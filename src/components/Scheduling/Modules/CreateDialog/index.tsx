@@ -12,15 +12,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  setEditModule,
   setInterviewModules,
   setIsCreateDialogOpen,
-  setPanelName,
+  setModuleName,
   setSelectedUsers,
   useSchedulingStore
 } from './../store';
 import TeamAutoComplete from './TeamTextField';
-import { createModule, editModuleFunct } from '../utils';
+import { createModule } from '../utils';
 
 function CreateDialog() {
   const { recruiter, members } = useAuthDetails();
@@ -28,8 +27,7 @@ function CreateDialog() {
   const isCreatePanelOpen = useSchedulingStore(
     (state) => state.isCreateDialogOpen
   );
-  const { selectedUsers, moduleName, interviewModules, editModule } =
-    useSchedulingStore();
+  const { selectedUsers, moduleName, interviewModules } = useSchedulingStore();
   const [loading, setLoading] = useState(false);
 
   const createPanelHandler = async () => {
@@ -46,7 +44,7 @@ function CreateDialog() {
       ]);
       setIsCreateDialogOpen(null);
       setSelectedUsers([]);
-      setPanelName('');
+      setModuleName('');
     } catch (e) {
       toast.error('Error creating panel');
       setIsCreateDialogOpen(null);
@@ -59,28 +57,28 @@ function CreateDialog() {
     try {
       setLoading(true);
 
-      const res = await editModuleFunct({
-        name: moduleName,
-        selectedUsers,
-        panel: editModule
-      });
-      setInterviewModules(
-        interviewModules.map((module) => {
-          if (module.id === editModule.id) {
-            return {
-              ...module,
-              name: res.name,
-              relations: res.updatedRelations
-            };
-          }
-          return module;
-        })
-      );
-      setEditModule({
-        ...editModule,
-        name: res.name,
-        relations: res.updatedRelations
-      });
+      // const res = await editModuleFunct({
+      //   name: moduleName,
+      //   selectedUsers,
+      //   panel: editModule
+      // });
+      // setInterviewModules(
+      //   interviewModules.map((module) => {
+      //     if (module.id === editModule.id) {
+      //       return {
+      //         ...module,
+      //         name: res.name,
+      //         relations: res.updatedRelations
+      //       };
+      //     }
+      //     return module;
+      //   })
+      // );
+      // setEditModule({
+      //   ...editModule,
+      //   name: res.name,
+      //   relations: res.updatedRelations
+      // });
       close();
     } catch (e) {
       toast.error('Error editing panel');
@@ -93,7 +91,7 @@ function CreateDialog() {
   const close = () => {
     if (isCreatePanelOpen == 'create') {
       setSelectedUsers([]);
-      setPanelName('');
+      setModuleName('');
     }
     setIsCreateDialogOpen(null);
   };
@@ -154,7 +152,7 @@ function CreateDialog() {
               placeholder='Enter Panel Name'
               value={moduleName}
               onChange={(e) => {
-                setPanelName(e.target.value);
+                setModuleName(e.target.value);
               }}
             />
           }

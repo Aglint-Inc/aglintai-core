@@ -57,6 +57,7 @@ export * from "./NewChat";
 export * from "./NewChatButton";
 export * from "./NewTaskDropdown";
 export * from "./OutlinedButton";
+export * from "./ResumePop";
 export * from "./SamplePanel";
 export * from "./SuggetionCard";
 export * from "./SuggetionPill";

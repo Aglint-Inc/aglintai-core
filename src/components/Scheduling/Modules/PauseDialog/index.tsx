@@ -7,26 +7,47 @@ import { useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
-import SpecializedDatePicker from '@/src/components/Common/SpecializedDatePicker';
-import UITextField from '@/src/components/Common/UITextField';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import {
+  setEditModule,
   setIsPauseDialogOpen,
   setPauseJson,
   useSchedulingStore
 } from '../store';
 
 function PauseDialog() {
-  const { isPauseDialogOpen, pause_json } = useSchedulingStore();
+  const { isPauseDialogOpen, pause_json, selUser, editModule } =
+    useSchedulingStore();
   const [selectedType, setSelectedType] = useState<
     'isManual' | 'twoWeek' | 'oneMonth' | 'threeMonth' | 'custom'
   >('isManual');
 
   const pauseHandler = async () => {
     try {
-      //
+      if (selUser.user_id) {
+        const { error } = await supabase
+          .from('interview_module_relation')
+          .update({ pause_json: pause_json })
+          .match({ module_id: editModule.id, user_id: selUser.user_id });
+        if (!error) {
+          setEditModule({
+            ...editModule,
+            relations: editModule.relations.map((rel) =>
+              rel.user_id === selUser.user_id
+                ? { ...rel, pause_json: pause_json }
+                : rel
+            )
+          });
+        }
+      } else {
+        throw new Error();
+      }
     } catch {
-      //
+      toast.error('Error pausing user');
+    } finally {
+      setIsPauseDialogOpen(false);
     }
   };
 
@@ -165,26 +186,36 @@ function PauseDialog() {
               <Stack direction={'row'} width={'100%'} spacing={1}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    label='Controlled picker'
-                    value={pause_json.start_date}
+                    label={'From'}
+                    value={dayjs(pause_json?.start_date)}
                     onChange={(newValue) => {
                       setPauseJson({
                         ...pause_json,
-                        start_date: newValue
+                        start_date: newValue.toISOString()
                       });
                     }}
-                    slots={{
-                      // textField: UITextField as any,
-                      textField: (params: any) => {
-                        return (
-                          <UITextField
-                            {...params}
-                            InputProps={{
-                              sx: { width: '100%' },
-                              ...params.InputProps
-                            }}
-                          />
-                        );
+                    minDate={currentDate}
+                    slotProps={{
+                      textField: {
+                        InputProps: { disableUnderline: true }
+                      }
+                    }}
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label={'To'}
+                    value={dayjs(pause_json?.end_date)}
+                    minDate={currentDate}
+                    onChange={(newValue) => {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: newValue.toISOString()
+                      });
+                    }}
+                    slotProps={{
+                      textField: {
+                        InputProps: { disableUnderline: true }
                       }
                     }}
                   />

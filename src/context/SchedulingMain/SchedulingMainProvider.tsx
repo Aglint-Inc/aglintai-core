@@ -18,7 +18,6 @@ import {
   setEditModule,
   setInterviewModules,
   setModuleName,
-  setSelectedUsers,
   useSchedulingStore
 } from '../../components/Scheduling/Modules/store';
 
@@ -70,7 +69,6 @@ const SchedulingProvider = ({ children }) => {
       if (selModule) {
         setModuleName(selModule.name);
         setEditModule(selModule);
-        setSelectedUsers(selModule.relations);
       }
     }
   }, [router, loading]);

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import {
@@ -9,10 +10,13 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import DeleteMemberDialog from '../DeleteDialog';
 import PauseDialog from '../PauseDialog';
 import {
+  setEditModule,
   setIsDeleteDialogOpen,
   setIsPauseDialogOpen,
   setSelUser,
@@ -22,7 +26,34 @@ import {
 function ModuleMembersComp() {
   const router = useRouter();
   const { members } = useAuthDetails();
-  const { selectedUsers, moduleName } = useSchedulingStore();
+  const { moduleName, editModule } = useSchedulingStore();
+
+  const resumeHandler = async (selUser) => {
+    try {
+      if (selUser.user_id) {
+        const { error } = await supabase
+          .from('interview_module_relation')
+          .update({ pause_json: null })
+          .match({ module_id: editModule.id, user_id: selUser.user_id });
+        if (!error) {
+          setEditModule({
+            ...editModule,
+            relations: editModule.relations.map((rel) =>
+              rel.user_id === selUser.user_id
+                ? { ...rel, pause_json: null }
+                : rel
+            )
+          });
+        }
+      } else {
+        throw new Error();
+      }
+    } catch {
+      toast.error('Error resuming user');
+    } finally {
+      setIsPauseDialogOpen(false);
+    }
+  };
 
   return (
     <>
@@ -43,7 +74,7 @@ function ModuleMembersComp() {
         slotBody={
           <>
             <InterviewMemberList
-              slotMemberList={selectedUsers.map((user) => {
+              slotMemberList={editModule?.relations.map((user) => {
                 const member = members.filter(
                   (member) => member.user_id === user.user_id
                 )[0];
@@ -63,7 +94,12 @@ function ModuleMembersComp() {
                     //     }
                     //   }
                     // }}
-                    textPauseResumeDate={user.pause_json?.end_date || '--'}
+                    textPauseResumeDate={
+                      user.pause_json?.end_date
+                        ? 'Till ' +
+                          dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
+                        : '--'
+                    }
                     onClickRemoveModule={{
                       onClick: () => {
                         setSelUser(user);
@@ -74,6 +110,11 @@ function ModuleMembersComp() {
                       onClick: () => {
                         setSelUser(user);
                         setIsPauseDialogOpen(true);
+                      }
+                    }}
+                    onClickResumeInterview={{
+                      onClick: () => {
+                        resumeHandler(user);
                       }
                     }}
                     onHoverDot={false}

@@ -35,7 +35,7 @@ import {
   setInterviewModules,
   setIsCreateDialogOpen,
   setModuleName,
-  setSelectedUsers,
+  // setSelectedUsers,
   useSchedulingStore
 } from '../Modules/store';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -72,7 +72,7 @@ const Availability = () => {
           setTimeSlot(activeDuration);
           setModuleName(panel.name);
           setEditModule(panel);
-          setSelectedUsers(panel.relations);
+          // setSelectedUsers(panel.relations);
           const newInterviewers: StateAvailibility['interviewers'] =
             panel.relations.map((t) => {
               const member = members.find((m) => m.user_id === t.user_id);

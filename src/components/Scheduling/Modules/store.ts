@@ -2,7 +2,8 @@ import { create } from 'zustand';
 
 import {
   InterviewModuleRelationType,
-  InterviewModuleType
+  InterviewModuleType,
+  RecruiterUserType
 } from '@/src/types/data.types';
 
 interface SchedulingSlice {
@@ -10,14 +11,14 @@ interface SchedulingSlice {
   isCreateDialogOpen: 'edit' | 'create' | null;
   isDeleteDialogOpen: boolean;
   isPauseDialogOpen: boolean;
-  selectedUsers: InterviewModuleRelationType[];
+  selectedUsers: RecruiterUserType[];
   moduleName: string;
   editModule: ModuleType | null;
   selUser: InterviewModuleRelationType | null;
   pause_json: {
-    start_date?: string;
-    end_date?: string;
-    isManual?: boolean;
+    start_date: string;
+    end_date: string;
+    isManual: boolean;
   } | null;
 }
 
@@ -40,9 +41,8 @@ export const setIsCreateDialogOpen = (
   isCreateDialogOpen: 'edit' | 'create' | null
 ) => useSchedulingStore.setState({ isCreateDialogOpen });
 
-export const setSelectedUsers = (
-  selectedUsers: InterviewModuleRelationType[]
-) => useSchedulingStore.setState({ selectedUsers });
+export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
+  useSchedulingStore.setState({ selectedUsers });
 
 export const setModuleName = (moduleName: string) =>
   useSchedulingStore.setState({ moduleName });

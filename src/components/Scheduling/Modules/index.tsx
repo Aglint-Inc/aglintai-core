@@ -70,8 +70,8 @@ function Modules() {
                         ? `${module.relations.length} Members`
                         : ''
                     }
-                    textCompletedSchedules={'Oggy gay'}
-                    textUpcomingSchedules={'Oggy seedless'}
+                    textCompletedSchedules={''}
+                    textUpcomingSchedules={''}
                     isCompletedScheduleEmpty={true}
                     isCompletedScheduleVisible={true}
                     isUpcomingScheduleEmpty={true}

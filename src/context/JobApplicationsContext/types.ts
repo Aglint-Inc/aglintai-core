@@ -3,9 +3,9 @@
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import {
   FilterParameter,
-  SortParameter,
+  SortParameter
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { PanelType } from '@/src/components/Scheduling/Panels/store';
+import { ModuleType } from '@/src/components/Scheduling/Modules/store';
 import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
@@ -22,7 +22,7 @@ export enum JobApplicationSections {
   ASSESSMENT = 'assessment',
   INTERVIEW = 'interview',
   QUALIFIED = 'qualified',
-  DISQUALIFIED = 'disqualified',
+  DISQUALIFIED = 'disqualified'
 }
 
 export type CardStateManager = {
@@ -43,7 +43,7 @@ export type JobApplication = Applications & {
     id: AssessmentResult['id'];
   })[];
   schedule: Partial<InterviewScheduleTypeDB>;
-  panel: Partial<PanelType>;
+  panel: Partial<ModuleType>;
   emailValidity?: {
     isFetching: boolean;
     isValidEmail: boolean;

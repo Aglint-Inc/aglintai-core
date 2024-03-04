@@ -5,21 +5,21 @@ import {
   resetInterviewState,
   setApplicationList,
   setInitalLoading,
-  setPagination,
+  setPagination
 } from '@/src/components/Scheduling/AllSchedules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { setInterviewPanels } from '../../components/Scheduling/Panels/store';
-import { fetchInterviewPanel } from '../../components/Scheduling/Panels/utils';
+import { setInterviewModules } from '../../components/Scheduling/Modules/store';
+import { fetchInterviewModule } from '../../components/Scheduling/Modules/utils';
 
 type InterviewPanelContextType = {
   loading: boolean;
 };
 
 const initialState = {
-  loading: true,
+  loading: true
 };
 
 const InterviewPanelContext =
@@ -34,15 +34,15 @@ const InterviewPanelProvider = ({ children }) => {
       initialFetch();
     }
     return () => {
-      setInterviewPanels([]);
+      setInterviewModules([]);
     };
   }, [recruiter?.id]);
 
   const initialFetch = async () => {
     try {
-      const res: any = await fetchInterviewPanel(recruiter.id);
+      const res: any = await fetchInterviewModule(recruiter.id);
       if (res) {
-        setInterviewPanels(res);
+        setInterviewModules(res);
       }
     } catch (e) {
       //
@@ -66,8 +66,8 @@ const InterviewPanelProvider = ({ children }) => {
       const { data: appNew, error } = await supabase.rpc(
         'fetch_interview_data',
         {
-          rec_id: recruiter.id,
-        },
+          rec_id: recruiter.id
+        }
       );
       if (error) {
         throw new Error(error.message);
@@ -83,7 +83,7 @@ const InterviewPanelProvider = ({ children }) => {
   const getPaginationData = async () => {
     try {
       const { data, error } = await supabase.rpc('get_interview_data_count', {
-        rec_id: recruiter.id,
+        rec_id: recruiter.id
       });
       setPagination({ total: data });
       if (error) {
