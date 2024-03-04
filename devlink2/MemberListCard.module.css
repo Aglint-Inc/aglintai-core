@@ -251,6 +251,10 @@
   z-index: 1;
 }
 
+.icons.ml--6 {
+  margin-left: -6px;
+}
+
 .div-block-1075 {
   display: flex;
   align-items: center;
@@ -328,6 +332,34 @@
 }
 
 .div-block-1080 {
+  position: relative;
   padding: 4px;
   cursor: pointer;
+}
+
+.div-block-1101 {
+  position: absolute;
+  left: auto;
+  top: 24px;
+  right: 0%;
+  bottom: auto;
+
+  display: none;
+  overflow: hidden;
+  width: 213px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+}
+
+.div-block-1102 {
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }

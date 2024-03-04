@@ -14,7 +14,7 @@ export default function SpecializedDatePicker({
   disabled = false,
   disableFuture = false,
   monthView,
-  onChange,
+  onChange
 }: {
   maxDate?: Dayjs;
   minDate?: Dayjs;
@@ -50,7 +50,7 @@ export default function SpecializedDatePicker({
                 InputProps={{ sx: { width: '150px' }, ...params.InputProps }}
               />
             );
-          },
+          }
         }}
       />
     </LocalizationProvider>

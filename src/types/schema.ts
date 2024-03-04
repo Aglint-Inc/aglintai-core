@@ -985,16 +985,19 @@ export type Database = {
         Row: {
           id: string
           module_id: string
+          pause_json: Json | null
           user_id: string
         }
         Insert: {
           id?: string
           module_id: string
+          pause_json?: Json | null
           user_id: string
         }
         Update: {
           id?: string
           module_id?: string
+          pause_json?: Json | null
           user_id?: string
         }
         Relationships: [
@@ -1587,6 +1590,7 @@ export type Database = {
           recruiter_active: boolean | null
           recruiter_type: string | null
           roles: Json
+          service_json: string | null
           socials: Json | null
           technology_score: string[]
           use_of_purpose: Json | null
@@ -1628,6 +1632,7 @@ export type Database = {
           recruiter_active?: boolean | null
           recruiter_type?: string | null
           roles?: Json
+          service_json?: string | null
           socials?: Json | null
           technology_score?: string[]
           use_of_purpose?: Json | null
@@ -1669,6 +1674,7 @@ export type Database = {
           recruiter_active?: boolean | null
           recruiter_type?: string | null
           roles?: Json
+          service_json?: string | null
           socials?: Json | null
           technology_score?: string[]
           use_of_purpose?: Json | null
@@ -2828,7 +2834,7 @@ export type Database = {
         | "zoom"
       question_level: "basic" | "intermediate" | "advanced"
       question_type: "scq" | "mcq" | "qna" | "code"
-      recruiter_roles: "admin" | "member" | "interviewer"
+      recruiter_roles: "admin" | "member" | "interviewer" | "scheduler"
       sender_type: "aglint" | "you" | "system" | "user"
       template_type:
         | "cognitive"

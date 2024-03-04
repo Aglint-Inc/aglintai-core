@@ -34,7 +34,7 @@ import {
   setEditModule,
   setInterviewModules,
   setIsCreateDialogOpen,
-  setPanelName,
+  setModuleName,
   setSelectedUsers,
   useSchedulingStore
 } from '../Modules/store';
@@ -70,13 +70,9 @@ const Availability = () => {
           const activeDuration =
             (panel.duration_available as any)?.activeDuration ?? 30;
           setTimeSlot(activeDuration);
-          setPanelName(panel.name);
+          setModuleName(panel.name);
           setEditModule(panel);
-          setSelectedUsers(
-            members.filter((m) =>
-              panel.relations.map((r) => r.user_id).includes(m.user_id)
-            )
-          );
+          setSelectedUsers(panel.relations);
           const newInterviewers: StateAvailibility['interviewers'] =
             panel.relations.map((t) => {
               const member = members.find((m) => m.user_id === t.user_id);

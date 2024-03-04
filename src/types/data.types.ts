@@ -204,7 +204,12 @@ export type InterviewModuleType =
   Database['public']['Tables']['interview_module']['Row'];
 
 export type InterviewModuleRelationType =
-  Database['public']['Tables']['interview_module_relation']['Row'];
+  Database['public']['Tables']['interview_module_relation']['Row'] & {
+    pause_json: {
+      start_date: string;
+      end_date: string;
+    };
+  };
 
 export type InterviewAvailabilityType =
   Database['public']['Tables']['interview_availabilties']['Row'];

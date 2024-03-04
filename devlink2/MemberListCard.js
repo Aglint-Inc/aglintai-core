@@ -1,7 +1,12 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import * as _utils from "./utils";
 import _styles from "./MemberListCard.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-133":{"id":"e-133","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-79","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-134"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"82694787-d431-1436-c32c-c4b18a93bc91"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1709551095385},"e-134":{"id":"e-134","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-80","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-133"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"82694787-d431-1436-c32c-c4b18a93bc91"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1709551095386}},"actionLists":{"a-79":{"id":"a-79","title":"MemberListCard Hover IN","actionItemGroups":[{"actionItems":[{"id":"a-79-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1101","selectorGuids":["1bf41171-9dea-7b98-63d3-f51ced602df1"]}}},{"id":"a-79-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1101","selectorGuids":["1bf41171-9dea-7b98-63d3-f51ced602df1"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-79-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1101","selectorGuids":["1bf41171-9dea-7b98-63d3-f51ced602df1"]},"value":1,"unit":""}},{"id":"a-79-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"block","target":{"useEventTarget":"CHILDREN","selector":".div-block-1101","selectorGuids":["1bf41171-9dea-7b98-63d3-f51ced602df1"]}}}]}],"createdOn":1709551132201,"useFirstGroupAsInitialState":true},"a-80":{"id":"a-80","title":"MemberListCard Hover OUT","actionItemGroups":[{"actionItems":[{"id":"a-80-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1101","selectorGuids":["1bf41171-9dea-7b98-63d3-f51ced602df1"]},"value":0,"unit":""}},{"id":"a-80-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"value":"block","target":{"useEventTarget":"CHILDREN","selector":".div-block-1101","selectorGuids":["1bf41171-9dea-7b98-63d3-f51ced602df1"]}}}]}],"createdOn":1709551132201,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function MemberListCard({
   as: _Component = _Builtin.Block,
@@ -14,7 +19,14 @@ export function MemberListCard({
   isPauseResumeVisible = true,
   textPauseResumeDate = "Till 16 April 2024",
   onHoverDot = {},
+  onClickPauseInterview = {},
+  onClickResumeInterview = {},
+  onClickRemoveModule = {},
+  isPauseVisible = true,
+  isResumeVisible = false,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component
       className={_utils.cx(_styles, "interview-sub-table-card")}
@@ -144,6 +156,7 @@ export function MemberListCard({
         ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1080")}
+          data-w-id="82694787-d431-1436-c32c-c4b18a93bc91"
           tag="div"
           {...onHoverDot}
         >
@@ -151,6 +164,61 @@ export function MemberListCard({
             className={_utils.cx(_styles, "icons")}
             value="%3Csvg%20width%3D%2214%22%20height%3D%2216%22%20viewBox%3D%220%200%2014%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.25%208C0.270833%207.33333%200.5625%206.83333%201.125%206.5C1.70833%206.16667%202.29167%206.16667%202.875%206.5C3.4375%206.83333%203.72917%207.33333%203.75%208C3.72917%208.66667%203.4375%209.16667%202.875%209.5C2.29167%209.83333%201.70833%209.83333%201.125%209.5C0.5625%209.16667%200.270833%208.66667%200.25%208ZM5.25%208C5.27083%207.33333%205.5625%206.83333%206.125%206.5C6.70833%206.16667%207.29167%206.16667%207.875%206.5C8.4375%206.83333%208.72917%207.33333%208.75%208C8.72917%208.66667%208.4375%209.16667%207.875%209.5C7.29167%209.83333%206.70833%209.83333%206.125%209.5C5.5625%209.16667%205.27083%208.66667%205.25%208ZM12%206.25C12.6667%206.27083%2013.1667%206.5625%2013.5%207.125C13.8333%207.70833%2013.8333%208.29167%2013.5%208.875C13.1667%209.4375%2012.6667%209.72917%2012%209.75C11.3333%209.72917%2010.8333%209.4375%2010.5%208.875C10.1667%208.29167%2010.1667%207.70833%2010.5%207.125C10.8333%206.5625%2011.3333%206.27083%2012%206.25Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
           />
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1101")}
+            tag="div"
+          >
+            {isPauseVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "div-block-1102",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickPauseInterview}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.5%205C6.1875%205.02083%206.02083%205.1875%206%205.5V14.5C6.02083%2014.8125%206.1875%2014.9792%206.5%2015H8C8.3125%2014.9792%208.47917%2014.8125%208.5%2014.5V5.5C8.47917%205.1875%208.3125%205.02083%208%205H6.5ZM5%205.5C5.02083%205.08333%205.16667%204.72917%205.4375%204.4375C5.72917%204.16667%206.08333%204.02083%206.5%204H8C8.41667%204.02083%208.77083%204.16667%209.0625%204.4375C9.33333%204.72917%209.47917%205.08333%209.5%205.5V14.5C9.47917%2014.9167%209.33333%2015.2708%209.0625%2015.5625C8.77083%2015.8333%208.41667%2015.9792%208%2016H6.5C6.08333%2015.9792%205.72917%2015.8333%205.4375%2015.5625C5.16667%2015.2708%205.02083%2014.9167%205%2014.5V5.5ZM12%205C11.6875%205.02083%2011.5208%205.1875%2011.5%205.5V14.5C11.5208%2014.8125%2011.6875%2014.9792%2012%2015H13.5C13.8125%2014.9792%2013.9792%2014.8125%2014%2014.5V5.5C13.9792%205.1875%2013.8125%205.02083%2013.5%205H12ZM10.5%205.5C10.5208%205.08333%2010.6667%204.72917%2010.9375%204.4375C11.2292%204.16667%2011.5833%204.02083%2012%204H13.5C13.9167%204.02083%2014.2708%204.16667%2014.5625%204.4375C14.8333%204.72917%2014.9792%205.08333%2015%205.5V14.5C14.9792%2014.9167%2014.8333%2015.2708%2014.5625%2015.5625C14.2708%2015.8333%2013.9167%2015.9792%2013.5%2016H12C11.5833%2015.9792%2011.2292%2015.8333%2010.9375%2015.5625C10.6667%2015.2708%2010.5208%2014.9167%2010.5%2014.5V5.5Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block tag="div">{"Pause Interviews"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+            {isResumeVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "div-block-1102",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickResumeInterview}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.75%204.0625C5.58333%203.97917%205.41667%203.97917%205.25%204.0625C5.08333%204.16667%205%204.3125%205%204.5V15.5C5%2015.6875%205.08333%2015.8333%205.25%2015.9375C5.41667%2016.0208%205.58333%2016.0208%205.75%2015.9375L14.75%2010.4375C14.9167%2010.3333%2015%2010.1875%2015%2010C15%209.8125%2014.9167%209.66667%2014.75%209.5625L5.75%204.0625ZM4.78125%203.1875C5.28125%202.91667%205.78125%202.92708%206.28125%203.21875L15.2812%208.71875C15.7396%209.01042%2015.9792%209.4375%2016%2010C15.9792%2010.5625%2015.7396%2010.9896%2015.2812%2011.2812L6.28125%2016.7812C5.78125%2017.0729%205.28125%2017.0833%204.78125%2016.8125C4.28125%2016.5208%204.02083%2016.0833%204%2015.5V4.5C4.02083%203.91667%204.28125%203.47917%204.78125%203.1875Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block tag="div">{"Resume Inerviews"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1102", "cursor-pointer")}
+              tag="div"
+              {...onClickRemoveModule}
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.5625%203C8.375%203%208.22917%203.08333%208.125%203.25L7.65625%204H12.3438L11.875%203.25C11.7708%203.08333%2011.625%203%2011.4375%203H8.5625ZM13.5312%204H15H16H16.5C16.8125%204.02083%2016.9792%204.1875%2017%204.5C16.9792%204.8125%2016.8125%204.97917%2016.5%205H15.9375L15.125%2016.1562C15.0833%2016.6771%2014.875%2017.1146%2014.5%2017.4688C14.125%2017.8021%2013.6667%2017.9792%2013.125%2018H6.875C6.33333%2017.9792%205.875%2017.8021%205.5%2017.4688C5.125%2017.1146%204.91667%2016.6771%204.875%2016.1562L4.0625%205H3.5C3.1875%204.97917%203.02083%204.8125%203%204.5C3.02083%204.1875%203.1875%204.02083%203.5%204H4H5H6.46875L7.28125%202.71875C7.59375%202.26042%208.02083%202.02083%208.5625%202H11.4375C11.9792%202.02083%2012.4062%202.26042%2012.7188%202.71875L13.5312%204ZM14.9375%205H5.0625L5.875%2016.0625C5.89583%2016.3333%206%2016.5521%206.1875%2016.7188C6.375%2016.9062%206.60417%2017%206.875%2017H13.125C13.3958%2017%2013.625%2016.9062%2013.8125%2016.7188C14%2016.5521%2014.1042%2016.3333%2014.125%2016.0625L14.9375%205Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-red-500")}
+                tag="div"
+              >
+                {"Remove from module"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

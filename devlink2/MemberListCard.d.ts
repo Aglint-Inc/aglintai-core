@@ -12,4 +12,9 @@ declare function MemberListCard(props: {
   isPauseResumeVisible?: Types.Visibility.VisibilityConditions;
   textPauseResumeDate?: React.ReactNode;
   onHoverDot?: Types.Devlink.RuntimeProps;
+  onClickPauseInterview?: Types.Devlink.RuntimeProps;
+  onClickResumeInterview?: Types.Devlink.RuntimeProps;
+  onClickRemoveModule?: Types.Devlink.RuntimeProps;
+  isPauseVisible?: Types.Visibility.VisibilityConditions;
+  isResumeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

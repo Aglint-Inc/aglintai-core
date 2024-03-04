@@ -14,7 +14,13 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { setInterviewModules } from '../../components/Scheduling/Modules/store';
+import {
+  setEditModule,
+  setInterviewModules,
+  setModuleName,
+  setSelectedUsers,
+  useSchedulingStore
+} from '../../components/Scheduling/Modules/store';
 
 type InterviewPanelContextType = {
   loading: boolean;
@@ -31,6 +37,7 @@ const SchedulingProvider = ({ children }) => {
   const { recruiter } = useAuthDetails();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { interviewModules } = useSchedulingStore();
 
   useEffect(() => {
     if (recruiter?.id) {
@@ -53,6 +60,20 @@ const SchedulingProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (router.isReady && router.query.module_id && !loading) {
+      const selModule = interviewModules.filter(
+        (m) => m.id === router.query.module_id
+      )[0];
+
+      if (selModule) {
+        setModuleName(selModule.name);
+        setEditModule(selModule);
+        setSelectedUsers(selModule.relations);
+      }
+    }
+  }, [router, loading]);
 
   useEffect(() => {
     if (
