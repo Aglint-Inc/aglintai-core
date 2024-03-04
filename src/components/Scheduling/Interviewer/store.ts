@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import {
   CandidateFileTypeDB,
   CandidateType,
-  InterviewPanelType,
+  InterviewModuleType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
 } from '@/src/types/data.types';
@@ -73,7 +73,7 @@ export type ScheduleType = {
     recruiter_id: string;
     jd_json: JSON;
   };
-  panel: InterviewPanelType;
+  panel: InterviewModuleType;
 };
 
 interface ScoreJson {

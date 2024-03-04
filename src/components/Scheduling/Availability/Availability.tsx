@@ -8,7 +8,7 @@ import {
   ButtonWithShadow,
   PageLayout,
   PanelDetail,
-  PanelDetailTopRight,
+  PanelDetailTopRight
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -26,18 +26,18 @@ import {
   setIsisInitialising,
   setTimeSlot,
   useAvailableStore,
-  useSyncInterviewersCalender,
+  useSyncInterviewersCalender
 } from './store';
 import { handleDelete } from './utils';
-import CreateDialog from '../Panels/CreateDialog';
+import CreateDialog from '../Modules/CreateDialog';
 import {
-  setEditPanel,
-  setInterviewPanels,
+  setEditModule,
+  setInterviewModules,
   setIsCreateDialogOpen,
   setPanelName,
   setSelectedUsers,
-  useSchedulingStore,
-} from '../Panels/store';
+  useSchedulingStore
+} from '../Modules/store';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
@@ -46,34 +46,36 @@ const Availability = () => {
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const { initialiseAvailabilities } = useSyncInterviewersCalender();
   const { members } = useAuthDetails();
-  const panelName = useSchedulingStore((state) => state.panelName);
+  const moduleName = useSchedulingStore((state) => state.moduleName);
   const isInitialising = useAvailableStore((state) => state.isInitialising);
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
   const timeRange = useAvailableStore((state) => state.timeRange);
 
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const interviewModules = useSchedulingStore(
+    (state) => state.interviewModules
+  );
 
   const [popupEl, setPopupEl] = useState(null);
 
   const router = useRouter();
   useEffect(() => {
-    if (router.isReady && router.query.panel_id && !isInterviewPanelLoading) {
+    if (router.isReady && router.query.module_id && !isInterviewPanelLoading) {
       (async () => {
         try {
           setIsisInitialising(true);
-          const panel = interviewPanels.find(
-            (p) => p.id === router.query.panel_id,
+          const panel = interviewModules.find(
+            (p) => p.id === router.query.module_id
           );
 
           const activeDuration =
             (panel.duration_available as any)?.activeDuration ?? 30;
           setTimeSlot(activeDuration);
           setPanelName(panel.name);
-          setEditPanel(panel);
+          setEditModule(panel);
           setSelectedUsers(
             members.filter((m) =>
-              panel.relations.map((r) => r.user_id).includes(m.user_id),
-            ),
+              panel.relations.map((r) => r.user_id).includes(m.user_id)
+            )
           );
           const newInterviewers: StateAvailibility['interviewers'] =
             panel.relations.map((t) => {
@@ -87,7 +89,7 @@ const Availability = () => {
                 slots: [],
                 email: member.email,
                 isMailConnected: true,
-                timeZone: '',
+                timeZone: ''
               };
             });
 
@@ -96,7 +98,7 @@ const Availability = () => {
             newInterviewers,
             activeDuration,
             dateRangeView,
-            timeRange,
+            timeRange
           );
         } catch (err) {
           toast.error(API_FAIL_MSG);
@@ -112,12 +114,12 @@ const Availability = () => {
   }, [router.isReady, router.query, isInterviewPanelLoading]);
 
   const deleteHandler = async () => {
-    const res = await handleDelete(router.query.panel_id);
+    const res = await handleDelete(router.query.module_id);
     if (res) {
-      setInterviewPanels(
-        interviewPanels.filter((p) => p.id !== router.query.panel_id),
+      setInterviewModules(
+        interviewModules.filter((p) => p.id !== router.query.module_id)
       );
-      router.push(pageRoutes.SCHEDULINGPANEL);
+      router.push(pageRoutes.INTERVIEWMODULE);
     }
   };
 
@@ -126,13 +128,13 @@ const Availability = () => {
       <PageLayout
         onClickBack={{
           onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=panels`);
-          },
+            router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
+          }
         }}
         isBackButton={true}
         slotTopbarLeft={
           <>
-            <Breadcrum textName={panelName} />
+            <Breadcrum textName={moduleName} />
           </>
         }
         slotBody={
@@ -168,7 +170,7 @@ const Availability = () => {
               onClickEditPanel={{
                 onClick: () => {
                   setIsCreateDialogOpen('edit');
-                },
+                }
               }}
               slotThreeDots={
                 <>
@@ -176,7 +178,7 @@ const Availability = () => {
                     onClickClose={{
                       onClick: (e) => {
                         setPopupEl(e.currentTarget);
-                      },
+                      }
                     }}
                   />
                 </>
@@ -201,21 +203,21 @@ const Availability = () => {
         }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         sx={{
           // mt: 2,
           '& .MuiPaper-root': {
             border: 'none !important',
-            overflow: 'visible !important',
-          },
+            overflow: 'visible !important'
+          }
         }}
       >
         <ButtonWithShadow
           onClickButton={{
             onClick: () => {
               deleteHandler();
-            },
+            }
           }}
         />
       </Popover>
@@ -226,7 +228,7 @@ const Availability = () => {
 export default Availability;
 
 export const InterviewerGroup = ({
-  profileUrls,
+  profileUrls
 }: {
   profileUrls: { name: string; url: string; isChecked?: boolean }[];
 }) => {
@@ -237,8 +239,8 @@ export const InterviewerGroup = ({
         '& .MuiAvatar-root': {
           width: '24px',
           height: '24px',
-          fontSize: '12px',
-        },
+          fontSize: '12px'
+        }
       }}
       total={profileUrls.length}
     >

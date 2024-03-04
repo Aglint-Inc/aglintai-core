@@ -949,7 +949,7 @@ export type Database = {
           }
         ]
       }
-      interview_panel: {
+      interview_module: {
         Row: {
           created_at: string
           duration_available: Json | null
@@ -981,28 +981,28 @@ export type Database = {
           }
         ]
       }
-      interview_panel_relation: {
+      interview_module_relation: {
         Row: {
           id: string
-          panel_id: string
+          module_id: string
           user_id: string
         }
         Insert: {
           id?: string
-          panel_id: string
+          module_id: string
           user_id: string
         }
         Update: {
           id?: string
-          panel_id?: string
+          module_id?: string
           user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "interview_panel_relation_panel_id_fkey"
-            columns: ["panel_id"]
+            columns: ["module_id"]
             isOneToOne: false
-            referencedRelation: "interview_panel"
+            referencedRelation: "interview_module"
             referencedColumns: ["id"]
           },
           {
@@ -1078,7 +1078,7 @@ export type Database = {
             foreignKeyName: "interview_schedule_interview_panel_fkey"
             columns: ["panel_id"]
             isOneToOne: false
-            referencedRelation: "interview_panel"
+            referencedRelation: "interview_module"
             referencedColumns: ["id"]
           },
           {

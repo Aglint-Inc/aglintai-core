@@ -13,12 +13,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase
       .from('interview_schedule')
       .select(
-        '*, interview_panel(id, name , recruiter(id,name,logo)),applications(id , candidates(first_name,email))',
+        '*, interview_module(id, name , recruiter(id,name,logo)),applications(id , candidates(first_name,email))',
       )
       .eq('id', req.body.id);
     if (!error) {
       const { data: rel, error: relErr } = await supabase
-        .from('interview_panel_relation')
+        .from('interview_module_relation')
         .select('*')
         .eq('panel_id', data[0].panel_id);
 

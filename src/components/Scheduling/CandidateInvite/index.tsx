@@ -63,8 +63,8 @@ function CandidateInvite() {
       const res = await axios.post('/api/scheduling/confirm', {
         id: router.query.schedule_id,
         selectedSlot: selectedSlot,
-        company_logo: schedule?.interview_panel?.recruiter?.logo,
-        company_name: schedule?.interview_panel?.recruiter?.name,
+        company_logo: schedule?.interview_module?.recruiter?.logo,
+        company_name: schedule?.interview_module?.recruiter?.name,
         schedule_name: schedule.schedule_name,
         interviewers_id: interviewers_id,
         candidate_email: schedule.applications.candidates.email,
@@ -313,7 +313,7 @@ function CandidateInvite() {
           }
           slotCompanyImage={
             <Avatar
-              src={schedule?.interview_panel?.recruiter?.logo}
+              src={schedule?.interview_module?.recruiter?.logo}
               variant='rounded'
               sx={{
                 width: '60px',
@@ -353,7 +353,7 @@ function CandidateInvite() {
           )} - ${dayjs(schedule?.schedule_time?.endTime).format('hh:mm A')}`}
           slotCompanyLogo={
             <Avatar
-              src={schedule?.interview_panel?.recruiter?.logo}
+              src={schedule?.interview_module?.recruiter?.logo}
               variant='rounded'
               sx={{
                 width: '60px',

@@ -27,7 +27,7 @@ export const pageRoutes = Object.freeze({
   PHONESCREEN: '/candidate-phone-screening',
   LOADING: '/loading',
   SCHEDULING: '/scheduling',
-  SCHEDULINGPANEL: '/scheduling/panel',
+  INTERVIEWMODULE: '/scheduling/module',
   CONFIRM_SCHEDULE: '/confirm-availability',
   INTERVIEWER: '/interviewer',
   AGENT: '/agent',

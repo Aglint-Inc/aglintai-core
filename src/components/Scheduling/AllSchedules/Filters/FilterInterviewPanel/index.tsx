@@ -11,14 +11,16 @@ import {
   setFilterVisible,
   useInterviewStore
 } from '../../store';
-import { useSchedulingStore } from '../../../Panels/store';
+import { useSchedulingStore } from '../../../Modules/store';
 
 function FilterInterviewPanel() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
   const filter = useInterviewStore((state) => state.filter);
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const interviewModules = useSchedulingStore(
+    (state) => state.interviewModules
+  );
   const filterVisible = useInterviewStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -112,7 +114,7 @@ function FilterInterviewPanel() {
         }}
       >
         <FilterDropdown
-          slotOption={interviewPanels?.map((panel) => {
+          slotOption={interviewModules?.map((panel) => {
             return (
               <Stack
                 key={panel.id}

@@ -1,35 +1,34 @@
 import {
-  InterviewPanelRelationType,
-  InterviewPanelType,
-  RecruiterUserType,
+  InterviewModuleRelationType,
+  InterviewModuleType,
+  RecruiterUserType
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-export const fetchInterviewPanel = async (recruiter_id: string) => {
+export const fetchInterviewModule = async (recruiter_id: string) => {
   try {
-    const { data: dataPanel, error: errorPanel } = await supabase
-      .from('interview_panel')
+    const { data: dataModule, error: errorModule } = await supabase
+      .from('interview_module')
       .select('*')
       .eq('recruiter_id', recruiter_id);
-    if (errorPanel) {
-      throw errorPanel;
+    if (errorModule) {
+      throw errorModule;
     }
-    const panelIds = dataPanel.map((panel) => panel.id);
+    const moduleIds = dataModule.map((panel) => panel.id);
     const { data: dataRel, error: errorRel } = await supabase
-      .from('interview_panel_relation')
+      .from('interview_module_relation')
       .select('*')
-      .in('panel_id', panelIds);
+      .in('module_id', moduleIds);
 
     if (errorRel) {
       throw errorRel;
     }
-    const intPan = dataPanel.map((panel) => {
-      const members = dataRel.filter((rel) => rel.panel_id === panel.id);
-
+    const intPan = dataModule.map((module) => {
+      const members = dataRel.filter((rel) => rel.module_id === module.id);
       return {
-        ...panel,
-        relations: members,
+        ...module,
+        relations: members
       };
     });
 
@@ -40,38 +39,38 @@ export const fetchInterviewPanel = async (recruiter_id: string) => {
   }
 };
 
-export const createPanel = async ({
+export const createModule = async ({
   name,
   recruiter_id,
-  selectedUsers,
+  selectedUsers
 }: {
   name: string;
   recruiter_id: string;
   selectedUsers: RecruiterUserType[];
 }) => {
-  const { data: interPan, error: errorPanel } = await supabase
-    .from('interview_panel')
+  const { data: interPan, error: errorModule } = await supabase
+    .from('interview_module')
     .insert({ name: name, recruiter_id: recruiter_id })
     .select();
 
-  if (errorPanel) {
-    throw errorPanel;
+  if (errorModule) {
+    throw errorModule;
   }
 
   const insertToRelation = selectedUsers.map((user) => {
     return {
-      panel_id: interPan[0].id,
-      user_id: user.user_id,
+      module_id: interPan[0].id,
+      user_id: user.user_id
     };
   });
 
   const { data: interRel, error: errorRel } = await supabase
-    .from('interview_panel_relation')
+    .from('interview_module_relation')
     .insert(insertToRelation)
     .select();
 
   if (errorRel) {
-    throw errorPanel;
+    throw errorModule;
   }
 
   const { data: interAval, error: errorAval } = await supabase
@@ -79,7 +78,7 @@ export const createPanel = async ({
     .select()
     .in(
       'user_id',
-      selectedUsers.map((user) => user.user_id),
+      selectedUsers.map((user) => user.user_id)
     );
 
   if (errorAval) {
@@ -92,7 +91,7 @@ export const createPanel = async ({
 
   const insertToAvalData = insertToAval.map((user) => {
     return {
-      user_id: user.user_id,
+      user_id: user.user_id
     };
   });
 
@@ -105,32 +104,32 @@ export const createPanel = async ({
   }
 
   return {
-    interviewPanel: interPan[0],
-    interviewPanelRelations: interRel,
-    interviewAvailabilities: interAvalInsert,
+    interviewModule: interPan[0],
+    interviewModuleRelations: interRel,
+    interviewAvailabilities: interAvalInsert
   };
 };
 
-export const editPanel = async ({
+export const editModuleFunctio = async ({
   panel,
   name,
-  selectedUsers,
+  selectedUsers
 }: {
-  panel: InterviewPanelType & {
-    relations: InterviewPanelRelationType[];
+  panel: InterviewModuleType & {
+    relations: InterviewModuleRelationType[];
   };
   name: string;
   selectedUsers: RecruiterUserType[];
 }) => {
   try {
     // Update interview panel details
-    const { error: errorPanelUpdate } = await supabase
-      .from('interview_panel')
+    const { error: errorModuleUpdate } = await supabase
+      .from('interview_module')
       .update({ name: name })
       .eq('id', panel.id);
 
-    if (errorPanelUpdate) {
-      throw errorPanelUpdate;
+    if (errorModuleUpdate) {
+      throw errorModuleUpdate;
     }
 
     // Identify existing user relations
@@ -138,20 +137,20 @@ export const editPanel = async ({
 
     // Find newly added users and removed users
     const addedUsers = selectedUsers.filter(
-      (user) => !existingUserIds.includes(user.user_id),
+      (user) => !existingUserIds.includes(user.user_id)
     );
     const removedUsers = panel.relations.filter(
-      (rel) => !selectedUsers.find((user) => user.user_id === rel.user_id),
+      (rel) => !selectedUsers.find((user) => user.user_id === rel.user_id)
     );
 
     // Update interview panel relation for added users
     const insertToRelation = addedUsers.map((user) => ({
-      panel_id: panel.id,
-      user_id: user.user_id,
+      module_id: panel.id,
+      user_id: user.user_id
     }));
 
     const { error: errorRelAdded } = await supabase
-      .from('interview_panel_relation')
+      .from('interview_module_relation')
       .insert(insertToRelation);
 
     if (errorRelAdded) {
@@ -160,11 +159,11 @@ export const editPanel = async ({
 
     // Delete interview panel relation for removed users
     const { error: errorRelDeleted } = await supabase
-      .from('interview_panel_relation')
+      .from('interview_module_relation')
       .delete()
       .in(
         'id',
-        removedUsers.map((user) => user.id),
+        removedUsers.map((user) => user.id)
       ); // Assuming each relation has a unique identifier "id"
 
     if (errorRelDeleted) {
@@ -174,7 +173,7 @@ export const editPanel = async ({
     // Fetch all current relations after the update
     const { data: updatedRelations, error: errorUpdatedRelations } =
       await supabase
-        .from('interview_panel_relation')
+        .from('interview_module_relation')
         .select('*')
         .eq('panel_id', panel.id);
 
@@ -187,7 +186,7 @@ export const editPanel = async ({
       panelId: panel.id,
       name: name,
       selectedUsers: selectedUsers,
-      updatedRelations: updatedRelations,
+      updatedRelations: updatedRelations
       // Include other relevant return data
     };
   } catch (error) {

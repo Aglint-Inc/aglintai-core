@@ -10,8 +10,8 @@ import {
   ServerInterviewerAvailabliity,
 } from '@/src/components/Scheduling/Availability/availability.types';
 import {
-  InterviewPanelRelationType,
-  InterviewPanelType,
+  InterviewModuleRelationType,
+  InterviewModuleType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
@@ -57,10 +57,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (panel_name) {
       const [panel] = supabaseWrap(
         await supabaseAdmin
-          .from('interview_panel')
+          .from('interview_module')
           .select()
           .eq('name', panel_name),
-      ) as InterviewPanelType[];
+      ) as InterviewModuleType[];
       if (!panel) res.status(404).send('');
       panel_id = panel.id;
     }
@@ -110,10 +110,10 @@ type Fetch_saved_ints_return_params = Pick<InterviewerType, 'interviewerId'> & {
 const fetch_saved_ints = async (panel_id) => {
   const ints = supabaseWrap(
     await supabaseAdmin
-      .from('interview_panel_relation')
+      .from('interview_module_relation')
       .select()
       .eq('panel_id', panel_id),
-  ) as InterviewPanelRelationType[];
+  ) as InterviewModuleRelationType[];
   const int_ids = ints.map((int) => int.user_id);
   const savedIntsPromises = int_ids.map(async (int_id) => {
     const [saved] = supabaseWrap(

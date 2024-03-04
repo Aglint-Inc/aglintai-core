@@ -1,0 +1,47 @@
+.div-block-1081 {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-1077 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.all-wrap-navi {
+  position: relative;
+}
+
+.div-block-1076 {
+  padding: 6px 16px;
+  border: 1px solid #e9ebed;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.div-block-1076.active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-style: none;
+
+  background-color: #68737d;
+
+  color: white;
+}
+
+.div-block-1079 {
+  display: flex;
+  overflow: auto;
+  height: 100%;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}

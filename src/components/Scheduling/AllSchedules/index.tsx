@@ -40,7 +40,7 @@ import {
   useInterviewStore
 } from './store';
 import { getPaginationDB } from './utils';
-import { useSchedulingStore } from '../Panels/store';
+import { useSchedulingStore } from '../Modules/store';
 
 function InterviewComp() {
   const router = useRouter();
@@ -56,7 +56,9 @@ function InterviewComp() {
     selectedApplication
   } = useInterviewStore();
 
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const interviewModules = useSchedulingStore(
+    (state) => state.interviewModules
+  );
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -319,8 +321,8 @@ function InterviewComp() {
               <>
                 {applicationList.length === 0 && <AllInterviewEmpty />}
                 {applicationList.map((app) => {
-                  const panel_name = interviewPanels.filter(
-                    (panel) => panel.id === app.schedule?.panel_id
+                  const panel_name = interviewModules.filter(
+                    (module) => module.id === app.schedule?.panel_id
                   )[0]?.name;
                   return (
                     <ListCardInterviewSchedule

@@ -200,11 +200,11 @@ export type GreenhouseType = Pick<
 export type OutreachEmailDbType =
   Database['public']['Tables']['outreached_emails']['Row'];
 
-export type InterviewPanelType =
-  Database['public']['Tables']['interview_panel']['Row'];
+export type InterviewModuleType =
+  Database['public']['Tables']['interview_module']['Row'];
 
-export type InterviewPanelRelationType =
-  Database['public']['Tables']['interview_panel_relation']['Row'];
+export type InterviewModuleRelationType =
+  Database['public']['Tables']['interview_module_relation']['Row'];
 
 export type InterviewAvailabilityType =
   Database['public']['Tables']['interview_availabilties']['Row'];

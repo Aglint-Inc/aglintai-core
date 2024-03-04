@@ -9,6 +9,7 @@ function SubNav() {
   return (
     <>
       <SublinkTab
+        isActtive={router.query.tab === 'allSchedules'}
         text={'All Schedules'}
         onClickTab={{
           onClick: () => {
@@ -17,6 +18,7 @@ function SubNav() {
         }}
       />
       <SublinkTab
+        isActtive={router.query.tab === 'mySchedules'}
         text={'My Schedules'}
         onClickTab={{
           onClick: () => {
@@ -25,14 +27,16 @@ function SubNav() {
         }}
       />
       <SublinkTab
-        text={'Interview Panel'}
+        isActtive={router.query.tab === 'interviewModules'}
+        text={'Interview Modules'}
         onClickTab={{
           onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=panels`);
+            router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
           },
         }}
       />
       <SublinkTab
+        isActtive={router.query.tab === 'emailTemplates'}
         text={'Email Templates'}
         onClickTab={{
           onClick: () => {
@@ -41,6 +45,7 @@ function SubNav() {
         }}
       />
       <SublinkTab
+        isActtive={router.query.tab === 'settings'}
         text={'Settings'}
         onClickTab={{
           onClick: () => {

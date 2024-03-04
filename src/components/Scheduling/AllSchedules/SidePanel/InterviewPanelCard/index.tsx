@@ -4,23 +4,25 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { useInterviewStore } from '../../store';
-import { useSchedulingStore } from '../../../Panels/store';
+import { useSchedulingStore } from '../../../Modules/store';
 
 function InterviewPanelCardComp() {
   const { members } = useAuthDetails();
 
   const selectedApplication = useInterviewStore(
-    (state) => state.selectedApplication,
+    (state) => state.selectedApplication
   );
 
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const interviewModules = useSchedulingStore(
+    (state) => state.interviewModules
+  );
 
   return (
     <>
       <InterviewPanelCard
         textPanelName={
-          interviewPanels.filter(
-            (panel) => panel.id === selectedApplication?.schedule?.panel_id,
+          interviewModules.filter(
+            (module) => module.id === selectedApplication?.schedule?.panel_id
           )[0]?.name
         }
         slotInterviewPanelMember={(
@@ -32,14 +34,14 @@ function InterviewPanelCardComp() {
           .filter((rel) => rel.must === 'selected' || rel.must === 'optional')
           .map((rel) => {
             const member = members.filter(
-              (member) => member.user_id === rel.user_id,
+              (member) => member.user_id === rel.user_id
             )[0];
             return (
               <InterviewPanelMember
                 key={rel.user_id}
                 textMemberName={getFullName(
                   member.first_name,
-                  member.last_name,
+                  member.last_name
                 )}
                 slotMemberAvatar={
                   <MuiAvatar

@@ -2,18 +2,18 @@ import { AvatarGroup } from '@mui/material';
 
 import { WidgetFlexRow, WidgetPanelCard } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { PanelType } from '@/src/components/Scheduling/Panels/store';
+import { ModuleType } from '@/src/components/Scheduling/Modules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
 import {
   setLoading,
   setSelectedChat,
-  useSchedulingAgentStore,
+  useSchedulingAgentStore
 } from '../../../../store';
 
 function SelectPanel({
-  panels,
+  panels
 }: {
   panels: {
     relations: {
@@ -32,18 +32,18 @@ function SelectPanel({
   const selectedChat = useSchedulingAgentStore((state) => state.selectedChat);
   const { updateAllChat, scrollToBottom } = useSchedulingAgent();
 
-  const submitHandler = (message: string, selectedPanel?: PanelType) => {
+  const submitHandler = (message: string, selectedModule?: ModuleType) => {
     setLoading(true);
 
     setTimeout(() => {
       setLoading(false);
-      addMessageToChatHistory(message, selectedPanel);
+      addMessageToChatHistory(message, selectedModule);
     }, 1000);
   };
 
   const addMessageToChatHistory = (
     message: string,
-    selectedPanel?: PanelType,
+    selectedModule?: ModuleType
   ) => {
     const updatedHistory = [
       ...selectedChat.history,
@@ -52,36 +52,36 @@ function SelectPanel({
         value: message,
         selectedItem:
           {
-            selectedPanel,
-            message: `Schedule with panel ${selectedPanel.name}`,
+            selectedModule,
+            message: `Schedule with panel ${selectedModule.name}`
           } || null,
-        created_at: new Date().toISOString(),
-      },
+        created_at: new Date().toISOString()
+      }
     ];
 
     setSelectedChat({
-      history: updatedHistory,
+      history: updatedHistory
     } as any);
 
     const histAfterAssisResponse = [
       ...updatedHistory,
       {
         type: 'assistant',
-        value: `Select users from panel ${selectedPanel.name}`,
+        value: `Select users from panel ${selectedModule.name}`,
         funcRes: [
           {
             name: 'select-panel-users-for-scheduling',
             response: {
-              panel: selectedPanel,
-            },
-          } as any,
+              panel: selectedModule
+            }
+          } as any
         ],
-        created_at: new Date().toISOString(),
-      },
+        created_at: new Date().toISOString()
+      }
     ];
 
     setSelectedChat({
-      history: histAfterAssisResponse,
+      history: histAfterAssisResponse
     } as any);
 
     updateAllChat(histAfterAssisResponse as any);
@@ -102,13 +102,13 @@ function SelectPanel({
                 '& .MuiAvatar-root': {
                   width: '28px',
                   height: '28px',
-                  fontSize: '12px',
-                },
+                  fontSize: '12px'
+                }
               }}
             >
               {panel.relations?.slice(0, 5).map((rel) => {
                 const member = members.find(
-                  (member) => member.user_id === rel.user_id,
+                  (member) => member.user_id === rel.user_id
                 );
                 return (
                   <MuiAvatar
@@ -128,9 +128,9 @@ function SelectPanel({
             onClick: () => {
               submitHandler(
                 `Schedule with panel ${panel.id}`,
-                panel as unknown as PanelType,
+                panel as unknown as ModuleType
               );
-            },
+            }
           }}
         />
       ))}

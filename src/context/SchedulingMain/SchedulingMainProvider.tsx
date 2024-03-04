@@ -6,22 +6,22 @@ import {
   ApplicationList,
   setApplicationList,
   setInitalLoading,
-  setPagination,
+  setPagination
 } from '@/src/components/Scheduling/AllSchedules/store';
+import { fetchInterviewModule } from '@/src/components/Scheduling/Modules/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { setInterviewPanels } from '../../components/Scheduling/Panels/store';
-import { fetchInterviewPanel } from '../../components/Scheduling/Panels/utils';
+import { setInterviewModules } from '../../components/Scheduling/Modules/store';
 
 type InterviewPanelContextType = {
   loading: boolean;
 };
 
 const initialState = {
-  loading: true,
+  loading: true
 };
 
 const InterviewPanelContext =
@@ -37,15 +37,15 @@ const SchedulingProvider = ({ children }) => {
       initialFetch();
     }
     return () => {
-      setInterviewPanels([]);
+      setInterviewModules([]);
     };
   }, [recruiter?.id]);
 
   const initialFetch = async () => {
     try {
-      const res: any = await fetchInterviewPanel(recruiter.id);
+      const res: any = await fetchInterviewModule(recruiter.id);
       if (res) {
-        setInterviewPanels(res);
+        setInterviewModules(res);
       }
     } catch (e) {
       //
@@ -58,10 +58,10 @@ const SchedulingProvider = ({ children }) => {
     if (
       router.isReady &&
       !router.query.tab &&
-      !router.pathname.includes('/panel/[panel_id]')
+      !router.pathname.includes('/module/')
     ) {
       router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
-        shallow: true,
+        shallow: true
       });
     }
   }, [router]);
@@ -81,8 +81,8 @@ const SchedulingProvider = ({ children }) => {
       const { data: appNew, error } = await supabase.rpc(
         'fetch_interview_data',
         {
-          rec_id: recruiter.id,
-        },
+          rec_id: recruiter.id
+        }
       );
       if (error) {
         throw new Error(error.message);
@@ -98,7 +98,7 @@ const SchedulingProvider = ({ children }) => {
   const getPaginationData = async () => {
     try {
       const { data, error } = await supabase.rpc('get_interview_data_count', {
-        rec_id: recruiter.id,
+        rec_id: recruiter.id
       });
       setPagination({ total: data });
       if (error) {

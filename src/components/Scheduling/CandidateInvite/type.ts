@@ -1,7 +1,7 @@
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 export type ApiResponse = InterviewScheduleTypeDB & {
-  interview_panel: {
+  interview_module: {
     name: string;
     recruiter: {
       name: string;

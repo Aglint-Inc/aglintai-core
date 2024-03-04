@@ -26,15 +26,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     const [panel] = supabaseWrap(
       await supabaseAdmin
-        .from('interview_panel')
+        .from('interview_module')
         .select(
-          '*,interview_panel_relation(*, recruiter_user(first_name,last_name,profile_image))',
+          '*,interview_module_relation(*, recruiter_user(first_name,last_name,profile_image))',
         )
         .eq('id', panel_id),
     );
     if (!panel) throw new Error('invalid panel id');
     const recruiter_avails = await Promise.all(
-      panel.interview_panel_relation
+      panel.interview_module_relation
         .map((reln) => reln.user_id)
         .map(async (userId) => {
           let [avail] = supabaseWrap(
@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }),
     );
     let finalData = recruiter_avails.map((avail) => {
-      const user = panel.interview_panel_relation.find(
+      const user = panel.interview_module_relation.find(
         (panel) => panel.user_id === avail.user_id,
       ).recruiter_user;
       return {

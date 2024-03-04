@@ -258,7 +258,7 @@ export const handleDelete = async (panel_id: string | string[]) => {
       return false;
     } else {
       const { error } = await supabase
-        .from('interview_panel')
+        .from('interview_module')
         .delete()
         .eq('id', panel_id);
 

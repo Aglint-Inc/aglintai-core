@@ -12,39 +12,37 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  setEditPanel,
-  setInterviewPanels,
+  setEditModule,
+  setInterviewModules,
   setIsCreateDialogOpen,
   setPanelName,
   setSelectedUsers,
-  useSchedulingStore,
+  useSchedulingStore
 } from './../store';
 import TeamAutoComplete from './TeamTextField';
-import { createPanel, editPanel } from '../utils';
+import { createModule, editModuleFunct } from '../utils';
 
 function CreateDialog() {
   const { recruiter, members } = useAuthDetails();
   const router = useRouter();
   const isCreatePanelOpen = useSchedulingStore(
-    (state) => state.isCreateDialogOpen,
+    (state) => state.isCreateDialogOpen
   );
-  const selectedUsers = useSchedulingStore((state) => state.selectedUsers);
-  const panelName = useSchedulingStore((state) => state.panelName);
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
-  const editPanelDetails = useSchedulingStore((state) => state.editPanel);
+  const { selectedUsers, moduleName, interviewModules, editModule } =
+    useSchedulingStore();
   const [loading, setLoading] = useState(false);
 
   const createPanelHandler = async () => {
     try {
       setLoading(true);
-      const res: any = await createPanel({
-        name: panelName,
+      const res: any = await createModule({
+        name: moduleName,
         recruiter_id: recruiter.id,
-        selectedUsers,
+        selectedUsers
       });
-      setInterviewPanels([
-        ...interviewPanels,
-        { ...res.interviewPanel, relations: res.interviewPanelRelations },
+      setInterviewModules([
+        ...interviewModules,
+        { ...res.interviewPanel, relations: res.interviewPanelRelations }
       ]);
       setIsCreateDialogOpen(null);
       setSelectedUsers([]);
@@ -61,27 +59,27 @@ function CreateDialog() {
     try {
       setLoading(true);
 
-      const res = await editPanel({
-        name: panelName,
+      const res = await editModuleFunct({
+        name: moduleName,
         selectedUsers,
-        panel: editPanelDetails,
+        panel: editModule
       });
-      setInterviewPanels(
-        interviewPanels.map((panel) => {
-          if (panel.id === editPanelDetails.id) {
+      setInterviewModules(
+        interviewModules.map((module) => {
+          if (module.id === editModule.id) {
             return {
-              ...panel,
+              ...module,
               name: res.name,
-              relations: res.updatedRelations,
+              relations: res.updatedRelations
             };
           }
-          return panel;
-        }),
+          return module;
+        })
       );
-      setEditPanel({
-        ...editPanelDetails,
+      setEditModule({
+        ...editModule,
         name: res.name,
-        relations: res.updatedRelations,
+        relations: res.updatedRelations
       });
       close();
     } catch (e) {
@@ -113,12 +111,12 @@ function CreateDialog() {
       }
       if (data.length > 0) {
         toast.error(
-          'Panel member cannot be removed as interview is scheduled with this panel',
+          'Panel member cannot be removed as interview is scheduled with this panel'
         );
         return;
       }
       setSelectedUsers(
-        selectedUsers.filter((us) => us.user_id !== user.user_id),
+        selectedUsers.filter((us) => us.user_id !== user.user_id)
       );
     } catch (e) {
       toast.error('Unable to remove panel member. Please try again later.');
@@ -141,7 +139,7 @@ function CreateDialog() {
           onClickInvite={{
             onClick: () => {
               router.push(pageRoutes.COMPANY + '?tab=team');
-            },
+            }
           }}
           slotLoader={
             <Stack width={16} height={16}>
@@ -149,12 +147,12 @@ function CreateDialog() {
             </Stack>
           }
           isLoading={loading}
-          isButtonEnabled={selectedUsers.length > 0 && panelName.length > 0}
+          isButtonEnabled={selectedUsers.length > 0 && moduleName.length > 0}
           slotPanelNameInput={
             <UITextField
               disabled={loading}
               placeholder='Enter Panel Name'
-              value={panelName}
+              value={moduleName}
               onChange={(e) => {
                 setPanelName(e.target.value);
               }}
@@ -171,7 +169,7 @@ function CreateDialog() {
                   editPanelHandler();
                 }
               }
-            },
+            }
           }}
           isMemberEmpty={selectedUsers.length === 0}
           slotPanelMemberPills={selectedUsers.map((user) => {
@@ -185,11 +183,11 @@ function CreateDialog() {
                     } else {
                       setSelectedUsers(
                         selectedUsers.filter(
-                          (us) => us.user_id !== user.user_id,
-                        ),
+                          (us) => us.user_id !== user.user_id
+                        )
                       );
                     }
-                  },
+                  }
                 }}
                 slotImage={
                   <MuiAvatar
@@ -226,7 +224,7 @@ function CreateDialog() {
           onClickClose={{
             onClick: () => {
               close();
-            },
+            }
           }}
         />
       </Stack>

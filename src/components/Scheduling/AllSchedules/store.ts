@@ -6,14 +6,14 @@ import {
   JobApplcationDB
 } from '@/src/types/data.types';
 
-import { PanelType } from '../Panels/store';
+import { ModuleType } from '../Modules/store';
 
 export interface InterviewSlice {
   applicationList: ApplicationList[];
   initialLoading: boolean;
   isCreateScheduleOpen: boolean;
   selectedApplication: ApplicationList;
-  selectedPanel: PanelType;
+  selectedPanel: ModuleType;
   selectedUsers: {
     user_id: string;
     must: 'selected' | 'optional' | 'not selected';
@@ -95,7 +95,7 @@ export const setIsCreateScheduleOpen = (isCreateScheduleOpen: boolean) =>
 export const setSelectedApplication = (selectedApplication: ApplicationList) =>
   useInterviewStore.setState({ selectedApplication });
 
-export const setSelectedPanel = (selectedPanel: PanelType) =>
+export const setSelectedPanel = (selectedPanel: ModuleType) =>
   useInterviewStore.setState({ selectedPanel });
 
 export const setSelectedUsers = (

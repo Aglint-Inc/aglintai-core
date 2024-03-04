@@ -9,13 +9,15 @@ import {
   setDuration,
   setSelectedPanel,
   setSelectedUsers,
-  useInterviewStore,
+  useInterviewStore
 } from '../../store';
-import { useSchedulingStore } from '../../../Panels/store';
+import { useSchedulingStore } from '../../../Modules/store';
 
 function TeamAutoComplete() {
   const { members } = useAuthDetails();
-  const interviewPanels = useSchedulingStore((state) => state.interviewPanels);
+  const interviewModules = useSchedulingStore(
+    (state) => state.interviewModules
+  );
   const selectedPanel = useInterviewStore((state) => state.selectedPanel);
   const [panelId, setPanelId] = useState('');
   const duration = useInterviewStore((state) => state.duration);
@@ -58,7 +60,7 @@ function TeamAutoComplete() {
           }}
           value={panelId}
         >
-          {interviewPanels.map((option) => {
+          {interviewModules.map((option) => {
             return (
               <MenuItem value={option.id} key={option.id}>
                 <Stack
@@ -73,7 +75,7 @@ function TeamAutoComplete() {
                     setSelectedUsers(
                       option.relations.map((user) => {
                         return { user_id: user.user_id, must: 'selected' };
-                      }),
+                      })
                     );
                   }}
                 >
@@ -95,14 +97,14 @@ function TeamAutoComplete() {
                       '& .MuiAvatar-root': {
                         width: '24px',
                         height: '24px',
-                        fontSize: '12px',
-                      },
+                        fontSize: '12px'
+                      }
                     }}
                     total={option.relations.length}
                   >
                     {option.relations.slice(0, 3).map((rel) => {
                       const member = members.filter(
-                        (member) => member.user_id === rel.user_id,
+                        (member) => member.user_id === rel.user_id
                       )[0];
                       return (
                         <MuiAvatar
