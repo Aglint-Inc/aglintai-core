@@ -149,6 +149,8 @@ const SchedulingAgentProvider = ({ children }) => {
       ) {
         allActivity = [];
       } else {
+        activity.filter((act) => act.icon_status == 'success')[0].event =
+          res?.data?.funcRes[res.data.funcRes.length - 1]?.response?.event;
         const data = supabaseWrap(
           await supabase.from('agent_activity').insert(activity).select(),
         );
