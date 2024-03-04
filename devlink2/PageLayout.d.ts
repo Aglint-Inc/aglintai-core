@@ -8,4 +8,5 @@ declare function PageLayout(props: {
   slotBody?: Types.Devlink.Slot;
   isBackButton?: Types.Visibility.VisibilityConditions;
   onClickBack?: Types.Devlink.RuntimeProps;
+  slotSaving?: Types.Devlink.Slot;
 }): React.JSX.Element;

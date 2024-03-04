@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { Breadcrum } from "./Breadcrum";
-import { BodyWithSublink } from "./BodyWithSublink";
 import * as _utils from "./utils";
 import _styles from "./PageLayout.module.css";
 
@@ -12,6 +11,7 @@ export function PageLayout({
   slotBody,
   isBackButton = false,
   onClickBack = {},
+  slotSaving,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scheduler_layout")} tag="div">
@@ -51,12 +51,18 @@ export function PageLayout({
         >
           {slotTopbarRight}
         </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1112")}
+          tag="div"
+        >
+          {slotSaving}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "slot-body-global")}
         tag="div"
       >
-        {slotBody ?? <BodyWithSublink />}
+        {slotBody}
       </_Builtin.Block>
     </_Component>
   );

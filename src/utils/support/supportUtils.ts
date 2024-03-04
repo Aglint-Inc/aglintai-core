@@ -71,6 +71,11 @@ export function fillEmailTemplate(
     support_link?: string;
     phone_screening_link?: string;
     recruter_name?: string;
+    candidate_name?: string;
+    position_name?: string;
+    date?: string;
+    time?: string;
+    team_member_name?: string;
   },
 ) {
   let filledTemplate = template;
@@ -83,6 +88,12 @@ export function fillEmailTemplate(
     '[supportLink]': email.support_link,
     '[phoneScreeningLink]': email.phone_screening_link,
     '[recruiterName]': email.recruter_name,
+    '[candidateName]': email.candidate_name,
+    '[positionName]': email.position_name,
+    '[yourCompanyName]': email.company_name,
+    '[Date]': email.date,
+    '[Time]': email.time,
+    '[TeamMemberName]': email.team_member_name,
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {
