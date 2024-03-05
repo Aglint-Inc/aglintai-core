@@ -8,40 +8,6 @@ export type scoreMatchesScore = {
   score: number;
   color: string;
 };
-export const countMatches = (inputData) => {
-  function convertData(inputData: {
-    topMatch: any;
-    goodMatch: any;
-    averageMatch: any;
-    poorMatch: any;
-    noMatch: any;
-  }) {
-    return {
-      top_Matches: {
-        score: inputData.topMatch,
-        color: '#A8189733',
-      },
-      good_Matches: {
-        score: inputData.goodMatch,
-        color: '#D1E8DF80',
-      },
-      average_Matches: {
-        score: inputData.averageMatch,
-        color: '#FFEDC2',
-      },
-      poor_Matches: {
-        score: inputData.poorMatch,
-        color: '#FFEEDB',
-      },
-      not_Matches: {
-        score: inputData.noMatch,
-        color: '#F5D5D8',
-      },
-    };
-  }
-
-  return convertData(inputData);
-};
 
 export const grapDependencies = {
   colors: [

@@ -30,6 +30,7 @@ const createPromises = (
     locations: getLocationPool(job_id, supabase),
     skills: getSkillsPool(job_id, supabase),
     counts: getResumeMatch(job_id, supabase),
+    sections: getJobAppStatus(job_id, supabase),
   };
 };
 
@@ -45,6 +46,7 @@ export const createInvalidResponse = (): { [id in Key]: PostgrestError } => {
     locations: error,
     skills: error,
     counts: error,
+    sections: error,
   };
 };
 
@@ -139,6 +141,22 @@ export const getResumeMatch = async (
     throw new Error(`Resume match RPC function failure : ${error.message}`);
   const safeData = resumeMatchRPCFormatter(data);
   return safeData;
+};
+
+export const getJobAppStatus = async (
+  job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
+) => {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 60000);
+  const { data, error } = await supabase
+    .rpc('getsectioncounts', {
+      jobid: job_id,
+    })
+    .abortSignal(controller.signal);
+  if (error)
+    throw new Error(`Job app status RPC function failure : ${error.message}`);
+  return data;
 };
 
 export const resumeMatchRPCFormatter = (

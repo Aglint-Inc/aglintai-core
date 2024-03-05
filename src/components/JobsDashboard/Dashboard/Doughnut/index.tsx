@@ -1,10 +1,11 @@
 import { Stack, Typography } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BarElement,
   CategoryScale,
   Chart as ChartJs,
   LinearScale,
-  Tooltip,
+  Tooltip
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
 import React from 'react';
@@ -26,7 +27,7 @@ const DoughnutChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] },
+    { names: [], counts: [], colors: [] }
   );
   const dataBar = {
     labels: names,
@@ -34,29 +35,30 @@ const DoughnutChart: React.FC<{
       {
         data: counts,
         backgroundColor: colors,
-        borderColor: colors,
-      },
-    ],
+        borderColor: colors
+      }
+    ]
   };
+  const matches = useMediaQuery('(min-width:1920px)');
 
   return (
-    <Stack width={'350px'} style={{ aspectRatio: 1 }}>
+    <Stack width={matches ? '350px' : '250px'} style={{ aspectRatio: 1 }}>
       <Doughnut
         options={{
           responsive: true,
           plugins: {
             legend: {
-              display: false, // Set to false to hide the legend
-            },
+              display: false // Set to false to hide the legend
+            }
           },
           scales: {
             x: {
-              display: false,
+              display: false
             },
             y: {
-              display: false,
-            },
-          },
+              display: false
+            }
+          }
         }}
         data={dataBar}
       />
@@ -67,7 +69,7 @@ const DoughnutChart: React.FC<{
 const DashboardDoughnutChart = () => {
   const {
     analytics: { locations: locationPool },
-    job: { count },
+    job: { count }
   } = useJobDashboard();
   const locations = locationPool?.city ?? null;
   if (!locations) return <></>;
@@ -81,13 +83,13 @@ const DashboardDoughnutChart = () => {
       sx={{
         bgcolor: '#F7F9FB',
         p: '24px',
-        borderRadius: '16px',
+        borderRadius: '16px'
       }}
       display={'flex'}
       flexDirection={'column'}
       spacing={'16px'}
+      width={'100%'}
     >
-      <Typography variant='subtitle2'>Candidates by Locations</Typography>
       <Stack
         direction={'row'}
         alignItems={'center'}
@@ -109,7 +111,7 @@ const DashboardDoughnutChart = () => {
                       bgcolor: color,
                       width: '10px',
                       aspectRatio: 1,
-                      borderRadius: '100%',
+                      borderRadius: '100%'
                     }}
                   />
                   <Typography variant='body2'>{capitalize(name)}</Typography>
