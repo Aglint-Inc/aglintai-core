@@ -1,4 +1,4 @@
-import { InterviewModule } from './store';
+import { InterviewModule } from './types';
 
 export const filterAddedModules = (
   allModules: InterviewModule[],

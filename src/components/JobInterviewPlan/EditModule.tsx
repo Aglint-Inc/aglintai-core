@@ -4,12 +4,8 @@ import { useState } from 'react';
 import { PanelMemberPill } from '@/devlink2';
 import { InterviewPlanCard } from '@/devlink3';
 
-import {
-  defaultDurations,
-  handleUpdateDb,
-  InterviewModule,
-  useInterviewPlan
-} from './store';
+import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
+import { InterviewModule } from './types';
 import { filterAddedModules } from './utils';
 import MuiAvatar from '../Common/MuiAvatar';
 import UISelect from '../Common/Uiselect';

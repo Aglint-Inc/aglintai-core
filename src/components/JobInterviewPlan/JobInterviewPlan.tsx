@@ -11,7 +11,8 @@ import { InterviewPlan } from '@/devlink3';
 
 import EditModule from './EditModule';
 import InterviewModuleC from './InterviewModuleC';
-import { handleUpdateDb, InterviewModule, useInterviewPlan } from './store';
+import { handleUpdateDb, useInterviewPlan } from './store';
+import { InterviewModule } from './types';
 import { filterAddedModules } from './utils';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import { reorder } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/reorder';

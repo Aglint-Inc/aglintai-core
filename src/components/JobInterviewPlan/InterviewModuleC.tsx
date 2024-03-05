@@ -3,12 +3,8 @@ import { Stack } from '@mui/material';
 import { InterviewBreakCard, InterviewModuleCard } from '@/devlink3';
 
 import EditModule from './EditModule';
-import {
-  defaultDurations,
-  handleUpdateDb,
-  InterviewModule,
-  useInterviewPlan
-} from './store';
+import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
+import { InterviewModule } from './types';
 import MuiAvatar from '../Common/MuiAvatar';
 
 const InterviewModuleC = ({
