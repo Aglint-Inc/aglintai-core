@@ -234,6 +234,12 @@
   background-color: white;
 }
 
+.embed_css_block {
+  position: fixed;
+  z-index: -99;
+  pointer-events: none;
+}
+
 .task_search_box {
   position: absolute;
   left: 0%;
@@ -266,6 +272,10 @@
   grid-row-gap: 10px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
+}
+
+.slot_suggetion_pills.hide {
+  display: none;
 }
 
 .task_search_box-copy {
@@ -376,10 +386,4 @@
   .task_activity {
     display: flex;
   }
-}
-
-.embed_css_block {
-  position: fixed;
-  z-index: -99;
-  pointer-events: none;
 }

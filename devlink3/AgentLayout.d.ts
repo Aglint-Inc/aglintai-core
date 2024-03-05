@@ -22,4 +22,5 @@ declare function AgentLayout(props: {
   slotLottieLoader?: Types.Devlink.Slot;
   isChatLoading?: Types.Visibility.VisibilityConditions;
   slotMoreButton?: Types.Devlink.Slot;
+  moduleName?: Types.Builtin.Text;
 }): React.JSX.Element;

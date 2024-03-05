@@ -33,6 +33,7 @@ export function AgentLayout({
   slotLottieLoader,
   isChatLoading = false,
   slotMoreButton,
+  moduleName,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "aglint_chatbot_wrap")} tag="div">
@@ -129,9 +130,18 @@ export function AgentLayout({
             <_Builtin.Block
               className={_utils.cx(_styles, "task_chat_body")}
               tag="div"
+              data-layout={moduleName}
               id="chat_scroll"
             >
-              {slotChat ?? <NewChat />}
+              {slotChat ?? (
+                <>
+                  <NewChat />
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "embed_css_block")}
+                    value="%3Cstyle%3E%0A%5Bdata-layout%3D%22jobs%22%5D%20%7B%0A%20%20%20%20height%3A%20calc(100vh%20-%20100px)%20!important%3B%0A%7D%0A%3C%2Fstyle%3E"
+                  />
+                </>
+              )}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "task_search_box")}
@@ -139,7 +149,7 @@ export function AgentLayout({
             >
               {isSuggetionPills ? (
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "slot_suggetion_pills")}
+                  className={_utils.cx(_styles, "slot_suggetion_pills", "hide")}
                   tag="div"
                 >
                   {slotSuggetionPills ?? (
@@ -206,7 +216,7 @@ export function AgentLayout({
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css_block")}
-        value="%3Cstyle%3E%0A.task_chat_body%7B%0Aheight%3A%20calc(100vh%20-%2060px)%20!important%3B%0A%7D%0A.chat_send_button%7B%0Abackground%3A%20linear-gradient(222deg%2C%20%23FF6224%200%25%2C%20rgba(255%2C%2098%2C%2036%2C%200.51)%20119.46%25)%3B%0A%7D%0A%0A%5Bclass*%3D%22AgentLayout_chat_send_button__%22%5D%7B%0Abackground%3A%20linear-gradient(222deg%2C%20%23FF6224%200%25%2C%20rgba(255%2C%2098%2C%2036%2C%200.51)%20119.46%25)%3B%0A%7D%0A%5Bclass*%3D%22AgentLayout_task_chat_body__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2060px)%20!important%3B%0A%7D%0A%3C%2Fstyle%3E"
+        value="%3Cstyle%3E%0A.task_chat_body%7B%0Aheight%3A%20calc(100vh%20-%2060px)%20%3B%0A%7D%0A.chat_send_button%7B%0Abackground%3A%20linear-gradient(222deg%2C%20%23FF6224%200%25%2C%20rgba(255%2C%2098%2C%2036%2C%200.51)%20119.46%25)%3B%0A%7D%0A%0A%5Bclass*%3D%22AgentLayout_chat_send_button__%22%5D%7B%0Abackground%3A%20linear-gradient(222deg%2C%20%23FF6224%200%25%2C%20rgba(255%2C%2098%2C%2036%2C%200.51)%20119.46%25)%3B%0A%7D%0A%5Bclass*%3D%22AgentLayout_task_chat_body__%22%5D%7B%0Aheight%3A%20calc(100vh%20-%2060px)%20%3B%0A%7D%0A%3C%2Fstyle%3E"
       />
     </_Component>
   );
