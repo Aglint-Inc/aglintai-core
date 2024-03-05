@@ -73,11 +73,35 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
 .text-grey_600 {
   color: #68737d;
 }
 
 .text-grey_600.hide {
+  display: none;
+}
+
+.hide {
   display: none;
 }
 

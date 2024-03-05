@@ -35,6 +35,10 @@
   display: none;
 }
 
+.hide {
+  display: none;
+}
+
 .embed_flex.custom_top {
   margin-top: 2px;
 }
@@ -42,6 +46,15 @@
 .relative_2 {
   position: relative;
   z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .text_bloxk {

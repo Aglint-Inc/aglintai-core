@@ -39,6 +39,12 @@
   border-radius: 100px;
 }
 
+.slot_useravatr.small {
+  width: 24px;
+  height: 24px;
+  background-color: #f8f9f9;
+}
+
 .panel_card_text {
   position: relative;
   z-index: 2;

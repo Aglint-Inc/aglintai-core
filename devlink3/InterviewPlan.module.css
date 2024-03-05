@@ -1,43 +1,22 @@
-.assessment_duplicate_popup {
-  position: relative;
-  z-index: 1;
-
+.interviewplan {
   display: flex;
-  overflow: hidden;
-  width: 425px;
-  padding: 16px;
+  overflow: auto;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
   flex-direction: column;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-
-  border-radius: 10px;
-
-  background-color: white;
+  align-items: flex-start;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  height: calc(100vh - 60px);
 }
 
-.assessment_duplicate_popup.width-463 {
-  width: 463px;
-}
-
-.popup_header {
+.title_wrap {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.popup_title {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.embed_flex-2 {
-  display: flex;
-}
-
-.embed_flex-2.cursor {
-  cursor: pointer;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .fw-semibold {
@@ -87,13 +66,6 @@
   color: #d93f4c;
 }
 
-.popup_body {
-  display: flex;
-  flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-}
-
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -107,28 +79,24 @@
   opacity: 0.8;
 }
 
-.slot_widget {
+.link {
+  color: #337fbd;
+  cursor: pointer;
+}
+
+.slotinterviewplancard {
+  display: flex;
+  width: 100%;
+  max-width: 700px;
+  flex-direction: column;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.buttons_wrap {
   display: flex;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.buttn_flex {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-}
-
-.wide_button {
-  position: relative;
-  z-index: 1;
-}
-
-.wide_button.width-100 {
-  width: 100%;
 }
 
 .button_primary {
@@ -192,4 +160,30 @@
 
 .button_primary.greay_btn-copy:hover {
   background-color: #d8dcde;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
 }

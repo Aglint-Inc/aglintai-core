@@ -13,6 +13,9 @@ export function ConfirmationPopup({
   onClickCancel = {},
   onClickAction = {},
   isIcon = true,
+  isYellowButtonVisible = false,
+  isBlueButtonVisible = true,
+  isGreyButtonVisible = true,
 }) {
   return (
     <_Component
@@ -63,25 +66,52 @@ export function ConfirmationPopup({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "buttn_flex")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "button-pop-wrap")}
+        tag="div"
+      >
+        {isGreyButtonVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "greay_btn")}
+            className={_utils.cx(_styles, "wide_button", "width-100")}
             tag="div"
-            {...onClickCancel}
           >
-            <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button_primary", "greay_btn")}
+              tag="div"
+              {...onClickCancel}
+            >
+              <_Builtin.Block tag="div">{"Cancel"}</_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "wide_button")} tag="div">
+        ) : null}
+        {isBlueButtonVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary")}
+            className={_utils.cx(_styles, "wide_button", "width-100")}
             tag="div"
-            {...onClickAction}
           >
-            <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button_primary")}
+              tag="div"
+              {...onClickAction}
+            >
+              <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
+        {isYellowButtonVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "wide_button", "width-100")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button-yellow")}
+              tag="div"
+              {...onClickAction}
+            >
+              <_Builtin.Block tag="div">{textPopupButton}</_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
     </_Component>
   );

@@ -40,6 +40,10 @@
   }
 }
 
+.hide {
+  display: none;
+}
+
 .task_list_switch.no_hover {
   align-items: flex-start;
   grid-column-gap: 10px;
@@ -74,6 +78,15 @@
 .relative_2 {
   position: relative;
   z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .timeline_wrap {

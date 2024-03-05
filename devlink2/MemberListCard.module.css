@@ -257,7 +257,10 @@
 
 .div-block-1075 {
   display: flex;
+  width: 200px;
+  justify-content: flex-end;
   align-items: center;
+  flex: 0 0 auto;
   grid-column-gap: 50px;
   grid-row-gap: 50px;
 }
@@ -341,6 +344,10 @@
   cursor: pointer;
 }
 
+@media screen and (min-width: 1440px) {
+
+}
+
 .div-block-1101 {
   position: absolute;
   left: auto;
@@ -358,6 +365,10 @@
   background-color: white;
 
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+}
+
+@media screen and (min-width: 1440px) {
+
 }
 
 .div-block-1102 {

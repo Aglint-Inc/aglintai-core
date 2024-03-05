@@ -15,6 +15,10 @@
   background-color: white;
 }
 
+.assessment_duplicate_popup.width-463 {
+  width: 463px;
+}
+
 .popup_header {
   display: flex;
   justify-content: space-between;
@@ -63,6 +67,26 @@
   text-transform: capitalize;
 }
 
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
 .popup_body {
   display: flex;
   flex-direction: column;
@@ -74,24 +98,35 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+.text-gray-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-gray-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .slot_widget {
   display: flex;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 
-.buttn_flex {
-  display: grid;
-  grid-auto-columns: 1fr;
+.button-pop-wrap {
+  display: flex;
+  align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
 }
 
 .wide_button {
   position: relative;
   z-index: 1;
+}
+
+.wide_button.width-100 {
+  width: 100%;
 }
 
 .button_primary {
@@ -137,5 +172,85 @@
 }
 
 .button_primary.greay_btn:hover {
+  background-color: #d8dcde;
+}
+
+.button_primary.is_outline {
+  border: 1px solid #1f73b7;
+  background-color: white;
+  color: #1f73b7;
+}
+
+.button_primary.greay_btn-copy {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.greay_btn-copy:hover {
+  background-color: #d8dcde;
+}
+
+.button-yellow {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #ed8f1c;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button-yellow:hover {
+  background-color: hsla(33.014354066985646, 81.45%, 45.93%, 1.00);
+}
+
+.button-yellow.danger {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #d93f4c;
+}
+
+.button-yellow.danger:hover {
+  background-color: #cc3340;
+}
+
+.button-yellow.greay_btn {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button-yellow.greay_btn:hover {
+  background-color: #d8dcde;
+}
+
+.button-yellow.is_outline {
+  border: 1px solid #1f73b7;
+  background-color: white;
+  color: #1f73b7;
+}
+
+.button-yellow.greay_btn-copy {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button-yellow.greay_btn-copy:hover {
   background-color: #d8dcde;
 }

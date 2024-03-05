@@ -13,6 +13,7 @@ interface SchedulingSlice {
   isDeleteModuleDialogOpen: boolean;
   isPauseDialogOpen: boolean;
   isAddMemberDialogOpen: boolean;
+  isResumeDialogOpen: boolean;
   selectedUsers: RecruiterUserType[];
   moduleName: string;
   editModule: ModuleType | null;
@@ -31,6 +32,7 @@ export const useSchedulingStore = create<SchedulingSlice>()(() => ({
   isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
   isAddMemberDialogOpen: false,
+  isResumeDialogOpen: false,
   selectedUsers: [],
   moduleName: '',
   editModule: null,
@@ -56,6 +58,9 @@ export const setIsDeleteMemberDialogOpen = (
 
 export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
   useSchedulingStore.setState({ isAddMemberDialogOpen });
+
+export const setIsResumeDialogOpen = (isResumeDialogOpen: boolean) =>
+  useSchedulingStore.setState({ isResumeDialogOpen });
 
 export const setIsDeleteModuleDialogOpen = (
   isDeleteModuleDialogOpen: boolean

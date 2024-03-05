@@ -5,7 +5,7 @@ function MuiSelect({
   value,
   handleSelect,
   dataset,
-  width = '100px',
+  width = '100px'
 }: {
   value: number | string;
   handleSelect: any;
@@ -16,12 +16,12 @@ function MuiSelect({
     <FormControl>
       <Select
         sx={{
-          width: width,
+          width: width
         }}
         size='small'
         labelId='demo-simple-select-label'
         id='demo-simple-select'
-        value={value}
+        value={String(value)}
         variant='outlined'
         onChange={handleSelect}
       >

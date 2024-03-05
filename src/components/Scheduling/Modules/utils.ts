@@ -11,7 +11,8 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
     const { data: dataModule, error: errorModule } = await supabase
       .from('interview_module')
       .select('*')
-      .eq('recruiter_id', recruiter_id);
+      .eq('recruiter_id', recruiter_id)
+      .order('created_at', { ascending: false });
     if (errorModule) {
       throw errorModule;
     }

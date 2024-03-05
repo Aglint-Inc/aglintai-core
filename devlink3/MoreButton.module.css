@@ -71,6 +71,10 @@
   display: none;
 }
 
+.hide {
+  display: none;
+}
+
 .v6-icon-2 {
   display: flex;
   width: 20px;

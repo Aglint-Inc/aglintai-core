@@ -8,6 +8,7 @@ export function ResumePop({
   onClickResume = {},
   onClickCancel = {},
   onClickClose = {},
+  textResumeWarning = "This member is paused from scheduling until March 04 2014",
 }) {
   return (
     <_Component
@@ -45,7 +46,7 @@ export function ResumePop({
           className={_utils.cx(_styles, "text-yellow-800")}
           tag="div"
         >
-          {"This member is paused from scheduling until March 04 2014"}
+          {textResumeWarning}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "popup_body")} tag="div">
@@ -65,7 +66,7 @@ export function ResumePop({
         <_Builtin.Block
           className={_utils.cx(_styles, "wide_button", "width-100")}
           tag="div"
-          {...onClickCancel}
+          {...onClickClose}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "button_primary", "greay_btn")}

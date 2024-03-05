@@ -90,19 +90,20 @@ function PauseDialog() {
             <Typography variant='body2' color={'#2F3941'}>
               Pause For
             </Typography>
-            <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Checkbox
-                isChecked={selectedType === 'isManual'}
-                onClickCheck={{
-                  onClick: () => {
-                    setSelectedType('isManual');
-                    setPauseJson({
-                      ...pause_json,
-                      isManual: true
-                    });
-                  }
-                }}
-              />
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems={'center'}
+              onClick={() => {
+                setSelectedType('isManual');
+                setPauseJson({
+                  ...pause_json,
+                  isManual: true
+                });
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
+              <Checkbox isChecked={selectedType === 'isManual'} />
               <Typography variant='body2' color={'#000'}>
                 Indefinetly
               </Typography>
@@ -110,20 +111,21 @@ function PauseDialog() {
                 Until when you manualy resumes
               </Typography>
             </Stack>
-            <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Checkbox
-                isChecked={selectedType === 'twoWeek'}
-                onClickCheck={{
-                  onClick: () => {
-                    setSelectedType('twoWeek');
-                    setPauseJson({
-                      isManual: false,
-                      start_date: new Date().toISOString(),
-                      end_date: twoWeeks.toDate().toISOString()
-                    });
-                  }
-                }}
-              />
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems={'center'}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => {
+                setSelectedType('twoWeek');
+                setPauseJson({
+                  isManual: false,
+                  start_date: new Date().toISOString(),
+                  end_date: twoWeeks.toDate().toISOString()
+                });
+              }}
+            >
+              <Checkbox isChecked={selectedType === 'twoWeek'} />
               <Typography variant='body2' color={'#000'}>
                 2 Weeks
               </Typography>
@@ -131,20 +133,21 @@ function PauseDialog() {
                 Resumes on {twoWeeks.format('MMMM DD, YYYY')}
               </Typography>
             </Stack>
-            <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Checkbox
-                isChecked={selectedType === 'oneMonth'}
-                onClickCheck={{
-                  onClick: () => {
-                    setSelectedType('oneMonth');
-                    setPauseJson({
-                      isManual: false,
-                      start_date: new Date().toISOString(),
-                      end_date: oneMonth.toDate().toISOString()
-                    });
-                  }
-                }}
-              />
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems={'center'}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => {
+                setSelectedType('oneMonth');
+                setPauseJson({
+                  isManual: false,
+                  start_date: new Date().toISOString(),
+                  end_date: oneMonth.toDate().toISOString()
+                });
+              }}
+            >
+              <Checkbox isChecked={selectedType === 'oneMonth'} />
               <Typography variant='body2' color={'#000'}>
                 1 Month
               </Typography>
@@ -152,20 +155,21 @@ function PauseDialog() {
                 Resumes on {oneMonth.format('MMMM DD, YYYY')}
               </Typography>
             </Stack>
-            <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Checkbox
-                isChecked={selectedType === 'threeMonth'}
-                onClickCheck={{
-                  onClick: () => {
-                    setSelectedType('threeMonth');
-                    setPauseJson({
-                      isManual: false,
-                      start_date: new Date().toISOString(),
-                      end_date: threeMonth.toDate().toISOString()
-                    });
-                  }
-                }}
-              />
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems={'center'}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => {
+                setSelectedType('threeMonth');
+                setPauseJson({
+                  isManual: false,
+                  start_date: new Date().toISOString(),
+                  end_date: threeMonth.toDate().toISOString()
+                });
+              }}
+            >
+              <Checkbox isChecked={selectedType === 'threeMonth'} />
               <Typography variant='body2' color={'#000'}>
                 3 Months
               </Typography>
@@ -173,20 +177,21 @@ function PauseDialog() {
                 Resumes on {threeMonth.format('MMMM DD, YYYY')}
               </Typography>
             </Stack>
-            <Stack direction={'row'} spacing={1} alignItems={'center'}>
-              <Checkbox
-                isChecked={selectedType === 'custom'}
-                onClickCheck={{
-                  onClick: () => {
-                    setSelectedType('custom');
-                    setPauseJson({
-                      isManual: false,
-                      start_date: new Date().toISOString(),
-                      end_date: ''
-                    });
-                  }
-                }}
-              />
+            <Stack
+              direction={'row'}
+              spacing={1}
+              alignItems={'center'}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => {
+                setSelectedType('custom');
+                setPauseJson({
+                  isManual: false,
+                  start_date: new Date().toISOString(),
+                  end_date: ''
+                });
+              }}
+            >
+              <Checkbox isChecked={selectedType === 'custom'} />
               <Typography variant='body2' color={'#000'}>
                 Custom date
               </Typography>

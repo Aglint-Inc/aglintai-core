@@ -6,4 +6,5 @@ declare function ResumePop(props: {
   onClickResume?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
+  textResumeWarning?: React.ReactNode;
 }): React.JSX.Element;

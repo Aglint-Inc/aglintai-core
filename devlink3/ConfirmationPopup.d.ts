@@ -11,4 +11,7 @@ declare function ConfirmationPopup(props: {
   onClickCancel?: Types.Devlink.RuntimeProps;
   onClickAction?: Types.Devlink.RuntimeProps;
   isIcon?: Types.Visibility.VisibilityConditions;
+  isYellowButtonVisible?: Types.Visibility.VisibilityConditions;
+  isBlueButtonVisible?: Types.Visibility.VisibilityConditions;
+  isGreyButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
