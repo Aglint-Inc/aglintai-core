@@ -5,9 +5,9 @@ import { BodyWithSublink, PageLayout } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 
 import InterviewComp from './AllSchedules';
-import InterviewerComp from './Interviewer';
 import { Modules } from './Modules/Modules';
 import { setIsCreateDialogOpen } from './Modules/store';
+import MySchedule from './MySchedule';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SettingsScheduling from './Settings';
 import SubNav from './SubNav';
@@ -50,7 +50,10 @@ function SchedulingMainComp() {
               router.query.tab == 'allSchedules' ? (
                 <InterviewComp />
               ) : router.query.tab == 'mySchedules' ? (
-                <InterviewerComp />
+                <>
+                  <MySchedule />
+                  {/* <InterviewerComp /> */}
+                </>
               ) : router.query.tab == 'interviewModules' ? (
                 <Modules />
               ) : router.query.tab == 'emailTemplates' ? (
