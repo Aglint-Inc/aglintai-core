@@ -11,6 +11,7 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -153,7 +154,14 @@ const AddMember = ({
                   }}
                   select
                 >
-                  {['member', 'admin', 'interviewer'].map((role) => (
+                  {(
+                    [
+                      'member',
+                      'admin',
+                      'interviewer',
+                      'scheduler',
+                    ] as Database['public']['Enums']['agent_type'][]
+                  ).map((role) => (
                     <MenuItem key={role} value={role}>
                       {capitalize(role)}
                     </MenuItem>

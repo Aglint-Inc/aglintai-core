@@ -171,19 +171,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-}
-
 .embed_flex.custom_top {
   margin-top: 2px;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
 }
