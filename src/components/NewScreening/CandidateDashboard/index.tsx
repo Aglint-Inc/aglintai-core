@@ -14,7 +14,7 @@ import {
   InviteStatus,
   PageLayout,
   ScreeningCards,
-  ScreeningTable,
+  ScreeningTable
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -30,7 +30,7 @@ const CandidateDashboard = () => {
   const { recruiter_id } = useAuthDetails();
   const [details, setDetails] = useState<CandidateScreeningType[]>([]);
   const [filterDetails, setFilterDetails] = useState<CandidateScreeningType[]>(
-    [],
+    []
   );
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [id, setId] = useState<string>('');
@@ -39,10 +39,10 @@ const CandidateDashboard = () => {
   const [selectedScreeningTypes, setSelectedScreeningTypes] = useState<any>([]);
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
   const [anchor2El, set2AnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
   const handleClose = () => {
     setAnchorEl(null);
@@ -66,19 +66,19 @@ const CandidateDashboard = () => {
         <UITextField
           rest={{
             style: {
-              borderRadius: '41px',
-            },
+              borderRadius: '41px'
+            }
           }}
           InputProps={{
             sx: {
               borderRadius: '10px',
-              minWidth: '250px',
+              minWidth: '250px'
             },
             endAdornment: (
               <InputAdornment position='end'>
                 <Icon variant='JobSearch' height='14' />
               </InputAdornment>
-            ),
+            )
           }}
           placeholder='Search by name'
           onChange={() => {
@@ -92,7 +92,7 @@ const CandidateDashboard = () => {
 
   const fetchApplicantsId = async () => {
     const { data, error } = await supabase.rpc('get_screening_candidates', {
-      p_recruiter_id: recruiter_id,
+      p_recruiter_id: recruiter_id
     });
 
     if (error) {
@@ -111,7 +111,7 @@ const CandidateDashboard = () => {
       let updatedStatus = [];
       if (isScheduled) {
         updatedStatus = selectedScreeningTypes.filter(
-          (item) => item !== scheduleType,
+          (item) => item !== scheduleType
         );
       } else {
         updatedStatus = [...selectedScreeningTypes, scheduleType];
@@ -120,7 +120,7 @@ const CandidateDashboard = () => {
       let filteredData = [];
       if (updatedStatus.length > 0) {
         updatedStatus.forEach((filter) => {
-          filteredData = details.filter((data) => {
+          filteredData = filterDetails.filter((data) => {
             if (filter.includes('submitted')) {
               if (data.created_at !== null) {
                 return true;
@@ -162,7 +162,7 @@ const CandidateDashboard = () => {
           onClickCheck={{
             onClick: () => {
               handleCheckClick(scheduleType);
-            },
+            }
           }}
         />
         <Typography
@@ -170,7 +170,7 @@ const CandidateDashboard = () => {
           sx={{
             fontSize: '14px',
             fontWeight: 600,
-            cursor: 'pointer',
+            cursor: 'pointer'
           }}
           onClick={() => {
             handleCheckClick(scheduleType);
@@ -183,7 +183,7 @@ const CandidateDashboard = () => {
   };
 
   const uniqueScreeningTitles = Array.from(
-    new Set(filterDetails.map((data) => data.screening_title)),
+    new Set(filterDetails.map((data) => data.screening_title))
   );
 
   const filteredScreeningNames = uniqueScreeningTitles.map((title) => {
@@ -191,7 +191,7 @@ const CandidateDashboard = () => {
   });
 
   const uniqueJobTitles = Array.from(
-    new Set(filterDetails.map((data) => data.job_title)),
+    new Set(filterDetails.map((data) => data.job_title))
   );
   const filteredJobs = uniqueJobTitles.map((title) => {
     return FilterStatus(title, title);
@@ -223,7 +223,7 @@ const CandidateDashboard = () => {
                           onClick: (e) => {
                             handle2Click(e);
                             setFilter(data);
-                          },
+                          }
                         }}
                         textLabel={
                           filter.find((title) => title.id === data)?.title
@@ -236,15 +236,15 @@ const CandidateDashboard = () => {
                         onClose={handleClose}
                         anchorOrigin={{
                           vertical: 'bottom',
-                          horizontal: 'left',
+                          horizontal: 'left'
                         }}
                         transformOrigin={{ vertical: -10, horizontal: 0 }}
                         sx={{
                           '& .MuiPopover-paper': {
                             borderRadius: '10px',
                             borderColor: '#E9EBED',
-                            minWidth: '176px',
-                          },
+                            minWidth: '176px'
+                          }
                         }}
                       >
                         {selectFilter === '1' ? (
@@ -260,20 +260,18 @@ const CandidateDashboard = () => {
                             onClickDelete={{
                               onClick: () => {
                                 setFilterId((prevFilters) =>
-                                  prevFilters.filter(
-                                    (filter) => filter !== '1',
-                                  ),
+                                  prevFilters.filter((filter) => filter !== '1')
                                 );
                                 set2AnchorEl(null);
                                 setSelectedScreeningTypes([]);
                                 fetchApplicantsId();
-                              },
+                              }
                             }}
                             onClickReset={{
                               onClick: () => {
                                 setSelectedScreeningTypes([]);
                                 fetchApplicantsId();
-                              },
+                              }
                             }}
                           />
                         ) : selectFilter === '2' ? (
@@ -283,18 +281,16 @@ const CandidateDashboard = () => {
                             onClickDelete={{
                               onClick: () => {
                                 setFilterId((prevFilters) =>
-                                  prevFilters.filter(
-                                    (filter) => filter !== '2',
-                                  ),
+                                  prevFilters.filter((filter) => filter !== '2')
                                 );
                                 set2AnchorEl(null);
                                 setSelectedScreeningTypes([]);
-                              },
+                              }
                             }}
                             onClickReset={{
                               onClick: () => {
                                 setSelectedScreeningTypes([]);
-                              },
+                              }
                             }}
                           />
                         ) : (
@@ -304,18 +300,16 @@ const CandidateDashboard = () => {
                             onClickDelete={{
                               onClick: () => {
                                 setFilterId((prevFilters) =>
-                                  prevFilters.filter(
-                                    (filter) => filter !== '3',
-                                  ),
+                                  prevFilters.filter((filter) => filter !== '3')
                                 );
                                 set2AnchorEl(null);
                                 setSelectedScreeningTypes([]);
-                              },
+                              }
                             }}
                             onClickReset={{
                               onClick: () => {
                                 setSelectedScreeningTypes([]);
-                              },
+                              }
                             }}
                           />
                         )}
@@ -332,7 +326,7 @@ const CandidateDashboard = () => {
                   onClickAddFilter={{
                     onClick: (e) => {
                       handleClick(e);
-                    },
+                    }
                   }}
                 />
                 <Popover
@@ -342,13 +336,13 @@ const CandidateDashboard = () => {
                   onClose={handleClose}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'left'
                   }}
                   transformOrigin={{ vertical: -10, horizontal: 0 }}
                   sx={{
                     '& .MuiPopover-paper': {
-                      border: 'none',
-                    },
+                      border: 'none'
+                    }
                   }}
                 >
                   <AllInterviewFilter
@@ -364,7 +358,7 @@ const CandidateDashboard = () => {
                             onClick: () => {
                               setFilterId([...filterId, title.id]);
                               setAnchorEl(null);
-                            },
+                            }
                           }}
                         />
                       ))}
@@ -394,15 +388,15 @@ const CandidateDashboard = () => {
                     const textStatus = isSubmitted
                       ? 'Submitted'
                       : isNotInvited
-                        ? 'Not Invited'
-                        : 'Invited';
+                      ? 'Not Invited'
+                      : 'Invited';
                     return (
                       <ScreeningCards
                         onClickCard={{
                           onClick: () => {
                             setId(data.id);
                             setDrawerOpen(true);
-                          },
+                          }
                         }}
                         textName={
                           data.first_name +
@@ -437,7 +431,7 @@ const CandidateDashboard = () => {
                                 : dayjs(
                                     data.status_emails_sent
                                       .phone_screening_resend ||
-                                      data.status_emails_sent.phone_screening,
+                                      data.status_emails_sent.phone_screening
                                   ).fromNow()
                             }
                           />
@@ -458,15 +452,15 @@ const CandidateDashboard = () => {
                     const textStatus = isSubmitted
                       ? 'Submitted'
                       : isNotInvited
-                        ? 'Not Invited'
-                        : 'Invited';
+                      ? 'Not Invited'
+                      : 'Invited';
                     return (
                       <ScreeningCards
                         onClickCard={{
                           onClick: () => {
                             setId(data.id);
                             setDrawerOpen(true);
-                          },
+                          }
                         }}
                         textName={
                           data.first_name +
@@ -501,7 +495,7 @@ const CandidateDashboard = () => {
                                 : dayjs(
                                     data.status_emails_sent
                                       .phone_screening_resend ||
-                                      data.status_emails_sent.phone_screening,
+                                      data.status_emails_sent.phone_screening
                                   ).fromNow()
                             }
                           />
@@ -528,7 +522,7 @@ const ScreeningDashboardBreadCrumbs = () => {
         onClickLink={{
           onClick: () => {
             router.push('/screening');
-          },
+          }
         }}
         isLink={true}
       />
@@ -616,5 +610,5 @@ const JobIcon = () => {
 const filter = [
   { id: '1', title: 'Status', icon: <StatusIcon /> },
   { id: '2', title: 'Screening Name', icon: <ScreeningIcon /> },
-  { id: '3', title: 'Related Jobs', icon: <JobIcon /> },
+  { id: '3', title: 'Related Jobs', icon: <JobIcon /> }
 ];
