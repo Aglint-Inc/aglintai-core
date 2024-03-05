@@ -12,4 +12,6 @@ declare function SchedulingSetting(props: {
   slotToggleCompanyDays?: Types.Devlink.Slot;
   slotDateList?: Types.Devlink.Slot;
   onClickAddDaysOff?: Types.Devlink.RuntimeProps;
+  onClickDiscard?: Types.Devlink.RuntimeProps;
+  onClickUpdateChanges?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

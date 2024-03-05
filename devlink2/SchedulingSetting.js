@@ -15,16 +15,57 @@ export function SchedulingSetting({
   slotToggleCompanyDays,
   slotDateList,
   onClickAddDaysOff = {},
+  onClickDiscard = {},
+  onClickUpdateChanges = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "scheduler-setting-wrap")}
       tag="div"
     >
-      <_Builtin.Block tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Time Zone"}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1117")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1115")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Settings"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-grey-600")}
+            tag="div"
+          >
+            {"These settings will be applied on company level"}
+          </_Builtin.Block>
         </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1116")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-red-500", "cursor-pointer")}
+            tag="div"
+            {...onClickDiscard}
+          >
+            {"Discard"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "button_primary")}
+            tag="div"
+            {...onClickUpdateChanges}
+          >
+            <_Builtin.Block tag="div">{"Update Changes"}</_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block tag="div">
+        <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "time-auto-input-wrap")}
           tag="div"
@@ -52,12 +93,7 @@ export function SchedulingSetting({
           className={_utils.cx(_styles, "div-block-1082")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Interview Load"}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{"Interview Load"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-500")}
             tag="div"
@@ -129,12 +165,7 @@ export function SchedulingSetting({
           className={_utils.cx(_styles, "div-block-1082")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Working Hours"}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{"Working Hours"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-500")}
             tag="div"
@@ -148,9 +179,7 @@ export function SchedulingSetting({
         className={_utils.cx(_styles, "div-block-1091")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Company Days Off"}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{"Company Days Off"}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "time-auto-wrap")}
           tag="div"

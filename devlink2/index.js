@@ -79,11 +79,8 @@ export * from "./CompanySwitchDropdown";
 export * from "./ConfirmSlots";
 export * from "./CsvImport";
 export * from "./CsvListItem";
-<<<<<<< HEAD
 export * from "./DateList";
 export * from "./DayOff";
-=======
->>>>>>> 072f0f38c7a77ec105bb28d99442037fd94abe94
 export * from "./DelJobBtn";
 export * from "./DeleteAssessmentPopup";
 export * from "./DeleteJobPopup";
