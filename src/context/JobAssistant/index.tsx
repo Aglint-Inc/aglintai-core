@@ -111,13 +111,13 @@ function JobAssistantProvider({ children }) {
   const [fetching, setFetching] = useState(true);
 
   const inputRef = useRef(null);
-  // const job_id = router.query?.id as string;
-  // useEffect(() => {
-  //   if (job_id) {
-  //     getCompanyDetails(job_id);
-  //     getApplications(job_id);
-  //   }
-  // }, [job_id]);
+  const job_id = router.query?.id as string;
+  useEffect(() => {
+    if (job_id) {
+      getCompanyDetails(job_id);
+      getApplications(job_id);
+    }
+  }, [job_id]);
 
   ////////////////////////// Create New Chat and Messages ///////////////////////////////////
   async function createNewChat() {

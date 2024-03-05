@@ -257,3 +257,7 @@ textarea::placeholder {
   color: #337fbd;
   cursor: pointer;
 }
+
+[data-layout='jobs'] {
+  height: calc(100vh - 100px) !important;
+}

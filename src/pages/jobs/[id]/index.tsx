@@ -4,7 +4,6 @@ import { JobAssessmentContextProvider } from '@/src/components/JobAssessment/con
 import JobDashboard from '@/src/components/JobsDashboard/Dashboard';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
-import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 
 const JobPage = () => {
@@ -15,9 +14,7 @@ const JobPage = () => {
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>
-        <JobAssistantProvider>
-          <JobDashboard />
-        </JobAssistantProvider>
+        <JobDashboard />
       </JobPostFormProvider>
     </>
   );

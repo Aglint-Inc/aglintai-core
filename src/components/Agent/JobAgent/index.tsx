@@ -3,6 +3,7 @@ import { Drawer, Skeleton, Stack, Typography } from '@mui/material';
 import { Editor } from '@tiptap/react';
 import dayjs from 'dayjs';
 import { marked } from 'marked';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { AssistantLogo } from '@/devlink2';
@@ -13,7 +14,7 @@ import {
   NewChat,
   NewChatButton,
   SuggetionPill,
-  WidgetGrid3X3,
+  WidgetGrid3X3
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
@@ -21,7 +22,7 @@ import { useJobAssistantContext } from '@/src/context/JobAssistant';
 import {
   chatusers,
   getSuggestedPrompts,
-  suggestions,
+  suggestions
 } from '@/src/context/JobAssistant/utils';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -52,8 +53,9 @@ function JobAgent() {
     setApplicationDetails,
     createNewChat,
     jobAssistantChats,
-    switchChat,
+    switchChat
   } = useJobAssistantContext();
+  const { pathname } = useRouter();
   const [open, setOpen] = useState(false);
   //@ts-ignore
   const skills = companyDetails?.jd_json?.skills
@@ -74,7 +76,7 @@ function JobAgent() {
     'Please wait, job assistant is creating!',
     'Job assistant created!',
     'Passing the job descriptions to assistant',
-    'Plase wait we are almost done!',
+    'Plase wait we are almost done!'
   ];
   const [loadingMessage, setLoadingMessage] = useState(loadingMessages[0]);
 
@@ -84,7 +86,7 @@ function JobAgent() {
       const timeint = setInterval(() => {
         if (i === loadingMessages.length - 1) {
           setLoadingMessage(
-            loadingMessages[Number(loadingMessages.length - 1)],
+            loadingMessages[Number(loadingMessages.length - 1)]
           );
           clearInterval(timeint);
         }
@@ -97,6 +99,7 @@ function JobAgent() {
   return (
     <>
       <AgentLayout
+        moduleName={pathname === '/jobs/[id]/agent' ? 'jobs' : null}
         isActivity={false}
         slotNewChatButton={
           <NewChatButton
@@ -107,7 +110,7 @@ function JobAgent() {
                 } else {
                   switchChat(jobAssistantChats[0]?.id);
                 }
-              },
+              }
             }}
           />
         }
@@ -134,7 +137,7 @@ function JobAgent() {
                       searchArguments,
                       active,
                       message,
-                      result_applications,
+                      result_applications
                     } = content;
                     applicationList = result_applications;
                     if (searchArguments) {
@@ -142,7 +145,7 @@ function JobAgent() {
                         searchArguments,
                         applicationList,
                         companyDetails.location,
-                        skills,
+                        skills
                       );
                     }
 
@@ -194,9 +197,9 @@ function JobAgent() {
                                                 ?.replaceAll('```', '')
                                                 .replaceAll(
                                                   /.*\b[Aa]pplication.[Ii][Dd].*\n/g,
-                                                  '',
-                                                ),
-                                            ),
+                                                  ''
+                                                )
+                                            )
                                           }}
                                         />
                                       </>
@@ -219,7 +222,7 @@ function JobAgent() {
                                   applicationList
                                     ?.sort(
                                       (a, b) =>
-                                        b?.overall_score - a?.overall_score,
+                                        b?.overall_score - a?.overall_score
                                     )
                                     .map((application) => {
                                       return (
@@ -268,7 +271,7 @@ function JobAgent() {
             sx={{
               display: 'flex',
               width: '100%',
-              height: '58px',
+              height: '58px'
             }}
           >
             {!fetching ? (
@@ -281,7 +284,7 @@ function JobAgent() {
                     .forEach(
                       (node) =>
                         (node.textContent =
-                          '```' + node.getAttribute('data-id') + '```'),
+                          '```' + node.getAttribute('data-id') + '```')
                     );
                   setBackEndText(div.textContent);
                   setTextMessage(event);
@@ -294,7 +297,7 @@ function JobAgent() {
             ) : (
               <Skeleton
                 sx={{
-                  transform: 'none',
+                  transform: 'none'
                 }}
                 height={'58px'}
               />
@@ -306,7 +309,7 @@ function JobAgent() {
             if (textMessage?.text?.trim()) {
               handleChat();
             }
-          },
+          }
         }}
       />
       <Stack>
@@ -352,7 +355,7 @@ function SuggestedPrompts({ suggestionsPrompts, getEditorRef }) {
                       setTextMessage({
                         html: `<p>${ele}</p>`,
                         text: ele,
-                        wordCount: ele.length,
+                        wordCount: ele.length
                       });
                       setBackEndText(`<p>${ele}</p>`);
 
@@ -362,15 +365,15 @@ function SuggestedPrompts({ suggestionsPrompts, getEditorRef }) {
 
                       const secondBacktickPos = ele.indexOf(
                         '`',
-                        firstBacktickPos + 1,
+                        firstBacktickPos + 1
                       );
                       if (firstBacktickPos > 0 && secondBacktickPos > 0) {
                         getEditorRef().commands.setTextSelection({
                           from: firstBacktickPos + 2,
-                          to: secondBacktickPos + 1,
+                          to: secondBacktickPos + 1
                         });
                       }
-                    },
+                    }
                   }}
                 />
               );
