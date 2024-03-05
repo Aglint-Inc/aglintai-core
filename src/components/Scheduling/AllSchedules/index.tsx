@@ -37,12 +37,12 @@ import {
   setIsRescheduleOpen,
   setPagination,
   setSelectedApplication,
-  useInterviewStore
+  useInterviewSchedulingStore
 } from './store';
 import { getPaginationDB } from './utils';
 import { useSchedulingStore } from '../Modules/store';
 
-function InterviewComp() {
+function AllSchedules() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [pageLoad, setPageLoad] = useState(true);
@@ -54,7 +54,7 @@ function InterviewComp() {
     filterVisible,
     fetching,
     selectedApplication
-  } = useInterviewStore();
+  } = useInterviewSchedulingStore();
 
   const interviewModules = useSchedulingStore(
     (state) => state.interviewModules
@@ -206,7 +206,7 @@ function InterviewComp() {
 
   const onClickCard = (app: ApplicationList) => {
     router.push(
-      `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${app.applications.id}`,
+      `${pageRoutes.SCHEDULING}/application/${app.applications.id}`,
       undefined,
       {
         shallow: true
@@ -346,4 +346,4 @@ function InterviewComp() {
   );
 }
 
-export default InterviewComp;
+export default AllSchedules;

@@ -9,7 +9,7 @@ import {
   setEditModule,
   setIsResumeDialogOpen,
   useSchedulingStore
-} from '../store';
+} from '../../store';
 
 function ResumeMemberDialog() {
   const { isResumeDialogOpen, editModule, selUser } = useSchedulingStore();

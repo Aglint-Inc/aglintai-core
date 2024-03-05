@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { BodyWithSublink, PageLayout } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
-import InterviewComp from './AllSchedules';
+import AllSchedules from './AllSchedules';
 import { Modules } from './Modules/Modules';
 import { setIsCreateDialogOpen } from './Modules/store';
 import MySchedule from './MySchedule';
@@ -17,6 +18,14 @@ import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/S
 function SchedulingMainComp() {
   const router = useRouter();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
+
+  useEffect(() => {
+    if (router.isReady && !router.query.tab) {
+      router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
+        shallow: true
+      });
+    }
+  }, [router]);
 
   return (
     <>
@@ -48,7 +57,7 @@ function SchedulingMainComp() {
           <BodyWithSublink
             slotTabContent={
               router.query.tab == 'allSchedules' ? (
-                <InterviewComp />
+                <AllSchedules />
               ) : router.query.tab == 'mySchedules' ? (
                 <>
                   <MySchedule />

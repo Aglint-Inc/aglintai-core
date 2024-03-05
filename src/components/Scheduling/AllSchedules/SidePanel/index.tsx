@@ -8,7 +8,7 @@ import {
   SidebarBlockConfirmed,
   SidebarBlockNotScheduled,
   SidebarBlockPending,
-  TimeRangePreview,
+  TimeRangePreview
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -25,20 +25,22 @@ import {
   setIsCreateScheduleOpen,
   setIsRescheduleOpen,
   setSelectedApplication,
-  useInterviewStore,
+  useInterviewSchedulingStore
 } from '../store';
 import { mailHandler, TimeSlot } from '../utils';
 
 function SidePanel() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const selectedApplication = useInterviewStore(
-    (state) => state.selectedApplication,
+  const selectedApplication = useInterviewSchedulingStore(
+    (state) => state.selectedApplication
   );
-  const applicationList = useInterviewStore((state) => state.applicationList);
+  const applicationList = useInterviewSchedulingStore(
+    (state) => state.applicationList
+  );
 
   const currentIndex = applicationList.findIndex(
-    (app) => app.applications.id === selectedApplication?.applications.id,
+    (app) => app.applications.id === selectedApplication?.applications.id
   );
 
   const resendInvite = async () => {
@@ -47,7 +49,7 @@ function SidePanel() {
         await supabase
           .from('interview_schedule')
           .update({
-            resend_invite: selectedApplication?.schedule.resend_invite + 1,
+            resend_invite: selectedApplication?.schedule.resend_invite + 1
           })
           .eq('id', selectedApplication.schedule.id);
 
@@ -56,23 +58,23 @@ function SidePanel() {
           candidate_name: selectedApplication.candidates.first_name,
           company_logo: recruiter.logo,
           company_name: recruiter.name,
-          schedule_name: selectedApplication.schedule.schedule_name,
+          schedule_name: selectedApplication.schedule.schedule_name
         });
         selectedApplication.schedule.resend_invite += 1;
         setSelectedApplication({
           ...selectedApplication,
-          schedule: selectedApplication.schedule,
+          schedule: selectedApplication.schedule
         });
         applicationList.filter(
-          (app) => app.applications.id === selectedApplication.applications.id,
+          (app) => app.applications.id === selectedApplication.applications.id
         )[0].schedule = {
           ...selectedApplication.schedule,
-          resend_invite: selectedApplication.schedule.resend_invite + 1,
+          resend_invite: selectedApplication.schedule.resend_invite + 1
         };
         setApplicationList([...applicationList]);
       } else {
         toast.error(
-          'You have reached the maximum limit of resending the invite',
+          'You have reached the maximum limit of resending the invite'
         );
       }
     }
@@ -98,13 +100,13 @@ function SidePanel() {
           onClickClose={{
             onClick: () => {
               setSelectedApplication(null);
-            },
+            }
           }}
           slotAvatar={
             <MuiAvatar
               level={getFullName(
                 selectedApplication?.candidates.first_name,
-                selectedApplication?.candidates.last_name,
+                selectedApplication?.candidates.last_name
               )}
               src={selectedApplication?.candidates.avatar}
               variant={'circular'}
@@ -121,7 +123,7 @@ function SidePanel() {
                 onClickResendInvite={{
                   onClick: () => {
                     resendInvite();
-                  },
+                  }
                 }}
                 textScheduleName={selectedApplication?.schedule?.schedule_name}
                 textSlotNumber={`${totalSlots} slots provided to candidate to choose`}
@@ -152,12 +154,12 @@ function SidePanel() {
                 onClickCancelSchedule={{
                   onClick: () => {
                     setIsCancelOpen(true);
-                  },
+                  }
                 }}
                 onClickReschedule={{
                   onClick: () => {
                     setIsRescheduleOpen(true);
-                  },
+                  }
                 }}
                 slotInterviewPanel={<InterviewPanelCardComp />}
                 slotScheduleInfo={<ScheduleInfoBlockComp />}
@@ -170,7 +172,7 @@ function SidePanel() {
                 onClickSchedule={{
                   onClick: () => {
                     setIsCreateScheduleOpen(true);
-                  },
+                  }
                 }}
               />
             )
@@ -179,19 +181,19 @@ function SidePanel() {
             onClick: () => {
               if (currentIndex > 0) {
                 router.push(
-                  `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${applicationList[currentIndex - 1].applications.id}`,
+                  `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${applicationList[currentIndex - 1].applications.id}`
                 );
               }
-            },
+            }
           }}
           onClickRight={{
             onClick: () => {
               if (currentIndex < applicationList.length - 1) {
                 router.push(
-                  `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${applicationList[currentIndex + 1].applications.id}`,
+                  `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${applicationList[currentIndex + 1].applications.id}`
                 );
               }
-            },
+            }
           }}
           textCandidateName={`${selectedApplication?.candidates.first_name} ${selectedApplication?.candidates.last_name}`}
         />

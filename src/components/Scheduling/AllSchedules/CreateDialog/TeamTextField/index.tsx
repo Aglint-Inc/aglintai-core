@@ -9,7 +9,7 @@ import {
   setDuration,
   setSelectedPanel,
   setSelectedUsers,
-  useInterviewStore
+  useInterviewSchedulingStore
 } from '../../store';
 import { useSchedulingStore } from '../../../Modules/store';
 
@@ -18,9 +18,11 @@ function TeamAutoComplete() {
   const interviewModules = useSchedulingStore(
     (state) => state.interviewModules
   );
-  const selectedPanel = useInterviewStore((state) => state.selectedPanel);
+  const selectedPanel = useInterviewSchedulingStore(
+    (state) => state.selectedPanel
+  );
   const [panelId, setPanelId] = useState('');
-  const duration = useInterviewStore((state) => state.duration);
+  const duration = useInterviewSchedulingStore((state) => state.duration);
 
   useEffect(() => {
     if (selectedPanel) {

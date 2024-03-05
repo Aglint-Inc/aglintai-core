@@ -3,13 +3,13 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { useInterviewStore } from '../../store';
+import { useInterviewSchedulingStore } from '../../store';
 import { useSchedulingStore } from '../../../Modules/store';
 
 function InterviewPanelCardComp() {
   const { members } = useAuthDetails();
 
-  const selectedApplication = useInterviewStore(
+  const selectedApplication = useInterviewSchedulingStore(
     (state) => state.selectedApplication
   );
 

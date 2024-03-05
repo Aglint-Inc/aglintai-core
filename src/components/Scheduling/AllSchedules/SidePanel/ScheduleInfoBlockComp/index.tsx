@@ -3,12 +3,12 @@ import dayjs from 'dayjs';
 import { ScheduleInfoBlock } from '@/devlink2';
 
 import IconScheduleType from '../../ListCard/Icon';
-import { useInterviewStore } from '../../store';
+import { useInterviewSchedulingStore } from '../../store';
 import { getScheduleType } from '../../utils';
 
 function ScheduleInfoBlockComp() {
-  const selectedApplication = useInterviewStore(
-    (state) => state.selectedApplication,
+  const selectedApplication = useInterviewSchedulingStore(
+    (state) => state.selectedApplication
   );
 
   return (
@@ -18,11 +18,11 @@ function ScheduleInfoBlockComp() {
           selectedApplication?.schedule.schedule_time
             ? selectedApplication.schedule.schedule_time
               ? dayjs(
-                  selectedApplication.schedule.schedule_time.startTime,
+                  selectedApplication.schedule.schedule_time.startTime
                 ).format('YYYY MMM DD') +
                 ' at ' +
                 dayjs(
-                  selectedApplication.schedule.schedule_time.startTime,
+                  selectedApplication.schedule.schedule_time.startTime
                 ).format('hh:mm A')
               : '--'
             : '--'
@@ -37,7 +37,7 @@ function ScheduleInfoBlockComp() {
           />
         }
         textMeetingType={getScheduleType(
-          selectedApplication?.schedule.schedule_type,
+          selectedApplication?.schedule.schedule_type
         )}
       />
     </>

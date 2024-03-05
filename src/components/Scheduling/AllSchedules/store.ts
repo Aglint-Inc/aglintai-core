@@ -7,6 +7,7 @@ import {
 } from '@/src/types/data.types';
 
 import { ModuleType } from '../Modules/store';
+import { InterviewModuleDbType } from '../../JobInterviewPlan/types';
 
 export interface InterviewSlice {
   applicationList: ApplicationList[];
@@ -79,59 +80,59 @@ const initialState: InterviewSlice = {
   isCancelOpen: false
 };
 
-export const useInterviewStore = create<InterviewSlice>()(() => ({
+export const useInterviewSchedulingStore = create<InterviewSlice>()(() => ({
   ...initialState
 }));
 
 export const setApplicationList = (applicationList: ApplicationList[]) =>
-  useInterviewStore.setState({ applicationList });
+  useInterviewSchedulingStore.setState({ applicationList });
 
 export const setInitalLoading = (initialLoading: boolean) =>
-  useInterviewStore.setState({ initialLoading });
+  useInterviewSchedulingStore.setState({ initialLoading });
 
 export const setIsCreateScheduleOpen = (isCreateScheduleOpen: boolean) =>
-  useInterviewStore.setState({ isCreateScheduleOpen });
+  useInterviewSchedulingStore.setState({ isCreateScheduleOpen });
 
 export const setSelectedApplication = (selectedApplication: ApplicationList) =>
-  useInterviewStore.setState({ selectedApplication });
+  useInterviewSchedulingStore.setState({ selectedApplication });
 
 export const setSelectedPanel = (selectedPanel: ModuleType) =>
-  useInterviewStore.setState({ selectedPanel });
+  useInterviewSchedulingStore.setState({ selectedPanel });
 
 export const setSelectedUsers = (
   selectedUsers: InterviewSlice['selectedUsers']
-) => useInterviewStore.setState({ selectedUsers });
+) => useInterviewSchedulingStore.setState({ selectedUsers });
 
 export const setFilter = (filter: InterviewSlice['filter']) =>
-  useInterviewStore.setState((state) => ({
+  useInterviewSchedulingStore.setState((state) => ({
     filter: { ...state.filter, ...filter }
   }));
 
 export const setDuration = (duration: number) =>
-  useInterviewStore.setState({ duration });
+  useInterviewSchedulingStore.setState({ duration });
 
 export const setIsRescheduleOpen = (isRescheduleOpen: boolean) =>
-  useInterviewStore.setState({ isRescheduleOpen });
+  useInterviewSchedulingStore.setState({ isRescheduleOpen });
 
 export const setIsCancelOpen = (isCancelOpen: boolean) =>
-  useInterviewStore.setState({ isCancelOpen });
+  useInterviewSchedulingStore.setState({ isCancelOpen });
 
 export const setFilterVisible = (
   filterVisible: InterviewSlice['filterVisible']
-) => useInterviewStore.setState({ filterVisible });
+) => useInterviewSchedulingStore.setState({ filterVisible });
 
 export const setPagination = (
   pagination: Partial<InterviewSlice['pagination']>
 ) =>
-  useInterviewStore.setState((state) => ({
+  useInterviewSchedulingStore.setState((state) => ({
     pagination: { ...state.pagination, ...pagination }
   }));
 
 export const setFetching = (fetching: boolean) =>
-  useInterviewStore.setState({ fetching });
+  useInterviewSchedulingStore.setState({ fetching });
 
 export const resetInterviewState = () =>
-  useInterviewStore.setState({ ...initialState });
+  useInterviewSchedulingStore.setState({ ...initialState });
 
 export type ApplicationList = {
   applications: JobApplcationDB;
@@ -145,5 +146,10 @@ export type ApplicationList = {
         } | null;
       })
     | null;
-  public_jobs: { id: string; job_title: string };
+  public_jobs: {
+    id: string;
+    job_title: string;
+    interview_plan: { plan: InterviewModuleDbType[] };
+    location: string;
+  };
 };

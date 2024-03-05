@@ -6,14 +6,21 @@ import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
-import { FilterType, setFilter, setFilterVisible, useInterviewStore } from '../../store';
+import {
+  FilterType,
+  setFilter,
+  setFilterVisible,
+  useInterviewSchedulingStore
+} from '../../store';
 
 function FilterStatus() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const filter = useInterviewStore((state) => state.filter);
-  const filterVisible = useInterviewStore((state) => state.filterVisible);
+  const filter = useInterviewSchedulingStore((state) => state.filter);
+  const filterVisible = useInterviewSchedulingStore(
+    (state) => state.filterVisible
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -140,8 +147,9 @@ function FilterStatus() {
           onClickDelete={{
             onClick: () => {
               setFilter({ status: [] });
-              setFilterVisible(filterVisible.filter((f) => f !== FilterType.
-              status));
+              setFilterVisible(
+                filterVisible.filter((f) => f !== FilterType.status)
+              );
             }
           }}
           onClickReset={{

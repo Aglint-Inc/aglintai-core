@@ -3,18 +3,20 @@ import React from 'react';
 
 import { ConfirmationPopup } from '@/devlink3';
 
-import { setIsRescheduleOpen, useInterviewStore } from '../store';
+import { setIsRescheduleOpen, useInterviewSchedulingStore } from '../store';
 
 function RescheduleDialog({ onClickReschedule }) {
-  const isRescheduleOpen = useInterviewStore((state) => state.isRescheduleOpen);
+  const isRescheduleOpen = useInterviewSchedulingStore(
+    (state) => state.isRescheduleOpen
+  );
   return (
     <Dialog
       sx={{
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px',
-        },
+          borderRadius: '10px'
+        }
       }}
       open={isRescheduleOpen}
       onClose={() => {
@@ -30,10 +32,10 @@ function RescheduleDialog({ onClickReschedule }) {
         onClickCancel={{
           onClick: () => {
             setIsRescheduleOpen(false);
-          },
+          }
         }}
         onClickAction={{
-          onClick: onClickReschedule,
+          onClick: onClickReschedule
         }}
         textPopupButton={'Confirm'}
       />

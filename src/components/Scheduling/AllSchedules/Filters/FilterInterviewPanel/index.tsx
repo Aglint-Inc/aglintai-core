@@ -9,7 +9,7 @@ import {
   FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewStore
+  useInterviewSchedulingStore
 } from '../../store';
 import { useSchedulingStore } from '../../../Modules/store';
 
@@ -17,11 +17,13 @@ function FilterInterviewPanel() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const filter = useInterviewStore((state) => state.filter);
+  const filter = useInterviewSchedulingStore((state) => state.filter);
   const interviewModules = useSchedulingStore(
     (state) => state.interviewModules
   );
-  const filterVisible = useInterviewStore((state) => state.filterVisible);
+  const filterVisible = useInterviewSchedulingStore(
+    (state) => state.filterVisible
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

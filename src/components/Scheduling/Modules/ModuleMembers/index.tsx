@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
+import { ButtonPrimarySmall } from '@/devlink';
 import {
   AllInterviewEmpty,
   Breadcrum,
@@ -10,18 +11,18 @@ import {
   MemberListCard,
   PageLayout
 } from '@/devlink2';
-import { ButtonPrimaryDefaultRegular, MoreButton } from '@/devlink3';
+import { MoreButton } from '@/devlink3';
 import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import AddMemberDialog from '../AddMemberDialog';
-import DeleteMemberDialog from '../DeleteMemberDialog';
-import DeleteModuleDialog from '../DeleteModuleDialog';
-import PauseDialog from '../PauseDialog';
-import ResumeMemberDialog from '../ResumeMemberDialog';
+import AddMemberDialog from './AddMemberDialog';
+import DeleteMemberDialog from './DeleteMemberDialog';
+import DeleteModuleDialog from './DeleteModuleDialog';
+import PauseDialog from './PauseDialog';
+import ResumeMemberDialog from './ResumeMemberDialog';
 import {
   setIsAddMemberDialogOpen,
   setIsDeleteMemberDialogOpen,
@@ -131,12 +132,20 @@ function ModuleMembersComp() {
         }
         slotTopbarRight={
           <Stack spacing={2} direction={'row'} alignItems={'center'}>
-            <ButtonPrimaryDefaultRegular
-              startIconSlot={
-                <Icon variant='PlusThin' height='12' width='12' color='#fff' />
+            <ButtonPrimarySmall
+              isStartIcon={true}
+              slotStartIcon={
+                <Stack>
+                  <Icon
+                    variant='PlusThin'
+                    height='12'
+                    width='12'
+                    color='#fff'
+                  />
+                </Stack>
               }
-              buttonText={'Add Member'}
-              buttonProps={{
+              textLabel={'Add Member'}
+              onClickButton={{
                 onClick: () => {
                   setIsAddMemberDialogOpen(true);
                 }

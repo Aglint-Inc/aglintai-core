@@ -16,7 +16,7 @@ import {
   setIsAddMemberDialogOpen,
   setSelectedUsers,
   useSchedulingStore
-} from '../store';
+} from '../../store';
 
 function AddMemberDialog() {
   const { members } = useAuthDetails();
@@ -146,7 +146,7 @@ function AddMemberDialog() {
         onClickAction={{
           onClick: addMemberHandler
         }}
-        textPopupButton={'Create'}
+        textPopupButton={editModule?.relations.length > 0 ? 'Add' : 'Create'}
       />
     </Dialog>
   );

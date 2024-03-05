@@ -4,10 +4,10 @@ import React from 'react';
 import { ButtonFilter } from '@/devlink2';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { setFilter, useInterviewStore } from '../../store';
+import { setFilter, useInterviewSchedulingStore } from '../../store';
 
 function DateFilter() {
-  const filter = useInterviewStore((state) => state.filter);
+  const filter = useInterviewSchedulingStore((state) => state.filter);
 
   const handleClick = () => {
     if (filter.sortBy === 'asc') {

@@ -10,7 +10,7 @@ import {
   FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewStore
+  useInterviewSchedulingStore
 } from '../../store';
 
 function FilterJob() {
@@ -18,8 +18,10 @@ function FilterJob() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const filter = useInterviewStore((state) => state.filter);
-  const filterVisible = useInterviewStore((state) => state.filterVisible);
+  const filter = useInterviewSchedulingStore((state) => state.filter);
+  const filterVisible = useInterviewSchedulingStore(
+    (state) => state.filterVisible
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

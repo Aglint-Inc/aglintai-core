@@ -11,7 +11,7 @@ import {
   ScheduleInterview,
   ScheduleInterviewFill,
   ScheduleInterviewLoadedSlots,
-  ScheduleInterviewLoading,
+  ScheduleInterviewLoading
 } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
@@ -29,22 +29,28 @@ import {
   setIsCreateScheduleOpen,
   setSelectedPanel,
   setSelectedUsers,
-  useInterviewStore,
+  useInterviewSchedulingStore
 } from '../store';
 import { findIntersection, mailHandler, TimeSlot } from '../utils';
 
 function CreateDialog() {
   const { members, recruiter } = useAuthDetails();
-  const isCreateScheduleOpen = useInterviewStore(
-    (state) => state.isCreateScheduleOpen,
+  const isCreateScheduleOpen = useInterviewSchedulingStore(
+    (state) => state.isCreateScheduleOpen
   );
-  const selectedApplication = useInterviewStore(
-    (state) => state.selectedApplication,
+  const selectedApplication = useInterviewSchedulingStore(
+    (state) => state.selectedApplication
   );
-  const applicationList = useInterviewStore((state) => state.applicationList);
-  const selectedUsers = useInterviewStore((state) => state.selectedUsers);
-  const slelectedPanel = useInterviewStore((state) => state.selectedPanel);
-  const duration = useInterviewStore((state) => state.duration);
+  const applicationList = useInterviewSchedulingStore(
+    (state) => state.applicationList
+  );
+  const selectedUsers = useInterviewSchedulingStore(
+    (state) => state.selectedUsers
+  );
+  const slelectedPanel = useInterviewSchedulingStore(
+    (state) => state.selectedPanel
+  );
+  const duration = useInterviewSchedulingStore((state) => state.duration);
   const [scheduleType, setScheduleType] =
     useState<InterviewScheduleTypeDB['schedule_type']>('google_meet');
 
@@ -57,7 +63,7 @@ function CreateDialog() {
   useEffect(() => {
     if (selectedApplication?.applications?.id) {
       setName(
-        `Interview for ${selectedApplication?.public_jobs?.job_title} - ${selectedApplication?.candidates?.first_name}`,
+        `Interview for ${selectedApplication?.public_jobs?.job_title} - ${selectedApplication?.candidates?.first_name}`
       );
     }
   }, [selectedApplication?.applications?.id]);
@@ -72,7 +78,7 @@ function CreateDialog() {
           'user_id',
           selectedUsers
             .filter((u) => u.must !== 'not selected')
-            .map((u) => u.user_id),
+            .map((u) => u.user_id)
         );
       if (error) throw new Error('Error fetching data');
 
@@ -81,17 +87,17 @@ function CreateDialog() {
           user_id: user.user_id,
           availibility_json: user?.slot_availability
             ? user?.slot_availability.find(
-                (s: any) => s.timeDuration === duration,
+                (s: any) => s.timeDuration === duration
               )
-            : null,
+            : null
         };
       });
 
       const intersectionArray = Object.entries(
-        findIntersection(res as any),
+        findIntersection(res as any)
       ).map((t) => ({
         date: t[0],
-        slots: t[1],
+        slots: t[1]
       }));
 
       setFilteredSlots(intersectionArray);
@@ -118,12 +124,12 @@ function CreateDialog() {
           status: 'pending',
           duration: duration,
           panel_users: selectedUsers,
-          selected_slots: filteredSlots as any,
+          selected_slots: filteredSlots as any
         })
         .select();
       if (error) throw new Error('Error inserting data');
       applicationList.filter(
-        (app) => app.applications.id === selectedApplication.applications.id,
+        (app) => app.applications.id === selectedApplication.applications.id
       )[0].schedule = data[0] as ApplicationList['schedule'];
       setApplicationList([...applicationList]);
 
@@ -132,7 +138,7 @@ function CreateDialog() {
         candidate_name: selectedApplication?.candidates.first_name,
         company_logo: recruiter.logo,
         company_name: recruiter.name,
-        schedule_name: selectedApplication?.schedule?.schedule_name,
+        schedule_name: selectedApplication?.schedule?.schedule_name
       });
       setStep(4);
     } catch (e) {
@@ -167,7 +173,7 @@ function CreateDialog() {
             setSelectedPanel(null);
             setFilteredSlots([]);
             setStep(1);
-          },
+          }
         }}
         isContinueVisible={step === 1}
         slotScheduleInterviewFill={
@@ -177,22 +183,22 @@ function CreateDialog() {
               onClickGoogleMeet={{
                 onClick: () => {
                   setScheduleType('google_meet');
-                },
+                }
               }}
               onClickPersonMeeting={{
                 onClick: () => {
                   setScheduleType('in_person_meeting');
-                },
+                }
               }}
               onClickPhoneCall={{
                 onClick: () => {
                   setScheduleType('phone_call');
-                },
+                }
               }}
               onClickZoom={{
                 onClick: () => {
                   setScheduleType('zoom');
-                },
+                }
               }}
               isGoogleMeetActive={scheduleType === 'google_meet'}
               isPersonMeetingActive={scheduleType === 'in_person_meeting'}
@@ -203,7 +209,7 @@ function CreateDialog() {
                 <MuiAvatar
                   level={getFullName(
                     selectedApplication?.candidates.first_name,
-                    selectedApplication?.candidates.last_name,
+                    selectedApplication?.candidates.last_name
                   )}
                   src={selectedApplication?.candidates.avatar}
                   variant={'circular'}
@@ -237,20 +243,20 @@ function CreateDialog() {
                         onClick: () => {
                           if (user.must === 'not selected') {
                             selectedUsers.filter(
-                              (u) => u.user_id == user.user_id,
+                              (u) => u.user_id == user.user_id
                             )[0].must = 'selected';
                           } else if (user.must === 'selected') {
                             selectedUsers.filter(
-                              (u) => u.user_id == user.user_id,
+                              (u) => u.user_id == user.user_id
                             )[0].must = 'optional';
                           } else {
                             selectedUsers.filter(
-                              (u) => u.user_id == user.user_id,
+                              (u) => u.user_id == user.user_id
                             )[0].must = 'not selected';
                           }
 
                           setSelectedUsers([...selectedUsers]);
-                        },
+                        }
                       }}
                       slotProfileImage={
                         <MuiAvatar
@@ -294,10 +300,10 @@ function CreateDialog() {
                                 onClickPill={{
                                   onClick: () => {
                                     filteredSlots[ind].slots.filter(
-                                      (s) => s === slot,
+                                      (s) => s === slot
                                     )[0].isSelected = !slot.isSelected;
                                     setFilteredSlots([...filteredSlots]);
-                                  },
+                                  }
                                 }}
                                 key={slot.startTime}
                                 textTime={`${dayjs(slot.startTime).format('hh:mm')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
@@ -307,8 +313,8 @@ function CreateDialog() {
                                       '& .MuiAvatar-root': {
                                         width: '24px',
                                         height: '24px',
-                                        fontSize: '8px',
-                                      },
+                                        fontSize: '8px'
+                                      }
                                     }}
                                     total={uniqueUserIds.length}
                                   >
@@ -316,8 +322,7 @@ function CreateDialog() {
                                       .slice(0, 5)
                                       .map((user_id) => {
                                         const member = members.filter(
-                                          (member) =>
-                                            member.user_id === user_id,
+                                          (member) => member.user_id === user_id
                                         )[0];
                                         return (
                                           <MuiAvatar
@@ -373,7 +378,7 @@ function CreateDialog() {
               onClickScheduler={{
                 onClick: () => {
                   clickScheduler();
-                },
+                }
               }}
               slotAvatarImage={
                 <AvatarGroup
@@ -381,14 +386,14 @@ function CreateDialog() {
                     '& .MuiAvatar-root': {
                       width: '20px',
                       height: '20px',
-                      fontSize: '8px',
-                    },
+                      fontSize: '8px'
+                    }
                   }}
                   total={selectedUsers.length}
                 >
                   {selectedUsers.slice(0, 5).map((user) => {
                     const member = members.filter(
-                      (member) => member.user_id === user.user_id,
+                      (member) => member.user_id === user.user_id
                     )[0];
                     return (
                       <MuiAvatar
@@ -417,24 +422,24 @@ function CreateDialog() {
         isInviteCandidateButtonVisible={step === 3}
         isInviteCandidateDisable={
           filteredSlots.filter(
-            (f) => f.slots.filter((s) => s.isSelected).length > 0,
+            (f) => f.slots.filter((s) => s.isSelected).length > 0
           ).length === 0
         }
         onClickBack={{
           onClick: () => {
             setStep(1);
             setFilteredSlots([]);
-          },
+          }
         }}
         onClickInviteCandidate={{
           onClick: () => {
             inviteCandidate();
-          },
+          }
         }}
         onClickContinue={{
           onClick: () => {
             clickContinue();
-          },
+          }
         }}
       />
     </Drawer>

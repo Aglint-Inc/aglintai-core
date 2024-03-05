@@ -5,7 +5,7 @@ import {
   InputProps,
   OutlinedInputProps,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
@@ -71,34 +71,23 @@ const UITextField = React.forwardRef(
       minRows = 4.7,
       maxRows = 4.7,
       rest = undefined,
-      onFocus = () => {},
       onKeyDown = () => {},
       onBlur = () => {},
       InputProps,
       children,
       defaultValue,
       borderRadius = 4,
-      noBorder,
       width,
       select,
       height,
       secondaryText,
-      labelBold = 'default',
+      labelBold = 'default'
     }: Props,
-    ref?: React.Ref<HTMLInputElement>,
+    ref?: React.Ref<HTMLInputElement>
   ) => {
-    const [focus, setfocus] = useState(false);
     const [contentExceeded, setContentExceeded] = useState(false);
-    let borderColor = `#b1cee6`;
-    let outlineColor = palette.grey[300];
     let labelColor = palette.grey[800];
-    if (focus) {
-      outlineColor = palette.blue[600];
-    }
-    if (error) {
-      outlineColor = palette.red[400];
-      borderColor = palette.red[200];
-    }
+
     if (disabled) {
       labelColor = palette.grey[600];
     }
@@ -150,45 +139,19 @@ const UITextField = React.forwardRef(
           minRows={minRows}
           maxRows={maxRows}
           InputProps={{
-            ...InputProps,
-          }}
-          onFocus={(e) => {
-            setfocus(true);
-            if (onFocus) onFocus(e.currentTarget);
+            ...InputProps
           }}
           onBlur={() => {
-            setfocus(false);
             onBlur();
             setContentExceeded(false);
           }}
           type={type}
           sx={{
-            '&': {
-              margin: 0,
-            },
             '& .MuiOutlinedInput-root': {
               height: height ? `${height}px !important` : '100%',
-              bgcolor: disabled ? 'transparent' : 'white.700',
-              fontSize: '14px',
-              borderRadius: `${borderRadius}px`,
-              fieldset: {
-                pt: '8px',
-                border: noBorder
-                  ? 'transparent'
-                  : `1px solid ${outlineColor}!important`,
-                borderRadius: `${borderRadius}px`,
-              },
-              '&:hover fieldset': {
-                border: noBorder
-                  ? 'transparent'
-                  : `1px solid ${outlineColor}!important`,
-                borderRadius: `${borderRadius}px`,
-              },
-              '&': {
-                outline: `3px solid ${focus ? borderColor : 'transparent'}`,
-              },
+              borderRadius: `${borderRadius}px`
             },
-            width: width,
+            width: width
           }}
           {...rest}
         >
@@ -212,7 +175,7 @@ const UITextField = React.forwardRef(
         )}
       </Stack>
     );
-  },
+  }
 );
 
 export default UITextField;

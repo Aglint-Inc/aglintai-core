@@ -15,7 +15,7 @@ import {
   setIsPauseDialogOpen,
   setPauseJson,
   useSchedulingStore
-} from '../store';
+} from '../../store';
 
 function PauseDialog() {
   const { isPauseDialogOpen, pause_json, selUser, editModule } =
@@ -62,7 +62,7 @@ function PauseDialog() {
   const resetState = () => {
     setIsPauseDialogOpen(false);
     setSelectedType('isManual');
-    setPauseJson(null);
+    setPauseJson({ isManual: true, start_date: '', end_date: '' });
   };
 
   return (

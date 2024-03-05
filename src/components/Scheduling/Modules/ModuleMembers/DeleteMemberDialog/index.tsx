@@ -1,42 +1,42 @@
 import { Dialog } from '@mui/material';
-import { useRouter } from 'next/router';
 
 import { DeletePopup } from '@/devlink3';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
   setEditModule,
-  setInterviewModules,
-  setIsDeleteModuleDialogOpen,
+  setIsDeleteMemberDialogOpen,
   useSchedulingStore
-} from '../store';
+} from '../../store';
 
-function DeleteModuleDialog() {
-  const router = useRouter();
-  const { isDeleteModuleDialogOpen, editModule, interviewModules } =
+function DeleteMemberDialog() {
+  const { isDeleteMemberDialogOpen, editModule, selUser } =
     useSchedulingStore();
 
-  const deleteModule = async () => {
+  const deleteRelation = async () => {
     try {
       const { error } = await supabase
-        .from('interview_module')
+        .from('interview_module_relation')
         .delete()
-        .eq('id', editModule.id);
+        .match({
+          user_id: selUser.user_id,
+          module_id: editModule.id
+        });
       if (!error) {
-        setInterviewModules(
-          interviewModules.filter((module) => module.id !== editModule.id)
-        );
-        router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
-        setEditModule(null);
+        setEditModule({
+          ...editModule,
+          relations: editModule.relations.filter(
+            (rel) => rel.user_id !== selUser.user_id
+          )
+        });
       } else {
         throw new Error();
       }
     } catch {
       toast.error('Error deleting user');
     } finally {
-      setIsDeleteModuleDialogOpen(false);
+      setIsDeleteMemberDialogOpen(false);
     }
   };
 
@@ -49,25 +49,25 @@ function DeleteModuleDialog() {
           borderRadius: '10px'
         }
       }}
-      open={isDeleteModuleDialogOpen}
+      open={isDeleteMemberDialogOpen}
       onClose={() => {
-        setIsDeleteModuleDialogOpen(false);
+        setIsDeleteMemberDialogOpen(false);
       }}
     >
       <DeletePopup
-        textTitle={'Remove Module'}
+        textTitle={'Remove Member'}
         textDescription={
-          'By clicking remove the module will be permanently removed'
+          'By clicking remove the member will be permanently removed from this interview module'
         }
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setIsDeleteModuleDialogOpen(false);
+            setIsDeleteMemberDialogOpen(false);
           }
         }}
         onClickDelete={{
           onClick: () => {
-            if (editModule.id) deleteModule();
+            if (selUser.id) deleteRelation();
           }
         }}
         buttonText={'Delete'}
@@ -76,4 +76,4 @@ function DeleteModuleDialog() {
   );
 }
 
-export default DeleteModuleDialog;
+export default DeleteMemberDialog;

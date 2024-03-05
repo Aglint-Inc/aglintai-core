@@ -2,22 +2,24 @@ import { Dialog } from '@mui/material';
 
 import { DeletePopup } from '@/devlink3';
 
-import { setIsCancelOpen, useInterviewStore } from '../store';
+import { setIsCancelOpen, useInterviewSchedulingStore } from '../store';
 
 function DeleteScheduleDialog({
-  onClickCancel,
+  onClickCancel
 }: {
   onClickCancel: () => void;
 }) {
-  const isCancelOpen = useInterviewStore((state) => state.isCancelOpen);
+  const isCancelOpen = useInterviewSchedulingStore(
+    (state) => state.isCancelOpen
+  );
   return (
     <Dialog
       sx={{
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px',
-        },
+          borderRadius: '10px'
+        }
       }}
       open={isCancelOpen}
       onClose={() => {
@@ -33,12 +35,12 @@ function DeleteScheduleDialog({
         onClickCancel={{
           onClick: () => {
             setIsCancelOpen(false);
-          },
+          }
         }}
         onClickDelete={{
           onClick: () => {
             onClickCancel();
-          },
+          }
         }}
         buttonText={'Cancel Schedule'}
       />

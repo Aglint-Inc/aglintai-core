@@ -10,7 +10,6 @@ import {
 } from '@/src/components/Scheduling/AllSchedules/store';
 import { fetchInterviewModule } from '@/src/components/Scheduling/Modules/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -72,18 +71,6 @@ const SchedulingProvider = ({ children }) => {
       }
     }
   }, [router, loading]);
-
-  useEffect(() => {
-    if (
-      router.isReady &&
-      !router.query.tab &&
-      !router.pathname.includes('/module/')
-    ) {
-      router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
-        shallow: true
-      });
-    }
-  }, [router]);
 
   useEffect(() => {
     if (recruiter?.id) {
