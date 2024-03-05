@@ -7,7 +7,7 @@ import {
   JobTypeDB,
   PublicJobsType,
   RecruiterDB,
-  RecruiterUserType,
+  RecruiterUserType
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -96,8 +96,8 @@ export type FormJobType = {
   jobDescription: string;
   department: string;
   interviewType: 'ai-powered' | 'questions-preset';
-  interviewConfig: InterviewConfigType[];
-  videoAssessment: boolean;
+  // interviewConfig: InterviewConfigType[];
+  // videoAssessment: boolean;
   screeningEmail: {
     isImmediate: boolean;
     date: null | string;
@@ -129,22 +129,22 @@ export type FormJobType = {
   defaultJobType: dropDownOption[];
   defaultAddress: AutoCompleteType[];
   recruiterId: string;
-  introVideo: QuestionType;
-  startVideo: QuestionType;
-  endVideo: QuestionType;
-  interviewSetting: {
-    showInstructionVideo: boolean;
-    isVideoAiGenerated: boolean;
-    uploadedVideoInfo: QuestionType;
-    aiGeneratedVideoInfo: QuestionType;
-    assessmentValidity: {
-      expirationDuration: number;
-      candidateRetry: number;
-    };
-  };
+  // introVideo: QuestionType;
+  // startVideo: QuestionType;
+  // endVideo: QuestionType;
+  // interviewSetting: {
+  //   showInstructionVideo: boolean;
+  //   isVideoAiGenerated: boolean;
+  //   uploadedVideoInfo: QuestionType;
+  //   aiGeneratedVideoInfo: QuestionType;
+  //   assessmentValidity: {
+  //     expirationDuration: number;
+  //     candidateRetry: number;
+  //   };
+  // };
   isDraftCleared: boolean;
-  interviewInstrctions: string;
-  assessment: boolean;
+  // interviewInstrctions: string;
+  isAssesmentEnabled: boolean;
   isPhoneScreenEnabled: boolean;
   isjdChanged: boolean;
   // phoneScreening: {
@@ -155,12 +155,6 @@ export type FormJobType = {
   phoneScreeningTemplateId: string;
 };
 
-export type AssesMenusType =
-  | 'instructions'
-  | 'welcome'
-  | 'assesqns'
-  | 'epilogue'
-  | 'settings';
 export type JobFormState = {
   isFormOpen: boolean;
   jobPostId: string | undefined;
@@ -171,11 +165,9 @@ export type JobFormState = {
   currSlide:
     | 'details'
     | 'templates'
-    | 'screening'
     | 'phoneScreening'
     | 'workflow'
     | 'resumeScore';
-  currentAssmSlides: AssesMenusType;
   syncStatus: 'saving' | 'saved' | '';
   jobPostStatus: 'published' | 'draft' | 'closed';
   isJobPostReverting: boolean;
@@ -191,8 +183,7 @@ const initialState: JobFormState = {
   syncStatus: '',
   currSlide: 'details',
   isJobPostReverting: false,
-  jobPostStatus: 'draft',
-  currentAssmSlides: 'instructions',
+  jobPostStatus: 'draft'
 };
 
 // Define action types
@@ -246,12 +237,6 @@ type JobsAction =
       };
     }
   | {
-      type: 'updateAssmTab';
-      payload: {
-        tab: JobFormState['currentAssmSlides'];
-      };
-    }
-  | {
       type: 'UpdateMultiStates';
       payload: {
         path: string;
@@ -279,7 +264,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
     }
     case 'closeForm': {
       const newState: JobFormState = {
-        ...initialState,
+        ...initialState
       };
       return newState;
     }
@@ -312,11 +297,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
       }
       return newState;
     }
-    case 'updateAssmTab': {
-      const { tab } = action.payload;
-      set(newState, 'currentAssmSlides', tab);
-      return newState;
-    }
+
     case 'UpdateMultiStates': {
       const updStates = action.payload;
       for (let singState of updStates) {
@@ -340,7 +321,7 @@ export type JobsContextType = {
     // eslint-disable-next-line no-unused-vars
     value,
     // eslint-disable-next-line no-unused-vars
-    multipayload,
+    multipayload
   }: {
     path?: string;
     value?: any;
@@ -351,7 +332,7 @@ export type JobsContextType = {
   }) => Promise<void>;
   handleInitializeForm: ({
     // eslint-disable-next-line no-unused-vars
-    type,
+    type
   }: {
     type: JobFormState['formType'];
     recruiter?: RecruiterDB | null;
@@ -376,60 +357,35 @@ const initialContextValue: JobsContextType = {
     details: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     phoneScreening: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     screening: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
 
     templates: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     workflow: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     resumeScore: {
       err: [],
       title: '',
-      rightErr: [],
-    },
-    assesqns: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    epilogue: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    instructions: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    settings: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    welcome: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-  },
+      rightErr: []
+    }
+  }
 };
 
 const JobsCtx = createContext<JobsContextType>(initialContextValue);
@@ -452,8 +408,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       dispatch({
         type: 'setDbSyncStatus',
         payload: {
-          status: 'saving',
-        },
+          status: 'saving'
+        }
       });
 
       const updatedJobDb = await saveJobPostToDb(currState);
@@ -473,8 +429,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
                 new: 0,
                 assessment: 0,
                 qualified: 0,
-                disqualified: 0,
-              }) as JobTypeDashboard['count'],
+                disqualified: 0
+              }) as JobTypeDashboard['count']
         });
       }
 
@@ -483,15 +439,15 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           type: 'setPostMeta',
           payload: {
             createdAt: updatedJobDb.created_at,
-            updatedAt: updatedJobDb.updated_at,
-          },
+            updatedAt: updatedJobDb.updated_at
+          }
         });
       }
       dispatch({
         type: 'setDbSyncStatus',
         payload: {
-          status: 'saved',
-        },
+          status: 'saved'
+        }
       });
     } catch (err) {
       toast.error('Something went wrong! Please Check Your Network');
@@ -499,7 +455,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   };
 
   const formSyncTODB = React.useRef(
-    debounce(updateFormTodb, SYNC_TIME),
+    debounce(updateFormTodb, SYNC_TIME)
   ).current;
 
   const handleUpdateFormFields: JobsContextType['handleUpdateFormFields'] =
@@ -508,7 +464,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         if (multipayload) {
           dispatch({
             type: 'UpdateMultiStates',
-            payload: multipayload,
+            payload: multipayload
           });
 
           const updatedState = cloneDeep(state);
@@ -525,8 +481,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
             type: 'editJobField',
             payload: {
               path,
-              value,
-            },
+              value
+            }
           });
 
           const updatedState = cloneDeep(state);
@@ -543,7 +499,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     recruiter,
     job,
     currSlide,
-    recruiterUser,
+    recruiterUser
   }) => {
     try {
       const seedFormData = getSeedJobFormData(recruiterUser, recruiter);
@@ -551,7 +507,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       if (type === 'new') {
         dispatch({
           type: 'initForm',
-          payload: { seedData: seedFormData, currSlide },
+          payload: { seedData: seedFormData, currSlide }
         });
       } else {
         dispatch({
@@ -561,10 +517,10 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
               isNull(job.draft) ? job : (job.draft as PublicJobsType),
               recruiter,
               job.status,
-              recruiterUser,
+              recruiterUser
             ),
-            currSlide,
-          },
+            currSlide
+          }
         });
       }
     } catch (err) {
@@ -574,7 +530,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
 
   const handleFormClose = async () => {
     dispatch({
-      type: 'closeForm',
+      type: 'closeForm'
     });
   };
 
@@ -582,8 +538,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     dispatch({
       type: 'updateRevertStatus',
       payload: {
-        status,
-      },
+        status
+      }
     });
   };
   const warning = state.formFields && findDisclaimers(state.formFields);
@@ -597,7 +553,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         handleInitializeForm,
         handleFormClose,
         handleUpdateRevertStatus,
-        formWarnings: warning,
+        formWarnings: warning
       }}
     >
       {children}

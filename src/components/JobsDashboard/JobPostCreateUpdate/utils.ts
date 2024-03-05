@@ -5,12 +5,7 @@ import { JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { FormErrorParams } from './JobForm/JobForm';
-import {
-  AssesMenusType,
-  FormJobType,
-  InterviewParam,
-  JobFormState,
-} from './JobPostFormProvider';
+import { FormJobType, JobFormState } from './JobPostFormProvider';
 import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
 
 export const supabaseWrap = ({ data, error }: { data: any; error: any }) => {
@@ -37,9 +32,9 @@ export async function saveJobPostToDb(jobForm: JobFormState) {
       .upsert({
         id: updateJobData.id,
         recruiter_id: updateJobData.recruiter_id,
-        draft: updateJobData,
+        draft: updateJobData
       })
-      .select('*,assessment_job_relation(assessment(*))'),
+      .select('*,assessment_job_relation(assessment(*))')
   );
 
   return updatedJob as JobTypeDB & {
@@ -68,22 +63,17 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     recruiter_id: jobForm.formFields.recruiterId,
     location: jobForm.formFields.jobLocation,
     email_template: jobForm.formFields.screeningEmail.emailTemplates,
-    screening_questions: jobForm.formFields.interviewConfig,
     new_screening_setting: {
-      ...jobForm.formFields.newScreeningConfig,
+      ...jobForm.formFields.newScreeningConfig
     },
     parameter_weights: jobForm.formFields.resumeScoreSettings,
-    video_assessment: jobForm.formFields.videoAssessment,
-    intro_videos: jobForm.formFields.interviewSetting,
-    start_video: jobForm.formFields.startVideo,
-    end_video: jobForm.formFields.endVideo,
     status: jobForm.jobPostStatus,
-    interview_instructions: jobForm.formFields.interviewInstrctions,
-    assessment: jobForm.formFields.assessment,
     jd_json: jobForm.formFields.jdJson,
     jd_changed: jobForm.formFields.isjdChanged,
     phone_screen_enabled: jobForm.formFields.isPhoneScreenEnabled,
-    screening_template: jobForm.formFields.phoneScreeningTemplateId,
+    screening_template: jobForm.formFields.phoneScreeningTemplateId
+      ? jobForm.formFields.phoneScreeningTemplateId
+      : undefined
   };
 
   return updateJobData;
@@ -96,59 +86,34 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     details: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     phoneScreening: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     screening: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
 
     templates: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     workflow: {
       err: [],
       title: '',
-      rightErr: [],
+      rightErr: []
     },
     resumeScore: {
       err: [],
       title: '',
-      rightErr: [],
-    },
-    assesqns: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    epilogue: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    instructions: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    settings: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    welcome: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
+      rightErr: []
+    }
   };
 
   if (isEmpty(jobForm.jobTitle.trim())) {
@@ -172,38 +137,8 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     warnings.resumeScore.err.push('Job description altered');
   }
 
-  if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
-    warnings.instructions.err.push('Please Provide Assessment Instructions');
-  }
-
-  if (
-    jobForm.assessment &&
-    jobForm.interviewSetting.showInstructionVideo &&
-    isEmpty(jobForm.interviewSetting.aiGeneratedVideoInfo.videoUrl) &&
-    isEmpty(jobForm.interviewSetting.uploadedVideoInfo.videoUrl)
-  ) {
-    warnings.instructions.err.push('Please add instruction video');
-  }
-
   if (jobForm.isPhoneScreenEnabled) {
     //
-  }
-  // screening qns
-  const totalQns = Object.keys(jobForm.interviewConfig)
-    .map((key: InterviewParam) => {
-      return jobForm.interviewConfig[String(key)].questions;
-    })
-    .reduce((prev, curr) => {
-      return prev + curr.length;
-    }, 0);
-
-  if (jobForm.assessment && totalQns < 1) {
-    warnings.assesqns.err.push('Please provide atleast 1 assessment questions');
-  }
-  if (jobForm.assessment && totalQns > 20) {
-    warnings.assesqns.err.push(
-      'Please provide maximum 20 assessment questions',
-    );
   }
 
   Object.keys(get(jobForm, 'screeningEmail.emailTemplates', {})).map(
@@ -214,7 +149,7 @@ export const findDisclaimers = (jobForm: FormJobType) => {
         warnings.templates.err.push(
           `Please provide From name template ${
             templateObj[String(emailPath)].listing
-          }`,
+          }`
         );
       }
 
@@ -222,7 +157,7 @@ export const findDisclaimers = (jobForm: FormJobType) => {
         warnings.templates.err.push(
           `Please provide Subject template ${
             templateObj[String(emailPath)].listing
-          }`,
+          }`
         );
       }
 
@@ -230,15 +165,15 @@ export const findDisclaimers = (jobForm: FormJobType) => {
         warnings.templates.err.push(
           `Please provide email body for template ${
             templateObj[String(emailPath)].listing
-          }`,
+          }`
         );
       }
-    },
+    }
   );
 
   const totalResScore = Object.values(jobForm.resumeScoreSettings).reduce(
     (acc, curr) => acc + curr,
-    0,
+    0
   );
   if (totalResScore !== 100) {
     warnings.resumeScore.rightErr.push('Total sections score should be 100');
@@ -268,18 +203,16 @@ export const slidePathToNum: Record<JobFormState['currSlide'], number> = {
   details: 1,
   resumeScore: 2,
   phoneScreening: 3,
-  screening: 4,
-  workflow: 5,
-  templates: 6,
+  workflow: 4,
+  templates: 5
 };
 
 export const jobSlides: { path: JobFormState['currSlide']; title: string }[] = [
   { title: 'Details', path: 'details' },
   { title: 'Profile Score', path: 'resumeScore' },
   { title: 'Screening', path: 'phoneScreening' },
-  { title: 'Assessment', path: 'screening' },
   { title: 'Workflows', path: 'workflow' },
-  { title: 'Email Templates', path: 'templates' },
+  { title: 'Email Templates', path: 'templates' }
 ];
 
 export const isShoWWarn = (
@@ -288,7 +221,7 @@ export const isShoWWarn = (
   path,
   slideNum,
   jobPostId,
-  isAssesment = false,
+  isAssesment = false
 ) => {
   if (!isAssesment) {
     const isShowWarn =
@@ -298,28 +231,11 @@ export const isShoWWarn = (
       (formType === 'new' &&
         slideNum <=
           Number(
-            localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1,
+            localStorage.getItem(`MaxVisitedSlideNo-${jobPostId}`) || -1
           ) &&
         (formWarnings[String(path)].err.length > 0 ||
           formWarnings[String(path)].rightErr.length > 0));
 
     return isShowWarn;
-  } else {
-    if (formType === 'edit') {
-      let slides: AssesMenusType[] = [
-        'assesqns',
-        'epilogue',
-        'instructions',
-        'settings',
-        'welcome',
-      ];
-      let isErr = false;
-      slides.forEach((slide) => {
-        if (formWarnings[String(slide)].err.length > 0) {
-          isErr = true;
-        }
-      });
-      return isErr;
-    }
   }
 };
