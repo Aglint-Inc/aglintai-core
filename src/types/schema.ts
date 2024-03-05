@@ -1380,6 +1380,7 @@ export type Database = {
           experience_in_months: number | null
           id: string
           interview_instructions: string | null
+          interview_plan: Json | null
           interview_success: string | null
           intro_videos: Json | null
           is_ats_sync: boolean
@@ -1424,6 +1425,7 @@ export type Database = {
           experience_in_months?: number | null
           id?: string
           interview_instructions?: string | null
+          interview_plan?: Json | null
           interview_success?: string | null
           intro_videos?: Json | null
           is_ats_sync?: boolean
@@ -1468,6 +1470,7 @@ export type Database = {
           experience_in_months?: number | null
           id?: string
           interview_instructions?: string | null
+          interview_plan?: Json | null
           interview_success?: string | null
           intro_videos?: Json | null
           is_ats_sync?: boolean
@@ -1590,6 +1593,7 @@ export type Database = {
           recruiter_active: boolean | null
           recruiter_type: string | null
           roles: Json
+          scheduling_settings: Json | null
           service_json: string | null
           socials: Json | null
           technology_score: string[]
@@ -1632,6 +1636,7 @@ export type Database = {
           recruiter_active?: boolean | null
           recruiter_type?: string | null
           roles?: Json
+          scheduling_settings?: Json | null
           service_json?: string | null
           socials?: Json | null
           technology_score?: string[]
@@ -1674,6 +1679,7 @@ export type Database = {
           recruiter_active?: boolean | null
           recruiter_type?: string | null
           roles?: Json
+          scheduling_settings?: Json | null
           service_json?: string | null
           socials?: Json | null
           technology_score?: string[]
@@ -1906,6 +1912,18 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      sections: {
+        Row: {
+          jsonb_object_agg: Json | null
+        }
+        Insert: {
+          jsonb_object_agg?: Json | null
+        }
+        Update: {
+          jsonb_object_agg?: Json | null
+        }
+        Relationships: []
       }
       state_json: {
         Row: {
@@ -2578,6 +2596,12 @@ export type Database = {
           goodmatch?: number
           averagematch?: number
           poormatch?: number
+        }
+        Returns: Json
+      }
+      getsectioncounts: {
+        Args: {
+          jobid: string
         }
         Returns: Json
       }
