@@ -6,7 +6,8 @@ import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { initialState, initilizeIntPlan, InterviewModule } from './store';
+import { initialState, initilizeIntPlan } from './store';
+import { InterviewModule, InterviewModuleDbType } from './types';
 import {
   API_FAIL_MSG,
   supabaseWrap
@@ -45,10 +46,38 @@ const JobInterviewPlanHoc = ({ children }) => {
         await supabase.from('public_jobs').select().eq('id', router.query.id)
       ) as PublicJobsType[];
 
-      let jobModules = (rec.interview_plan as any)?.plan ?? [];
+      let jobModules = ((rec.interview_plan as any)?.plan ??
+        []) as InterviewModuleDbType[];
+      let clModules: InterviewModule[] = [];
+
+      for (let dbModule of jobModules) {
+        let intModule = allIntModules.find(
+          (i) => i.module_id === dbModule.module_id
+        );
+        let clModule: InterviewModule = {
+          name: intModule?.name ?? '', //break
+          duration: dbModule.duration,
+          isBreak: dbModule.isBreak,
+          meetingIntervCnt: dbModule.meetingIntervCnt,
+          module_id: dbModule.module_id,
+          selectedIntervs: dbModule.selectedIntervs.map((i) => {
+            let member = members.find((m) => m.user_id === i.interv_id);
+            return {
+              interv_id: i.interv_id,
+              name: [member.first_name, member.last_name]
+                .filter(Boolean)
+                .join(' '),
+              profile_image: member.profile_image
+            };
+          }),
+          allIntervs: intModule?.allIntervs ?? [] //break
+        };
+        clModules.push(clModule);
+      }
+
       initilizeIntPlan({
         allModules: allIntModules,
-        modules: jobModules,
+        modules: clModules,
         isloading: false,
         syncStatus: '',
         jobId: router.query.id as string,

@@ -1,40 +1,14 @@
 import { cloneDeep, set } from 'lodash';
 import { create } from 'zustand';
 
-import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { InterviewModuleDbType, InterviewPlanState } from './types';
 import {
   API_FAIL_MSG,
   supabaseWrap
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
-
-type IntwerviewerPlanType = {
-  name: string;
-  interv_id: string;
-  profile_image: string;
-};
-
-export type InterviewModule = {
-  module_id: string;
-  name: string;
-  duration: number;
-  selectedIntervs: IntwerviewerPlanType[];
-  allIntervs: IntwerviewerPlanType[];
-  meetingIntervCnt: number;
-  isBreak: boolean;
-};
-
-export type InterviewPlanState = {
-  modules: InterviewModule[];
-  allModules: InterviewModule[];
-  isloading: boolean;
-  syncStatus: 'saving' | 'saved' | '';
-  jobId: string;
-  jobTitle: string;
-  jobStatus: PublicJobsType['status'];
-};
 
 export const initialState: InterviewPlanState = {
   modules: [],
@@ -80,12 +54,28 @@ export const handleUpdateDb = async ({
       set(clonedState, path, value);
       return clonedState;
     });
+
+    let dbModules: InterviewModuleDbType[] = [];
+
+    for (let clModule of clonedState.modules) {
+      let dbModule: InterviewModuleDbType = {
+        duration: clModule.duration,
+        isBreak: clModule.isBreak,
+        meetingIntervCnt: clModule.meetingIntervCnt,
+        module_id: clModule.module_id,
+        selectedIntervs: clModule.selectedIntervs.map((s) => ({
+          interv_id: s.interv_id
+        }))
+      };
+      dbModules.push(dbModule);
+    }
+
     supabaseWrap(
       await supabase
         .from('public_jobs')
         .update({
           interview_plan: {
-            plan: clonedState.modules
+            plan: dbModules
           }
         })
         .eq('id', clonedState.jobId)
