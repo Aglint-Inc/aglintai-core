@@ -105,7 +105,7 @@ const Dashboard = () => {
             slotPipeline={<Pipeline />}
             slotModuleCard={<Modules />}
             textCandidateCount={counts.total}
-            onClickAssistant={{ onClick: () => push('/agent') }}
+            onClickAssistant={{ onClick: () => push(`/agent/jobs/${job.id}`) }}
           />
         }
         slotTopbarLeft={<BreadCrumbs />}
