@@ -29,10 +29,10 @@ import {
 } from './types';
 import { hoursList } from './utils';
 import UITextField from '../../Common/UITextField';
-
-function SchedulingSettings() {
+let schedulingSettingObj = {};
+let changeValue = null;
+function SchedulingSettings({ setSaving }) {
   const { recruiter, setRecruiter } = useAuthDetails();
-
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
@@ -43,7 +43,6 @@ function SchedulingSettings() {
       type: 'Hours',
       value: 16,
     });
-  const [reload, setReload] = useState(false);
 
   const [workingHours, setWorkingHours] = useState([]);
   const [daysOff, setDaysOff] = useState([]);
@@ -131,7 +130,7 @@ function SchedulingSettings() {
   //   }),
   // );
 
-  function discard() {
+  function initialLoad() {
     if (recruiter) {
       const schedulingSettingData = cloneDeep(
         recruiter?.scheduling_settings,
@@ -154,26 +153,45 @@ function SchedulingSettings() {
   }
 
   useEffect(() => {
-    setReload(false);
-  }, [workingHours]);
+    if (daysOff.length && workingHours.length) {
+      schedulingSettingObj = {
+        interviewLoad: {
+          dailyLimit: selectedDailyLimit,
+          weeklyLimit: selectedWeeklyLimit,
+        },
+        timeZone: selectedTimeZone,
+        workingHours: workingHours,
+        totalDaysOff: daysOff,
+      } as schedulingSettingType;
+
+      if (changeValue === 'updating') {
+        updateSettings();
+      }
+
+      changeValue = 'updating';
+    }
+  }, [
+    selectedDailyLimit,
+    selectedWeeklyLimit,
+    daysOff,
+    workingHours,
+    selectedTimeZone,
+  ]);
 
   useEffect(() => {
-    discard();
-  }, [recruiter]);
+    initialLoad();
+
+    return () => {
+      changeValue = null;
+    };
+  }, []);
 
   async function updateSettings() {
-    const data = {
-      interviewLoad: {
-        dailyLimit: selectedDailyLimit,
-        weeklyLimit: selectedWeeklyLimit,
-      },
-      timeZone: selectedTimeZone,
-      workingHours: workingHours,
-      totalDaysOff: daysOff,
-    } as schedulingSettingType;
+    setSaving('saving');
+
     const { data: updatedRecruiter, error } = await supabase
       .from('recruiter')
-      .update({ scheduling_settings: data })
+      .update({ scheduling_settings: schedulingSettingObj })
       .eq('id', recruiter.id)
       .select()
       .single();
@@ -185,19 +203,20 @@ function SchedulingSettings() {
         }!,
       );
     }
+    setSaving('saved');
   }
   return (
     <>
       <ScheduleSettings
-        onClickUpdateChanges={{
-          onClick: updateSettings,
-        }}
-        onClickDiscard={{
-          onClick: () => {
-            setReload(true);
-            discard();
-          },
-        }}
+        // onClickUpdateChanges={{
+        //   onClick: updateSettings,
+        // }}
+        // onClickDiscard={{
+        //   onClick: () => {
+        //     setReload(true);
+        //     discard();
+        //   },
+        // }}
         isTimeZoneToggleVisible={false}
         // slotTimeZoneToggle={
         //   <ToggleBtn isActive={isTimeZone} handleCheck={handleCheck} />
@@ -297,48 +316,42 @@ function SchedulingSettings() {
                         />
                       }
                       slotTimeRageInput={
-                        !reload && (
-                          <TimeRangeInput
-                            slotStartTimeInput={
-                              <SelectTime
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      day.timeRange.startTime.split(':')[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      day.timeRange.startTime.split(':')[1],
-                                    ),
-                                  )}
-                                onSelect={selectStartTime}
-                                i={i}
-                              />
-                            }
-                            slotEndTimeInput={
-                              <SelectTime
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      day.timeRange.endTime.split(':')[0],
-                                    ),
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      day.timeRange.endTime.split(':')[1],
-                                    ),
-                                  )}
-                                onSelect={selectEndTime}
-                                i={i}
-                              />
-                            }
-                          />
-                        )
+                        <TimeRangeInput
+                          slotStartTimeInput={
+                            <SelectTime
+                              value={dayjs()
+                                .set(
+                                  'hour',
+                                  parseInt(
+                                    day.timeRange.startTime.split(':')[0],
+                                  ),
+                                )
+                                .set(
+                                  'minute',
+                                  parseInt(
+                                    day.timeRange.startTime.split(':')[1],
+                                  ),
+                                )}
+                              onSelect={selectStartTime}
+                              i={i}
+                            />
+                          }
+                          slotEndTimeInput={
+                            <SelectTime
+                              value={dayjs()
+                                .set(
+                                  'hour',
+                                  parseInt(day.timeRange.endTime.split(':')[0]),
+                                )
+                                .set(
+                                  'minute',
+                                  parseInt(day.timeRange.endTime.split(':')[1]),
+                                )}
+                              onSelect={selectEndTime}
+                              i={i}
+                            />
+                          }
+                        />
                       }
                     />
                   </>

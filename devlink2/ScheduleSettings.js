@@ -41,7 +41,7 @@ export function ScheduleSettings({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1116")}
+          className={_utils.cx(_styles, "div-block-1116", "hide")}
           tag="div"
         >
           <_Builtin.Block

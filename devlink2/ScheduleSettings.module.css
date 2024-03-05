@@ -206,6 +206,10 @@
   grid-row-gap: 26px;
 }
 
+.div-block-1116.hide {
+  display: none;
+}
+
 .cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;

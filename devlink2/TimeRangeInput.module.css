@@ -7,7 +7,7 @@
 
 .duration_block {
   display: flex;
-  width: 240px;
+  width: 280px;
   min-height: 36px;
   align-items: center;
   grid-column-gap: 4px;
@@ -26,6 +26,21 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.operations.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .embed_flex {

@@ -17,7 +17,7 @@ function DateSelect({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
           // sx={calenderStyles}
-          disablePast
+          // disablePast
           defaultValue={dayjs(today)}
           onChange={getDate}
           ref={dateRef}
