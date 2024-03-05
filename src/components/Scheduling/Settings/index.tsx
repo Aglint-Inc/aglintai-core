@@ -385,7 +385,7 @@ function SchedulingSettings({ setSaving }) {
                 horizontal: 'left',
               }}
             >
-              <DateSelect dateRef={dateRef} getDate={getDate} />
+              <DateSelect selectedDates={daysOff} dateRef={dateRef} getDate={getDate} />
             </Popover>
           </>
         }
