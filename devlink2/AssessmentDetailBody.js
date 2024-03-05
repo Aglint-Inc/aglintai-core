@@ -97,44 +97,6 @@ export function AssessmentDetailBody({
           {slotQuestionDetail ?? <AssessmentQuestionDetail />}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot_recommended_questions")}
-        id={_utils.cx(
-          _styles,
-          "w-node-c57b9ec5-caab-87a6-2cc9-a31ddff8edb1-dff8edad"
-        )}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "question_list_top")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "relative_2")}
-            tag="div"
-          >
-            {"Recommended Questions"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "overlay_gradient", "gray")}
-            tag="div"
-          />
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot_question_cards")}
-          tag="div"
-        >
-          {slotRecommendedQuestions ?? (
-            <>
-              <RecommendedQuestionCard />
-              <RecommendedQuestionCard />
-              <RecommendedQuestionCard />
-              <RecommendedCardLoader />
-              <RecommendedCardLoader />
-            </>
-          )}
-        </_Builtin.Block>
-      </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css")}
         id={_utils.cx(

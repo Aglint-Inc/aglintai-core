@@ -1,0 +1,69 @@
+.day_off {
+  display: grid;
+  padding: 8px 16px;
+  align-items: center;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr max-content;
+  grid-template-rows: auto;
+
+  border-radius: 10px;
+}
+
+.day_off:hover {
+  background-color: #f7f9fb;
+}
+
+.removeday {
+  color: #68737d;
+  cursor: pointer;
+}
+
+.removeday:hover {
+  color: #d93f4c;
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+#w-node-_1ec17d4b-084f-674b-41dc-34aeb6f2abd2-b6f2abd1 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}
+#w-node-_1ec17d4b-084f-674b-41dc-34aeb6f2abd4-b6f2abd1 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+  align-self: center;
+}
+#w-node-_1ec17d4b-084f-674b-41dc-34aeb6f2abd5-b6f2abd1 {
+}

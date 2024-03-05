@@ -7,6 +7,7 @@ import {
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { Database } from '@/src/types/schema';
 
 import {
@@ -81,5 +82,20 @@ type ResponseDataPayload = {
       [id: string]: number;
     };
   };
-  counts: Awaited<ReturnType<typeof getResumeMatch>>;
+  counts: Omit<Awaited<ReturnType<typeof getResumeMatch>>, 'matches'> & {
+    matches: {
+      // eslint-disable-next-line no-unused-vars
+      [id in Matches]: number;
+    };
+  };
+  // eslint-disable-next-line no-unused-vars
+  sections: { [id in JobApplicationSections]: number };
 };
+
+type Matches =
+  | 'averageMatch'
+  | 'goodMatch'
+  | 'noMatch'
+  | 'poorMatch'
+  | 'topMatch'
+  | 'unknownMatch';

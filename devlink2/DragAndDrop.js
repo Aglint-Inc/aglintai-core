@@ -22,9 +22,7 @@ export function DragAndDrop({
         )}
         tag="div"
       >
-        {
-          "Drop the question here, or reorder the list as desired to indicate the preferred sequence of questions."
-        }
+        {"Pick or add a question "}
       </_Builtin.Block>
       {isDropping ? (
         <_Builtin.Block

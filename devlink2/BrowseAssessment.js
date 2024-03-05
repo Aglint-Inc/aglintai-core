@@ -27,47 +27,6 @@ export function BrowseAssessment({
           className={_utils.cx(_styles, "tab_search_wrap")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "switch_tab")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "tab_pill")}
-              tag="div"
-              {...onClickYourAssessment}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative_2")}
-                tag="div"
-              >
-                {"Your Assessments"}
-              </_Builtin.Block>
-              {isYourAssessment ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "is_active_bg", "no_radius")}
-                  tag="div"
-                />
-              ) : null}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "tab_pill")}
-              tag="div"
-              {...onClickAglintAssessment}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "relative_2")}
-                tag="div"
-              >
-                {"Aglint Assessments"}
-              </_Builtin.Block>
-              {isAglintAssessment ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "is_active_bg", "no_radius")}
-                  tag="div"
-                />
-              ) : null}
-            </_Builtin.Block>
-          </_Builtin.Block>
           <_Builtin.Block tag="div">{slotSearch}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.HtmlEmbed

@@ -4,7 +4,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 1fr 25%;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
 }
 
@@ -210,6 +210,10 @@
   position: relative;
 }
 
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
 .button_text {
   display: flex;
   padding: 0px;
@@ -259,6 +263,10 @@
 .embed_flex.relative_3 {
   position: relative;
   z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
 }
 
 .overlay_gradient {

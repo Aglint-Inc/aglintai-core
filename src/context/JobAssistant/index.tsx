@@ -60,7 +60,7 @@ const defaultProvider: ContextValue = {
   textMessage: {
     html: '',
     text: '',
-    wordCount: 0,
+    wordCount: 0
   },
   setTextMessage: () => {},
   backEndText: null,
@@ -79,7 +79,7 @@ const defaultProvider: ContextValue = {
   isPopUpOpen: null,
   setIsPopUpOpen: () => {},
   applicationDetails: null,
-  setApplicationDetails: () => {},
+  setApplicationDetails: () => {}
 };
 let job_descriptions = '';
 const JobAssistantContext = createContext<ContextValue>(defaultProvider);
@@ -95,14 +95,14 @@ function JobAssistantProvider({ children }) {
   const [applicationDetails, setApplicationDetails] =
     useState<JobApplication | null>(null);
   const [currentChat, setCurrentChat] = useState<JobAssistantChats | null>(
-    null,
+    null
   );
   let [isPopUpOpen, setIsPopUpOpen] = useState(false);
 
   const [textMessage, setTextMessage] = useState<ChatInput>({
     html: '',
     text: '',
-    wordCount: 0,
+    wordCount: 0
   });
   const [backEndText, setBackEndText] = useState('');
 
@@ -111,13 +111,13 @@ function JobAssistantProvider({ children }) {
   const [fetching, setFetching] = useState(true);
 
   const inputRef = useRef(null);
-  const job_id = router.query?.id as string;
-  useEffect(() => {
-    if (job_id) {
-      getCompanyDetails(job_id);
-      getApplications(job_id);
-    }
-  }, [job_id]);
+  // const job_id = router.query?.id as string;
+  // useEffect(() => {
+  //   if (job_id) {
+  //     getCompanyDetails(job_id);
+  //     getApplications(job_id);
+  //   }
+  // }, [job_id]);
 
   ////////////////////////// Create New Chat and Messages ///////////////////////////////////
   async function createNewChat() {
@@ -137,7 +137,7 @@ function JobAssistantProvider({ children }) {
       .select()
       .eq('job_id', router.query?.id)
       .order('created_at', {
-        ascending: false,
+        ascending: false
       });
 
     if (!chatsError) {
@@ -146,7 +146,7 @@ function JobAssistantProvider({ children }) {
         .insert({
           job_id: router.query?.id as string,
           updated_at: currentDate.toISOString(),
-          thread_id: thread_id,
+          thread_id: thread_id
         })
         .select();
       if (!error) {
@@ -176,7 +176,7 @@ function JobAssistantProvider({ children }) {
       .insert({
         ...content,
         job_assiatan_chat_id: currentChat.id,
-        type: '',
+        type: ''
       })
       .select();
     if (!error) {
@@ -190,20 +190,20 @@ function JobAssistantProvider({ children }) {
       .select()
       .eq('job_id', job_id)
       .order('created_at', {
-        ascending: false,
+        ascending: false
       });
     if (!error) {
       // console.log(jobAssistantChats);
       if (!jobAssistantChats.length) {
         setCurrentChat({
-          job_id: router.query?.id as string,
+          job_id: router.query?.id as string
         } as JobAssistantChats);
         createNewChat();
         return;
       }
       const currectChat =
         jobAssistantChats.filter(
-          (item) => item.id === router.query?.chat_id,
+          (item) => item.id === router.query?.chat_id
         )[0] || jobAssistantChats[0];
       if (currectChat.id) {
         getMessages(currectChat.id);
@@ -218,7 +218,7 @@ function JobAssistantProvider({ children }) {
     await supabase
       .from('job_assiatan_chat')
       .update({
-        last_message,
+        last_message
       })
       .eq('id', currentChat.id);
     setCurrentChat((pre) => {
@@ -233,7 +233,7 @@ function JobAssistantProvider({ children }) {
       .select()
       .eq('job_assiatan_chat_id', chat_id)
       .order('created_at', {
-        ascending: true,
+        ascending: true
       });
     if (!error) {
       setMessages(messages);
@@ -258,7 +258,7 @@ function JobAssistantProvider({ children }) {
     setBackEndText('');
     const userMessage = {
       sender: 'You',
-      content: { message: uisideText, active: true },
+      content: { message: uisideText, active: true }
     };
     const assistantMessage = {
       sender: 'Assistant',
@@ -266,18 +266,18 @@ function JobAssistantProvider({ children }) {
         message: {
           html: '',
           text: '',
-          wordCount: 0,
+          wordCount: 0
         } as ChatInput,
-        active: true,
-      },
+        active: true
+      }
     };
     setMessages((pre) => [...pre, userMessage, assistantMessage]);
     const { data: response } = await axios.post(
       '/api/job-assistant/cluoud-functions/assistant',
       {
         message: tempMessage,
-        chat_id: currentChat.id,
-      },
+        chat_id: currentChat.id
+      }
     );
 
     const message = response.result?.message;
@@ -298,10 +298,10 @@ function JobAssistantProvider({ children }) {
         .filter((ele) => application_ids.includes(ele.id))
         .map((application) => {
           const candidateFiltered = candidates.filter(
-            (candidate) => candidate.candidates.id === application.candidate_id,
+            (candidate) => candidate.candidates.id === application.candidate_id
           );
           result_applications.push({
-            ...candidateFiltered[0],
+            ...candidateFiltered[0]
           });
         });
     }
@@ -327,7 +327,7 @@ function JobAssistantProvider({ children }) {
       pre[messages.length + 1].content.message = {
         html: message,
         text: message,
-        wordCount: message?.length,
+        wordCount: message?.length
       };
       pre[messages.length + 1].content.active = activeMessage;
       pre[messages.length + 1].content.result_applications =
@@ -337,7 +337,7 @@ function JobAssistantProvider({ children }) {
     });
     await createMessage({
       ...userMessage,
-      message_id: response.result?.userMessageId,
+      message_id: response.result?.userMessageId
     });
 
     await createMessage({
@@ -346,17 +346,17 @@ function JobAssistantProvider({ children }) {
         message: {
           html: message,
           text: message,
-          wordCount: String(message).length,
+          wordCount: String(message).length
         },
         active: activeMessage,
         result_applications: result_applications,
-        searchArguments: searchArguments,
+        searchArguments: searchArguments
       },
-      message_id: response.result?.assistantMessageId,
+      message_id: response.result?.assistantMessageId
     });
     const lastMessage = message || '';
     updateJobAssistantChat(
-      lastMessage?.length > 50 ? lastMessage.slice(0, 50) : lastMessage,
+      lastMessage?.length > 50 ? lastMessage.slice(0, 50) : lastMessage
     );
 
     setResLoading(false);
@@ -391,7 +391,7 @@ function JobAssistantProvider({ children }) {
           if (candidate.id === application.candidate_id)
             tempCandidates.push({
               ...application,
-              candidates: { ...candidate },
+              candidates: { ...candidate }
             });
         });
       });
@@ -453,7 +453,7 @@ function JobAssistantProvider({ children }) {
         isPopUpOpen,
         setIsPopUpOpen,
         applicationDetails,
-        setApplicationDetails,
+        setApplicationDetails
       }}
     >
       {children}

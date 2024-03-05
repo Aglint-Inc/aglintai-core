@@ -1,10 +1,9 @@
-import { Stack, Typography } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
   Chart as ChartJs,
   LinearScale,
-  Tooltip,
+  Tooltip
 } from 'chart.js/auto';
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -25,7 +24,7 @@ const BarChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] },
+    { names: [], counts: [], colors: [] }
   );
   const dataBar = {
     labels: names,
@@ -35,9 +34,9 @@ const BarChart: React.FC<{
         data: counts,
         backgroundColor: colors,
         borderRadius: 8,
-        borderSkipped: false,
-      },
-    ],
+        borderSkipped: false
+      }
+    ]
   };
 
   return (
@@ -46,21 +45,21 @@ const BarChart: React.FC<{
         responsive: true,
         plugins: {
           legend: {
-            display: false,
-          },
+            display: false
+          }
         },
         scales: {
           x: {
             grid: {
-              display: false,
-            },
+              display: false
+            }
           },
           y: {
             grid: {
-              display: false,
-            },
-          },
-        },
+              display: false
+            }
+          }
+        }
       }}
       data={dataBar}
     />
@@ -71,7 +70,7 @@ export default DashboardBarChart;
 
 function DashboardBarChart() {
   const {
-    analytics: { skills: skillPool },
+    analytics: { skills: skillPool }
   } = useJobDashboard();
   const skills = skillPool?.required_skills ?? null;
   const total = skills
@@ -82,19 +81,5 @@ function DashboardBarChart() {
     : 0;
   if (total === 0) return <></>;
   const safeSkills = getOrderedGraphValues(skills);
-  return (
-    <Stack
-      sx={{
-        bgcolor: '#F7F9FB',
-        p: '24px',
-        borderRadius: '16px',
-      }}
-      display={'flex'}
-      flexDirection={'column'}
-      spacing={'16px'}
-    >
-      <Typography variant='subtitle2'>Candidates with skills</Typography>
-      <BarChart skills={safeSkills} />
-    </Stack>
-  );
+  return <BarChart skills={safeSkills} />;
 }
