@@ -208,6 +208,7 @@ export type InterviewModuleRelationType =
     pause_json: {
       start_date: string;
       end_date: string;
+      isManual: boolean;
     };
   };
 

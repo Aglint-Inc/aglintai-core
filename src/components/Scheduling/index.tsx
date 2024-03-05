@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 
-import { ButtonPrimaryRegular } from '@/devlink';
 import { BodyWithSublink, PageLayout } from '@/devlink2';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 
 import InterviewComp from './AllSchedules';
 import InterviewerComp from './Interviewer';
-import Modules from './Modules';
+import { Modules } from './Modules/Modules';
 import { setIsCreateDialogOpen } from './Modules/store';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SettingsScheduling from './Settings';
@@ -21,9 +21,8 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {router.query.tab == 'interviewModules' && (
-              <ButtonPrimaryRegular
-                isStartIcon={true}
-                slotStartIcon={
+              <ButtonPrimaryDefaultRegular
+                startIconSlot={
                   <Icon
                     variant='PlusThin'
                     height='12'
@@ -31,10 +30,10 @@ function SchedulingMainComp() {
                     color='#fff'
                   />
                 }
-                textLabel={'New Module'}
-                onClickButton={{
+                buttonText={'New Module'}
+                buttonProps={{
                   onClick: () => {
-                    setIsCreateDialogOpen('create');
+                    setIsCreateDialogOpen(true);
                   }
                 }}
               />

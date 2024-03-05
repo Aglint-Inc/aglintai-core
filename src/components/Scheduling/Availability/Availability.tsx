@@ -29,11 +29,9 @@ import {
   useSyncInterviewersCalender
 } from './store';
 import { handleDelete } from './utils';
-import CreateDialog from '../Modules/CreateDialog';
 import {
   setEditModule,
   setInterviewModules,
-  setIsCreateDialogOpen,
   setModuleName,
   // setSelectedUsers,
   useSchedulingStore
@@ -164,9 +162,7 @@ const Availability = () => {
           <>
             <PanelDetailTopRight
               onClickEditPanel={{
-                onClick: () => {
-                  setIsCreateDialogOpen('edit');
-                }
+                onClick: () => {}
               }}
               slotThreeDots={
                 <>
@@ -183,7 +179,6 @@ const Availability = () => {
           </>
         }
       />
-      <CreateDialog />
       <Drawer
         open={openSideDrawer}
         anchor='right'

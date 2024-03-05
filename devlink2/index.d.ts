@@ -108,6 +108,7 @@ export * from "./InterviewModuleTable";
 export * from "./InterviewPanelCard";
 export * from "./InterviewPanelMember";
 export * from "./InterviewPanelSidebar";
+export * from "./InterviewScreenCard";
 export * from "./InvitedCards";
 export * from "./InviteStatus";
 export * from "./JobCardSchedule";

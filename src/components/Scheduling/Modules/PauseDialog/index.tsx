@@ -27,6 +27,9 @@ function PauseDialog() {
   const pauseHandler = async () => {
     try {
       if (selUser.user_id) {
+        if (selectedType === 'custom' && !pause_json?.end_date) {
+          return toast.error('Please select end date');
+        }
         const { error } = await supabase
           .from('interview_module_relation')
           .update({ pause_json: pause_json })
@@ -40,14 +43,14 @@ function PauseDialog() {
                 : rel
             )
           });
+          resetState();
         }
       } else {
         throw new Error();
       }
     } catch {
       toast.error('Error pausing user');
-    } finally {
-      setIsPauseDialogOpen(false);
+      resetState();
     }
   };
 
@@ -55,6 +58,12 @@ function PauseDialog() {
   const twoWeeks = currentDate.add(2, 'week');
   const oneMonth = currentDate.add(1, 'month');
   const threeMonth = currentDate.add(3, 'month');
+
+  const resetState = () => {
+    setIsPauseDialogOpen(false);
+    setSelectedType('isManual');
+    setPauseJson(null);
+  };
 
   return (
     <Dialog
@@ -67,7 +76,7 @@ function PauseDialog() {
       }}
       open={isPauseDialogOpen}
       onClose={() => {
-        setIsPauseDialogOpen(false);
+        resetState();
       }}
     >
       <ConfirmationPopup
@@ -189,10 +198,20 @@ function PauseDialog() {
                     label={'From'}
                     value={dayjs(pause_json?.start_date)}
                     onChange={(newValue) => {
-                      setPauseJson({
-                        ...pause_json,
-                        start_date: newValue.toISOString()
-                      });
+                      if (
+                        dayjs(newValue).toISOString() < pause_json?.end_date
+                      ) {
+                        setPauseJson({
+                          ...pause_json,
+                          start_date: dayjs(newValue).toISOString()
+                        });
+                      } else {
+                        setPauseJson({
+                          ...pause_json,
+                          start_date: dayjs(newValue).toISOString(),
+                          end_date: null
+                        });
+                      }
                     }}
                     minDate={currentDate}
                     slotProps={{
@@ -206,11 +225,11 @@ function PauseDialog() {
                   <DatePicker
                     label={'To'}
                     value={dayjs(pause_json?.end_date)}
-                    minDate={currentDate}
+                    minDate={dayjs(pause_json?.start_date)}
                     onChange={(newValue) => {
                       setPauseJson({
                         ...pause_json,
-                        start_date: newValue.toISOString()
+                        end_date: newValue.toISOString()
                       });
                     }}
                     slotProps={{

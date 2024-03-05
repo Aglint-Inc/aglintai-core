@@ -3,21 +3,26 @@ import {
   Fade,
   Popper,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import React from 'react';
 
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RecruiterUserType } from '@/src/types/data.types';
 
-import { setSelectedUsers, useSchedulingStore } from '../../store';
-
-function TeamAutoComplete({ loading }) {
-  const { members } = useAuthDetails();
-
-  const selectedUsers = useSchedulingStore((state) => state.selectedUsers);
-
+function MembersAutoComplete({
+  disabled,
+  renderUsers,
+  selectedUsers,
+  setSelectedUsers
+}: {
+  disabled: boolean;
+  renderUsers: RecruiterUserType[];
+  selectedUsers: RecruiterUserType[];
+  // eslint-disable-next-line no-unused-vars
+  setSelectedUsers: (val: RecruiterUserType[]) => void;
+}) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -38,11 +43,11 @@ function TeamAutoComplete({ loading }) {
 
   return (
     <>
-      <Stack onClick={handleClick}>
+      <Stack onClick={handleClick} width={'100%'}>
         <UITextField
           rest={{ id: 'list' }}
           placeholder='Choose from the list'
-          disabled={loading}
+          disabled={disabled}
         />
       </Stack>
 
@@ -52,9 +57,9 @@ function TeamAutoComplete({ loading }) {
         anchorEl={anchorEl}
         transition
         sx={{
-          zIndex: 1200,
-          maxWidth: '410px',
-          width: '100%',
+          zIndex: 1300,
+          maxWidth: '400px',
+          width: '100%'
         }}
       >
         {({ TransitionProps }) => (
@@ -69,9 +74,11 @@ function TeamAutoComplete({ loading }) {
                   mt: '10px',
                   maxHeight: '250px',
                   overflow: 'auto',
+                  bgcolor: '#fff'
                 }}
               >
-                {members.map((option, ind) => {
+                {renderUsers.length === 0 && <Stack p={2}>No members</Stack>}
+                {renderUsers.map((option, ind) => {
                   return (
                     <Stack
                       key={option.user_id}
@@ -83,16 +90,16 @@ function TeamAutoComplete({ loading }) {
                         p: '8px 16px',
                         borderTop: ind === 0 ? 'none' : '1px solid #F8F9F9',
                         backgroundColor: selectedUsers.find(
-                          (user) => user.user_id === option.user_id,
+                          (user) => user.user_id === option.user_id
                         )
                           ? '#F8F9F9'
                           : 'transparent',
-                        cursor: 'pointer',
+                        cursor: 'pointer'
                       }}
                       onClick={() => {
                         if (
                           !selectedUsers.find(
-                            (user) => user.user_id === option.user_id,
+                            (user) => user.user_id === option.user_id
                           )
                         ) {
                           setSelectedUsers([...selectedUsers, option]);
@@ -137,4 +144,4 @@ function TeamAutoComplete({ loading }) {
   );
 }
 
-export default TeamAutoComplete;
+export default MembersAutoComplete;

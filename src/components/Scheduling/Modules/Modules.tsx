@@ -6,11 +6,11 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import CreateDialog from './CreateDialog';
+import CreateModuleDialog from './CreateModuleDialog';
 import { useSchedulingStore } from './store';
 import MuiAvatar from '../../Common/MuiAvatar';
 
-function Modules() {
+export function Modules() {
   const router = useRouter();
   const { members } = useAuthDetails();
   const { loading } = useScheduling();
@@ -20,7 +20,7 @@ function Modules() {
 
   return (
     <>
-      <CreateDialog />
+      <CreateModuleDialog />
       {!loading && (
         <>
           <InterviewModuleTable
@@ -86,5 +86,3 @@ function Modules() {
     </>
   );
 }
-
-export default Modules;

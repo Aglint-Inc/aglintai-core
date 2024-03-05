@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
@@ -7,17 +8,23 @@ import {
   MemberListCard,
   PageLayout
 } from '@/devlink2';
+import { ButtonPrimaryDefaultRegular, MoreButton } from '@/devlink3';
+import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import DeleteMemberDialog from '../DeleteDialog';
+import AddMemberDialog from '../AddMemberDialog';
+import DeleteMemberDialog from '../DeleteMemberDialog';
+import DeleteModuleDialog from '../DeleteModuleDialog';
 import PauseDialog from '../PauseDialog';
 import {
   setEditModule,
-  setIsDeleteDialogOpen,
+  setIsAddMemberDialogOpen,
+  setIsDeleteMemberDialogOpen,
+  setIsDeleteModuleDialogOpen,
   setIsPauseDialogOpen,
   setSelUser,
   useSchedulingStore
@@ -57,8 +64,10 @@ function ModuleMembersComp() {
 
   return (
     <>
+      <AddMemberDialog />
       <DeleteMemberDialog />
       <PauseDialog />
+      <DeleteModuleDialog />
       <PageLayout
         onClickBack={{
           onClick: () => {
@@ -81,29 +90,20 @@ function ModuleMembersComp() {
                 return (
                   <MemberListCard
                     key={user.user_id}
-                    // onClickClose={{
-                    //   onClick: () => {
-                    //     if (isCreatePanelOpen == 'edit') {
-                    //       checkCandidate(user);
-                    //     } else {
-                    //       setSelectedUsers(
-                    //         selectedUsers.filter(
-                    //           (us) => us.user_id !== user.user_id
-                    //         )
-                    //       );
-                    //     }
-                    //   }
-                    // }}
                     textPauseResumeDate={
-                      user.pause_json?.end_date
-                        ? 'Till ' +
-                          dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
-                        : '--'
+                      !user.pause_json?.isManual
+                        ? user.pause_json?.end_date
+                          ? 'Till ' +
+                            dayjs(user.pause_json.end_date).format(
+                              'DD MMMM YYYY'
+                            )
+                          : '--'
+                        : 'Till you resume'
                     }
                     onClickRemoveModule={{
                       onClick: () => {
                         setSelUser(user);
-                        setIsDeleteDialogOpen(true);
+                        setIsDeleteMemberDialogOpen(true);
                       }
                     }}
                     onClickPauseInterview={{
@@ -139,7 +139,28 @@ function ModuleMembersComp() {
             />
           </>
         }
-        slotTopbarRight={<></>}
+        slotTopbarRight={
+          <Stack spacing={2} direction={'row'} alignItems={'center'}>
+            <ButtonPrimaryDefaultRegular
+              startIconSlot={
+                <Icon variant='PlusThin' height='12' width='12' color='#fff' />
+              }
+              buttonText={'Add Member'}
+              buttonProps={{
+                onClick: () => {
+                  setIsAddMemberDialogOpen(true);
+                }
+              }}
+            />
+            <MoreButton
+              onClickDelete={{
+                onClick: () => {
+                  setIsDeleteModuleDialogOpen(true);
+                }
+              }}
+            />
+          </Stack>
+        }
       />
     </>
   );

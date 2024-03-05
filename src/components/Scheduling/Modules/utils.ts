@@ -41,14 +41,12 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
 
 export const createModule = async ({
   name,
-  recruiter_id,
-  selectedUsers
+  recruiter_id
 }: {
   name: string;
   recruiter_id: string;
-  selectedUsers: RecruiterUserType[];
 }) => {
-  const { data: interPan, error: errorModule } = await supabase
+  const { data: interMod, error: errorModule } = await supabase
     .from('interview_module')
     .insert({ name: name, recruiter_id: recruiter_id })
     .select();
@@ -57,60 +55,10 @@ export const createModule = async ({
     throw errorModule;
   }
 
-  const insertToRelation = selectedUsers.map((user) => {
-    return {
-      module_id: interPan[0].id,
-      user_id: user.user_id
-    };
-  });
-
-  const { data: interRel, error: errorRel } = await supabase
-    .from('interview_module_relation')
-    .insert(insertToRelation)
-    .select();
-
-  if (errorRel) {
-    throw errorModule;
-  }
-
-  const { data: interAval, error: errorAval } = await supabase
-    .from('interview_availabilties')
-    .select()
-    .in(
-      'user_id',
-      selectedUsers.map((user) => user.user_id)
-    );
-
-  if (errorAval) {
-    throw errorAval;
-  }
-
-  const insertToAval = selectedUsers.filter((user) => {
-    return !interAval.some((aval) => aval.user_id === user.user_id);
-  });
-
-  const insertToAvalData = insertToAval.map((user) => {
-    return {
-      user_id: user.user_id
-    };
-  });
-
-  const { data: interAvalInsert, error: errorAvalInsert } = await supabase
-    .from('interview_availabilties')
-    .insert(insertToAvalData);
-
-  if (errorAvalInsert) {
-    throw errorAvalInsert;
-  }
-
-  return {
-    interviewModule: interPan[0],
-    interviewModuleRelations: interRel,
-    interviewAvailabilities: interAvalInsert
-  };
+  return interMod[0];
 };
 
-export const editModuleFunctio = async ({
+export const editModuleFunct = async ({
   panel,
   name,
   selectedUsers

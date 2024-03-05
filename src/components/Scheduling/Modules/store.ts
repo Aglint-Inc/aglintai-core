@@ -8,9 +8,11 @@ import {
 
 interface SchedulingSlice {
   interviewModules: ModuleType[];
-  isCreateDialogOpen: 'edit' | 'create' | null;
-  isDeleteDialogOpen: boolean;
+  isCreateDialogOpen: boolean;
+  isDeleteMemberDialogOpen: boolean;
+  isDeleteModuleDialogOpen: boolean;
   isPauseDialogOpen: boolean;
+  isAddMemberDialogOpen: boolean;
   selectedUsers: RecruiterUserType[];
   moduleName: string;
   editModule: ModuleType | null;
@@ -25,21 +27,22 @@ interface SchedulingSlice {
 export const useSchedulingStore = create<SchedulingSlice>()(() => ({
   interviewModules: [],
   isCreateDialogOpen: null,
-  isDeleteDialogOpen: false,
+  isDeleteMemberDialogOpen: false,
+  isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
+  isAddMemberDialogOpen: false,
   selectedUsers: [],
   moduleName: '',
   editModule: null,
   selUser: null,
-  pause_json: null
+  pause_json: { isManual: true, start_date: '', end_date: '' }
 }));
 
 export const setInterviewModules = (interviewModules: ModuleType[]) =>
   useSchedulingStore.setState({ interviewModules });
 
-export const setIsCreateDialogOpen = (
-  isCreateDialogOpen: 'edit' | 'create' | null
-) => useSchedulingStore.setState({ isCreateDialogOpen });
+export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
+  useSchedulingStore.setState({ isCreateDialogOpen });
 
 export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
   useSchedulingStore.setState({ selectedUsers });
@@ -47,8 +50,16 @@ export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
 export const setModuleName = (moduleName: string) =>
   useSchedulingStore.setState({ moduleName });
 
-export const setIsDeleteDialogOpen = (isDeleteDialogOpen: boolean) =>
-  useSchedulingStore.setState({ isDeleteDialogOpen });
+export const setIsDeleteMemberDialogOpen = (
+  isDeleteMemberDialogOpen: boolean
+) => useSchedulingStore.setState({ isDeleteMemberDialogOpen });
+
+export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
+  useSchedulingStore.setState({ isAddMemberDialogOpen });
+
+export const setIsDeleteModuleDialogOpen = (
+  isDeleteModuleDialogOpen: boolean
+) => useSchedulingStore.setState({ isDeleteModuleDialogOpen });
 
 export const setIsPauseDialogOpen = (isPauseDialogOpen: boolean) =>
   useSchedulingStore.setState({ isPauseDialogOpen });
