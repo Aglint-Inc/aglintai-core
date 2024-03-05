@@ -22,7 +22,7 @@ export function PageLayout({
         <_Builtin.Block className={_utils.cx(_styles, "top_left")} tag="div">
           {isBackButton ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "back_button")}
+              className={_utils.cx(_styles, "back_button", "cursor-pointer")}
               tag="div"
               {...onClickBack}
             >
