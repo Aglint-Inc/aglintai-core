@@ -7,6 +7,7 @@ import {
   createContext,
   Dispatch,
   SetStateAction,
+  use,
   useContext,
   useEffect,
   useState,
@@ -93,6 +94,17 @@ const AuthProvider = ({ children }) => {
         router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
     }
   }, [router.isReady, loading]);
+
+  useEffect(() => {
+    if (router.isReady && userDetails?.user) {
+      const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
+      if (feature && !posthog.isFeatureEnabled(feature)) {
+        // eslint-disable-next-line no-console
+        console.log('Feature not enabled');
+        router.push(pageRoutes.JOBS);
+      }
+    }
+  }, [router.pathname, userDetails]);
 
   const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
     const { data, error } = await supabase
@@ -288,4 +300,12 @@ const isRoutePublic = (path = '') => {
       return true;
     }
   }
+};
+
+const pageFeatureMapper = {
+  [pageRoutes.ASSISTANT]: 'isAssistantEnabled',
+  [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
+  [pageRoutes.AGENT]: 'isAgentEnabled',
+  [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
+  [pageRoutes.SUPPORT]: 'isSupportEnabled',
 };
