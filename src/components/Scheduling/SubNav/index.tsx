@@ -1,3 +1,4 @@
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,18 +7,31 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 function SubNav() {
   const router = useRouter();
+  const tabs = [
+    'all Schedules',
+    'my Schedules',
+    'interview Modules',
+    'email Templates',
+    'interviewers',
+    'settings'
+  ];
   return (
     <>
-      <SublinkTab
-        isActtive={router.query.tab === 'allSchedules'}
-        text={'All Schedules'}
-        onClickTab={{
-          onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`);
-          },
-        }}
-      />
-      <SublinkTab
+      {tabs.map((item) => (
+        <SublinkTab
+          key={item}
+          isActtive={router.query.tab === item.replace(' ', '')}
+          text={capitalize(item)}
+          onClickTab={{
+            onClick: () => {
+              router.push(
+                `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`
+              );
+            }
+          }}
+        />
+      ))}
+      {/* <SublinkTab
         isActtive={router.query.tab === 'mySchedules'}
         text={'My Schedules'}
         onClickTab={{
@@ -52,7 +66,7 @@ function SubNav() {
             router.push(`${pageRoutes.SCHEDULING}?tab=settings`);
           },
         }}
-      />
+      /> */}
     </>
   );
 }

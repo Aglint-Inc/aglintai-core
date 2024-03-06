@@ -1,0 +1,29 @@
+.all-interviewers-header-wrap {
+  display: grid;
+  height: 52px;
+  grid-template-columns: 20% 20% 20% 40%;
+  grid-template-rows: auto;
+
+  border-top: 1px solid rgba(233, 235, 237, 0.5);
+  border-bottom: 1px solid rgba(233, 235, 237, 0.5);
+
+  background-color: #f8f9f9;
+}
+
+.div-block-1142 {
+  display: flex;
+  height: 52px;
+  padding: 10px 20px;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: #f8f9f9;
+}
+
+.div-block-1147 {
+  overflow: auto;
+  height: calc(100vh - 112px);
+}
+
+#w-node-_51c09859-0c9a-df83-83a4-a6e076826a60-76826a5b {
+}
