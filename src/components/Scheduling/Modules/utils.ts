@@ -1,10 +1,7 @@
-import {
-  InterviewModuleRelationType,
-  InterviewModuleType,
-  RecruiterUserType
-} from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
+import { PauseJson } from './types';
 
 export const fetchInterviewModule = async (recruiter_id: string) => {
   try {
@@ -59,86 +56,77 @@ export const createModule = async ({
   return interMod[0];
 };
 
-export const editModuleFunct = async ({
-  panel,
-  name,
-  selectedUsers
-}: {
-  panel: InterviewModuleType & {
-    relations: InterviewModuleRelationType[];
-  };
-  name: string;
-  selectedUsers: RecruiterUserType[];
-}) => {
-  try {
-    // Update interview panel details
-    const { error: errorModuleUpdate } = await supabase
-      .from('interview_module')
-      .update({ name: name })
-      .eq('id', panel.id);
-
-    if (errorModuleUpdate) {
-      throw errorModuleUpdate;
-    }
-
-    // Identify existing user relations
-    const existingUserIds = panel.relations.map((rel) => rel.user_id);
-
-    // Find newly added users and removed users
-    const addedUsers = selectedUsers.filter(
-      (user) => !existingUserIds.includes(user.user_id)
-    );
-    const removedUsers = panel.relations.filter(
-      (rel) => !selectedUsers.find((user) => user.user_id === rel.user_id)
-    );
-
-    // Update interview panel relation for added users
-    const insertToRelation = addedUsers.map((user) => ({
-      module_id: panel.id,
-      user_id: user.user_id
-    }));
-
-    const { error: errorRelAdded } = await supabase
-      .from('interview_module_relation')
-      .insert(insertToRelation);
-
-    if (errorRelAdded) {
-      throw errorRelAdded;
-    }
-
-    // Delete interview panel relation for removed users
-    const { error: errorRelDeleted } = await supabase
-      .from('interview_module_relation')
-      .delete()
-      .in(
-        'id',
-        removedUsers.map((user) => user.id)
-      ); // Assuming each relation has a unique identifier "id"
-
-    if (errorRelDeleted) {
-      throw errorRelDeleted;
-    }
-
-    // Fetch all current relations after the update
-    const { data: updatedRelations, error: errorUpdatedRelations } =
-      await supabase
-        .from('interview_module_relation')
-        .select('*')
-        .eq('panel_id', panel.id);
-
-    if (errorUpdatedRelations) {
-      throw errorUpdatedRelations;
-    }
-
-    // Return updated panel details
-    return {
-      panelId: panel.id,
-      name: name,
-      selectedUsers: selectedUsers,
-      updatedRelations: updatedRelations
-      // Include other relevant return data
-    };
-  } catch (error) {
-    throw new Error('Error editing interview panel');
+export const deleteModuleById = async (id: string) => {
+  const { error } = await supabase
+    .from('interview_module')
+    .delete()
+    .eq('id', id);
+  if (error) {
+    return false;
+  } else {
+    return true;
   }
+};
+
+export const deleteRelationByUserId = async ({
+  user_id,
+  module_id
+}: {
+  user_id: string;
+  module_id: string;
+}) => {
+  const { error } = await supabase
+    .from('interview_module_relation')
+    .delete()
+    .match({
+      user_id: user_id,
+      module_id: module_id
+    });
+  if (error) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const updatePauseJsonByUserId = async ({
+  module_id,
+  user_id,
+  pause_json
+}: {
+  module_id: string;
+  user_id: string;
+  pause_json: PauseJson;
+}) => {
+  const { error } = await supabase
+    .from('interview_module_relation')
+    .update({ pause_json: pause_json })
+    .match({ module_id: module_id, user_id: user_id });
+  if (error) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const addMemberbyUserIds = async ({
+  user_ids,
+  module_id
+}: {
+  user_ids: string[];
+  module_id: string;
+}) => {
+  const { data, error } = await supabase
+    .from('interview_module_relation')
+    .insert(
+      user_ids.map((user_id) => ({
+        user_id: user_id,
+        module_id: module_id
+      }))
+    )
+    .select();
+  if (error) {
+    return { data: null, error: error };
+  }
+  return { data, error };
 };

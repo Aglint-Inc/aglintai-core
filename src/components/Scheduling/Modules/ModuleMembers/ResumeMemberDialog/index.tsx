@@ -12,7 +12,11 @@ import {
 } from '../../store';
 
 function ResumeMemberDialog() {
-  const { isResumeDialogOpen, editModule, selUser } = useSchedulingStore();
+  const isResumeDialogOpen = useSchedulingStore(
+    (state) => state.isResumeDialogOpen
+  );
+  const editModule = useSchedulingStore((state) => state.editModule);
+  const selUser = useSchedulingStore((state) => state.selUser);
 
   const resumeHandler = async () => {
     try {

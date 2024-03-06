@@ -6,7 +6,7 @@ import {
   JobApplcationDB
 } from '@/src/types/data.types';
 
-import { ModuleType } from '../Modules/store';
+import { ModuleType } from '../Modules/types';
 import { InterviewModuleDbType } from '../../JobInterviewPlan/types';
 
 export interface InterviewSlice {

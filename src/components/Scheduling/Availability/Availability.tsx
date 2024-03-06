@@ -11,7 +11,7 @@ import {
   PanelDetailTopRight
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
@@ -40,7 +40,7 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const Availability = () => {
-  const { loading: isInterviewPanelLoading } = useScheduling();
+  const { loading: isInterviewPanelLoading } = useSchedulingContext();
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const { initialiseAvailabilities } = useSyncInterviewersCalender();
   const { members } = useAuthDetails();

@@ -124,6 +124,6 @@ const SchedulingProvider = ({ children }) => {
 
 export default SchedulingProvider;
 
-export const useScheduling = () => {
+export const useSchedulingContext = () => {
   return useContext(InterviewPanelContext);
 };

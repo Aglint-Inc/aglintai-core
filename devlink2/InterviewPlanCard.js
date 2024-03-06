@@ -32,7 +32,12 @@ export function InterviewPlanCard({
         </_Builtin.Block>
       </_Builtin.Block>
       {isMemberFromVisible ? (
-        <_Builtin.Block tag="div">{textMemberFrom}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-first-cap")}
+          tag="div"
+        >
+          {textMemberFrom}
+        </_Builtin.Block>
       ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "member-wrap-cultutr")}

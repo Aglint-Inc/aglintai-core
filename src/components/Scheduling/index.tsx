@@ -1,3 +1,4 @@
+import { InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -7,17 +8,23 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import AllSchedules from './AllSchedules';
 import { Modules } from './Modules/Modules';
-import { setIsCreateDialogOpen } from './Modules/store';
+import {
+  setIsCreateDialogOpen,
+  setSearchText,
+  useSchedulingStore
+} from './Modules/store';
 import MySchedule from './MySchedule';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SettingsScheduling from './Settings';
 import SubNav from './SubNav';
 import Icon from '../Common/Icons/Icon';
+import UITextField from '../Common/UITextField';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 
 function SchedulingMainComp() {
   const router = useRouter();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
+  const { searchText } = useSchedulingStore();
 
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
@@ -34,22 +41,40 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {router.query.tab == 'interviewModules' && (
-              <ButtonPrimaryDefaultRegular
-                startIconSlot={
-                  <Icon
-                    variant='PlusThin'
-                    height='12'
-                    width='12'
-                    color='#fff'
-                  />
-                }
-                buttonText={'New Module'}
-                buttonProps={{
-                  onClick: () => {
-                    setIsCreateDialogOpen(true);
+              <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                <UITextField
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <Icon variant='JobSearch' height='14' />
+                      </InputAdornment>
+                    )
+                  }}
+                  placeholder='Search by name'
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
+                  value={searchText}
+                  borderRadius={10}
+                />
+
+                <ButtonPrimaryDefaultRegular
+                  startIconSlot={
+                    <Icon
+                      variant='PlusThin'
+                      height='12'
+                      width='12'
+                      color='#fff'
+                    />
                   }
-                }}
-              />
+                  buttonText={'New Module'}
+                  buttonProps={{
+                    onClick: () => {
+                      setIsCreateDialogOpen(true);
+                    }
+                  }}
+                />
+              </Stack>
             )}
           </>
         }

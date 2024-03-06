@@ -3,7 +3,6 @@ import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { palette } from '@/src/context/Theme/Theme';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 import {
@@ -75,6 +74,7 @@ function FilterStatus() {
   return (
     <>
       <ButtonFilter
+        isDotVisible={filter.status.length > 0}
         slotLeftIcon={
           <Stack>
             <svg
@@ -92,10 +92,6 @@ function FilterStatus() {
           </Stack>
         }
         onClickStatus={{
-          style: {
-            borderColor:
-              filter.status.length > 0 ? palette.blue[600] : palette.blue[300]
-          },
           onClick: handleClick
         }}
         textLabel={'Status'}

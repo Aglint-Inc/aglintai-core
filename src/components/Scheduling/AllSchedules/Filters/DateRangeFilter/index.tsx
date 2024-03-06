@@ -8,7 +8,6 @@ import 'react-date-range/dist/theme/default.css';
 
 import { ButtonPrimarySmall, ButtonTextSmall } from '@/devlink';
 import { ButtonFilter } from '@/devlink2';
-import { palette } from '@/src/context/Theme/Theme';
 
 import {
   FilterType,
@@ -76,12 +75,8 @@ function DateRangeFilterComp() {
             </svg>
           </Stack>
         }
+        isDotVisible={filter.dateRange !== null}
         onClickStatus={{
-          style: {
-            borderColor: filter.dateRange
-              ? palette.blue[600]
-              : palette.blue[300]
-          },
           onClick: handleClick
         }}
         textLabel={'Date Range'}

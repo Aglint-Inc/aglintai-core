@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { useJobs } from '@/src/context/JobsContext';
-import { palette } from '@/src/context/Theme/Theme';
 
 import {
   FilterType,
@@ -67,11 +66,8 @@ function FilterJob() {
             </svg>
           </Stack>
         }
+        isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
-          style: {
-            borderColor:
-              filter.job_ids.length > 0 ? palette.blue[600] : palette.blue[300]
-          },
           onClick: handleClick
         }}
         textLabel={'Related Jobs'}

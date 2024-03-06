@@ -214,6 +214,10 @@
   margin-left: -6px;
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .member-wrap-cultutr {
   display: flex;
   align-items: center;

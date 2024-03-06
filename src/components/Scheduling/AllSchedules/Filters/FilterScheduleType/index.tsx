@@ -3,7 +3,6 @@ import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { palette } from '@/src/context/Theme/Theme';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 import {
@@ -77,6 +76,7 @@ function FilterScheduleType() {
   return (
     <>
       <ButtonFilter
+        isDotVisible={filter.scheduleType.length > 0}
         slotLeftIcon={
           <Stack>
             <svg
@@ -95,12 +95,6 @@ function FilterScheduleType() {
         }
         textLabel={'Schedule Type'}
         onClickStatus={{
-          style: {
-            borderColor:
-              filter.scheduleType.length > 0
-                ? palette.blue[600]
-                : palette.blue[300]
-          },
           onClick: handleClick
         }}
         slotRightIcon={

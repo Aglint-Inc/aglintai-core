@@ -1,42 +1,36 @@
 import { Dialog } from '@mui/material';
 
 import { DeletePopup } from '@/devlink3';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  setEditModule,
+  deleteMemberSchedulingStore,
   setIsDeleteMemberDialogOpen,
   useSchedulingStore
 } from '../../store';
+import { deleteRelationByUserId } from '../../utils';
 
 function DeleteMemberDialog() {
-  const { isDeleteMemberDialogOpen, editModule, selUser } =
-    useSchedulingStore();
+  const isDeleteMemberDialogOpen = useSchedulingStore(
+    (state) => state.isDeleteMemberDialogOpen
+  );
+  const editModule = useSchedulingStore((state) => state.editModule);
+  const selUser = useSchedulingStore((state) => state.selUser);
 
   const deleteRelation = async () => {
     try {
-      const { error } = await supabase
-        .from('interview_module_relation')
-        .delete()
-        .match({
-          user_id: selUser.user_id,
-          module_id: editModule.id
-        });
-      if (!error) {
-        setEditModule({
-          ...editModule,
-          relations: editModule.relations.filter(
-            (rel) => rel.user_id !== selUser.user_id
-          )
-        });
+      const isDeleted = await deleteRelationByUserId({
+        module_id: editModule.id,
+        user_id: selUser.user_id
+      });
+      if (isDeleted) {
+        deleteMemberSchedulingStore(selUser.user_id);
       } else {
         throw new Error();
       }
-    } catch {
-      toast.error('Error deleting user');
-    } finally {
+    } catch (e) {
       setIsDeleteMemberDialogOpen(false);
+      toast.error('Error deleting user');
     }
   };
 

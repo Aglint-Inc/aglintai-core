@@ -328,9 +328,9 @@ function Theme({ children }) {
 
       MuiTextField: {
         defaultProps: {
-          margin: 'dense',
+          margin: 'none',
           size: 'small',
-          variant: 'filled',
+          variant: 'outlined',
           InputProps: {
             disableUnderline: true
           }

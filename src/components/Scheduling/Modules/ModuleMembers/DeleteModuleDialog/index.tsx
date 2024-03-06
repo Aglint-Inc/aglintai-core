@@ -3,33 +3,28 @@ import { useRouter } from 'next/router';
 
 import { DeletePopup } from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  setEditModule,
-  setInterviewModules,
+  deleteModuleSchedulingStore,
   setIsDeleteModuleDialogOpen,
   useSchedulingStore
 } from '../../store';
+import { deleteModuleById } from '../../utils';
 
 function DeleteModuleDialog() {
   const router = useRouter();
-  const { isDeleteModuleDialogOpen, editModule, interviewModules } =
-    useSchedulingStore();
+  const isDeleteModuleDialogOpen = useSchedulingStore(
+    (state) => state.isDeleteModuleDialogOpen
+  );
+  const editModule = useSchedulingStore((state) => state.editModule);
 
   const deleteModule = async () => {
     try {
-      const { error } = await supabase
-        .from('interview_module')
-        .delete()
-        .eq('id', editModule.id);
-      if (!error) {
-        setInterviewModules(
-          interviewModules.filter((module) => module.id !== editModule.id)
-        );
+      const isdeleted = await deleteModuleById(editModule.id);
+      if (isdeleted) {
+        deleteModuleSchedulingStore(editModule.id);
         router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
-        setEditModule(null);
       } else {
         throw new Error();
       }

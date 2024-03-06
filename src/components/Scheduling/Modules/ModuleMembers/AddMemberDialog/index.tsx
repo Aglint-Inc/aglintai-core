@@ -6,23 +6,25 @@ import { ConfirmationPopup } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewModuleRelationType } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import MembersAutoComplete from './MembersTextField';
 import {
-  setEditModule,
-  setInterviewModules,
+  addMembersSchedulingStore,
   setIsAddMemberDialogOpen,
   setSelectedUsers,
   useSchedulingStore
 } from '../../store';
+import { addMemberbyUserIds } from '../../utils';
 
 function AddMemberDialog() {
   const { members } = useAuthDetails();
-  const { isAddMemberDialogOpen, selectedUsers, editModule, interviewModules } =
-    useSchedulingStore();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // used to disable multiple clicks
+  const isAddMemberDialogOpen = useSchedulingStore(
+    (state) => state.isAddMemberDialogOpen
+  );
+  const editModule = useSchedulingStore((state) => state.editModule);
+  const selectedUsers = useSchedulingStore((state) => state.selectedUsers);
 
   const addMemberHandler = async () => {
     try {
@@ -31,38 +33,14 @@ function AddMemberDialog() {
         return;
       }
       setLoading(true);
-      const { data, error } = await supabase
-        .from('interview_module_relation')
-        .insert(
-          selectedUsers.map((user) => ({
-            user_id: user.user_id,
-            module_id: editModule.id
-          }))
-        )
-        .select();
+      const { data, error } = await addMemberbyUserIds({
+        module_id: editModule.id,
+        user_ids: selectedUsers.map((user) => user.user_id)
+      });
       if (error) {
         throw new Error();
       }
-      setEditModule({
-        ...editModule,
-        relations: [
-          ...(editModule.relations || []),
-          ...data
-        ] as InterviewModuleRelationType[]
-      });
-      interviewModules.map((module) => {
-        if (module.id === editModule.id) {
-          module.relations = [
-            ...(module.relations || []),
-            ...data
-          ] as InterviewModuleRelationType[];
-        } else {
-          module;
-        }
-      });
-      setInterviewModules([...interviewModules]);
-      setIsAddMemberDialogOpen(false);
-      setSelectedUsers([]);
+      addMembersSchedulingStore(data as InterviewModuleRelationType[]);
     } catch (e) {
       toast.error('Error adding panel members');
     } finally {

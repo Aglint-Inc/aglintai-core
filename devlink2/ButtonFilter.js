@@ -9,6 +9,7 @@ export function ButtonFilter({
   slotLeftIcon,
   slotRightIcon,
   textLabel = "Status",
+  isDotVisible = false,
 }) {
   return (
     <_Component
@@ -19,6 +20,12 @@ export function ButtonFilter({
       <_Builtin.Block tag="div">{slotLeftIcon}</_Builtin.Block>
       <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
       <_Builtin.Block tag="div">{slotRightIcon}</_Builtin.Block>
+      {isDotVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "dot-indicator")}
+          tag="div"
+        />
+      ) : null}
     </_Component>
   );
 }

@@ -7,4 +7,5 @@ declare function ButtonFilter(props: {
   slotLeftIcon?: Types.Devlink.Slot;
   slotRightIcon?: Types.Devlink.Slot;
   textLabel?: React.ReactNode;
+  isDotVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -3,11 +3,10 @@ import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
@@ -16,10 +15,15 @@ import {
   setPauseJson,
   useSchedulingStore
 } from '../../store';
+import { updatePauseJsonByUserId } from '../../utils';
 
 function PauseDialog() {
-  const { isPauseDialogOpen, pause_json, selUser, editModule } =
-    useSchedulingStore();
+  const isPauseDialogOpen = useSchedulingStore(
+    (state) => state.isPauseDialogOpen
+  );
+  const editModule = useSchedulingStore((state) => state.editModule);
+  const selUser = useSchedulingStore((state) => state.selUser);
+  const pause_json = useSchedulingStore((state) => state.pause_json);
   const [selectedType, setSelectedType] = useState<
     'isManual' | 'twoWeek' | 'oneMonth' | 'threeMonth' | 'custom'
   >('isManual');
@@ -30,11 +34,12 @@ function PauseDialog() {
         if (selectedType === 'custom' && !pause_json?.end_date) {
           return toast.error('Please select end date');
         }
-        const { error } = await supabase
-          .from('interview_module_relation')
-          .update({ pause_json: pause_json })
-          .match({ module_id: editModule.id, user_id: selUser.user_id });
-        if (!error) {
+        const isUpdated = await updatePauseJsonByUserId({
+          user_id: selUser.user_id,
+          pause_json: pause_json,
+          module_id: editModule.id
+        });
+        if (isUpdated) {
           setEditModule({
             ...editModule,
             relations: editModule.relations.map((rel) =>
@@ -54,10 +59,10 @@ function PauseDialog() {
     }
   };
 
-  const currentDate = dayjs();
-  const twoWeeks = currentDate.add(2, 'week');
-  const oneMonth = currentDate.add(1, 'month');
-  const threeMonth = currentDate.add(3, 'month');
+  const currentDate = useMemo(() => dayjs(), []);
+  const twoWeeks = useMemo(() => currentDate.add(2, 'week'), [currentDate]);
+  const oneMonth = useMemo(() => currentDate.add(1, 'month'), [currentDate]);
+  const threeMonth = useMemo(() => currentDate.add(3, 'month'), [currentDate]);
 
   const resetState = () => {
     setIsPauseDialogOpen(false);
@@ -82,7 +87,7 @@ function PauseDialog() {
       <ConfirmationPopup
         textPopupTitle={'Pause from scheduling'}
         textPopupDescription={
-          'This member won’t be considered for any new interviews schedulled with this modulw until the pause is complete'
+          'This member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
         }
         isIcon={false}
         slotWidget={
@@ -108,7 +113,7 @@ function PauseDialog() {
                 Indefinetly
               </Typography>
               <Typography variant='body2'>
-                Until when you manualy resumes
+                Until when you manually resumes
               </Typography>
             </Stack>
             <Stack
@@ -200,7 +205,6 @@ function PauseDialog() {
               <Stack direction={'row'} width={'100%'} spacing={1}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    label={'From'}
                     value={dayjs(pause_json?.start_date)}
                     onChange={(newValue) => {
                       if (
@@ -228,7 +232,6 @@ function PauseDialog() {
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
-                    label={'To'}
                     value={dayjs(pause_json?.end_date)}
                     minDate={dayjs(pause_json?.start_date)}
                     onChange={(newValue) => {

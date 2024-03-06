@@ -2,7 +2,7 @@ import { AvatarGroup } from '@mui/material';
 
 import { WidgetFlexRow, WidgetPanelCard } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { ModuleType } from '@/src/components/Scheduling/Modules/store';
+import { ModuleType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 

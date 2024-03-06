@@ -1,9 +1,10 @@
 import { AvatarGroup, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
 import { InterviewModuleCard, InterviewModuleTable } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import CreateModuleDialog from './CreateModuleDialog';
@@ -13,10 +14,16 @@ import MuiAvatar from '../../Common/MuiAvatar';
 export function Modules() {
   const router = useRouter();
   const { members } = useAuthDetails();
-  const { loading } = useScheduling();
+  const { loading } = useSchedulingContext();
+  const searchText = useSchedulingStore((state) => state.searchText);
   const interviewModules = useSchedulingStore(
     (state) => state.interviewModules
   );
+  const filterModules = useMemo(() => {
+    return interviewModules.filter((module) => {
+      return module.name.toLowerCase().includes(searchText.toLowerCase());
+    });
+  }, [interviewModules, searchText]);
 
   return (
     <>
@@ -24,7 +31,7 @@ export function Modules() {
       {!loading && (
         <>
           <InterviewModuleTable
-            slotInterviewModuleCard={interviewModules.map((module) => {
+            slotInterviewModuleCard={filterModules.map((module) => {
               return (
                 <Stack
                   key={module.id}

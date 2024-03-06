@@ -1,11 +1,13 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import { useShallow } from 'zustand/react/shallow';
 
 import { ButtonPrimarySmall } from '@/devlink';
 import {
   AllInterviewEmpty,
   Breadcrum,
+  EmptyState,
   InterviewMemberList,
   InterviewMemberSide,
   MemberListCard,
@@ -15,7 +17,7 @@ import { MoreButton } from '@/devlink3';
 import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useScheduling } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import AddMemberDialog from './AddMemberDialog';
@@ -36,8 +38,11 @@ import {
 function ModuleMembersComp() {
   const router = useRouter();
   const { members } = useAuthDetails();
-  const { moduleName, editModule } = useSchedulingStore();
-  const { loading } = useScheduling();
+  const moduleName = useSchedulingStore((state) => state.moduleName);
+  const allUsers = useSchedulingStore(
+    useShallow((state) => state.editModule.relations)
+  );
+  const { loading } = useSchedulingContext();
 
   return (
     <>
@@ -71,61 +76,66 @@ function ModuleMembersComp() {
                 />
               }
               slotMemberList={
-                !loading &&
-                editModule?.relations.map((user) => {
-                  const member = members.filter(
-                    (member) => member.user_id === user.user_id
-                  )[0];
-                  return (
-                    <MemberListCard
-                      key={user.user_id}
-                      textPauseResumeDate={
-                        !user.pause_json?.isManual
-                          ? user.pause_json?.end_date
-                            ? 'Till ' +
-                              dayjs(user.pause_json.end_date).format(
-                                'DD MMMM YYYY'
-                              )
-                            : '--'
-                          : 'Till you resume'
-                      }
-                      onClickRemoveModule={{
-                        onClick: () => {
-                          setSelUser(user);
-                          setIsDeleteMemberDialogOpen(true);
-                        }
-                      }}
-                      onClickPauseInterview={{
-                        onClick: () => {
-                          setSelUser(user);
-                          setIsPauseDialogOpen(true);
-                        }
-                      }}
-                      onClickResumeInterview={{
-                        onClick: () => {
-                          setSelUser(user);
-                          setIsResumeDialogOpen(true);
-                        }
-                      }}
-                      onHoverDot={false}
-                      isPauseResumeVisible={Boolean(user.pause_json)}
-                      isPauseVisible={!user.pause_json}
-                      isResumeVisible={Boolean(user.pause_json)}
-                      slotProfileImage={
-                        <MuiAvatar
-                          src={member.profile_image}
-                          level={member.first_name}
-                          variant='circular'
-                          height='60px'
-                          width='60px'
-                          fontSize='24px'
+                <>
+                  {!loading && allUsers.length === 0 && (
+                    <EmptyState textDescription={'No Members Added Yet'} />
+                  )}
+                  {!loading &&
+                    allUsers.map((user) => {
+                      const member = members.filter(
+                        (member) => member.user_id === user.user_id
+                      )[0];
+                      return (
+                        <MemberListCard
+                          key={user.user_id}
+                          textPauseResumeDate={
+                            !user.pause_json?.isManual
+                              ? user.pause_json?.end_date
+                                ? 'Till ' +
+                                  dayjs(user.pause_json.end_date).format(
+                                    'DD MMMM YYYY'
+                                  )
+                                : '--'
+                              : 'Till you resume'
+                          }
+                          onClickRemoveModule={{
+                            onClick: () => {
+                              setSelUser(user);
+                              setIsDeleteMemberDialogOpen(true);
+                            }
+                          }}
+                          onClickPauseInterview={{
+                            onClick: () => {
+                              setSelUser(user);
+                              setIsPauseDialogOpen(true);
+                            }
+                          }}
+                          onClickResumeInterview={{
+                            onClick: () => {
+                              setSelUser(user);
+                              setIsResumeDialogOpen(true);
+                            }
+                          }}
+                          onHoverDot={false}
+                          isPauseResumeVisible={Boolean(user.pause_json)}
+                          isPauseVisible={!user.pause_json}
+                          isResumeVisible={Boolean(user.pause_json)}
+                          slotProfileImage={
+                            <MuiAvatar
+                              src={member.profile_image}
+                              level={member.first_name}
+                              variant='circular'
+                              height='60px'
+                              width='60px'
+                              fontSize='24px'
+                            />
+                          }
+                          textName={member.first_name}
+                          textRole={member.position || '--'}
                         />
-                      }
-                      textName={member.first_name}
-                      textRole={member.position || '--'}
-                    />
-                  );
-                })
+                      );
+                    })}
+                </>
               }
             />
           </>

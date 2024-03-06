@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { palette } from '@/src/context/Theme/Theme';
 
 import {
   FilterType,
@@ -69,13 +68,8 @@ function FilterInterviewPanel() {
             </svg>
           </Stack>
         }
+        isDotVisible={filter.panel_ids.length > 0}
         onClickStatus={{
-          style: {
-            borderColor:
-              filter.panel_ids.length > 0
-                ? palette.blue[600]
-                : palette.blue[300]
-          },
           onClick: handleClick
         }}
         textLabel={'Interview Panels'}

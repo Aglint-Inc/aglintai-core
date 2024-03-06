@@ -10,26 +10,19 @@ function FilterSearchField() {
   return (
     <>
       <UITextField
-        rest={{
-          style: {
-            borderRadius: '41px',
-          },
-        }}
         InputProps={{
-          sx: {
-            borderRadius: '10px',
-            minWidth: '250px',
-          },
           endAdornment: (
             <InputAdornment position='end'>
               <Icon variant='JobSearch' height='14' />
             </InputAdornment>
-          ),
+          )
         }}
         placeholder='Search by name'
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
+        borderRadius={10}
+        height={42}
       />
     </>
   );
