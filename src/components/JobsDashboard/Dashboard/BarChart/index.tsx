@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-object-injection */
+import { useMediaQuery } from '@mui/material';
 import {
   BarElement,
   CategoryScale,
@@ -5,11 +7,14 @@ import {
   LinearScale,
   Tooltip
 } from 'chart.js/auto';
-import React from 'react';
+import { capitalize } from 'lodash';
+import React, { FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
+import { NoData } from '@/devlink3';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
+import { DashboardGraphOptions } from '..';
 import { getOrderedGraphValues } from '../utils';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -17,9 +22,10 @@ ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 const BarChart: React.FC<{
   skills: ReturnType<typeof getOrderedGraphValues>;
 }> = ({ skills }) => {
+  const matches = useMediaQuery('(min-width:1920px)');
   const { names, counts, colors } = skills.reduce(
     (acc, { color, name, count }) => {
-      acc.names.push(name);
+      acc.names.push(capitalize(name));
       acc.counts.push(count);
       acc.colors.push(color);
       return acc;
@@ -34,7 +40,9 @@ const BarChart: React.FC<{
         data: counts,
         backgroundColor: colors,
         borderRadius: 8,
-        borderSkipped: false
+        borderSkipped: false,
+        grouped: true,
+        barThickness: 40
       }
     ]
   };
@@ -43,6 +51,7 @@ const BarChart: React.FC<{
     <Bar
       options={{
         responsive: true,
+        aspectRatio: matches ? 4 : 3,
         plugins: {
           legend: {
             display: false
@@ -50,13 +59,20 @@ const BarChart: React.FC<{
         },
         scales: {
           x: {
+            border: {
+              color: 'transparent'
+            },
             grid: {
               display: false
             }
           },
           y: {
+            border: {
+              color: 'transparent'
+            },
             grid: {
-              display: false
+              display: true,
+              color: 'rgba(0,0,0,0.05)'
             }
           }
         }
@@ -66,20 +82,22 @@ const BarChart: React.FC<{
   );
 };
 
-export default DashboardBarChart;
-
-function DashboardBarChart() {
+const DashboardBarChart: FC<{
+  option: keyof DashboardGraphOptions<'skills'>;
+}> = ({ option }) => {
   const {
     analytics: { skills: skillPool }
   } = useJobDashboard();
-  const skills = skillPool?.required_skills ?? null;
+  const skills = skillPool?.[option] ?? null;
   const total = skills
     ? Object.values(skills).reduce((acc, curr) => {
         acc += curr;
         return acc;
       }, 0)
     : 0;
-  if (total === 0) return <></>;
   const safeSkills = getOrderedGraphValues(skills);
+  if (total === 0) return <NoData />;
   return <BarChart skills={safeSkills} />;
-}
+};
+
+export default DashboardBarChart;

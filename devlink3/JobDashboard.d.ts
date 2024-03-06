@@ -14,9 +14,10 @@ declare function JobDashboard(props: {
   textBelowAverageCount?: React.ReactNode;
   textNotAMatchCount?: React.ReactNode;
   slotPipeline?: Types.Devlink.Slot;
-  slotSkillGraph?: Types.Devlink.Slot;
-  slotLocationGraph?: Types.Devlink.Slot;
   slotModuleCard?: Types.Devlink.Slot;
   onClickAssistant?: Types.Devlink.RuntimeProps;
   textCandidateCount?: React.ReactNode;
+  slotScheduleCardSmall?: Types.Devlink.Slot;
+  slotLocationGraphBlock?: Types.Devlink.Slot;
+  slotSkillGraphBlock?: Types.Devlink.Slot;
 }): React.JSX.Element;

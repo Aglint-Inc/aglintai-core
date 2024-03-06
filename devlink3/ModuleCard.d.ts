@@ -8,4 +8,5 @@ declare function ModuleCard(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   slotIcon?: Types.Devlink.Slot;
   slotEnableDisable?: Types.Devlink.Slot;
+  isDescription?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

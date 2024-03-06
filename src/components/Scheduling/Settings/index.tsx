@@ -15,9 +15,6 @@ import {
   TimeRangeInput,
   WorkingHourDay
 } from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { SocialsType } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabase/client';
 
 import DateSelect from './Components/DateSelector';
 import MuiSelect from './Components/MuiSelect';
@@ -31,8 +28,7 @@ import { hoursList } from './utils';
 import UITextField from '../../Common/UITextField';
 let schedulingSettingObj = {};
 let changeValue = null;
-function SchedulingSettings({ setSaving }) {
-  const { recruiter, setRecruiter } = useAuthDetails();
+function SchedulingSettings({ updateSettings, initialData }) {
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
@@ -78,7 +74,7 @@ function SchedulingSettings({ setSaving }) {
   const selectStartTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
-      data[Number(i)].timeRange.startTime = `${dayjs(value).format('HH:MM')}`;
+      data[Number(i)].timeRange.startTime = `${dayjs(value).format('HH:mm')}`;
       return [...data];
     });
   };
@@ -86,7 +82,7 @@ function SchedulingSettings({ setSaving }) {
   const selectEndTime = (value: any, i: number) => {
     setWorkingHours((pre) => {
       const data = pre;
-      data[Number(i)].timeRange.endTime = `${dayjs(value).format('HH:MM')}`;
+      data[Number(i)].timeRange.endTime = `${dayjs(value).format('HH:mm')}`;
       return [...data];
     });
   };
@@ -116,22 +112,10 @@ function SchedulingSettings({ setSaving }) {
     });
   }
 
-  // console.table({ selectedWeeklyLimit, selectedDailyLimit });
-  // console.table(
-  //   workingHours.map((item) => {
-  //     return {
-  //       day: item.day,
-  //       isDayOff: item.isDayOff,
-  //       start: item.timeRange.startTime,
-  //       end: item.timeRange.endTime,
-  //     };
-  //   }),
-  // );
-
   function initialLoad() {
-    if (recruiter) {
+    if (initialData) {
       const schedulingSettingData = cloneDeep(
-        recruiter?.scheduling_settings
+        initialData
       ) as schedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
@@ -163,7 +147,7 @@ function SchedulingSettings({ setSaving }) {
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
-        updateSettings();
+        updateSettings(schedulingSettingObj);
       }
 
       changeValue = 'updating';
@@ -184,25 +168,6 @@ function SchedulingSettings({ setSaving }) {
     };
   }, []);
 
-  async function updateSettings() {
-    setSaving('saving');
-
-    const { data: updatedRecruiter, error } = await supabase
-      .from('recruiter')
-      .update({ scheduling_settings: schedulingSettingObj })
-      .eq('id', recruiter.id)
-      .select()
-      .single();
-    if (!error) {
-      setRecruiter(
-        {
-          ...updatedRecruiter,
-          socials: updatedRecruiter?.socials as unknown as SocialsType
-        }!
-      );
-    }
-    setSaving('saved');
-  }
   return (
     <>
       <ScheduleSettings
