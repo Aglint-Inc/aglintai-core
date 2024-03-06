@@ -23,6 +23,7 @@ import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
 import Icon from '../Common/Icons/Icon';
 import UITextField from '../Common/UITextField';
+import InterviewTab from '../CompanyDetailComp/Interviewers';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 
 function SchedulingMainComp() {
@@ -115,6 +116,8 @@ function SchedulingMainComp() {
                 <Modules />
               ) : router.query.tab == 'emailTemplates' ? (
                 <SchedulingEmailTemplates />
+              ) : router.query.tab == 'interviewers' ? (
+                <InterviewTab />
               ) : router.query.tab == 'settings' ? (
                 <SettingsScheduling
                   updateSettings={updateSettings}

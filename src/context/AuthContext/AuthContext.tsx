@@ -19,10 +19,12 @@ import {
   RecruiterUserType,
   SocialsType
 } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
+import { datacatalog_v1beta1 } from 'googleapis';
 
 interface ContextValue {
   userDetails: Session | null;
@@ -42,6 +44,10 @@ interface ContextValue {
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
   members: RecruiterUserType[];
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
+  handelMemberUpdate: (x: {
+    user_id: string;
+    data: Database['public']['Tables']['recruiter_user']['Update'];
+  }) => Promise<boolean>;
 }
 
 const defaultProvider = {
@@ -62,7 +68,8 @@ const defaultProvider = {
   recruiterUser: null,
   setRecruiterUser: () => {},
   members: [],
-  setMembers: () => {}
+  setMembers: () => {},
+  handelMemberUpdate: (x) => Promise.resolve(true)
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -249,6 +256,24 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
+    user_id,
+    data
+  }) => {
+    if (!user_id && data) return Promise.resolve(false);
+    return updateMember({ user_id, data }).then((data) => {
+      if (data) {
+        setMembers((prev) =>
+          prev.map((item) => {
+            return data.user_id !== item.user_id ? item : data;
+          })
+        );
+        return true;
+      }
+      return false;
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -268,7 +293,8 @@ const AuthProvider = ({ children }) => {
         setAllrecruterRelation,
         setRecruiterUser,
         members,
-        setMembers
+        setMembers,
+        handelMemberUpdate
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -307,4 +333,25 @@ const pageFeatureMapper = {
   [pageRoutes.AGENT]: 'isAgentEnabled',
   [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
   [pageRoutes.SUPPORT]: 'isSupportEnabled'
+};
+
+const updateMember = ({
+  user_id,
+  data
+}: {
+  user_id: string;
+  data: Database['public']['Tables']['recruiter_user']['Update'];
+}) => {
+  return supabase
+    .from('recruiter_user')
+    .update(data)
+    .eq('user_id', user_id)
+    .select()
+    .single()
+    .then(({ data, error }) => {
+      if (error) {
+        throw new Error(error.message);
+      }
+      return data;
+    });
 };
