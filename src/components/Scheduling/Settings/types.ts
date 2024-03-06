@@ -23,7 +23,7 @@ export type WeeklyLimitType = {
 };
 export type WorkingDaysType = {
   day: string;
-  isDayOff: boolean;
+  isWorkDay: boolean;
   timeRange: {
     startTime: string;
     endTime: string;

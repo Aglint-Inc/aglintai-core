@@ -1,6 +1,4 @@
-import {
-    LocalizationProvider
-} from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';

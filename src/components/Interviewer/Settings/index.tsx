@@ -16,33 +16,33 @@ import {
   WorkingHourDay,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { SocialsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import DateSelect from './Components/DateSelector';
-import MuiSelect from './Components/MuiSelect';
-import SelectTime from './Components/SelectTime';
-import {
-  DailyLimitType,
-  schedulingSettingType,
-  WeeklyLimitType,
-} from './types';
-import { hoursList } from './utils';
 import UITextField from '../../Common/UITextField';
+import DateSelect from '../../Scheduling/Settings/Components/DateSelector';
+import MuiSelect from '../../Scheduling/Settings/Components/MuiSelect';
+import SelectTime from '../../Scheduling/Settings/Components/SelectTime';
+import {
+  schedulingSettingType,
+} from '../../Scheduling/Settings/types';
+import { hoursList } from '../../Scheduling/Settings/utils';
 let schedulingSettingObj = {};
 let changeValue = null;
 function SchedulingSettings({ setSaving }) {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiterUser, setRecruiterUser } = useAuthDetails();
   const dateRef = useRef<HTMLInputElement>(null);
-  const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
+  const [selectedDailyLimit, setSelectedDailyLimit] = useState<
+    schedulingSettingType['interviewLoad']['dailyLimit']
+  >({
     type: 'Interviews',
     value: 2,
   });
-  const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
-    useState<DailyLimitType>({
-      type: 'Hours',
-      value: 16,
-    });
+  const [selectedWeeklyLimit, setSelectedWeeklyLimit] = useState<
+    schedulingSettingType['interviewLoad']['weeklyLimit']
+  >({
+    type: 'Hours',
+    value: 16,
+  });
 
   const [workingHours, setWorkingHours] = useState([]);
   const [daysOff, setDaysOff] = useState([]);
@@ -52,26 +52,30 @@ function SchedulingSettings({ setSaving }) {
   const handleSelectWeeklyType = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
       pre.type = value.target.value as string;
-      return { ...pre } as WeeklyLimitType;
+      return {
+        ...pre,
+      } as schedulingSettingType['interviewLoad']['weeklyLimit'];
     });
   };
   const handleSelectWeeklyValue = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
       pre.value = value.target.value as number;
-      return { ...pre } as WeeklyLimitType;
+      return {
+        ...pre,
+      } as schedulingSettingType['interviewLoad']['weeklyLimit'];
     });
   };
   const handleSelectDailyType = (value: any) => {
     setSelectedDailyLimit((pre) => {
       pre.type = value.target.value as string;
-      return { ...pre } as DailyLimitType;
+      return { ...pre } as schedulingSettingType['interviewLoad']['dailyLimit'];
     });
   };
 
   const handleSelectDailyValue = (value: any) => {
     setSelectedDailyLimit((pre) => {
       pre.value = value.target.value as number;
-      return { ...pre } as DailyLimitType;
+      return { ...pre } as schedulingSettingType['interviewLoad']['dailyLimit'];
     });
   };
 
@@ -129,12 +133,12 @@ function SchedulingSettings({ setSaving }) {
   // );
 
   function initialLoad() {
-    if (recruiter) {
+    if (recruiterUser?.scheduling_settings) {
       const schedulingSettingData = cloneDeep(
-        recruiter?.scheduling_settings,
+        recruiterUser?.scheduling_settings,
       ) as schedulingSettingType;
 
-      const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
+      const workingHoursCopy = cloneDeep(schedulingSettingData?.workingHours);
       // eslint-disable-next-line no-console
       console.log('local timeZones', dayjs.tz.guess());
 
@@ -187,17 +191,16 @@ function SchedulingSettings({ setSaving }) {
   async function updateSettings() {
     setSaving('saving');
 
-    const { data: updatedRecruiter, error } = await supabase
-      .from('recruiter')
+    const { data: updatedRecruiterUser, error } = await supabase
+      .from('recruiter_user')
       .update({ scheduling_settings: schedulingSettingObj })
-      .eq('id', recruiter.id)
+      .eq('recruiter_id', recruiterUser.recruiter_id)
       .select()
       .single();
     if (!error) {
-      setRecruiter(
+      setRecruiterUser(
         {
-          ...updatedRecruiter,
-          socials: updatedRecruiter?.socials as unknown as SocialsType,
+          ...updatedRecruiterUser,
         }!,
       );
     }

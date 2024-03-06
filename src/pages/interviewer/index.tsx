@@ -1,20 +1,25 @@
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React from 'react';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
-import { setSelectedSchedule, useInterviewerStore } from '@/src/components/Scheduling/Interviewer/store';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
-
-import InterviewerComp from '../../components/Scheduling/Interviewer';
+// import { Breadcrum, PageLayout } from '@/devlink2';
+// import {
+//   setSelectedSchedule,
+//   useInterviewerStore,
+// } from '@/src/components/Scheduling/Interviewer/store';
+// import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+// import { pageRoutes } from '@/src/utils/pageRouting';
+// import InterviewerComp from '../../components/Scheduling/Interviewer';
+import InterviewerScheduling from '@/src/components/Interviewer';
 
 function InterviewerPage() {
-  const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
-  const selectedSchedule = useInterviewerStore((state) => state.selectedSchedule);
+  // const router = useRouter();
+  // const { recruiterUser } = useAuthDetails();
+  // const selectedSchedule = useInterviewerStore(
+  //   (state) => state.selectedSchedule,
+  // );
   return (
     <>
-      <PageLayout
+      {/* <PageLayout
         slotTopbarLeft={
           <>
             {recruiterUser.role == 'admin' && (
@@ -47,8 +52,10 @@ function InterviewerPage() {
             )}
           </>
         }
-        slotBody={<InterviewerComp />}
-      />
+        slotBody={<InterviewerScheduling />}
+      /> */}
+
+      <InterviewerScheduling />
     </>
   );
 }

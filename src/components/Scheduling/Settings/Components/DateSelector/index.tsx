@@ -31,7 +31,8 @@ function DateSelect({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar
           // sx={calenderStyles}
-          minDate={dayjs('1-1-2024')}
+          minDate={dayjs(`1-1-${dayjs(today).year()}`)}
+          maxDate={dayjs(`12-31-${dayjs(today).year()}`)}
           defaultValue={dayjs(today)}
           onChange={getDate}
           ref={dateRef}

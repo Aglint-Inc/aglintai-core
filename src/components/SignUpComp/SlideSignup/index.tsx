@@ -168,7 +168,10 @@ const SlideTwoSignUp = () => {
 
             await supabase
               .from('recruiter_user')
-              .update({ recruiter_id: rec[0].id })
+              .update({
+                recruiter_id: rec[0].id,
+                scheduling_settings: rec[0].scheduling_settings,
+              })
               .eq('user_id', authdata.data.user.id);
 
             router.push(`?step=${stepObj.type}`, undefined, {

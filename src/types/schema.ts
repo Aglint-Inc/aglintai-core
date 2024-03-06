@@ -1754,6 +1754,7 @@ export type Database = {
           recruiter_id: string | null
           role: Database["public"]["Enums"]["recruiter_roles"]
           schedule_auth: Json | null
+          scheduling_settings: Json | null
           user_id: string
         }
         Insert: {
@@ -1771,6 +1772,7 @@ export type Database = {
           recruiter_id?: string | null
           role?: Database["public"]["Enums"]["recruiter_roles"]
           schedule_auth?: Json | null
+          scheduling_settings?: Json | null
           user_id: string
         }
         Update: {
@@ -1788,6 +1790,7 @@ export type Database = {
           recruiter_id?: string | null
           role?: Database["public"]["Enums"]["recruiter_roles"]
           schedule_auth?: Json | null
+          scheduling_settings?: Json | null
           user_id?: string
         }
         Relationships: [
