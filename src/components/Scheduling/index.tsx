@@ -29,6 +29,7 @@ function SchedulingMainComp() {
   const router = useRouter();
   const { recruiter, setRecruiter } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
+  const { searchText } = useSchedulingStore();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setSaving('saving');
 
