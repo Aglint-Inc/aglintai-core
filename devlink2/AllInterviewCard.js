@@ -71,7 +71,7 @@ export function AllInterviewCard({
         {slotScheduleInfo ?? <ScheduleInfoBlock />}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
+        className={_utils.cx(_styles, "candidate_cell", "hide")}
         tag="div"
       >
         <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>

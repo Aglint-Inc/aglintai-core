@@ -6,4 +6,5 @@ declare function InterviewBreakCard(props: {
   textDuration?: React.ReactNode;
   onClickDelete?: Types.Devlink.RuntimeProps;
   onClickEdit?: Types.Devlink.RuntimeProps;
+  isEditDeleteVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

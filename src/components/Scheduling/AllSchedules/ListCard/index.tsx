@@ -17,7 +17,7 @@ function ListCardInterviewSchedule({
   onClickCard,
   slotCheckbox = <></>,
   isJobDasboard = false,
-  isSelected = false,
+  isSelected = false
 }: {
   app: ApplicationList;
   panel_name: string;
@@ -41,9 +41,9 @@ function ListCardInterviewSchedule({
           propsGrid={{
             style: {
               gridTemplateColumns: isJobDasboard
-                ? '25% 15% 15% 20% 25%'
-                : '20% 15% 15% 10% 20% 20%',
-            },
+                ? '25% 15% 15% 20%'
+                : '25% 15% 20% 17% 23%'
+            }
           }}
           isSchedulerTable={!isJobDasboard}
           isCheckBoxVisible={isJobDasboard}
@@ -54,7 +54,7 @@ function ListCardInterviewSchedule({
               <MuiAvatar
                 level={getFullName(
                   app.candidates.first_name,
-                  app.candidates.last_name,
+                  app.candidates.last_name
                 )}
                 src={app.candidates.avatar}
                 variant={'circular'}
@@ -77,8 +77,8 @@ function ListCardInterviewSchedule({
                     : app.schedule.status == 'pending'
                       ? '#FFEDC2'
                       : '#FFF0F1'
-                : '#FFF0F1',
-            },
+                : '#FFF0F1'
+            }
           }}
           colorPropsText={{
             style: {
@@ -90,8 +90,8 @@ function ListCardInterviewSchedule({
                     : app.schedule.status == 'pending'
                       ? '#703815'
                       : '#681219'
-                : '#681219',
-            },
+                : '#681219'
+            }
           }}
           textDuration={app.schedule ? `${app.schedule.duration}` : '--'}
           textInterviewPanel={panel_name || '--'}
@@ -102,8 +102,8 @@ function ListCardInterviewSchedule({
                   '& .MuiAvatar-root': {
                     width: '24px',
                     height: '24px',
-                    fontSize: '12px',
-                  },
+                    fontSize: '12px'
+                  }
                 }}
                 total={app.schedule ? app.schedule.panel_users.length : 0}
               >
@@ -111,7 +111,7 @@ function ListCardInterviewSchedule({
                   .slice(0, 3)
                   .map((rel: { user_id: string; must: 'string' }) => {
                     const member = members.filter(
-                      (member) => member.user_id === rel.user_id,
+                      (member) => member.user_id === rel.user_id
                     )[0];
                     return (
                       <MuiAvatar
@@ -136,11 +136,11 @@ function ListCardInterviewSchedule({
                 textDateTimeOrSlots={
                   app.schedule.schedule_time
                     ? dayjs(app.schedule.schedule_time.startTime).format(
-                        'YYYY MMM DD',
+                        'YYYY MMM DD'
                       ) +
                       ' at ' +
                       dayjs(app.schedule.schedule_time.startTime).format(
-                        'hh:mm A',
+                        'hh:mm A'
                       )
                     : '--'
                 }

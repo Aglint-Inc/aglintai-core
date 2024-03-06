@@ -23,7 +23,7 @@ import {
   FeedbackScore,
   InterviewResultStatus,
   ResumeFeedbackScore,
-  UnableFetchResume,
+  UnableFetchResume
 } from '@/devlink';
 import {
   AnalysisBlock,
@@ -34,14 +34,14 @@ import {
   SidebarAnalysisBlock,
   SidebarBlockNotScheduled,
   SidebarScreening,
-  SummaryBlock,
+  SummaryBlock
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
   scoreWheelDependencies,
-  ScoreWheelParams,
+  ScoreWheelParams
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
@@ -52,7 +52,7 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
-  ScoreJson,
+  ScoreJson
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { getSafeAssessmentResult } from '@/src/pages/api/jobApplications/candidateEmail/utils';
@@ -69,7 +69,7 @@ import EmailIcon from '../../Common/Icons/emailIcon';
 import LinkedInIcon from '../../Common/Icons/linkedinIcon';
 import PhoneIcon from '../../Common/Icons/phoneIcon';
 import InterviewScore, {
-  getInterviewScores,
+  getInterviewScores
   // getOverallInterviewScore,
 } from '../../Common/InterviewScore';
 // import InterviewScore, {
@@ -86,7 +86,7 @@ import {
   getCandidateDetails,
   getScreeningStatus,
   handleOngoingWarning,
-  mapScoreToAnalysis,
+  mapScoreToAnalysis
 } from '../../utils';
 
 const ApplicationDetails = ({
@@ -95,7 +95,7 @@ const ApplicationDetails = ({
   application,
   handleSelectNextApplication,
   handleSelectPrevApplication,
-  hideNextPrev,
+  hideNextPrev
 }: {
   open: boolean;
   onClose: () => void;
@@ -145,7 +145,7 @@ const ApplicationDetails = ({
         width: drawerOpen ? '420px' : '0px',
         height: '100%',
         pointerEvents: drawerOpen ? 'auto' : 'none',
-        overflow: drawerOpen ? 'visible' : 'auto',
+        overflow: drawerOpen ? 'visible' : 'auto'
       }}
     >
       {application ? (
@@ -167,7 +167,7 @@ const ApplicationDetails = ({
 export default ApplicationDetails;
 
 export const DetailedInterviewResultParams = ({
-  resultParamsObj,
+  resultParamsObj
 }: {
   resultParamsObj: any;
 }) => {
@@ -198,7 +198,7 @@ const NewJobApplicationSideDrawer = ({
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
-  hideNextPrev,
+  hideNextPrev
 }: {
   application: JobApplication;
   onClose: () => void;
@@ -210,7 +210,7 @@ const NewJobApplicationSideDrawer = ({
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
-      `${application.candidates.last_name || ''}`,
+      `${application.candidates.last_name || ''}`
   );
   const creationDate = formatTimeStamp(application.applied_at);
 
@@ -229,17 +229,17 @@ const NewJobApplicationSideDrawer = ({
       onClickPrev={{
         onClick: () => handleSelectPrevApplication(),
         style: {
-          display: hideNextPrev ? 'none' : 'block',
-        },
+          display: hideNextPrev ? 'none' : 'block'
+        }
       }}
       onClickNext={{
         onClick: () => handleSelectNextApplication(),
         style: {
-          display: hideNextPrev ? 'none' : 'block',
-        },
+          display: hideNextPrev ? 'none' : 'block'
+        }
       }}
       onClickClose={{
-        onClick: () => onClose(),
+        onClick: () => onClose()
       }}
       slotSocialLink={<SocialsBlock application={application} />}
       isOverviewVisible={overview.valid}
@@ -277,7 +277,7 @@ const NewJobApplicationSideDrawer = ({
 };
 
 const SocialsBlock: React.FC<{ application: JobApplication }> = ({
-  application,
+  application
 }) => {
   const linkedin = getCandidateDetails(application, 'linkedin');
   const phone = getCandidateDetails(application, 'phone');
@@ -385,8 +385,8 @@ export const AnalysisBlockSection: React.FC<{
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${collapse ? '180deg' : '0deg'})`,
-        },
+          transform: `rotate(${collapse ? '180deg' : '0deg'})`
+        }
       }}
       slotBody={
         <Collapse in={collapse}>
@@ -405,7 +405,7 @@ const AssessmentSection: React.FC<{
   const { section } = useJobApplications();
   const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
     application.status_emails_sent,
-    getSafeAssessmentResult(application?.assessment_results),
+    getSafeAssessmentResult(application?.assessment_results)
   );
   if (isNotInvited && section === JobApplicationSections.ASSESSMENT)
     return <NewInterviewStatus application={application} pending={false} />;
@@ -416,7 +416,7 @@ const AssessmentSection: React.FC<{
 
 const NewInterviewStatus = ({
   application,
-  pending,
+  pending
 }: {
   application: JobApplication;
   pending: boolean;
@@ -427,8 +427,8 @@ const NewInterviewStatus = ({
     setCardStates,
     cardStates: {
       checkList: { disabled, list },
-      disabledList,
-    },
+      disabledList
+    }
   } = useJobApplications();
   const [collapse, setCollapse] = useState(false);
   const status = {
@@ -436,7 +436,7 @@ const NewInterviewStatus = ({
     description: pending
       ? 'The candidate has received an assessment invitation but has not yet taken the assessment.'
       : 'The candidate has not been invited for assesment yet. ',
-    btnText: pending ? 'Resend link' : 'Invite now',
+    btnText: pending ? 'Resend link' : 'Invite now'
   };
   const disable =
     disabledList.has(application.id) || (disabled && list.has(application.id));
@@ -445,22 +445,22 @@ const NewInterviewStatus = ({
       const purpose = pending ? 'interview_resend' : 'interview';
       setCardStates((prev) => ({
         ...prev,
-        disabledList: new Set([...prev.disabledList, application.id]),
+        disabledList: new Set([...prev.disabledList, application.id])
       }));
       await handleJobApplicationSectionUpdate(
         {
           source: section,
-          destination: null,
+          destination: null
         },
         [purpose],
-        new Set([application.id]),
+        new Set([application.id])
       );
       setCardStates((prev) => {
         return {
           ...prev,
           disabledList: new Set(
-            [...prev.disabledList].filter((e) => e === application.id),
-          ),
+            [...prev.disabledList].filter((e) => e === application.id)
+          )
         };
       });
     } else {
@@ -473,7 +473,7 @@ const NewInterviewStatus = ({
       style={{
         opacity: disable ? 0.4 : 1,
         transition: '0.5s',
-        pointerEvents: disable ? 'none' : 'auto',
+        pointerEvents: disable ? 'none' : 'auto'
       }}
     >
       <InterviewResultStatus
@@ -489,12 +489,12 @@ const NewInterviewStatus = ({
                   onClick: () => {
                     navigator.clipboard
                       .writeText(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`
                       )
                       .then(() => {
                         toast.success('Interview link copied');
                       });
-                  },
+                  }
                 }}
                 slotResendButton={
                   <ButtonPrimaryOutlinedRegular
@@ -510,8 +510,8 @@ const NewInterviewStatus = ({
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
-            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-          },
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`
+          }
         }}
       />
     </Stack>
@@ -519,7 +519,7 @@ const NewInterviewStatus = ({
 };
 
 const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
-  application,
+  application
 }) => {
   const { job } = useJobApplications();
   const result = getInterviewScores(application, job);
@@ -532,8 +532,8 @@ const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-        },
+          transform: `rotate(${collapse ? '0deg' : '180deg'})`
+        }
       }}
       slotInterviewFeedbackScore={
         result && (
@@ -549,7 +549,7 @@ const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
 };
 
 const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
-  application,
+  application
 }) => {
   const router = useRouter();
   const { section } = useJobApplications();
@@ -560,19 +560,20 @@ const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
         style={{
           backgroundColor: '#f7f9fb',
           padding: '16px',
-          borderRadius: '8px',
+          borderRadius: '8px'
         }}
       >
         <SidebarBlockNotScheduled
           onClickSchedule={{
             onClick: () => {
-              localStorage.setItem('sch_job_id', application.job_id.toString());
               router.push(
-                `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${application.id}`,
+                `${pageRoutes.SCHEDULING}/application/${application.id}`,
                 undefined,
-                { shallow: true },
+                {
+                  shallow: true
+                }
               );
-            },
+            }
           }}
         />
       </Stack>
@@ -581,7 +582,7 @@ const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
 };
 
 const InterviewScheduled: FC<{ application: JobApplication }> = ({
-  application,
+  application
 }) => {
   const { push } = useRouter();
   const { members } = useAuthDetails();
@@ -607,20 +608,21 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
       }`}
       onClickViewScheduler={{
         onClick: () => {
-          localStorage.setItem('sch_job_id', application.job_id.toString());
           push(
-            `${pageRoutes.SCHEDULING}?tab=allSchedules&application_id=${application.id}`,
+            `${pageRoutes.SCHEDULING}/application/${application.id}`,
             undefined,
-            { shallow: true },
+            {
+              shallow: true
+            }
           );
-        },
+        }
       }}
       textStatus={capitalize(schedule.status)}
       propsBgColor={{
         style: {
           backgroundColor:
-            schedule.status == 'completed' ? '#D1E8DF80' : '#CEE2F2',
-        },
+            schedule.status == 'completed' ? '#D1E8DF80' : '#CEE2F2'
+        }
       }}
       textHeader={schedule.schedule_name}
       slotMemberImage={
@@ -629,8 +631,8 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
             '& .MuiAvatar-root': {
               width: '24px',
               height: '24px',
-              fontSize: '12px',
-            },
+              fontSize: '12px'
+            }
           }}
           total={schedule.panel_users.length}
         >
@@ -638,7 +640,7 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
             .slice(0, 3)
             .map((rel: { user_id: string; must: 'string' }) => {
               const member = members.filter(
-                (member) => member.user_id === rel.user_id,
+                (member) => member.user_id === rel.user_id
               )[0];
               return (
                 <MuiAvatar
@@ -661,7 +663,7 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
 export const OverviewBlock = ({
   title,
   description,
-  bgColor = '#f5fcfc',
+  bgColor = '#f5fcfc'
 }: {
   title: string;
   description: string;
@@ -681,14 +683,14 @@ export const OverviewBlock = ({
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-        },
+          transform: `rotate(${collapse ? '0deg' : '180deg'})`
+        }
       }}
       title={title}
       description={displayText}
       descriptionTextProps={{
         onClick: () => setCollapse((prev) => !prev),
-        style: { cursor: 'pointer' },
+        style: { cursor: 'pointer' }
       }}
       wrapperProps={{ style: { backgroundColor: bgColor } }}
     />
@@ -736,11 +738,11 @@ const ResumeViewer: React.FC<{
       sx={{
         '& .MuiDialog-paper': {
           borderRadius: '0px !important',
-          border: 'none !important',
+          border: 'none !important'
         },
         '.MuiDialog-container': {
-          height: 'auto',
-        },
+          height: 'auto'
+        }
       }}
       fullWidth
       maxWidth={'lg'}
@@ -774,10 +776,10 @@ const ResumeBlock: React.FC<{
           onClickViewResume={{
             onClick: () => {
               setOpenResume(true);
-            },
+            }
           }}
           onClickDownloadResume={{
-            onClick: async () => await handleDownload(),
+            onClick: async () => await handleDownload()
           }}
         />
       );
@@ -787,7 +789,7 @@ const ResumeBlock: React.FC<{
 };
 
 export const InterviewResultParams = ({
-  resultParamsObj,
+  resultParamsObj
 }: {
   resultParamsObj: ReturnType<typeof getInterviewScores>;
 }) => {
@@ -829,7 +831,7 @@ export const NewResumeScoreDetails = ({
   application,
   job,
   result,
-  setOpenResume,
+  setOpenResume
 }: {
   application: JobApplication;
   job: JobTypeDashboard;
@@ -859,8 +861,8 @@ export const NewResumeScoreDetails = ({
     <CandidateResumeScore
       textStyleProps={{
         style: {
-          fontSize: result ? '18px' : '14px',
-        },
+          fontSize: result ? '18px' : '14px'
+        }
       }}
       slotScoreGraph={resumeScoreWheel}
       textScoreState={resultObj.text}
@@ -869,10 +871,10 @@ export const NewResumeScoreDetails = ({
         onClick: () => {
           setOpenResume(true);
           posthog.capture('View Resume Clicked');
-        },
+        }
       }}
       onClickDownloadResume={{
-        onClick: async () => await handleDownload(),
+        onClick: async () => await handleDownload()
       }}
       propsLink={{ href: application.candidate_files.file_url }}
       slotFeedbackScore={<ResumeResultParams resultParamsObj={jdScoreObj} />}
@@ -881,7 +883,7 @@ export const NewResumeScoreDetails = ({
 };
 
 export const ResumeResultParams = ({
-  resultParamsObj,
+  resultParamsObj
 }: {
   resultParamsObj: ScoreWheelParams;
 }) => {
@@ -915,19 +917,19 @@ export const ResumeResultParams = ({
 };
 
 const PhoneScreening: React.FC<{ application: JobApplication }> = ({
-  application,
+  application
 }) => {
   const {
     section,
     cardStates: {
       disabledList,
-      checkList: { list, disabled },
-    },
+      checkList: { list, disabled }
+    }
   } = useJobApplications();
 
   const { isSubmitted } = getScreeningStatus(
     application.status_emails_sent,
-    application.phone_screening,
+    application.phone_screening
   );
 
   const showComponent =
@@ -947,7 +949,7 @@ const PhoneScreening: React.FC<{ application: JobApplication }> = ({
 
 const PhoneScreeningSection = ({
   application,
-  disable,
+  disable
 }: {
   application: JobApplication;
   disable: boolean;
@@ -960,22 +962,22 @@ const PhoneScreeningSection = ({
       const purpose = resend ? 'phone_screening_resend' : 'phone_screening';
       setCardStates((prev) => ({
         ...prev,
-        disabledList: new Set([...prev.disabledList, application.id]),
+        disabledList: new Set([...prev.disabledList, application.id])
       }));
       await handleJobApplicationSectionUpdate(
         {
           source: section,
-          destination: null,
+          destination: null
         },
         [purpose],
-        new Set([application.id]),
+        new Set([application.id])
       );
       setCardStates((prev) => {
         return {
           ...prev,
           disabledList: new Set(
-            [...prev.disabledList].filter((e) => e === application.id),
-          ),
+            [...prev.disabledList].filter((e) => e === application.id)
+          )
         };
       });
     } else {
@@ -985,19 +987,19 @@ const PhoneScreeningSection = ({
 
   const { isNotInvited, isPending, phoneScreening } = getScreeningStatus(
     application.status_emails_sent,
-    application.phone_screening,
+    application.phone_screening
   );
 
   const status = {
     description: isPending
       ? 'The candidate has received a screening invitation but has not yet taken the screening.'
       : 'The candidate has not been invited for screening yet. ',
-    btnText: isPending ? 'Resend Invite' : 'Invite now',
+    btnText: isPending ? 'Resend Invite' : 'Invite now'
   };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${application.job_id}&application_id=${application.id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${application.job_id}&application_id=${application.id}`
     );
     toast.success('Interview link copied!');
   };
@@ -1010,7 +1012,7 @@ const PhoneScreeningSection = ({
         <AssessmentInvite
           textDescription={status.description}
           onClickCopyInterviewLink={{
-            onClick: () => handleCopy(),
+            onClick: () => handleCopy()
           }}
           slotResendButton={
             <ButtonPrimaryOutlinedRegular
@@ -1032,8 +1034,8 @@ const PhoneScreeningSection = ({
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
-            transform: `rotate(${collapse ? '180deg' : '0deg'})`,
-          },
+            transform: `rotate(${collapse ? '180deg' : '0deg'})`
+          }
         }}
       />
     );
@@ -1047,8 +1049,8 @@ const PhoneScreeningSection = ({
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
-            transform: `rotate(${collapse ? '180deg' : '0deg'})`,
-          },
+            transform: `rotate(${collapse ? '180deg' : '0deg'})`
+          }
         }}
       />
     );
@@ -1066,15 +1068,15 @@ const PhoneScreeningSection = ({
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
-          transform: `rotate(${collapse ? '180deg' : '0deg'})`,
-        },
+          transform: `rotate(${collapse ? '180deg' : '0deg'})`
+        }
       }}
     />
   );
 };
 
 const ScreeningQuestions = ({
-  phoneScreening,
+  phoneScreening
 }: {
   phoneScreening: PhoneScreeningResponseType[];
 }) => {
@@ -1114,19 +1116,19 @@ const fetchFile = async (application: JobApplication) => {
   await axios({
     url: application?.candidate_files.file_url ?? '#',
     method: 'GET',
-    responseType: 'blob',
+    responseType: 'blob'
   }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
     const ext = application.candidate_files.file_url.slice(
-      application.candidate_files.file_url.lastIndexOf('.'),
+      application.candidate_files.file_url.lastIndexOf('.')
     );
     link.setAttribute(
       'download',
       `${application.candidates.first_name}_${
         application.candidates.last_name
-      }_Resume${ext ?? '.pdf'}`,
+      }_Resume${ext ?? '.pdf'}`
     );
     posthog.capture('Download Resume Clicked');
     document.body.appendChild(link);
@@ -1138,7 +1140,7 @@ const fetchFile = async (application: JobApplication) => {
 
 export const NewEducationDetails = ({
   schools,
-  relevance,
+  relevance
 }: {
   schools;
   relevance: ScoreJson['relevance']['schools'];
@@ -1177,8 +1179,8 @@ export const NewEducationDetails = ({
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
-            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-          },
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`
+          }
         }}
         slotEducationCard={
           <Collapse in={collapse}>
@@ -1195,7 +1197,7 @@ export const NewEducationDetails = ({
 
 export const NewExperienceDetails = ({
   positions,
-  relevance,
+  relevance
 }: {
   positions;
   relevance: ScoreJson['relevance']['positions'];
@@ -1220,7 +1222,7 @@ export const NewExperienceDetails = ({
             isBadgeVisible={
               relevance && relevance[i] && relevance[i] === 'high'
             }
-          />,
+          />
         );
       }
       return acc;
@@ -1231,8 +1233,8 @@ export const NewExperienceDetails = ({
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
-            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-          },
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`
+          }
         }}
         slotCandidateExperienceCard={
           <Collapse in={collapse} style={{ gap: '2px' }}>
@@ -1249,7 +1251,7 @@ export const NewExperienceDetails = ({
 
 const timeFormat = (
   obj: { year: number; month: number },
-  isEndDate: boolean = false,
+  isEndDate: boolean = false
 ) => {
   if (obj) {
     if (obj.month) {
@@ -1272,7 +1274,7 @@ const timeRange = (startDate: string, endDate: string) => {
 
 export const NewSkillDetails = ({
   skills,
-  relevance,
+  relevance
 }: {
   skills;
   relevance: ScoreJson['relevance']['skills'];
@@ -1287,8 +1289,8 @@ export const NewSkillDetails = ({
               ...acc,
               relevant: [
                 ...acc.relevant,
-                <CandidateSkillPills key={i} textSkill={key} />,
-              ],
+                <CandidateSkillPills key={i} textSkill={key} />
+              ]
             };
           return {
             ...acc,
@@ -1298,13 +1300,13 @@ export const NewSkillDetails = ({
                 key={i}
                 textSkill={key}
                 propsBgColor={{
-                  style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
+                  style: { backgroundColor: 'rgba(248, 249, 249, 1)' }
                 }}
-              />,
-            ],
+              />
+            ]
           };
         },
-        { relevant: [], others: [] },
+        { relevant: [], others: [] }
       );
       return (
         <CandidateSkill
@@ -1312,8 +1314,8 @@ export const NewSkillDetails = ({
             onClick: () => setCollapse((prev) => !prev),
             style: {
               cursor: 'pointer',
-              transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-            },
+              transform: `rotate(${collapse ? '0deg' : '180deg'})`
+            }
           }}
           slotCandidateSkill={
             <Collapse in={collapse}>
@@ -1337,7 +1339,7 @@ export const NewSkillDetails = ({
         key={i}
         textSkill={skill}
         propsBgColor={{
-          style: { backgroundColor: 'rgba(248, 249, 249, 1)' },
+          style: { backgroundColor: 'rgba(248, 249, 249, 1)' }
         }}
       />
     ));
@@ -1347,8 +1349,8 @@ export const NewSkillDetails = ({
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
-            transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-          },
+            transform: `rotate(${collapse ? '0deg' : '180deg'})`
+          }
         }}
         slotCandidateSkill={
           <Collapse in={collapse}>

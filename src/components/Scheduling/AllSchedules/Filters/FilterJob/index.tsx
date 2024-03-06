@@ -1,5 +1,5 @@
 import { Popover, Stack, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
@@ -46,6 +46,10 @@ function FilterJob() {
       setFilter({ job_ids: [] });
     };
   }, []);
+
+  const allJobs = useMemo(() => {
+    return jobsData?.jobs?.filter((job) => job.status === 'published');
+  }, [jobsData?.jobs]);
 
   return (
     <>
@@ -108,7 +112,7 @@ function FilterJob() {
         }}
       >
         <FilterDropdown
-          slotOption={jobsData?.jobs?.map((job) => {
+          slotOption={allJobs?.map((job) => {
             return (
               <Stack
                 key={job.id}

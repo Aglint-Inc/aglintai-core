@@ -2356,6 +2356,17 @@ export type Database = {
           schedule: Json
         }[]
       }
+      fetch_interview_data_by_application_id: {
+        Args: {
+          app_id: string
+        }
+        Returns: {
+          applications: Json
+          candidates: Json
+          public_jobs: Json
+          schedule: Json
+        }[]
+      }
       fetch_interview_data_page_number: {
         Args: {
           rec_id: string

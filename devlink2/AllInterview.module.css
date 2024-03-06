@@ -76,7 +76,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 20% 15% 15% 10% 20% 20%;
+  grid-template-columns: 25% 15% 20% 17% 23%;
   grid-template-rows: auto;
 
   border-top: 1px solid #e9ebed;
@@ -107,6 +107,21 @@
 
 @media screen and (min-width: 1440px) {
   .allinterview_header_cell.sfesrf {
+    display: none;
+  }
+}
+
+.allinterview_header_cell.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
     display: none;
   }
 }

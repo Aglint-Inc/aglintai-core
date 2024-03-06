@@ -13,7 +13,7 @@ import {
   RcCheckbox,
   ScheduleSettings,
   TimeRangeInput,
-  WorkingHourDay,
+  WorkingHourDay
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { SocialsType } from '@/src/types/data.types';
@@ -25,7 +25,7 @@ import SelectTime from './Components/SelectTime';
 import {
   DailyLimitType,
   schedulingSettingType,
-  WeeklyLimitType,
+  WeeklyLimitType
 } from './types';
 import { hoursList } from './utils';
 import UITextField from '../../Common/UITextField';
@@ -36,12 +36,12 @@ function SchedulingSettings({ setSaving }) {
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
-    value: 2,
+    value: 2
   });
   const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
     useState<DailyLimitType>({
       type: 'Hours',
-      value: 16,
+      value: 16
     });
 
   const [workingHours, setWorkingHours] = useState([]);
@@ -131,7 +131,7 @@ function SchedulingSettings({ setSaving }) {
   function initialLoad() {
     if (recruiter) {
       const schedulingSettingData = cloneDeep(
-        recruiter?.scheduling_settings,
+        recruiter?.scheduling_settings
       ) as schedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
@@ -140,10 +140,10 @@ function SchedulingSettings({ setSaving }) {
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
       setSelectedDailyLimit({
-        ...schedulingSettingData.interviewLoad.dailyLimit,
+        ...schedulingSettingData.interviewLoad.dailyLimit
       });
       setSelectedWeeklyLimit({
-        ...schedulingSettingData.interviewLoad.weeklyLimit,
+        ...schedulingSettingData.interviewLoad.weeklyLimit
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff]);
@@ -155,11 +155,11 @@ function SchedulingSettings({ setSaving }) {
       schedulingSettingObj = {
         interviewLoad: {
           dailyLimit: selectedDailyLimit,
-          weeklyLimit: selectedWeeklyLimit,
+          weeklyLimit: selectedWeeklyLimit
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
-        totalDaysOff: daysOff,
+        totalDaysOff: daysOff
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -173,7 +173,7 @@ function SchedulingSettings({ setSaving }) {
     selectedWeeklyLimit,
     daysOff,
     workingHours,
-    selectedTimeZone,
+    selectedTimeZone
   ]);
 
   useEffect(() => {
@@ -197,8 +197,8 @@ function SchedulingSettings({ setSaving }) {
       setRecruiter(
         {
           ...updatedRecruiter,
-          socials: updatedRecruiter?.socials as unknown as SocialsType,
-        }!,
+          socials: updatedRecruiter?.socials as unknown as SocialsType
+        }!
       );
     }
     setSaving('saved');
@@ -251,7 +251,7 @@ function SchedulingSettings({ setSaving }) {
                     placeholder='Ex. Healthcare'
                     InputProps={{
                       ...params.InputProps,
-                      autoComplete: 'new-password',
+                      autoComplete: 'new-password'
                     }}
                   />
                 );
@@ -307,7 +307,7 @@ function SchedulingSettings({ setSaving }) {
 
                                 return [...data];
                               });
-                            },
+                            }
                           }}
                           isChecked={day.isWorkDay}
                           text={capitalize(day.day)}
@@ -321,14 +321,14 @@ function SchedulingSettings({ setSaving }) {
                                 .set(
                                   'hour',
                                   parseInt(
-                                    day.timeRange.startTime.split(':')[0],
-                                  ),
+                                    day.timeRange.startTime.split(':')[0]
+                                  )
                                 )
                                 .set(
                                   'minute',
                                   parseInt(
-                                    day.timeRange.startTime.split(':')[1],
-                                  ),
+                                    day.timeRange.startTime.split(':')[1]
+                                  )
                                 )}
                               onSelect={selectStartTime}
                               i={i}
@@ -339,11 +339,11 @@ function SchedulingSettings({ setSaving }) {
                               value={dayjs()
                                 .set(
                                   'hour',
-                                  parseInt(day.timeRange.endTime.split(':')[0]),
+                                  parseInt(day.timeRange.endTime.split(':')[0])
                                 )
                                 .set(
                                   'minute',
-                                  parseInt(day.timeRange.endTime.split(':')[1]),
+                                  parseInt(day.timeRange.endTime.split(':')[1])
                                 )}
                               onSelect={selectEndTime}
                               i={i}
@@ -358,7 +358,7 @@ function SchedulingSettings({ setSaving }) {
           </>
         }
         onClickAddDate={{
-          onClick: openAddCompany,
+          onClick: openAddCompany
         }}
         slotDayOff={
           <>
@@ -366,7 +366,7 @@ function SchedulingSettings({ setSaving }) {
               return (
                 <DayOff
                   onClickRemove={{
-                    onClick: () => removeDayOff(item),
+                    onClick: () => removeDayOff(item)
                   }}
                   key={i}
                   textDate={item}
@@ -380,7 +380,7 @@ function SchedulingSettings({ setSaving }) {
               onClose={handleClose}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
             >
               <DateSelect

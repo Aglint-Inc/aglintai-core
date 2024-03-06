@@ -7,7 +7,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 20% 15% 15% 10% 20% 20%;
+  grid-template-columns: 25% 15% 20% 17% 23%;
   grid-template-rows: auto;
 
   border-bottom: 1px solid #e9ebed;
@@ -44,6 +44,21 @@
 
 .candidate_cell.width-300 {
   width: 300px;
+}
+
+.candidate_cell.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .div-block-958 {
@@ -146,17 +161,6 @@
   color: #c2c8cc;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
@@ -214,6 +218,10 @@
 
 .relative {
   position: relative;
+}
+
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }
 
 .status_pill {

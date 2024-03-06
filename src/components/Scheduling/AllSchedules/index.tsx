@@ -4,32 +4,22 @@ import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import {
-  AllInterview,
-  AllInterviewEmpty,
-  CandidatesListPagination
-} from '@/devlink2';
+import { AllInterview, CandidatesListPagination } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import AllList from './AllList';
 import CreateDialog from './CreateDialog';
 import DeleteScheduleDialog from './DeleteDialog';
+import AllFilters from './Filters';
 import DateFilter from './Filters/DateFilter';
-import DateRangeFilterComp from './Filters/DateRangeFilter';
-import FilterInterviewPanel from './Filters/FilterInterviewPanel';
-import FilterJob from './Filters/FilterJob';
 import AddFilterComp from './Filters/FilterMenu';
-import FilterScheduleType from './Filters/FilterScheduleType';
-import FilterSearchField from './Filters/FilterSearchField';
-import FilterStatus from './Filters/FilterStatus';
-import ListCardInterviewSchedule from './ListCard';
 import RescheduleDialog from './RescheduleDialog';
 import SidePanel from './SidePanel';
 import {
   ApplicationList,
-  FilterType,
   setApplicationList,
   setFetching,
   setIsCancelOpen,
@@ -40,24 +30,22 @@ import {
   useInterviewSchedulingStore
 } from './store';
 import { getPaginationDB } from './utils';
-import { useSchedulingStore } from '../Modules/store';
 
 function AllSchedules() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const [pageLoad, setPageLoad] = useState(true);
-  const {
-    applicationList,
-    filter,
-    initialLoading,
-    pagination,
-    filterVisible,
-    fetching,
-    selectedApplication
-  } = useInterviewSchedulingStore();
-
-  const interviewModules = useSchedulingStore(
-    (state) => state.interviewModules
+  const applicationList = useInterviewSchedulingStore(
+    (state) => state.applicationList
+  );
+  const filter = useInterviewSchedulingStore((state) => state.filter);
+  const pagination = useInterviewSchedulingStore((state) => state.pagination);
+  const initialLoading = useInterviewSchedulingStore(
+    (state) => state.initialLoading
+  );
+  const fetching = useInterviewSchedulingStore((state) => state.fetching);
+  const selectedApplication = useInterviewSchedulingStore(
+    (state) => state.selectedApplication
   );
 
   // separate useeffect for filter except text search because no need to debounce
@@ -120,16 +108,6 @@ function AllSchedules() {
     }
   }, []);
 
-  useEffect(() => {
-    if (router.isReady && router.query.application_id && !initialLoading) {
-      const application = applicationList.find(
-        (app) => app.applications.id === router.query.application_id
-      );
-      setSelectedApplication(application);
-      viaJobHandler(application);
-    }
-  }, [router, applicationList]);
-
   const fetchInterviewData = async ({ page = 1 }: { page: number }) => {
     try {
       setPagination({ page });
@@ -161,30 +139,6 @@ function AllSchedules() {
     }
   };
 
-  const viaJobHandler = async (application: ApplicationList) => {
-    try {
-      const job_id = localStorage.getItem('sch_job_id');
-      if (job_id) {
-        const { data: pageNumber, error } = await supabase.rpc(
-          'fetch_interview_data_page_number',
-          {
-            rec_id: recruiter.id,
-            application_id: router.query.application_id as string
-          }
-        );
-        if (!error && pageNumber !== 1) {
-          setPagination({ page: pageNumber });
-        }
-        if (!application?.schedule) {
-          setIsCreateScheduleOpen(true);
-        }
-        localStorage.removeItem('sch_job_id');
-      }
-    } catch {
-      //
-    }
-  };
-
   const getPagination = async () => {
     try {
       const totalCount = await getPaginationDB({
@@ -202,16 +156,6 @@ function AllSchedules() {
     } catch (error) {
       toast.error('Error fetching interview data');
     }
-  };
-
-  const onClickCard = (app: ApplicationList) => {
-    router.push(
-      `${pageRoutes.SCHEDULING}/application/${app.applications.id}`,
-      undefined,
-      {
-        shallow: true
-      }
-    );
   };
 
   const onClickCancel = async () => {
@@ -288,59 +232,9 @@ function AllSchedules() {
         }
         slotSidebar={<SidePanel />}
         slotAddFilter={<AddFilterComp />}
-        slotFilterButton={
-          <>
-            <FilterSearchField />
-            {filterVisible.map((filterType) => {
-              switch (filterType) {
-                case FilterType.relatedJobs:
-                  return <FilterJob key={filterType} />;
-                case FilterType.interviewPanels:
-                  return <FilterInterviewPanel key={filterType} />;
-                case FilterType.dateRange:
-                  return <DateRangeFilterComp key={filterType} />;
-                case FilterType.scheduleType:
-                  return <FilterScheduleType key={filterType} />;
-                case FilterType.status:
-                  return <FilterStatus key={filterType} />;
-                default:
-                  return null;
-              }
-            })}
-          </>
-        }
+        slotFilterButton={<AllFilters />}
         slotDate={<DateFilter />}
-        slotAllInterviewCard={
-          <Stack
-            style={{
-              opacity: fetching ? 0.5 : 1,
-              pointerEvents: fetching ? 'none' : 'auto'
-            }}
-          >
-            {!initialLoading && (
-              <>
-                {applicationList.length === 0 && <AllInterviewEmpty />}
-                {applicationList.map((app) => {
-                  const panel_name = interviewModules.filter(
-                    (module) => module.id === app.schedule?.panel_id
-                  )[0]?.name;
-                  return (
-                    <ListCardInterviewSchedule
-                      isSelected={
-                        app.applications.id ===
-                        selectedApplication?.applications.id
-                      }
-                      key={app.applications.id}
-                      app={app}
-                      onClickCard={onClickCard}
-                      panel_name={panel_name}
-                    />
-                  );
-                })}
-              </>
-            )}
-          </Stack>
-        }
+        slotAllInterviewCard={<AllList />}
       />
     </>
   );
