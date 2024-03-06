@@ -6,7 +6,7 @@ import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScre
 
 import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
-const SideBar = () => {
+const ScreeningSideBar = () => {
   const { handleUpdateFormFields } = useJobForm();
   const { recruiterUser } = useAuthDetails();
   const { template_id } = usePhoneScreening();
@@ -44,4 +44,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default ScreeningSideBar;

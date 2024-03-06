@@ -227,7 +227,7 @@ const Pipeline = () => {
 const Modules = () => {
   return (
     <>
-      <ModuleCard slotIcon={<ScreeningIcon />} textName={'Screening'} />
+      <ScreeningModule />
       <AssessmentModule />
       <ModuleCard slotIcon={<SchedulingIcon />} textName={'Scheduling'} />
     </>
@@ -257,4 +257,26 @@ const AssessmentModule = () => {
 
 const getPlural = (count: number, label: string) => {
   return `${count} ${capitalize(label)}${count === 1 ? '' : 's'}`;
+};
+
+const ScreeningModule = () => {
+  const { job } = useJobDashboard();
+  const { push } = useRouter();
+
+  const handleClick = () => {
+    push(`/jobs/${job.id}/screening`);
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textDescription={
+        job.phone_screen_enabled
+          ? `Phone screening is enabled for this job`
+          : 'Phone screening has not been enabled for this job.'
+      }
+      textName={'Screening'}
+      slotIcon={<ScreeningIcon />}
+      slotEnableDisable={<EnableDisable isEnabled={job.phone_screen_enabled} />}
+    />
+  );
 };

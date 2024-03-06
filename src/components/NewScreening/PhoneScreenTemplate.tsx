@@ -6,7 +6,7 @@ import { Breadcrum, PageLayout } from '@/devlink2';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
 import ScreeningComp from './TemplateComps/ScreeningComp';
-import SideBar from './TemplateComps/SideBar';
+import ScreeningSideBar from './TemplateComps/SideBar';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 
 export const ScreeningDashboardBread = () => {
@@ -56,7 +56,7 @@ const PhoneScreenTemplate = () => {
                 <SyncStatus status={phoneScreenignForm.syncStatus} />
               </>
             }
-            slotSideSection={<SideBar />}
+            slotSideSection={<ScreeningSideBar />}
           />
         }
       />
