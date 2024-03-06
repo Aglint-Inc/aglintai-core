@@ -11,19 +11,15 @@ export type scoreMatchesScore = {
 
 export const grapDependencies = {
   colors: [
-    '#E9D2F1',
-    '#95A4FC',
     '#B1E3FF',
-    '#FFD3B6',
-    '#BAEDBD',
-    '#A8C5DA',
     '#A1E3CB',
-    '#FFCCCB',
-    '#C9FFE5',
-    '#FFDF6B',
-    '#FFAAA5',
+    '#A8C5DA',
+    '#949494',
+    '#BAEDBD',
+    '#95A4FC',
+    '#C4D2CD'
   ],
-  defer: ['others', 'unknown'],
+  defer: ['others', 'unknown']
 };
 
 export const getOrderedGraphValues = (data: { [id: string]: number }) => {
@@ -40,11 +36,12 @@ export const getOrderedGraphValues = (data: { [id: string]: number }) => {
   const result = Object.entries(safeData)
     .sort((a, b) => b[1] - a[1])
     .reduce((acc, curr, i) => {
-      acc.push({
-        name: curr[0],
-        count: curr[1],
-        color: grapDependencies.colors[i % grapDependencies.colors.length],
-      });
+      if (curr[1])
+        acc.push({
+          name: curr[0],
+          count: curr[1],
+          color: grapDependencies.colors[i % grapDependencies.colors.length]
+        });
       return acc;
     }, []) as { name: string; count: number; color: string }[];
   (result.length + 1) % grapDependencies.colors.length;
@@ -54,7 +51,7 @@ export const getOrderedGraphValues = (data: { [id: string]: number }) => {
     result.push({
       name: key,
       count: value,
-      color: grapDependencies.colors[colorPosition],
+      color: grapDependencies.colors[colorPosition]
     });
   });
   return result;

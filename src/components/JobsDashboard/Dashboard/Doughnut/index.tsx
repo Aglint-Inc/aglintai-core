@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Stack, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -8,11 +9,13 @@ import {
   Tooltip
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
-import React from 'react';
+import React, { FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
+import { NoData } from '@/devlink3';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 
+import { DashboardGraphOptions } from '..';
 import { getOrderedGraphValues } from '../utils';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -35,14 +38,17 @@ const DoughnutChart: React.FC<{
       {
         data: counts,
         backgroundColor: colors,
-        borderColor: colors
+        borderColor: 'transparent',
+        hoverBorderColor: 'transparent',
+        spacing: 4,
+        borderRadius: 4
       }
     ]
   };
   const matches = useMediaQuery('(min-width:1920px)');
 
   return (
-    <Stack width={matches ? '350px' : '250px'} style={{ aspectRatio: 1 }}>
+    <Stack width={matches ? '300px' : '250px'} style={{ aspectRatio: 1 }}>
       <Doughnut
         options={{
           responsive: true,
@@ -66,13 +72,15 @@ const DoughnutChart: React.FC<{
   );
 };
 
-const DashboardDoughnutChart = () => {
+const DashboardDoughnutChart: FC<{
+  option: keyof DashboardGraphOptions<'locations'>;
+}> = ({ option }) => {
   const {
     analytics: { locations: locationPool },
     job: { count }
   } = useJobDashboard();
-  const locations = locationPool?.city ?? null;
-  if (!locations) return <></>;
+  const locations = locationPool?.[option] ?? null;
+  if (!locations) return <NoData />;
   const totalCount = Object.values(count).reduce((acc, curr) => {
     acc += curr;
     return acc;
@@ -114,7 +122,9 @@ const DashboardDoughnutChart = () => {
                       borderRadius: '100%'
                     }}
                   />
-                  <Typography variant='body2'>{capitalize(name)}</Typography>
+                  <Typography variant='body2' style={{ textWrap: 'nowrap' }}>
+                    {capitalize(name)}
+                  </Typography>
                 </Stack>
                 <Typography variant='body2'>
                   {((count / totalCount) * 100).toFixed(0)}%

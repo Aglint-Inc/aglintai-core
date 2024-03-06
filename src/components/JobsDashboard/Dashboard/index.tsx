@@ -13,7 +13,9 @@ import {
 } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import {
+  DarkPill,
   EnableDisable,
+  GraphBlock,
   JobDashboard as JobDashboardDev,
   JobDashboardTopRight,
   ModuleCard,
@@ -28,6 +30,7 @@ import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './Doughnut';
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
+// import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
 import { AddCandidates } from '../../JobApplicationsDashboard';
@@ -55,7 +58,7 @@ const getCounts = (
     (acc, [key, value]) => {
       acc[key] = {
         count: getPlural(value, 'candidate'),
-        percentage: `${Math.trunc((value / counts.total) * 100)}%`
+        percentage: `${value ? Math.trunc((value / counts.total) * 100) : 0}%`
       };
       return acc;
     },
@@ -100,8 +103,8 @@ const Dashboard = () => {
             textBelowAverageCount={score_matches.poorMatch.count}
             textNotAMatchPercentage={score_matches.noMatch.percentage}
             textNotAMatchCount={score_matches.noMatch.count}
-            slotLocationGraph={<DashboardDoughnutChart />}
-            slotSkillGraph={<DashboardBarChart />}
+            slotLocationGraphBlock={<Doughnut />}
+            slotSkillGraphBlock={<Bars />}
             slotPipeline={<Pipeline />}
             slotModuleCard={<Modules />}
             textCandidateCount={counts.total}
@@ -227,9 +230,18 @@ const Pipeline = () => {
 const Modules = () => {
   return (
     <>
-      <ScreeningModule />
+      <ModuleCard
+        slotIcon={<SchedulingIcon />}
+        textName={'Interview Plan (Scheduler)'}
+        textDescription={'0 interview modules linked'}
+        slotEnableDisable={<></>}
+      />
       <AssessmentModule />
-      <ModuleCard slotIcon={<SchedulingIcon />} textName={'Scheduling'} />
+      <ScreeningModule />
+      {/* <ModuleCard
+        slotIcon={<EmailTemplateIcon />}
+        textName={'Email Templates'}
+      /> */}
     </>
   );
 };
@@ -251,6 +263,63 @@ const AssessmentModule = () => {
       textName={'Assessment'}
       slotIcon={<AssessmentIcon />}
       slotEnableDisable={<EnableDisable isEnabled={job.assessment} />}
+    />
+  );
+};
+
+export type DashboardGraphOptions<
+  T extends keyof ReturnType<typeof useJobDashboard>['analytics']
+> = {
+  // eslint-disable-next-line no-unused-vars
+  [id in keyof ReturnType<typeof useJobDashboard>['analytics'][T]]: string;
+};
+
+const Doughnut = () => {
+  const options: DashboardGraphOptions<'locations'> = {
+    city: 'City',
+    state: 'State',
+    country: 'Country'
+  };
+  const [selection, setSelection] = useState<keyof typeof options>('city');
+  const pills = Object.entries(options).map(([key, value]) => (
+    <DarkPill
+      key={key}
+      isActive={selection === key}
+      textPill={value}
+      onClickPill={{
+        onClick: () => setSelection(key as keyof typeof options)
+      }}
+    />
+  ));
+  return (
+    <GraphBlock
+      slotLocationGraph={<DashboardDoughnutChart option={selection} />}
+      slotDarkPillLocation={pills}
+    />
+  );
+};
+
+const Bars = () => {
+  const options: DashboardGraphOptions<'skills'> = {
+    top_skills: 'Top skills',
+    required_skills: 'Skills mentioned in JD'
+  };
+  const [selection, setSelection] =
+    useState<keyof typeof options>('top_skills');
+  const pills = Object.entries(options).map(([key, value]) => (
+    <DarkPill
+      key={key}
+      isActive={selection === key}
+      textPill={value}
+      onClickPill={{
+        onClick: () => setSelection(key as keyof typeof options)
+      }}
+    />
+  ));
+  return (
+    <GraphBlock
+      slotLocationGraph={<DashboardBarChart option={selection} />}
+      slotDarkPillLocation={pills}
     />
   );
 };
