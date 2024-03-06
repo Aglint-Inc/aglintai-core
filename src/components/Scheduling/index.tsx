@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 
 import { BodyWithSublink, PageLayout } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { SocialsType } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabase/client';
 
 import AllSchedules from './AllSchedules';
 import { Modules } from './Modules/Modules';
@@ -16,6 +19,7 @@ import {
 import MySchedule from './MySchedule';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SettingsScheduling from './Settings';
+import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
 import Icon from '../Common/Icons/Icon';
 import UITextField from '../Common/UITextField';
@@ -23,9 +27,27 @@ import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/S
 
 function SchedulingMainComp() {
   const router = useRouter();
+  const { recruiter, setRecruiter } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
-  const { searchText } = useSchedulingStore();
+  async function updateSettings(schedulingSettingObj: schedulingSettingType) {
+    setSaving('saving');
 
+    const { data: updatedRecruiter, error } = await supabase
+      .from('recruiter')
+      .update({ scheduling_settings: schedulingSettingObj })
+      .eq('id', recruiter.id)
+      .select()
+      .single();
+    if (!error) {
+      setRecruiter(
+        {
+          ...updatedRecruiter,
+          socials: updatedRecruiter?.socials as unknown as SocialsType
+        }!
+      );
+    }
+    setSaving('saved');
+  }
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
@@ -93,7 +115,10 @@ function SchedulingMainComp() {
               ) : router.query.tab == 'emailTemplates' ? (
                 <SchedulingEmailTemplates />
               ) : router.query.tab == 'settings' ? (
-                <SettingsScheduling setSaving={setSaving} />
+                <SettingsScheduling
+                  updateSettings={updateSettings}
+                  initialData={recruiter?.scheduling_settings}
+                />
               ) : (
                 ''
               )
