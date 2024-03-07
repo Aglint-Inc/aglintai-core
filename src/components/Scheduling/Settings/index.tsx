@@ -1,4 +1,11 @@
-import { Autocomplete, Popover, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Chip,
+  IconButton,
+  Popover,
+  Stack,
+  Typography
+} from '@mui/material';
 import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -10,11 +17,13 @@ dayjs.extend(timezone);
 
 import {
   DayOff,
+  KeywordCard,
   RcCheckbox,
   ScheduleSettings,
   TimeRangeInput,
   WorkingHourDay
 } from '@/devlink2';
+import toast from '@/src/utils/toast';
 
 import DateSelect from './Components/DateSelector';
 import MuiSelect from './Components/MuiSelect';
@@ -25,6 +34,8 @@ import {
   WeeklyLimitType
 } from './types';
 import { hoursList } from './utils';
+import FilterInput from '../../CandidateDatabase/Search/FilterInput';
+import Icon from '../../Common/Icons/Icon';
 import UITextField from '../../Common/UITextField';
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -42,6 +53,8 @@ function SchedulingSettings({ updateSettings, initialData }) {
 
   const [workingHours, setWorkingHours] = useState([]);
   const [daysOff, setDaysOff] = useState([]);
+  const [freeKeyWords, setFreeKeywords] = useState([]);
+  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
 
@@ -131,6 +144,10 @@ function SchedulingSettings({ updateSettings, initialData }) {
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff]);
+      setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
+      setSoftConflictsKeyWords(
+        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || []
+      );
     }
   }
 
@@ -143,7 +160,11 @@ function SchedulingSettings({ updateSettings, initialData }) {
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
-        totalDaysOff: daysOff
+        totalDaysOff: daysOff,
+        schedulingKeyWords: {
+          free: freeKeyWords,
+          SoftConflicts: softConflictsKeyWords
+        }
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -157,7 +178,9 @@ function SchedulingSettings({ updateSettings, initialData }) {
     selectedWeeklyLimit,
     daysOff,
     workingHours,
-    selectedTimeZone
+    selectedTimeZone,
+    freeKeyWords,
+    softConflictsKeyWords
   ]);
 
   useEffect(() => {
@@ -185,7 +208,7 @@ function SchedulingSettings({ updateSettings, initialData }) {
         //   <ToggleBtn isActive={isTimeZone} handleCheck={handleCheck} />
         // }
         slotTimeZoneInput={
-          <Stack width={320}>
+          <Stack spacing={'20px'} width={420}>
             <Autocomplete
               disableClearable
               options={timeZones}
@@ -223,6 +246,107 @@ function SchedulingSettings({ updateSettings, initialData }) {
               }}
             />
           </Stack>
+        }
+        isKeywordVisible={true}
+        slotKeywordCard={
+          <>
+            <KeywordCard
+              textTitle={'Free'}
+              slotInput={
+                <FilterInput
+                  handleAdd={(s) => {
+                    const keyword = String(s).split(',');
+                    keyword.map((item) => {
+                      if (freeKeyWords.includes(item)) {
+                        toast.warning(`"${item}" keyword exist!`);
+                        return null;
+                      } else {
+                        setFreeKeywords((pre) => [item, ...pre]);
+                      }
+                    });
+                  }}
+                  path='freeKeywords'
+                  type='string'
+                />
+              }
+              slotSuggestPill={freeKeyWords.map((item) => {
+                return (
+                  <>
+                    <Chip
+                      clickable
+                      onDelete={() => {
+                        setFreeKeywords((pre) => {
+                          return pre.filter((ele) => ele !== item);
+                        });
+                      }}
+                      sx={{
+                        p: '5px'
+                      }}
+                      deleteIcon={
+                        <IconButton>
+                          <Icon
+                            width='14'
+                            height='14'
+                            color='grey'
+                            variant='CloseThinIcon'
+                          />
+                        </IconButton>
+                      }
+                      label={item}
+                    />
+                  </>
+                );
+              })}
+            />
+            <KeywordCard
+              textTitle={'Soft conflicts'}
+              slotInput={
+                <FilterInput
+                  handleAdd={(s) => {
+                    const keyword = String(s).split(',');
+                    keyword.map((item) => {
+                      if (freeKeyWords.includes(item)) {
+                        toast.warning(`"${item}" keyword exist!`);
+                        return null;
+                      } else {
+                        setSoftConflictsKeyWords((pre) => [item, ...pre]);
+                      }
+                    });
+                  }}
+                  path='softConflictsKeywords'
+                  type='string'
+                />
+              }
+              slotSuggestPill={softConflictsKeyWords.map((item) => {
+                return (
+                  <>
+                    <Chip
+                      clickable
+                      onDelete={() => {
+                        setSoftConflictsKeyWords((pre) => {
+                          return pre.filter((ele) => ele !== item);
+                        });
+                      }}
+                      sx={{
+                        p: '5px'
+                      }}
+                      deleteIcon={
+                        <IconButton>
+                          <Icon
+                            width='14'
+                            height='14'
+                            color='grey'
+                            variant='CloseThinIcon'
+                          />
+                        </IconButton>
+                      }
+                      label={item}
+                    />
+                  </>
+                );
+              })}
+            />
+          </>
         }
         slotDailyLimit={
           <>

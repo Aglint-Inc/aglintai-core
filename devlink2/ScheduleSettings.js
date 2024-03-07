@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { KeywordCard } from "./KeywordCard";
 import { WorkingHourDay } from "./WorkingHourDay";
 import * as _utils from "./utils";
 import _styles from "./ScheduleSettings.module.css";
@@ -16,9 +17,43 @@ export function ScheduleSettings({
   isTimeZoneToggleVisible = true,
   onClickDiscard = {},
   onClickUpdateChanges = {},
+  slotKeywordCard,
+  isKeywordVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule_settings")} tag="div">
+      {isKeywordVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "keywords-wrapp")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1115", "keyword-head")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Keywords"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {
+                "Keywords allow you to identify events on interviewer’s calendars that can be scheduled over by either you or a candidate when booking interviews."
+              }
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1169")}
+            tag="div"
+          >
+            {slotKeywordCard ?? <KeywordCard />}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1117")}
         tag="div"
@@ -31,13 +66,13 @@ export function ScheduleSettings({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Settings"}
+            {"Availability"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-grey-600")}
             tag="div"
           >
-            {"These settings will be applied on company level"}
+            {"Set up recruitng time ranges and available working hours"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

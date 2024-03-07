@@ -7,30 +7,30 @@ import { supabase } from '@/src/utils/supabase/client';
 import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import {
   CandidateSearchRes,
-  CandidateSearchState,
+  CandidateSearchState
 } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],
   job_ids: string[],
   max_records: number,
-  bookmarked_cands: string[] = [],
+  bookmarked_cands: string[] = []
 ) => {
   let embeddings = {
     skills: null,
     education: null,
     experience: null,
-    resume: null,
+    resume: null
   };
 
   const modifyQryJson = {
-    ...newQueryJson,
+    ...newQueryJson
   };
 
   Object.keys(modifyQryJson).forEach((k) => {
     if (isArray(modifyQryJson[String(k)])) {
       modifyQryJson[String(k)] = modifyQryJson[String(k)].filter((s) =>
-        Boolean(s.trim()),
+        Boolean(s.trim())
       );
     }
   });
@@ -41,7 +41,7 @@ export const getRelevantCndidates = async (
       await getEmbedding(
         [...modifyQryJson.degrees, ...modifyQryJson.universities]
           .join(' ')
-          .trim(),
+          .trim()
       ))(),
     (async () =>
       await getEmbedding(
@@ -50,8 +50,8 @@ export const getRelevantCndidates = async (
           [modifyQryJson.minExp, modifyQryJson.maxExp]
             .filter(Boolean)
             .join(' years'),
-          ...modifyQryJson.prefferedCompanies,
-        ].join(' '),
+          ...modifyQryJson.prefferedCompanies
+        ].join(' ')
       ))(),
     (async () =>
       await getEmbedding(
@@ -65,11 +65,11 @@ export const getRelevantCndidates = async (
             .filter(Boolean)
             .join(' years'),
           ...modifyQryJson.degrees,
-          ...modifyQryJson.universities,
+          ...modifyQryJson.universities
         ]
           .join(' ')
-          .trim(),
-      ))(),
+          .trim()
+      ))()
   ];
 
   const resp = await Promise.allSettled(preqs);
@@ -103,8 +103,8 @@ export const getRelevantCndidates = async (
       job_ids,
       max_records: max_records,
       ts_query: getFtsearchQry(modifyQryJson.jobTitles),
-      filter_companies: getFilterSearchQry(modifyQryJson.excludedCompanies),
-    }),
+      filter_companies: getFilterSearchQry(modifyQryJson.excludedCompanies)
+    })
   ) as Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[];
 
   const canididatesDto: CandidateSearchRes[] =
@@ -115,7 +115,7 @@ export const getRelevantCndidates = async (
 const getEmbedding = async (str: string) => {
   if (!str) return null;
   const { data } = await axios.post('/api/ai/create-embeddings', {
-    text: str,
+    text: str
   });
 
   return data;
@@ -136,12 +136,12 @@ const getFilterSearchQry = (companies: string[]) => {
 
 export const joinSearchResultWithBookMarkAndJobApplied = async (
   candidates: Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[],
-  bookmarkedCands: string[],
+  bookmarkedCands: string[]
 ) => {
   const candjobs = (await supabaseWrap(
     await supabase.rpc('getjobapplicationcountforcandidates2', {
-      candidate_ids: candidates.map((c) => c.candidate_id),
-    }),
+      candidate_ids: candidates.map((c) => c.candidate_id)
+    })
   )) as CandidateJobINfo[];
   let mp = new Map();
 
@@ -164,8 +164,8 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
         ...c.json_resume,
         basics: {
           ...c.json_resume.basics,
-          location: loc,
-        },
+          location: loc
+        }
       };
       return {
         application_id: c.application_id,
@@ -184,9 +184,9 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
         applied_job_posts: mp.get(c.candidate_id).job_titles.map((_, idx) => {
           return {
             job_id: mp.get(c.candidate_id).job_ids[Number(idx)],
-            job_title: mp.get(c.candidate_id).job_titles[Number(idx)],
+            job_title: mp.get(c.candidate_id).job_titles[Number(idx)]
           };
-        }),
+        })
       };
     });
 
@@ -202,34 +202,42 @@ type CandidateJobINfo = {
 export const dialogFormContent = {
   jobTitles: {
     placeholder: 'Start typing the job title or choose from the list',
-    emptyMsg: 'No prefered job roles added',
+    emptyMsg: 'No prefered job roles added'
   },
   languages: {
     placeholder: 'Start typing the languages or choose from the list',
-    emptyMsg: 'No languages added',
+    emptyMsg: 'No languages added'
   },
   location: {
     placeholder: 'Start typing the location or choose from the list',
-    emptyMsg: 'No location added',
+    emptyMsg: 'No location added'
   },
   universities: {
     placeholder: 'Start typing the universities or choose from the list',
-    emptyMsg: 'No universities added',
+    emptyMsg: 'No universities added'
   },
   degrees: {
     placeholder: 'Start typing the degrees or choose from the list',
-    emptyMsg: 'No degrees added',
+    emptyMsg: 'No degrees added'
   },
   skills: {
     placeholder: 'Start typing the skills or choose from the list',
-    emptyMsg: 'No skills added',
+    emptyMsg: 'No skills added'
   },
   excludedCompanies: {
     placeholder: 'Start typing the skills or choose from the list',
-    emptyMsg: 'No excluded companies added',
+    emptyMsg: 'No excluded companies added'
   },
   prefferedCompanies: {
     placeholder: 'Start typing the skills or choose from the list',
-    emptyMsg: 'No preferred companies',
+    emptyMsg: 'No preferred companies'
   },
+  freeKeywords: {
+    placeholder: 'Enter free keyword',
+    emptyMsg: 'No preferred keywords'
+  },
+  softConflictsKeywords: {
+    placeholder: 'Enter soft conflicts keyword',
+    emptyMsg: 'No preferred keywords'
+  }
 };

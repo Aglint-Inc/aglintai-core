@@ -13,4 +13,6 @@ declare function ScheduleSettings(props: {
   isTimeZoneToggleVisible?: Types.Visibility.VisibilityConditions;
   onClickDiscard?: Types.Devlink.RuntimeProps;
   onClickUpdateChanges?: Types.Devlink.RuntimeProps;
+  slotKeywordCard?: Types.Devlink.Slot;
+  isKeywordVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

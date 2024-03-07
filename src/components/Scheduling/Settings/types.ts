@@ -11,6 +11,10 @@ export type schedulingSettingType = {
   };
   workingHours: WorkingDaysType[];
   totalDaysOff: any[];
+  schedulingKeyWords: {
+    free: any[];
+    SoftConflicts: any[];
+  };
 };
 
 export type DailyLimitType = {
