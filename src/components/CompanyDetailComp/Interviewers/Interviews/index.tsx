@@ -1,10 +1,17 @@
-import { AvatarGroup } from '@mui/material';
+import { AvatarGroup, Stack } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
 import { InterviewMemberSide, InterviewScreenCard } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
-function Interviews({ allInterviews }: { allInterviews: any[] }) {
+function Interviews({
+  allInterviews,
+  onClick
+}: {
+  allInterviews: any[];
+  // eslint-disable-next-line no-unused-vars
+  onClick: (item: any) => void;
+}) {
   const [filter, setFilter] = useState<
     'all' | 'confirmed' | 'notConfirmed' | 'upcoming' | 'completed'
   >('all');
@@ -43,20 +50,18 @@ function Interviews({ allInterviews }: { allInterviews: any[] }) {
         isNotConfirmedActive={filter === 'notConfirmed'}
         slotInterviewCard={filteredInterviews.map((item, i) => {
           return (
-            // <Stack
-            //   onClick={() => {
-            //     setSelectedItem(item);
-            //   }}
-            //   key={i}
-            // >
-            <InterviewScreenCard
+            <Stack
+              onClick={() => onClick(item)}
+              style={{ cursor: 'pointer' }}
               key={i}
-              isUpcomingVisible={item.status !== 'completed'}
-              isCompletedVisible={item.status !== 'upcoming'}
-              slotMemberImage={<Members members={item.members} />}
-              textDate={item.date.day}
-            />
-            // </Stack>
+            >
+              <InterviewScreenCard
+                isUpcomingVisible={item.status !== 'completed'}
+                isCompletedVisible={item.status !== 'upcoming'}
+                slotMemberImage={<Members members={item.members} />}
+                textDate={item.date.day}
+              />
+            </Stack>
           );
         })}
       />
