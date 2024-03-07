@@ -252,6 +252,9 @@ function SchedulingSettings({ updateSettings, initialData }) {
           <>
             <KeywordCard
               textTitle={'Free'}
+              textWarning={
+                'If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.'
+              }
               slotInput={
                 <FilterInput
                   handleAdd={(s) => {
@@ -300,6 +303,9 @@ function SchedulingSettings({ updateSettings, initialData }) {
             />
             <KeywordCard
               textTitle={'Soft conflicts'}
+              textWarning={
+                'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation'
+              }
               slotInput={
                 <FilterInput
                   handleAdd={(s) => {

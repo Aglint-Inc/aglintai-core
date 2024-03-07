@@ -9,6 +9,7 @@ export function KeywordCard({
   isTextWarningVisible = true,
   slotSuggestPill,
   slotInput,
+  textWarning = "If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1166")} tag="div">
@@ -24,9 +25,7 @@ export function KeywordCard({
             className={_utils.cx(_styles, "text-yellow-800")}
             tag="div"
           >
-            {
-              "If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict."
-            }
+            {textWarning}
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

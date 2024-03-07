@@ -7,4 +7,5 @@ declare function KeywordCard(props: {
   isTextWarningVisible?: Types.Visibility.VisibilityConditions;
   slotSuggestPill?: Types.Devlink.Slot;
   slotInput?: Types.Devlink.Slot;
+  textWarning?: React.ReactNode;
 }): React.JSX.Element;
