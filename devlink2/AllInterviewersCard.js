@@ -13,7 +13,10 @@ export function AllInterviewersCard({
   slotInterviewModules,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1143")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1143", "", "dec-width")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1144")}
         id={_utils.cx(
@@ -37,7 +40,7 @@ export function AllInterviewersCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1144")}
+        className={_utils.cx(_styles, "div-block-1144", "center")}
         id={_utils.cx(
           _styles,
           "w-node-_23fa5a49-b85f-659d-e893-4735fbc243b9-fbc243b4"
@@ -47,7 +50,7 @@ export function AllInterviewersCard({
         <_Builtin.Block tag="div">{textUpcomingInterviews}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1144")}
+        className={_utils.cx(_styles, "div-block-1144", "center")}
         id={_utils.cx(
           _styles,
           "w-node-_23fa5a49-b85f-659d-e893-4735fbc243bc-fbc243b4"

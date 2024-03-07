@@ -14,7 +14,11 @@ export function AllInterviewers({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "all-interviewers-header-wrap")}
+        className={_utils.cx(
+          _styles,
+          "all-interviewers-header-wrap",
+          "decrease-grid"
+        )}
         tag="div"
       >
         <_Builtin.Block
@@ -24,7 +28,7 @@ export function AllInterviewers({
           <_Builtin.Block tag="div">{"Interviewer"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142")}
+          className={_utils.cx(_styles, "div-block-1142", "center")}
           id={_utils.cx(
             _styles,
             "w-node-_51c09859-0c9a-df83-83a4-a6e076826a60-76826a5b"
@@ -34,7 +38,7 @@ export function AllInterviewers({
           <_Builtin.Block tag="div">{"Upcoming Interviews"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142")}
+          className={_utils.cx(_styles, "div-block-1142", "center")}
           tag="div"
         >
           <_Builtin.Block tag="div">{"Completed Interviews"}</_Builtin.Block>
