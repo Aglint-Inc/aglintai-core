@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME,
+  // assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME,
   eslint: {
-    dirs: ['src'],
+    dirs: ['src']
   },
   async redirects() {
     return [
@@ -11,8 +11,8 @@ const nextConfig = {
         source: '/',
         destination: '/signup',
         basePath: false,
-        permanent: false,
-      },
+        permanent: false
+      }
       // {
       //   source: '/login',
       //   destination: '/signup?step=signin',
@@ -27,10 +27,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
-      },
-    ],
-  },
+        hostname: '**'
+      }
+    ]
+  }
 };
 
 module.exports = nextConfig;
