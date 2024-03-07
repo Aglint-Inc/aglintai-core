@@ -7,15 +7,18 @@
 .div-block-1149 {
   overflow: auto;
   width: 100%;
-  padding-top: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
   height: calc(100vh - 60px);
 }
 
 .div-block-1151 {
   display: flex;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -188,6 +191,11 @@
   color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .text-grey-600.relative-1 {
   position: relative;
   z-index: 1;
@@ -195,8 +203,10 @@
 
 .div-block-1152 {
   display: flex;
-  width: 70%;
+  width: 630px;
   margin-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
@@ -206,6 +216,8 @@
 .div-block-1154 {
   display: flex;
   margin-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 20px;
@@ -249,13 +261,18 @@
   margin-left: -6px;
 }
 
-.div-block-1156 {
-  margin-top: 20px;
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-30.p-lr-20 {
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .div-block-1148 {
   width: 435px;
-  padding: 20px;
+  padding: 20px 0px;
   flex: 0 0 auto;
   border-left: 1px solid #e9ebed;
 }

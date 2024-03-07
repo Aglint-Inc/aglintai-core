@@ -202,7 +202,10 @@ export function ScheduleSettings({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "setting_wrap", "p-b-40")}
+        tag="div"
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "setting_title")}
           tag="div"

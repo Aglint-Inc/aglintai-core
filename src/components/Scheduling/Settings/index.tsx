@@ -39,7 +39,11 @@ import Icon from '../../Common/Icons/Icon';
 import UITextField from '../../Common/UITextField';
 let schedulingSettingObj = {};
 let changeValue = null;
-function SchedulingSettings({ updateSettings, initialData }) {
+function SchedulingSettings({
+  updateSettings,
+  initialData,
+  isOverflow = true
+}) {
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
@@ -192,7 +196,7 @@ function SchedulingSettings({ updateSettings, initialData }) {
   }, []);
 
   return (
-    <>
+    <Stack overflow={isOverflow ? 'auto' : 'visible'}>
       <ScheduleSettings
         // onClickUpdateChanges={{
         //   onClick: updateSettings,
@@ -487,7 +491,7 @@ function SchedulingSettings({ updateSettings, initialData }) {
           </>
         }
       />
-    </>
+    </Stack>
   );
 }
 

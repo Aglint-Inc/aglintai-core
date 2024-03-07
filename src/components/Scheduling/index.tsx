@@ -116,7 +116,7 @@ function SchedulingMainComp() {
                 <Modules />
               ) : router.query.tab == 'emailTemplates' ? (
                 <SchedulingEmailTemplates />
-              ) : router.query.tab == 'interviewers' ? (
+              ) : router.query.tab == 'allInterviewers' ? (
                 <InterviewTab />
               ) : router.query.tab == 'settings' ? (
                 <SettingsScheduling

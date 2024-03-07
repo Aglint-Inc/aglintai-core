@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { InterviewScreenCard } from "./InterviewScreenCard";
 import * as _utils from "./utils";
 import _styles from "./InterviewMemberSide.module.css";
 
@@ -106,7 +107,7 @@ export function InterviewMemberSide({
         className={_utils.cx(_styles, "div-block-1079")}
         tag="div"
       >
-        {slotInterviewCard}
+        {slotInterviewCard ?? <InterviewScreenCard />}
       </_Builtin.Block>
     </_Component>
   );

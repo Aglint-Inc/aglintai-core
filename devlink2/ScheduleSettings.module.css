@@ -361,6 +361,10 @@
   grid-row-gap: 10px;
 }
 
+.setting_wrap.p-b-40 {
+  padding-bottom: 40px;
+}
+
 .toggle_wrap {
   display: flex;
   align-items: center;
