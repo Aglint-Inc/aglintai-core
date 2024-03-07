@@ -13,10 +13,6 @@
   border-radius: 10px;
 }
 
-.day_wrap:hover {
-  background-color: #f7f9fb;
-}
-
 .day_checkbox {
   display: flex;
   padding-top: 8px;

@@ -14,7 +14,11 @@ export function AllInterviewers({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "all-interviewers-header-wrap")}
+        className={_utils.cx(
+          _styles,
+          "all-interviewers-header-wrap",
+          "decrease-grid"
+        )}
         tag="div"
       >
         <_Builtin.Block
@@ -31,13 +35,13 @@ export function AllInterviewers({
           )}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Upcoming Interviews"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1142")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Completed Interviews"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1142")}

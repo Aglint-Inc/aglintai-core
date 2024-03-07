@@ -10,6 +10,10 @@
   border-bottom: 1px solid rgba(233, 235, 237, 0.5);
 }
 
+.div-block-1143.dec-width {
+  grid-template-columns: 20% 12% 12% 56%;
+}
+
 .div-block-1144 {
   display: flex;
   padding-right: 20px;
@@ -18,6 +22,11 @@
   align-items: center;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
+}
+
+.div-block-1144.center {
+  justify-content: center;
+  align-items: center;
 }
 
 .div-block-1145 {
@@ -190,11 +199,19 @@
   color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .slot-interview-module {
   display: flex;
+  overflow: hidden;
   padding-right: 20px;
   padding-left: 20px;
+  flex-direction: row;
   justify-content: flex-start;
+  flex-wrap: nowrap;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
