@@ -177,7 +177,6 @@ export const findPlanCombinations = (
 
     return schedule_combs;
   };
-
   explore_module_combs([], 0);
 
   return all_schedule_combs;
