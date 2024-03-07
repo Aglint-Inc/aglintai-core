@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { PanelMemberPill } from '@/devlink2';
 import { ConfirmationPopup } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { InterviewModuleRelationType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -18,7 +18,7 @@ import {
 import { addMemberbyUserIds } from '../../utils';
 
 function AddMemberDialog() {
-  const { members } = useAuthDetails();
+  const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false); // used to disable multiple clicks
   const isAddMemberDialogOpen = useSchedulingStore(
     (state) => state.isAddMemberDialogOpen

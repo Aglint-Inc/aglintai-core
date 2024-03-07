@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
+import { datacatalog_v1beta1 } from 'googleapis';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import {
@@ -24,7 +25,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
-import { datacatalog_v1beta1 } from 'googleapis';
 
 interface ContextValue {
   userDetails: Session | null;

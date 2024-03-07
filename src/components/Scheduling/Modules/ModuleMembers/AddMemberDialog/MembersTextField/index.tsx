@@ -9,6 +9,7 @@ import React from 'react';
 
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
+import { InterviewPanelContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { RecruiterUserType } from '@/src/types/data.types';
 
 function MembersAutoComplete({
@@ -18,10 +19,10 @@ function MembersAutoComplete({
   setSelectedUsers
 }: {
   disabled: boolean;
-  renderUsers: RecruiterUserType[];
+  renderUsers: InterviewPanelContextType['members'];
   selectedUsers: RecruiterUserType[];
   // eslint-disable-next-line no-unused-vars
-  setSelectedUsers: (val: RecruiterUserType[]) => void;
+  setSelectedUsers: (val: InterviewPanelContextType['members']) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -129,7 +130,7 @@ function MembersAutoComplete({
                           variant='caption'
                           sx={{ textTransform: 'capitalize' }}
                         >
-                          {option.role}
+                          {option.position || ''}
                         </Typography>
                       </Stack>
                     </Stack>

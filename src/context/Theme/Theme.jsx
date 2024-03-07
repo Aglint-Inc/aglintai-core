@@ -340,13 +340,13 @@ function Theme({ children }) {
             '& .MuiFilledInput-root': {
               fontSize: '14px',
               borderRadius: '4px',
-              background: palette.white[700],
+              background: '#ffffff',
               border: '1px solid',
               borderColor: palette.grey[300]
             },
             '& .MuiFilledInput-root.Mui-focused': {
               borderColor: palette.blue[600], // Change this to your desired highlight color
-              background: 'none',
+              background: '#ffffff',
               outline: `3px solid ${palette.blue[300]}`
             },
             '& .MuiInputLabel-root': {
@@ -355,7 +355,7 @@ function Theme({ children }) {
             '& .MuiOutlinedInput-root': {
               fontSize: '14px',
               borderRadius: '4px',
-              background: palette.white[700],
+              background: '#ffffff',
               border: '1px solid',
               borderColor: palette.grey[300],
               fieldset: {
@@ -365,7 +365,7 @@ function Theme({ children }) {
             },
             '& .MuiOutlinedInput-root.Mui-focused': {
               borderColor: palette.blue[600],
-              background: 'none',
+              background: '#ffffff',
               outline: `3px solid ${palette.blue[300]}`
             },
             '& .MuiFilledInput-root.Mui-focused.Mui-error': {

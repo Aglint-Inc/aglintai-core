@@ -16,7 +16,6 @@ import {
 import { MoreButton } from '@/devlink3';
 import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -37,7 +36,7 @@ import {
 
 function ModuleMembersComp() {
   const router = useRouter();
-  const { members } = useAuthDetails();
+  const { members } = useSchedulingContext();
   const moduleName = useSchedulingStore((state) => state.moduleName);
   const allUsers = useSchedulingStore(
     useShallow((state) => state.editModule.relations)
