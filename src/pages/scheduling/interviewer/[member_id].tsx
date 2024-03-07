@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
 import Interviewer from '@/src/components/CompanyDetailComp/Interviewers/Interviewer';
@@ -12,6 +12,9 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 function InterviewerPage() {
   const { interviewerMembers, selectedInterviewer, handelSelectInterviewer } =
     useInterviewerContext();
+  const [selectedInterviewEvent, setSelectedInterviewEvent] = useState<
+    any | null
+  >(null);
   const router = useRouter();
   useEffect(() => {
     if (router.isReady && interviewerMembers.length) {
@@ -19,12 +22,13 @@ function InterviewerPage() {
       member_id && handelSelectInterviewer(member_id as string);
     }
   }, [router.isReady, interviewerMembers]);
-
   return (
     <PageLayout
       onClickBack={{
         onClick: () => {
-          router.push(`${pageRoutes.SCHEDULING}?tab=allInterviewers`);
+          selectedInterviewEvent
+            ? setSelectedInterviewEvent(null)
+            : router.push(`${pageRoutes.SCHEDULING}?tab=allInterviewers`);
         }
       }}
       isBackButton={true}
@@ -35,7 +39,12 @@ function InterviewerPage() {
           />
         </>
       }
-      slotBody={<Interviewer />}
+      slotBody={
+        <Interviewer
+          selectedInterviewEvent={selectedInterviewEvent}
+          setSelectedInterviewEvent={setSelectedInterviewEvent}
+        />
+      }
     />
   );
 }

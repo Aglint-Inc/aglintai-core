@@ -21,33 +21,33 @@ function MySchedule() {
           onClick: () => {
             setDataObj(data);
             router.push(`${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=all`);
-          },
+          }
         }}
         onClickUpcoming={{
           onClick: () => {
             setDataObj(data.filter((item) => item.status === 'upcoming'));
 
             router.push(
-              `${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=upcoming`,
+              `${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=upcoming`
             );
-          },
+          }
         }}
         onClickCompleted={{
           onClick: () => {
             setDataObj(data.filter((item) => item.status === 'completed'));
             router.push(
-              `${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=completed`,
+              `${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=completed`
             );
-          },
+          }
         }}
         onClickNotConfirmed={{
           onClick: () => {
             setDataObj(data.filter((item) => item.status === 'notconfirmed'));
 
             router.push(
-              `${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=confirmed`,
+              `${pageRoutes.INTERVIEWER}?tab=mySchedules&filter=confirmed`
             );
-          },
+          }
         }}
         isUpcomingActive={router.query.filter === 'upcoming'}
         isAllActive={router.query.filter === 'all'}
@@ -85,49 +85,49 @@ export const data = [
     name: 'Phase 1: Interview for software engineer',
     status: 'completed',
     members: ['kishan', 'pradeep'],
-    date: { day: 12 },
+    date: { day: 12 }
   },
   {
     id: '2',
     name: 'Phase 2: Interview for software engineer',
     status: 'upcoming',
     members: ['rohan', 'ramesh'],
-    date: { day: 12 },
+    date: { day: 12 }
   },
   {
     id: '3',
     name: 'Phase 1: Interview for designer',
     status: 'upcoming',
     members: ['Mohan', 'Jay'],
-    date: { day: 13 },
+    date: { day: 13 }
   },
   {
     id: '4',
     name: 'Phase 1: Interview for designer',
     status: 'upcoming',
     members: ['prakash', 'Vimlesh'],
-    date: { day: 13 },
+    date: { day: 13 }
   },
   {
     id: '5',
     name: 'Phase 1: Interview for SDK2 engineer',
     status: 'completed',
     members: ['Arohi', 'Navin'],
-    date: { day: 14 },
+    date: { day: 14 }
   },
   {
     id: '6',
     name: 'Phase 1: Interview for SDK2 engineer',
     status: 'upcoming',
     members: ['Sohan', 'Ganesh'],
-    date: { day: 15 },
-  },
+    date: { day: 15 }
+  }
 ];
 
 export function Members({ members }) {
   return (
     <AvatarGroup max={3} total={5}>
-      {members.map((ele, i) => {
+      {members?.map((ele, i) => {
         return (
           <MuiAvatar
             key={i}
