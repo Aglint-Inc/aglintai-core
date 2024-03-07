@@ -1,6 +1,5 @@
 .schedule_settings {
   display: flex;
-  overflow: auto;
   padding-top: 20px;
   padding-right: 20px;
   padding-bottom: 20px;
@@ -11,20 +10,16 @@
   height: calc(100vh - 60px);
 }
 
-.div-block-1117 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
 .div-block-1115 {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+}
+
+.div-block-1115.keyword-head {
+  width: 620px;
 }
 
 .fw-semibold {
@@ -196,6 +191,24 @@
   z-index: 1;
 }
 
+.div-block-1169 {
+  display: flex;
+  width: 658px;
+  margin-top: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 14px;
+  grid-row-gap: 14px;
+}
+
+.div-block-1117 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
 .div-block-1116 {
   display: flex;
   flex-direction: row;
@@ -346,6 +359,10 @@
   align-items: flex-start;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.setting_wrap.p-b-40 {
+  padding-bottom: 40px;
 }
 
 .toggle_wrap {

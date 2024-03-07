@@ -17,4 +17,7 @@ declare function MemberListCard(props: {
   onClickRemoveModule?: Types.Devlink.RuntimeProps;
   isPauseVisible?: Types.Visibility.VisibilityConditions;
   isResumeVisible?: Types.Visibility.VisibilityConditions;
+  isScheduleCountVisible?: Types.Visibility.VisibilityConditions;
+  isProfileVisible?: Types.Visibility.VisibilityConditions;
+  isRoleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

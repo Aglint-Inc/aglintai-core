@@ -1,7 +1,7 @@
 import { AvatarGroup } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 
-import { InterviewerScreens, InterviewScreenCard } from '@/devlink2';
+import { InterviewMemberSide, InterviewScreenCard } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
 function Interviews({ allInterviews }: { allInterviews: any[] }) {
@@ -16,7 +16,7 @@ function Interviews({ allInterviews }: { allInterviews: any[] }) {
   }, [filter, allInterviews]);
   return (
     <>
-      <InterviewerScreens
+      <InterviewMemberSide
         onClickAll={{
           onClick: () => {
             setFilter('all');
@@ -41,7 +41,7 @@ function Interviews({ allInterviews }: { allInterviews: any[] }) {
         isAllActive={filter === 'all'}
         isCompletedActive={filter === 'completed'}
         isNotConfirmedActive={filter === 'notConfirmed'}
-        slotInterviewScreenCard={filteredInterviews.map((item, i) => {
+        slotInterviewCard={filteredInterviews.map((item, i) => {
           return (
             // <Stack
             //   onClick={() => {

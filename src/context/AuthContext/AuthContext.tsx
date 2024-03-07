@@ -26,7 +26,7 @@ import toast from '@/src/utils/toast';
 
 import { Session } from './types';
 
-interface ContextValue {
+export interface ContextValue {
   userDetails: Session | null;
   userCountry: string | null;
   setUserDetails: (details: Session | null) => void;
