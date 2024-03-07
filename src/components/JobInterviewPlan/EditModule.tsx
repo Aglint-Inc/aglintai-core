@@ -5,7 +5,7 @@ import { PanelMemberPill } from '@/devlink2';
 import { InterviewPlanCard } from '@/devlink3';
 
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewModule } from './types';
+import { InterviewModuleCType } from './types';
 import { filterAddedModules } from './utils';
 import MuiAvatar from '../Common/MuiAvatar';
 import UISelect from '../Common/Uiselect';
@@ -16,13 +16,13 @@ const EditModule = ({
   onClose,
   isEdit
 }: {
-  initModule: InterviewModule;
+  initModule: InterviewModuleCType;
   onClose: any;
   isBreak: boolean;
   isEdit: boolean;
 }) => {
   const { allModules, modules } = useInterviewPlan();
-  const [module, setModule] = useState<InterviewModule>(initModule);
+  const [module, setModule] = useState<InterviewModuleCType>(initModule);
   let isDisabled = false;
   if (
     (module.module_id.length === 0 ||

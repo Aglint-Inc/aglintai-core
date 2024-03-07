@@ -12,7 +12,7 @@ import { InterviewPlan } from '@/devlink3';
 import EditModule from './EditModule';
 import InterviewModuleC from './InterviewModuleC';
 import { handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewModule } from './types';
+import { InterviewModuleCType } from './types';
 import { filterAddedModules } from './utils';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import { reorder } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/reorder';
@@ -28,7 +28,7 @@ const JobInterviewPlan = () => {
     syncStatus
   } = useInterviewPlan((state) => state);
   const [editModuleId, setEditModuleId] = useState('');
-  const [newModule, setNewModule] = useState<InterviewModule | null>(null);
+  const [newModule, setNewModule] = useState<InterviewModuleCType | null>(null);
   const router = useRouter();
   const handleDragEnd = (result) => {
     const { source, type, destination } = result;
@@ -44,7 +44,7 @@ const JobInterviewPlan = () => {
         modules,
         sourceIdx,
         destIdx
-      ) as InterviewModule[];
+      ) as InterviewModuleCType[];
       if (
         updatedOrder[0].isBreak ||
         updatedOrder[updatedOrder.length - 1].isBreak
@@ -61,7 +61,7 @@ const JobInterviewPlan = () => {
   };
 
   const handleAddBreak = () => {
-    let intBreak: InterviewModule = {
+    let intBreak: InterviewModuleCType = {
       isBreak: true,
       allIntervs: [],
       duration: 30,
@@ -174,7 +174,7 @@ const JobInterviewPlan = () => {
                       modules
                     );
                     if (filteredModules.length > 0) {
-                      let nModule: InterviewModule = {
+                      let nModule: InterviewModuleCType = {
                         ...filteredModules[0],
                         selectedIntervs: [...filteredModules[0].allIntervs]
                       };

@@ -4,7 +4,7 @@ import { InterviewBreakCard, InterviewModuleCard } from '@/devlink3';
 
 import EditModule from './EditModule';
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewModule } from './types';
+import { InterviewModuleCType } from './types';
 import MuiAvatar from '../Common/MuiAvatar';
 
 const InterviewModuleC = ({
@@ -12,13 +12,13 @@ const InterviewModuleC = ({
   editModuleId,
   setEditModuleId
 }: {
-  module: InterviewModule;
+  module: InterviewModuleCType;
   editModuleId;
   setEditModuleId;
 }) => {
   const modules = useInterviewPlan((state) => state.modules);
   const handleDelete = () => {
-    let newModules: InterviewModule[] = modules.filter(
+    let newModules: InterviewModuleCType[] = modules.filter(
       (m) => m.module_id !== module.module_id
     );
 

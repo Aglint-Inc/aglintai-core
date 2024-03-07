@@ -7,7 +7,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { initialState, initilizeIntPlan } from './store';
-import { InterviewModule, InterviewModuleDbType } from './types';
+import { InterviewModuleCType, InterviewModuleDbType } from './types';
 import {
   API_FAIL_MSG,
   supabaseWrap
@@ -19,10 +19,10 @@ const JobInterviewPlanHoc = ({ children }) => {
   const { recruiter, members } = useAuthDetails();
   const initialize = async () => {
     try {
-      const allIntModules: InterviewModule[] = [];
+      const allIntModules: InterviewModuleCType[] = [];
       const d = await fetchInterviewModule(recruiter.id);
       for (let intModule of d) {
-        const intMod: InterviewModule = {
+        const intMod: InterviewModuleCType = {
           module_id: intModule.id,
           duration: 30,
           meetingIntervCnt: 1,
@@ -48,13 +48,13 @@ const JobInterviewPlanHoc = ({ children }) => {
 
       let jobModules = ((rec.interview_plan as any)?.plan ??
         []) as InterviewModuleDbType[];
-      let clModules: InterviewModule[] = [];
+      let clModules: InterviewModuleCType[] = [];
 
       for (let dbModule of jobModules) {
         let intModule = allIntModules.find(
           (i) => i.module_id === dbModule.module_id
         );
-        let clModule: InterviewModule = {
+        let clModule: InterviewModuleCType = {
           name: intModule?.name ?? '', //break
           duration: dbModule.duration,
           isBreak: dbModule.isBreak,

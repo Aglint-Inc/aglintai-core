@@ -6,7 +6,7 @@ export type IntwerviewerPlanType = {
   profile_image: string;
 };
 
-export type InterviewModule = {
+export type InterviewModuleCType = {
   module_id: string;
   name: string;
   duration: number;
@@ -17,8 +17,8 @@ export type InterviewModule = {
 };
 
 export type InterviewPlanState = {
-  modules: InterviewModule[];
-  allModules: InterviewModule[];
+  modules: InterviewModuleCType[];
+  allModules: InterviewModuleCType[];
   isloading: boolean;
   syncStatus: 'saving' | 'saved' | '';
   jobId: string;
@@ -30,6 +30,9 @@ export type InterviewPlanState = {
 
 export type IntwerviewerPlanDbType = {
   interv_id: string;
+  profile_img?: string;
+  name?: string;
+  email?: string;
 };
 
 export type InterviewModuleDbType = {
@@ -38,4 +41,18 @@ export type InterviewModuleDbType = {
   selectedIntervs: IntwerviewerPlanDbType[];
   meetingIntervCnt: number;
   isBreak: boolean;
+  module_name?: string;
+};
+
+export type InterviewPlanScheduleDbType = {
+  schedule_id: string;
+  plan: (Omit<InterviewModuleDbType, 'selectedIntervs' | 'meetingIntervCnt'> & {
+    start_time: string;
+    end_time: string;
+    attended_inters: {
+      id: string;
+      email: string;
+      profile_img: string;
+    }[];
+  })[];
 };
