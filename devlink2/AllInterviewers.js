@@ -28,20 +28,20 @@ export function AllInterviewers({
           <_Builtin.Block tag="div">{"Interviewer"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142", "center")}
+          className={_utils.cx(_styles, "div-block-1142")}
           id={_utils.cx(
             _styles,
             "w-node-_51c09859-0c9a-df83-83a4-a6e076826a60-76826a5b"
           )}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Upcoming Interviews"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142", "center")}
+          className={_utils.cx(_styles, "div-block-1142")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Completed Interviews"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1142")}
