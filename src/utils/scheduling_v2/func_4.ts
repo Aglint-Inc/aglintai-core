@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 
 import {
-  InterviewModuleDbType,
+  InterviewModuleApiType,
   InterviewPlanScheduleDbType
 } from '@/src/components/JobInterviewPlan/types';
 
@@ -11,7 +11,7 @@ import { findCommonTimeRange } from './func_3';
 import { InterDetailsType, TimeDurationType } from './types';
 
 export const findPlanCombinations = (
-  interview_plan: InterviewModuleDbType[],
+  interview_plan: InterviewModuleApiType[],
   interv_free_time: InterDetailsType[]
 ) => {
   const cached_free_time = new Map<string, TimeDurationType[]>();
@@ -20,6 +20,7 @@ export const findPlanCombinations = (
   const module_combs = calcIntervCombsForModule(
     interview_plan.filter((item) => !item.isBreak)
   );
+
   const explore_module_combs = (
     current_comb: ModuleCombination[],
     module_idx
@@ -33,7 +34,7 @@ export const findPlanCombinations = (
     for (let module_comb of module_combs[Number(module_idx)]) {
       current_comb.push(module_comb);
       explore_module_combs(current_comb, module_idx + 1);
-      current_comb.push(module_comb);
+      current_comb.pop();
     }
   };
 

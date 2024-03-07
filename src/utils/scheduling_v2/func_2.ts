@@ -1,7 +1,7 @@
-import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
+import { InterviewModuleApiType } from '@/src/components/JobInterviewPlan/types';
 
 export type ModuleCombination = Pick<
-  InterviewModuleDbType,
+  InterviewModuleApiType,
   'module_id' | 'duration' | 'meetingIntervCnt' | 'module_name'
 > & {
   participating_inters: {
@@ -12,9 +12,9 @@ export type ModuleCombination = Pick<
   }[];
 };
 
-export const calcIntervCombsForModule = (plan: InterviewModuleDbType[]) => {
+export const calcIntervCombsForModule = (plan: InterviewModuleApiType[]) => {
   const calcSingleModuleCombinations = (
-    plan_module: InterviewModuleDbType,
+    plan_module: InterviewModuleApiType,
     comb: number
   ) => {
     let module_combs: ModuleCombination[] = [];

@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import dayjs from 'dayjs';
 
-import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
+import {
+  InterviewModuleApiType,
+  InterviewModuleDbType
+} from '@/src/components/JobInterviewPlan/types';
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
@@ -43,33 +46,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let interview_plan: InterviewModuleDbType[] =
       rec.interview_plan?.plan ?? ([] as any);
 
-    let [company_cred, interviewers_info] = await Promise.all([
-      (async () => {
-        const company_cred = await fetch_company_cred(company_id); // 2
-        return company_cred;
-      })(),
-      (async () => {
-        const interviewers_info = await fetchInterviersSheduleSetting(
-          getSelectedInterviewers(interview_plan)
-        );
-        return interviewers_info;
-      })(),
-      (async () => {
-        const modules_meta = await fetchModuleName(
-          interview_plan.filter((i) => !i.isBreak).map((i) => i.module_id)
-        );
-        interview_plan = interview_plan.map((m) => {
-          if (m.isBreak) return m;
-          return {
-            ...m,
-            module_name: modules_meta.find((m2) => m2.module_id === m.module_id)
-              ?.name
-          };
-        });
-      })()
-    ]);
+    let [company_cred, interviewers_info, interview_plan_api] =
+      await Promise.all([
+        (async () => {
+          const company_cred = await fetch_company_cred(company_id); // 2
+          return company_cred;
+        })(),
+        (async () => {
+          const interviewers_info = await fetchInterviersSheduleSetting(
+            getSelectedInterviewers(interview_plan)
+          );
+          return interviewers_info;
+        })(),
+        (async () => {
+          const modules_meta = await fetchModuleName(
+            interview_plan.filter((i) => !i.isBreak).map((i) => i.module_id)
+          );
+          const interview_plan_api: InterviewModuleApiType[] =
+            interview_plan.map((m) => {
+              return {
+                duration: m.duration,
+                isBreak: m.isBreak,
+                meetingIntervCnt: m.meetingIntervCnt,
+                module_id: m.module_id,
+                selectedIntervs: [],
+                module_name: !m.isBreak
+                  ? modules_meta.find((m2) => m2.module_id === m.module_id)
+                      ?.name
+                  : ''
+              };
+            });
+          return interview_plan_api;
+        })()
+      ]);
 
-    interview_plan = interview_plan.map((m) => {
+    interview_plan_api = interview_plan_api.map((m) => {
       return {
         ...m,
         selectedIntervs: m.selectedIntervs.map((s) => {
@@ -94,7 +105,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     const combs = findPlanCombinations(
-      interview_plan,
+      interview_plan_api,
       inters_with_free_time_ranges
     );
 

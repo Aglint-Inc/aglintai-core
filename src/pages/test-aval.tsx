@@ -25,18 +25,20 @@ const Comp = () => {
   const handlSubmit = async () => {
     try {
       setIsFinding(true);
+
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
-          job_id: '770a61d3-c20b-4ee7-bf1d-e89345df37c6',
+          job_id: '9a29abfd-1307-4ef6-8ec9-1144714578e8',
           company_id: 'ce4f1b5c-431d-47cc-9826-ca376a8d031b',
-          start_date: '2024-03-06T06:38:10.120Z',
-          end_date: '2024-03-06T06:38:10.120Z'
+          start_date: '2024-03-07T14:59:55.247Z',
+          end_date: '2024-03-10T14:59:55.247Z'
         }
       );
       setData(r);
       setIsFinding(false);
     } catch (err) {
+      setIsFinding(false);
       // console.log(err);
     }
   };
@@ -44,29 +46,36 @@ const Comp = () => {
   return (
     <Stack direction={'column'} display={'flex'} height={'600px'} px={'20px'}>
       <AUIButton onClick={handlSubmit}>
-        {isFinding ? 'finding' : 'find'}
+        {`${isFinding ? 'finding' : 'Find'}${
+          data && `       (${data.length} combinations)`
+        }`}
       </AUIButton>
       <p>
         {data.map((schedule) => {
           return (
-            <div key={schedule.schedule_id} style={{ marginBottom: '10px' }}>
+            <div key={schedule.schedule_id} style={{ marginBottom: '20px' }}>
               <h5>ScheduleId {schedule.schedule_id}</h5>
               <p>
                 {schedule.plan.map((m) => {
-                  return (
-                    <p key={m.module_id}>
-                      <h6>module {m.module_id}</h6>
-                      <p>
+                  if (m.isBreak) {
+                    return (
+                      <p key={m.module_id} style={{ marginBottom: '10px' }}>
                         {dayjs(m.start_time).format('HH:mm')} -{' '}
+                        {m.isBreak && '--------BREAK-------'}
                         {dayjs(m.end_time).format('HH:mm')}
-                        {m.isBreak && '--------BREAK'}
                       </p>
-                      <p>
-                        Interviewers{' '}
-                        {m.attended_inters.map((int) => int.email).join(' ')}
+                    );
+                  } else
+                    return (
+                      <p key={m.module_id} style={{ marginBottom: '10px' }}>
+                        <h6>module name {m.module_name}</h6>
+
+                        <p>
+                          Interviewers{' '}
+                          {m.attended_inters.map((int) => int.email).join(' ')}
+                        </p>
                       </p>
-                    </p>
-                  );
+                    );
                 })}
               </p>
             </div>
