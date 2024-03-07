@@ -12,7 +12,7 @@ function SubNav() {
     'my Schedules',
     'interview Modules',
     'email Templates',
-    'interviewers',
+    'all Interviewers',
     'settings'
   ];
   return (

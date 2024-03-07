@@ -82,6 +82,12 @@ export function AllInterviewersDetail({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
+          className={_utils.cx(_styles, "mt-30", "p-lr-20", "fw-semibold")}
+          tag="div"
+        >
+          {"User Level Settings"}
+        </_Builtin.Block>
+        <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1156")}
           tag="div"
         >
@@ -94,7 +100,7 @@ export function AllInterviewersDetail({
       >
         <_Builtin.Block tag="div">
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "fw-semibold", "p-lr-16")}
             tag="div"
           >
             {"Schedules of Raimon"}

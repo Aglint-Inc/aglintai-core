@@ -18,7 +18,11 @@ export function InterviewScreenCard({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "completed-interview-wrappers")}
+      className={_utils.cx(
+        _styles,
+        "completed-interview-wrappers",
+        "remove-padding"
+      )}
       tag="div"
     >
       <_Builtin.Block tag="div">
