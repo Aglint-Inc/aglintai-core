@@ -20,7 +20,7 @@ const Password = ({ passwordRef, label, error, onChange }) => {
       fullWidth
       name='password'
       type={showPassword ? 'text' : 'password'}
-      label={label || 'Password'}
+      placeholder={label || 'Password'}
       autoComplete='current-password'
       id='password'
       onChange={onChange}
@@ -51,7 +51,7 @@ const Password = ({ passwordRef, label, error, onChange }) => {
               {/* {showPassword ? <IconUnlock /> : <IconLock />} */}
             </IconButton>
           </InputAdornment>
-        ),
+        )
       }}
       inputRef={passwordRef}
     />

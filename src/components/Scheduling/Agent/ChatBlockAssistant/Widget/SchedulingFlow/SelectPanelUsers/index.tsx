@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { ButtonPrimaryRegular, InterviewpanelPill } from '@/devlink';
 import { WidgetGrid3X3 } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { InterviewSlice } from '@/src/components/Scheduling/AllSchedules/store';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 
@@ -12,7 +11,7 @@ import { useSchedulingAgentStore } from '../../../../store';
 
 function SelectPanelUsers({
   panel,
-  index,
+  index
 }: {
   panel: {
     relations: {
@@ -29,9 +28,7 @@ function SelectPanelUsers({
   index: number;
 }) {
   const { members } = useAuthDetails();
-  const [selectedUsers, setSelectedUsers] = useState<
-    InterviewSlice['selectedUsers']
-  >([]);
+  const [selectedUsers, setSelectedUsers] = useState<any>([]);
   const { submitHandler } = useSchedulingAgent();
   const selectedChat = useSchedulingAgentStore((state) => state.selectedChat);
 
@@ -40,9 +37,9 @@ function SelectPanelUsers({
       panel.relations.map((user) => {
         return {
           user_id: user.user_id,
-          must: 'selected',
+          must: 'selected'
         };
-      }),
+      })
     );
 
     return () => {
@@ -66,20 +63,20 @@ function SelectPanelUsers({
                 onClick: () => {
                   if (user.must === 'not selected') {
                     selectedUsers.filter(
-                      (u) => u.user_id == user.user_id,
+                      (u) => u.user_id == user.user_id
                     )[0].must = 'selected';
                   } else if (user.must === 'selected') {
                     selectedUsers.filter(
-                      (u) => u.user_id == user.user_id,
+                      (u) => u.user_id == user.user_id
                     )[0].must = 'optional';
                   } else {
                     selectedUsers.filter(
-                      (u) => u.user_id == user.user_id,
+                      (u) => u.user_id == user.user_id
                     )[0].must = 'not selected';
                   }
 
                   setSelectedUsers([...selectedUsers]);
-                },
+                }
               }}
               slotProfileImage={
                 <MuiAvatar
@@ -111,17 +108,17 @@ function SelectPanelUsers({
               onClickButton={{
                 onClick: () => {
                   const input = `${JSON.stringify(
-                    selectedUsers,
+                    selectedUsers
                   )} are the panel members for the interview`;
 
                   submitHandler({
                     input: input,
                     selectedItem: {
                       selUsers: selectedUsers,
-                      message: `${selectedUsers.map((u) => members.find((user) => u.user_id == user.user_id).first_name).join(' , ')} are the panel members for the interview`,
-                    },
+                      message: `${selectedUsers.map((u) => members.find((user) => u.user_id == user.user_id).first_name).join(' , ')} are the panel members for the interview`
+                    }
                   });
-                },
+                }
               }}
             />
           </Stack>

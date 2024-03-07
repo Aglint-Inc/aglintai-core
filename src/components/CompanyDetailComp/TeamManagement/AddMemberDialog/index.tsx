@@ -5,7 +5,7 @@ import {
   InviteTeamCard,
   TeamInvite,
   TeamInvitesBlock,
-  TeamPendingInvites,
+  TeamPendingInvites
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
@@ -21,7 +21,7 @@ const AddMember = ({
   open,
   menu,
   pendingList,
-  onClose,
+  onClose
 }: {
   open: boolean;
   menu: 'addMember' | 'pendingMember';
@@ -72,7 +72,7 @@ const AddMember = ({
   const inviteUser = async () => {
     const res = await inviteUserApi(form, userDetails.user.id, {
       name: recruiterUser.first_name,
-      email: recruiterUser.email,
+      email: recruiterUser.email
     });
 
     if (res.status === 200) {
@@ -81,7 +81,7 @@ const AddMember = ({
         setMembers((prev) => [...prev, user]);
         setInviteData((prev) => [
           ...prev,
-          { name: form.name, email: form.email, role: form.role },
+          { name: form.name, email: form.email, role: form.role }
         ]);
         setInviteCardVisisble(true);
         toast.success('Invite sent');
@@ -116,7 +116,7 @@ const AddMember = ({
               <Stack spacing={2}>
                 <TextField
                   value={form.name ? form.name : ''}
-                  label='Name'
+                  placeholder='Name'
                   error={formError.name}
                   onFocus={() => {
                     setFormError({ ...formError, name: false });
@@ -127,7 +127,7 @@ const AddMember = ({
                 />
                 <TextField
                   value={form.email ? form.email : ''}
-                  label='Email'
+                  placeholder='Email'
                   error={formError.email}
                   onFocus={() => {
                     setFormError({ ...formError, email: false });
@@ -138,7 +138,7 @@ const AddMember = ({
                 />
                 <TextField
                   value={form.role}
-                  label='Role'
+                  placeholder='Role'
                   error={formError.role}
                   onFocus={() => {
                     setFormError({ ...formError, role: false });
@@ -146,10 +146,7 @@ const AddMember = ({
                   onChange={(e) => {
                     setForm({
                       ...form,
-                      role: e.target.value as
-                        | 'admin'
-                        | 'member'
-                        | 'interviewer',
+                      role: e.target.value as 'admin' | 'member' | 'interviewer'
                     });
                   }}
                   select
@@ -159,7 +156,7 @@ const AddMember = ({
                       'member',
                       'admin',
                       'interviewer',
-                      'scheduler',
+                      'scheduler'
                     ] as Database['public']['Enums']['agent_type'][]
                   ).map((role) => (
                     <MenuItem key={role} value={role}>
@@ -191,7 +188,7 @@ const AddMember = ({
                 onClose(),
                   setInviteData([]),
                   setForm({ ...form, name: null, email: null });
-              },
+              }
             }}
           />
         ) : menu === 'pendingMember' ? (
@@ -208,7 +205,7 @@ const AddMember = ({
                     alt={member.first_name}
                     sx={{
                       width: '100%',
-                      height: '100%',
+                      height: '100%'
                     }}
                   />
                 }
@@ -224,7 +221,7 @@ const AddMember = ({
                             return toast.success('Invite sent');
                           }
                           return toast.error(error);
-                        },
+                        }
                       );
                     }}
                   >
@@ -234,7 +231,7 @@ const AddMember = ({
               />
             ))}
             onClickClose={{
-              onClick: () => onClose(),
+              onClick: () => onClose()
             }}
           />
         ) : (

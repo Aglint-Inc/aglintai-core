@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 import { InterviewModuleCard, InterviewModuleTable } from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -13,8 +12,7 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 export function Modules() {
   const router = useRouter();
-  const { members } = useAuthDetails();
-  const { loading } = useSchedulingContext();
+  const { loading, members } = useSchedulingContext();
   const searchText = useSchedulingStore((state) => state.searchText);
   const interviewModules = useSchedulingStore(
     (state) => state.interviewModules

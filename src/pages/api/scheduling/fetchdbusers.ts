@@ -5,14 +5,14 @@ import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { data: usersData, error: usersError } = await supabase
       .from('recruiter_user')
-      .select('user_id, first_name, email, profile_image')
+      .select('user_id, first_name, last_name, email, profile_image, position')
       .in('user_id', req.body.user_ids);
 
     if (usersError) throw usersError;

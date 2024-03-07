@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import axios from 'axios';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -11,22 +10,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import AllList from './AllList';
-import CreateDialog from './CreateDialog';
-import DeleteScheduleDialog from './DeleteDialog';
 import AllFilters from './Filters';
 import DateFilter from './Filters/DateFilter';
 import AddFilterComp from './Filters/FilterMenu';
-import RescheduleDialog from './RescheduleDialog';
-import SidePanel from './SidePanel';
 import {
   ApplicationList,
   setApplicationList,
   setFetching,
-  setIsCancelOpen,
-  setIsCreateScheduleOpen,
-  setIsRescheduleOpen,
   setPagination,
-  setSelectedApplication,
   useInterviewSchedulingStore
 } from './store';
 import { getPaginationDB } from './utils';
@@ -44,9 +35,6 @@ function AllSchedules() {
     (state) => state.initialLoading
   );
   const fetching = useInterviewSchedulingStore((state) => state.fetching);
-  const selectedApplication = useInterviewSchedulingStore(
-    (state) => state.selectedApplication
-  );
 
   // separate useeffect for filter except text search because no need to debounce
   useEffect(() => {
@@ -61,7 +49,6 @@ function AllSchedules() {
         filter.sortBy ||
         filter.scheduleType
       ) {
-        setSelectedApplication(null);
         router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
           shallow: true
         });
@@ -86,7 +73,6 @@ function AllSchedules() {
 
   useEffect(() => {
     const debouncedTextSearchFetch = debounce(() => {
-      setSelectedApplication(null);
       router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
         shallow: true
       });
@@ -158,48 +144,10 @@ function AllSchedules() {
     }
   };
 
-  const onClickCancel = async () => {
-    try {
-      if (selectedApplication.schedule.id) {
-        await supabase
-          .from('interview_schedule')
-          .update({ is_active: false })
-          .eq('id', selectedApplication.schedule.id);
-        setIsCancelOpen(false);
-        setSelectedApplication({ ...selectedApplication, schedule: null });
-        applicationList.filter(
-          (app) => app.applications.id === selectedApplication.applications.id
-        )[0].schedule = null;
-        setApplicationList([...applicationList]);
-        if ((selectedApplication.schedule.meeting_json as any)?.id) {
-          const res = await axios.post(
-            '/api/scheduling/update-calender-event-status',
-            {
-              organizer_id: selectedApplication.schedule.created_by,
-              event_id: (selectedApplication.schedule.meeting_json as any).id
-            }
-          );
-          if (res.status !== 200) {
-            throw new Error('Error in response');
-          }
-        }
-      }
-    } catch {
-      //
-    }
-  };
-
-  const onClickReschedule = async () => {
-    await onClickCancel();
-    setIsRescheduleOpen(false);
-    setIsCreateScheduleOpen(true);
-  };
-
   return (
     <>
-      <DeleteScheduleDialog onClickCancel={onClickCancel} />
-      <RescheduleDialog onClickReschedule={onClickReschedule} />
-      <CreateDialog />
+      {/* <DeleteScheduleDialog onClickCancel={onClickCancel} />
+      <RescheduleDialog onClickReschedule={onClickReschedule} /> */}
       <AllInterview
         isSchedulerTable={true}
         slotPagination={
@@ -230,7 +178,6 @@ function AllSchedules() {
             />
           </Stack>
         }
-        slotSidebar={<SidePanel />}
         slotAddFilter={<AddFilterComp />}
         slotFilterButton={<AllFilters />}
         slotDate={<DateFilter />}

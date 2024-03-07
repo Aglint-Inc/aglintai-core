@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -20,12 +21,21 @@ import {
   useSchedulingStore
 } from '../../components/Scheduling/Modules/store';
 
-type InterviewPanelContextType = {
+export type InterviewPanelContextType = {
   loading: boolean;
+  members: {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_image: string;
+    position: string;
+  }[];
 };
 
 const initialState = {
-  loading: true
+  loading: true,
+  members: []
 };
 
 const InterviewPanelContext =
@@ -34,6 +44,9 @@ const InterviewPanelContext =
 const SchedulingProvider = ({ children }) => {
   const { recruiter } = useAuthDetails();
   const [loading, setLoading] = useState(true);
+  const [members, setMembers] = useState<InterviewPanelContextType['members']>(
+    []
+  );
   const router = useRouter();
   const { interviewModules } = useSchedulingStore();
 
@@ -51,6 +64,12 @@ const SchedulingProvider = ({ children }) => {
       const res: any = await fetchInterviewModule(recruiter.id);
       if (res) {
         setInterviewModules(res);
+      }
+      const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
+        recruiter_id: recruiter.id
+      });
+      if (resMem.data) {
+        setMembers(resMem.data);
       }
     } catch (e) {
       //
@@ -116,7 +135,7 @@ const SchedulingProvider = ({ children }) => {
   };
 
   return (
-    <InterviewPanelContext.Provider value={{ loading }}>
+    <InterviewPanelContext.Provider value={{ loading, members }}>
       {children}
     </InterviewPanelContext.Provider>
   );

@@ -14,19 +14,19 @@ function Login() {
   const [errorCheck, setErrorCheck] = useState({
     email: {
       error: false,
-      message: 'Please provide correct email!',
+      message: 'Please provide correct email!'
     },
     password: {
       error: false,
-      message: 'Your password is less than 8 character',
-    },
+      message: 'Your password is less than 8 character'
+    }
   });
   // const { setStep } = useSignupDetails();
   const [details, setDetails] = useState<
     Omit<Details, 'first_name' | 'last_name'>
   >({
     email: '',
-    password: '',
+    password: ''
   });
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -48,8 +48,8 @@ function Login() {
         ...errorCheck,
         email: {
           ...errorCheck.email,
-          error: false,
-        },
+          error: false
+        }
       });
       return false;
     }
@@ -60,8 +60,8 @@ function Login() {
         ...errorCheck,
         email: {
           ...errorCheck.email,
-          error: false,
-        },
+          error: false
+        }
       });
       return false;
     } else {
@@ -69,8 +69,8 @@ function Login() {
         ...errorCheck,
         email: {
           ...errorCheck.email,
-          error: true,
-        },
+          error: true
+        }
       });
       return true;
     }
@@ -82,8 +82,8 @@ function Login() {
         ...errorCheck,
         password: {
           ...errorCheck.password,
-          error: false,
-        },
+          error: false
+        }
       });
       return false;
     }
@@ -92,8 +92,8 @@ function Login() {
         ...errorCheck,
         password: {
           ...errorCheck.password,
-          error: false,
-        },
+          error: false
+        }
       });
       return false;
     } else {
@@ -101,8 +101,8 @@ function Login() {
         ...errorCheck,
         password: {
           ...errorCheck.password,
-          error: true,
-        },
+          error: true
+        }
       });
       return true;
     }
@@ -115,7 +115,7 @@ function Login() {
     ) {
       const authData = await supabase.auth.signInWithPassword({
         email: details.email,
-        password: details.password,
+        password: details.password
       });
       if (!authData.error) {
         router.push(pageRoutes.LOADING);
@@ -124,8 +124,8 @@ function Login() {
           ...errorCheck,
           password: {
             message: authData.error.message,
-            error: true,
-          },
+            error: true
+          }
         });
       }
     }
@@ -141,8 +141,8 @@ function Login() {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: provider,
           options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
-          },
+            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`
+          }
         });
         if (error) {
           toast.error(error.message);
@@ -157,20 +157,20 @@ function Login() {
         onclickForgotPassword={{
           onClick: () => {
             router.push(pageRoutes.FORGOT_PASSWORD);
-          },
+          }
         }}
         contactLink={{
-          href: 'mailto:admin@aglinthq.com',
+          href: 'mailto:admin@aglinthq.com'
         }}
         onclickGoogle={{
           onClick: () => {
             oauthHandler('google');
-          },
+          }
         }}
         onclickSignup={{
           onClick: () => {
             router.push(`${pageRoutes.SIGNUP}`);
-          },
+          }
         }}
         slotForm={
           <Stack spacing={'20px'} p={'4px'}>
@@ -180,7 +180,7 @@ function Login() {
               required
               fullWidth
               id='email'
-              label='Email'
+              placeholder='Email'
               name='email'
               autoComplete='email'
               value={details.email}
@@ -194,8 +194,8 @@ function Login() {
               inputProps={{
                 autoCapitalize: 'true',
                 style: {
-                  fontSize: '14px',
-                },
+                  fontSize: '14px'
+                }
               }}
               onBlur={() => {
                 validateEmail(emailRef.current.value);
@@ -209,7 +209,7 @@ function Login() {
               fullWidth
               name='password'
               type={showPassword ? 'text' : 'password'}
-              label={'Password'}
+              placeholder={'Password'}
               autoComplete='current-password'
               id='password'
               error={
@@ -259,7 +259,7 @@ function Login() {
                       </svg>
                     </IconButton>
                   </InputAdornment>
-                ),
+                )
               }}
               value={details.password}
               onChange={(e) => {
@@ -268,8 +268,8 @@ function Login() {
               inputProps={{
                 autoCapitalize: 'true',
                 style: {
-                  fontSize: '14px',
-                },
+                  fontSize: '14px'
+                }
               }}
             />
           </Stack>
