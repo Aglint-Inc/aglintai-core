@@ -12,6 +12,7 @@ export function TeamInvite({
   slotInviteTeamCard,
   isInviteTeamCardVisible = true,
   isInviteSentVisible = false,
+  textTitle = "Invite Member",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-invite-members")} tag="div">
@@ -20,7 +21,7 @@ export function TeamInvite({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Invite Member"}
+          {textTitle}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "im-close-btn", "clickable")}

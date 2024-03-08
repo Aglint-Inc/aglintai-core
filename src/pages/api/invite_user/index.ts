@@ -8,13 +8,13 @@ import { companyType } from '@/src/utils/userRoles';
 
 export const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   if (req.method === 'POST') {
     const { users, id, recruiter_user } =
@@ -34,13 +34,13 @@ export default async function handler(
             email: user.email,
             password: 'password',
             user_metadata: {
-              name: user.name,
+              name: `${user.first_name} ${user.last_name || ''}`?.trim(),
               role: companyType.COMPANY,
               roles: companyType.COMPANY,
               is_invite: 'true',
-              invite_user: recruiter_user,
+              invite_user: recruiter_user
             },
-            email_confirm: true,
+            email_confirm: true
           });
 
           if (error) throw new Error(error.message);
@@ -51,10 +51,13 @@ export default async function handler(
             .from('recruiter_user')
             .insert({
               user_id: userId,
-              first_name: user.name,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              position: user.designation,
+              department: user.department,
               role: user.role.toLocaleLowerCase(),
               email: email,
-              join_status: 'invited',
+              join_status: 'invited'
             } as RecruiterUserType)
             .select();
           if (errorRecUser) throw new Error(error.message);
@@ -65,13 +68,13 @@ export default async function handler(
               recruiter_id: companyId,
               user_id: userId,
               is_active: true,
-              created_by: id,
+              created_by: id
             })
             .select('*');
 
           await supabase.auth
             .resetPasswordForEmail(email, {
-              redirectTo,
+              redirectTo
             })
             .then(({ error }) => {
               if (error) throw new Error(error.message);
@@ -80,7 +83,7 @@ export default async function handler(
           res.status(200).send({
             created: true,
             error: null,
-            user: recUser[0],
+            user: recUser[0]
           });
         }
       } catch (error: any) {

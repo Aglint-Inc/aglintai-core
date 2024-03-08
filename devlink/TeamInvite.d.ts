@@ -9,4 +9,5 @@ declare function TeamInvite(props: {
   slotInviteTeamCard?: Types.Devlink.Slot;
   isInviteTeamCardVisible?: Types.Visibility.VisibilityConditions;
   isInviteSentVisible?: Types.Visibility.VisibilityConditions;
+  textTitle?: React.ReactNode;
 }): React.JSX.Element;

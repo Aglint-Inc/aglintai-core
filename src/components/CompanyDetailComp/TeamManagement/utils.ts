@@ -5,7 +5,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,
-  id: string,
+  id: string
 ) => {
   const { data, error } = await supabase
     .from('recruiter_user')
@@ -20,20 +20,23 @@ export const setMemberInDb = async (
 
 export const inviteUserApi = (
   form: {
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
+    designation: string;
+    department: string;
     role: string;
   },
   id: string,
   recruiter_user: {
     name: string;
     email: string;
-  },
+  }
 ) => {
   const res = axios.post<InviteUserAPIType['out']>('/api/invite_user', {
     users: [form],
     id: id,
-    recruiter_user: recruiter_user,
+    recruiter_user: recruiter_user
   });
 
   return res;
@@ -43,20 +46,27 @@ export const reinviteUser = (email: string, id: string) => {
   return axios
     .post('/api/invite_user/resend', {
       email,
-      id,
+      id
     })
     .then(
       ({ data }) =>
         data as {
           error: string;
           emailSend: boolean;
-        },
+        }
     );
 };
 
 export type InviteUserAPIType = {
   in: {
-    users: { name: string; email: string; role: string }[];
+    users: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      designation: string;
+      department: string;
+      role: string;
+    }[];
     id: string;
     recruiter_user: {
       name: string;
