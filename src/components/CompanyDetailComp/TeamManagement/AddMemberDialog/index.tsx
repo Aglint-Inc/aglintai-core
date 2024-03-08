@@ -1,4 +1,4 @@
-import { Avatar, Drawer, MenuItem, Stack, TextField } from '@mui/material';
+import { Autocomplete, Avatar, Drawer, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
 import {
@@ -28,42 +28,78 @@ const AddMember = ({
   pendingList: RecruiterUserType[];
   onClose: () => void;
 }) => {
-  const { userDetails, setMembers, recruiterUser } = useAuthDetails();
+  const { userDetails, setMembers, recruiter, recruiterUser } =
+    useAuthDetails();
   const [form, setForm] = useState<{
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
+    designation: string;
+    department: string;
     role: RecruiterUserType['role'];
-  }>({ name: null, email: null, role: 'member' });
+  }>({
+    first_name: null,
+    last_name: null,
+    email: null,
+    designation: null,
+    department: null,
+    role: null
+  });
 
   const [inviteData, setInviteData] = useState<
     {
-      name: string;
+      first_name: string;
+      last_name: string;
       email: string;
+      department: string;
+      designation: string;
       role: RecruiterUserType['role'];
     }[]
   >([]);
 
   const [formError, setFormError] = useState<{
-    name: boolean;
+    first_name: boolean;
     email: boolean;
+    department: boolean;
+    designation: boolean;
     role: boolean;
-  }>({ name: null, email: null, role: null });
+  }>({
+    first_name: false,
+    email: false,
+    department: false,
+    designation: false,
+    role: false
+  });
 
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState(false);
-  const [isInviteCardVisible, setInviteCardVisisble] = useState(false);
+  const [isInviteCardVisible, setInviteCardVisible] = useState(false);
 
   const checkValidation = () => {
-    if (!form.name || form.name.trim() === '') {
-      setFormError({ ...formError, name: true });
-      setIsDisable(false);
-      return false;
-    } else if (!form.email || form.email.trim() === '') {
-      setFormError({ ...formError, email: true });
-      setIsDisable(false);
-      return false;
-    } else if (!form.role || form.role.trim() === '') {
-      setFormError({ ...formError, role: true });
+    let flag = false;
+    let temp = { ...formError };
+    if (!form.first_name || form.first_name.trim() === '') {
+      temp = { ...temp, first_name: true };
+      flag = true;
+    }
+    if (!form.email || form.email.trim() === '') {
+      temp = { ...temp, email: true };
+      flag = true;
+    }
+    if (!form.department || form.department.trim() === '') {
+      temp = { ...temp, department: true };
+      flag = true;
+    }
+    if (!form.designation || form.designation.trim() === '') {
+      temp = { ...temp, designation: true };
+      flag = true;
+    }
+    if (!form.role || form.role.trim() === '') {
+      temp = { ...temp, role: true };
+      flag = true;
+    }
+    if (flag) {
+      setFormError(temp);
       setIsDisable(false);
       return false;
     }
@@ -81,12 +117,26 @@ const AddMember = ({
         setMembers((prev) => [...prev, user]);
         setInviteData((prev) => [
           ...prev,
-          { name: form.name, email: form.email, role: form.role }
+          {
+            first_name: form.first_name,
+            last_name: form.last_name,
+            email: form.email,
+            department: form.department,
+            designation: form.designation,
+            role: form.role.toLowerCase() as typeof form.role
+          }
         ]);
-        setInviteCardVisisble(true);
+        setInviteCardVisible(true);
         toast.success('Invite sent');
         setIsDisable(false);
-        setForm({ ...form, name: null, email: null });
+        setForm({
+          first_name: null,
+          last_name: null,
+          email: null,
+          department: null,
+          designation: null,
+          role: null
+        });
       } else {
         toast.error('User allready exists');
         setIsDisable(false);
@@ -99,6 +149,7 @@ const AddMember = ({
       <Stack sx={{ width: '500px' }}>
         {menu === 'addMember' ? (
           <TeamInvite
+            textTitle={'Add Member'}
             isInviteSentVisible={false}
             isInviteTeamCardVisible={isInviteCardVisible}
             slotInviteTeamCard={inviteData.map((data) => {
@@ -106,7 +157,7 @@ const AddMember = ({
                 <>
                   <InviteTeamCard
                     textEmail={data.email}
-                    textName={data.name}
+                    textName={data.first_name}
                     slotAvatar={<Icon variant='UserSolo' />}
                   />
                 </>
@@ -115,14 +166,21 @@ const AddMember = ({
             slotForm={
               <Stack spacing={2}>
                 <TextField
-                  value={form.name ? form.name : ''}
-                  placeholder='Name'
-                  error={formError.name}
+                  value={form.first_name ? form.first_name : ''}
+                  placeholder='First Name'
+                  error={formError.first_name}
                   onFocus={() => {
-                    setFormError({ ...formError, name: false });
+                    setFormError({ ...formError, first_name: false });
                   }}
                   onChange={(e) => {
-                    setForm({ ...form, name: e.target.value });
+                    setForm({ ...form, first_name: e.target.value });
+                  }}
+                />
+                <TextField
+                  value={form.last_name ? form.last_name : ''}
+                  placeholder='Last Name'
+                  onChange={(e) => {
+                    setForm({ ...form, last_name: e.target.value });
                   }}
                 />
                 <TextField
@@ -137,33 +195,69 @@ const AddMember = ({
                   }}
                 />
                 <TextField
-                  value={form.role}
-                  placeholder='Role'
-                  error={formError.role}
+                  value={form.designation ? form.designation : ''}
+                  placeholder='Designation'
+                  error={formError.designation}
                   onFocus={() => {
-                    setFormError({ ...formError, role: false });
+                    setFormError({ ...formError, designation: false });
                   }}
                   onChange={(e) => {
+                    setForm({ ...form, designation: e.target.value });
+                  }}
+                />
+                <Autocomplete
+                  fullWidth
+                  value={form.department}
+                  onChange={(event: any, newValue: string | null) => {
                     setForm({
                       ...form,
-                      role: e.target.value as 'admin' | 'member' | 'interviewer'
+                      department: newValue
                     });
                   }}
-                  select
-                >
-                  {(
+                  options={recruiter?.departments?.map((departments) =>
+                    capitalize(departments)
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      error={formError.department}
+                      onFocus={() => {
+                        setFormError({ ...formError, department: false });
+                      }}
+                      name='Department'
+                      placeholder='Department'
+                    />
+                  )}
+                />
+                <Autocomplete
+                  fullWidth
+                  value={form.role}
+                  onChange={(event: any, newValue: string | null) => {
+                    setForm({
+                      ...form,
+                      role: newValue as 'member' | 'interviewer' | 'scheduler'
+                    });
+                  }}
+                  id='controllable-states-demo'
+                  options={(
                     [
                       'member',
-                      'admin',
                       'interviewer',
                       'scheduler'
                     ] as Database['public']['Enums']['agent_type'][]
-                  ).map((role) => (
-                    <MenuItem key={role} value={role}>
-                      {capitalize(role)}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  ).map((role) => capitalize(role))}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      name='Role'
+                      placeholder='Role'
+                      error={formError.role}
+                      onFocus={() => {
+                        setFormError({ ...formError, role: false });
+                      }}
+                    />
+                  )}
+                />
               </Stack>
             }
             slotButtons={
@@ -187,7 +281,14 @@ const AddMember = ({
               onClick: () => {
                 onClose(),
                   setInviteData([]),
-                  setForm({ ...form, name: null, email: null });
+                  setForm({
+                    ...form,
+                    first_name: null,
+                    last_name: null,
+                    email: null,
+                    department: null,
+                    designation: null
+                  });
               }
             }}
           />

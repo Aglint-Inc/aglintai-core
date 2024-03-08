@@ -13,10 +13,7 @@ export function AllInterviewersCard({
   slotInterviewModules,
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "div-block-1143", "", "dec-width")}
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "div-block-1143", "")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1144")}
         id={_utils.cx(
