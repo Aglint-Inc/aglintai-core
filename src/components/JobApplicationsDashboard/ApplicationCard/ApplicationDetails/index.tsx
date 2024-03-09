@@ -1,11 +1,16 @@
 /* eslint-disable security/detect-object-injection */
-import { AvatarGroup, Collapse, Dialog, Stack } from '@mui/material';
+import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import React from 'react';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState
+} from 'react';
 
 import {
   AssessmentInvite,
@@ -38,7 +43,6 @@ import {
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams
@@ -47,7 +51,6 @@ import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore'
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
 import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
 import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -60,8 +63,8 @@ import { getSafeAssessmentResult } from '@/src/pages/api/jobApplications/candida
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-// import ConversationCard from './ConversationCard';
 import ResumePreviewer from './ResumePreviewer';
+// import ConversationCard from './ConversationCard';
 import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
@@ -585,11 +588,10 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
   application
 }) => {
   const { push } = useRouter();
-  const { members } = useAuthDetails();
   const schedule = application.schedule;
   return (
     <JobCardSchedule
-      textDuration={schedule?.duration && `${schedule.duration} Minutes`}
+      // textDuration={schedule?.duration && `${schedule.duration} Minutes`}
       slotPlatformIcon={<IconScheduleType type={schedule.schedule_type} />}
       textTimeDate={
         schedule.schedule_time
@@ -599,13 +601,6 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
           : '--'
       }
       textPlatformName={getScheduleType(schedule.schedule_type)}
-      textPanelMember={`${application.panel.name} ${
-        schedule.panel_users.length !== 0
-          ? `(${schedule.panel_users.length} member${
-              schedule.panel_users.length === 1 ? '' : 's'
-            })`
-          : ``
-      }`}
       onClickViewScheduler={{
         onClick: () => {
           push(
@@ -625,37 +620,6 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
         }
       }}
       textHeader={schedule.schedule_name}
-      slotMemberImage={
-        <AvatarGroup
-          sx={{
-            '& .MuiAvatar-root': {
-              width: '24px',
-              height: '24px',
-              fontSize: '12px'
-            }
-          }}
-          total={schedule.panel_users.length}
-        >
-          {schedule.panel_users
-            .slice(0, 3)
-            .map((rel: { user_id: string; must: 'string' }) => {
-              const member = members.filter(
-                (member) => member.user_id === rel.user_id
-              )[0];
-              return (
-                <MuiAvatar
-                  key={rel.user_id}
-                  src={member?.profile_image}
-                  level={member?.first_name}
-                  variant='circular'
-                  height='24px'
-                  width='24px'
-                  fontSize='8px'
-                />
-              );
-            })}
-        </AvatarGroup>
-      }
     />
   );
 };

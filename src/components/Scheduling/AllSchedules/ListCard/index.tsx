@@ -1,10 +1,9 @@
-import { AvatarGroup, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from './Icon';
@@ -27,8 +26,6 @@ function ListCardInterviewSchedule({
   slotCheckbox?: ReactNode;
   isSelected?: boolean;
 }) {
-  const { members } = useAuthDetails();
-
   return (
     <>
       <Stack
@@ -93,43 +90,8 @@ function ListCardInterviewSchedule({
                 : '#681219'
             }
           }}
-          textDuration={app.schedule ? `${app.schedule.duration}` : '--'}
+          textDuration={app.schedule ? `--` : '--'}
           textInterviewPanel={panel_name || '--'}
-          slotPanelImage={
-            app.schedule?.panel_users ? (
-              <AvatarGroup
-                sx={{
-                  '& .MuiAvatar-root': {
-                    width: '24px',
-                    height: '24px',
-                    fontSize: '12px'
-                  }
-                }}
-                total={app.schedule ? app.schedule.panel_users.length : 0}
-              >
-                {app.schedule.panel_users
-                  .slice(0, 3)
-                  .map((rel: { user_id: string; must: 'string' }) => {
-                    const member = members.filter(
-                      (member) => member.user_id === rel.user_id
-                    )[0];
-                    return (
-                      <MuiAvatar
-                        key={rel.user_id}
-                        src={member?.profile_image}
-                        level={member?.first_name}
-                        variant='circular'
-                        height='24px'
-                        width='24px'
-                        fontSize='8px'
-                      />
-                    );
-                  })}
-              </AvatarGroup>
-            ) : (
-              ''
-            )
-          }
           slotScheduleInfo={
             app.schedule ? (
               <ScheduleInfoBlock

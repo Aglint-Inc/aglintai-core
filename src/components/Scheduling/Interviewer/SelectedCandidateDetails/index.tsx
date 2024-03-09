@@ -13,7 +13,7 @@ import { getScheduleType } from '../../AllSchedules/utils';
 
 function SelectedCandidateDetails() {
   const selectedSchedule = useInterviewerStore(
-    (state) => state.selectedSchedule,
+    (state) => state.selectedSchedule
   );
   const members = useInterviewerStore((state) => state.members);
 
@@ -22,13 +22,13 @@ function SelectedCandidateDetails() {
       isCompletedVisible={selectedSchedule.schedule.status === 'completed'}
       isUpcomingVisible={selectedSchedule.schedule.status === 'confirmed'}
       textDate={dayjs(selectedSchedule.schedule.schedule_time?.endTime).format(
-        'DD',
+        'DD'
       )}
       textDay={dayjs(selectedSchedule.schedule.schedule_time?.endTime).format(
-        'dddd',
+        'dddd'
       )}
       textMonth={dayjs(selectedSchedule.schedule.schedule_time?.endTime).format(
-        'MMM',
+        'MMM'
       )}
       slotPlatformLogo={
         <IconScheduleType type={selectedSchedule.schedule.schedule_type} />
@@ -39,10 +39,10 @@ function SelectedCandidateDetails() {
       onClickCopyMeetingLink={{
         onClick: () => {
           navigator.clipboard.writeText(
-            (selectedSchedule.schedule.meeting_json as any)?.hangoutLink,
+            (selectedSchedule.schedule.meeting_json as any)?.hangoutLink
           );
           toast.success('Link copied to clipboard');
-        },
+        }
       }}
       textMeetingLink={
         (selectedSchedule.schedule.meeting_json as any)?.hangoutLink
@@ -50,20 +50,20 @@ function SelectedCandidateDetails() {
       onClickJoinGoogleMeet={{
         onClick: () => {
           window.open(
-            (selectedSchedule.schedule.meeting_json as any)?.hangoutLink,
+            (selectedSchedule.schedule.meeting_json as any)?.hangoutLink
           );
-        },
+        }
       }}
       textPlatformName={getScheduleType(
-        selectedSchedule.schedule.schedule_type,
+        selectedSchedule.schedule.schedule_type
       )}
       textPanelName={selectedSchedule.panel.name}
-      textDuration={selectedSchedule.schedule.duration + ' minutes'}
+      textDuration={'' + ' minutes'}
       slotCandidateDetails={<CandidateDetailsJob />}
       slotPanelList={selectedSchedule.schedule.panel_users.map(
         (user: { user_id: string; must: string }) => {
           const member = members.find(
-            (member) => member.user_id === user.user_id,
+            (member) => member.user_id === user.user_id
           );
 
           return (
@@ -82,7 +82,7 @@ function SelectedCandidateDetails() {
               }
             />
           );
-        },
+        }
       )}
     />
   );

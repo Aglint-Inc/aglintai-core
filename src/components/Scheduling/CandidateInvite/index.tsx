@@ -10,7 +10,7 @@ import {
   InterviewConfirmed,
   LoadedSlotPill,
   LoadedSlots,
-  OpenedInvitationLink,
+  OpenedInvitationLink
 } from '@/devlink';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -40,7 +40,7 @@ function CandidateInvite() {
     try {
       // schedule.users[0].user_id
       const res = await axios.post('/api/scheduling/invite', {
-        id: router.query.schedule_id,
+        id: router.query.schedule_id
       });
       if (res.status === 200 && res.data) {
         setSchedule(res.data);
@@ -52,7 +52,7 @@ function CandidateInvite() {
     }
   };
 
-  const scheduleSlots = schedule?.selected_slots as unknown as {
+  const scheduleSlots = (schedule as any)?.selected_slots as unknown as {
     date: string;
     slots: TimeSlot[];
   }[];
@@ -68,14 +68,14 @@ function CandidateInvite() {
         schedule_name: schedule.schedule_name,
         interviewers_id: interviewers_id,
         candidate_email: schedule.applications.candidates.email,
-        organizer_id: schedule.created_by,
+        organizer_id: schedule.created_by
       });
       if (res.status === 200 && res.data) {
         await handleChat(selectedSlot);
         setSchedule({
           ...schedule,
           schedule_time: selectedSlot as any,
-          status: 'confirmed',
+          status: 'confirmed'
         });
         setDialogOpen(false);
       }
@@ -107,9 +107,9 @@ function CandidateInvite() {
                   type: 'activity',
                   value: `Candidate has confirmed the slot`,
                   status: 'success',
-                  created_at: new Date().toISOString(),
-                },
-              ],
+                  created_at: new Date().toISOString()
+                }
+              ]
             })
             .eq('id', router.query.chat_id);
 
@@ -117,9 +117,9 @@ function CandidateInvite() {
             agent_chat_id: String(router.query.chat_id),
             type: 'candidate',
             title: `Candidate has confirmed the slot on ${dayjs(
-              selectedSlot.startTime,
+              selectedSlot.startTime
             ).format('D MMM h:mm A')} - ${dayjs(selectedSlot.endTime).format(
-              'D MMM h:mm A',
+              'D MMM h:mm A'
             )}`,
             created_at: new Date().toISOString(),
             icon_status: 'success',
@@ -127,8 +127,8 @@ function CandidateInvite() {
               type: 'candidate_confirmation',
               appication_id: schedule.applications.id,
               interviewers_id,
-              schedule,
-            },
+              schedule
+            }
           });
         }
       }
@@ -143,7 +143,7 @@ function CandidateInvite() {
         height: '100vh',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
+        width: '100%'
       }}
     >
       <Dialog
@@ -157,12 +157,12 @@ function CandidateInvite() {
           onClickClose={{
             onClick: () => {
               setDialogOpen(false);
-            },
+            }
           }}
           onClickConfirm={{
             onClick: () => {
               handleConfirmSlot();
-            },
+            }
           }}
           slotConfirmButton={
             <ButtonSuccessLarge
@@ -175,14 +175,14 @@ function CandidateInvite() {
               wrapperProps={{
                 style: {
                   width: '100%',
-                  fontSize: '16px',
-                },
+                  fontSize: '16px'
+                }
               }}
               isDisabled={false}
               onClickButton={{
                 onClick: () => {
                   if (!saving) handleConfirmSlot();
-                },
+                }
               }}
               textLabel='Confirm'
             />
@@ -201,7 +201,7 @@ function CandidateInvite() {
           }
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
           textTime={`${dayjs(selectedSlot?.startTime).format(
-            'hh:mm A',
+            'hh:mm A'
           )} - ${dayjs(selectedSlot?.endTime).format('hh:mm A')}`}
           textTitle={schedule?.schedule_name}
         />
@@ -214,7 +214,7 @@ function CandidateInvite() {
           onClickProceed={{
             onClick: () => {
               setDialogOpen(true);
-            },
+            }
           }}
           textTitle={schedule?.schedule_name}
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
@@ -228,7 +228,7 @@ function CandidateInvite() {
                   : 'Google Meet'
           }
           textDesc={`Hi ${schedule?.applications?.candidates?.first_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
-          textDuration={schedule?.duration + ' minutes'}
+          textDuration={'' + ' minutes'}
           slotTable={
             <Stack
               justifyContent={'center'}
@@ -260,13 +260,13 @@ function CandidateInvite() {
                                         setInterviewers_id(slot.user_ids);
                                         setSelectedSlot(slot);
                                       }
-                                    },
+                                    }
                                   }}
                                   key={slot.startTime}
                                   textTime={`${dayjs(slot.startTime).format(
-                                    'hh:mm',
+                                    'hh:mm'
                                   )} - ${dayjs(slot.endTime).format(
-                                    'hh:mm A',
+                                    'hh:mm A'
                                   )}`}
                                   slotImage={
                                     <AvatarGroup
@@ -274,8 +274,8 @@ function CandidateInvite() {
                                         '& .MuiAvatar-root': {
                                           width: '24px',
                                           height: '24px',
-                                          fontSize: '8px',
-                                        },
+                                          fontSize: '8px'
+                                        }
                                       }}
                                       total={slot.user_ids.length}
                                     >
@@ -284,7 +284,7 @@ function CandidateInvite() {
                                         .map((user_id) => {
                                           const member = schedule?.users.filter(
                                             (member) =>
-                                              member.user_id === user_id,
+                                              member.user_id === user_id
                                           )[0];
                                           return (
                                             <MuiAvatar
@@ -320,8 +320,8 @@ function CandidateInvite() {
                 height: '60px',
                 background: '#fff',
                 '& .MuiAvatar-img ': {
-                  objectFit: 'contain',
-                },
+                  objectFit: 'contain'
+                }
               }}
             >
               <Icon
@@ -349,7 +349,7 @@ function CandidateInvite() {
           }
           slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
           textTime={`${dayjs(schedule?.schedule_time?.startTime).format(
-            'hh:mm A',
+            'hh:mm A'
           )} - ${dayjs(schedule?.schedule_time?.endTime).format('hh:mm A')}`}
           slotCompanyLogo={
             <Avatar
@@ -360,8 +360,8 @@ function CandidateInvite() {
                 height: '60px',
                 background: '#fff',
                 '& .MuiAvatar-img ': {
-                  objectFit: 'contain',
-                },
+                  objectFit: 'contain'
+                }
               }}
             >
               <Icon
@@ -376,7 +376,7 @@ function CandidateInvite() {
           onClickContactSupport={{
             onClick: () => {
               window.open(`mailto:customersuccess@aglinthq.com`);
-            },
+            }
           }}
           textTitle={schedule?.schedule_name}
         />
