@@ -250,30 +250,3 @@ const minusEventsTimeInWorkHours = (
   }
   return free_times;
 };
-
-// given start time and end time and worktimings and interv_events
-// find
-// finding free timings from start time to end time
-//
-//
-// given a day ,work hours in that day, dayoffs, event on that, find free timings
-
-// module availability
-//
-// interviewers and settings
-// func : combination of single modules with diffrent ints and its availability
-// output availibility time range of module
-
-// given two module and its availability_time_range find the combination that they appear in time duration X minutes gap
-// module={
-//     name:string,
-//     id:string,
-//     availability_time_range={start_time:String, endTime:string}[],
-// }
-// time_gap = x
-
-// find all the combination of meeting given n number of people each having there availability time_range with meetin duration be x minutes
-//  all the combintions of interview_modules with different interviewers
-//  all the combinations of
-//
-//

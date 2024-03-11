@@ -82,7 +82,7 @@ export const findPlanCombinations = (
           isBreak: true,
           duration: break_duration,
           attended_inters: [],
-          start_time: prev_time_range.startTime,
+          start_time: prev_time_range.endTime,
           end_time: dayjs(prev_time_range.endTime)
             .add(break_duration, 'minutes')
             .toISOString(),

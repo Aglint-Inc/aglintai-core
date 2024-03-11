@@ -45,7 +45,10 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   searchText: ''
 };
 
-export type ModuleType = InterviewModuleType & {
+export type ModuleType = Pick<
+  InterviewModuleType,
+  'id' | 'name' | 'created_at' | 'recruiter_id'
+> & {
   relations: InterviewModuleRelationType[];
   duration_available: TimeSlotsData;
 };

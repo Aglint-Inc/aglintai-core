@@ -31,8 +31,8 @@ const Comp = () => {
         {
           job_id: '9a29abfd-1307-4ef6-8ec9-1144714578e8',
           company_id: 'ce4f1b5c-431d-47cc-9826-ca376a8d031b',
-          start_date: '2024-03-07T14:59:55.247Z',
-          end_date: '2024-03-10T14:59:55.247Z'
+          start_date: '2024-03-11T14:59:55.247Z',
+          end_date: '2024-03-13T14:59:55.247Z'
         }
       );
       setData(r);
@@ -68,7 +68,12 @@ const Comp = () => {
                   } else
                     return (
                       <p key={m.module_id} style={{ marginBottom: '10px' }}>
-                        <h6>module name {m.module_name}</h6>
+                        <h6>
+                          module name {m.module_name}
+                          {'      '}
+                          {dayjs(m.start_time).format('HH:mm')} -{' '}
+                          {dayjs(m.end_time).format('HH:mm')} -{' '}
+                        </h6>
 
                         <p>
                           Interviewers{' '}

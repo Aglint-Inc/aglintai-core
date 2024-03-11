@@ -1,60 +1,68 @@
+import {
+  InterviewModuleApiType,
+  InterviewModuleDbType
+} from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { InterviewModuleType, RecruiterUserType } from '@/src/types/data.types';
 
 import { CompServiceKeyCred, IntervMeta } from './types';
 import { decrypt } from './utils';
+import { getFullName } from '../jsonResume';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
-export const fetch_company_cred = async (company_id: string) => {
+export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
   const [rec] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter')
-      .select('service_json')
-      .eq('id', company_id)
+    await supabaseAdmin.rpc('find_avail_api_details', {
+      job_id,
+      recruiter_id
+    })
   );
-  const company_cred = decrypt(rec.service_json, process.env.ENCRYPTION_KEY);
-  return JSON.parse(company_cred) as CompServiceKeyCred;
-};
 
-export const fetchInterviersSheduleSetting = async (
-  interviewer_ids: string[]
-) => {
-  const recs = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select(
-        'schedule_auth,email,user_id, scheduling_settings,first_name,last_name'
-      )
-      .in('user_id', interviewer_ids)
-  ) as Pick<
-    RecruiterUserType,
-    | 'email'
-    | 'user_id'
-    | 'schedule_auth'
-    | 'scheduling_settings'
-    | 'first_name'
-    | 'last_name'
-    | 'profile_image'
-  >[];
+  const details = {
+    interview_plan: rec.interview_plan.plan as InterviewModuleDbType[],
+    service_json: JSON.parse(
+      decrypt(rec.service_json.service_json, process.env.ENCRYPTION_KEY)
+    ) as CompServiceKeyCred,
+    interviewers: rec.interviewer.interviewer as RecruiterUserType[],
+    interview_modules: rec.interview_modules
+      .interview_modules as InterviewModuleType[]
+  };
 
-  let interviewers: IntervMeta[] = recs.map((r) => {
-    return {
-      name: [r.first_name, r.last_name].filter(Boolean).join(' '),
-      profile_img: r.profile_image,
-      email: r.email,
-      interviewer_id: r.user_id,
-      tokens: (r.schedule_auth as any) ?? null,
-      shedule_settings: r.scheduling_settings as schedulingSettingType
-    };
-  });
-  return interviewers;
-};
+  const interview_plan_api: InterviewModuleApiType[] =
+    details.interview_plan.map((m) => {
+      return {
+        duration: m.duration,
+        isBreak: m.isBreak,
+        meetingIntervCnt: m.meetingIntervCnt,
+        module_id: m.module_id,
+        module_name: !m.isBreak
+          ? details.interview_modules.find((m2) => m2.id === m.module_id)?.name
+          : '',
+        selectedIntervs: m.selectedIntervs.map((s) => {
+          const int = details.interviewers.find(
+            (i) => i.user_id === s.interv_id
+          );
+          return {
+            interv_id: int.user_id,
+            email: int.email,
+            profile_img: int?.profile_image ?? '',
+            name: getFullName(int.first_name, int.last_name)
+          };
+        })
+      };
+    });
 
-export const fetchModuleName = async (ids: string[]) => {
-  const modules = supabaseWrap(
-    await supabaseAdmin.from('interview_module').select().in('id', ids)
-  ) as InterviewModuleType[];
-
-  return modules.map((m) => ({ module_id: m.id, name: m.name }));
+  const interviewers_info: IntervMeta[] = details.interviewers.map((int) => ({
+    email: int.email,
+    interviewer_id: int.user_id,
+    name: getFullName(int.first_name, int.last_name),
+    profile_img: int.profile_image,
+    shedule_settings: int.scheduling_settings as any,
+    tokens: int.schedule_auth as any
+  }));
+  return {
+    company_cred: details.service_json,
+    interviewers_info,
+    interview_plan_api
+  };
 };
