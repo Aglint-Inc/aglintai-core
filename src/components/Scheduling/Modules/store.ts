@@ -10,7 +10,8 @@ import {
   initialStateSchedulingStore,
   ModuleType,
   PauseJson,
-  SchedulingSlice
+  SchedulingSlice,
+  StatusTraining
 } from './types';
 
 export const useSchedulingStore = create<SchedulingSlice>()(
@@ -26,15 +27,16 @@ export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
 export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
   useSchedulingStore.setState({ selectedUsers });
 
-export const setModuleName = (moduleName: string) =>
-  useSchedulingStore.setState({ moduleName });
-
 export const setIsDeleteMemberDialogOpen = (
   isDeleteMemberDialogOpen: boolean
 ) => useSchedulingStore.setState({ isDeleteMemberDialogOpen });
 
 export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
   useSchedulingStore.setState({ isAddMemberDialogOpen });
+
+export const setIsModuleSettingsDialogOpen = (
+  isModuleSettingsDialogOpen: boolean
+) => useSchedulingStore.setState({ isModuleSettingsDialogOpen });
 
 export const setSearchText = (searchText: string) =>
   useSchedulingStore.setState({ searchText });
@@ -55,11 +57,27 @@ export const setSelUser = (selUser: InterviewModuleRelationType | null) =>
 export const setPauseJson = (pause_json: PauseJson | null) =>
   useSchedulingStore.setState({ pause_json });
 
-export const setEditModule = (editModule: ModuleType) =>
-  useSchedulingStore.setState({ editModule });
+export const setEditModule = (editModule: Partial<ModuleType>) => {
+  if (editModule.settings) {
+    useSchedulingStore.setState((state) => ({
+      editModule: { ...state.editModule, ...editModule }
+    }));
+  } else {
+    useSchedulingStore.setState((state) => ({
+      editModule: {
+        ...state.editModule,
+        ...editModule,
+        settings: initialEditModule.settings
+      }
+    }));
+  }
+};
 
 export const resetSchedulingStore = () =>
   useSchedulingStore.setState(initialStateSchedulingStore);
+
+export const setTrainingStatus = (trainingStatus: StatusTraining) =>
+  useSchedulingStore.setState({ trainingStatus });
 
 export const deleteModuleSchedulingStore = (id: string) => {
   useSchedulingStore.setState({

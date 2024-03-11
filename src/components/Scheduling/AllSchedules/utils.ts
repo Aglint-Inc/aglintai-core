@@ -1,80 +1,9 @@
+/* eslint-disable security/detect-object-injection */
 import axios from 'axios';
 
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
-
-/* eslint-disable security/detect-object-injection */
-export function findIntersection(
-  userAvailability: {
-    user_id: string;
-    availibility_json: {
-      availability: {
-        [date: string]: {
-          status: string;
-          endTime: string;
-          startTime: string;
-        }[];
-      };
-      timeDuration: number;
-    } | null;
-  }[]
-): IntersectionResult {
-  let intersection: IntersectionResult = {};
-  const currentDate = new Date();
-
-  // Iterate over each availability date
-  userAvailability.forEach((person) => {
-    if (person.availibility_json && person.availibility_json.availability) {
-      const availability = person.availibility_json.availability;
-
-      Object.keys(availability).forEach((date) => {
-        // Convert date string to a Date object
-        const availabilityDate = new Date(date);
-
-        // Check if the availability date is on or after the current date
-        if (availabilityDate >= currentDate) {
-          const slots = availability[date];
-
-          slots.forEach((slot) => {
-            const startTime = slot.startTime;
-            const endTime = slot.endTime;
-            const status = slot.status;
-
-            // Only consider slots with status "available"
-            if (status === 'confirmed') {
-              // Initialize user_ids array for this time slot if it doesn't exist
-              if (!intersection[date]) {
-                intersection[date] = [];
-              }
-
-              // Check if this time slot exists in the intersection object
-              const existingSlot = intersection[date].find(
-                (existingSlot) =>
-                  existingSlot.startTime === startTime &&
-                  existingSlot.endTime === endTime
-              );
-
-              // If it doesn't exist, add it with the user_id
-              if (!existingSlot) {
-                intersection[date].push({
-                  startTime: startTime,
-                  endTime: endTime,
-                  user_ids: [person.user_id]
-                });
-              } else {
-                // If it exists, add the user_id to the existing time slot
-                existingSlot.user_ids.push(person.user_id);
-              }
-            }
-          });
-        }
-      });
-    }
-  });
-
-  return intersection;
-}
 
 export interface TimeSlot {
   startTime: string;
@@ -246,4 +175,23 @@ export function convertToWord(number) {
   }
 
   return result.trim();
+}
+
+export function transformData(inputData) {
+  const transformedData = {};
+
+  inputData.forEach((item) => {
+    const date = item.start_time.split('T')[0]; // Extracting date from start_time
+    if (!transformedData[date]) {
+      transformedData[date] = [];
+    }
+    transformedData[date].push(item);
+  });
+
+  const result = [];
+  for (const date in transformedData) {
+    result.push({ [date]: transformedData[date] });
+  }
+
+  return result;
 }

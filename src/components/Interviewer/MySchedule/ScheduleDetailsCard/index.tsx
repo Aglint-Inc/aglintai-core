@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import { PageLayout, ScheduleInfo } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
-import { data, Members } from '..';
+import { data } from '..';
 
 function ScheduleDetailsCard() {
   const {
     query: { schedule_id },
-    back,
+    back
   } = useRouter();
   const selectedItem = data.filter((item) => item.id === schedule_id)[0];
 
@@ -18,7 +18,7 @@ function ScheduleDetailsCard() {
       onClickBack={{
         onClick: () => {
           back();
-        },
+        }
       }}
       slotTopbarLeft={<>{selectedItem.name}</>}
       slotBody={
@@ -34,18 +34,6 @@ function ScheduleDetailsCard() {
                 src='/static/images/avatar/5.jpg'
               />
             }
-            slotMeetingIcon={
-              <MuiAvatar
-                level={'Tom Odel'}
-                width='14'
-                variant='circular'
-                fontSize='12px'
-                height='14'
-                src='https://logo.clearbit.com/meet.com'
-              />
-            }
-            textDate={selectedItem.date.day}
-            slotMemberImage={<Members members={selectedItem.members} />}
           />
         </>
       }

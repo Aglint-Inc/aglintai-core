@@ -44,7 +44,6 @@ function AllList() {
                 key={app.applications.id}
                 app={app}
                 onClickCard={onClickCard}
-                panel_name='---'
               />
             );
           })}

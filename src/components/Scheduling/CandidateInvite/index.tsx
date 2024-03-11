@@ -1,24 +1,25 @@
-import { Avatar, AvatarGroup, Dialog, Stack } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonPrimaryLarge, ButtonSuccessLarge } from '@/devlink';
 import {
-  ButtonSuccessLarge,
-  ConfirmSlotPop,
+  AvailableOptionCardDate,
   InterviewConfirmed,
-  LoadedSlotPill,
-  LoadedSlots,
-  OpenedInvitationLink
-} from '@/devlink';
-import { supabase } from '@/src/utils/supabase/client';
+  InviteLinkConfirm,
+  OpenInvitationLink,
+  OptionAvailable,
+  OptionAvailableCard,
+  SessionList
+} from '@/devlink2';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { ApiResponse } from './type';
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
-import { TimeSlot } from '../AllSchedules/utils';
-import Icon from '../../Common/Icons/Icon';
+import { getScheduleType } from '../AllSchedules/utils';
 import Loader from '../../Common/Loader';
 import LoaderGrey from '../../Common/LoaderGrey';
 import MuiAvatar from '../../Common/MuiAvatar';
@@ -26,11 +27,11 @@ import MuiAvatar from '../../Common/MuiAvatar';
 function CandidateInvite() {
   const router = useRouter();
   const [schedule, setSchedule] = useState<ApiResponse>(null);
-  const [selectedSlot, setSelectedSlot] = useState<TimeSlot>(null);
+  const [selectedSlot, setSelectedSlot] =
+    useState<ApiResponse['schedulingOptions'][0]>(null);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [interviewers_id, setInterviewers_id] = useState<string[]>([]);
 
   useEffect(() => {
     if (router.isReady && router.query.schedule_id) initialFetch();
@@ -38,7 +39,6 @@ function CandidateInvite() {
 
   const initialFetch = async () => {
     try {
-      // schedule.users[0].user_id
       const res = await axios.post('/api/scheduling/invite', {
         id: router.query.schedule_id
       });
@@ -52,30 +52,17 @@ function CandidateInvite() {
     }
   };
 
-  const scheduleSlots = (schedule as any)?.selected_slots as unknown as {
-    date: string;
-    slots: TimeSlot[];
-  }[];
-
   const handleConfirmSlot = async () => {
     try {
       setSaving(true);
       const res = await axios.post('/api/scheduling/confirm', {
         id: router.query.schedule_id,
-        selectedSlot: selectedSlot,
-        company_logo: schedule?.interview_module?.recruiter?.logo,
-        company_name: schedule?.interview_module?.recruiter?.name,
-        schedule_name: schedule.schedule_name,
-        interviewers_id: interviewers_id,
-        candidate_email: schedule.applications.candidates.email,
-        organizer_id: schedule.created_by
+        selectedSlot: selectedSlot
       });
       if (res.status === 200 && res.data) {
-        await handleChat(selectedSlot);
+        schedule.schedule.confirmed_option = selectedSlot;
         setSchedule({
-          ...schedule,
-          schedule_time: selectedSlot as any,
-          status: 'confirmed'
+          ...schedule
         });
         setDialogOpen(false);
       }
@@ -86,56 +73,7 @@ function CandidateInvite() {
     }
   };
 
-  const handleChat = async (selectedSlot: TimeSlot) => {
-    try {
-      if (router.query.chat_id) {
-        const { data, error } = await supabase
-          .from('agent_chatx')
-          .select('*')
-          .eq('id', router.query.chat_id);
-
-        if (error) {
-          throw error;
-        }
-        if (data.length > 0) {
-          await supabase
-            .from('agent_chatx')
-            .update({
-              history: [
-                ...data[0].history,
-                {
-                  type: 'activity',
-                  value: `Candidate has confirmed the slot`,
-                  status: 'success',
-                  created_at: new Date().toISOString()
-                }
-              ]
-            })
-            .eq('id', router.query.chat_id);
-
-          await supabase.from('agent_activity').insert({
-            agent_chat_id: String(router.query.chat_id),
-            type: 'candidate',
-            title: `Candidate has confirmed the slot on ${dayjs(
-              selectedSlot.startTime
-            ).format('D MMM h:mm A')} - ${dayjs(selectedSlot.endTime).format(
-              'D MMM h:mm A'
-            )}`,
-            created_at: new Date().toISOString(),
-            icon_status: 'success',
-            event: {
-              type: 'candidate_confirmation',
-              appication_id: schedule.applications.id,
-              interviewers_id,
-              schedule
-            }
-          });
-        }
-      }
-    } catch (e) {
-      //
-    }
-  };
+  const schedulingOptions = schedule?.schedulingOptions;
 
   return (
     <Stack
@@ -147,21 +85,91 @@ function CandidateInvite() {
       }}
     >
       <Dialog
+        maxWidth={'lg'}
         open={dialogOpen}
-        fullWidth={true}
         onClose={() => {
           setDialogOpen(false);
         }}
       >
-        <ConfirmSlotPop
+        <InviteLinkConfirm
+          slotInviteLinkCard={
+            <OptionAvailableCard
+              isActive={false}
+              slotCardDate={selectedSlot?.transformedPlan.map((plan, ind) => {
+                return Object.entries(plan).map(([date, events]) => {
+                  return (
+                    <AvailableOptionCardDate
+                      textDate={dayjs(date).format('DD')}
+                      textDay={dayjs(date).format('dddd')}
+                      textMonth={dayjs(date).format('MMM')}
+                      key={ind}
+                      slotOptionAvailable={events.map((pl, ind) => {
+                        return (
+                          <OptionAvailable
+                            textTime={`${dayjs(pl.start_time).format('hh:mm A')} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                            textTitle={pl.module_name}
+                            key={ind}
+                            isTitleVisible={!pl.isBreak}
+                            isBreakVisible={pl.isBreak}
+                            slotMember={
+                              <Stack
+                                direction={'row'}
+                                sx={{
+                                  flexWrap: 'wrap',
+                                  gap: 2.5
+                                }}
+                              >
+                                {pl?.attended_inters?.map((int) => {
+                                  const user = schedule.members.find(
+                                    (member) => member.user_id === int.id
+                                  );
+                                  if (!user) return null;
+                                  return (
+                                    <Stack
+                                      key={int.id}
+                                      direction={'row'}
+                                      spacing={1}
+                                      sx={{
+                                        textWrap: 'nowrap'
+                                      }}
+                                    >
+                                      <MuiAvatar
+                                        level={getFullName(
+                                          user.first_name,
+                                          user.last_name
+                                        )}
+                                        src={user?.profile_image}
+                                        variant={'circular'}
+                                        width={'24px'}
+                                        height={'24px'}
+                                        fontSize={'12px'}
+                                      />
+                                      <Typography
+                                        variant={'body2'}
+                                        color={'#000'}
+                                      >
+                                        {getFullName(
+                                          user.first_name,
+                                          user.last_name
+                                        )}
+                                      </Typography>
+                                    </Stack>
+                                  );
+                                })}
+                              </Stack>
+                            }
+                          />
+                        );
+                      })}
+                    />
+                  );
+                });
+              })}
+            />
+          }
           onClickClose={{
             onClick: () => {
               setDialogOpen(false);
-            }
-          }}
-          onClickConfirm={{
-            onClick: () => {
-              handleConfirmSlot();
             }
           }}
           slotConfirmButton={
@@ -187,198 +195,223 @@ function CandidateInvite() {
               textLabel='Confirm'
             />
           }
-          textDate={dayjs(selectedSlot?.endTime).format('DD')}
-          textDay={dayjs(selectedSlot?.endTime).format('dddd')}
-          textMonth={dayjs(selectedSlot?.endTime).format('MMM')}
-          textPlatformName={
-            schedule?.schedule_type == 'zoom'
-              ? 'Zoom'
-              : schedule?.schedule_type == 'in_person_meeting'
-                ? 'In Person Meeting'
-                : schedule?.schedule_type == 'phone_call'
-                  ? 'Phone Call'
-                  : 'Google Meet'
-          }
-          slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
-          textTime={`${dayjs(selectedSlot?.startTime).format(
-            'hh:mm A'
-          )} - ${dayjs(selectedSlot?.endTime).format('hh:mm A')}`}
-          textTitle={schedule?.schedule_name}
         />
       </Dialog>
       {loading ? (
         <Loader />
-      ) : !schedule.schedule_time ? (
-        <OpenedInvitationLink
-          isProceedDisable={!selectedSlot}
-          onClickProceed={{
+      ) : !schedule?.schedule.confirmed_option ? (
+        <OpenInvitationLink
+          onClickAskOptions={{
             onClick: () => {
               setDialogOpen(true);
             }
           }}
-          textTitle={schedule?.schedule_name}
-          slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
-          textPlatform={
-            schedule?.schedule_type == 'zoom'
-              ? 'Zoom'
-              : schedule?.schedule_type == 'in_person_meeting'
-                ? 'In Person Meeting'
-                : schedule?.schedule_type == 'phone_call'
-                  ? 'Phone Call'
-                  : 'Google Meet'
+          isNotFindingTextVisible={!selectedSlot}
+          slotButtonPrimary={
+            selectedSlot?.schedule_id && (
+              <Stack width={'100%'}>
+                <ButtonPrimaryLarge
+                  onClickButton={{
+                    onClick: () => {
+                      setDialogOpen(true);
+                    }
+                  }}
+                  textLabel={'Proceed'}
+                />
+              </Stack>
+            )
           }
-          textDesc={`Hi ${schedule?.applications?.candidates?.first_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
-          textDuration={'' + ' minutes'}
-          slotTable={
-            <Stack
-              justifyContent={'center'}
-              maxWidth={'620px'}
-              p={'40px'}
-              spacing={2}
-            >
-              {scheduleSlots
-                ?.filter((f) => f.slots.filter((s) => s.isSelected).length > 0)
-                .map((sch) => {
-                  return (
-                    <>
-                      <LoadedSlots
-                        key={dayjs(sch.date).format('DD dddd')}
-                        slotLoadedSlotPill={sch.slots
-                          .filter((slot) => slot.isSelected)
-                          .map((slot) => {
+          textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
+          slotInviteLinkCard={schedulingOptions?.map((option, ind) => {
+            return (
+              <Stack
+                key={ind}
+                onClick={() => {
+                  setSelectedSlot(option);
+                }}
+                sx={{ cursor: 'pointer' }}
+              >
+                <OptionAvailableCard
+                  isActive={selectedSlot === option}
+                  slotCardDate={option.transformedPlan.map((plan, ind) => {
+                    return Object.entries(plan).map(([date, events]) => {
+                      return (
+                        <AvailableOptionCardDate
+                          textDate={dayjs(date).format('DD')}
+                          textDay={dayjs(date).format('dddd')}
+                          textMonth={dayjs(date).format('MMM')}
+                          key={ind}
+                          slotOptionAvailable={events.map((pl, ind) => {
                             return (
-                              <>
-                                <LoadedSlotPill
-                                  isNotSelected={selectedSlot !== slot}
-                                  isSelectedActive={selectedSlot === slot}
-                                  onClickPill={{
-                                    onClick: () => {
-                                      if (selectedSlot === slot) {
-                                        setInterviewers_id([]);
-                                        setSelectedSlot(null);
-                                      } else {
-                                        setInterviewers_id(slot.user_ids);
-                                        setSelectedSlot(slot);
-                                      }
-                                    }
-                                  }}
-                                  key={slot.startTime}
-                                  textTime={`${dayjs(slot.startTime).format(
-                                    'hh:mm'
-                                  )} - ${dayjs(slot.endTime).format(
-                                    'hh:mm A'
-                                  )}`}
-                                  slotImage={
-                                    <AvatarGroup
-                                      sx={{
-                                        '& .MuiAvatar-root': {
-                                          width: '24px',
-                                          height: '24px',
-                                          fontSize: '8px'
-                                        }
-                                      }}
-                                      total={slot.user_ids.length}
-                                    >
-                                      {slot.user_ids
-                                        .slice(0, 5)
-                                        .map((user_id) => {
-                                          const member = schedule?.users.filter(
-                                            (member) =>
-                                              member.user_id === user_id
-                                          )[0];
-                                          return (
-                                            <MuiAvatar
-                                              key={user_id}
-                                              src={member?.profile_image}
-                                              level={member?.first_name}
-                                              variant='circular'
-                                              height='24px'
-                                              width='24px'
-                                              fontSize='8px'
-                                            />
-                                          );
-                                        })}
-                                    </AvatarGroup>
-                                  }
-                                />
-                              </>
+                              <OptionAvailable
+                                textTime={`${dayjs(pl.start_time).format('hh:mm A')} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                                textTitle={pl.module_name}
+                                key={ind}
+                                isTitleVisible={!pl.isBreak}
+                                isBreakVisible={pl.isBreak}
+                                slotMember={
+                                  <Stack
+                                    direction={'row'}
+                                    sx={{
+                                      flexWrap: 'wrap',
+                                      gap: 2.5
+                                    }}
+                                  >
+                                    {pl?.attended_inters?.map((int) => {
+                                      const user = schedule.members.find(
+                                        (member) => member.user_id === int.id
+                                      );
+                                      if (!user) return null;
+                                      return (
+                                        <Stack
+                                          key={int.id}
+                                          direction={'row'}
+                                          spacing={1}
+                                          sx={{
+                                            textWrap: 'nowrap'
+                                          }}
+                                        >
+                                          <MuiAvatar
+                                            level={getFullName(
+                                              user.first_name,
+                                              user.last_name
+                                            )}
+                                            src={user?.profile_image}
+                                            variant={'circular'}
+                                            width={'24px'}
+                                            height={'24px'}
+                                            fontSize={'12px'}
+                                          />
+                                          <Typography
+                                            variant={'body2'}
+                                            color={'#000'}
+                                          >
+                                            {getFullName(
+                                              user.first_name,
+                                              user.last_name
+                                            )}
+                                          </Typography>
+                                        </Stack>
+                                      );
+                                    })}
+                                  </Stack>
+                                }
+                              />
                             );
                           })}
-                        textDay={dayjs(sch.date).format('MMM D dddd')}
-                      />
-                    </>
-                  );
-                })}
-            </Stack>
-          }
-          slotCompanyImage={
-            <Avatar
-              src={schedule?.interview_module?.recruiter?.logo}
-              variant='rounded'
-              sx={{
-                width: '60px',
-                height: '60px',
-                background: '#fff',
-                '& .MuiAvatar-img ': {
-                  objectFit: 'contain'
-                }
-              }}
-            >
-              <Icon
-                variant='CompanyOutlined'
-                height='24'
-                width='24'
-                color='#87929D'
-              />
-            </Avatar>
-          }
+                        />
+                      );
+                    });
+                  })}
+                />
+              </Stack>
+            );
+          })}
         />
       ) : (
         <InterviewConfirmed
-          textDate={dayjs(schedule?.schedule_time?.endTime).format('DD')}
-          textDay={dayjs(schedule?.schedule_time?.endTime).format('dddd')}
-          textMonth={dayjs(schedule?.schedule_time?.endTime).format('MMM')}
-          textPlatformName={
-            schedule?.schedule_type == 'zoom'
-              ? 'Zoom'
-              : schedule?.schedule_type == 'in_person_meeting'
-                ? 'In Person Meeting'
-                : schedule?.schedule_type == 'phone_call'
-                  ? 'Phone Call'
-                  : 'Google Meet'
+          textTitle={schedule.schedule.schedule_name}
+          textMailSent={schedule.candidate.email}
+          textMeetingPlatform={getScheduleType(schedule.schedule.schedule_type)}
+          slotPlatformIcon={
+            <IconScheduleType type={schedule.schedule.schedule_type} />
           }
-          slotPlatformLogo={<IconScheduleType type={schedule?.schedule_type} />}
-          textTime={`${dayjs(schedule?.schedule_time?.startTime).format(
-            'hh:mm A'
-          )} - ${dayjs(schedule?.schedule_time?.endTime).format('hh:mm A')}`}
-          slotCompanyLogo={
-            <Avatar
-              src={schedule?.interview_module?.recruiter?.logo}
-              variant='rounded'
-              sx={{
-                width: '60px',
-                height: '60px',
-                background: '#fff',
-                '& .MuiAvatar-img ': {
-                  objectFit: 'contain'
+          slotCardDate={
+            <OptionAvailableCard
+              isActive={false}
+              slotCardDate={schedule?.schedule?.confirmed_option?.transformedPlan.map(
+                (plan, ind) => {
+                  return Object.entries(plan).map(([date, events]) => {
+                    return (
+                      <AvailableOptionCardDate
+                        textDate={dayjs(date).format('DD')}
+                        textDay={dayjs(date).format('dddd')}
+                        textMonth={dayjs(date).format('MMM')}
+                        key={ind}
+                        slotOptionAvailable={events.map((pl, ind) => {
+                          return (
+                            <OptionAvailable
+                              textTime={`${dayjs(pl.start_time).format('hh:mm A')} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                              textTitle={pl.module_name}
+                              key={ind}
+                              isTitleVisible={!pl.isBreak}
+                              isBreakVisible={pl.isBreak}
+                              slotMember={
+                                <Stack
+                                  direction={'row'}
+                                  sx={{
+                                    flexWrap: 'wrap',
+                                    gap: 2.5
+                                  }}
+                                >
+                                  {pl?.attended_inters?.map((int) => {
+                                    const user = schedule.members.find(
+                                      (member) => member.user_id === int.id
+                                    );
+                                    if (!user) return null;
+                                    return (
+                                      <Stack
+                                        key={int.id}
+                                        direction={'row'}
+                                        spacing={1}
+                                        sx={{
+                                          textWrap: 'nowrap'
+                                        }}
+                                      >
+                                        <MuiAvatar
+                                          level={getFullName(
+                                            user.first_name,
+                                            user.last_name
+                                          )}
+                                          src={user?.profile_image}
+                                          variant={'circular'}
+                                          width={'24px'}
+                                          height={'24px'}
+                                          fontSize={'12px'}
+                                        />
+                                        <Typography
+                                          variant={'body2'}
+                                          color={'#000'}
+                                        >
+                                          {getFullName(
+                                            user.first_name,
+                                            user.last_name
+                                          )}
+                                        </Typography>
+                                      </Stack>
+                                    );
+                                  })}
+                                </Stack>
+                              }
+                            />
+                          );
+                        })}
+                      />
+                    );
+                  });
                 }
-              }}
-            >
-              <Icon
-                variant='CompanyOutlined'
-                height='24'
-                width='24'
-                color='#87929D'
-              />
-            </Avatar>
+              )}
+            />
           }
-          textSentMail={`Information has sent to ${schedule?.applications?.candidates?.email}`}
-          onClickContactSupport={{
+          onClickSupport={{
             onClick: () => {
-              window.open(`mailto:customersuccess@aglinthq.com`);
+              window.open(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${schedule.schedule.application_id}`,
+                '_blank'
+              );
             }
           }}
-          textTitle={schedule?.schedule_name}
+          slotSessionList={schedule.schedule.confirmed_option.plan
+            .filter((pl) => !pl.isBreak)
+            .map((plan, ind) => {
+              return (
+                <SessionList
+                  key={ind}
+                  textDuration={plan.duration + ' Minutes'}
+                  textSession={plan.module_name}
+                />
+              );
+            })}
         />
       )}
     </Stack>

@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 
+import ConfirmedComp from './Confirmed';
 import NotScheduledApplication from './NotScheduled';
-import PendingConfirmed from './PendingConfirmed';
+import PendingConfirmed from './Pending';
 import {
+  resetSchedulingApplicationState,
   setDateRange,
   setInitalLoading,
   setInterviewModules,
@@ -23,15 +24,12 @@ import { ApplicationList } from '../store';
 function SchedulingApplication() {
   const router = useRouter();
   const currentDate = dayjs();
-  const threeDays = currentDate.add(3, 'day');
+  const threeDays = currentDate.add(1, 'day');
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication
   );
   const scheduleName = useSchedulingApplicationStore(
     (state) => state.scheduleName
-  );
-  const initialLoading = useSchedulingApplicationStore(
-    (state) => state.initialLoading
   );
 
   useEffect(() => {
@@ -42,7 +40,7 @@ function SchedulingApplication() {
 
   useEffect(() => {
     return () => {
-      setSelectedApplication(null);
+      resetSchedulingApplicationState();
     };
   }, []);
 
@@ -70,7 +68,7 @@ function SchedulingApplication() {
 
         if (moduleIds?.length > 0) {
           const { data: modules, error: moduleError } = await supabase
-            .from('interview_modules')
+            .from('interview_module')
             .select('*')
             .in('id', moduleIds);
 
@@ -108,7 +106,7 @@ function SchedulingApplication() {
       <PageLayout
         onClickBack={{
           onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`);
+            window.history.back();
           }
         }}
         isBackButton={true}
@@ -118,12 +116,17 @@ function SchedulingApplication() {
           </>
         }
         slotBody={
-          !initialLoading &&
-          (!selectedApplication?.schedule ? (
-            <NotScheduledApplication />
-          ) : (
-            <PendingConfirmed />
-          ))
+          <>
+            {!selectedApplication?.schedule ? (
+              <NotScheduledApplication />
+            ) : selectedApplication?.schedule.status == 'pending' ? (
+              <PendingConfirmed />
+            ) : selectedApplication?.schedule.status == 'confirmed' ? (
+              <ConfirmedComp />
+            ) : (
+              ''
+            )}
+          </>
         }
         slotTopbarRight={''}
       />

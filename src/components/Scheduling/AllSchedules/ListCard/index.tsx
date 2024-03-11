@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
@@ -12,14 +11,12 @@ import { getScheduleType } from '../utils';
 
 function ListCardInterviewSchedule({
   app,
-  panel_name,
   onClickCard,
   slotCheckbox = <></>,
   isJobDasboard = false,
   isSelected = false
 }: {
   app: ApplicationList;
-  panel_name: string;
   // eslint-disable-next-line no-unused-vars
   onClickCard: (app: ApplicationList) => void;
   isJobDasboard?: boolean;
@@ -91,21 +88,14 @@ function ListCardInterviewSchedule({
             }
           }}
           textDuration={app.schedule ? `--` : '--'}
-          textInterviewPanel={panel_name || '--'}
+          textInterviewPanel={
+            app?.schedule?.interview_plan?.filter((f) => !f.isBreak)?.length ||
+            '--'
+          }
           slotScheduleInfo={
             app.schedule ? (
               <ScheduleInfoBlock
-                textDateTimeOrSlots={
-                  app.schedule.schedule_time
-                    ? dayjs(app.schedule.schedule_time.startTime).format(
-                        'YYYY MMM DD'
-                      ) +
-                      ' at ' +
-                      dayjs(app.schedule.schedule_time.startTime).format(
-                        'hh:mm A'
-                      )
-                    : '--'
-                }
+                textDateTimeOrSlots={''}
                 slotScheduleTypeIcon={
                   <IconScheduleType type={app.schedule.schedule_type} />
                 }

@@ -3,6 +3,7 @@ import {
   InterviewModuleType,
   RecruiterUserType
 } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 
 export type SchedulingSlice = {
   interviewModules: ModuleType[];
@@ -12,12 +13,13 @@ export type SchedulingSlice = {
   isPauseDialogOpen: boolean;
   isAddMemberDialogOpen: boolean;
   isResumeDialogOpen: boolean;
+  isModuleSettingsDialogOpen: boolean;
   selectedUsers: RecruiterUserType[];
-  moduleName: string;
   editModule: ModuleType;
   selUser: InterviewModuleRelationType | null;
   pause_json: PauseJson | null;
   searchText: string;
+  trainingStatus: StatusTraining;
 };
 
 export const initialEditModule: ModuleType = {
@@ -26,7 +28,14 @@ export const initialEditModule: ModuleType = {
   relations: [],
   duration_available: { activeDuration: 0, availabletimeSlots: [] },
   created_at: '',
-  recruiter_id: ''
+  recruiter_id: '',
+  settings: {
+    require_training: false,
+    noShadow: 2,
+    noReverseShadow: 1,
+    reqruire_approval: false,
+    approve_users: []
+  }
 };
 
 export const initialStateSchedulingStore: SchedulingSlice = {
@@ -37,20 +46,25 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   isPauseDialogOpen: false,
   isAddMemberDialogOpen: false,
   isResumeDialogOpen: false,
+  isModuleSettingsDialogOpen: false,
   selectedUsers: [],
-  moduleName: '',
   editModule: initialEditModule,
   selUser: null,
   pause_json: { isManual: true, start_date: '', end_date: '' },
-  searchText: ''
+  searchText: '',
+  trainingStatus: 'qualified'
 };
 
-export type ModuleType = Pick<
-  InterviewModuleType,
-  'id' | 'name' | 'created_at' | 'recruiter_id'
-> & {
+export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
   relations: InterviewModuleRelationType[];
   duration_available: TimeSlotsData;
+  settings: {
+    require_training: boolean;
+    noShadow: number;
+    noReverseShadow: number;
+    reqruire_approval: boolean;
+    approve_users: string[];
+  };
 };
 
 export type PauseJson = {
@@ -63,3 +77,5 @@ export interface TimeSlotsData {
   activeDuration: number;
   availabletimeSlots: number[];
 }
+
+export type StatusTraining = Database['public']['Enums']['status_training'];

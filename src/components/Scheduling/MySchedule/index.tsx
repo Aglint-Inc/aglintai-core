@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import {
   InterviewerScreens,
   InterviewScreenCard,
-  ScheduleInfo,
+  ScheduleInfo
 } from '@/devlink2';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -28,35 +28,35 @@ function MySchedule() {
             onClick: () => {
               setDataObj(data);
               router.push(
-                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=all`,
+                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=all`
               );
-            },
+            }
           }}
           onClickUpcoming={{
             onClick: () => {
               setDataObj(data.filter((item) => item.status === 'upcoming'));
 
               router.push(
-                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=upcoming`,
+                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=upcoming`
               );
-            },
+            }
           }}
           onClickCompleted={{
             onClick: () => {
               setDataObj(data.filter((item) => item.status === 'completed'));
               router.push(
-                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=completed`,
+                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=completed`
               );
-            },
+            }
           }}
           onClickNotConfirmed={{
             onClick: () => {
               setDataObj(data.filter((item) => item.status === 'notconfirmed'));
 
               router.push(
-                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=confirmed`,
+                `${pageRoutes.SCHEDULING}?tab=mySchedules&filter=confirmed`
               );
-            },
+            }
           }}
           isUpcomingActive={router.query.filter === 'upcoming'}
           isAllActive={router.query.filter === 'all'}
@@ -92,7 +92,7 @@ function MySchedule() {
           >
             <Stack
               sx={{
-                transform: 'rotate(180deg)',
+                transform: 'rotate(180deg)'
               }}
             >
               <ArrowRightIcon />
@@ -110,18 +110,6 @@ function MySchedule() {
                 src='/static/images/avatar/5.jpg'
               />
             }
-            slotMeetingIcon={
-              <MuiAvatar
-                level={'Tom Odel'}
-                width='14'
-                variant='circular'
-                fontSize='12px'
-                height='14'
-                src='https://logo.clearbit.com/meet.com'
-              />
-            }
-            textDate={selectedItem.date.day}
-            slotMemberImage={<Members members={selectedItem.members} />}
           />
         </>
       )}
@@ -136,38 +124,38 @@ const data = [
     name: 'Phase 1: Interview for software engineer',
     status: 'completed',
     members: ['kishan', 'pradeep'],
-    date: { day: 12 },
+    date: { day: 12 }
   },
   {
     name: 'Phase 2: Interview for software engineer',
     status: 'upcoming',
     members: ['rohan', 'ramesh'],
-    date: { day: 12 },
+    date: { day: 12 }
   },
   {
     name: 'Phase 1: Interview for designer',
     status: 'upcoming',
     members: ['Mohan', 'Jay'],
-    date: { day: 13 },
+    date: { day: 13 }
   },
   {
     name: 'Phase 1: Interview for designer',
     status: 'upcoming',
     members: ['prakash', 'Vimlesh'],
-    date: { day: 13 },
+    date: { day: 13 }
   },
   {
     name: 'Phase 1: Interview for SDK2 engineer',
     status: 'completed',
     members: ['Arohi', 'Navin'],
-    date: { day: 14 },
+    date: { day: 14 }
   },
   {
     name: 'Phase 1: Interview for SDK2 engineer',
     status: 'upcoming',
     members: ['Sohan', 'Ganesh'],
-    date: { day: 15 },
-  },
+    date: { day: 15 }
+  }
 ];
 
 function Members({ members }) {

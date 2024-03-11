@@ -77,7 +77,7 @@ function AllSchedules() {
         shallow: true
       });
       fetchInterviewData({ page: 1 });
-    }, 1000);
+    }, 300);
 
     if (!initialLoading && router.isReady && !pageLoad) {
       debouncedTextSearchFetch();
@@ -146,8 +146,7 @@ function AllSchedules() {
 
   return (
     <>
-      {/* <DeleteScheduleDialog onClickCancel={onClickCancel} />
-      <RescheduleDialog onClickReschedule={onClickReschedule} /> */}
+     
       <AllInterview
         isSchedulerTable={true}
         slotPagination={

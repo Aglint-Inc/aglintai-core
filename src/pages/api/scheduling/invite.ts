@@ -1,39 +1,80 @@
 import { createClient } from '@supabase/supabase-js';
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { ApplicationList } from '@/src/components/Scheduling/AllSchedules/store';
+import { transformData } from '@/src/components/Scheduling/AllSchedules/utils';
 import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { data, error } = await supabase
+    const { data: sch, error: errSch } = await supabase
       .from('interview_schedule')
-      .select(
-        '*, interview_module(id, name , recruiter(id,name,logo)),applications(id , candidates(first_name,email))',
-      )
-      .eq('id', req.body.id);
-    if (!error) {
-      const { data: rel, error: relErr } = await supabase
-        .from('interview_module_relation')
-        .select('*')
-        .eq('panel_id', data[0].panel_id);
+      .select('*')
+      .eq('id', req.body.id as string);
 
-      if (!relErr) {
-        const { data: relUser, error: userErr } = await supabase
-          .from('recruiter_user')
-          .select('user_id,first_name,profile_image')
-          .in(
-            'user_id',
-            rel.map((r) => r.user_id),
-          );
-        if (!userErr) {
-          return res.status(200).json({ ...data[0], users: relUser });
+    if (errSch) {
+      res.status(400).send(errSch.message);
+      return;
+    }
+
+    const { data, error } = await supabase.rpc(
+      'fetch_interview_data_by_application_id',
+      {
+        app_id: sch[0].application_id as string
+      }
+    );
+
+    if (!error && data.length > 0) {
+      const application = data[0] as unknown as ApplicationList;
+
+      let allModules = [];
+      const moduleIds = application?.public_jobs?.interview_plan?.plan
+        ?.filter((plan) => !plan.isBreak)
+        ?.map((plan) => plan.module_id);
+
+      if (moduleIds?.length > 0) {
+        const { data: modules, error: moduleError } = await supabase
+          .from('interview_module')
+          .select('*')
+          .in('id', moduleIds);
+        if (!moduleError) {
+          allModules = modules;
         }
       }
+      let userIds = [];
+      application?.public_jobs?.interview_plan?.plan.map((plan) => {
+        plan.selectedIntervs.map((interv) => {
+          userIds.push(interv.interv_id);
+        });
+      });
+
+      const resMem = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/fetchdbusers`,
+        {
+          user_ids: userIds
+        }
+      );
+
+      const resSchOpt = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/find_availability`,
+        sch[0].filter_json
+      );
+
+      res.status(200).json({
+        modules: allModules,
+        members: resMem.data,
+        schedule: sch[0],
+        schedulingOptions: resSchOpt.data.map((option) => {
+          return { ...option, transformedPlan: transformData(option.plan) };
+        }),
+        candidate: application.candidates
+      });
     }
   } catch (error) {
     res.status(400).send(error.message);

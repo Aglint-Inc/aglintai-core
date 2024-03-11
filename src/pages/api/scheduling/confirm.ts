@@ -1,14 +1,13 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
-import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 type BodyParams = {
@@ -28,51 +27,47 @@ type BodyParams = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
-      // eslint-disable-next-line no-unused-vars
-      candidate_email,
-      company_logo,
-      company_name,
+      // candidate_email,
+      // company_logo,
+      // company_name,
       id,
-      schedule_name,
-      selectedSlot,
-      interviewers_id,
-      organizer_id,
+      // schedule_name,
+      selectedSlot
     } = req.body as BodyParams;
 
-    const resp = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/create-calender-event`,
-      {
-        start_time: selectedSlot.startTime,
-        end_time: selectedSlot.endTime,
-        interviewers_id: interviewers_id.filter(
-          (int_id) => int_id !== organizer_id,
-        ),
-        organizer_id: organizer_id,
-        schedule_name: schedule_name,
-        candidate_email: 'admin@aglinthq.com',
-      },
-    );
+    // const resp = await axios.post(
+    //   `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/create-calender-event`,
+    //   {
+    //     start_time: selectedSlot.startTime,
+    //     end_time: selectedSlot.endTime,
+    //     interviewers_id: interviewers_id.filter(
+    //       (int_id) => int_id !== organizer_id
+    //     ),
+    //     organizer_id: organizer_id,
+    //     schedule_name: schedule_name,
+    //     candidate_email: 'admin@aglinthq.com'
+    //   }
+    // );
 
-    if (resp.status !== 200) {
-      return res.status(400).send('Error in scheduling');
-    }
+    // if (resp.status !== 200) {
+    //   return res.status(400).send('Error in scheduling');
+    // }
 
     const { data, error } = await supabase
       .from('interview_schedule')
       .update({
-        schedule_time: req.body.selectedSlot,
         status: 'confirmed',
-        meeting_json: resp.data,
+        confirmed_option: selectedSlot
       })
       .eq('id', id)
       .select();
 
-    await mailThankYouHandler({
-      company_logo: company_logo,
-      company_name: company_name,
-      schedule_name: schedule_name,
-      timings: `${dayjs(selectedSlot.startTime).format('hh:mm A')} - ${dayjs(selectedSlot.endTime).format('hh:mm A')}`,
-    });
+    // await mailThankYouHandler({
+    //   company_logo: company_logo,
+    //   company_name: company_name,
+    //   schedule_name: schedule_name,
+    //   timings: `${dayjs(selectedSlot.startTime).format('hh:mm A')} - ${dayjs(selectedSlot.endTime).format('hh:mm A')}`
+    // });
 
     if (error) {
       console.log('error', error.message);
@@ -87,12 +82,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const mailThankYouHandler = async ({
+export const mailThankYouHandler = async ({
   company_name,
   company_logo,
   timings,
   schedule_name,
-  mail,
+  mail
 }: {
   company_name: string;
   company_logo: string;
@@ -119,7 +114,7 @@ const mailThankYouHandler = async ({
               </div>
               <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© 2023 Aglint Inc. All Rights Reserved.</span> </p>
           </div>
-      </body>`,
+      </body>`
       })
       .then((res) => {
         if (res.status === 200 && res.data.data === 'Email sent') {
@@ -127,7 +122,7 @@ const mailThankYouHandler = async ({
         } else {
           console.log(
             'error',
-            'Unable to send the mail. Please try again later.',
+            'Unable to send the mail. Please try again later.'
           );
           return false;
         }

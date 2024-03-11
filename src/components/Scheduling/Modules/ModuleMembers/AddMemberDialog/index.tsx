@@ -1,9 +1,7 @@
-import { Dialog, Stack } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { useState } from 'react';
 
-import { PanelMemberPill } from '@/devlink2';
 import { ConfirmationPopup } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { InterviewModuleRelationType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
@@ -25,6 +23,7 @@ function AddMemberDialog() {
   );
   const editModule = useSchedulingStore((state) => state.editModule);
   const selectedUsers = useSchedulingStore((state) => state.selectedUsers);
+  const trainingStatus = useSchedulingStore((state) => state.trainingStatus);
 
   const addMemberHandler = async () => {
     try {
@@ -35,7 +34,8 @@ function AddMemberDialog() {
       setLoading(true);
       const { data, error } = await addMemberbyUserIds({
         module_id: editModule.id,
-        user_ids: selectedUsers.map((user) => user.user_id)
+        user_ids: selectedUsers.map((user) => user.user_id),
+        training_status: trainingStatus
       });
       if (error) {
         throw new Error();
@@ -70,50 +70,22 @@ function AddMemberDialog() {
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Add Members'}
+        textPopupTitle={
+          trainingStatus === 'qualified'
+            ? 'Add Qualified Members'
+            : 'Add Trainee Members'
+        }
         textPopupDescription={
           'Select interview panel members from your team list.'
         }
         isIcon={false}
         slotWidget={
-          <Stack spacing={2} width={'100%'}>
-            <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
-              {selectedUsers.map((user) => {
-                return (
-                  <PanelMemberPill
-                    key={user.user_id}
-                    onClickClose={{
-                      onClick: () => {
-                        setSelectedUsers(
-                          selectedUsers.filter(
-                            (us) => us.user_id !== user.user_id
-                          )
-                        );
-                      }
-                    }}
-                    slotImage={
-                      <MuiAvatar
-                        src={user.profile_image}
-                        level={user.first_name}
-                        variant='circular'
-                        height='24px'
-                        width='24px'
-                        fontSize='12px'
-                      />
-                    }
-                    textMemberName={user.first_name}
-                  />
-                );
-              })}
-            </Stack>
-
-            <MembersAutoComplete
-              disabled={loading}
-              renderUsers={allMembers}
-              selectedUsers={selectedUsers}
-              setSelectedUsers={setSelectedUsers}
-            />
-          </Stack>
+          <MembersAutoComplete
+            disabled={loading}
+            renderUsers={allMembers}
+            selectedUsers={selectedUsers}
+            setSelectedUsers={setSelectedUsers}
+          />
         }
         isWidget={true}
         onClickCancel={{

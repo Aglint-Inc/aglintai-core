@@ -167,10 +167,10 @@ export const findPlanCombinations = (
         }
 
         curr_time_range.startTime = dayjs(curr_time_range.startTime)
-          .add(5, 'minutes')
+          .add(30, 'minutes')
           .toISOString();
         curr_time_range.endTime = dayjs(curr_time_range.endTime)
-          .add(5, 'minutes')
+          .add(30, 'minutes')
           .toISOString();
       }
     }

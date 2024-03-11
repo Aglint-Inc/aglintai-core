@@ -7,10 +7,13 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+import { PanelMemberPill } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import { InterviewPanelContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { RecruiterUserType } from '@/src/types/data.types';
+import {
+  InterviewPanelContextType,
+  MemberType
+} from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 function MembersAutoComplete({
   disabled,
@@ -20,7 +23,7 @@ function MembersAutoComplete({
 }: {
   disabled: boolean;
   renderUsers: InterviewPanelContextType['members'];
-  selectedUsers: RecruiterUserType[];
+  selectedUsers: MemberType[];
   // eslint-disable-next-line no-unused-vars
   setSelectedUsers: (val: InterviewPanelContextType['members']) => void;
 }) {
@@ -43,7 +46,34 @@ function MembersAutoComplete({
   };
 
   return (
-    <>
+    <Stack spacing={2} width={'100%'}>
+      <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
+        {selectedUsers.map((user) => {
+          return (
+            <PanelMemberPill
+              key={user.user_id}
+              onClickClose={{
+                onClick: () => {
+                  setSelectedUsers(
+                    selectedUsers.filter((us) => us.user_id !== user.user_id)
+                  );
+                }
+              }}
+              slotImage={
+                <MuiAvatar
+                  src={user.profile_image}
+                  level={user.first_name}
+                  variant='circular'
+                  height='24px'
+                  width='24px'
+                  fontSize='12px'
+                />
+              }
+              textMemberName={user.first_name}
+            />
+          );
+        })}
+      </Stack>
       <Stack onClick={handleClick} width={'100%'}>
         <UITextField
           rest={{ id: 'list' }}
@@ -141,7 +171,7 @@ function MembersAutoComplete({
           </ClickAwayListener>
         )}
       </Popper>
-    </>
+    </Stack>
   );
 }
 

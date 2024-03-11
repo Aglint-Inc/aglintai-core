@@ -1,29 +1,18 @@
-import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import { MemberType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import {
+  CandidateType,
+  InterviewModuleType,
+  InterviewScheduleTypeDB
+} from '@/src/types/data.types';
 
-export type ApiResponse = InterviewScheduleTypeDB & {
-  interview_module: {
-    name: string;
-    recruiter: {
-      name: string;
-      logo: string;
-      id: string;
-    };
+import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
+
+export type ApiResponse = {
+  modules: InterviewModuleType[];
+  members: MemberType[];
+  schedule: InterviewScheduleTypeDB & {
+    confirmed_option: SchedulingOptionType[0] | null;
   };
-  applications: {
-    id: string;
-    candidates: {
-      first_name: string;
-      email: string;
-    };
-  };
-  users: {
-    user_id: string;
-    first_name: string;
-    profile_image: string;
-  }[];
-  schedule_time: {
-    startTime: string;
-    endTime: string;
-    user_ids: string[];
-  };
+  schedulingOptions: SchedulingOptionType;
+  candidate: CandidateType;
 };
