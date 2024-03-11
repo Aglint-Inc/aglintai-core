@@ -1,4 +1,5 @@
 import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import { InviteTeamCard, TeamInvite } from '@/devlink';
@@ -7,7 +8,6 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
-import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 const EditMember = ({
@@ -31,7 +31,7 @@ const EditMember = ({
     last_name: member.last_name,
     department: member.department,
     designation: member.position,
-    role: 'member'
+    role: member.role
   });
 
   const [inviteData, setInviteData] = useState<
