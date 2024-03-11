@@ -5,12 +5,10 @@ import { InterviewMemberSide, InterviewScreenCard } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
 function Interviews({
-  allInterviews,
-  onClick
+  allInterviews
 }: {
   allInterviews: any[];
   // eslint-disable-next-line no-unused-vars
-  onClick: (item: any) => void;
 }) {
   const [filter, setFilter] = useState<
     'all' | 'confirmed' | 'notConfirmed' | 'upcoming' | 'completed'
@@ -50,13 +48,9 @@ function Interviews({
         isNotConfirmedActive={filter === 'notConfirmed'}
         slotInterviewCard={filteredInterviews.map((item, i) => {
           return (
-            <Stack
-              onClick={() => onClick(item)}
-              style={{ cursor: 'pointer' }}
-              key={i}
-            >
+            <Stack style={{ cursor: 'pointer' }} key={i}>
               <InterviewScreenCard
-                isUpcomingVisible={item.status !== 'completed'}
+                isUpcomingVisible={true}
                 isCompletedVisible={item.status !== 'upcoming'}
                 slotMemberImage={<Members members={item.members} />}
                 textDate={item.date.day}

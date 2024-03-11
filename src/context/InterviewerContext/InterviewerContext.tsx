@@ -31,6 +31,7 @@ interface InterviewerContextInterface {
             start_date: string;
           };
         };
+        training_status: 'qualified' | 'training';
       };
     };
   };
@@ -179,7 +180,6 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
       }
     };
   useEffect(() => {
-    setLoading(true);
     getInterviewModuleRelation(
       interviewerMembers.map((member) => member.user_id)
     ).then((data) => {
@@ -223,7 +223,7 @@ export { InterviewerContextProvider, useInterviewerContext };
 const getInterviewModuleRelation = async (ids: string[]) => {
   return supabase
     .from('interview_module_relation')
-    .select('user_id,module_id, pause_json')
+    .select('user_id,module_id, pause_json, training_status')
     .in('user_id', ids)
     .then(async ({ data, error }) => {
       if (error) {
@@ -250,17 +250,23 @@ const getInterviewModuleRelation = async (ids: string[]) => {
             throw new Error(error.message);
           }
           const modules: {
-            [key: string]: (typeof data)[0] & { pause_json: any };
+            [key: string]: (typeof data)[0] & {
+              pause_json: any;
+              training_status: 'training' | 'qualified';
+            };
           } = {};
           data.map((d) => {
             panelIdes.push(d.id);
             const tempPauseJson = {};
+            let status = null;
             tempInterview_module_relation[d.id].map((item) => {
               tempPauseJson[item.user_id] = item.pause_json;
+              status = item.training_status;
             });
             modules[d.id] = {
               ...d,
-              pause_json: tempPauseJson
+              pause_json: tempPauseJson,
+              training_status: status
             };
           });
           return modules;

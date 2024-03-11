@@ -893,6 +893,18 @@ export type Database = {
         }
         Relationships: []
       }
+      experience: {
+        Row: {
+          jsonb_object_agg: Json | null
+        }
+        Insert: {
+          jsonb_object_agg?: Json | null
+        }
+        Update: {
+          jsonb_object_agg?: Json | null
+        }
+        Relationships: []
+      }
       greenhouse_reference: {
         Row: {
           application_id: string
@@ -1026,6 +1038,7 @@ export type Database = {
       interview_schedule: {
         Row: {
           application_id: string
+          confirmed_option: Json | null
           created_at: string
           created_by: string
           filter_json: Json | null
@@ -1042,6 +1055,7 @@ export type Database = {
         }
         Insert: {
           application_id: string
+          confirmed_option?: Json | null
           created_at?: string
           created_by?: string
           filter_json?: Json | null
@@ -1058,6 +1072,7 @@ export type Database = {
         }
         Update: {
           application_id?: string
+          confirmed_option?: Json | null
           created_at?: string
           created_by?: string
           filter_json?: Json | null
@@ -2509,6 +2524,7 @@ export type Database = {
           candidates: Json
           public_jobs: Json
           schedule: Json
+          file: Json
         }[]
       }
       fetch_interview_data_page_number: {

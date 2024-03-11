@@ -6,9 +6,9 @@ import _styles from "./ResumePop.module.css";
 export function ResumePop({
   as: _Component = _Builtin.Block,
   onClickResume = {},
-  onClickCancel = {},
   onClickClose = {},
-  textResumeWarning = "This member is paused from scheduling until March 04 2014",
+  textResumeWarning = "This member is paused from scheduling with this module until March 04 2014",
+  textDescription = "By Clicking resume the member will be considerd with the schdules.",
 }) {
   return (
     <_Component
@@ -54,9 +54,7 @@ export function ResumePop({
           className={_utils.cx(_styles, "text-gray-600")}
           tag="div"
         >
-          {
-            "By Clicking resume the member will be considerd with the schdules including this panel"
-          }
+          {textDescription}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

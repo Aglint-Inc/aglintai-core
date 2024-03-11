@@ -56,7 +56,7 @@ function SchedulingApplication() {
       );
 
       if (!error && data.length > 0) {
-        const application = data[0] as ApplicationList;
+        const application = data[0] as unknown as ApplicationList;
         setScheduleName(
           `Interview for ${application?.public_jobs?.job_title} - ${application?.candidates?.first_name}`
         );

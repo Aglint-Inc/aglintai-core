@@ -29,10 +29,18 @@
   align-items: center;
 }
 
-.div-block-1145 {
-  width: 20px;
-  height: 20px;
+.interviewer-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 100px;
+}
+
+.div-block-1196 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
 }
 
 .fw-semibold {
@@ -202,6 +210,37 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-xsm {
+  font-size: 10px;
 }
 
 .slot-interview-module {

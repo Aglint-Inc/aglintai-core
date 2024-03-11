@@ -2,8 +2,12 @@
   position: relative;
   z-index: 1;
 
+  display: flex;
   overflow: hidden;
+  height: 100%;
   padding: 4px 16px;
+  justify-content: flex-start;
+  align-items: center;
 
   border-radius: 6px;
 
@@ -28,7 +32,10 @@
   bottom: 0%;
   z-index: 1;
 
+  display: flex;
   padding: 4px 16px;
+  justify-content: flex-start;
+  align-items: center;
 
   background-color: #49545c;
 

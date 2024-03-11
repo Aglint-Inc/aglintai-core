@@ -13,18 +13,17 @@ import {
   RcCheckbox,
   ScheduleSettings,
   TimeRangeInput,
-  WorkingHourDay,
+  WorkingHourDay
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import UITextField from '../../Common/UITextField';
 import DateSelect from '../../Scheduling/Settings/Components/DateSelector';
 import MuiSelect from '../../Scheduling/Settings/Components/MuiSelect';
 import SelectTime from '../../Scheduling/Settings/Components/SelectTime';
-import {
-  schedulingSettingType,
-} from '../../Scheduling/Settings/types';
+import { schedulingSettingType } from '../../Scheduling/Settings/types';
 import { hoursList } from '../../Scheduling/Settings/utils';
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -35,13 +34,13 @@ function SchedulingSettings({ setSaving }) {
     schedulingSettingType['interviewLoad']['dailyLimit']
   >({
     type: 'Interviews',
-    value: 2,
+    value: 2
   });
   const [selectedWeeklyLimit, setSelectedWeeklyLimit] = useState<
     schedulingSettingType['interviewLoad']['weeklyLimit']
   >({
     type: 'Hours',
-    value: 16,
+    value: 16
   });
 
   const [workingHours, setWorkingHours] = useState([]);
@@ -53,7 +52,7 @@ function SchedulingSettings({ setSaving }) {
     setSelectedWeeklyLimit((pre) => {
       pre.type = value.target.value as string;
       return {
-        ...pre,
+        ...pre
       } as schedulingSettingType['interviewLoad']['weeklyLimit'];
     });
   };
@@ -61,7 +60,7 @@ function SchedulingSettings({ setSaving }) {
     setSelectedWeeklyLimit((pre) => {
       pre.value = value.target.value as number;
       return {
-        ...pre,
+        ...pre
       } as schedulingSettingType['interviewLoad']['weeklyLimit'];
     });
   };
@@ -135,7 +134,7 @@ function SchedulingSettings({ setSaving }) {
   function initialLoad() {
     if (recruiterUser?.scheduling_settings) {
       const schedulingSettingData = cloneDeep(
-        recruiterUser?.scheduling_settings,
+        recruiterUser?.scheduling_settings
       ) as schedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData?.workingHours);
@@ -144,10 +143,10 @@ function SchedulingSettings({ setSaving }) {
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
       setSelectedDailyLimit({
-        ...schedulingSettingData.interviewLoad.dailyLimit,
+        ...schedulingSettingData.interviewLoad.dailyLimit
       });
       setSelectedWeeklyLimit({
-        ...schedulingSettingData.interviewLoad.weeklyLimit,
+        ...schedulingSettingData.interviewLoad.weeklyLimit
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff]);
@@ -159,11 +158,11 @@ function SchedulingSettings({ setSaving }) {
       schedulingSettingObj = {
         interviewLoad: {
           dailyLimit: selectedDailyLimit,
-          weeklyLimit: selectedWeeklyLimit,
+          weeklyLimit: selectedWeeklyLimit
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
-        totalDaysOff: daysOff,
+        totalDaysOff: daysOff
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -177,7 +176,7 @@ function SchedulingSettings({ setSaving }) {
     selectedWeeklyLimit,
     daysOff,
     workingHours,
-    selectedTimeZone,
+    selectedTimeZone
   ]);
 
   useEffect(() => {
@@ -198,11 +197,7 @@ function SchedulingSettings({ setSaving }) {
       .select()
       .single();
     if (!error) {
-      setRecruiterUser(
-        {
-          ...updatedRecruiterUser,
-        }!,
-      );
+      setRecruiterUser(updatedRecruiterUser as RecruiterUserType);
     }
     setSaving('saved');
   }
@@ -254,7 +249,7 @@ function SchedulingSettings({ setSaving }) {
                     placeholder='Ex. Healthcare'
                     InputProps={{
                       ...params.InputProps,
-                      autoComplete: 'new-password',
+                      autoComplete: 'new-password'
                     }}
                   />
                 );
@@ -310,7 +305,7 @@ function SchedulingSettings({ setSaving }) {
 
                                 return [...data];
                               });
-                            },
+                            }
                           }}
                           isChecked={day.isWorkDay}
                           text={capitalize(day.day)}
@@ -324,14 +319,14 @@ function SchedulingSettings({ setSaving }) {
                                 .set(
                                   'hour',
                                   parseInt(
-                                    day.timeRange.startTime.split(':')[0],
-                                  ),
+                                    day.timeRange.startTime.split(':')[0]
+                                  )
                                 )
                                 .set(
                                   'minute',
                                   parseInt(
-                                    day.timeRange.startTime.split(':')[1],
-                                  ),
+                                    day.timeRange.startTime.split(':')[1]
+                                  )
                                 )}
                               onSelect={selectStartTime}
                               i={i}
@@ -342,11 +337,11 @@ function SchedulingSettings({ setSaving }) {
                               value={dayjs()
                                 .set(
                                   'hour',
-                                  parseInt(day.timeRange.endTime.split(':')[0]),
+                                  parseInt(day.timeRange.endTime.split(':')[0])
                                 )
                                 .set(
                                   'minute',
-                                  parseInt(day.timeRange.endTime.split(':')[1]),
+                                  parseInt(day.timeRange.endTime.split(':')[1])
                                 )}
                               onSelect={selectEndTime}
                               i={i}
@@ -361,7 +356,7 @@ function SchedulingSettings({ setSaving }) {
           </>
         }
         onClickAddDate={{
-          onClick: openAddCompany,
+          onClick: openAddCompany
         }}
         slotDayOff={
           <>
@@ -369,7 +364,7 @@ function SchedulingSettings({ setSaving }) {
               return (
                 <DayOff
                   onClickRemove={{
-                    onClick: () => removeDayOff(item),
+                    onClick: () => removeDayOff(item)
                   }}
                   key={i}
                   textDate={item}
@@ -383,7 +378,7 @@ function SchedulingSettings({ setSaving }) {
               onClose={handleClose}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
             >
               <DateSelect

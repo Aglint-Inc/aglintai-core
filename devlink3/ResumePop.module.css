@@ -121,6 +121,12 @@
   opacity: 0.8;
 }
 
+.text-gray-600.is_link {
+  color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .slot_widget {
   display: flex;
   grid-column-gap: 10px;

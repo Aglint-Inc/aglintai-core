@@ -13,4 +13,6 @@ declare function InterviewScreenCard(props: {
   textDate?: React.ReactNode;
   textDay?: React.ReactNode;
   textMonth?: React.ReactNode;
+  textStatus?: React.ReactNode;
+  colorPropsText?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

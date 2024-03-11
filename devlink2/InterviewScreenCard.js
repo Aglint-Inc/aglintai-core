@@ -10,11 +10,13 @@ export function InterviewScreenCard({
   slotMeetingIcon,
   textMeetingPlatform = "Google Meet",
   slotMemberImage,
-  isUpcomingVisible = false,
+  isUpcomingVisible = true,
   isCompletedVisible = true,
   textDate = "27",
   textDay = "FRIDAY",
   textMonth = "Feb",
+  textStatus = "Completed",
+  colorPropsText = {},
 }) {
   return (
     <_Component
@@ -62,61 +64,12 @@ export function InterviewScreenCard({
                 >
                   {textDay}
                 </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "completed-bottom-wrap")}
-                tag="div"
-              >
                 <_Builtin.Block
                   className={_utils.cx(_styles, "text-xsm")}
                   tag="div"
+                  {...colorPropsText}
                 >
-                  {"Completed"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-          {isUpcomingVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "full-date-wrap")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "date-wrappers")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "text-gray-600")}
-                  tag="div"
-                >
-                  {"Feb"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-20", "fw-semibold")}
-                  tag="div"
-                >
-                  {"27"}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-xsm")}
-                  tag="div"
-                >
-                  {"FRIDAY"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "div-block-910",
-                  "upcoming-inter"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-xsm")}
-                  tag="div"
-                >
-                  {"Upcoming"}
+                  {textStatus}
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>

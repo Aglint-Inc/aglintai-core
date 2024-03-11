@@ -7,7 +7,7 @@ import { SignupSlider } from '@/devlink';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType, RecruiterUserType } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
@@ -135,7 +135,7 @@ const SlideTwoSignUp = () => {
           .select();
 
         if (!erroruser) {
-          setRecruiterUser(recruiter_user);
+          setRecruiterUser(recruiter_user as RecruiterUserType);
 
           let rec_id = uuidv4();
           const { error } = await supabase.from('recruiter').insert({

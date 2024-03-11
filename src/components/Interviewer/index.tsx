@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { BodyWithSublink, PageLayout } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import MySchedule from './MySchedule';
@@ -26,11 +27,7 @@ function InterviewerScheduling() {
       .select()
       .single();
     if (!error) {
-      setRecruiterUser(
-        {
-          ...updatedRecruiterUser
-        }!
-      );
+      setRecruiterUser(updatedRecruiterUser as RecruiterUserType);
     }
     setSaving('saved');
   }
