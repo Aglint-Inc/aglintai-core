@@ -96,12 +96,10 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const handelSelectInterviewer = async (id: string) => {
-    setLoading(true);
     if (interviewerMembers.length === 0) return;
     const temp = interviewerMembers.find((member) => member.user_id === id);
     if (temp) {
       setSelectedInterviewer(temp);
-      setLoading(false);
       return true;
     }
     return false;

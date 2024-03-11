@@ -223,7 +223,7 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
                         return (
                           <MemberListCard
                             isMoveToQualifierVisible={false}
-                            isTrainingProgessVisible={false}
+                            isTrainingProgessVisible={true}
                             key={modulesAndMapping.modules[String(item)].id}
                             textName={
                               modulesAndMapping.modules[String(item)].name
