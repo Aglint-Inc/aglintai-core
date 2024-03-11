@@ -62,7 +62,9 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
               textInterviewerName={
                 selectedInterviewer.first_name +
                 ' ' +
-                selectedInterviewer.last_name
+                (selectedInterviewer.last_name
+                  ? selectedInterviewer.last_name
+                  : '')
               }
               slotInterviewerAvatar={
                 <MuiAvatar
