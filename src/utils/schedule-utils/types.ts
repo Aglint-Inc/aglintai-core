@@ -15,7 +15,7 @@ export type TimeSlotType = {
   end: Date;
 };
 
-export type CalenderEvent = {
+export type NewCalenderEvent = {
   summary: string;
   location?: string;
   start: {
@@ -31,5 +31,71 @@ export type CalenderEvent = {
   };
   conferenceData: {
     createRequest: { requestId: string };
+  };
+};
+
+export type CalendarEvent = {
+  id: string;
+  end: {
+    dateTime: string;
+    timeZone: string;
+  };
+  etag: string;
+  kind: string;
+  start: {
+    dateTime: string;
+    timeZone: string;
+  };
+  status: string;
+  created: string;
+  creator: {
+    self: boolean;
+    email: string;
+  };
+  iCalUID: string;
+  summary: string;
+  updated: string;
+  htmlLink: string;
+  sequence: number;
+  attendees: {
+    email: string;
+    responseStatus: string;
+  }[];
+  eventType: string;
+  organizer: {
+    self: boolean;
+    email: string;
+  };
+  reminders: {
+    overrides: {
+      method: string;
+      minutes: number;
+    }[];
+    useDefault: boolean;
+  };
+  hangoutLink: string;
+  conferenceData: {
+    entryPoints: {
+      uri: string;
+      label: string;
+      entryPointType: string;
+    }[];
+    conferenceId: string;
+    createRequest: {
+      status: {
+        statusCode: string;
+      };
+      requestId: string;
+      conferenceSolutionKey: {
+        type: string;
+      };
+    };
+    conferenceSolution: {
+      key: {
+        type: string;
+      };
+      name: string;
+      iconUri: string;
+    };
   };
 };
