@@ -59,7 +59,6 @@ const InterviewTab = () => {
                       </>
                     }
                     textName={`${member.first_name} ${member.last_name || ''}`}
-                    textPosition={member?.position}
                   />
                 </Stack>
               );

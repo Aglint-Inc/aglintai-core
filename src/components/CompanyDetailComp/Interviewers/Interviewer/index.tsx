@@ -19,7 +19,6 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
     loading,
     modulesAndMapping,
     selectedInterviewer,
-    interviewsData,
     handelRemoveMemberFormPanel,
     handelUpdateSchedule
   } = useInterviewerContext();
@@ -282,7 +281,7 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
               }
               slotScheduleTabs={
                 <>
-                  <Interviews allInterviews={interviewsData} />
+                  <Interviews />
                 </>
               }
             />

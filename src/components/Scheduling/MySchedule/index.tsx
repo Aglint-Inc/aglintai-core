@@ -72,8 +72,6 @@ function MySchedule() {
               >
                 <InterviewScreenCard
                   key={i}
-                  isUpcomingVisible={item.status !== 'completed'}
-                  isCompletedVisible={item.status !== 'upcoming'}
                   slotMemberImage={<Members members={item.members} />}
                   textDate={item.date.day}
                 />

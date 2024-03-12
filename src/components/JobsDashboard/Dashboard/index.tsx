@@ -230,9 +230,18 @@ const Pipeline = () => {
 const Modules = () => {
   return (
     <>
-      <InterviewModule />
+      <ModuleCard
+        slotIcon={<SchedulingIcon />}
+        textName={'Interview Plan (Scheduler)'}
+        textDescription={'0 interview modules linked'}
+        slotEnableDisable={<></>}
+      />
       <AssessmentModule />
       <ScreeningModule />
+      {/* <ModuleCard
+        slotIcon={<EmailTemplateIcon />}
+        textName={'Email Templates'}
+      /> */}
     </>
   );
 };
@@ -337,27 +346,6 @@ const ScreeningModule = () => {
       textName={'Screening'}
       slotIcon={<ScreeningIcon />}
       slotEnableDisable={<EnableDisable isEnabled={job.phone_screen_enabled} />}
-    />
-  );
-};
-
-const InterviewModule = () => {
-  const { job } = useJobDashboard();
-  const { push } = useRouter();
-  const interview_plan = job.interview_plan as any;
-  const count =
-    interview_plan && interview_plan?.plan ? interview_plan.plan.length : 0;
-  const handleClick = () => {
-    push(`/jobs/${job.id}/interview-plan`);
-  };
-  return (
-    <ModuleCard
-      onClickCard={{ onClick: () => handleClick() }}
-      textName={'Interview Plan (Scheduler)'}
-      isDescription
-      textDescription={`${count} interview plans linked`}
-      slotIcon={<SchedulingIcon />}
-      slotEnableDisable={<></>}
     />
   );
 };

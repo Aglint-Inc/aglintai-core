@@ -14,6 +14,4 @@ declare function ScheduleInfoUpcoming(props: {
   slotMemberProfile?: Types.Devlink.Slot;
   slotButtonPrimary?: Types.Devlink.Slot;
   onClickCopyLink?: Types.Devlink.RuntimeProps;
-  textLink?: React.ReactNode;
-  isLinkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

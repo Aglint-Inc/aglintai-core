@@ -6,6 +6,7 @@ import {
   useState
 } from 'react';
 
+import { ScheduleType } from '@/src/components/Scheduling/Modules/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { ContextValue, useAuthDetails } from '../AuthContext/AuthContext';
@@ -91,9 +92,7 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
     initialInterviewerContext.interviewsData
   );
 
-  const interviewerMembers = members.filter(
-    (member) => member.role === 'interviewer'
-  );
+  const interviewerMembers = members;
 
   const handelSelectInterviewer = async (id: string) => {
     if (interviewerMembers.length === 0) return;
@@ -190,12 +189,11 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
       selectedInterviewer &&
       modulesAndMapping.moduleMapping[selectedInterviewer.user_id]
     ) {
-      const temp = getInterviewsData({
-        ids: modulesAndMapping.moduleMapping[
-          String(selectedInterviewer.user_id)
-        ]
+      getInterviewsData({
+        user_id: selectedInterviewer.user_id
+      }).then((data) => {
+        setInterviewsData(data);
       });
-      setInterviewsData(temp);
     }
   }, [selectedInterviewer, modulesAndMapping]);
   return (
@@ -348,44 +346,28 @@ const updateSchedule = async ({
     });
 };
 
-const getInterviewsData = ({ ids }: { ids: string[] }) => {
-  ids;
-  return [
+const getInterviewsData = async ({ user_id }: { user_id: string }) => {
+  const { data, error } = await supabase.rpc(
+    'get_interview_schedule_by_user_id',
     {
-      name: 'Phase 1: Interview for software engineer',
-      status: 'completed',
-      members: ['kishan', 'pradeep'],
-      date: { day: 12 }
-    },
-    {
-      name: 'Phase 2: Interview for software engineer',
-      status: 'upcoming',
-      members: ['rohan', 'ramesh'],
-      date: { day: 12 }
-    },
-    {
-      name: 'Phase 1: Interview for designer',
-      status: 'upcoming',
-      members: ['Mohan', 'Jay'],
-      date: { day: 13 }
-    },
-    {
-      name: 'Phase 1: Interview for designer',
-      status: 'upcoming',
-      members: ['prakash', 'Vimlesh'],
-      date: { day: 13 }
-    },
-    {
-      name: 'Phase 1: Interview for SDK2 engineer',
-      status: 'completed',
-      members: ['Arohi', 'Navin'],
-      date: { day: 14 }
-    },
-    {
-      name: 'Phase 1: Interview for SDK2 engineer',
-      status: 'upcoming',
-      members: ['Sohan', 'Ganesh'],
-      date: { day: 15 }
+      target_user_id: user_id
     }
-  ];
+  );
+
+  if (!error) {
+    const allSchedules = data as unknown as ScheduleType[];
+    const schArray = [];
+    allSchedules.map((sch) =>
+      sch.schedule.confirmed_option.plan.map((plan) => {
+        if (
+          !plan.isBreak &&
+          plan.attended_inters.find((user) => user.id === user_id)
+        ) {
+          schArray.push({ ...sch, module_time: plan });
+        }
+      })
+    );
+    // setSchedules(schArray);
+    return schArray;
+  }
 };
