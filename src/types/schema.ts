@@ -1046,12 +1046,14 @@ export type Database = {
           interview_plan: Json[] | null
           is_active: boolean
           meeting_json: Json | null
+          module_ids: string[] | null
           panel_id: string | null
           resend_invite: number
           schedule_name: string
           schedule_time: Json | null
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
           status: Database["public"]["Enums"]["interview_schedule_status"]
+          user_ids: string[] | null
         }
         Insert: {
           application_id: string
@@ -1063,12 +1065,14 @@ export type Database = {
           interview_plan?: Json[] | null
           is_active?: boolean
           meeting_json?: Json | null
+          module_ids?: string[] | null
           panel_id?: string | null
           resend_invite?: number
           schedule_name: string
           schedule_time?: Json | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
           status?: Database["public"]["Enums"]["interview_schedule_status"]
+          user_ids?: string[] | null
         }
         Update: {
           application_id?: string
@@ -1080,12 +1084,14 @@ export type Database = {
           interview_plan?: Json[] | null
           is_active?: boolean
           meeting_json?: Json | null
+          module_ids?: string[] | null
           panel_id?: string | null
           resend_invite?: number
           schedule_name?: string
           schedule_time?: Json | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
           status?: Database["public"]["Enums"]["interview_schedule_status"]
+          user_ids?: string[] | null
         }
         Relationships: [
           {
@@ -2583,6 +2589,18 @@ export type Database = {
           date_range_filter?: unknown
         }
         Returns: number
+      }
+      get_interview_schedule_by_module_id: {
+        Args: {
+          target_module_id: string
+        }
+        Returns: {
+          schedule: Json
+          applications: Json
+          candidate: Json
+          file: Json
+          job: Json
+        }[]
       }
       get_interview_schedule_by_user_id: {
         Args: {

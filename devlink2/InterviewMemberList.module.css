@@ -265,8 +265,11 @@
 
 .interview-sub-table-right {
   height: 100%;
-  min-width: 466px;
-  padding: 16px;
+  min-width: 420px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
   flex: 0 auto;
+
   border-left: 1px solid #e9ebed;
 }

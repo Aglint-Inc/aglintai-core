@@ -1,15 +1,14 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
 import {
-  AllInterviewEmpty,
   Breadcrum,
   ButtonSetting,
-  EmptyState,
+  EmptyGeneral,
   InterviewMemberList,
-  InterviewMemberSide,
   MemberListCard,
   PageLayout
 } from '@/devlink2';
@@ -17,10 +16,12 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabase/client';
 
 import AddMemberDialog from './AddMemberDialog';
 import DeleteMemberDialog from './DeleteMemberDialog';
 import DeleteModuleDialog from './DeleteModuleDialog';
+import ModuleSchedules from './ModuleSchedules';
 import ModuleSettingDrawer from './ModuleSettingDrawer';
 import PauseDialog from './PauseDialog';
 import ResumeMemberDialog from './ResumeMemberDialog';
@@ -34,10 +35,28 @@ import {
   setTrainingStatus,
   useSchedulingStore
 } from '../store';
+import { ScheduleType } from '../types';
+
+export type TransformSchedule = ScheduleType & {
+  module_time: {
+    module_id: string;
+    module_name: string;
+    start_time: string;
+    end_time: string;
+    duration: number;
+    attended_inters: {
+      id: string;
+      name: string;
+      email: string;
+      profile_img: string;
+    }[];
+  };
+};
 
 function ModuleMembersComp() {
   const router = useRouter();
   const editModule = useSchedulingStore((state) => state.editModule);
+  const [schedules, setSchedules] = useState<TransformSchedule[]>([]);
   const allUsers = useSchedulingStore(
     useShallow((state) => state.editModule.relations)
   );
@@ -48,6 +67,29 @@ function ModuleMembersComp() {
   const allQualified = allUsers.filter(
     (user) => user.training_status === 'qualified'
   );
+
+  useEffect(() => {
+    (async () => {
+      if (editModule?.id) {
+        const { data } = await supabase.rpc(
+          'get_interview_schedule_by_module_id',
+          { target_module_id: editModule.id }
+        );
+
+        const allSchedules = data as unknown as ScheduleType[];
+
+        const schArray = [];
+        allSchedules.map((sch) =>
+          sch.schedule.confirmed_option.plan.map((plan) => {
+            if (plan.module_id === editModule.id) {
+              schArray.push({ ...sch, module_time: plan });
+            }
+          })
+        );
+        setSchedules(schArray);
+      }
+    })();
+  }, [editModule?.id]);
 
   return (
     <>
@@ -82,15 +124,7 @@ function ModuleMembersComp() {
           <>
             {!loading ? (
               <InterviewMemberList
-                slotInterviewCard={
-                  <InterviewMemberSide
-                    slotInterviewCard={
-                      <>
-                        <AllInterviewEmpty />
-                      </>
-                    }
-                  />
-                }
+                slotInterviewCard={<ModuleSchedules schedules={schedules} />}
                 onClickAddTrainee={{
                   onClick: () => {
                     setIsAddMemberDialogOpen(true);
@@ -100,7 +134,7 @@ function ModuleMembersComp() {
                 slotQualifiedMemberList={
                   <>
                     {allQualified.length === 0 && (
-                      <EmptyState textDescription={'No Members Added Yet'} />
+                      <EmptyGeneral textEmpt={'No Members Added Yet'} />
                     )}
                     {allQualified.map((user) => {
                       const member = members.filter(
@@ -170,7 +204,7 @@ function ModuleMembersComp() {
                 slotMembersInTraining={
                   <>
                     {allTrainees.length === 0 && (
-                      <EmptyState textDescription={'No Members Added Yet'} />
+                      <EmptyGeneral textEmpt={'No Members Added Yet'} />
                     )}
                     {allTrainees.map((user) => {
                       const member = members.filter(

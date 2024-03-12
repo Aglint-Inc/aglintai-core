@@ -19,10 +19,18 @@ function ConfirmedComp() {
     (state) => state.selectedApplication
   );
   const members = useSchedulingApplicationStore((state) => state.members);
+  const isViewProfileOpen = useSchedulingApplicationStore(
+    (state) => state.isViewProfileOpen
+  );
 
   return (
     <>
-      <CandidateDetailsJobDrawer />
+      <CandidateDetailsJobDrawer
+        applications={selectedApplication.applications}
+        candidate={selectedApplication.candidates}
+        file={selectedApplication.file}
+        isViewProfileOpen={isViewProfileOpen}
+      />
       <ScheduleInfoConfirmed
         onClickViewProfile={{
           onClick: () => {

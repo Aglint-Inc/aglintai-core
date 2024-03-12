@@ -1,30 +1,48 @@
-import { Stack, Typography } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import { ButtonSuccessLarge } from '@/devlink';
 import {
   AvailableOptionCardDate,
+  InviteLinkConfirm,
   OptionAvailable,
   OptionAvailableCard
 } from '@/devlink2';
+import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { useSchedulingApplicationStore } from '../store';
+import { ApiResponse } from '../type';
 
-function SchedulingOptionComp() {
-  const schedulingOptions = useSchedulingApplicationStore(
-    (state) => state.schedulingOptions
-  );
-  const members = useSchedulingApplicationStore((state) => state.members);
+function ConfirmDialog({
+  selectedSlot,
+  dialogOpen,
+  setDialogOpen,
+  handleConfirmSlot,
+  saving,
+  schedule
+}: {
+  selectedSlot: ApiResponse['schedulingOptions'][0];
+  dialogOpen: boolean;
+  setDialogOpen: any;
+  handleConfirmSlot: () => void;
+  saving: boolean;
+  schedule: ApiResponse;
+}) {
   return (
-    <>
-      {schedulingOptions?.map((option, ind) => {
-        return (
+    <Dialog
+      maxWidth={'lg'}
+      open={dialogOpen}
+      onClose={() => {
+        setDialogOpen(false);
+      }}
+    >
+      <InviteLinkConfirm
+        slotInviteLinkCard={
           <OptionAvailableCard
             isActive={false}
-            key={ind}
-            slotCardDate={option.transformedPlan.map((plan, ind) => {
+            slotCardDate={selectedSlot?.transformedPlan.map((plan, ind) => {
               return Object.entries(plan).map(([date, events]) => {
                 return (
                   <AvailableOptionCardDate
@@ -38,9 +56,6 @@ function SchedulingOptionComp() {
                           textTime={`${dayjs(pl.start_time).format('hh:mm A')} - ${dayjs(pl.end_time).format('hh:mm A')}`}
                           textTitle={pl.module_name}
                           key={ind}
-                          textBreakTime={
-                            pl.isBreak ? `${pl.duration} Minutes` : ''
-                          }
                           isTitleVisible={!pl.isBreak}
                           isBreakVisible={pl.isBreak}
                           slotMember={
@@ -52,7 +67,7 @@ function SchedulingOptionComp() {
                               }}
                             >
                               {pl?.attended_inters?.map((int) => {
-                                const user = members.find(
+                                const user = schedule.members.find(
                                   (member) => member.user_id === int.id
                                 );
                                 if (!user) return null;
@@ -98,10 +113,38 @@ function SchedulingOptionComp() {
               });
             })}
           />
-        );
-      })}
-    </>
+        }
+        onClickClose={{
+          onClick: () => {
+            setDialogOpen(false);
+          }
+        }}
+        slotConfirmButton={
+          <ButtonSuccessLarge
+            isEndIcon={saving}
+            slotEndIcon={
+              <Stack>
+                <LoaderGrey />
+              </Stack>
+            }
+            wrapperProps={{
+              style: {
+                width: '100%',
+                fontSize: '16px'
+              }
+            }}
+            isDisabled={false}
+            onClickButton={{
+              onClick: () => {
+                if (!saving) handleConfirmSlot();
+              }
+            }}
+            textLabel='Confirm'
+          />
+        }
+      />
+    </Dialog>
   );
 }
 
-export default SchedulingOptionComp;
+export default ConfirmDialog;

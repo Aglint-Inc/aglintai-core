@@ -10,13 +10,12 @@ export function InterviewScreenCard({
   slotMeetingIcon,
   textMeetingPlatform = "Google Meet",
   slotMemberImage,
-  isUpcomingVisible = true,
-  isCompletedVisible = true,
   textDate = "27",
   textDay = "FRIDAY",
   textMonth = "Feb",
   textStatus = "Completed",
   colorPropsText = {},
+  onClickCard = {},
 }) {
   return (
     <_Component
@@ -26,6 +25,7 @@ export function InterviewScreenCard({
         "remove-padding"
       )}
       tag="div"
+      {...onClickCard}
     >
       <_Builtin.Block tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
@@ -37,43 +37,41 @@ export function InterviewScreenCard({
         tag="div"
       >
         <_Builtin.Block tag="div">
-          {isCompletedVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "full-date-wrap")}
+            tag="div"
+          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "full-date-wrap")}
+              className={_utils.cx(_styles, "date-wrappers")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "date-wrappers")}
+                className={_utils.cx(_styles, "text-sm", "text-gray-600")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "text-gray-600")}
-                  tag="div"
-                >
-                  {textMonth}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-20", "fw-semibold")}
-                  tag="div"
-                >
-                  {textDate}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-xsm")}
-                  tag="div"
-                >
-                  {textDay}
-                </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-xsm")}
-                  tag="div"
-                  {...colorPropsText}
-                >
-                  {textStatus}
-                </_Builtin.Block>
+                {textMonth}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-20", "fw-semibold")}
+                tag="div"
+              >
+                {textDate}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xsm")}
+                tag="div"
+              >
+                {textDay}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xsm", "text-first-cap")}
+                tag="div"
+                {...colorPropsText}
+              >
+                {textStatus}
               </_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-912")}

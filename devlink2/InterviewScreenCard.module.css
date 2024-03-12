@@ -251,6 +251,10 @@
   font-size: 10px;
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .div-block-912 {
   display: flex;
   flex-direction: column;

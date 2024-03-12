@@ -1,7 +1,7 @@
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PauseJson, StatusTraining } from './types';
+import { PauseJson, ScheduleType, StatusTraining } from './types';
 
 export const fetchInterviewModule = async (recruiter_id: string) => {
   try {
@@ -132,4 +132,16 @@ export const addMemberbyUserIds = async ({
     return { data: null, error: error };
   }
   return { data, error };
+};
+
+export const getColorStatusSchedule = (
+  status: ScheduleType['schedule']['status']
+) => {
+  return status == 'completed'
+    ? '#2F3941'
+    : status == 'confirmed'
+      ? '#0F3554'
+      : status == 'pending'
+        ? '#703815'
+        : '#681219';
 };

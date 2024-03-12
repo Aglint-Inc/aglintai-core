@@ -15,4 +15,11 @@ export type ApiResponse = {
   };
   schedulingOptions: SchedulingOptionType;
   candidate: CandidateType;
+  recruiter: {
+    id: string;
+    logo: string;
+    name: string;
+  };
 };
+
+

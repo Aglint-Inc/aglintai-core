@@ -11,4 +11,7 @@ declare function ScheduleInfoConfirmed(props: {
   onClickViewProfile?: Types.Devlink.RuntimeProps;
   onClickReschedule?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
+  isInterviewPlanVisible?: Types.Visibility.VisibilityConditions;
+  slotInterviewPlan?: Types.Devlink.Slot;
+  isScheduleStatusVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

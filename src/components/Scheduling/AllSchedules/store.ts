@@ -119,6 +119,7 @@ export type ApplicationList = {
     job_title: string;
     interview_plan: { plan: InterviewModuleDbType[] };
     location: string;
+    recruiter_id: string;
   };
   file: {
     id: string;

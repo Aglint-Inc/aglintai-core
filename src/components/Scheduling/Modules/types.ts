@@ -1,9 +1,15 @@
+import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import {
+  CandidateType,
   InterviewModuleRelationType,
   InterviewModuleType,
+  InterviewScheduleTypeDB,
+  JobApplcationDB,
   RecruiterUserType
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+
+import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
 
 export type SchedulingSlice = {
   interviewModules: ModuleType[];
@@ -79,3 +85,36 @@ export interface TimeSlotsData {
 }
 
 export type StatusTraining = Database['public']['Enums']['status_training'];
+
+export type ScheduleType = {
+  applications: JobApplcationDB & {
+    score_json: ScoreJson;
+  };
+  file: {
+    id: string;
+    created_at: string;
+    file_url: string;
+    candidate_id: string;
+    resume_json: JSON;
+    type: string;
+  };
+  candidates: CandidateType;
+  schedule: InterviewScheduleTypeDB & {
+    confirmed_option: SchedulingOptionType[0] | null;
+  };
+  job: {
+    id: string;
+    created_at: string;
+    job_title: string;
+    description: string;
+    parameter_weights: {
+      education: number;
+      experience: number;
+      skills: number;
+    };
+    recruiter_id: string;
+    jd_json: JSON;
+    location: string;
+  };
+  panel: InterviewModuleType;
+};

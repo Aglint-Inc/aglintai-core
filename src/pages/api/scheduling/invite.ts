@@ -33,6 +33,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!error && data.length > 0) {
       const application = data[0] as unknown as ApplicationList;
 
+      const { data: rec } = await supabase
+        .from('recruiter')
+        .select('id,logo,name')
+        .eq('id', application.public_jobs.recruiter_id);
+
       let allModules = [];
       const moduleIds = application?.public_jobs?.interview_plan?.plan
         ?.filter((plan) => !plan.isBreak)
@@ -73,7 +78,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         schedulingOptions: resSchOpt.data.map((option) => {
           return { ...option, transformedPlan: transformData(option.plan) };
         }),
-        candidate: application.candidates
+        candidate: application.candidates,
+        recruiter: rec[0]
       });
     }
   } catch (error) {
