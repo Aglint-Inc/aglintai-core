@@ -8,5 +8,4 @@ declare function AllInterviewersCard(props: {
   textUpcomingInterviews?: React.ReactNode;
   textCompletedInterviews?: React.ReactNode;
   slotInterviewModules?: Types.Devlink.Slot;
-  textPosition?: React.ReactNode;
 }): React.JSX.Element;

@@ -6,15 +6,15 @@ import _styles from "./InterviewMemberSide.module.css";
 
 export function InterviewMemberSide({
   as: _Component = _Builtin.Block,
-  isAllActive = false,
   isUpcomingActive = false,
   isCompletedActive = false,
-  isNotConfirmedActive = false,
   slotInterviewCard,
-  onClickAll = {},
   onClickUpcoming = {},
   onClickCompleted = {},
-  onClickNotConfirmed = {},
+  onClickScheduling = {},
+  onClickCancelled = {},
+  isCancelActive = false,
+  isSchedulingActive = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">
@@ -22,26 +22,6 @@ export function InterviewMemberSide({
         className={_utils.cx(_styles, "div-block-1077")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "all-wrap-navi")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1076")}
-            tag="div"
-            {...onClickAll}
-          >
-            <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
-          </_Builtin.Block>
-          {isAllActive ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076", "active")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "all-wrap-navi")}
           tag="div"
@@ -89,16 +69,36 @@ export function InterviewMemberSide({
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1076")}
             tag="div"
-            {...onClickNotConfirmed}
+            {...onClickScheduling}
           >
-            <_Builtin.Block tag="div">{"Not Confimed"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Scheduling"}</_Builtin.Block>
           </_Builtin.Block>
-          {isNotConfirmedActive ? (
+          {isSchedulingActive ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1076", "active")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Not Confimed"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Scheduling"}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "all-wrap-navi")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1076")}
+            tag="div"
+            {...onClickCancelled}
+          >
+            <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+          </_Builtin.Block>
+          {isCancelActive ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1076", "active")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>

@@ -3,13 +3,13 @@ import * as Types from "./types";
 
 declare function InterviewMemberSide(props: {
   as?: React.ElementType;
-  isAllActive?: Types.Visibility.VisibilityConditions;
   isUpcomingActive?: Types.Visibility.VisibilityConditions;
   isCompletedActive?: Types.Visibility.VisibilityConditions;
-  isNotConfirmedActive?: Types.Visibility.VisibilityConditions;
   slotInterviewCard?: Types.Devlink.Slot;
-  onClickAll?: Types.Devlink.RuntimeProps;
   onClickUpcoming?: Types.Devlink.RuntimeProps;
   onClickCompleted?: Types.Devlink.RuntimeProps;
-  onClickNotConfirmed?: Types.Devlink.RuntimeProps;
+  onClickScheduling?: Types.Devlink.RuntimeProps;
+  onClickCancelled?: Types.Devlink.RuntimeProps;
+  isCancelActive?: Types.Visibility.VisibilityConditions;
+  isSchedulingActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
