@@ -71,9 +71,7 @@ function AddFilterComp() {
             }
             isDurationVisible={false}
             isDataRangeVisible={!filterVisible.includes(FilterType.dateRange)}
-            isInterviewPanelVisible={
-              !filterVisible.includes(FilterType.interviewPanels)
-            }
+            isInterviewPanelVisible={false}
             isRelatedJobVisible={
               !filterVisible.includes(FilterType.relatedJobs)
             }

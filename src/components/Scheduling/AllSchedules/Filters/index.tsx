@@ -1,7 +1,4 @@
-import React from 'react';
-
 import DateRangeFilterComp from './DateRangeFilter';
-import FilterInterviewPanel from './FilterInterviewPanel';
 import FilterJob from './FilterJob';
 import FilterScheduleType from './FilterScheduleType';
 import FilterSearchField from './FilterSearchField';
@@ -19,8 +16,6 @@ function AllFilters() {
         switch (filterType) {
           case FilterType.relatedJobs:
             return <FilterJob key={filterType} />;
-          case FilterType.interviewPanels:
-            return <FilterInterviewPanel key={filterType} />;
           case FilterType.dateRange:
             return <DateRangeFilterComp key={filterType} />;
           case FilterType.scheduleType:
