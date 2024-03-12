@@ -8,6 +8,8 @@ export function SublinkTab({
   text = "Sublink Text",
   isActtive = false,
   onClickTab = {},
+  slotSubLinkSubMenu,
+  isSubMenuVisible = false,
 }) {
   return (
     <_Component
@@ -21,6 +23,14 @@ export function SublinkTab({
       >
         {text}
       </_Builtin.Block>
+      {isSubMenuVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1220")}
+          tag="div"
+        >
+          {slotSubLinkSubMenu}
+        </_Builtin.Block>
+      ) : null}
       {isActtive ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "is_active_bg")}

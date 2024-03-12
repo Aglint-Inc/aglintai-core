@@ -6,4 +6,6 @@ declare function SublinkTab(props: {
   text?: React.ReactNode;
   isActtive?: Types.Visibility.VisibilityConditions;
   onClickTab?: Types.Devlink.RuntimeProps;
+  slotSubLinkSubMenu?: Types.Devlink.Slot;
+  isSubMenuVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

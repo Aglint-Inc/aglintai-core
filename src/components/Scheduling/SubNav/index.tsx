@@ -2,7 +2,7 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { SublinkTab } from '@/devlink2';
+import { SubLinkSubMenu, SublinkTab } from '@/devlink2';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function SubNav() {
@@ -24,49 +24,48 @@ function SubNav() {
           text={capitalize(item)}
           onClickTab={{
             onClick: () => {
-              router.push(
-                `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`
-              );
+              if (item === 'settings') {
+                router.push(
+                  `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}&subtab=availability`
+                );
+              } else {
+                router.push(
+                  `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`
+                );
+              }
             }
           }}
+          isSubMenuVisible={item === 'settings' && router.query.tab === item}
+          slotSubLinkSubMenu={
+            <>
+              <SubLinkSubMenu
+                textSubMenu={'Availability'}
+                isActive={router.query.subtab === 'availability'}
+                onClickSubMenu={{
+                  onClick: (e: any) => {
+                    e.stopPropagation();
+                    router.push(
+                      `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}&subtab=availability`
+                    );
+                  }
+                }}
+              />
+              <SubLinkSubMenu
+                textSubMenu={'Keywords'}
+                isActive={router.query.subtab === 'keywords'}
+                onClickSubMenu={{
+                  onClick: (e: any) => {
+                    e.stopPropagation();
+                    router.push(
+                      `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}&subtab=keywords`
+                    );
+                  }
+                }}
+              />
+            </>
+          }
         />
       ))}
-      {/* <SublinkTab
-        isActtive={router.query.tab === 'mySchedules'}
-        text={'My Schedules'}
-        onClickTab={{
-          onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`);
-          },
-        }}
-      />
-      <SublinkTab
-        isActtive={router.query.tab === 'interviewModules'}
-        text={'Interview Modules'}
-        onClickTab={{
-          onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
-          },
-        }}
-      />
-      <SublinkTab
-        isActtive={router.query.tab === 'emailTemplates'}
-        text={'Email Templates'}
-        onClickTab={{
-          onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=emailTemplates`);
-          },
-        }}
-      />
-      <SublinkTab
-        isActtive={router.query.tab === 'settings'}
-        text={'Settings'}
-        onClickTab={{
-          onClick: () => {
-            router.push(`${pageRoutes.SCHEDULING}?tab=settings`);
-          },
-        }}
-      /> */}
     </>
   );
 }

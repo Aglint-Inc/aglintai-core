@@ -35,7 +35,7 @@ const InterviewTab = () => {
                         variant='circular'
                         height='100%'
                         width='100%'
-                        fontSize='24px'
+                        fontSize='14px'
                       />
                     }
                     slotInterviewModules={
@@ -59,6 +59,7 @@ const InterviewTab = () => {
                       </>
                     }
                     textName={`${member.first_name} ${member.last_name || ''}`}
+                    textRole={member?.position}
                   />
                 </Stack>
               );
