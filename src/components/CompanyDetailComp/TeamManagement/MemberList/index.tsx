@@ -11,11 +11,15 @@ dayjs.extend(relativeTime);
 
 const Member = ({
   member,
-  removeMember,
+  removeMember
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
 }) => {
+  const handelRemove = (e) => {
+    e.stopPropagation();
+    removeMember();
+  };
   return (
     <TeamListItem
       isDeleteDisable={member.role !== 'admin' ? false : true}
@@ -25,7 +29,7 @@ const Member = ({
           : true
       }
       onClickCancelInvite={{
-        onClick: removeMember,
+        onClick: handelRemove
       }}
       isCancelInviteVisible={member.join_status === 'invited' ? true : false}
       key={1}
@@ -37,7 +41,7 @@ const Member = ({
           alt={member.first_name}
           sx={{
             width: '100%',
-            height: '100%',
+            height: '100%'
           }}
         />
       }
@@ -53,16 +57,16 @@ const Member = ({
           member.join_status === 'invited'
             ? {
                 backgroundColor: palette.yellow[200],
-                color: palette.yellow[800],
+                color: palette.yellow[800]
               }
             : {
                 backgroundColor: palette.green[200],
-                color: palette.green[800],
-              },
+                color: palette.green[800]
+              }
       }}
       userStatusText={<Stack>{capitalizeAll(member.join_status)}</Stack>}
       onClickRemove={{
-        onClick: removeMember,
+        onClick: handelRemove
       }}
     />
   );
