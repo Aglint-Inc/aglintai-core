@@ -16,7 +16,7 @@ export const initialState: InterviewPlanState = {
   allModules: [],
   syncStatus: '',
   jobId: '',
-  jobStatus: '',
+  jobStatus: 'published',
   jobTitle: ''
 };
 export const defaultDurations = [

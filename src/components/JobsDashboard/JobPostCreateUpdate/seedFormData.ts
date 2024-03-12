@@ -23,12 +23,12 @@ export const getSeedJobFormData = (
       company: '',
       jobLocation: '',
       jobTitle: '',
-      jobType: 'fullTime',
-      department: '',
+      jobType: 'full time',
+      department: 'entrepreneurship',
       logo: '',
       defaultJobType: [],
       defaultWorkPlaceTypes: [],
-      workPlaceType: 'onSite',
+      workPlaceType: 'off site',
       jobDescription: '',
       interviewType: 'questions-preset',
       defaultAddress: [],
@@ -147,10 +147,14 @@ export const getSeedJobFormData = (
         };
       }
     });
-    seedFormState.formFields.workPlaceType = 'onsite';
-    seedFormState.formFields.jobType = 'fulltime';
+    seedFormState.formFields.workPlaceType = 'hybrid';
+    seedFormState.formFields.jobType = 'full time';
     seedFormState.formFields.jobLocation = get(defaultAddress, '[0].value', '');
-    seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
+    seedFormState.formFields.department = get(
+      recruiter,
+      'departments[0]',
+      ''
+    ) as any;
 
     seedFormState.formFields.defaultAddress = defaultAddress;
     seedFormState.formFields.screeningEmail = {
