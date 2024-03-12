@@ -74,7 +74,7 @@ function SchedulingViewComp() {
           setMeetLink(meetingLink);
           if (
             meetingLink &&
-            schedule.schedule.user_ids.find(
+            resTypeSafe.schedule.user_ids.find(
               (id) => id === recruiterUser.user_id
             )
           ) {
