@@ -9,9 +9,10 @@
 .div-block-1077 {
   display: flex;
   padding-right: 16px;
-  padding-left: 16px;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .all-wrap-navi {
@@ -45,7 +46,6 @@
   padding-top: 10px;
   padding-right: 16px;
   padding-bottom: 20px;
-  padding-left: 16px;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

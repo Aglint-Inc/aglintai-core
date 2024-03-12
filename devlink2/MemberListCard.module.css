@@ -1,5 +1,6 @@
 .interview-sub-table-card {
   display: flex;
+  height: 93px;
   padding: 16px;
   justify-content: space-between;
   align-items: center;
@@ -264,7 +265,79 @@
   margin-left: -6px;
 }
 
-.div-block-1075 {
+.div-block-1174 {
+  width: 470px;
+}
+
+.training-wrapp {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+.div-block-1173 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.clickable {
+  transition: all 300ms ease;
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.ml-12 {
+  margin-left: 8px;
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.training-completed-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+@media screen and (min-width: 1440px) {
+  .training-completed-wrap {
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+}
+
+.text-gray-500.hide {
+  display: none;
+}
+
+.div-block-1175 {
   display: flex;
   width: 200px;
   justify-content: space-between;
@@ -274,14 +347,14 @@
   grid-row-gap: 50px;
 }
 
-.div-block-1074 {
+.div-block-1176 {
   display: flex;
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 }
 
-.div-block-1073 {
+.div-block-1179 {
   display: flex;
   align-items: center;
   grid-column-gap: 6px;
@@ -292,10 +365,6 @@
   .text-gray-600.mobile-12 {
     font-size: 12px;
   }
-}
-
-.text-no-wrap {
-  white-space: nowrap;
 }
 
 .text-gray-600.max-width-500 {
@@ -347,7 +416,7 @@
   width: 136px;
 }
 
-.div-block-1080 {
+.div-block-1178 {
   position: relative;
   padding: 4px;
   cursor: pointer;
@@ -363,7 +432,7 @@
 
   display: none;
   overflow: hidden;
-  width: 213px;
+  width: 244px;
 
   border: 1px solid #e9ebed;
   border-radius: 10px;

@@ -11,9 +11,13 @@ export function AllInterviewersCard({
   textUpcomingInterviews = "3",
   textCompletedInterviews = "3",
   slotInterviewModules,
+  textRole = "Software",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1143", "")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1143", "", "dec-width")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1144")}
         id={_utils.cx(
@@ -23,7 +27,7 @@ export function AllInterviewersCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1145")}
+          className={_utils.cx(_styles, "div-block-1145", "width-24")}
           id={_utils.cx(
             _styles,
             "w-node-_23fa5a49-b85f-659d-e893-4735fbc243b6-fbc243b4"
@@ -32,8 +36,22 @@ export function AllInterviewersCard({
         >
           {slotProfileImage}
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textName}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1223")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {textName}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {textRole}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

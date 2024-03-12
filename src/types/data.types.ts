@@ -1,4 +1,5 @@
 import { Database } from './schema';
+import { schedulingSettingType } from '../components/Scheduling/Settings/types';
 
 export type AddressType = {
   line1: string;
@@ -151,8 +152,15 @@ export type Summary = {
   suggestions: string[];
   color?: 'string';
 };
-export type RecruiterUserType =
-  Database['public']['Tables']['recruiter_user']['Row'];
+
+type TempRecruiterUser = Database['public']['Tables']['recruiter_user']['Row'];
+export interface RecruiterUserType extends TempRecruiterUser {
+  scheduling_settings: schedulingSettingType;
+}
+// export type RecruiterUserType =
+//   Database['public']['Tables']['recruiter_user']['Row'] & {
+//     scheduling_settings: schedulingSettingType;
+//   };
 
 export type RoleType = {
   sourcing: boolean;

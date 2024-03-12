@@ -1,0 +1,15 @@
+.div-block-1222 {
+  position: relative;
+}
+
+.div-block-1221 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #e9ebed;
+
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}

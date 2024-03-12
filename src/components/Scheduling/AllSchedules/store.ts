@@ -6,6 +6,7 @@ import {
   JobApplcationDB
 } from '@/src/types/data.types';
 
+import { SchedulingOptionType } from './SchedulingApplication/store';
 import { InterviewModuleDbType } from '../../JobInterviewPlan/types';
 
 export interface InterviewSlice {
@@ -108,12 +109,9 @@ export type ApplicationList = {
   applications: JobApplcationDB;
   candidates: CandidateType;
   schedule:
-    | (InterviewScheduleTypeDB & {
-        schedule_time: {
-          startTime: string;
-          endTime: string;
-          user_ids: string[];
-        } | null;
+    | (Omit<InterviewScheduleTypeDB, 'interview_plan' | 'confirmed_option'> & {
+        confirmed_option: SchedulingOptionType[0] | null;
+        interview_plan: InterviewModuleDbType[];
       })
     | null;
   public_jobs: {
@@ -121,5 +119,14 @@ export type ApplicationList = {
     job_title: string;
     interview_plan: { plan: InterviewModuleDbType[] };
     location: string;
+    recruiter_id: string;
+  };
+  file: {
+    id: string;
+    created_at: string;
+    file_url: string;
+    candidate_id: string;
+    resume_json: JSON;
+    type: string;
   };
 };

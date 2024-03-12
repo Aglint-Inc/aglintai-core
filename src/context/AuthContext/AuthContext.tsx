@@ -14,6 +14,7 @@ import {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink';
+import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import {
   RecruiterRelationsType,
   RecruiterType,
@@ -125,7 +126,7 @@ const AuthProvider = ({ children }) => {
         .select()
         .in('user_id', userIds);
       if (!userError && users.length) {
-        setMembers(users);
+        setMembers(users as RecruiterUserType[]);
       }
     }
     return [];
@@ -162,7 +163,7 @@ const AuthProvider = ({ children }) => {
       .select('*')
       .eq('user_id', userDetails.user.id);
     if (!errorUser && recruiterUser.length > 0) {
-      setRecruiterUser(recruiterUser[0]);
+      setRecruiterUser(recruiterUser[0] as RecruiterUserType);
       (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
       const { data: recruiterRel, error: errorRel } = await supabase
@@ -229,7 +230,7 @@ const AuthProvider = ({ children }) => {
       .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {
-      setRecruiterUser(data[0]);
+      setRecruiterUser(data[0] as RecruiterUserType);
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -265,7 +266,7 @@ const AuthProvider = ({ children }) => {
       if (data) {
         setMembers((prev) =>
           prev.map((item) => {
-            return data.user_id !== item.user_id ? item : data;
+            return data.user_id !== item.user_id ? item : data as RecruiterUserType;
           })
         );
         return true;

@@ -9,8 +9,6 @@ declare function MemberListCard(props: {
   countUpcomingSchedule?: React.ReactNode;
   countCompletedSchedule?: React.ReactNode;
   countIncompleteSchedule?: React.ReactNode;
-  isPauseResumeVisible?: Types.Visibility.VisibilityConditions;
-  textPauseResumeDate?: React.ReactNode;
   onHoverDot?: Types.Devlink.RuntimeProps;
   onClickPauseInterview?: Types.Devlink.RuntimeProps;
   onClickResumeInterview?: Types.Devlink.RuntimeProps;
@@ -20,4 +18,15 @@ declare function MemberListCard(props: {
   isScheduleCountVisible?: Types.Visibility.VisibilityConditions;
   isProfileVisible?: Types.Visibility.VisibilityConditions;
   isRoleVisible?: Types.Visibility.VisibilityConditions;
+  isTrainingCompletedVisible?: Types.Visibility.VisibilityConditions;
+  isTrainingProgessVisible?: Types.Visibility.VisibilityConditions;
+  onClickApproveCandidate?: Types.Devlink.RuntimeProps;
+  slotProgressBar?: Types.Devlink.Slot;
+  onClickViewProgress?: Types.Devlink.RuntimeProps;
+  isMoveToQualifierVisible?: Types.Visibility.VisibilityConditions;
+  onClickMoveToQualifier?: Types.Devlink.RuntimeProps;
+  isApproveCandidateButtonVisible?: Types.Visibility.VisibilityConditions;
+  isPendingApprovalVisible?: Types.Visibility.VisibilityConditions;
+  textPauseResumeDate?: React.ReactNode;
+  isPauseResumeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

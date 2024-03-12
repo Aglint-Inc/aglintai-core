@@ -1,20 +1,18 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
+import { InterviewerDetailTopRight } from '@/devlink3';
 import Interviewer from '@/src/components/CompanyDetailComp/Interviewers/Interviewer';
 import {
   InterviewerContextProvider,
   useInterviewerContext
 } from '@/src/context/InterviewerContext/InterviewerContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
 
 function InterviewerPage() {
   const { interviewerMembers, selectedInterviewer, handelSelectInterviewer } =
     useInterviewerContext();
-  const [selectedInterviewEvent, setSelectedInterviewEvent] = useState<
-    any | null
-  >(null);
+
   const router = useRouter();
   useEffect(() => {
     if (router.isReady && interviewerMembers.length) {
@@ -22,13 +20,16 @@ function InterviewerPage() {
       member_id && handelSelectInterviewer(member_id as string);
     }
   }, [router.isReady, interviewerMembers]);
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+
+  const toggleDrawer = () => {
+    setOpenDrawer(true);
+  };
   return (
     <PageLayout
       onClickBack={{
         onClick: () => {
-          selectedInterviewEvent
-            ? setSelectedInterviewEvent(null)
-            : router.push(`${pageRoutes.SCHEDULING}?tab=allInterviewers`);
+          router.back();
         }
       }}
       isBackButton={true}
@@ -39,11 +40,17 @@ function InterviewerPage() {
           />
         </>
       }
-      slotBody={
-        <Interviewer
-          selectedInterviewEvent={selectedInterviewEvent}
-          setSelectedInterviewEvent={setSelectedInterviewEvent}
+      slotTopbarRight={
+        <InterviewerDetailTopRight
+          onClickSettings={{
+            onClick: () => {
+              toggleDrawer();
+            }
+          }}
         />
+      }
+      slotBody={
+        <Interviewer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
       }
     />
   );

@@ -5,7 +5,8 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
 import { Checkbox } from '@/devlink';
-import { ConfirmationPopup } from '@/devlink3';
+import { ConfirmationPopup, DeletePopup, ResumePop } from '@/devlink3';
+import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
 
 function PauseResumeDialog({
   pauseResumeDialog,
@@ -18,6 +19,7 @@ function PauseResumeDialog({
     isOpen: boolean;
     isAll: boolean;
     type: 'pause' | 'resume' | 'remove';
+    panel_id?: string | null;
   };
   close: () => void;
   // eslint-disable-next-line no-unused-vars
@@ -26,6 +28,11 @@ function PauseResumeDialog({
   resume: () => void;
   remove: () => void;
 }) {
+  const { modulesAndMapping, selectedInterviewer } = useInterviewerContext();
+  const selectedModule =
+    modulesAndMapping.modules[String(pauseResumeDialog.panel_id)]?.pause_json[
+      String(selectedInterviewer.user_id)
+    ];
   const [pause_json, setPauseJson] = useState<{
     start_date: string;
     end_date: string;
@@ -56,8 +63,8 @@ function PauseResumeDialog({
       >
         {pauseResumeDialog.type === 'pause' ? (
           <ConfirmationPopup
-            textPopupTitle={`Pause from scheduling ${pauseResumeDialog.isAll && 'for all panels'}.`}
-            textPopupDescription={`This member won’t be considered for any new interviews scheduled with ${pauseResumeDialog.isAll ? 'all' : 'this'} module until the pause durations is completed.`}
+            textPopupTitle={`Pause from scheduling ${pauseResumeDialog.isAll && 'for all qualified modules'}.`}
+            textPopupDescription={`This member won’t be considered for any new interviews scheduled with ${pauseResumeDialog.isAll ? 'all qualified' : 'this'} module until the pause durations is completed.`}
             isIcon={false}
             slotWidget={
               <Stack spacing={2}>
@@ -232,28 +239,26 @@ function PauseResumeDialog({
             textPopupButton={'Pause'}
           />
         ) : pauseResumeDialog.type === 'resume' ? (
-          <ConfirmationPopup
-            textPopupTitle={'Resume for scheduling'}
-            textPopupDescription={`This member will be included in new interviews scheduled for this module.`}
-            isIcon={false}
-            isWidget={true}
-            onClickCancel={{ onClick: close }}
-            onClickAction={{
+          <ResumePop
+            // textTitle={'Resume for scheduling'}
+            textResumeWarning={`This member is paused from scheduling with this module until ${dayjs(selectedModule?.end_date).format('DD MMMM YYYY')} `}
+            textDescription={`By Clicking resume this member will be included in new interviews scheduled for this module.`}
+            onClickResume={{
               onClick: resume
             }}
-            textPopupButton={'Resume'}
+            onClickClose={{ onClick: close }}
           />
         ) : (
-          <ConfirmationPopup
-            textPopupTitle={`Remove form${pauseResumeDialog.isAll && ' all'} Modules`}
-            textPopupDescription={`This member will be removed from ${pauseResumeDialog.isAll ? 'all' : 'this'} Modules.`}
+          <DeletePopup
+            textTitle={`Remove form${pauseResumeDialog.isAll && ' all'} Modules`}
+            textDescription={`By Clicking remove the member will be permanently removed from ${pauseResumeDialog.isAll ? 'all qualified interview Modules' : 'this interview Module'} .`}
             isIcon={false}
             isWidget={true}
             onClickCancel={{ onClick: close }}
-            onClickAction={{
+            onClickDelete={{
               onClick: remove
             }}
-            textPopupButton={'Remove'}
+            buttonText={'Remove'}
           />
         )}
       </Dialog>

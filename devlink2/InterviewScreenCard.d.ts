@@ -8,9 +8,10 @@ declare function InterviewScreenCard(props: {
   slotMeetingIcon?: Types.Devlink.Slot;
   textMeetingPlatform?: React.ReactNode;
   slotMemberImage?: Types.Devlink.Slot;
-  isUpcomingVisible?: Types.Visibility.VisibilityConditions;
-  isCompletedVisible?: Types.Visibility.VisibilityConditions;
   textDate?: React.ReactNode;
   textDay?: React.ReactNode;
   textMonth?: React.ReactNode;
+  textStatus?: React.ReactNode;
+  colorPropsText?: Types.Devlink.RuntimeProps;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

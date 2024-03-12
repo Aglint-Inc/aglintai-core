@@ -2,7 +2,7 @@ import { Dayjs } from 'dayjs';
 
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 
-import { CalenderEvent, ScheduleAuthType } from '../schedule-utils/types';
+import { NewCalenderEvent, ScheduleAuthType } from '../schedule-utils/types';
 
 export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
@@ -11,7 +11,7 @@ export type InterDetailsType = {
   profile_img: string;
   email: string;
   shedule_settings: schedulingSettingType;
-  events: CalenderEvent[];
+  events: NewCalenderEvent[];
   freeTimes: TimeDurationType[];
   isCalenderConnected: boolean;
 };

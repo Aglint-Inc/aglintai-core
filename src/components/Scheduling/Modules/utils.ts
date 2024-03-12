@@ -1,7 +1,7 @@
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PauseJson } from './types';
+import { PauseJson, ScheduleType, StatusTraining } from './types';
 
 export const fetchInterviewModule = async (recruiter_id: string) => {
   try {
@@ -111,17 +111,20 @@ export const updatePauseJsonByUserId = async ({
 
 export const addMemberbyUserIds = async ({
   user_ids,
-  module_id
+  module_id,
+  training_status
 }: {
   user_ids: string[];
   module_id: string;
+  training_status: StatusTraining;
 }) => {
   const { data, error } = await supabase
     .from('interview_module_relation')
     .insert(
       user_ids.map((user_id) => ({
         user_id: user_id,
-        module_id: module_id
+        module_id: module_id,
+        training_status: training_status
       }))
     )
     .select();
@@ -129,4 +132,16 @@ export const addMemberbyUserIds = async ({
     return { data: null, error: error };
   }
   return { data, error };
+};
+
+export const getColorStatusSchedule = (
+  status: ScheduleType['schedule']['status']
+) => {
+  return status == 'completed'
+    ? '#2F3941'
+    : status == 'confirmed'
+      ? '#0F3554'
+      : status == 'pending'
+        ? '#703815'
+        : '#681219';
 };

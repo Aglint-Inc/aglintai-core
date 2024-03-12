@@ -32,7 +32,6 @@ import { handleDelete } from './utils';
 import {
   setEditModule,
   setInterviewModules,
-  setModuleName,
   // setSelectedUsers,
   useSchedulingStore
 } from '../Modules/store';
@@ -44,7 +43,6 @@ const Availability = () => {
   const [openSideDrawer, setOpenSideDrawer] = useState(false);
   const { initialiseAvailabilities } = useSyncInterviewersCalender();
   const { members } = useAuthDetails();
-  const moduleName = useSchedulingStore((state) => state.moduleName);
   const isInitialising = useAvailableStore((state) => state.isInitialising);
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
   const timeRange = useAvailableStore((state) => state.timeRange);
@@ -68,7 +66,6 @@ const Availability = () => {
           const activeDuration =
             (panel.duration_available as any)?.activeDuration ?? 30;
           setTimeSlot(activeDuration);
-          setModuleName(panel.name);
           setEditModule(panel);
           // setSelectedUsers(panel.relations);
           const newInterviewers: StateAvailibility['interviewers'] =
@@ -128,7 +125,7 @@ const Availability = () => {
         isBackButton={true}
         slotTopbarLeft={
           <>
-            <Breadcrum textName={moduleName} />
+            <Breadcrum textName={'moduleName'} />
           </>
         }
         slotBody={

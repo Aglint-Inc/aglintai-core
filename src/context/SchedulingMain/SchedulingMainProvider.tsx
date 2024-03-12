@@ -17,20 +17,21 @@ import toast from '@/src/utils/toast';
 import {
   setEditModule,
   setInterviewModules,
-  setModuleName,
   useSchedulingStore
 } from '../../components/Scheduling/Modules/store';
 
 export type InterviewPanelContextType = {
   loading: boolean;
-  members: {
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    profile_image: string;
-    position: string;
-  }[];
+  members: MemberType[];
+};
+
+export type MemberType = {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_image: string;
+  position: string;
 };
 
 const initialState = {
@@ -85,7 +86,6 @@ const SchedulingProvider = ({ children }) => {
       )[0];
 
       if (selModule) {
-        setModuleName(selModule.name);
         setEditModule(selModule);
       }
     }

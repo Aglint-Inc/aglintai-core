@@ -15,4 +15,5 @@ declare function ScheduleSettings(props: {
   onClickUpdateChanges?: Types.Devlink.RuntimeProps;
   slotKeywordCard?: Types.Devlink.Slot;
   isKeywordVisible?: Types.Visibility.VisibilityConditions;
+  isCompanyLevelVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

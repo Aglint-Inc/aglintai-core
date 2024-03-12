@@ -82,7 +82,7 @@ export const findPlanCombinations = (
           isBreak: true,
           duration: break_duration,
           attended_inters: [],
-          start_time: prev_time_range.startTime,
+          start_time: prev_time_range.endTime,
           end_time: dayjs(prev_time_range.endTime)
             .add(break_duration, 'minutes')
             .toISOString(),
@@ -167,10 +167,10 @@ export const findPlanCombinations = (
         }
 
         curr_time_range.startTime = dayjs(curr_time_range.startTime)
-          .add(5, 'minutes')
+          .add(30, 'minutes')
           .toISOString();
         curr_time_range.endTime = dayjs(curr_time_range.endTime)
-          .add(5, 'minutes')
+          .add(30, 'minutes')
           .toISOString();
       }
     }

@@ -19,6 +19,7 @@ export function ScheduleSettings({
   onClickUpdateChanges = {},
   slotKeywordCard,
   isKeywordVisible = false,
+  isCompanyLevelVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule_settings")} tag="div">
@@ -27,25 +28,27 @@ export function ScheduleSettings({
           className={_utils.cx(_styles, "keywords-wrapp")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1115", "keyword-head")}
-            tag="div"
-          >
+          {isCompanyLevelVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "div-block-1115", "keyword-head")}
               tag="div"
             >
-              {"Keywords"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Keywords"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-grey-600")}
+                tag="div"
+              >
+                {
+                  "Keywords allow you to identify events on interviewer’s calendars that can be scheduled over by either you or a candidate when booking interviews."
+                }
+              </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-600")}
-              tag="div"
-            >
-              {
-                "Keywords allow you to identify events on interviewer’s calendars that can be scheduled over by either you or a candidate when booking interviews."
-              }
-            </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1169")}
             tag="div"
@@ -54,47 +57,49 @@ export function ScheduleSettings({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1117")}
-        tag="div"
-      >
+      {isCompanyLevelVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1115")}
+          className={_utils.cx(_styles, "div-block-1117")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "div-block-1115")}
             tag="div"
           >
-            {"Availability"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Availability"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {"Set up recruitng time ranges and available working hours"}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "div-block-1116", "hide")}
             tag="div"
           >
-            {"Set up recruitng time ranges and available working hours"}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-red-500", "cursor-pointer")}
+              tag="div"
+              {...onClickDiscard}
+            >
+              {"Discard"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button_primary")}
+              tag="div"
+              {...onClickUpdateChanges}
+            >
+              <_Builtin.Block tag="div">{"Update Changes"}</_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1116", "hide")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-red-500", "cursor-pointer")}
-            tag="div"
-            {...onClickDiscard}
-          >
-            {"Discard"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary")}
-            tag="div"
-            {...onClickUpdateChanges}
-          >
-            <_Builtin.Block tag="div">{"Update Changes"}</_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
         <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
         {isTimeZoneToggleVisible ? (

@@ -1,7 +1,7 @@
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { refreshAccessToken } from '@/src/pages/api/email-outreach/getNewAcessToken';
 
-import { CalenderEvent, ScheduleAuthType } from '../schedule-utils/types';
+import { NewCalenderEvent, ScheduleAuthType } from '../schedule-utils/types';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 const crypto = require('crypto');
 
@@ -34,7 +34,7 @@ async function listEvents(
   authClient,
   startDate: string,
   endDate: string
-): Promise<CalenderEvent[]> {
+): Promise<NewCalenderEvent[]> {
   const calendar = google.calendar({ version: 'v3', auth: authClient });
   const events = await calendar.events.list({
     calendarId: 'primary',
@@ -73,7 +73,7 @@ export const fetchCalenderEventsCompanyCred = async (
     orderBy: 'startTime'
   });
 
-  const events = response.data.items as CalenderEvent[];
+  const events = response.data.items as NewCalenderEvent[];
 
   return events;
 };
