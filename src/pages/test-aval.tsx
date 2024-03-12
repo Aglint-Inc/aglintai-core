@@ -102,7 +102,8 @@ const Comp = () => {
         '/api/scheduling/v2/book_schedule_plan',
         {
           plan: payload,
-          candidate_email: 'ogyen@aglinthq.com'
+          candidate_email: 'ogyen@aglinthq.com',
+          schedule_id: '5db59175-c60b-4b49-9192-223f98db9ee2'
         }
       );
     } catch (error) {

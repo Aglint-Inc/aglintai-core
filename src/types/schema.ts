@@ -1038,6 +1038,7 @@ export type Database = {
       interview_schedule: {
         Row: {
           application_id: string
+          calender_event_api_status: Json | null
           confirmed_option: Json | null
           created_at: string
           created_by: string
@@ -1045,16 +1046,19 @@ export type Database = {
           id: string
           interview_plan: Json[] | null
           is_active: boolean
-          meeting_json: Json | null
+          meeting_json: Json[] | null
+          module_ids: string[] | null
           panel_id: string | null
           resend_invite: number
           schedule_name: string
           schedule_time: Json | null
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
           status: Database["public"]["Enums"]["interview_schedule_status"]
+          user_ids: string[] | null
         }
         Insert: {
           application_id: string
+          calender_event_api_status?: Json | null
           confirmed_option?: Json | null
           created_at?: string
           created_by?: string
@@ -1062,16 +1066,19 @@ export type Database = {
           id?: string
           interview_plan?: Json[] | null
           is_active?: boolean
-          meeting_json?: Json | null
+          meeting_json?: Json[] | null
+          module_ids?: string[] | null
           panel_id?: string | null
           resend_invite?: number
           schedule_name: string
           schedule_time?: Json | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
           status?: Database["public"]["Enums"]["interview_schedule_status"]
+          user_ids?: string[] | null
         }
         Update: {
           application_id?: string
+          calender_event_api_status?: Json | null
           confirmed_option?: Json | null
           created_at?: string
           created_by?: string
@@ -1079,13 +1086,15 @@ export type Database = {
           id?: string
           interview_plan?: Json[] | null
           is_active?: boolean
-          meeting_json?: Json | null
+          meeting_json?: Json[] | null
+          module_ids?: string[] | null
           panel_id?: string | null
           resend_invite?: number
           schedule_name?: string
           schedule_time?: Json | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
           status?: Database["public"]["Enums"]["interview_schedule_status"]
+          user_ids?: string[] | null
         }
         Relationships: [
           {
@@ -1528,7 +1537,9 @@ export type Database = {
           company: string | null
           company_details: string | null
           created_at: string
-          department: string | null
+          department:
+            | Database["public"]["Enums"]["public_job_department"]
+            | null
           description: string | null
           draft: Json | null
           email_template: Json
@@ -1545,7 +1556,7 @@ export type Database = {
           job_criteria: Json | null
           job_details_embedding: string | null
           job_title: string | null
-          job_type: string | null
+          job_type: Database["public"]["Enums"]["public_job_type"] | null
           location: string | null
           location_json: Json | null
           logo: string | null
@@ -1562,10 +1573,12 @@ export type Database = {
           skills: string[] | null
           slug: string
           start_video: Json | null
-          status: string
+          status: Database["public"]["Enums"]["public_job_status"]
           updated_at: string | null
           video_assessment: boolean
-          workplace_type: string | null
+          workplace_type:
+            | Database["public"]["Enums"]["public_job_workplace"]
+            | null
         }
         Insert: {
           active_status?: Json
@@ -1573,7 +1586,9 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          department?: string | null
+          department?:
+            | Database["public"]["Enums"]["public_job_department"]
+            | null
           description?: string | null
           draft?: Json | null
           email_template?: Json
@@ -1590,7 +1605,7 @@ export type Database = {
           job_criteria?: Json | null
           job_details_embedding?: string | null
           job_title?: string | null
-          job_type?: string | null
+          job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location?: string | null
           location_json?: Json | null
           logo?: string | null
@@ -1607,10 +1622,12 @@ export type Database = {
           skills?: string[] | null
           slug?: string
           start_video?: Json | null
-          status?: string
+          status?: Database["public"]["Enums"]["public_job_status"]
           updated_at?: string | null
           video_assessment?: boolean
-          workplace_type?: string | null
+          workplace_type?:
+            | Database["public"]["Enums"]["public_job_workplace"]
+            | null
         }
         Update: {
           active_status?: Json
@@ -1618,7 +1635,9 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          department?: string | null
+          department?:
+            | Database["public"]["Enums"]["public_job_department"]
+            | null
           description?: string | null
           draft?: Json | null
           email_template?: Json
@@ -1635,7 +1654,7 @@ export type Database = {
           job_criteria?: Json | null
           job_details_embedding?: string | null
           job_title?: string | null
-          job_type?: string | null
+          job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location?: string | null
           location_json?: Json | null
           logo?: string | null
@@ -1652,10 +1671,12 @@ export type Database = {
           skills?: string[] | null
           slug?: string
           start_video?: Json | null
-          status?: string
+          status?: Database["public"]["Enums"]["public_job_status"]
           updated_at?: string | null
           video_assessment?: boolean
-          workplace_type?: string | null
+          workplace_type?:
+            | Database["public"]["Enums"]["public_job_workplace"]
+            | null
         }
         Relationships: [
           {
@@ -2584,6 +2605,18 @@ export type Database = {
         }
         Returns: number
       }
+      get_interview_schedule_by_module_id: {
+        Args: {
+          target_module_id: string
+        }
+        Returns: {
+          schedule: Json
+          applications: Json
+          candidate: Json
+          file: Json
+          job: Json
+        }[]
+      }
       get_interview_schedule_by_user_id: {
         Args: {
           target_user_id: string
@@ -2594,7 +2627,6 @@ export type Database = {
           candidate: Json
           file: Json
           job: Json
-          panel: Json
         }[]
       }
       get_present_scheduled_jobs: {
@@ -2706,7 +2738,7 @@ export type Database = {
           company: string
           company_details: string
           created_at: string
-          department: string
+          department: Database["public"]["Enums"]["public_job_department"]
           description: string
           draft: Json
           email_template: Json
@@ -2722,7 +2754,7 @@ export type Database = {
           jd_json: Json
           job_criteria: Json
           job_title: string
-          job_type: string
+          job_type: Database["public"]["Enums"]["public_job_type"]
           location: string
           location_json: Json
           logo: string
@@ -2739,10 +2771,10 @@ export type Database = {
           skills: string[]
           slug: string
           start_video: Json
-          status: string
+          status: Database["public"]["Enums"]["public_job_status"]
           updated_at: string
           video_assessment: boolean
-          workplace_type: string
+          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           count: Json
         }[]
       }
@@ -2802,7 +2834,7 @@ export type Database = {
           company: string
           company_details: string
           created_at: string
-          department: string
+          department: Database["public"]["Enums"]["public_job_department"]
           description: string
           draft: Json
           email_template: Json
@@ -2818,7 +2850,7 @@ export type Database = {
           jd_json: Json
           job_criteria: Json
           job_title: string
-          job_type: string
+          job_type: Database["public"]["Enums"]["public_job_type"]
           location: string
           location_json: Json
           logo: string
@@ -2835,10 +2867,10 @@ export type Database = {
           skills: string[]
           slug: string
           start_video: Json
-          status: string
+          status: Database["public"]["Enums"]["public_job_status"]
           updated_at: string
           video_assessment: boolean
-          workplace_type: string
+          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           count: Json
         }[]
       }
@@ -3146,6 +3178,35 @@ export type Database = {
         | "google_meet"
         | "phone_call"
         | "zoom"
+      public_job_department:
+        | "legal"
+        | "sales"
+        | "finance"
+        | "support"
+        | "education"
+        | "marketing"
+        | "accounting"
+        | "consulting"
+        | "operations"
+        | "engineering"
+        | "data science"
+        | "administrative"
+        | "arts and design"
+        | "human resources"
+        | "entrepreneurship"
+        | "product management"
+        | "business development"
+        | "information technology"
+        | "media and communication"
+      public_job_status: "draft" | "published" | "closed"
+      public_job_type:
+        | "contract"
+        | "full time"
+        | "part time"
+        | "temporary"
+        | "volunteer"
+        | "internship"
+      public_job_workplace: "hybrid" | "on site" | "off site"
       question_level: "basic" | "intermediate" | "advanced"
       question_type: "scq" | "mcq" | "qna" | "code"
       recruiter_roles: "admin" | "member" | "interviewer" | "scheduler"
