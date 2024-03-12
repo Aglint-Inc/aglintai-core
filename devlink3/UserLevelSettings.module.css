@@ -16,6 +16,7 @@
 .sticky_block {
   position: sticky;
   top: 0px;
+  z-index: 4;
 
   display: flex;
   padding: 20px 20px 0px;
