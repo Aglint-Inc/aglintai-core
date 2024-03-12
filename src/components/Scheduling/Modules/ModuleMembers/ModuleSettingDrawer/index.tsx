@@ -74,6 +74,9 @@ function ModuleSettingDrawer() {
     >
       {editModule && (
         <ModuleSetting
+          onClickClose={{
+            onClick: () => setIsModuleSettingsDialogOpen(false)
+          }}
           slotModuleNameInput={
             <TextField
               fullWidth

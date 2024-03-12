@@ -23,6 +23,9 @@ function PendingConfirmed() {
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication
   );
+  const isViewProfileOpen = useSchedulingApplicationStore(
+    (state) => state.isViewProfileOpen
+  );
 
   const onClickCancel = async () => {
     try {
@@ -104,7 +107,12 @@ function PendingConfirmed() {
     <>
       {/* <DeleteScheduleDialog onClickCancel={onClickCancel} />
       <RescheduleDialog onClickReschedule={onClickReschedule} /> */}
-      <CandidateDetailsJobDrawer />
+      <CandidateDetailsJobDrawer
+        applications={selectedApplication.applications}
+        candidate={selectedApplication.candidates}
+        file={selectedApplication.file}
+        isViewProfileOpen={isViewProfileOpen}
+      />
       {selectedApplication?.schedule && (
         <ScheduleInfoPending
           isCancelSheduleVisible={true}
