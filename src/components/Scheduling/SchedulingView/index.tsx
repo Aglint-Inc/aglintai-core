@@ -276,6 +276,8 @@ function SchedulingViewComp() {
                         type={schedule.schedule.schedule_type}
                       />
                     }
+                    textLink={meetLink}
+                    isLinkVisible={isMeetingButtonVisible}
                     textTitle={schedule.schedule.schedule_name}
                     textTime={`${dayjs(schedule.module_time.start_time).format('hh:mm A')} - ${dayjs(schedule.module_time.end_time).format('hh:mm A')} ( ${schedule.module_time.duration} Minutes )`}
                   />
