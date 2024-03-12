@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 import { RecruiterUserType } from '@/src/types/data.types';
 
-import { CalenderEvent } from '../schedule-utils/types';
+import { NewCalenderEvent } from '../schedule-utils/types';
 import { CompServiceKeyCred } from '../scheduling_v2/types';
 import { decrypt } from '../scheduling_v2/utils';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
@@ -104,7 +104,7 @@ export const bookIndividualModule = async ({
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
 }) => {
-  const calendar_event: CalenderEvent = {
+  const calendar_event: NewCalenderEvent = {
     summary: schedule_name,
     start: {
       dateTime: start_time

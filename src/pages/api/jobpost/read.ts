@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     .or(req.body.query);
 
   if (!error && data?.length > 0) {
-    if (data[0]?.status == 'closed' || data[0]?.status == 'archived') {
+    if (data[0]?.status == 'closed' || data[0]?.status == ('archived' as any)) {
       isValid = false;
     } else {
       if ((req.body.preview || data[0]?.status == 'draft') && data[0]?.draft) {
@@ -53,7 +53,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     const { data: rec } = await supabase
       .from('recruiter')
-      .select('id, logo, name, office_locations,company_overview,employee_size,socials,company_website,industry')
+      .select(
+        'id, logo, name, office_locations,company_overview,employee_size,socials,company_website,industry'
+      )
       .eq('id', data[0].recruiter_id);
 
     const { data: jobs } = await supabase

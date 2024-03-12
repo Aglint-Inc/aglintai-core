@@ -33,18 +33,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       selectedSlot
     } = req.body as BodyParams;
 
-    const resp = await axios.post(
+    axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/book_schedule_plan`,
       {
-        plan: selectedSlot.plan,
+        plan: { plan: selectedSlot.plan },
         candidate_email: candidate_email,
         schedule_id: id
       }
     );
-
-    if (resp.status !== 200) {
-      return res.status(400).send('Error in scheduling');
-    }
 
     const user_ids = [];
     selectedSlot.plan.map((plan) => {
@@ -63,7 +59,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         status: 'confirmed',
         confirmed_option: selectedSlot,
         user_ids,
-        module_ids
+        module_ids,
+        completion_time:
+          selectedSlot.plan[selectedSlot.plan.length - 1].end_time
       })
       .eq('id', id)
       .select();

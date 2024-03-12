@@ -8,7 +8,7 @@ import {
   createEvent,
   importEventToAttendee
 } from '@/src/utils/event_book/book_schedule_plan';
-import { CalenderEvent } from '@/src/utils/schedule-utils/types';
+import { NewCalenderEvent } from '@/src/utils/schedule-utils/types';
 import { getRecruiterAuthTokens } from '@/src/utils/schedule-utils/utils';
 
 const supabaseAdmin = createClient<Database>(
@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return rec.schedule_auth.email;
     });
     const interviewers_email = await Promise.all(interviewers_promises);
-    const calendar_event: CalenderEvent = {
+    const calendar_event: NewCalenderEvent = {
       summary: schedule_name,
       start: {
         dateTime: start_time

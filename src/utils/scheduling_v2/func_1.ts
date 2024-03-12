@@ -21,7 +21,7 @@ import {
   fetchCalenderEventsCompanyCred,
   refreshTokenIfNeeded
 } from './utils';
-import { CalenderEvent } from '../schedule-utils/types';
+import { NewCalenderEvent } from '../schedule-utils/types';
 
 export const findInterviewersEvents = async (
   company_cred: CompServiceKeyCred,
@@ -181,7 +181,7 @@ const chageTimeInDay = (current_day: Dayjs, time: string, timeZone: string) => {
 
 const minusEventsTimeInWorkHours = (
   work_hours_range: TimeDurationType[],
-  calend_events: CalenderEvent[]
+  calend_events: NewCalenderEvent[]
 ): TimeDurationType[] => {
   const work_hours = cloneDeep(work_hours_range);
 

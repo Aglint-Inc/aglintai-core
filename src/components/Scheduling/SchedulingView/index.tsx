@@ -1,9 +1,10 @@
-import { Stack, Typography } from '@mui/material';
+import { AvatarGroup, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { ButtonPrimaryRegular } from '@/devlink';
 import {
   AvailableOptionCardDate,
   Breadcrum,
@@ -13,9 +14,12 @@ import {
   ScheduleInfoConfirmed,
   ScheduleInfoUpcoming
 } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { MemberType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import NotFoundPage from '@/src/pages/404';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import CandidateDetailsJobDrawer from '../AllSchedules/SchedulingApplication/CandidateDetailsJob';
@@ -27,10 +31,13 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 function SchedulingViewComp() {
   const router = useRouter();
+  const { recruiterUser } = useAuthDetails();
   const [loading, setLoading] = useState(true);
   const [schedule, setSchedule] = useState<TransformSchedule>(null);
   const [members, setMembers] = useState<MemberType[]>([]);
   const [isViewProfileOpen, setIsViewProfileOpen] = useState(false);
+  const [meetLink, setMeetLink] = useState<string>('');
+  const [isMeetingButtonVisible, setIsMeetingButtonVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -40,10 +47,9 @@ function SchedulingViewComp() {
           { target_module_id: router.query.module_id as string }
         );
         if (data.length > 0) {
+          const resTypeSafe = data[0] as unknown as ScheduleType;
           const userIds = [];
-          (
-            data[0] as unknown as ScheduleType
-          ).schedule.confirmed_option.plan.map((plan) =>
+          resTypeSafe.schedule.confirmed_option.plan.map((plan) =>
             plan.attended_inters.map((interv) => userIds.push(interv.id))
           );
           const resMem = await axios.post('/api/scheduling/fetchdbusers', {
@@ -51,16 +57,33 @@ function SchedulingViewComp() {
           });
           setMembers(resMem.data);
 
-          const module_time = (
-            data[0] as unknown as ScheduleType
-          ).schedule.confirmed_option.plan.filter(
+          const module_time =
+            resTypeSafe.schedule.confirmed_option?.plan?.filter(
+              (plan) => !plan.isBreak
+            );
+
+          const index = module_time?.findIndex(
             (plan) =>
               plan.module_id === router.query.module_id &&
               plan.start_time === router.query.start_time
           );
+
+          const meetingLink = (
+            resTypeSafe.schedule.meeting_json[Number(index)] as any
+          )?.hangoutLink;
+          setMeetLink(meetingLink);
+          if (
+            meetingLink &&
+            schedule.schedule.user_ids.find(
+              (id) => id === recruiterUser.user_id
+            )
+          ) {
+            setIsMeetingButtonVisible(true);
+          }
+
           setSchedule({
             ...data[0],
-            module_time: module_time[0]
+            module_time: module_time[Number(index)]
           } as unknown as TransformSchedule);
           setLoading(false);
         }
@@ -189,6 +212,54 @@ function SchedulingViewComp() {
                 }
                 slotScheduleInfoCard={
                   <ScheduleInfoUpcoming
+                    onClickCopyLink={{
+                      onClick: () => {
+                        navigator.clipboard.writeText(meetLink);
+                        toast.success('Link copied');
+                      }
+                    }}
+                    slotMemberProfile={
+                      <AvatarGroup
+                        total={
+                          schedule.module_time.attended_inters?.length || 0
+                        }
+                        sx={{
+                          '& .MuiAvatar-root': {
+                            width: '40px',
+                            height: '40px',
+                            fontSize: '16px'
+                          }
+                        }}
+                      >
+                        {schedule.module_time.attended_inters
+                          .slice(0, 5)
+                          ?.map((user) => {
+                            return (
+                              <MuiAvatar
+                                key={user.id}
+                                src={user.profile_img}
+                                level={user.name}
+                                variant='circular'
+                                height='40px'
+                                width='40px'
+                                fontSize='16px'
+                              />
+                            );
+                          })}
+                      </AvatarGroup>
+                    }
+                    slotButtonPrimary={
+                      isMeetingButtonVisible && (
+                        <ButtonPrimaryRegular
+                          textLabel={'Join Meeting'}
+                          onClickButton={{
+                            onClick: () => {
+                              window.open(meetLink, '_blank');
+                            }
+                          }}
+                        />
+                      )
+                    }
                     textDate={dayjs(schedule.module_time.end_time).format('DD')}
                     textDay={dayjs(schedule.module_time.end_time).format(
                       'dddd'
@@ -230,7 +301,7 @@ function SchedulingViewComp() {
                 }
               />
             ) : (
-              ''
+              <NotFoundPage />
             )}
           </>
         }

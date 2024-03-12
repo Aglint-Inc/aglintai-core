@@ -90,11 +90,11 @@ export type FormJobType = {
   jobTitle: string;
   company: string;
   logo: string;
-  workPlaceType: string;
+  workPlaceType: JobTypeDB['workplace_type'];
   jobLocation: string;
-  jobType: string;
+  jobType: JobTypeDB['job_type'];
   jobDescription: string;
-  department: string;
+  department: JobTypeDB['department'];
   interviewType: 'ai-powered' | 'questions-preset';
   // interviewConfig: InterviewConfigType[];
   // videoAssessment: boolean;
