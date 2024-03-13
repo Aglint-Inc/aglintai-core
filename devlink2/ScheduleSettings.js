@@ -20,6 +20,7 @@ export function ScheduleSettings({
   slotKeywordCard,
   isKeywordVisible = false,
   isCompanyLevelVisible = true,
+  isCompanyDaysOffVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule_settings")} tag="div">
@@ -207,52 +208,54 @@ export function ScheduleSettings({
           )}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "setting_wrap", "p-b-40")}
-        tag="div"
-      >
+      {isCompanyDaysOffVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "setting_title")}
+          className={_utils.cx(_styles, "setting_wrap", "p-b-40")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Company Days Off"}</_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-500")}
+            className={_utils.cx(_styles, "setting_title")}
             tag="div"
           >
-            {"These days will be excluded while scheduling."}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "days_off_wrap")}
-          tag="div"
-        >
-          {slotDayOff ?? (
+            <_Builtin.Block tag="div">{"Company Days Off"}</_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "days_off_empty")}
+              className={_utils.cx(_styles, "text-gray-500")}
               tag="div"
             >
+              {"These days will be excluded while scheduling."}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "days_off_wrap")}
+            tag="div"
+          >
+            {slotDayOff ?? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-400")}
+                className={_utils.cx(_styles, "days_off_empty")}
                 tag="div"
               >
-                {"No days added"}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-400")}
+                  tag="div"
+                >
+                  {"No days added"}
+                </_Builtin.Block>
               </_Builtin.Block>
-            </_Builtin.Block>
-          )}
+            )}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "link_button", "is_blue")}
+            tag="div"
+            {...onClickAddDate}
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2215%22%20height%3D%2215%22%20viewBox%3D%220%200%2015%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.0625%203.1875V6.9375H11.8125C12.1562%206.96875%2012.3438%207.15625%2012.375%207.5C12.3438%207.84375%2012.1562%208.03125%2011.8125%208.0625H8.0625V11.8125C8.03125%2012.1562%207.84375%2012.3438%207.5%2012.375C7.15625%2012.3438%206.96875%2012.1562%206.9375%2011.8125V8.0625H3.1875C2.84375%208.03125%202.65625%207.84375%202.625%207.5C2.65625%207.15625%202.84375%206.96875%203.1875%206.9375H6.9375V3.1875C6.96875%202.84375%207.15625%202.65625%207.5%202.625C7.84375%202.65625%208.03125%202.84375%208.0625%203.1875Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">{"Add"}</_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "link_button", "is_blue")}
-          tag="div"
-          {...onClickAddDate}
-        >
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%2215%22%20height%3D%2215%22%20viewBox%3D%220%200%2015%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.0625%203.1875V6.9375H11.8125C12.1562%206.96875%2012.3438%207.15625%2012.375%207.5C12.3438%207.84375%2012.1562%208.03125%2011.8125%208.0625H8.0625V11.8125C8.03125%2012.1562%207.84375%2012.3438%207.5%2012.375C7.15625%2012.3438%206.96875%2012.1562%206.9375%2011.8125V8.0625H3.1875C2.84375%208.03125%202.65625%207.84375%202.625%207.5C2.65625%207.15625%202.84375%206.96875%203.1875%206.9375H6.9375V3.1875C6.96875%202.84375%207.15625%202.65625%207.5%202.625C7.84375%202.65625%208.03125%202.84375%208.0625%203.1875Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-          <_Builtin.Block tag="div">{"Add"}</_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

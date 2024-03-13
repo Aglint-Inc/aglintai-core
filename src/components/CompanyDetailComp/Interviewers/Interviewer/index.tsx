@@ -99,73 +99,80 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
                     return ele;
                   }
                 })?.length
-                  ? modulesAndMapping.moduleMapping[
-                      selectedInterviewer.user_id
-                    ]?.map((item) => {
-                      const pauseResumeDetails = modulesAndMapping.modules[
-                        String(item)
-                      ].pause_json
-                        ? modulesAndMapping.modules[String(item)].pause_json[
-                            selectedInterviewer.user_id
-                          ]
-                        : null;
+                  ? modulesAndMapping.moduleMapping[selectedInterviewer.user_id]
+                      ?.filter((ele) => {
+                        if (
+                          modulesAndMapping.modules[String(ele)]
+                            .training_status === 'qualified'
+                        ) {
+                          return ele;
+                        }
+                      })
+                      .map((item) => {
+                        const pauseResumeDetails = modulesAndMapping.modules[
+                          String(item)
+                        ].pause_json
+                          ? modulesAndMapping.modules[String(item)].pause_json[
+                              selectedInterviewer.user_id
+                            ]
+                          : null;
 
-                      return (
-                        <MemberListCard
-                          isMoveToQualifierVisible={false}
-                          isTrainingProgessVisible={false}
-                          key={modulesAndMapping.modules[String(item)].id}
-                          textName={
-                            modulesAndMapping.modules[String(item)].name
-                          }
-                          isPauseResumeVisible={Boolean(pauseResumeDetails)}
-                          isPauseVisible={!pauseResumeDetails}
-                          isResumeVisible={Boolean(pauseResumeDetails)}
-                          isScheduleCountVisible={false}
-                          isProfileVisible={false}
-                          isRoleVisible={false}
-                          textPauseResumeDate={
-                            pauseResumeDetails
-                              ? pauseResumeDetails.isManual
-                                ? 'Paused indefinably'
-                                : pauseResumeDetails.end_date
-                                  ? `Till ${dayjs(pauseResumeDetails.end_date).format('DD MMMM YYYY')}`
-                                  : '--'
-                              : ''
-                          }
-                          onClickPauseInterview={{
-                            onClick: () => {
-                              setPauseResumeDialog((pre) => ({
-                                ...pre,
-                                isOpen: true,
-                                type: 'pause',
-                                panel_id: item
-                              }));
+                        return (
+                          <MemberListCard
+                            isMoveToQualifierVisible={false}
+                            isTrainingProgessVisible={false}
+                            key={modulesAndMapping.modules[String(item)].id}
+                            textName={
+                              modulesAndMapping.modules[String(item)].name
                             }
-                          }}
-                          onClickResumeInterview={{
-                            onClick: () => {
-                              setPauseResumeDialog((pre) => ({
-                                ...pre,
-                                isOpen: true,
-                                type: 'resume',
-                                panel_id: item
-                              }));
+                            isPauseResumeVisible={Boolean(pauseResumeDetails)}
+                            isPauseVisible={!pauseResumeDetails}
+                            isResumeVisible={Boolean(pauseResumeDetails)}
+                            isScheduleCountVisible={false}
+                            isProfileVisible={false}
+                            isRoleVisible={false}
+                            textPauseResumeDate={
+                              pauseResumeDetails
+                                ? pauseResumeDetails.isManual
+                                  ? 'Paused indefinably'
+                                  : pauseResumeDetails.end_date
+                                    ? `Till ${dayjs(pauseResumeDetails.end_date).format('DD MMMM YYYY')}`
+                                    : '--'
+                                : ''
                             }
-                          }}
-                          onClickRemoveModule={{
-                            onClick: () => {
-                              setPauseResumeDialog((pre) => ({
-                                ...pre,
-                                isOpen: true,
-                                type: 'remove',
-                                panel_id: item
-                              }));
-                            }
-                          }}
-                        />
-                      );
-                    })
+                            onClickPauseInterview={{
+                              onClick: () => {
+                                setPauseResumeDialog((pre) => ({
+                                  ...pre,
+                                  isOpen: true,
+                                  type: 'pause',
+                                  panel_id: item
+                                }));
+                              }
+                            }}
+                            onClickResumeInterview={{
+                              onClick: () => {
+                                setPauseResumeDialog((pre) => ({
+                                  ...pre,
+                                  isOpen: true,
+                                  type: 'resume',
+                                  panel_id: item
+                                }));
+                              }
+                            }}
+                            onClickRemoveModule={{
+                              onClick: () => {
+                                setPauseResumeDialog((pre) => ({
+                                  ...pre,
+                                  isOpen: true,
+                                  type: 'remove',
+                                  panel_id: item
+                                }));
+                              }
+                            }}
+                          />
+                        );
+                      })
                   : null
               }
               slotQualifiedModulesMoreMenu={
@@ -204,23 +211,34 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
               }
               slotTrainingModulesMoreMenu={<></>}
               slotTrainingModules={
-                modulesAndMapping.moduleMapping[selectedInterviewer.user_id]
-                  ?.length
-                  ? modulesAndMapping.moduleMapping[
-                      selectedInterviewer.user_id
-                    ]?.map((item) => {
-                      const pauseResumeDetails = modulesAndMapping.modules[
-                        String(item)
-                      ].pause_json
-                        ? modulesAndMapping.modules[String(item)].pause_json[
-                            selectedInterviewer.user_id
-                          ]
-                        : null;
+                modulesAndMapping.moduleMapping[
+                  selectedInterviewer.user_id
+                ]?.filter((ele) => {
+                  if (
+                    modulesAndMapping.modules[String(ele)].training_status ===
+                    'training'
+                  ) {
+                    return ele;
+                  }
+                })?.length
+                  ? modulesAndMapping.moduleMapping[selectedInterviewer.user_id]
+                      ?.filter((ele) => {
+                        if (
+                          modulesAndMapping.modules[String(ele)]
+                            .training_status === 'training'
+                        ) {
+                          return ele;
+                        }
+                      })
+                      .map((item) => {
+                        const pauseResumeDetails = modulesAndMapping.modules[
+                          String(item)
+                        ].pause_json
+                          ? modulesAndMapping.modules[String(item)].pause_json[
+                              selectedInterviewer.user_id
+                            ]
+                          : null;
 
-                      if (
-                        modulesAndMapping.modules[String(item)]
-                          .training_status === 'training'
-                      )
                         return (
                           <MemberListCard
                             isMoveToQualifierVisible={false}
@@ -276,7 +294,7 @@ function Interviewer({ openDrawer, setOpenDrawer }) {
                             }}
                           />
                         );
-                    })
+                      })
                   : null
               }
               slotScheduleTabs={

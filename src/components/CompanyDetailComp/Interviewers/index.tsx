@@ -7,15 +7,16 @@ import { useInterviewerContext } from '@/src/context/InterviewerContext/Intervie
 import MuiAvatar from '../../Common/MuiAvatar';
 
 const InterviewTab = () => {
-  const { interviewerMembers, modulesAndMapping } = useInterviewerContext();
+  const { interviewer, modulesAndMapping } = useInterviewerContext();
   const router = useRouter();
+  
 
   return (
     <Stack position={'relative'}>
       <AllInterviewers
         slotAllInterviewesCard={
           <>
-            {interviewerMembers.map((member) => {
+            {interviewer.map((member) => {
               return (
                 <Stack
                   key={member.user_id}
@@ -28,6 +29,8 @@ const InterviewTab = () => {
                   }}
                 >
                   <AllInterviewersCard
+                    textCompletedInterviews={member.completedCount}
+                    textUpcomingInterviews={member.upcomingCount}
                     slotProfileImage={
                       <MuiAvatar
                         src={member.profile_image}

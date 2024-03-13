@@ -388,6 +388,7 @@ function InterviewerLevelSettings({
               onClickAddDate={{
                 onClick: openAddCompany
               }}
+              isCompanyDaysOffVisible={false}
               slotDayOff={
                 <>
                   {daysOff.map((item, i) => {

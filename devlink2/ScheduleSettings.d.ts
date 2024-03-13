@@ -16,4 +16,5 @@ declare function ScheduleSettings(props: {
   slotKeywordCard?: Types.Devlink.Slot;
   isKeywordVisible?: Types.Visibility.VisibilityConditions;
   isCompanyLevelVisible?: Types.Visibility.VisibilityConditions;
+  isCompanyDaysOffVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

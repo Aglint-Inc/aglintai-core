@@ -57,7 +57,8 @@ export default async function handler(
               department: user.department,
               role: user.role.toLocaleLowerCase(),
               email: email,
-              join_status: 'invited'
+              join_status: 'invited',
+              scheduling_settings: user.scheduling_settings
             } as RecruiterUserType)
             .select();
           if (errorRecUser) throw new Error(error.message);

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { schedulingSettingType } from '../../Scheduling/Settings/types';
+
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,
   id: string
@@ -26,6 +28,7 @@ export const inviteUserApi = (
     designation: string;
     department: string;
     role: string;
+    scheduling_settings: schedulingSettingType;
   },
   id: string,
   recruiter_user: {
@@ -66,6 +69,7 @@ export type InviteUserAPIType = {
       designation: string;
       department: string;
       role: string;
+      scheduling_settings: schedulingSettingType;
     }[];
     id: string;
     recruiter_user: {

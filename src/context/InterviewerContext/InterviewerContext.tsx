@@ -51,6 +51,9 @@ interface InterviewerContextInterface {
     pause_json: any;
     isAll: boolean;
   }) => Promise<void>;
+  interviewer: any[];
+  // eslint-disable-next-line no-unused-vars
+  setInterviewer: (x: any[]) => void;
 }
 
 const initialInterviewerContext: InterviewerContextInterface = {
@@ -67,7 +70,9 @@ const initialInterviewerContext: InterviewerContextInterface = {
   // eslint-disable-next-line no-unused-vars
   handelRemoveMemberFormPanel: (x) => Promise.resolve(),
   // eslint-disable-next-line no-unused-vars
-  handelUpdateSchedule: (x) => Promise.resolve()
+  handelUpdateSchedule: (x) => Promise.resolve(),
+  interviewer: [],
+  setInterviewer: () => {}
 };
 
 const InterviewerContext = createContext<InterviewerContextInterface>(
@@ -196,6 +201,55 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
       });
     }
   }, [selectedInterviewer, modulesAndMapping]);
+
+  const [interviewer, setInterviewer] = useState([]);
+  async function getInterviewStatus() {
+    // Initialize an object to store the counts of each status
+
+    for (const member of interviewerMembers) {
+      const statusCounts = {
+        completed: 0,
+        upcoming: 0
+      };
+      const { data, error } = await supabase.rpc(
+        'get_interview_schedule_by_user_id',
+        {
+          target_user_id: member.user_id
+        }
+      );
+
+      if (!error) {
+        const allSchedules = data as unknown as ScheduleType[];
+        const schArray = [];
+        allSchedules.map((sch) =>
+          sch.schedule.confirmed_option.plan.map((plan) => {
+            if (
+              !plan.isBreak &&
+              plan.attended_inters.find((user) => user.id === member.user_id)
+            ) {
+              schArray.push({ ...sch, module_time: plan });
+            }
+          })
+        );
+        schArray.map((item: ScheduleType) => {
+          statusCounts[item.schedule.status]++;
+        });
+      }
+      setInterviewer((pre) => {
+        return [
+          ...pre,
+          {
+            ...member,
+            upcomingCount: statusCounts.upcoming,
+            completedCount: statusCounts.completed
+          }
+        ];
+      });
+    }
+  }
+  useEffect(() => {
+    if (interviewerMembers.length) getInterviewStatus();
+  }, [interviewerMembers]);
   return (
     <InterviewerContext.Provider
       value={{
@@ -206,7 +260,9 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
         interviewsData,
         handelSelectInterviewer,
         handelRemoveMemberFormPanel,
-        handelUpdateSchedule
+        handelUpdateSchedule,
+        interviewer,
+        setInterviewer
       }}
     >
       {children}

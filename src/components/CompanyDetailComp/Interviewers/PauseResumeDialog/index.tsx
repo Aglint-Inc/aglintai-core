@@ -45,6 +45,14 @@ function PauseResumeDialog({
   const twoWeeks = currentDate.add(2, 'week');
   const oneMonth = currentDate.add(1, 'month');
   const threeMonth = currentDate.add(3, 'month');
+
+  const end_date =
+    selectedModule?.end_date &&
+    dayjs(selectedModule?.end_date).format('DD MMMM YYYY');
+  // console.log({
+  //   dd: selectedModule?.end_date,
+  //   dd2: `${dayjs(selectedModule?.end_date).format('DD MMMM YYYY')}`
+  // });
   return (
     <>
       <Dialog
@@ -241,7 +249,12 @@ function PauseResumeDialog({
         ) : pauseResumeDialog.type === 'resume' ? (
           <ResumePop
             // textTitle={'Resume for scheduling'}
-            textResumeWarning={`This member is paused from scheduling with this module until ${dayjs(selectedModule?.end_date).format('DD MMMM YYYY')} `}
+
+            textResumeWarning={
+              end_date
+                ? `This member is paused from scheduling with this module until ${end_date} `
+                : 'This member is paused from scheduling with this module'
+            }
             textDescription={`By Clicking resume this member will be included in new interviews scheduled for this module.`}
             onClickResume={{
               onClick: resume
