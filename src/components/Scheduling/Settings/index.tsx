@@ -401,6 +401,7 @@ function SchedulingSettings({
           direction={'row'}
           flexDirection={'column'}
           gap={'10px'}
+          width={'650px'}
         >
           <KeywordCard
             textTitle={'Free'}
