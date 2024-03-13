@@ -15,7 +15,13 @@ import { getColorStatusSchedule } from '../../utils';
 import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../../AllSchedules/utils';
 
-function ModuleSchedules({ schedules }: { schedules: TransformSchedule[] }) {
+function ModuleSchedules({
+  schedules,
+  loading = false
+}: {
+  schedules: TransformSchedule[];
+  loading?: boolean;
+}) {
   const router = useRouter();
   const [filter, setFilter] = React.useState<
     'all' | 'upcoming' | 'cancelled' | 'completed'
@@ -26,10 +32,10 @@ function ModuleSchedules({ schedules }: { schedules: TransformSchedule[] }) {
       return schedules;
     } else if (filter === 'upcoming') {
       return schedules.filter(
-        (sch) => sch.module_time.start_time > new Date().toISOString()
+        (sch) => sch.interview_meeting.start_time > new Date().toISOString()
       );
     } else if (filter === 'cancelled') {
-      return schedules.filter((sch) => !sch.schedule.is_active);
+      return schedules.filter((sch) => sch.schedule.status === 'cancelled');
     } else if (filter === 'completed') {
       return schedules.filter((sch) => sch.schedule.status === 'completed');
     }
@@ -55,53 +61,54 @@ function ModuleSchedules({ schedules }: { schedules: TransformSchedule[] }) {
       }}
       slotInterviewCard={
         <>
-          {filterSchedules().map((sch, ind) => {
-            return (
-              <InterviewScreenCard
-                onClickCard={{
-                  onClick: () => {
-                    router.push(
-                      `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.module_time.module_id}&start_time=${sch.module_time.start_time}`
-                    );
+          {!loading &&
+            filterSchedules().map((sch, ind) => {
+              return (
+                <InterviewScreenCard
+                  onClickCard={{
+                    onClick: () => {
+                      router.push(
+                        `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}`
+                      );
+                    }
+                  }}
+                  key={ind}
+                  textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
+                  textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
+                  textMonth={dayjs(sch.interview_meeting.end_time).format(
+                    'MMM'
+                  )}
+                  textStatus={sch.schedule.status}
+                  textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${sch.interview_meeting.duration} Minutes )`}
+                  textMeetingPlatform={getScheduleType(
+                    sch.schedule.schedule_type
+                  )}
+                  slotMeetingIcon={
+                    <IconScheduleType type={sch.schedule.schedule_type} />
                   }
-                }}
-                key={ind}
-                textDate={dayjs(sch.module_time.end_time).format('DD')}
-                textDay={dayjs(sch.module_time.end_time).format('dddd')}
-                textMonth={dayjs(sch.module_time.end_time).format('MMM')}
-                textStatus={sch.schedule.status}
-                textTime={`${dayjs(sch.module_time.start_time).format('hh:mm A')} - ${dayjs(sch.module_time.end_time).format('hh:mm A')} ( ${sch.module_time.duration} Minutes )`}
-                textMeetingPlatform={getScheduleType(
-                  sch.schedule.schedule_type
-                )}
-                slotMeetingIcon={
-                  <IconScheduleType type={sch.schedule.schedule_type} />
-                }
-                textTitle={sch.schedule.schedule_name}
-                colorPropsText={{
-                  style: {
-                    color: getColorStatusSchedule(sch.schedule.status)
-                  }
-                }}
-                slotMemberImage={
-                  <AvatarGroup
-                    total={sch.module_time.attended_inters?.length || 0}
-                    sx={{
-                      '& .MuiAvatar-root': {
-                        width: '28px',
-                        height: '28px',
-                        fontSize: '12px'
-                      }
-                    }}
-                  >
-                    {sch.module_time.attended_inters
-                      .slice(0, 5)
-                      ?.map((user) => {
+                  textTitle={sch.schedule.schedule_name}
+                  colorPropsText={{
+                    style: {
+                      color: getColorStatusSchedule(sch.schedule.status)
+                    }
+                  }}
+                  slotMemberImage={
+                    <AvatarGroup
+                      total={sch.users?.length || 0}
+                      sx={{
+                        '& .MuiAvatar-root': {
+                          width: '28px',
+                          height: '28px',
+                          fontSize: '12px'
+                        }
+                      }}
+                    >
+                      {sch.users.slice(0, 5)?.map((user) => {
                         return (
                           <MuiAvatar
                             key={user.id}
-                            src={user.profile_img}
-                            level={user.name}
+                            src={user.profile_image}
+                            level={user.first_name}
                             variant='circular'
                             height='28px'
                             width='28px'
@@ -109,12 +116,12 @@ function ModuleSchedules({ schedules }: { schedules: TransformSchedule[] }) {
                           />
                         );
                       })}
-                  </AvatarGroup>
-                }
-              />
-            );
-          })}
-          {filterSchedules().length === 0 && <AllInterviewEmpty />}
+                    </AvatarGroup>
+                  }
+                />
+              );
+            })}
+          {!loading && filterSchedules().length === 0 && <AllInterviewEmpty />}
         </>
       }
     />

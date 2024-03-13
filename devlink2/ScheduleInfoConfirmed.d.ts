@@ -14,4 +14,9 @@ declare function ScheduleInfoConfirmed(props: {
   isInterviewPlanVisible?: Types.Visibility.VisibilityConditions;
   slotInterviewPlan?: Types.Devlink.Slot;
   isScheduleStatusVisible?: Types.Visibility.VisibilityConditions;
+  textCompleted?: React.ReactNode;
+  isScheduleCompletedVisible?: Types.Visibility.VisibilityConditions;
+  textScheduleCancelled?: React.ReactNode;
+  isScheduleCancelVisible?: Types.Visibility.VisibilityConditions;
+  isScheduleInfoVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

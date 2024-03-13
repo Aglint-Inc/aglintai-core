@@ -227,3 +227,6 @@ export type AgentChatType = Database['public']['Tables']['agent_chatx']['Row'];
 
 export type AgentActivityType =
   Database['public']['Tables']['agent_activity']['Insert'];
+
+export type InterviewMeetingTypeDb =
+  Database['public']['Tables']['interview_meeting']['Insert'];

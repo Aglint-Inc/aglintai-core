@@ -108,8 +108,6 @@ function AllSchedules() {
           sch_type: filter.scheduleType.length > 0 ? filter.scheduleType : null,
           sort_by: filter.sortBy,
           job_id_filter: filter.job_ids.length > 0 ? filter.job_ids : null,
-          panel_id_filter:
-            filter.panel_ids.length > 0 ? filter.panel_ids : null,
           page_number: page,
           date_range_filter: filter.dateRange ? filter.dateRange : null
         }
@@ -146,7 +144,6 @@ function AllSchedules() {
 
   return (
     <>
-     
       <AllInterview
         isSchedulerTable={true}
         slotPagination={

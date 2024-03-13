@@ -133,6 +133,7 @@ function ModuleSettingDrawer() {
               renderUsers={members}
               setSelectedUsers={setSelectedUsers}
               selectedUsers={selectedUsers}
+              pillColor='#fff'
             />
           }
           slotInputNoOfReverse={

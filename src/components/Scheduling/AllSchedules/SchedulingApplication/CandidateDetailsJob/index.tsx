@@ -18,13 +18,12 @@ import CopyWrapper from '@/src/components/JobApplicationsDashboard/Common/Wrappe
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { CandidateType, JobApplcationDB } from '@/src/types/data.types';
 
-import { setIsViewProfileOpen } from '../store';
-
 function CandidateDetailsJobDrawer({
   isViewProfileOpen,
   applications,
   candidate,
-  file
+  file,
+  setIsViewProfileOpen
 }: {
   isViewProfileOpen: boolean;
   applications: JobApplcationDB;
@@ -37,6 +36,8 @@ function CandidateDetailsJobDrawer({
     resume_json: JSON;
     type: string;
   };
+  // eslint-disable-next-line no-unused-vars
+  setIsViewProfileOpen: (value: boolean) => void;
 }) {
   const application: JobApplication = useMemo(
     () =>
@@ -47,8 +48,7 @@ function CandidateDetailsJobDrawer({
       }) as unknown as JobApplication,
     [applications, candidate, file]
   );
-
-  const resumeJson: any = useMemo(() => file?.resume_json, [file?.resume_json]);
+  const resumeJson: any = file?.resume_json;
 
   return (
     <>

@@ -14,18 +14,21 @@ import {
   InterviewPanelContextType,
   MemberType
 } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { palette } from '@/src/context/Theme/Theme';
 
 function MembersAutoComplete({
   disabled,
   renderUsers,
   selectedUsers,
-  setSelectedUsers
+  setSelectedUsers,
+  pillColor = 'transparent'
 }: {
   disabled: boolean;
   renderUsers: InterviewPanelContextType['members'];
   selectedUsers: MemberType[];
   // eslint-disable-next-line no-unused-vars
   setSelectedUsers: (val: InterviewPanelContextType['members']) => void;
+  pillColor?: string;
 }) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -52,6 +55,11 @@ function MembersAutoComplete({
           return (
             <PanelMemberPill
               key={user.user_id}
+              propsBgColor={{
+                style: {
+                  background: pillColor ? pillColor : palette.grey[100]
+                }
+              }}
               onClickClose={{
                 onClick: () => {
                   setSelectedUsers(

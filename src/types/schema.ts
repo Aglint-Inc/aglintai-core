@@ -2709,11 +2709,13 @@ export type Database = {
           target_module_id: string
         }
         Returns: {
+          interview_meeting: Json
           schedule: Json
           applications: Json
           candidates: Json
           file: Json
           job: Json
+          users: Json
         }[]
       }
       get_interview_schedule_by_user_id: {
@@ -2721,11 +2723,9 @@ export type Database = {
           target_user_id: string
         }
         Returns: {
+          interview_meeting: Json
           schedule: Json
-          applications: Json
-          candidates: Json
-          file: Json
-          job: Json
+          users: Json
         }[]
       }
       get_present_scheduled_jobs: {
@@ -3276,6 +3276,7 @@ export type Database = {
         | "confirmed"
         | "completed"
         | "cancelled"
+        | "reschedule"
       interview_schedule_type:
         | "in_person_meeting"
         | "google_meet"

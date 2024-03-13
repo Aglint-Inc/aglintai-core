@@ -15,6 +15,8 @@ import {
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { InterviewMeetingTypeDb } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -38,25 +40,28 @@ import {
 import { ScheduleType } from '../types';
 
 export type TransformSchedule = ScheduleType & {
-  module_time: {
-    module_id: string;
-    module_name: string;
-    start_time: string;
-    end_time: string;
-    duration: number;
-    attended_inters: {
-      id: string;
-      name: string;
-      email: string;
-      profile_img: string;
-    }[];
+  interview_meeting: InterviewMeetingTypeDb & {
+    meeting_json: {
+      hangoutLink: string;
+    };
   };
+  users: {
+    id: string;
+    created_at: string;
+    interviewer_id: string;
+    interviewer_type: Database['public']['Enums']['interviewer_type'];
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_image: string;
+  }[];
 };
 
 function ModuleMembersComp() {
   const router = useRouter();
   const editModule = useSchedulingStore((state) => state.editModule);
   const [schedules, setSchedules] = useState<TransformSchedule[]>([]);
+  const [fetchingModules, setFetchingModules] = useState(true);
   const allUsers = useSchedulingStore(
     useShallow((state) => state.editModule.relations)
   );
@@ -69,27 +74,18 @@ function ModuleMembersComp() {
   );
 
   useEffect(() => {
-    (async () => {
-      if (editModule?.id) {
-        const { data } = await supabase.rpc(
-          'get_interview_schedule_by_module_id',
-          { target_module_id: editModule.id }
-        );
-
-        const allSchedules = data as unknown as ScheduleType[];
-
-        const schArray = [];
-        allSchedules.map((sch) =>
-          sch.schedule.confirmed_option.plan.map((plan) => {
-            if (plan.module_id === editModule.id) {
-              schArray.push({ ...sch, module_time: plan });
-            }
-          })
-        );
-        setSchedules(schArray);
-      }
-    })();
+    if (editModule?.id) {
+      fetchModules();
+    }
   }, [editModule?.id]);
+
+  const fetchModules = async () => {
+    const { data } = await supabase.rpc('get_interview_schedule_by_module_id', {
+      target_module_id: editModule.id
+    });
+    setSchedules(data as unknown as TransformSchedule[]);
+    setFetchingModules(false);
+  };
 
   return (
     <>
@@ -124,7 +120,12 @@ function ModuleMembersComp() {
           <>
             {!loading ? (
               <InterviewMemberList
-                slotInterviewCard={<ModuleSchedules schedules={schedules} />}
+                slotInterviewCard={
+                  <ModuleSchedules
+                    schedules={schedules}
+                    loading={fetchingModules}
+                  />
+                }
                 onClickAddTrainee={{
                   onClick: () => {
                     setIsAddMemberDialogOpen(true);
@@ -199,6 +200,7 @@ function ModuleMembersComp() {
                 onClickAddMember={{
                   onClick: () => {
                     setIsAddMemberDialogOpen(true);
+                    setTrainingStatus('qualified');
                   }
                 }}
                 slotMembersInTraining={

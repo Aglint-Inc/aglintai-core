@@ -3,9 +3,7 @@ import { useEffect } from 'react';
 
 import { ScheduleInfoPending } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import CandidateDetailsJobDrawer from '../CandidateDetailsJob';
@@ -13,13 +11,12 @@ import SchedulingOptionComp from '../ScheduleOption';
 import {
   setIsViewProfileOpen,
   setSchedulingOptions,
-  setSelectedApplication,
   useSchedulingApplicationStore
 } from '../store';
-import { mailHandler, transformData } from '../../utils';
+import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
+import { transformData } from '../../utils';
 
 function PendingConfirmed() {
-  const { recruiter } = useAuthDetails();
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication
   );
@@ -27,61 +24,31 @@ function PendingConfirmed() {
     (state) => state.isViewProfileOpen
   );
 
-  const onClickCancel = async () => {
-    try {
-      if (selectedApplication.schedule.id) {
-        await supabase
-          .from('interview_schedule')
-          .update({ is_active: false })
-          .eq('id', selectedApplication.schedule.id);
-        setSelectedApplication({ ...selectedApplication, schedule: null });
-        if ((selectedApplication.schedule.meeting_json as any)?.id) {
-          const res = await axios.post(
-            '/api/scheduling/update-calender-event-status',
-            {
-              organizer_id: selectedApplication.schedule.created_by,
-              event_id: (selectedApplication.schedule.meeting_json as any).id
-            }
-          );
-          if (res.status !== 200) {
-            throw new Error('Error in response');
-          }
-        }
-      }
-    } catch {
-      //
-    }
-  };
-
-  const resendInvite = async () => {
-    if (selectedApplication?.schedule?.id) {
-      if (selectedApplication?.schedule.resend_invite <= 3) {
-        await supabase
-          .from('interview_schedule')
-          .update({
-            resend_invite: selectedApplication?.schedule.resend_invite + 1
-          })
-          .eq('id', selectedApplication.schedule.id);
-
-        mailHandler({
-          id: selectedApplication.schedule.id,
-          candidate_name: selectedApplication.candidates.first_name,
-          company_logo: recruiter.logo,
-          company_name: recruiter.name,
-          schedule_name: selectedApplication.schedule.schedule_name
-        });
-        selectedApplication.schedule.resend_invite += 1;
-        setSelectedApplication({
-          ...selectedApplication,
-          schedule: selectedApplication.schedule
-        });
-      } else {
-        toast.error(
-          'You have reached the maximum limit of resending the invite'
-        );
-      }
-    }
-  };
+  // const onClickCancel = async () => {
+  //   try {
+  //     if (selectedApplication.schedule.id) {
+  //       await supabase
+  //         .from('interview_schedule')
+  //         .update({ is_active: false })
+  //         .eq('id', selectedApplication.schedule.id);
+  //       setSelectedApplication({ ...selectedApplication, schedule: null });
+  //       if ((selectedApplication.schedule.meeting_json as any)?.id) {
+  //         const res = await axios.post(
+  //           '/api/scheduling/update-calender-event-status',
+  //           {
+  //             organizer_id: selectedApplication.schedule.created_by,
+  //             event_id: (selectedApplication.schedule.meeting_json as any).id
+  //           }
+  //         );
+  //         if (res.status !== 200) {
+  //           throw new Error('Error in response');
+  //         }
+  //       }
+  //     }
+  //   } catch {
+  //     //
+  //   }
+  // };
 
   useEffect(() => {
     findScheduleOptions();
@@ -105,14 +72,16 @@ function PendingConfirmed() {
 
   return (
     <>
-      {/* <DeleteScheduleDialog onClickCancel={onClickCancel} />
-      <RescheduleDialog onClickReschedule={onClickReschedule} /> */}
-      <CandidateDetailsJobDrawer
-        applications={selectedApplication.applications}
-        candidate={selectedApplication.candidates}
-        file={selectedApplication.file}
-        isViewProfileOpen={isViewProfileOpen}
-      />
+      {selectedApplication.file.resume_json && (
+        <CandidateDetailsJobDrawer
+          applications={selectedApplication.applications}
+          candidate={selectedApplication.candidates}
+          file={selectedApplication.file}
+          isViewProfileOpen={isViewProfileOpen}
+          setIsViewProfileOpen={setIsViewProfileOpen}
+        />
+      )}
+
       {selectedApplication?.schedule && (
         <ScheduleInfoPending
           isCancelSheduleVisible={true}
@@ -120,14 +89,15 @@ function PendingConfirmed() {
             selectedApplication.schedule.status === 'confirmed'
           }
           onClickCancelSchedule={{
-            onClick: onClickCancel
+            onClick: () => setIsCancelOpen(true)
           }}
           onClickRequest={{
-            onClick: resendInvite
+            onClick: () => setIsRescheduleOpen(true)
           }}
           onClickViewProfile={{
             onClick: () => {
-              setIsViewProfileOpen(true);
+              if (selectedApplication.file.resume_json)
+                setIsViewProfileOpen(true);
             }
           }}
           isPendingVisible={selectedApplication.schedule.status === 'pending'}

@@ -10,6 +10,7 @@ import { ButtonPrimaryRegular } from '@/devlink';
 import {
   AvailableOption,
   InterviewPlanCard,
+  InterviewPlanEmpty,
   ScheduleOptions,
   SchedulingFlow
 } from '@/devlink2';
@@ -58,30 +59,39 @@ function NotScheduledApplication() {
   const fetchingPlan = useSchedulingApplicationStore(
     (state) => state.fetchingPlan
   );
+  const fetchingSchedule = useSchedulingApplicationStore(
+    (state) => state.fetchingSchedule
+  );
 
   const allPlans = useMemo(() => {
     return selectedApplication?.public_jobs?.interview_plan?.plan;
   }, [selectedApplication?.public_jobs?.interview_plan?.plan]);
 
   const findScheduleOptions = async () => {
-    setFetchingPlan(true);
-    const res = await axios.post('/api/scheduling/v2/find_availability', {
-      job_id: selectedApplication.public_jobs.id,
-      company_id: recruiter.id,
-      start_date: dateRange.start_date,
-      end_date: dateRange.end_date
-    });
-    if (res.data) {
-      setSchedulingOptions(
-        res.data.map((option) => {
-          return { ...option, transformedPlan: transformData(option.plan) };
-        })
-      );
-      setStep(2);
-      setFetchingPlan(false);
-    } else {
-      toast.error('Error fetching schedule options');
-      setFetchingPlan(false);
+    try {
+      setFetchingPlan(true);
+      const res = await axios.post('/api/scheduling/v2/find_availability', {
+        job_id: selectedApplication.public_jobs.id,
+        company_id: recruiter.id,
+        start_date: dateRange.start_date,
+        end_date: dateRange.end_date
+      });
+      if (res.data) {
+        setSchedulingOptions(
+          res.data.map((option) => {
+            return { ...option, transformedPlan: transformData(option.plan) };
+          })
+        );
+        setStep(2);
+        setFetchingPlan(false);
+      } else {
+        setStep(1);
+        toast.error('Error fetching schedule options');
+        setFetchingPlan(false);
+      }
+    } catch (e) {
+      setStep(1);
+      //
     }
   };
 
@@ -124,197 +134,213 @@ function NotScheduledApplication() {
 
   return (
     <>
-      {allPlans?.length > 0 && (
-        <SchedulingFlow
-          onClickJobSettings={{
-            onClick: () => {
-              router.push(
-                `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
-              );
-            }
-          }}
-          textRole={selectedApplication.public_jobs.job_title}
-          textLocation={selectedApplication.public_jobs.location || '--'}
-          slotScheduleOptions={
-            <>
-              {fetchingPlan ? (
-                <Stack height={'100%'} width={'100%'}>
-                  <Loader />
-                </Stack>
-              ) : step === 1 ? (
-                <ScheduleOptions
-                  slotCandidateImage={
-                    <MuiAvatar
-                      level={getFullName(
-                        selectedApplication?.candidates.first_name,
-                        selectedApplication?.candidates.last_name
-                      )}
-                      src={selectedApplication?.candidates.avatar}
-                      variant={'circular'}
-                      width={'100%'}
-                      height={'100%'}
-                      fontSize={'12px'}
-                    />
-                  }
-                  slotPrimaryButton={
-                    <Stack width={'100%'}>
-                      <ButtonPrimaryRegular
-                        textLabel={'Get Schedule Options'}
-                        onClickButton={{
-                          onClick: findScheduleOptions
-                        }}
-                      />
-                    </Stack>
-                  }
-                  slotInputName={
-                    <UITextField
-                      placeholder='Name your Schedule'
-                      onChange={(e) => {
-                        setScheduleName(e.target.value);
-                      }}
-                      value={scheduleName}
-                    />
-                  }
-                  slotDateRangeInput={
-                    <Stack direction={'row'} width={'100%'} spacing={2}>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={dayjs(dateRange?.start_date)}
-                          onChange={(newValue) => {
-                            if (dayjs(newValue) < dayjs(dateRange?.end_date)) {
-                              setDateRange({
-                                start_date: dayjs(newValue).toISOString(),
-                                end_date: dateRange?.end_date
-                              });
-                            } else {
-                              setDateRange({
-                                start_date: dayjs(newValue).toISOString(),
-                                end_date: null
-                              });
-                            }
-                          }}
-                          minDate={currentDate}
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              variant: 'outlined',
-                              InputProps: { disableUnderline: true },
-                              placeholder: 'Start Date'
-                            }
-                          }}
-                        />
-                      </LocalizationProvider>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={dayjs(dateRange?.end_date)}
-                          minDate={dayjs(dateRange?.start_date)}
-                          maxDate={dayjs(dateRange?.start_date).add(7, 'day')}
-                          onChange={(newValue) => {
-                            setDateRange({
-                              start_date: dateRange?.start_date,
-                              end_date: dayjs(newValue).toISOString()
-                            });
-                          }}
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              variant: 'outlined',
-                              InputProps: { disableUnderline: true },
-                              placeholder: 'Start Date'
-                            }
-                          }}
-                        />
-                      </LocalizationProvider>
-                    </Stack>
-                  }
-                  textCandidateName={getFullName(
-                    selectedApplication.candidates.first_name,
-                    selectedApplication.candidates.last_name
-                  )}
-                />
-              ) : (
-                <AvailableOption
-                  slotSendCandidatesButton={
-                    <Stack direction={'row'} pt={4}>
-                      <ButtonPrimaryRegular
-                        textLabel={'Send to Candidate'}
-                        onClickButton={{
-                          onClick: sendToCandidate
-                        }}
-                      />
-                    </Stack>
-                  }
-                  slotOptionAvailableCard={<SchedulingOptionComp />}
-                />
-              )}
-            </>
-          }
-          slotPlanCard={
-            <>
-              {allPlans.map((plan) => {
-                const mod = interviewModules.find(
-                  (module) => module.id === plan.module_id
+      {!fetchingSchedule ? (
+        allPlans?.length > 0 ? (
+          <SchedulingFlow
+            onClickJobSettings={{
+              onClick: () => {
+                router.push(
+                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
                 );
-                return plan.isBreak ? (
-                  <InterviewBreakCard
-                    textDuration={plan.duration + ' Minutes'}
-                    isEditDeleteVisible={false}
-                  />
-                ) : (
-                  <InterviewPlanCard
-                    key={plan.module_id}
-                    textTitle={mod?.name}
-                    textDuration={plan.duration + ' Minutes'}
-                    textMemberFrom={`${convertToWord(
-                      plan?.meetingIntervCnt || 0
-                    )} Member from :`}
-                    slotMemberList={
-                      <Stack
-                        direction={'row'}
-                        sx={{
-                          flexWrap: 'wrap',
-                          gap: 2.5
-                        }}
-                      >
-                        {plan.selectedIntervs.map((int) => {
-                          const user = members.find(
-                            (member) => member.user_id === int.interv_id
-                          );
-                          if (!user) return null;
-                          return (
-                            <Stack
-                              key={int.interv_id}
-                              direction={'row'}
-                              spacing={1}
-                              sx={{
-                                textWrap: 'nowrap'
-                              }}
-                            >
-                              <MuiAvatar
-                                level={getFullName(
-                                  user.first_name,
-                                  user.last_name
-                                )}
-                                src={user?.profile_image}
-                                variant={'circular'}
-                                width={'24px'}
-                                height={'24px'}
-                                fontSize={'12px'}
-                              />
-                              <Typography variant={'body2'} color={'#000'}>
-                                {getFullName(user.first_name, user.last_name)}
-                              </Typography>
-                            </Stack>
-                          );
-                        })}
+              }
+            }}
+            textRole={selectedApplication.public_jobs.job_title}
+            textLocation={selectedApplication.public_jobs.location || '--'}
+            slotScheduleOptions={
+              <>
+                {fetchingPlan ? (
+                  <Stack height={'100%'} width={'100%'}>
+                    <Loader />
+                  </Stack>
+                ) : step === 1 ? (
+                  <ScheduleOptions
+                    slotCandidateImage={
+                      <MuiAvatar
+                        level={getFullName(
+                          selectedApplication?.candidates.first_name,
+                          selectedApplication?.candidates.last_name
+                        )}
+                        src={selectedApplication?.candidates.avatar}
+                        variant={'circular'}
+                        width={'100%'}
+                        height={'100%'}
+                        fontSize={'12px'}
+                      />
+                    }
+                    slotPrimaryButton={
+                      <Stack width={'100%'}>
+                        <ButtonPrimaryRegular
+                          textLabel={'Get Schedule Options'}
+                          onClickButton={{
+                            onClick: findScheduleOptions
+                          }}
+                        />
                       </Stack>
                     }
+                    slotInputName={
+                      <UITextField
+                        placeholder='Name your Schedule'
+                        onChange={(e) => {
+                          setScheduleName(e.target.value);
+                        }}
+                        value={scheduleName}
+                      />
+                    }
+                    slotDateRangeInput={
+                      <Stack direction={'row'} width={'100%'} spacing={2}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={dayjs(dateRange?.start_date)}
+                            onChange={(newValue) => {
+                              if (
+                                dayjs(newValue) < dayjs(dateRange?.end_date)
+                              ) {
+                                setDateRange({
+                                  start_date: dayjs(newValue).toISOString(),
+                                  end_date: dateRange?.end_date
+                                });
+                              } else {
+                                setDateRange({
+                                  start_date: dayjs(newValue).toISOString(),
+                                  end_date: null
+                                });
+                              }
+                            }}
+                            minDate={currentDate}
+                            slotProps={{
+                              textField: {
+                                fullWidth: true,
+                                variant: 'outlined',
+                                InputProps: { disableUnderline: true },
+                                placeholder: 'Start Date'
+                              }
+                            }}
+                          />
+                        </LocalizationProvider>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={dayjs(dateRange?.end_date)}
+                            minDate={dayjs(dateRange?.start_date)}
+                            maxDate={dayjs(dateRange?.start_date).add(7, 'day')}
+                            onChange={(newValue) => {
+                              setDateRange({
+                                start_date: dateRange?.start_date,
+                                end_date: dayjs(newValue).toISOString()
+                              });
+                            }}
+                            slotProps={{
+                              textField: {
+                                fullWidth: true,
+                                variant: 'outlined',
+                                InputProps: { disableUnderline: true },
+                                placeholder: 'Start Date'
+                              }
+                            }}
+                          />
+                        </LocalizationProvider>
+                      </Stack>
+                    }
+                    textCandidateName={getFullName(
+                      selectedApplication.candidates.first_name,
+                      selectedApplication.candidates.last_name
+                    )}
                   />
+                ) : (
+                  <AvailableOption
+                    slotSendCandidatesButton={
+                      <Stack direction={'row'} pt={4}>
+                        <ButtonPrimaryRegular
+                          textLabel={'Send to Candidate'}
+                          onClickButton={{
+                            onClick: sendToCandidate
+                          }}
+                        />
+                      </Stack>
+                    }
+                    slotOptionAvailableCard={<SchedulingOptionComp />}
+                  />
+                )}
+              </>
+            }
+            slotPlanCard={
+              <>
+                {allPlans.map((plan) => {
+                  const mod = interviewModules.find(
+                    (module) => module.id === plan.module_id
+                  );
+                  return plan.isBreak ? (
+                    <InterviewBreakCard
+                      textDuration={plan.duration + ' Minutes'}
+                      isEditDeleteVisible={false}
+                    />
+                  ) : (
+                    <InterviewPlanCard
+                      key={plan.module_id}
+                      textTitle={mod?.name}
+                      textDuration={plan.duration + ' Minutes'}
+                      textMemberFrom={`${convertToWord(
+                        plan?.meetingIntervCnt || 0
+                      )} Member from :`}
+                      slotMemberList={
+                        <Stack
+                          direction={'row'}
+                          sx={{
+                            flexWrap: 'wrap',
+                            gap: 2.5
+                          }}
+                        >
+                          {plan.selectedIntervs.map((int) => {
+                            const user = members.find(
+                              (member) => member.user_id === int.interv_id
+                            );
+                            if (!user) return null;
+                            return (
+                              <Stack
+                                key={int.interv_id}
+                                direction={'row'}
+                                spacing={1}
+                                sx={{
+                                  textWrap: 'nowrap'
+                                }}
+                              >
+                                <MuiAvatar
+                                  level={getFullName(
+                                    user.first_name,
+                                    user.last_name
+                                  )}
+                                  src={user?.profile_image}
+                                  variant={'circular'}
+                                  width={'24px'}
+                                  height={'24px'}
+                                  fontSize={'12px'}
+                                />
+                                <Typography variant={'body2'} color={'#000'}>
+                                  {getFullName(user.first_name, user.last_name)}
+                                </Typography>
+                              </Stack>
+                            );
+                          })}
+                        </Stack>
+                      }
+                    />
+                  );
+                })}
+              </>
+            }
+          />
+        ) : (
+          <InterviewPlanEmpty
+            onClickCreateInterviewPlan={{
+              onClick: () => {
+                router.push(
+                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
                 );
-              })}
-            </>
-          }
-        />
+              }
+            }}
+          />
+        )
+      ) : (
+        <Loader />
       )}
     </>
   );

@@ -91,8 +91,7 @@ export const getPaginationDB = async ({
       status_filter: filter.status?.length > 0 ? filter.status : null,
       text_search_filter: filter.textSearch,
       sch_type: filter.scheduleType?.length > 0 ? filter.scheduleType : null,
-      job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null,
-      panel_id_filter: filter.panel_ids?.length > 0 ? filter.panel_ids : null
+      job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null
     });
 
     if (error) {

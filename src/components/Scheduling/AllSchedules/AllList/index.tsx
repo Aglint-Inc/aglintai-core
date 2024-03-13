@@ -6,6 +6,7 @@ import { AllInterviewEmpty } from '@/devlink2';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ListCardInterviewSchedule from '../ListCard';
+import { setFetchingSchedule } from '../SchedulingApplication/store';
 import { ApplicationList, useInterviewSchedulingStore } from '../store';
 
 function AllList() {
@@ -19,6 +20,7 @@ function AllList() {
   );
 
   const onClickCard = (app: ApplicationList) => {
+    setFetchingSchedule(true);
     router.push(
       `${pageRoutes.SCHEDULING}/application/${app.applications.id}`,
       undefined,

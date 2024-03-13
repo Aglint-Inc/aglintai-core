@@ -6,4 +6,5 @@ declare function PanelMemberPill(props: {
   slotImage?: Types.Devlink.Slot;
   textMemberName?: React.ReactNode;
   onClickClose?: Types.Devlink.RuntimeProps;
+  propsBgColor?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

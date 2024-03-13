@@ -7,11 +7,14 @@ import { Breadcrum, PageLayout } from '@/devlink2';
 import { supabase } from '@/src/utils/supabase/client';
 
 import ConfirmedComp from './Confirmed';
+import DeleteScheduleDialog from './DeleteDialog';
 import NotScheduledApplication from './NotScheduled';
 import PendingConfirmed from './Pending';
+import RescheduleDialog from './RescheduleDialog';
 import {
   resetSchedulingApplicationState,
   setDateRange,
+  setFetchingSchedule,
   setInitalLoading,
   setInterviewModules,
   setMembers,
@@ -46,6 +49,7 @@ function SchedulingApplication() {
 
   const fetchInterviewDataByApplication = async () => {
     try {
+      setFetchingSchedule(true);
       const { data, error } = await supabase.rpc(
         'fetch_interview_data_by_application_id',
         {
@@ -97,12 +101,14 @@ function SchedulingApplication() {
     } catch (error) {
       //
     } finally {
-      //
+      setFetchingSchedule(false);
     }
   };
 
   return (
     <>
+      <DeleteScheduleDialog />
+      <RescheduleDialog />
       <PageLayout
         onClickBack={{
           onClick: () => {
@@ -117,14 +123,13 @@ function SchedulingApplication() {
         }
         slotBody={
           <>
-            {!selectedApplication?.schedule ? (
+            {!selectedApplication?.schedule ||
+            selectedApplication.schedule.status == 'reschedule' ? (
               <NotScheduledApplication />
             ) : selectedApplication?.schedule.status == 'pending' ? (
               <PendingConfirmed />
-            ) : selectedApplication?.schedule.status == 'confirmed' ? (
-              <ConfirmedComp />
             ) : (
-              ''
+              <ConfirmedComp />
             )}
           </>
         }

@@ -397,6 +397,16 @@
   background-color: #ffedc2;
 }
 
+.div-block-1119.green {
+  background-color: #d1e8df;
+}
+
+.div-block-1119.red {
+  border: 1px solid #f5d5d8;
+  background-color: #f5d5d8;
+  color: #681219;
+}
+
 .text-grey-600.relative-1 {
   position: relative;
   z-index: 1;

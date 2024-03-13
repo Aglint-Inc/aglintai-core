@@ -116,5 +116,4 @@ export type ScheduleType = {
     jd_json: JSON;
     location: string;
   };
-  panel: InterviewModuleType;
 };

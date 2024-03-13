@@ -8,9 +8,14 @@ export function PanelMemberPill({
   slotImage,
   textMemberName = "Member Name",
   onClickClose = {},
+  propsBgColor = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "team_pill")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "team_pill")}
+      tag="div"
+      {...propsBgColor}
+    >
       <_Builtin.Block className={_utils.cx(_styles, "member_photo")} tag="div">
         {slotImage}
       </_Builtin.Block>

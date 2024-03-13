@@ -28,6 +28,7 @@ export interface SchedulingApplication {
   schedulingOptions: SchedulingOptionType;
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
+  fetchingSchedule: boolean;
 }
 
 const initialState: SchedulingApplication = {
@@ -43,7 +44,8 @@ const initialState: SchedulingApplication = {
   step: 1,
   schedulingOptions: [],
   fetchingPlan: false,
-  isViewProfileOpen: false
+  isViewProfileOpen: false,
+  fetchingSchedule: false
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -69,6 +71,9 @@ export const setSchedulingOptions = (schedulingOptions: SchedulingOptionType) =>
 
 export const setIsViewProfileOpen = (isViewProfileOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isViewProfileOpen });
+
+export const setFetchingSchedule = (fetchingSchedule: boolean) =>
+  useSchedulingApplicationStore.setState({ fetchingSchedule });
 
 export const setFetchingPlan = (fetchingPlan: boolean) =>
   useSchedulingApplicationStore.setState({ fetchingPlan });
