@@ -86,6 +86,7 @@ export const findEachInterviewerFreeTimes = async (
   start_date: string,
   end_date: string
 ) => {
+  console.log(ints_meta);
   const intervs_details_with_events = await findInterviewersEvents(
     company_cred,
     ints_meta,
@@ -94,12 +95,15 @@ export const findEachInterviewerFreeTimes = async (
   );
   const updated_intervs_details = cloneDeep(intervs_details_with_events);
   for (let interv of updated_intervs_details) {
-    if (!interv.isCalenderConnected) continue;
-    interv.freeTimes = findInterviewerFreeTime(
-      interv,
-      dayjs(start_date),
-      dayjs(end_date)
-    );
+    if (!interv.isCalenderConnected) {
+      interv.freeTimes = [];
+    } else {
+      interv.freeTimes = findInterviewerFreeTime(
+        interv,
+        dayjs(start_date),
+        dayjs(end_date)
+      );
+    }
   }
   return updated_intervs_details;
 };

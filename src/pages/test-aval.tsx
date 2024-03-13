@@ -26,14 +26,13 @@ const Comp = () => {
   const handlSubmit = async () => {
     try {
       setIsFinding(true);
-
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
           job_id: '770a61d3-c20b-4ee7-bf1d-e89345df37c6',
           company_id: 'ce4f1b5c-431d-47cc-9826-ca376a8d031b',
           start_date: '2024-03-11T14:59:55.247Z',
-          end_date: '2024-03-13T14:59:55.247Z'
+          end_date: '2024-03-11T14:59:55.247Z'
         }
       );
       setData(r);
@@ -205,10 +204,10 @@ const Comp = () => {
       <p>
         {data.map((schedule) => {
           return (
-            <div key={schedule.schedule_id} style={{ marginBottom: '20px' }}>
-              <h5>ScheduleId {schedule.schedule_id}</h5>
+            <div key={schedule.id} style={{ marginBottom: '20px' }}>
+              <h5>ScheduleId {schedule.id}</h5>
               <p>
-                {schedule.plan.map((m) => {
+                {schedule.plans.map((m) => {
                   if (m.isBreak) {
                     return (
                       <p key={m.module_id} style={{ marginBottom: '10px' }}>
@@ -228,8 +227,16 @@ const Comp = () => {
                         </h6>
 
                         <p>
-                          Interviewers{' '}
-                          {m.attended_inters.map((int) => int.email).join(' ')}
+                          <b>Interviewers</b>{' '}
+                          {m.selectedIntervs.map((int) => int.name).join(' ')}
+                        </p>
+                        <p>
+                          <b>Shadow Interviewers</b>{' '}
+                          {m.shadowIntervs.map((int) => int.name).join(' ')}
+                        </p>
+                        <p>
+                          <b>Shadow Interviewers</b>{' '}
+                          {m.revShadowIntervs.map((int) => int.name).join(' ')}
                         </p>
                       </p>
                     );

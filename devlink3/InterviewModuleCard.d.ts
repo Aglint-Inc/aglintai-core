@@ -9,4 +9,6 @@ declare function InterviewModuleCard(props: {
   onClickDelete?: Types.Devlink.RuntimeProps;
   onClickEdit?: Types.Devlink.RuntimeProps;
   slotAvatarWithName?: Types.Devlink.Slot;
+  textInterviewModule?: React.ReactNode;
+  isInterviewModuleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

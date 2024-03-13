@@ -1,37 +1,27 @@
-import { Stack } from '@mui/material';
+import { Badge, Stack } from '@mui/material';
 
 import { InterviewBreakCard, InterviewModuleCard } from '@/devlink3';
 
 import EditModule from './EditModule';
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewModuleCType } from './types';
+import { InterviewSession } from './types';
 import MuiAvatar from '../Common/MuiAvatar';
+import UITypography from '../Common/UITypography';
 
 const InterviewModuleC = ({
   module,
   editModuleId,
   setEditModuleId
 }: {
-  module: InterviewModuleCType;
+  module: InterviewSession;
   editModuleId;
   setEditModuleId;
 }) => {
   const modules = useInterviewPlan((state) => state.modules);
   const handleDelete = () => {
-    let newModules: InterviewModuleCType[] = modules.filter(
+    let newModules: InterviewSession[] = modules.filter(
       (m) => m.module_id !== module.module_id
     );
-
-    // let newModules = [temp[0]];
-
-    // for (let idx = 1; idx < temp.length; ++idx) {
-    //   if (!temp[Number(idx)].isBreak) {
-    //     newModules.push(temp[Number(idx)]);
-    //   }
-    //   if (temp[Number(idx - 1)].isBreak) {
-    //     newModules.push(temp[Number(idx)]);
-    //   }
-    // }
 
     handleUpdateDb({ path: 'modules', value: newModules });
   };
@@ -43,6 +33,7 @@ const InterviewModuleC = ({
         onClose={() => setEditModuleId('')}
         isEdit={true}
         isBreak={module.isBreak}
+        editModuleId={editModuleId}
       />
     );
   }
@@ -62,24 +53,95 @@ const InterviewModuleC = ({
   } else {
     return (
       <InterviewModuleCard
-        textModuleName={module.name}
+        textModuleName={module.session_name}
         textDuration={
           defaultDurations.find((d) => d.value === module.duration).name
         }
+        textInterviewModule={module.module_name}
+        isInterviewModuleVisible={true}
         slotAvatarWithName={
           <>
-            <Stack direction={'row'} gap={1}>
+            <Stack direction={'row'} gap={1} flexWrap={'wrap'} columnGap={2}>
               {module.selectedIntervs.map((mem) => {
                 return (
-                  <MuiAvatar
+                  <Stack
                     key={mem.interv_id}
-                    variant='circular'
-                    src={mem.profile_image}
-                    level={mem.name}
-                    fontSize='15px'
-                    height='30px'
-                    width='30px'
-                  />
+                    direction={'row'}
+                    gap={0.9}
+                    alignItems={'center'}
+                  >
+                    <MuiAvatar
+                      variant='circular'
+                      src={mem.profile_image}
+                      level={mem.name}
+                      fontSize='15px'
+                      height='30px'
+                      width='30px'
+                    />
+                    <UITypography>{mem.name}</UITypography>
+                  </Stack>
+                );
+              })}
+              {module.shadowIntervs.map((mem) => {
+                return (
+                  <Stack
+                    key={mem.interv_id}
+                    direction={'row'}
+                    gap={0.9}
+                    alignItems={'center'}
+                  >
+                    <Badge
+                      key={mem.interv_id}
+                      color='secondary'
+                      overlap='circular'
+                      badgeContent={<>S</>}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                      }}
+                    >
+                      <MuiAvatar
+                        variant='circular'
+                        src={mem.profile_img}
+                        level={mem.name}
+                        fontSize='15px'
+                        height='30px'
+                        width='30px'
+                      />
+                    </Badge>
+                    <UITypography>{mem.name}</UITypography>
+                  </Stack>
+                );
+              })}
+              {module.revShadowIntervs.map((mem) => {
+                return (
+                  <Stack
+                    key={mem.interv_id}
+                    direction={'row'}
+                    gap={0.9}
+                    alignItems={'center'}
+                  >
+                    <Badge
+                      key={mem.interv_id}
+                      color='secondary'
+                      overlap='circular'
+                      badgeContent={'R'}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                      }}
+                    >
+                      <MuiAvatar
+                        variant='circular'
+                        src={mem.profile_img}
+                        level={mem.name}
+                        fontSize='15px'
+                        height='30px'
+                        width='30px'
+                      />
+                    </Badge>
+                    <UITypography>{mem.name}</UITypography>
+                  </Stack>
                 );
               })}
             </Stack>

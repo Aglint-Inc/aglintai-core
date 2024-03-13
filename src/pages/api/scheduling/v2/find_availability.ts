@@ -27,7 +27,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         job_id,
         recruiter_id: company_id
       });
-    console.timeEnd('fetchAvailApiDetails');
 
     const inters_with_free_time_ranges = await findEachInterviewerFreeTimes(
       company_cred,
@@ -43,7 +42,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json(combs);
   } catch (error) {
-    console.log('error', error);
     res.status(500).send(error.message);
   }
 };

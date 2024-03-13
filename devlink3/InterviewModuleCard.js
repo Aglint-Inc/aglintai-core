@@ -12,6 +12,8 @@ export function InterviewModuleCard({
   onClickDelete = {},
   onClickEdit = {},
   slotAvatarWithName,
+  textInterviewModule = "Company Introduction",
+  isInterviewModuleVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interview_module")} tag="div">
@@ -49,6 +51,19 @@ export function InterviewModuleCard({
           />
           <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
         </_Builtin.Block>
+        {isInterviewModuleVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-754")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-755")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{textInterviewModule}</_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "im_member-blcok")}
           tag="div"
@@ -66,7 +81,7 @@ export function InterviewModuleCard({
             )}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
+            className={_utils.cx(_styles, "text-gray-600", "hide")}
             tag="div"
           >
             {textMemberSelection}

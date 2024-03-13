@@ -6,19 +6,23 @@ export type IntwerviewerPlanType = {
   profile_image: string;
 };
 
-export type InterviewModuleCType = {
+export type InterviewSession = {
   module_id: string;
-  name: string;
+  module_name: string;
+  session_name: string;
   duration: number;
   selectedIntervs: IntwerviewerPlanType[];
+  shadowIntervs: InterviewerPlanApiType[];
+  training_ints: InterviewerPlanApiType[];
+  revShadowIntervs: InterviewerPlanApiType[];
   allIntervs: IntwerviewerPlanType[];
   meetingIntervCnt: number;
   isBreak: boolean;
 };
 
 export type InterviewPlanState = {
-  modules: InterviewModuleCType[];
-  allModules: InterviewModuleCType[];
+  modules: InterviewSession[];
+  allModules: InterviewSession[];
   isloading: boolean;
   syncStatus: 'saving' | 'saved' | '';
   jobId: string;
@@ -31,9 +35,11 @@ export type InterviewerDbType = Pick<InterviewerPlanApiType, 'interv_id'>;
 
 export type InterviewModuleDbType = Pick<
   InterviewModuleApiType,
-  'duration' | 'isBreak' | 'meetingIntervCnt' | 'module_id'
+  'duration' | 'isBreak' | 'meetingIntervCnt' | 'module_id' | 'session_name'
 > & {
   selectedIntervs: InterviewerDbType[];
+  shadowIntervs: InterviewerDbType[];
+  revShadowInterv: InterviewerDbType[];
 };
 
 // api Types
@@ -46,26 +52,30 @@ export type InterviewerPlanApiType = {
 
 export type InterviewModuleApiType = {
   module_id: string;
+  module_name: string;
+  session_name: string;
   duration: number;
   selectedIntervs: InterviewerPlanApiType[];
+  shadowIntervs: InterviewerPlanApiType[];
+  revShadowIntervs: InterviewerPlanApiType[];
   meetingIntervCnt: number;
   isBreak: boolean;
-  module_name: string;
 };
 
 export type InterviewPlanScheduleDbType = {
-  schedule_id: string;
-  plan: (Omit<
+  id: string;
+  plans: (Pick<
     InterviewModuleApiType,
-    'selectedIntervs' | 'meetingIntervCnt'
+    | 'selectedIntervs'
+    | 'duration'
+    | 'isBreak'
+    | 'module_id'
+    | 'module_name'
+    | 'revShadowIntervs'
+    | 'session_name'
+    | 'shadowIntervs'
   > & {
     start_time: string;
     end_time: string;
-    attended_inters: {
-      id: string;
-      email: string;
-      profile_img: string;
-      name: string;
-    }[];
   })[];
 };

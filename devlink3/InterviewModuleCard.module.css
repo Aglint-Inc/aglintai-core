@@ -112,6 +112,18 @@
   grid-row-gap: 10px;
 }
 
+.div-block-754 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.div-block-755 {
+  padding: 6px 16px;
+  border-radius: 6px;
+  background-color: #f7f9fb;
+}
+
 .im_member-blcok {
   display: flex;
   flex-direction: column;
@@ -137,4 +149,10 @@
 
 .text-gray-600.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-gray-600.is_link {
+  color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
 }

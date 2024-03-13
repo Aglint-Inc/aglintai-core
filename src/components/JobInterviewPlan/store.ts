@@ -20,6 +20,9 @@ export const initialState: InterviewPlanState = {
   jobTitle: ''
 };
 export const defaultDurations = [
+  { name: '10 minutes', value: 10 },
+  { name: '15 minutes', value: 15 },
+  { name: '20 minutes', value: 20 },
   { name: '30 minutes', value: 30 },
   { name: '45 minutes', value: 45 },
   { name: '1 hour', value: 60 },
@@ -59,6 +62,13 @@ export const handleUpdateDb = async ({
 
     for (let clModule of clonedState.modules) {
       let dbModule: InterviewModuleDbType = {
+        session_name: clModule.session_name,
+        shadowIntervs: clModule.shadowIntervs.map((i) => ({
+          interv_id: i.interv_id
+        })),
+        revShadowInterv: clModule.revShadowIntervs.map((i) => ({
+          interv_id: i.interv_id
+        })),
         duration: clModule.duration,
         isBreak: clModule.isBreak,
         meetingIntervCnt: clModule.meetingIntervCnt,

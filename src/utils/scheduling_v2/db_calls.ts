@@ -12,7 +12,7 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
   const [rec] = supabaseWrap(
-    await supabaseAdmin.rpc('find_avail_api_details', {
+    await supabaseAdmin.rpc('find_avail_api_details_updated', {
       job_id,
       recruiter_id
     })
@@ -24,13 +24,16 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
       decrypt(rec.service_json.service_json, process.env.ENCRYPTION_KEY)
     ) as CompServiceKeyCred,
     interviewers: rec.interviewer.interviewer as RecruiterUserType[],
+    shadowIntervs: (rec.shadow_ints?.shadow_ints ?? []) as RecruiterUserType[],
+    rShadowIntervs: (rec.rshadow_ints?.rshadow_ints ??
+      []) as RecruiterUserType[],
     interview_modules: rec.interview_modules
       .interview_modules as InterviewModuleType[]
   };
-
   const interview_plan_api: InterviewModuleApiType[] =
     details.interview_plan.map((m) => {
       return {
+        session_name: m.session_name,
         duration: m.duration,
         isBreak: m.isBreak,
         meetingIntervCnt: m.meetingIntervCnt,
@@ -48,11 +51,33 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
             profile_img: int?.profile_image ?? '',
             name: getFullName(int.first_name, int.last_name)
           };
+        }),
+        revShadowIntervs: m.revShadowInterv.map((s) => {
+          const int = details.rShadowIntervs.find(
+            (i) => i.user_id === s.interv_id
+          );
+          return {
+            interv_id: int.user_id,
+            email: int.email,
+            profile_img: int?.profile_image ?? '',
+            name: getFullName(int.first_name, int.last_name)
+          };
+        }),
+        shadowIntervs: m.shadowIntervs.map((s) => {
+          const int = details.shadowIntervs.find(
+            (i) => i.user_id === s.interv_id
+          );
+          return {
+            interv_id: int.user_id,
+            email: int.email,
+            profile_img: int?.profile_image ?? '',
+            name: getFullName(int.first_name, int.last_name)
+          };
         })
       };
     });
 
-  const interviewers_info: IntervMeta[] = details.interviewers.map((int) => ({
+  const sel_int_info: IntervMeta[] = details.interviewers.map((int) => ({
     email: int.email,
     interviewer_id: int.user_id,
     name: getFullName(int.first_name, int.last_name),
@@ -60,9 +85,43 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
     shedule_settings: int.scheduling_settings as any,
     tokens: int.schedule_auth as any
   }));
+  const shadow_ints_info = details.shadowIntervs.map((int) => ({
+    email: int.email,
+    interviewer_id: int.user_id,
+    name: getFullName(int.first_name, int.last_name),
+    profile_img: int.profile_image,
+    shedule_settings: int.scheduling_settings as any,
+    tokens: int.schedule_auth as any
+  }));
+
+  const rshadow_ints_info = details.rShadowIntervs.map((int) => ({
+    email: int.email,
+    interviewer_id: int.user_id,
+    name: getFullName(int.first_name, int.last_name),
+    profile_img: int.profile_image,
+    shedule_settings: int.scheduling_settings as any,
+    tokens: int.schedule_auth as any
+  }));
+
+  const getUniqInts = getUniqueInts([
+    ...sel_int_info,
+    ...shadow_ints_info,
+    ...rshadow_ints_info
+  ]);
+
   return {
     company_cred: details.service_json,
-    interviewers_info,
+    interviewers_info: getUniqInts,
     interview_plan_api
   };
+};
+
+const getUniqueInts = (ints: IntervMeta[]) => {
+  let mp = new Map();
+
+  for (let int of ints) {
+    if (!mp.get(int.interviewer_id)) mp.set(int.interviewer_id, int);
+  }
+
+  return [...mp.values()];
 };

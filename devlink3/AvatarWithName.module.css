@@ -6,6 +6,10 @@
   grid-row-gap: 8px;
 }
 
+.div-block-757 {
+  position: relative;
+}
+
 .slot_useravatr {
   position: relative;
   z-index: 2;
@@ -23,4 +27,24 @@
   width: 24px;
   height: 24px;
   background-color: #f8f9f9;
+}
+
+.div-block-758 {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: -5px;
+  bottom: -5px;
+  z-index: 2;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  cursor: pointer;
 }

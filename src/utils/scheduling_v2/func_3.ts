@@ -8,6 +8,7 @@ type FuncParams = {
 }[];
 
 export const findCommonTimeRange = (inters: FuncParams): TimeDurationType[] => {
+  if (inters.find((i) => i.time_ranges.length === 0)) return [];
   let sorted_time_ranges: TimeDurationType[] = [];
   for (let inter of inters) {
     sorted_time_ranges = [...sorted_time_ranges, ...inter.time_ranges];

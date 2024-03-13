@@ -12,7 +12,7 @@ import { InterviewPlan } from '@/devlink3';
 import EditModule from './EditModule';
 import InterviewModuleC from './InterviewModuleC';
 import { handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewModuleCType } from './types';
+import { InterviewSession } from './types';
 import { filterAddedModules } from './utils';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import { reorder } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/reorder';
@@ -28,7 +28,7 @@ const JobInterviewPlan = () => {
     syncStatus
   } = useInterviewPlan((state) => state);
   const [editModuleId, setEditModuleId] = useState('');
-  const [newModule, setNewModule] = useState<InterviewModuleCType | null>(null);
+  const [newModule, setNewModule] = useState<InterviewSession | null>(null);
   const router = useRouter();
   const handleDragEnd = (result) => {
     const { source, type, destination } = result;
@@ -44,7 +44,7 @@ const JobInterviewPlan = () => {
         modules,
         sourceIdx,
         destIdx
-      ) as InterviewModuleCType[];
+      ) as InterviewSession[];
       if (
         updatedOrder[0].isBreak ||
         updatedOrder[updatedOrder.length - 1].isBreak
@@ -61,14 +61,18 @@ const JobInterviewPlan = () => {
   };
 
   const handleAddBreak = () => {
-    let intBreak: InterviewModuleCType = {
+    let intBreak: InterviewSession = {
       isBreak: true,
       allIntervs: [],
       duration: 30,
       meetingIntervCnt: 0,
       module_id: uuidv4(),
-      name: '',
-      selectedIntervs: []
+      module_name: '',
+      session_name: '',
+      selectedIntervs: [],
+      revShadowIntervs: [],
+      shadowIntervs: [],
+      training_ints: []
     };
     for (let i = 1; i < modules.length; ++i) {
       if (!modules[Number(i)].isBreak && !modules[Number(i - 1)].isBreak) {
@@ -98,21 +102,25 @@ const JobInterviewPlan = () => {
               }}
               textName={`${capitalize(jobStatus)} Jobs`}
             />
-            <Breadcrum
-              isLink
-              onClickLink={{
-                onClick: () => {
-                  router.push(`/jobs/${jobId}`);
-                }
-              }}
-              showArrow
-              textName={`${jobTitle}`}
-            />
-            <Breadcrum
-              onClickLink={{ onClick: () => {} }}
-              showArrow
-              textName={`Interview Plan`}
-            />
+            {!isloading && (
+              <>
+                <Breadcrum
+                  isLink
+                  onClickLink={{
+                    onClick: () => {
+                      router.push(`/jobs/${jobId}`);
+                    }
+                  }}
+                  showArrow
+                  textName={`${jobTitle}`}
+                />
+                <Breadcrum
+                  onClickLink={{ onClick: () => {} }}
+                  showArrow
+                  textName={`Interview Plan`}
+                />
+              </>
+            )}
           </>
         }
         slotSaving={
@@ -163,6 +171,7 @@ const JobInterviewPlan = () => {
                         initModule={newModule}
                         isBreak={false}
                         isEdit={false}
+                        editModuleId={editModuleId}
                       />
                     )}
                   </>
@@ -174,7 +183,7 @@ const JobInterviewPlan = () => {
                       modules
                     );
                     if (filteredModules.length > 0) {
-                      let nModule: InterviewModuleCType = {
+                      let nModule: InterviewSession = {
                         ...filteredModules[0],
                         selectedIntervs: [...filteredModules[0].allIntervs]
                       };

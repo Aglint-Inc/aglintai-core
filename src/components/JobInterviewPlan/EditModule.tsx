@@ -1,11 +1,12 @@
 import { Autocomplete } from '@mui/material';
+import { cloneDeep } from 'lodash';
 import { useState } from 'react';
 
 import { PanelMemberPill } from '@/devlink2';
 import { InterviewPlanCard } from '@/devlink3';
 
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewModuleCType } from './types';
+import { InterviewSession } from './types';
 import { filterAddedModules } from './utils';
 import MuiAvatar from '../Common/MuiAvatar';
 import UISelect from '../Common/Uiselect';
@@ -14,34 +15,38 @@ import UITextField from '../Common/UITextField';
 const EditModule = ({
   initModule,
   onClose,
-  isEdit
+  isEdit,
+  editModuleId
 }: {
-  initModule: InterviewModuleCType;
+  initModule: InterviewSession;
   onClose: any;
   isBreak: boolean;
   isEdit: boolean;
+  editModuleId: string;
 }) => {
   const { allModules, modules } = useInterviewPlan();
-  const [module, setModule] = useState<InterviewModuleCType>(initModule);
+  const [moduleform, setModule] = useState<InterviewSession>(initModule);
   let isDisabled = false;
   if (
-    (module.module_id.length === 0 ||
-      module.meetingIntervCnt === 0 ||
-      module.selectedIntervs.length === 0 ||
-      module.name.length === 0) &&
-    !module.isBreak
+    (moduleform.module_id.length === 0 ||
+      moduleform.meetingIntervCnt === 0 ||
+      moduleform.selectedIntervs.length === 0 ||
+      moduleform.module_name.length === 0) &&
+    !moduleform.isBreak
   ) {
     isDisabled = true;
   }
   const handleSubmit = () => {
     if (isDisabled) return;
+
     let modifModules;
     if (!isEdit) {
-      modifModules = [...modules, module];
+      modifModules = [...modules, moduleform];
     } else {
       modifModules = modules.map((m) => {
-        if (m.module_id === module.module_id) return module;
-        else return m;
+        if (m.module_id === editModuleId) {
+          return moduleform;
+        } else return m;
       });
     }
     handleUpdateDb({ path: 'modules', value: modifModules });
@@ -49,80 +54,67 @@ const EditModule = ({
   };
 
   const updateAllMembers = (name) => {
-    const mod = allModules.find((m) => m.name === name);
+    const mod = allModules.find((m) => m.module_name === name);
     setModule((prev) => {
-      prev.allIntervs = mod.allIntervs;
-      prev.selectedIntervs = [...mod.allIntervs];
-      prev.meetingIntervCnt = 1;
-      return { ...prev };
+      let newModule = cloneDeep(prev);
+      newModule.allIntervs = mod.allIntervs;
+      newModule.selectedIntervs = [...mod.allIntervs];
+      newModule.training_ints = [...mod.training_ints];
+      newModule.shadowIntervs = mod.training_ints.slice(0, 1);
+      newModule.revShadowIntervs = mod.training_ints.slice(1, 2);
+      newModule.meetingIntervCnt = 1;
+      newModule.module_id = mod.module_id;
+      newModule.module_name = mod.module_name;
+
+      return newModule;
     });
   };
-
   const filteredModules = filterAddedModules(allModules, modules);
   return (
     <InterviewPlanCard
-      isMemberVisible={!module.isBreak}
-      isMemberSelectionVisible={!module.isBreak}
-      isInterviewModuleVisible={!module.isBreak}
+      isMemberSelectionVisible={!moduleform.isBreak}
+      isInterviewModuleVisible={!moduleform.isBreak}
+      isSessionNameVisible={!moduleform.isBreak}
+      isQualifiedMemberVisible={!moduleform.isBreak}
+      isReverseShadowVisible={!moduleform.isBreak}
+      isShadowMemberVisible={!moduleform.isBreak}
       slotInterviewModuleInput={
         <>
-          <Autocomplete
-            options={filteredModules.map((m) => ({
-              label: m.name,
-              value: m.name
+          <UISelect
+            menuOptions={filteredModules.map((m) => ({
+              name: m.module_name,
+              value: m.module_name
             }))}
-            onChange={(event: any, newValue: any) => {
-              if (!newValue) return;
-              updateAllMembers(newValue.value);
-              setModule((prev) => {
-                prev.name = newValue.value;
-                prev.selectedIntervs = [];
-                return { ...prev };
-              });
+            onChange={(event) => {
+              updateAllMembers(event.target.value);
             }}
-            renderInput={(params) => (
-              <UITextField
-                rest={{ ...params }}
-                placeholder='Company Introduction'
-                onChange={(e) => {
-                  setModule((prev) => {
-                    prev.name = String(e.target.value);
-                    return { ...prev };
-                  });
-                }}
-              />
-            )}
-            defaultValue={{
-              label: '',
-              value: ''
-            }}
-            value={{
-              label: module.name,
-              value: module.name
-            }}
-            freeSolo
-            disablePortal
+            value={moduleform.module_name}
+            defaultValue={moduleform.module_name}
           />
         </>
       }
       slotDurationInput={
         <>
           <UISelect
-            menuOptions={defaultDurations}
-            defaultValue={module.duration}
+            menuOptions={
+              moduleform.isBreak
+                ? defaultDurations.slice(0, 3)
+                : defaultDurations.slice(3)
+            }
+            defaultValue={moduleform.duration}
             onChange={(e) => {
               setModule((prev) => {
                 prev.duration = Number(e.target.value);
                 return { ...prev };
               });
             }}
-            value={module.duration}
+            value={moduleform.duration}
           />
         </>
       }
-      slotMemberList={
+      slotQualifiedMemberList={
         <>
-          {module.selectedIntervs.map((mem) => {
+          {moduleform.selectedIntervs.map((mem) => {
             return (
               <PanelMemberPill
                 key={mem.interv_id}
@@ -150,17 +142,17 @@ const EditModule = ({
           })}
         </>
       }
-      slotSearchMemberInput={
+      slotSearchQualifiedMember={
         <>
           <Autocomplete
-            options={module.allIntervs.map((int) => ({
+            options={moduleform.allIntervs.map((int) => ({
               label: int.name,
               value: int.interv_id
             }))}
             onChange={(event: any, newValue: any) => {
               if (!newValue) return;
               if (
-                !module.selectedIntervs.find(
+                !moduleform.selectedIntervs.find(
                   (i) => i.interv_id == newValue.value
                 )
               ) {
@@ -191,21 +183,190 @@ const EditModule = ({
           />
         </>
       }
-      slotInputSelected={
+      slotInputSelectedQualified={
         <>
           <UISelect
-            menuOptions={module.allIntervs.map((_, idx) => ({
+            menuOptions={moduleform.allIntervs.map((i, idx) => ({
               name: String(idx + 1),
               value: String(idx + 1)
             }))}
-            value={module.meetingIntervCnt}
             onChange={(e) => {
-              setModule((prev) => {
-                prev.meetingIntervCnt = Number(e.target.value);
-                return { ...prev };
+              setModule((p) => {
+                p.meetingIntervCnt = Number(e.target.value);
+                return { ...p };
               });
             }}
-            defaultValue={1}
+            value={String(moduleform.meetingIntervCnt)}
+            defaultValue={'1'}
+          />
+        </>
+      }
+      slotShadowMemberList={
+        <>
+          {moduleform.shadowIntervs.map((mem) => {
+            return (
+              <PanelMemberPill
+                key={mem.interv_id}
+                slotImage={
+                  <MuiAvatar
+                    variant='rounded'
+                    src={mem.profile_img ?? ''}
+                    level={mem.name}
+                    fontSize='20px'
+                  />
+                }
+                textMemberName={mem.name}
+                onClickClose={{
+                  onClick: () => {
+                    setModule((prev) => {
+                      prev.shadowIntervs = prev.shadowIntervs.filter(
+                        (i) => i.interv_id !== mem.interv_id
+                      );
+                      return { ...prev };
+                    });
+                  }
+                }}
+              />
+            );
+          })}
+        </>
+      }
+      slotShadowMemberSearch={
+        <>
+          <Autocomplete
+            options={moduleform.training_ints
+              .filter(
+                (i) =>
+                  !moduleform.revShadowIntervs.find(
+                    (si) => si.interv_id === i.interv_id
+                  )
+              )
+              .map((int) => ({
+                label: int.name,
+                value: int.interv_id
+              }))}
+            onChange={(event: any, newValue: any) => {
+              if (!newValue) return;
+              if (
+                !moduleform.shadowIntervs.find(
+                  (i) => i.interv_id == newValue.value
+                )
+              ) {
+                setModule((prev) => {
+                  let int = prev.training_ints.find(
+                    (i) => i.interv_id === newValue.value
+                  );
+                  prev.shadowIntervs.push(int);
+                  return { ...prev };
+                });
+              }
+            }}
+            renderInput={(params) => {
+              return (
+                <UITextField
+                  rest={{ ...params }}
+                  labelBold='normal'
+                  placeholder='Search members'
+                />
+              );
+            }}
+            defaultValue={{
+              label: '',
+              value: ''
+            }}
+            freeSolo
+            disablePortal
+          />
+        </>
+      }
+      slotReverseShadowMemberList={
+        <>
+          {moduleform.revShadowIntervs.map((mem) => {
+            return (
+              <PanelMemberPill
+                key={mem.interv_id}
+                slotImage={
+                  <MuiAvatar
+                    variant='rounded'
+                    src={mem.profile_img ?? ''}
+                    level={mem.name}
+                    fontSize='20px'
+                  />
+                }
+                textMemberName={mem.name}
+                onClickClose={{
+                  onClick: () => {
+                    setModule((prev) => {
+                      prev.revShadowIntervs = prev.revShadowIntervs.filter(
+                        (i) => i.interv_id !== mem.interv_id
+                      );
+                      return { ...prev };
+                    });
+                  }
+                }}
+              />
+            );
+          })}
+        </>
+      }
+      slotRsSearch={
+        <>
+          <Autocomplete
+            options={moduleform.training_ints
+              .filter(
+                (i) =>
+                  !moduleform.shadowIntervs.find(
+                    (si) => si.interv_id === i.interv_id
+                  )
+              )
+              .map((int) => ({
+                label: int.name,
+                value: int.interv_id
+              }))}
+            onChange={(event: any, newValue: any) => {
+              if (!newValue) return;
+              if (
+                !moduleform.revShadowIntervs.find(
+                  (i) => i.interv_id == newValue.value
+                )
+              ) {
+                setModule((prev) => {
+                  let int = prev.training_ints.find(
+                    (i) => i.interv_id === newValue.value
+                  );
+                  prev.revShadowIntervs.push(int);
+                  return { ...prev };
+                });
+              }
+            }}
+            renderInput={(params) => {
+              return (
+                <UITextField
+                  rest={{ ...params }}
+                  labelBold='normal'
+                  placeholder='Search members'
+                />
+              );
+            }}
+            defaultValue={{
+              label: '',
+              value: ''
+            }}
+            freeSolo
+            disablePortal
+          />
+        </>
+      }
+      slotSessionNameInput={
+        <>
+          <UITextField
+            onChange={(e) => {
+              setModule((p) => {
+                p.session_name = e.target.value;
+                return { ...p };
+              });
+            }}
+            value={moduleform.session_name}
           />
         </>
       }
