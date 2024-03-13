@@ -25,6 +25,7 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJobDashboard } from '@/src/context/JobDashboard';
 import NotFoundPage from '@/src/pages/404';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './Doughnut';
@@ -228,6 +229,8 @@ const Pipeline = () => {
 };
 
 const Modules = () => {
+  const { push } = useRouter();
+  const { job } = useJobDashboard();
   return (
     <>
       <ModuleCard
@@ -235,13 +238,12 @@ const Modules = () => {
         textName={'Interview Plan (Scheduler)'}
         textDescription={'0 interview modules linked'}
         slotEnableDisable={<></>}
+        onClickCard={{
+          onClick: () => push(`${pageRoutes.JOBS}/${job.id}/interview-plan`)
+        }}
       />
       <AssessmentModule />
       <ScreeningModule />
-      {/* <ModuleCard
-        slotIcon={<EmailTemplateIcon />}
-        textName={'Email Templates'}
-      /> */}
     </>
   );
 };
