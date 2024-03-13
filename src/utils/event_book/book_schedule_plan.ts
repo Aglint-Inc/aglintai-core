@@ -94,7 +94,8 @@ export const bookIndividualModule = async ({
   organizer,
   schedule_name,
   start_time,
-  company_cred
+  company_cred,
+  module_id
 }: {
   schedule_name: string;
   start_time: string;
@@ -103,6 +104,7 @@ export const bookIndividualModule = async ({
   candidate_email: string;
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
+  module_id: string;
 }) => {
   const calendar_event: NewCalenderEvent = {
     summary: schedule_name,
@@ -131,9 +133,7 @@ export const bookIndividualModule = async ({
   calendar_event.attendees.push({
     email: candidate_email
   });
-
   const auth = await getUserCalAuth({ company_cred, recruiter: organizer });
-
   const event = await createEvent(auth, calendar_event);
 
   const attendees_promises = interviewers.map(async (int) => {
@@ -142,7 +142,7 @@ export const bookIndividualModule = async ({
     return await importEventToAttendee(event, email, auth);
   });
   await Promise.all(attendees_promises);
-  return event;
+  return { module_id, event };
 };
 
 export async function createEvent(auth, event) {

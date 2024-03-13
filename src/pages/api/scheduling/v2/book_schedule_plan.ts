@@ -29,14 +29,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!plan || !candidate_email || !schedule_id)
       return res.status(400).send('missing fields');
+
     await saveEventsStatusInSchedule({
       schedule_id,
       api_status: 'started',
-      meeting_events: []
+      meeting_events: [],
+      schedule_plan: plan.plan
     });
+
     const { company_cred, recruiters_info } = await getAllIntsFromPlan(
       plan.plan
     );
+
     const promises = plan.plan
       .filter((i) => !i.isBreak)
       .map(async (int_module) => {
@@ -61,23 +65,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             )?.schedule_auth as any,
             user_id: organizer.id
           },
-          schedule_name: int_module.module_name
+          schedule_name: int_module.module_name,
+          module_id: int_module.module_id
         });
       });
 
     const events = await Promise.all(promises);
+    console.log('nfkewjn');
+
     await saveEventsStatusInSchedule({
       schedule_id,
       api_status: 'sucess',
-      meeting_events: events
+      meeting_events: events,
+      schedule_plan: plan.plan
     });
+    console.log('nfkewjn');
+
     return res.status(200).json(events);
   } catch (error) {
     await saveEventsStatusInSchedule({
       api_status: 'failed',
       meeting_events: [],
       schedule_id,
-      error_msg: error.message
+      error_msg: error.message,
+      schedule_plan: plan.plan
     });
     return res.status(500).send(error.message);
   }
@@ -87,20 +98,65 @@ export default handler;
 
 const saveEventsStatusInSchedule = async ({
   api_status,
-  meeting_events,
+  meeting_events = [],
   schedule_id,
-  error_msg = null
+  error_msg = null,
+  schedule_plan
 }: {
   schedule_id: string;
   api_status: 'sucess' | 'started' | 'not_started' | 'failed';
   meeting_events: any[];
   error_msg?: string | null;
+  schedule_plan: InterviewPlanScheduleDbType['plan'];
 }) => {
+  if (meeting_events.length > 0) {
+    const promises = schedule_plan.map(async (int_module, idx) => {
+      if (int_module.isBreak) return;
+
+      const meet_event = meeting_events.find(
+        (e) => e.module_id === int_module.module_id
+      );
+
+      let break_duration = 0;
+      if (idx < schedule_plan.length - 1 && schedule_plan[idx + 1].isBreak) {
+        break_duration = schedule_plan[idx + 1].duration;
+      }
+
+      const [rec] = supabaseWrap(
+        await supabaseAdmin
+          .from('interview_meeting')
+          .insert({
+            module_id: int_module.module_id,
+            duration: int_module.duration,
+            start_time: int_module.start_time,
+            end_time: int_module.end_time,
+            interview_schedule_id: schedule_id,
+            break_time: break_duration,
+            meeting_json: meet_event.event
+          })
+          .select('id')
+      );
+
+      const meeting_interviewers = int_module.attended_inters.map((i) => ({
+        interview_meeting_id: rec.id,
+        interviewer_id: i.id,
+        interviewer_type: 'qualified' as any
+      }));
+
+      supabaseWrap(
+        await supabaseAdmin
+          .from('interview_meeting_user')
+          .insert(meeting_interviewers)
+      );
+    });
+
+    await Promise.all(promises);
+  }
+
   supabaseWrap(
     await supabaseAdmin
       .from('interview_schedule')
       .update({
-        meeting_json: meeting_events,
         calender_event_api_status: {
           api_status,
           error_msg
