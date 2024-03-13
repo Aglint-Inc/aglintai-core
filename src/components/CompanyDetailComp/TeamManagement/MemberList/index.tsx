@@ -11,10 +11,13 @@ dayjs.extend(relativeTime);
 
 const Member = ({
   member,
-  removeMember
+  removeMember,
+  editMember
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
+  // eslint-disable-next-line no-unused-vars
+  editMember: (member: RecruiterUserType) => void;
 }) => {
   const handelRemove = (e) => {
     e.stopPropagation();
@@ -22,7 +25,9 @@ const Member = ({
   };
   return (
     <TeamListItem
-      isDeleteDisable={member.role !== 'admin' ? false : true}
+      // isDeleteDisable={member.role !== 'admin' ? false : true}
+      isEditInviteVisible={member.join_status !== 'invited'}
+      onClickEditInvite={{ onClick: editMember }}
       isDeleteVisible={
         member.role === 'admin' || member.join_status === 'invited'
           ? false

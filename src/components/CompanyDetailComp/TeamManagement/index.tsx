@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import axios from 'axios';
 import converter from 'number-to-words';
 import { useState } from 'react';
@@ -35,29 +34,31 @@ const TeamManagement = () => {
         slotTeamList={
           <>
             {members?.map((member) => (
-              <Stack
+              // <Stack
+              //   key={member.user_id}
+              //   style={{ cursor: 'pointer' }}
+              //   onClick={() => {
+              //     setEditMember(member);
+              //   }}
+              // >
+              <Member
                 key={member.user_id}
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setEditMember(member);
+                member={member}
+                editMember={() => setEditMember(member)}
+                removeMember={async () => {
+                  if (recruiterUser?.user_id === member.user_id) {
+                    toast.error('Cannot remove admin account');
+                  } else {
+                    await axios.post('/api/supabase/deleteuser', {
+                      user_id: member.user_id
+                    });
+                    setMembers((members) =>
+                      members.filter((mem) => mem.user_id !== member.user_id)
+                    );
+                  }
                 }}
-              >
-                <Member
-                  member={member}
-                  removeMember={async () => {
-                    if (recruiterUser?.user_id === member.user_id) {
-                      toast.error('Cannot remove admin account');
-                    } else {
-                      await axios.post('/api/supabase/deleteuser', {
-                        user_id: member.user_id
-                      });
-                      setMembers((members) =>
-                        members.filter((mem) => mem.user_id !== member.user_id)
-                      );
-                    }
-                  }}
-                />
-              </Stack>
+              />
+              // </Stack>
             ))}
           </>
         }

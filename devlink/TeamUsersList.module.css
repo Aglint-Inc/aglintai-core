@@ -353,6 +353,10 @@
   margin-top: 9px;
 }
 
+.mt-9 {
+  margin-top: 9px;
+}
+
 .mt-15 {
   margin-top: 15px;
 }
@@ -464,7 +468,6 @@
 
 .tu-list-wrapper {
   display: flex;
-  overflow: hidden;
   flex-direction: column;
   border: 1px solid #e9ebed;
   border-radius: 10px;
