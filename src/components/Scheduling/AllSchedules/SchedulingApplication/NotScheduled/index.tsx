@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
@@ -9,7 +9,6 @@ import { useMemo } from 'react';
 import { ButtonPrimaryRegular } from '@/devlink';
 import {
   AvailableOption,
-  InterviewPlanCard,
   InterviewPlanEmpty,
   ScheduleOptions,
   SchedulingFlow
@@ -24,6 +23,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import InterviewPlanCardComp from '../Common/InterviewPlanCardComp';
 import SchedulingOptionComp from '../ScheduleOption';
 import {
   setDateRange,
@@ -35,7 +35,7 @@ import {
   useSchedulingApplicationStore
 } from '../store';
 import { setApplicationList, useInterviewSchedulingStore } from '../../store';
-import { convertToWord, mailHandler, transformData } from '../../utils';
+import { mailHandler, transformData } from '../../utils';
 
 function NotScheduledApplication() {
   const router = useRouter();
@@ -274,54 +274,10 @@ function NotScheduledApplication() {
                       isEditDeleteVisible={false}
                     />
                   ) : (
-                    <InterviewPlanCard
-                      key={plan.module_id}
-                      textTitle={mod?.name}
-                      textDuration={plan.duration + ' Minutes'}
-                      textMemberFrom={`${convertToWord(
-                        plan?.meetingIntervCnt || 0
-                      )} Member from :`}
-                      slotMemberList={
-                        <Stack
-                          direction={'row'}
-                          sx={{
-                            flexWrap: 'wrap',
-                            gap: 2.5
-                          }}
-                        >
-                          {plan.selectedIntervs.map((int) => {
-                            const user = members.find(
-                              (member) => member.user_id === int.interv_id
-                            );
-                            if (!user) return null;
-                            return (
-                              <Stack
-                                key={int.interv_id}
-                                direction={'row'}
-                                spacing={1}
-                                sx={{
-                                  textWrap: 'nowrap'
-                                }}
-                              >
-                                <MuiAvatar
-                                  level={getFullName(
-                                    user.first_name,
-                                    user.last_name
-                                  )}
-                                  src={user?.profile_image}
-                                  variant={'circular'}
-                                  width={'24px'}
-                                  height={'24px'}
-                                  fontSize={'12px'}
-                                />
-                                <Typography variant={'body2'} color={'#000'}>
-                                  {getFullName(user.first_name, user.last_name)}
-                                </Typography>
-                              </Stack>
-                            );
-                          })}
-                        </Stack>
-                      }
+                    <InterviewPlanCardComp
+                      members={members}
+                      plan={plan}
+                      mod={mod}
                     />
                   );
                 })}

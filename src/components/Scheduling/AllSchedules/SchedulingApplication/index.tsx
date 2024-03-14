@@ -85,6 +85,12 @@ function SchedulingApplication() {
           plan.selectedIntervs.map((interv) => {
             userIds.push(interv.interv_id);
           });
+          plan.revShadowInterv.map((interv) => {
+            userIds.push(interv.interv_id);
+          });
+          plan.shadowIntervs.map((interv) => {
+            userIds.push(interv.interv_id);
+          });
         });
 
         const resMem = await axios.post('/api/scheduling/fetchdbusers', {

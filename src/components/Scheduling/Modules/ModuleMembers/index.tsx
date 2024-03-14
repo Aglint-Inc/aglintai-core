@@ -12,6 +12,7 @@ import {
   MemberListCard,
   PageLayout
 } from '@/devlink2';
+import { MoreButton } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -30,6 +31,7 @@ import ResumeMemberDialog from './ResumeMemberDialog';
 import {
   setIsAddMemberDialogOpen,
   setIsDeleteMemberDialogOpen,
+  setIsDeleteModuleDialogOpen,
   setIsModuleSettingsDialogOpen,
   setIsPauseDialogOpen,
   setIsResumeDialogOpen,
@@ -108,13 +110,23 @@ function ModuleMembersComp() {
           </>
         }
         slotTopbarRight={
-          <ButtonSetting
-            onClickButton={{
-              onClick: () => {
-                setIsModuleSettingsDialogOpen(true);
-              }
-            }}
-          />
+          <Stack direction={'row'} alignItems={'center'} spacing={1}>
+            <ButtonSetting
+              onClickButton={{
+                onClick: () => {
+                  setIsModuleSettingsDialogOpen(true);
+                }
+              }}
+            />
+
+            <MoreButton
+              onClickDelete={{
+                onClick: () => {
+                  setIsDeleteModuleDialogOpen(true);
+                }
+              }}
+            />
+          </Stack>
         }
         slotBody={
           <>
