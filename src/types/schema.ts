@@ -1129,6 +1129,7 @@ export type Database = {
         Row: {
           application_id: string
           calender_event_api_status: Json | null
+          completion_time: string | null
           confirmed_option: Json | null
           created_at: string
           created_by: string
@@ -1144,6 +1145,7 @@ export type Database = {
         Insert: {
           application_id: string
           calender_event_api_status?: Json | null
+          completion_time?: string | null
           confirmed_option?: Json | null
           created_at?: string
           created_by?: string
@@ -1159,6 +1161,7 @@ export type Database = {
         Update: {
           application_id?: string
           calender_event_api_status?: Json | null
+          completion_time?: string | null
           confirmed_option?: Json | null
           created_at?: string
           created_by?: string
@@ -2725,10 +2728,6 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           schedule: Json
-          applications: Json
-          candidates: Json
-          file: Json
-          job: Json
           users: Json
         }[]
       }

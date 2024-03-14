@@ -1,4 +1,4 @@
-import { Children, ReactNode } from "react";
+import { Children, ReactNode } from 'react';
 
 export const ShowCode = (props: any) => {
   let when = null as any;
@@ -15,10 +15,10 @@ export const ShowCode = (props: any) => {
 
 ShowCode.When = ({
   isTrue,
-  children,
+  children
 }: {
   isTrue: boolean;
   children: ReactNode;
-}) => isTrue && children;
+}): any => isTrue && children;
 ShowCode.Else = ({ render, children }: { render: any; children: ReactNode }) =>
   render || children;
