@@ -6,10 +6,11 @@ import Seo from '@/src/components/Common/Seo';
 import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
 import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
 import JobPostFormProvider, {
-  useJobForm,
+  useJobForm
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 function Hoc() {
   return (
@@ -40,7 +41,7 @@ function New() {
           type: 'new',
           currSlide: 'details',
           recruiter,
-          recruiterUser,
+          recruiterUser
         });
       }
     }
@@ -52,7 +53,7 @@ function New() {
         <EmptyJobDashboard
           heading={'Create Job'}
           handleClickAddJob={() => {
-            router.push(`/jobs/new?flow=manual`);
+            router.push(pageRoutes.CREATEJOB);
           }}
           showMsg={false}
         />

@@ -15,7 +15,7 @@ import {
   LeverApiKey,
   LoadingJobsAts,
   NoResultAts,
-  SkeletonLoaderAtsCard,
+  SkeletonLoaderAtsCard
 } from '@/devlink';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
@@ -35,7 +35,7 @@ import {
   createJobObject,
   fetchAllJobs,
   filterJobs,
-  getGreenhouseStatusColor,
+  getGreenhouseStatusColor
 } from './utils';
 import LoaderLever from '../Loader';
 import { POSTED_BY } from '../utils';
@@ -44,7 +44,7 @@ export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead } = useJobs();
+  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
@@ -71,14 +71,14 @@ export function GreenhouseModal() {
             (job) =>
               job.posted_by === POSTED_BY.GREENHOUSE &&
               job.job_title === post.title &&
-              job.location == post.location.name,
+              job.location == post.location.name
           ).length == 0
         ) {
           return true;
         } else {
           return false;
         }
-      }),
+      })
     );
     setInitialFetch(false);
   };
@@ -87,7 +87,7 @@ export function GreenhouseModal() {
     try {
       setIntegration((prev) => ({
         ...prev,
-        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
+        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.IMPORTING }
       }));
 
       const refJobsObj = selectedGreenhousePostings.map((post) => {
@@ -96,7 +96,7 @@ export function GreenhouseModal() {
           public_job_id: uuidv4(),
           ats_job_id: post.job_id,
           recruiter_id: recruiter.id,
-          ats_json: post, //used saving the whole job posting from greenhouse
+          ats_json: post //used saving the whole job posting from greenhouse
         };
       });
       //converting greenhouse jobs to db jobs
@@ -115,9 +115,9 @@ export function GreenhouseModal() {
             public_job_id: (newJobs as any).filter(
               (job) =>
                 job.draft.job_title == post.title &&
-                job.draft.location == post.location.name,
+                job.draft.location == post.location.name
             )[0].id,
-            recruiter_id: recruiter.id,
+            recruiter_id: recruiter.id
           };
         }) as unknown as ExtendedJobGreenhouse[];
 
@@ -127,11 +127,12 @@ export function GreenhouseModal() {
             public_job_id: post.public_job_id,
             recruiter_id: recruiter.id,
             ats_job_id: post.ats_job_id, //saving job posting id from ashby
-            ats: 'greenhouse',
+            ats: 'greenhouse'
           };
         });
 
         await supabase.from('job_reference').insert(astJobsObj).select();
+        experimental_handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
         await createJobApplications(jobsObj, recruiter.greenhouse_key);
         //updating jobsData
@@ -139,19 +140,19 @@ export function GreenhouseModal() {
         //closing modal once done
         setIntegration((prev) => ({
           ...prev,
-          greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
+          greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING }
         }));
-        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}&ats=true`);
+        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       } else {
         toast.error(
-          'Sorry unable to import. Please try again later or contact support.',
+          'Sorry unable to import. Please try again later or contact support.'
         );
         posthog.capture('GreenHouse Import Error');
         handleClose();
       }
     } catch (error) {
       toast.error(
-        'Sorry unable to import. Please try again later or contact support.',
+        'Sorry unable to import. Please try again later or contact support.'
       );
       handleClose();
     }
@@ -163,17 +164,17 @@ export function GreenhouseModal() {
       const response = await axios.post('/api/greenhouse/getPostings', {
         page: 1,
         apiKey: apiRef.current.value,
-        isInitial: true,
+        isInitial: true
       });
 
       if (response.status === 200 && response.data.length > 0) {
         setIntegration((prev) => ({
           ...prev,
-          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.FETCHING },
+          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.FETCHING }
         }));
         const responseRec = await axios.post('/api/greenhouse/saveApiKey', {
           recruiterId: recruiter.id,
-          apiKey: apiRef.current.value,
+          apiKey: apiRef.current.value
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.greenhouse_key) {
@@ -186,8 +187,8 @@ export function GreenhouseModal() {
               ...prev,
               greenhouse: {
                 open: true,
-                step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-              },
+                step: STATE_GREENHOUSE_DIALOG.LISTJOBS
+              }
             }));
           }, 1000);
         }
@@ -195,14 +196,14 @@ export function GreenhouseModal() {
         setLoading(false);
         setIntegration((prev) => ({
           ...prev,
-          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
+          greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR }
         }));
       }
     } catch (error) {
       setLoading(false);
       setIntegration((prev) => ({
         ...prev,
-        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR },
+        greenhouse: { open: true, step: STATE_GREENHOUSE_DIALOG.ERROR }
       }));
     }
   };
@@ -230,7 +231,7 @@ export function GreenhouseModal() {
                 buttonProps={{
                   onClick: () => {
                     submitApiKey();
-                  },
+                  }
                 }}
               />
             }
@@ -298,7 +299,7 @@ export function GreenhouseModal() {
                 onClick: () => {
                   importGreenhouse();
                   posthog.capture('GreenHouse Jobs successfully imported');
-                },
+                }
               }}
               isImportDisable={selectedGreenhousePostings.length === 0}
               isAllActive={greenhouseFilter == 'all'}
@@ -308,22 +309,22 @@ export function GreenhouseModal() {
               onClickClosed={{
                 onClick: () => {
                   setGreenhouseFilter('closed');
-                },
+                }
               }}
               onClickActive={{
                 onClick: () => {
                   setGreenhouseFilter('active');
-                },
+                }
               }}
               onClickLive={{
                 onClick: () => {
                   setGreenhouseFilter('live');
-                },
+                }
               }}
               onClickAll={{
                 onClick: () => {
                   setGreenhouseFilter('all');
-                },
+                }
               }}
               slotAtsCard={
                 !initialFetch ? (
@@ -334,39 +335,39 @@ export function GreenhouseModal() {
                           <AtsCard
                             isChecked={
                               selectedGreenhousePostings?.filter(
-                                (p) => p.id === post.id,
+                                (p) => p.id === post.id
                               )?.length > 0
                             }
                             onClickCheck={{
                               onClick: () => {
                                 if (
                                   selectedGreenhousePostings?.some(
-                                    (p) => p.id === post.id,
+                                    (p) => p.id === post.id
                                   )
                                 ) {
                                   // If the object is already in the array, remove it
                                   setSelectedGreenhousePostings((prev) =>
-                                    prev.filter((p) => p.id !== post.id),
+                                    prev.filter((p) => p.id !== post.id)
                                   );
                                 } else {
                                   if (selectedGreenhousePostings.length < 1) {
                                     // If the object is not in the array, add it
                                     setSelectedGreenhousePostings((prev) => [
                                       ...prev,
-                                      post,
+                                      post
                                     ]);
                                   } else {
                                     toast.warning(
-                                      'You can import 1 job at a time',
+                                      'You can import 1 job at a time'
                                     );
                                   }
                                 }
-                              },
+                              }
                             }}
                             propsTextColor={{
                               style: {
-                                color: getGreenhouseStatusColor(post),
-                              },
+                                color: getGreenhouseStatusColor(post)
+                              }
                             }}
                             textRole={post.title}
                             textStatus={
@@ -412,7 +413,7 @@ export function GreenhouseModal() {
       onClickClose={{
         onClick: () => {
           handleClose();
-        },
+        }
       }}
     />
   );

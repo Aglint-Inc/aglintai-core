@@ -91,8 +91,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         ? StatusColor['inactive']
                         : job.status == 'published'
                           ? StatusColor['active']
-                          : StatusColor['closed'],
-                  },
+                          : StatusColor['closed']
+                  }
                 }}
                 textJobsStatus={job.status}
                 slotStatusIcon={
@@ -120,13 +120,9 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 }
                 onClickCard={{
                   onClick: () => {
-                    if (job.status === 'draft') {
-                      router.push(`${pageRoutes.EDITJOBS}?job_id=${job.id}`);
-                    } else {
-                      router.push(`${pageRoutes.JOBS}/${job.id}`);
-                    }
+                    router.push(`${pageRoutes.JOBS}/${job.id}`);
                     posthog.capture('Job Card Clicked');
-                  },
+                  }
                 }}
               />
             </ScrollList>

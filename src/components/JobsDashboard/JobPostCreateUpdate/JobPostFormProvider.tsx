@@ -2,7 +2,7 @@ import { cloneDeep, debounce, get, isNull, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+// import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import {
   JobTypeDB,
   PublicJobsType,
@@ -402,7 +402,7 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { handleUIJobUpdate, jobsData } = useJobs();
+  const { jobsData } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
     try {
       dispatch({
@@ -416,22 +416,21 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
 
       //randomly .jobs was not initilised temp soln
       if (jobsData.jobs) {
-        const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
-        handleUIJobUpdate({
-          ...updatedJobDb,
-          assessment_job_relation: updatedJobDb.assessment_job_relation,
-          jd_json: updatedJobDb.jd_json as JobTypeDashboard['jd_json'],
-          active_status:
-            updatedJobDb.active_status as JobTypeDashboard['active_status'],
-          count: (uiJob
-            ? uiJob.count
-            : {
-                new: 0,
-                assessment: 0,
-                qualified: 0,
-                disqualified: 0
-              }) as JobTypeDashboard['count']
-        });
+        // const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
+        // handleUIJobUpdate({
+        //   ...updatedJobDb,
+        //   jd_json: updatedJobDb.jd_json as JobTypeDashboard['jd_json'],
+        //   active_status:
+        //     updatedJobDb.active_status as JobTypeDashboard['active_status'],
+        //   count: (uiJob
+        //     ? uiJob.count
+        //     : {
+        //         new: 0,
+        //         assessment: 0,
+        //         qualified: 0,
+        //         disqualified: 0
+        //       }) as JobTypeDashboard['count']
+        // });
       }
 
       if (get(currState, 'createdAt', undefined) === undefined) {

@@ -6,7 +6,7 @@ import {
   SortParameter
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { ModuleType } from '@/src/components/Scheduling/Modules/types';
-import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
+import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Applications } from '@/src/types/applications.types';

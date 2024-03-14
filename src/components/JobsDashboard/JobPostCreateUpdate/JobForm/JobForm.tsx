@@ -161,8 +161,7 @@ function JobForm() {
 
   const handleDeleteDraft = async () => {
     try {
-      const isDeleted = await handleJobDelete(jobForm.jobPostId);
-      if (!isDeleted) throw new Error('Job delete fail');
+      await handleJobDelete(jobForm.jobPostId);
       router.replace('/jobs?status=draft');
       toast.error('Deleted draft job ');
       posthog.capture('Deleted Draft job');
@@ -173,8 +172,7 @@ function JobForm() {
 
   const handleDeleteJob = async () => {
     try {
-      const isDeleted = await handleJobDelete(jobForm.jobPostId);
-      if (!isDeleted) throw new Error('Job delete failed');
+      await handleJobDelete(jobForm.jobPostId);
       router.replace('/jobs');
       toast.error('Deleted job');
       posthog.capture('Deleted job');

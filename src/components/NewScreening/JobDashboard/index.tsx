@@ -19,7 +19,7 @@ import {
   ScreeningLandingCard
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -28,7 +28,7 @@ import MuiPopup from '../../Common/MuiPopup';
 
 const ScreeningDashboardComp = () => {
   const { recruiter_id, recruiterUser } = useAuthDetails();
-  const { job } = useJobDashboard();
+  const { job } = useJobDetails();
   const [phoneScreening, setPhoneScreening] = useState({
     phone_screen_enabled: false,
     recruiter_id: '',
@@ -286,7 +286,11 @@ const ScreeningDashboardComp = () => {
                         window.open(
                           `${
                             process.env.NEXT_PUBLIC_HOST_NAME
-                          }/candidate-phone-screening?template_id=${phoneScreening.screening_template}&recruiter_email=${recruiterUser.email}&recruiter_name=${[
+                          }/candidate-phone-screening?template_id=${
+                            phoneScreening.screening_template
+                          }&recruiter_email=${
+                            recruiterUser.email
+                          }&recruiter_name=${[
                             recruiterUser.first_name,
                             recruiterUser.last_name
                           ].join(' ')}`,

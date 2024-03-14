@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import { JobInsert } from '@/src/queries/job/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -22,7 +23,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           phone: cand.phones[0]?.value,
           job_id: post.job_id,
           application_id: uuidv4(), //our job application id
-          id: cand.id, //lever opportunity id
+          id: cand.id //lever opportunity id
         };
       });
       // for creating lever job reference
@@ -31,13 +32,13 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
         ...new Set(
           refCandidates.map((cand) => {
             return cand.email;
-          }),
-        ),
+          })
+        )
       ];
 
       const checkCandidates = await processEmailsInBatches(
         emails,
-        post.recruiter_id,
+        post.recruiter_id
       );
 
       //new candidates insert flow
@@ -55,7 +56,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           linkedin: cand.linkedin,
           phone: cand.phone,
           id: uuidv4(),
-          recruiter_id: post.recruiter_id,
+          recruiter_id: post.recruiter_id
         };
       });
 
@@ -78,11 +79,11 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           return {
             applied_at: ref.created_at,
             candidate_id: allCandidates.filter(
-              (cand) => cand.email === ref.email,
+              (cand) => cand.email === ref.email
             )[0].id,
             job_id: post.job_id,
             id: ref.application_id,
-            is_resume_fetching: true,
+            is_resume_fetching: true
           };
         });
 
@@ -96,19 +97,19 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
               application_id: ref.application_id,
               posting_id: post.id,
               opportunity_id: ref.id,
-              public_job_id: post.job_id,
+              public_job_id: post.job_id
             };
           });
 
           await createLeverReference(referenceObj);
         } else {
           toast.error(
-            'Sorry unable to import. Please try again later or contact support.',
+            'Sorry unable to import. Please try again later or contact support.'
           );
         }
         //new candidates insert flow
       }
-    }),
+    })
   );
   return applications;
 };
@@ -121,7 +122,7 @@ export const createLeverReference = async (reference) => {
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Sorry unable to import. Please try again later or contact support.'
     );
   } else {
     await createGoogleTaskQueue(data);
@@ -137,14 +138,14 @@ export const createLeverJobReference = async (reference) => {
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Sorry unable to import. Please try again later or contact support.'
     );
   }
 };
 
 const createGoogleTaskQueue = async (dbRecords) => {
   await axios.post('/api/lever/createQueue', {
-    records: dbRecords,
+    records: dbRecords
   });
 };
 
@@ -158,7 +159,7 @@ const fetchAllCandidates = async (post_id, apiKey) => {
       const response = await axios.post('/api/lever/getCandidates', {
         posting_id: post_id,
         offset: next,
-        apiKey: apiKey,
+        apiKey: apiKey
       });
 
       if (response.data && response.data.data) {
@@ -187,7 +188,7 @@ export const fetchAllJobs = async (apiKey) => {
       const response = await axios.post('/api/lever/getPostings', {
         offset: next,
         apiKey: apiKey,
-        isInitial: false,
+        isInitial: false
       });
 
       if (response.data && response.data.data) {
@@ -204,40 +205,38 @@ export const fetchAllJobs = async (apiKey) => {
   return allJobs;
 };
 
-export const createJobObject = async (selectedLeverPostings, recruiter) => {
+export const createJobObject = async (
+  selectedLeverPostings,
+  recruiter
+): Promise<JobInsert[]> => {
   const dbJobs = selectedLeverPostings.map((post) => {
     const id = uuidv4();
     return {
       draft: {
-        id: id,
         location: post.categories.location,
         job_title: post.text,
         description: post.content.descriptionHtml,
-        email_template: recruiter.email_template,
-        department: post.categories.department || '',
-        recruiter_id: recruiter.id,
-        posted_by: POSTED_BY.LEVER,
+        department: 'support',
         job_type:
           post.categories.commitment === 'Part Time'
-            ? 'parttime'
+            ? 'part time'
             : post.categories.commitment === 'Internship'
               ? 'internship'
-              : 'fulltime',
+              : 'full time',
         workplace_type:
           post.workplaceType === 'hybrid'
             ? 'hybrid'
             : post.workplaceType === 'onsite'
-              ? 'onsite'
-              : 'offsite',
+              ? 'on site'
+              : 'off site',
         company: recruiter.name,
-        skills: [],
-        status: 'draft',
-        parameter_weights: {
-          skills: 0,
-          education: 0,
-          experience: 0,
-        },
-        video_assessment: false,
+        jd_json: {
+          educations: [],
+          level: 'Mid-level',
+          rolesResponsibilities: [],
+          skills: [],
+          title: post.text
+        }
       },
       location: post.categories.location,
       job_title: post.text,
@@ -245,7 +244,30 @@ export const createJobObject = async (selectedLeverPostings, recruiter) => {
       posted_by: POSTED_BY.LEVER,
       recruiter_id: recruiter.id,
       id: id,
-    };
+      description: post.content.descriptionHtml,
+      email_template: recruiter.email_template,
+      department: 'support',
+      job_type:
+        post.categories.commitment === 'Part Time'
+          ? 'parttime'
+          : post.categories.commitment === 'Internship'
+            ? 'internship'
+            : 'fulltime',
+      workplace_type:
+        post.workplaceType === 'hybrid'
+          ? 'hybrid'
+          : post.workplaceType === 'onsite'
+            ? 'onsite'
+            : 'offsite',
+      company: recruiter.name,
+      skills: [],
+      parameter_weights: {
+        skills: 0,
+        education: 0,
+        experience: 0
+      },
+      video_assessment: false
+    } as JobInsert;
   });
   return dbJobs;
 };

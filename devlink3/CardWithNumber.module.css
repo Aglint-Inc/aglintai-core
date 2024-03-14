@@ -1,0 +1,96 @@
+.cardwithnumber {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  padding: 16px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.year_flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  font-size: 40px;
+  line-height: 40px;
+  font-weight: 600;
+}
+
+.text-sm-copy {
+  margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+.text-sm-copy.color-grey-600 {
+  color: #68737d;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-sm-copy.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-gray-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-gray-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-gray-600.is_link {
+  color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+.cardwithnumber-copy {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  display: flex;
+  height: 100%;
+  padding: 16px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}

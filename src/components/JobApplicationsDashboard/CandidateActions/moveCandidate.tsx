@@ -7,10 +7,10 @@ import { CandidateSelectionPopup, SelectActionsDropdown } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   // JobApplicationsData,
-  JobApplicationSections,
+  JobApplicationSections
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
+import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
@@ -24,15 +24,15 @@ const MoveCandidate: React.FC<{
   const {
     section,
     cardStates: {
-      checkList: { list, disabled },
+      checkList: { list, disabled }
     },
     setCardStates,
     handleJobApplicationSectionUpdate,
-    activeSections,
+    activeSections
   } = useJobApplications();
   const [props, setProps] = useState({
     open: false,
-    destination: null,
+    destination: null
   });
   const [purposes, setPurposes] = useState([]);
   const isChecked = list.size !== 0;
@@ -73,7 +73,7 @@ const MoveCandidate: React.FC<{
 
   const handlePopUpCheck = () => {
     setPurposes((prev) =>
-      prev.length !== 0 ? [] : getPurpose(props.destination),
+      prev.length !== 0 ? [] : getPurpose(props.destination)
     );
   };
   const handleMoveCandidate = async () => {
@@ -81,23 +81,23 @@ const MoveCandidate: React.FC<{
       setProps((prev) => ({ ...prev, open: false }));
       setCardStates((prev) => ({
         ...prev,
-        checkList: { ...prev.checkList, disabled: true },
+        checkList: { ...prev.checkList, disabled: true }
       }));
       await handleJobApplicationSectionUpdate(
         {
           source: section,
-          destination: props.destination,
+          destination: props.destination
         },
         purposes,
         list,
-        selectAll,
+        selectAll
       );
       setCardStates((prev) => ({
         ...prev,
         checkList: {
           disabled: false,
-          list: new Set(),
-        },
+          list: new Set()
+        }
       }));
       setSelectAll(false);
     }
@@ -114,26 +114,26 @@ const MoveCandidate: React.FC<{
       <SelectActionsDropdown
         isInterview={showInterview}
         onClickInterview={{
-          onClick: () => handleOpen(JobApplicationSections.INTERVIEW),
+          onClick: () => handleOpen(JobApplicationSections.INTERVIEW)
         }}
         isAssessment={showAssessment}
         onClickAssessment={{
-          onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
+          onClick: () => handleOpen(JobApplicationSections.ASSESSMENT)
         }}
         isQualified={showQualified}
         onClickQualified={{
-          onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
+          onClick: () => handleOpen(JobApplicationSections.QUALIFIED)
         }}
         isDisqualified={showDisqualified}
         onClickDisqualified={{
-          onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
+          onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED)
         }}
         onClickMoveNew={{
-          onClick: () => handleOpen(JobApplicationSections.NEW),
+          onClick: () => handleOpen(JobApplicationSections.NEW)
         }}
         isMoveNew={showNew}
         onClickScreening={{
-          onClick: () => handleOpen(JobApplicationSections.SCREENING),
+          onClick: () => handleOpen(JobApplicationSections.SCREENING)
         }}
         isScreening={showScreening}
       />
@@ -160,7 +160,7 @@ const MoveCandidateDialog = ({
   onSubmit,
   checkAction,
   count = 0,
-  name = null,
+  name = null
 }: {
   open: boolean;
   checked: boolean;
@@ -217,18 +217,18 @@ const checkVisibility = (destination: JobApplicationSections) => {
 const getDescription = (
   destination,
   count: number = 0,
-  name: string = null,
+  name: string = null
 ) => {
   if (name) return `Move ${name} to ${capitalize(destination)} stage?`;
   return `Move ${count} candidate${count !== 1 ? 's' : ''} to ${capitalize(
-    destination,
+    destination
   )} stage`;
 };
 
 const getSubTitle = (
   destination: JobApplicationSections,
   count: number = 0,
-  name: string = null,
+  name: string = null
 ) => {
   if (name) {
     switch (destination) {
@@ -263,7 +263,7 @@ const getSubTitle = (
 };
 
 const getPurpose = (
-  destination: JobApplicationSections,
+  destination: JobApplicationSections
 ): JobApplicationEmails['request']['purposes'] => {
   switch (destination) {
     case JobApplicationSections.NEW:

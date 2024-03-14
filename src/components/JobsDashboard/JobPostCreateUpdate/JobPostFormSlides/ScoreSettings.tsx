@@ -9,7 +9,7 @@ import {
   ScorePillMust,
   ScorePillNice,
   ScoreSetting,
-  SettingSkeleton,
+  SettingSkeleton
 } from '@/devlink';
 import { AddButton } from '@/devlink/AddButton';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
@@ -45,20 +45,20 @@ const params: {
     label: 'Experience',
     paramKey: 'rolesResponsibilities',
     AddBtnLabel: 'Add Experience',
-    color: 'rgb(48, 170, 188)',
+    color: 'rgb(48, 170, 188)'
   },
   {
     label: 'Skill',
     paramKey: 'skills',
     AddBtnLabel: 'Add Skill',
-    color: 'rgb(136, 107, 216)',
+    color: 'rgb(136, 107, 216)'
   },
   {
     label: 'Education',
     paramKey: 'educations',
     AddBtnLabel: 'Add Education',
-    color: 'rgb(93, 125, 245)',
-  },
+    color: 'rgb(93, 125, 245)'
+  }
 ];
 
 const ScoreSettings = () => {
@@ -79,7 +79,7 @@ const ScoreSettings = () => {
 Job Role : ${jobForm.formFields.jobTitle}
 
 ${jobForm.formFields.jobDescription}
-`,
+`
       );
 
       const j: JdJsonType = {
@@ -88,10 +88,10 @@ ${jobForm.formFields.jobDescription}
         rolesResponsibilities: arrItemToReactArr([
           ...json.roles,
           ...json.responsibilities,
-          ...json.requirements,
+          ...json.requirements
         ]),
         skills: arrItemToReactArr([...json.skills]),
-        educations: arrItemToReactArr([...json.educations]),
+        educations: arrItemToReactArr([...json.educations])
       };
 
       handleUpdateFormFields({
@@ -101,18 +101,18 @@ ${jobForm.formFields.jobDescription}
             value: getBalancedScore(
               j.rolesResponsibilities.length === 0,
               j.educations.length === 0,
-              j.skills.length === 0,
-            ),
+              j.skills.length === 0
+            )
           },
           {
             path: 'isjdChanged',
-            value: false,
+            value: false
           },
           {
             path: 'jdJson',
-            value: j,
-          },
-        ],
+            value: j
+          }
+        ]
       });
       // handleUpdateFormFields({
       //   path: `resumeScoreSettings`,
@@ -159,7 +159,7 @@ ${jobForm.formFields.jobDescription}
       paramKey: paramKey,
       isMustHave: s.isMustHave,
       value: s.field,
-      id,
+      id
     });
     setPopUpEl(e.currentTarget);
   };
@@ -168,10 +168,10 @@ ${jobForm.formFields.jobDescription}
     const isFeildValExist = get(
       jobForm.formFields,
       `jdJson.${paramKey}`,
-      [],
+      []
     ).find(
       (s) =>
-        s.field.trim().toLowerCase() === newField.value.trim().toLowerCase(),
+        s.field.trim().toLowerCase() === newField.value.trim().toLowerCase()
     );
     if (isFeildValExist) {
       toast.warning(`Field already exist`);
@@ -187,9 +187,9 @@ ${jobForm.formFields.jobDescription}
         {
           field: newField.value,
           isMustHave: newField.isMustHave,
-          id: nanoid(),
-        },
-      ],
+          id: nanoid()
+        }
+      ]
     });
     setNewField(null);
   };
@@ -201,7 +201,7 @@ ${jobForm.formFields.jobDescription}
     ].find(
       (it) =>
         it.id !== editParam.id &&
-        it.field.trim().toLowerCase() === editParam.value.trim().toLowerCase(),
+        it.field.trim().toLowerCase() === editParam.value.trim().toLowerCase()
     );
     if (existedItem) {
       toast.warning(`Field already exist`);
@@ -217,11 +217,11 @@ ${jobForm.formFields.jobDescription}
             return {
               ...editParam,
               field: editParam.value,
-              isMustHave: editParam.isMustHave,
+              isMustHave: editParam.isMustHave
             };
           return item;
-        },
-      ),
+        }
+      )
     });
     setPopUpEl(null);
   };
@@ -249,8 +249,8 @@ ${jobForm.formFields.jobDescription}
                     <ScoreCard
                       colorPropsHeading={{
                         style: {
-                          backgroundColor: p.color,
-                        },
+                          backgroundColor: p.color
+                        }
                       }}
                       key={p.paramKey}
                       textHeading={
@@ -273,7 +273,7 @@ ${jobForm.formFields.jobDescription}
                                     textDetails={s.field}
                                     onClickEditText={{
                                       onClick: (e) =>
-                                        handleClickEdit(p.paramKey, s.id, s, e),
+                                        handleClickEdit(p.paramKey, s.id, s, e)
                                     }}
                                   />
                                 );
@@ -288,7 +288,7 @@ ${jobForm.formFields.jobDescription}
                                     textDetails={s.field}
                                     onClickEditText={{
                                       onClick: (e) =>
-                                        handleClickEdit(p.paramKey, s.id, s, e),
+                                        handleClickEdit(p.paramKey, s.id, s, e)
                                     }}
                                   />
                                 );
@@ -305,9 +305,9 @@ ${jobForm.formFields.jobDescription}
                                 setNewField({
                                   paramKey: p.paramKey,
                                   isMustHave: true,
-                                  value: '',
+                                  value: ''
                                 });
-                              },
+                              }
                             }}
                           />
                           <Popover
@@ -319,7 +319,7 @@ ${jobForm.formFields.jobDescription}
                             anchorEl={newFieldEv}
                             transformOrigin={{
                               vertical: 'top',
-                              horizontal: 'left',
+                              horizontal: 'left'
                             }}
                             onClose={() => {
                               setNewField(null);
@@ -328,8 +328,8 @@ ${jobForm.formFields.jobDescription}
                             sx={{
                               '& .MuiPaper-outlined': {
                                 border: 'none',
-                                outline: 'none',
-                              },
+                                outline: 'none'
+                              }
                             }}
                           >
                             <div
@@ -338,7 +338,7 @@ ${jobForm.formFields.jobDescription}
                                   newField &&
                                   newField.paramKey === 'rolesResponsibilities'
                                     ? '600px'
-                                    : '300px',
+                                    : '300px'
                               }}
                             >
                               {newField && (
@@ -364,7 +364,7 @@ ${jobForm.formFields.jobDescription}
                                           outline: 'none',
                                           border: '0px',
                                           backgroundColor: '#f8f9f9',
-                                          resize: 'none',
+                                          resize: 'none'
                                         }}
                                         // eslint-disable-next-line jsx-a11y/no-autofocus
                                         autoFocus={true}
@@ -373,7 +373,7 @@ ${jobForm.formFields.jobDescription}
                                         onChange={(e) => {
                                           setNewField((p) => ({
                                             ...p,
-                                            value: e.target.value,
+                                            value: e.target.value
                                           }));
                                         }}
                                       ></textarea>
@@ -383,7 +383,7 @@ ${jobForm.formFields.jobDescription}
                                   onClickCancel={{
                                     onClick: () => {
                                       setNewField(null);
-                                    },
+                                    }
                                   }}
                                   slotCheckBox={
                                     <Checkbox
@@ -392,9 +392,9 @@ ${jobForm.formFields.jobDescription}
                                         onClick: () => {
                                           setNewField((prev) => ({
                                             ...prev,
-                                            isMustHave: !newField?.isMustHave,
+                                            isMustHave: !newField?.isMustHave
                                           }));
-                                        },
+                                        }
                                       }}
                                     />
                                   }
@@ -409,18 +409,16 @@ ${jobForm.formFields.jobDescription}
                 })}
               </>
             }
-            slotButtonPrimaryRegular={<></>}
-            isProceedDisable={false}
             onClickRegenerate={{
-              onClick: handleGenerate,
+              onClick: handleGenerate
             }}
             onClickDismiss={{
               onClick: () => {
                 handleUpdateFormFields({
                   path: 'isjdChanged',
-                  value: false,
+                  value: false
                 });
-              },
+              }
             }}
           />
 
@@ -432,14 +430,14 @@ ${jobForm.formFields.jobDescription}
             }}
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'left',
+              horizontal: 'left'
             }}
             sx={{
               mt: 1,
               '& .MuiPaper-outlined': {
                 border: 'none',
-                outline: 'none',
-              },
+                outline: 'none'
+              }
             }}
           >
             <div
@@ -447,7 +445,7 @@ ${jobForm.formFields.jobDescription}
                 width:
                   editParam && editParam.paramKey === 'rolesResponsibilities'
                     ? '600px'
-                    : '300px',
+                    : '300px'
               }}
             >
               <ScoreCardEdit
@@ -457,7 +455,7 @@ ${jobForm.formFields.jobDescription}
                     let arr = get(
                       jobForm.formFields.jdJson,
                       `${editParam.paramKey}`,
-                      [],
+                      []
                     ).filter((it) => it.id !== editParam.id);
 
                     // jobForm.formFields.resumeScoreSettings.education;
@@ -469,13 +467,13 @@ ${jobForm.formFields.jobDescription}
                           multipayload: [
                             {
                               path: `resumeScoreSettings.skills`,
-                              value: 0,
+                              value: 0
                             },
                             {
                               path: `jdJson.${editParam.paramKey}`,
-                              value: arr,
-                            },
-                          ],
+                              value: arr
+                            }
+                          ]
                         });
                       } else if (
                         editParam.paramKey === 'rolesResponsibilities'
@@ -484,37 +482,37 @@ ${jobForm.formFields.jobDescription}
                           multipayload: [
                             {
                               path: `resumeScoreSettings.experience`,
-                              value: 0,
+                              value: 0
                             },
                             {
                               path: `jdJson.${editParam.paramKey}`,
-                              value: arr,
-                            },
-                          ],
+                              value: arr
+                            }
+                          ]
                         });
                       } else if (editParam.paramKey === 'educations') {
                         handleUpdateFormFields({
                           multipayload: [
                             {
                               path: `resumeScoreSettings.education`,
-                              value: 0,
+                              value: 0
                             },
                             {
                               path: `jdJson.${editParam.paramKey}`,
-                              value: arr,
-                            },
-                          ],
+                              value: arr
+                            }
+                          ]
                         });
                       }
                     } else {
                       handleUpdateFormFields({
                         path: `jdJson.${editParam.paramKey}`,
-                        value: arr,
+                        value: arr
                       });
                     }
 
                     setPopUpEl(null);
-                  },
+                  }
                 }}
                 slotButtonUpdate={
                   <>
@@ -536,7 +534,7 @@ ${jobForm.formFields.jobDescription}
                         outline: 'none',
                         border: '0px',
                         backgroundColor: '#f8f9f9',
-                        resize: 'none',
+                        resize: 'none'
                       }}
                       // eslint-disable-next-line jsx-a11y/no-autofocus
                       autoFocus={true}
@@ -555,9 +553,9 @@ ${jobForm.formFields.jobDescription}
                       onClick: () => {
                         setEditParam((prev) => ({
                           ...prev,
-                          isMustHave: !editParam.isMustHave,
+                          isMustHave: !editParam.isMustHave
                         }));
-                      },
+                      }
                     }}
                   />
                 }
@@ -574,12 +572,12 @@ export default ScoreSettings;
 export const getBalancedScore = (
   isExpZero: boolean,
   isEduZero: boolean,
-  isSkillZero: boolean,
+  isSkillZero: boolean
 ): JobFormState['formFields']['resumeScoreSettings'] => {
   const scoreSetting: JobFormState['formFields']['resumeScoreSettings'] = {
     experience: 60,
     education: 20,
-    skills: 20,
+    skills: 20
   };
 
   if (isExpZero && isEduZero && isSkillZero) {

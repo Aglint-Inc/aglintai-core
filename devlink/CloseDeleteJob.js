@@ -93,7 +93,7 @@ export function CloseDeleteJob({
               className={_utils.cx(_styles, "fw-semibold", "text-red-500")}
               tag="div"
             >
-              {"Delete draft"}
+              {"Delete Job"}
             </_Builtin.Block>
           ) : null}
           {isDynamicDescVisible ? (

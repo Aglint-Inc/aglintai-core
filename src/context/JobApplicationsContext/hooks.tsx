@@ -13,11 +13,11 @@ import {
   getScreeningStatus
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
-import { JobApplicationDelete } from '@/src/pages/api/jobApplications/candidateDelete';
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
-import { getSafeAssessmentResult } from '@/src/pages/api/jobApplications/candidateEmail/utils';
-import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
-import { handleJobApplicationApi } from '@/src/pages/api/jobApplications/utils';
+import { JobApplicationDelete } from '@/src/pages/api/job/jobApplications/candidateDelete';
+import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
+import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
+import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
+import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/utils';
 import { EmailTemplateType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 

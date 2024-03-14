@@ -1,12 +1,18 @@
 /* eslint-disable security/detect-object-injection */
-
-import { PostgrestError } from '@supabase/supabase-js';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
-import { JobDashboardApi } from '@/src/pages/api/jobDashboard/read';
-import { handleJobDashboardApi } from '@/src/pages/api/jobDashboard/utils';
-import toast from '@/src/utils/toast';
+import {
+  useAllAssessments,
+  useAllAssessmentTemplates
+} from '@/src/queries/assessment';
+import { Assessment } from '@/src/queries/assessment/types';
+import { Job } from '@/src/queries/job/types';
+import {
+  useJobLocations,
+  useJobMatches,
+  useJobSkills,
+  useJobTenureAndExperience
+} from '@/src/queries/job-dashboard';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
@@ -20,44 +26,103 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const job = initialJobLoad
     ? jobsData.jobs.find((job) => job.id === jobId)
     : undefined;
+  const assessments = useAllAssessments();
+  const templates = useAllAssessmentTemplates();
+  const assessmentData = assessments?.data
+    ? assessments.data.reduce(
+        (acc, curr) => {
+          if (curr.jobs.find(({ id }) => id === jobId))
+            acc.jobAssessments.push(curr);
+          else if (curr.duration) acc.otherAssessments.push(curr);
+          return acc;
+        },
+        {
+          jobAssessments: [] as Assessment[],
+          otherAssessments: [] as Assessment[]
+        }
+      )
+    : {
+        jobAssessments: [] as Assessment[],
+        otherAssessments: [] as Assessment[]
+      };
+  const skills = useJobSkills();
+  const locations = useJobLocations();
+  const matches = useJobMatches();
+  const tenureAndExperience = useJobTenureAndExperience();
+  const draftValidity = getDraftValidity(job);
 
-  const [analytics, setAnalytics] =
-    useState<JobDashboardApi['response']['data']>(undefined);
-
-  const initialLoad = initialJobLoad && analytics !== undefined ? true : false;
-
-  const handleReadAnalytics = async () => {
-    const { data, error } = await handleJobDashboardApi('read', {
-      job_id: jobId,
-    });
-    handleJobDashboardError(error);
-    setAnalytics(data);
-  };
-
-  const handleJobDashboardError = (error: { [id: string]: PostgrestError }) => {
-    const errors = Object.entries(error).reduce((acc, [key, value]) => {
-      if (value) acc.push(`${key}: ${value}`);
-      return acc;
-    }, []);
-    if (errors.length !== 0) toast.error(`${errors.join('\n')}`);
-  };
-
-  const handleJobDashboardInit = () => {
-    handleReadAnalytics();
-  };
-  useEffect(() => {
-    if (initialJobLoad) {
-      handleJobDashboardInit();
-    }
-  }, [initialJobLoad, job?.id]);
+  const initialLoad =
+    jobLoad &&
+    assessments.status !== 'pending' &&
+    tenureAndExperience.status !== 'pending' &&
+    templates.status !== 'pending' &&
+    matches.status !== 'pending' &&
+    skills.status !== 'pending' &&
+    locations.status !== 'pending'
+      ? true
+      : false;
 
   const value = {
     job,
+    draftValidity,
     initialLoad,
-    analytics,
+    assessments: {
+      ...assessments,
+      data: assessmentData
+    },
+    tenureAndExperience,
+    templates,
+    skills,
+    locations,
+    matches
   };
 
   return value;
+};
+
+export const getDraftValidity = (job: Job) => {
+  if (!job) return false;
+  //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
+  const draft = {
+    job_title: job.job_title,
+    company: job.company,
+    department: job.department,
+    description: job.description,
+    job_type: job.job_type,
+    location: job.location,
+    workplace_type: job.workplace_type,
+    ...(job.draft ?? {})
+  };
+  return Object.entries(draft).reduce((acc, [key, value]) => {
+    if (acc) {
+      const safeKey = key as keyof typeof draft;
+      switch (safeKey) {
+        case 'jd_json':
+          return acc;
+        case 'description':
+          return !validateDescription(value as string);
+        //TODO: HACK HERE AGAIN
+        case 'company':
+        case 'department':
+        case 'job_title':
+        case 'job_type':
+        case 'location':
+        case 'workplace_type':
+          return !validateString(value as string);
+        default:
+          return acc;
+      }
+    }
+    return acc;
+  }, true);
+};
+
+export const validateString = (str: string) => {
+  return !str || typeof str !== 'string' || str.length === 0;
+};
+
+export const validateDescription = (str: string) => {
+  return validateString(str) || str.length < 100;
 };
 
 export default useProviderJobDashboardActions;
