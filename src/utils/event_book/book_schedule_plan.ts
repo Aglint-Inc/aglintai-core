@@ -20,6 +20,12 @@ export const getAllIntsFromPlan = async (
     module_slot.selectedIntervs.forEach((int) => {
       intSet.add(int.interv_id);
     });
+    module_slot.shadowIntervs.forEach((int) => {
+      intSet.add(int.interv_id);
+    });
+    module_slot.revShadowIntervs.forEach((int) => {
+      intSet.add(int.interv_id);
+    });
   }
 
   const [company] = supabaseWrap(

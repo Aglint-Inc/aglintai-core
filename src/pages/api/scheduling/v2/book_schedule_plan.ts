@@ -24,7 +24,6 @@ export type BookingApiParams = {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { plan, candidate_email, schedule_id } = req.body as BookingApiParams;
-  console.log(plan, candidate_email, schedule_id);
 
   try {
     if (!plan || !candidate_email || !schedule_id)
@@ -45,14 +44,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .filter((i) => !i.isBreak)
       .map(async (int_module) => {
         const organizer = int_module.selectedIntervs[0];
-        const interviewers = int_module.selectedIntervs.slice(1);
-
+        const attended_inters = [
+          ...int_module.selectedIntervs.slice(1),
+          ...int_module.shadowIntervs,
+          ...int_module.revShadowIntervs
+        ];
         return await bookIndividualModule({
           candidate_email,
           company_cred,
           end_time: int_module.end_time,
           start_time: int_module.start_time,
-          interviewers: interviewers.map((int) => ({
+          interviewers: attended_inters.map((int) => ({
             email: int.email,
             schedule_auth: recruiters_info.find(
               (r) => r.user_id === int.interv_id
@@ -72,7 +74,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
     const events = await Promise.all(promises);
-    console.log('nfkewjn');
 
     await saveEventsStatusInSchedule({
       schedule_id,
@@ -80,7 +81,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_events: events,
       schedule_plan: plan.plans
     });
-    console.log('nfkewjn');
 
     return res.status(200).json(events);
   } catch (error) {
@@ -138,11 +138,29 @@ const saveEventsStatusInSchedule = async ({
           .select('id')
       );
 
-      const meeting_interviewers = int_module.selectedIntervs.map((i) => ({
-        interview_meeting_id: rec.id,
-        interviewer_id: i.interv_id,
-        interviewer_type: 'qualified' as any
-      }));
+      const meeting_interviewers = [];
+
+      int_module.selectedIntervs.forEach((i) => {
+        meeting_interviewers.push({
+          interview_meeting_id: rec.id,
+          interviewer_id: i.interv_id,
+          interviewer_type: 'qualified' as any
+        });
+      });
+      int_module.shadowIntervs.forEach((i) => {
+        meeting_interviewers.push({
+          interview_meeting_id: rec.id,
+          interviewer_id: i.interv_id,
+          interviewer_type: 'shadow' as any
+        });
+      });
+      int_module.revShadowIntervs.forEach((i) => {
+        meeting_interviewers.push({
+          interview_meeting_id: rec.id,
+          interviewer_id: i.interv_id,
+          interviewer_type: 'reverse_shadow' as any
+        });
+      });
 
       supabaseWrap(
         await supabaseAdmin

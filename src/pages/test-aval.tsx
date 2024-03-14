@@ -46,49 +46,56 @@ const Comp = () => {
   const test = async () => {
     try {
       const payload = {
-        schedule_id: 'XfDhm0F8ZFxikCcA-8GLq',
-        plan: [
+        id: 'rF4V1t-mh4bU-9Sb1rDtK',
+        plans: [
           {
+            module_id: '3e225dce-67d2-45c1-aee5-dcdf36ddaaac',
             isBreak: false,
-            duration: 30,
-            end_time: '2024-03-14T11:30:00.000Z',
-            module_id: '24535995-ec9e-4c91-a273-859e3c41bfe4',
-            start_time: '2024-03-14T11:00:00.000Z',
-            module_name: 'H R',
-            attended_inters: [
+            selectedIntervs: [
               {
-                id: '627fedcf-7b6f-490a-97ee-3ba93f3fee2d',
-                name: 'Ravi K',
-                email: 'ravi@aglinthq.com',
-                profile_img: ''
-              }
-            ]
-          },
-          {
-            isBreak: true,
-            duration: 30,
-            end_time: '2024-03-14T12:00:00.000Z',
-            module_id: '',
-            start_time: '2024-03-14T11:30:00.000Z',
-            module_name: '',
-            attended_inters: []
-          },
-          {
-            isBreak: false,
-            duration: 30,
-            end_time: '2024-03-14T12:30:00.000Z',
-            module_id: '43387b96-2390-4406-8a93-73c14cc3a668',
-            start_time: '2024-03-14T12:00:00.000Z',
-            module_name: 'Next JS Developer',
-            attended_inters: [
-              {
-                id: '9afe3700-c509-4f65-af0d-7892718ecde2',
-                name: 'Chinmai C R',
+                interv_id: '9afe3700-c509-4f65-af0d-7892718ecde2',
                 email: 'chinmai@aglinthq.com',
                 profile_img:
-                  'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/recruiter-user/public/9afe3700-c509-4f65-af0d-7892718ecde2?t=2024-02-22T05:06:18.313Z'
+                  'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/recruiter-user/public/9afe3700-c509-4f65-af0d-7892718ecde2?t=2024-02-22T05:06:18.313Z',
+                name: 'Chinmai C R',
+                pause_json: null
               }
-            ]
+            ],
+            duration: 30,
+            start_time: '2024-03-18T04:00:55.247Z',
+            end_time: '2024-03-18T04:30:55.247Z',
+            module_name: 'Cloud Architect',
+            session_name: 'Session 1',
+            revShadowIntervs: [
+              {
+                interv_id: 'da3fbdd1-4403-44e3-b94a-1601bca8787a',
+                email: 'ogyen@aglinthq.com',
+                profile_img: '',
+                name: 'Ogyen Togga',
+                pause_json: null
+              }
+            ],
+            shadowIntervs: []
+          },
+          {
+            module_id: 'c26261d0-8a74-4aae-a8b1-6c6586862a8e',
+            isBreak: false,
+            start_time: '2024-03-18T04:30:55.247Z',
+            end_time: '2024-03-18T05:00:55.247Z',
+            selectedIntervs: [
+              {
+                interv_id: '3521d240-eb11-4ae5-ac27-d4f4e2ac5ea5',
+                email: 'dileep@aglinthq.com',
+                profile_img: '',
+                name: 'Dileep B C',
+                pause_json: null
+              }
+            ],
+            duration: 30,
+            module_name: 'Typescipt Interview',
+            session_name: 'Session 2',
+            revShadowIntervs: [],
+            shadowIntervs: []
           }
         ]
       };
@@ -97,7 +104,7 @@ const Comp = () => {
         {
           plan: payload,
           candidate_email: 'ogyen@aglinthq.com',
-          schedule_id: '8e7f04cd-916a-48a7-ba4e-9b3c1c12f2b5'
+          schedule_id: '84e4c494-80a4-411d-b08d-68a480052910'
         }
       );
     } catch (error) {
