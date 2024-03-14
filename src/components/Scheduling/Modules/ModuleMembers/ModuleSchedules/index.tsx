@@ -44,7 +44,6 @@ function ModuleSchedules({
       return schedules.filter((sch) => sch.schedule.status === 'completed');
     }
   };
-
   return (
     <InterviewMemberSide
       isAllActive={filter === 'all'}
@@ -65,7 +64,7 @@ function ModuleSchedules({
       }}
       slotInterviewCard={
         <>
-          <Grid container item spacing={2}>
+          <Grid container spacing={2}>
             {!loading &&
               filterSchedules().map((sch, ind) => {
                 return (
@@ -73,7 +72,9 @@ function ModuleSchedules({
                     item
                     sm={12}
                     md={12}
-                    lg={router.query.member_id ? 12 : 6}
+                    lg={
+                      router.query.member_id || router.query.module_id ? 12 : 6
+                    }
                     xl={4}
                     key={ind}
                   >
