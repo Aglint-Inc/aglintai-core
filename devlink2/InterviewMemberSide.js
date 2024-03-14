@@ -15,6 +15,7 @@ export function InterviewMemberSide({
   isCancelActive = false,
   onClickAll = {},
   isAllActive = false,
+  propsGrids = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">
@@ -106,6 +107,7 @@ export function InterviewMemberSide({
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1079")}
         tag="div"
+        {...propsGrids}
       >
         {slotInterviewCard ?? <InterviewScreenCard />}
       </_Builtin.Block>
