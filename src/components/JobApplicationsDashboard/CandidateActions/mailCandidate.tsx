@@ -7,15 +7,15 @@ import { CandidateSelectionPopup } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
-  JobApplicationSections,
+  JobApplicationSections
 } from '@/src/context/JobApplicationsContext/types';
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
-import { getSafeAssessmentResult } from '@/src/pages/api/jobApplications/candidateEmail/utils';
+import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
+import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 
 import {
   getAssessmentStatus,
   getDisqualificationStatus,
-  getScreeningStatus,
+  getScreeningStatus
 } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 
@@ -27,12 +27,12 @@ const MailCandidateDialog: React.FC<{
 }> = ({ open, setOpen, selectAll, setSelectAll }) => {
   const {
     cardStates: {
-      checkList: { list, disabled },
+      checkList: { list, disabled }
     },
     setCardStates,
     handleJobApplicationSectionUpdate,
     section,
-    applications,
+    applications
   } = useJobApplications();
 
   const {
@@ -41,7 +41,7 @@ const MailCandidateDialog: React.FC<{
     title,
     description,
     subTitle,
-    buttonText,
+    buttonText
   } = getEmailProps(selectAll, applications[section], section, list);
 
   const [purposes, setPurposes] = useState(initialPurpose);
@@ -70,23 +70,23 @@ const MailCandidateDialog: React.FC<{
       setOpen(false);
       setCardStates((prev) => ({
         ...prev,
-        checkList: { ...prev.checkList, disabled: true },
+        checkList: { ...prev.checkList, disabled: true }
       }));
       await handleJobApplicationSectionUpdate(
         {
           source: section,
-          destination: null,
+          destination: null
         },
         purposes,
         list,
-        selectAll,
+        selectAll
       );
       setCardStates((prev) => ({
         ...prev,
         checkList: {
           disabled: false,
-          list: new Set(),
-        },
+          list: new Set()
+        }
       }));
       setSelectAll(false);
     }
@@ -131,13 +131,13 @@ const getEmailProps = (
   selectAll: boolean,
   sectionApplications: JobApplication[],
   section: JobApplicationSections,
-  list: Set<string>,
+  list: Set<string>
 ) => {
   const type =
     section === JobApplicationSections.DISQUALIFIED ? 'mail' : 'invite';
   if (selectAll) {
     const initialPurpose = [getPurpose(section)].filter(
-      (f) => f,
+      (f) => f
     ) as JobApplicationEmails['request']['purposes'];
     return {
       initialPurpose,
@@ -151,7 +151,7 @@ const getEmailProps = (
           ? `Resend ${type}s to all disqualified candidates who have recieved a rejection email`
           : `Resend ${type}s to all invited candidates`,
       showCheck: section === JobApplicationSections.DISQUALIFIED ? false : true,
-      buttonText: `Send ${type}s`,
+      buttonText: `Send ${type}s`
     };
   }
   const { send, resend } = getEmailSplit(sectionApplications, list, section);
@@ -181,14 +181,14 @@ const getEmailProps = (
     subTitle,
     description,
     showCheck,
-    buttonText,
+    buttonText
   };
 };
 
 const getEmailSplit = (
   applications: JobApplication[],
   checkList: Set<string>,
-  section: JobApplicationSections,
+  section: JobApplicationSections
 ) => {
   return applications.reduce(
     (acc, curr) => {
@@ -199,24 +199,24 @@ const getEmailSplit = (
       }
       return acc;
     },
-    { send: [] as JobApplication[], resend: [] as JobApplication[] },
+    { send: [] as JobApplication[], resend: [] as JobApplication[] }
   );
 };
 
 const getStatus = (
   section: JobApplicationSections,
-  application: JobApplication,
+  application: JobApplication
 ) => {
   switch (section) {
     case JobApplicationSections.SCREENING:
       return getScreeningStatus(
         application.status_emails_sent,
-        application.phone_screening,
+        application.phone_screening
       );
     case JobApplicationSections.ASSESSMENT:
       return getAssessmentStatus(
         application.status_emails_sent,
-        getSafeAssessmentResult(application.assessment_results),
+        getSafeAssessmentResult(application.assessment_results)
       );
     case JobApplicationSections.DISQUALIFIED:
       return getDisqualificationStatus(application.status_emails_sent);
@@ -225,7 +225,7 @@ const getStatus = (
 
 const checkVisibility = (
   section: JobApplicationSections,
-  sendTitleCriteria: boolean,
+  sendTitleCriteria: boolean
 ) => {
   return (
     (section === JobApplicationSections.SCREENING ||
@@ -260,7 +260,7 @@ const getTitle = (section: JobApplicationSections) => {
 };
 
 const getPurpose = (
-  destination: JobApplicationSections,
+  destination: JobApplicationSections
 ): JobApplicationEmails['request']['purposes'][number] => {
   switch (destination) {
     case JobApplicationSections.NEW:
@@ -279,7 +279,7 @@ const getPurpose = (
 };
 
 const getSubPurpose = (
-  destination: JobApplicationSections,
+  destination: JobApplicationSections
 ): JobApplicationEmails['request']['purposes'][number] => {
   switch (destination) {
     case JobApplicationSections.NEW:

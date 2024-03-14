@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
+import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
 import { JobApplicationDelete } from './candidateDelete';
 import {
   type CsvUploadApi,
   type ManualUploadApi,
   type ResumeUploadApi,
-  UploadApiFormData,
+  UploadApiFormData
 } from './candidateUpload/types';
 import { type ReadJobApplicationApi } from './read';
 
@@ -23,7 +23,7 @@ type ApiRouteTypes = {
 export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(
   route: T,
   payload: ApiRouteTypes[T]['request'],
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   if (payload[UploadApiFormData.PARAMS] && payload[UploadApiFormData.FILES]) {
     const params = Object.entries(payload[UploadApiFormData.PARAMS])
@@ -34,19 +34,19 @@ export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(
       .join('&');
     const { data } = await axios<ApiRouteTypes[T]['response']>({
       method: 'post',
-      url: `/api/jobApplications/${route}?${params}`,
+      url: `/api/job/jobApplications/${route}?${params}`,
       data: payload[UploadApiFormData.FILES],
       timeout: 60000,
-      signal: signal,
+      signal: signal
     });
     return data;
   }
   const { data } = await axios<ApiRouteTypes[T]['response']>({
     method: 'post',
-    url: `/api/jobApplications/${route}`,
+    url: `/api/job/jobApplications/${route}`,
     data: payload,
     timeout: 60000,
-    signal: signal,
+    signal: signal
   });
   return data;
 };

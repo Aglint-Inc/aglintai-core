@@ -3,6 +3,7 @@ import * as _Builtin from "./_Builtin";
 import { PipeLine } from "./PipeLine";
 import { ScheduleCardSmall } from "./ScheduleCardSmall";
 import { GraphBlock } from "./GraphBlock";
+import { CardWithNumber } from "./CardWithNumber";
 import { ModuleCard } from "./ModuleCard";
 import * as _utils from "./utils";
 import _styles from "./JobDashboard.module.css";
@@ -26,6 +27,8 @@ export function JobDashboard({
   slotScheduleCardSmall,
   slotLocationGraphBlock,
   slotSkillGraphBlock,
+  slotExperienceGraph,
+  slotCardWithNumber,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jobdashboard")} tag="div">
@@ -58,10 +61,6 @@ export function JobDashboard({
                 {"Total Applicants"}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "score_settings")}
-              tag="div"
-            />
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -426,7 +425,55 @@ export function JobDashboard({
           className={_utils.cx(_styles, "jd_graph_skills")}
           tag="div"
         >
-          {slotSkillGraphBlock ?? <GraphBlock />}
+          {slotSkillGraphBlock ?? (
+            <GraphBlock dummyImage="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65e80bbf1bd6c485187c4a79_Chart.svg" />
+          )}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-753")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "jd_graph_skills")}
+            tag="div"
+          >
+            {slotExperienceGraph ?? (
+              <GraphBlock
+                dummyImage="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg"
+                textGraphTitle="Experience Metrics"
+              />
+            )}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "crads_with_number")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_2e52e577-9ad7-d035-77fb-4341b0366642-06b69083"
+            )}
+            tag="div"
+          >
+            {slotCardWithNumber ?? (
+              <>
+                <CardWithNumber />
+                <CardWithNumber
+                  textTitle={
+                    <>
+                      {"Average Tenure"}
+                      <br />
+                    </>
+                  }
+                  textNumber="6.1"
+                  textDescription={
+                    <>
+                      {"Average time before switching companies."}
+                      <br />
+                    </>
+                  }
+                  isEmpty={false}
+                />
+              </>
+            )}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "embed_css_block")}
@@ -461,23 +508,27 @@ export function JobDashboard({
             {"Ask to Assistant"}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
-            {
-              "Utilize AI to efficiently handle all tasks related to this job, ensuring seamless execution of all tasks traditionally performed manually."
-            }
+            {"Utilize AI for seamless execution of all job tasks."}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "jd_modulecard")}
+        <_Builtin.Grid
+          id={_utils.cx(
+            _styles,
+            "w-node-_455ef4cc-ff1b-729d-620d-560a6abf007f-06b69083"
+          )}
           tag="div"
         >
           {slotModuleCard ?? (
             <>
-              <ModuleCard textDescription="Phone screening is not enabled " />
-              <ModuleCard textDescription="Phone screening is not enabled." />
-              <ModuleCard textDescription="Phone screening is not enabled." />
+              <ModuleCard textName="Profile Score" />
+              <ModuleCard textName="Interview Plan" />
+              <ModuleCard textName="Assessment" isError={false} />
+              <ModuleCard textName="Screening" />
+              <ModuleCard textName="Templates" />
+              <ModuleCard textName="Workflows" isError={false} />
             </>
           )}
-        </_Builtin.Block>
+        </_Builtin.Grid>
       </_Builtin.Block>
     </_Component>
   );

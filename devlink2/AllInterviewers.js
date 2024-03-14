@@ -25,7 +25,12 @@ export function AllInterviewers({
           className={_utils.cx(_styles, "div-block-1142")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Interviewer"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Interviewer"}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1142")}
@@ -35,19 +40,34 @@ export function AllInterviewers({
           )}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Upcoming"}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1142")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Completed"}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1142")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Interview Modules"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Interview Modules"}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

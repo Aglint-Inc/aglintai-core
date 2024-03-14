@@ -8,6 +8,8 @@ export function GraphBlock({
   as: _Component = _Builtin.Block,
   slotDarkPillLocation,
   slotLocationGraph,
+  dummyImage = "https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg",
+  textGraphTitle = "Candidates by",
 }) {
   return (
     <_Component
@@ -20,7 +22,7 @@ export function GraphBlock({
     >
       <_Builtin.Block className={_utils.cx(_styles, "graph_title")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Candidates by"}
+          {textGraphTitle}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "graph_filter")}
@@ -43,7 +45,7 @@ export function GraphBlock({
             width="auto"
             height="auto"
             alt=""
-            src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65e80bbf36098df0643efeb7_round%20graph.svg"
+            src={dummyImage}
           />
         )}
       </_Builtin.Block>

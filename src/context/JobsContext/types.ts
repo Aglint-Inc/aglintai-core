@@ -1,7 +1,7 @@
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { Assessment } from '@/src/queries/assessment/types';
-import { JobTypeDB, StatusJobs } from '@/src/types/data.types';
+import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
+import { Job } from '@/src/queries/job/types';
 
+// import { Assessment } from '@/src/queries/assessment/types';
 import useJobActions from './hooks';
 import { JobApplicationSections } from '../JobApplicationsContext/types';
 
@@ -21,13 +21,10 @@ export type InputData = Partial<
 >;
 
 export type JobContext = ReturnType<typeof useJobActions>;
-
-export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
-  assessment_job_relation: Partial<{ assessment: Assessment }[]>;
-  jd_json: JdJsonType;
-  active_status: StatusJobs | null;
-  count: CountJobs;
-};
-
+export type JobTypeDashboard = Job;
 // eslint-disable-next-line no-unused-vars
 export type CountJobs = { [key in JobApplicationSections]?: number };
+
+export type InterviewPlan = {
+  plan: InterviewPlanScheduleDbType['plans'];
+};

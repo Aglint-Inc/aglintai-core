@@ -12,7 +12,7 @@ import React, { FC } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import { useJobDetails } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '..';
 import { getOrderedGraphValues } from '../utils';
@@ -36,7 +36,7 @@ const BarChart: React.FC<{
     labels: names,
     datasets: [
       {
-        label: 'Count',
+        label: 'Candidates',
         data: counts,
         backgroundColor: colors,
         borderRadius: 8,
@@ -86,8 +86,8 @@ const DashboardBarChart: FC<{
   option: keyof DashboardGraphOptions<'skills'>;
 }> = ({ option }) => {
   const {
-    analytics: { skills: skillPool }
-  } = useJobDashboard();
+    skills: { data: skillPool }
+  } = useJobDetails();
   const skills = skillPool?.[option] ?? null;
   const total = skills
     ? Object.values(skills).reduce((acc, curr) => {

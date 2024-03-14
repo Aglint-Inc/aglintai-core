@@ -14,7 +14,7 @@ type Key = keyof ResponseData;
 
 export const handleJobAnalytics = async (
   job_id: Request['job_id'],
-  supabase: Supabase,
+  supabase: Supabase
 ) => {
   const promises = createPromises(job_id, supabase);
   const responses = handlePromises(promises);
@@ -23,7 +23,7 @@ export const handleJobAnalytics = async (
 
 const createPromises = (
   job_id: Request['job_id'],
-  supabase: Supabase,
+  supabase: Supabase
   // eslint-disable-next-line no-unused-vars
 ): { [id in Key]: Promise<any> } => {
   return {
@@ -31,6 +31,8 @@ const createPromises = (
     skills: getSkillsPool(job_id, supabase),
     counts: getResumeMatch(job_id, supabase),
     sections: getJobAppStatus(job_id, supabase),
+    assessments: getJobAssessments(job_id, supabase),
+    tenureAndExperience: getTenureAndExperience(job_id, supabase)
   };
 };
 
@@ -40,18 +42,20 @@ export const createInvalidResponse = (): { [id in Key]: PostgrestError } => {
     code: null,
     details: null,
     hint: null,
-    message: 'Invalid paramters',
+    message: 'Invalid paramters'
   };
   return {
+    assessments: error,
     locations: error,
     skills: error,
     counts: error,
     sections: error,
+    tenureAndExperience: error
   };
 };
 
 const handlePromises = async (
-  promiseObj: ReturnType<typeof createPromises>,
+  promiseObj: ReturnType<typeof createPromises>
 ) => {
   const { keys, promises } = Object.entries(promiseObj).reduce(
     (acc, [key, promise]) => {
@@ -59,7 +63,7 @@ const handlePromises = async (
       acc.promises.push(promise);
       return acc;
     },
-    { keys: [] as (keyof typeof promiseObj)[], promises: [] as Promise<any>[] },
+    { keys: [] as (keyof typeof promiseObj)[], promises: [] as Promise<any>[] }
   );
   const responses = await Promise.allSettled(promises);
   const results = keys.reduce(
@@ -70,7 +74,7 @@ const handlePromises = async (
           code: response.status,
           message: response.reason,
           hint: null,
-          details: null,
+          details: null
         };
         acc.data[curr] = null;
       } else {
@@ -79,20 +83,20 @@ const handlePromises = async (
       }
       return acc;
     },
-    { data: {} as ResponseData, error: {} as ResponseError },
+    { data: {} as ResponseData, error: {} as ResponseError }
   );
   return results;
 };
 
 const getSkillsPool = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<Database>>
 ) => {
   try {
     const controller = new AbortController();
     setTimeout(() => controller.abort(), 60000);
     const { data, error } = await supabase.rpc('getskillpools', {
-      jobid: job_id,
+      jobid: job_id
     });
     if (error)
       throw new Error(`Skill pool RPC function failure: ${error.message}`);
@@ -104,17 +108,17 @@ const getSkillsPool = async (
 
 const getLocationPool = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<Database>>
 ) => {
   try {
     const controller = new AbortController();
     setTimeout(() => controller.abort(), 60000);
     const { data, error } = await supabase.rpc('getlocationspool', {
-      jobid: job_id,
+      jobid: job_id
     });
     if (error)
       throw new Error(
-        `Location pool RPC function failure: ${error.message}, ${error.details}, ${error.hint}`,
+        `Location pool RPC function failure: ${error.message}, ${error.details}, ${error.hint}`
       );
     return data as ResponseData['locations'];
   } catch (e) {
@@ -122,9 +126,45 @@ const getLocationPool = async (
   }
 };
 
+const getTenureAndExperience = async (
+  job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>
+) => {
+  try {
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 60000);
+    const { data, error } = await supabase.rpc('getexperienceandtenure', {
+      jobid: job_id
+    });
+    if (error)
+      throw new Error(
+        `Tenure and experience RPC function failure: ${error.message}, ${error.details}, ${error.hint}`
+      );
+    return data as ResponseData['tenureAndExperience'];
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const getJobAssessments = async (
+  job_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>
+) => {
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 60000);
+  const { data, error } = await supabase
+    .rpc('getjobassessments', {
+      jobid: job_id
+    })
+    .abortSignal(controller.signal);
+  if (error)
+    throw new Error(`Assessment RPC function failure : ${error.message}`);
+  return data;
+};
+
 export const getResumeMatch = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<Database>>
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -134,7 +174,7 @@ export const getResumeMatch = async (
       topmatch: 80,
       goodmatch: 60,
       averagematch: 40,
-      poormatch: 20,
+      poormatch: 20
     })
     .abortSignal(controller.signal);
   if (error)
@@ -145,13 +185,13 @@ export const getResumeMatch = async (
 
 export const getJobAppStatus = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<Database>>
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
   const { data, error } = await supabase
     .rpc('getsectioncounts', {
-      jobid: job_id,
+      jobid: job_id
     })
     .abortSignal(controller.signal);
   if (error)
@@ -160,11 +200,11 @@ export const getJobAppStatus = async (
 };
 
 export const resumeMatchRPCFormatter = (
-  unsafeData: Database['public']['Functions']['getresumematches']['Returns'],
+  unsafeData: Database['public']['Functions']['getresumematches']['Returns']
 ) => {
   const initialData = {
     matches: unsafeData,
-    total: 0,
+    total: 0
   };
   return Object.values(unsafeData).reduce((acc, curr) => {
     acc.total += curr;

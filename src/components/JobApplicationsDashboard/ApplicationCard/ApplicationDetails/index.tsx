@@ -57,8 +57,9 @@ import {
   JobApplicationSections,
   ScoreJson
 } from '@/src/context/JobApplicationsContext/types';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
-import { getSafeAssessmentResult } from '@/src/pages/api/jobApplications/candidateEmail/utils';
+import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 // import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
@@ -524,8 +525,12 @@ const NewInterviewStatus = ({
 const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
   application
 }) => {
-  const { job } = useJobApplications();
-  const result = getInterviewScores(application, job);
+  const {
+    assessments: {
+      data: { jobAssessments }
+    }
+  } = useJobDetails();
+  const result = getInterviewScores(application, jobAssessments);
   const [collapse, setCollapse] = useState(false);
   const interviewScore = <InterviewScore application={application} />;
   return (

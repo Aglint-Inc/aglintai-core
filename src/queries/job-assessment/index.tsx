@@ -35,7 +35,7 @@ export const useJobAssessmentsConnect = () => {
     onError: (error, variables, context) => {
       toast.error('Unable to connect assessment');
       queryClient.setQueryData<Assessment[]>(queryKey, context.prevAssessments);
-    },
+    }
   });
 };
 
@@ -75,11 +75,11 @@ export const useJobAssessmentsBulkConnect = () => {
               id: assessment_id,
               jobs: [{ id: job_id, title }],
               created_at: null,
-              loading: true,
+              loading: true
             });
             return acc;
           },
-          [] as Assessment[],
+          [] as Assessment[]
         );
         newAssessments.unshift(...newTemplatestoAssessments);
         return newAssessments;
@@ -94,7 +94,7 @@ export const useJobAssessmentsBulkConnect = () => {
             return acc;
           }, [] as AssessmentTemplate[]);
           return newTemplates;
-        },
+        }
       );
       return { prevAssessments, prevTemplates };
     },
@@ -103,13 +103,13 @@ export const useJobAssessmentsBulkConnect = () => {
       queryClient.setQueryData<Assessment[]>(queryKey, context.prevAssessments);
       queryClient.setQueryData<AssessmentTemplate[]>(
         templateQueryKey,
-        context.prevTemplates,
+        context.prevTemplates
       );
     },
     onSettled: async () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
-    },
+    }
   });
 };
 
@@ -127,7 +127,7 @@ export const useJobAssessmentTemplateConnect = () => {
         assessment_id,
         job_id,
         template.id,
-        recruiter_id,
+        recruiter_id
       ),
     onMutate: async (template) => {
       await queryClient.cancelQueries({ queryKey });
@@ -139,9 +139,9 @@ export const useJobAssessmentTemplateConnect = () => {
             ...template,
             recruiter_id,
             jobs: [{ id: job_id, title }],
-            loading: true,
+            loading: true
           },
-          ...prev,
+          ...prev
         ];
         return newAssessments;
       });
@@ -151,10 +151,10 @@ export const useJobAssessmentTemplateConnect = () => {
         templateQueryKey,
         (prev) => {
           const newTemplates: AssessmentTemplate[] = prev.filter(
-            (t) => t.id !== template.id,
+            (t) => t.id !== template.id
           );
           return newTemplates;
-        },
+        }
       );
       return { prevAssessments, prevTemplates };
     },
@@ -163,13 +163,13 @@ export const useJobAssessmentTemplateConnect = () => {
       queryClient.setQueryData<Assessment[]>(queryKey, context.prevAssessments);
       queryClient.setQueryData<AssessmentTemplate[]>(
         templateQueryKey,
-        context.prevTemplates,
+        context.prevTemplates
       );
     },
     onSettled: async () => {
       await queryClient.cancelQueries({ queryKey });
       queryClient.invalidateQueries({ queryKey });
-    },
+    }
   });
 };
 
@@ -188,7 +188,7 @@ export const useJobAssessmentsDisconnect = () => {
           if (curr.id === assessment_id)
             acc.push({
               ...curr,
-              jobs: curr.jobs.filter(({ id }) => id !== job_id),
+              jobs: curr.jobs.filter(({ id }) => id !== job_id)
             });
           else acc.push(curr);
           return acc;
@@ -200,13 +200,13 @@ export const useJobAssessmentsDisconnect = () => {
     onError: (error, variables, context) => {
       toast.error('Unable to disconnect assessment');
       queryClient.setQueryData<Assessment[]>(queryKey, context.prevAssessments);
-    },
+    }
   });
 };
 
 const connectJobAssessmentDbAction = async (
   job_id: JobTypeDB['id'],
-  assessment_id: Assessment['id'],
+  assessment_id: Assessment['id']
 ) => {
   const { error } = await supabase
     .from('assessment_job_relation')
@@ -217,19 +217,19 @@ const connectJobAssessmentDbAction = async (
 const bulkConnectJobAssessmentDbAction = async (
   job_id: JobTypeDB['id'],
   props: BulkConnectProps,
-  recruiter_id: string,
+  recruiter_id: string
 ) => {
   const { assessments, templates } = props;
   const assessmentPayload = assessments.map(({ id }) => id);
   const templatePayload = templates.map(({ id, assessment_id }) => ({
     template_id: id,
-    assessment_id,
+    assessment_id
   }));
   const { error } = await supabase.rpc('connectbulkassessmenttemplate', {
     assessments: assessmentPayload,
     templates: templatePayload,
     recruiterid: recruiter_id,
-    jobid: job_id,
+    jobid: job_id
   });
   if (error) throw new Error(error.message);
 };
@@ -238,20 +238,20 @@ const connectJobAssessmentTemplateDbAction = async (
   assessment_id: Assessment['id'],
   job_id: JobTypeDB['id'],
   template_id: AssessmentTemplate['id'],
-  recruiter_id: string,
+  recruiter_id: string
 ) => {
   const { error } = await supabase.rpc('connectassessmenttemplate', {
     assessmentid: assessment_id,
     jobid: job_id,
     templateid: template_id,
-    recruiterid: recruiter_id,
+    recruiterid: recruiter_id
   });
   if (error) throw new Error(error.message);
 };
 
 const disconnectJobAssessmentDbAction = async (
   job_id: JobTypeDB['id'],
-  assessment_id: Assessment['id'],
+  assessment_id: Assessment['id']
 ) => {
   const { error } = await supabase
     .from('assessment_job_relation')

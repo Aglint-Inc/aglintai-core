@@ -9,14 +9,14 @@ type ApiRouteTypes = {
 export const handleJobDashboardApi = async <T extends keyof ApiRouteTypes>(
   route: T,
   payload: ApiRouteTypes[T]['request'],
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const { data } = await axios<ApiRouteTypes[T]['response']>({
     method: 'post',
-    url: `/api/jobDashboard/${route}`,
+    url: `/api/job/jobDashboard/${route}`,
     data: payload,
     timeout: 60000,
-    signal: signal,
+    signal: signal
   });
   return data;
 };

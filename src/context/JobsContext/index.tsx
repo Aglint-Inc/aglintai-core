@@ -2,7 +2,21 @@ import { createContext, ReactNode, useContext } from 'react';
 
 import useJobActions from './hooks';
 import { JobContext } from './types';
-import { initialJobContext } from './utils';
+
+export const initialJobContext = {
+  jobs: undefined,
+  jobsData: { jobs: undefined },
+  handleJobRead: undefined,
+  handleJobCreate: undefined,
+  handleJobUpdate: undefined,
+  handleUIJobUpdate: undefined,
+  handleJobPublish: undefined,
+  handleJobDelete: undefined,
+  handleGetJob: undefined,
+  experimental_handleGenerateJd: undefined,
+  handleJobRefresh: undefined,
+  initialLoad: false
+};
 
 const JobsContext = createContext(initialJobContext);
 

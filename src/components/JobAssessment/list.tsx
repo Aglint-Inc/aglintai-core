@@ -16,6 +16,7 @@ import {
   EmptyAssessmentList,
   SelectButton
 } from '@/devlink2';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';
 import {
@@ -26,7 +27,6 @@ import {
 } from '@/src/queries/job-assessment';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
-import { useJobAssessments } from './context';
 import TipTapAIEditor from '../Common/TipTapAIEditor';
 import SearchField from '../JobApplicationsDashboard/SearchField';
 import { AssessmentDetails } from '../NewAssessment/AssessmentDashboard/card';
@@ -38,7 +38,7 @@ const JobAssessment = () => {
       data: { jobAssessments }
     }
     // templates: { status, data: templates }
-  } = useJobAssessments();
+  } = useJobDetails();
   const [open, setOpen] = useState(false);
   // const isRecommendedVisible =
   //   status !== 'error' &&
@@ -77,7 +77,7 @@ const JobAssessments = ({ onOpen }: { onOpen: () => void }) => {
       data: { jobAssessments },
       refetch
     }
-  } = useJobAssessments();
+  } = useJobDetails();
   const { mutate } = useJobAssessmentsDisconnect();
   const handleDisconnect = (assessment_id: Assessment['id']) => {
     mutate(assessment_id);
@@ -142,7 +142,7 @@ const AssessmentListCard = ({
 const AssessmentTemplates = () => {
   const {
     templates: { data, status }
-  } = useJobAssessments();
+  } = useJobDetails();
   const { mutate } = useJobAssessmentTemplateConnect();
   const handleConnect = (template: AssessmentTemplate) => {
     mutate(template);
@@ -234,7 +234,7 @@ const AssessmentBrowser = ({
       data: { otherAssessments }
     },
     templates: { data: templates }
-  } = useJobAssessments();
+  } = useJobDetails();
   const { mutate } = useJobAssessmentsBulkConnect();
   const [section, setSection] = useState<keyof BroweserSelections>('private');
   const [selections, setSelections] = useState<BroweserSelections>({
@@ -402,7 +402,7 @@ const AssessmentPreview = () => {
     assessments: {
       data: { jobAssessments }
     }
-  } = useJobAssessments();
+  } = useJobDetails();
   const { handleJobUpdate } = useJobs();
   const { job_id } = useCurrentJob();
   const handlePreview = () => {

@@ -1,7 +1,6 @@
 import Seo from '@components/Common/Seo';
 
 import JobAssessmentDashboard from '@/src/components/JobAssessment';
-import { JobAssessmentContextProvider } from '@/src/components/JobAssessment/context';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 
@@ -20,9 +19,7 @@ const JobAssessmentPage = () => {
 JobAssessmentPage.getProvider = function getProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>
-        <JobAssessmentContextProvider>{page}</JobAssessmentContextProvider>
-      </JobApplicationProvider>
+      <JobApplicationProvider>{page}</JobApplicationProvider>
     </JobDashboardProvider>
   );
 };

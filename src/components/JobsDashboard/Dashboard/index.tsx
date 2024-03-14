@@ -1,14 +1,17 @@
 /* eslint-disable security/detect-object-injection */
-import { Stack } from '@mui/material';
+import { Dialog, Popover, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 // import posthog from 'posthog-js';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   // AssistantApplicantCount,
   // AssistantDashboard,
-  AssistStatus
+  AssistStatus,
+  CloseDeleteJob,
+  CloseJobButton,
+  CloseJobModal
   // DashboardMenu,
 } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
@@ -23,21 +26,29 @@ import {
 } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
+import { Job } from '@/src/queries/job/types';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './Doughnut';
+import DashboardLineChart from './LineChart';
+import TenureAndExpSummary from './TenureAndExpSummary';
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
+import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
 // import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
+import UITextField from '../../Common/UITextField';
 import { AddCandidates } from '../../JobApplicationsDashboard';
+import PublishButton from '../../publishButton';
 
 const JobDashboard = () => {
-  const { initialLoad, job } = useJobDashboard();
+  const { initialLoad, job } = useJobDetails();
 
   return initialLoad ? (
     job !== undefined ? (
@@ -52,8 +63,8 @@ const JobDashboard = () => {
   );
 };
 
-const getCounts = (
-  counts: ReturnType<typeof useJobDashboard>['analytics']['counts']
+const getMatches = (
+  counts: ReturnType<typeof useJobDetails>['matches']['data']
 ) => {
   return Object.entries(counts.matches).reduce(
     (acc, [key, value]) => {
@@ -74,16 +85,50 @@ const getCounts = (
 };
 
 const Dashboard = () => {
-  // const [maximizeChat, setMaximizeChat] = useState(false);
   const {
     job,
-    analytics: { counts }
-  } = useJobDashboard();
+    matches: { data: counts },
+    draftValidity
+  } = useJobDetails();
   const { push } = useRouter();
+  const { handleJobUpdate, handleJobDelete, handleJobPublish } = useJobs();
 
-  const score_matches = getCounts(counts);
+  const score_matches = getMatches(counts);
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
+  const [popover, setPopover] = useState(false);
+
+  const handleCloseJob = useCallback(async () => {
+    return await handleJobUpdate(job.id, { status: 'closed' });
+  }, [job.id]);
+  const handleDeleteJob = useCallback(() => {
+    push(`${pageRoutes.JOBS}?status=${job?.status ?? 'all'}`);
+    handleJobDelete(job.id);
+  }, [job.id]);
+
+  const handleSubmit = useCallback(async () => {
+    switch (job.status) {
+      case 'draft':
+        handleDeleteJob();
+        break;
+      case 'published':
+        {
+          const { data } = await handleCloseJob();
+          if (data) toast.success('Job closed successfully');
+        }
+        break;
+      case 'closed':
+        handleDeleteJob();
+        break;
+    }
+  }, [job.status]);
+
+  const handlePublish = async () => {
+    if (draftValidity) {
+      return await handleJobPublish(job);
+    }
+    toast.error('Unable to publish. Please check job details.');
+  };
 
   return (
     <>
@@ -105,9 +150,11 @@ const Dashboard = () => {
             textNotAMatchPercentage={score_matches.noMatch.percentage}
             textNotAMatchCount={score_matches.noMatch.count}
             slotLocationGraphBlock={<Doughnut />}
+            slotExperienceGraph={<LineGraph />}
             slotSkillGraphBlock={<Bars />}
             slotPipeline={<Pipeline />}
             slotModuleCard={<Modules />}
+            slotCardWithNumber={<TenureAndExpSummary />}
             textCandidateCount={counts.total}
             onClickAssistant={{
               onClick: () => push(`/jobs/${job.id}/agent`)
@@ -124,7 +171,28 @@ const Dashboard = () => {
                 isPublishedVisible={job?.status === 'published'}
               />
             }
-            onClickEdit={{ onClick: () => push(`/jobs/edit?job_id=${job.id}`) }}
+            slotPublishButton={
+              <PublishButton onClick={async () => await handlePublish()} />
+            }
+            isPublish={job.status !== 'closed'}
+            isEditError={!draftValidity}
+            onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
+            slotCloseJobButton={
+              <>
+                <CloseJobButton
+                  onClickClose={{
+                    onClick: () => {
+                      setPopover(true);
+                    }
+                  }}
+                />
+                <JobClose
+                  popover={popover}
+                  onClose={() => setPopover(false)}
+                  onSubmit={() => handleSubmit()}
+                />
+              </>
+            }
           />
         }
       />
@@ -136,7 +204,7 @@ export default JobDashboard;
 
 const BreadCrumbs = () => {
   const router = useRouter();
-  const { job } = useJobApplications();
+  const { job } = useJobDetails();
   return (
     <>
       <Breadcrum
@@ -155,20 +223,17 @@ const BreadCrumbs = () => {
 };
 
 const Pipeline = () => {
-  const {
-    job,
-    analytics: { sections }
-  } = useJobDashboard();
+  const { job } = useJobDetails();
   const { setSection } = useJobApplications();
   const { push } = useRouter();
 
-  const newSections = Object.entries(sections).reduce(
+  const newSections = Object.entries(job.count).reduce(
     (acc, [key, value]) => {
       acc[key] = { count: value, label: getPlural(value, 'candidate') };
       return acc;
     },
     // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof typeof sections]: { count: number; label: string } }
+    {} as { [id in keyof Job['count']]: { count: number; label: string } }
   );
   const handlClick = (section: JobApplicationSections) => {
     setSection(section);
@@ -228,40 +293,103 @@ const Pipeline = () => {
   );
 };
 
-const Modules = () => {
-  const { push } = useRouter();
-  const { job } = useJobDashboard();
+const JobClose = ({
+  popover,
+  onClose,
+  onSubmit
+}: {
+  popover: boolean;
+  onClose: () => void;
+  onSubmit: () => void;
+}) => {
+  const {
+    job: { job_title, location, status }
+  } = useJobDetails();
+  const [modal, setModal] = useState(false);
+  const [value, setValue] = useState('');
+  const handleClose = () => {
+    setModal(false);
+    setTimeout(() => setValue(''), 400);
+  };
+  const openModal = () => {
+    onClose();
+    setModal(true);
+  };
+  const handleSubmit = () => {
+    handleClose();
+    onSubmit();
+  };
+  const isDelete = status !== 'published';
   return (
     <>
-      <ModuleCard
-        slotIcon={<SchedulingIcon />}
-        textName={'Interview Plan (Scheduler)'}
-        textDescription={'0 interview modules linked'}
-        slotEnableDisable={<></>}
-        onClickCard={{
-          onClick: () => push(`${pageRoutes.JOBS}/${job.id}/interview-plan`)
+      <Popover
+        open={popover}
+        onClose={() => onClose()}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
         }}
-      />
+        sx={{
+          '& .MuiPaper-root': {
+            border: 'none !important',
+            overflow: 'visible !important',
+            top: '62px !important'
+          }
+        }}
+      >
+        <CloseDeleteJob
+          onClickClose={{ onClick: () => openModal() }}
+          isCloseJobVisible={!isDelete}
+          isDeleteJobVisible={isDelete}
+        />
+      </Popover>
+      <Dialog open={modal} onClose={() => handleClose()}>
+        <CloseJobModal
+          textPopupTitle={`${isDelete ? 'Delete' : 'Close'} Job Confirmation`}
+          textWarning={
+            isDelete
+              ? 'By deleting this job, it will no longer be accessible, and the data related to this job will be permanently deleted.'
+              : 'Closing this job will unpublish it, preventing candidates from applying or being imported. Additionally, the screening and assessment processes for this job will be stopped.'
+          }
+          textButton={isDelete ? 'Delete Job' : 'Close Job'}
+          textJobTitle={job_title.trim()}
+          onClickCancel={{ onClick: () => handleClose() }}
+          onClickCloseJob={{ onClick: () => handleSubmit() }}
+          textLocation={location}
+          isDisabled={job_title.trim() !== value.trim()}
+          slotInput={
+            <UITextField
+              placeholder={job_title.trim()}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+          }
+        />
+      </Dialog>
+    </>
+  );
+};
+
+const Modules = () => {
+  return (
+    <>
+      <InterviewModule />
       <AssessmentModule />
+      {/* <ProfileScoreModule /> */}
       <ScreeningModule />
     </>
   );
 };
 
 const AssessmentModule = () => {
-  const { job } = useJobDashboard();
+  const { job } = useJobDetails();
   const { push } = useRouter();
-  const count = job.assessment_job_relation.length;
-  const descripition = job.assessment
-    ? `${count} assessment${count === 1 ? '' : 's'} linked`
-    : 'Assessments are disabled';
   const handleClick = () => {
     push(`/jobs/${job.id}/assessment`);
   };
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}
-      textDescription={descripition}
       textName={'Assessment'}
       slotIcon={<AssessmentIcon />}
       slotEnableDisable={<EnableDisable isEnabled={job.assessment} />}
@@ -270,10 +398,13 @@ const AssessmentModule = () => {
 };
 
 export type DashboardGraphOptions<
-  T extends keyof ReturnType<typeof useJobDashboard>['analytics']
+  T extends keyof Pick<
+    ReturnType<typeof useJobDetails>,
+    'assessments' | 'locations' | 'matches' | 'skills' | 'tenureAndExperience'
+  >
 > = {
   // eslint-disable-next-line no-unused-vars
-  [id in keyof ReturnType<typeof useJobDashboard>['analytics'][T]]: string;
+  [id in keyof ReturnType<typeof useJobDetails>[T]['data']]: string;
 };
 
 const Doughnut = () => {
@@ -296,6 +427,37 @@ const Doughnut = () => {
   return (
     <GraphBlock
       slotLocationGraph={<DashboardDoughnutChart option={selection} />}
+      slotDarkPillLocation={pills}
+    />
+  );
+};
+
+const LineGraph = () => {
+  const options: {
+    // eslint-disable-next-line no-unused-vars
+    [id in keyof Pick<
+      DashboardGraphOptions<'tenureAndExperience'>,
+      'experience' | 'tenure'
+    >]: string;
+  } = {
+    experience: 'Experience',
+    tenure: 'Tenure'
+  };
+  const [selection, setSelection] =
+    useState<keyof typeof options>('experience');
+  const pills = Object.entries(options).map(([key, value]) => (
+    <DarkPill
+      key={key}
+      isActive={selection === key}
+      textPill={value}
+      onClickPill={{
+        onClick: () => setSelection(key as keyof typeof options)
+      }}
+    />
+  ));
+  return (
+    <GraphBlock
+      slotLocationGraph={<DashboardLineChart option={selection} />}
       slotDarkPillLocation={pills}
     />
   );
@@ -331,7 +493,7 @@ const getPlural = (count: number, label: string) => {
 };
 
 const ScreeningModule = () => {
-  const { job } = useJobDashboard();
+  const { job } = useJobDetails();
   const { push } = useRouter();
 
   const handleClick = () => {
@@ -340,14 +502,43 @@ const ScreeningModule = () => {
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}
-      textDescription={
-        job.phone_screen_enabled
-          ? `Phone screening is enabled for this job`
-          : 'Phone screening has not been enabled for this job.'
-      }
       textName={'Screening'}
       slotIcon={<ScreeningIcon />}
       slotEnableDisable={<EnableDisable isEnabled={job.phone_screen_enabled} />}
+    />
+  );
+};
+
+const InterviewModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(`/jobs/${job.id}/interview-plan`);
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Interview Plan (Scheduler)'}
+      slotIcon={<SchedulingIcon />}
+      slotEnableDisable={<></>}
+    />
+  );
+};
+
+// eslint-disable-next-line no-unused-vars
+const ProfileScoreModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(`/jobs/${job.id}/profile-score`);
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      isError={true}
+      textName={'Profile Score'}
+      slotIcon={<ProfileScoreIcon />}
+      slotEnableDisable={<></>}
     />
   );
 };

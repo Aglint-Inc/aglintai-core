@@ -6,8 +6,8 @@ import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { JobApplicationEmails } from '../jobApplications/candidateEmail';
-import { sendMails } from '../jobApplications/candidateEmail/utils';
+import { JobApplicationEmails } from '../job/jobApplications/candidateEmail';
+import { sendMails } from '../job/jobApplications/candidateEmail/utils';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -28,9 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         cookies: {
           get(name: string) {
             return req.cookies[name];
-          },
-        },
-      },
+          }
+        }
+      }
     );
     const { job, purposes, applicationIds, candidates } =
       req.body as BodyParams;
@@ -40,8 +40,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         acc.push(
           `Missing email template for ${capitalize(curr).replace(
             'resend',
-            'follow up',
-          )}`,
+            'follow up'
+          )}`
         );
       return acc;
     }, []);
@@ -74,7 +74,7 @@ const updateDataInDb = async (candidates: { application_id: string }[]) => {
     await supabaseAdmin
       .from('applications')
       .select('status_emails_sent')
-      .eq('id', candidates[0].application_id),
+      .eq('id', candidates[0].application_id)
   );
   if (app.status_emails_sent) {
     if (app.status_emails_sent.phone_screening) {
@@ -84,7 +84,7 @@ const updateDataInDb = async (candidates: { application_id: string }[]) => {
         await supabaseAdmin
           .from('applications')
           .update({ status_emails_sent: app.status_emails_sent })
-          .eq('id', candidates[0].application_id),
+          .eq('id', candidates[0].application_id)
       );
     } else if (app.status_emails_sent.phone_screening_resend) {
       app.status_emails_sent.phone_screening_resend = timeStamp;
@@ -92,9 +92,9 @@ const updateDataInDb = async (candidates: { application_id: string }[]) => {
         await supabaseAdmin
           .from('applications')
           .update({
-            status_emails_sent: app.status_emails_sent.phone_screening_resend,
+            status_emails_sent: app.status_emails_sent.phone_screening_resend
           })
-          .eq('id', candidates[0].application_id),
+          .eq('id', candidates[0].application_id)
       );
     } else {
       app.status_emails_sent.phone_screening = timeStamp;
@@ -103,7 +103,7 @@ const updateDataInDb = async (candidates: { application_id: string }[]) => {
         await supabaseAdmin
           .from('applications')
           .update({ status_emails_sent: app.status_emails_sent })
-          .eq('id', candidates[0].application_id),
+          .eq('id', candidates[0].application_id)
       );
     }
   }

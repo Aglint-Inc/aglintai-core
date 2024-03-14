@@ -13,7 +13,7 @@ import React, { FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { NoData } from '@/devlink3';
-import { useJobDashboard } from '@/src/context/JobDashboard';
+import { useJobDetails } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '..';
 import { getOrderedGraphValues } from '../utils';
@@ -25,7 +25,7 @@ const DoughnutChart: React.FC<{
 }> = ({ locations }) => {
   const { names, counts, colors } = locations.reduce(
     (acc, { color, name, count }) => {
-      acc.names.push(name);
+      acc.names.push(capitalize(name));
       acc.counts.push(count);
       acc.colors.push(color);
       return acc;
@@ -76,9 +76,9 @@ const DashboardDoughnutChart: FC<{
   option: keyof DashboardGraphOptions<'locations'>;
 }> = ({ option }) => {
   const {
-    analytics: { locations: locationPool },
+    locations: { data: locationPool },
     job: { count }
-  } = useJobDashboard();
+  } = useJobDetails();
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoData />;
   const totalCount = Object.values(count).reduce((acc, curr) => {
