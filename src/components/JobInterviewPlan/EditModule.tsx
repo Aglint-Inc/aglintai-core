@@ -1,6 +1,6 @@
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { cloneDeep } from 'lodash';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { PanelMemberPill } from '@/devlink2';
 import { InterviewPlanCard } from '@/devlink3';
@@ -69,7 +69,10 @@ const EditModule = ({
       return newModule;
     });
   };
-  const filteredModules = filterAddedModules(allModules, modules);
+
+  const filteredModules = useMemo(() => {
+    return filterAddedModules(allModules, modules);
+  }, []);
   return (
     <InterviewPlanCard
       isMemberSelectionVisible={!moduleform.isBreak}
@@ -80,7 +83,25 @@ const EditModule = ({
       isShadowMemberVisible={!moduleform.isBreak}
       slotInterviewModuleInput={
         <>
-          <UISelect
+          <Autocomplete
+            fullWidth
+            options={filteredModules.map((m) => ({
+              label: m.module_name,
+              value: m.module_name
+            }))}
+            value={{
+              label: moduleform.module_name,
+              value: moduleform.module_name
+            }}
+            getOptionLabel={(option: any) => option.label}
+            onChange={(event, value) => {
+              if (value) {
+                updateAllMembers(value.value);
+              }
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          {/* <UISelect
             menuOptions={filteredModules.map((m) => ({
               name: m.module_name,
               value: m.module_name
@@ -89,8 +110,8 @@ const EditModule = ({
               updateAllMembers(event.target.value);
             }}
             value={moduleform.module_name}
-            defaultValue={moduleform.module_name}
-          />
+            defaultValue={initModule.module_name}
+          /> */}
         </>
       }
       slotDurationInput={
@@ -98,17 +119,17 @@ const EditModule = ({
           <UISelect
             menuOptions={
               moduleform.isBreak
-                ? defaultDurations.slice(0, 3)
+                ? defaultDurations.slice(0, 4)
                 : defaultDurations.slice(3)
             }
-            defaultValue={moduleform.duration}
+            defaultValue={String(moduleform.duration)}
             onChange={(e) => {
               setModule((prev) => {
                 prev.duration = Number(e.target.value);
                 return { ...prev };
               });
             }}
-            value={moduleform.duration}
+            value={String(moduleform.duration)}
           />
         </>
       }
@@ -123,7 +144,9 @@ const EditModule = ({
                     variant='rounded'
                     src={mem.profile_image}
                     level={mem.name}
-                    fontSize='20px'
+                    fontSize='15px'
+                    width={'25px'}
+                    height={'25px'}
                   />
                 }
                 textMemberName={mem.name}
@@ -212,7 +235,9 @@ const EditModule = ({
                     variant='rounded'
                     src={mem.profile_img ?? ''}
                     level={mem.name}
-                    fontSize='20px'
+                    fontSize='15px'
+                    width={'25px'}
+                    height={'25px'}
                   />
                 }
                 textMemberName={mem.name}
@@ -290,7 +315,9 @@ const EditModule = ({
                     variant='rounded'
                     src={mem.profile_img ?? ''}
                     level={mem.name}
-                    fontSize='20px'
+                    fontSize='15px'
+                    width={'25px'}
+                    height={'25px'}
                   />
                 }
                 textMemberName={mem.name}

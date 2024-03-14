@@ -185,7 +185,11 @@ const JobInterviewPlan = () => {
                     if (filteredModules.length > 0) {
                       let nModule: InterviewSession = {
                         ...filteredModules[0],
-                        selectedIntervs: [...filteredModules[0].allIntervs]
+                        selectedIntervs: [...filteredModules[0].allIntervs],
+                        meetingIntervCnt: 1,
+                        duration: 30,
+                        isBreak: false,
+                        session_name: `Session ${modules.length + 1}`
                       };
                       setNewModule(nModule);
                     }

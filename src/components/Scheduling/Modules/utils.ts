@@ -140,8 +140,8 @@ export const getColorStatusSchedule = (
   return status == 'completed'
     ? '#2F3941'
     : status == 'confirmed'
-      ? '#0F3554'
-      : status == 'pending'
-        ? '#703815'
-        : '#681219';
+    ? '#0F3554'
+    : status == 'pending'
+    ? '#703815'
+    : '#681219';
 };

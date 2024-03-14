@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -17,11 +18,17 @@ import { fetchInterviewModule } from '../Scheduling/Modules/utils';
 
 const JobInterviewPlanHoc = ({ children }) => {
   const router = useRouter();
-  const { recruiter, members } = useAuthDetails();
+  const { recruiter } = useAuthDetails();
+
   const initialize = async () => {
     try {
       const allIntModules: InterviewSession[] = [];
+
       const fetchedDbModules = await fetchInterviewModule(recruiter.id);
+      const member_ids = fetchedDbModules.reduce((tot, curr) => {
+        return [...tot, ...curr.relations.map((r) => r.user_id)];
+      }, []);
+      const members = await fetchAllMembers(member_ids);
       for (let intModule of fetchedDbModules) {
         const intMod: InterviewSession = {
           module_id: intModule.id,
@@ -39,8 +46,10 @@ const JobInterviewPlanHoc = ({ children }) => {
 
         intMod.training_ints = intModule.relations
           .filter((reln) => reln.training_status === 'training')
+          .filter((r) => members.find((m) => m.user_id === r.user_id))
           .map((reln) => {
             const member = members.find((m) => m.user_id === reln.user_id);
+
             return {
               interv_id: member.user_id,
               name: getFullName(member.first_name, member.last_name),
@@ -48,28 +57,38 @@ const JobInterviewPlanHoc = ({ children }) => {
               email: member.email
             };
           });
-        intMod.allIntervs = intModule.relations.map((reln) => {
-          const member = members.find((m) => m.user_id === reln.user_id);
-          return {
-            profile_image: member.profile_image,
-            interv_id: member.user_id,
-            name: [member.first_name, member.last_name].join(' ')
-          };
-        });
+        intMod.allIntervs = intModule.relations
+          .filter((reln) => reln.training_status === 'qualified')
+          .filter((r) => members.find((m) => m.user_id === r.user_id))
+          .map((reln) => {
+            const member = members.find((m) => m.user_id === reln.user_id);
+            return {
+              profile_image: member.profile_image,
+              interv_id: member.user_id,
+              name: [member.first_name, member.last_name].join(' ')
+            };
+          });
         allIntModules.push(intMod);
       }
+
       const [rec] = supabaseWrap(
         await supabase.from('public_jobs').select().eq('id', router.query.id)
       ) as PublicJobsType[];
-
+      if (!rec) {
+        toast.error('job doesnot exist');
+        return router.back();
+      }
       let jobModules = ((rec.interview_plan as any)?.plan ??
         []) as InterviewModuleDbType[];
+
       let clModules: InterviewSession[] = [];
       for (let dbModule of jobModules) {
         if (dbModule.isBreak) continue;
         let intModule = allIntModules.find(
           (i) => i.module_id === dbModule.module_id
         );
+        if (!intModule) continue;
+
         let clModule: InterviewSession = {
           module_name: intModule?.module_name ?? '', //break
           duration: dbModule.duration,
@@ -158,3 +177,11 @@ const JobInterviewPlanHoc = ({ children }) => {
 };
 
 export default JobInterviewPlanHoc;
+
+const fetchAllMembers = async (userIds) => {
+  const { data } = await axios.post('/api/scheduling/fetchdbusers', {
+    user_ids: userIds
+  });
+
+  return data;
+};
