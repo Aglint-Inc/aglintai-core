@@ -428,7 +428,6 @@ function InterviewerLevelSettings({
               direction={'row'}
               flexDirection={'column'}
               gap={'10px'}
-              minWidth={'650px'}
             >
               <KeywordCard
                 textTitle={'Free'}
