@@ -54,22 +54,14 @@ export const mailHandler = async ({
     </body>`
       })
       .then((res) =>
-        toastMsg(
-          res.status === 200 && res.data.data === 'Email sent',
-          'Mail sent successfully',
-          'Unable to send mail. Please try again later.'
-        )
+        res.status === 200 && res.data.data === 'Email sent'
+          ? true
+          : toast.error('Unable to send mail. Please try again later.')
       );
   } catch (e) {
     toast.error('Unable to send mail. Please try again later.');
   }
 };
-
-const toastMsg = (
-  isSuccess: boolean,
-  msgSuccess: string,
-  msgFailure: string
-) => (isSuccess ? toast.success(msgSuccess) : toast.error(msgFailure));
 
 export const getPaginationDB = async ({
   recruiter,
@@ -179,7 +171,7 @@ export function convertToWord(number) {
 export function transformData(inputData) {
   const transformedData = {};
 
-  inputData.forEach((item) => {
+  inputData?.forEach((item) => {
     const date = item.start_time.split('T')[0]; // Extracting date from start_time
     if (!transformedData[date]) {
       transformedData[date] = [];

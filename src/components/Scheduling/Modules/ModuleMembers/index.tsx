@@ -67,7 +67,7 @@ function ModuleMembersComp() {
   const allUsers = useSchedulingStore(
     useShallow((state) => state.editModule.relations)
   );
-  const { loading, members } = useSchedulingContext();
+  const { fetchingModule, members } = useSchedulingContext();
   const allTrainees = allUsers.filter(
     (user) => user.training_status === 'training'
   );
@@ -130,7 +130,7 @@ function ModuleMembersComp() {
         }
         slotBody={
           <>
-            {!loading ? (
+            {!fetchingModule ? (
               <InterviewMemberList
                 slotInterviewCard={
                   <ModuleSchedules

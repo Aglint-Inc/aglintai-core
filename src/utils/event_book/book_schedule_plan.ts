@@ -36,11 +36,15 @@ export const getAllIntsFromPlan = async (
       .in('user_id', Array.from(intSet))
   ) as Pick<RecruiterUserType, 'user_id' | 'schedule_auth' | 'email'>[];
 
+  let company_cred = null;
+  if (company.recruiter.service_json) {
+    company_cred = JSON.parse(
+      decrypt(company.recruiter.service_json, process.env.ENCRYPTION_KEY)
+    );
+  }
+
   return {
-    company_cred: decrypt(
-      company.recruiter.service_json,
-      process.env.ENCRYPTION_KEY
-    ),
+    company_cred: company_cred,
     recruiters_info: recs
   };
 };

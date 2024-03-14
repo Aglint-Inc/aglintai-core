@@ -37,6 +37,31 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
   }
 };
 
+export const fetchInterviewModuleById = async (module_id: string) => {
+  try {
+    const { data: dataModule, error: errorModule } = await supabase
+      .from('interview_module')
+      .select('*')
+      .eq('id', module_id);
+    if (errorModule) {
+      throw errorModule;
+    }
+    const { data: dataRel, error: errorRel } = await supabase
+      .from('interview_module_relation')
+      .select('*')
+      .eq('module_id', module_id);
+
+    if (errorRel) {
+      throw errorRel;
+    }
+
+    return { ...dataModule[0], relations: dataRel };
+  } catch (e) {
+    toast.error('Error fetching interview panel');
+    return [];
+  }
+};
+
 export const createModule = async ({
   name,
   recruiter_id
@@ -140,8 +165,8 @@ export const getColorStatusSchedule = (
   return status == 'completed'
     ? '#2F3941'
     : status == 'confirmed'
-    ? '#0F3554'
-    : status == 'pending'
-    ? '#703815'
-    : '#681219';
+      ? '#0F3554'
+      : status == 'pending'
+        ? '#703815'
+        : '#681219';
 };

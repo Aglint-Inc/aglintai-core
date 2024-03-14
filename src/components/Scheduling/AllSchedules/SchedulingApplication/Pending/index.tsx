@@ -24,32 +24,6 @@ function PendingConfirmed() {
     (state) => state.isViewProfileOpen
   );
 
-  // const onClickCancel = async () => {
-  //   try {
-  //     if (selectedApplication.schedule.id) {
-  //       await supabase
-  //         .from('interview_schedule')
-  //         .update({ is_active: false })
-  //         .eq('id', selectedApplication.schedule.id);
-  //       setSelectedApplication({ ...selectedApplication, schedule: null });
-  //       if ((selectedApplication.schedule.meeting_json as any)?.id) {
-  //         const res = await axios.post(
-  //           '/api/scheduling/update-calender-event-status',
-  //           {
-  //             organizer_id: selectedApplication.schedule.created_by,
-  //             event_id: (selectedApplication.schedule.meeting_json as any).id
-  //           }
-  //         );
-  //         if (res.status !== 200) {
-  //           throw new Error('Error in response');
-  //         }
-  //       }
-  //     }
-  //   } catch {
-  //     //
-  //   }
-  // };
-
   useEffect(() => {
     findScheduleOptions();
   }, [selectedApplication?.applications?.id]);
@@ -62,7 +36,7 @@ function PendingConfirmed() {
     if (res.data) {
       setSchedulingOptions(
         res.data.map((option) => {
-          return { ...option, transformedPlan: transformData(option.plan) };
+          return { ...option, transformedPlan: transformData(option.plans) };
         })
       );
     } else {

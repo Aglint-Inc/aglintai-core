@@ -16,7 +16,7 @@ import {
 import { addMemberbyUserIds } from '../../utils';
 
 function AddMemberDialog() {
-  const { members } = useSchedulingContext();
+  const { members, fetchInterviewModules } = useSchedulingContext();
   const [loading, setLoading] = useState(false); // used to disable multiple clicks
   const isAddMemberDialogOpen = useSchedulingStore(
     (state) => state.isAddMemberDialogOpen
@@ -40,6 +40,7 @@ function AddMemberDialog() {
       if (error) {
         throw new Error();
       }
+      fetchInterviewModules();
       addMembersSchedulingStore(data as InterviewModuleRelationType[]);
     } catch (e) {
       toast.error('Error adding panel members');

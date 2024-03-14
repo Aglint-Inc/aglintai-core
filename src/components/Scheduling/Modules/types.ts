@@ -12,7 +12,6 @@ import { Database } from '@/src/types/schema';
 import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
 
 export type SchedulingSlice = {
-  interviewModules: ModuleType[];
   isCreateDialogOpen: boolean;
   isDeleteMemberDialogOpen: boolean;
   isDeleteModuleDialogOpen: boolean;
@@ -45,7 +44,6 @@ export const initialEditModule: ModuleType = {
 };
 
 export const initialStateSchedulingStore: SchedulingSlice = {
-  interviewModules: [],
   isCreateDialogOpen: null,
   isDeleteMemberDialogOpen: false,
   isDeleteModuleDialogOpen: false,
@@ -63,7 +61,6 @@ export const initialStateSchedulingStore: SchedulingSlice = {
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
   relations: InterviewModuleRelationType[];
-  duration_available: TimeSlotsData;
   settings: {
     require_training: boolean;
     noShadow: number;
@@ -116,4 +113,19 @@ export type ScheduleType = {
     jd_json: JSON;
     location: string;
   };
+};
+export type ModuleDashboard = {
+  interview_modules: InterviewModuleType;
+  users: MemberType[];
+  upcoming_meeting_count: number;
+  completed_meeting_count: number;
+};
+
+export type MemberType = {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_image: string;
+  position: string;
 };

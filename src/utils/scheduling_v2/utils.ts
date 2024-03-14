@@ -63,7 +63,6 @@ export const fetchCalenderEventsCompanyCred = async (
   });
 
   await jwtClient.authorize();
-
   const calendar = google.calendar({ version: 'v3', auth: jwtClient });
   const response = await calendar.events.list({
     calendarId: 'primary',

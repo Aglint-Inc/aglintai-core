@@ -3,29 +3,22 @@ import React, { useEffect } from 'react';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { ModuleSetting } from '@/devlink2';
-import {
-  MemberType,
-  useSchedulingContext
-} from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
 import MembersAutoComplete from '../AddMemberDialog/MembersTextField';
 import {
   setEditModule,
-  setInterviewModules,
   setIsModuleSettingsDialogOpen,
   useSchedulingStore
 } from '../../store';
-import { ModuleType } from '../../types';
+import { MemberType, ModuleType } from '../../types';
 
 function ModuleSettingDrawer() {
   const isModuleSettingsDialogOpen = useSchedulingStore(
     (state) => state.isModuleSettingsDialogOpen
   );
-  const interviewModules = useSchedulingStore(
-    (state) => state.interviewModules
-  );
-  const { members } = useSchedulingContext();
+  const { members, allModules, setAllModules } = useSchedulingContext();
   const editModule = useSchedulingStore((state) => state.editModule);
   const [moduleName, setModuleName] = React.useState('');
   const [selectedUsers, setSelectedUsers] = React.useState<MemberType[]>([]);
@@ -54,11 +47,13 @@ function ModuleSettingDrawer() {
       .eq('id', editModule.id)
       .select();
     if (!error) {
-      interviewModules.find((module) => module.id === editModule.id).name =
-        moduleName;
-      interviewModules.find((module) => module.id === editModule.id).settings =
-        editModule.settings;
-      setInterviewModules([...interviewModules]);
+      allModules.find(
+        (module) => module.interview_modules.id === editModule.id
+      ).interview_modules.name = moduleName;
+      allModules.find(
+        (module) => module.interview_modules.id === editModule.id
+      ).interview_modules.settings = editModule.settings;
+      setAllModules([...allModules]);
       setEditModule(data[0] as ModuleType);
       setIsModuleSettingsDialogOpen(false);
     }

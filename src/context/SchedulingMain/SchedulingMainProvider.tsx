@@ -9,63 +9,72 @@ import {
   setInitalLoading,
   setPagination
 } from '@/src/components/Scheduling/AllSchedules/store';
-import { fetchInterviewModule } from '@/src/components/Scheduling/Modules/utils';
+import {
+  MemberType,
+  ModuleDashboard,
+  ModuleType
+} from '@/src/components/Scheduling/Modules/types';
+import { fetchInterviewModuleById } from '@/src/components/Scheduling/Modules/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import {
-  setEditModule,
-  setInterviewModules,
-  useSchedulingStore
-} from '../../components/Scheduling/Modules/store';
+import { setEditModule } from '../../components/Scheduling/Modules/store';
 
 export type InterviewPanelContextType = {
   loading: boolean;
   members: MemberType[];
-};
-
-export type MemberType = {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  profile_image: string;
-  position: string;
+  allModules: ModuleDashboard[];
+  // eslint-disable-next-line no-unused-vars
+  setAllModules: (x: ModuleDashboard[]) => void;
+  fetchInterviewModules: () => void;
+  fetchingModule: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setFetchingModule: (x: boolean) => void;
 };
 
 const initialState = {
   loading: true,
-  members: []
+  members: [],
+  allModules: [],
+  setAllModules: () => {},
+  fetchInterviewModules: () => {},
+  fetchingModule: false,
+  setFetchingModule: () => {}
 };
 
-const InterviewPanelContext =
+const AllSchedulingContext =
   createContext<InterviewPanelContextType>(initialState);
 
 const SchedulingProvider = ({ children }) => {
   const { recruiter } = useAuthDetails();
   const [loading, setLoading] = useState(true);
+  const [fetchingModule, setFetchingModule] = useState(true);
   const [members, setMembers] = useState<InterviewPanelContextType['members']>(
     []
   );
   const router = useRouter();
-  const { interviewModules } = useSchedulingStore();
+  const [allModules, setAllModules] = useState<ModuleDashboard[]>([]);
 
   useEffect(() => {
     if (recruiter?.id) {
       initialFetch();
     }
-    return () => {
-      setInterviewModules([]);
-    };
   }, [recruiter?.id]);
+
+  const fetchInterviewModules = async () => {
+    const { data, error } = await supabase.rpc('get_interview_modules', {
+      rec_id: recruiter.id
+    });
+
+    if (!error) {
+      setAllModules(data as ModuleDashboard[]);
+    }
+  };
 
   const initialFetch = async () => {
     try {
-      const res: any = await fetchInterviewModule(recruiter.id);
-      if (res) {
-        setInterviewModules(res);
-      }
+      await fetchInterviewModules();
       const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
         recruiter_id: recruiter.id
       });
@@ -81,13 +90,14 @@ const SchedulingProvider = ({ children }) => {
 
   useEffect(() => {
     if (router.isReady && router.query.module_id && !loading) {
-      const selModule = interviewModules.filter(
-        (m) => m.id === router.query.module_id
-      )[0];
-
-      if (selModule) {
-        setEditModule(selModule);
-      }
+      (async () => {
+        setFetchingModule(true);
+        const resMod = await fetchInterviewModuleById(
+          router.query.module_id as string
+        );
+        setEditModule(resMod as ModuleType);
+        setFetchingModule(false);
+      })();
     }
   }, [router, loading]);
 
@@ -135,14 +145,24 @@ const SchedulingProvider = ({ children }) => {
   };
 
   return (
-    <InterviewPanelContext.Provider value={{ loading, members }}>
+    <AllSchedulingContext.Provider
+      value={{
+        loading,
+        members,
+        allModules,
+        setAllModules,
+        fetchInterviewModules,
+        fetchingModule,
+        setFetchingModule
+      }}
+    >
       {children}
-    </InterviewPanelContext.Provider>
+    </AllSchedulingContext.Provider>
   );
 };
 
 export default SchedulingProvider;
 
 export const useSchedulingContext = () => {
-  return useContext(InterviewPanelContext);
+  return useContext(AllSchedulingContext);
 };

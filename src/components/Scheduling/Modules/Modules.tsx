@@ -12,16 +12,16 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 export function Modules() {
   const router = useRouter();
-  const { loading, members } = useSchedulingContext();
+  const { loading, allModules, setFetchingModule } = useSchedulingContext();
   const searchText = useSchedulingStore((state) => state.searchText);
-  const interviewModules = useSchedulingStore(
-    (state) => state.interviewModules
-  );
+
   const filterModules = useMemo(() => {
-    return interviewModules.filter((module) => {
-      return module.name.toLowerCase().includes(searchText.toLowerCase());
+    return allModules.filter((mod) => {
+      return mod.interview_modules.name
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
     });
-  }, [interviewModules, searchText]);
+  }, [allModules, searchText]);
 
   return (
     <>
@@ -29,21 +29,24 @@ export function Modules() {
       {!loading && (
         <>
           <InterviewModuleTable
-            slotInterviewModuleCard={filterModules.map((module) => {
+            slotInterviewModuleCard={filterModules.map((mod) => {
               return (
                 <Stack
                   key={module.id}
                   onClick={() => {
+                    setFetchingModule(true);
                     router.push(
-                      pageRoutes.INTERVIEWMODULE + '/members' + `/${module.id}`
+                      pageRoutes.INTERVIEWMODULE +
+                        '/members' +
+                        `/${mod.interview_modules.id}`
                     );
                   }}
                 >
                   <InterviewModuleCard
-                    textModuleName={module.name}
+                    textModuleName={mod.interview_modules.name}
                     slotMemberPic={
                       <AvatarGroup
-                        total={module.relations.length}
+                        total={mod.users.length}
                         sx={{
                           '& .MuiAvatar-root': {
                             width: '26px',
@@ -52,15 +55,12 @@ export function Modules() {
                           }
                         }}
                       >
-                        {module.relations.slice(0, 5).map((rel) => {
-                          const member = members.filter(
-                            (member) => member.user_id === rel.user_id
-                          )[0];
+                        {mod.users.slice(0, 5).map((user) => {
                           return (
                             <MuiAvatar
-                              key={rel.id}
-                              src={member?.profile_image}
-                              level={member?.first_name}
+                              key={user.user_id}
+                              src={user?.profile_image}
+                              level={user?.first_name}
                               variant='circular'
                               height='26px'
                               width='26px'
@@ -71,16 +71,16 @@ export function Modules() {
                       </AvatarGroup>
                     }
                     textMembersCount={
-                      module.relations.length !== 0
-                        ? `${module.relations.length} Members`
+                      mod.users.length !== 0
+                        ? `${mod.users.length} Members`
                         : ''
                     }
-                    textCompletedSchedules={''}
-                    textUpcomingSchedules={''}
-                    isCompletedScheduleEmpty={true}
-                    isCompletedScheduleVisible={true}
-                    isUpcomingScheduleEmpty={true}
-                    isUpcomingScheduleVisible={true}
+                    textCompletedSchedules={mod.completed_meeting_count}
+                    textUpcomingSchedules={mod.upcoming_meeting_count}
+                    isCompletedScheduleEmpty={mod.completed_meeting_count === 0}
+                    isCompletedScheduleVisible={mod.completed_meeting_count > 0}
+                    isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
+                    isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
                   />
                 </Stack>
               );

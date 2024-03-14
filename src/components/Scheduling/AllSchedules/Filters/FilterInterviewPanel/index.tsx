@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {
   FilterType,
@@ -10,16 +11,14 @@ import {
   setFilterVisible,
   useInterviewSchedulingStore
 } from '../../store';
-import { useSchedulingStore } from '../../../Modules/store';
 
 function FilterInterviewPanel() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const { allModules } = useSchedulingContext();
   const filter = useInterviewSchedulingStore((state) => state.filter);
-  const interviewModules = useSchedulingStore(
-    (state) => state.interviewModules
-  );
+
   const filterVisible = useInterviewSchedulingStore(
     (state) => state.filterVisible
   );
@@ -110,19 +109,21 @@ function FilterInterviewPanel() {
         }}
       >
         <FilterDropdown
-          slotOption={interviewModules?.map((panel) => {
+          slotOption={allModules?.map((mod) => {
             return (
               <Stack
-                key={panel.id}
+                key={mod.interview_modules.id}
                 direction={'row'}
                 sx={{ alignItems: 'center' }}
                 spacing={1}
               >
                 <Checkbox
-                  isChecked={filter.panel_ids.includes(panel.id)}
+                  isChecked={filter.panel_ids.includes(
+                    mod.interview_modules.id
+                  )}
                   onClickCheck={{
                     onClick: () => {
-                      handleFilterClick(panel.id);
+                      handleFilterClick(mod.interview_modules.id);
                     }
                   }}
                 />
@@ -132,9 +133,9 @@ function FilterInterviewPanel() {
                     fontWeight: 600,
                     cursor: 'pointer'
                   }}
-                  onClick={() => handleFilterClick(panel.id)}
+                  onClick={() => handleFilterClick(mod.interview_modules.id)}
                 >
-                  {panel.name}
+                  {mod.interview_modules.name}
                 </Typography>
               </Stack>
             );

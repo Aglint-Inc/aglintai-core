@@ -4,11 +4,11 @@ import React from 'react';
 import { InterviewPlanCard } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
-import { MemberType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { InterviewModuleType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { convertToWord } from '../../utils';
+import { MemberType } from '../../../Modules/types';
 
 function InterviewPlanCardComp({
   plan,

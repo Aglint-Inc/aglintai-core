@@ -29,12 +29,7 @@ import {
   useSyncInterviewersCalender
 } from './store';
 import { handleDelete } from './utils';
-import {
-  setEditModule,
-  setInterviewModules,
-  // setSelectedUsers,
-  useSchedulingStore
-} from '../Modules/store';
+import { setEditModule } from '../Modules/store';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
@@ -47,9 +42,7 @@ const Availability = () => {
   const dateRangeView = useAvailableStore((state) => state.dateRangeView);
   const timeRange = useAvailableStore((state) => state.timeRange);
 
-  const interviewModules = useSchedulingStore(
-    (state) => state.interviewModules
-  );
+  const interviewModules = [];
 
   const [popupEl, setPopupEl] = useState(null);
 
@@ -107,9 +100,9 @@ const Availability = () => {
   const deleteHandler = async () => {
     const res = await handleDelete(router.query.module_id);
     if (res) {
-      setInterviewModules(
-        interviewModules.filter((p) => p.id !== router.query.module_id)
-      );
+      // setInterviewModules(
+      //   interviewModules.filter((p) => p.id !== router.query.module_id)
+      // );
       router.push(pageRoutes.INTERVIEWMODULE);
     }
   };

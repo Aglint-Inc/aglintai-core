@@ -72,6 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       res.status(200).json({
+        job: application.public_jobs,
         modules: allModules,
         members: resMem.data,
         schedule: sch[0],

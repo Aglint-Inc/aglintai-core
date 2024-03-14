@@ -125,6 +125,7 @@ function NotScheduledApplication() {
         ...selectedApplication,
         schedule: data[0] as any
       });
+
       applicationList.filter(
         (app) => app.applications.id === selectedApplication.applications.id
       )[0].schedule = data[0] as any;

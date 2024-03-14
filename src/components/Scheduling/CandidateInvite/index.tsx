@@ -16,6 +16,7 @@ import {
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import CheckAvailibility from './CheckAvailibility';
 import ConfirmDialog from './ConfirmDialog';
 import { ApiResponse } from './type';
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
@@ -25,12 +26,22 @@ import MuiAvatar from '../../Common/MuiAvatar';
 
 function CandidateInvite() {
   const router = useRouter();
+  const currentDate = dayjs();
+  const sevenDays = currentDate.add(7, 'day');
   const [schedule, setSchedule] = useState<ApiResponse>(null);
   const [selectedSlot, setSelectedSlot] =
     useState<ApiResponse['schedulingOptions'][0]>(null);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [changeTime, setChangeTime] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [dateRange, setDateRange] = useState<{
+    start_date: string;
+    end_date: string;
+  }>({
+    start_date: currentDate.toISOString(),
+    end_date: sevenDays.toISOString()
+  });
 
   useEffect(() => {
     if (router.isReady && router.query.schedule_id) initialFetch();
@@ -64,6 +75,7 @@ function CandidateInvite() {
       });
       if (res.status === 200 && res.data) {
         schedule.schedule.confirmed_option = selectedSlot;
+        schedule.schedule.status = 'confirmed';
         setSchedule({
           ...schedule
         });
@@ -94,140 +106,54 @@ function CandidateInvite() {
         selectedSlot={selectedSlot}
         setDialogOpen={setDialogOpen}
       />
+      <CheckAvailibility
+        changeTime={changeTime}
+        setChangeTime={setChangeTime}
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        schedule={schedule}
+        setSchedule={setSchedule}
+      />
 
       {loading ? (
         <Stack height={'100vh'} width={'100%'}>
           <Loader />
         </Stack>
       ) : schedule?.schedule.status == 'pending' ? (
-        !schedule?.schedule.confirmed_option ? (
-          <OpenInvitationLink
-            onClickAskOptions={{
-              onClick: () => {}
-            }}
-            isNotFindingTextVisible={!selectedSlot}
-            slotButtonPrimary={
-              selectedSlot?.id && (
-                <Stack width={'100%'}>
-                  <ButtonPrimaryLarge
-                    onClickButton={{
-                      onClick: () => {
-                        setDialogOpen(true);
-                      }
-                    }}
-                    textLabel={'Proceed'}
-                  />
-                </Stack>
-              )
+        <OpenInvitationLink
+          onClickAskOptions={{
+            onClick: () => {
+              setChangeTime(true);
             }
-            textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
-            slotInviteLinkCard={schedulingOptions?.map((option, ind) => {
-              return (
-                <Stack
-                  key={ind}
-                  onClick={() => {
-                    setSelectedSlot(option);
+          }}
+          isNotFindingTextVisible={!selectedSlot}
+          slotButtonPrimary={
+            selectedSlot?.id && (
+              <Stack width={'100%'}>
+                <ButtonPrimaryLarge
+                  onClickButton={{
+                    onClick: () => {
+                      setDialogOpen(true);
+                    }
                   }}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  <OptionAvailableCard
-                    isActive={selectedSlot === option}
-                    slotCardDate={option.transformedPlan.map((plan, ind) => {
-                      return Object.entries(plan).map(([date, events]) => {
-                        return (
-                          <AvailableOptionCardDate
-                            textDate={dayjs(date).format('DD')}
-                            textDay={dayjs(date).format('dddd')}
-                            textMonth={dayjs(date).format('MMM')}
-                            key={ind}
-                            slotOptionAvailable={events.map((pl, ind) => {
-                              return (
-                                <OptionAvailable
-                                  textTime={`${dayjs(pl.start_time).format(
-                                    'hh:mm A'
-                                  )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                                  textTitle={pl.module_name}
-                                  key={ind}
-                                  textBreakTime={
-                                    pl.isBreak ? `${pl.duration} Minutes` : ''
-                                  }
-                                  isTitleVisible={!pl.isBreak}
-                                  isBreakVisible={pl.isBreak}
-                                  slotMember={
-                                    <Stack
-                                      direction={'row'}
-                                      sx={{
-                                        flexWrap: 'wrap',
-                                        gap: 2.5
-                                      }}
-                                    >
-                                      {pl?.selectedIntervs?.map((int) => {
-                                        const user = schedule.members.find(
-                                          (member) =>
-                                            member.user_id === int.interv_id
-                                        );
-                                        if (!user) return null;
-                                        return (
-                                          <Stack
-                                            key={int.interv_id}
-                                            direction={'row'}
-                                            spacing={1}
-                                            sx={{
-                                              textWrap: 'nowrap'
-                                            }}
-                                          >
-                                            <MuiAvatar
-                                              level={getFullName(
-                                                user.first_name,
-                                                user.last_name
-                                              )}
-                                              src={user?.profile_image}
-                                              variant={'circular'}
-                                              width={'24px'}
-                                              height={'24px'}
-                                              fontSize={'12px'}
-                                            />
-                                            <Typography
-                                              variant={'body2'}
-                                              color={'#000'}
-                                            >
-                                              {getFullName(
-                                                user.first_name,
-                                                user.last_name
-                                              )}
-                                            </Typography>
-                                          </Stack>
-                                        );
-                                      })}
-                                    </Stack>
-                                  }
-                                />
-                              );
-                            })}
-                          />
-                        );
-                      });
-                    })}
-                  />
-                </Stack>
-              );
-            })}
-          />
-        ) : (
-          <InterviewConfirmed
-            textTitle={schedule.schedule.schedule_name}
-            textMailSent={schedule.candidate.email}
-            textMeetingPlatform={getScheduleType(
-              schedule.schedule.schedule_type
-            )}
-            slotPlatformIcon={
-              <IconScheduleType type={schedule.schedule.schedule_type} />
-            }
-            slotCardDate={
-              <OptionAvailableCard
-                isActive={false}
-                slotCardDate={schedule?.schedule?.confirmed_option?.transformedPlan.map(
-                  (plan, ind) => {
+                  textLabel={'Proceed'}
+                />
+              </Stack>
+            )
+          }
+          textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
+          slotInviteLinkCard={schedulingOptions?.map((option, ind) => {
+            return (
+              <Stack
+                key={ind}
+                onClick={() => {
+                  setSelectedSlot(option);
+                }}
+                sx={{ cursor: 'pointer' }}
+              >
+                <OptionAvailableCard
+                  isActive={selectedSlot === option}
+                  slotCardDate={option.transformedPlan.map((plan, ind) => {
                     return Object.entries(plan).map(([date, events]) => {
                       return (
                         <AvailableOptionCardDate
@@ -243,6 +169,9 @@ function CandidateInvite() {
                                 )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
                                 textTitle={pl.module_name}
                                 key={ind}
+                                textBreakTime={
+                                  pl.isBreak ? `${pl.duration} Minutes` : ''
+                                }
                                 isTitleVisible={!pl.isBreak}
                                 isBreakVisible={pl.isBreak}
                                 slotMember={
@@ -299,31 +228,120 @@ function CandidateInvite() {
                         />
                       );
                     });
-                  }
-                )}
-              />
+                  })}
+                />
+              </Stack>
+            );
+          })}
+        />
+      ) : schedule?.schedule.status == 'confirmed' ? (
+        <InterviewConfirmed
+          textTitle={schedule.schedule.schedule_name}
+          textMailSent={schedule.candidate.email}
+          textMeetingPlatform={getScheduleType(schedule.schedule.schedule_type)}
+          slotPlatformIcon={
+            <IconScheduleType type={schedule.schedule.schedule_type} />
+          }
+          slotCardDate={
+            <OptionAvailableCard
+              isActive={false}
+              slotCardDate={schedule?.schedule?.confirmed_option?.transformedPlan.map(
+                (plan, ind) => {
+                  return Object.entries(plan).map(([date, events]) => {
+                    return (
+                      <AvailableOptionCardDate
+                        textDate={dayjs(date).format('DD')}
+                        textDay={dayjs(date).format('dddd')}
+                        textMonth={dayjs(date).format('MMM')}
+                        key={ind}
+                        slotOptionAvailable={events.map((pl, ind) => {
+                          return (
+                            <OptionAvailable
+                              textTime={`${dayjs(pl.start_time).format(
+                                'hh:mm A'
+                              )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                              textTitle={pl.module_name}
+                              key={ind}
+                              isTitleVisible={!pl.isBreak}
+                              isBreakVisible={pl.isBreak}
+                              slotMember={
+                                <Stack
+                                  direction={'row'}
+                                  sx={{
+                                    flexWrap: 'wrap',
+                                    gap: 2.5
+                                  }}
+                                >
+                                  {pl?.selectedIntervs?.map((int) => {
+                                    const user = schedule.members.find(
+                                      (member) =>
+                                        member.user_id === int.interv_id
+                                    );
+                                    if (!user) return null;
+                                    return (
+                                      <Stack
+                                        key={int.interv_id}
+                                        direction={'row'}
+                                        spacing={1}
+                                        sx={{
+                                          textWrap: 'nowrap'
+                                        }}
+                                      >
+                                        <MuiAvatar
+                                          level={getFullName(
+                                            user.first_name,
+                                            user.last_name
+                                          )}
+                                          src={user?.profile_image}
+                                          variant={'circular'}
+                                          width={'24px'}
+                                          height={'24px'}
+                                          fontSize={'12px'}
+                                        />
+                                        <Typography
+                                          variant={'body2'}
+                                          color={'#000'}
+                                        >
+                                          {getFullName(
+                                            user.first_name,
+                                            user.last_name
+                                          )}
+                                        </Typography>
+                                      </Stack>
+                                    );
+                                  })}
+                                </Stack>
+                              }
+                            />
+                          );
+                        })}
+                      />
+                    );
+                  });
+                }
+              )}
+            />
+          }
+          onClickSupport={{
+            onClick: () => {
+              window.open(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${schedule.schedule.application_id}`,
+                '_blank'
+              );
             }
-            onClickSupport={{
-              onClick: () => {
-                window.open(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${schedule.schedule.application_id}`,
-                  '_blank'
-                );
-              }
-            }}
-            slotSessionList={schedule.schedule.confirmed_option.plans
-              .filter((pl) => !pl.isBreak)
-              .map((plan, ind) => {
-                return (
-                  <SessionList
-                    key={ind}
-                    textDuration={plan.duration + ' Minutes'}
-                    textSession={plan.module_name}
-                  />
-                );
-              })}
-          />
-        )
+          }}
+          slotSessionList={schedule.schedule.confirmed_option.plans
+            .filter((pl) => !pl.isBreak)
+            .map((plan, ind) => {
+              return (
+                <SessionList
+                  key={ind}
+                  textDuration={plan.duration + ' Minutes'}
+                  textSession={plan.module_name}
+                />
+              );
+            })}
+        />
       ) : (
         <Page404 />
       )}

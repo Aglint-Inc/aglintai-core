@@ -1137,13 +1137,10 @@ export type Database = {
           id: string
           interview_plan: Json[] | null
           meeting_json: Json[] | null
-          module_ids: string[] | null
           resend_invite: number
           schedule_name: string
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
-          start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
-          user_ids: string[] | null
         }
         Insert: {
           application_id: string
@@ -1156,13 +1153,10 @@ export type Database = {
           id?: string
           interview_plan?: Json[] | null
           meeting_json?: Json[] | null
-          module_ids?: string[] | null
           resend_invite?: number
           schedule_name: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
-          start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
-          user_ids?: string[] | null
         }
         Update: {
           application_id?: string
@@ -1175,13 +1169,10 @@ export type Database = {
           id?: string
           interview_plan?: Json[] | null
           meeting_json?: Json[] | null
-          module_ids?: string[] | null
           resend_invite?: number
           schedule_name?: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
-          start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
-          user_ids?: string[] | null
         }
         Relationships: [
           {
@@ -2674,6 +2665,21 @@ export type Database = {
           rshadow_ints: Json
         }[]
       }
+      find_avail_api_details_updated_2: {
+        Args: {
+          job_id: string
+          recruiter_id: string
+        }
+        Returns: {
+          interview_plan: Json
+          service_json: Json
+          interviewer: Json
+          interview_modules: Json
+          shadow_ints: Json
+          rshadow_ints: Json
+          int_mod_relns: Json
+        }[]
+      }
       get_candidate_info: {
         Args: {
           rec_id: string
@@ -2703,6 +2709,17 @@ export type Database = {
           date_range_filter?: unknown
         }
         Returns: number
+      }
+      get_interview_modules: {
+        Args: {
+          rec_id: string
+        }
+        Returns: {
+          interview_modules: Json
+          users: Json
+          upcoming_meeting_count: number
+          completed_meeting_count: number
+        }[]
       }
       get_interview_schedule_by_module_id: {
         Args: {

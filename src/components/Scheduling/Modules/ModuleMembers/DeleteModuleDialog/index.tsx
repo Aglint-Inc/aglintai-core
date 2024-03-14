@@ -2,18 +2,16 @@ import { Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { DeletePopup } from '@/devlink3';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import {
-  deleteModuleSchedulingStore,
-  setIsDeleteModuleDialogOpen,
-  useSchedulingStore
-} from '../../store';
+import { setIsDeleteModuleDialogOpen, useSchedulingStore } from '../../store';
 import { deleteModuleById } from '../../utils';
 
 function DeleteModuleDialog() {
   const router = useRouter();
+  const { allModules, setAllModules } = useSchedulingContext();
   const isDeleteModuleDialogOpen = useSchedulingStore(
     (state) => state.isDeleteModuleDialogOpen
   );
@@ -23,7 +21,10 @@ function DeleteModuleDialog() {
     try {
       const isdeleted = await deleteModuleById(editModule.id);
       if (isdeleted) {
-        deleteModuleSchedulingStore(editModule.id);
+        const updatedModules = allModules.filter(
+          (mod) => mod.interview_modules.id !== editModule.id
+        );
+        setAllModules([...updatedModules]);
         router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
       } else {
         throw new Error();

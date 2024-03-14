@@ -18,9 +18,6 @@ export const useSchedulingStore = create<SchedulingSlice>()(
   () => initialStateSchedulingStore
 );
 
-export const setInterviewModules = (interviewModules: ModuleType[]) =>
-  useSchedulingStore.setState({ interviewModules });
-
 export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
   useSchedulingStore.setState({ isCreateDialogOpen });
 
@@ -79,15 +76,6 @@ export const resetSchedulingStore = () =>
 export const setTrainingStatus = (trainingStatus: StatusTraining) =>
   useSchedulingStore.setState({ trainingStatus });
 
-export const deleteModuleSchedulingStore = (id: string) => {
-  useSchedulingStore.setState({
-    interviewModules: useSchedulingStore
-      .getState()
-      .interviewModules.filter((module) => module.id !== id)
-  });
-  resetEditModule();
-};
-
 export const deleteMemberSchedulingStore = (id: string) => {
   setIsDeleteMemberDialogOpen(false);
   const { editModule } = useSchedulingStore.getState();
@@ -108,15 +96,6 @@ export const addMembersSchedulingStore = (
       ...editModule,
       relations: [...editModule.relations, ...members]
     }
-  });
-  const { interviewModules } = useSchedulingStore.getState();
-  useSchedulingStore.setState({
-    interviewModules: interviewModules.map((module) => {
-      if (module.id === editModule.id) {
-        module.relations = [...module.relations, ...members];
-      }
-      return module;
-    })
   });
   setIsAddMemberDialogOpen(false);
   setSelectedUsers([]);

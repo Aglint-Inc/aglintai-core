@@ -10,11 +10,10 @@ import React from 'react';
 import { PanelMemberPill } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
-import {
-  InterviewPanelContextType,
-  MemberType
-} from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { InterviewPanelContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { palette } from '@/src/context/Theme/Theme';
+
+import { MemberType } from '../../../types';
 
 function MembersAutoComplete({
   disabled,

@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { ConfirmationPopup } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import {
-  setInterviewModules,
   setIsCreateDialogOpen,
   setSelectedUsers,
   useSchedulingStore
@@ -19,7 +19,8 @@ import { createModule } from '../utils';
 function CreateModuleDialog() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const { isCreateDialogOpen, interviewModules } = useSchedulingStore();
+  const { allModules, setAllModules } = useSchedulingContext();
+  const { isCreateDialogOpen } = useSchedulingStore();
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
 
@@ -27,15 +28,21 @@ function CreateModuleDialog() {
     if (text && !loading) {
       try {
         setLoading(true);
+
         const res = await createModule({
           name: text,
           recruiter_id: recruiter.id
         });
-        setInterviewModules([
-          ...interviewModules,
-          { ...res, relations: [] }
-        ] as any);
         router.push(`${pageRoutes.INTERVIEWMODULE}/members/${res.id}`);
+        setAllModules([
+          ...allModules,
+          {
+            interview_modules: res,
+            completed_meeting_count: 0,
+            upcoming_meeting_count: 0,
+            users: []
+          }
+        ]);
         setIsCreateDialogOpen(null);
         setSelectedUsers([]);
       } catch (e) {

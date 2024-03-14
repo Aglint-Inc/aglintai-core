@@ -15,7 +15,6 @@ import {
   ScheduleInfoUpcoming
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { MemberType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import NotFoundPage from '@/src/pages/404';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -25,6 +24,7 @@ import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import CandidateDetailsJobDrawer from '../AllSchedules/SchedulingApplication/CandidateDetailsJob';
 import { getScheduleType } from '../AllSchedules/utils';
 import { TransformSchedule } from '../Modules/ModuleMembers';
+import { MemberType } from '../Modules/types';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 

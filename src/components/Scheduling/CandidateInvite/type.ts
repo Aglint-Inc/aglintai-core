@@ -1,4 +1,3 @@
-import { MemberType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import {
   CandidateType,
   InterviewModuleType,
@@ -6,8 +5,11 @@ import {
 } from '@/src/types/data.types';
 
 import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
+import { ApplicationList } from '../AllSchedules/store';
+import { MemberType } from '../Modules/types';
 
 export type ApiResponse = {
+  job: ApplicationList['public_jobs'];
   modules: InterviewModuleType[];
   members: MemberType[];
   schedule: InterviewScheduleTypeDB & {
@@ -21,5 +23,3 @@ export type ApiResponse = {
     name: string;
   };
 };
-
-

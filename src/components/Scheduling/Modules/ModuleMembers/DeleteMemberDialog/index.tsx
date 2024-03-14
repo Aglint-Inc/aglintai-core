@@ -1,6 +1,7 @@
 import { Dialog } from '@mui/material';
 
 import { DeletePopup } from '@/devlink3';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import toast from '@/src/utils/toast';
 
 import {
@@ -11,6 +12,7 @@ import {
 import { deleteRelationByUserId } from '../../utils';
 
 function DeleteMemberDialog() {
+  const { allModules, setAllModules } = useSchedulingContext();
   const isDeleteMemberDialogOpen = useSchedulingStore(
     (state) => state.isDeleteMemberDialogOpen
   );
@@ -24,6 +26,16 @@ function DeleteMemberDialog() {
         user_id: selUser.user_id
       });
       if (isDeleted) {
+        const updatedModules = allModules.map((mod) => {
+          if (mod.interview_modules.id === editModule.id) {
+            const filteredUsers = mod.users.filter(
+              (user) => user.user_id !== selUser.user_id
+            );
+            mod.users = filteredUsers;
+          }
+          return mod;
+        });
+        setAllModules([...updatedModules]);
         deleteMemberSchedulingStore(selUser.user_id);
       } else {
         throw new Error();

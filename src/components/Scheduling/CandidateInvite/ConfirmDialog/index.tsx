@@ -125,7 +125,7 @@ function ConfirmDialog({
           <ButtonSuccessLarge
             isEndIcon={saving}
             slotEndIcon={
-              <Stack>
+              <Stack height={'100%'}>
                 <LoaderGrey />
               </Stack>
             }
