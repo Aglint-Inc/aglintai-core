@@ -8,7 +8,7 @@ import {
 
 import { calcIntervCombsForModule, ModuleCombination } from './func_2';
 import { findCommonTimeRange } from './func_3';
-import { InterDetailsType, TimeDurationType } from './types';
+import { InterDetailsType, IntervCntApp, TimeDurationType } from './types';
 
 export const findPlanCombinations = (
   interview_plan: InterviewModuleApiType[],
@@ -41,23 +41,30 @@ export const findPlanCombinations = (
   // given one combination of plan find all possible times for that plan
   const calcMeetingCombinsForPlan = (plan_comb: ModuleCombination[]) => {
     const schedule_combs: InterviewPlanScheduleDbType[] = [];
-    const getInterviewersCommonTime = (inter_ids: string[]) => {
-      let sorted_inters = inter_ids.sort();
-
-      if (cached_free_time.has(sorted_inters.join('_'))) {
-        return cached_free_time.get(inter_ids.join('_'));
+    const getInterviewersCommonTime = (curr_module: ModuleCombination) => {
+      const all_int_attendees = [
+        ...curr_module.selectedIntervs,
+        ...curr_module.shadowIntervs,
+        ...curr_module.revShadowIntervs
+      ];
+      let map_key: string[] = [
+        curr_module.module_id,
+        ...all_int_attendees.map((s) => s.interv_id)
+      ];
+      map_key = map_key.sort();
+      if (cached_free_time.has(map_key.join('_'))) {
+        return cached_free_time.get(map_key.join('_'));
       }
       const common_time_range = findCommonTimeRange(
-        interv_free_time
-          .filter((int) =>
-            sorted_inters.find((str) => str === int.interviewer_id)
-          )
-          .map((i) => ({
-            inter_id: i.interviewer_id,
-            time_ranges: i.freeTimes
-          }))
+        all_int_attendees.map((s) => ({
+          inter_id: s.interv_id,
+          time_ranges: interv_free_time.find(
+            (i) => i.interviewer_id === s.interv_id
+          ).freeTimes,
+          interviewer_pause: s.pause_json
+        }))
       );
-      cached_free_time.set(sorted_inters.join('_'), common_time_range);
+      cached_free_time.set(map_key.join('_'), common_time_range);
       return common_time_range;
     };
 
@@ -108,11 +115,7 @@ export const findPlanCombinations = (
           .toISOString()
       };
 
-      const common_time = getInterviewersCommonTime([
-        ...module_comb.selectedIntervs.map((i) => i.interv_id),
-        ...module_comb.shadowIntervs.map((i) => i.interv_id),
-        ...module_comb.revShadowIntervs.map((i) => i.interv_id)
-      ]);
+      const common_time = getInterviewersCommonTime(module_comb);
 
       for (let free_time of common_time) {
         if (
@@ -144,12 +147,49 @@ export const findPlanCombinations = (
       // const required_time_range = dayjs
     };
 
+    const isPlanPossible = () => {
+      let flag = true;
+      let mp = new Map<string, IntervCntApp>();
+      for (let mod of plan_comb) {
+        let all_ints = [
+          ...mod.selectedIntervs,
+          ...mod.shadowIntervs,
+          ...mod.revShadowIntervs
+        ];
+        for (const int of all_ints) {
+          let int_cnt = mp.get(int.interv_id);
+          if (int_cnt) {
+            int_cnt.meet_cnt += 1;
+            int_cnt.dur_cnt += mod.duration;
+          } else {
+            int_cnt = {
+              meet_cnt: 1,
+              dur_cnt: mod.duration
+            };
+            mp.set(int.interv_id, int_cnt);
+          }
+        }
+      }
+
+      for (let [int_id, int_cnt] of mp) {
+        const int_setting = interv_free_time.find(
+          (i) => i.interviewer_id === int_id
+        );
+        let load = int_setting.shedule_settings.interviewLoad.dailyLimit;
+        if (load.type === 'Interviews' && load.value < int_cnt.meet_cnt) {
+          flag = false;
+        } else if (load.type === 'Hours' && load.value * 60 < int_cnt.dur_cnt) {
+          flag = false;
+        }
+        if (!flag) break;
+      }
+      return flag;
+    };
+
+    // check for load balance setting
+    if (!isPlanPossible()) return schedule_combs;
     const first_meeting = plan_comb[0];
-    const first_mod_comon_time = getInterviewersCommonTime([
-      ...first_meeting.selectedIntervs.map((i) => i.interv_id),
-      ...first_meeting.shadowIntervs.map((i) => i.interv_id),
-      ...first_meeting.revShadowIntervs.map((i) => i.interv_id)
-    ]);
+    const first_mod_comon_time = getInterviewersCommonTime(first_meeting);
     for (let time_range of first_mod_comon_time) {
       const curr_time_range: TimeDurationType = {
         startTime: time_range.startTime,

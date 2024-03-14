@@ -31,7 +31,8 @@ export const calcIntervCombsForModule = (plan: InterviewModuleApiType[]) => {
             interv_id: inter.interv_id,
             email: inter.email,
             profile_img: inter.profile_img,
-            name: inter.name
+            name: inter.name,
+            pause_json: inter.pause_json
           };
         }),
         duration: plan_module.duration,
