@@ -50,59 +50,6 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
       }).then(() => {});
     };
 
-<<<<<<< HEAD
-=======
-  const [interviewer, setInterviewer] = useState([]);
-  async function getInterviewStatus() {
-    // Initialize an object to store the counts of each status
-
-    for (const member of interviewerMembers) {
-      const statusCounts = {
-        completed: 0,
-        upcoming: 0
-      };
-      const { data, error } = await supabase.rpc(
-        'get_interview_schedule_by_user_id',
-        {
-          target_user_id: member.user_id
-        }
-      );
-
-      if (!error) {
-        const allSchedules = data as unknown as ScheduleType[];
-        const schArray = [];
-        allSchedules.map((sch) =>
-          sch.schedule.confirmed_option.plans.map((plan) => {
-            if (
-              !plan.isBreak &&
-              plan.selectedIntervs.find(
-                (user) => user.interv_id === member.user_id
-              )
-            ) {
-              schArray.push({ ...sch, module_time: plan });
-            }
-          })
-        );
-        schArray.map((item: ScheduleType) => {
-          statusCounts[item.schedule.status]++;
-        });
-      }
-      setInterviewer((pre) => {
-        return [
-          ...pre,
-          {
-            ...member,
-            upcomingCount: statusCounts.upcoming,
-            completedCount: statusCounts.completed
-          }
-        ];
-      });
-    }
-  }
-  useEffect(() => {
-    if (interviewerMembers.length) getInterviewStatus();
-  }, [interviewerMembers]);
->>>>>>> 96ceb18a14a56519cc217fec5e2c03ff4f500c84
   return (
     <InterviewerContext.Provider
       value={{
@@ -156,32 +103,3 @@ const updateSchedule = async ({
       return true;
     });
 };
-<<<<<<< HEAD
-=======
-
-const getInterviewsData = async ({ user_id }: { user_id: string }) => {
-  const { data, error } = await supabase.rpc(
-    'get_interview_schedule_by_user_id',
-    {
-      target_user_id: user_id
-    }
-  );
-
-  if (!error) {
-    const allSchedules = data as unknown as ScheduleType[];
-    const schArray = [];
-    allSchedules.map((sch) =>
-      sch.schedule.confirmed_option.plans.map((plan) => {
-        if (
-          !plan.isBreak &&
-          plan.selectedIntervs.find((user) => user.interv_id === user_id)
-        ) {
-          schArray.push({ ...sch, module_time: plan });
-        }
-      })
-    );
-    // setSchedules(schArray);
-    return schArray;
-  }
-};
->>>>>>> 96ceb18a14a56519cc217fec5e2c03ff4f500c84
