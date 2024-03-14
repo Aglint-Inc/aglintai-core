@@ -28,7 +28,7 @@ import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/S
 
 function SchedulingMainComp() {
   const router = useRouter();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter, setRecruiter, allowAction } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
   const { searchText } = useSchedulingStore();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
@@ -106,23 +106,30 @@ function SchedulingMainComp() {
           <BodyWithSublink
             slotTabContent={
               router.query.tab == 'allSchedules' ? (
-                <AllSchedules />
+                allowAction(<AllSchedules />, ['admin', 'member', 'scheduler'])
               ) : router.query.tab == 'mySchedules' ? (
                 <>
                   <MySchedule />
                   {/* <InterviewerComp /> */}
                 </>
               ) : router.query.tab == 'interviewModules' ? (
-                <Modules />
+                allowAction(<Modules />, ['admin', 'member', 'scheduler'])
               ) : router.query.tab == 'emailTemplates' ? (
-                <SchedulingEmailTemplates />
+                allowAction(<SchedulingEmailTemplates />, [
+                  'admin',
+                  'member',
+                  'scheduler'
+                ])
               ) : router.query.tab == 'allInterviewers' ? (
-                <InterviewTab />
+                allowAction(<InterviewTab />, ['admin', 'member', 'scheduler'])
               ) : router.query.tab == 'settings' ? (
-                <SettingsScheduling
-                  updateSettings={updateSettings}
-                  initialData={recruiter?.scheduling_settings}
-                />
+                allowAction(
+                  <SettingsScheduling
+                    updateSettings={updateSettings}
+                    initialData={recruiter?.scheduling_settings}
+                  />,
+                  ['admin', 'member', 'scheduler']
+                )
               ) : (
                 ''
               )

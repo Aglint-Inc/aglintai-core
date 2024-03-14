@@ -12,7 +12,7 @@ import { tabs } from './utils';
 import {
   generateDepartments,
   generateRoles,
-  generateSpecialities,
+  generateSpecialities
 } from './utils';
 import LoaderGrey from '../Common/LoaderGrey';
 
@@ -61,7 +61,7 @@ const CompanyDetailComp = () => {
               onClickNav={{
                 onClick: () => {
                   router.replace(`/company?tab=${tabs.basicinfo}`);
-                },
+                }
               }}
             />
             <NavSublink
@@ -70,7 +70,7 @@ const CompanyDetailComp = () => {
               onClickNav={{
                 onClick: () => {
                   router.replace(`/company?tab=${tabs.additionalinfo}`);
-                },
+                }
               }}
             />
             <NavSublink
@@ -79,7 +79,7 @@ const CompanyDetailComp = () => {
               onClickNav={{
                 onClick: () => {
                   router.replace(`/company?tab=${tabs.about}`);
-                },
+                }
               }}
             />
             {isAssesEnabled && (
@@ -89,7 +89,7 @@ const CompanyDetailComp = () => {
                 onClickNav={{
                   onClick: () => {
                     router.replace(`/company?tab=${tabs.assessment}`);
-                  },
+                  }
                 }}
               />
             )}
@@ -100,7 +100,7 @@ const CompanyDetailComp = () => {
                 onClickNav={{
                   onClick: () => {
                     router.replace(`/company?tab=${tabs.jobassistant}`);
-                  },
+                  }
                 }}
               />
             )}
@@ -110,7 +110,7 @@ const CompanyDetailComp = () => {
               onClickNav={{
                 onClick: () => {
                   router.replace(`/company?tab=${tabs.email}`);
-                },
+                }
               }}
             />
             {isTeamEnabled && (
@@ -120,7 +120,7 @@ const CompanyDetailComp = () => {
                 onClickNav={{
                   onClick: () => {
                     router.replace('/company?tab=team');
-                  },
+                  }
                 }}
               />
             )}

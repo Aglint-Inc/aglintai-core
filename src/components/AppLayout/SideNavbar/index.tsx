@@ -96,7 +96,6 @@ function SideNavbar() {
       isvisible:
         isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com'
     },
-
     {
       icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',
@@ -106,26 +105,28 @@ function SideNavbar() {
       isvisible: true
     }
   ];
-  const navListInterviewer = [
-    {
-      icon: <NavScheduler isActive={false} />,
-      text: 'Scheduler',
-      SubComponents: null,
-      route: pageRoutes.INTERVIEWER,
-      comingsoon: false,
-      isvisible: true
-    }
-  ];
 
   const newNaveList = useMemo(() => {
     let tempList = [];
-
-    if (recruiterUser?.role === 'member') {
-      tempList = navList.filter((x) => x.text !== 'Company Settings');
-    } else if (recruiterUser?.role === 'interviewer') {
-      tempList = navListInterviewer;
-    } else {
-      tempList = navList;
+    switch (recruiterUser?.role) {
+      case 'member': {
+        tempList = navList;
+        break;
+      }
+      case 'interviewer': {
+        tempList = navList.filter((item) => item.text === 'Scheduler');
+        break;
+      }
+      case 'scheduler': {
+        tempList = navList.filter((item) =>
+          ['Jobs', 'Scheduler'].includes(item.text)
+        );
+        break;
+      }
+      default: {
+        tempList = navList;
+        break;
+      }
     }
     return tempList;
   }, [recruiter, recruiterUser]);

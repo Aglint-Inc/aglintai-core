@@ -6,6 +6,7 @@ import DashboardComp from '@/src/components/JobsDashboard';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
+import withRoleProtection from '@/src/HOC/RoleProtection';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 const Dashboard = () => {
@@ -30,4 +31,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withRoleProtection(Dashboard, ['admin', 'member', 'scheduler']);

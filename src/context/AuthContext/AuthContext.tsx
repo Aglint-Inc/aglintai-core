@@ -7,6 +7,7 @@ import posthog from 'posthog-js';
 import {
   createContext,
   Dispatch,
+  ReactNode,
   SetStateAction,
   useContext,
   useEffect,
@@ -49,6 +50,13 @@ export interface ContextValue {
     user_id: string;
     data: Database['public']['Tables']['recruiter_user']['Update'];
   }) => Promise<boolean>;
+  isAllowed: (
+    role: Database['public']['Enums']['recruiter_roles'][]
+  ) => boolean;
+  allowAction: <T extends Function | ReactNode>(
+    func: T,
+    role: Database['public']['Enums']['recruiter_roles'][]
+  ) => T;
 }
 
 const defaultProvider = {
@@ -70,7 +78,9 @@ const defaultProvider = {
   setRecruiterUser: () => {},
   members: [],
   setMembers: () => {},
-  handelMemberUpdate: (x) => Promise.resolve(true)
+  handelMemberUpdate: (x) => Promise.resolve(true),
+  isAllowed: (role) => true,
+  allowAction: (func, role) => func
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -266,13 +276,40 @@ const AuthProvider = ({ children }) => {
       if (data) {
         setMembers((prev) =>
           prev.map((item) => {
-            return data.user_id !== item.user_id ? item : data as RecruiterUserType;
+            return data.user_id !== item.user_id
+              ? item
+              : (data as RecruiterUserType);
           })
         );
         return true;
       }
       return false;
     });
+  };
+
+  // role based access
+  const isAllowed: ContextValue['isAllowed'] = (role) => {
+    if (recruiterUser) {
+      return role.includes(recruiterUser.role);
+    }
+    return false;
+  };
+  const allowAction: ContextValue['allowAction'] = <
+    T extends Function | ReactNode
+  >(
+    func: T,
+    role
+  ) => {
+    if (recruiterUser && role.includes(recruiterUser.role)) {
+      return func;
+    }
+
+    // Return an empty function if func is a function
+    if (typeof func === 'function') {
+      return (() => {}) as unknown as T;
+    }
+    // Return an empty fragment if func is a React node
+    return (<></>) as T;
   };
 
   return (
@@ -295,7 +332,9 @@ const AuthProvider = ({ children }) => {
         setRecruiterUser,
         members,
         setMembers,
-        handelMemberUpdate
+        handelMemberUpdate,
+        isAllowed,
+        allowAction
       }}
     >
       {loading ? <AuthLoader /> : children}
