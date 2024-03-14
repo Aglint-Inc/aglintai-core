@@ -1,15 +1,15 @@
-import { supportedTypes } from '@/src/pages/api/jobApplications/candidateUpload/utils';
+import { supportedTypes } from '@/src/pages/api/job/jobApplications/candidateUpload/utils';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { CandidateResumesContext, CandidateResumesCreateAction } from './types';
 
 export const initialCandidateResumesContext: CandidateResumesContext = {
   handleCandidateResumesCreate: undefined,
-  handleCandidateResumesDelete: undefined,
+  handleCandidateResumesDelete: undefined
 };
 
 export const createCandidateResumeDbAction = async (
-  inputData: CandidateResumesCreateAction['request']['inputData'],
+  inputData: CandidateResumesCreateAction['request']['inputData']
 ) => {
   const { data, error } = await supabase.storage
     .from('candidates-files')
@@ -18,21 +18,21 @@ export const createCandidateResumeDbAction = async (
       inputData.file,
       {
         cacheControl: '3600',
-        contentType: inputData.contentType,
-      },
+        contentType: inputData.contentType
+      }
     );
   return { data, error };
 };
 
 export const deleteCandidateResumeDbAction = async (
-  inputData: CandidateResumesCreateAction['request']['inputData'],
+  inputData: CandidateResumesCreateAction['request']['inputData']
 ) => {
   const { error } = await supabase.storage
     .from('candidate-files')
     .remove([
       `resumes/${inputData.candidate_file_id}.${
         supportedTypes[inputData.contentType]
-      }`,
+      }`
     ]);
   return { error };
 };

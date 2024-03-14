@@ -10,13 +10,13 @@ import { useJobs } from '@/src/context/JobsContext';
 
 function AgentPage() {
   const router = useRouter();
-  const { handleJobRead } = useJobs();
-  const [jobs, setJObs] = useState([]);
+  const {
+    jobs: { data: jobs }
+  } = useJobs();
   const [loading, setLoading] = useState(true);
   async function getjobs() {
-    const jobList = await handleJobRead();
     setLoading(false);
-    setJObs(jobList);
+    // setJObs(jobList);
   }
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function AgentPage() {
                   onClickJob={{
                     onClick: () => {
                       router.push(`/agent/jobs/${item.id}`);
-                    },
+                    }
                   }}
                   key={i}
                   textJob={item.job_title}

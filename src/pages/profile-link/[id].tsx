@@ -10,13 +10,13 @@ import {
   // InterviewAiTranscriptCard,
   // InterviewCandidateCard,
   // ProfileInterviewScore,
-  ProfileShare,
+  ProfileShare
 } from '@/devlink';
 import Icon from '@/src/components/Common/Icons/Icon';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import ScoreWheel, {
-  ScoreWheelParams,
+  ScoreWheelParams
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import {
@@ -24,14 +24,14 @@ import {
   giveColorForInterviewScore,
   // giveRateInWordForInterview,
   // InterviewResultParams,
-  NewResumeScoreDetails,
+  NewResumeScoreDetails
   // Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import {
   JobApplication,
-  ScoreJson,
+  ScoreJson
 } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
@@ -39,7 +39,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { selectJobApplicationQuery } from '../api/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '../api/job/jobApplications/read/utils';
 
 function InterviewFeedbackPage() {
   const router = useRouter();
@@ -116,11 +116,11 @@ function InterviewFeedbackPage() {
           sx={{
             '& .MuiDialog-paper': {
               borderRadius: '0px !important',
-              border: 'none !important',
+              border: 'none !important'
             },
             '.MuiDialog-container': {
-              height: 'auto',
-            },
+              height: 'auto'
+            }
           }}
           fullWidth
           maxWidth={'lg'}
@@ -263,15 +263,15 @@ function InterviewFeedbackPage() {
             onClick: () => {
               navigator.clipboard
                 .writeText(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${application.id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.ProfileLink}/${application.id}`
                 )
                 .then(() => {
                   toast.success('Link copied');
                 });
-            },
+            }
           }}
           propsTextColor={{
-            style: { color: giveColorForInterviewScore(interviewScore) },
+            style: { color: giveColorForInterviewScore(interviewScore) }
           }}
           slotCompanyLogo={
             <Avatar
@@ -280,11 +280,11 @@ function InterviewFeedbackPage() {
               sx={{
                 color: 'common.black',
                 '& .MuiAvatar-img ': {
-                  objectFit: 'contain',
+                  objectFit: 'contain'
                 },
                 height: '40px',
                 width: '40px',
-                background: palette.grey[100],
+                background: palette.grey[100]
               }}
             >
               <Icon variant='CompanyOutlinedBig' />
@@ -296,11 +296,11 @@ function InterviewFeedbackPage() {
                 sx={{
                   '& .MuiDialog-paper': {
                     borderRadius: '0px !important',
-                    border: 'none !important',
+                    border: 'none !important'
                   },
                   '.MuiDialog-container': {
-                    height: 'auto',
-                  },
+                    height: 'auto'
+                  }
                 }}
                 fullWidth
                 maxWidth={'lg'}

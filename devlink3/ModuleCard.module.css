@@ -1,5 +1,8 @@
 .module_card {
+  position: relative;
+
   display: flex;
+  width: 100%;
   height: 100%;
   padding: 16px;
   flex-direction: column;
@@ -14,14 +17,45 @@
   cursor: pointer;
 }
 
+@media screen and (min-width: 1920px) {
+  .module_card {
+    height: 150px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .module_card {
+    height: 120px;
+  }
+}
+
 .module_card:hover {
-  box-shadow: inset 0 0 0 1px #e9ebed;
+  border-style: solid;
+  border-color: #f7f9fb;
+  background-color: #f7f9fb;
 }
 
 .tittle_icon_flex {
-  display: flex;
+  display: grid;
   justify-content: space-between;
   align-items: flex-start;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto;
+}
+
+.relative {
+  position: relative;
+}
+
+.relative.mt-2 {
+  margin-top: 2px;
+}
+
+.relative.cursor-pointer {
+  cursor: pointer;
 }
 
 .icon {
@@ -36,6 +70,59 @@
   background-color: #f7f9fb;
 }
 
+.errorr_warning {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+
+  padding: 0px;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
+.slot_enable_disable {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -46,11 +133,6 @@
 }
 
 .fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
   position: relative;
   z-index: 2;
 }
@@ -81,23 +163,4 @@
 
 .fw-semibold.text-red {
   color: #d93f4c;
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-gray-600.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-gray-600.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-gray-600.is_link {
-  color: #337fbd;
-  text-decoration: underline;
-  cursor: pointer;
 }

@@ -8,4 +8,9 @@ declare function CloseJobModal(props: {
   slotInput?: Types.Devlink.Slot;
   onClickCloseJob?: Types.Devlink.RuntimeProps;
   onClickCancel?: Types.Devlink.RuntimeProps;
+  slotButton?: Types.Devlink.Slot;
+  isDisabled?: Types.Visibility.VisibilityConditions;
+  textWarning?: React.ReactNode;
+  textPopupTitle?: React.ReactNode;
+  textButton?: React.ReactNode;
 }): React.JSX.Element;

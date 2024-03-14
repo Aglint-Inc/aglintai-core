@@ -15,7 +15,7 @@ import {
   LeverApiKey,
   LoadingJobsAts,
   NoResultAts,
-  SkeletonLoaderAtsCard,
+  SkeletonLoaderAtsCard
 } from '@/devlink';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
@@ -38,7 +38,7 @@ export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead } = useJobs();
+  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedAshbyPostings, setSelectedAshbyPostings] = useState<
@@ -68,14 +68,14 @@ export function AshbyModalComp() {
             (job) =>
               job.posted_by === POSTED_BY.ASHBY &&
               job.job_title === post.title &&
-              job.location == post.location,
+              job.location == post.location
           ).length == 0
         ) {
           return true;
         } else {
           return false;
         }
-      }),
+      })
     );
     setInitialFetch(false);
   };
@@ -84,7 +84,7 @@ export function AshbyModalComp() {
     try {
       setIntegration((prev) => ({
         ...prev,
-        ashby: { open: true, step: STATE_ASHBY_DIALOG.IMPORTING },
+        ashby: { open: true, step: STATE_ASHBY_DIALOG.IMPORTING }
       }));
       //converting ashby jobs to db jobs
       const refJobsObj = selectedAshbyPostings.map((post) => {
@@ -93,7 +93,7 @@ export function AshbyModalComp() {
           public_job_id: uuidv4(),
           ats_job_id: post.jobId,
           recruiter_id: recruiter.id,
-          ats_json: post,
+          ats_json: post
         };
       });
       const dbJobs = await createJobObject(refJobsObj, recruiter);
@@ -108,10 +108,11 @@ export function AshbyModalComp() {
             public_job_id: post.public_job_id,
             recruiter_id: recruiter.id,
             ats_job_id: post.jobId, //saving job posting id from ashby
-            ats: 'ashby',
+            ats: 'ashby'
           };
         });
         await supabase.from('job_reference').insert(astJobsObj).select();
+        experimental_handleGenerateJd(newJobs[0].id);
         // await axios.post('/api/ashby/batchsave', {
         //   recruiter_id: recruiter.id,
         // });
@@ -121,13 +122,13 @@ export function AshbyModalComp() {
         //closing modal once done
         setIntegration((prev) => ({
           ...prev,
-          ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
+          ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING }
         }));
-        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}&ats=true`);
+        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       }
     } catch (error) {
       toast.error(
-        'Sorry unable to import. Please try again later or contact support.',
+        'Sorry unable to import. Please try again later or contact support.'
       );
       posthog.capture('Error Importing Asbhy Jobs');
       handleClose();
@@ -140,17 +141,17 @@ export function AshbyModalComp() {
       const response = await axios.post('/api/ashby/getPostings', {
         page: 1,
         apiKey: apiRef.current.value,
-        isInitial: true,
+        isInitial: true
       });
 
       if (response.status === 200 && response.data?.results?.length > 0) {
         setIntegration((prev) => ({
           ...prev,
-          ashby: { open: true, step: STATE_ASHBY_DIALOG.FETCHING },
+          ashby: { open: true, step: STATE_ASHBY_DIALOG.FETCHING }
         }));
         const responseRec = await axios.post('/api/ashby/saveApiKey', {
           recruiterId: recruiter.id,
-          apiKey: apiRef.current.value,
+          apiKey: apiRef.current.value
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
@@ -163,8 +164,8 @@ export function AshbyModalComp() {
               ...prev,
               ashby: {
                 open: true,
-                step: STATE_ASHBY_DIALOG.LISTJOBS,
-              },
+                step: STATE_ASHBY_DIALOG.LISTJOBS
+              }
             }));
           }, 1000);
         }
@@ -172,14 +173,14 @@ export function AshbyModalComp() {
         setLoading(false);
         setIntegration((prev) => ({
           ...prev,
-          ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
+          ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR }
         }));
       }
     } catch (error) {
       setLoading(false);
       setIntegration((prev) => ({
         ...prev,
-        ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR },
+        ashby: { open: true, step: STATE_ASHBY_DIALOG.ERROR }
       }));
     }
   };
@@ -202,7 +203,7 @@ export function AshbyModalComp() {
                 buttonProps={{
                   onClick: () => {
                     submitApiKey();
-                  },
+                  }
                 }}
               />
             }
@@ -256,7 +257,7 @@ export function AshbyModalComp() {
                 onClick: () => {
                   importAshby();
                   posthog.capture('Asbhy Jobs successfully imported');
-                },
+                }
               }}
               isImportDisable={selectedAshbyPostings.length === 0}
               slotAtsCard={
@@ -268,39 +269,39 @@ export function AshbyModalComp() {
                           <AtsCard
                             isChecked={
                               selectedAshbyPostings?.filter(
-                                (p) => p.id === post.id,
+                                (p) => p.id === post.id
                               )?.length > 0
                             }
                             onClickCheck={{
                               onClick: () => {
                                 if (
                                   selectedAshbyPostings?.some(
-                                    (p) => p.id === post.id,
+                                    (p) => p.id === post.id
                                   )
                                 ) {
                                   // If the object is already in the array, remove it
                                   setSelectedAshbyPostings((prev) =>
-                                    prev.filter((p) => p.id !== post.id),
+                                    prev.filter((p) => p.id !== post.id)
                                   );
                                 } else {
                                   if (selectedAshbyPostings.length < 1) {
                                     // If the object is not in the array, add it
                                     setSelectedAshbyPostings((prev) => [
                                       ...prev,
-                                      post,
+                                      post
                                     ]);
                                   } else {
                                     toast.warning(
-                                      'You can import 1 job at a time',
+                                      'You can import 1 job at a time'
                                     );
                                   }
                                 }
-                              },
+                              }
                             }}
                             propsTextColor={{
                               style: {
-                                color: '',
-                              },
+                                color: ''
+                              }
                             }}
                             textRole={post.title}
                             textStatus={'Live'}
@@ -339,7 +340,7 @@ export function AshbyModalComp() {
       onClickClose={{
         onClick: () => {
           handleClose();
-        },
+        }
       }}
     />
   );

@@ -17,7 +17,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import SpeechRecognition, {
-  useSpeechRecognition,
+  useSpeechRecognition
 } from 'react-speech-recognition';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -25,7 +25,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { useInterviewSignUp } from './InterviewSignup';
 import { useLogActivities } from './LogActivities';
 import { useResumeList } from './ResumeListContext';
-import { selectJobApplicationQuery } from '../pages/api/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '../pages/api/job/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
 import { interviewCompleted } from '../utils/email_templates/innterview_completed';
 import { mixPanel } from '../utils/mix-panel';
@@ -78,7 +78,7 @@ const InterviewPrepProvider = ({ children }) => {
     transcript,
     resetTranscript,
     listening,
-    browserSupportsSpeechRecognition,
+    browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
   //======================Start: States======================================================
@@ -91,8 +91,8 @@ const InterviewPrepProvider = ({ children }) => {
   const [selectedIndex, setSelectedIndex] = useState([
     {
       selectedCompany: false,
-      selectedResum: null,
-    },
+      selectedResum: null
+    }
   ]);
 
   const [openAddComp, setOpenAddComp] = useState(false);
@@ -167,8 +167,8 @@ const InterviewPrepProvider = ({ children }) => {
             .slice(1, applicantDetails.first_name.length)
             .toLowerCase() +
           '@' +
-          applicantDetails.application_id.split('-')[0],
-      ),
+          applicantDetails.application_id.split('-')[0]
+      )
     });
   }
 
@@ -201,9 +201,9 @@ const InterviewPrepProvider = ({ children }) => {
       context: [
         {
           role: 'system',
-          content: improveAnswerPrompt(question, answer),
-        },
-      ],
+          content: improveAnswerPrompt(question, answer)
+        }
+      ]
     });
     if (!error) {
       setConversations((pre) => {
@@ -218,7 +218,7 @@ const InterviewPrepProvider = ({ children }) => {
     const { data: updatedData, error: updateError } = await supabase
       .from('interview_preparation')
       .update({
-        conversation: [...preConversation],
+        conversation: [...preConversation]
       })
       .eq('id', currentInterviewID)
       .select();
@@ -231,7 +231,7 @@ const InterviewPrepProvider = ({ children }) => {
     const { data: updatedData, error: updateError } = await supabase
       .from('interview_preparation')
       .update({
-        total_token_used: openAiChatToken + token,
+        total_token_used: openAiChatToken + token
       })
       .eq('id', currentInterviewID)
       .select();
@@ -244,7 +244,7 @@ const InterviewPrepProvider = ({ children }) => {
     const { data: updatedData, error: updateError } = await supabase
       .from('job_applications')
       .update({
-        used_token: [usedToken],
+        used_token: [usedToken]
       })
       .eq('application_id', router.query.id)
       .select(`${selectJobApplicationQuery}`);
@@ -275,7 +275,7 @@ const InterviewPrepProvider = ({ children }) => {
       const newState = [...prevState];
       newState[0] = {
         ...newState[0],
-        selectedCompany: index,
+        selectedCompany: index
       };
       return newState;
     });
@@ -289,7 +289,7 @@ const InterviewPrepProvider = ({ children }) => {
     setOpenSkillInput(true);
     setLoadingSkills(true);
     const { data: skills, error } = await axios.post('/api/openAi', {
-      inputText: createSkillsPrompt(interviewDetails.job_role),
+      inputText: createSkillsPrompt(interviewDetails.job_role)
     });
 
     if (!error) {
@@ -298,18 +298,18 @@ const InterviewPrepProvider = ({ children }) => {
           skills.map((skill) => {
             return {
               skill,
-              active: false,
+              active: false
             };
-          }),
+          })
         );
       } else {
         setAiSkills(
           JSON.parse(skills).map((skill) => {
             return {
               skill,
-              active: false,
+              active: false
             };
-          }),
+          })
         );
       }
       setLoadingSkills(false);
@@ -331,7 +331,7 @@ const InterviewPrepProvider = ({ children }) => {
           getminutes +
           ':' +
           (getSecound < 10 ? '0' : '') +
-          getSecound,
+          getSecound
       );
     }
     // senderRef.current.value = '';
@@ -341,8 +341,8 @@ const InterviewPrepProvider = ({ children }) => {
     setSelectedIndex([
       {
         selectedCompany: null,
-        selectedResum: null,
-      },
+        selectedResum: null
+      }
     ]);
     setActiveStep(0);
     setAiSkills([]);
@@ -381,7 +381,7 @@ const InterviewPrepProvider = ({ children }) => {
         resume_id: interviewDetails.resume_id,
         complete: false,
         tracker_job_id: interviewDetails.tracker_job_id,
-        ai_interviewer_id: interviewerIndex,
+        ai_interviewer_id: interviewerIndex
       })
       .select();
 
@@ -390,9 +390,9 @@ const InterviewPrepProvider = ({ children }) => {
       if (!progressStatus?.interview?.first_interview) {
         updateProgressStatusInDb(
           {
-            interview: { first_interview: true },
+            interview: { first_interview: true }
           },
-          employeeDtails[0].user_id,
+          employeeDtails[0].user_id
         ).then((data) => {
           setProgressStatus(data);
         });
@@ -401,7 +401,7 @@ const InterviewPrepProvider = ({ children }) => {
       log_activity({
         type: pageRoutes.MOCK_INTERVIEW,
         item_id: interview[0].id,
-        log_message: `Incomplete mock interview for ${interview[0].role} at ${interview[0].company}`,
+        log_message: `Incomplete mock interview for ${interview[0].role} at ${interview[0].company}`
       }).then((data) => {
         if (data && data.length) {
           log_id = data[0].id;
@@ -471,7 +471,7 @@ const InterviewPrepProvider = ({ children }) => {
         `${employeeDtails[0].email.split('@')[0]}_${
           employeeDtails[0].user_id
         }/${currentInterviewID}/recorded_voice_${new Date().getTime()}.mp3`,
-        audioBlob,
+        audioBlob
       );
 
     if (!error) {
@@ -528,7 +528,7 @@ const InterviewPrepProvider = ({ children }) => {
     if (
       activeStep === 0 &&
       listResumeData.filter(
-        (f) => calculateCompletionPercentage(f).value > 90,
+        (f) => calculateCompletionPercentage(f).value > 90
       ) !== 'loading' &&
       listResumeData.filter((f) => calculateCompletionPercentage(f).value > 90)
         .length === 0
@@ -561,7 +561,7 @@ const InterviewPrepProvider = ({ children }) => {
       .eq('resume_id', resume_id);
     if (!error) {
       const skillNames = JSON.stringify(
-        data.map((skill) => skill.skill).join(', '),
+        data.map((skill) => skill.skill).join(', ')
       );
       interviewDetails.resume_skills = skillNames.replaceAll('"', '');
       return data;
@@ -593,8 +593,8 @@ const InterviewPrepProvider = ({ children }) => {
               orgnization: project.orgnization,
               start_date: project.start_date,
               end_date: project.end_date,
-              description: project.description,
-            }).replace(/^{|"|}|<\/p>|<p>|<br>|$/g, ''), // remove curly brackets and double quotes
+              description: project.description
+            }).replace(/^{|"|}|<\/p>|<p>|<br>|$/g, '') // remove curly brackets and double quotes
         )
         .join(', ');
       interviewDetails.resume_projects = projectsString;
@@ -640,8 +640,8 @@ const InterviewPrepProvider = ({ children }) => {
           const { data: response, error } = await axios.post(
             '/api/interviewChatOpenAi',
             {
-              context: context,
-            },
+              context: context
+            }
           );
           if (!error) {
             context.push(response.response);
@@ -684,7 +684,7 @@ const InterviewPrepProvider = ({ children }) => {
       audioElement = null;
       context.push({
         role: 'user',
-        content: 'End interview now',
+        content: 'End interview now'
       });
       setConversations((pre) => {
         pre[conversations.length - 1].userRole = 'You';
@@ -703,8 +703,8 @@ const InterviewPrepProvider = ({ children }) => {
         const { data: response, error } = await axios.post(
           '/api/interviewChatOpenAi',
           {
-            context: context,
-          },
+            context: context
+          }
         );
         if (!error) {
           context.push(response.response);
@@ -731,7 +731,7 @@ const InterviewPrepProvider = ({ children }) => {
       audioElement = null;
       context.push({
         role: 'user',
-        content: userText,
+        content: userText
       });
       setConversations((pre) => {
         pre[conversations.length - 1].userRole = 'You';
@@ -751,8 +751,8 @@ const InterviewPrepProvider = ({ children }) => {
         const { data: response, error } = await axios.post(
           '/api/interviewChatOpenAi',
           {
-            context: context,
-          },
+            context: context
+          }
         );
         if (!error) {
           context.push(response.response);
@@ -800,7 +800,7 @@ const InterviewPrepProvider = ({ children }) => {
     }
     console.log('Start interview feeback👍');
     const result = await axios.post('/api/interview', {
-      interviewData: context,
+      interviewData: context
     });
 
     console.log(result, '🔥', context);
@@ -812,7 +812,7 @@ const InterviewPrepProvider = ({ children }) => {
       return {
         topic: key,
         feedback,
-        rating,
+        rating
       };
     });
 
@@ -845,7 +845,7 @@ const InterviewPrepProvider = ({ children }) => {
           getminutes +
           ':' +
           (getSecound < 10 ? '0' : '') +
-          getSecound,
+          getSecound
       );
       mixpanel.track(mixPanel.interviewSignUp.InterviewCompletedForSignUp);
       sendEmailAfterCompleteTheInterview();
@@ -865,7 +865,7 @@ const InterviewPrepProvider = ({ children }) => {
           getminutes +
           ':' +
           (getSecound < 10 ? '0' : '') +
-          getSecound,
+          getSecound
       })
       .eq('id', currentInterviewID)
       .select();
@@ -873,7 +873,7 @@ const InterviewPrepProvider = ({ children }) => {
       // log recent activities
       update_log_activity(log_id, {
         log_message: `Completed mock interview for ${data[0].role} at ${data[0].company}`,
-        type: pageRoutes.MOCKTEST,
+        type: pageRoutes.MOCKTEST
       });
     }
   }
@@ -886,8 +886,8 @@ const InterviewPrepProvider = ({ children }) => {
       const { data: response, error } = await axios.post(
         '/api/interviewChatOpenAi',
         {
-          context: context,
-        },
+          context: context
+        }
       );
       if (!error) {
         context.push(response.response);
@@ -910,7 +910,7 @@ const InterviewPrepProvider = ({ children }) => {
       startRecording();
 
       SpeechRecognition.startListening({
-        continuous: true,
+        continuous: true
       });
     } else {
       stopRecording();
@@ -946,7 +946,7 @@ const InterviewPrepProvider = ({ children }) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Accept-Encoding': 'gzip',
+            'Accept-Encoding': 'gzip'
           },
           body: JSON.stringify({
             data: {
@@ -954,15 +954,15 @@ const InterviewPrepProvider = ({ children }) => {
                 audioEncoding: 'LINEAR16',
 
                 pitch: 0,
-                speakingRate: 0.9,
+                speakingRate: 0.9
               },
               input: {
-                text: textToSpeech,
+                text: textToSpeech
               },
-              voice: interviewerList[Number(interviewerIndex)].voice,
-            },
-          }),
-        },
+              voice: interviewerList[Number(interviewerIndex)].voice
+            }
+          })
+        }
       );
       const data = await resp.json();
       console.log('response', 'nfen', data);
@@ -984,7 +984,7 @@ const InterviewPrepProvider = ({ children }) => {
                 `${employeeDtails[0].email.split('@')[0]}_${
                   employeeDtails[0].user_id
                 }/${currentInterviewID}/recorded_ai_voice_${new Date().getTime()}.mp3`,
-                blob,
+                blob
               );
             if (!error) {
               console.log('file uploaded', data);
@@ -997,8 +997,8 @@ const InterviewPrepProvider = ({ children }) => {
                   userContent: '',
                   userVoice: '',
                   aiAnswer: '',
-                  aiVoice: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/interview_prep/${data.path}`,
-                },
+                  aiVoice: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/interview_prep/${data.path}`
+                }
               ]);
             }
           });
@@ -1027,7 +1027,7 @@ const InterviewPrepProvider = ({ children }) => {
             getFeedback();
           } else {
             SpeechRecognition.startListening({
-              continuous: true,
+              continuous: true
             });
           }
 
@@ -1064,7 +1064,7 @@ const InterviewPrepProvider = ({ children }) => {
       .eq('id', interviewId);
     if (!interviewsError) {
       const filteredInterview = interviewsList.filter(
-        (pre) => pre.id !== interviewId,
+        (pre) => pre.id !== interviewId
       );
       setInterviewsList(filteredInterview);
       toast.success('Interview successfully deleted');
@@ -1075,7 +1075,7 @@ const InterviewPrepProvider = ({ children }) => {
       .list(
         `${employeeDtails[0].email.split('@')[0]}_${
           employeeDtails[0].user_id
-        }/${interviewId}`,
+        }/${interviewId}`
       );
     if (!allfilesError) {
       if (allfiles.length) {
@@ -1085,7 +1085,7 @@ const InterviewPrepProvider = ({ children }) => {
             .remove([
               `${employeeDtails[0].email.split('@')[0]}_${
                 employeeDtails[0].user_id
-              }/${interviewId}/${file.name}`,
+              }/${interviewId}/${file.name}`
             ]);
         });
       }
@@ -1188,7 +1188,7 @@ const InterviewPrepProvider = ({ children }) => {
         blinkLayer,
 
         animationFrameId,
-        mediaRecorder,
+        mediaRecorder
       }}
     >
       {children}

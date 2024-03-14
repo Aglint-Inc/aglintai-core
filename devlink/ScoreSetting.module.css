@@ -274,6 +274,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -323,6 +327,10 @@
   margin-top: 9px;
 }
 
+.mt-9 {
+  margin-top: 9px;
+}
+
 .mt-15 {
   margin-top: 15px;
 }
@@ -355,10 +363,6 @@
 
 .text-grey-600.mt-8 {
   margin-top: 8px;
-}
-
-.div-block-718 {
-  margin-bottom: 20px;
 }
 
 .div-block-696 {

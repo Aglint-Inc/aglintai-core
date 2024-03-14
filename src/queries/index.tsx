@@ -13,17 +13,21 @@ const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
   pageRoutes.ASSESSMENTS,
   pageRoutes.ASSESSMENT,
   pageRoutes.JOBASSESSMENT,
+  pageRoutes.JOBS,
+  pageRoutes.JOBDASHBOARD,
+  pageRoutes.CREATEJOB,
+  pageRoutes.EDITJOB,
   pageRoutes.SCHEDULINGINTERVIEWER
 ];
 
 export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
-  children,
+  children
 }) => {
   const router = useRouter();
   const validEnv =
     process.env.NEXT_PUBLIC_HOST_NAME.startsWith('http://localhost');
   const validPath = reactQueryPageRoute.includes(
-    (router?.pathname ?? null) as any,
+    (router?.pathname ?? null) as any
   );
   const showRQDevTools = validEnv && validPath;
   return (

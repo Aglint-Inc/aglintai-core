@@ -20,4 +20,6 @@ declare function JobDashboard(props: {
   slotScheduleCardSmall?: Types.Devlink.Slot;
   slotLocationGraphBlock?: Types.Devlink.Slot;
   slotSkillGraphBlock?: Types.Devlink.Slot;
+  slotExperienceGraph?: Types.Devlink.Slot;
+  slotCardWithNumber?: Types.Devlink.Slot;
 }): React.JSX.Element;

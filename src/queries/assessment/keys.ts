@@ -7,26 +7,23 @@ import { type Assessment } from './types';
 export const assessmentQueryKeys = {
   all: { queryKey: ['aglint_assessment'] as string[] },
   templates: () => ({
-    queryKey: [...assessmentQueryKeys.all.queryKey, 'templates'],
+    queryKey: [...assessmentQueryKeys.all.queryKey, 'templates']
   }),
   assessments: () => ({
-    queryKey: [...assessmentQueryKeys.all.queryKey, 'assessments'],
+    queryKey: [...assessmentQueryKeys.all.queryKey, 'assessments']
   }),
   assessment: ({ assessment_id }: { assessment_id: string }) => ({
-    queryKey: [
-      ...assessmentQueryKeys.assessments().queryKey,
-      { assessment_id },
-    ],
+    queryKey: [...assessmentQueryKeys.assessments().queryKey, { assessment_id }]
   }),
   questions: ({ assessment_id }: { assessment_id: string }) => ({
     queryKey: [
       ...assessmentQueryKeys.assessment({ assessment_id }).queryKey,
-      'questions',
-    ],
+      'questions'
+    ]
   }),
   question: ({
     assessment_id,
-    question_id,
+    question_id
   }: {
     assessment_id: string;
     question_id: string;
@@ -34,12 +31,12 @@ export const assessmentQueryKeys = {
     queryKey: [
       ...assessmentQueryKeys.questions({ assessment_id }).queryKey,
       'questions',
-      { question_id },
-    ],
+      { question_id }
+    ]
   }),
   recommendations: ({
     assessment_id,
-    mode,
+    mode
   }: {
     assessment_id: Assessment['id'];
     mode: Assessment['mode'];
@@ -47,50 +44,10 @@ export const assessmentQueryKeys = {
     queryKey: [
       ...assessmentQueryKeys.assessment({ assessment_id }).queryKey,
       'recommendations',
-      { mode },
-    ],
-  }),
+      { mode }
+    ]
+  })
 } as const;
-
-// export const assessmentMutationKeys = {
-//   all: { mutationKey: ['aglint_assessment_mutate'] as string[] },
-//   assessment_create: () => ({
-//     mutationKey: [
-//       ...assessmentMutationKeys.all.mutationKey,
-//       'assessment_create',
-//     ],
-//   }),
-//   assessment_update: ({ assessment_id }: { assessment_id: string }) => ({
-//     mutationKey: [
-//       ...assessmentMutationKeys.all.mutationKey,
-//       { assessment_update: assessment_id },
-//     ],
-//   }),
-//   assessment_delete: ({ assessment_id }: { assessment_id: string }) => ({
-//     mutationKey: [
-//       ...assessmentMutationKeys.all.mutationKey,
-//       { assessment_delete: assessment_id },
-//     ],
-//   }),
-//   question_create: ({ question_id }: { question_id: string }) => ({
-//     mutationKey: [
-//       ...assessmentMutationKeys.all.mutationKey,
-//       { question_create: question_id },
-//     ],
-//   }),
-//   question_update: ({ question_id }: { question_id: string }) => ({
-//     mutationKey: [
-//       ...assessmentMutationKeys.all.mutationKey,
-//       { question_update: question_id },
-//     ],
-//   }),
-//   question_delete: ({ question_id }: { question_id: string }) => ({
-//     mutationKey: [
-//       ...assessmentMutationKeys.all.mutationKey,
-//       { question_delete: question_id },
-//     ],
-//   }),
-// } as const;
 
 export const useAssessmentId = () => {
   const router = useRouter();

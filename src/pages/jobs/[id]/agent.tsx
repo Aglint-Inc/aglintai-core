@@ -3,12 +3,11 @@ import { useRouter } from 'next/router';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
 import JobAgent from '@/src/components/Agent/JobAgent';
-import { JobAssessmentContextProvider } from '@/src/components/JobAssessment/context';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider, {
-  useJobDashboard
+  useJobDetails
 } from '@/src/context/JobDashboard';
 
 const JobAgentPage = () => {
@@ -26,9 +25,7 @@ export default JobAgentPage;
 JobAgentPage.getProvider = function getProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>
-        <JobAssessmentContextProvider>{page}</JobAssessmentContextProvider>
-      </JobApplicationProvider>
+      <JobApplicationProvider>{page}</JobApplicationProvider>
     </JobDashboardProvider>
   );
 };
@@ -41,7 +38,7 @@ const AgentPage = () => {
 
 const BreadCrumbs = () => {
   const router = useRouter();
-  const { job } = useJobDashboard();
+  const { job } = useJobDetails();
   return (
     <>
       <Breadcrum

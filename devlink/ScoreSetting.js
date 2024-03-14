@@ -8,20 +8,10 @@ import _styles from "./ScoreSetting.module.css";
 export function ScoreSetting({
   as: _Component = _Builtin.Block,
   slotScoreCardDetails,
-  slotScoreWeight,
-  isAddJob = true,
-  onClickDone = {},
-  slotButtonPrimaryRegular,
-  slotBasicButton,
-  onClickSaveDraft = {},
-  isProceedDisable = true,
-  onClickProceed = {},
   isEmptyWarningVisible = false,
   onClickDismiss = {},
   onClickRegenerate = {},
   isRegenerateVisible = false,
-  slotWarning,
-  isWarningVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "score-setting-wrap")} tag="div">
@@ -38,14 +28,6 @@ export function ScoreSetting({
           }
         </_Builtin.Block>
       </_Builtin.Block>
-      {isWarningVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-718")}
-          tag="div"
-        >
-          {slotWarning}
-        </_Builtin.Block>
-      ) : null}
       {isEmptyWarningVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-696")}

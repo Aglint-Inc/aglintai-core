@@ -19,7 +19,7 @@ type Props = {
   disabled?: boolean;
   onChange: (
     // eslint-disable-next-line no-unused-vars
-    event: SelectChangeEvent<string | number>,
+    event: SelectChangeEvent<string | number>
   ) => void;
   defaultValue?: string | number;
   startIcon?: any;
@@ -34,7 +34,7 @@ const UISelect = ({
   label,
   defaultValue,
   startIcon,
-  size = 'md',
+  size = 'md'
 }: Props) => {
   let [focus, setFocus] = useState(false);
   let outlineColor = palette.grey[300];
@@ -70,23 +70,23 @@ const UISelect = ({
             fieldset: {
               py: 0,
 
-              border: `1px solid ${outlineColor}!important`,
+              border: `1px solid ${outlineColor}!important`
             },
             '&:hover fieldset': {
               py: 0,
 
-              border: `1px solid ${outlineColor}!important`,
+              border: `1px solid ${outlineColor}!important`
             },
             '.MuiSelect-outlined': {
               py: 0,
 
               fontSize: '14px',
-              p: size === 'md' ? '8px 14px' : '4px 12px',
+              p: size === 'md' ? '8px 14px' : '4px 12px'
             },
             outline: `${size === 'md' ? '3px' : '2px'} solid ${
               focus ? borderColor : 'transparent'
-            }`,
-          },
+            }`
+          }
         }}
         defaultValue={defaultValue}
       >

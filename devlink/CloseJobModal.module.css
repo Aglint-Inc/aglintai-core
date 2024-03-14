@@ -1,7 +1,7 @@
 .close-job-modal-pop {
   position: relative;
   width: 460px;
-  padding: 26px;
+  padding: 20px;
   border-radius: 10px;
 }
 
@@ -266,6 +266,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .close-data-wrap {
   display: flex;
   margin-top: 16px;
@@ -447,35 +451,15 @@
   flex: 0 0 auto;
 }
 
-.close-job-modal-btn-wrap {
-  display: flex;
-  margin-top: 18px;
-  justify-content: flex-end;
-  align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
-}
-
-.cursor-pointer.grow-job-wishlist {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex: 0 0 auto;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-.cursor-pointer.discard-job {
-  display: flex;
-  align-items: center;
-  grid-column-gap: 3px;
-  grid-row-gap: 3px;
+.text-sm-2 {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .close-job-btn-modal {
   position: absolute;
   left: auto;
-  top: 20px;
+  top: 14px;
   right: 20px;
   bottom: auto;
 
@@ -577,4 +561,79 @@
 
 .icons.mr--10 {
   margin-right: -8px;
+}
+
+.buttn_flex {
+  display: grid;
+  padding-top: 12px;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.wide_button {
+  position: relative;
+  z-index: 1;
+}
+
+.button_primary {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button_primary:hover {
+  background-color: #144a75;
+}
+
+.button_primary.greay_btn {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.greay_btn:hover {
+  background-color: #d8dcde;
+}
+
+.button_primary.danger {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #d93f4c;
+}
+
+.button_primary.danger:hover {
+  background-color: #cc3340;
+}
+
+.button_primary.is_disabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: hsla(210.00000000000023, 5.03%, 81.75%, 1.00);
+
+  color: hsla(0, 0.00%, 64.67%, 1.00);
+
+  cursor: not-allowed;
 }

@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
-import { selectJobApplicationQuery } from '@/src/pages/api/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '@/src/pages/api/job/jobApplications/read/utils';
 import {
   Applications,
   ApplicationsInsert,
-  ApplicationsUpdate,
+  ApplicationsUpdate
 } from '@/src/types/applications.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -13,13 +13,13 @@ import { supabase } from '@/src/utils/supabase/client';
 import {
   JobApplicationContext,
   JobApplicationsData,
-  JobApplicationSections,
+  JobApplicationSections
 } from './types';
 
 export const uploadResumeDbAction = async (
   candidateId: string,
   jobId: string,
-  file: any,
+  file: any
 ): Promise<{
   data: string;
   error: any;
@@ -29,37 +29,37 @@ export const uploadResumeDbAction = async (
     .from('resume-job-post')
     .upload(`public/${candidateId}/${jobId}${ext ?? '.pdf'}`, file, {
       cacheControl: '3600',
-      contentType: file.type,
+      contentType: file.type
     });
   if (data)
     return {
       data: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resume-job-post/${data?.path}`,
-      error: null,
+      error: null
     };
   return {
     data: null,
-    error: error,
+    error: error
   };
 };
 
 export const deleteResumeDbAction = async (
   candidateId: string,
   jobId: string,
-  file: any,
+  file: any
 ) => {
   const { error } = await supabase.storage
     .from('resume-job-post')
     .remove([
       `public/${candidateId}/${jobId}.${
         file.name.split(file.name.lastIndexOf('.'))[1]
-      }`,
+      }`
     ]);
   return { data: error ? false : true, error };
 };
 
 export const updateCandidateDbAction = async (
   candidate: Database['public']['Tables']['candidates']['Update'],
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -75,7 +75,7 @@ export const updateCandidateDbAction = async (
 
 export const deleteCandidateDbAction = async (
   candidateId: string,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -92,7 +92,7 @@ export const deleteCandidateDbAction = async (
 export const bulkCreateJobApplicationDbAction = async (
   job_id: string,
   inputData: ApplicationsInsert[],
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -110,7 +110,7 @@ export const bulkCreateJobApplicationDbAction = async (
 
 export const readJobApplicationDbAction = async (
   job_id: string,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -126,7 +126,7 @@ export const readJobApplicationDbAction = async (
 export const updateJobApplicationDbAction = async (
   application_id: string,
   inputData: ApplicationsUpdate,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -142,7 +142,7 @@ export const updateJobApplicationDbAction = async (
 
 export const bulkUpdateJobApplicationDbAction = async (
   inputData: Applications[],
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -156,7 +156,7 @@ export const bulkUpdateJobApplicationDbAction = async (
 
 export const deleteJobApplicationDbAction = async (
   application_id: string,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
@@ -175,29 +175,29 @@ export const getUpdatedJobStatus = (
   sections: {
     source: JobApplicationSections;
     destination: JobApplicationSections;
-  },
+  }
 ): Applications[] => {
   return applications[sections.source].reduce(
     (
       acc: Applications[],
       // eslint-disable-next-line no-unused-vars
-      { candidates, assessment_results, candidate_files, ...curr },
+      { candidates, assessment_results, candidate_files, ...curr }
     ) => {
       if (applicationIdSet.has(curr.id))
         acc.push({ ...curr, status: sections.destination });
       return acc;
     },
-    [],
+    []
   );
 };
 
 export const getRange = (
   pageNumber: number,
-  paginationLimit: JobApplicationContext['paginationLimit'],
+  paginationLimit: JobApplicationContext['paginationLimit']
 ) => {
   return {
     start: (pageNumber - 1) * paginationLimit,
-    end: pageNumber * paginationLimit - 1,
+    end: pageNumber * paginationLimit - 1
   };
 };
 
@@ -212,17 +212,17 @@ export const application_relationships: Relationships<'applications'>[] = [
   'assessment_results',
   'candidate_files',
   'candidates',
-  'public_jobs',
+  'public_jobs'
 ];
 
 export const universalUpdateDbAction = async <
   T extends keyof Tables,
-  I extends Tables[T]['Update'],
+  I extends Tables[T]['Update']
 >(
   table: T,
   input: I,
   id: string,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ): Promise<boolean> => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);

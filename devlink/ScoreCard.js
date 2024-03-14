@@ -9,11 +9,8 @@ import _styles from "./ScoreCard.module.css";
 export function ScoreCard({
   as: _Component = _Builtin.Block,
   slotScorePills,
-  onClickAdd = {},
-  textAddButton = "Add required skills",
   textHeading = "Skills",
   colorPropsHeading = {},
-  slotAddCard,
   slotAddButton,
 }) {
   return (
@@ -39,14 +36,16 @@ export function ScoreCard({
           <>
             <ScorePillNice />
             <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
+            <ScorePillMust />
           </>
         )}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "add-skill-required")}
-        tag="div"
-      >
-        {slotAddCard}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-701")} tag="div">
         {slotAddButton ?? <AddButton />}
