@@ -2735,6 +2735,21 @@ export type Database = {
           users: Json
         }[]
       }
+      get_interview_schedule_by_module_id_schedule_id: {
+        Args: {
+          target_module_id: string
+          target_schedule_id: string
+        }
+        Returns: {
+          interview_meeting: Json
+          schedule: Json
+          applications: Json
+          candidates: Json
+          file: Json
+          job: Json
+          users: Json
+        }[]
+      }
       get_interview_schedule_by_user_id: {
         Args: {
           target_user_id: string
@@ -2743,6 +2758,17 @@ export type Database = {
           interview_meeting: Json
           schedule: Json
           users: Json
+        }[]
+      }
+      get_interviewers: {
+        Args: {
+          rec_id: string
+        }
+        Returns: {
+          rec_user: Json
+          module_names: string[]
+          upcoming_meeting_count: number
+          completed_meeting_count: number
         }[]
       }
       get_present_scheduled_jobs: {

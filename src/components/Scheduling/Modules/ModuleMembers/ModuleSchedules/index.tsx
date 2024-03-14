@@ -9,6 +9,7 @@ import {
   InterviewScreenCard
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { getFullName } from '@/src/utils/jsonResume';
 
 import { TransformSchedule } from '..';
 import { getColorStatusSchedule } from '../../utils';
@@ -19,7 +20,10 @@ function ModuleSchedules({
   schedules,
   loading = false
 }: {
-  schedules: TransformSchedule[];
+  schedules: Omit<
+    TransformSchedule,
+    'applications' | 'job' | 'candidates' | 'file'
+  >[];
   loading?: boolean;
 }) {
   const router = useRouter();
@@ -62,7 +66,7 @@ function ModuleSchedules({
       slotInterviewCard={
         <>
           {!loading &&
-            filterSchedules().map((sch, ind) => {
+            filterSchedules()?.map((sch, ind) => {
               return (
                 <InterviewScreenCard
                   onClickCard={{
@@ -108,7 +112,7 @@ function ModuleSchedules({
                           <MuiAvatar
                             key={user.id}
                             src={user.profile_image}
-                            level={user.first_name}
+                            level={getFullName(user.first_name, user.last_name)}
                             variant='circular'
                             height='28px'
                             width='28px'

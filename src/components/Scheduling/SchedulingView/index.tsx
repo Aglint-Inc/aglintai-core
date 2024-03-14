@@ -1,5 +1,4 @@
 import { AvatarGroup, Stack, Typography } from '@mui/material';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -24,7 +23,6 @@ import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import CandidateDetailsJobDrawer from '../AllSchedules/SchedulingApplication/CandidateDetailsJob';
 import { getScheduleType } from '../AllSchedules/utils';
 import { TransformSchedule } from '../Modules/ModuleMembers';
-import { MemberType } from '../Modules/types';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 
@@ -32,7 +30,6 @@ function SchedulingViewComp() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const [loading, setLoading] = useState(true);
-  const [members, setMembers] = useState<MemberType[]>([]);
   const [schedule, setSchedule] = useState<TransformSchedule>(null);
   const [isViewProfileOpen, setIsViewProfileOpen] = useState(false);
 
@@ -40,8 +37,11 @@ function SchedulingViewComp() {
     (async () => {
       if (router.isReady && router.query.module_id) {
         const { data } = await supabase.rpc(
-          'get_interview_schedule_by_module_id',
-          { target_module_id: router.query.module_id as string }
+          'get_interview_schedule_by_module_id_schedule_id',
+          {
+            target_module_id: router.query.module_id as string,
+            target_schedule_id: router.query.schedule_id as string
+          }
         );
         if (data.length > 0) {
           const userIds = [];
@@ -50,10 +50,7 @@ function SchedulingViewComp() {
           ).schedule.confirmed_option.plans.map((plan) =>
             plan.selectedIntervs.map((interv) => userIds.push(interv.interv_id))
           );
-          const resMem = await axios.post('/api/scheduling/fetchdbusers', {
-            user_ids: userIds
-          });
-          setMembers(resMem.data);
+
           setSchedule({
             ...data[0]
           } as unknown as TransformSchedule);
@@ -64,12 +61,26 @@ function SchedulingViewComp() {
   }, [router]);
 
   const isMeetVisible = useMemo(() => {
-    return schedule?.schedule.confirmed_option.plans.some((plan) =>
-      plan.selectedIntervs.some(
-        (interv) => interv.interv_id === recruiterUser?.user_id
-      )
+    const planFiltered = schedule?.schedule?.confirmed_option?.plans.find(
+      (plan) => plan.module_id === router.query.module_id
     );
-  }, [schedule?.schedule?.confirmed_option?.plans]);
+    if (!planFiltered) {
+      return false;
+    }
+    const currentUserID = recruiterUser?.user_id.toString();
+    const isUserSelected = (plan) =>
+      plan.selectedIntervs.some((int) => int.interv_id === currentUserID);
+    const isUserRevShadow = (plan) =>
+      plan.revShadowIntervs.some((int) => int.interv_id === currentUserID);
+    const isUserShadow = (plan) =>
+      plan.shadowIntervs.some((int) => int.interv_id === currentUserID);
+    const isUserInvolved =
+      isUserSelected(planFiltered) ||
+      isUserRevShadow(planFiltered) ||
+      isUserShadow(planFiltered);
+    const isMeetingInFuture = new Date(planFiltered.start_time) > new Date();
+    return isUserInvolved && isMeetingInFuture;
+  }, [schedule?.schedule?.confirmed_option?.plans, router.query.module_id]);
 
   return (
     <>
@@ -126,6 +137,11 @@ function SchedulingViewComp() {
                               textMonth={dayjs(date).format('MMM')}
                               key={ind}
                               slotOptionAvailable={events.map((pl, ind) => {
+                                const allMembers = [
+                                  ...pl.selectedIntervs,
+                                  ...pl.revShadowIntervs,
+                                  ...pl.shadowIntervs
+                                ];
                                 return (
                                   <OptionAvailable
                                     textTime={`${dayjs(pl.start_time).format(
@@ -145,12 +161,7 @@ function SchedulingViewComp() {
                                           gap: 2.5
                                         }}
                                       >
-                                        {pl?.selectedIntervs?.map((int) => {
-                                          const user = members.find(
-                                            (member) =>
-                                              member.user_id === int.interv_id
-                                          );
-                                          if (!user) return null;
+                                        {allMembers?.map((int) => {
                                           return (
                                             <Stack
                                               key={int.interv_id}
@@ -161,8 +172,8 @@ function SchedulingViewComp() {
                                               }}
                                             >
                                               <MuiAvatar
-                                                level={user.first_name}
-                                                src={user?.profile_image}
+                                                level={int.name}
+                                                src={int?.profile_img}
                                                 variant={'circular'}
                                                 width={'24px'}
                                                 height={'24px'}
@@ -172,7 +183,7 @@ function SchedulingViewComp() {
                                                 variant={'body2'}
                                                 color={'#000'}
                                               >
-                                                {user.first_name}
+                                                {int.name}
                                               </Typography>
                                             </Stack>
                                           );

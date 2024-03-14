@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 import { InterviewModuleCard, InterviewModuleTable } from '@/devlink2';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import CreateModuleDialog from './CreateModuleDialog';
@@ -59,8 +60,11 @@ export function Modules() {
                           return (
                             <MuiAvatar
                               key={user.user_id}
-                              src={user?.profile_image}
-                              level={user?.first_name}
+                              src={user.profile_image}
+                              level={getFullName(
+                                user.first_name,
+                                user.last_name
+                              )}
                               variant='circular'
                               height='26px'
                               width='26px'

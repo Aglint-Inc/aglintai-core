@@ -18,8 +18,10 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import AddMemberDialog from './AddMemberDialog';
 import DeleteMemberDialog from './DeleteMemberDialog';
@@ -29,6 +31,7 @@ import ModuleSettingDrawer from './ModuleSettingDrawer';
 import PauseDialog from './PauseDialog';
 import ResumeMemberDialog from './ResumeMemberDialog';
 import {
+  setEditModule,
   setIsAddMemberDialogOpen,
   setIsDeleteMemberDialogOpen,
   setIsDeleteModuleDialogOpen,
@@ -79,6 +82,10 @@ function ModuleMembersComp() {
     if (editModule?.id) {
       fetchModules();
     }
+    return () => {
+      setSchedules([]);
+      setFetchingModules(true);
+    };
   }, [editModule?.id]);
 
   const fetchModules = async () => {
@@ -87,6 +94,24 @@ function ModuleMembersComp() {
     });
     setSchedules(data as unknown as TransformSchedule[]);
     setFetchingModules(false);
+  };
+
+  const moveToQualified = async (user_id: string) => {
+    try {
+      const { error } = await supabase
+        .from('interview_module_relation')
+        .update({ training_status: 'qualified' })
+        .match({ user_id: user_id, module_id: editModule.id });
+      if (error) {
+        throw new Error();
+      }
+      editModule.relations.find(
+        (user) => user.user_id === user_id
+      ).training_status = 'qualified';
+      setEditModule({ ...editModule });
+    } catch {
+      toast.error('Failed to move to qualified');
+    }
   };
 
   return (
@@ -195,7 +220,12 @@ function ModuleMembersComp() {
                           slotProfileImage={
                             <MuiAvatar
                               src={member.profile_image}
-                              level={member.first_name}
+                              level={
+                                getFullName(
+                                  member.first_name,
+                                  member.last_name
+                                ) || ''
+                              }
                               variant='circular'
                               height='60px'
                               width='60px'
@@ -227,8 +257,13 @@ function ModuleMembersComp() {
                       if (!member) return null;
                       return (
                         <MemberListCard
+                          onClickMoveToQualifier={{
+                            onClick: () => {
+                              moveToQualified(user.user_id);
+                            }
+                          }}
                           key={user.user_id}
-                          isMoveToQualifierVisible={false}
+                          isMoveToQualifierVisible={true}
                           isTrainingProgessVisible={true}
                           isTrainingCompletedVisible={false}
                           textPauseResumeDate={
@@ -266,7 +301,12 @@ function ModuleMembersComp() {
                           slotProfileImage={
                             <MuiAvatar
                               src={member.profile_image}
-                              level={member.first_name}
+                              level={
+                                getFullName(
+                                  member.first_name,
+                                  member.last_name
+                                ) || ''
+                              }
                               variant='circular'
                               height='60px'
                               width='60px'
