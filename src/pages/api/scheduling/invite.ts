@@ -76,7 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         members: resMem.data,
         schedule: sch[0],
         schedulingOptions: resSchOpt.data.map((option) => {
-          return { ...option, transformedPlan: transformData(option.plan) };
+          return { ...option, transformedPlan: transformData(option.plans) };
         }),
         candidate: application.candidates,
         recruiter: rec[0]
