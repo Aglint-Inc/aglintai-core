@@ -36,20 +36,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/book_schedule_plan`,
       {
-        plan: { plan: selectedSlot.plan },
+        plan: { plan: selectedSlot.plans },
         candidate_email: candidate_email,
         schedule_id: id
       }
     );
 
     const user_ids = [];
-    selectedSlot.plan.map((plan) => {
-      plan.attended_inters.map((int) => {
-        if (int.id) user_ids.push(int.id);
+    selectedSlot.plans.map((plan) => {
+      plan.selectedIntervs.map((int) => {
+        if (int.interv_id) user_ids.push(int.interv_id);
       });
     });
 
-    const module_ids = selectedSlot.plan.map((plan) => {
+    const module_ids = selectedSlot.plans.map((plan) => {
       if (plan.module_id) return plan.module_id;
     });
 
@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         user_ids,
         module_ids,
         completion_time:
-          selectedSlot.plan[selectedSlot.plan.length - 1].end_time
+          selectedSlot.plans[selectedSlot.plans.length - 1].end_time
       })
       .eq('id', id)
       .select();

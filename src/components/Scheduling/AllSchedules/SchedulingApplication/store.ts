@@ -9,7 +9,7 @@ import { ApplicationList } from '../store';
 export type SchedulingOptionType = Array<
   InterviewPlanScheduleDbType & {
     transformedPlan: {
-      [key: string]: InterviewPlanScheduleDbType['plan'];
+      [key: string]: InterviewPlanScheduleDbType['plans'];
     }[];
   }
 >;

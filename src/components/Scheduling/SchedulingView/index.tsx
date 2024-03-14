@@ -47,8 +47,8 @@ function SchedulingViewComp() {
           const userIds = [];
           (
             data[0] as unknown as TransformSchedule
-          ).schedule.confirmed_option.plan.map((plan) =>
-            plan.attended_inters.map((interv) => userIds.push(interv.id))
+          ).schedule.confirmed_option.plans.map((plan) =>
+            plan.selectedIntervs.map((interv) => userIds.push(interv.interv_id))
           );
           const resMem = await axios.post('/api/scheduling/fetchdbusers', {
             user_ids: userIds
@@ -64,12 +64,12 @@ function SchedulingViewComp() {
   }, [router]);
 
   const isMeetVisible = useMemo(() => {
-    return schedule?.schedule.confirmed_option.plan.some((plan) =>
-      plan.attended_inters.some(
-        (interv) => interv.id === recruiterUser?.user_id
+    return schedule?.schedule.confirmed_option.plans.some((plan) =>
+      plan.selectedIntervs.some(
+        (interv) => interv.interv_id === recruiterUser?.user_id
       )
     );
-  }, [schedule?.schedule?.confirmed_option?.plan]);
+  }, [schedule?.schedule?.confirmed_option?.plans]);
 
   return (
     <>
@@ -128,7 +128,11 @@ function SchedulingViewComp() {
                               slotOptionAvailable={events.map((pl, ind) => {
                                 return (
                                   <OptionAvailable
-                                    textTime={`${dayjs(pl.start_time).format('hh:mm A')} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                                    textTime={`${dayjs(pl.start_time).format(
+                                      'hh:mm A'
+                                    )} - ${dayjs(pl.end_time).format(
+                                      'hh:mm A'
+                                    )}`}
                                     textTitle={pl.module_name}
                                     key={ind}
                                     isTitleVisible={!pl.isBreak}
@@ -141,15 +145,15 @@ function SchedulingViewComp() {
                                           gap: 2.5
                                         }}
                                       >
-                                        {pl?.attended_inters?.map((int) => {
+                                        {pl?.selectedIntervs?.map((int) => {
                                           const user = members.find(
                                             (member) =>
-                                              member.user_id === int.id
+                                              member.user_id === int.interv_id
                                           );
                                           if (!user) return null;
                                           return (
                                             <Stack
-                                              key={int.id}
+                                              key={int.interv_id}
                                               direction={'row'}
                                               spacing={1}
                                               sx={{
@@ -263,7 +267,13 @@ function SchedulingViewComp() {
                       />
                     }
                     textTitle={schedule.schedule.schedule_name}
-                    textTime={`${dayjs(schedule.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(schedule.interview_meeting.end_time).format('hh:mm A')} ( ${schedule.interview_meeting.duration} Minutes )`}
+                    textTime={`${dayjs(
+                      schedule.interview_meeting.start_time
+                    ).format('hh:mm A')} - ${dayjs(
+                      schedule.interview_meeting.end_time
+                    ).format('hh:mm A')} ( ${
+                      schedule.interview_meeting.duration
+                    } Minutes )`}
                   />
                 }
                 textName={getFullName(

@@ -86,7 +86,6 @@ export const findEachInterviewerFreeTimes = async (
   start_date: string,
   end_date: string
 ) => {
-  console.log(ints_meta);
   const intervs_details_with_events = await findInterviewersEvents(
     company_cred,
     ints_meta,

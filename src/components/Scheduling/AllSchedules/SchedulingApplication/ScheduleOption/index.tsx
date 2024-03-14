@@ -35,7 +35,9 @@ function SchedulingOptionComp() {
                     slotOptionAvailable={events.map((pl, ind) => {
                       return (
                         <OptionAvailable
-                          textTime={`${dayjs(pl.start_time).format('hh:mm A')} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                          textTime={`${dayjs(pl.start_time).format(
+                            'hh:mm A'
+                          )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
                           textTitle={pl.module_name}
                           key={ind}
                           textBreakTime={
@@ -51,14 +53,14 @@ function SchedulingOptionComp() {
                                 gap: 2.5
                               }}
                             >
-                              {pl?.attended_inters?.map((int) => {
+                              {pl?.selectedIntervs?.map((int) => {
                                 const user = members.find(
-                                  (member) => member.user_id === int.id
+                                  (member) => member.user_id === int.interv_id
                                 );
                                 if (!user) return null;
                                 return (
                                   <Stack
-                                    key={int.id}
+                                    key={int.interv_id}
                                     direction={'row'}
                                     spacing={1}
                                     sx={{

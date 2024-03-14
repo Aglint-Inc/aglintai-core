@@ -16,8 +16,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select()
       .eq('recruiter_id', recruiter_id);
     if (!error && data.length) {
-      console.log(data);
-
       const userIds = data.map((item) => item.user_id);
       const { data: users, error: userError } = await supabase
         .from('recruiter_user')

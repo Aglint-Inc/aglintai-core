@@ -12,13 +12,13 @@ const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
 export const getAllIntsFromPlan = async (
-  plan: InterviewPlanScheduleDbType['plan']
+  plan: InterviewPlanScheduleDbType['plans']
 ) => {
   let intSet = new Set();
 
   for (const module_slot of plan) {
-    module_slot.attended_inters.forEach((int) => {
-      intSet.add(int.id);
+    module_slot.selectedIntervs.forEach((int) => {
+      intSet.add(int.interv_id);
     });
   }
 

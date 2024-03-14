@@ -222,10 +222,12 @@ const InterviewerContextProvider = ({ children }: { children: ReactNode }) => {
         const allSchedules = data as unknown as ScheduleType[];
         const schArray = [];
         allSchedules.map((sch) =>
-          sch.schedule.confirmed_option.plan.map((plan) => {
+          sch.schedule.confirmed_option.plans.map((plan) => {
             if (
               !plan.isBreak &&
-              plan.attended_inters.find((user) => user.id === member.user_id)
+              plan.selectedIntervs.find(
+                (user) => user.interv_id === member.user_id
+              )
             ) {
               schArray.push({ ...sch, module_time: plan });
             }
@@ -414,10 +416,10 @@ const getInterviewsData = async ({ user_id }: { user_id: string }) => {
     const allSchedules = data as unknown as ScheduleType[];
     const schArray = [];
     allSchedules.map((sch) =>
-      sch.schedule.confirmed_option.plan.map((plan) => {
+      sch.schedule.confirmed_option.plans.map((plan) => {
         if (
           !plan.isBreak &&
-          plan.attended_inters.find((user) => user.id === user_id)
+          plan.selectedIntervs.find((user) => user.interv_id === user_id)
         ) {
           schArray.push({ ...sch, module_time: plan });
         }

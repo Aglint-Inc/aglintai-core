@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import React, {
@@ -593,13 +593,13 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
     <JobCardSchedule
       // textDuration={schedule?.duration && `${schedule.duration} Minutes`}
       slotPlatformIcon={<IconScheduleType type={schedule.schedule_type} />}
-      textTimeDate={
-        schedule.schedule_time
-          ? dayjs(schedule.schedule_time['startTime']).format('YYYY MMM DD') +
-            ' at ' +
-            dayjs(schedule.schedule_time['startTime']).format('hh:mm A')
-          : '--'
-      }
+      // textTimeDate={
+      //   schedule.schedule_time
+      //     ? dayjs(schedule.schedule_time['startTime']).format('YYYY MMM DD') +
+      //       ' at ' +
+      //       dayjs(schedule.schedule_time['startTime']).format('hh:mm A')
+      //     : '--'
+      // }
       textPlatformName={getScheduleType(schedule.schedule_type)}
       onClickViewScheduler={{
         onClick: () => {
@@ -855,12 +855,12 @@ export const ResumeResultParams = ({
     return e === 100
       ? 'Perfect'
       : e >= 75
-        ? 'High'
-        : e >= 50
-          ? 'Average'
-          : e >= 25
-            ? 'Low'
-            : 'Poor';
+      ? 'High'
+      : e >= 50
+      ? 'Average'
+      : e >= 25
+      ? 'Low'
+      : 'Poor';
   };
   return (
     <>
@@ -1351,18 +1351,18 @@ export function giveRateInWordForInterview(overAllScore: number) {
   return overAllScore > 90
     ? `Absolutely incredible! 🌟😍`
     : overAllScore > 70
-      ? `Truly outstanding! 🤩`
-      : overAllScore > 50
-        ? `Excellent job! 👏`
-        : `Not up to mark! 😑`;
+    ? `Truly outstanding! 🤩`
+    : overAllScore > 50
+    ? `Excellent job! 👏`
+    : `Not up to mark! 😑`;
 }
 
 export function giveColorForInterviewScore(rating) {
   return rating >= 90
     ? '#228F67'
     : rating >= 70
-      ? '#f79a3e'
-      : rating >= 50
-        ? '#de701d'
-        : '#d93f4c';
+    ? '#f79a3e'
+    : rating >= 50
+    ? '#de701d'
+    : '#d93f4c';
 }

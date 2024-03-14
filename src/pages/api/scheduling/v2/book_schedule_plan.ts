@@ -34,18 +34,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id,
       api_status: 'started',
       meeting_events: [],
-      schedule_plan: plan.plan
+      schedule_plan: plan.plans
     });
 
     const { company_cred, recruiters_info } = await getAllIntsFromPlan(
-      plan.plan
+      plan.plans
     );
 
-    const promises = plan.plan
+    const promises = plan.plans
       .filter((i) => !i.isBreak)
       .map(async (int_module) => {
-        const organizer = int_module.attended_inters[0];
-        const interviewers = int_module.attended_inters.slice(1);
+        const organizer = int_module.selectedIntervs[0];
+        const interviewers = int_module.selectedIntervs.slice(1);
 
         return await bookIndividualModule({
           candidate_email,
@@ -54,16 +54,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           start_time: int_module.start_time,
           interviewers: interviewers.map((int) => ({
             email: int.email,
-            schedule_auth: recruiters_info.find((r) => r.user_id === int.id)
-              ?.schedule_auth as any,
-            user_id: int.id
+            schedule_auth: recruiters_info.find(
+              (r) => r.user_id === int.interv_id
+            )?.schedule_auth as any,
+            user_id: int.interv_id
           })),
           organizer: {
             email: organizer.email,
             schedule_auth: recruiters_info.find(
-              (r) => r.user_id === organizer.id
+              (r) => r.user_id === organizer.interv_id
             )?.schedule_auth as any,
-            user_id: organizer.id
+            user_id: organizer.interv_id
           },
           schedule_name: int_module.module_name,
           module_id: int_module.module_id
@@ -77,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id,
       api_status: 'sucess',
       meeting_events: events,
-      schedule_plan: plan.plan
+      schedule_plan: plan.plans
     });
     console.log('nfkewjn');
 
@@ -88,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_events: [],
       schedule_id,
       error_msg: error.message,
-      schedule_plan: plan.plan
+      schedule_plan: plan.plans
     });
     return res.status(500).send(error.message);
   }
@@ -107,7 +108,7 @@ const saveEventsStatusInSchedule = async ({
   api_status: 'sucess' | 'started' | 'not_started' | 'failed';
   meeting_events: any[];
   error_msg?: string | null;
-  schedule_plan: InterviewPlanScheduleDbType['plan'];
+  schedule_plan: InterviewPlanScheduleDbType['plans'];
 }) => {
   if (meeting_events.length > 0) {
     const promises = schedule_plan.map(async (int_module, idx) => {
@@ -137,9 +138,9 @@ const saveEventsStatusInSchedule = async ({
           .select('id')
       );
 
-      const meeting_interviewers = int_module.attended_inters.map((i) => ({
+      const meeting_interviewers = int_module.selectedIntervs.map((i) => ({
         interview_meeting_id: rec.id,
-        interviewer_id: i.id,
+        interviewer_id: i.interv_id,
         interviewer_type: 'qualified' as any
       }));
 
