@@ -33,6 +33,11 @@ function SchedulingOptionComp() {
                     textMonth={dayjs(date).format('MMM')}
                     key={ind}
                     slotOptionAvailable={events.map((pl, ind) => {
+                      const allMembers = [
+                        ...pl.selectedIntervs,
+                        ...pl.revShadowIntervs,
+                        ...pl.shadowIntervs
+                      ];
                       return (
                         <OptionAvailable
                           textTime={`${dayjs(pl.start_time).format(
@@ -53,7 +58,7 @@ function SchedulingOptionComp() {
                                 gap: 2.5
                               }}
                             >
-                              {pl?.selectedIntervs?.map((int) => {
+                              {allMembers?.map((int) => {
                                 const user = members.find(
                                   (member) => member.user_id === int.interv_id
                                 );
