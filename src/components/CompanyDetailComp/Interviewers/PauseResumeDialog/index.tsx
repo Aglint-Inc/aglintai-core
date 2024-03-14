@@ -2,11 +2,10 @@ import { Dialog, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup, DeletePopup, ResumePop } from '@/devlink3';
-import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
 
 function PauseResumeDialog({
   pauseResumeDialog,
@@ -28,11 +27,6 @@ function PauseResumeDialog({
   resume: () => void;
   remove: () => void;
 }) {
-  const { modulesAndMapping, selectedInterviewer } = useInterviewerContext();
-  const selectedModule =
-    modulesAndMapping.modules[String(pauseResumeDialog.panel_id)]?.pause_json[
-      String(selectedInterviewer.user_id)
-    ];
   const [pause_json, setPauseJson] = useState<{
     start_date: string;
     end_date: string;
@@ -46,9 +40,7 @@ function PauseResumeDialog({
   const oneMonth = currentDate.add(1, 'month');
   const threeMonth = currentDate.add(3, 'month');
 
-  const end_date =
-    selectedModule?.end_date &&
-    dayjs(selectedModule?.end_date).format('DD MMMM YYYY');
+  const end_date = dayjs().format('DD MMMM YYYY');
   // console.log({
   //   dd: selectedModule?.end_date,
   //   dd2: `${dayjs(selectedModule?.end_date).format('DD MMMM YYYY')}`

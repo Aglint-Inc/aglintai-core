@@ -13,6 +13,7 @@ const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
   pageRoutes.ASSESSMENTS,
   pageRoutes.ASSESSMENT,
   pageRoutes.JOBASSESSMENT,
+  pageRoutes.SCHEDULINGINTERVIEWER
 ];
 
 export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({

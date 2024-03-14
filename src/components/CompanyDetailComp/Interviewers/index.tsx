@@ -1,22 +1,21 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { AllInterviewers, AllInterviewersCard, TextWithBg } from '@/devlink2';
-import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
+import { AllInterviewers, AllInterviewersCard } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 
 const InterviewTab = () => {
-  const { interviewer, modulesAndMapping } = useInterviewerContext();
+  const { members } = useAuthDetails();
   const router = useRouter();
-  
 
   return (
     <Stack position={'relative'}>
       <AllInterviewers
         slotAllInterviewesCard={
           <>
-            {interviewer.map((member) => {
+            {members.map((member) => {
               return (
                 <Stack
                   key={member.user_id}
@@ -29,8 +28,6 @@ const InterviewTab = () => {
                   }}
                 >
                   <AllInterviewersCard
-                    textCompletedInterviews={member.completedCount}
-                    textUpcomingInterviews={member.upcomingCount}
                     slotProfileImage={
                       <MuiAvatar
                         src={member.profile_image}
@@ -41,26 +38,7 @@ const InterviewTab = () => {
                         fontSize='14px'
                       />
                     }
-                    slotInterviewModules={
-                      <>
-                        {modulesAndMapping.moduleMapping[member.user_id]
-                          ?.slice(0, 2)
-                          .map((item) => (
-                            <TextWithBg
-                              key={modulesAndMapping.modules[String(item)].id}
-                              text={
-                                modulesAndMapping.modules[String(item)].name
-                              }
-                            />
-                          ))}
-                        {modulesAndMapping.moduleMapping[member.user_id]
-                          ?.length > 2 && (
-                          <TextWithBg
-                            text={`+${modulesAndMapping.moduleMapping[member.user_id].length - 2}`}
-                          />
-                        )}
-                      </>
-                    }
+                    slotInterviewModules={<></>}
                     textName={`${member.first_name} ${member.last_name || ''}`}
                     textRole={member?.position}
                   />
