@@ -66,6 +66,7 @@ const JobInterviewPlanHoc = ({ children }) => {
         []) as InterviewModuleDbType[];
       let clModules: InterviewSession[] = [];
       for (let dbModule of jobModules) {
+        if (dbModule.isBreak) continue;
         let intModule = allIntModules.find(
           (i) => i.module_id === dbModule.module_id
         );
