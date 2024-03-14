@@ -29,8 +29,8 @@ const Comp = () => {
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
-          job_id: '770a61d3-c20b-4ee7-bf1d-e89345df37c6',
-          company_id: 'ce4f1b5c-431d-47cc-9826-ca376a8d031b',
+          job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
+          company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
           start_date: '2024-03-11T14:59:55.247Z',
           end_date: '2024-03-11T14:59:55.247Z'
         }

@@ -72,8 +72,8 @@ export const getUserCalAuth = async ({
       subject: recruiter.email
     });
 
-    const auth = await jwtClient.authorize();
-    return auth;
+    await jwtClient.authorize();
+    return jwtClient;
   }
 };
 
