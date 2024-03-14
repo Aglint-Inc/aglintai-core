@@ -47,3 +47,8 @@ export type TimeDurationDayjsType = {
   startTime: Dayjs;
   endTime: Dayjs;
 };
+
+export type IntervCntApp = {
+  meet_cnt: number;
+  dur_cnt: number;
+};

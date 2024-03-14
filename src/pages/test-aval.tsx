@@ -29,10 +29,10 @@ const Comp = () => {
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
-          job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
+          job_id: 'b6fe81e7-759b-4947-b950-a8d8ec0c70f0',
           company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
-          start_date: '2024-03-11T14:59:55.247Z',
-          end_date: '2024-03-11T14:59:55.247Z'
+          start_date: '2024-03-18T14:59:55.247Z',
+          end_date: '2024-03-21T14:59:55.247Z'
         }
       );
       setData(r);
@@ -222,6 +222,7 @@ const Comp = () => {
                         <h6>
                           module name {m.module_name}
                           {'      '}
+                          {dayjs(m.start_time).format('DD')} -{' '}
                           {dayjs(m.start_time).format('HH:mm')} -{' '}
                           {dayjs(m.end_time).format('HH:mm')} -{' '}
                         </h6>

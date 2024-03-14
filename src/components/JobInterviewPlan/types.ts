@@ -48,6 +48,11 @@ export type InterviewerPlanApiType = {
   profile_img: string;
   name: string;
   email: string;
+  pause_json: {
+    start_date: string;
+    end_date: string;
+    isManual: boolean;
+  } | null;
 };
 
 export type InterviewModuleApiType = {
