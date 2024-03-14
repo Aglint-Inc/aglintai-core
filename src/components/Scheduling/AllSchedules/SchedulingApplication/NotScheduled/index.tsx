@@ -79,7 +79,7 @@ function NotScheduledApplication() {
       if (res.data) {
         setSchedulingOptions(
           res.data.map((option) => {
-            return { ...option, transformedPlan: transformData(option.plan) };
+            return { ...option, transformedPlan: transformData(option.plans) };
           })
         );
         setStep(2);

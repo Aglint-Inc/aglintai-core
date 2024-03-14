@@ -6,6 +6,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { SchedulingOptionType } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/store';
 import { Database } from '@/src/types/schema';
 
+import { BookingApiParams } from './v2/book_schedule_plan';
+
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
@@ -36,32 +38,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/book_schedule_plan`,
       {
-        plan: { plan: selectedSlot.plans },
+        plan: { plans: selectedSlot.plans },
         candidate_email: candidate_email,
         schedule_id: id
-      }
+      } as BookingApiParams
     );
-
-    const user_ids = [];
-    selectedSlot.plans.map((plan) => {
-      plan.selectedIntervs.map((int) => {
-        if (int.interv_id) user_ids.push(int.interv_id);
-      });
-    });
-
-    const module_ids = selectedSlot.plans.map((plan) => {
-      if (plan.module_id) return plan.module_id;
-    });
 
     const { data, error } = await supabase
       .from('interview_schedule')
       .update({
         status: 'confirmed',
-        confirmed_option: selectedSlot,
-        user_ids,
-        module_ids,
-        completion_time:
-          selectedSlot.plans[selectedSlot.plans.length - 1].end_time
+        confirmed_option: selectedSlot
       })
       .eq('id', id)
       .select();

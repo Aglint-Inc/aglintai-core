@@ -16,14 +16,14 @@ import {
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
-type BodyParams = {
+export type BookingApiParams = {
   plan: InterviewPlanScheduleDbType;
   candidate_email: string;
   schedule_id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { plan, candidate_email, schedule_id } = req.body as BodyParams;
+  let { plan, candidate_email, schedule_id } = req.body as BookingApiParams;
   console.log(plan, candidate_email, schedule_id);
 
   try {
