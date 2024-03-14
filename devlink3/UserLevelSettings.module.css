@@ -69,6 +69,10 @@
   opacity: 0.8;
 }
 
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 .settings_tabs {
   display: grid;
   height: 40px;

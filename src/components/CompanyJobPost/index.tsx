@@ -7,7 +7,7 @@ import {
   CompanyListing,
   CompanyListingLinks,
   OfficeLocationCard,
-  OpenJobListingCard,
+  OpenJobListingCard
 } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
@@ -35,11 +35,11 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               p: '4px',
               color: 'common.black',
               '& .MuiAvatar-img ': {
-                objectFit: 'contain',
+                objectFit: 'contain'
               },
-              height: '150px',
-              width: '150px',
-              background: palette.grey[100],
+              height: '100%',
+              width: '100%',
+              background: palette.grey[100]
             }}
           >
             <Icon variant='CompanyOutlinedBig' />
@@ -62,7 +62,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               onClickApplyNow={{
                 onClick: () => {
                   router.push(pageRoutes.JOBPOST + job.id);
-                },
+                }
               }}
             />
           );
@@ -80,6 +80,11 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 key={ind}
                 slotIcon={
                   <Image
+                    style={{
+                      background: soc[0] == 'twitter' ? '#fff' : '',
+                      borderRadius: '4px',
+                      padding: soc[0] == 'twitter' ? '2px ' : ''
+                    }}
                     src={`/images/logo/${soc[0]}.svg`}
                     height={16}
                     width={16}
@@ -90,7 +95,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 onClickLink={{
                   onClick: () => {
                     window.open(soc[1], '_blank');
-                  },
+                  }
                 }}
               />
             );
@@ -112,7 +117,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 } Jobs`}
               />
             );
-          },
+          }
         )}
       />
     </Stack>

@@ -20,7 +20,7 @@ export function UserLevelSettings({
           className={_utils.cx(_styles, "module_title_button")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"User Level Settings"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Settings"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "more_button_block")}
             tag="div"

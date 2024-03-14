@@ -43,7 +43,12 @@ export function OfficeLocationCard({
         {textAddress}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "job-post-tag")} tag="div">
-        <_Builtin.Block tag="div">{textJobPostCount}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-block-36")}
+          tag="div"
+        >
+          {textJobPostCount}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

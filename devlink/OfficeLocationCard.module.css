@@ -48,6 +48,12 @@
   background-color: var(--grey200-9ba653f1);
 }
 
+@media screen and (max-width: 479px) {
+  .text-block-36 {
+    font-size: 12px;
+  }
+}
+
 #w-node-_7647a0d8-4712-5784-4dd2-2bfcd85a668e-d85a668e {
   grid-column-start: span 1;
   grid-column-end: span 1;

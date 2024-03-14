@@ -23,8 +23,8 @@ function JobPost() {
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/jobpost/company`,
           {
-            job_id: jobId,
-          },
+            job_id: jobId
+          }
         );
         if (response.data) {
           setRecruiter(response.data.recruiter);
