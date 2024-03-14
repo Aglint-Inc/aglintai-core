@@ -12,4 +12,5 @@ declare function InterviewMemberSide(props: {
   isCancelActive?: Types.Visibility.VisibilityConditions;
   onClickAll?: Types.Devlink.RuntimeProps;
   isAllActive?: Types.Visibility.VisibilityConditions;
+  propsGrids?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

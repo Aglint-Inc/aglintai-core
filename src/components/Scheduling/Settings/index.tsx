@@ -20,6 +20,7 @@ import { useRouter } from 'next/router';
 import {
   DayOff,
   KeywordCard,
+  Keywords,
   RcCheckbox,
   ScheduleSettings,
   TimeRangeInput,
@@ -395,117 +396,114 @@ function SchedulingSettings({
           }
         />
       ) : (
-        <Stack
-          px={'20px'}
-          pt={'20px'}
-          direction={'row'}
-          flexDirection={'column'}
-          gap={'10px'}
-          width={'650px'}
-        >
-          <KeywordCard
-            textTitle={'Free'}
-            textWarning={
-              'If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.'
-            }
-            slotInput={
-              <FilterInput
-                handleAdd={(s) => {
-                  const keyword = String(s).split(',');
-                  keyword.map((item) => {
-                    if (freeKeyWords.includes(item)) {
-                      toast.warning(`"${item}" keyword exist!`);
-                      return null;
-                    } else {
-                      setFreeKeywords((pre) => [item, ...pre]);
-                    }
-                  });
-                }}
-                path='freeKeywords'
-                type='string'
-              />
-            }
-            slotSuggestPill={freeKeyWords.map((item) => {
-              return (
-                <>
-                  <Chip
-                    clickable
-                    onDelete={() => {
-                      setFreeKeywords((pre) => {
-                        return pre.filter((ele) => ele !== item);
+        <Keywords
+          slotKeywordsCard={
+            <>
+              <KeywordCard
+                textTitle={'Free'}
+                textWarning={
+                  'If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.'
+                }
+                slotInput={
+                  <FilterInput
+                    handleAdd={(s) => {
+                      const keyword = String(s).split(',');
+                      keyword.map((item) => {
+                        if (freeKeyWords.includes(item)) {
+                          toast.warning(`"${item}" keyword exist!`);
+                          return null;
+                        } else {
+                          setFreeKeywords((pre) => [item, ...pre]);
+                        }
                       });
                     }}
-                    sx={{
-                      p: '5px'
-                    }}
-                    deleteIcon={
-                      <IconButton>
-                        <Icon
-                          width='14'
-                          height='14'
-                          color='grey'
-                          variant='CloseThinIcon'
-                        />
-                      </IconButton>
-                    }
-                    label={item}
+                    path='freeKeywords'
+                    type='string'
                   />
-                </>
-              );
-            })}
-          />
-          <KeywordCard
-            textTitle={'Soft conflicts'}
-            textWarning={
-              'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation'
-            }
-            slotInput={
-              <FilterInput
-                handleAdd={(s) => {
-                  const keyword = String(s).split(',');
-                  keyword.map((item) => {
-                    if (freeKeyWords.includes(item)) {
-                      toast.warning(`"${item}" keyword exist!`);
-                      return null;
-                    } else {
-                      setSoftConflictsKeyWords((pre) => [item, ...pre]);
-                    }
-                  });
-                }}
-                path='softConflictsKeywords'
-                type='string'
+                }
+                slotSuggestPill={freeKeyWords.map((item) => {
+                  return (
+                    <>
+                      <Chip
+                        clickable
+                        onDelete={() => {
+                          setFreeKeywords((pre) => {
+                            return pre.filter((ele) => ele !== item);
+                          });
+                        }}
+                        sx={{
+                          p: '5px'
+                        }}
+                        deleteIcon={
+                          <IconButton>
+                            <Icon
+                              width='14'
+                              height='14'
+                              color='grey'
+                              variant='CloseThinIcon'
+                            />
+                          </IconButton>
+                        }
+                        label={item}
+                      />
+                    </>
+                  );
+                })}
               />
-            }
-            slotSuggestPill={softConflictsKeyWords.map((item) => {
-              return (
-                <>
-                  <Chip
-                    clickable
-                    onDelete={() => {
-                      setSoftConflictsKeyWords((pre) => {
-                        return pre.filter((ele) => ele !== item);
+              <KeywordCard
+                textTitle={'Soft conflicts'}
+                textWarning={
+                  'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation'
+                }
+                slotInput={
+                  <FilterInput
+                    handleAdd={(s) => {
+                      const keyword = String(s).split(',');
+                      keyword.map((item) => {
+                        if (freeKeyWords.includes(item)) {
+                          toast.warning(`"${item}" keyword exist!`);
+                          return null;
+                        } else {
+                          setSoftConflictsKeyWords((pre) => [item, ...pre]);
+                        }
                       });
                     }}
-                    sx={{
-                      p: '5px'
-                    }}
-                    deleteIcon={
-                      <IconButton>
-                        <Icon
-                          width='14'
-                          height='14'
-                          color='grey'
-                          variant='CloseThinIcon'
-                        />
-                      </IconButton>
-                    }
-                    label={item}
+                    path='softConflictsKeywords'
+                    type='string'
                   />
-                </>
-              );
-            })}
-          />
-        </Stack>
+                }
+                slotSuggestPill={softConflictsKeyWords.map((item) => {
+                  return (
+                    <>
+                      <Chip
+                        clickable
+                        onDelete={() => {
+                          setSoftConflictsKeyWords((pre) => {
+                            return pre.filter((ele) => ele !== item);
+                          });
+                        }}
+                        sx={{
+                          p: '5px'
+                        }}
+                        deleteIcon={
+                          <IconButton>
+                            <Icon
+                              width='14'
+                              height='14'
+                              color='grey'
+                              variant='CloseThinIcon'
+                            />
+                          </IconButton>
+                        }
+                        label={item}
+                      />
+                    </>
+                  );
+                })}
+              />
+            </>
+          }
+        />
       )}
     </Stack>
   );

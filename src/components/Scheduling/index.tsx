@@ -114,7 +114,7 @@ function SchedulingMainComp() {
                 </>
               ) : router.query.tab == 'interviewModules' ? (
                 allowAction(<Modules />, ['admin', 'member', 'scheduler'])
-              ) : router.query.tab == 'emailTemplates' ? (
+              ) : router.query.tab == 'emailTemplate' ? (
                 allowAction(<SchedulingEmailTemplates />, [
                   'admin',
                   'member',
