@@ -7,4 +7,7 @@ declare function ModulesMoreMenu(props: {
   isTrainingModules?: Types.Visibility.VisibilityConditions;
   onClickPause?: Types.Devlink.RuntimeProps;
   onClickRemove?: Types.Devlink.RuntimeProps;
+  textAllmodules?: React.ReactNode;
+  textPauseTraining?: React.ReactNode;
+  slotResumeIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

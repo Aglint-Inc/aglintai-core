@@ -36,6 +36,7 @@ function InterviewerPage() {
   };
 
   const { data, isLoading, isError, isFetched } = useImrQuery();
+
   if (isLoading) {
     return <DynamicLoader />;
   } else
@@ -127,5 +128,36 @@ const imrQueryKeys = {
   }),
   imr_member: (member_id: string) => ({
     queryKey: [...imrQueryKeys.imr().queryKey, { member_id }] // Imr =>interview_module_relation
+  }),
+  interviewer_schedules: () => ({
+    queryKey: [...imrQueryKeys.all.queryKey, 'interviewerSchedules'] // Imr =>interview_module_relation
+  }),
+  interviewer_schedules_member: (member_id: string) => ({
+    queryKey: [...imrQueryKeys.interviewer_schedules().queryKey, { member_id }] // Imr =>interview_module_relation
   })
 } as const;
+
+export const useInterviewerSchedulesQuery = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const member_id = router.query.member_id as string;
+  const { queryKey } = imrQueryKeys.interviewer_schedules_member(member_id);
+  const query = useQuery({
+    queryKey,
+    queryFn: () => getSchedules(member_id)
+  });
+  const refetch = () => queryClient.invalidateQueries({ queryKey });
+
+  return { ...query, refetch };
+};
+
+async function getSchedules(user_id: string) {
+  const { data, error } = await supabase.rpc(
+    'get_interview_schedule_by_user_id',
+    {
+      target_user_id: user_id
+    }
+  );
+  if (error) throw Error(error.message);
+  return data;
+}

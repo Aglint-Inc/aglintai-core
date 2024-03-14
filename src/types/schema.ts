@@ -2745,6 +2745,17 @@ export type Database = {
           users: Json
         }[]
       }
+      get_interviewers: {
+        Args: {
+          rec_id: string
+        }
+        Returns: {
+          rec_rel: Json
+          rec_user: Json
+          upcoming_meeting_count: number
+          completed_meeting_count: number
+        }[]
+      }
       get_present_scheduled_jobs: {
         Args: Record<PropertyKey, never>
         Returns: Json[]

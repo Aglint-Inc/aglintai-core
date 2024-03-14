@@ -7,6 +7,8 @@
 
   border: 1px solid #e9ebed;
   border-radius: 10px;
+
+  cursor: pointer;
 }
 
 .div-block-1069 {
@@ -418,21 +420,25 @@
 
 .div-block-1178 {
   position: relative;
-  padding: 4px;
+
+  display: flex;
+  padding: 8px;
+  justify-content: flex-end;
+  align-items: center;
+
   cursor: pointer;
 }
 
 .div-block-1101 {
   position: absolute;
   left: auto;
-  top: 24px;
+  top: 79%;
   right: 0%;
   bottom: auto;
   z-index: 2;
 
   display: none;
-  overflow: hidden;
-  width: 244px;
+  width: 240px;
 
   border: 1px solid #e9ebed;
   border-radius: 10px;

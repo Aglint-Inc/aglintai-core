@@ -29,4 +29,5 @@ declare function MemberListCard(props: {
   isPendingApprovalVisible?: Types.Visibility.VisibilityConditions;
   textPauseResumeDate?: React.ReactNode;
   isPauseResumeVisible?: Types.Visibility.VisibilityConditions;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
