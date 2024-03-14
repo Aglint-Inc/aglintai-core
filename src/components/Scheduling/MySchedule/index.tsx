@@ -5,7 +5,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 import ModuleSchedules from '../Modules/ModuleMembers/ModuleSchedules';
-import { ScheduleType } from '../Modules/types';
 import Loader from '../../Common/Loader';
 
 function MySchedule() {
@@ -22,20 +21,7 @@ function MySchedule() {
     );
 
     if (!error) {
-      const allSchedules = data as unknown as ScheduleType[];
-      const schArray = [];
-      allSchedules.map((sch) =>
-        sch.schedule.confirmed_option.plans.map((plan) => {
-          if (
-            !plan.isBreak &&
-            plan.selectedIntervs.find((user) => user.interv_id === user_id)
-          ) {
-            schArray.push({ ...sch, module_time: plan });
-          }
-        })
-      );
-      // setSchedules(schArray);
-      setinterviewsData(schArray);
+      setinterviewsData(data);
     }
     setLoading(false);
   }

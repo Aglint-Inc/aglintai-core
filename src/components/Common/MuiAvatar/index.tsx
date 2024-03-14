@@ -17,7 +17,7 @@ export default function MuiAvatar({
   height,
   variant,
   src,
-  fontSize,
+  fontSize
 }: MuiAvatarProps): React.JSX.Element {
   function stringToColor(string: string): string {
     let hash = 0;
@@ -46,7 +46,7 @@ export default function MuiAvatar({
       sx: {
         width: width ? width : '40px',
         height: height ? height : '40px',
-        bgcolor: value && stringToColor(value),
+        bgcolor: value && stringToColor(value)
       },
       children: (
         <Typography
@@ -56,7 +56,7 @@ export default function MuiAvatar({
         >
           {value ? value[0].toUpperCase() : '0'}
         </Typography>
-      ),
+      )
     };
   }
 

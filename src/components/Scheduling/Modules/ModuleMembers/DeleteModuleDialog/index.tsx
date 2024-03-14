@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { DeletePopup } from '@/devlink3';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { setIsDeleteModuleDialogOpen, useSchedulingStore } from '../../store';
@@ -19,15 +20,30 @@ function DeleteModuleDialog() {
 
   const deleteModule = async () => {
     try {
-      const isdeleted = await deleteModuleById(editModule.id);
-      if (isdeleted) {
-        const updatedModules = allModules.filter(
-          (mod) => mod.interview_modules.id !== editModule.id
-        );
-        setAllModules([...updatedModules]);
-        router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
+      const { data } = await supabase
+        .from('interview_meeting')
+        .select('*,interview_schedule!inner(*)')
+        .eq('module_id', editModule.id);
+
+      const isActiveMeeting = data.some(
+        (meet) => meet.start_time > new Date().toISOString()
+      );
+
+      if (!isActiveMeeting) {
+        const isdeleted = await deleteModuleById(editModule.id);
+        if (isdeleted) {
+          const updatedModules = allModules.filter(
+            (mod) => mod.interview_modules.id !== editModule.id
+          );
+          setAllModules([...updatedModules]);
+          router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
+        } else {
+          throw new Error();
+        }
       } else {
-        throw new Error();
+        toast.error(
+          'Cannot delete module, active schedules are present for this module'
+        );
       }
     } catch {
       toast.error('Error deleting user');

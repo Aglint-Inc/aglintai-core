@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Badge, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -12,11 +12,14 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import { useSchedulingApplicationStore } from '../store';
 
-function SchedulingOptionComp() {
+function SchedulingOptionComp({
+  isBadgeVisible = false
+}: {
+  isBadgeVisible?: boolean;
+}) {
   const schedulingOptions = useSchedulingApplicationStore(
     (state) => state.schedulingOptions
   );
-  const members = useSchedulingApplicationStore((state) => state.members);
   return (
     <>
       {schedulingOptions?.map((option, ind) => {
@@ -33,11 +36,6 @@ function SchedulingOptionComp() {
                     textMonth={dayjs(date).format('MMM')}
                     key={ind}
                     slotOptionAvailable={events.map((pl, ind) => {
-                      const allMembers = [
-                        ...pl.selectedIntervs,
-                        ...pl.revShadowIntervs,
-                        ...pl.shadowIntervs
-                      ];
                       return (
                         <OptionAvailable
                           textTime={`${dayjs(pl.start_time).format(
@@ -58,11 +56,7 @@ function SchedulingOptionComp() {
                                 gap: 2.5
                               }}
                             >
-                              {allMembers?.map((int) => {
-                                const user = members.find(
-                                  (member) => member.user_id === int.interv_id
-                                );
-                                if (!user) return null;
+                              {pl.selectedIntervs?.map((int) => {
                                 return (
                                   <Stack
                                     key={int.interv_id}
@@ -73,24 +67,117 @@ function SchedulingOptionComp() {
                                     }}
                                   >
                                     <MuiAvatar
-                                      level={getFullName(
-                                        user.first_name,
-                                        user.last_name
-                                      )}
-                                      src={user?.profile_image}
+                                      level={getFullName(int.name, '')}
+                                      src={int?.profile_img}
                                       variant={'circular'}
                                       width={'24px'}
                                       height={'24px'}
                                       fontSize={'12px'}
                                     />
+
                                     <Typography
                                       variant={'body2'}
                                       color={'#000'}
                                     >
-                                      {getFullName(
-                                        user.first_name,
-                                        user.last_name
-                                      )}
+                                      {getFullName(int.name, '')}
+                                    </Typography>
+                                  </Stack>
+                                );
+                              })}
+                              {pl.shadowIntervs?.map((int) => {
+                                return (
+                                  <Stack
+                                    key={int.interv_id}
+                                    direction={'row'}
+                                    spacing={1}
+                                    sx={{
+                                      textWrap: 'nowrap'
+                                    }}
+                                  >
+                                    <Badge
+                                      key={int.interv_id}
+                                      color='secondary'
+                                      overlap='circular'
+                                      badgeContent={<>S</>}
+                                      anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'right'
+                                      }}
+                                      sx={{
+                                        '& .MuiBadge-badge': {
+                                          fontSize: '6px',
+                                          height: '14px',
+                                          minWidth: '14px',
+                                          display: isBadgeVisible
+                                            ? 'block'
+                                            : 'none'
+                                        }
+                                      }}
+                                    >
+                                      <MuiAvatar
+                                        level={getFullName(int.name, '')}
+                                        src={int?.profile_img}
+                                        variant={'circular'}
+                                        width={'20px'}
+                                        height={'20px'}
+                                        fontSize={'12px'}
+                                      />
+                                    </Badge>
+
+                                    <Typography
+                                      variant={'body2'}
+                                      color={'#000'}
+                                    >
+                                      {getFullName(int.name, '')}
+                                    </Typography>
+                                  </Stack>
+                                );
+                              })}
+                              {pl.revShadowIntervs?.map((int) => {
+                                return (
+                                  <Stack
+                                    key={int.interv_id}
+                                    direction={'row'}
+                                    spacing={1}
+                                    sx={{
+                                      textWrap: 'nowrap'
+                                    }}
+                                  >
+                                    <Badge
+                                      key={int.interv_id}
+                                      color='secondary'
+                                      overlap='circular'
+                                      badgeContent={<>R</>}
+                                      anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'right'
+                                      }}
+                                      sx={{
+                                        '& .MuiBadge-badge': {
+                                          fontSize: '6px',
+                                          height: '14px',
+                                          minWidth: '14px',
+                                          display: isBadgeVisible
+                                            ? 'block'
+                                            : 'none'
+                                        }
+                                      }}
+                                    >
+                                      <MuiAvatar
+                                        level={getFullName(int.name, '')}
+                                        src={int?.profile_img}
+                                        variant={'circular'}
+                                        width={'24px'}
+                                        height={'24px'}
+                                        fontSize={'12px'}
+                                      />
+                                    </Badge>
+
+                                    <Typography
+                                      variant={'body2'}
+                                      color={'#000'}
+                                    >
+                                      {getFullName(int.name, '')}
                                     </Typography>
                                   </Stack>
                                 );
