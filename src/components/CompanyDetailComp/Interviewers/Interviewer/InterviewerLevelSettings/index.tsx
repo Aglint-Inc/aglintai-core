@@ -8,9 +8,12 @@ import {
 } from '@mui/material';
 import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
-
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import {
   DayOff,
   KeywordCard,
@@ -27,6 +30,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
+import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
 import {
   DailyLimitType,
   schedulingSettingType,
@@ -60,6 +64,7 @@ function InterviewerLevelSettings({
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
+  const [isTimeZone, setIsTimeZone] = useState(true);
 
   const handleSelectWeeklyType = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
@@ -242,11 +247,28 @@ function InterviewerLevelSettings({
               //   <ToggleBtn isActive={isTimeZone} handleCheck={handleCheck} />
               // }
               slotTimeZoneInput={
-                <Stack spacing={'20px'} width={420}>
+                <Stack spacing={'10px'} width={420}>
+                  <Stack alignItems={'center'} direction={'row'}>
+                    <ToggleBtn
+                      handleCheck={(e) => {
+                        setIsTimeZone(e);
+                      }}
+                      isActive={isTimeZone}
+                    />
+                    <Typography fontSize={'14px'} variant='caption'>
+                      Get timezone automatically
+                    </Typography>
+                  </Stack>
                   <Autocomplete
                     disableClearable
                     options={timeZones}
-                    value={selectedTimeZone}
+                    value={
+                      isTimeZone
+                        ? timeZones.filter((item) =>
+                            item.label.includes(dayjs.tz.guess())
+                          )[0] || selectedTimeZone
+                        : selectedTimeZone
+                    }
                     onChange={(event, value) => {
                       if (value) {
                         setSelectedTimeZone(value);

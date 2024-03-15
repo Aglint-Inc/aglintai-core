@@ -52,7 +52,7 @@ const InterviewTab = () => {
                           variant='circular'
                           height='100%'
                           width='100%'
-                          fontSize='14px'
+                          fontSize='16px'
                         />
                       }
                       slotInterviewModules={

@@ -52,7 +52,7 @@ function SchedulingMainComp() {
   }
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
-      router.push(`${pageRoutes.SCHEDULING}?tab=allSchedules`, undefined, {
+      router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`, undefined, {
         shallow: true
       });
     }
