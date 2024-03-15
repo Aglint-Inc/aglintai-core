@@ -9,6 +9,7 @@ import {
   InterviewScreenCard
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { TransformSchedule } from '..';
@@ -26,10 +27,10 @@ function ModuleSchedules({
   >[];
   loading?: boolean;
 }) {
-  const router = useRouter();
   const [filter, setFilter] = React.useState<
     'all' | 'upcoming' | 'cancelled' | 'completed'
   >('all');
+  const router = useRouter();
 
   const filterSchedules = () => {
     if (filter === 'all') {
@@ -63,93 +64,93 @@ function ModuleSchedules({
         onClick: () => setFilter('completed')
       }}
       slotInterviewCard={
-        <>
-          <Grid container spacing={2}>
-            {!loading &&
-              filterSchedules().map((sch, ind) => {
-                return (
-                  <Grid
-                    item
-                    sm={12}
-                    md={12}
-                    lg={
-                      router.query.member_id || router.query.module_id ? 12 : 6
-                    }
-                    xl={4}
-                    key={ind}
-                  >
-                    <InterviewScreenCard
-                      onClickCard={{
-                        onClick: () => {
-                          router.push(
-                            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}`
-                          );
-                        }
-                      }}
-                      key={ind}
-                      textDate={dayjs(sch.interview_meeting.end_time).format(
-                        'DD'
-                      )}
-                      textDay={dayjs(sch.interview_meeting.end_time).format(
-                        'dddd'
-                      )}
-                      textMonth={dayjs(sch.interview_meeting.end_time).format(
-                        'MMM'
-                      )}
-                      textStatus={sch.schedule.status}
-                      textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${sch.interview_meeting.duration} Minutes )`}
-                      textMeetingPlatform={getScheduleType(
-                        sch.schedule.schedule_type
-                      )}
-                      slotMeetingIcon={
-                        <IconScheduleType type={sch.schedule.schedule_type} />
-                      }
-                      textTitle={sch.schedule.schedule_name}
-                      colorPropsText={{
-                        style: {
-                          color: getColorStatusSchedule(sch.schedule.status)
-                        }
-                      }}
-                      slotMemberImage={
-                        <AvatarGroup
-                          total={sch.users?.length || 0}
-                          sx={{
-                            '& .MuiAvatar-root': {
-                              width: '28px',
-                              height: '28px',
-                              fontSize: '12px'
-                            }
-                          }}
-                        >
-                          {sch.users.slice(0, 5)?.map((user) => {
-                            return (
-                              <MuiAvatar
-                                key={user.id}
-                                src={user.profile_image}
-                                level={getFullName(
-                                  user.first_name,
-                                  user.last_name
-                                )}
-                                variant='circular'
-                                height='28px'
-                                width='28px'
-                                fontSize='12px'
-                              />
-                            );
-                          })}
-                        </AvatarGroup>
-                      }
-                    />
-                  </Grid>
-                );
-              })}
-          </Grid>
-
-          {!loading && filterSchedules().length === 0 && <AllInterviewEmpty />}
-        </>
+        <ShowCode>
+          <ShowCode.When isTrue={!loading && Boolean(filterSchedules().length)}>
+            {router.query.member_id || router.query.module_id ? (
+              <Grid container spacing={2}>
+                {!loading &&
+                  filterSchedules().map((sch, ind) => {
+                    return (
+                      <Grid item sm={12} md={12} lg={12} xl={12} key={ind}>
+                        <ScheduleCard sch={sch} />
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+            ) : (
+              <Grid container spacing={2}>
+                {!loading &&
+                  filterSchedules().map((sch, ind) => {
+                    return (
+                      <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
+                        <ScheduleCard sch={sch} />
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+            )}
+          </ShowCode.When>
+          <ShowCode.When isTrue={!loading && filterSchedules().length === 0}>
+            <AllInterviewEmpty />
+          </ShowCode.When>
+        </ShowCode>
       }
     />
   );
 }
 
 export default ModuleSchedules;
+
+function ScheduleCard({ sch }) {
+  const router = useRouter();
+  return (
+    <InterviewScreenCard
+      onClickCard={{
+        onClick: () => {
+          router.push(
+            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}`
+          );
+        }
+      }}
+      textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
+      textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
+      textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
+      textStatus={sch.schedule.status}
+      textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${sch.interview_meeting.duration} Minutes )`}
+      textMeetingPlatform={getScheduleType(sch.schedule.schedule_type)}
+      slotMeetingIcon={<IconScheduleType type={sch.schedule.schedule_type} />}
+      textTitle={sch.schedule.schedule_name}
+      colorPropsText={{
+        style: {
+          color: getColorStatusSchedule(sch.schedule.status)
+        }
+      }}
+      slotMemberImage={
+        <AvatarGroup
+          total={sch.users?.length || 0}
+          sx={{
+            '& .MuiAvatar-root': {
+              width: '28px',
+              height: '28px',
+              fontSize: '12px'
+            }
+          }}
+        >
+          {sch.users.slice(0, 5)?.map((user) => {
+            return (
+              <MuiAvatar
+                key={user.id}
+                src={user.profile_image}
+                level={getFullName(user.first_name, user.last_name)}
+                variant='circular'
+                height='28px'
+                width='28px'
+                fontSize='12px'
+              />
+            );
+          })}
+        </AvatarGroup>
+      }
+    />
+  );
+}
