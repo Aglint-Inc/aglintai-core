@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { JobInsert } from '@/src/queries/job/types';
 import {
   CandidateType,
@@ -251,6 +252,7 @@ export const createJobObject = async (
         },
         department: 'support'
       },
+      description_hash: hashCode(post?.content ?? ''),
       location: post.location.name,
       job_title: post.title,
       status: 'draft',

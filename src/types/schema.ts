@@ -972,6 +972,7 @@ export type Database = {
           meeting_json: Json | null
           module_id: string
           start_time: string
+          status: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Insert: {
           break_time?: number
@@ -983,6 +984,7 @@ export type Database = {
           meeting_json?: Json | null
           module_id: string
           start_time: string
+          status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Update: {
           break_time?: number
@@ -994,6 +996,7 @@ export type Database = {
           meeting_json?: Json | null
           module_id?: string
           start_time?: string
+          status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Relationships: [
           {
@@ -1054,6 +1057,7 @@ export type Database = {
       interview_module: {
         Row: {
           created_at: string
+          description: string | null
           duration_available: Json | null
           id: string
           name: string
@@ -1062,6 +1066,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          description?: string | null
           duration_available?: Json | null
           id?: string
           name: string
@@ -1070,6 +1075,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          description?: string | null
           duration_available?: Json | null
           id?: string
           name?: string
@@ -1612,6 +1618,7 @@ export type Database = {
             | Database["public"]["Enums"]["public_job_department"]
             | null
           description: string | null
+          description_hash: number
           draft: Json | null
           email_template: Json
           end_video: Json | null
@@ -1664,6 +1671,7 @@ export type Database = {
             | Database["public"]["Enums"]["public_job_department"]
             | null
           description?: string | null
+          description_hash?: number
           draft?: Json | null
           email_template?: Json
           end_video?: Json | null
@@ -1716,6 +1724,7 @@ export type Database = {
             | Database["public"]["Enums"]["public_job_department"]
             | null
           description?: string | null
+          description_hash?: number
           draft?: Json | null
           email_template?: Json
           end_video?: Json | null
@@ -2923,6 +2932,7 @@ export type Database = {
           video_assessment: boolean
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           scoring_param_status: Database["public"]["Enums"]["job_scoring_param_status"]
+          description_hash: number
           count: Json
         }[]
       }
@@ -3020,6 +3030,7 @@ export type Database = {
           video_assessment: boolean
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           scoring_param_status: Database["public"]["Enums"]["job_scoring_param_status"]
+          description_hash: number
           count: Json
         }[]
       }
@@ -3285,6 +3296,14 @@ export type Database = {
           candfile_id: string
           total_results: number
         }[]
+      }
+      update_interview_schedule_status: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      update_meeting_status: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       update_resume_score: {
         Args: {

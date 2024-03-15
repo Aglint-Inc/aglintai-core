@@ -13,6 +13,10 @@ import { Database } from '@/src/types/schema';
 
 import { jdJson } from './utils';
 
+export const config = {
+  maxDuration: 300
+};
+
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<JobProfileScoreApi['response']>
@@ -59,36 +63,50 @@ const handler = async (
     });
     return;
   }
-  const job = data[0];
-  const json = await jdJson(
-    `Job Role : ${job.job_title}
+  const timeoutPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error('Timed out'));
+    }, 280000);
+  });
+  try {
+    await supabase
+      .from('public_jobs')
+      .update({ scoring_param_status: 'loading' })
+      .eq('id', job_id);
+    res.status(200).send({ data: 'started', error: null });
+    const job = data[0];
+    const jsonPromise = jdJson(
+      `Job Role : ${job.job_title}
 
 ${job.description}
 `
-  );
-  const j: JdJsonType = {
-    title: job.job_title,
-    level: json.jobLevel,
-    rolesResponsibilities: arrItemToReactArr([
-      ...json.roles,
-      ...json.responsibilities,
-      ...json.requirements
-    ]),
-    skills: arrItemToReactArr([...json.skills]),
-    educations: arrItemToReactArr([...json.educations])
-  };
-  await supabase
-    .from('public_jobs')
-    .update({
-      jd_json: j,
-      draft: { ...(job.draft as any), jd_json: j }
-    })
-    .eq('id', job_id);
-  const result = {
-    data: j,
-    error: null
-  };
-  res.status(200).send(result);
+    );
+    const json = await Promise.race([jsonPromise, timeoutPromise]);
+    const j: JdJsonType = {
+      title: job.job_title,
+      level: json.jobLevel,
+      rolesResponsibilities: arrItemToReactArr([
+        ...json.roles,
+        ...json.responsibilities,
+        ...json.requirements
+      ]),
+      skills: arrItemToReactArr([...json.skills]),
+      educations: arrItemToReactArr([...json.educations])
+    };
+    await supabase
+      .from('public_jobs')
+      .update({
+        jd_json: j,
+        draft: { ...(job.draft as any), jd_json: j },
+        scoring_param_status: 'success'
+      })
+      .eq('id', job_id);
+  } catch (e) {
+    await supabase
+      .from('public_jobs')
+      .update({ scoring_param_status: null })
+      .eq('id', job_id);
+  }
   return;
 };
 
@@ -108,4 +126,4 @@ export type JobProfileScoreApi = {
   };
 };
 
-type ResponseDataPayload = any;
+type ResponseDataPayload = 'started';

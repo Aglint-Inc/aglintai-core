@@ -1,6 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
+import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import {
   useAllAssessments,
   useAllAssessmentTemplates
@@ -13,6 +15,7 @@ import {
   useJobSkills,
   useJobTenureAndExperience
 } from '@/src/queries/job-dashboard';
+import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
@@ -49,11 +52,19 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const locations = useJobLocations();
   const matches = useJobMatches();
   const tenureAndExperience = useJobTenureAndExperience();
+  const validDescription = !validateDescription(job?.draft?.description);
+  const descriptionChanged =
+    hashCode(job?.draft?.description ?? '') !== job?.description_hash;
+  const scoringPoll = useJobScoringPoll();
   const draftValidity = getDraftValidity(job);
+  const jdValidity = !validateJd(job?.draft?.jd_json);
+  const publishable = draftValidity && jdValidity;
+  const [dismiss, setDismiss] = useState(false);
 
   const initialLoad =
     jobLoad &&
     assessments.status !== 'pending' &&
+    scoringPoll.status !== 'pending' &&
     tenureAndExperience.status !== 'pending' &&
     templates.status !== 'pending' &&
     matches.status !== 'pending' &&
@@ -64,7 +75,14 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const value = {
     job,
+    dismiss,
+    setDismiss,
     draftValidity,
+    jdValidity,
+    scoringPoll,
+    validDescription,
+    descriptionChanged,
+    publishable,
     initialLoad,
     assessments: {
       ...assessments,
@@ -97,8 +115,6 @@ export const getDraftValidity = (job: Job) => {
     if (acc) {
       const safeKey = key as keyof typeof draft;
       switch (safeKey) {
-        case 'jd_json':
-          return acc;
         case 'description':
           return !validateDescription(value as string);
         //TODO: HACK HERE AGAIN
@@ -117,12 +133,31 @@ export const getDraftValidity = (job: Job) => {
   }, true);
 };
 
+export const validateJd = (jd_json: JdJsonType) => {
+  return (
+    !jd_json ||
+    Object.entries(jd_json).length === 0 ||
+    Object.values(jd_json).filter((a) => Array.isArray(a) && a.length !== 0)
+      .length === 0
+  );
+};
+
 export const validateString = (str: string) => {
   return !str || typeof str !== 'string' || str.length === 0;
 };
 
 export const validateDescription = (str: string) => {
   return validateString(str) || str.length < 100;
+};
+
+export const hashCode = (str: string) => {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    var code = str.charCodeAt(i);
+    hash = (hash << 5) - hash + code;
+    hash = hash & hash;
+  }
+  return hash;
 };
 
 export default useProviderJobDashboardActions;

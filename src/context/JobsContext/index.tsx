@@ -8,6 +8,7 @@ export const initialJobContext = {
   jobsData: { jobs: undefined },
   handleJobRead: undefined,
   handleJobCreate: undefined,
+  handleJobAsyncUpdate: undefined,
   handleJobUpdate: undefined,
   handleUIJobUpdate: undefined,
   handleJobPublish: undefined,

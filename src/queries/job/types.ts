@@ -12,7 +12,9 @@ export type Job = Omit<JobTableRPC, keyof CustomJobType> & CustomJobType;
 export type JobInsert = Omit<JobTable['Insert'], keyof CustomJobType> &
   Partial<Omit<CustomJobType, 'count'>>;
 
-export type JobCreate = Required<Job['draft']>;
+export type JobCreate = Required<Job['draft']> & {
+  description_hash: Job['description_hash'];
+};
 
 type CustomJobType = {
   jd_json: JdJsonType;
