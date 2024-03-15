@@ -12,14 +12,14 @@ function SubNav() {
   const { isAllowed } = useAuthDetails();
   const tabs: {
     text: string;
-    roles?: Database['public']['Enums']['recruiter_roles'][];
+    roles?: Database['public']['Enums']['user_roles'][];
   }[] = [
-    { text: 'all Schedules', roles: ['admin', 'member', 'scheduler'] },
+    { text: 'all Schedules', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'my Schedules' },
-    { text: 'interview Modules', roles: ['admin', 'member', 'scheduler'] },
-    { text: 'email Template', roles: ['admin', 'member', 'scheduler'] },
-    { text: 'all Interviewers', roles: ['admin', 'member', 'scheduler'] },
-    { text: 'settings', roles: ['admin', 'member', 'scheduler'] }
+    { text: 'interview Modules', roles: ['admin', 'recruiter', 'scheduler'] },
+    { text: 'email Template', roles: ['admin', 'recruiter', 'scheduler'] },
+    { text: 'all Interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
+    { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] }
   ];
   return (
     <>
@@ -34,7 +34,10 @@ function SubNav() {
               onClick: () => {
                 if (item === 'settings') {
                   router.push(
-                    `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}&subtab=availability`
+                    `${pageRoutes.SCHEDULING}?tab=${item.replace(
+                      ' ',
+                      ''
+                    )}&subtab=availability`
                   );
                 } else {
                   router.push(
@@ -53,7 +56,10 @@ function SubNav() {
                     onClick: (e: any) => {
                       e.stopPropagation();
                       router.push(
-                        `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}&subtab=availability`
+                        `${pageRoutes.SCHEDULING}?tab=${item.replace(
+                          ' ',
+                          ''
+                        )}&subtab=availability`
                       );
                     }
                   }}
@@ -65,7 +71,10 @@ function SubNav() {
                     onClick: (e: any) => {
                       e.stopPropagation();
                       router.push(
-                        `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}&subtab=keywords`
+                        `${pageRoutes.SCHEDULING}?tab=${item.replace(
+                          ' ',
+                          ''
+                        )}&subtab=keywords`
                       );
                     }
                   }}

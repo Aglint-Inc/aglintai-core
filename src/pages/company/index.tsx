@@ -13,4 +13,4 @@ function CompanyPage() {
   );
 }
 
-export default withRoleProtection(CompanyPage, ['admin', 'member']);
+export default withRoleProtection(CompanyPage, ['admin', 'recruiter']);

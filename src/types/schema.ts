@@ -1638,6 +1638,9 @@ export type Database = {
           phone_screening: Json | null
           posted_by: string
           recruiter_id: string
+          scoring_param_status:
+            | Database["public"]["Enums"]["job_scoring_param_status"]
+            | null
           screening_questions: Json[] | null
           screening_setting: Json | null
           screening_template: string | null
@@ -1687,6 +1690,9 @@ export type Database = {
           phone_screening?: Json | null
           posted_by?: string
           recruiter_id: string
+          scoring_param_status?:
+            | Database["public"]["Enums"]["job_scoring_param_status"]
+            | null
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
@@ -1736,6 +1742,9 @@ export type Database = {
           phone_screening?: Json | null
           posted_by?: string
           recruiter_id?: string
+          scoring_param_status?:
+            | Database["public"]["Enums"]["job_scoring_param_status"]
+            | null
           screening_questions?: Json[] | null
           screening_setting?: Json | null
           screening_template?: string | null
@@ -2008,7 +2017,7 @@ export type Database = {
           position: string | null
           profile_image: string | null
           recruiter_id: string | null
-          role: Database["public"]["Enums"]["recruiter_roles"]
+          role: Database["public"]["Enums"]["user_roles"] | null
           schedule_auth: Json | null
           scheduling_settings: Json | null
           user_id: string
@@ -2027,7 +2036,7 @@ export type Database = {
           position?: string | null
           profile_image?: string | null
           recruiter_id?: string | null
-          role?: Database["public"]["Enums"]["recruiter_roles"]
+          role?: Database["public"]["Enums"]["user_roles"] | null
           schedule_auth?: Json | null
           scheduling_settings?: Json | null
           user_id: string
@@ -2046,7 +2055,7 @@ export type Database = {
           position?: string | null
           profile_image?: string | null
           recruiter_id?: string | null
-          role?: Database["public"]["Enums"]["recruiter_roles"]
+          role?: Database["public"]["Enums"]["user_roles"] | null
           schedule_auth?: Json | null
           scheduling_settings?: Json | null
           user_id?: string
@@ -2913,6 +2922,7 @@ export type Database = {
           updated_at: string
           video_assessment: boolean
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
+          scoring_param_status: Database["public"]["Enums"]["job_scoring_param_status"]
           count: Json
         }[]
       }
@@ -3009,6 +3019,7 @@ export type Database = {
           updated_at: string
           video_assessment: boolean
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
+          scoring_param_status: Database["public"]["Enums"]["job_scoring_param_status"]
           count: Json
         }[]
       }
@@ -3322,6 +3333,7 @@ export type Database = {
         | "phone_call"
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
+      job_scoring_param_status: "loading" | "success"
       public_job_department:
         | "legal"
         | "sales"
@@ -3353,7 +3365,12 @@ export type Database = {
       public_job_workplace: "hybrid" | "on site" | "off site"
       question_level: "basic" | "intermediate" | "advanced"
       question_type: "scq" | "mcq" | "qna" | "code"
-      recruiter_roles: "admin" | "member" | "interviewer" | "scheduler"
+      recruiter_rolesx:
+        | "admin"
+        | "member"
+        | "interviewer"
+        | "scheduler"
+        | "recruiter"
       sender_type: "aglint" | "you" | "system" | "user"
       status_training: "qualified" | "training"
       template_type:
@@ -3366,6 +3383,7 @@ export type Database = {
         | "situational"
         | "software"
         | "typing"
+      user_roles: "admin" | "recruiter" | "interviewer" | "scheduler"
     }
     CompositeTypes: {
       location_type: {

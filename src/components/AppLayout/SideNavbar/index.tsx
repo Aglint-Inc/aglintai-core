@@ -109,7 +109,7 @@ function SideNavbar() {
   const newNaveList = useMemo(() => {
     let tempList = [];
     switch (recruiterUser?.role) {
-      case 'member': {
+      case 'recruiter': {
         tempList = navList;
         break;
       }

@@ -106,29 +106,37 @@ function SchedulingMainComp() {
           <BodyWithSublink
             slotTabContent={
               router.query.tab == 'allSchedules' ? (
-                allowAction(<AllSchedules />, ['admin', 'member', 'scheduler'])
+                allowAction(<AllSchedules />, [
+                  'admin',
+                  'recruiter',
+                  'scheduler'
+                ])
               ) : router.query.tab == 'mySchedules' ? (
                 <>
                   <MySchedule />
                   {/* <InterviewerComp /> */}
                 </>
               ) : router.query.tab == 'interviewModules' ? (
-                allowAction(<Modules />, ['admin', 'member', 'scheduler'])
+                allowAction(<Modules />, ['admin', 'recruiter', 'scheduler'])
               ) : router.query.tab == 'emailTemplate' ? (
                 allowAction(<SchedulingEmailTemplates />, [
                   'admin',
-                  'member',
+                  'recruiter',
                   'scheduler'
                 ])
               ) : router.query.tab == 'allInterviewers' ? (
-                allowAction(<InterviewTab />, ['admin', 'member', 'scheduler'])
+                allowAction(<InterviewTab />, [
+                  'admin',
+                  'recruiter',
+                  'scheduler'
+                ])
               ) : router.query.tab == 'settings' ? (
                 allowAction(
                   <SettingsScheduling
                     updateSettings={updateSettings}
                     initialData={recruiter?.scheduling_settings}
                   />,
-                  ['admin', 'member', 'scheduler']
+                  ['admin', 'recruiter', 'scheduler']
                 )
               ) : (
                 ''

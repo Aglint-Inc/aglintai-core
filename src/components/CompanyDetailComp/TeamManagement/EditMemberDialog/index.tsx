@@ -152,13 +152,16 @@ const EditMember = ({
                   onChange={(event: any, newValue: string | null) => {
                     setForm({
                       ...form,
-                      role: newValue as 'member' | 'interviewer' | 'scheduler'
+                      role: newValue as
+                        | 'recruiter'
+                        | 'interviewer'
+                        | 'scheduler'
                     });
                   }}
                   id='controllable-states-demo'
                   options={(
                     [
-                      'member',
+                      'recruiter',
                       'interviewer',
                       'scheduler'
                     ] as Database['public']['Enums']['agent_type'][]
@@ -222,7 +225,7 @@ const EditMember = ({
                   last_name: null,
                   department: null,
                   designation: null,
-                  role: 'member'
+                  role: 'recruiter'
                 });
             }
           }}

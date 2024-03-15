@@ -7,7 +7,7 @@ import toast from '../utils/toast';
 
 const withRoleProtection = (
   WrappedComponent,
-  allowedRoles: Database['public']['Enums']['recruiter_roles'][]
+  allowedRoles: Database['public']['Enums']['user_roles'][]
 ) => {
   return function RoleProtection(props) {
     const { recruiterUser } = useAuthDetails();

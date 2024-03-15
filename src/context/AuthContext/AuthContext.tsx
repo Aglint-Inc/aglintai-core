@@ -50,12 +50,10 @@ export interface ContextValue {
     user_id: string;
     data: Database['public']['Tables']['recruiter_user']['Update'];
   }) => Promise<boolean>;
-  isAllowed: (
-    role: Database['public']['Enums']['recruiter_roles'][]
-  ) => boolean;
+  isAllowed: (role: Database['public']['Enums']['user_roles'][]) => boolean;
   allowAction: <T extends Function | ReactNode>(
     func: T,
-    role: Database['public']['Enums']['recruiter_roles'][]
+    role: Database['public']['Enums']['user_roles'][]
   ) => T;
 }
 
@@ -192,7 +190,7 @@ const AuthProvider = ({ children }) => {
         });
         if (
           recruiterUser[0].role === 'admin' ||
-          recruiterUser[0].role === 'member'
+          recruiterUser[0].role === 'recruiter'
         ) {
           await getMembersFromDB(
             recruiterRel[0].recruiter.id,

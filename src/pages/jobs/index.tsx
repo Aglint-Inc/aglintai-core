@@ -31,4 +31,8 @@ const Dashboard = () => {
   );
 };
 
-export default withRoleProtection(Dashboard, ['admin', 'member', 'scheduler']);
+export default withRoleProtection(Dashboard, [
+  'admin',
+  'recruiter',
+  'scheduler'
+]);
