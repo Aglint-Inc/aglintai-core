@@ -156,6 +156,10 @@
   z-index: 2;
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.sticky_2 {
   position: sticky;
   top: 0px;

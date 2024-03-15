@@ -15,16 +15,42 @@ export function InterviewModuleTable({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
-          <_Builtin.Block tag="div">{"Module"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Module"}
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
-          <_Builtin.Block tag="div">{"Members"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Members"}
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
-          <_Builtin.Block tag="div">{"Upcoming Schedules"}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "header-col", "center")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Upcoming Schedules"}
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">
-          <_Builtin.Block tag="div">{"Completed Schedules"}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "header-col", "center")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Completed Schedules"}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

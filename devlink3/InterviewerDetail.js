@@ -126,12 +126,7 @@ export function InterviewerDetail({
             className={_utils.cx(_styles, "module_title_button")}
             tag="div"
           >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey_600")}
-              tag="div"
-            >
-              {"Interview Modules"}
-            </_Builtin.Block>
+            <_Builtin.Block tag="div">{"Interview Modules"}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot-models-morement")}
               tag="div"

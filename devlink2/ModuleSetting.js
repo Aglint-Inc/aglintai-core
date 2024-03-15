@@ -23,7 +23,7 @@ export function ModuleSetting({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Module settings"}
+          {"Settings"}
         </_Builtin.Block>
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icons", "cursor-pointer")}
@@ -35,7 +35,7 @@ export function ModuleSetting({
         className={_utils.cx(_styles, "mt-20", "gap-6")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{"Module Name"}</_Builtin.Block>
+        <_Builtin.Block tag="div">{"Name"}</_Builtin.Block>
         <_Builtin.Block tag="div">{slotModuleNameInput}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

@@ -70,7 +70,7 @@ function CreateModuleDialog() {
     >
       <ConfirmationPopup
         textPopupTitle={'Create Interview Module'}
-        textPopupDescription={'Module Name'}
+        textPopupDescription={'Name'}
         isIcon={false}
         slotWidget={
           <UITextField

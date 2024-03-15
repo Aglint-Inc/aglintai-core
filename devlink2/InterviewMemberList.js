@@ -43,7 +43,7 @@ export function InterviewMemberList({
                 className={_utils.cx(_styles, "text-blue-500")}
                 tag="div"
               >
-                {"Add Qualified Member"}
+                {"Add"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
@@ -78,7 +78,7 @@ export function InterviewMemberList({
                 className={_utils.cx(_styles, "text-blue-500")}
                 tag="div"
               >
-                {"Add Trainee"}
+                {"Add"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

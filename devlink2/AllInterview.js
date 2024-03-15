@@ -85,19 +85,34 @@ export function AllInterview({
                     {slotCheckbox}
                   </_Builtin.Block>
                 ) : null}
-                <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {"Candidate"}
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Status"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {"Status"}
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Schedule Type"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {"Type"}
+                </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
@@ -113,14 +128,24 @@ export function AllInterview({
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Interview Module"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold")}
+                  tag="div"
+                >
+                  {"Interview"}
+                </_Builtin.Block>
               </_Builtin.Block>
               {isSchedulerTable ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "allinterview_header_cell")}
                   tag="div"
                 >
-                  <_Builtin.Block tag="div">{"Related Job"}</_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {"Job"}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>

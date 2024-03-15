@@ -135,6 +135,10 @@
   cursor: pointer;
 }
 
+.hide {
+  display: none;
+}
+
 .interviewer_setting_display {
   display: flex;
   flex-direction: column;
@@ -164,10 +168,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-}
-
 .embed_flex.custom_top {
   margin-top: 2px;
 }
@@ -179,6 +179,10 @@
 
 .embed_flex.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
 }
 
 .loadbalalnce_flex {
@@ -209,14 +213,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.text-grey_600 {
-  color: #68737d;
-}
-
-.text-grey_600.hide {
-  display: none;
 }
 
 .slot-models-morement {

@@ -5,7 +5,7 @@ import _styles from "./ButtonSetting.module.css";
 
 export function ButtonSetting({
   as: _Component = _Builtin.Block,
-  text = "Module Settings",
+  text = "Settings",
   onClickButton = {},
 }) {
   return (

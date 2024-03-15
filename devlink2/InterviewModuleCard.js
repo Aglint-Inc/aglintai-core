@@ -62,7 +62,7 @@ export function InterviewModuleCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1066")}
+        className={_utils.cx(_styles, "div-block-1066", "center")}
         tag="div"
       >
         {isUpcomingScheduleVisible ? (
@@ -87,7 +87,7 @@ export function InterviewModuleCard({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1066")}
+        className={_utils.cx(_styles, "div-block-1066", "center")}
         tag="div"
       >
         {isCompletedScheduleVisible ? (

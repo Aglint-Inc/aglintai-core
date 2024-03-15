@@ -18,7 +18,12 @@ export function SublinkTab({
       {...onClickTab}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold", "relative_2")}
+        className={_utils.cx(
+          _styles,
+          "fw-semibold",
+          "relative_2",
+          "text-first-cap"
+        )}
         tag="div"
       >
         {text}

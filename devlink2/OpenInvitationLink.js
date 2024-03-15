@@ -70,7 +70,7 @@ export function OpenInvitationLink({
                   )}
                   {...onClickAskOptions}
                 >
-                  {"Ask Recruiter to resend options"}
+                  {"Find here"}
                 </_Builtin.Span>
               </_Builtin.Block>
             ) : null}
