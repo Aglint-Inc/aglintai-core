@@ -52,19 +52,29 @@ export function InterviewScreenCard({
                 {textMonth}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-20", "fw-semibold")}
+                className={_utils.cx(
+                  _styles,
+                  "text-20",
+                  "fw-semibold",
+                  "text-grey-600"
+                )}
                 tag="div"
               >
                 {textDate}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-xsm")}
+                className={_utils.cx(_styles, "text-xsm", "text-grey-600")}
                 tag="div"
               >
                 {textDay}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-xsm", "text-first-cap")}
+                className={_utils.cx(
+                  _styles,
+                  "text-xsm",
+                  "text-first-cap",
+                  "mt-5"
+                )}
                 tag="div"
                 {...colorPropsText}
               >
