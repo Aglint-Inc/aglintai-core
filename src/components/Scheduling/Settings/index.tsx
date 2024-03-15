@@ -31,6 +31,7 @@ import toast from '@/src/utils/toast';
 import DateSelect from './Components/DateSelector';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
+import ToggleBtn from './Components/ToggleBtn';
 import {
   DailyLimitType,
   schedulingSettingType,
@@ -64,6 +65,7 @@ function SchedulingSettings({
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
+  const [isTimeZone, setIsTimeZone] = useState(true);
 
   const handleSelectWeeklyType = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
@@ -216,11 +218,29 @@ function SchedulingSettings({
           //   <ToggleBtn isActive={isTimeZone} handleCheck={handleCheck} />
           // }
           slotTimeZoneInput={
-            <Stack spacing={'20px'} width={420}>
+            <Stack spacing={'10px'} width={420}>
+              <Stack alignItems={'center'} direction={'row'}>
+                <ToggleBtn
+                  handleCheck={(e) => {
+                    setIsTimeZone(e);
+                  }}
+                  isActive={isTimeZone}
+                />
+                <Typography fontSize={'14px'} variant='caption'>
+                  Get timezone automatically
+                </Typography>
+              </Stack>
+
               <Autocomplete
                 disableClearable
                 options={timeZones}
-                value={selectedTimeZone}
+                value={
+                  isTimeZone
+                    ? timeZones.filter((item) =>
+                        item.label.includes(dayjs.tz.guess())
+                      )[0] || selectedTimeZone
+                    : selectedTimeZone
+                }
                 onChange={(event, value) => {
                   if (value) {
                     setSelectedTimeZone(value);

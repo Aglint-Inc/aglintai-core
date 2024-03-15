@@ -62,5 +62,6 @@ export const allowedPaths = new Set([
   '/api/scheduling/v2/find_availability',
   '/api/scheduling/fetchdbusers',
   '/api/scheduling/v2/book_schedule_plan',
+  '/api/invite_user',
   ...cronPaths
 ]);

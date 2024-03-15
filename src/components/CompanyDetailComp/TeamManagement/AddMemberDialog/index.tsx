@@ -159,9 +159,9 @@ const AddMember = ({
         });
       } else {
         toast.error('User allready exists');
-        setIsDisable(false);
       }
     }
+    setIsDisable(false);
   };
 
   return (
