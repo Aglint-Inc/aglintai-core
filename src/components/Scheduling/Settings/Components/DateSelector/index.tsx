@@ -1,43 +1,43 @@
 import { Stack } from '@mui/material';
-import { DateCalendar } from '@mui/x-date-pickers';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 function DateSelect({
   getDate,
   dateRef,
-  selectedDates,
+  selectedDates
 }: {
   getDate: any;
   dateRef: any;
   selectedDates: any[];
 }) {
-  var today = new Date();
   return (
     <Stack
       sx={{
         '& .MuiDayCalendar-weekContainer .Mui-disabled': {
           bgcolor: '#f56600aa',
           content: '"✦"',
-          color: '#000',
+          color: '#000'
         },
         '& .MuiDayCalendar-weekContainer .Mui-disabled:after': {
           content: '"✦"',
           color: '#f56600',
-          fontSize: '10px',
-        },
+          fontSize: '10px'
+        }
       }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar
-          // sx={calenderStyles}
-          minDate={dayjs(`1-1-${dayjs(today).year()}`)}
-          maxDate={dayjs(`12-31-${dayjs(today).year()}`)}
-          defaultValue={dayjs(today)}
-          onChange={getDate}
+        <DesktopDatePicker
+          minDate={dayjs(`1-1-${dayjs().year()}`)}
+          maxDate={dayjs(`12-31-${dayjs().year()}`)}
+          format='MM/DD/YYYY'
           ref={dateRef}
+          onChange={getDate}
           shouldDisableDate={(date) => {
-            return selectedDates.includes(dayjs(date).format('DD MMM YYYY'));
+            return selectedDates
+              .map((item) => item.date)
+              .includes(dayjs(date).format('DD MMM YYYY'));
           }}
         />
       </LocalizationProvider>

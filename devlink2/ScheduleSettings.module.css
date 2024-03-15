@@ -172,6 +172,10 @@
   z-index: 2;
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.sticky_2 {
   position: sticky;
   top: 0px;
@@ -420,11 +424,14 @@
 .days_off_wrap {
   display: flex;
   width: 100%;
-  max-width: 240px;
+  max-width: 500px;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .days_off_empty {
+  width: 240px;
   padding: 20px;
   border-radius: 10px;
   background-color: #f7f9fb;

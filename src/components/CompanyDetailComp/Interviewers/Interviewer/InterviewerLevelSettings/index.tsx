@@ -33,6 +33,7 @@ import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTi
 import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
 import {
   DailyLimitType,
+  holidayType,
   schedulingSettingType,
   WeeklyLimitType
 } from '@/src/components/Scheduling/Settings/types';
@@ -59,7 +60,7 @@ function InterviewerLevelSettings({
     });
 
   const [workingHours, setWorkingHours] = useState([]);
-  const [daysOff, setDaysOff] = useState([]);
+  const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [freeKeyWords, setFreeKeywords] = useState([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
@@ -121,14 +122,14 @@ function InterviewerLevelSettings({
 
   function getDate(e: any) {
     const selectedDate = dayjs(e).format('DD MMM YYYY');
-    setDaysOff((pre) => [...pre, selectedDate]);
+    setDaysOff((pre) => [...pre, { date: selectedDate } as holidayType]);
     handleClose();
     dateRef.current.value = String(new Date(e.$d));
   }
 
   function removeDayOff(value: string) {
     setDaysOff((pre) => {
-      const filtered = pre.filter((item) => item !== value);
+      const filtered = pre.filter((item) => item.date !== value);
       return [...filtered];
     });
   }
@@ -418,10 +419,10 @@ function InterviewerLevelSettings({
                     return (
                       <DayOff
                         onClickRemove={{
-                          onClick: () => removeDayOff(item)
+                          onClick: () => removeDayOff(item.date)
                         }}
                         key={i}
-                        textDate={item}
+                        textDate={item.date}
                       />
                     );
                   })}

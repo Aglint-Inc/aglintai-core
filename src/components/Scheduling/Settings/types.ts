@@ -10,13 +10,16 @@ export type schedulingSettingType = {
     weeklyLimit: WeeklyLimitType;
   };
   workingHours: WorkingDaysType[];
-  totalDaysOff: any[];
+  totalDaysOff: holidayType[];
   schedulingKeyWords: {
     free: any[];
     SoftConflicts: any[];
   };
 };
-
+export type holidayType = {
+  date: string;
+  event_name: string;
+};
 export type DailyLimitType = {
   value: number | null;
   type: string | null;
