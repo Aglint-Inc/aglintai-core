@@ -184,12 +184,12 @@ const AssessmentEditor = ({
   skeletonCount: number;
 }) => {
   const { job } = useCurrentJob();
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const [value, setValue] = useState(job[payload]);
   const initialRef = useRef(true);
   const handleUpdate = useCallback(
     async (message: string) => {
-      await handleJobUpdate(job.id, { [payload]: message });
+      await handleJobAsyncUpdate(job.id, { [payload]: message });
     },
     [job.id]
   );
@@ -403,7 +403,7 @@ const AssessmentPreview = () => {
       data: { jobAssessments }
     }
   } = useJobDetails();
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const { job_id } = useCurrentJob();
   const handlePreview = () => {
     window.open(
@@ -416,7 +416,7 @@ const AssessmentPreview = () => {
   const handleDisable = async () => {
     if (!disable) {
       setDisable(true);
-      await handleJobUpdate(job_id, { assessment: false });
+      await handleJobAsyncUpdate(job_id, { assessment: false });
       setDisable(false);
     }
   };

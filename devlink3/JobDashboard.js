@@ -29,6 +29,8 @@ export function JobDashboard({
   slotSkillGraphBlock,
   slotExperienceGraph,
   slotCardWithNumber,
+  isBanner = false,
+  slotBanner,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jobdashboard")} tag="div">
@@ -40,6 +42,9 @@ export function JobDashboard({
           className={_utils.cx(_styles, "jd_titleblock")}
           tag="div"
         >
+          {isBanner ? (
+            <_Builtin.Block tag="div">{slotBanner}</_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "score_settings_top")}
             tag="div"
@@ -238,6 +243,10 @@ export function JobDashboard({
                   >
                     <_Builtin.Block
                       className={_utils.cx(_styles, "card_date")}
+                      id={_utils.cx(
+                        _styles,
+                        "w-node-b4b01c05-acf7-c8a1-f084-f563d54c5fb1-06b69083"
+                      )}
                       tag="div"
                     >
                       <_Builtin.Block
@@ -522,10 +531,10 @@ export function JobDashboard({
             <>
               <ModuleCard textName="Profile Score" />
               <ModuleCard textName="Interview Plan" />
-              <ModuleCard textName="Assessment" isError={false} />
+              <ModuleCard textName="Assessment" isWarning={false} />
               <ModuleCard textName="Screening" />
               <ModuleCard textName="Templates" />
-              <ModuleCard textName="Workflows" isError={false} />
+              <ModuleCard textName="Workflows" isWarning={false} />
             </>
           )}
         </_Builtin.Grid>

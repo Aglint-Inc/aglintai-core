@@ -14,7 +14,7 @@ import UISelect from '../Common/Uiselect';
 import UITextField from '../Common/UITextField';
 
 export type Form = {
-  [id in keyof Omit<JobCreate, 'jd_json'>]: {
+  [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
     value: JobCreate[id];
     error: {
       value: boolean;

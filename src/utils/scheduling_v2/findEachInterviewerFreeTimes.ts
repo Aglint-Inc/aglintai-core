@@ -8,6 +8,8 @@ dayjs.extend(timezone);
 
 import { cloneDeep } from 'lodash';
 
+import { holidayType } from '@/src/components/Scheduling/Settings/types';
+
 import {
   CompServiceKeyCred,
   InterDetailsType,
@@ -124,8 +126,8 @@ const findInterviewerFreeTime = (
   const findFreeTimeForTheDay = (current_day: Dayjs): TimeDurationType[] => {
     //is current day holiday
     if (
-      interviewer.shedule_settings.totalDaysOff.find((holiday: string) =>
-        current_day.isSame(dayjs(holiday, 'DD MMM YYYY'), 'date')
+      interviewer.shedule_settings.totalDaysOff.find((holiday: holidayType) =>
+        current_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date')
       )
     ) {
       return [];

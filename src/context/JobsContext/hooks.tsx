@@ -17,7 +17,7 @@ const useJobActions = () => {
   const { recruiter } = useAuthDetails();
 
   const jobs = useJobRead();
-  const { mutateAsync: jobAsyncUpdate } = useJobUpdate();
+  const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
   const { mutateAsync: jobCreate } = useJobCreate();
   const { mutate: jobUIUpdate } = useJobUIUpdate();
   const { mutate: jobDelete } = useJobDelete();
@@ -69,6 +69,19 @@ const useJobActions = () => {
     newJob: Partial<JobTypeDashboard>
   ) => {
     if (recruiter) {
+      jobUpdate({
+        id: jobId,
+        ...newJob,
+        recruiter_id: recruiter.id
+      });
+    }
+  };
+
+  const handleJobAsyncUpdate = async (
+    jobId: string,
+    newJob: Partial<JobTypeDashboard>
+  ) => {
+    if (recruiter) {
       try {
         return await jobAsyncUpdate({
           id: jobId,
@@ -100,8 +113,8 @@ const useJobActions = () => {
   };
 
   const experimental_handleGenerateJd = async (jobId: string) => {
-    await handleGenerateJd(jobId);
-    handleJobRefresh(jobId);
+    const response = await handleGenerateJd(jobId);
+    if (response.data === 'started') handleJobRefresh(jobId);
   };
 
   const handleGetJob = (jobId: string) => {
@@ -113,6 +126,7 @@ const useJobActions = () => {
     jobsData,
     handleJobRead,
     handleJobCreate,
+    handleJobAsyncUpdate,
     handleJobUpdate,
     handleUIJobUpdate,
     handleJobDelete,
@@ -129,7 +143,5 @@ const useJobActions = () => {
 export default useJobActions;
 
 const handleGenerateJd = async (job_id: string) => {
-  const response = await handleJobApi('profileScore', { job_id });
-  // eslint-disable-next-line no-console
-  console.log(response);
+  return await handleJobApi('profileScore', { job_id });
 };

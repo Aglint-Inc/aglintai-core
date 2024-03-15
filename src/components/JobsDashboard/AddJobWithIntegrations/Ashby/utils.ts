@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { JobInsert } from '@/src/queries/job/types';
 import {
   GreenhouseRefDbType,
@@ -87,6 +88,7 @@ export const createJobObject = async (
         workplace_type: 'on site',
         company: recruiter.name
       },
+      description_hash: hashCode(post?.description ?? ''),
       location: post.location,
       job_title: post.title,
       recruiter_id: recruiter.id,

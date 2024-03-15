@@ -115,6 +115,16 @@
   width: 23px;
 }
 
+.errorr_warning-copy {
+  position: absolute;
+  left: auto;
+  top: -9px;
+  right: -10px;
+  bottom: auto;
+
+  padding: 0px;
+}
+
 .slot_enable_disable {
   display: flex;
   width: 100%;

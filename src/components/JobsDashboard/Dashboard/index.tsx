@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Popover, Stack } from '@mui/material';
+import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 // import posthog from 'posthog-js';
@@ -17,6 +17,7 @@ import {
 import { Breadcrum, PageLayout } from '@/devlink2';
 import {
   DarkPill,
+  DashboardAlert,
   EnableDisable,
   GraphBlock,
   JobDashboard as JobDashboardDev,
@@ -28,6 +29,7 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
+import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/job/types';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -88,10 +90,11 @@ const Dashboard = () => {
   const {
     job,
     matches: { data: counts },
+    publishable,
     draftValidity
   } = useJobDetails();
   const { push } = useRouter();
-  const { handleJobUpdate, handleJobDelete, handleJobPublish } = useJobs();
+  const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
 
   const score_matches = getMatches(counts);
 
@@ -99,7 +102,7 @@ const Dashboard = () => {
   const [popover, setPopover] = useState(false);
 
   const handleCloseJob = useCallback(async () => {
-    return await handleJobUpdate(job.id, { status: 'closed' });
+    return await handleJobAsyncUpdate(job.id, { status: 'closed' });
   }, [job.id]);
   const handleDeleteJob = useCallback(() => {
     push(`${pageRoutes.JOBS}?status=${job?.status ?? 'all'}`);
@@ -124,7 +127,7 @@ const Dashboard = () => {
   }, [job.status]);
 
   const handlePublish = async () => {
-    if (draftValidity) {
+    if (publishable) {
       return await handleJobPublish(job);
     }
     toast.error('Unable to publish. Please check job details.');
@@ -139,6 +142,8 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
+            isBanner={!draftValidity}
+            slotBanner={<Banners />}
             textTopMatchPercentage={score_matches.topMatch.percentage}
             textTopMatchCount={score_matches.topMatch.count}
             textGoodMatchPercentage={score_matches.goodMatch.percentage}
@@ -293,6 +298,10 @@ const Pipeline = () => {
   );
 };
 
+const Banners = () => {
+  return <DashboardAlert />;
+};
+
 const JobClose = ({
   popover,
   onClose,
@@ -375,7 +384,7 @@ const Modules = () => {
     <>
       <InterviewModule />
       <AssessmentModule />
-      {/* <ProfileScoreModule /> */}
+      <ProfileScoreModule />
       <ScreeningModule />
     </>
   );
@@ -525,9 +534,8 @@ const InterviewModule = () => {
   );
 };
 
-// eslint-disable-next-line no-unused-vars
 const ProfileScoreModule = () => {
-  const { job } = useJobDetails();
+  const { job, jdValidity } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);
@@ -535,10 +543,20 @@ const ProfileScoreModule = () => {
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}
-      isError={true}
+      isWarning={!jdValidity}
       textName={'Profile Score'}
       slotIcon={<ProfileScoreIcon />}
-      slotEnableDisable={<></>}
+      slotEnableDisable={
+        <>
+          {job?.scoring_param_status === 'loading' && (
+            <CircularProgress
+              color='inherit'
+              size={'15px'}
+              sx={{ color: palette.grey[400] }}
+            />
+          )}
+        </>
+      }
     />
   );
 };

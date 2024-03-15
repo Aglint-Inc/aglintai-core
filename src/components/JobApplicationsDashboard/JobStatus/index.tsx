@@ -100,13 +100,13 @@ type StatusInfo = {
 
 const CloseJob = ({ status }: { status: Status }) => {
   const { job } = useJobApplications();
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const [close, setClose] = useState(false);
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const handleJobClose = async () => {
     setLoading(true);
-    await handleJobUpdate(job.id, {
+    await handleJobAsyncUpdate(job.id, {
       active_status: {
         sourcing: {
           ...status.sourcing,
@@ -169,13 +169,13 @@ const SideDrawerContent = ({
   status: Status;
   statusInfo: StatusInfo;
 }) => {
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const { job } = useJobApplications();
   const jobId = job.id;
   const [loading, setLoading] = useState(false);
   const handleJobStatusInactive = async () => {
     setLoading(true);
-    await handleJobUpdate(jobId, {
+    await handleJobAsyncUpdate(jobId, {
       active_status: {
         ...status,
         [statusInfo.flow]: {
@@ -299,10 +299,10 @@ const JobSchedules = ({
   const [date, setDate] = useState(timeStamp.split('T')[0]);
   // const [time, setTime] = useState(timeStamp);
   const disabled = !(date /*&& time*/);
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const handleJobStatusUpdate = async () => {
     setLoading(true);
-    await handleJobUpdate(jobId, {
+    await handleJobAsyncUpdate(jobId, {
       active_status: {
         ...status,
         [flow]: {

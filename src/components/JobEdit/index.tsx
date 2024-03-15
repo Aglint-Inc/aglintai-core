@@ -165,7 +165,9 @@ const validateForms = (fields: Form) => {
   }, {} as Form);
 };
 
-type Payload = Parameters<ReturnType<typeof useJobs>['handleJobUpdate']>[1];
+type Payload = Parameters<
+  ReturnType<typeof useJobs>['handleJobAsyncUpdate']
+>[1];
 
 const JobEditForm = ({
   fields,
@@ -178,7 +180,7 @@ const JobEditForm = ({
 }) => {
   const initialRef = useRef(false);
   const { job } = useJobDetails();
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
 
   const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
     acc[key] = value;
@@ -187,7 +189,7 @@ const JobEditForm = ({
 
   const handleSave = async () => {
     setSaving(true);
-    await handleJobUpdate(job.id, { draft: { ...job.draft, ...newJob } });
+    await handleJobAsyncUpdate(job.id, { draft: { ...job.draft, ...newJob } });
     setSaving(false);
   };
 

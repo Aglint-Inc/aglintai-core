@@ -34,20 +34,24 @@ import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
 import {
   DailyLimitType,
+  holidayType,
   schedulingSettingType,
   WeeklyLimitType
 } from './types';
 import { hoursList } from './utils';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
+import AUIButton from '../../Common/AUIButton';
 import Icon from '../../Common/Icons/Icon';
 import UITextField from '../../Common/UITextField';
 let schedulingSettingObj = {};
 let changeValue = null;
+
 function SchedulingSettings({
   updateSettings,
   initialData,
   isOverflow = true
 }) {
+  const eventRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
@@ -60,7 +64,8 @@ function SchedulingSettings({
     });
 
   const [workingHours, setWorkingHours] = useState([]);
-  const [daysOff, setDaysOff] = useState([]);
+  const [daysOff, setDaysOff] = useState<holidayType[]>([]);
+  const [selectedDate, setSelectedDate] = useState('');
   const [freeKeyWords, setFreeKeywords] = useState([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
@@ -116,20 +121,19 @@ function SchedulingSettings({
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setSelectedDate('');
   };
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
   function getDate(e: any) {
-    const selectedDate = dayjs(e).format('DD MMM YYYY');
-    setDaysOff((pre) => [...pre, selectedDate]);
-    handleClose();
-    dateRef.current.value = String(new Date(e.$d));
+    setSelectedDate(dayjs(e).format('DD MMM YYYY'));
+    // dateRef.current.value = String(new Date(e.$d));
   }
 
   function removeDayOff(value: string) {
     setDaysOff((pre) => {
-      const filtered = pre.filter((item) => item !== value);
+      const filtered = pre.filter((item) => item.date !== value);
       return [...filtered];
     });
   }
@@ -152,7 +156,7 @@ function SchedulingSettings({
         ...schedulingSettingData.interviewLoad.weeklyLimit
       });
       setWorkingHours(workingHoursCopy);
-      setDaysOff([...schedulingSettingData.totalDaysOff]);
+      setDaysOff([...schedulingSettingData.totalDaysOff] as holidayType[]);
       setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
       setSoftConflictsKeyWords(
         schedulingSettingData?.schedulingKeyWords?.SoftConflicts || []
@@ -388,11 +392,13 @@ function SchedulingSettings({
               {daysOff.map((item, i) => {
                 return (
                   <DayOff
+                    isEditVisible={false}
                     onClickRemove={{
-                      onClick: () => removeDayOff(item)
+                      onClick: () => removeDayOff(item.date)
                     }}
                     key={i}
-                    textDate={item}
+                    textDate={item.date}
+                    textDaysOffName={item.event_name}
                   />
                 );
               })}
@@ -406,11 +412,44 @@ function SchedulingSettings({
                   horizontal: 'left'
                 }}
               >
-                <DateSelect
-                  selectedDates={daysOff}
-                  dateRef={dateRef}
-                  getDate={getDate}
-                />
+                <Stack width={300} gap={1} p={2}>
+                  <Stack direction={'row'} justifyContent={'space-between'}>
+                    <Typography variant='subtitle1'>Add holiday</Typography>
+                    <Stack>
+                      <IconButton onClick={handleClose}>
+                        <Icon width='12px' height='12px' variant='CloseIcon' />
+                      </IconButton>
+                    </Stack>
+                  </Stack>
+                  <Typography variant='body2'>Date</Typography>
+                  <DateSelect
+                    selectedDates={daysOff}
+                    dateRef={dateRef}
+                    getDate={getDate}
+                  />
+                  <Typography variant='body2'>Specialty</Typography>
+                  <Stack>
+                    <UITextField ref={eventRef} />
+                  </Stack>
+                  <AUIButton
+                    disabled={!selectedDate}
+                    onClick={() => {
+                      setDaysOff(
+                        (pre) =>
+                          [
+                            ...pre,
+                            {
+                              date: selectedDate,
+                              event_name: eventRef.current.value
+                            }
+                          ] as holidayType[]
+                      );
+                      handleClose();
+                    }}
+                  >
+                    Add
+                  </AUIButton>
+                </Stack>
               </Popover>
             </>
           }

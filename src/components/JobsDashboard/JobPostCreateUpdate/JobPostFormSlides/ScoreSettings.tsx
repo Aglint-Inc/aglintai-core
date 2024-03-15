@@ -226,13 +226,13 @@ ${jobForm.formFields.jobDescription}
     setPopUpEl(null);
   };
 
-  let isJdTooShort =
-    !jobForm.formFields.jobDescription ||
-    jobForm.formFields.jobDescription.split(' ').length <= 10;
-  let showRegen = false;
-  if (!isJsonLoading && !isJdTooShort) {
-    showRegen = jobForm.formFields.isjdChanged;
-  }
+  // let isJdTooShort =
+  //   !jobForm.formFields.jobDescription ||
+  //   jobForm.formFields.jobDescription.split(' ').length <= 10;
+  // let showRegen = false;
+  // if (!isJsonLoading && !isJdTooShort) {
+  //   showRegen = jobForm.formFields.isjdChanged;
+  // }
 
   return (
     <>
@@ -240,8 +240,8 @@ ${jobForm.formFields.jobDescription}
         <>
           <ScoreSetting
             // isRegenerateVisible={showRegen}
-            isRegenerateVisible={showRegen}
-            isEmptyWarningVisible={isJdTooShort}
+            // isRegenerateVisible={showRegen}
+            // isEmptyWarningVisible={isJdTooShort}
             slotScoreCardDetails={
               <>
                 {params.map((p) => {
@@ -409,17 +409,17 @@ ${jobForm.formFields.jobDescription}
                 })}
               </>
             }
-            onClickRegenerate={{
-              onClick: handleGenerate
-            }}
-            onClickDismiss={{
-              onClick: () => {
-                handleUpdateFormFields({
-                  path: 'isjdChanged',
-                  value: false
-                });
-              }
-            }}
+            // onClickRegenerate={{
+            //   onClick: handleGenerate
+            // }}
+            // onClickDismiss={{
+            //   onClick: () => {
+            //     handleUpdateFormFields({
+            //       path: 'isjdChanged',
+            //       value: false
+            //     });
+            //   }
+            // }}
           />
 
           <Popover

@@ -1,0 +1,172 @@
+.scoreskele-topm {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 18px;
+  grid-row-gap: 18px;
+}
+
+.score-card-detail-wrap-copyloader {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+}
+
+.div-block-800 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.div-block-801-copy-copy-copy {
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+  background-color: #30aabc;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
+.skills-wrap-details {
+  display: flex;
+  width: 100%;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.skills-wrapps-copy {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 28px;
+  padding: 4px 10px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 4px;
+
+  background-color: #f7f9fb;
+
+  cursor: pointer;
+}
+
+.skills-wrapps-copy.blue-100 {
+  background-color: #edf7ff;
+}
+
+.skills-wrapps-copy._20 {
+  width: 20%;
+}
+
+.skills-wrapps-copy._30 {
+  width: 30%;
+}
+
+.skills-wrapps-copy._40 {
+  width: 40%;
+}
+
+.skills-wrapps-copy._60 {
+  width: 60%;
+}
+
+.skills-wrapps-copy._80 {
+  width: 80%;
+}
+
+.skills-wrapps-copy._90 {
+  width: 90%;
+}
+
+.div-block-701 {
+  margin-top: 15px;
+}
+
+.add-button-wrap-copy {
+  position: relative;
+
+  display: flex;
+  overflow: hidden;
+  width: 134.125px;
+  height: 20px;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.div-block-801-copy-copy {
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+  background-color: #5d7df5;
+}
+
+.div-block-801-copy {
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+  background-color: #886bd8;
+}

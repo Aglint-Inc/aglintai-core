@@ -17,6 +17,7 @@ const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
   pageRoutes.JOBDASHBOARD,
   pageRoutes.CREATEJOB,
   pageRoutes.EDITJOB,
+  pageRoutes.PROFILESCORE,
   pageRoutes.SCHEDULINGINTERVIEWER
 ];
 

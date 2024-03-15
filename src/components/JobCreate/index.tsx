@@ -10,6 +10,7 @@ import {
   EditJobTopbarLeft
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -114,7 +115,11 @@ const JobCreateForm = ({
         return acc;
       }, {} as Payload);
       setModal(true);
-      const { id } = await handleJobCreate(newJob);
+
+      const { id } = await handleJobCreate({
+        ...newJob,
+        description_hash: hashCode(newJob.description)
+      });
       push(`${pageRoutes.JOBS}/${id}`);
     } else {
       setFields(newFields);

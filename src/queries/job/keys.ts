@@ -5,5 +5,8 @@ export const jobQueryKeys = {
   }),
   job: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobQueryKeys.jobs().queryKey, { job_id }]
+  }),
+  scoring_param: ({ job_id }: { job_id: string }) => ({
+    queryKey: [...jobQueryKeys.jobs().queryKey, { job_id }, 'scoring_param']
   })
 } as const;
