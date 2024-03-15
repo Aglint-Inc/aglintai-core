@@ -50,10 +50,10 @@ const Combination = () => {
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
-          job_id: '6781035e-47ac-486f-baff-ccb121fce8c2',
+          job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
           company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
           start_date: '2024-03-18T14:59:55.247Z',
-          end_date: '2024-03-21T14:59:55.247Z'
+          end_date: '2024-03-25T14:59:55.247Z'
         }
       );
       setData(r);
@@ -299,10 +299,14 @@ const FreeTime = () => {
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
-          job_id: '6781035e-47ac-486f-baff-ccb121fce8c2',
+          // job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
+          // company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
+          // start_date: dateRange.start_date,
+          // end_date: dateRange.end_date
+          job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
           company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
-          start_date: dateRange.start_date,
-          end_date: dateRange.end_date
+          start_date: '2024-03-18T14:59:55.247Z',
+          end_date: '2024-03-25T14:59:55.247Z'
         }
       );
       set2Data(r);
@@ -370,6 +374,9 @@ const FreeTime = () => {
                     if (showLocalTime) {
                       d1 = d1.tz(localTimeZone);
                       d2 = d2.tz(localTimeZone);
+                    } else {
+                      d1 = d1.tz(i.shedule_settings.timeZone.tzCode);
+                      d2 = d2.tz(i.shedule_settings.timeZone.tzCode);
                     }
                     return (
                       <p key={idx}>

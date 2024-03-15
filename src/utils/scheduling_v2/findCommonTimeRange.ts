@@ -1,7 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 import { cloneDeep } from 'lodash';
 
@@ -24,8 +26,8 @@ export const findCommonTimeRange = (
   ints_meta: FuncParams
 ): TimeDurationType[] => {
   const inters = subtractpauseTimeFromFreeTimeRange(ints_meta);
-  if (inters.find((i) => i.time_ranges.length === 0)) return [];
 
+  if (inters.find((i) => i.time_ranges.length === 0)) return [];
   const int_sorted_range: DayjsTimeRange[] = inters.map((i) => ({
     inter_id: i.inter_id,
     time_ranges: i.time_ranges
@@ -47,13 +49,49 @@ export const findCommonTimeRange = (
     let j = 0,
       k = 0;
     while (j < curr_intersection.length && k < current_time_ranges.length) {
-      // disjoint case 1
+      if (
+        curr_intersection[j].startTime.isSameOrBefore(
+          current_time_ranges[k].startTime,
+          'minutes'
+        ) &&
+        curr_intersection[j].endTime.isSameOrAfter(
+          current_time_ranges[k].endTime,
+          'minutes'
+        )
+      ) {
+        new_intersection.push({
+          startTime: current_time_ranges[k].startTime,
+          endTime: current_time_ranges[k].endTime
+        });
+        k++;
+        continue;
+      }
+
+      if (
+        current_time_ranges[k].startTime.isSameOrBefore(
+          curr_intersection[j].startTime,
+          'minutes'
+        ) &&
+        current_time_ranges[k].endTime.isSameOrAfter(
+          curr_intersection[j].endTime,
+          'minutes'
+        )
+      ) {
+        new_intersection.push({
+          startTime: curr_intersection[j].startTime,
+          endTime: curr_intersection[j].endTime
+        });
+        j++;
+        continue;
+      }
+
       if (
         current_time_ranges[k].endTime.isSameOrBefore(
           curr_intersection[j].startTime,
           'minutes'
         )
       ) {
+        // disjoint case 1
         k++;
       }
       // disjoint case 2
@@ -105,6 +143,7 @@ export const findCommonTimeRange = (
         // console.log('fnkewjjkfewnkj');
       }
     }
+
     curr_intersection = [...new_intersection];
   }
 
