@@ -74,7 +74,6 @@ function Interviewer({
         dayjs(interview.end_time).isSame(thisWeekStart, 'day')
     ).length;
   }
-
   return (
     <>
       <Drawer
@@ -158,8 +157,10 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                              ? `Till ${dayjs(pause_json.end_date).format('DD MMMM YYYY')}`
-                              : '--'
+                            ? `Till ${dayjs(pause_json.end_date).format(
+                                'DD MMMM YYYY'
+                              )}`
+                            : '--'
                           : ''
                       }
                       onClickPauseInterview={{
@@ -226,8 +227,10 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                              ? `Till ${dayjs(pause_json.end_date).format('DD MMMM YYYY')}`
-                              : '--'
+                            ? `Till ${dayjs(pause_json.end_date).format(
+                                'DD MMMM YYYY'
+                              )}`
+                            : '--'
                           : ''
                       }
                       onClickPauseInterview={{

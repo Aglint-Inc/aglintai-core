@@ -6,8 +6,11 @@ import {
   InterviewPlanScheduleDbType
 } from '@/src/components/JobInterviewPlan/types';
 
-import { calcIntervCombsForModule, ModuleCombination } from './func_2';
-import { findCommonTimeRange } from './func_3';
+import {
+  calcIntervCombsForModule,
+  ModuleCombination
+} from './calcIntervCombsForModule';
+import { findCommonTimeRange } from './findCommonTimeRange';
 import { InterDetailsType, IntervCntApp, TimeDurationType } from './types';
 
 export const findPlanCombinations = (

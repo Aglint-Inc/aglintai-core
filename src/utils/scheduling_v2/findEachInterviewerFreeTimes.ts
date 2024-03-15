@@ -1,11 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat'; // Import plugin for localized formats
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.extend(localizedFormat);
+// dayjs.extend(localizedFormat);
 
 import { cloneDeep } from 'lodash';
 
@@ -23,6 +22,7 @@ import {
 } from './utils';
 import { NewCalenderEvent } from '../schedule-utils/types';
 
+// returns users calender events on there timezone ,given respective start_date and end_date
 export const findInterviewersEvents = async (
   company_cred: CompServiceKeyCred,
   ints_meta: IntervMeta[],
@@ -30,14 +30,15 @@ export const findInterviewersEvents = async (
   end_date: string
 ) => {
   const promiseArr = ints_meta.map(async (int) => {
-    const inter_start_time = dayjs(start_date)
-      .tz(int.shedule_settings.timeZone.tzCode)
-      .startOf('day')
-      .toISOString();
-    const inter_end_time = dayjs(end_date)
-      .tz(int.shedule_settings.timeZone.tzCode)
-      .endOf('day')
-      .toISOString();
+    const userTimeZone = int.shedule_settings.timeZone.tzCode;
+
+    const inter_start_time = getUserTimeZoneDate(
+      start_date,
+      userTimeZone,
+      true
+    );
+    const inter_end_time = getUserTimeZoneDate(end_date, userTimeZone, false);
+
     let newInt: InterDetailsType = {
       ...int,
       events: [],
@@ -79,7 +80,7 @@ export const findInterviewersEvents = async (
   return intervs_details_with_events;
 };
 
-// each interviewer free times
+// returns users free time ranges on there timezone, given respective start_date and end_date
 export const findEachInterviewerFreeTimes = async (
   company_cred: CompServiceKeyCred,
   ints_meta: IntervMeta[],
@@ -97,6 +98,14 @@ export const findEachInterviewerFreeTimes = async (
     if (!interv.isCalenderConnected) {
       interv.freeTimes = [];
     } else {
+      // const userTimeZone = interv.shedule_settings.timeZone.tzCode;
+
+      // const user_start_date = getUserTimeZoneDate(
+      //   start_date,
+      //   userTimeZone,
+      //   true
+      // );
+      // const user_end_date = getUserTimeZoneDate(end_date, userTimeZone, false);
       interv.freeTimes = findInterviewerFreeTime(
         interv,
         dayjs(start_date),
@@ -148,7 +157,6 @@ const findInterviewerFreeTime = (
     ];
 
     let day_free_times: TimeDurationType[] = [];
-
     day_free_times = minusEventsTimeInWorkHours(
       work_time_duration,
       interviewer.events.filter((cal_event) => {
@@ -168,18 +176,16 @@ const findInterviewerFreeTime = (
     free_times = [...free_times, ...curr_day_free_times];
     current_date = current_date.add(1, 'day');
   }
-
   return free_times;
 };
+
 const chageTimeInDay = (current_day: Dayjs, time: string, timeZone: string) => {
   const [hours, minutes] = time.split(':');
-  const new_time = current_day
-    .hour(Number(hours))
-    .minute(Number(minutes))
-    .tz(timeZone)
-    .toISOString();
+  let userTime = current_day.tz(timeZone);
+  userTime = userTime.set('hour', Number(hours));
+  userTime = userTime.set('minutes', Number(minutes));
 
-  return new_time;
+  return userTime.format();
 };
 
 const minusEventsTimeInWorkHours = (
@@ -187,7 +193,6 @@ const minusEventsTimeInWorkHours = (
   calend_events: NewCalenderEvent[]
 ): TimeDurationType[] => {
   const work_hours = cloneDeep(work_hours_range);
-
   if (calend_events.length === 0) {
     return work_hours;
   }
@@ -252,4 +257,17 @@ const minusEventsTimeInWorkHours = (
     }
   }
   return free_times;
+};
+
+const getUserTimeZoneDate = (user_date, userTimeZone, isStartTime = true) => {
+  const d1 = dayjs(user_date);
+  let d: Dayjs;
+
+  d = d1.tz(userTimeZone);
+  if (isStartTime) {
+    d = d.startOf('day');
+  } else {
+    d = d.endOf('day');
+  }
+  return d.format();
 };

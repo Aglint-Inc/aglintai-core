@@ -8,8 +8,9 @@ dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { fetchAvailApiDetails } from '@/src/utils/scheduling_v2/db_calls';
-import { findEachInterviewerFreeTimes } from '@/src/utils/scheduling_v2/func_1';
-import { findPlanCombinations } from '@/src/utils/scheduling_v2/func_4';
+// import { findCommonTimeRange } from '@/src/utils/scheduling_v2/findCommonTimeRange';
+import { findEachInterviewerFreeTimes } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
+import { findPlanCombinations } from '@/src/utils/scheduling_v2/findPlanCombinations';
 
 type BodyParams = {
   job_id: string;
@@ -27,7 +28,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         job_id,
         recruiter_id: company_id
       });
-
     const inters_with_free_time_ranges = await findEachInterviewerFreeTimes(
       company_cred,
       interviewers_info,
@@ -40,9 +40,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       inters_with_free_time_ranges
     );
 
-    res.status(200).json(combs);
+    return res.status(200).json(combs);
+
+    // const common_free_time = findCommonTimeRange(
+    //   inters_with_free_time_ranges.map((i) => ({
+    //     inter_id: i.interviewer_id,
+    //     time_ranges: i.freeTimes,
+    //     interviewer_pause: null
+    //   }))
+    // );
+
+    // return res
+    //   .status(200)
+    //   .json({ d1: inters_with_free_time_ranges, d2: common_free_time });
   } catch (error) {
-    res.status(500).send(error.message);
+    return res.status(500).send(error.message);
   }
 };
 

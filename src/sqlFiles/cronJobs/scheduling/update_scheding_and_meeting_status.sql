@@ -18,7 +18,7 @@ BEGIN
             -- If all meetings have ended, update status in interview_schedule
             UPDATE interview_schedule
             SET status = 'completed'
-            WHERE id = schedule_id_var AND status <> 'completed'; -- Update only if status is not already 'Completed'
+            WHERE id = schedule_id_var AND status <> 'completed'AND status <> 'cancelled'; -- Update only if status is not already 'Completed'
         END IF;
     END LOOP;
 END;
@@ -41,7 +41,7 @@ BEGIN
     -- Loop through each row in interview_schedule
     UPDATE interview_meeting
     SET status = 'completed'
-    WHERE to_timestamp(end_time, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') > NOW();
+    WHERE to_timestamp(end_time, 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') > NOW() AND status <> 'completed'AND status <> 'cancelled';
 END;
 $$
 LANGUAGE plpgsql;
