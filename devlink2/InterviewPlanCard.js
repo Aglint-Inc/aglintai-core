@@ -10,6 +10,10 @@ export function InterviewPlanCard({
   slotMemberList,
   isMemberFromVisible = true,
   textMemberFrom = "One Member from :",
+  isShadowMemberVisible = true,
+  isReverseShadowVisible = true,
+  slotShadowMember,
+  slotReverseShadowmember,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1098")} tag="div">
@@ -45,6 +49,34 @@ export function InterviewPlanCard({
       >
         {slotMemberList}
       </_Builtin.Block>
+      {isShadowMemberVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1230")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-first-cap")}
+            tag="div"
+          >
+            {"Shadow Member:"}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotShadowMember}</_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
+      {isReverseShadowVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1230")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-first-cap")}
+            tag="div"
+          >
+            {"Reverse Shadow Member:"}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotReverseShadowmember}</_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

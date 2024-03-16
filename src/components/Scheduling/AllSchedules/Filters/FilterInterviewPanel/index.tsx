@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {
   FilterType,
@@ -16,7 +15,7 @@ function FilterInterviewPanel() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const { allModules } = useSchedulingContext();
+  const allModules = [];
   const filter = useInterviewSchedulingStore((state) => state.filter);
 
   const filterVisible = useInterviewSchedulingStore(

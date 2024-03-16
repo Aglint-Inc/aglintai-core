@@ -77,12 +77,20 @@ function NotScheduledApplication() {
         end_date: dateRange.end_date
       });
       if (res.data) {
-        setSchedulingOptions(
-          res.data.map((option) => {
-            return { ...option, transformedPlan: transformData(option.plans) };
-          })
-        );
-        setStep(2);
+        if (res.data.length === 0) {
+          toast.warning('No schedule options found for the given date range');
+          setStep(1);
+        } else {
+          setSchedulingOptions(
+            res.data.map((option) => {
+              return {
+                ...option,
+                transformedPlan: transformData(option.plans)
+              };
+            })
+          );
+          setStep(2);
+        }
         setFetchingPlan(false);
       } else {
         setStep(1);

@@ -12,7 +12,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { TransformSchedule } from '..';
+import { TransformSchedule } from '../../types';
 import { getColorStatusSchedule } from '../../utils';
 import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../../AllSchedules/utils';
@@ -33,18 +33,22 @@ function ModuleSchedules({
   const router = useRouter();
 
   const filterSchedules = () => {
+    const filSch = schedules.filter((sch) => sch.schedule.status !== 'pending');
     if (filter === 'all') {
-      return schedules;
+      return filSch;
     } else if (filter === 'upcoming') {
-      return schedules.filter(
+      return filSch.filter(
         (sch) => sch.interview_meeting.start_time > new Date().toISOString()
       );
     } else if (filter === 'cancelled') {
-      return schedules.filter((sch) => sch.schedule.status === 'cancelled');
+      return filSch.filter((sch) => sch.schedule.status === 'cancelled');
     } else if (filter === 'completed') {
-      return schedules.filter((sch) => sch.schedule.status === 'completed');
+      return filSch.filter(
+        (sch) => sch.interview_meeting.status === 'completed'
+      );
     }
   };
+
   return (
     <InterviewMemberSide
       isAllActive={filter === 'all'}
@@ -115,7 +119,7 @@ function ScheduleCard({ sch }) {
       textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
       textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
       textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
-      textStatus={sch.schedule.status}
+      textStatus={sch.interview_meeting.status ?? ''}
       textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${sch.interview_meeting.duration} Minutes )`}
       textMeetingPlatform={getScheduleType(sch.schedule.schedule_type)}
       slotMeetingIcon={<IconScheduleType type={sch.schedule.schedule_type} />}

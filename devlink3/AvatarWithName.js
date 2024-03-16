@@ -7,6 +7,8 @@ export function AvatarWithName({
   as: _Component = _Builtin.Block,
   isReverseShadowVisible = false,
   isShadowVisible = false,
+  slotAvatar,
+  textName = "Mike",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "avatarwithname")} tag="div">
@@ -14,7 +16,9 @@ export function AvatarWithName({
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_useravatr", "small")}
           tag="div"
-        />
+        >
+          {slotAvatar}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-758")}
           tag="div"
@@ -33,7 +37,7 @@ export function AvatarWithName({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{"Mike"}</_Builtin.Block>
+      <_Builtin.Block tag="div">{textName}</_Builtin.Block>
     </_Component>
   );
 }

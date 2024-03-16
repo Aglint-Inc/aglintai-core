@@ -28,6 +28,9 @@ export const setIsDeleteMemberDialogOpen = (
   isDeleteMemberDialogOpen: boolean
 ) => useSchedulingStore.setState({ isDeleteMemberDialogOpen });
 
+export const setIsProgressDialaogOpen = (isProgressDialaogOpen: boolean) =>
+  useSchedulingStore.setState({ isProgressDialaogOpen });
+
 export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
   useSchedulingStore.setState({ isAddMemberDialogOpen });
 

@@ -16,8 +16,11 @@ import { MoreButton } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { InterviewMeetingTypeDb } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
+import {
+  InterviewMeetingTypeDb,
+  InterviewMeetingUserTypeDb,
+  InterviewScheduleTypeDB
+} from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
@@ -29,7 +32,9 @@ import DeleteModuleDialog from './DeleteModuleDialog';
 import ModuleSchedules from './ModuleSchedules';
 import ModuleSettingDrawer from './ModuleSettingDrawer';
 import PauseDialog from './PauseDialog';
+import ProgressDrawer from './ProgressDrawer';
 import ResumeMemberDialog from './ResumeMemberDialog';
+import { useAllSchedulesByModuleId } from '../queries/hooks';
 import {
   setEditModule,
   setIsAddMemberDialogOpen,
@@ -37,36 +42,31 @@ import {
   setIsDeleteModuleDialogOpen,
   setIsModuleSettingsDialogOpen,
   setIsPauseDialogOpen,
+  setIsProgressDialaogOpen,
   setIsResumeDialogOpen,
   setSelUser,
   setTrainingStatus,
   useSchedulingStore
 } from '../store';
-import { ScheduleType } from '../types';
+import { MemberType } from '../types';
 
-export type TransformSchedule = ScheduleType & {
+export type ProgressType = InterviewMeetingUserTypeDb & {
   interview_meeting: InterviewMeetingTypeDb & {
-    meeting_json: {
-      hangoutLink: string;
-    };
+    interview_schedule: InterviewScheduleTypeDB;
   };
-  users: {
-    id: string;
-    created_at: string;
-    interviewer_id: string;
-    interviewer_type: Database['public']['Enums']['interviewer_type'];
-    first_name: string;
-    last_name: string;
-    email: string;
-    profile_image: string;
-  }[];
 };
 
 function ModuleMembersComp() {
   const router = useRouter();
   const editModule = useSchedulingStore((state) => state.editModule);
-  const [schedules, setSchedules] = useState<TransformSchedule[]>([]);
-  const [fetchingModules, setFetchingModules] = useState(true);
+  const [progress, setProgress] = useState<ProgressType[]>([]);
+  const [progressUser, setProgressUser] = useState<{
+    user: MemberType;
+    progress: ProgressType[];
+  } | null>({
+    user: null,
+    progress: []
+  });
   const allUsers = useSchedulingStore(
     useShallow((state) => state.editModule.relations)
   );
@@ -78,22 +78,32 @@ function ModuleMembersComp() {
     (user) => user.training_status === 'qualified'
   );
 
-  useEffect(() => {
-    if (editModule?.id) {
-      fetchModules();
-    }
-    return () => {
-      setSchedules([]);
-      setFetchingModules(true);
-    };
-  }, [editModule?.id]);
+  const { data: schedules, isLoading: schedulesLoading } =
+    useAllSchedulesByModuleId();
 
-  const fetchModules = async () => {
-    const { data } = await supabase.rpc('get_interview_schedule_by_module_id', {
-      target_module_id: editModule.id
-    });
-    setSchedules(data as unknown as TransformSchedule[]);
-    setFetchingModules(false);
+  useEffect(() => {
+    if (editModule.id) {
+      fetchProgress();
+    }
+  }, [editModule.id]);
+
+  const fetchProgress = async () => {
+    const trainer_ids = allUsers
+      .filter((user) => user.training_status === 'training')
+      .map((user) => {
+        return user.user_id;
+      });
+
+    const { data, error } = await supabase
+      .from('interview_meeting_user')
+      .select('*,interview_meeting(*,interview_schedule(*))')
+      .eq('interview_meeting.module_id', editModule.id)
+      .in('interviewer_id', trainer_ids);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    setProgress(data);
   };
 
   const moveToQualified = async (user_id: string) => {
@@ -122,6 +132,7 @@ function ModuleMembersComp() {
       <PauseDialog />
       <DeleteModuleDialog />
       <ResumeMemberDialog />
+      <ProgressDrawer progressUser={progressUser} module={editModule} />
       <PageLayout
         onClickBack={{
           onClick: () => {
@@ -157,10 +168,11 @@ function ModuleMembersComp() {
           <>
             {!fetchingModule ? (
               <InterviewMemberList
+                isMembersTrainingVisible={editModule.settings?.require_training}
                 slotInterviewCard={
                   <ModuleSchedules
                     schedules={schedules}
-                    loading={fetchingModules}
+                    loading={schedulesLoading}
                   />
                 }
                 onClickAddTrainee={{
@@ -254,9 +266,34 @@ function ModuleMembersComp() {
                       const member = members.filter(
                         (member) => member.user_id === user.user_id
                       )[0];
+                      const progressDataUser = progress.filter(
+                        (prog) =>
+                          prog.interviewer_id === user.user_id &&
+                          prog.interview_meeting?.status == 'completed'
+                      );
+                      const revShadowCount = progressDataUser.filter(
+                        (prog) => prog.interviewer_type == 'reverse_shadow'
+                      ).length;
+                      const shadowCount = progressDataUser.filter(
+                        (prog) => prog.interviewer_type == 'shadow'
+                      ).length;
+
                       if (!member) return null;
                       return (
                         <MemberListCard
+                          onClickViewProgress={{
+                            onClick: () => {
+                              setProgressUser({
+                                progress: progress.filter(
+                                  (prog) => prog.interviewer_id === user.user_id
+                                ),
+                                user: members.filter(
+                                  (member) => member.user_id === user.user_id
+                                )[0]
+                              });
+                              setIsProgressDialaogOpen(true);
+                            }
+                          }}
                           onClickMoveToQualifier={{
                             onClick: () => {
                               moveToQualified(user.user_id);
@@ -264,8 +301,23 @@ function ModuleMembersComp() {
                           }}
                           key={user.user_id}
                           isMoveToQualifierVisible={true}
-                          isTrainingProgessVisible={true}
-                          isTrainingCompletedVisible={false}
+                          isTrainingProgessVisible={
+                            editModule.settings.noReverseShadow >
+                              revShadowCount ||
+                            editModule.settings.noShadow > shadowCount
+                          }
+                          isPendingApprovalVisible={
+                            !(
+                              editModule.settings.noReverseShadow >
+                                revShadowCount ||
+                              editModule.settings.noShadow > shadowCount
+                            ) && editModule.settings.reqruire_approval
+                          }
+                          isTrainingCompletedVisible={
+                            editModule.settings.noReverseShadow <=
+                              revShadowCount &&
+                            editModule.settings.noShadow <= shadowCount
+                          }
                           textPauseResumeDate={
                             !user.pause_json?.isManual
                               ? user.pause_json?.end_date

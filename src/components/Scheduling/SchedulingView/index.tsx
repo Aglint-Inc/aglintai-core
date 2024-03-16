@@ -22,7 +22,7 @@ import toast from '@/src/utils/toast';
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import CandidateDetailsJobDrawer from '../AllSchedules/SchedulingApplication/CandidateDetailsJob';
 import { getScheduleType } from '../AllSchedules/utils';
-import { TransformSchedule } from '../Modules/ModuleMembers';
+import { TransformSchedule } from '../Modules/types';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 
@@ -45,9 +45,10 @@ function SchedulingViewComp() {
         );
         if (data.length > 0) {
           const userIds = [];
+
           (
             data[0] as unknown as TransformSchedule
-          ).schedule.confirmed_option.plans.map((plan) =>
+          ).schedule.confirmed_option?.plans.map((plan) =>
             plan.selectedIntervs.map((interv) => userIds.push(interv.interv_id))
           );
 

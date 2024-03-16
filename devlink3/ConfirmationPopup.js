@@ -16,6 +16,7 @@ export function ConfirmationPopup({
   isYellowButtonVisible = false,
   isBlueButtonVisible = true,
   isGreyButtonVisible = true,
+  isDescriptionVisible = true,
 }) {
   return (
     <_Component
@@ -51,12 +52,14 @@ export function ConfirmationPopup({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "popup_body")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
-          tag="div"
-        >
-          {textPopupDescription}
-        </_Builtin.Block>
+        {isDescriptionVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {textPopupDescription}
+          </_Builtin.Block>
+        ) : null}
         {isWidget ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_widget")}

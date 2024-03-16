@@ -1,11 +1,11 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
@@ -19,34 +19,27 @@ import { createModule } from '../utils';
 function CreateModuleDialog() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const { allModules, setAllModules } = useSchedulingContext();
   const { isCreateDialogOpen } = useSchedulingStore();
   const [loading, setLoading] = useState(false);
-  const [text, setText] = useState('');
+  const [name, setName] = useState('');
+  const [objective, setObjective] = useState('');
+  const [isTraining, setIsTraining] = useState(false);
 
   const createModuleHandler = async () => {
-    if (text && !loading) {
+    if (name && !loading) {
       try {
         setLoading(true);
-
         const res = await createModule({
-          name: text,
+          name: name,
+          description: objective,
+          isTraining: isTraining,
           recruiter_id: recruiter.id
         });
         router.push(`${pageRoutes.INTERVIEWMODULE}/members/${res.id}`);
-        setAllModules([
-          ...allModules,
-          {
-            interview_modules: res,
-            completed_meeting_count: 0,
-            upcoming_meeting_count: 0,
-            users: []
-          }
-        ]);
         setIsCreateDialogOpen(null);
         setSelectedUsers([]);
       } catch (e) {
-        toast.error('Error creating panel');
+        toast.error(e.message);
         setIsCreateDialogOpen(null);
       } finally {
         setLoading(true);
@@ -69,23 +62,52 @@ function CreateModuleDialog() {
       }}
     >
       <ConfirmationPopup
+        isDescriptionVisible={false}
         textPopupTitle={'Create Interview Module'}
-        textPopupDescription={'Name'}
         isIcon={false}
         slotWidget={
-          <UITextField
-            placeholder='Ex. Node JS Developer'
-            fullWidth
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                createModuleHandler();
-              }
-            }}
-          />
+          <Stack spacing={2} width={'100%'}>
+            <UITextField
+              label='Name'
+              placeholder='Ex. Node JS Developer'
+              fullWidth
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  createModuleHandler();
+                }
+              }}
+            />
+            <UITextField
+              label='Objective'
+              multiline
+              placeholder='Ex. Node JS Developer'
+              fullWidth
+              value={objective}
+              onChange={(e) => {
+                setObjective(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  createModuleHandler();
+                }
+              }}
+            />
+            <Stack spacing={1} direction={'row'} alignItems={'center'}>
+              <Checkbox
+                isChecked={isTraining}
+                onClickCheck={{
+                  onClick: () => {
+                    setIsTraining(!isTraining);
+                  }
+                }}
+              />
+              <Typography variant='body2'>Requires training</Typography>
+            </Stack>
+          </Stack>
         }
         isWidget={true}
         onClickCancel={{

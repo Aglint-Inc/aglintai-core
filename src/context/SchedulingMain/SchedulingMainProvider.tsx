@@ -11,7 +11,6 @@ import {
 } from '@/src/components/Scheduling/AllSchedules/store';
 import {
   MemberType,
-  ModuleDashboard,
   ModuleType
 } from '@/src/components/Scheduling/Modules/types';
 import { fetchInterviewModuleById } from '@/src/components/Scheduling/Modules/utils';
@@ -24,10 +23,6 @@ import { setEditModule } from '../../components/Scheduling/Modules/store';
 export type InterviewPanelContextType = {
   loading: boolean;
   members: MemberType[];
-  allModules: ModuleDashboard[];
-  // eslint-disable-next-line no-unused-vars
-  setAllModules: (x: ModuleDashboard[]) => void;
-  fetchInterviewModules: () => void;
   fetchingModule: boolean;
   // eslint-disable-next-line no-unused-vars
   setFetchingModule: (x: boolean) => void;
@@ -36,9 +31,6 @@ export type InterviewPanelContextType = {
 const initialState = {
   loading: true,
   members: [],
-  allModules: [],
-  setAllModules: () => {},
-  fetchInterviewModules: () => {},
   fetchingModule: false,
   setFetchingModule: () => {}
 };
@@ -54,7 +46,6 @@ const SchedulingProvider = ({ children }) => {
     []
   );
   const router = useRouter();
-  const [allModules, setAllModules] = useState<ModuleDashboard[]>([]);
 
   useEffect(() => {
     if (recruiter?.id) {
@@ -62,19 +53,8 @@ const SchedulingProvider = ({ children }) => {
     }
   }, [recruiter?.id]);
 
-  const fetchInterviewModules = async () => {
-    const { data, error } = await supabase.rpc('get_interview_modules', {
-      rec_id: recruiter.id
-    });
-
-    if (!error) {
-      setAllModules(data as ModuleDashboard[]);
-    }
-  };
-
   const initialFetch = async () => {
     try {
-      await fetchInterviewModules();
       const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
         recruiter_id: recruiter.id
       });
@@ -149,9 +129,6 @@ const SchedulingProvider = ({ children }) => {
       value={{
         loading,
         members,
-        allModules,
-        setAllModules,
-        fetchInterviewModules,
         fetchingModule,
         setFetchingModule
       }}

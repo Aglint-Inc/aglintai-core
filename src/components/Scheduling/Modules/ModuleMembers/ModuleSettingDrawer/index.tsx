@@ -3,8 +3,10 @@ import React, { useEffect } from 'react';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { ModuleSetting } from '@/devlink2';
+import UITextField from '@/src/components/Common/UITextField';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import MembersAutoComplete from '../AddMemberDialog/MembersTextField';
 import {
@@ -18,14 +20,16 @@ function ModuleSettingDrawer() {
   const isModuleSettingsDialogOpen = useSchedulingStore(
     (state) => state.isModuleSettingsDialogOpen
   );
-  const { members, allModules, setAllModules } = useSchedulingContext();
+  const { members } = useSchedulingContext();
   const editModule = useSchedulingStore((state) => state.editModule);
   const [moduleName, setModuleName] = React.useState('');
+  const [objective, setObjective] = React.useState('');
   const [selectedUsers, setSelectedUsers] = React.useState<MemberType[]>([]);
 
   useEffect(() => {
     if (editModule) {
       setModuleName(editModule.name);
+      setObjective(editModule.description);
       setSelectedUsers(
         members.filter((member) =>
           editModule.settings.approve_users.includes(member.user_id)
@@ -39,6 +43,7 @@ function ModuleSettingDrawer() {
       .from('interview_module')
       .update({
         name: moduleName,
+        description: objective,
         settings: {
           ...editModule.settings,
           approve_users: selectedUsers.map((user) => user.user_id)
@@ -47,13 +52,6 @@ function ModuleSettingDrawer() {
       .eq('id', editModule.id)
       .select();
     if (!error) {
-      allModules.find(
-        (module) => module.interview_modules.id === editModule.id
-      ).interview_modules.name = moduleName;
-      allModules.find(
-        (module) => module.interview_modules.id === editModule.id
-      ).interview_modules.settings = editModule.settings;
-      setAllModules([...allModules]);
       setEditModule(data[0] as ModuleType);
       setIsModuleSettingsDialogOpen(false);
     }
@@ -73,12 +71,24 @@ function ModuleSettingDrawer() {
             onClick: () => setIsModuleSettingsDialogOpen(false)
           }}
           slotModuleNameInput={
-            <TextField
-              fullWidth
-              placeholder='Module Name'
-              value={moduleName}
-              onChange={(e) => setModuleName(e.target.value)}
-            />
+            <Stack spacing={2}>
+              <TextField
+                fullWidth
+                placeholder='Module Name'
+                value={moduleName}
+                onChange={(e) => setModuleName(e.target.value)}
+              />
+              <UITextField
+                label='Objective'
+                multiline
+                placeholder='Ex. Node JS Developer'
+                fullWidth
+                value={objective}
+                onChange={(e) => {
+                  setObjective(e.target.value);
+                }}
+              />
+            </Stack>
           }
           isRequireTrainingVisible={editModule?.settings?.require_training}
           slotRequiresTrainingToggle={
@@ -86,12 +96,38 @@ function ModuleSettingDrawer() {
               isChecked={editModule?.settings?.require_training}
               onClickCheck={{
                 onClick: () => {
-                  setEditModule({
-                    settings: {
-                      ...editModule.settings,
-                      require_training: !editModule.settings.require_training
+                  if (
+                    editModule.relations.filter(
+                      (relation) => relation.training_status === 'training'
+                    ).length == 0
+                  ) {
+                    {
+                      setEditModule({
+                        settings: {
+                          ...editModule.settings,
+                          require_training:
+                            !editModule.settings.require_training
+                        }
+                      });
                     }
-                  });
+                  } else if (
+                    editModule.settings.require_training === false &&
+                    editModule.relations.filter(
+                      (relation) => relation.training_status === 'training'
+                    ).length > 0
+                  ) {
+                    //this condition is not needed actually just temporary
+                    setEditModule({
+                      settings: {
+                        ...editModule.settings,
+                        require_training: !editModule.settings.require_training
+                      }
+                    });
+                  } else {
+                    toast.error(
+                      'Cannot disable training when there are members in training'
+                    );
+                  }
                 }
               }}
             />
@@ -134,12 +170,12 @@ function ModuleSettingDrawer() {
           slotInputNoOfReverse={
             <TextField
               select
-              value={editModule.settings.noShadow}
+              value={editModule.settings.noReverseShadow}
               onChange={(e) => {
                 setEditModule({
                   settings: {
                     ...editModule.settings,
-                    noShadow: Number(e.target.value)
+                    noReverseShadow: Number(e.target.value)
                   }
                 });
               }}

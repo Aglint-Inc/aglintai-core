@@ -230,3 +230,6 @@ export type AgentActivityType =
 
 export type InterviewMeetingTypeDb =
   Database['public']['Tables']['interview_meeting']['Insert'];
+
+export type InterviewMeetingUserTypeDb =
+  Database['public']['Tables']['interview_meeting_user']['Insert'];

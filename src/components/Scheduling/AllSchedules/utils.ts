@@ -106,7 +106,7 @@ export const getScheduleType = (
   schedule_type: InterviewScheduleTypeDB['schedule_type']
 ) => TYPE_LABELS[schedule_type] || 'Zoom';
 
-export function convertToWord(number) {
+export function convertNumberToWord(number) {
   const units = [
     '',
     'one',

@@ -64,14 +64,29 @@ export const fetchInterviewModuleById = async (module_id: string) => {
 
 export const createModule = async ({
   name,
-  recruiter_id
+  recruiter_id,
+  description,
+  isTraining
 }: {
   name: string;
+  description: string;
+  isTraining: boolean;
   recruiter_id: string;
 }) => {
   const { data: interMod, error: errorModule } = await supabase
     .from('interview_module')
-    .insert({ name: name, recruiter_id: recruiter_id })
+    .insert({
+      name: name,
+      recruiter_id: recruiter_id,
+      description: description,
+      settings: {
+        require_training: isTraining ? true : false,
+        noShadow: 2,
+        noReverseShadow: 2,
+        reqruire_approval: false,
+        approve_users: []
+      }
+    })
     .select();
 
   if (errorModule) {

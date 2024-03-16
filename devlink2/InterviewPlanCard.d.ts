@@ -8,4 +8,8 @@ declare function InterviewPlanCard(props: {
   slotMemberList?: Types.Devlink.Slot;
   isMemberFromVisible?: Types.Visibility.VisibilityConditions;
   textMemberFrom?: React.ReactNode;
+  isShadowMemberVisible?: Types.Visibility.VisibilityConditions;
+  isReverseShadowVisible?: Types.Visibility.VisibilityConditions;
+  slotShadowMember?: Types.Devlink.Slot;
+  slotReverseShadowmember?: Types.Devlink.Slot;
 }): React.JSX.Element;

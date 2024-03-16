@@ -1,8 +1,8 @@
 import { Dialog } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { DeletePopup } from '@/devlink3';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -12,11 +12,11 @@ import { deleteModuleById } from '../../utils';
 
 function DeleteModuleDialog() {
   const router = useRouter();
-  const { allModules, setAllModules } = useSchedulingContext();
   const isDeleteModuleDialogOpen = useSchedulingStore(
     (state) => state.isDeleteModuleDialogOpen
   );
   const editModule = useSchedulingStore((state) => state.editModule);
+  const queryClient = useQueryClient();
 
   const deleteModule = async () => {
     try {
@@ -32,11 +32,9 @@ function DeleteModuleDialog() {
       if (!isActiveMeeting) {
         const isdeleted = await deleteModuleById(editModule.id);
         if (isdeleted) {
-          const updatedModules = allModules.filter(
-            (mod) => mod.interview_modules.id !== editModule.id
-          );
-          setAllModules([...updatedModules]);
+          queryClient.invalidateQueries({ queryKey: ['interview_modules'] });
           router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
+          toast.success('Module deleted successfully');
         } else {
           throw new Error();
         }

@@ -1,6 +1,7 @@
 import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import {
   CandidateType,
+  InterviewMeetingTypeDb,
   InterviewModuleRelationType,
   InterviewModuleType,
   InterviewScheduleTypeDB,
@@ -10,22 +11,6 @@ import {
 import { Database } from '@/src/types/schema';
 
 import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
-
-export type SchedulingSlice = {
-  isCreateDialogOpen: boolean;
-  isDeleteMemberDialogOpen: boolean;
-  isDeleteModuleDialogOpen: boolean;
-  isPauseDialogOpen: boolean;
-  isAddMemberDialogOpen: boolean;
-  isResumeDialogOpen: boolean;
-  isModuleSettingsDialogOpen: boolean;
-  selectedUsers: RecruiterUserType[];
-  editModule: ModuleType;
-  selUser: InterviewModuleRelationType | null;
-  pause_json: PauseJson | null;
-  searchText: string;
-  trainingStatus: StatusTraining;
-};
 
 export const initialEditModule: ModuleType = {
   id: '',
@@ -37,10 +22,28 @@ export const initialEditModule: ModuleType = {
   settings: {
     require_training: false,
     noShadow: 2,
-    noReverseShadow: 1,
+    noReverseShadow: 2,
     reqruire_approval: false,
     approve_users: []
-  }
+  },
+  description: ''
+};
+
+export type SchedulingSlice = {
+  isCreateDialogOpen: boolean;
+  isDeleteMemberDialogOpen: boolean;
+  isDeleteModuleDialogOpen: boolean;
+  isPauseDialogOpen: boolean;
+  isAddMemberDialogOpen: boolean;
+  isResumeDialogOpen: boolean;
+  isModuleSettingsDialogOpen: boolean;
+  isProgressDialaogOpen: boolean;
+  selectedUsers: RecruiterUserType[];
+  editModule: ModuleType;
+  selUser: InterviewModuleRelationType | null;
+  pause_json: PauseJson | null;
+  searchText: string;
+  trainingStatus: StatusTraining;
 };
 
 export const initialStateSchedulingStore: SchedulingSlice = {
@@ -49,6 +52,7 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
   isAddMemberDialogOpen: false,
+  isProgressDialaogOpen: false,
   isResumeDialogOpen: false,
   isModuleSettingsDialogOpen: false,
   selectedUsers: [],
@@ -128,4 +132,22 @@ export type MemberType = {
   email: string;
   profile_image: string;
   position: string;
+};
+
+export type TransformSchedule = ScheduleType & {
+  interview_meeting: InterviewMeetingTypeDb & {
+    meeting_json: {
+      hangoutLink: string;
+    };
+  };
+  users: {
+    id: string;
+    created_at: string;
+    interviewer_id: string;
+    interviewer_type: Database['public']['Enums']['interviewer_type'];
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_image: string;
+  }[];
 };

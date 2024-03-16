@@ -8,13 +8,17 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import CreateModuleDialog from './CreateModuleDialog';
+import { useAllInterviewModules } from './queries/hooks';
 import { useSchedulingStore } from './store';
+import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 export function Modules() {
   const router = useRouter();
-  const { loading, allModules, setFetchingModule } = useSchedulingContext();
+  const { setFetchingModule } = useSchedulingContext();
   const searchText = useSchedulingStore((state) => state.searchText);
+
+  const { data: allModules, isLoading } = useAllInterviewModules();
 
   const filterModules = useMemo(() => {
     return allModules.filter((mod) => {
@@ -27,7 +31,7 @@ export function Modules() {
   return (
     <>
       <CreateModuleDialog />
-      {!loading && (
+      {!isLoading && (
         <>
           <InterviewModuleTable
             slotInterviewModuleCard={filterModules.map((mod) => {
@@ -91,6 +95,11 @@ export function Modules() {
             })}
           />
         </>
+      )}
+      {isLoading && (
+        <Stack sx={{ height: '100%' }}>
+          <Loader />
+        </Stack>
       )}
     </>
   );

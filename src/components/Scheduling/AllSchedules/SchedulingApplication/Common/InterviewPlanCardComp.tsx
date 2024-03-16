@@ -1,13 +1,13 @@
-import { Badge, Stack, Typography } from '@mui/material';
-import React from 'react';
+import { Stack } from '@mui/material';
 
 import { InterviewPlanCard } from '@/devlink2';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { InterviewModuleType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { convertToWord } from '../../utils';
+import { convertNumberToWord } from '../../utils';
 import { MemberType } from '../../../Modules/types';
 
 function InterviewPlanCardComp({
@@ -24,10 +24,10 @@ function InterviewPlanCardComp({
       key={plan.module_id}
       textTitle={mod?.name}
       textDuration={plan.duration + ' Minutes'}
-      textMemberFrom={`${convertToWord(
+      textMemberFrom={`${convertNumberToWord(
         plan?.meetingIntervCnt || 0
       )} Member from :`}
-      slotMemberList={
+      slotReverseShadowmember={
         <Stack
           direction={'row'}
           sx={{
@@ -35,77 +35,6 @@ function InterviewPlanCardComp({
             gap: 2.5
           }}
         >
-          {plan.selectedIntervs.map((int) => {
-            const user = members.find(
-              (member) => member.user_id === int.interv_id
-            );
-            if (!user) return null;
-            return (
-              <Stack
-                key={int.interv_id}
-                direction={'row'}
-                spacing={1}
-                sx={{
-                  textWrap: 'nowrap'
-                }}
-              >
-                <MuiAvatar
-                  level={getFullName(user.first_name, user.last_name)}
-                  src={user?.profile_image}
-                  variant={'circular'}
-                  width={'24px'}
-                  height={'24px'}
-                  fontSize={'12px'}
-                />
-                <Typography variant={'body2'} color={'#000'}>
-                  {getFullName(user.first_name, user.last_name)}
-                </Typography>
-              </Stack>
-            );
-          })}
-          {plan.shadowIntervs.map((int) => {
-            const user = members.find(
-              (member) => member.user_id === int.interv_id
-            );
-            if (!user) return null;
-            return (
-              <Stack
-                key={int.interv_id}
-                direction={'row'}
-                spacing={1}
-                sx={{
-                  textWrap: 'nowrap'
-                }}
-              >
-                <Badge
-                  key={int.interv_id}
-                  color='secondary'
-                  overlap='circular'
-                  badgeContent={<>S</>}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right'
-                  }}
-                  style={{
-                    fontSize: '10px'
-                  }}
-                >
-                  <MuiAvatar
-                    level={getFullName(user.first_name, user.last_name)}
-                    src={user?.profile_image}
-                    variant={'circular'}
-                    width={'24px'}
-                    height={'24px'}
-                    fontSize={'12px'}
-                  />
-                </Badge>
-
-                <Typography variant={'body2'} color={'#000'}>
-                  {getFullName(user.first_name, user.last_name)}
-                </Typography>
-              </Stack>
-            );
-          })}
           {plan.revShadowInterv.map((int) => {
             const user = members.find(
               (member) => member.user_id === int.interv_id
@@ -120,16 +49,86 @@ function InterviewPlanCardComp({
                   textWrap: 'nowrap'
                 }}
               >
-                <Badge
-                  key={int.interv_id}
-                  color='secondary'
-                  overlap='circular'
-                  badgeContent={<>R</>}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right'
-                  }}
-                >
+                <AvatarWithName
+                  isReverseShadowVisible={true}
+                  textName={user.first_name}
+                  slotAvatar={
+                    <MuiAvatar
+                      level={getFullName(user.first_name, user.last_name)}
+                      src={user?.profile_image}
+                      variant={'circular'}
+                      width={'24px'}
+                      height={'24px'}
+                      fontSize={'12px'}
+                    />
+                  }
+                />
+              </Stack>
+            );
+          })}
+        </Stack>
+      }
+      slotShadowMember={
+        <Stack
+          direction={'row'}
+          sx={{
+            flexWrap: 'wrap',
+            gap: 2.5
+          }}
+        >
+          {plan.shadowIntervs.map((int) => {
+            const user = members.find(
+              (member) => member.user_id === int.interv_id
+            );
+            if (!user) return null;
+            return (
+              <Stack
+                key={int.interv_id}
+                direction={'row'}
+                spacing={1}
+                sx={{
+                  textWrap: 'nowrap'
+                }}
+              >
+                <AvatarWithName
+                  isShadowVisible={true}
+                  textName={user.first_name}
+                  slotAvatar={
+                    <MuiAvatar
+                      level={getFullName(user.first_name, user.last_name)}
+                      src={user?.profile_image}
+                      variant={'circular'}
+                      width={'24px'}
+                      height={'24px'}
+                      fontSize={'12px'}
+                    />
+                  }
+                />
+              </Stack>
+            );
+          })}
+        </Stack>
+      }
+      isShadowMemberVisible={plan.shadowIntervs.length > 0}
+      isReverseShadowVisible={plan.revShadowInterv.length > 0}
+      slotMemberList={
+        <Stack
+          direction={'row'}
+          sx={{
+            flexWrap: 'wrap',
+            gap: 2.5
+          }}
+        >
+          {plan.selectedIntervs.map((int) => {
+            const user = members.find(
+              (member) => member.user_id === int.interv_id
+            );
+            if (!user) return null;
+            return (
+              <AvatarWithName
+                key={int.interv_id}
+                textName={user.first_name}
+                slotAvatar={
                   <MuiAvatar
                     level={getFullName(user.first_name, user.last_name)}
                     src={user?.profile_image}
@@ -138,12 +137,8 @@ function InterviewPlanCardComp({
                     height={'24px'}
                     fontSize={'12px'}
                   />
-                </Badge>
-
-                <Typography variant={'body2'} color={'#000'}>
-                  {getFullName(user.first_name, user.last_name)}
-                </Typography>
-              </Stack>
+                }
+              />
             );
           })}
         </Stack>
