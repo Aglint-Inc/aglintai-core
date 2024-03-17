@@ -7,57 +7,20 @@ import { useMemo, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
-import toast from '@/src/utils/toast';
 
+import { PauseType } from '../type';
+import { usePauseHandler } from '../../queries/hooks';
 import {
-  setEditModule,
   setIsPauseDialogOpen,
   setPauseJson,
-  useSchedulingStore
+  useModulesStore,
 } from '../../store';
-import { updatePauseJsonByUserId } from '../../utils';
 
 function PauseDialog() {
-  const isPauseDialogOpen = useSchedulingStore(
-    (state) => state.isPauseDialogOpen
-  );
-  const editModule = useSchedulingStore((state) => state.editModule);
-  const selUser = useSchedulingStore((state) => state.selUser);
-  const pause_json = useSchedulingStore((state) => state.pause_json);
-  const [selectedType, setSelectedType] = useState<
-    'isManual' | 'twoWeek' | 'oneMonth' | 'threeMonth' | 'custom'
-  >('isManual');
-
-  const pauseHandler = async () => {
-    try {
-      if (selUser.user_id) {
-        if (selectedType === 'custom' && !pause_json?.end_date) {
-          return toast.error('Please select end date');
-        }
-        const isUpdated = await updatePauseJsonByUserId({
-          user_id: selUser.user_id,
-          pause_json: pause_json,
-          module_id: editModule.id
-        });
-        if (isUpdated) {
-          setEditModule({
-            ...editModule,
-            relations: editModule.relations.map((rel) =>
-              rel.user_id === selUser.user_id
-                ? { ...rel, pause_json: pause_json }
-                : rel
-            )
-          });
-          resetState();
-        }
-      } else {
-        throw new Error();
-      }
-    } catch {
-      toast.error('Error pausing user');
-      resetState();
-    }
-  };
+  const isPauseDialogOpen = useModulesStore((state) => state.isPauseDialogOpen);
+  const selUser = useModulesStore((state) => state.selUser);
+  const pause_json = useModulesStore((state) => state.pause_json);
+  const [selectedType, setSelectedType] = useState<PauseType>('isManual');
 
   const currentDate = useMemo(() => dayjs(), []);
   const twoWeeks = useMemo(() => currentDate.add(2, 'week'), [currentDate]);
@@ -70,14 +33,16 @@ function PauseDialog() {
     setPauseJson({ isManual: true, start_date: '', end_date: '' });
   };
 
+  const { pauseHandler } = usePauseHandler();
+
   return (
     <Dialog
       sx={{
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isPauseDialogOpen}
       onClose={() => {
@@ -103,7 +68,7 @@ function PauseDialog() {
                 setSelectedType('isManual');
                 setPauseJson({
                   ...pause_json,
-                  isManual: true
+                  isManual: true,
                 });
               }}
               sx={{ cursor: 'pointer' }}
@@ -126,7 +91,7 @@ function PauseDialog() {
                 setPauseJson({
                   isManual: false,
                   start_date: new Date().toISOString(),
-                  end_date: twoWeeks.toDate().toISOString()
+                  end_date: twoWeeks.toDate().toISOString(),
                 });
               }}
             >
@@ -148,7 +113,7 @@ function PauseDialog() {
                 setPauseJson({
                   isManual: false,
                   start_date: new Date().toISOString(),
-                  end_date: oneMonth.toDate().toISOString()
+                  end_date: oneMonth.toDate().toISOString(),
                 });
               }}
             >
@@ -170,7 +135,7 @@ function PauseDialog() {
                 setPauseJson({
                   isManual: false,
                   start_date: new Date().toISOString(),
-                  end_date: threeMonth.toDate().toISOString()
+                  end_date: threeMonth.toDate().toISOString(),
                 });
               }}
             >
@@ -192,7 +157,7 @@ function PauseDialog() {
                 setPauseJson({
                   isManual: false,
                   start_date: new Date().toISOString(),
-                  end_date: ''
+                  end_date: '',
                 });
               }}
             >
@@ -212,21 +177,21 @@ function PauseDialog() {
                       ) {
                         setPauseJson({
                           ...pause_json,
-                          start_date: dayjs(newValue).toISOString()
+                          start_date: dayjs(newValue).toISOString(),
                         });
                       } else {
                         setPauseJson({
                           ...pause_json,
                           start_date: dayjs(newValue).toISOString(),
-                          end_date: null
+                          end_date: null,
                         });
                       }
                     }}
                     minDate={currentDate}
                     slotProps={{
                       textField: {
-                        InputProps: { disableUnderline: true }
-                      }
+                        InputProps: { disableUnderline: true },
+                      },
                     }}
                   />
                 </LocalizationProvider>
@@ -237,13 +202,13 @@ function PauseDialog() {
                     onChange={(newValue) => {
                       setPauseJson({
                         ...pause_json,
-                        end_date: newValue.toISOString()
+                        end_date: newValue.toISOString(),
                       });
                     }}
                     slotProps={{
                       textField: {
-                        InputProps: { disableUnderline: true }
-                      }
+                        InputProps: { disableUnderline: true },
+                      },
                     }}
                   />
                 </LocalizationProvider>
@@ -255,10 +220,18 @@ function PauseDialog() {
         onClickCancel={{
           onClick: () => {
             setIsPauseDialogOpen(false);
-          }
+          },
         }}
         onClickAction={{
-          onClick: pauseHandler
+          onClick: async () => {
+            await pauseHandler({
+              module_id: selUser.module_id,
+              user_id: selUser?.user_id || '',
+              selectedType,
+              pause_json: pause_json,
+            });
+            resetState();
+          },
         }}
         textPopupButton={'Pause'}
       />

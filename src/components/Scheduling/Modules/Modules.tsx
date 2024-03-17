@@ -1,22 +1,20 @@
 import { AvatarGroup, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { InterviewModuleCard, InterviewModuleTable } from '@/devlink2';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import CreateModuleDialog from './CreateModuleDialog';
 import { useAllInterviewModules } from './queries/hooks';
-import { useSchedulingStore } from './store';
+import { resetModulesStore, useModulesStore } from './store';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 export function Modules() {
   const router = useRouter();
-  const { setFetchingModule } = useSchedulingContext();
-  const searchText = useSchedulingStore((state) => state.searchText);
+  const searchText = useModulesStore((state) => state.searchText);
 
   const { data: allModules, isLoading } = useAllInterviewModules();
 
@@ -27,6 +25,12 @@ export function Modules() {
         .includes(searchText.toLowerCase());
     });
   }, [allModules, searchText]);
+
+  useEffect(() => {
+    return () => {
+      resetModulesStore();
+    };
+  }, []);
 
   return (
     <>
@@ -39,11 +43,10 @@ export function Modules() {
                 <Stack
                   key={module.id}
                   onClick={() => {
-                    setFetchingModule(true);
                     router.push(
                       pageRoutes.INTERVIEWMODULE +
                         '/members' +
-                        `/${mod.interview_modules.id}`
+                        `/${mod.interview_modules.id}`,
                     );
                   }}
                 >
@@ -56,8 +59,8 @@ export function Modules() {
                           '& .MuiAvatar-root': {
                             width: '26px',
                             height: '26px',
-                            fontSize: '12px'
-                          }
+                            fontSize: '12px',
+                          },
                         }}
                       >
                         {mod.users.slice(0, 5).map((user) => {
@@ -67,7 +70,7 @@ export function Modules() {
                               src={user.profile_image}
                               level={getFullName(
                                 user.first_name,
-                                user.last_name
+                                user.last_name,
                               )}
                               variant='circular'
                               height='26px'

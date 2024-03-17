@@ -1,4 +1,4 @@
-import ModuleSchedules from '@/src/components/Scheduling/Modules/ModuleMembers/ModuleSchedules';
+import ModuleSchedules from '@/src/components/Scheduling/Common/ModuleSchedules';
 
 function Interviews({ interviewsData }) {
   return (

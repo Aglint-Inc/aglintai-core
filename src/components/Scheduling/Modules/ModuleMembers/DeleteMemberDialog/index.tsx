@@ -1,52 +1,17 @@
 import { Dialog } from '@mui/material';
 
 import { DeletePopup } from '@/devlink3';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
-import {
-  deleteMemberSchedulingStore,
-  setIsDeleteMemberDialogOpen,
-  useSchedulingStore
-} from '../../store';
-import { deleteRelationByUserId } from '../../utils';
+import { useDeleteRelationHandler } from '../../queries/hooks';
+import { setIsDeleteMemberDialogOpen, useModulesStore } from '../../store';
 
 function DeleteMemberDialog() {
-  const isDeleteMemberDialogOpen = useSchedulingStore(
-    (state) => state.isDeleteMemberDialogOpen
+  const isDeleteMemberDialogOpen = useModulesStore(
+    (state) => state.isDeleteMemberDialogOpen,
   );
-  const editModule = useSchedulingStore((state) => state.editModule);
-  const selUser = useSchedulingStore((state) => state.selUser);
+  const selUser = useModulesStore((state) => state.selUser);
 
-  const deleteRelation = async () => {
-    try {
-      const { data } = await supabase
-        .from('interview_meeting_user')
-        .select('*,interview_meeting!inner(*)')
-        .eq('interviewer_id', selUser.user_id)
-        .eq('interview_meeting.module_id', editModule.id);
-
-      const isActiveMeeting = data.some(
-        (meet) => meet.interview_meeting.start_time > new Date().toISOString()
-      );
-      if (!isActiveMeeting) {
-        const isDeleted = await deleteRelationByUserId({
-          module_id: editModule.id,
-          user_id: selUser.user_id
-        });
-        if (isDeleted) {
-          deleteMemberSchedulingStore(selUser.user_id);
-        } else {
-          throw new Error();
-        }
-      } else {
-        toast.error('Cannot delete user, active schedules are present');
-      }
-    } catch (e) {
-      setIsDeleteMemberDialogOpen(false);
-      toast.error('Error deleting user');
-    }
-  };
+  const { deleteRelationByUserId } = useDeleteRelationHandler();
 
   return (
     <Dialog
@@ -54,8 +19,8 @@ function DeleteMemberDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isDeleteMemberDialogOpen}
       onClose={() => {
@@ -71,12 +36,18 @@ function DeleteMemberDialog() {
         onClickCancel={{
           onClick: () => {
             setIsDeleteMemberDialogOpen(false);
-          }
+          },
         }}
         onClickDelete={{
-          onClick: () => {
-            if (selUser.id) deleteRelation();
-          }
+          onClick: async () => {
+            if (selUser.id) {
+              await deleteRelationByUserId({
+                module_id: selUser.module_id,
+                user_id: selUser.user_id,
+              });
+              setIsDeleteMemberDialogOpen(false);
+            }
+          },
         }}
         buttonText={'Delete'}
       />

@@ -3,57 +3,45 @@ import { useState } from 'react';
 
 import { ConfirmationPopup } from '@/devlink3';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { InterviewModuleRelationType } from '@/src/types/data.types';
-import toast from '@/src/utils/toast';
 
-import MembersAutoComplete from './MembersTextField';
+import { useAddMemberHandler } from '../../queries/hooks';
 import {
-  addMembersSchedulingStore,
   setIsAddMemberDialogOpen,
   setSelectedUsers,
-  useSchedulingStore
+  useModulesStore,
 } from '../../store';
-import { addMemberbyUserIds } from '../../utils';
+import { ModuleType } from '../../types';
+import MembersAutoComplete from '../../../Common/MembersTextField';
 
-function AddMemberDialog() {
+function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   const { members } = useSchedulingContext();
-  const [loading, setLoading] = useState(false); // used to disable multiple clicks
-  const isAddMemberDialogOpen = useSchedulingStore(
-    (state) => state.isAddMemberDialogOpen
+  const [loading, setLoading] = useState(false);
+  const isAddMemberDialogOpen = useModulesStore(
+    (state) => state.isAddMemberDialogOpen,
   );
-  const editModule = useSchedulingStore((state) => state.editModule);
-  const selectedUsers = useSchedulingStore((state) => state.selectedUsers);
-  const trainingStatus = useSchedulingStore((state) => state.trainingStatus);
+  const selectedUsers = useModulesStore((state) => state.selectedUsers);
+  const trainingStatus = useModulesStore((state) => state.trainingStatus);
 
-  const addMemberHandler = async () => {
-    try {
-      if (!selectedUsers.length || !editModule.id) {
-        setIsAddMemberDialogOpen(false);
-        return;
-      }
-      setLoading(true);
-      const { data, error } = await addMemberbyUserIds({
-        module_id: editModule.id,
-        user_ids: selectedUsers.map((user) => user.user_id),
-        training_status: trainingStatus
-      });
-      if (error) {
-        throw new Error();
-      }
-      addMembersSchedulingStore(data as InterviewModuleRelationType[]);
-    } catch (e) {
-      toast.error('Error adding panel members');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { addMemberHandler } = useAddMemberHandler();
 
   const allMembers = members.filter(
     (user) =>
       editModule?.relations?.findIndex(
-        (rel) => rel.user_id === user.user_id
-      ) === -1
+        (rel) => rel.user_id === user.user_id,
+      ) === -1,
   );
+
+  const onClickAddMember = async () => {
+    setLoading(true);
+    await addMemberHandler({
+      module_id: editModule.id,
+      selectedUsers: selectedUsers,
+      trainingStatus: trainingStatus,
+    });
+    setIsAddMemberDialogOpen(false);
+    setSelectedUsers([]);
+    setLoading(false);
+  };
 
   return (
     <Dialog
@@ -61,8 +49,8 @@ function AddMemberDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isAddMemberDialogOpen}
       onClose={() => {
@@ -91,10 +79,10 @@ function AddMemberDialog() {
         onClickCancel={{
           onClick: () => {
             setIsAddMemberDialogOpen(false);
-          }
+          },
         }}
         onClickAction={{
-          onClick: addMemberHandler
+          onClick: onClickAddMember,
         }}
         textPopupButton={editModule?.relations.length > 0 ? 'Add' : 'Create'}
       />

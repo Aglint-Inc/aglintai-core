@@ -1,5 +1,6 @@
 import { Drawer, MenuItem, Stack, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { ModuleSetting } from '@/devlink2';
@@ -8,32 +9,27 @@ import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMai
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import MembersAutoComplete from '../AddMemberDialog/MembersTextField';
-import {
-  setEditModule,
-  setIsModuleSettingsDialogOpen,
-  useSchedulingStore
-} from '../../store';
-import { MemberType, ModuleType } from '../../types';
+import MembersAutoComplete from '../../../../Common/MembersTextField';
+import { QueryKeysInteviewModules } from '../../../queries/type';
+import { setIsModuleSettingsDialogOpen, useModulesStore } from '../../../store';
+import { MemberType, ModuleType } from '../../../types';
 
-function ModuleSettingDrawer() {
-  const isModuleSettingsDialogOpen = useSchedulingStore(
-    (state) => state.isModuleSettingsDialogOpen
+function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
+  const queryClient = useQueryClient();
+  const isModuleSettingsDialogOpen = useModulesStore(
+    (state) => state.isModuleSettingsDialogOpen,
   );
   const { members } = useSchedulingContext();
-  const editModule = useSchedulingStore((state) => state.editModule);
-  const [moduleName, setModuleName] = React.useState('');
-  const [objective, setObjective] = React.useState('');
+  const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
   const [selectedUsers, setSelectedUsers] = React.useState<MemberType[]>([]);
 
   useEffect(() => {
     if (editModule) {
-      setModuleName(editModule.name);
-      setObjective(editModule.description);
+      setEditLocalModule(editModule);
       setSelectedUsers(
         members.filter((member) =>
-          editModule.settings.approve_users.includes(member.user_id)
-        )
+          editModule.settings.approve_users.includes(member.user_id),
+        ),
       );
     }
   }, [editModule]);
@@ -42,17 +38,26 @@ function ModuleSettingDrawer() {
     const { data, error } = await supabase
       .from('interview_module')
       .update({
-        name: moduleName,
-        description: objective,
-        settings: {
-          ...editModule.settings,
-          approve_users: selectedUsers.map((user) => user.user_id)
-        }
+        name: localModule.name,
+        description: localModule.description,
+        settings: localModule.settings,
       })
       .eq('id', editModule.id)
       .select();
     if (!error) {
-      setEditModule(data[0] as ModuleType);
+      const updatedEditModule = {
+        ...editModule,
+        ...data[0],
+      } as ModuleType;
+
+      queryClient.setQueryData<ModuleType>(
+        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+          moduleId: editModule.id,
+        }),
+        {
+          ...updatedEditModule,
+        },
+      );
       setIsModuleSettingsDialogOpen(false);
     }
   };
@@ -65,27 +70,35 @@ function ModuleSettingDrawer() {
         setIsModuleSettingsDialogOpen(false);
       }}
     >
-      {editModule && (
+      {localModule && (
         <ModuleSetting
           onClickClose={{
-            onClick: () => setIsModuleSettingsDialogOpen(false)
+            onClick: () => setIsModuleSettingsDialogOpen(false),
           }}
           slotModuleNameInput={
             <Stack spacing={2}>
               <TextField
                 fullWidth
                 placeholder='Module Name'
-                value={moduleName}
-                onChange={(e) => setModuleName(e.target.value)}
+                value={localModule.name}
+                onChange={(e) =>
+                  setEditLocalModule((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
               />
               <UITextField
                 label='Objective'
                 multiline
                 placeholder='Ex. Node JS Developer'
                 fullWidth
-                value={objective}
+                value={localModule.description}
                 onChange={(e) => {
-                  setObjective(e.target.value);
+                  setEditLocalModule((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }));
                 }}
               />
             </Stack>
@@ -93,42 +106,43 @@ function ModuleSettingDrawer() {
           isRequireTrainingVisible={editModule?.settings?.require_training}
           slotRequiresTrainingToggle={
             <Checkbox
-              isChecked={editModule?.settings?.require_training}
+              isChecked={localModule?.settings?.require_training}
               onClickCheck={{
                 onClick: () => {
                   if (
                     editModule.relations.filter(
-                      (relation) => relation.training_status === 'training'
+                      (relation) => relation.training_status === 'training',
                     ).length == 0
                   ) {
                     {
-                      setEditModule({
+                      setEditLocalModule((prev) => ({
+                        ...prev,
                         settings: {
-                          ...editModule.settings,
-                          require_training:
-                            !editModule.settings.require_training
-                        }
-                      });
+                          ...prev.settings,
+                          require_training: !prev.settings.require_training,
+                        },
+                      }));
                     }
                   } else if (
                     editModule.settings.require_training === false &&
                     editModule.relations.filter(
-                      (relation) => relation.training_status === 'training'
+                      (relation) => relation.training_status === 'training',
                     ).length > 0
                   ) {
                     //this condition is not needed actually just temporary
-                    setEditModule({
+                    setEditLocalModule((prev) => ({
+                      ...prev,
                       settings: {
-                        ...editModule.settings,
-                        require_training: !editModule.settings.require_training
-                      }
-                    });
+                        ...prev.settings,
+                        require_training: !prev.settings.require_training,
+                      },
+                    }));
                   } else {
                     toast.error(
-                      'Cannot disable training when there are members in training'
+                      'Cannot disable training when there are members in training',
                     );
                   }
-                }
+                },
               }}
             />
           }
@@ -138,13 +152,14 @@ function ModuleSettingDrawer() {
               isChecked={editModule?.settings?.reqruire_approval}
               onClickCheck={{
                 onClick: () => {
-                  setEditModule({
+                  setEditLocalModule((prev) => ({
+                    ...prev,
                     settings: {
-                      ...editModule.settings,
-                      reqruire_approval: !editModule.settings.reqruire_approval
-                    }
-                  });
-                }
+                      ...prev.settings,
+                      reqruire_approval: !prev.settings.reqruire_approval,
+                    },
+                  }));
+                },
               }}
             />
           }
@@ -153,7 +168,7 @@ function ModuleSettingDrawer() {
               <ButtonPrimaryRegular
                 textLabel={'Save Changes'}
                 onClickButton={{
-                  onClick: updateModule
+                  onClick: updateModule,
                 }}
               />
             </Stack>
@@ -172,12 +187,13 @@ function ModuleSettingDrawer() {
               select
               value={editModule.settings.noReverseShadow}
               onChange={(e) => {
-                setEditModule({
+                setEditLocalModule((prev) => ({
+                  ...prev,
                   settings: {
-                    ...editModule.settings,
-                    noReverseShadow: Number(e.target.value)
-                  }
-                });
+                    ...prev.settings,
+                    noReverseShadow: Number(e.target.value),
+                  },
+                }));
               }}
             >
               <MenuItem value={1}>1</MenuItem>
@@ -192,12 +208,13 @@ function ModuleSettingDrawer() {
               select
               value={editModule.settings.noShadow}
               onChange={(e) => {
-                setEditModule({
+                setEditLocalModule((prev) => ({
+                  ...prev,
                   settings: {
-                    ...editModule.settings,
-                    noShadow: Number(e.target.value)
-                  }
-                });
+                    ...prev.settings,
+                    noShadow: Number(e.target.value),
+                  },
+                }));
               }}
             >
               <MenuItem value={1}>1</MenuItem>

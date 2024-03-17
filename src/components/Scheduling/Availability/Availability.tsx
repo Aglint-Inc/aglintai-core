@@ -8,7 +8,7 @@ import {
   ButtonWithShadow,
   PageLayout,
   PanelDetail,
-  PanelDetailTopRight
+  PanelDetailTopRight,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -26,10 +26,9 @@ import {
   setIsisInitialising,
   setTimeSlot,
   useAvailableStore,
-  useSyncInterviewersCalender
+  useSyncInterviewersCalender,
 } from './store';
 import { handleDelete } from './utils';
-import { setEditModule } from '../Modules/store';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
@@ -53,13 +52,12 @@ const Availability = () => {
         try {
           setIsisInitialising(true);
           const panel = interviewModules.find(
-            (p) => p.id === router.query.module_id
+            (p) => p.id === router.query.module_id,
           );
 
           const activeDuration =
             (panel.duration_available as any)?.activeDuration ?? 30;
           setTimeSlot(activeDuration);
-          setEditModule(panel);
           // setSelectedUsers(panel.relations);
           const newInterviewers: StateAvailibility['interviewers'] =
             panel.relations.map((t) => {
@@ -73,7 +71,7 @@ const Availability = () => {
                 slots: [],
                 email: member.email,
                 isMailConnected: true,
-                timeZone: ''
+                timeZone: '',
               };
             });
 
@@ -82,7 +80,7 @@ const Availability = () => {
             newInterviewers,
             activeDuration,
             dateRangeView,
-            timeRange
+            timeRange,
           );
         } catch (err) {
           toast.error(API_FAIL_MSG);
@@ -113,7 +111,7 @@ const Availability = () => {
         onClickBack={{
           onClick: () => {
             router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
-          }
+          },
         }}
         isBackButton={true}
         slotTopbarLeft={
@@ -152,7 +150,7 @@ const Availability = () => {
           <>
             <PanelDetailTopRight
               onClickEditPanel={{
-                onClick: () => {}
+                onClick: () => {},
               }}
               slotThreeDots={
                 <>
@@ -160,7 +158,7 @@ const Availability = () => {
                     onClickClose={{
                       onClick: (e) => {
                         setPopupEl(e.currentTarget);
-                      }
+                      },
                     }}
                   />
                 </>
@@ -184,21 +182,21 @@ const Availability = () => {
         }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         sx={{
           // mt: 2,
           '& .MuiPaper-root': {
             border: 'none !important',
-            overflow: 'visible !important'
-          }
+            overflow: 'visible !important',
+          },
         }}
       >
         <ButtonWithShadow
           onClickButton={{
             onClick: () => {
               deleteHandler();
-            }
+            },
           }}
         />
       </Popover>
@@ -209,7 +207,7 @@ const Availability = () => {
 export default Availability;
 
 export const InterviewerGroup = ({
-  profileUrls
+  profileUrls,
 }: {
   profileUrls: { name: string; url: string; isChecked?: boolean }[];
 }) => {
@@ -220,8 +218,8 @@ export const InterviewerGroup = ({
         '& .MuiAvatar-root': {
           width: '24px',
           height: '24px',
-          fontSize: '12px'
-        }
+          fontSize: '12px',
+        },
       }}
       total={profileUrls.length}
     >

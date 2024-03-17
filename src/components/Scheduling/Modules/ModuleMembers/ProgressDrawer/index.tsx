@@ -6,38 +6,35 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
 
 import SessionCard from './SessionCard';
-import { ProgressType } from '..';
-import { setIsProgressDialaogOpen, useSchedulingStore } from '../../store';
-import { MemberType, ModuleType } from '../../types';
+import { ProgressUserType } from '../type';
+import { setIsProgressDialaogOpen, useModulesStore } from '../../store';
+import { ModuleType } from '../../types';
 
 function ProgressDrawer({
   module,
-  progressUser
+  progressUser,
 }: {
   module: ModuleType;
-  progressUser: {
-    user: MemberType;
-    progress: ProgressType[];
-  } | null;
+  progressUser: ProgressUserType;
 }) {
-  const isProgressDialogOpen = useSchedulingStore(
-    (state) => state.isProgressDialaogOpen
+  const isProgressDialogOpen = useModulesStore(
+    (state) => state.isProgressDialaogOpen,
   );
 
   const shadowProgress = progressUser?.progress.filter(
-    (prog) => prog.interviewer_type == 'shadow'
+    (prog) => prog.interviewer_type == 'shadow',
   );
 
   const mutatedShadowProgress = Array.from({
-    length: module.settings.noShadow - shadowProgress.length
+    length: module.settings.noShadow - shadowProgress.length,
   });
 
   const reverseShadowProgress = progressUser?.progress.filter(
-    (prog) => prog.interviewer_type == 'reverse_shadow'
+    (prog) => prog.interviewer_type == 'reverse_shadow',
   );
 
   const mutatedReverseShadowProgress = Array.from({
-    length: module.settings.noReverseShadow - reverseShadowProgress.length
+    length: module.settings.noReverseShadow - reverseShadowProgress.length,
   });
 
   return (
@@ -56,7 +53,7 @@ function ProgressDrawer({
               src={progressUser.user.profile_image}
               level={getFullName(
                 progressUser.user.first_name,
-                progressUser.user.last_name
+                progressUser.user.last_name,
               )}
               variant='circular'
               height='24px'

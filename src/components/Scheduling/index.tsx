@@ -14,7 +14,7 @@ import { Modules } from './Modules/Modules';
 import {
   setIsCreateDialogOpen,
   setSearchText,
-  useSchedulingStore
+  useModulesStore,
 } from './Modules/store';
 import MySchedule from './MySchedule';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
@@ -30,7 +30,7 @@ function SchedulingMainComp() {
   const router = useRouter();
   const { recruiter, setRecruiter, allowAction } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
-  const { searchText } = useSchedulingStore();
+  const { searchText } = useModulesStore();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setSaving('saving');
 
@@ -44,8 +44,8 @@ function SchedulingMainComp() {
       setRecruiter(
         {
           ...updatedRecruiter,
-          socials: updatedRecruiter?.socials as unknown as SocialsType
-        }!
+          socials: updatedRecruiter?.socials as unknown as SocialsType,
+        }!,
       );
     }
     setSaving('saved');
@@ -53,7 +53,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`, undefined, {
-        shallow: true
+        shallow: true,
       });
     }
   }, [router]);
@@ -72,7 +72,7 @@ function SchedulingMainComp() {
                       <InputAdornment position='end'>
                         <Icon variant='JobSearch' height='14' />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   placeholder='Search by name'
                   onChange={(e) => {
@@ -95,7 +95,7 @@ function SchedulingMainComp() {
                   buttonProps={{
                     onClick: () => {
                       setIsCreateDialogOpen(true);
-                    }
+                    },
                   }}
                 />
               </Stack>
@@ -109,7 +109,7 @@ function SchedulingMainComp() {
                 allowAction(<AllSchedules />, [
                   'admin',
                   'recruiter',
-                  'scheduler'
+                  'scheduler',
                 ])
               ) : router.query.tab == 'mySchedules' ? (
                 <>
@@ -122,13 +122,13 @@ function SchedulingMainComp() {
                 allowAction(<SchedulingEmailTemplates />, [
                   'admin',
                   'recruiter',
-                  'scheduler'
+                  'scheduler',
                 ])
               ) : router.query.tab == 'allInterviewers' ? (
                 allowAction(<InterviewTab />, [
                   'admin',
                   'recruiter',
-                  'scheduler'
+                  'scheduler',
                 ])
               ) : router.query.tab == 'settings' ? (
                 allowAction(
@@ -136,7 +136,7 @@ function SchedulingMainComp() {
                     updateSettings={updateSettings}
                     initialData={recruiter?.scheduling_settings}
                   />,
-                  ['admin', 'recruiter', 'scheduler']
+                  ['admin', 'recruiter', 'scheduler'],
                 )
               ) : (
                 ''

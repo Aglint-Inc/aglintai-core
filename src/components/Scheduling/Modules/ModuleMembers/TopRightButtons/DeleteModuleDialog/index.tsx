@@ -1,5 +1,4 @@
 import { Dialog } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { DeletePopup } from '@/devlink3';
@@ -7,16 +6,15 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { setIsDeleteModuleDialogOpen, useSchedulingStore } from '../../store';
-import { deleteModuleById } from '../../utils';
+import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
+import { ModuleType } from '../../../types';
+import { deleteModuleById } from '../../../utils';
 
-function DeleteModuleDialog() {
+function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   const router = useRouter();
-  const isDeleteModuleDialogOpen = useSchedulingStore(
-    (state) => state.isDeleteModuleDialogOpen
+  const isDeleteModuleDialogOpen = useModulesStore(
+    (state) => state.isDeleteModuleDialogOpen,
   );
-  const editModule = useSchedulingStore((state) => state.editModule);
-  const queryClient = useQueryClient();
 
   const deleteModule = async () => {
     try {
@@ -26,13 +24,12 @@ function DeleteModuleDialog() {
         .eq('module_id', editModule.id);
 
       const isActiveMeeting = data.some(
-        (meet) => meet.start_time > new Date().toISOString()
+        (meet) => meet.start_time > new Date().toISOString(),
       );
 
       if (!isActiveMeeting) {
         const isdeleted = await deleteModuleById(editModule.id);
         if (isdeleted) {
-          queryClient.invalidateQueries({ queryKey: ['interview_modules'] });
           router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
           toast.success('Module deleted successfully');
         } else {
@@ -40,7 +37,7 @@ function DeleteModuleDialog() {
         }
       } else {
         toast.error(
-          'Cannot delete module, active schedules are present for this module'
+          'Cannot delete module, active schedules are present for this module',
         );
       }
     } catch {
@@ -56,8 +53,8 @@ function DeleteModuleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isDeleteModuleDialogOpen}
       onClose={() => {
@@ -73,12 +70,12 @@ function DeleteModuleDialog() {
         onClickCancel={{
           onClick: () => {
             setIsDeleteModuleDialogOpen(false);
-          }
+          },
         }}
         onClickDelete={{
           onClick: () => {
             if (editModule.id) deleteModule();
-          }
+          },
         }}
         buttonText={'Delete'}
       />

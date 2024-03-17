@@ -12,14 +12,14 @@ import toast from '@/src/utils/toast';
 import {
   setIsCreateDialogOpen,
   setSelectedUsers,
-  useSchedulingStore
+  useModulesStore,
 } from '../store';
 import { createModule } from '../utils';
 
 function CreateModuleDialog() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const { isCreateDialogOpen } = useSchedulingStore();
+  const { isCreateDialogOpen } = useModulesStore();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
@@ -33,9 +33,9 @@ function CreateModuleDialog() {
           name: name,
           description: objective,
           isTraining: isTraining,
-          recruiter_id: recruiter.id
+          recruiter_id: recruiter.id,
         });
-        router.push(`${pageRoutes.INTERVIEWMODULE}/members/${res.id}`);
+        await router.push(`${pageRoutes.INTERVIEWMODULE}/members/${res.id}`);
         setIsCreateDialogOpen(null);
         setSelectedUsers([]);
       } catch (e) {
@@ -53,8 +53,8 @@ function CreateModuleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isCreateDialogOpen}
       onClose={() => {
@@ -102,7 +102,7 @@ function CreateModuleDialog() {
                 onClickCheck={{
                   onClick: () => {
                     setIsTraining(!isTraining);
-                  }
+                  },
                 }}
               />
               <Typography variant='body2'>Requires training</Typography>
@@ -113,10 +113,10 @@ function CreateModuleDialog() {
         onClickCancel={{
           onClick: () => {
             setIsCreateDialogOpen(false);
-          }
+          },
         }}
         onClickAction={{
-          onClick: createModuleHandler
+          onClick: createModuleHandler,
         }}
         textPopupButton={'Create'}
       />

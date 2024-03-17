@@ -1,7 +1,7 @@
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { PauseJson, ScheduleType, StatusTraining } from './types';
+import { ScheduleType } from './types';
 
 export const fetchInterviewModule = async (recruiter_id: string) => {
   try {
@@ -26,7 +26,7 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
       const members = dataRel.filter((rel) => rel.module_id === module.id);
       return {
         ...module,
-        relations: members
+        relations: members,
       };
     });
 
@@ -38,35 +38,29 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
 };
 
 export const fetchInterviewModuleById = async (module_id: string) => {
-  try {
-    const { data: dataModule, error: errorModule } = await supabase
-      .from('interview_module')
-      .select('*')
-      .eq('id', module_id);
-    if (errorModule) {
-      throw errorModule;
-    }
-    const { data: dataRel, error: errorRel } = await supabase
-      .from('interview_module_relation')
-      .select('*')
-      .eq('module_id', module_id);
-
-    if (errorRel) {
-      throw errorRel;
-    }
-
-    return { ...dataModule[0], relations: dataRel };
-  } catch (e) {
-    toast.error('Error fetching interview panel');
-    return [];
+  const { data: dataModule, error: errorModule } = await supabase
+    .from('interview_module')
+    .select('*')
+    .eq('id', module_id);
+  if (errorModule) {
+    throw errorModule;
   }
+  const { data: dataRel, error: errorRel } = await supabase
+    .from('interview_module_relation')
+    .select('*')
+    .eq('module_id', module_id);
+
+  if (errorRel) {
+    throw new Error(errorRel.message);
+  }
+  return { ...dataModule[0], relations: dataRel };
 };
 
 export const createModule = async ({
   name,
   recruiter_id,
   description,
-  isTraining
+  isTraining,
 }: {
   name: string;
   description: string;
@@ -84,8 +78,8 @@ export const createModule = async ({
         noShadow: 2,
         noReverseShadow: 2,
         reqruire_approval: false,
-        approve_users: []
-      }
+        approve_users: [],
+      },
     })
     .select();
 
@@ -110,7 +104,7 @@ export const deleteModuleById = async (id: string) => {
 
 export const deleteRelationByUserId = async ({
   user_id,
-  module_id
+  module_id,
 }: {
   user_id: string;
   module_id: string;
@@ -120,7 +114,7 @@ export const deleteRelationByUserId = async ({
     .delete()
     .match({
       user_id: user_id,
-      module_id: module_id
+      module_id: module_id,
     });
   if (error) {
     return false;
@@ -129,53 +123,8 @@ export const deleteRelationByUserId = async ({
   }
 };
 
-export const updatePauseJsonByUserId = async ({
-  module_id,
-  user_id,
-  pause_json
-}: {
-  module_id: string;
-  user_id: string;
-  pause_json: PauseJson;
-}) => {
-  const { error } = await supabase
-    .from('interview_module_relation')
-    .update({ pause_json: pause_json })
-    .match({ module_id: module_id, user_id: user_id });
-  if (error) {
-    return false;
-  } else {
-    return true;
-  }
-};
-
-export const addMemberbyUserIds = async ({
-  user_ids,
-  module_id,
-  training_status
-}: {
-  user_ids: string[];
-  module_id: string;
-  training_status: StatusTraining;
-}) => {
-  const { data, error } = await supabase
-    .from('interview_module_relation')
-    .insert(
-      user_ids.map((user_id) => ({
-        user_id: user_id,
-        module_id: module_id,
-        training_status: training_status
-      }))
-    )
-    .select();
-  if (error) {
-    return { data: null, error: error };
-  }
-  return { data, error };
-};
-
 export const getColorStatusSchedule = (
-  status: ScheduleType['schedule']['status']
+  status: ScheduleType['schedule']['status'],
 ) => {
   return status == 'completed'
     ? '#2F3941'

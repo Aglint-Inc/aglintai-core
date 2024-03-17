@@ -3,7 +3,7 @@ import {
   Fade,
   Popper,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import React from 'react';
 
@@ -13,14 +13,14 @@ import UITextField from '@/src/components/Common/UITextField';
 import { InterviewPanelContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { palette } from '@/src/context/Theme/Theme';
 
-import { MemberType } from '../../../types';
+import { MemberType } from '../../Modules/types';
 
 function MembersAutoComplete({
   disabled,
   renderUsers,
   selectedUsers,
   setSelectedUsers,
-  pillColor = 'transparent'
+  pillColor = 'transparent',
 }: {
   disabled: boolean;
   renderUsers: InterviewPanelContextType['members'];
@@ -56,15 +56,15 @@ function MembersAutoComplete({
               key={user.user_id}
               propsBgColor={{
                 style: {
-                  background: pillColor ? pillColor : palette.grey[100]
-                }
+                  background: pillColor ? pillColor : palette.grey[100],
+                },
               }}
               onClickClose={{
                 onClick: () => {
                   setSelectedUsers(
-                    selectedUsers.filter((us) => us.user_id !== user.user_id)
+                    selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
-                }
+                },
               }}
               slotImage={
                 <MuiAvatar
@@ -97,7 +97,7 @@ function MembersAutoComplete({
         sx={{
           zIndex: 1300,
           maxWidth: '400px',
-          width: '100%'
+          width: '100%',
         }}
       >
         {({ TransitionProps }) => (
@@ -112,7 +112,7 @@ function MembersAutoComplete({
                   mt: '10px',
                   maxHeight: '250px',
                   overflow: 'auto',
-                  bgcolor: '#fff'
+                  bgcolor: '#fff',
                 }}
               >
                 {renderUsers.length === 0 && <Stack p={2}>No members</Stack>}
@@ -128,16 +128,16 @@ function MembersAutoComplete({
                         p: '8px 16px',
                         borderTop: ind === 0 ? 'none' : '1px solid #F8F9F9',
                         backgroundColor: selectedUsers.find(
-                          (user) => user.user_id === option.user_id
+                          (user) => user.user_id === option.user_id,
                         )
                           ? '#F8F9F9'
                           : 'transparent',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       }}
                       onClick={() => {
                         if (
                           !selectedUsers.find(
-                            (user) => user.user_id === option.user_id
+                            (user) => user.user_id === option.user_id,
                           )
                         ) {
                           setSelectedUsers([...selectedUsers, option]);

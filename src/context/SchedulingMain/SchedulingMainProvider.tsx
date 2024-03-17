@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
@@ -7,32 +6,21 @@ import {
   ApplicationList,
   setApplicationList,
   setInitalLoading,
-  setPagination
+  setPagination,
 } from '@/src/components/Scheduling/AllSchedules/store';
-import {
-  MemberType,
-  ModuleType
-} from '@/src/components/Scheduling/Modules/types';
-import { fetchInterviewModuleById } from '@/src/components/Scheduling/Modules/utils';
+import { MemberType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { setEditModule } from '../../components/Scheduling/Modules/store';
-
 export type InterviewPanelContextType = {
   loading: boolean;
   members: MemberType[];
-  fetchingModule: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setFetchingModule: (x: boolean) => void;
 };
 
 const initialState = {
   loading: true,
   members: [],
-  fetchingModule: false,
-  setFetchingModule: () => {}
 };
 
 const AllSchedulingContext =
@@ -41,11 +29,9 @@ const AllSchedulingContext =
 const SchedulingProvider = ({ children }) => {
   const { recruiter } = useAuthDetails();
   const [loading, setLoading] = useState(true);
-  const [fetchingModule, setFetchingModule] = useState(true);
   const [members, setMembers] = useState<InterviewPanelContextType['members']>(
-    []
+    [],
   );
-  const router = useRouter();
 
   useEffect(() => {
     if (recruiter?.id) {
@@ -56,7 +42,7 @@ const SchedulingProvider = ({ children }) => {
   const initialFetch = async () => {
     try {
       const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
-        recruiter_id: recruiter.id
+        recruiter_id: recruiter.id,
       });
       if (resMem.data) {
         setMembers(resMem.data);
@@ -67,19 +53,6 @@ const SchedulingProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (router.isReady && router.query.module_id && !loading) {
-      (async () => {
-        setFetchingModule(true);
-        const resMod = await fetchInterviewModuleById(
-          router.query.module_id as string
-        );
-        setEditModule(resMod as ModuleType);
-        setFetchingModule(false);
-      })();
-    }
-  }, [router, loading]);
 
   useEffect(() => {
     if (recruiter?.id) {
@@ -96,8 +69,8 @@ const SchedulingProvider = ({ children }) => {
       const { data: appNew, error } = await supabase.rpc(
         'fetch_interview_data',
         {
-          rec_id: recruiter.id
-        }
+          rec_id: recruiter.id,
+        },
       );
       if (error) {
         throw new Error(error.message);
@@ -113,7 +86,7 @@ const SchedulingProvider = ({ children }) => {
   const getPaginationData = async () => {
     try {
       const { data, error } = await supabase.rpc('get_interview_data_count', {
-        rec_id: recruiter.id
+        rec_id: recruiter.id,
       });
       setPagination({ total: data });
       if (error) {
@@ -129,8 +102,6 @@ const SchedulingProvider = ({ children }) => {
       value={{
         loading,
         members,
-        fetchingModule,
-        setFetchingModule
       }}
     >
       {children}

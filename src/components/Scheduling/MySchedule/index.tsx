@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import ModuleSchedules from '../Modules/ModuleMembers/ModuleSchedules';
+import ModuleSchedules from '../Common/ModuleSchedules';
 import Loader from '../../Common/Loader';
 
 function MySchedule() {
@@ -16,8 +16,8 @@ function MySchedule() {
     const { data, error } = await supabase.rpc(
       'get_interview_schedule_by_user_id',
       {
-        target_user_id: user_id
-      }
+        target_user_id: user_id,
+      },
     );
 
     if (!error) {

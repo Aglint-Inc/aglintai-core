@@ -2,107 +2,94 @@ import { create } from 'zustand';
 
 import {
   InterviewModuleRelationType,
-  RecruiterUserType
+  RecruiterUserType,
 } from '@/src/types/data.types';
 
 import {
-  initialEditModule,
-  initialStateSchedulingStore,
   ModuleType,
   PauseJson,
   SchedulingSlice,
-  StatusTraining
+  StatusTraining,
 } from './types';
 
-export const useSchedulingStore = create<SchedulingSlice>()(
-  () => initialStateSchedulingStore
+export const initialEditModule: ModuleType = {
+  id: '',
+  name: '',
+  relations: [],
+  duration_available: { activeDuration: 0, availabletimeSlots: [] },
+  created_at: '',
+  recruiter_id: '',
+  settings: {
+    require_training: false,
+    noShadow: 2,
+    noReverseShadow: 2,
+    reqruire_approval: false,
+    approve_users: [],
+  },
+  description: '',
+};
+
+export const initialStateSchedulingStore: SchedulingSlice = {
+  isCreateDialogOpen: null,
+  isDeleteMemberDialogOpen: false,
+  isDeleteModuleDialogOpen: false,
+  isPauseDialogOpen: false,
+  isAddMemberDialogOpen: false,
+  isProgressDialaogOpen: false,
+  isResumeDialogOpen: false,
+  isModuleSettingsDialogOpen: false,
+  selectedUsers: [],
+  selUser: null,
+  pause_json: { isManual: true, start_date: '', end_date: '' },
+  searchText: '',
+  trainingStatus: 'qualified',
+};
+
+export const useModulesStore = create<SchedulingSlice>()(
+  () => initialStateSchedulingStore,
 );
 
 export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
-  useSchedulingStore.setState({ isCreateDialogOpen });
+  useModulesStore.setState({ isCreateDialogOpen });
 
 export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
-  useSchedulingStore.setState({ selectedUsers });
+  useModulesStore.setState({ selectedUsers });
 
 export const setIsDeleteMemberDialogOpen = (
-  isDeleteMemberDialogOpen: boolean
-) => useSchedulingStore.setState({ isDeleteMemberDialogOpen });
+  isDeleteMemberDialogOpen: boolean,
+) => useModulesStore.setState({ isDeleteMemberDialogOpen });
 
 export const setIsProgressDialaogOpen = (isProgressDialaogOpen: boolean) =>
-  useSchedulingStore.setState({ isProgressDialaogOpen });
+  useModulesStore.setState({ isProgressDialaogOpen });
 
 export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
-  useSchedulingStore.setState({ isAddMemberDialogOpen });
+  useModulesStore.setState({ isAddMemberDialogOpen });
 
 export const setIsModuleSettingsDialogOpen = (
-  isModuleSettingsDialogOpen: boolean
-) => useSchedulingStore.setState({ isModuleSettingsDialogOpen });
+  isModuleSettingsDialogOpen: boolean,
+) => useModulesStore.setState({ isModuleSettingsDialogOpen });
 
 export const setSearchText = (searchText: string) =>
-  useSchedulingStore.setState({ searchText });
+  useModulesStore.setState({ searchText });
 
 export const setIsResumeDialogOpen = (isResumeDialogOpen: boolean) =>
-  useSchedulingStore.setState({ isResumeDialogOpen });
+  useModulesStore.setState({ isResumeDialogOpen });
 
 export const setIsDeleteModuleDialogOpen = (
-  isDeleteModuleDialogOpen: boolean
-) => useSchedulingStore.setState({ isDeleteModuleDialogOpen });
+  isDeleteModuleDialogOpen: boolean,
+) => useModulesStore.setState({ isDeleteModuleDialogOpen });
 
 export const setIsPauseDialogOpen = (isPauseDialogOpen: boolean) =>
-  useSchedulingStore.setState({ isPauseDialogOpen });
+  useModulesStore.setState({ isPauseDialogOpen });
 
 export const setSelUser = (selUser: InterviewModuleRelationType | null) =>
-  useSchedulingStore.setState({ selUser });
+  useModulesStore.setState({ selUser });
 
 export const setPauseJson = (pause_json: PauseJson | null) =>
-  useSchedulingStore.setState({ pause_json });
+  useModulesStore.setState({ pause_json });
 
-export const setEditModule = (editModule: Partial<ModuleType>) => {
-  if (editModule.settings) {
-    useSchedulingStore.setState((state) => ({
-      editModule: { ...state.editModule, ...editModule }
-    }));
-  } else {
-    useSchedulingStore.setState((state) => ({
-      editModule: {
-        ...state.editModule,
-        ...editModule,
-        settings: initialEditModule.settings
-      }
-    }));
-  }
-};
-
-export const resetSchedulingStore = () =>
-  useSchedulingStore.setState(initialStateSchedulingStore);
+export const resetModulesStore = () =>
+  useModulesStore.setState(initialStateSchedulingStore);
 
 export const setTrainingStatus = (trainingStatus: StatusTraining) =>
-  useSchedulingStore.setState({ trainingStatus });
-
-export const deleteMemberSchedulingStore = (id: string) => {
-  setIsDeleteMemberDialogOpen(false);
-  const { editModule } = useSchedulingStore.getState();
-  useSchedulingStore.setState({
-    editModule: {
-      ...editModule,
-      relations: editModule.relations.filter((rel) => rel.user_id !== id)
-    }
-  });
-};
-
-export const addMembersSchedulingStore = (
-  members: InterviewModuleRelationType[]
-) => {
-  const { editModule } = useSchedulingStore.getState();
-  useSchedulingStore.setState({
-    editModule: {
-      ...editModule,
-      relations: [...editModule.relations, ...members]
-    }
-  });
-  setIsAddMemberDialogOpen(false);
-  setSelectedUsers([]);
-};
-
-export const resetEditModule = () =>
-  useSchedulingStore.setState({ editModule: initialEditModule });
+  useModulesStore.setState({ trainingStatus });

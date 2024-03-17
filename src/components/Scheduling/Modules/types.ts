@@ -6,28 +6,13 @@ import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
-  RecruiterUserType
+  RecruiterUserType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
 
-export const initialEditModule: ModuleType = {
-  id: '',
-  name: '',
-  relations: [],
-  duration_available: { activeDuration: 0, availabletimeSlots: [] },
-  created_at: '',
-  recruiter_id: '',
-  settings: {
-    require_training: false,
-    noShadow: 2,
-    noReverseShadow: 2,
-    reqruire_approval: false,
-    approve_users: []
-  },
-  description: ''
-};
+
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -39,29 +24,12 @@ export type SchedulingSlice = {
   isModuleSettingsDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
   selectedUsers: RecruiterUserType[];
-  editModule: ModuleType;
   selUser: InterviewModuleRelationType | null;
   pause_json: PauseJson | null;
   searchText: string;
   trainingStatus: StatusTraining;
 };
 
-export const initialStateSchedulingStore: SchedulingSlice = {
-  isCreateDialogOpen: null,
-  isDeleteMemberDialogOpen: false,
-  isDeleteModuleDialogOpen: false,
-  isPauseDialogOpen: false,
-  isAddMemberDialogOpen: false,
-  isProgressDialaogOpen: false,
-  isResumeDialogOpen: false,
-  isModuleSettingsDialogOpen: false,
-  selectedUsers: [],
-  editModule: initialEditModule,
-  selUser: null,
-  pause_json: { isManual: true, start_date: '', end_date: '' },
-  searchText: '',
-  trainingStatus: 'qualified'
-};
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
   relations: InterviewModuleRelationType[];
