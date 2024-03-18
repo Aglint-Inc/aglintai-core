@@ -18,13 +18,15 @@ dayjs.extend(timezone);
 import { useRouter } from 'next/router';
 
 import {
+  CompanyDayOff,
   DayOff,
+  InterviewLoad,
   KeywordCard,
   Keywords,
   RcCheckbox,
-  ScheduleSettings,
   TimeRangeInput,
-  WorkingHourDay
+  WorkingHourDay,
+  WorkingHours
 } from '@/devlink2';
 import toast from '@/src/utils/toast';
 
@@ -39,9 +41,11 @@ import {
   WeeklyLimitType
 } from './types';
 import { hoursList } from './utils';
+import { settingSubNavItem } from '../SubNav/utils';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import AUIButton from '../../Common/AUIButton';
 import Icon from '../../Common/Icons/Icon';
+import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -206,255 +210,255 @@ function SchedulingSettings({
   const router = useRouter();
   return (
     <Stack overflow={isOverflow ? 'auto' : 'visible'}>
-      {router.query.subtab === 'availability' ? (
-        <ScheduleSettings
-          // onClickUpdateChanges={{
-          //   onClick: updateSettings,
-          // }}
-          // onClickDiscard={{
-          //   onClick: () => {
-          //     setReload(true);
-          //     discard();
-          //   },
-          // }}
-          isTimeZoneToggleVisible={false}
-          // slotTimeZoneToggle={
-          //   <ToggleBtn isActive={isTimeZone} handleCheck={handleCheck} />
-          // }
-          slotTimeZoneInput={
-            <Stack spacing={'10px'} width={420}>
-              <Stack alignItems={'center'} direction={'row'}>
-                <ToggleBtn
-                  handleCheck={(e) => {
-                    setIsTimeZone(e);
-                  }}
-                  isActive={isTimeZone}
-                />
-                <Typography fontSize={'14px'} variant='caption'>
-                  Get timezone automatically
-                </Typography>
-              </Stack>
-
-              <Autocomplete
-                disableClearable
-                options={timeZones}
-                value={
-                  isTimeZone
-                    ? timeZones.filter((item) =>
-                        item.label.includes(dayjs.tz.guess())
-                      )[0] || selectedTimeZone
-                    : selectedTimeZone
-                }
-                onChange={(event, value) => {
-                  if (value) {
-                    setSelectedTimeZone(value);
+      <ShowCode>
+        <ShowCode.When
+          isTrue={router.query.subtab == settingSubNavItem.WORKINGHOURS}
+        >
+          <WorkingHours
+            slotTimeZoneInput={
+              <Stack spacing={'10px'} width={420}>
+                <Autocomplete
+                  disableClearable
+                  options={timeZones}
+                  value={
+                    isTimeZone
+                      ? timeZones.filter((item) =>
+                          item.label.includes(dayjs.tz.guess())
+                        )[0] || selectedTimeZone
+                      : selectedTimeZone
                   }
+                  onChange={(event, value) => {
+                    if (value) {
+                      setSelectedTimeZone(value);
+                    }
+                  }}
+                  autoComplete={false}
+                  getOptionLabel={(option) => option.label}
+                  renderOption={(props, option) => {
+                    return (
+                      <li {...props}>
+                        <Typography variant='body2' color={'#000'}>
+                          {option.label}
+                        </Typography>
+                      </li>
+                    );
+                  }}
+                  renderInput={(params) => {
+                    return (
+                      <UITextField
+                        rest={{ ...params }}
+                        labelSize='medium'
+                        // fullWidth
+                        label=''
+                        placeholder='Ex. Healthcare'
+                        InputProps={{
+                          ...params.InputProps,
+                          autoComplete: 'new-password'
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </Stack>
+            }
+            // slotTimeZoneToggle={}
+            slotWorkingHourDay={
+              <>
+                {!!workingHours.length &&
+                  workingHours.map((day, i) => {
+                    return (
+                      <>
+                        <WorkingHourDay
+                          slotRcCheckbox={
+                            <RcCheckbox
+                              onclickCheck={{
+                                onClick: () => {
+                                  setWorkingHours((pre) => {
+                                    const data = pre;
+                                    data[Number(i)].isWorkDay =
+                                      !data[Number(i)].isWorkDay;
+
+                                    return [...data];
+                                  });
+                                }
+                              }}
+                              isChecked={day.isWorkDay}
+                              text={capitalize(day.day)}
+                            />
+                          }
+                          slotTimeRageInput={
+                            <TimeRangeInput
+                              slotStartTimeInput={
+                                <SelectTime
+                                  value={dayjs()
+                                    .set(
+                                      'hour',
+                                      parseInt(
+                                        day.timeRange.startTime.split(':')[0]
+                                      )
+                                    )
+                                    .set(
+                                      'minute',
+                                      parseInt(
+                                        day.timeRange.startTime.split(':')[1]
+                                      )
+                                    )}
+                                  onSelect={selectStartTime}
+                                  i={i}
+                                />
+                              }
+                              slotEndTimeInput={
+                                <SelectTime
+                                  value={dayjs()
+                                    .set(
+                                      'hour',
+                                      parseInt(
+                                        day.timeRange.endTime.split(':')[0]
+                                      )
+                                    )
+                                    .set(
+                                      'minute',
+                                      parseInt(
+                                        day.timeRange.endTime.split(':')[1]
+                                      )
+                                    )}
+                                  onSelect={selectEndTime}
+                                  i={i}
+                                />
+                              }
+                            />
+                          }
+                        />
+                      </>
+                    );
+                  })}
+              </>
+            }
+            slotTimeZoneToggle={
+              <ToggleBtn
+                handleCheck={(e) => {
+                  setIsTimeZone(e);
                 }}
-                autoComplete={false}
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => {
+                isActive={isTimeZone}
+              />
+            }
+          />
+        </ShowCode.When>
+        <ShowCode.When isTrue={router.query.subtab == settingSubNavItem.DAYOFF}>
+          <CompanyDayOff
+            slotDayOff={
+              <>
+                {daysOff.map((item, i) => {
                   return (
-                    <li {...props}>
-                      <Typography variant='body2' color={'#000'}>
-                        {option.label}
-                      </Typography>
-                    </li>
-                  );
-                }}
-                renderInput={(params) => {
-                  return (
-                    <UITextField
-                      rest={{ ...params }}
-                      labelSize='medium'
-                      // fullWidth
-                      label=''
-                      placeholder='Ex. Healthcare'
-                      InputProps={{
-                        ...params.InputProps,
-                        autoComplete: 'new-password'
+                    <DayOff
+                      isEditVisible={false}
+                      onClickRemove={{
+                        onClick: () => removeDayOff(item.date)
                       }}
+                      key={i}
+                      textDate={item.date}
+                      textDaysOffName={item.event_name}
                     />
                   );
-                }}
-              />
-            </Stack>
-          }
-          isKeywordVisible={false}
-          isCompanyLevelVisible={false}
-          slotKeywordCard={<></>}
-          slotDailyLimit={
-            <>
-              <MuiSelect
-                dataset={hoursList}
-                handleSelect={handleSelectDailyValue}
-                value={selectedDailyLimit.value}
-              />
-              <MuiSelect
-                width='150px'
-                dataset={['Interviews', 'Hours']}
-                handleSelect={handleSelectDailyType}
-                value={selectedDailyLimit.type}
-              />
-            </>
-          }
-          slotWeeklyLimit={
-            <>
-              <MuiSelect
-                dataset={hoursList}
-                handleSelect={handleSelectWeeklyValue}
-                value={selectedWeeklyLimit.value}
-              />
-              <MuiSelect
-                width='150px'
-                dataset={['Interviews', 'Hours']}
-                handleSelect={handleSelectWeeklyType}
-                value={selectedWeeklyLimit.type}
-              />
-            </>
-          }
-          slotWorkingHourDay={
-            <>
-              {!!workingHours.length &&
-                workingHours.map((day, i) => {
-                  return (
-                    <>
-                      <WorkingHourDay
-                        slotRcCheckbox={
-                          <RcCheckbox
-                            onclickCheck={{
-                              onClick: () => {
-                                setWorkingHours((pre) => {
-                                  const data = pre;
-                                  data[Number(i)].isWorkDay =
-                                    !data[Number(i)].isWorkDay;
-
-                                  return [...data];
-                                });
-                              }
-                            }}
-                            isChecked={day.isWorkDay}
-                            text={capitalize(day.day)}
-                          />
-                        }
-                        slotTimeRageInput={
-                          <TimeRangeInput
-                            slotStartTimeInput={
-                              <SelectTime
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      day.timeRange.startTime.split(':')[0]
-                                    )
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      day.timeRange.startTime.split(':')[1]
-                                    )
-                                  )}
-                                onSelect={selectStartTime}
-                                i={i}
-                              />
-                            }
-                            slotEndTimeInput={
-                              <SelectTime
-                                value={dayjs()
-                                  .set(
-                                    'hour',
-                                    parseInt(
-                                      day.timeRange.endTime.split(':')[0]
-                                    )
-                                  )
-                                  .set(
-                                    'minute',
-                                    parseInt(
-                                      day.timeRange.endTime.split(':')[1]
-                                    )
-                                  )}
-                                onSelect={selectEndTime}
-                                i={i}
-                              />
-                            }
-                          />
-                        }
-                      />
-                    </>
-                  );
                 })}
-            </>
-          }
-          onClickAddDate={{
-            onClick: openAddCompany
-          }}
-          slotDayOff={
-            <>
-              {daysOff.map((item, i) => {
-                return (
-                  <DayOff
-                    isEditVisible={false}
-                    onClickRemove={{
-                      onClick: () => removeDayOff(item.date)
-                    }}
-                    key={i}
-                    textDate={item.date}
-                    textDaysOffName={item.event_name}
-                  />
-                );
-              })}
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left'
-                }}
-              >
-                <Stack width={300} gap={1} p={2}>
-                  <Stack direction={'row'} justifyContent={'space-between'}>
-                    <Typography variant='subtitle1'>Add holiday</Typography>
-                    <Stack>
-                      <IconButton onClick={handleClose}>
-                        <Icon width='12px' height='12px' variant='CloseIcon' />
-                      </IconButton>
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                  }}
+                >
+                  <Stack width={300} gap={1} p={2}>
+                    <Stack direction={'row'} justifyContent={'space-between'}>
+                      <Typography variant='subtitle1'>Add holiday</Typography>
+                      <Stack>
+                        <IconButton onClick={handleClose}>
+                          <Icon
+                            width='12px'
+                            height='12px'
+                            variant='CloseIcon'
+                          />
+                        </IconButton>
+                      </Stack>
                     </Stack>
+                    <Typography variant='body2'>Date</Typography>
+                    <DateSelect
+                      selectedDates={daysOff}
+                      dateRef={dateRef}
+                      getDate={getDate}
+                    />
+                    <Typography variant='body2'>Specialty</Typography>
+                    <Stack>
+                      <UITextField ref={eventRef} />
+                    </Stack>
+                    <AUIButton
+                      disabled={!selectedDate}
+                      onClick={() => {
+                        setDaysOff(
+                          (pre) =>
+                            [
+                              ...pre,
+                              {
+                                date: selectedDate,
+                                event_name: eventRef.current.value
+                              }
+                            ] as holidayType[]
+                        );
+                        handleClose();
+                      }}
+                    >
+                      Add
+                    </AUIButton>
                   </Stack>
-                  <Typography variant='body2'>Date</Typography>
-                  <DateSelect
-                    selectedDates={daysOff}
-                    dateRef={dateRef}
-                    getDate={getDate}
-                  />
-                  <Typography variant='body2'>Specialty</Typography>
-                  <Stack>
-                    <UITextField ref={eventRef} />
-                  </Stack>
-                  <AUIButton
-                    disabled={!selectedDate}
-                    onClick={() => {
-                      setDaysOff(
-                        (pre) =>
-                          [
-                            ...pre,
-                            {
-                              date: selectedDate,
-                              event_name: eventRef.current.value
-                            }
-                          ] as holidayType[]
-                      );
-                      handleClose();
-                    }}
-                  >
-                    Add
-                  </AUIButton>
-                </Stack>
-              </Popover>
-            </>
-          }
-        />
-      ) : (
+                </Popover>
+              </>
+            }
+            onClickAddDate={{
+              onClick: openAddCompany
+            }}
+          />
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={router.query.subtab == settingSubNavItem.INTERVIEWLOAD}
+        >
+          <InterviewLoad
+            slotDailyLimit={
+              <>
+                <MuiSelect
+                  dataset={hoursList}
+                  handleSelect={handleSelectDailyValue}
+                  value={selectedDailyLimit.value}
+                />
+                <MuiSelect
+                  width='150px'
+                  dataset={['Interviews', 'Hours']}
+                  handleSelect={handleSelectDailyType}
+                  value={selectedDailyLimit.type}
+                />
+              </>
+            }
+            slotWeeklyLimit={
+              <>
+                <MuiSelect
+                  dataset={hoursList}
+                  handleSelect={handleSelectWeeklyValue}
+                  value={selectedWeeklyLimit.value}
+                />
+                <MuiSelect
+                  width='150px'
+                  dataset={['Interviews', 'Hours']}
+                  handleSelect={handleSelectWeeklyType}
+                  value={selectedWeeklyLimit.type}
+                />
+              </>
+            }
+          />
+        </ShowCode.When>
+      </ShowCode>
+      <ShowCode.When isTrue={router.query.subtab == settingSubNavItem.KEYWORDS}>
         <Keywords
           slotKeywordsCard={
             <>
@@ -563,7 +567,7 @@ function SchedulingSettings({
             </>
           }
         />
-      )}
+      </ShowCode.When>
     </Stack>
   );
 }
