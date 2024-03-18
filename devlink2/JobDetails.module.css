@@ -448,6 +448,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -515,6 +519,19 @@
   z-index: 2;
 }
 
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .warning-job-wrap {
   position: relative;
   cursor: pointer;
@@ -534,6 +551,10 @@
 .icons.relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.icons.ml--6 {
+  margin-left: -6px;
 }
 
 .job-desc-warn-wrap {
@@ -821,6 +842,15 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-xsm {
+  font-size: 10px;
 }
 
 .cvs-intro-overview-block {

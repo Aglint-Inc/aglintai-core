@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import {
   useAllAssessments,
-  useAllAssessmentTemplates
+  useAllAssessmentTemplates,
 } from '@/src/queries/assessment';
 import { Assessment } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';
@@ -13,7 +13,7 @@ import {
   useJobLocations,
   useJobMatches,
   useJobSkills,
-  useJobTenureAndExperience
+  useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
 import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
 
@@ -41,25 +41,40 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         },
         {
           jobAssessments: [] as Assessment[],
-          otherAssessments: [] as Assessment[]
-        }
+          otherAssessments: [] as Assessment[],
+        },
       )
     : {
         jobAssessments: [] as Assessment[],
-        otherAssessments: [] as Assessment[]
+        otherAssessments: [] as Assessment[],
       };
   const skills = useJobSkills();
   const locations = useJobLocations();
   const matches = useJobMatches();
   const tenureAndExperience = useJobTenureAndExperience();
-  const validDescription = !validateDescription(job?.draft?.description);
-  const descriptionChanged =
-    hashCode(job?.draft?.description ?? '') !== job?.description_hash;
   const scoringPoll = useJobScoringPoll();
+
   const draftValidity = getDraftValidity(job);
+
   const jdValidity = !validateJd(job?.draft?.jd_json);
+
   const publishable = draftValidity && jdValidity;
   const [dismiss, setDismiss] = useState(false);
+
+  const status = job &&
+    jobLoad && {
+      loading: job.scoring_param_status === 'loading',
+      description_error:
+        job.scoring_param_status !== 'loading' &&
+        validateDescription(job?.draft?.description ?? ''),
+      description_changed:
+        job.scoring_param_status !== 'loading' &&
+        hashCode(job?.draft?.description ?? '') !== job?.description_hash,
+      generation_error:
+        job.scoring_param_status !== 'loading' &&
+        job.scoring_param_status === null &&
+        !validateDescription(job?.draft?.description ?? ''),
+    };
 
   const initialLoad =
     jobLoad &&
@@ -80,19 +95,18 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     draftValidity,
     jdValidity,
     scoringPoll,
-    validDescription,
-    descriptionChanged,
+    status,
     publishable,
     initialLoad,
     assessments: {
       ...assessments,
-      data: assessmentData
+      data: assessmentData,
     },
     tenureAndExperience,
     templates,
     skills,
     locations,
-    matches
+    matches,
   };
 
   return value;
@@ -109,7 +123,7 @@ export const getDraftValidity = (job: Job) => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
-    ...(job.draft ?? {})
+    ...(job.draft ?? {}),
   };
   return Object.entries(draft).reduce((acc, [key, value]) => {
     if (acc) {

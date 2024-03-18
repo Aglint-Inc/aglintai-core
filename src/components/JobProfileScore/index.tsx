@@ -27,6 +27,7 @@ import {
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
+import { Job } from '@/src/queries/job/types';
 
 import Loader from '../Common/Loader';
 import ScoreWheel, { ScoreWheelParams } from '../Common/ScoreWheel';
@@ -106,26 +107,7 @@ const ProfileScoreControls = () => {
     else setWeight((prev) => ({ ...prev, [e.target.name]: safeEntry }));
   };
   const handleReset = () => {
-    const count = Object.values(disabled).filter((v) => !v).length;
-    const { obj } = Object.entries(disabled).reduce(
-      (acc, [key, value], i) => {
-        const c = Math.trunc(100 / count);
-        if (value) {
-          acc.obj[key] = 0;
-        } else if (i === count - 1) {
-          acc.obj[key] = acc.total;
-          acc.total = 0;
-        } else {
-          acc.obj[key] = c;
-          acc.total -= c;
-        }
-        return acc;
-      },
-      {
-        obj: {} as ScoreWheelParams,
-        total: 100,
-      },
-    );
+    const obj = distributeScoreWeights(job.draft.jd_json);
     setWeight(obj);
   };
   const handleSubmit = () => {
@@ -149,87 +131,126 @@ const ProfileScoreControls = () => {
     }
   }, Object.values(safeWeights));
   return (
-    <ScoreWeightage
-      onClickEqualize={{ onClick: () => handleReset() }}
-      slotScoreWheel={
-        <>
-          <Stack
-            direction={'row'}
-            width={'60%'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            gap={'40px'}
-          >
-            <ScoreWheel id={'ScoreWheelSetting'} parameter_weights={weights} />
-          </Stack>
-        </>
-      }
-      slotScorePercent={
-        <>
-          <ScorePercentage
-            colorPropsBg={{
-              style: {
-                backgroundColor: '#30AABC',
-              },
-            }}
-            textTitle={'Experience'}
-            slotInputPercent={
-              <>
-                <UITextField
-                  name='experience'
-                  type='number'
-                  width='60px'
-                  value={weights.experience}
-                  onChange={(e) => handleChange(e)}
-                  disabled={disabled.experience}
-                />
-              </>
-            }
-          />
-          <ScorePercentage
-            colorPropsBg={{
-              style: {
-                backgroundColor: '#886BD8',
-              },
-            }}
-            textTitle={'Skills'}
-            slotInputPercent={
-              <>
-                <UITextField
-                  name='skills'
-                  type='number'
-                  width='60px'
-                  value={weights.skills}
-                  onChange={(e) => handleChange(e)}
-                  disabled={disabled.skills}
-                />
-              </>
-            }
-          />
-          <ScorePercentage
-            colorPropsBg={{
-              style: {
-                backgroundColor: '#5D7DF5',
-              },
-            }}
-            textTitle={'Education'}
-            slotInputPercent={
-              <>
-                <UITextField
-                  name='education'
-                  type='number'
-                  width='60px'
-                  value={weights.education}
-                  onChange={(e) => handleChange(e)}
-                  disabled={disabled.education}
-                />
-              </>
-            }
-          />
-        </>
-      }
-    />
+    <Stack
+      style={{
+        opacity: job.scoring_param_status === 'loading' ? 0.4 : 1,
+        pointerEvents: job.scoring_param_status === 'loading' ? 'none' : 'auto',
+      }}
+    >
+      <ScoreWeightage
+        onClickEqualize={{ onClick: () => handleReset() }}
+        slotScoreWheel={
+          <>
+            <Stack
+              direction={'row'}
+              width={'60%'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              gap={'40px'}
+            >
+              <ScoreWheel
+                id={'ScoreWheelSetting'}
+                parameter_weights={weights}
+              />
+            </Stack>
+          </>
+        }
+        slotScorePercent={
+          <>
+            <ScorePercentage
+              colorPropsBg={{
+                style: {
+                  backgroundColor: '#30AABC',
+                },
+              }}
+              textTitle={'Experience'}
+              slotInputPercent={
+                <>
+                  <UITextField
+                    name='experience'
+                    type='number'
+                    width='60px'
+                    value={weights.experience}
+                    onChange={(e) => handleChange(e)}
+                    disabled={disabled.experience}
+                  />
+                </>
+              }
+            />
+            <ScorePercentage
+              colorPropsBg={{
+                style: {
+                  backgroundColor: '#886BD8',
+                },
+              }}
+              textTitle={'Skills'}
+              slotInputPercent={
+                <>
+                  <UITextField
+                    name='skills'
+                    type='number'
+                    width='60px'
+                    value={weights.skills}
+                    onChange={(e) => handleChange(e)}
+                    disabled={disabled.skills}
+                  />
+                </>
+              }
+            />
+            <ScorePercentage
+              colorPropsBg={{
+                style: {
+                  backgroundColor: '#5D7DF5',
+                },
+              }}
+              textTitle={'Education'}
+              slotInputPercent={
+                <>
+                  <UITextField
+                    name='education'
+                    type='number'
+                    width='60px'
+                    value={weights.education}
+                    onChange={(e) => handleChange(e)}
+                    disabled={disabled.education}
+                  />
+                </>
+              }
+            />
+          </>
+        }
+      />
+    </Stack>
   );
+};
+
+export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
+  const disabled = {
+    experience: (jd_json?.rolesResponsibilities ?? []).length === 0,
+    skills: (jd_json?.skills ?? []).length === 0,
+    education: (jd_json?.educations ?? []).length === 0,
+  };
+  const count = Object.values(disabled).filter((v) => !v).length;
+  const { obj } = Object.entries(disabled).reduce(
+    (acc, [key, value], i) => {
+      const c = Math.trunc(100 / count);
+      if (value) {
+        acc.obj[key] = 0;
+      } else if (i === count - 1) {
+        acc.obj[key] = acc.total;
+        acc.total = 0;
+      } else {
+        acc.obj[key] = c;
+        acc.total -= c;
+      }
+      return acc;
+    },
+    {
+      obj: {} as ScoreWheelParams,
+      total: 100,
+    },
+  );
+  return obj;
 };
 
 const ProfileScore = () => {
@@ -253,39 +274,36 @@ const ProfileScore = () => {
 };
 
 const Banners = () => {
-  const { experimental_handleGenerateJd } = useJobs();
-  const {
-    descriptionChanged,
-    scoringPoll,
-    validDescription,
-    job,
-    dismiss,
-    setDismiss,
-  } = useJobDetails();
-  if (scoringPoll.status === '')
-    if (!validDescription)
-      return (
-        <BannerWarning
-          isDismiss={false}
-          isButton={false}
-          textBanner={'Job description is unavailable'}
-        />
-      );
-  if (!scoringPoll?.data?.scoring_param_status)
+  const { experimental_handleRegenerateJd } = useJobs();
+  const { status, job, dismiss, setDismiss } = useJobDetails();
+  if (status.loading) return <></>;
+  if (status.description_error)
+    return (
+      <BannerWarning
+        isDismiss={false}
+        isButton={false}
+        textBanner={'Job description is unavailable'}
+      />
+    );
+  if (status.generation_error)
     return (
       <BannerAlert
         textBanner={'Failed to generate profile score'}
         textButton={'Retry'}
-        onClickButton={{ onClick: () => experimental_handleGenerateJd(job.id) }}
+        onClickButton={{
+          onClick: () => experimental_handleRegenerateJd(job),
+        }}
       />
     );
-  if (descriptionChanged)
+  if (status.description_changed)
     return dismiss ? (
       <></>
     ) : (
       <BannerWarning
         onClickDismiss={{ onClick: () => setDismiss(true) }}
-        onClickButton={{ onClick: () => experimental_handleGenerateJd(job.id) }}
+        onClickButton={{
+          onClick: () => experimental_handleRegenerateJd(job),
+        }}
       />
     );
   return <></>;

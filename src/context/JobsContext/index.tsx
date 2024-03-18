@@ -16,7 +16,8 @@ export const initialJobContext = {
   handleGetJob: undefined,
   experimental_handleGenerateJd: undefined,
   handleJobRefresh: undefined,
-  initialLoad: false
+  experimental_handleRegenerateJd: undefined,
+  initialLoad: false,
 };
 
 const JobsContext = createContext(initialJobContext);

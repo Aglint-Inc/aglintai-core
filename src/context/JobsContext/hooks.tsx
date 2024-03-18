@@ -38,7 +38,7 @@ const useJobActions = () => {
     if (recruiter) {
       try {
         const data = await jobCreate(newJob);
-        experimental_handleGenerateJd(data.id);
+        await experimental_handleGenerateJd(data.id);
         return data;
       } catch {
         //
@@ -112,9 +112,15 @@ const useJobActions = () => {
     }
   };
 
-  const experimental_handleGenerateJd = (jobId: string) => {
+  const experimental_handleGenerateJd = async (jobId: string) => {
     handleGenerateJd(jobId);
     handleJobRefresh(jobId);
+  };
+
+  const experimental_handleRegenerateJd = async (job: JobTypeDashboard) => {
+    handleUIJobUpdate({ ...job, scoring_param_status: 'loading' });
+    await handleGenerateJd(job.id);
+    handleJobRefresh(job.id);
   };
 
   const handleGetJob = (jobId: string) => {
@@ -134,6 +140,7 @@ const useJobActions = () => {
     handleJobRefresh,
     handleJobPublish,
     experimental_handleGenerateJd,
+    experimental_handleRegenerateJd,
     initialLoad,
   };
 
