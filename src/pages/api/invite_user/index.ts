@@ -64,7 +64,7 @@ export default async function handler(
 
           if (errorRecUser) throw new Error(error.message);
 
-          await supabase
+          const { error: relationError } = await supabase
             .from('recruiter_relation')
             .insert({
               recruiter_id: companyId,
@@ -73,14 +73,23 @@ export default async function handler(
               created_by: id
             })
             .select('*');
-
-          await supabase.auth
-            .resetPasswordForEmail(email, {
-              redirectTo
-            })
-            .then(({ error }) => {
-              if (error) throw new Error(error.message);
+          if (relationError) {
+            return res.status(200).send({
+              created: null,
+              error: 'Inserting in user relation failed!'
             });
+          }
+
+          const { error: resetEmail } =
+            await supabase.auth.resetPasswordForEmail(email, {
+              redirectTo
+            });
+          if (resetEmail) {
+            return res.status(200).send({
+              created: null,
+              error: 'Sending reset password failed!'
+            });
+          }
 
           return res.status(200).send({
             created: true,
