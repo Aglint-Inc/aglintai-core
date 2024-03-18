@@ -262,44 +262,44 @@ function InterviewerLevelSettings({
                       Get timezone automatically
                     </Typography>
                   </Stack>
-                  {!isTimeZone && (
-                    <Autocomplete
-                      disableClearable
-                      options={timeZones}
-                      value={selectedTimeZone}
-                      onChange={(event, value) => {
-                        if (value) {
-                          setSelectedTimeZone(value);
-                        }
-                      }}
-                      autoComplete={false}
-                      getOptionLabel={(option) => option.label}
-                      renderOption={(props, option) => {
-                        return (
-                          <li {...props}>
-                            <Typography variant='body2' color={'#000'}>
-                              {option.label}
-                            </Typography>
-                          </li>
-                        );
-                      }}
-                      renderInput={(params) => {
-                        return (
-                          <UITextField
-                            rest={{ ...params }}
-                            labelSize='medium'
-                            // fullWidth
-                            label=''
-                            placeholder='Ex. Healthcare'
-                            InputProps={{
-                              ...params.InputProps,
-                              autoComplete: 'new-password'
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                  )}
+
+                  <Autocomplete
+                    disabled={isTimeZone}
+                    disableClearable
+                    options={timeZones}
+                    value={selectedTimeZone}
+                    onChange={(event, value) => {
+                      if (value) {
+                        setSelectedTimeZone(value);
+                      }
+                    }}
+                    autoComplete={false}
+                    getOptionLabel={(option) => option.label}
+                    renderOption={(props, option) => {
+                      return (
+                        <li {...props}>
+                          <Typography variant='body2' color={'#000'}>
+                            {option.label}
+                          </Typography>
+                        </li>
+                      );
+                    }}
+                    renderInput={(params) => {
+                      return (
+                        <UITextField
+                          rest={{ ...params }}
+                          labelSize='medium'
+                          // fullWidth
+                          label=''
+                          placeholder='Ex. Healthcare'
+                          InputProps={{
+                            ...params.InputProps,
+                            autoComplete: 'new-password'
+                          }}
+                        />
+                      );
+                    }}
+                  />
                 </Stack>
               }
               isKeywordVisible={false}

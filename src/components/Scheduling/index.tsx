@@ -124,7 +124,7 @@ function SchedulingMainComp() {
                   'recruiter',
                   'scheduler',
                 ])
-              ) : router.query.tab == 'allInterviewers' ? (
+              ) : router.query.tab == 'interviewers' ? (
                 allowAction(<InterviewTab />, [
                   'admin',
                   'recruiter',
