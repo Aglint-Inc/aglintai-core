@@ -13,7 +13,9 @@ import { Database } from '@/src/types/schema';
 
 import { jdJson } from './utils';
 
-export const maxDuration = 300;
+export const config = {
+  maxDuration: 250,
+};
 
 const handler = async (
   req: NextApiRequest,
@@ -64,7 +66,7 @@ const handler = async (
   const timeoutPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       reject(new Error('Timed out'));
-    }, 280000);
+    }, 200000);
   });
   try {
     await supabase
