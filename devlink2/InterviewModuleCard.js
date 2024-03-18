@@ -39,7 +39,7 @@ export function InterviewModuleCard({
         </_Builtin.Block>
         {isObjectiveVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600", "one-line-clamp")}
+            className={_utils.cx(_styles, "text-grey-600", "two-line-clamp")}
             tag="div"
           >
             {textObjective}

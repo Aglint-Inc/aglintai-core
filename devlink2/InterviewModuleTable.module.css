@@ -14,7 +14,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 35% 21.6% 21.6% 21.6%;
   grid-template-rows: auto;
 
   border-top: 1px solid #e9ebed;
