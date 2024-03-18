@@ -17,7 +17,7 @@ import {
   ScoreSetting,
   ScoreWeightage,
 } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { Breadcrum, PageLayout, Skeleton } from '@/devlink2';
 import {
   BannerAlert,
   BannerWarning,
@@ -239,7 +239,7 @@ const ProfileScore = () => {
       slotBanner={<Banners />}
       slotScoreCardDetails={
         job.scoring_param_status === 'loading' ? (
-          <ProfileScoreSkeleton />
+          <ProfileScoreSkeleton slotSkeleton={<Skeleton />} />
         ) : (
           <>
             <Section type='experience' />

@@ -2,7 +2,7 @@
 import {
   type CookieOptions,
   createServerClient,
-  serialize
+  serialize,
 } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
@@ -13,13 +13,11 @@ import { Database } from '@/src/types/schema';
 
 import { jdJson } from './utils';
 
-export const config = {
-  maxDuration: 300
-};
+export const maxDuration = 300;
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<JobProfileScoreApi['response']>
+  res: NextApiResponse<JobProfileScoreApi['response']>,
 ) => {
   // eslint-disable-next-line no-unused-vars
   const supabase = createServerClient<Database>(
@@ -35,9 +33,9 @@ const handler = async (
         },
         remove(name: string, options: CookieOptions) {
           res.setHeader('Set-Cookie', serialize(name, '', options));
-        }
-      }
-    }
+        },
+      },
+    },
   );
   const { job_id } = req.body as JobProfileScoreApi['request'];
   const { data } = await supabase
@@ -58,8 +56,8 @@ const handler = async (
         message: 'No description provided',
         code: '400',
         details: null,
-        hint: null
-      }
+        hint: null,
+      },
     });
     return;
   }
@@ -79,7 +77,7 @@ const handler = async (
       `Job Role : ${job.job_title}
 
 ${job.description}
-`
+`,
     );
     const json = await Promise.race([jsonPromise, timeoutPromise]);
     const j: JdJsonType = {
@@ -88,17 +86,17 @@ ${job.description}
       rolesResponsibilities: arrItemToReactArr([
         ...json.roles,
         ...json.responsibilities,
-        ...json.requirements
+        ...json.requirements,
       ]),
       skills: arrItemToReactArr([...json.skills]),
-      educations: arrItemToReactArr([...json.educations])
+      educations: arrItemToReactArr([...json.educations]),
     };
     await supabase
       .from('public_jobs')
       .update({
         jd_json: j,
         draft: { ...(job.draft as any), jd_json: j },
-        scoring_param_status: 'success'
+        scoring_param_status: 'success',
       })
       .eq('id', job_id);
   } catch (e) {
