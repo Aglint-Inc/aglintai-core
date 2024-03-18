@@ -6,17 +6,17 @@ import { AddFilter, AllInterviewFilter } from '@/devlink2';
 import {
   FilterType,
   setFilterVisible,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../store';
 
 const FILTERS_LENGTH = Object.keys(FilterType).length;
 
 function AddFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
   const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible
+    (state) => state.filterVisible,
   );
 
   const handleClose = () => {
@@ -43,7 +43,7 @@ function AddFilterComp() {
             onClickAddFilter={{
               onClick: (e) => {
                 handleClick(e);
-              }
+              },
             }}
           />
         )}
@@ -55,13 +55,13 @@ function AddFilterComp() {
           onClose={handleClose}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left'
+            horizontal: 'left',
           }}
           transformOrigin={{ vertical: -10, horizontal: 0 }}
           sx={{
             '& .MuiPopover-paper': {
-              border: 'none'
-            }
+              border: 'none',
+            },
           }}
         >
           <AllInterviewFilter
@@ -71,24 +71,22 @@ function AddFilterComp() {
             }
             isDurationVisible={false}
             isDataRangeVisible={!filterVisible.includes(FilterType.dateRange)}
-            isInterviewPanelVisible={
-              !filterVisible.includes(FilterType.interviewPanels)
-            }
+            isInterviewPanelVisible={false}
             isRelatedJobVisible={
               !filterVisible.includes(FilterType.relatedJobs)
             }
             onClickRelatedJob={{
-              onClick: () => addFilter(FilterType.relatedJobs)
+              onClick: () => addFilter(FilterType.relatedJobs),
             }}
             onClickStatus={{ onClick: () => addFilter(FilterType.status) }}
             onClickScheduleType={{
-              onClick: () => addFilter(FilterType.scheduleType)
+              onClick: () => addFilter(FilterType.scheduleType),
             }}
             onClickInterviewPanel={{
-              onClick: () => addFilter(FilterType.interviewPanels)
+              onClick: () => addFilter(FilterType.interviewPanels),
             }}
             onClickDateRange={{
-              onClick: () => addFilter(FilterType.dateRange)
+              onClick: () => addFilter(FilterType.dateRange),
             }}
           />
         </Popover>

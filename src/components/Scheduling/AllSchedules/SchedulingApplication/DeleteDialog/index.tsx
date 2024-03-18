@@ -6,32 +6,28 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import {
   setSelectedApplication,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../store';
-import {
-  setApplicationList,
-  setIsCancelOpen,
-  useInterviewSchedulingStore
-} from '../../store';
+import { setIsCancelOpen, useInterviewSchedulingStore } from '../../store';
 
 function DeleteScheduleDialog() {
   const isCancelOpen = useInterviewSchedulingStore(
-    (state) => state.isCancelOpen
-  );
-  const applicationList = useInterviewSchedulingStore(
-    (state) => state.applicationList
+    (state) => state.isCancelOpen,
   );
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
 
   const onClickCancel = async () => {
     try {
       if (selectedApplication.schedule.id) {
-        const { error: errMeet } = await supabase
+        const { data, error: errMeet } = await supabase
           .from('interview_meeting')
-          .delete()
-          .eq('interview_schedule_id', selectedApplication.schedule.id);
+          .update({
+            status: 'cancelled',
+          })
+          .eq('interview_schedule_id', selectedApplication.schedule.id)
+          .select();
         if (errMeet) {
           throw new Error(errMeet.message);
         }
@@ -42,26 +38,14 @@ function DeleteScheduleDialog() {
         setIsCancelOpen(false);
         setSelectedApplication({
           ...selectedApplication,
-          schedule: { ...selectedApplication.schedule, status: 'cancelled' }
+          schedule: { ...selectedApplication.schedule, status: 'cancelled' },
         });
-        applicationList.filter(
-          (app) => app.applications.id === selectedApplication.applications.id
-        )[0].schedule.status = 'cancelled';
-        setApplicationList([...applicationList]);
 
-        const { data, error } = await supabase
-          .from('interview_meeting')
-          .select()
-          .eq('interview_schedule_id', selectedApplication.schedule.id);
-
-        if (error) {
-          throw new Error(error.message);
-        }
         const allMeeting = data;
         allMeeting.forEach(async (meet) => {
           if (meet.meeting_json)
             axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json
+              calender_event: meet.meeting_json,
             });
         });
       }
@@ -76,8 +60,8 @@ function DeleteScheduleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isCancelOpen}
       onClose={() => {
@@ -93,12 +77,12 @@ function DeleteScheduleDialog() {
         onClickCancel={{
           onClick: () => {
             setIsCancelOpen(false);
-          }
+          },
         }}
         onClickDelete={{
           onClick: () => {
             onClickCancel();
-          }
+          },
         }}
         buttonText={'Cancel Schedule'}
       />

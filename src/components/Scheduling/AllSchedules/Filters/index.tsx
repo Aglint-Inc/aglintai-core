@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DateRangeFilterComp from './DateRangeFilter';
-import FilterInterviewPanel from './FilterInterviewPanel';
+import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
 import FilterScheduleType from './FilterScheduleType';
 import FilterSearchField from './FilterSearchField';
@@ -10,7 +10,7 @@ import { FilterType, useInterviewSchedulingStore } from '../store';
 
 function AllFilters() {
   const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible
+    (state) => state.filterVisible,
   );
   return (
     <>
@@ -20,7 +20,7 @@ function AllFilters() {
           case FilterType.relatedJobs:
             return <FilterJob key={filterType} />;
           case FilterType.interviewPanels:
-            return <FilterInterviewPanel key={filterType} />;
+            return <FilterInterviewModule key={filterType} />;
           case FilterType.dateRange:
             return <DateRangeFilterComp key={filterType} />;
           case FilterType.scheduleType:

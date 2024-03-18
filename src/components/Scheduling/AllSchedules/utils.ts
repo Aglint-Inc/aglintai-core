@@ -30,7 +30,7 @@ export const mailHandler = async ({
   company_logo,
   candidate_name,
   schedule_name,
-  mail
+  mail,
 }: MailHandlerparam) => {
   try {
     await axios
@@ -51,12 +51,12 @@ export const mailHandler = async ({
             <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">Pick Your Slot</a>
             <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© 2023 Aglint Inc. All Rights Reserved.</span> </p>
         </div>
-    </body>`
+    </body>`,
       })
       .then((res) =>
         res.status === 200 && res.data.data === 'Email sent'
           ? true
-          : toast.error('Unable to send mail. Please try again later.')
+          : toast.error('Unable to send mail. Please try again later.'),
       );
   } catch (e) {
     toast.error('Unable to send mail. Please try again later.');
@@ -65,7 +65,7 @@ export const mailHandler = async ({
 
 export const getPaginationDB = async ({
   recruiter,
-  filter
+  filter,
 }: {
   recruiter: { id: string };
   filter: {
@@ -83,7 +83,7 @@ export const getPaginationDB = async ({
       status_filter: filter.status?.length > 0 ? filter.status : null,
       text_search_filter: filter.textSearch,
       sch_type: filter.scheduleType?.length > 0 ? filter.scheduleType : null,
-      job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null
+      job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null,
     });
 
     if (error) {
@@ -99,11 +99,11 @@ export const getPaginationDB = async ({
 const TYPE_LABELS = {
   google_meet: 'Google Meet',
   in_person_meeting: 'In Person Meeting',
-  phone_call: 'Phone Call'
+  phone_call: 'Phone Call',
 };
 
 export const getScheduleType = (
-  schedule_type: InterviewScheduleTypeDB['schedule_type']
+  schedule_type: InterviewScheduleTypeDB['schedule_type'],
 ) => TYPE_LABELS[schedule_type] || 'Zoom';
 
 export function convertNumberToWord(number) {
@@ -117,7 +117,7 @@ export function convertNumberToWord(number) {
     'six',
     'seven',
     'eight',
-    'nine'
+    'nine',
   ];
   const teens = [
     'ten',
@@ -129,7 +129,7 @@ export function convertNumberToWord(number) {
     'sixteen',
     'seventeen',
     'eighteen',
-    'nineteen'
+    'nineteen',
   ];
   const tens = [
     '',
@@ -141,7 +141,7 @@ export function convertNumberToWord(number) {
     'sixty',
     'seventy',
     'eighty',
-    'ninety'
+    'ninety',
   ];
 
   if (number === 0) return 'zero';
@@ -186,3 +186,27 @@ export function transformData(inputData) {
 
   return result;
 }
+
+export const getScheduleBgcolor = (
+  status: InterviewScheduleTypeDB['status'],
+) => {
+  return status === 'completed'
+    ? '#D1E8DF80'
+    : status === 'confirmed'
+      ? '#CEE2F2'
+      : status === 'pending'
+        ? '#FFEDC2'
+        : '#FFF0F1';
+};
+
+export const getScheduleTextcolor = (
+  status: InterviewScheduleTypeDB['status'],
+) => {
+  return status === 'completed'
+    ? '#2F3941'
+    : status === 'confirmed'
+      ? '#0F3554'
+      : status === 'pending'
+        ? '#703815'
+        : '#681219';
+};

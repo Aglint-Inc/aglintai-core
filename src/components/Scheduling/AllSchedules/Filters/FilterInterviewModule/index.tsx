@@ -3,23 +3,24 @@ import React, { useEffect } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {
   FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../store';
 
-function FilterInterviewPanel() {
+function FilterInterviewModule() {
+  const { allModules } = useSchedulingContext();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
-  const allModules = [];
   const filter = useInterviewSchedulingStore((state) => state.filter);
 
   const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible
+    (state) => state.filterVisible,
   );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,7 +69,7 @@ function FilterInterviewPanel() {
         }
         isDotVisible={filter.panel_ids.length > 0}
         onClickStatus={{
-          onClick: handleClick
+          onClick: handleClick,
         }}
         textLabel={'Interview Panels'}
         slotRightIcon={
@@ -96,45 +97,45 @@ function FilterInterviewPanel() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
-            minWidth: '176px'
-          }
+            minWidth: '176px',
+          },
         }}
       >
         <FilterDropdown
           slotOption={allModules?.map((mod) => {
             return (
               <Stack
-                key={mod.interview_modules.id}
+                key={mod.id}
                 direction={'row'}
                 sx={{ alignItems: 'center' }}
                 spacing={1}
               >
                 <Checkbox
                   isChecked={filter.panel_ids.includes(
-                    mod.interview_modules.id
+                    mod.id,
                   )}
                   onClickCheck={{
                     onClick: () => {
-                      handleFilterClick(mod.interview_modules.id);
-                    }
+                      handleFilterClick(mod.id);
+                    },
                   }}
                 />
                 <Typography
                   sx={{
                     fontSize: '14px',
                     fontWeight: 600,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
                   }}
-                  onClick={() => handleFilterClick(mod.interview_modules.id)}
+                  onClick={() => handleFilterClick(mod.id)}
                 >
-                  {mod.interview_modules.name}
+                  {mod.name}
                 </Typography>
               </Stack>
             );
@@ -143,14 +144,14 @@ function FilterInterviewPanel() {
             onClick: () => {
               setFilter({ panel_ids: [] });
               setFilterVisible(
-                filterVisible.filter((f) => f !== FilterType.interviewPanels)
+                filterVisible.filter((f) => f !== FilterType.interviewPanels),
               );
-            }
+            },
           }}
           onClickReset={{
             onClick: () => {
               setFilter({ panel_ids: [] });
-            }
+            },
           }}
         />
       </Popover>
@@ -158,4 +159,4 @@ function FilterInterviewPanel() {
   );
 }
 
-export default FilterInterviewPanel;
+export default FilterInterviewModule;

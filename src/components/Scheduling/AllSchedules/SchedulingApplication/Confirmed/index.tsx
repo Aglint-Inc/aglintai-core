@@ -6,7 +6,7 @@ import {
   AvailableOptionCardDate,
   OptionAvailable,
   OptionAvailableCard,
-  ScheduleInfoConfirmed
+  ScheduleInfoConfirmed,
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -17,11 +17,11 @@ import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 
 function ConfirmedComp() {
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const members = useSchedulingApplicationStore((state) => state.members);
   const isViewProfileOpen = useSchedulingApplicationStore(
-    (state) => state.isViewProfileOpen
+    (state) => state.isViewProfileOpen,
   );
 
   return (
@@ -37,9 +37,15 @@ function ConfirmedComp() {
       )}
 
       <ScheduleInfoConfirmed
-        textCompleted={`This Schedule has been completed on ${dayjs(
-          selectedApplication.schedule.completion_time
-        ).format('DD MMM YYYY')}`}
+        textCompleted={
+          selectedApplication.schedule?.confirmed_option?.plans
+            ? `This Schedule has been completed on ${dayjs(
+                selectedApplication.schedule.confirmed_option.plans[
+                  selectedApplication.schedule.confirmed_option.plans.length - 1
+                ].end_time,
+              ).format('DD MMM YYYY')}`
+            : ''
+        }
         isScheduleStatusVisible={
           selectedApplication.schedule.status === 'confirmed'
         }
@@ -52,20 +58,20 @@ function ConfirmedComp() {
         onClickCancel={{
           onClick: () => {
             setIsCancelOpen(true);
-          }
+          },
         }}
         onClickViewProfile={{
           onClick: () => {
             setIsViewProfileOpen(true);
-          }
+          },
         }}
         isScheduleInfoVisible={Boolean(
-          selectedApplication.schedule.confirmed_option?.transformedPlan
+          selectedApplication.schedule.confirmed_option?.transformedPlan,
         )}
         onClickReschedule={{
           onClick: () => {
             setIsRescheduleOpen(true);
-          }
+          },
         }}
         slotScheduleInfoCard={
           selectedApplication.schedule.confirmed_option?.transformedPlan && (
@@ -84,12 +90,12 @@ function ConfirmedComp() {
                           const allMembers = [
                             ...pl.selectedIntervs,
                             ...pl.revShadowIntervs,
-                            ...pl.shadowIntervs
+                            ...pl.shadowIntervs,
                           ];
                           return (
                             <OptionAvailable
                               textTime={`${dayjs(pl.start_time).format(
-                                'hh:mm A'
+                                'hh:mm A',
                               )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
                               textTitle={pl.module_name}
                               key={ind}
@@ -100,13 +106,13 @@ function ConfirmedComp() {
                                   direction={'row'}
                                   sx={{
                                     flexWrap: 'wrap',
-                                    gap: 2.5
+                                    gap: 2.5,
                                   }}
                                 >
                                   {allMembers?.map((int) => {
                                     const user = members.find(
                                       (member) =>
-                                        member.user_id === int.interv_id
+                                        member.user_id === int.interv_id,
                                     );
                                     if (!user) return null;
                                     return (
@@ -115,13 +121,13 @@ function ConfirmedComp() {
                                         direction={'row'}
                                         spacing={1}
                                         sx={{
-                                          textWrap: 'nowrap'
+                                          textWrap: 'nowrap',
                                         }}
                                       >
                                         <MuiAvatar
                                           level={getFullName(
                                             user.first_name,
-                                            user.last_name
+                                            user.last_name,
                                           )}
                                           src={user?.profile_image}
                                           variant={'circular'}
@@ -135,7 +141,7 @@ function ConfirmedComp() {
                                         >
                                           {getFullName(
                                             user.first_name,
-                                            user.last_name
+                                            user.last_name,
                                           )}
                                         </Typography>
                                       </Stack>
@@ -149,14 +155,14 @@ function ConfirmedComp() {
                       />
                     );
                   });
-                }
+                },
               )}
             />
           )
         }
         textName={getFullName(
           selectedApplication.candidates.first_name,
-          selectedApplication.candidates.last_name
+          selectedApplication.candidates.last_name,
         )}
         textRole={selectedApplication.public_jobs.job_title}
         textLocation={selectedApplication.public_jobs.location || '--'}
@@ -164,7 +170,7 @@ function ConfirmedComp() {
           <MuiAvatar
             level={getFullName(
               selectedApplication?.candidates.first_name,
-              selectedApplication?.candidates.last_name
+              selectedApplication?.candidates.last_name,
             )}
             src={selectedApplication?.candidates.avatar}
             variant={'circular'}

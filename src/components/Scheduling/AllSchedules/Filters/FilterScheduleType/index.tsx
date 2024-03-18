@@ -9,16 +9,16 @@ import {
   FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../store';
 
 function FilterScheduleType() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
   const filter = useInterviewSchedulingStore((state) => state.filter);
   const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible
+    (state) => state.filterVisible,
   );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,11 +33,11 @@ function FilterScheduleType() {
   const id = open ? 'filter-schedule-type' : undefined;
 
   const handleFilterClick = (
-    scheduleType: InterviewScheduleTypeDB['schedule_type']
+    scheduleType: InterviewScheduleTypeDB['schedule_type'],
   ) => {
     if (filter.scheduleType.includes(scheduleType)) {
       setFilter({
-        scheduleType: filter.scheduleType.filter((s) => s !== scheduleType)
+        scheduleType: filter.scheduleType.filter((s) => s !== scheduleType),
       });
     } else {
       setFilter({ scheduleType: [...filter.scheduleType, scheduleType] });
@@ -46,7 +46,7 @@ function FilterScheduleType() {
 
   const renderScheduleType = (
     scheduleType: InterviewScheduleTypeDB['schedule_type'],
-    label: string
+    label: string,
   ) => {
     return (
       <Stack direction={'row'} sx={{ alignItems: 'center' }} spacing={1}>
@@ -55,7 +55,7 @@ function FilterScheduleType() {
           onClickCheck={{
             onClick: () => {
               handleFilterClick(scheduleType);
-            }
+            },
           }}
         />
         <Typography
@@ -63,7 +63,7 @@ function FilterScheduleType() {
           sx={{
             fontSize: '14px',
             fontWeight: 600,
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
           onClick={() => handleFilterClick(scheduleType)}
         >
@@ -95,7 +95,7 @@ function FilterScheduleType() {
         }
         textLabel={'Schedule Type'}
         onClickStatus={{
-          onClick: handleClick
+          onClick: handleClick,
         }}
         slotRightIcon={
           <Stack>
@@ -121,15 +121,15 @@ function FilterScheduleType() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
-            minWidth: '176px'
-          }
+            minWidth: '176px',
+          },
         }}
       >
         <FilterDropdown
@@ -145,14 +145,14 @@ function FilterScheduleType() {
             onClick: () => {
               setFilter({ scheduleType: [] });
               setFilterVisible(
-                filterVisible.filter((f) => f !== FilterType.scheduleType)
+                filterVisible.filter((f) => f !== FilterType.scheduleType),
               );
-            }
+            },
           }}
           onClickReset={{
             onClick: () => {
               setFilter({ scheduleType: [] });
-            }
+            },
           }}
         />
       </Popover>

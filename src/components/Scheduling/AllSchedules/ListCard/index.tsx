@@ -7,14 +7,18 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from './Icon';
 import { ApplicationList } from '../store';
-import { getScheduleType } from '../utils';
+import {
+  getScheduleBgcolor,
+  getScheduleTextcolor,
+  getScheduleType,
+} from '../utils';
 
 function ListCardInterviewSchedule({
   app,
   onClickCard,
   slotCheckbox = <></>,
   isJobDasboard = false,
-  isSelected = false
+  isSelected = false,
 }: {
   app: ApplicationList;
   // eslint-disable-next-line no-unused-vars
@@ -36,8 +40,8 @@ function ListCardInterviewSchedule({
             style: {
               gridTemplateColumns: isJobDasboard
                 ? '25% 15% 15% 20%'
-                : '25% 15% 20% 17% 23%'
-            }
+                : '25% 15% 20% 17% 23%',
+            },
           }}
           isSchedulerTable={!isJobDasboard}
           isCheckBoxVisible={isJobDasboard}
@@ -48,7 +52,7 @@ function ListCardInterviewSchedule({
               <MuiAvatar
                 level={getFullName(
                   app.candidates.first_name,
-                  app.candidates.last_name
+                  app.candidates.last_name,
                 )}
                 src={app.candidates.avatar}
                 variant={'circular'}
@@ -63,31 +67,15 @@ function ListCardInterviewSchedule({
           }
           colorPropsBg={{
             style: {
-              backgroundColor: app.schedule
-                ? app.schedule.status == 'completed'
-                  ? '#D1E8DF80'
-                  : app.schedule.status == 'confirmed'
-                    ? '#CEE2F2'
-                    : app.schedule.status == 'pending'
-                      ? '#FFEDC2'
-                      : '#FFF0F1'
-                : '#FFF0F1'
-            }
+              backgroundColor: getScheduleBgcolor(app.schedule?.status),
+            },
           }}
           colorPropsText={{
             style: {
-              color: app.schedule
-                ? app.schedule.status == 'completed'
-                  ? '#2F3941'
-                  : app.schedule.status == 'confirmed'
-                    ? '#0F3554'
-                    : app.schedule.status == 'pending'
-                      ? '#703815'
-                      : '#681219'
-                : '#681219'
-            }
+              color: getScheduleTextcolor(app.schedule?.status),
+            },
           }}
-          textDuration={app.schedule ? `--` : '--'}
+          textDuration={'--'}
           textInterviewPanel={
             app?.schedule?.interview_plan?.filter((f) => !f.isBreak)?.length ||
             '--'
