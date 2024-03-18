@@ -38,6 +38,7 @@ import {
   WeeklyLimitType
 } from '@/src/components/Scheduling/Settings/types';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
+import { useImrQuery } from '@/src/pages/scheduling/interviewer/[member_id]';
 import toast from '@/src/utils/toast';
 
 let schedulingSettingObj = {};
@@ -145,6 +146,7 @@ function InterviewerLevelSettings({
       //   console.log('local timeZones', dayjs.tz.guess());
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
+      setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
       setSelectedDailyLimit({
         ...schedulingSettingData.interviewLoad.dailyLimit
       });
@@ -173,11 +175,14 @@ function InterviewerLevelSettings({
         schedulingKeyWords: {
           free: freeKeyWords,
           SoftConflicts: softConflictsKeyWords
-        }
+        },
+        isAutomaticTimezone: isTimeZone
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
-        updateSettings(schedulingSettingObj);
+        updateSettings(schedulingSettingObj).then(() => {
+          refetch();
+        });
       }
 
       changeValue = 'updating';
@@ -201,6 +206,7 @@ function InterviewerLevelSettings({
   }, []);
 
   const [isAvailability, setIsAvailability] = useState(true);
+  const { refetch } = useImrQuery();
   return (
     <Stack overflow={isOverflow ? 'auto' : 'visible'}>
       <UserLevelSettings
@@ -234,25 +240,21 @@ function InterviewerLevelSettings({
         slotTabContent={
           isAvailability ? (
             <ScheduleSettings
-              // onClickUpdateChanges={{
-              //   onClick: updateSettings,
-              // }}
-              // onClickDiscard={{
-              //   onClick: () => {
-              //     setReload(true);
-              //     discard();
-              //   },
-              // }}
               isTimeZoneToggleVisible={false}
-              // slotTimeZoneToggle={
-              //   <ToggleBtn isActive={isTimeZone} handleCheck={handleCheck} />
-              // }
               slotTimeZoneInput={
                 <Stack spacing={'10px'} width={420}>
                   <Stack alignItems={'center'} direction={'row'}>
                     <ToggleBtn
                       handleCheck={(e) => {
                         setIsTimeZone(e);
+                        if (e) {
+                          setSelectedTimeZone(
+                            timeZones.filter((item) =>
+                              item.label.includes(dayjs.tz.guess())
+                            )[0]
+                          );
+                        }
+                        refetch();
                       }}
                       isActive={isTimeZone}
                     />
@@ -260,48 +262,44 @@ function InterviewerLevelSettings({
                       Get timezone automatically
                     </Typography>
                   </Stack>
-                  <Autocomplete
-                    disableClearable
-                    options={timeZones}
-                    value={
-                      isTimeZone
-                        ? timeZones.filter((item) =>
-                            item.label.includes(dayjs.tz.guess())
-                          )[0] || selectedTimeZone
-                        : selectedTimeZone
-                    }
-                    onChange={(event, value) => {
-                      if (value) {
-                        setSelectedTimeZone(value);
-                      }
-                    }}
-                    autoComplete={false}
-                    getOptionLabel={(option) => option.label}
-                    renderOption={(props, option) => {
-                      return (
-                        <li {...props}>
-                          <Typography variant='body2' color={'#000'}>
-                            {option.label}
-                          </Typography>
-                        </li>
-                      );
-                    }}
-                    renderInput={(params) => {
-                      return (
-                        <UITextField
-                          rest={{ ...params }}
-                          labelSize='medium'
-                          // fullWidth
-                          label=''
-                          placeholder='Ex. Healthcare'
-                          InputProps={{
-                            ...params.InputProps,
-                            autoComplete: 'new-password'
-                          }}
-                        />
-                      );
-                    }}
-                  />
+                  {!isTimeZone && (
+                    <Autocomplete
+                      disableClearable
+                      options={timeZones}
+                      value={selectedTimeZone}
+                      onChange={(event, value) => {
+                        if (value) {
+                          setSelectedTimeZone(value);
+                        }
+                      }}
+                      autoComplete={false}
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(props, option) => {
+                        return (
+                          <li {...props}>
+                            <Typography variant='body2' color={'#000'}>
+                              {option.label}
+                            </Typography>
+                          </li>
+                        );
+                      }}
+                      renderInput={(params) => {
+                        return (
+                          <UITextField
+                            rest={{ ...params }}
+                            labelSize='medium'
+                            // fullWidth
+                            label=''
+                            placeholder='Ex. Healthcare'
+                            InputProps={{
+                              ...params.InputProps,
+                              autoComplete: 'new-password'
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  )}
                 </Stack>
               }
               isKeywordVisible={false}

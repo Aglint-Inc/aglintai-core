@@ -15,7 +15,12 @@ export function InterviewLoad({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Interview Load"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Interview Load"}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-500")}
             tag="div"

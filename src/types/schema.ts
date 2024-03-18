@@ -2139,6 +2139,7 @@ export type Database = {
           application_id: string
           candidate_email: string
           chat_history: Json[]
+          company_id: string | null
           created_at: string
           date_range: string[] | null
           job_id: string
@@ -2148,6 +2149,7 @@ export type Database = {
           application_id?: string
           candidate_email: string
           chat_history?: Json[]
+          company_id?: string | null
           created_at?: string
           date_range?: string[] | null
           job_id: string
@@ -2157,6 +2159,7 @@ export type Database = {
           application_id?: string
           candidate_email?: string
           chat_history?: Json[]
+          company_id?: string | null
           created_at?: string
           date_range?: string[] | null
           job_id?: string
@@ -2168,6 +2171,20 @@ export type Database = {
             columns: ["application_id"]
             isOneToOne: false
             referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
             referencedColumns: ["id"]
           }
         ]
@@ -2784,7 +2801,6 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           schedule: Json
-          interview_module: Json
           applications: Json
           candidates: Json
           file: Json

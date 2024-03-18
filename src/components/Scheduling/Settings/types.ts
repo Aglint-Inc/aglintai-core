@@ -1,4 +1,5 @@
 export type schedulingSettingType = {
+  isAutomaticTimezone: boolean;
   timeZone: {
     label: string;
     name: string;

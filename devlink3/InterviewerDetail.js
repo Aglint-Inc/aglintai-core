@@ -17,6 +17,10 @@ export function InterviewerDetail({
   slotInterviewerAvatar,
   slotTrainingModulesMoreMenu,
   slotQualifiedModulesMoreMenu,
+  onClickAddModulesTraining = {},
+  onClickAddInterviewModules = {},
+  isModuleTrainingVisible = true,
+  onClickInterviewSchedule = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewerdetail")} tag="div">
@@ -74,6 +78,7 @@ export function InterviewerDetail({
           <_Builtin.Block
             className={_utils.cx(_styles, "interviewer_setting_display")}
             tag="div"
+            {...onClickInterviewSchedule}
           >
             <_Builtin.Block
               className={_utils.cx(_styles, "timezone_flex")}
@@ -128,10 +133,35 @@ export function InterviewerDetail({
           >
             <_Builtin.Block tag="div">{"Interview Modules"}</_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-models-morement")}
+              className={_utils.cx(_styles, "div-block-760")}
               tag="div"
             >
-              {slotQualifiedModulesMoreMenu}
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "div-block-761",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickAddInterviewModules}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75%201.875V5.25H10.125C10.3438%205.25%2010.5234%205.32031%2010.6641%205.46094C10.8047%205.60156%2010.875%205.78125%2010.875%206C10.875%206.21875%2010.8047%206.39844%2010.6641%206.53906C10.5234%206.67969%2010.3438%206.75%2010.125%206.75H6.75V10.125C6.75%2010.3438%206.67969%2010.5234%206.53906%2010.6641C6.39844%2010.8047%206.21875%2010.875%206%2010.875C5.78125%2010.875%205.60156%2010.8047%205.46094%2010.6641C5.32031%2010.5234%205.25%2010.3438%205.25%2010.125V6.75H1.875C1.65625%206.75%201.47656%206.67969%201.33594%206.53906C1.19531%206.39844%201.125%206.21875%201.125%206C1.125%205.78125%201.19531%205.60156%201.33594%205.46094C1.47656%205.32031%201.65625%205.25%201.875%205.25H5.25V1.875C5.25%201.65625%205.32031%201.47656%205.46094%201.33594C5.60156%201.19531%205.78125%201.125%206%201.125C6.21875%201.125%206.39844%201.19531%206.53906%201.33594C6.67969%201.47656%206.75%201.65625%206.75%201.875Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-blue-500")}
+                  tag="div"
+                >
+                  {"Add"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot-models-morement")}
+                tag="div"
+              >
+                {slotQualifiedModulesMoreMenu}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -157,45 +187,72 @@ export function InterviewerDetail({
             )}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "modules_in_training")}
-          tag="div"
-        >
+        {isModuleTrainingVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "module_title_button")}
+            className={_utils.cx(_styles, "modules_in_training")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Modules in training"}</_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-models-morement")}
+              className={_utils.cx(_styles, "module_title_button")}
               tag="div"
             >
-              {slotTrainingModulesMoreMenu}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "module_flex")}
-            tag="div"
-          >
-            {slotTrainingModules ?? (
+              <_Builtin.Block tag="div">{"Modules in training"}</_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "genealempty")}
+                className={_utils.cx(_styles, "div-block-760")}
                 tag="div"
               >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex")}
-                  value="%3Csvg%20width%3D%2280%22%20height%3D%2260%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20opacity%3D%220.8%22%3E%0A%3Cpath%20d%3D%22M25.9984%2016.7C25.9984%2016.35%2025.8859%2016.0625%2025.6609%2015.8375C25.4359%2015.6125%2025.1484%2015.5%2024.7984%2015.5H20.4109C19.4109%2015.475%2018.5609%2015.125%2017.8609%2014.45L16.8484%2013.4375L17.7109%2012.6125L16.8484%2013.4375C16.6234%2013.2125%2016.3484%2013.1%2016.0234%2013.1H11.5984C11.2484%2013.1%2010.9609%2013.2125%2010.7359%2013.4375C10.5109%2013.6625%2010.3984%2013.95%2010.3984%2014.3V25.0625L12.3109%2020.225C12.6359%2019.5%2013.1984%2019.125%2013.9984%2019.1H28.9984C29.6234%2019.125%2030.1234%2019.3875%2030.4984%2019.8875C30.8234%2020.4125%2030.8859%2020.975%2030.6859%2021.575L28.2859%2027.575C27.9609%2028.3%2027.3984%2028.675%2026.5984%2028.7H23.5984H11.5984C10.9234%2028.675%2010.3609%2028.4375%209.91094%2027.9875C9.46094%2027.5375%209.22344%2026.975%209.19844%2026.3V14.3C9.22344%2013.625%209.46094%2013.0625%209.91094%2012.6125C10.3609%2012.1625%2010.9234%2011.925%2011.5984%2011.9H15.9859C16.6609%2011.9%2017.2359%2012.1375%2017.7109%2012.6125L18.6859%2013.5875C19.1609%2014.0625%2019.7359%2014.3%2020.4109%2014.3H24.7984C25.4734%2014.325%2026.0359%2014.5625%2026.4859%2015.0125C26.9359%2015.4625%2027.1734%2016.025%2027.1984%2016.7V17.9H25.9984V16.7ZM23.5984%2027.5H26.5984C26.8484%2027.5%2027.0359%2027.375%2027.1609%2027.125L29.5609%2021.125C29.6359%2020.925%2029.6109%2020.7375%2029.4859%2020.5625C29.3609%2020.3875%2029.1984%2020.3%2028.9984%2020.3H13.9984C13.7484%2020.3%2013.5609%2020.425%2013.4359%2020.675L11.0359%2026.675C10.9609%2026.875%2010.9859%2027.0625%2011.1109%2027.2375C11.2359%2027.4125%2011.3984%2027.5%2011.5984%2027.5H23.5984Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E"
-                />
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-gray-600")}
+                  className={_utils.cx(
+                    _styles,
+                    "div-block-761",
+                    "cursor-pointer"
+                  )}
+                  tag="div"
+                  {...onClickAddModulesTraining}
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "icons")}
+                    value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75%201.875V5.25H10.125C10.3438%205.25%2010.5234%205.32031%2010.6641%205.46094C10.8047%205.60156%2010.875%205.78125%2010.875%206C10.875%206.21875%2010.8047%206.39844%2010.6641%206.53906C10.5234%206.67969%2010.3438%206.75%2010.125%206.75H6.75V10.125C6.75%2010.3438%206.67969%2010.5234%206.53906%2010.6641C6.39844%2010.8047%206.21875%2010.875%206%2010.875C5.78125%2010.875%205.60156%2010.8047%205.46094%2010.6641C5.32031%2010.5234%205.25%2010.3438%205.25%2010.125V6.75H1.875C1.65625%206.75%201.47656%206.67969%201.33594%206.53906C1.19531%206.39844%201.125%206.21875%201.125%206C1.125%205.78125%201.19531%205.60156%201.33594%205.46094C1.47656%205.32031%201.65625%205.25%201.875%205.25H5.25V1.875C5.25%201.65625%205.32031%201.47656%205.46094%201.33594C5.60156%201.19531%205.78125%201.125%206%201.125C6.21875%201.125%206.39844%201.19531%206.53906%201.33594C6.67969%201.47656%206.75%201.65625%206.75%201.875Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                  />
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-blue-500")}
+                    tag="div"
+                  >
+                    {"Add"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "slot-models-morement")}
                   tag="div"
                 >
-                  {"No modules in training"}
+                  {slotTrainingModulesMoreMenu}
                 </_Builtin.Block>
               </_Builtin.Block>
-            )}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "module_flex")}
+              tag="div"
+            >
+              {slotTrainingModules ?? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "genealempty")}
+                  tag="div"
+                >
+                  <_Builtin.HtmlEmbed
+                    className={_utils.cx(_styles, "embed_flex")}
+                    value="%3Csvg%20width%3D%2280%22%20height%3D%2260%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cg%20opacity%3D%220.8%22%3E%0A%3Cpath%20d%3D%22M25.9984%2016.7C25.9984%2016.35%2025.8859%2016.0625%2025.6609%2015.8375C25.4359%2015.6125%2025.1484%2015.5%2024.7984%2015.5H20.4109C19.4109%2015.475%2018.5609%2015.125%2017.8609%2014.45L16.8484%2013.4375L17.7109%2012.6125L16.8484%2013.4375C16.6234%2013.2125%2016.3484%2013.1%2016.0234%2013.1H11.5984C11.2484%2013.1%2010.9609%2013.2125%2010.7359%2013.4375C10.5109%2013.6625%2010.3984%2013.95%2010.3984%2014.3V25.0625L12.3109%2020.225C12.6359%2019.5%2013.1984%2019.125%2013.9984%2019.1H28.9984C29.6234%2019.125%2030.1234%2019.3875%2030.4984%2019.8875C30.8234%2020.4125%2030.8859%2020.975%2030.6859%2021.575L28.2859%2027.575C27.9609%2028.3%2027.3984%2028.675%2026.5984%2028.7H23.5984H11.5984C10.9234%2028.675%2010.3609%2028.4375%209.91094%2027.9875C9.46094%2027.5375%209.22344%2026.975%209.19844%2026.3V14.3C9.22344%2013.625%209.46094%2013.0625%209.91094%2012.6125C10.3609%2012.1625%2010.9234%2011.925%2011.5984%2011.9H15.9859C16.6609%2011.9%2017.2359%2012.1375%2017.7109%2012.6125L18.6859%2013.5875C19.1609%2014.0625%2019.7359%2014.3%2020.4109%2014.3H24.7984C25.4734%2014.325%2026.0359%2014.5625%2026.4859%2015.0125C26.9359%2015.4625%2027.1734%2016.025%2027.1984%2016.7V17.9H25.9984V16.7ZM23.5984%2027.5H26.5984C26.8484%2027.5%2027.0359%2027.375%2027.1609%2027.125L29.5609%2021.125C29.6359%2020.925%2029.6109%2020.7375%2029.4859%2020.5625C29.3609%2020.3875%2029.1984%2020.3%2028.9984%2020.3H13.9984C13.7484%2020.3%2013.5609%2020.425%2013.4359%2020.675L11.0359%2026.675C10.9609%2026.875%2010.9859%2027.0625%2011.1109%2027.2375C11.2359%2027.4125%2011.3984%2027.5%2011.5984%2027.5H23.5984Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E"
+                  />
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "text-gray-600")}
+                    tag="div"
+                  >
+                    {"No modules in training"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              )}
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "interviewerdetaill-right")}
