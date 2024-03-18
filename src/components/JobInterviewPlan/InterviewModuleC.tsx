@@ -11,7 +11,7 @@ import UITypography from '../Common/UITypography';
 const InterviewModuleC = ({
   module,
   editModuleId,
-  setEditModuleId
+  setEditModuleId,
 }: {
   module: InterviewSession;
   editModuleId;
@@ -20,7 +20,7 @@ const InterviewModuleC = ({
   const modules = useInterviewPlan((state) => state.modules);
   const handleDelete = () => {
     let newModules: InterviewSession[] = modules.filter(
-      (m) => m.module_id !== module.module_id
+      (m) => m.module_id !== module.module_id,
     );
 
     handleUpdateDb({ path: 'modules', value: newModules });
@@ -46,7 +46,7 @@ const InterviewModuleC = ({
         onClickEdit={{
           onClick: () => {
             setEditModuleId(module.module_id);
-          }
+          },
         }}
       />
     );
@@ -97,12 +97,12 @@ const InterviewModuleC = ({
                       badgeContent={<>S</>}
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right'
+                        horizontal: 'right',
                       }}
                     >
                       <MuiAvatar
                         variant='circular'
-                        src={mem.profile_img}
+                        src={mem.profile_image}
                         level={mem.name}
                         fontSize='15px'
                         height='30px'
@@ -128,12 +128,12 @@ const InterviewModuleC = ({
                       badgeContent={'R'}
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right'
+                        horizontal: 'right',
                       }}
                     >
                       <MuiAvatar
                         variant='circular'
-                        src={mem.profile_img}
+                        src={mem.profile_image}
                         level={mem.name}
                         fontSize='15px'
                         height='30px'
@@ -151,12 +151,12 @@ const InterviewModuleC = ({
           <>{`${module.meetingIntervCnt} of the member will be picked as the interviewer`}</>
         }
         onClickDelete={{
-          onClick: handleDelete
+          onClick: handleDelete,
         }}
         onClickEdit={{
           onClick: () => {
             setEditModuleId(module.module_id);
-          }
+          },
         }}
       />
     );

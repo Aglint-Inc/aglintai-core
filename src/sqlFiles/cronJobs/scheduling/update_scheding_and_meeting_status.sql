@@ -18,7 +18,7 @@ BEGIN
             -- If all meetings have ended, update status in interview_schedule
             UPDATE interview_schedule
             SET status = 'completed'
-            WHERE id = schedule_id_var AND status <> 'completed'AND status <> 'cancelled'; -- Update only if status is not already 'Completed'
+            WHERE id = schedule_id_var AND status ='confirmed'; -- Update only if status is not already 'Completed'
         END IF;
     END LOOP;
 END;

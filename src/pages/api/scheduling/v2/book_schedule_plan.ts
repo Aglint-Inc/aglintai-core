@@ -11,7 +11,7 @@ import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/t
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   bookIndividualModule,
-  getAllIntsFromPlan
+  getAllIntsFromPlan,
 } from '@/src/utils/event_book/book_schedule_plan';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
@@ -33,21 +33,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id,
       api_status: 'started',
       meeting_events: [],
-      schedule_plan: plan.plans
+      schedule_plan: plan.plans,
     });
 
     const { company_cred, recruiters_info } = await getAllIntsFromPlan(
-      plan.plans
+      plan.plans,
     );
 
     const promises = plan.plans
       .filter((i) => !i.isBreak)
       .map(async (int_module) => {
-        const organizer = int_module.selectedIntervs[0];
+        const filt_selected_intervs = int_module.selectedIntervs.filter((u) =>
+          recruiters_info.find((r) => r.user_id === u.interv_id),
+        );
+        const filt_shadow_intervs = int_module.selectedIntervs.filter((u) =>
+          recruiters_info.find((r) => r.user_id === u.interv_id),
+        );
+        const filt_revShadow_intervs = int_module.selectedIntervs.filter((u) =>
+          recruiters_info.find((r) => r.user_id === u.interv_id),
+        );
+
+        const organizer = filt_selected_intervs[0];
         const attended_inters = [
-          ...int_module.selectedIntervs.slice(1),
-          ...int_module.shadowIntervs,
-          ...int_module.revShadowIntervs
+          ...filt_selected_intervs.slice(1),
+          ...filt_shadow_intervs,
+          ...filt_revShadow_intervs,
         ];
         return await bookIndividualModule({
           candidate_email,
@@ -57,19 +67,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           interviewers: attended_inters.map((int) => ({
             email: int.email,
             schedule_auth: recruiters_info.find(
-              (r) => r.user_id === int.interv_id
+              (r) => r.user_id === int.interv_id,
             )?.schedule_auth as any,
-            user_id: int.interv_id
+            user_id: int.interv_id,
           })),
           organizer: {
             email: organizer.email,
             schedule_auth: recruiters_info.find(
-              (r) => r.user_id === organizer.interv_id
+              (r) => r.user_id === organizer.interv_id,
             )?.schedule_auth as any,
-            user_id: organizer.interv_id
+            user_id: organizer.interv_id,
           },
           schedule_name: int_module.module_name,
-          module_id: int_module.module_id
+          module_id: int_module.module_id,
         });
       });
 
@@ -79,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id,
       api_status: 'sucess',
       meeting_events: events,
-      schedule_plan: plan.plans
+      schedule_plan: plan.plans,
     });
 
     return res.status(200).json(events);
@@ -89,7 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_events: [],
       schedule_id,
       error_msg: error.message,
-      schedule_plan: plan.plans
+      schedule_plan: plan.plans,
     });
     return res.status(500).send(error.message);
   }
@@ -102,7 +112,7 @@ const saveEventsStatusInSchedule = async ({
   meeting_events = [],
   schedule_id,
   error_msg = null,
-  schedule_plan
+  schedule_plan,
 }: {
   schedule_id: string;
   api_status: 'sucess' | 'started' | 'not_started' | 'failed';
@@ -115,7 +125,7 @@ const saveEventsStatusInSchedule = async ({
       if (int_module.isBreak) return;
 
       const meet_event = meeting_events.find(
-        (e) => e.module_id === int_module.module_id
+        (e) => e.module_id === int_module.module_id,
       );
 
       let break_duration = 0;
@@ -133,9 +143,9 @@ const saveEventsStatusInSchedule = async ({
             end_time: int_module.end_time,
             interview_schedule_id: schedule_id,
             break_time: break_duration,
-            meeting_json: meet_event.event
+            meeting_json: meet_event.event,
           })
-          .select('id')
+          .select('id'),
       );
 
       const meeting_interviewers = [];
@@ -144,28 +154,28 @@ const saveEventsStatusInSchedule = async ({
         meeting_interviewers.push({
           interview_meeting_id: rec.id,
           interviewer_id: i.interv_id,
-          interviewer_type: 'qualified' as any
+          interviewer_type: 'qualified' as any,
         });
       });
       int_module.shadowIntervs.forEach((i) => {
         meeting_interviewers.push({
           interview_meeting_id: rec.id,
           interviewer_id: i.interv_id,
-          interviewer_type: 'shadow' as any
+          interviewer_type: 'shadow' as any,
         });
       });
       int_module.revShadowIntervs.forEach((i) => {
         meeting_interviewers.push({
           interview_meeting_id: rec.id,
           interviewer_id: i.interv_id,
-          interviewer_type: 'reverse_shadow' as any
+          interviewer_type: 'reverse_shadow' as any,
         });
       });
 
       supabaseWrap(
         await supabaseAdmin
           .from('interview_meeting_user')
-          .insert(meeting_interviewers)
+          .insert(meeting_interviewers),
       );
     });
 
@@ -178,9 +188,9 @@ const saveEventsStatusInSchedule = async ({
       .update({
         calender_event_api_status: {
           api_status,
-          error_msg
-        }
+          error_msg,
+        },
       })
-      .eq('id', schedule_id)
+      .eq('id', schedule_id),
   );
 };

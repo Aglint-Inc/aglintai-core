@@ -16,7 +16,7 @@ const EditModule = ({
   initModule,
   onClose,
   isEdit,
-  editModuleId
+  editModuleId,
 }: {
   initModule: InterviewSession;
   onClose: any;
@@ -87,11 +87,11 @@ const EditModule = ({
             fullWidth
             options={filteredModules.map((m) => ({
               label: m.module_name,
-              value: m.module_name
+              value: m.module_name,
             }))}
             value={{
               label: moduleform.module_name,
-              value: moduleform.module_name
+              value: moduleform.module_name,
             }}
             getOptionLabel={(option: any) => option.label}
             onChange={(event, value) => {
@@ -154,11 +154,11 @@ const EditModule = ({
                   onClick: () => {
                     setModule((prev) => {
                       prev.selectedIntervs = prev.selectedIntervs.filter(
-                        (i) => i.interv_id !== mem.interv_id
+                        (i) => i.interv_id !== mem.interv_id,
                       );
                       return { ...prev };
                     });
-                  }
+                  },
                 }}
               />
             );
@@ -170,18 +170,18 @@ const EditModule = ({
           <Autocomplete
             options={moduleform.allIntervs.map((int) => ({
               label: int.name,
-              value: int.interv_id
+              value: int.interv_id,
             }))}
             onChange={(event: any, newValue: any) => {
               if (!newValue) return;
               if (
                 !moduleform.selectedIntervs.find(
-                  (i) => i.interv_id == newValue.value
+                  (i) => i.interv_id == newValue.value,
                 )
               ) {
                 setModule((prev) => {
                   let int = prev.allIntervs.find(
-                    (i) => i.interv_id === newValue.value
+                    (i) => i.interv_id === newValue.value,
                   );
                   prev.selectedIntervs.push(int);
                   return { ...prev };
@@ -199,7 +199,7 @@ const EditModule = ({
             }}
             defaultValue={{
               label: '',
-              value: ''
+              value: '',
             }}
             freeSolo
             disablePortal
@@ -211,7 +211,7 @@ const EditModule = ({
           <UISelect
             menuOptions={moduleform.allIntervs.map((i, idx) => ({
               name: String(idx + 1),
-              value: String(idx + 1)
+              value: String(idx + 1),
             }))}
             onChange={(e) => {
               setModule((p) => {
@@ -233,7 +233,7 @@ const EditModule = ({
                 slotImage={
                   <MuiAvatar
                     variant='rounded'
-                    src={mem.profile_img ?? ''}
+                    src={mem.profile_image ?? ''}
                     level={mem.name}
                     fontSize='15px'
                     width={'25px'}
@@ -245,11 +245,11 @@ const EditModule = ({
                   onClick: () => {
                     setModule((prev) => {
                       prev.shadowIntervs = prev.shadowIntervs.filter(
-                        (i) => i.interv_id !== mem.interv_id
+                        (i) => i.interv_id !== mem.interv_id,
                       );
                       return { ...prev };
                     });
-                  }
+                  },
                 }}
               />
             );
@@ -263,23 +263,23 @@ const EditModule = ({
               .filter(
                 (i) =>
                   !moduleform.revShadowIntervs.find(
-                    (si) => si.interv_id === i.interv_id
-                  )
+                    (si) => si.interv_id === i.interv_id,
+                  ),
               )
               .map((int) => ({
                 label: int.name,
-                value: int.interv_id
+                value: int.interv_id,
               }))}
             onChange={(event: any, newValue: any) => {
               if (!newValue) return;
               if (
                 !moduleform.shadowIntervs.find(
-                  (i) => i.interv_id == newValue.value
+                  (i) => i.interv_id == newValue.value,
                 )
               ) {
                 setModule((prev) => {
                   let int = prev.training_ints.find(
-                    (i) => i.interv_id === newValue.value
+                    (i) => i.interv_id === newValue.value,
                   );
                   prev.shadowIntervs.push(int);
                   return { ...prev };
@@ -297,7 +297,7 @@ const EditModule = ({
             }}
             defaultValue={{
               label: '',
-              value: ''
+              value: '',
             }}
             freeSolo
             disablePortal
@@ -313,7 +313,7 @@ const EditModule = ({
                 slotImage={
                   <MuiAvatar
                     variant='rounded'
-                    src={mem.profile_img ?? ''}
+                    src={mem.profile_image ?? ''}
                     level={mem.name}
                     fontSize='15px'
                     width={'25px'}
@@ -325,11 +325,11 @@ const EditModule = ({
                   onClick: () => {
                     setModule((prev) => {
                       prev.revShadowIntervs = prev.revShadowIntervs.filter(
-                        (i) => i.interv_id !== mem.interv_id
+                        (i) => i.interv_id !== mem.interv_id,
                       );
                       return { ...prev };
                     });
-                  }
+                  },
                 }}
               />
             );
@@ -343,23 +343,23 @@ const EditModule = ({
               .filter(
                 (i) =>
                   !moduleform.shadowIntervs.find(
-                    (si) => si.interv_id === i.interv_id
-                  )
+                    (si) => si.interv_id === i.interv_id,
+                  ),
               )
               .map((int) => ({
                 label: int.name,
-                value: int.interv_id
+                value: int.interv_id,
               }))}
             onChange={(event: any, newValue: any) => {
               if (!newValue) return;
               if (
                 !moduleform.revShadowIntervs.find(
-                  (i) => i.interv_id == newValue.value
+                  (i) => i.interv_id == newValue.value,
                 )
               ) {
                 setModule((prev) => {
                   let int = prev.training_ints.find(
-                    (i) => i.interv_id === newValue.value
+                    (i) => i.interv_id === newValue.value,
                   );
                   prev.revShadowIntervs.push(int);
                   return { ...prev };
@@ -377,7 +377,7 @@ const EditModule = ({
             }}
             defaultValue={{
               label: '',
-              value: ''
+              value: '',
             }}
             freeSolo
             disablePortal
@@ -400,10 +400,10 @@ const EditModule = ({
       onClickCancel={{
         onClick: () => {
           onClose();
-        }
+        },
       }}
       onClickDone={{
-        onClick: handleSubmit
+        onClick: handleSubmit,
       }}
     />
   );

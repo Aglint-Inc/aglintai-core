@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { LoaderSvg } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { Breadcrum, InterviewCordinator, PageLayout } from '@/devlink2';
 import { InterviewPlan } from '@/devlink3';
 
 import EditModule from './EditModule';
@@ -14,6 +14,7 @@ import InterviewModuleC from './InterviewModuleC';
 import { handleUpdateDb, useInterviewPlan } from './store';
 import { InterviewSession } from './types';
 import { filterAddedModules } from './utils';
+import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import { reorder } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/reorder';
 
@@ -25,7 +26,7 @@ const JobInterviewPlan = () => {
     jobStatus,
     jobTitle,
     jobId,
-    syncStatus
+    syncStatus,
   } = useInterviewPlan((state) => state);
   const [editModuleId, setEditModuleId] = useState('');
   const [newModule, setNewModule] = useState<InterviewSession | null>(null);
@@ -43,7 +44,7 @@ const JobInterviewPlan = () => {
       const updatedOrder = reorder(
         modules,
         sourceIdx,
-        destIdx
+        destIdx,
       ) as InterviewSession[];
       if (
         updatedOrder[0].isBreak ||
@@ -72,14 +73,14 @@ const JobInterviewPlan = () => {
       selectedIntervs: [],
       revShadowIntervs: [],
       shadowIntervs: [],
-      training_ints: []
+      training_ints: [],
     };
     for (let i = 1; i < modules.length; ++i) {
       if (!modules[Number(i)].isBreak && !modules[Number(i - 1)].isBreak) {
         const newModules = [
           ...modules.slice(0, i),
           intBreak,
-          ...modules.slice(i)
+          ...modules.slice(i),
         ];
         handleUpdateDb({ path: 'modules', value: newModules });
 
@@ -98,7 +99,7 @@ const JobInterviewPlan = () => {
               onClickLink={{
                 onClick: () => {
                   router.push(`/jobs?status=${jobStatus}`);
-                }
+                },
               }}
               textName={`${capitalize(jobStatus)} Jobs`}
             />
@@ -109,7 +110,7 @@ const JobInterviewPlan = () => {
                   onClickLink={{
                     onClick: () => {
                       router.push(`/jobs/${jobId}`);
-                    }
+                    },
                   }}
                   showArrow
                   textName={`${jobTitle}`}
@@ -143,6 +144,7 @@ const JobInterviewPlan = () => {
               <InterviewPlan
                 slotInterviewPlan={
                   <>
+                    <CoordinatorDropDown />
                     <DragAndDrop onDragEnd={handleDragEnd}>
                       <Drop id={'droppable'} type={'droppable-category'}>
                         {modules.map((module, idx) => {
@@ -180,7 +182,7 @@ const JobInterviewPlan = () => {
                   onClick: () => {
                     const filteredModules = filterAddedModules(
                       allModules,
-                      modules
+                      modules,
                     );
                     if (filteredModules.length > 0) {
                       let nModule: InterviewSession = {
@@ -189,19 +191,19 @@ const JobInterviewPlan = () => {
                         meetingIntervCnt: 1,
                         duration: 30,
                         isBreak: false,
-                        session_name: `Session ${modules.length + 1}`
+                        session_name: `Session ${modules.length + 1}`,
                       };
                       setNewModule(nModule);
                     }
-                  }
+                  },
                 }}
                 onClickAddBreak={{
-                  onClick: handleAddBreak
+                  onClick: handleAddBreak,
                 }}
                 onClickScheduler={{
                   onClick: () => {
                     router.push('/scheduling?tab=interviewModules');
-                  }
+                  },
                 }}
               />
             )}
@@ -213,3 +215,56 @@ const JobInterviewPlan = () => {
 };
 
 export default JobInterviewPlan;
+
+const CoordinatorDropDown = () => {
+  const allTeamMembers = useInterviewPlan((state) => state.allTeamMembers);
+  const interviewCordinator = useInterviewPlan(
+    (state) => state.interviewCordinator,
+  );
+
+  return (
+    <>
+      <InterviewCordinator
+        slotInput={
+          <>
+            <AvatarSelectDropDown
+              onChange={(e) => {
+                const cord = allTeamMembers.find(
+                  (t) => t.interv_id === e.target.value,
+                );
+                handleUpdateDb({
+                  path: 'interviewCordinator',
+                  value: cord,
+                });
+              }}
+              menuOptions={allTeamMembers.map((m) => ({
+                name: m.name,
+                value: m.interv_id,
+                start_icon_url: m.profile_image,
+              }))}
+              showMenuIcons
+              value={interviewCordinator?.interv_id ?? ''}
+              defaultValue={allTeamMembers[0]?.interv_id}
+              // onChange={(e) => {
+              //   const cord = allTeamMembers.find(
+              //     (t) => t.interv_id === e.target.value,
+              //   );
+              //   handleUpdateDb({
+              //     path: 'interviewCordinator',
+              //     value: cord,
+              //   });
+              // }}
+              // value={
+              //   interviewCordinator?.interv_id ?? allTeamMembers[0].interv_id
+              // }
+              // defaultValue={
+              //   interviewCordinator?.interv_id ?? allTeamMembers[0].interv_id
+              // }
+              // fullWidth
+            />
+          </>
+        }
+      />
+    </>
+  );
+};

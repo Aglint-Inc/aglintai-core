@@ -1,12 +1,12 @@
 import {
   InterviewModuleApiType,
-  InterviewModuleDbType
+  InterviewModuleDbType,
 } from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   InterviewModuleRelationType,
   InterviewModuleType,
-  RecruiterUserType
+  RecruiterUserType,
 } from '@/src/types/data.types';
 
 import { CompServiceKeyCred, IntervMeta } from './types';
@@ -18,14 +18,43 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
   const [rec] = supabaseWrap(
     await supabaseAdmin.rpc('find_avail_api_details_updated_2', {
       job_id,
-      recruiter_id
-    })
+      recruiter_id,
+    }),
   );
+  const all_ints = [
+    ...(rec.shadow_ints?.shadow_ints ?? []),
+    ...(rec.rshadow_ints?.rshadow_ints ?? []),
+    ...(rec.interviewer.interviewer ?? []),
+  ] as RecruiterUserType[];
+
+  const filtered_int_plans: InterviewModuleDbType[] = (
+    rec.interview_plan.plan as InterviewModuleDbType[]
+  ).map((mod) => {
+    const selectedIntervs = mod.selectedIntervs.filter((int) =>
+      all_ints.find((aint) => aint.user_id === int.interv_id),
+    );
+    const shadowInterv = mod.shadowIntervs.filter((int) =>
+      all_ints.find((aint) => aint.user_id === int.interv_id),
+    );
+    const revShadowInterv = mod.revShadowInterv.filter((int) =>
+      all_ints.find((aint) => aint.user_id === int.interv_id),
+    );
+    return {
+      ...mod,
+      meetingIntervCnt:
+        mod.meetingIntervCnt > selectedIntervs.length
+          ? selectedIntervs.length
+          : mod.meetingIntervCnt,
+      selectedIntervs,
+      shadowInterv,
+      revShadowInterv,
+    };
+  });
 
   const details = {
-    interview_plan: rec.interview_plan.plan as InterviewModuleDbType[],
+    interview_plan: filtered_int_plans,
     service_json: JSON.parse(
-      decrypt(rec.service_json.service_json, process.env.ENCRYPTION_KEY)
+      decrypt(rec.service_json.service_json, process.env.ENCRYPTION_KEY),
     ) as CompServiceKeyCred,
     interviewers: rec.interviewer.interviewer as RecruiterUserType[],
     shadowIntervs: (rec.shadow_ints?.shadow_ints ?? []) as RecruiterUserType[],
@@ -34,7 +63,7 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
     interview_modules: rec.interview_modules
       .interview_modules as InterviewModuleType[],
     int_mod_relns: (rec.int_mod_relns?.int_mod_relns ??
-      []) as InterviewModuleRelationType[]
+      []) as InterviewModuleRelationType[],
   };
 
   const interview_plan_api: InterviewModuleApiType[] =
@@ -50,7 +79,7 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
           : '',
         selectedIntervs: m.selectedIntervs.map((s) => {
           const int = details.interviewers.find(
-            (i) => i.user_id === s.interv_id
+            (i) => i.user_id === s.interv_id,
           );
           return {
             interv_id: int.user_id,
@@ -58,13 +87,13 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
             profile_img: int?.profile_image ?? '',
             name: getFullName(int.first_name, int.last_name),
             pause_json: details.int_mod_relns.find(
-              (i) => i.module_id === m.module_id && i.user_id === int.user_id
-            )?.pause_json
+              (i) => i.module_id === m.module_id && i.user_id === int.user_id,
+            )?.pause_json,
           };
         }),
         revShadowIntervs: m.revShadowInterv.map((s) => {
           const int = details.rShadowIntervs.find(
-            (i) => i.user_id === s.interv_id
+            (i) => i.user_id === s.interv_id,
           );
           return {
             interv_id: int.user_id,
@@ -72,13 +101,13 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
             profile_img: int?.profile_image ?? '',
             name: getFullName(int.first_name, int.last_name),
             pause_json: details.int_mod_relns.find(
-              (i) => i.module_id === m.module_id && i.user_id === int.user_id
-            )?.pause_json
+              (i) => i.module_id === m.module_id && i.user_id === int.user_id,
+            )?.pause_json,
           };
         }),
         shadowIntervs: m.shadowIntervs.map((s) => {
           const int = details.shadowIntervs.find(
-            (i) => i.user_id === s.interv_id
+            (i) => i.user_id === s.interv_id,
           );
           return {
             interv_id: int.user_id,
@@ -86,10 +115,10 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
             profile_img: int?.profile_image ?? '',
             name: getFullName(int.first_name, int.last_name),
             pause_json: details.int_mod_relns.find(
-              (i) => i.module_id === m.module_id && i.user_id === int.user_id
-            )?.pause_json
+              (i) => i.module_id === m.module_id && i.user_id === int.user_id,
+            )?.pause_json,
           };
-        })
+        }),
       };
     });
 
@@ -99,7 +128,7 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
     name: getFullName(int.first_name, int.last_name),
     profile_img: int.profile_image,
     shedule_settings: int.scheduling_settings as any,
-    tokens: int.schedule_auth as any
+    tokens: int.schedule_auth as any,
   }));
   const shadow_ints_info = details.shadowIntervs.map((int) => ({
     email: int.email,
@@ -107,7 +136,7 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
     name: getFullName(int.first_name, int.last_name),
     profile_img: int.profile_image,
     shedule_settings: int.scheduling_settings as any,
-    tokens: int.schedule_auth as any
+    tokens: int.schedule_auth as any,
   }));
 
   const rshadow_ints_info = details.rShadowIntervs.map((int) => ({
@@ -116,19 +145,19 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
     name: getFullName(int.first_name, int.last_name),
     profile_img: int.profile_image,
     shedule_settings: int.scheduling_settings as any,
-    tokens: int.schedule_auth as any
+    tokens: int.schedule_auth as any,
   }));
 
   const getUniqInts = getUniqueInts([
     ...sel_int_info,
     ...shadow_ints_info,
-    ...rshadow_ints_info
+    ...rshadow_ints_info,
   ]);
 
   return {
     company_cred: details.service_json,
     interviewers_info: getUniqInts,
-    interview_plan_api
+    interview_plan_api,
   };
 };
 

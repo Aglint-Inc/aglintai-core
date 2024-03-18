@@ -4,20 +4,26 @@ import { create } from 'zustand';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { InterviewModuleDbType, InterviewPlanState } from './types';
+import {
+  InterviewerDbType,
+  InterviewModuleDbType,
+  InterviewPlanState,
+} from './types';
 import {
   API_FAIL_MSG,
-  supabaseWrap
+  supabaseWrap,
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const initialState: InterviewPlanState = {
+  interviewCordinator: null,
+  allTeamMembers: [],
   modules: [],
   isloading: true,
   allModules: [],
   syncStatus: '',
   jobId: '',
   jobStatus: 'published',
-  jobTitle: ''
+  jobTitle: '',
 };
 export const defaultDurations = [
   { name: '10 minutes', value: 10 },
@@ -27,11 +33,11 @@ export const defaultDurations = [
   { name: '45 minutes', value: 45 },
   { name: '1 hour', value: 60 },
   { name: '1 hour 30 minutes', value: 90 },
-  { name: '2 Hour', value: 120 }
+  { name: '2 Hour', value: 120 },
 ];
 
 export const useInterviewPlan = create<InterviewPlanState>()(() => ({
-  ...initialState
+  ...initialState,
 }));
 
 export const initilizeIntPlan = (state: InterviewPlanState) => {
@@ -44,7 +50,7 @@ export const setModules = (modules: InterviewPlanState['modules']) => {
 
 export const handleUpdateDb = async ({
   path,
-  value
+  value,
 }: {
   path: string;
   value: any;
@@ -64,31 +70,37 @@ export const handleUpdateDb = async ({
       let dbModule: InterviewModuleDbType = {
         session_name: clModule.session_name,
         shadowIntervs: clModule.shadowIntervs.map((i) => ({
-          interv_id: i.interv_id
+          interv_id: i.interv_id,
         })),
         revShadowInterv: clModule.revShadowIntervs.map((i) => ({
-          interv_id: i.interv_id
+          interv_id: i.interv_id,
         })),
         duration: clModule.duration,
         isBreak: clModule.isBreak,
         meetingIntervCnt: clModule.meetingIntervCnt,
         module_id: clModule.module_id,
         selectedIntervs: clModule.selectedIntervs.map((s) => ({
-          interv_id: s.interv_id
-        }))
+          interv_id: s.interv_id,
+        })),
       };
       dbModules.push(dbModule);
     }
-
+    let cordinator: InterviewerDbType = null;
+    if (clonedState.interviewCordinator) {
+      cordinator = {
+        interv_id: clonedState.interviewCordinator.interv_id,
+      };
+    }
     supabaseWrap(
       await supabase
         .from('public_jobs')
         .update({
           interview_plan: {
-            plan: dbModules
-          }
+            plan: dbModules,
+            coordinator: cordinator,
+          },
         })
-        .eq('id', clonedState.jobId)
+        .eq('id', clonedState.jobId),
     );
     useInterviewPlan.setState((prevState) => {
       clonedState = cloneDeep(prevState);
@@ -96,6 +108,6 @@ export const handleUpdateDb = async ({
       return clonedState;
     });
   } catch (err) {
-    toast.toast.error(API_FAIL_MSG);
+    toast.error(API_FAIL_MSG);
   }
 };

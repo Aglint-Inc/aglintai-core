@@ -12,15 +12,17 @@ export type InterviewSession = {
   session_name: string;
   duration: number;
   selectedIntervs: IntwerviewerPlanType[];
-  shadowIntervs: InterviewerPlanApiType[];
-  training_ints: InterviewerPlanApiType[];
-  revShadowIntervs: InterviewerPlanApiType[];
+  shadowIntervs: IntwerviewerPlanType[];
+  training_ints: IntwerviewerPlanType[];
+  revShadowIntervs: IntwerviewerPlanType[];
   allIntervs: IntwerviewerPlanType[];
   meetingIntervCnt: number;
   isBreak: boolean;
 };
 
 export type InterviewPlanState = {
+  interviewCordinator: IntwerviewerPlanType | null;
+  allTeamMembers: IntwerviewerPlanType[];
   modules: InterviewSession[];
   allModules: InterviewSession[];
   isloading: boolean;

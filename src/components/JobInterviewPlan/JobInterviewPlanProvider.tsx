@@ -1,18 +1,22 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { PublicJobsType } from '@/src/types/data.types';
+import { PublicJobsType, RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { initialState, initilizeIntPlan } from './store';
-import { InterviewModuleDbType, InterviewSession } from './types';
+import {
+  InterviewModuleDbType,
+  InterviewPlanState,
+  InterviewSession,
+  IntwerviewerPlanType,
+} from './types';
 import {
   API_FAIL_MSG,
-  supabaseWrap
+  supabaseWrap,
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { fetchInterviewModule } from '../Scheduling/Modules/utils';
 
@@ -22,13 +26,25 @@ const JobInterviewPlanHoc = ({ children }) => {
 
   const initialize = async () => {
     try {
-      const allIntModules: InterviewSession[] = [];
+      const [rec] = supabaseWrap(
+        await supabase.from('public_jobs').select().eq('id', router.query.id),
+      ) as PublicJobsType[];
+      if (!rec) {
+        toast.error('job doesnot exist');
+        return router.back();
+      }
+      let jobModules = ((rec.interview_plan as any)?.plan ??
+        []) as InterviewModuleDbType[];
 
       const fetchedDbModules = await fetchInterviewModule(recruiter.id);
-      const member_ids = fetchedDbModules.reduce((tot, curr) => {
-        return [...tot, ...curr.relations.map((r) => r.user_id)];
-      }, []);
-      const members = await fetchAllMembers(member_ids);
+      const allIntModules: InterviewSession[] = [];
+      let coordinator_db = (rec.interview_plan as any)
+        ?.coordinator as null | Pick<
+        InterviewPlanState['interviewCordinator'],
+        'interv_id'
+      >;
+      const allTeamMembers = await fetchAllMembers();
+
       for (let intModule of fetchedDbModules) {
         const intMod: InterviewSession = {
           module_id: intModule.id,
@@ -41,52 +57,45 @@ const JobInterviewPlanHoc = ({ children }) => {
           isBreak: false,
           session_name: '',
           revShadowIntervs: [],
-          shadowIntervs: []
+          shadowIntervs: [],
         };
 
         intMod.training_ints = intModule.relations
           .filter((reln) => reln.training_status === 'training')
-          .filter((r) => members.find((m) => m.user_id === r.user_id))
+          .filter((r) => allTeamMembers.find((m) => m.interv_id === r.user_id))
           .map((reln) => {
-            const member = members.find((m) => m.user_id === reln.user_id);
-
+            const member = allTeamMembers.find(
+              (m) => m.interv_id === reln.user_id,
+            );
             return {
-              interv_id: member.user_id,
-              name: getFullName(member.first_name, member.last_name),
-              profile_img: member.profile_image,
+              interv_id: member.interv_id,
+              name: member.name,
+              profile_image: member.profile_image,
               email: member.email,
-              pause_json: null
+              pause_json: null,
             };
           });
         intMod.allIntervs = intModule.relations
           .filter((reln) => reln.training_status === 'qualified')
-          .filter((r) => members.find((m) => m.user_id === r.user_id))
+          .filter((r) => allTeamMembers.find((m) => m.interv_id === r.user_id))
           .map((reln) => {
-            const member = members.find((m) => m.user_id === reln.user_id);
+            const member = allTeamMembers.find(
+              (m) => m.interv_id === reln.user_id,
+            );
             return {
               profile_image: member.profile_image,
-              interv_id: member.user_id,
-              name: [member.first_name, member.last_name].join(' ')
+              interv_id: member.interv_id,
+              name: member.name,
             };
           });
         allIntModules.push(intMod);
       }
 
-      const [rec] = supabaseWrap(
-        await supabase.from('public_jobs').select().eq('id', router.query.id)
-      ) as PublicJobsType[];
-      if (!rec) {
-        toast.error('job doesnot exist');
-        return router.back();
-      }
-      let jobModules = ((rec.interview_plan as any)?.plan ??
-        []) as InterviewModuleDbType[];
-
       let clModules: InterviewSession[] = [];
       for (let dbModule of jobModules) {
         if (dbModule.isBreak) continue;
         let intModule = allIntModules.find(
-          (i) => i.module_id === dbModule.module_id
+          (i) => i.module_id === dbModule.module_id,
         );
         if (!intModule) continue;
 
@@ -96,70 +105,100 @@ const JobInterviewPlanHoc = ({ children }) => {
           isBreak: dbModule.isBreak,
           meetingIntervCnt: dbModule.meetingIntervCnt,
           module_id: dbModule.module_id,
-          selectedIntervs: dbModule.selectedIntervs.map((i) => {
-            let member = members.find((m) => m.user_id === i.interv_id);
-            return {
-              interv_id: i.interv_id,
-              name: [member.first_name, member.last_name]
-                .filter(Boolean)
-                .join(' '),
-              profile_image: member.profile_image
-            };
-          }),
+          selectedIntervs: dbModule.selectedIntervs
+            .filter((r) =>
+              allTeamMembers.find((m) => m.interv_id === r.interv_id),
+            )
+            .map((i) => {
+              let member = allTeamMembers.find(
+                (m) => m.interv_id === i.interv_id,
+              );
+              return {
+                interv_id: i.interv_id,
+                name: member.name,
+                profile_image: member.profile_image,
+              };
+            }),
           allIntervs: intModule?.allIntervs ?? [], //break
           session_name: dbModule?.session_name ?? '',
           training_ints: [],
-          revShadowIntervs: dbModule.revShadowInterv.map((i) => {
-            let member = members.find((m) => m.user_id === i.interv_id);
-            return {
-              interv_id: i.interv_id,
-              name: [member.first_name, member.last_name]
-                .filter(Boolean)
-                .join(' '),
-              profile_image: member.profile_image,
-              email: member.email,
-              profile_img: member.profile_image,
-              pause_json: null
-            };
-          }),
-          shadowIntervs: dbModule.shadowIntervs.map((i) => {
-            let member = members.find((m) => m.user_id === i.interv_id);
-            return {
-              interv_id: i.interv_id,
-              name: [member.first_name, member.last_name]
-                .filter(Boolean)
-                .join(' '),
-              profile_image: member.profile_image,
-              email: member.email,
-              profile_img: member.profile_image,
-              pause_json: null
-            };
-          })
+          revShadowIntervs: dbModule.revShadowInterv
+            .filter((r) =>
+              allTeamMembers.find((m) => m.interv_id === r.interv_id),
+            )
+            .map((i) => {
+              let member = allTeamMembers.find(
+                (m) => m.interv_id === i.interv_id,
+              );
+              return {
+                interv_id: i.interv_id,
+                name: member.name,
+                profile_image: member.profile_image,
+                email: member.email,
+                profile_img: member.profile_image,
+                pause_json: null,
+              };
+            }),
+          shadowIntervs: dbModule.shadowIntervs
+            .filter((r) =>
+              allTeamMembers.find((m) => m.interv_id === r.interv_id),
+            )
+            .map((i) => {
+              let member = allTeamMembers.find(
+                (m) => m.interv_id === i.interv_id,
+              );
+              return {
+                interv_id: i.interv_id,
+                name: member.name,
+                profile_image: member.profile_image,
+                email: member.email,
+                profile_img: member.profile_image,
+                pause_json: null,
+              };
+            }),
         };
         const l = fetchedDbModules.find((mod) => mod.id === dbModule.module_id);
         clModule.training_ints = l.relations
+          .filter((r) => allTeamMembers.find((m) => m.interv_id === r.user_id))
           .filter((reln) => reln.training_status === 'training')
           .map((reln) => {
-            const member = members.find((m) => m.user_id === reln.user_id);
+            const member = allTeamMembers.find(
+              (m) => m.interv_id === reln.user_id,
+            );
             return {
-              interv_id: member.user_id,
-              name: getFullName(member.first_name, member.last_name),
-              profile_img: member.profile_image,
+              interv_id: member.interv_id,
+              name: member.name,
+              profile_image: member.profile_image,
               email: member.email,
-              pause_json: null
+              pause_json: null,
             };
           });
         clModules.push(clModule);
       }
 
+      let coordinator: InterviewPlanState['interviewCordinator'] = null;
+      if (coordinator_db) {
+        let mem = allTeamMembers.find(
+          (u) => u.interv_id === coordinator_db.interv_id,
+        );
+        if (mem) {
+          coordinator = {
+            interv_id: mem.interv_id,
+            name: mem.name,
+            profile_image: mem.profile_image,
+          };
+        }
+      }
       initilizeIntPlan({
+        allTeamMembers,
         allModules: allIntModules,
         modules: clModules,
         isloading: false,
         syncStatus: '',
         jobId: router.query.id as string,
         jobStatus: rec.status,
-        jobTitle: rec.job_title
+        jobTitle: rec.job_title,
+        interviewCordinator: coordinator,
       });
     } catch (error) {
       toast.error(API_FAIL_MSG);
@@ -172,7 +211,7 @@ const JobInterviewPlanHoc = ({ children }) => {
     }
     return () => {
       initilizeIntPlan({
-        ...initialState
+        ...initialState,
       });
     };
   }, [router.query]);
@@ -182,10 +221,30 @@ const JobInterviewPlanHoc = ({ children }) => {
 
 export default JobInterviewPlanHoc;
 
-const fetchAllMembers = async (userIds) => {
-  const { data } = await axios.post('/api/scheduling/fetchdbusers', {
-    user_ids: userIds
-  });
-
-  return data;
+const fetchAllMembers = async () => {
+  const recs = supabaseWrap(
+    await supabase
+      .from('recruiter_relation')
+      .select(
+        'recruiter_id,recruiter_user(user_id, email, profile_image,first_name,last_name))',
+      ),
+  ) as {
+    recruiter_id: string;
+    recruiter_user: Pick<
+      RecruiterUserType,
+      'email' | 'first_name' | 'last_name' | 'profile_image' | 'user_id'
+    > | null;
+  }[];
+  const allMembers: (IntwerviewerPlanType & { email: string })[] = recs
+    .filter((u) => u.recruiter_user)
+    .map((r) => ({
+      interv_id: r.recruiter_user.user_id,
+      name: getFullName(
+        r.recruiter_user.first_name,
+        r.recruiter_user.last_name,
+      ),
+      profile_image: r.recruiter_user.profile_image,
+      email: r.recruiter_user.email,
+    }));
+  return allMembers;
 };

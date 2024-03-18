@@ -26,18 +26,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { interview_plan_api, company_cred, interviewers_info } =
       await fetchAvailApiDetails({
         job_id,
-        recruiter_id: company_id
+        recruiter_id: company_id,
       });
     const inters_with_free_time_ranges = await findEachInterviewerFreeTimes(
       company_cred,
       interviewers_info,
       start_date,
-      end_date
+      end_date,
     );
 
     const combs = findPlanCombinations(
       interview_plan_api,
-      inters_with_free_time_ranges
+      inters_with_free_time_ranges,
     );
 
     return res.status(200).json(combs);
