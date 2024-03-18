@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -62,11 +61,10 @@ export default async function handler(
               scheduling_settings: user.scheduling_settings
             } as RecruiterUserType)
             .select();
-          console.log(errorRecUser, 'errorRecUser');
 
           if (errorRecUser) throw new Error(error.message);
 
-          const { error: errRel } = await supabase
+          await supabase
             .from('recruiter_relation')
             .insert({
               recruiter_id: companyId,
@@ -75,18 +73,16 @@ export default async function handler(
               created_by: id
             })
             .select('*');
-          console.log(errRel, 'errRel');
 
           await supabase.auth
             .resetPasswordForEmail(email, {
               redirectTo
             })
             .then(({ error }) => {
-              console.log(error);
               if (error) throw new Error(error.message);
             });
 
-          res.status(200).send({
+          return res.status(200).send({
             created: true,
             error: null,
             user: recUser[0]
