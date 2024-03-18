@@ -38,7 +38,7 @@ export function InterviewModuleTable({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Upcoming Schedules"}
+            {"Upcoming"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -49,7 +49,7 @@ export function InterviewModuleTable({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Completed Schedules"}
+            {"Completed"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

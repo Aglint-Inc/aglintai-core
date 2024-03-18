@@ -10,6 +10,7 @@
   padding-top: 20px;
   padding-right: 20px;
   flex: 0 0 auto;
+  border-right: 1px solid #e9ebed;
 }
 
 .div-block-507 {
@@ -283,6 +284,10 @@
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .color-grey-600.max-width-350 {

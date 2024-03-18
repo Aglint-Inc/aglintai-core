@@ -2,6 +2,7 @@
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 // import posthog from 'posthog-js';
 import { useCallback, useState } from 'react';
 
@@ -11,7 +12,7 @@ import {
   AssistStatus,
   CloseDeleteJob,
   CloseJobButton,
-  CloseJobModal
+  CloseJobModal,
   // DashboardMenu,
 } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
@@ -23,7 +24,7 @@ import {
   JobDashboard as JobDashboardDev,
   JobDashboardTopRight,
   ModuleCard,
-  PipeLine
+  PipeLine,
 } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
@@ -66,13 +67,13 @@ const JobDashboard = () => {
 };
 
 const getMatches = (
-  counts: ReturnType<typeof useJobDetails>['matches']['data']
+  counts: ReturnType<typeof useJobDetails>['matches']['data'],
 ) => {
   return Object.entries(counts.matches).reduce(
     (acc, [key, value]) => {
       acc[key] = {
         count: getPlural(value, 'candidate'),
-        percentage: `${value ? Math.trunc((value / counts.total) * 100) : 0}%`
+        percentage: `${value ? Math.trunc((value / counts.total) * 100) : 0}%`,
       };
       return acc;
     },
@@ -82,7 +83,7 @@ const getMatches = (
         count: number;
         percentage: string;
       };
-    }
+    },
   );
 };
 
@@ -91,7 +92,7 @@ const Dashboard = () => {
     job,
     matches: { data: counts },
     publishable,
-    draftValidity
+    draftValidity,
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
@@ -162,7 +163,7 @@ const Dashboard = () => {
             slotCardWithNumber={<TenureAndExpSummary />}
             textCandidateCount={counts.total}
             onClickAssistant={{
-              onClick: () => push(`/jobs/${job.id}/agent`)
+              onClick: () => push(`/jobs/${job.id}/agent`),
             }}
           />
         }
@@ -188,7 +189,7 @@ const Dashboard = () => {
                   onClickClose={{
                     onClick: () => {
                       setPopover(true);
-                    }
+                    },
                   }}
                 />
                 <JobClose
@@ -219,7 +220,7 @@ const BreadCrumbs = () => {
           onClick: () => {
             router.push(`/jobs?status=${job?.status ?? 'all'}`);
           },
-          style: { cursor: 'pointer' }
+          style: { cursor: 'pointer' },
         }}
       />
       <Breadcrum textName={capitalize(job?.job_title ?? 'Job')} showArrow />
@@ -238,7 +239,7 @@ const Pipeline = () => {
       return acc;
     },
     // eslint-disable-next-line no-unused-vars
-    {} as { [id in keyof Job['count']]: { count: number; label: string } }
+    {} as { [id in keyof Job['count']]: { count: number; label: string } },
   );
   const handlClick = (section: JobApplicationSections) => {
     setSection(section);
@@ -251,7 +252,7 @@ const Pipeline = () => {
         textCandidateCount={newSections.new.label}
         textName={capitalize(JobApplicationSections.NEW)}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.NEW)
+          onClick: () => handlClick(JobApplicationSections.NEW),
         }}
       />
       {job.phone_screen_enabled && (
@@ -259,7 +260,7 @@ const Pipeline = () => {
           textCandidateCount={newSections.screening.label}
           textName={capitalize(JobApplicationSections.SCREENING)}
           onClickPipeline={{
-            onClick: () => handlClick(JobApplicationSections.SCREENING)
+            onClick: () => handlClick(JobApplicationSections.SCREENING),
           }}
         />
       )}
@@ -268,7 +269,7 @@ const Pipeline = () => {
           textCandidateCount={newSections.assessment.label}
           textName={capitalize(JobApplicationSections.ASSESSMENT)}
           onClickPipeline={{
-            onClick: () => handlClick(JobApplicationSections.ASSESSMENT)
+            onClick: () => handlClick(JobApplicationSections.ASSESSMENT),
           }}
         />
       )}
@@ -276,14 +277,14 @@ const Pipeline = () => {
         textCandidateCount={newSections.interview.label}
         textName={capitalize(JobApplicationSections.INTERVIEW)}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.INTERVIEW)
+          onClick: () => handlClick(JobApplicationSections.INTERVIEW),
         }}
       />
       <PipeLine
         textCandidateCount={newSections.qualified.label}
         textName={capitalize(JobApplicationSections.QUALIFIED)}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.QUALIFIED)
+          onClick: () => handlClick(JobApplicationSections.QUALIFIED),
         }}
       />
       <PipeLine
@@ -291,7 +292,7 @@ const Pipeline = () => {
         textCandidateCount={newSections.disqualified.label}
         textName={capitalize(JobApplicationSections.DISQUALIFIED)}
         onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.DISQUALIFIED)
+          onClick: () => handlClick(JobApplicationSections.DISQUALIFIED),
         }}
       />
     </>
@@ -305,14 +306,14 @@ const Banners = () => {
 const JobClose = ({
   popover,
   onClose,
-  onSubmit
+  onSubmit,
 }: {
   popover: boolean;
   onClose: () => void;
   onSubmit: () => void;
 }) => {
   const {
-    job: { job_title, location, status }
+    job: { job_title, location, status },
   } = useJobDetails();
   const [modal, setModal] = useState(false);
   const [value, setValue] = useState('');
@@ -336,14 +337,14 @@ const JobClose = ({
         onClose={() => onClose()}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         sx={{
           '& .MuiPaper-root': {
             border: 'none !important',
             overflow: 'visible !important',
-            top: '62px !important'
-          }
+            top: '62px !important',
+          },
         }}
       >
         <CloseDeleteJob
@@ -380,12 +381,20 @@ const JobClose = ({
 };
 
 const Modules = () => {
+  const isNewAssessmentEnabled = posthog.isFeatureEnabled(
+    'isNewAssessmentEnabled',
+  );
+  const isSchedulingEnabled = posthog.isFeatureEnabled('isSchedulingEnabled');
+  const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+    'isPhoneScreeningEnabled',
+  );
+
   return (
     <>
-      <InterviewModule />
-      <AssessmentModule />
+      {isSchedulingEnabled && <InterviewModule />}
+      {isNewAssessmentEnabled && <AssessmentModule />}
       <ProfileScoreModule />
-      <ScreeningModule />
+      {isPhoneScreeningEnabled && <ScreeningModule />}
     </>
   );
 };
@@ -410,7 +419,7 @@ export type DashboardGraphOptions<
   T extends keyof Pick<
     ReturnType<typeof useJobDetails>,
     'assessments' | 'locations' | 'matches' | 'skills' | 'tenureAndExperience'
-  >
+  >,
 > = {
   // eslint-disable-next-line no-unused-vars
   [id in keyof ReturnType<typeof useJobDetails>[T]['data']]: string;
@@ -420,7 +429,7 @@ const Doughnut = () => {
   const options: DashboardGraphOptions<'locations'> = {
     city: 'City',
     state: 'State',
-    country: 'Country'
+    country: 'Country',
   };
   const [selection, setSelection] = useState<keyof typeof options>('city');
   const pills = Object.entries(options).map(([key, value]) => (
@@ -429,7 +438,7 @@ const Doughnut = () => {
       isActive={selection === key}
       textPill={value}
       onClickPill={{
-        onClick: () => setSelection(key as keyof typeof options)
+        onClick: () => setSelection(key as keyof typeof options),
       }}
     />
   ));
@@ -450,7 +459,7 @@ const LineGraph = () => {
     >]: string;
   } = {
     experience: 'Experience',
-    tenure: 'Tenure'
+    tenure: 'Tenure',
   };
   const [selection, setSelection] =
     useState<keyof typeof options>('experience');
@@ -460,7 +469,7 @@ const LineGraph = () => {
       isActive={selection === key}
       textPill={value}
       onClickPill={{
-        onClick: () => setSelection(key as keyof typeof options)
+        onClick: () => setSelection(key as keyof typeof options),
       }}
     />
   ));
@@ -475,7 +484,7 @@ const LineGraph = () => {
 const Bars = () => {
   const options: DashboardGraphOptions<'skills'> = {
     top_skills: 'Top skills',
-    required_skills: 'Skills mentioned in JD'
+    required_skills: 'Skills mentioned in JD',
   };
   const [selection, setSelection] =
     useState<keyof typeof options>('top_skills');
@@ -485,7 +494,7 @@ const Bars = () => {
       isActive={selection === key}
       textPill={value}
       onClickPill={{
-        onClick: () => setSelection(key as keyof typeof options)
+        onClick: () => setSelection(key as keyof typeof options),
       }}
     />
   ));
@@ -535,20 +544,24 @@ const InterviewModule = () => {
 };
 
 const ProfileScoreModule = () => {
-  const { job, jdValidity } = useJobDetails();
+  const { job, status } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);
   };
+  const isAlert = status.generation_error;
+  const isWarning =
+    !isAlert && (status.description_changed || status.description_error);
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}
-      isWarning={!jdValidity}
+      isWarning={isWarning}
+      isAlert={isAlert}
       textName={'Profile Score'}
       slotIcon={<ProfileScoreIcon />}
       slotEnableDisable={
         <>
-          {job?.scoring_param_status === 'loading' && (
+          {status.loading && (
             <CircularProgress
               color='inherit'
               size={'15px'}

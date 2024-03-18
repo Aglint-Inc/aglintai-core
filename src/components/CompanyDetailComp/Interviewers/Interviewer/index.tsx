@@ -42,7 +42,12 @@ function Interviewer({
     isAll: boolean;
     training_status?: 'qualified' | 'training';
     panel_id?: string | null;
-    type: 'pause' | 'resume' | 'remove';
+    type:
+      | 'pause'
+      | 'resume'
+      | 'remove'
+      | 'addQualifiedModule'
+      | 'addTrainingModule';
     isLoading?: boolean;
     end_time?: string;
   }>({
@@ -423,6 +428,26 @@ function Interviewer({
             </ShowCode.When>
           </ShowCode>
         }
+        onClickAddInterviewModules={{
+          onClick: () => {
+            setPauseResumeDialog((pre) => ({
+              ...pre,
+              isOpen: true,
+              type: 'addQualifiedModule',
+              isLoading: false
+            }));
+          }
+        }}
+        onClickAddModulesTraining={{
+          onClick: () => {
+            setPauseResumeDialog((pre) => ({
+              ...pre,
+              isOpen: true,
+              type: 'addTrainingModule',
+              isLoading: false
+            }));
+          }
+        }}
       />
 
       <PauseResumeDialog

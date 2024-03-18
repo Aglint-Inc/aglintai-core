@@ -3,9 +3,6 @@ import * as Types from "./types";
 
 declare function JobDetails(props: {
   as?: React.ElementType;
-  onClickEditJobs?: Types.Devlink.RuntimeProps;
-  isPreviewVisible?: Types.Visibility.VisibilityConditions;
-  jobLink?: Types.Basic.Link;
   slotSidebar?: Types.Devlink.Slot;
   slotTabs?: Types.Devlink.Slot;
   slotFilters?: Types.Devlink.Slot;

@@ -8,6 +8,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/CompanyDetailComp/Interviewers/DynamicLoader';
 import Interviewer from '@/src/components/CompanyDetailComp/Interviewers/Interviewer';
 import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
+import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { InterviewModuleType, RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -35,7 +36,7 @@ function InterviewerPage() {
     setOpenDrawer(true);
   };
 
-  const { data, isLoading, isError, isFetched, } = useImrQuery();
+  const { data, isLoading, isError, isFetched } = useImrQuery();
 
   if (isLoading) {
     return <DynamicLoader />;
@@ -88,7 +89,11 @@ function InterviewerPage() {
 }
 
 InterviewerPage.getProvider = function getProvider(page) {
-  return <InterviewerContextProvider>{page}</InterviewerContextProvider>;
+  return (
+    <InterviewerContextProvider>
+      <SchedulingProvider>{page}</SchedulingProvider>
+    </InterviewerContextProvider>
+  );
 };
 
 export default InterviewerPage;

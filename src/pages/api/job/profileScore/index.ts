@@ -9,7 +9,9 @@ import { nanoid } from 'nanoid';
 import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
 
+import { distributeScoreWeights } from '@/src/components/JobProfileScore';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { Database } from '@/src/types/schema';
 
 export const openai = new OpenAI({
@@ -53,8 +55,9 @@ const handler = async (
     !(
       data &&
       data[0] &&
-      data[0]?.description &&
-      data[0]?.description.length > 100
+      data[0]?.draft &&
+      (data[0]?.draft as any)?.description &&
+      ((data[0]?.draft as any)?.description ?? '').length > 100
     )
   ) {
     await supabase
@@ -78,7 +81,7 @@ const handler = async (
     const jsonPromise = jdJson(
       `Job Role : ${job.job_title}
 
-${job.description}
+${(job.draft as any).description}
 `,
     );
     const json = await Promise.race([jsonPromise, timeoutPromise]);
@@ -93,12 +96,16 @@ ${job.description}
       skills: arrItemToReactArr([...json.skills]),
       educations: arrItemToReactArr([...json.educations]),
     };
+    const descriptionHash = hashCode((job.draft as any).description);
+    const weights = distributeScoreWeights(j);
     await supabase
       .from('public_jobs')
       .update({
         jd_json: j,
         draft: { ...(job.draft as any), jd_json: j },
+        description_hash: descriptionHash,
         scoring_param_status: 'success',
+        parameter_weights: weights,
       })
       .eq('id', job_id);
     res.status(200).send();

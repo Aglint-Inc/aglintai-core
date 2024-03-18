@@ -83,7 +83,6 @@ const JobApplicationComponent = () => {
     handleSelectNextSection,
     handleSelectPrevSection,
   } = useJobApplications();
-  const router = useRouter();
 
   const sectionApplications = applications[section];
 
@@ -171,16 +170,11 @@ const JobApplicationComponent = () => {
         }
         isFetchingPillVisible={atsSync}
         slotBreadcrumb={<BreadCrumbs />}
-        onClickEditJobs={{
+        onclickAddCandidates={{
           onClick: () => {
-            router.push(`/jobs/edit?job_id=${job.id}`);
-            posthog.capture('Edit Job Details clicked');
+            setOpenImportCandidates(true);
+            posthog.capture('Import Candidates Clicked');
           },
-        }}
-        isPreviewVisible={true}
-        jobLink={{
-          href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
-          target: '_blank',
         }}
         slotSidebar={
           <ApplicationDetails
@@ -205,12 +199,6 @@ const JobApplicationComponent = () => {
             setApplicationLimit={setApplicationLimit}
           />
         }
-        onclickAddCandidates={{
-          onClick: () => {
-            setOpenImportCandidates(true);
-            posthog.capture('Import Candidates Clicked');
-          },
-        }}
         slotTable={
           <ApplicationTable
             detailedView={detailedView}

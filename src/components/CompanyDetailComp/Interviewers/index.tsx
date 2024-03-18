@@ -29,54 +29,54 @@ const InterviewTab = () => {
           <AllInterviewers
             slotAllInterviewesCard={
               interviewers &&
-              [...interviewers
-                .filter((item) => item.module_names[0]),...interviewers
-                .filter((item) => !item.module_names[0])]
-                .map((member) => {
-                  return (
-                    <Stack
-                      key={member.rec_user.user_id}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        // setSelectedInterviewer(member);
-                        router.push(
-                          `${router.route}/interviewer/${member.rec_user.user_id}`
-                        );
-                      }}
-                    >
-                      <AllInterviewersCard
-                        textCompletedInterviews={member.completed_meeting_count}
-                        textUpcomingInterviews={member.upcoming_meeting_count}
-                        slotProfileImage={
-                          <MuiAvatar
-                            src={member.rec_user.profile_image}
-                            level={member.rec_user.first_name}
-                            variant='circular'
-                            height='100%'
-                            width='100%'
-                            fontSize='16px'
-                          />
-                        }
-                        slotInterviewModules={
-                          <>
-                            {member.module_names
-                              ?.slice(0, 2)
-                              .map((item) => (
-                                <TextWithBg key={item} text={item} />
-                              ))}
-                            {member.module_names?.length > 2 && (
-                              <TextWithBg
-                                text={`+${member.module_names.length - 2}`}
-                              />
-                            )}
-                          </>
-                        }
-                        textName={`${member.rec_user.first_name} ${member.rec_user.last_name || ''}`}
-                        textRole={member.rec_user?.position}
-                      />
-                    </Stack>
-                  );
-                })
+              [
+                ...interviewers.filter((item) => item.module_names[0]),
+                ...interviewers.filter((item) => !item.module_names[0])
+              ].map((member) => {
+                return (
+                  <Stack
+                    key={member.rec_user.user_id}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      // setSelectedInterviewer(member);
+                      router.push(
+                        `${router.route}/interviewer/${member.rec_user.user_id}`
+                      );
+                    }}
+                  >
+                    <AllInterviewersCard
+                      textCompletedInterviews={member.completed_meeting_count}
+                      textUpcomingInterviews={member.upcoming_meeting_count}
+                      slotProfileImage={
+                        <MuiAvatar
+                          src={member.rec_user.profile_image}
+                          level={member.rec_user.first_name}
+                          variant='circular'
+                          height='100%'
+                          width='100%'
+                          fontSize='16px'
+                        />
+                      }
+                      slotInterviewModules={
+                        <>
+                          {member.module_names
+                            ?.slice(0, 2)
+                            .map((item) => (
+                              <TextWithBg key={item} text={item} />
+                            ))}
+                          {member.module_names?.length > 2 && (
+                            <TextWithBg
+                              text={`+${member.module_names.length - 2}`}
+                            />
+                          )}
+                        </>
+                      }
+                      textName={`${member.rec_user.first_name} ${member.rec_user.last_name || ''}`}
+                      textRole={member.rec_user?.position}
+                    />
+                  </Stack>
+                );
+              })
             }
           />
         </Stack>

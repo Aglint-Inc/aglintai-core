@@ -18,34 +18,34 @@ export const useJobScoringPoll = () => {
     enabled: !!job,
     refetchInterval: job?.scoring_param_status === 'loading' ? 5000 : false,
     queryFn: async () => {
-      const { scoring_param_status, draft } = await readJobScoring(job_id);
+      const polledData = await readJobScoring(job_id);
       const newJobs = jobs.reduce((acc, curr) => {
-        if (curr.id === job_id)
-          acc.push({ ...curr, scoring_param_status, draft });
+        if (curr.id === job_id) acc.push({ ...curr, ...polledData });
         else acc.push(curr);
         return acc;
       }, [] as Job[]);
       queryClient.setQueryData<Job[]>(jobQueryKey, newJobs);
-      return { scoring_param_status, draft };
-    }
+      return polledData;
+    },
   });
   return {
     ...query,
-    status:
-      !!job && job?.scoring_param_status === 'loading'
-        ? 'polling'
-        : query.status
+    status: (!!job && job?.scoring_param_status === 'loading'
+      ? 'polling'
+      : query.status) as 'success' | 'error' | 'pending' | 'polling',
   };
 };
 
 export const readJobScoring = async (job_id: string) => {
   const { data, error } = await supabase
     .from('public_jobs')
-    .select('scoring_param_status, draft')
+    .select('scoring_param_status, draft, parameter_weights, description_hash')
     .eq('id', job_id);
   if (error) throw new Error(error.message);
   return data[0] as unknown as {
     scoring_param_status: Job['scoring_param_status'];
+    parameter_weights: Job['parameter_weights'];
+    description_hash: Job['description_hash'];
     draft: Job['draft'];
   };
 };
