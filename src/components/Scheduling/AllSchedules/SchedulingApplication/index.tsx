@@ -15,7 +15,6 @@ import {
   resetSchedulingApplicationState,
   setDateRange,
   setFetchingSchedule,
-  setInitalLoading,
   setInterviewModules,
   setMembers,
   setScheduleName,
@@ -100,8 +99,6 @@ function SchedulingApplication() {
         if (resMem?.data?.length > 0) {
           setMembers(resMem.data);
         }
-
-        setInitalLoading(false);
         setSelectedApplication(application);
       }
     } catch (error) {

@@ -22,7 +22,7 @@ function VideoCandidatePanel() {
     showStartCard,
     setShowStartCard,
     startInterview,
-    setCharacter,
+    setCharacter
   } = useInterviewContext();
 
   const [edit, setEdit] = useState(false);
@@ -44,7 +44,7 @@ function VideoCandidatePanel() {
             setCharacter('');
             setShowStartCard(true);
             startInterview();
-          },
+          }
         }}
         textTimer={`${getminutes < 10 && '0'}
               ${getminutes} : ${getSecond < 10 ? '0' : ''} ${getSecond}`}
@@ -58,12 +58,12 @@ function VideoCandidatePanel() {
             }, 200);
             stopListening();
           },
-          id: 'edit-pencil',
+          id: 'edit-pencil'
         }}
         onClickEditDone={{
           onClick: () => {
             setEdit(false);
-          },
+          }
         }}
         slotText={
           <>
@@ -112,13 +112,13 @@ function VideoCandidatePanel() {
                 justifyContent={'center'}
                 sx={{
                   '& .MuiFormControl-root': {
-                    margin: '0px',
+                    margin: '0px'
                   },
                   '& .MuiInputBase-root': {
                     height: '100%',
                     padding: { xs: '0px', sm: '34px' },
-                    background: 'white.700 !important',
-                  },
+                    background: 'white.700 !important'
+                  }
                   // p: { xs: '12px 20px', md: '0px' },
                 }}
                 position={'relative'}
@@ -131,7 +131,6 @@ function VideoCandidatePanel() {
                   //     e.preventDefault(); // Prevent the default paste behavior
                   // }}
                   fullWidth
-                  variant='standard'
                   id='candidate_answer_textarea'
                   sx={{
                     '& textarea': {
@@ -143,8 +142,8 @@ function VideoCandidatePanel() {
                       overflow: 'auto !important',
                       background: 'rgba(255, 255, 255, 0.11)',
                       borderRadius: '20px !important',
-                      padding: '15px',
-                    },
+                      padding: '15px'
+                    }
                   }}
                   // className={`${classes.textField} ${classes.textFieldSmall} ${classes.textFieldExtraSmall}`}
                   inputRef={senderRef}
@@ -161,12 +160,12 @@ function VideoCandidatePanel() {
         onClickMicStop={{
           onClick: () => {
             handleListing();
-          },
+          }
         }}
         onClickMic={{
           onClick: () => {
             handleListing();
-          },
+          }
         }}
         isAllButtonDisable={speaking}
         isMicSubmitButtonDisable={edit}
@@ -176,7 +175,7 @@ function VideoCandidatePanel() {
           onClick: () => {
             if (videoAssessment) submitVideoAnswers();
             else submitAnswers();
-          },
+          }
         }}
       />
     </>

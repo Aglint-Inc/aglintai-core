@@ -3,7 +3,7 @@ import {
   Dialog,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ interface DepartmentsProps {
 const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
   handleClose,
   open,
-  handleChange,
+  handleChange
 }) => {
   const { recruiter } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
@@ -60,7 +60,7 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
       const newValue = inputValue.trim();
       if (!departmentState.includes(newValue)) {
         setDepartmentState([
-          ...new Set([...departmentState, newValue.toLocaleLowerCase()]),
+          ...new Set([...departmentState, newValue.toLocaleLowerCase()])
         ]);
       }
       setTimeout(() => {
@@ -81,9 +81,9 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
               onClickRemoveRoles={{
                 onClick: () => {
                   setDepartmentState(
-                    departmentState.filter((rol) => role != rol),
+                    departmentState.filter((rol) => role != rol)
                   );
-                },
+                }
               }}
             />
           );
@@ -112,8 +112,8 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                         setDepartmentState([
                           ...new Set([
                             ...departmentState,
-                            option.toLocaleLowerCase(),
-                          ]),
+                            option.toLocaleLowerCase()
+                          ])
                         ]);
                         setTimeout(() => {
                           setInputValue('');
@@ -140,8 +140,8 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                         setDepartmentState([
                           ...new Set([
                             ...departmentState,
-                            option.toLocaleLowerCase(),
-                          ]),
+                            option.toLocaleLowerCase()
+                          ])
                         ]);
                         setTimeout(() => {
                           setInputValue('');
@@ -158,11 +158,11 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
             renderInput={(params) => (
               <TextField
                 {...params}
-                label='Type or Choose from the list and press enter'
+                placeholder='Type or Choose from the list and press enter'
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
                 onKeyDown={handleKeyDown}
               />
@@ -172,16 +172,16 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
         onClickCancel={{
           onClick: () => {
             handleClose();
-          },
+          }
         }}
         onClickDone={{
           onClick: () => {
             handleChange({
               ...recruiter,
-              departments: departmentState,
+              departments: departmentState
             });
             handleClose();
-          },
+          }
         }}
       />
     </Dialog>

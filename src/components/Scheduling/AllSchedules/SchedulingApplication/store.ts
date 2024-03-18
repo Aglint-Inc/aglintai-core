@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
-import { InterviewPanelContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { InterviewModuleType } from '@/src/types/data.types';
 
 import { ApplicationList } from '../store';
@@ -23,7 +23,7 @@ export interface SchedulingApplication {
     start_date: string;
     end_date: string;
   };
-  members: InterviewPanelContextType['members'];
+  members: InterviewScheduleContextType['members'];
   step: number;
   schedulingOptions: SchedulingOptionType;
   isViewProfileOpen: boolean;
@@ -78,7 +78,7 @@ export const setFetchingSchedule = (fetchingSchedule: boolean) =>
 export const setFetchingPlan = (fetchingPlan: boolean) =>
   useSchedulingApplicationStore.setState({ fetchingPlan });
 
-export const setMembers = (members: InterviewPanelContextType['members']) =>
+export const setMembers = (members: InterviewScheduleContextType['members']) =>
   useSchedulingApplicationStore.setState({ members });
 
 export const setStep = (step: number) =>

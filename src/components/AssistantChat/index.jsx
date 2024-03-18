@@ -9,7 +9,7 @@ import {
   ChatWelcome,
   PdfSelected,
   UserChat,
-  UserChatIcon,
+  UserChatIcon
 } from '@/devlink';
 import { useJobPostAssistantContext } from '@/src/context/JobPostAssistant';
 
@@ -24,7 +24,7 @@ function ChatMessages() {
     inputRef,
     selectedFile,
     setSelectedFile,
-    closeChat,
+    closeChat
   } = useJobPostAssistantContext();
   const [openChat, setOpenChat] = useState(false);
 
@@ -39,7 +39,7 @@ function ChatMessages() {
     <Stack
       sx={{
         background:
-          'linear-gradient(0deg, rgba(1,0,14,1) 0%, rgba(14,9,83,1) 86%)',
+          'linear-gradient(0deg, rgba(1,0,14,1) 0%, rgba(14,9,83,1) 86%)'
       }}
       position={'relative'}
       width={'100%'}
@@ -55,13 +55,13 @@ function ChatMessages() {
             opacity: openChat ? 1 : 0,
             transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${
               openChat ? '0.4s' : '0.2s'
-            }, opacity ${openChat ? '0.4s' : '0.2s'} `,
+            }, opacity ${openChat ? '0.4s' : '0.2s'} `
           }}
           pr={'30px'}
         >
           <ChatBox
             onClickScroll={{
-              id: 'chat_scroll',
+              id: 'chat_scroll'
             }}
             textCompanyName={companyDetails?.name}
             slotLogo={
@@ -88,18 +88,17 @@ function ChatMessages() {
                     onClickAttach={{
                       onClick: () => {
                         document.getElementById('chat-file').click();
-                      },
+                      }
                     }}
                     onClickSend={{
                       onClick: () => {
                         createNewMessage();
-                      },
+                      }
                     }}
                     slotTypeInput={
                       <Stack>
                         <Stack alignItems={'center'} direction={'row'}>
                           <TextField
-                            variant='standard'
                             onKeyDownCapture={(e) => {
                               if (e.ctrlKey && e.key === 'Enter') {
                                 createNewMessage();
@@ -143,7 +142,7 @@ function ChatMessages() {
             onClickChat={{
               onClick: () => {
                 setOpenChat((pre) => !pre);
-              },
+              }
             }}
           />
         </Stack>
@@ -163,14 +162,14 @@ export function ChatConversation() {
       {
         role: 'user',
         value: 'Yes, please',
-        metadata: {},
+        metadata: {}
       },
       {
         role: 'assistant',
         value: `Hi there! I'm the AI assistant for ${companyDetails.name}. Can I assist you in finding a suitable job opportunity today?`,
-        metadata: {},
+        metadata: {}
       },
-      ...pre,
+      ...pre
     ]);
     createNewMessage();
   }

@@ -7,7 +7,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewModuleType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-export type InterviewPanelContextType = {
+export type InterviewScheduleContextType = {
   loading: boolean;
   members: MemberType[];
   allModules: InterviewModuleType[];
@@ -16,18 +16,18 @@ export type InterviewPanelContextType = {
 const initialState = {
   loading: true,
   members: [],
-  allModules: [],
+  allModules: []
 };
 
 const AllSchedulingContext =
-  createContext<InterviewPanelContextType>(initialState);
+  createContext<InterviewScheduleContextType>(initialState);
 
 const SchedulingProvider = ({ children }) => {
   const { recruiter } = useAuthDetails();
   const [loading, setLoading] = useState(true);
-  const [members, setMembers] = useState<InterviewPanelContextType['members']>(
-    [],
-  );
+  const [members, setMembers] = useState<
+    InterviewScheduleContextType['members']
+  >([]);
   const [allModules, setAllModules] = useState<InterviewModuleType[]>([]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const SchedulingProvider = ({ children }) => {
       }
 
       const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
-        recruiter_id: recruiter.id,
+        recruiter_id: recruiter.id
       });
       if (resMem.data) {
         setMembers(resMem.data);
@@ -68,7 +68,7 @@ const SchedulingProvider = ({ children }) => {
       value={{
         loading,
         members,
-        allModules,
+        allModules
       }}
     >
       {children}

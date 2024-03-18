@@ -119,7 +119,7 @@ function SlideDetailsTwo() {
                 variant='text'
                 onClick={() => {
                   router.push(`?step=${stepObj.atsSystem}`, undefined, {
-                    shallow: true,
+                    shallow: true
                   });
                   setStep(stepObj.atsSystem);
                 }}
@@ -145,7 +145,7 @@ export function CompanyDetails() {
     recruiterUser,
     setRecruiterUser,
     userCountry,
-    userDetails,
+    userDetails
   } = useAuthDetails();
   const [logo, setLogo] = useState(recruiter.logo);
   const [phone, setPhone] = useState(null);
@@ -154,16 +154,16 @@ export function CompanyDetails() {
   const [error, setError] = useState<Error1>({
     phone: {
       error: false,
-      msg: '',
+      msg: ''
     },
     logo: {
       error: false,
-      msg: '',
+      msg: ''
     },
     name: {
       error: false,
-      msg: '',
-    },
+      msg: ''
+    }
   });
 
   useEffect(() => {
@@ -174,12 +174,12 @@ export function CompanyDetails() {
     if (!phone?.trim() || countRept(phone, /\d/g) != countRept(format, /\./g)) {
       setError({
         ...error,
-        phone: { error: true, msg: '' },
+        phone: { error: true, msg: '' }
       });
     } else {
       setError({
         ...error,
-        phone: { ...error.phone, error: false },
+        phone: { ...error.phone, error: false }
       });
     }
   };
@@ -197,16 +197,16 @@ export function CompanyDetails() {
         ...error,
         name: {
           error: true,
-          msg: 'Company name is required',
-        },
+          msg: 'Company name is required'
+        }
       });
     } else {
       setError({
         ...error,
         name: {
           error: false,
-          msg: '',
-        },
+          msg: ''
+        }
       });
     }
     return isValid;
@@ -221,14 +221,14 @@ export function CompanyDetails() {
           phone_number: phone,
           employee_size: recruiter.employee_size,
           name: recruiter.name,
-          industry: recruiter.industry,
+          industry: recruiter.industry
         })
         .eq('id', recruiter.id);
       cacheUserInfo(recruiterUser.email, recruiterUser.user_id);
 
       if (!e1) {
         router.push(`?step=${stepObj.atsSystem}`, undefined, {
-          shallow: true,
+          shallow: true
         });
         setStep(stepObj.atsSystem);
       }
@@ -238,16 +238,16 @@ export function CompanyDetails() {
   const cacheUserInfo = async (email: string, rec_user_id: string) => {
     try {
       let [cand] = supabaseWrap(
-        await supabase.from('aglint_candidates').select().eq('email', email),
+        await supabase.from('aglint_candidates').select().eq('email', email)
       ) as AglintCandidatesTypeDB[];
 
       let profile_img;
       let position;
       if (!cand) {
         const {
-          data: { person },
+          data: { person }
         } = await axios.post('/api/candidatedb/get-email', {
-          email: email,
+          email: email
         });
         supabaseWrap(
           await supabase.from('aglint_candidates').insert({
@@ -280,8 +280,8 @@ export function CompanyDetails() {
             subdepartments: person.subdepartments,
             title: person.title,
             twitter_url: person.twitter_url,
-            search_query: {},
-          }),
+            search_query: {}
+          })
         );
         profile_img = person.photo_url;
         position = person.title;
@@ -295,14 +295,14 @@ export function CompanyDetails() {
           .from('recruiter_user')
           .update({
             profile_image: profile_img,
-            position: position,
+            position: position
           })
-          .eq('user_id', rec_user_id),
+          .eq('user_id', rec_user_id)
       );
       setRecruiterUser((prev) => ({
         ...prev,
         position: position,
-        profile_image: profile_img,
+        profile_image: profile_img
       }));
     } catch (err) {
       //
@@ -343,7 +343,7 @@ export function CompanyDetails() {
               if (value) {
                 setRecruiter({
                   ...recruiter,
-                  industry: value,
+                  industry: value
                 });
               }
             }}
@@ -366,7 +366,7 @@ export function CompanyDetails() {
                   label='Industry Type'
                   placeholder='Ex. Healthcare'
                   InputProps={{
-                    ...params.InputProps,
+                    ...params.InputProps
                   }}
                   onChange={(e) => {
                     setRecruiter({ ...recruiter, industry: e.target.value });
@@ -384,7 +384,7 @@ export function CompanyDetails() {
               if (value) {
                 setRecruiter({
                   ...recruiter,
-                  employee_size: value,
+                  employee_size: value
                 });
               }
             }}
@@ -404,7 +404,7 @@ export function CompanyDetails() {
                 rest={{ ...params }}
                 fullWidth
                 InputProps={{
-                  ...params.InputProps,
+                  ...params.InputProps
                 }}
                 label='Employee Size'
                 placeholder='Ex. 1000-2000'
@@ -412,7 +412,7 @@ export function CompanyDetails() {
                 onChange={(event) => {
                   setRecruiter({
                     ...recruiter,
-                    employee_size: event.target.value,
+                    employee_size: event.target.value
                   });
                 }}
               />
@@ -451,7 +451,7 @@ export function CompanyDetails() {
               onclickProps={{
                 onClick: () => {
                   router.back();
-                },
+                }
               }}
             />
             <AUIButton disabled={false} onClick={submitHandler}>

@@ -155,7 +155,6 @@ function VideoCandidatePanel() {
                   //     e.preventDefault(); // Prevent the default paste behavior
                   // }}
                   fullWidth
-                  variant='standard'
                   id='candidate_answer_textarea'
                   sx={{
                     '& textarea': {

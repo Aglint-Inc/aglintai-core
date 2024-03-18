@@ -3,7 +3,7 @@ import {
   Dialog,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ interface RolesProps {
 const AddRolesDialog: React.FC<RolesProps> = ({
   handleClose,
   open,
-  handleChange,
+  handleChange
 }) => {
   const { recruiter } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
@@ -76,7 +76,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
               onClickRemoveRoles={{
                 onClick: () => {
                   setRoles(roles.filter((rol) => role != rol));
-                },
+                }
               }}
             />
           );
@@ -103,7 +103,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                       width={'100%'}
                       onClick={() => {
                         setRoles([
-                          ...new Set([...roles, option.toLocaleLowerCase()]),
+                          ...new Set([...roles, option.toLocaleLowerCase()])
                         ]);
                         setTimeout(() => {
                           setInputValue('');
@@ -126,7 +126,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                     onClick={() => {
                       if (!roles.includes(option)) {
                         setRoles([
-                          ...new Set([...roles, option.toLocaleLowerCase()]),
+                          ...new Set([...roles, option.toLocaleLowerCase()])
                         ]);
                         setTimeout(() => {
                           setInputValue('');
@@ -143,11 +143,11 @@ const AddRolesDialog: React.FC<RolesProps> = ({
             renderInput={(params) => (
               <TextField
                 {...params}
-                label='Type or Choose from the list and press enter'
+                placeholder='Type or Choose from the list and press enter'
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
-                  disableUnderline: true,
+                  disableUnderline: true
                 }}
                 onKeyDown={handleKeyDown}
               />
@@ -157,16 +157,16 @@ const AddRolesDialog: React.FC<RolesProps> = ({
         onClickCancel={{
           onClick: () => {
             handleClose();
-          },
+          }
         }}
         onClickDone={{
           onClick: () => {
             handleChange({
               ...recruiter,
-              available_roles: roles,
+              available_roles: roles
             });
             handleClose();
-          },
+          }
         }}
       />
     </Dialog>
