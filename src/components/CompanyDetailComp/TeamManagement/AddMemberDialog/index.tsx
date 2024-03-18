@@ -159,7 +159,7 @@ const AddMember = ({
           scheduling_settings: null
         });
       } else {
-        toast.error('User allready exists');
+        toast.error('User already exists');
       }
     }
     setIsDisable(false);
