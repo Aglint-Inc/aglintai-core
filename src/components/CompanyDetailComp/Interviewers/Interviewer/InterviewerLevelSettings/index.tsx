@@ -194,7 +194,8 @@ function InterviewerLevelSettings({
     workingHours,
     selectedTimeZone,
     freeKeyWords,
-    softConflictsKeyWords
+    softConflictsKeyWords,
+    isTimeZone
   ]);
 
   useEffect(() => {
@@ -254,7 +255,6 @@ function InterviewerLevelSettings({
                             )[0]
                           );
                         }
-                        refetch();
                       }}
                       isActive={isTimeZone}
                     />

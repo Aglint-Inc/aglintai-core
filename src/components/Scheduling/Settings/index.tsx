@@ -199,7 +199,8 @@ function SchedulingSettings({
     workingHours,
     selectedTimeZone,
     freeKeyWords,
-    softConflictsKeyWords
+    softConflictsKeyWords,
+    isTimeZone
   ]);
 
   useEffect(() => {
