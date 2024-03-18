@@ -7,6 +7,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { settingsItems } from './utils';
+
 function SubNav() {
   const router = useRouter();
   const { isAllowed } = useAuthDetails();
@@ -37,7 +39,7 @@ function SubNav() {
                     `${pageRoutes.SCHEDULING}?tab=${item.replace(
                       ' ',
                       ''
-                    )}&subtab=availability`
+                    )}&subtab=${settingsItems[0].value}`
                   );
                 } else {
                   router.push(
@@ -47,40 +49,7 @@ function SubNav() {
               }
             }}
             isSubMenuVisible={item === 'settings' && router.query.tab === item}
-            slotSubLinkSubMenu={
-              <>
-                <SubLinkSubMenu
-                  textSubMenu={'Availability'}
-                  isActive={router.query.subtab === 'availability'}
-                  onClickSubMenu={{
-                    onClick: (e: any) => {
-                      e.stopPropagation();
-                      router.push(
-                        `${pageRoutes.SCHEDULING}?tab=${item.replace(
-                          ' ',
-                          ''
-                        )}&subtab=availability`
-                      );
-                    }
-                  }}
-                />
-                <SubLinkSubMenu
-                  textSubMenu={'Keywords'}
-                  isActive={router.query.subtab === 'keywords'}
-                  onClickSubMenu={{
-                    onClick: (e: any) => {
-                      e.stopPropagation();
-                      router.push(
-                        `${pageRoutes.SCHEDULING}?tab=${item.replace(
-                          ' ',
-                          ''
-                        )}&subtab=keywords`
-                      );
-                    }
-                  }}
-                />
-              </>
-            }
+            slotSubLinkSubMenu={<SettingsSubNabItem tab={item} />}
           />
         ))}
     </>
@@ -88,3 +57,30 @@ function SubNav() {
 }
 
 export default SubNav;
+function SettingsSubNabItem({ tab }: { tab: string }) {
+  const router = useRouter();
+  return (
+    <>
+      {settingsItems.map((item, i) => {
+        return (
+          <SubLinkSubMenu
+            key={i}
+            textSubMenu={item.label}
+            isActive={router.query.subtab === item.value}
+            onClickSubMenu={{
+              onClick: (e: any) => {
+                e.stopPropagation();
+                router.push(
+                  `${pageRoutes.SCHEDULING}?tab=${tab.replace(
+                    ' ',
+                    ''
+                  )}&subtab=${item.value}`
+                );
+              }
+            }}
+          />
+        );
+      })}
+    </>
+  );
+}
