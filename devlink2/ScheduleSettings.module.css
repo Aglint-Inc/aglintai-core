@@ -195,6 +195,10 @@
   padding-left: 16px;
 }
 
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .text-grey-600.relative-1 {
   position: relative;
   z-index: 1;
@@ -399,7 +403,7 @@
 
 .load_grid {
   width: 100%;
-  max-width: 310px;
+  max-width: 370px;
   align-content: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

@@ -10,7 +10,7 @@ const _interactionsData = JSON.parse(
 
 export function DayOff({
   as: _Component = _Builtin.Block,
-  textDate = "17 Nov 2024 - 20 Nov 2024",
+  textDate = "17 Nov 2024",
   onClickRemove = {},
   textDaysOffName = "Christmas",
   onClickEdit = {},
@@ -25,7 +25,7 @@ export function DayOff({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold")}
+        className={_utils.cx(_styles, "fw-semibold", "text-width-100")}
         id={_utils.cx(
           _styles,
           "w-node-_1ec17d4b-084f-674b-41dc-34aeb6f2abd2-b6f2abd1"

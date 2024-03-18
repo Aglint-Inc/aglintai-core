@@ -43,11 +43,11 @@
 .div-block-1079 {
   display: flex;
   overflow: auto;
+  height: 100%;
   padding-top: 10px;
   padding-right: 16px;
   padding-bottom: 20px;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  height: calc(100vh - 154px);
 }

@@ -325,3 +325,7 @@
 
   border-left: 1px solid #e9ebed;
 }
+
+.interview-sub-table-right.pb-0 {
+  padding-bottom: 0px;
+}

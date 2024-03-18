@@ -20,7 +20,7 @@ function SubNav() {
     { text: 'all Schedules', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interview Modules', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'email Template', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'all Interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
+    { text: 'Interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] }
   ];
   return (

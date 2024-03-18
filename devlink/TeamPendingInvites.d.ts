@@ -5,4 +5,5 @@ declare function TeamPendingInvites(props: {
   as?: React.ElementType;
   slotList?: Types.Devlink.Slot;
   onClickClose?: Types.Devlink.RuntimeProps;
+  textTitleDescription?: React.ReactNode;
 }): React.JSX.Element;

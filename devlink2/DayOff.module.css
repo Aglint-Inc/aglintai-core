@@ -188,6 +188,10 @@
   padding-left: 16px;
 }
 
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .removeday {
   display: none;
   justify-content: flex-start;

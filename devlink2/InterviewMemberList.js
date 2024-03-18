@@ -110,7 +110,7 @@ export function InterviewMemberList({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "interview-sub-table-right")}
+        className={_utils.cx(_styles, "interview-sub-table-right", "pb-0")}
         tag="div"
       >
         {slotInterviewCard ?? <InterviewMemberSide />}
