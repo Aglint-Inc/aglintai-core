@@ -129,7 +129,8 @@ const AddMember = ({
         email: recruiterUser.email
       }
     );
-
+    // eslint-disable-next-line no-console
+    console.log(res);
     if (res.status === 200) {
       let { error, created, user } = res.data;
       if (!error && created) {
