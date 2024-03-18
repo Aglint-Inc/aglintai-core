@@ -31,7 +31,12 @@ export function MutedShadowSession({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-gray-500")}
+          className={_utils.cx(
+            _styles,
+            "fw-semibold",
+            "text-gray-500",
+            "text-first-cap"
+          )}
           tag="div"
         >
           {textSessionHeader}

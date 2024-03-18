@@ -56,7 +56,8 @@ function MembersAutoComplete({
               key={user.user_id}
               propsBgColor={{
                 style: {
-                  background: pillColor ? pillColor : palette.grey[100]
+                  background: pillColor ? pillColor : palette.grey[100],
+                  textTransform: 'capitalize'
                 }
               }}
               onClickClose={{
@@ -160,6 +161,7 @@ function MembersAutoComplete({
                         <Typography
                           variant='subtitle2'
                           className='one-line-clamp'
+                          sx={{ textTransform: 'capitalize' }}
                         >
                           {option.first_name}
                         </Typography>

@@ -4,13 +4,12 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
 import { MemberType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { InterviewModuleType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 export type InterviewScheduleContextType = {
   loading: boolean;
   members: MemberType[];
-  allModules: InterviewModuleType[];
+  allModules: { id: string; name: string }[];
 };
 
 const initialState = {
@@ -28,7 +27,9 @@ const SchedulingProvider = ({ children }) => {
   const [members, setMembers] = useState<
     InterviewScheduleContextType['members']
   >([]);
-  const [allModules, setAllModules] = useState<InterviewModuleType[]>([]);
+  const [allModules, setAllModules] = useState<{ id: string; name: string }[]>(
+    []
+  );
 
   useEffect(() => {
     if (recruiter?.id) {
@@ -43,7 +44,7 @@ const SchedulingProvider = ({ children }) => {
     try {
       const { data: modules, error: moduleError } = await supabase
         .from('interview_module')
-        .select('*')
+        .select('id,name')
         .eq('recruiter_id', recruiter.id);
 
       if (!moduleError) {

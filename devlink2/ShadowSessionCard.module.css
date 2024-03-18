@@ -85,6 +85,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -185,10 +189,6 @@
   z-index: 2;
 }
 
-.text-first-cap {
-  text-transform: capitalize;
-}
-
 .fw-semibold.sticky_2 {
   position: sticky;
   top: 0px;
@@ -208,13 +208,17 @@
   padding-left: 16px;
 }
 
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .div-block-1204 {
   display: flex;
   padding-left: 9px;
 }
 
 .div-block-1204.height-58 {
-  height: 58px;
+  height: 37px;
 }
 
 .div-block-1205 {
