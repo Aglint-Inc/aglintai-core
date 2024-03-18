@@ -15,7 +15,7 @@ export const useJobRead = () => {
   const response = useQuery({
     queryKey,
     queryFn: () => readJobs(recruiter_id),
-    enabled: !!recruiter_id
+    enabled: !!recruiter_id,
   });
   const refetch = async () => {
     await queryClient.invalidateQueries({ queryKey });
@@ -36,15 +36,16 @@ export const useJobCreate = () => {
           skills: [],
           rolesResponsibilities: [],
           title: '',
-          level: 'Mid-level'
-        } as JdJsonType
+          level: 'Mid-level',
+        } as JdJsonType,
       };
       return createJob({
         recruiter_id,
         ...job,
+        scoring_param_status: 'loading',
         draft: {
-          ...job
-        }
+          ...job,
+        },
       });
     },
     onError: () => {
@@ -54,7 +55,7 @@ export const useJobCreate = () => {
       if (data)
         queryClient.setQueryData<Job[]>(queryKey, (prev) => [data, ...prev]);
       else queryClient.invalidateQueries({ queryKey });
-    }
+    },
   });
   return mutation;
 };
@@ -77,7 +78,7 @@ export const useJobUpdate = () => {
     onError: (_, __, context) => {
       toast.error('Unable to update job');
       queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
-    }
+    },
   });
   return mutation;
 };
@@ -114,7 +115,7 @@ export const useJobDelete = () => {
     },
     onSuccess: () => {
       toast.success('Job successfully deleted');
-    }
+    },
   });
   return mutation;
 };
@@ -135,14 +136,14 @@ export const useJobRefresh = () => {
           return acc;
         }, [] as Job[]);
       });
-    }
+    },
   });
   return mutation;
 };
 
 export const readJobs = async (recruiter_id: string) => {
   const { data, error } = await supabase.rpc('getjobs', {
-    recruiterid: recruiter_id
+    recruiterid: recruiter_id,
   });
   if (error) throw new Error(error.message);
   return data as unknown as Job[];
@@ -150,7 +151,7 @@ export const readJobs = async (recruiter_id: string) => {
 
 export const readJob = async (id: Job['id']) => {
   const { data, error } = await supabase.rpc('getjob', {
-    jobid: id
+    jobid: id,
   });
   if (error) throw new Error(error.message);
   return data[0] as unknown as Job;
@@ -163,7 +164,7 @@ const createJob = async (newJob: JobInsert) => {
     .select('id');
   if (e1) throw new Error(e1.message);
   const { data: d2, error: e2 } = await supabase.rpc('getjob', {
-    jobid: d1[0].id
+    jobid: d1[0].id,
   });
   if (e2) return null;
   return d2[0] as unknown as Job;
