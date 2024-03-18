@@ -1,20 +1,25 @@
 /* eslint-disable security/detect-object-injection */
+
 import {
   type CookieOptions,
   createServerClient,
   serialize,
 } from '@supabase/ssr';
-import { PostgrestError } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { NextApiRequest, NextApiResponse } from 'next';
+import OpenAI from 'openai';
 
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { Database } from '@/src/types/schema';
 
-import { jdJson } from './utils';
+export const openai = new OpenAI({
+  apiKey: process.env.OPENAI_KEY,
+});
+
+export type OpenAi = typeof openai.chat.completions.create;
 
 export const config = {
-  maxDuration: 250,
+  maxDuration: 300,
 };
 
 const handler = async (
@@ -52,28 +57,23 @@ const handler = async (
       data[0]?.description.length > 100
     )
   ) {
-    res.status(200).send({
-      data: null,
-      error: {
-        message: 'No description provided',
-        code: '400',
-        details: null,
-        hint: null,
-      },
-    });
+    await supabase
+      .from('public_jobs')
+      .update({ scoring_param_status: null })
+      .eq('id', job_id);
+    res.status(200).send();
     return;
   }
   const timeoutPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
       reject(new Error('Timed out'));
-    }, 200000);
+    }, 250000);
   });
   try {
     await supabase
       .from('public_jobs')
       .update({ scoring_param_status: 'loading' })
       .eq('id', job_id);
-    res.status(200).send({ data: 'started', error: null });
     const job = data[0];
     const jsonPromise = jdJson(
       `Job Role : ${job.job_title}
@@ -101,17 +101,65 @@ ${job.description}
         scoring_param_status: 'success',
       })
       .eq('id', job_id);
+    res.status(200).send();
+    return;
   } catch (e) {
     await supabase
       .from('public_jobs')
       .update({ scoring_param_status: null })
       .eq('id', job_id);
+    res.status(200).send();
+    return;
   }
-  return;
 };
 
 const arrItemToReactArr = (arr: any[]) => {
   return arr.map((a) => ({ ...a, id: nanoid() }));
+};
+
+export const jdJson = async (description: string) => {
+  const messages: any[] = [
+    {
+      role: 'system',
+      content: `
+You're an helpful assistant. You're given a job description, 
+Analyze the job description provided and categorize the roles,responsibilities, requirements, skills, education into "must-have" and "preferred".
+
+You're given a job description, and your task is to extract and return the information in the following JSON format:
+
+export type JsonItemType = {
+  field: string;
+  isMustHave: boolean;  // If the field is absolutely necessary, then the value is true; otherwise, it's false.
+};
+
+export type JdJson = {
+  roles: JsonItemType[]; // previous roles and number of years.
+  responsibilities: JsonItemType[]; // responsibilities mentioned in job description.
+  requirements: JsonItemType[]; // requirements ( exclude degree or skill mentioned in the requirements ) .
+  jobLevel:enum // 'Fresher-level', 'Associate-level', 'Mid-level', 'Senior-level', 'Executive-level',
+  skills: JsonItemType[]; // Each Skill mentioned in roles, reponsibilities and requirements and whether they are a must-have.
+  educations: JsonItemType[]; // Each Education degree mentioned in roles, reponsibilities and requirements and whether they are a must-have .
+};
+`,
+    },
+    {
+      role: 'user',
+      content: `
+Here is the Job Description
+${description}
+`,
+    },
+  ];
+
+  const result = await openai.chat.completions.create({
+    messages,
+    model: 'gpt-3.5-turbo-1106',
+    temperature: 1,
+    response_format: {
+      type: 'json_object',
+    },
+  });
+  return JSON.parse(result.choices[0].message.content);
 };
 
 export default handler;
@@ -120,10 +168,5 @@ export type JobProfileScoreApi = {
   request: {
     job_id: string;
   };
-  response: {
-    data: ResponseDataPayload;
-    error: PostgrestError;
-  };
+  response: void;
 };
-
-type ResponseDataPayload = 'started';

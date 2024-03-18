@@ -153,6 +153,7 @@ function SchedulingSettings({
       console.log('local timeZones', dayjs.tz.guess());
 
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
+      setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
       setSelectedDailyLimit({
         ...schedulingSettingData.interviewLoad.dailyLimit
       });
@@ -181,7 +182,8 @@ function SchedulingSettings({
         schedulingKeyWords: {
           free: freeKeyWords,
           SoftConflicts: softConflictsKeyWords
-        }
+        },
+        isAutomaticTimezone: isTimeZone
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -216,50 +218,46 @@ function SchedulingSettings({
         >
           <WorkingHours
             slotTimeZoneInput={
-              <Stack spacing={'10px'} width={420}>
-                <Autocomplete
-                  disableClearable
-                  options={timeZones}
-                  value={
-                    isTimeZone
-                      ? timeZones.filter((item) =>
-                          item.label.includes(dayjs.tz.guess())
-                        )[0] || selectedTimeZone
-                      : selectedTimeZone
-                  }
-                  onChange={(event, value) => {
-                    if (value) {
-                      setSelectedTimeZone(value);
-                    }
-                  }}
-                  autoComplete={false}
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => {
-                    return (
-                      <li {...props}>
-                        <Typography variant='body2' color={'#000'}>
-                          {option.label}
-                        </Typography>
-                      </li>
-                    );
-                  }}
-                  renderInput={(params) => {
-                    return (
-                      <UITextField
-                        rest={{ ...params }}
-                        labelSize='medium'
-                        // fullWidth
-                        label=''
-                        placeholder='Ex. Healthcare'
-                        InputProps={{
-                          ...params.InputProps,
-                          autoComplete: 'new-password'
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </Stack>
+              !isTimeZone && (
+                <Stack spacing={'10px'} width={420}>
+                  <Autocomplete
+                    disableClearable
+                    options={timeZones}
+                    value={selectedTimeZone}
+                    onChange={(event, value) => {
+                      if (value) {
+                        setSelectedTimeZone(value);
+                      }
+                    }}
+                    autoComplete={false}
+                    getOptionLabel={(option) => option.label}
+                    renderOption={(props, option) => {
+                      return (
+                        <li {...props}>
+                          <Typography variant='body2' color={'#000'}>
+                            {option.label}
+                          </Typography>
+                        </li>
+                      );
+                    }}
+                    renderInput={(params) => {
+                      return (
+                        <UITextField
+                          rest={{ ...params }}
+                          labelSize='medium'
+                          // fullWidth
+                          label=''
+                          placeholder='Ex. Healthcare'
+                          InputProps={{
+                            ...params.InputProps,
+                            autoComplete: 'new-password'
+                          }}
+                        />
+                      );
+                    }}
+                  />
+                </Stack>
+              )
             }
             // slotTimeZoneToggle={}
             slotWorkingHourDay={
@@ -338,6 +336,13 @@ function SchedulingSettings({
               <ToggleBtn
                 handleCheck={(e) => {
                   setIsTimeZone(e);
+                  if (e) {
+                    setSelectedTimeZone(
+                      timeZones.filter((item) =>
+                        item.label.includes(dayjs.tz.guess())
+                      )[0]
+                    );
+                  }
                 }}
                 isActive={isTimeZone}
               />

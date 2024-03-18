@@ -8,7 +8,7 @@ import {
   GreenhouseRefDbType,
   GreenhouseType,
   NewCandidateType,
-  RecruiterDB
+  RecruiterDB,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -16,13 +16,13 @@ import toast from '@/src/utils/toast';
 import {
   ExtendedJobGreenhouse,
   GreenhouseApplication,
-  JobGreenhouse
+  JobGreenhouse,
 } from './types';
 import { POSTED_BY } from '../utils';
 
 export const createJobApplications = async (
   selectedLeverPostings: ExtendedJobGreenhouse[],
-  apiKey: string
+  apiKey: string,
 ) => {
   await Promise.all(
     selectedLeverPostings.map(async (post) => {
@@ -41,7 +41,7 @@ export const createJobApplications = async (
               company: cand.company,
               profile_image: cand.photo_url,
               linkedin: extractLinkedInURLGreenhouse(
-                cand.website_addresses[0]?.value || ''
+                cand.website_addresses[0]?.value || '',
               ),
               phone: cand.phone_numbers[0]?.value,
               resume:
@@ -52,7 +52,7 @@ export const createJobApplications = async (
                   : cand.attachments[0]?.url,
               job_id: post.public_job_id,
               application_id: uuidv4(), //our job application id
-              id: cand.id //greenhouse candidate id
+              id: cand.id, //greenhouse candidate id
             };
           } else {
             return null;
@@ -66,13 +66,13 @@ export const createJobApplications = async (
         ...new Set(
           refCandidates.map((cand) => {
             return cand.email;
-          })
-        )
+          }),
+        ),
       ];
 
       const checkCandidates = await processEmailsInBatches(
         emails,
-        post.recruiter_id
+        post.recruiter_id,
       );
 
       //new candidates insert flow
@@ -91,7 +91,7 @@ export const createJobApplications = async (
           linkedin: cand.linkedin,
           phone: cand.phone,
           id: uuidv4(),
-          recruiter_id: post.recruiter_id
+          recruiter_id: post.recruiter_id,
         };
       });
 
@@ -117,7 +117,7 @@ export const createJobApplications = async (
         const dbApplications = refCandidates
           .map((ref) => {
             const matchingCandidate = allCandidates.find(
-              (cand) => cand.email === ref.email
+              (cand) => cand.email === ref.email,
             );
 
             if (matchingCandidate && matchingCandidate.id) {
@@ -126,7 +126,7 @@ export const createJobApplications = async (
                 candidate_id: matchingCandidate.id,
                 job_id: post.public_job_id,
                 id: ref.application_id,
-                is_resume_fetching: true
+                is_resume_fetching: true,
               };
             } else {
               return null;
@@ -145,24 +145,24 @@ export const createJobApplications = async (
               posting_id: post.id,
               greenhouse_id: ref.id,
               public_job_id: post.public_job_id,
-              resume: ref.resume
+              resume: ref.resume,
             };
           }) as unknown as GreenhouseType[];
           await createReference(referenceObj);
         } else {
           toast.error(
-            'Sorry unable to import. Please try again later or contact support.'
+            'Sorry unable to import. Please try again later or contact support.',
           );
         }
       }
       //new candidates insert flow
-    })
+    }),
   );
 };
 
 export const fetchAllCandidates = async (
   post_id: string,
-  apiKey: string
+  apiKey: string,
 ): Promise<GreenhouseApplication[]> => {
   let allCandidates = [];
   let hasMore = true;
@@ -173,7 +173,7 @@ export const fetchAllCandidates = async (
       const response = await axios.post('/api/greenhouse/getCandidates', {
         job_id: post_id,
         page: page,
-        apiKey: apiKey
+        apiKey: apiKey,
       });
 
       if (response.data && response.data) {
@@ -196,7 +196,7 @@ export const fetchAllCandidates = async (
 };
 
 export const fetchAllJobs = async (
-  apiKey: string
+  apiKey: string,
 ): Promise<JobGreenhouse[]> => {
   //pagination need to done
   let allJobs = [];
@@ -208,7 +208,7 @@ export const fetchAllJobs = async (
       const response = await axios.post('/api/greenhouse/getPostings', {
         apiKey: apiKey,
         isInitial: false,
-        page: page
+        page: page,
       });
 
       if (response.status == 200 && response.data) {
@@ -232,7 +232,7 @@ export const fetchAllJobs = async (
 
 export const createJobObject = async (
   selectedPostings: ExtendedJobGreenhouse[],
-  recruiter: RecruiterDB
+  recruiter: RecruiterDB,
 ): Promise<JobInsert[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
@@ -248,14 +248,15 @@ export const createJobObject = async (
           level: 'Mid-level',
           rolesResponsibilities: [],
           skills: [],
-          title: post.title
+          title: post.title,
         },
-        department: 'support'
+        department: 'support',
       },
       description_hash: hashCode(post?.content ?? ''),
       location: post.location.name,
       job_title: post.title,
       status: 'draft',
+      scoring_param_status: 'loading',
       posted_by: POSTED_BY.GREENHOUSE,
       id: post.public_job_id,
       recruiter_id: recruiter.id,
@@ -268,9 +269,9 @@ export const createJobObject = async (
       parameter_weights: {
         skills: 0,
         education: 0,
-        experience: 0
+        experience: 0,
       },
-      video_assessment: false
+      video_assessment: false,
     } as JobInsert;
   });
   return dbJobs;
@@ -299,7 +300,7 @@ export function extractLinkedInURLGreenhouse(item: string): string {
 }
 
 export const createReference = async (
-  reference: GreenhouseType[]
+  reference: GreenhouseType[],
 ): Promise<GreenhouseRefDbType[] | undefined> => {
   const { data, error } = await supabase
     .from('greenhouse_reference')
@@ -308,7 +309,7 @@ export const createReference = async (
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.'
+      'Sorry unable to import. Please try again later or contact support.',
     );
     return undefined;
   } else {
@@ -320,7 +321,7 @@ const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requiremen
 
 const processBatch = async (
   emailBatch: string[],
-  recruiter_id: string
+  recruiter_id: string,
 ): Promise<NewCandidateType[] | undefined> => {
   const { data: checkCandidates, error: errorCheck } = await supabase
     .from('candidates')
@@ -337,7 +338,7 @@ const processBatch = async (
 
 export const processEmailsInBatches = async (
   emails: string[],
-  recruiter_id: string
+  recruiter_id: string,
 ): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {

@@ -5,7 +5,7 @@ import { JobInsert } from '@/src/queries/job/types';
 import {
   GreenhouseRefDbType,
   GreenhouseType,
-  RecruiterDB
+  RecruiterDB,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -14,7 +14,7 @@ import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
 import { POSTED_BY } from '../utils';
 
 export const fetchAllCandidates = async (
-  apiKey: string
+  apiKey: string,
 ): Promise<AshbyApplication[]> => {
   let allCandidates = [];
   let hasMore = true;
@@ -24,7 +24,7 @@ export const fetchAllCandidates = async (
     try {
       const response = await axios.post('/api/ashby/getCandidates', {
         page: page,
-        apiKey: apiKey
+        apiKey: apiKey,
       });
 
       if (response.data && response.data.success) {
@@ -53,7 +53,7 @@ export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
   try {
     const response = await axios.post('/api/ashby/getPostings', {
       apiKey: apiKey,
-      isInitial: false
+      isInitial: false,
     });
 
     if (response.status == 200 && response.data?.results?.length > 0) {
@@ -68,7 +68,7 @@ export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
 
 export const createJobObject = async (
   selectedPostings: ExtendedJobAshby[],
-  recruiter: RecruiterDB
+  recruiter: RecruiterDB,
 ): Promise<JobInsert[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
@@ -78,7 +78,7 @@ export const createJobObject = async (
           level: 'Mid-level',
           rolesResponsibilities: [],
           skills: [],
-          title: post.title
+          title: post.title,
         },
         location: post.location,
         job_title: post.title,
@@ -86,7 +86,7 @@ export const createJobObject = async (
         department: 'support',
         job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
         workplace_type: 'on site',
-        company: recruiter.name
+        company: recruiter.name,
       },
       description_hash: hashCode(post?.description ?? ''),
       location: post.location,
@@ -101,13 +101,14 @@ export const createJobObject = async (
       job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
       workplace_type: 'on site',
       company: recruiter.name,
+      scoring_param_status: 'loading',
       skills: [],
       parameter_weights: {
         skills: 0,
         education: 0,
-        experience: 0
+        experience: 0,
       },
-      video_assessment: false
+      video_assessment: false,
     } as JobInsert;
   });
   return dbJobs;
@@ -124,7 +125,7 @@ export function getLeverStatusColor(state: string): string {
 }
 
 export const createReference = async (
-  reference: GreenhouseType[]
+  reference: GreenhouseType[],
 ): Promise<GreenhouseRefDbType[] | undefined> => {
   const { data, error } = await supabase
     .from('greenhouse_reference')
@@ -133,7 +134,7 @@ export const createReference = async (
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.'
+      'Sorry unable to import. Please try again later or contact support.',
     );
     return undefined;
   } else {

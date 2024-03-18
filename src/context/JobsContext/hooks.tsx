@@ -8,7 +8,7 @@ import {
   useJobRead,
   useJobRefresh,
   useJobUIUpdate,
-  useJobUpdate
+  useJobUpdate,
 } from '@/src/queries/job';
 
 import { JobTypeDashboard } from './types';
@@ -54,7 +54,7 @@ const useJobActions = () => {
         const { error } = await jobAsyncUpdate({
           ...newJob,
           ...newJob.draft,
-          status: 'published'
+          status: 'published',
         });
         if (error) return false;
         return true;
@@ -66,27 +66,27 @@ const useJobActions = () => {
 
   const handleJobUpdate = async (
     jobId: string,
-    newJob: Partial<JobTypeDashboard>
+    newJob: Partial<JobTypeDashboard>,
   ) => {
     if (recruiter) {
       jobUpdate({
         id: jobId,
         ...newJob,
-        recruiter_id: recruiter.id
+        recruiter_id: recruiter.id,
       });
     }
   };
 
   const handleJobAsyncUpdate = async (
     jobId: string,
-    newJob: Partial<JobTypeDashboard>
+    newJob: Partial<JobTypeDashboard>,
   ) => {
     if (recruiter) {
       try {
         return await jobAsyncUpdate({
           id: jobId,
           ...newJob,
-          recruiter_id: recruiter.id
+          recruiter_id: recruiter.id,
         });
       } catch {
         //
@@ -112,9 +112,9 @@ const useJobActions = () => {
     }
   };
 
-  const experimental_handleGenerateJd = async (jobId: string) => {
-    const response = await handleGenerateJd(jobId);
-    if (response.data === 'started') handleJobRefresh(jobId);
+  const experimental_handleGenerateJd = (jobId: string) => {
+    handleGenerateJd(jobId);
+    handleJobRefresh(jobId);
   };
 
   const handleGetJob = (jobId: string) => {
@@ -134,7 +134,7 @@ const useJobActions = () => {
     handleJobRefresh,
     handleJobPublish,
     experimental_handleGenerateJd,
-    initialLoad
+    initialLoad,
   };
 
   return value;

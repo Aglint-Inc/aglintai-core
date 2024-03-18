@@ -35,7 +35,7 @@ function InterviewerPage() {
     setOpenDrawer(true);
   };
 
-  const { data, isLoading, isError, isFetched } = useImrQuery();
+  const { data, isLoading, isError, isFetched, } = useImrQuery();
 
   if (isLoading) {
     return <DynamicLoader />;

@@ -15,4 +15,8 @@ declare function InterviewerDetail(props: {
   slotInterviewerAvatar?: Types.Devlink.Slot;
   slotTrainingModulesMoreMenu?: Types.Devlink.Slot;
   slotQualifiedModulesMoreMenu?: Types.Devlink.Slot;
+  onClickAddModulesTraining?: Types.Devlink.RuntimeProps;
+  onClickAddInterviewModules?: Types.Devlink.RuntimeProps;
+  isModuleTrainingVisible?: Types.Visibility.VisibilityConditions;
+  onClickInterviewSchedule?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

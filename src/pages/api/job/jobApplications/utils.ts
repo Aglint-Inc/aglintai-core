@@ -7,7 +7,7 @@ import {
   type CsvUploadApi,
   type ManualUploadApi,
   type ResumeUploadApi,
-  UploadApiFormData
+  UploadApiFormData,
 } from './candidateUpload/types';
 import { type ReadJobApplicationApi } from './read';
 
@@ -23,7 +23,7 @@ type ApiRouteTypes = {
 export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(
   route: T,
   payload: ApiRouteTypes[T]['request'],
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   if (payload[UploadApiFormData.PARAMS] && payload[UploadApiFormData.FILES]) {
     const params = Object.entries(payload[UploadApiFormData.PARAMS])
@@ -37,7 +37,7 @@ export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(
       url: `/api/job/jobApplications/${route}?${params}`,
       data: payload[UploadApiFormData.FILES],
       timeout: 60000,
-      signal: signal
+      signal: signal,
     });
     return data;
   }
@@ -46,7 +46,7 @@ export const handleJobApplicationApi = async <T extends keyof ApiRouteTypes>(
     url: `/api/job/jobApplications/${route}`,
     data: payload,
     timeout: 60000,
-    signal: signal
+    signal: signal,
   });
   return data;
 };

@@ -147,6 +147,8 @@
   align-items: flex-end;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  cursor: pointer;
 }
 
 .timezone_flex {
@@ -213,6 +215,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.div-block-760 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.div-block-761 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+}
+
+.div-block-761.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.div-block-761.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-blue-500 {
+  color: #337fbd;
 }
 
 .slot-models-morement {
