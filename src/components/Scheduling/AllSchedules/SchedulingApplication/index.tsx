@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import { supabase } from '@/src/utils/supabase/client';
 
+import DeleteScheduleDialog from './Common/DeleteDialog';
+import RescheduleDialog from './Common/RescheduleDialog';
 import ConfirmedComp from './Confirmed';
-import DeleteScheduleDialog from './DeleteDialog';
 import NotScheduledApplication from './NotScheduled';
 import PendingConfirmed from './Pending';
-import RescheduleDialog from './RescheduleDialog';
 import {
   resetSchedulingApplicationState,
   setDateRange,
@@ -132,6 +132,7 @@ function SchedulingApplication() {
             ) : selectedApplication?.schedule.status == 'pending' ? (
               <PendingConfirmed />
             ) : (
+              // confirmed and cancelled same component
               <ConfirmedComp />
             )}
           </>

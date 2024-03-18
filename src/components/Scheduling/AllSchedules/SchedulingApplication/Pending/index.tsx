@@ -6,8 +6,8 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import CandidateDetailsJobDrawer from '../CandidateDetailsJob';
-import SchedulingOptionComp from '../ScheduleOption';
+import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
+import SchedulingOptionComp from '../Common/ScheduleOption';
 import {
   setIsViewProfileOpen,
   setSchedulingOptions,
@@ -22,6 +22,9 @@ function PendingConfirmed() {
   );
   const isViewProfileOpen = useSchedulingApplicationStore(
     (state) => state.isViewProfileOpen
+  );
+  const schedulingOptions = useSchedulingApplicationStore(
+    (state) => state.schedulingOptions
   );
 
   useEffect(() => {
@@ -94,8 +97,13 @@ function PendingConfirmed() {
               fontSize={'12px'}
             />
           }
-          slotScheduleInfoPlan={'asdad'}
-          slotProvidedOption={<SchedulingOptionComp />}
+          slotScheduleInfoPlan={''}
+          slotProvidedOption={
+            <SchedulingOptionComp
+              schedulingOptions={schedulingOptions}
+              isBadgeVisible={true}
+            />
+          }
         />
       )}
     </>

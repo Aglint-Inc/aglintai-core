@@ -8,20 +8,20 @@ import toast from '@/src/utils/toast';
 
 import {
   setSelectedApplication,
-  useSchedulingApplicationStore,
-} from '../store';
+  useSchedulingApplicationStore
+} from '../../store';
 import {
   setIsCancelOpen,
   setIsRescheduleOpen,
-  useInterviewSchedulingStore,
-} from '../../store';
+  useInterviewSchedulingStore
+} from '../../../store';
 
 function RescheduleDialog() {
   const isRescheduleOpen = useInterviewSchedulingStore(
-    (state) => state.isRescheduleOpen,
+    (state) => state.isRescheduleOpen
   );
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
+    (state) => state.selectedApplication
   );
 
   const onClickReschedule = async () => {
@@ -29,7 +29,7 @@ function RescheduleDialog() {
       if (selectedApplication.schedule.id) {
         const { data, error } = await supabase
           .from('interview_meeting')
-          .update({ status: 'reschedule' })
+          .update({ status: 'cancelled' })
           .eq('interview_schedule_id', selectedApplication.schedule.id)
           .select();
 
@@ -40,13 +40,13 @@ function RescheduleDialog() {
         await supabase
           .from('interview_schedule')
           .update({
-            status: 'reschedule',
+            status: 'reschedule'
           })
           .eq('id', selectedApplication.schedule.id);
         setIsCancelOpen(false);
         setSelectedApplication({
           ...selectedApplication,
-          schedule: { ...selectedApplication.schedule, status: 'reschedule' },
+          schedule: { ...selectedApplication.schedule, status: 'reschedule' }
         });
         setIsRescheduleOpen(false);
 
@@ -54,7 +54,7 @@ function RescheduleDialog() {
         allMeeting.forEach(async (meet) => {
           if (meet.meeting_json)
             axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json,
+              calender_event: meet.meeting_json
             });
         });
       }
@@ -69,8 +69,8 @@ function RescheduleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px',
-        },
+          borderRadius: '10px'
+        }
       }}
       open={isRescheduleOpen}
       onClose={() => {
@@ -86,10 +86,10 @@ function RescheduleDialog() {
         onClickCancel={{
           onClick: () => {
             setIsRescheduleOpen(false);
-          },
+          }
         }}
         onClickAction={{
-          onClick: onClickReschedule,
+          onClick: onClickReschedule
         }}
         textPopupButton={'Confirm'}
       />

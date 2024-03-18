@@ -8,4 +8,10 @@ declare function SchedulingFlow(props: {
   slotPlanCard?: Types.Devlink.Slot;
   onClickJobSettings?: Types.Devlink.RuntimeProps;
   slotScheduleOptions?: Types.Devlink.Slot;
+  slotCandidateImage?: Types.Devlink.Slot;
+  textName?: React.ReactNode;
+  textCurrentRole?: React.ReactNode;
+  textCandidateMail?: React.ReactNode;
+  onClickViewProfile?: Types.Devlink.RuntimeProps;
+  slotAvatarWithName?: Types.Devlink.Slot;
 }): React.JSX.Element;

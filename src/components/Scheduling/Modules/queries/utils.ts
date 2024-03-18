@@ -120,7 +120,7 @@ export const updatePauseJsonByUserId = async ({
   }
 };
 
-export const deleteRelationByUserId = async ({
+export const deleteRelationByUserDbDelete = async ({
   module_id,
   user_id,
 }: {

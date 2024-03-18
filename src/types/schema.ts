@@ -970,7 +970,7 @@ export type Database = {
           id: string
           interview_schedule_id: string
           meeting_json: Json | null
-          module_id: string
+          module_id: string | null
           start_time: string
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -982,7 +982,7 @@ export type Database = {
           id?: string
           interview_schedule_id: string
           meeting_json?: Json | null
-          module_id: string
+          module_id?: string | null
           start_time: string
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -994,7 +994,7 @@ export type Database = {
           id?: string
           interview_schedule_id?: string
           meeting_json?: Json | null
-          module_id?: string
+          module_id?: string | null
           start_time?: string
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1020,21 +1020,21 @@ export type Database = {
           created_at: string
           id: string
           interview_meeting_id: string
-          interviewer_id: string
+          interviewer_id: string | null
           interviewer_type: Database["public"]["Enums"]["interviewer_type"]
         }
         Insert: {
           created_at?: string
           id?: string
           interview_meeting_id: string
-          interviewer_id: string
+          interviewer_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["interviewer_type"]
         }
         Update: {
           created_at?: string
           id?: string
           interview_meeting_id?: string
-          interviewer_id?: string
+          interviewer_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["interviewer_type"]
         }
         Relationships: [
@@ -2134,6 +2134,44 @@ export type Database = {
         }
         Relationships: []
       }
+      "scheduling-agent-chat-history": {
+        Row: {
+          application_id: string
+          candidate_email: string
+          chat_history: Json[]
+          created_at: string
+          date_range: string[] | null
+          job_id: string
+          scheduling_progress: string | null
+        }
+        Insert: {
+          application_id?: string
+          candidate_email: string
+          chat_history?: Json[]
+          created_at?: string
+          date_range?: string[] | null
+          job_id: string
+          scheduling_progress?: string | null
+        }
+        Update: {
+          application_id?: string
+          candidate_email?: string
+          chat_history?: Json[]
+          created_at?: string
+          date_range?: string[] | null
+          job_id?: string
+          scheduling_progress?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       screening_answers: {
         Row: {
           answers: Json
@@ -2739,6 +2777,21 @@ export type Database = {
           completed_meeting_count: number
         }[]
       }
+      get_interview_schedule_by_meeting_id: {
+        Args: {
+          target_meeting_id: string
+        }
+        Returns: {
+          interview_meeting: Json
+          schedule: Json
+          interview_module: Json
+          applications: Json
+          candidates: Json
+          file: Json
+          job: Json
+          users: Json
+        }[]
+      }
       get_interview_schedule_by_module_id: {
         Args: {
           target_module_id: string
@@ -2746,21 +2799,6 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           schedule: Json
-          users: Json
-        }[]
-      }
-      get_interview_schedule_by_module_id_schedule_id: {
-        Args: {
-          target_module_id: string
-          target_schedule_id: string
-        }
-        Returns: {
-          interview_meeting: Json
-          schedule: Json
-          applications: Json
-          candidates: Json
-          file: Json
-          job: Json
           users: Json
         }[]
       }

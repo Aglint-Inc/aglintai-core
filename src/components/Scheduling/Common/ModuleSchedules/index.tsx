@@ -6,7 +6,7 @@ import React from 'react';
 import {
   AllInterviewEmpty,
   InterviewMemberSide,
-  InterviewScreenCard,
+  InterviewScreenCard
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -19,7 +19,7 @@ import { getColorStatusSchedule } from '../../Modules/utils';
 
 function ModuleSchedules({
   schedules,
-  loading = false,
+  loading = false
 }: {
   schedules: Omit<
     TransformSchedule,
@@ -38,13 +38,13 @@ function ModuleSchedules({
       return filSch;
     } else if (filter === 'upcoming') {
       return filSch.filter(
-        (sch) => sch.interview_meeting.start_time > new Date().toISOString(),
+        (sch) => sch.interview_meeting.start_time > new Date().toISOString()
       );
     } else if (filter === 'cancelled') {
       return filSch.filter((sch) => sch.schedule.status === 'cancelled');
     } else if (filter === 'completed') {
       return filSch.filter(
-        (sch) => sch.interview_meeting.status === 'completed',
+        (sch) => sch.interview_meeting.status === 'completed'
       );
     }
   };
@@ -56,16 +56,16 @@ function ModuleSchedules({
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
       onClickAll={{
-        onClick: () => setFilter('all'),
+        onClick: () => setFilter('all')
       }}
       onClickUpcoming={{
-        onClick: () => setFilter('upcoming'),
+        onClick: () => setFilter('upcoming')
       }}
       onClickCancelled={{
-        onClick: () => setFilter('cancelled'),
+        onClick: () => setFilter('cancelled')
       }}
       onClickCompleted={{
-        onClick: () => setFilter('completed'),
+        onClick: () => setFilter('completed')
       }}
       slotInterviewCard={
         <ShowCode>
@@ -112,9 +112,9 @@ function ScheduleCard({ sch }) {
       onClickCard={{
         onClick: () => {
           router.push(
-            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}`,
+            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}&meeting_id=${sch.interview_meeting.id}`
           );
-        },
+        }
       }}
       textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
       textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
@@ -126,8 +126,8 @@ function ScheduleCard({ sch }) {
       textTitle={sch.schedule.schedule_name}
       colorPropsText={{
         style: {
-          color: getColorStatusSchedule(sch.schedule.status),
-        },
+          color: getColorStatusSchedule(sch.schedule.status)
+        }
       }}
       slotMemberImage={
         <AvatarGroup
@@ -136,8 +136,8 @@ function ScheduleCard({ sch }) {
             '& .MuiAvatar-root': {
               width: '28px',
               height: '28px',
-              fontSize: '12px',
-            },
+              fontSize: '12px'
+            }
           }}
         >
           {sch.users.slice(0, 5)?.map((user) => {

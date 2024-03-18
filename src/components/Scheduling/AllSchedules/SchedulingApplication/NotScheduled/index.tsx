@@ -11,28 +11,31 @@ import {
   AvailableOption,
   InterviewPlanEmpty,
   ScheduleOptions,
-  SchedulingFlow,
+  SchedulingFlow
 } from '@/devlink2';
 import { InterviewBreakCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import InterviewPlanCardComp from '../Common/InterviewPlanCardComp';
-import SchedulingOptionComp from '../ScheduleOption';
+import SchedulingOptionComp from '../Common/ScheduleOption';
 import {
   setDateRange,
   setFetchingPlan,
+  setIsViewProfileOpen,
   setScheduleName,
   setSchedulingOptions,
   setSelectedApplication,
   setStep,
-  useSchedulingApplicationStore,
+  useSchedulingApplicationStore
 } from '../store';
 import { mailHandler, transformData } from '../../utils';
 
@@ -41,22 +44,28 @@ function NotScheduledApplication() {
   const currentDate = dayjs();
   const { recruiter } = useAuthDetails();
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
+    (state) => state.selectedApplication
   );
   const interviewModules = useSchedulingApplicationStore(
-    (state) => state.interviewModules,
+    (state) => state.interviewModules
   );
   const members = useSchedulingApplicationStore((state) => state.members);
   const dateRange = useSchedulingApplicationStore((state) => state.dateRange);
   const scheduleName = useSchedulingApplicationStore(
-    (state) => state.scheduleName,
+    (state) => state.scheduleName
   );
   const step = useSchedulingApplicationStore((state) => state.step);
   const fetchingPlan = useSchedulingApplicationStore(
-    (state) => state.fetchingPlan,
+    (state) => state.fetchingPlan
   );
   const fetchingSchedule = useSchedulingApplicationStore(
-    (state) => state.fetchingSchedule,
+    (state) => state.fetchingSchedule
+  );
+  const isViewProfileOpen = useSchedulingApplicationStore(
+    (state) => state.isViewProfileOpen
+  );
+  const schedulingOptions = useSchedulingApplicationStore(
+    (state) => state.schedulingOptions
   );
 
   const allPlans = useMemo(() => {
@@ -70,7 +79,7 @@ function NotScheduledApplication() {
         job_id: selectedApplication.public_jobs.id,
         company_id: recruiter.id,
         start_date: dateRange.start_date,
-        end_date: dateRange.end_date,
+        end_date: dateRange.end_date
       });
       if (res.data) {
         if (res.data.length === 0) {
@@ -81,9 +90,9 @@ function NotScheduledApplication() {
             res.data.map((option) => {
               return {
                 ...option,
-                transformedPlan: transformData(option.plans),
+                transformedPlan: transformData(option.plans)
               };
-            }),
+            })
           );
           setStep(2);
         }
@@ -100,49 +109,98 @@ function NotScheduledApplication() {
   };
 
   const sendToCandidate = async () => {
-    const { data, error } = await supabase
-      .from('interview_schedule')
-      .insert({
-        application_id: selectedApplication.applications.id,
-        schedule_name: scheduleName,
-        schedule_type: 'google_meet',
-        interview_plan: allPlans,
-        status: 'pending',
-        filter_json: {
-          job_id: selectedApplication.public_jobs.id,
-          company_id: recruiter.id,
-          start_date: dateRange.start_date,
-          end_date: dateRange.end_date,
-        },
-      })
-      .select();
+    try {
+      const { data: checkSch, error: errorCheckSch } = await supabase
+        .from('interview_schedule')
+        .select('id')
+        .eq('application_id', selectedApplication.applications.id);
 
-    if (!error) {
-      mailHandler({
-        id: data[0].id,
-        candidate_name: selectedApplication.candidates.first_name,
-        company_logo: recruiter.logo,
-        company_name: recruiter.name,
-        schedule_name: scheduleName,
-      });
-      setSelectedApplication({
-        ...selectedApplication,
-        schedule: data[0] as any,
-      });
+      if (errorCheckSch) throw new Error(errorCheckSch.message);
+
+      if (checkSch.length === 0) {
+        const { data, error } = await supabase
+          .from('interview_schedule')
+          .insert({
+            application_id: selectedApplication.applications.id,
+            schedule_name: scheduleName,
+            schedule_type: 'google_meet',
+            interview_plan: allPlans,
+            status: 'pending',
+            filter_json: {
+              job_id: selectedApplication.public_jobs.id,
+              company_id: recruiter.id,
+              start_date: dateRange.start_date,
+              end_date: dateRange.end_date
+            }
+          })
+          .select();
+
+        if (!error) {
+          mailHandler({
+            id: data[0].id,
+            candidate_name: selectedApplication.candidates.first_name,
+            company_logo: recruiter.logo,
+            company_name: recruiter.name,
+            schedule_name: scheduleName
+          });
+          setSelectedApplication({
+            ...selectedApplication,
+            schedule: data[0] as any
+          });
+        }
+      }
+    } catch (e) {
+      toast.error('Error sending schedule to candidate');
     }
   };
 
   return (
     <>
+      {selectedApplication?.file?.resume_json && (
+        <CandidateDetailsJobDrawer
+          applications={selectedApplication.applications}
+          candidate={selectedApplication.candidates}
+          file={selectedApplication.file}
+          isViewProfileOpen={isViewProfileOpen}
+          setIsViewProfileOpen={setIsViewProfileOpen}
+        />
+      )}
       {!fetchingSchedule ? (
         allPlans?.length > 0 ? (
           <SchedulingFlow
+            textCurrentRole={
+              (selectedApplication.file.resume_json as unknown as ResumeJson)
+                ?.basics?.currentJobTitle || '--'
+            }
+            textName={getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name
+            )}
+            onClickViewProfile={{
+              onClick: () => {
+                setIsViewProfileOpen(true);
+              }
+            }}
+            textCandidateMail={selectedApplication.candidates.email}
+            slotCandidateImage={
+              <MuiAvatar
+                level={getFullName(
+                  selectedApplication.candidates.first_name,
+                  selectedApplication.candidates.last_name
+                )}
+                src={selectedApplication.candidates.avatar}
+                variant={'rounded'}
+                width={'74px'}
+                height={'74px'}
+                fontSize={'36px'}
+              />
+            }
             onClickJobSettings={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`,
+                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
                 );
-              },
+              }
             }}
             textRole={selectedApplication.public_jobs.job_title}
             textLocation={selectedApplication.public_jobs.location || '--'}
@@ -158,7 +216,7 @@ function NotScheduledApplication() {
                       <MuiAvatar
                         level={getFullName(
                           selectedApplication?.candidates.first_name,
-                          selectedApplication?.candidates.last_name,
+                          selectedApplication?.candidates.last_name
                         )}
                         src={selectedApplication?.candidates.avatar}
                         variant={'circular'}
@@ -172,7 +230,7 @@ function NotScheduledApplication() {
                         <ButtonPrimaryRegular
                           textLabel={'Get Schedule Options'}
                           onClickButton={{
-                            onClick: findScheduleOptions,
+                            onClick: findScheduleOptions
                           }}
                         />
                       </Stack>
@@ -197,12 +255,12 @@ function NotScheduledApplication() {
                               ) {
                                 setDateRange({
                                   start_date: dayjs(newValue).toISOString(),
-                                  end_date: dateRange?.end_date,
+                                  end_date: dateRange?.end_date
                                 });
                               } else {
                                 setDateRange({
                                   start_date: dayjs(newValue).toISOString(),
-                                  end_date: null,
+                                  end_date: null
                                 });
                               }
                             }}
@@ -212,8 +270,8 @@ function NotScheduledApplication() {
                                 fullWidth: true,
                                 variant: 'outlined',
                                 InputProps: { disableUnderline: true },
-                                placeholder: 'Start Date',
-                              },
+                                placeholder: 'Start Date'
+                              }
                             }}
                           />
                         </LocalizationProvider>
@@ -225,7 +283,7 @@ function NotScheduledApplication() {
                             onChange={(newValue) => {
                               setDateRange({
                                 start_date: dateRange?.start_date,
-                                end_date: dayjs(newValue).toISOString(),
+                                end_date: dayjs(newValue).toISOString()
                               });
                             }}
                             slotProps={{
@@ -233,8 +291,8 @@ function NotScheduledApplication() {
                                 fullWidth: true,
                                 variant: 'outlined',
                                 InputProps: { disableUnderline: true },
-                                placeholder: 'Start Date',
-                              },
+                                placeholder: 'Start Date'
+                              }
                             }}
                           />
                         </LocalizationProvider>
@@ -242,7 +300,7 @@ function NotScheduledApplication() {
                     }
                     textCandidateName={getFullName(
                       selectedApplication.candidates.first_name,
-                      selectedApplication.candidates.last_name,
+                      selectedApplication.candidates.last_name
                     )}
                   />
                 ) : (
@@ -252,12 +310,16 @@ function NotScheduledApplication() {
                         <ButtonPrimaryRegular
                           textLabel={'Send to Candidate'}
                           onClickButton={{
-                            onClick: sendToCandidate,
+                            onClick: sendToCandidate
                           }}
                         />
                       </Stack>
                     }
-                    slotOptionAvailableCard={<SchedulingOptionComp />}
+                    slotOptionAvailableCard={
+                      <SchedulingOptionComp
+                        schedulingOptions={schedulingOptions}
+                      />
+                    }
                   />
                 )}
               </>
@@ -266,7 +328,7 @@ function NotScheduledApplication() {
               <>
                 {allPlans.map((plan) => {
                   const mod = interviewModules.find(
-                    (module) => module.id === plan.module_id,
+                    (module) => module.id === plan.module_id
                   );
                   return plan.isBreak ? (
                     <InterviewBreakCard
@@ -289,9 +351,9 @@ function NotScheduledApplication() {
             onClickCreateInterviewPlan={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`,
+                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
                 );
-              },
+              }
             }}
           />
         )

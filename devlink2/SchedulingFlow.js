@@ -12,6 +12,12 @@ export function SchedulingFlow({
   slotPlanCard,
   onClickJobSettings = {},
   slotScheduleOptions,
+  slotCandidateImage,
+  textName = "Tom Odel",
+  textCurrentRole = "Senior software Engineer",
+  textCandidateMail = "tomode3243@gmaIl.com",
+  onClickViewProfile = {},
+  slotAvatarWithName,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule-wrap-flow")} tag="div">
@@ -29,6 +35,59 @@ export function SchedulingFlow({
           className={_utils.cx(_styles, "div-block-1190")}
           tag="div"
         >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1232")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Candidate"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1233")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1235")}
+                tag="div"
+              >
+                {slotCandidateImage}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1234")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                  tag="div"
+                >
+                  {textCurrentRole}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                  tag="div"
+                >
+                  {textCandidateMail}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-sm",
+                    "text-blue-500",
+                    "text-underline",
+                    "cursor-pointer"
+                  )}
+                  tag="div"
+                  {...onClickViewProfile}
+                >
+                  {"View Profile"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1093")}
             tag="div"
@@ -89,6 +148,13 @@ export function SchedulingFlow({
               tag="div"
             >
               {slotPlanCard ?? <InterviewPlanCard />}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1236")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"Co-ordinator :"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{slotAvatarWithName}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

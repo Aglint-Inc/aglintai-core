@@ -35,7 +35,7 @@ function InterviewPlanCardComp({
             gap: 2.5
           }}
         >
-          {plan.revShadowInterv.map((int) => {
+          {plan.revShadowInterv?.map((int) => {
             const user = members.find(
               (member) => member.user_id === int.interv_id
             );
@@ -76,7 +76,7 @@ function InterviewPlanCardComp({
             gap: 2.5
           }}
         >
-          {plan.shadowIntervs.map((int) => {
+          {plan.shadowIntervs?.map((int) => {
             const user = members.find(
               (member) => member.user_id === int.interv_id
             );
@@ -119,7 +119,7 @@ function InterviewPlanCardComp({
             gap: 2.5
           }}
         >
-          {plan.selectedIntervs.map((int) => {
+          {plan.selectedIntervs?.map((int) => {
             const user = members.find(
               (member) => member.user_id === int.interv_id
             );

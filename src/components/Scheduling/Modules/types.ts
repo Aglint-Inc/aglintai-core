@@ -6,13 +6,12 @@ import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
-  RecruiterUserType,
+  RecruiterUserType
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
-
-
+import { InterviewModuleDbType } from '../../JobInterviewPlan/types';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -29,7 +28,6 @@ export type SchedulingSlice = {
   searchText: string;
   trainingStatus: StatusTraining;
 };
-
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
   relations: InterviewModuleRelationType[];
@@ -68,7 +66,11 @@ export type ScheduleType = {
     type: string;
   };
   candidates: CandidateType;
-  schedule: InterviewScheduleTypeDB & {
+  schedule: Omit<
+    InterviewScheduleTypeDB,
+    'interview_plan' | 'confirmed_option'
+  > & {
+    interview_plan: InterviewModuleDbType[];
     confirmed_option: SchedulingOptionType[0] | null;
   };
   job: {
