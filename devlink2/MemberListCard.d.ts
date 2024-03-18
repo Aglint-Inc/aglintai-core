@@ -30,4 +30,9 @@ declare function MemberListCard(props: {
   textPauseResumeDate?: React.ReactNode;
   isPauseResumeVisible?: Types.Visibility.VisibilityConditions;
   onClickCard?: Types.Devlink.RuntimeProps;
+  isInterviewCountVisible?: Types.Visibility.VisibilityConditions;
+  textInterviewToday?: React.ReactNode;
+  textInterviewWeek?: React.ReactNode;
+  isTextObjectiveVisible?: Types.Visibility.VisibilityConditions;
+  textObjective?: React.ReactNode;
 }): React.JSX.Element;

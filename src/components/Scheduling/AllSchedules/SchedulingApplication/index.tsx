@@ -1,112 +1,37 @@
-import axios from 'axios';
-import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
-import { supabase } from '@/src/utils/supabase/client';
 
 import DeleteScheduleDialog from './Common/DeleteDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import ConfirmedComp from './Confirmed';
+import { useGetScheduleApplication } from './hooks';
 import NotScheduledApplication from './NotScheduled';
 import PendingConfirmed from './Pending';
 import {
   resetSchedulingApplicationState,
-  setDateRange,
-  setFetchingSchedule,
-  setInterviewModules,
-  setMembers,
-  setScheduleName,
-  setSelectedApplication,
   useSchedulingApplicationStore
 } from './store';
-import { ApplicationList } from '../store';
 
 function SchedulingApplication() {
   const router = useRouter();
-  const currentDate = dayjs();
-  const threeDays = currentDate.add(1, 'day');
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication
   );
   const scheduleName = useSchedulingApplicationStore(
     (state) => state.scheduleName
   );
+  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
       fetchInterviewDataByApplication();
     }
-  }, [router]);
-
-  useEffect(() => {
     return () => {
       resetSchedulingApplicationState();
     };
-  }, []);
-
-  const fetchInterviewDataByApplication = async () => {
-    try {
-      setFetchingSchedule(true);
-      const { data, error } = await supabase.rpc(
-        'fetch_interview_data_by_application_id',
-        {
-          app_id: router.query.application_id as string
-        }
-      );
-
-      if (!error && data.length > 0) {
-        const application = data[0] as unknown as ApplicationList;
-        setScheduleName(
-          `Interview for ${application?.public_jobs?.job_title} - ${application?.candidates?.first_name}`
-        );
-        setDateRange({
-          start_date: currentDate.toISOString(),
-          end_date: threeDays.toISOString()
-        });
-        const moduleIds = application?.public_jobs?.interview_plan?.plan
-          ?.filter((plan) => !plan.isBreak)
-          ?.map((plan) => plan.module_id);
-
-        if (moduleIds?.length > 0) {
-          const { data: modules, error: moduleError } = await supabase
-            .from('interview_module')
-            .select('*')
-            .in('id', moduleIds);
-
-          if (!moduleError) {
-            setInterviewModules(modules);
-          }
-        }
-        let userIds = [];
-        application?.public_jobs?.interview_plan?.plan.map((plan) => {
-          plan.selectedIntervs.map((interv) => {
-            userIds.push(interv.interv_id);
-          });
-          plan.revShadowInterv.map((interv) => {
-            userIds.push(interv.interv_id);
-          });
-          plan.shadowIntervs.map((interv) => {
-            userIds.push(interv.interv_id);
-          });
-        });
-
-        const resMem = await axios.post('/api/scheduling/fetchdbusers', {
-          user_ids: userIds
-        });
-
-        if (resMem?.data?.length > 0) {
-          setMembers(resMem.data);
-        }
-        setSelectedApplication(application);
-      }
-    } catch (error) {
-      //
-    } finally {
-      setFetchingSchedule(false);
-    }
-  };
+  }, [router]);
 
   return (
     <>
@@ -132,7 +57,7 @@ function SchedulingApplication() {
             ) : selectedApplication?.schedule.status == 'pending' ? (
               <PendingConfirmed />
             ) : (
-              // confirmed and cancelled same component
+              // confirmed and cancelled and completed same component
               <ConfirmedComp />
             )}
           </>

@@ -10,7 +10,7 @@ import { ApplicationList } from '../store';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
-  getScheduleType,
+  getScheduleType
 } from '../utils';
 
 function ListCardInterviewSchedule({
@@ -18,7 +18,7 @@ function ListCardInterviewSchedule({
   onClickCard,
   slotCheckbox = <></>,
   isJobDasboard = false,
-  isSelected = false,
+  isSelected = false
 }: {
   app: ApplicationList;
   // eslint-disable-next-line no-unused-vars
@@ -40,8 +40,8 @@ function ListCardInterviewSchedule({
             style: {
               gridTemplateColumns: isJobDasboard
                 ? '25% 15% 15% 20%'
-                : '25% 15% 20% 17% 23%',
-            },
+                : '25% 15% 20% 17% 23%'
+            }
           }}
           isSchedulerTable={!isJobDasboard}
           isCheckBoxVisible={isJobDasboard}
@@ -52,7 +52,7 @@ function ListCardInterviewSchedule({
               <MuiAvatar
                 level={getFullName(
                   app.candidates.first_name,
-                  app.candidates.last_name,
+                  app.candidates.last_name
                 )}
                 src={app.candidates.avatar}
                 variant={'circular'}
@@ -67,13 +67,13 @@ function ListCardInterviewSchedule({
           }
           colorPropsBg={{
             style: {
-              backgroundColor: getScheduleBgcolor(app.schedule?.status),
-            },
+              backgroundColor: getScheduleBgcolor(app.schedule?.status)
+            }
           }}
           colorPropsText={{
             style: {
-              color: getScheduleTextcolor(app.schedule?.status),
-            },
+              color: getScheduleTextcolor(app.schedule?.status)
+            }
           }}
           textDuration={'--'}
           textInterviewPanel={
@@ -93,7 +93,7 @@ function ListCardInterviewSchedule({
               '--'
             )
           }
-          textRelatedJob={app.public_jobs.job_title}
+          textRelatedJob={app.public_jobs?.job_title}
         />
       </Stack>
     </>

@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { EmptyGeneral, MemberListCard } from '@/devlink2';
@@ -7,6 +8,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -19,22 +21,48 @@ import {
   setIsPauseDialogOpen,
   setIsProgressDialaogOpen,
   setIsResumeDialogOpen,
-  setSelUser,
+  setSelUser
 } from '../../../store';
-import { ModuleType } from '../../../types';
+import { ModuleType, TransformSchedule } from '../../../types';
+import { calculateHourDifference } from '../../../utils';
 
-function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
+function SlotTrainingMembers({
+  editModule,
+  schedules
+}: {
+  editModule: ModuleType;
+  schedules: TransformSchedule[];
+}) {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { members } = useSchedulingContext();
   const [progressUser, setProgressUser] = useState<ProgressUserType>({
     user: null,
-    progress: [],
+    progress: []
   });
   const allUsers = editModule.relations;
-  const allTrainees = allUsers.filter(
-    (user) => user.training_status === 'training',
-  );
+  const currentDay = dayjs();
+  const allTrainees = allUsers
+    .filter((user) => user.training_status === 'training')
+    .map((user) => {
+      const weeklyHours = schedules
+        .filter(
+          (schedule) =>
+            schedule.users.some((u) => u.id === user.user_id) &&
+            dayjs(schedule.interview_meeting.end_time).isSame(currentDay, 'day')
+        )
+        .reduce((acc, curr) => {
+          return (
+            acc +
+            calculateHourDifference(
+              curr.interview_meeting.start_time,
+              curr.interview_meeting.end_time
+            )
+          );
+        }, 0);
+      return { ...user, weeklyHours: weeklyHours };
+    });
 
   const trainer_ids = allUsers
     .filter((user) => user.training_status === 'training')
@@ -60,16 +88,16 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
             return { ...rel, training_status: 'qualified' };
           }
           return rel;
-        }),
+        })
       } as ModuleType;
 
       queryClient.setQueryData<ModuleType>(
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
+          moduleId: editModule.id
         }),
         {
-          ...updatedEditModule,
-        },
+          ...updatedEditModule
+        }
       );
     } catch (error) {
       toast.error(error);
@@ -86,7 +114,7 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
       )}
       {allTrainees.map((user) => {
         const member = members.find(
-          (member) => member.user_id === user.user_id,
+          (member) => member.user_id === user.user_id
         );
 
         if (!member) return null; //this line added temporarily becasue of data inconsistency
@@ -94,14 +122,14 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
         const progressDataUser = progress.filter(
           (prog) =>
             prog.interviewer_id === user.user_id &&
-            prog.interview_meeting?.status == 'completed',
+            prog.interview_meeting?.status == 'completed'
         );
         const revShadowCount = progressDataUser.filter(
-          (prog) => prog.interviewer_type == 'reverse_shadow',
+          (prog) => prog.interviewer_type == 'reverse_shadow'
         ).length;
 
         const shadowCount = progressDataUser.filter(
-          (prog) => prog.interviewer_type == 'shadow',
+          (prog) => prog.interviewer_type == 'shadow'
         ).length;
 
         const isMoveToQualifierVisible =
@@ -109,25 +137,37 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
           (editModule.settings.reqruire_approval &&
             editModule.settings.approve_users.includes(user.user_id));
 
+        const userSettings = user.recruiter_user.scheduling_settings;
+
         return (
           <MemberListCard
+            textInterviewWeek={''}
+            isInterviewCountVisible={!user.pause_json}
+            textInterviewToday={`${user.weeklyHours} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
+            onClickCard={{
+              onClick: () => {
+                router.push(
+                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`
+                );
+              }
+            }}
             onClickViewProgress={{
               onClick: () => {
                 setProgressUser({
                   progress: progress.filter(
-                    (prog) => prog.interviewer_id === user.user_id,
+                    (prog) => prog.interviewer_id === user.user_id
                   ),
                   user: members.filter(
-                    (member) => member.user_id === user.user_id,
-                  )[0],
+                    (member) => member.user_id === user.user_id
+                  )[0]
                 });
                 setIsProgressDialaogOpen(true);
-              },
+              }
             }}
             onClickMoveToQualifier={{
               onClick: () => {
                 moveToQualified(user.user_id);
-              },
+              }
             }}
             key={user.user_id}
             isMoveToQualifierVisible={isMoveToQualifierVisible}
@@ -157,19 +197,19 @@ function SlotTrainingMembers({ editModule }: { editModule: ModuleType }) {
               onClick: () => {
                 setSelUser(user);
                 setIsDeleteMemberDialogOpen(true);
-              },
+              }
             }}
             onClickPauseInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsPauseDialogOpen(true);
-              },
+              }
             }}
             onClickResumeInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsResumeDialogOpen(true);
-              },
+              }
             }}
             onHoverDot={false}
             isPauseResumeVisible={Boolean(user.pause_json)}

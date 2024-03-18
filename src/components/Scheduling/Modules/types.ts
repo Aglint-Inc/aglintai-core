@@ -11,6 +11,7 @@ import {
 import { Database } from '@/src/types/schema';
 
 import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
+import { schedulingSettingType } from '../Settings/types';
 import { InterviewModuleDbType } from '../../JobInterviewPlan/types';
 
 export type SchedulingSlice = {
@@ -30,7 +31,16 @@ export type SchedulingSlice = {
 };
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
-  relations: InterviewModuleRelationType[];
+  relations: (InterviewModuleRelationType & {
+    recruiter_user: {
+      user_id: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      profile_image: string;
+      scheduling_settings: schedulingSettingType;
+    };
+  })[];
   settings: {
     require_training: boolean;
     noShadow: number;
@@ -112,12 +122,10 @@ export type TransformSchedule = ScheduleType & {
   };
   users: {
     id: string;
-    created_at: string;
-    interviewer_id: string;
-    interviewer_type: Database['public']['Enums']['interviewer_type'];
     first_name: string;
     last_name: string;
     email: string;
     profile_image: string;
+    position: string;
   }[];
 };

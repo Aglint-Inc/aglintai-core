@@ -9,15 +9,15 @@ import {
   ModuleType,
   PauseJson,
   StatusTraining,
-  TransformSchedule,
+  TransformSchedule
 } from '../types';
 
 export const fetchModules = async (module_id: string) => {
   const { data, error } = await supabase.rpc(
     'get_interview_schedule_by_module_id',
     {
-      target_module_id: module_id,
-    },
+      target_module_id: module_id
+    }
   );
   if (error) throw new Error(error.message);
   return data as TransformSchedule[];
@@ -25,7 +25,7 @@ export const fetchModules = async (module_id: string) => {
 
 export const fetchProgress = async ({
   module_id,
-  trainer_ids,
+  trainer_ids
 }: {
   module_id: string;
   trainer_ids: string[];
@@ -44,7 +44,7 @@ export const fetchProgress = async ({
 
 export const fetchInterviewModules = async (rec_id: string) => {
   const { data, error } = await supabase.rpc('get_interview_modules', {
-    rec_id: rec_id,
+    rec_id: rec_id
   });
   if (error) throw new Error(error.message);
   return data as ModuleDashboard[];
@@ -60,22 +60,25 @@ export const fetchInterviewModuleById = async (module_id: string) => {
   }
   const { data: dataRel, error: errorRel } = await supabase
     .from('interview_module_relation')
-    .select('*')
+    .select(
+      '*,recruiter_user(user_id,first_name,last_name,email,profile_image,scheduling_settings)'
+    )
     .eq('module_id', module_id);
 
   if (errorRel) {
     throw new Error(errorRel.message);
   }
+
   return {
     ...dataModule[0],
     relations: dataRel,
-    settings: dataModule[0].settings || initialEditModule.settings, //for some columns setting is null thats why we are adding this
+    settings: dataModule[0].settings || initialEditModule.settings //for some columns setting is null thats why we are adding this
   } as ModuleType;
 };
 
 export const fetchMembers = async (rec_id: string) => {
   const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
-    recruiter_id: rec_id,
+    recruiter_id: rec_id
   });
   if (resMem.status !== 200) {
     throw new Error('Error fetching user details');
@@ -85,7 +88,7 @@ export const fetchMembers = async (rec_id: string) => {
 
 export const resumePauseDbUpdate = async ({
   module_id,
-  user_id,
+  user_id
 }: {
   module_id: string;
   user_id: string;
@@ -103,7 +106,7 @@ export const resumePauseDbUpdate = async ({
 export const updatePauseJsonByUserId = async ({
   module_id,
   user_id,
-  pause_json,
+  pause_json
 }: {
   module_id: string;
   user_id: string;
@@ -122,7 +125,7 @@ export const updatePauseJsonByUserId = async ({
 
 export const deleteRelationByUserDbDelete = async ({
   module_id,
-  user_id,
+  user_id
 }: {
   module_id: string;
   user_id: string;
@@ -141,7 +144,7 @@ export const deleteRelationByUserDbDelete = async ({
 export const addMemberbyUserIds = async ({
   user_ids,
   module_id,
-  training_status,
+  training_status
 }: {
   user_ids: string[];
   module_id: string;
@@ -153,8 +156,8 @@ export const addMemberbyUserIds = async ({
       user_ids.map((user_id) => ({
         user_id: user_id,
         module_id: module_id,
-        training_status: training_status,
-      })),
+        training_status: training_status
+      }))
     )
     .select();
   if (error) {

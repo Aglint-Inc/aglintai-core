@@ -162,7 +162,7 @@ function SchedulingViewComp() {
                         {schedule.users.slice(0, 5)?.map((user) => {
                           return (
                             <MuiAvatar
-                              key={user.interviewer_id}
+                              key={user.id}
                               src={user.profile_image}
                               level={getFullName(
                                 user.first_name,

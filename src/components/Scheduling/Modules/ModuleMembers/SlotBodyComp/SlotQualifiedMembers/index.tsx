@@ -1,26 +1,57 @@
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { EmptyGeneral, MemberListCard } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import {
   setIsDeleteMemberDialogOpen,
   setIsPauseDialogOpen,
   setIsResumeDialogOpen,
-  setSelUser,
+  setSelUser
 } from '../../../store';
-import { ModuleType } from '../../../types';
+import { ModuleType, TransformSchedule } from '../../../types';
+import { calculateHourDifference } from '../../../utils';
 
-function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
+function SlotQualifiedMembers({
+  editModule,
+  schedules
+}: {
+  editModule: ModuleType;
+  schedules: TransformSchedule[];
+}) {
   const { members } = useSchedulingContext();
 
   const allUsers = editModule.relations;
+  const router = useRouter();
+  const currentDay = dayjs();
 
-  const allQualified = allUsers.filter(
-    (user) => user.training_status === 'qualified',
-  );
+  const allQualified = allUsers
+    .filter((user) => user.training_status === 'qualified')
+    .map((user) => {
+      const weeklyHours = schedules
+        .filter(
+          (schedule) =>
+            schedule?.users.some((u) => u.id === user.user_id) &&
+            dayjs(schedule?.interview_meeting?.end_time).isSame(
+              currentDay,
+              'day'
+            )
+        )
+        .reduce((acc, curr) => {
+          return (
+            acc +
+            calculateHourDifference(
+              curr.interview_meeting.start_time,
+              curr.interview_meeting.end_time
+            )
+          );
+        }, 0);
+      return { ...user, weeklyHours: weeklyHours };
+    }); // need to right rpc which calc everything in db and return
 
   return (
     <>
@@ -29,11 +60,23 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
       )}
       {allQualified.map((user) => {
         const member = members.filter(
-          (member) => member.user_id === user.user_id,
+          (member) => member.user_id === user.user_id
         )[0];
-        if (!member) return null;
+        if (!member) return null; //this line added temporarily becasue of data inconsistency
+
+        const userSettings = user.recruiter_user.scheduling_settings;
         return (
           <MemberListCard
+            textInterviewWeek={''}
+            isInterviewCountVisible={!user.pause_json}
+            textInterviewToday={`${user.weeklyHours} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
+            onClickCard={{
+              onClick: () => {
+                router.push(
+                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`
+                );
+              }
+            }}
             key={user.user_id}
             isMoveToQualifierVisible={false}
             isTrainingProgessVisible={false}
@@ -50,19 +93,19 @@ function SlotQualifiedMembers({ editModule }: { editModule: ModuleType }) {
               onClick: () => {
                 setSelUser(user);
                 setIsDeleteMemberDialogOpen(true);
-              },
+              }
             }}
             onClickPauseInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsPauseDialogOpen(true);
-              },
+              }
             }}
             onClickResumeInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsResumeDialogOpen(true);
-              },
+              }
             }}
             onHoverDot={false}
             isPauseResumeVisible={Boolean(user.pause_json)}

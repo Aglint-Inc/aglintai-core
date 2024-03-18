@@ -26,7 +26,7 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
       const members = dataRel.filter((rel) => rel.module_id === module.id);
       return {
         ...module,
-        relations: members,
+        relations: members
       };
     });
 
@@ -60,7 +60,7 @@ export const createModule = async ({
   name,
   recruiter_id,
   description,
-  isTraining,
+  isTraining
 }: {
   name: string;
   description: string;
@@ -78,8 +78,8 @@ export const createModule = async ({
         noShadow: 2,
         noReverseShadow: 2,
         reqruire_approval: false,
-        approve_users: [],
-      },
+        approve_users: []
+      }
     })
     .select();
 
@@ -104,7 +104,7 @@ export const deleteModuleById = async (id: string) => {
 
 export const deleteRelationByUserId = async ({
   user_id,
-  module_id,
+  module_id
 }: {
   user_id: string;
   module_id: string;
@@ -114,7 +114,7 @@ export const deleteRelationByUserId = async ({
     .delete()
     .match({
       user_id: user_id,
-      module_id: module_id,
+      module_id: module_id
     });
   if (error) {
     return false;
@@ -124,13 +124,26 @@ export const deleteRelationByUserId = async ({
 };
 
 export const getColorStatusSchedule = (
-  status: ScheduleType['schedule']['status'],
+  status: ScheduleType['schedule']['status']
 ) => {
   return status == 'completed'
-    ? '#2F3941'
+    ? '#228F67'
     : status == 'confirmed'
-      ? '#0F3554'
+      ? '#337FBD'
       : status == 'pending'
-        ? '#703815'
-        : '#681219';
+        ? '#ED8F1C'
+        : status == 'cancelled'
+          ? '#D93F4C'
+          : '#681219';
 };
+
+export function calculateHourDifference(
+  startDate: string,
+  endDate: string
+): number {
+  const start: Date = new Date(startDate);
+  const end: Date = new Date(endDate);
+  const diffInMilliseconds: number = Math.abs(end.getTime() - start.getTime());
+  const diffInHours: number = diffInMilliseconds / (1000 * 60 * 60);
+  return diffInHours;
+}

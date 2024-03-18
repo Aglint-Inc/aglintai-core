@@ -5,7 +5,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import SlotBodyComp from './SlotBodyComp';
 import TopRightButtons from './TopRightButtons';
-import { useAllModuleAndUsers } from '../queries/hooks';
+import { useModuleAndUsers } from '../queries/hooks';
 
 function ModuleMembersComp() {
   const router = useRouter();
@@ -13,8 +13,8 @@ function ModuleMembersComp() {
   const {
     data: editModule,
     isLoading: fetchingModule,
-    isFetching,
-  } = useAllModuleAndUsers();
+    isFetching
+  } = useModuleAndUsers();
 
   return (
     <>
@@ -22,7 +22,7 @@ function ModuleMembersComp() {
         onClickBack={{
           onClick: () => {
             router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
-          },
+          }
         }}
         isBackButton={true}
         slotTopbarLeft={

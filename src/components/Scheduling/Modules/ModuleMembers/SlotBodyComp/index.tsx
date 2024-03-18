@@ -59,7 +59,12 @@ function SlotBodyComp({
               }
             }}
             slotQualifiedMemberList={
-              <SlotQualifiedMembers editModule={editModule} />
+              !schedulesLoading && (
+                <SlotQualifiedMembers
+                  editModule={editModule}
+                  schedules={schedules}
+                />
+              )
             }
             onClickAddMember={{
               onClick: () => {
@@ -68,7 +73,10 @@ function SlotBodyComp({
               }
             }}
             slotMembersInTraining={
-              <SlotTrainingMembers editModule={editModule} />
+              <SlotTrainingMembers
+                editModule={editModule}
+                schedules={schedules}
+              />
             }
           />
         )

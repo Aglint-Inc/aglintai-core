@@ -67,7 +67,7 @@ export const useProgressModuleUsers = ({
   return query;
 };
 
-export const useAllModuleAndUsers = () => {
+export const useModuleAndUsers = () => {
   const router = useRouter();
 
   const query = useQuery({
