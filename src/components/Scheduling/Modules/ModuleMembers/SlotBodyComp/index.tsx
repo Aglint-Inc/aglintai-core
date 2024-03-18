@@ -24,7 +24,7 @@ interface SlotBodyCompProps {
 function SlotBodyComp({
   editModule,
   fetchingModule,
-  isFetching,
+  isFetching
 }: SlotBodyCompProps) {
   const { loading } = useSchedulingContext();
   const { data: schedules, isLoading: schedulesLoading } =
@@ -44,6 +44,7 @@ function SlotBodyComp({
       ) : (
         editModule && (
           <InterviewMemberList
+            textObjective={editModule.description || 'No description'}
             isMembersTrainingVisible={editModule.settings?.require_training}
             slotInterviewCard={
               <ModuleSchedules
@@ -55,7 +56,7 @@ function SlotBodyComp({
               onClick: () => {
                 setIsAddMemberDialogOpen(true);
                 setTrainingStatus('training');
-              },
+              }
             }}
             slotQualifiedMemberList={
               <SlotQualifiedMembers editModule={editModule} />
@@ -64,7 +65,7 @@ function SlotBodyComp({
               onClick: () => {
                 setIsAddMemberDialogOpen(true);
                 setTrainingStatus('qualified');
-              },
+              }
             }}
             slotMembersInTraining={
               <SlotTrainingMembers editModule={editModule} />

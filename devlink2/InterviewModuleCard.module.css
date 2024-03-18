@@ -107,6 +107,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -207,6 +211,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .text-gray-400 {

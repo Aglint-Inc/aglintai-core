@@ -9,4 +9,5 @@ declare function InterviewMemberList(props: {
   onClickAddTrainee?: Types.Devlink.RuntimeProps;
   slotMembersInTraining?: Types.Devlink.Slot;
   isMembersTrainingVisible?: Types.Visibility.VisibilityConditions;
+  textObjective?: React.ReactNode;
 }): React.JSX.Element;

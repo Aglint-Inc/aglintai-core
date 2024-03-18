@@ -13,14 +13,26 @@ export function InterviewMemberList({
   onClickAddTrainee = {},
   slotMembersInTraining,
   isMembersTrainingVisible = true,
+  textObjective = "This module aims to evaluate candidates' ability to write efficient, maintainable, and bug-free C++ code, covering a range of topics such as syntax, data structures, algorithms, object-oriented programming concepts, memory management, and best practices.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interview-sub-table")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "interview-sub-table-left")}
+        className={_utils.cx(_styles, "interview-sub-table-left", "plr-0")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "header-interview-list-wrap")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {textObjective}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "plr-20")} tag="div">
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1172")}
             tag="div"
@@ -56,7 +68,7 @@ export function InterviewMemberList({
           </_Builtin.Block>
         </_Builtin.Block>
         {isMembersTrainingVisible ? (
-          <_Builtin.Block tag="div">
+          <_Builtin.Block className={_utils.cx(_styles, "plr-20")} tag="div">
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1172")}
               tag="div"

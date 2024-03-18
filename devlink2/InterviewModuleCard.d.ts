@@ -13,4 +13,6 @@ declare function InterviewModuleCard(props: {
   isCompletedScheduleEmpty?: Types.Visibility.VisibilityConditions;
   isCompletedScheduleVisible?: Types.Visibility.VisibilityConditions;
   onClickCard?: Types.Devlink.RuntimeProps;
+  textObjective?: React.ReactNode;
+  isObjectiveVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

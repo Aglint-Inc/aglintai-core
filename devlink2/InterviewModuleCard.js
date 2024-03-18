@@ -15,6 +15,8 @@ export function InterviewModuleCard({
   isCompletedScheduleEmpty = false,
   isCompletedScheduleVisible = true,
   onClickCard = {},
+  textObjective = "This is some text inside of a div block.",
+  isObjectiveVisible = true,
 }) {
   return (
     <_Component
@@ -35,6 +37,14 @@ export function InterviewModuleCard({
         >
           {textModuleName}
         </_Builtin.Block>
+        {isObjectiveVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-grey-600", "one-line-clamp")}
+            tag="div"
+          >
+            {textObjective}
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1066")}

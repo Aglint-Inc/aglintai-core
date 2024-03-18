@@ -15,14 +15,77 @@
   grid-row-gap: 40px;
 }
 
-.div-block-1172 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.interview-sub-table-left.plr-0 {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.header-interview-list-wrap {
+  padding-right: 20px;
+  padding-bottom: 18px;
+  padding-left: 20px;
+  border-bottom: 1px solid #e9ebed;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
 }
 
 .fw-semibold {
   font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
+}
+
+.plr-20 {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.div-block-1172 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .text-yellow-800 {
@@ -37,23 +100,12 @@
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }
 
-.inline-block {
-  display: inline;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
 .text-color-black {
   color: var(--black-9b0fc3fc);
 }
 
 .text-kale-600 {
   color: var(--kale-600);
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
 }
 
 .text-yellow-700 {
@@ -69,6 +121,10 @@
   z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
+}
+
+.text-first-cap {
+  text-transform: capitalize;
 }
 
 .fw-semibold.z-index-5 {
@@ -154,10 +210,6 @@
   color: var(--black-100);
 }
 
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
 .text-capitalize {
   text-transform: uppercase;
 }
@@ -169,10 +221,6 @@
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.text-first-cap {
-  text-transform: capitalize;
 }
 
 .fw-semibold.sticky_2 {
@@ -192,6 +240,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .div-block-1171 {
@@ -252,10 +304,6 @@
 
 .text-blue-500.ml-12 {
   margin-left: 8px;
-}
-
-.text-no-wrap {
-  white-space: nowrap;
 }
 
 .slot-member-list-card {
