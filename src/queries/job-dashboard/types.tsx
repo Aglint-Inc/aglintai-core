@@ -1,3 +1,5 @@
+import { TransformSchedule } from '@/src/components/Scheduling/Modules/types';
+
 import { resumeMatchRPCFormatter } from '.';
 import { Assessment } from '../assessment/types';
 
@@ -34,6 +36,7 @@ export type DashboardTypes = {
     average_tenure: number;
     average_experience: number;
   };
+  schedules: Omit<TransformSchedule, 'applications' | 'job' | 'file'>[];
 };
 
 type Matches =

@@ -12,6 +12,7 @@ import { Job } from '@/src/queries/job/types';
 import {
   useJobLocations,
   useJobMatches,
+  useJobSchedules,
   useJobSkills,
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
@@ -52,6 +53,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const locations = useJobLocations();
   const matches = useJobMatches();
   const tenureAndExperience = useJobTenureAndExperience();
+  const schedules = useJobSchedules();
   const scoringPoll = useJobScoringPoll();
 
   const draftValidity = getDraftValidity(job);
@@ -79,6 +81,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const initialLoad =
     jobLoad &&
     assessments.status !== 'pending' &&
+    schedules.status !== 'pending' &&
     scoringPoll.status !== 'pending' &&
     tenureAndExperience.status !== 'pending' &&
     templates.status !== 'pending' &&
@@ -95,6 +98,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     draftValidity,
     jdValidity,
     scoringPoll,
+    schedules,
     status,
     publishable,
     initialLoad,

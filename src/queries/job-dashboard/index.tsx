@@ -19,7 +19,7 @@ export const useJobLocations = () => {
   const { queryKey } = jobDashboardQueryKeys.locations({ job_id });
   const response = useQuery({
     queryKey,
-    queryFn: () => getLocationPool(job_id)
+    queryFn: () => getLocationPool(job_id),
   });
   return response;
 };
@@ -29,7 +29,7 @@ export const useJobMatches = () => {
   const { queryKey } = jobDashboardQueryKeys.matches({ job_id });
   const response = useQuery({
     queryKey,
-    queryFn: () => getResumeMatch(job_id)
+    queryFn: () => getResumeMatch(job_id),
   });
   return response;
 };
@@ -39,25 +39,35 @@ export const useJobTenureAndExperience = () => {
   const { queryKey } = jobDashboardQueryKeys.tenureAndExperience({ job_id });
   const response = useQuery({
     queryKey,
-    queryFn: () => getTenureAndExperience(job_id)
+    queryFn: () => getTenureAndExperience(job_id),
+  });
+  return response;
+};
+
+export const useJobSchedules = () => {
+  const { job_id } = useCurrentJob();
+  const { queryKey } = jobDashboardQueryKeys.schedules({ job_id });
+  const response = useQuery({
+    queryKey,
+    queryFn: () => getScheduleData(job_id),
   });
   return response;
 };
 
 const getTenureAndExperience = async (job_id: string) => {
   const { data, error } = await supabase.rpc('getexperienceandtenure', {
-    jobid: job_id
+    jobid: job_id,
   });
   if (error)
     throw new Error(
-      `Tenure and Experience RPC function failure: ${error.message}`
+      `Tenure and Experience RPC function failure: ${error.message}`,
     );
   return data as DashboardTypes['tenureAndExperience'];
 };
 
 const getSkillsPool = async (job_id: string) => {
   const { data, error } = await supabase.rpc('getskillpools', {
-    jobid: job_id
+    jobid: job_id,
   });
   if (error)
     throw new Error(`Skill pool RPC function failure: ${error.message}`);
@@ -66,10 +76,21 @@ const getSkillsPool = async (job_id: string) => {
 
 const getLocationPool = async (job_id: string) => {
   const { data, error } = await supabase.rpc('getlocationspool', {
-    jobid: job_id
+    jobid: job_id,
   });
   if (error) throw new Error(error.message);
   return data as DashboardTypes['locations'];
+};
+
+export const getScheduleData = async (job_id: string) => {
+  const { data, error } = await supabase.rpc(
+    'get_interview_schedule_by_job_id',
+    {
+      target_job_id: job_id,
+    },
+  );
+  if (error) throw new Error(error.message);
+  return data as DashboardTypes['schedules'];
 };
 
 const getResumeMatch = async (job_id: string) => {
@@ -78,7 +99,7 @@ const getResumeMatch = async (job_id: string) => {
     topmatch: 80,
     goodmatch: 60,
     averagematch: 40,
-    poormatch: 20
+    poormatch: 20,
   });
   if (error) throw new Error(error.message);
   const safeData = resumeMatchRPCFormatter(data);
@@ -86,11 +107,11 @@ const getResumeMatch = async (job_id: string) => {
 };
 
 export const resumeMatchRPCFormatter = (
-  unsafeData: Database['public']['Functions']['getresumematches']['Returns']
+  unsafeData: Database['public']['Functions']['getresumematches']['Returns'],
 ) => {
   const initialData = {
     matches: unsafeData,
-    total: 0
+    total: 0,
   };
   return Object.values(unsafeData).reduce((acc, curr) => {
     acc.total += curr;

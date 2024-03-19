@@ -5,24 +5,31 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 export const jobDashboardQueryKeys = {
   all: { queryKey: ['aglint_job_dashboard'] as string[] },
   matches: ({ job_id }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'matches']
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'matches'],
   }),
   skills: ({ job_id }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'skills']
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'skills'],
   }),
   locations: ({ job_id }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'locations']
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'locations'],
   }),
   assessments: ({ job_id }: { job_id: string }) => ({
-    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'assessments']
+    queryKey: [
+      ...jobDashboardQueryKeys.all.queryKey,
+      { job_id },
+      'assessments',
+    ],
   }),
   tenureAndExperience: ({ job_id }: { job_id: string }) => ({
     queryKey: [
       ...jobDashboardQueryKeys.all.queryKey,
       { job_id },
-      'tenureAndExperience'
-    ]
-  })
+      'tenureAndExperience',
+    ],
+  }),
+  schedules: ({ job_id }: { job_id: string }) => ({
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'schedules'],
+  }),
 } as const;
 
 export const useJobId = () => {

@@ -34,6 +34,10 @@
   color: #68737d;
 }
 
+.color-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -118,37 +122,4 @@
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.embed_flex {
-  display: flex;
-  align-items: center;
-}
-
-.embed_flex.hide {
-  display: none;
-}
-
-.hide {
-  display: none;
-}
-
-.embed_flex.custom_top {
-  margin-top: 2px;
-}
-
-.embed_flex.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.embed_flex.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.avatar_sample {
-  overflow: hidden;
-  width: 27px;
-  height: 26px;
-  border-radius: 100px;
 }
