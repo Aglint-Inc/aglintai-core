@@ -1,11 +1,15 @@
+import { capitalize } from 'lodash';
+
 import { DateInfoType } from '../types/resume_json.types';
 
 export const getFullName = (firstName, lastName) => {
-  return [firstName, lastName]
-    .filter(Boolean)
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .join(' ');
+  return capitalize(
+    [firstName, lastName]
+      .filter(Boolean)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .join(' ')
+  );
 };
 
 export const getformatedDate = (start: DateInfoType, end: DateInfoType) => {
@@ -69,7 +73,7 @@ function monthIndexToString(monthIndex) {
     'September',
     'October',
     'November',
-    'December',
+    'December'
   ];
 
   // Check if the month index is within a valid range

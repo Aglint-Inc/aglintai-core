@@ -1,12 +1,15 @@
+// code has to rewritten not understandable and not maintainable
+
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
+import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import { RecruiterType, RecruiterUserType } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -119,67 +122,28 @@ const SlideTwoSignUp = () => {
         password: details.password
       });
       if (!authdata.error) {
-        setUserDetails(authdata.data.session);
-        const {
-          error: erroruser,
-          data: [recruiter_user]
-        } = await supabase
-          .from('recruiter_user')
-          .insert({
-            user_id: authdata.data.user.id,
-            email: details.email,
-            first_name: details.first_name,
-            last_name: details.last_name || '',
-            role: 'admin'
-          })
-          .select();
+        const res = (await axios.post('/api/signup', {
+          email: details.email,
+          user_id: authdata.data.user.id,
+          first_name: details.first_name,
+          last_name: details.last_name,
+          role: 'admin',
+          flow: flow
+        } as ApiBodyParamsSignup)) as {
+          data: { recruiter_user: RecruiterUserType; recruiter: RecruiterType };
+          status: number;
+        };
 
-        if (!erroruser) {
-          setRecruiterUser(recruiter_user as RecruiterUserType);
-
-          let rec_id = uuidv4();
-          const { error } = await supabase.from('recruiter').insert({
-            email: details.email,
-            recruiter_type: flow,
-            recruiter_active: true,
-            id: rec_id
+        if (res.status === 200) {
+          router.push(`?step=${stepObj.type}`, undefined, {
+            shallow: true
           });
-
-          if (!error) {
-            const { error } = await supabase.rpc('createrecuriterrelation', {
-              in_recruiter_id: rec_id,
-              in_user_id: authdata.data.user.id,
-              in_is_active: true
-            });
-
-            if (error) {
-              throw new Error(error.message);
-            }
-
-            const { data: rec, error: recError } = await supabase
-              .from('recruiter')
-              .select()
-              .eq('id', rec_id);
-            if (recError) {
-              throw new Error(recError.message);
-            }
-
-            setRecruiter(rec[0] as RecruiterType);
-
-            await supabase
-              .from('recruiter_user')
-              .update({
-                recruiter_id: rec[0].id,
-                scheduling_settings: rec[0].scheduling_settings
-              })
-              .eq('user_id', authdata.data.user.id);
-
-            router.push(`?step=${stepObj.type}`, undefined, {
-              shallow: true
-            });
-
-            setStep(stepObj.type);
-          }
+          setRecruiterUser(res.data.recruiter_user);
+          setUserDetails(authdata.data.session);
+          setRecruiter(res.data.recruiter);
+          setStep(stepObj.type);
+        } else {
+          toast.error('Something went wrong. Please try again later.');
         }
       } else {
         if (

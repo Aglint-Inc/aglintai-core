@@ -320,6 +320,10 @@
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
 }
 
+.text-blue-500 {
+  color: var(--blue500-72579298);
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -362,6 +366,10 @@
 }
 
 .text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
+.mt-9 {
   margin-top: 9px;
 }
 
@@ -606,6 +614,10 @@
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .div-block-814 {
