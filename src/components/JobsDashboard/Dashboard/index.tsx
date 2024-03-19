@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
+import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -24,7 +25,9 @@ import {
   JobDashboard as JobDashboardDev,
   JobDashboardTopRight,
   ModuleCard,
+  NoData,
   PipeLine,
+  ScheduleCardSmall,
 } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
@@ -33,6 +36,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/job/types';
+import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
@@ -46,9 +50,12 @@ import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
 // import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
+import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import { AddCandidates } from '../../JobApplicationsDashboard';
 import PublishButton from '../../publishButton';
+import IconScheduleType from '../../Scheduling/AllSchedules/ListCard/Icon';
+import { getScheduleType } from '../../Scheduling/AllSchedules/utils';
 
 const JobDashboard = () => {
   const { initialLoad, job } = useJobDetails();
@@ -91,6 +98,7 @@ const Dashboard = () => {
   const {
     job,
     matches: { data: counts },
+    schedules: { data: schedule },
     publishable,
     draftValidity,
   } = useJobDetails();
@@ -161,6 +169,11 @@ const Dashboard = () => {
             slotPipeline={<Pipeline />}
             slotModuleCard={<Modules />}
             slotCardWithNumber={<TenureAndExpSummary />}
+            isViewScheduleVisible={schedule.length > 3}
+            onClickViewSchedule={{
+              onClick: () => push(`/scheduling?tab=mySchedules`),
+            }}
+            slotScheduleCardSmall={<Schedules />}
             textCandidateCount={counts.total}
             onClickAssistant={{
               onClick: () => push(`/jobs/${job.id}/agent`),
@@ -297,6 +310,57 @@ const Pipeline = () => {
       />
     </>
   );
+};
+
+const Schedules = () => {
+  const {
+    schedules: { data },
+  } = useJobDetails();
+  if (data.length === 0) return <NoData />;
+  const cards = data
+    .sort(
+      (a, b) =>
+        (dayjs(a.interview_meeting.start_time) as any) -
+        (dayjs(b.interview_meeting.start_time) as any),
+    )
+    .slice(0, 3)
+    .map((sch, i) => (
+      <ScheduleCardSmall
+        key={i}
+        slotCandidatePic={
+          <MuiAvatar
+            key={sch.candidates.id}
+            src={sch.candidates.avatar}
+            level={getFullName(
+              sch.candidates.first_name,
+              sch.candidates.last_name,
+            )}
+            variant='circular'
+            height='28px'
+            width='28px'
+            fontSize='12px'
+          />
+        }
+        textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
+        textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
+        textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
+        textPlatformName={getScheduleType(sch.schedule.schedule_type)}
+        textScheduleName={sch.schedule.schedule_name}
+        textTimeRange={`${dayjs(sch.interview_meeting.start_time).format(
+          'hh:mm A',
+        )} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${
+          sch.interview_meeting.duration
+        } Minutes )`}
+        slotPlatformLogo={
+          <IconScheduleType type={sch.schedule.schedule_type} />
+        }
+        textCandidateName={getFullName(
+          sch.candidates.first_name,
+          sch.candidates.last_name,
+        )}
+      />
+    ));
+  return <>{cards}</>;
 };
 
 const Banners = () => {

@@ -8,4 +8,8 @@ declare function ScheduleCardSmall(props: {
   textDay?: React.ReactNode;
   textScheduleName?: React.ReactNode;
   textTimeRange?: React.ReactNode;
+  textPlatformName?: React.ReactNode;
+  slotPlatformLogo?: Types.Devlink.Slot;
+  textCandidateName?: React.ReactNode;
+  slotCandidatePic?: Types.Devlink.Slot;
 }): React.JSX.Element;

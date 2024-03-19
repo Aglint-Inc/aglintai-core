@@ -31,6 +31,8 @@ export function JobDashboard({
   slotCardWithNumber,
   isBanner = false,
   slotBanner,
+  onClickViewSchedule = {},
+  isViewScheduleVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jobdashboard")} tag="div">
@@ -416,12 +418,15 @@ export function JobDashboard({
                 </>
               )}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600", "is_link")}
-              tag="div"
-            >
-              {"View All Schedules"}
-            </_Builtin.Block>
+            {isViewScheduleVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-gray-600", "is_link")}
+                tag="div"
+                {...onClickViewSchedule}
+              >
+                {"View All Schedules"}
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "graph_wrapper-copy")}

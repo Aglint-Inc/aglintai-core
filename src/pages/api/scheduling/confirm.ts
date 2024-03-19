@@ -10,7 +10,7 @@ import { BookingApiParams } from './v2/book_schedule_plan';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY,
 );
 
 type BodyParams = {
@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_name,
       id,
       schedule_name,
-      selectedSlot
+      selectedSlot,
     } = req.body as BodyParams;
 
     axios.post(
@@ -40,15 +40,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       {
         plan: { plans: selectedSlot.plans },
         candidate_email: candidate_email,
-        schedule_id: id
-      } as BookingApiParams
+        schedule_id: id,
+      } as BookingApiParams,
     );
 
     const { data, error } = await supabase
       .from('interview_schedule')
       .update({
         status: 'confirmed',
-        confirmed_option: selectedSlot
+        confirmed_option: selectedSlot,
       })
       .eq('id', id)
       .select();
@@ -58,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_name: company_name,
       schedule_name: schedule_name,
       schedule_id: id,
-      mail: candidate_email
+      mail: candidate_email,
     });
 
     if (error) {
@@ -79,7 +79,7 @@ export const mailThankYouHandler = async ({
   company_logo,
   schedule_name,
   schedule_id,
-  mail
+  mail,
 }: {
   company_name: string;
   company_logo: string;
@@ -105,7 +105,7 @@ export const mailThankYouHandler = async ({
               </div>
               <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© 2023 Aglint Inc. All Rights Reserved.</span> </p>
           </div>
-      </body>`
+      </body>`,
       })
       .then((res) => {
         if (res.status === 200 && res.data.data === 'Email sent') {
@@ -113,7 +113,7 @@ export const mailThankYouHandler = async ({
         } else {
           console.log(
             'error',
-            'Unable to send the mail. Please try again later.'
+            'Unable to send the mail. Please try again later.',
           );
           return false;
         }

@@ -9,4 +9,7 @@ declare function AllInterviewersCard(props: {
   textCompletedInterviews?: React.ReactNode;
   slotInterviewModules?: Types.Devlink.Slot;
   textRole?: React.ReactNode;
+  isConnectedCalenderVisible?: Types.Visibility.VisibilityConditions;
+  isCalenderNotConnected?: Types.Visibility.VisibilityConditions;
+  slotModulesTraining?: Types.Devlink.Slot;
 }): React.JSX.Element;

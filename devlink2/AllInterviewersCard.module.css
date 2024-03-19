@@ -11,7 +11,7 @@
 }
 
 .div-block-1143.dec-width {
-  grid-template-columns: 25% 12% 12% 51%;
+  grid-template-columns: 25% 12% 12% 25% 26%;
 }
 
 .div-block-1144 {
@@ -46,6 +46,14 @@
   flex-wrap: nowrap;
   grid-column-gap: 3px;
   grid-row-gap: 3px;
+}
+
+.div-block-1255 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }
 
 .fw-semibold {
@@ -96,6 +104,10 @@
   z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
+}
+
+.text-first-cap {
+  text-transform: capitalize;
 }
 
 .fw-semibold.z-index-5 {
@@ -215,6 +227,108 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
+.div-block-1258 {
+  position: relative;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.ml--6 {
+  margin-left: -6px;
+}
+
+.div-block-1257 {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: -15px;
+  bottom: -41px;
+
+  display: flex;
+  width: 204px;
+  padding: 6px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 6px;
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+}
+
+.div-block-1257.not-connected {
+  left: -21px;
+  top: auto;
+  right: auto;
+  bottom: -41px;
+
+  display: none;
+  width: 230px;
+}
+
+.div-block-1257.connected {
+  left: -21px;
+  top: auto;
+  right: auto;
+  bottom: -41px;
+  display: none;
+}
+
+.tooltippos {
+  position: absolute;
+  left: 0%;
+  top: -7px;
+  right: auto;
+  bottom: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltippos.not-conneceted {
+  left: 21px;
+}
+
+.tooltippos.connected {
+  left: 21px;
+}
+
+.div-block-1259 {
+  position: relative;
 }
 
 @media screen and (max-width: 767px) {
