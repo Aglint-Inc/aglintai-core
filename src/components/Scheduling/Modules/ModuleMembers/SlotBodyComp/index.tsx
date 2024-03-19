@@ -10,7 +10,10 @@ import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
-import { useAllSchedulesByModuleId } from '../../queries/hooks';
+import {
+  useAllSchedulesByModuleId,
+  useGetMeetingsByModuleId
+} from '../../queries/hooks';
 import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
 import { ModuleType } from '../../types';
 import ModuleSchedules from '../../../Common/ModuleSchedules';
@@ -29,6 +32,11 @@ function SlotBodyComp({
   const { loading } = useSchedulingContext();
   const { data: schedules, isLoading: schedulesLoading } =
     useAllSchedulesByModuleId();
+
+  const { data: meetingData } = useGetMeetingsByModuleId({
+    schedulesLoading: schedulesLoading,
+    user_ids: editModule?.relations?.map((user) => user.user_id) || []
+  });
 
   return (
     <>
@@ -62,9 +70,15 @@ function SlotBodyComp({
               !schedulesLoading && (
                 <SlotQualifiedMembers
                   editModule={editModule}
-                  schedules={schedules}
+                  meetingData={meetingData}
                 />
               )
+            }
+            slotMembersInTraining={
+              <SlotTrainingMembers
+                editModule={editModule}
+                meetingData={meetingData}
+              />
             }
             onClickAddMember={{
               onClick: () => {
@@ -72,12 +86,6 @@ function SlotBodyComp({
                 setTrainingStatus('qualified');
               }
             }}
-            slotMembersInTraining={
-              <SlotTrainingMembers
-                editModule={editModule}
-                schedules={schedules}
-              />
-            }
           />
         )
       )}

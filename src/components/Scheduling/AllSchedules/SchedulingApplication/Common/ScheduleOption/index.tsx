@@ -14,10 +14,12 @@ import { SchedulingOptionType } from '../../store';
 
 function SchedulingOptionComp({
   isBadgeVisible = false,
-  schedulingOptions
+  schedulingOptions,
+  isInterviewVisible = true
 }: {
   isBadgeVisible?: boolean;
   schedulingOptions: SchedulingOptionType;
+  isInterviewVisible?: boolean;
 }) {
   return (
     <>
@@ -48,76 +50,78 @@ function SchedulingOptionComp({
                           isTitleVisible={!pl.isBreak}
                           isBreakVisible={pl.isBreak}
                           slotMember={
-                            <Stack
-                              direction={'row'}
-                              sx={{
-                                flexWrap: 'wrap',
-                                gap: 2.5
-                              }}
-                            >
-                              {pl.selectedIntervs?.map((int) => {
-                                return (
-                                  <AvatarWithName
-                                    key={int.interv_id}
-                                    textName={int.name}
-                                    slotAvatar={
-                                      <MuiAvatar
-                                        level={getFullName(int.name, '')}
-                                        src={int?.profile_img}
-                                        variant={'circular'}
-                                        width={'24px'}
-                                        height={'24px'}
-                                        fontSize={'12px'}
-                                      />
-                                    }
-                                  />
-                                );
-                              })}
-                              {pl.shadowIntervs?.map((int) => {
-                                return (
-                                  <AvatarWithName
-                                    key={int.interv_id}
-                                    isShadowVisible={isBadgeVisible && true}
-                                    isReverseShadowVisible={
-                                      isBadgeVisible && false
-                                    }
-                                    textName={int.name}
-                                    slotAvatar={
-                                      <MuiAvatar
-                                        level={getFullName(int.name, '')}
-                                        src={int?.profile_img}
-                                        variant={'circular'}
-                                        width={'24px'}
-                                        height={'24px'}
-                                        fontSize={'12px'}
-                                      />
-                                    }
-                                  />
-                                );
-                              })}
-                              {pl.revShadowIntervs?.map((int) => {
-                                return (
-                                  <AvatarWithName
-                                    key={int.interv_id}
-                                    isShadowVisible={isBadgeVisible && false}
-                                    isReverseShadowVisible={
-                                      isBadgeVisible && true
-                                    }
-                                    textName={int.name}
-                                    slotAvatar={
-                                      <MuiAvatar
-                                        level={getFullName(int.name, '')}
-                                        src={int?.profile_img}
-                                        variant={'circular'}
-                                        width={'24px'}
-                                        height={'24px'}
-                                        fontSize={'12px'}
-                                      />
-                                    }
-                                  />
-                                );
-                              })}
-                            </Stack>
+                            isInterviewVisible && (
+                              <Stack
+                                direction={'row'}
+                                sx={{
+                                  flexWrap: 'wrap',
+                                  gap: 2.5
+                                }}
+                              >
+                                {pl.selectedIntervs?.map((int) => {
+                                  return (
+                                    <AvatarWithName
+                                      key={int.interv_id}
+                                      textName={int.name}
+                                      slotAvatar={
+                                        <MuiAvatar
+                                          level={getFullName(int.name, '')}
+                                          src={int?.profile_img}
+                                          variant={'circular'}
+                                          width={'24px'}
+                                          height={'24px'}
+                                          fontSize={'12px'}
+                                        />
+                                      }
+                                    />
+                                  );
+                                })}
+                                {pl.shadowIntervs?.map((int) => {
+                                  return (
+                                    <AvatarWithName
+                                      key={int.interv_id}
+                                      isShadowVisible={isBadgeVisible && true}
+                                      isReverseShadowVisible={
+                                        isBadgeVisible && false
+                                      }
+                                      textName={int.name}
+                                      slotAvatar={
+                                        <MuiAvatar
+                                          level={getFullName(int.name, '')}
+                                          src={int?.profile_img}
+                                          variant={'circular'}
+                                          width={'24px'}
+                                          height={'24px'}
+                                          fontSize={'12px'}
+                                        />
+                                      }
+                                    />
+                                  );
+                                })}
+                                {pl.revShadowIntervs?.map((int) => {
+                                  return (
+                                    <AvatarWithName
+                                      key={int.interv_id}
+                                      isShadowVisible={isBadgeVisible && false}
+                                      isReverseShadowVisible={
+                                        isBadgeVisible && true
+                                      }
+                                      textName={int.name}
+                                      slotAvatar={
+                                        <MuiAvatar
+                                          level={getFullName(int.name, '')}
+                                          src={int?.profile_img}
+                                          variant={'circular'}
+                                          width={'24px'}
+                                          height={'24px'}
+                                          fontSize={'12px'}
+                                        />
+                                      }
+                                    />
+                                  );
+                                })}
+                              </Stack>
+                            )
                           }
                         />
                       );

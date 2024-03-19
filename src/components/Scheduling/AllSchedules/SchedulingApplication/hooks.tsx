@@ -185,9 +185,12 @@ export const useGetScheduleApplication = () => {
             userIds.push(interv.interv_id);
           });
         });
+        userIds.push(
+          application?.public_jobs?.interview_plan.coordinator.interv_id
+        );
 
         const resMem = await axios.post('/api/scheduling/fetchdbusers', {
-          user_ids: userIds
+          user_ids: [...new Set(userIds)]
         });
 
         if (resMem?.data?.length > 0) {

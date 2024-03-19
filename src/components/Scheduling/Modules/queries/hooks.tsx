@@ -12,6 +12,7 @@ import {
   fetchInterviewModules,
   fetchModules,
   fetchProgress,
+  getMeetingsByModuleId,
   resumePauseDbUpdate,
   updatePauseJsonByUserId
 } from './utils';
@@ -38,6 +39,27 @@ export const useAllSchedulesByModuleId = () => {
     }),
     queryFn: () => fetchModules(router.query.module_id as string),
     enabled: !!router.query.module_id,
+    initialData: [],
+    refetchOnWindowFocus: false
+  });
+  return query;
+};
+
+export const useGetMeetingsByModuleId = ({
+  schedulesLoading,
+  user_ids
+}: {
+  schedulesLoading: boolean;
+  user_ids: string[];
+}) => {
+  const router = useRouter();
+  const query = useQuery({
+    queryKey: QueryKeysInteviewModules.MEETINGS_BY_MODULE_ID({
+      moduleId: router.query.module_id as string,
+      user_ids: user_ids
+    }),
+    queryFn: () => getMeetingsByModuleId(router.query.module_id as string),
+    enabled: !schedulesLoading && user_ids.length > 0,
     initialData: [],
     refetchOnWindowFocus: false
   });
@@ -236,7 +258,7 @@ export const useAddMemberHandler = () => {
 
       if (!editModule) throw new Error('Module not found');
 
-      const { data, error } = await addMemberbyUserIds({
+      const { error } = await addMemberbyUserIds({
         module_id: editModule.id,
         user_ids: selectedUsers.map((user) => user.user_id),
         training_status: trainingStatus
@@ -244,19 +266,12 @@ export const useAddMemberHandler = () => {
       if (error) {
         throw new Error(error.message);
       }
-      const updatedEditModule = {
-        ...editModule,
-        relations: [...editModule.relations, ...data]
-      } as ModuleType;
 
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+      await queryClient.invalidateQueries({
+        queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
           moduleId: editModule.id
-        }),
-        {
-          ...updatedEditModule
-        }
-      );
+        })
+      });
     } catch (e) {
       toast.error(e.message);
     }

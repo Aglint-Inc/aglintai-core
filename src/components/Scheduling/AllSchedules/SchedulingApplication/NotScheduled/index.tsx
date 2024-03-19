@@ -8,7 +8,7 @@ import {
   InterviewPlanEmpty,
   SchedulingFlow
 } from '@/devlink2';
-import { InterviewBreakCard } from '@/devlink3';
+import { AvatarWithName, InterviewBreakCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
@@ -25,7 +25,7 @@ import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
 function NotScheduledApplication() {
   const router = useRouter();
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
+    (state) => state.selectedApplication
   );
   const interviewModules = useSchedulingApplicationStore(
     (state) => state.interviewModules
@@ -50,6 +50,12 @@ function NotScheduledApplication() {
   }, [selectedApplication?.public_jobs?.interview_plan?.plan]);
 
   const { sendToCandidate } = useSendInviteForCandidate();
+
+  const coordinator = members.find(
+    (member) =>
+      member.user_id ===
+      selectedApplication?.public_jobs?.interview_plan?.coordinator?.interv_id
+  );
 
   return (
     <>
@@ -99,6 +105,31 @@ function NotScheduledApplication() {
                 );
               }
             }}
+            slotAvatarWithName={
+              coordinator ? (
+                <AvatarWithName
+                  textName={getFullName(
+                    coordinator.first_name,
+                    coordinator.last_name
+                  )}
+                  slotAvatar={
+                    <MuiAvatar
+                      level={getFullName(
+                        coordinator.first_name,
+                        coordinator.last_name
+                      )}
+                      src={coordinator.profile_image}
+                      variant={'circular'}
+                      width={'100%'}
+                      height={'100%'}
+                      fontSize={'12px'}
+                    />
+                  }
+                />
+              ) : (
+                'None'
+              )
+            }
             textRole={selectedApplication.public_jobs.job_title}
             textLocation={selectedApplication.public_jobs.location || '--'}
             slotScheduleOptions={

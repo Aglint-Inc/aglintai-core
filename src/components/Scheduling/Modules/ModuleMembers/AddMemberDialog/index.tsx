@@ -8,7 +8,7 @@ import { useAddMemberHandler } from '../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
   setSelectedUsers,
-  useModulesStore,
+  useModulesStore
 } from '../../store';
 import { ModuleType } from '../../types';
 import MembersAutoComplete from '../../../Common/MembersTextField';
@@ -17,7 +17,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   const { members } = useSchedulingContext();
   const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
-    (state) => state.isAddMemberDialogOpen,
+    (state) => state.isAddMemberDialogOpen
   );
   const selectedUsers = useModulesStore((state) => state.selectedUsers);
   const trainingStatus = useModulesStore((state) => state.trainingStatus);
@@ -27,8 +27,8 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   const allMembers = members.filter(
     (user) =>
       editModule?.relations?.findIndex(
-        (rel) => rel.user_id === user.user_id,
-      ) === -1,
+        (rel) => rel.user_id === user.user_id
+      ) === -1
   );
 
   const onClickAddMember = async () => {
@@ -36,7 +36,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
     await addMemberHandler({
       module_id: editModule.id,
       selectedUsers: selectedUsers,
-      trainingStatus: trainingStatus,
+      trainingStatus: trainingStatus
     });
     setIsAddMemberDialogOpen(false);
     setSelectedUsers([]);
@@ -49,8 +49,8 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px',
-        },
+          borderRadius: '10px'
+        }
       }}
       open={isAddMemberDialogOpen}
       onClose={() => {
@@ -79,10 +79,10 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
         onClickCancel={{
           onClick: () => {
             setIsAddMemberDialogOpen(false);
-          },
+          }
         }}
         onClickAction={{
-          onClick: onClickAddMember,
+          onClick: onClickAddMember
         }}
         textPopupButton={editModule?.relations.length > 0 ? 'Add' : 'Create'}
       />

@@ -7,21 +7,22 @@ import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMai
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { useGetMeetingsByModuleId } from '../../../queries/hooks';
+import { getHours } from '../../../queries/utils';
 import {
   setIsDeleteMemberDialogOpen,
   setIsPauseDialogOpen,
   setIsResumeDialogOpen,
   setSelUser
 } from '../../../store';
-import { ModuleType, TransformSchedule } from '../../../types';
-import { calculateHourDifference } from '../../../utils';
+import { ModuleType } from '../../../types';
 
 function SlotQualifiedMembers({
   editModule,
-  schedules
+  meetingData
 }: {
   editModule: ModuleType;
-  schedules: TransformSchedule[];
+  meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
 }) {
   const { members } = useSchedulingContext();
 
@@ -32,25 +33,30 @@ function SlotQualifiedMembers({
   const allQualified = allUsers
     .filter((user) => user.training_status === 'qualified')
     .map((user) => {
-      const weeklyHours = schedules
-        .filter(
-          (schedule) =>
-            schedule?.users.some((u) => u.id === user.user_id) &&
-            dayjs(schedule?.interview_meeting?.end_time).isSame(
-              currentDay,
-              'day'
-            )
-        )
-        .reduce((acc, curr) => {
-          return (
-            acc +
-            calculateHourDifference(
-              curr.interview_meeting.start_time,
-              curr.interview_meeting.end_time
-            )
-          );
-        }, 0);
-      return { ...user, weeklyHours: weeklyHours };
+      const userSettings = user?.recruiter_user?.scheduling_settings;
+
+      let weekly = 0;
+      let daily = 0;
+      if (userSettings) {
+        weekly =
+          userSettings.interviewLoad.dailyLimit.type == 'Hours'
+            ? getHours({ user, type: 'weekly', meetingData })
+            : meetingData.filter(
+                (meet) => meet?.interviewer_id === user.user_id
+              ).length;
+        daily =
+          userSettings.interviewLoad.dailyLimit.type == 'Hours'
+            ? getHours({ user, type: 'daily', meetingData })
+            : meetingData.filter(
+                (meet) =>
+                  meet?.interviewer_id === user.user_id &&
+                  dayjs(meet?.interview_meeting?.end_time).isSame(
+                    currentDay,
+                    'day'
+                  )
+              ).length;
+      }
+      return { ...user, weekly, daily };
     }); // need to right rpc which calc everything in db and return
 
   return (
@@ -67,9 +73,9 @@ function SlotQualifiedMembers({
         const userSettings = user.recruiter_user.scheduling_settings;
         return (
           <MemberListCard
-            textInterviewWeek={''}
             isInterviewCountVisible={!user.pause_json}
-            textInterviewToday={`${user.weeklyHours} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
+            textInterviewWeek={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per week`}
+            textInterviewToday={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
             onClickCard={{
               onClick: () => {
                 router.push(

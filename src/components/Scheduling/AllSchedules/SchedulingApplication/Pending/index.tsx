@@ -94,7 +94,7 @@ function PendingConfirmed() {
               variant={'circular'}
               width={'100%'}
               height={'100%'}
-              fontSize={'12px'}
+              fontSize={'20px'}
             />
           }
           slotScheduleInfoPlan={''}

@@ -50,11 +50,12 @@ function GetScheduleOptions() {
             textLabel={'Get Schedule Options'}
             onClickButton={{
               onClick: async () => {
-                await findScheduleOptions({
-                  dateRange: dateRange,
-                  selectedApplication: selectedApplication,
-                  rec_id: recruiter.id
-                });
+                if (dateRange.start_date && dateRange.end_date)
+                  await findScheduleOptions({
+                    dateRange: dateRange,
+                    selectedApplication: selectedApplication,
+                    rec_id: recruiter.id
+                  });
               }
             }}
           />
@@ -77,12 +78,14 @@ function GetScheduleOptions() {
               onChange={(newValue) => {
                 if (dayjs(newValue) < dayjs(dateRange?.end_date)) {
                   setDateRange({
-                    start_date: dayjs(newValue).toISOString(),
+                    start_date: dayjs(newValue)?.toISOString(),
                     end_date: dateRange?.end_date
                   });
                 } else {
                   setDateRange({
-                    start_date: dayjs(newValue).toISOString(),
+                    start_date: dayjs(newValue).isValid()
+                      ? dayjs(newValue)?.toISOString()
+                      : null,
                     end_date: null
                   });
                 }
@@ -102,11 +105,11 @@ function GetScheduleOptions() {
             <DatePicker
               value={dayjs(dateRange?.end_date)}
               minDate={dayjs(dateRange?.start_date)}
-              maxDate={dayjs(dateRange?.start_date).add(7, 'day')}
+              maxDate={dayjs(dateRange?.start_date).add(1, 'month')}
               onChange={(newValue) => {
                 setDateRange({
                   start_date: dateRange?.start_date,
-                  end_date: dayjs(newValue).toISOString()
+                  end_date: dayjs(newValue)?.toISOString()
                 });
               }}
               slotProps={{
@@ -114,7 +117,7 @@ function GetScheduleOptions() {
                   fullWidth: true,
                   variant: 'outlined',
                   InputProps: { disableUnderline: true },
-                  placeholder: 'Start Date'
+                  placeholder: 'End Date'
                 }
               }}
             />

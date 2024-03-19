@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import {
   CandidateType,
   InterviewScheduleTypeDB,
-  JobApplcationDB,
+  JobApplcationDB
 } from '@/src/types/data.types';
 
 import { SchedulingOptionType } from './SchedulingApplication/store';
@@ -40,7 +40,7 @@ export enum FilterType {
   // eslint-disable-next-line no-unused-vars
   scheduleType = 'scheduleType',
   // eslint-disable-next-line no-unused-vars
-  status = 'status',
+  status = 'status'
 }
 
 const initialState: InterviewSlice = {
@@ -51,26 +51,26 @@ const initialState: InterviewSlice = {
     job_ids: [],
     panel_ids: [],
     scheduleType: [],
-    dateRange: null,
+    dateRange: null
   },
   pagination: {
     page: 1,
-    total: 0,
+    total: 0
   },
   fetching: false,
   filterVisible: [],
   isRescheduleOpen: false,
-  isCancelOpen: false,
+  isCancelOpen: false
 };
 
 export const useInterviewSchedulingStore = create<InterviewSlice>()(() => ({
-  ...initialState,
+  ...initialState
 }));
 
 export const setFilter = (filter: InterviewSlice['filter']) => {
   useInterviewSchedulingStore.setState((state) => ({
     pagination: { ...state.pagination, page: 1 },
-    filter: { ...state.filter, ...filter },
+    filter: { ...state.filter, ...filter }
   }));
 };
 
@@ -81,14 +81,14 @@ export const setIsCancelOpen = (isCancelOpen: boolean) =>
   useInterviewSchedulingStore.setState({ isCancelOpen });
 
 export const setFilterVisible = (
-  filterVisible: InterviewSlice['filterVisible'],
+  filterVisible: InterviewSlice['filterVisible']
 ) => useInterviewSchedulingStore.setState({ filterVisible });
 
 export const setPagination = (
-  pagination: Partial<InterviewSlice['pagination']>,
+  pagination: Partial<InterviewSlice['pagination']>
 ) =>
   useInterviewSchedulingStore.setState((state) => ({
-    pagination: { ...state.pagination, ...pagination },
+    pagination: { ...state.pagination, ...pagination }
   }));
 
 export const setFetching = (fetching: boolean) =>
@@ -109,7 +109,12 @@ export type ApplicationList = {
   public_jobs: {
     id: string;
     job_title: string;
-    interview_plan: { plan: InterviewModuleDbType[] };
+    interview_plan: {
+      plan: InterviewModuleDbType[];
+      coordinator: {
+        interv_id: string;
+      };
+    };
     location: string;
     recruiter_id: string;
   };

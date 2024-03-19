@@ -1,7 +1,9 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import { supabase } from '@/src/utils/supabase/client';
 
+import { useGetMeetingsByModuleId } from './hooks';
 import { initialEditModule } from '../store';
 import {
   MemberType,
@@ -11,6 +13,7 @@ import {
   StatusTraining,
   TransformSchedule
 } from '../types';
+import { calculateHourDifference } from '../utils';
 
 export const fetchModules = async (module_id: string) => {
   const { data, error } = await supabase.rpc(
@@ -164,4 +167,68 @@ export const addMemberbyUserIds = async ({
     return { data: null, error: error };
   }
   return { data, error };
+};
+
+export const getMeetingsByModuleId = async (module_id: string) => {
+  const today = new Date();
+  const firstDayOfWeek = new Date(
+    today.setDate(today.getDate() - today.getDay() + 1)
+  );
+  const lastDayOfWeek = new Date(firstDayOfWeek);
+  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+  const { data, error } = await supabase
+    .from('interview_meeting_user')
+    .select('*,interview_meeting(*)')
+    .eq('interview_meeting.module_id', module_id as string)
+    .not('interview_meeting', 'is', null)
+    .gte(
+      'interview_meeting.start_time',
+      firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00'
+    )
+    .lte(
+      'interview_meeting.end_time',
+      lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59'
+    );
+  if (error) throw new Error(error.message);
+  return data;
+};
+
+export const getHours = ({
+  meetingData,
+  user,
+  type
+}: {
+  meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
+  user: { user_id: string };
+  type: 'daily' | 'weekly';
+}) => {
+  let currentDay = dayjs();
+  if (type === 'daily') {
+    return meetingData
+      .filter(
+        (meet) =>
+          meet?.interviewer_id === user.user_id &&
+          dayjs(meet?.interview_meeting?.end_time).isSame(currentDay, 'day')
+      )
+      .reduce((acc, curr) => {
+        return (
+          acc +
+          calculateHourDifference(
+            curr.interview_meeting.start_time,
+            curr.interview_meeting.end_time
+          )
+        );
+      }, 0);
+  }
+  return meetingData
+    .filter((meet) => meet?.interviewer_id === user.user_id)
+    .reduce((acc, curr) => {
+      return (
+        acc +
+        calculateHourDifference(
+          curr.interview_meeting.start_time,
+          curr.interview_meeting.end_time
+        )
+      );
+    }, 0);
 };
