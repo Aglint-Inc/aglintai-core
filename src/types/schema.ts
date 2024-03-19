@@ -68,7 +68,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "agent_chatx"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       agent_chat: {
@@ -120,7 +120,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       agent_chat_messages: {
@@ -185,7 +185,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       aglint_candidates: {
@@ -430,7 +430,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       assessment: {
@@ -471,7 +471,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       assessment_job_relation: {
@@ -507,7 +507,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       assessment_question: {
@@ -567,7 +567,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "question_bank"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       assessment_results: {
@@ -615,7 +615,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "assessment"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       assessment_template: {
@@ -698,7 +698,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "candidates"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       candidate_list: {
@@ -730,7 +730,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       candidate_search_history: {
@@ -780,7 +780,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       candidates: {
@@ -845,7 +845,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       company_search_cache: {
@@ -958,7 +958,7 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          }
+          },
         ]
       }
       interview_meeting: {
@@ -1012,7 +1012,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "interview_module"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       interview_meeting_user: {
@@ -1051,7 +1051,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          }
+          },
         ]
       }
       interview_module: {
@@ -1089,7 +1089,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       interview_module_relation: {
@@ -1128,7 +1128,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          }
+          },
         ]
       }
       interview_schedule: {
@@ -1184,7 +1184,7 @@ export type Database = {
           {
             foreignKeyName: "interview_schedule_application_id_fkey"
             columns: ["application_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "applications"
             referencedColumns: ["id"]
           },
@@ -1194,7 +1194,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          }
+          },
         ]
       }
       job_assiatan_chat: {
@@ -1232,7 +1232,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       job_assiatan_chat_messages: {
@@ -1270,7 +1270,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "job_assiatan_chat"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       job_reference: {
@@ -1315,7 +1315,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       jobs: {
@@ -1507,7 +1507,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       lever_reference: {
@@ -1548,7 +1548,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       notify_me: {
@@ -1604,7 +1604,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          }
+          },
         ]
       }
       public_jobs: {
@@ -1781,7 +1781,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "screening_questions"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       question_bank: {
@@ -2008,7 +2008,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       recruiter_user: {
@@ -2083,7 +2083,7 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       rp_logs: {
@@ -2143,6 +2143,7 @@ export type Database = {
           created_at: string
           date_range: string[] | null
           job_id: string
+          schedule_id: string | null
           scheduling_progress: string | null
         }
         Insert: {
@@ -2153,6 +2154,7 @@ export type Database = {
           created_at?: string
           date_range?: string[] | null
           job_id: string
+          schedule_id?: string | null
           scheduling_progress?: string | null
         }
         Update: {
@@ -2163,6 +2165,7 @@ export type Database = {
           created_at?: string
           date_range?: string[] | null
           job_id?: string
+          schedule_id?: string | null
           scheduling_progress?: string | null
         }
         Relationships: [
@@ -2186,7 +2189,14 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_jobs"
             referencedColumns: ["id"]
-          }
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
+            referencedColumns: ["id"]
+          },
         ]
       }
       screening_answers: {
@@ -2212,7 +2222,7 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "applications"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       screening_questions: {
@@ -2244,7 +2254,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       sections: {
@@ -2300,7 +2310,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       support_ticket: {
@@ -2391,7 +2401,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       template_question_relation: {
@@ -2427,7 +2437,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "assessment_template"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       threads: {
@@ -2488,7 +2498,7 @@ export type Database = {
         Args: {
           rec_id: string
         }
-        Returns: unknown
+        Returns: Json[]
       }
       ashbysync: {
         Args: Record<PropertyKey, never>
@@ -2496,17 +2506,17 @@ export type Database = {
       }
       batchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
-        Returns: unknown
+        Returns: Json[]
       }
       batchsavegreenhouse: {
         Args: Record<PropertyKey, never>
-        Returns: unknown
+        Returns: Json[]
       }
       batchsavegreenhouse_test: {
         Args: {
           rec_id: string
         }
-        Returns: unknown
+        Returns: Json[]
       }
       batchscorecron: {
         Args: {
@@ -2662,7 +2672,7 @@ export type Database = {
       }
       emailhandlercandidatedb: {
         Args: Record<PropertyKey, never>
-        Returns: unknown
+        Returns: Json[]
       }
       embeddingresume: {
         Args: Record<PropertyKey, never>
@@ -2792,6 +2802,17 @@ export type Database = {
           users: Json
           upcoming_meeting_count: number
           completed_meeting_count: number
+        }[]
+      }
+      get_interview_schedule_by_job_id: {
+        Args: {
+          target_job_id: string
+        }
+        Returns: {
+          interview_meeting: Json
+          schedule: Json
+          candidates: Json
+          users: Json
         }[]
       }
       get_interview_schedule_by_meeting_id: {
@@ -3096,7 +3117,7 @@ export type Database = {
       }
       getoutreachemails: {
         Args: Record<PropertyKey, never>
-        Returns: unknown
+        Returns: Json[]
       }
       getrecruiterscreeningdata: {
         Args: {
@@ -3298,7 +3319,7 @@ export type Database = {
       }
       retrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
-        Returns: unknown
+        Returns: Json[]
       }
       search_candidates: {
         Args: {
@@ -3313,7 +3334,7 @@ export type Database = {
       }
       secondretrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
-        Returns: unknown
+        Returns: Json[]
       }
       set_active_rec: {
         Args: {
@@ -3460,27 +3481,29 @@ export type Database = {
     }
     CompositeTypes: {
       location_type: {
-        city: string
-        state: string
-        country: string
+        city: string | null
+        state: string | null
+        country: string | null
       }
       my_table_type: {
-        name: string
-        age: number
-        city: string
+        name: string | null
+        age: number | null
+        city: string | null
       }
     }
   }
 }
 
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -3488,67 +3511,67 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
-      Database["public"]["Views"])
-  ? (Database["public"]["Tables"] &
-      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof Database["public"]["Enums"]
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
-  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never

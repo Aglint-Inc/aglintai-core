@@ -12,7 +12,7 @@ const { google } = require('googleapis');
 const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_SCHEDULE_CLIENT_ID,
   process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-  process.env.GOOGLE_SCHEDULE_REDIRECT_URI
+  process.env.GOOGLE_SCHEDULE_REDIRECT_URI,
 );
 
 // using oAuth 2.0
@@ -20,11 +20,11 @@ export async function fetchCalenderEvents(
   access_token: string,
   refresh_token: string,
   startDate: string,
-  endDate: string
+  endDate: string,
 ) {
   oAuth2Client.setCredentials({
     access_token: access_token,
-    refresh_token: refresh_token
+    refresh_token: refresh_token,
   });
   const events = await listEvents(oAuth2Client, startDate, endDate);
 
@@ -33,7 +33,7 @@ export async function fetchCalenderEvents(
 async function listEvents(
   authClient,
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<NewCalenderEvent[]> {
   const calendar = google.calendar({ version: 'v3', auth: authClient });
   const events = await calendar.events.list({
@@ -41,7 +41,7 @@ async function listEvents(
     timeMin: startDate,
     timeMax: endDate,
     singleEvents: true,
-    orderBy: 'startTime'
+    orderBy: 'startTime',
   });
 
   return events.data.items;
@@ -53,13 +53,13 @@ export const fetchCalenderEventsCompanyCred = async (
   company_cred,
   emp_email: string,
   startDate: string,
-  endDate: string
+  endDate: string,
 ) => {
   const jwtClient = new google.auth.JWT({
     email: company_cred.client_email,
     key: company_cred.private_key,
     scopes: ['https://www.googleapis.com/auth/calendar'],
-    subject: emp_email
+    subject: emp_email,
   });
 
   await jwtClient.authorize();
@@ -69,7 +69,7 @@ export const fetchCalenderEventsCompanyCred = async (
     timeMin: startDate,
     timeMax: endDate,
     singleEvents: true,
-    orderBy: 'startTime'
+    orderBy: 'startTime',
   });
 
   const events = response.data.items as NewCalenderEvent[];
@@ -79,14 +79,14 @@ export const fetchCalenderEventsCompanyCred = async (
 
 export const refreshTokenIfNeeded = async (
   schedule_auth: ScheduleAuthType,
-  interviewer_id: string
+  interviewer_id: string,
 ) => {
   const isDateExpired = schedule_auth.expiry_date - Date.now();
   if (isDateExpired) {
     const newAccessToken = await refreshAccessToken(
       schedule_auth.refresh_token,
       process.env.GOOGLE_SCHEDULE_CLIENT_ID,
-      process.env.GOOGLE_SCHEDULE_CLIENT_SECRET
+      process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
     );
     schedule_auth.access_token = newAccessToken;
     supabaseAdmin
@@ -98,7 +98,7 @@ export const refreshTokenIfNeeded = async (
     expiry_date: schedule_auth.expiry_date,
     email: schedule_auth.email,
     access_token: schedule_auth.access_token,
-    refresh_token: schedule_auth.refresh_token
+    refresh_token: schedule_auth.refresh_token,
   };
 
   return tokenInfo;
@@ -114,7 +114,7 @@ export function decrypt(encryptedData, encryptionKey) {
 }
 
 export const getSelectedInterviewers = (
-  interview_plan: InterviewModuleDbType[]
+  interview_plan: InterviewModuleDbType[],
 ) => {
   let inters = new Set();
   for (let inter_module of interview_plan) {
