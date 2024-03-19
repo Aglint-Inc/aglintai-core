@@ -46,7 +46,10 @@ export function AllInterviewCard({
         >
           {slotCandidateImage}
         </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+          tag="div"
+        >
           {textName}
         </_Builtin.Block>
       </_Builtin.Block>
