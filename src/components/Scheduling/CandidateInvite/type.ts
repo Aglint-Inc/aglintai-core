@@ -1,5 +1,6 @@
 import {
   CandidateType,
+  InterviewMeetingTypeDb,
   InterviewModuleType,
   InterviewScheduleTypeDB
 } from '@/src/types/data.types';
@@ -22,4 +23,5 @@ export type ApiResponse = {
     logo: string;
     name: string;
   };
+  meetings: InterviewMeetingTypeDb[];
 };

@@ -1,10 +1,10 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { ButtonPrimaryLarge, Page404 } from '@/devlink';
+import { ButtonPrimaryLarge, ButtonPrimarySmall, Page404 } from '@/devlink';
 import {
   AvailableOptionCardDate,
   InterviewConfirmed,
@@ -13,6 +13,7 @@ import {
   OptionAvailableCard,
   SessionList
 } from '@/devlink2';
+import { CalendarEvent } from '@/src/utils/schedule-utils/types';
 import toast from '@/src/utils/toast';
 
 import CheckAvailibility from './CheckAvailibility';
@@ -184,7 +185,8 @@ function CandidateInvite() {
             );
           })}
         />
-      ) : schedule?.schedule.status == 'confirmed' ? (
+      ) : schedule?.schedule.status == 'confirmed' ||
+        schedule?.schedule.status == 'completed' ? (
         <InterviewConfirmed
           textTitle={schedule.schedule.schedule_name}
           textMailSent={schedule.candidate.email}
@@ -206,15 +208,50 @@ function CandidateInvite() {
                         key={ind}
                         slotOptionAvailable={events.map((pl, ind) => {
                           return (
-                            <OptionAvailable
-                              textTime={`${dayjs(pl.start_time).format(
-                                'hh:mm A'
-                              )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                              textTitle={pl.module_name}
-                              key={ind}
-                              isTitleVisible={!pl.isBreak}
-                              isBreakVisible={pl.isBreak}
-                            />
+                            <>
+                              <OptionAvailable
+                                textTime={`${dayjs(pl.start_time).format(
+                                  'hh:mm A'
+                                )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
+                                textTitle={pl.module_name}
+                                key={ind}
+                                isTitleVisible={!pl.isBreak}
+                                isBreakVisible={pl.isBreak}
+                                slotMember={
+                                  <Stack spacing={1}>
+                                    <Stack direction={'row'}>
+                                      <ButtonPrimarySmall
+                                        isDisabled={
+                                          dayjs(pl.start_time).isBefore(
+                                            dayjs().subtract(3, 'hour')
+                                          ) ||
+                                          dayjs().isAfter(dayjs(pl.end_time))
+                                        }
+                                        textLabel={'Join Meeting'}
+                                        onClickButton={{
+                                          onClick: () => {
+                                            window.open(
+                                              (
+                                                schedule.meetings.find(
+                                                  (meet) =>
+                                                    meet.module_id ==
+                                                    pl.module_id
+                                                ).meeting_json as CalendarEvent
+                                              ).hangoutLink,
+                                              '_blank'
+                                            );
+                                          }
+                                        }}
+                                      />
+                                    </Stack>
+                                    <Typography variant='caption'>
+                                      Meeting link will get enabled 3 hours
+                                      before meeting
+                                    </Typography>
+                                  </Stack>
+                                }
+                              />
+                            </>
                           );
                         })}
                       />

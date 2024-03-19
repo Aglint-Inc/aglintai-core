@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import { capitalize } from 'lodash';
 import { ReactNode } from 'react';
 
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
@@ -46,7 +47,7 @@ function ListCardInterviewSchedule({
           isSchedulerTable={!isJobDasboard}
           isCheckBoxVisible={isJobDasboard}
           slotCheckbox={slotCheckbox}
-          textName={`${app.candidates.first_name} ${app.candidates.last_name}`}
+          textName={`${capitalize(app.candidates.first_name)} ${capitalize(app.candidates.last_name)}`}
           slotCandidateImage={
             <>
               <MuiAvatar

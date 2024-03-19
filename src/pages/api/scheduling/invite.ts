@@ -66,22 +66,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       );
 
-      const resSchOpt = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/find_availability`,
-        sch[0].filter_json
-      );
+      if (sch[0].status == 'pending') {
+        const resSchOpt = await axios.post(
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/find_availability`,
+          sch[0].filter_json
+        );
 
-      res.status(200).json({
-        job: application.public_jobs,
-        modules: allModules,
-        members: resMem.data,
-        schedule: sch[0],
-        schedulingOptions: resSchOpt.data.map((option) => {
-          return { ...option, transformedPlan: transformData(option.plans) };
-        }),
-        candidate: application.candidates,
-        recruiter: rec[0]
-      });
+        return res.status(200).json({
+          job: application.public_jobs,
+          modules: allModules,
+          members: resMem.data,
+          schedule: sch[0],
+          schedulingOptions: resSchOpt.data.map((option) => {
+            return { ...option, transformedPlan: transformData(option.plans) };
+          }),
+          candidate: application.candidates,
+          recruiter: rec[0],
+          meetings: []
+        });
+      } else {
+        const { data: meetings } = await supabase
+          .from('interview_meeting')
+          .select('*')
+          .eq('interview_schedule_id', sch[0].id);
+        return res.status(200).json({
+          job: application.public_jobs,
+          modules: allModules,
+          members: resMem.data,
+          schedulingOptions: [],
+          schedule: sch[0],
+          candidate: application.candidates,
+          recruiter: rec[0],
+          meetings: meetings
+        });
+      }
     }
   } catch (error) {
     res.status(400).send(error.message);

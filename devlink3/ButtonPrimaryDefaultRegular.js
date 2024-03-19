@@ -34,7 +34,7 @@ export function ButtonPrimaryDefaultRegular({
       </_Builtin.Block>
       {isDisabled ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "button-block", "disabled")}
+          className={_utils.cx(_styles, "button-block", "disabled", "absolute")}
           tag="div"
         >
           <_Builtin.Block
