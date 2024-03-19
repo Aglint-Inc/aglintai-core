@@ -32,6 +32,7 @@ export * from "./ButtonDarkDefaultLarge";
 export * from "./ButtonDarkDefaultRegular";
 export * from "./ButtonDarkOutlinedLarge";
 export * from "./ButtonDarkOutlinedRegular";
+export * from "./ButtonGrey";
 export * from "./ButtonPrimaryBasicLarge";
 export * from "./ButtonPrimaryBasicRegular";
 export * from "./ButtonPrimaryDefaultLarge";

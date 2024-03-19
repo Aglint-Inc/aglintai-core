@@ -6,7 +6,7 @@ export default function handler(req, res) {
     const apiKey = req.body.apiKey;
     const page = req.body.page;
     if (!apiKey) {
-      res.status(400).send('api key is incorrect');
+      res.status(400).send('api key is needed');
     }
     let url = `https://harvest.greenhouse.io/v1/job_posts?per_page=500&page=${page}`;
 
@@ -27,7 +27,7 @@ export default function handler(req, res) {
         res.status(200).send(response.data);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(200).send(error);
       });
   } catch (error) {
     res.status(400).send(error);

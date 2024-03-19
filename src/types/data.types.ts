@@ -234,5 +234,8 @@ export type InterviewMeetingTypeDb =
 export type InterviewMeetingUserTypeDb =
   Database['public']['Tables']['interview_meeting_user']['Insert'];
 
+export type IntegrationType =
+  Database['public']['Tables']['request_integration_tool']['Row'];
+
 export type ScheduleAgentChatHistoryTypeDB =
   Database['public']['Tables']['scheduling-agent-chat-history']['Row'];

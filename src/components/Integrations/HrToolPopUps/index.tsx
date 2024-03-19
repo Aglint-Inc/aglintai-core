@@ -1,0 +1,227 @@
+/* eslint-disable no-unused-vars */
+import { Dialog, Stack, Typography } from '@mui/material';
+import { ReactNode } from 'react';
+
+import { ConfirmationPopup, DeletePopup } from '@/devlink3';
+
+import Loader from '../Loader';
+import { PopUpReasonTypes } from '../types';
+import Icon from '../../Common/Icons/Icon';
+import { ShowCode } from '../../Common/ShowCode';
+
+function HrToolPopUps({
+  isOpen,
+  close,
+  popUpBody,
+  action,
+  reason,
+  isLoading,
+}: {
+  isOpen: boolean;
+  close: () => void;
+  popUpBody: ReactNode;
+  action: () => void;
+  reason: PopUpReasonTypes;
+  isLoading: boolean;
+}) {
+  return (
+    <Dialog
+      sx={{
+        '& .MuiDialog-paper': {
+          background: 'transparent',
+          border: 'none',
+          borderRadius: '10px',
+        },
+      }}
+      open={isOpen}
+      onClose={close}
+      maxWidth={'md'}
+    >
+      <ShowCode>
+        <ShowCode.When isTrue={isLoading}>
+          <Stack
+            width={426}
+            height={191}
+            direction={'column'}
+            justifyContent={'center'}
+            alignItems={'center'}
+            position={'relative'}
+            bgcolor={'white.700'}
+          >
+            <Loader />
+            <Stack position={'relative'}>
+              <Typography fontSize={'16px'} variant='caption'>
+                <ShowCode.When isTrue={reason === 'connect_lever'}>
+                  {`Connecting to Lever`}
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'connect_greenhouse'}>
+                  {`Connecting to Greenhouse`}
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'connect_ashby'}>
+                  {`Connecting to Ashby`}
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_lever'}>
+                  {`Reconnecting to Lever`}
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_greenhouse'}>
+                  {`Reconnecting to Greenhouse`}
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_ashby'}>
+                  {`Reconnecting to Ashby`}
+                </ShowCode.When>
+              </Typography>
+            </Stack>
+          </Stack>
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={
+            reason === 'disconnect_greenhouse' ||
+            reason === 'disconnect_ashby' ||
+            reason === 'disconnect_lever'
+          }
+        >
+          <DeletePopup
+            textTitle={
+              <>
+                <ShowCode.When isTrue={reason === 'disconnect_greenhouse'}>
+                  Disconnect Greenhouse
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'disconnect_lever'}>
+                  Disconnect Lever
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'disconnect_ashby'}>
+                  Disconnect Ashby
+                </ShowCode.When>
+              </>
+            }
+            textDescription={
+              <>
+                By clicking {'"Disconnect"'},{' '}
+                {reason === 'disconnect_greenhouse'
+                  ? 'Greenhouse'
+                  : reason === 'disconnect_ashby'
+                    ? 'Ashby'
+                    : reason === 'disconnect_lever'
+                      ? 'Lever'
+                      : ''}{' '}
+                will be disconnected from Aglint and will no longer be
+                accessible in this application. You can reconnect again on the
+                Integrations page.
+              </>
+            }
+            onClickCancel={{
+              onClick: close,
+            }}
+            onClickDelete={{
+              onClick: action,
+            }}
+            buttonText={'Disconnect'}
+            isIcon={false}
+          />
+        </ShowCode.When>
+        <ShowCode.Else>
+          <ConfirmationPopup
+            isIcon={false}
+            textPopupTitle={
+              <ShowCode>
+                <ShowCode.When isTrue={reason === 'connect_greenhouse'}>
+                  Connect Greenhouse
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'connect_lever'}>
+                  Connect Lever
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'connect_ashby'}>
+                  Connect Ashby
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_greenhouse'}>
+                  Greenhouse
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_lever'}>
+                  Lever
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_ashby'}>
+                  Ashby
+                </ShowCode.When>
+              </ShowCode>
+            }
+            textPopupDescription={
+              <Stack direction={'column'} gap={1}>
+                <>
+                  <ShowCode.When isTrue={reason === 'connect_greenhouse'}>
+                    Greenhouse API key
+                  </ShowCode.When>
+                  <ShowCode.When isTrue={reason === 'connect_lever'}>
+                    Lever API key
+                  </ShowCode.When>
+                  <ShowCode.When isTrue={reason === 'connect_ashby'}>
+                    Ashby API key
+                  </ShowCode.When>
+                </>
+                <ShowCode>
+                  <ShowCode.Else>
+                    <Stack direction={'row'} spacing={1} alignItems={'center'}>
+                      {popUpBody}
+                      <Stack
+                        sx={{
+                          border: '1px solid',
+                          cursor: 'pointer',
+                          height: '36px',
+                          width: '38px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderRadius: 1,
+                          borderColor: 'grey.200',
+                        }}
+                      >
+                        <Icon
+                          width='16px'
+                          height='16px'
+                          variant='CopyTextIcon'
+                        />
+                        {/* <Icon width='16px' height='16px' variant='CheckedCircle' /> */}
+                      </Stack>
+                    </Stack>
+                  </ShowCode.Else>
+                </ShowCode>
+              </Stack>
+            }
+            isGreyButtonVisible={
+              reason !== 'connect_greenhouse' &&
+              reason !== 'connect_ashby' &&
+              reason !== 'connect_lever'
+            }
+            textPopupButton={
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={
+                    reason === 'connect_greenhouse' ||
+                    reason === 'connect_ashby' ||
+                    reason === 'connect_lever'
+                  }
+                >
+                  Connect
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={
+                    reason === 'update_greenhouse' ||
+                    reason === 'update_ashby' ||
+                    reason === 'update_lever'
+                  }
+                >
+                  Update changes
+                </ShowCode.When>
+              </ShowCode>
+            }
+            // isBlueButtonVisible={false}
+
+            onClickCancel={{ onClick: close }}
+            onClickAction={{ onClick: action }}
+          />
+        </ShowCode.Else>
+      </ShowCode>
+    </Dialog>
+  );
+}
+
+export default HrToolPopUps;

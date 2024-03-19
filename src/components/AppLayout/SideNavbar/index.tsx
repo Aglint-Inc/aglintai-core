@@ -8,6 +8,7 @@ import {
   NavAssistant,
   NavCd,
   NavCompanySetting,
+  NavIntegration,
   NavJobs,
   NavPhoneScreening,
   NavScheduler,
@@ -101,6 +102,14 @@ function SideNavbar() {
       text: 'Company Settings',
       SubComponents: null,
       route: pageRoutes.COMPANY,
+      comingsoon: false,
+      isvisible: true
+    },
+    {
+      icon: <NavIntegration isActive={false} />,
+      text: 'Integrations',
+      SubComponents: null,
+      route: '/integrations',
       comingsoon: false,
       isvisible: true
     }

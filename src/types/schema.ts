@@ -2086,6 +2086,30 @@ export type Database = {
           },
         ]
       }
+      request_integration_tool: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          recruiter_id: string | null
+          tool_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          recruiter_id?: string | null
+          tool_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          recruiter_id?: string | null
+          tool_name?: string | null
+        }
+        Relationships: []
+      }
       rp_logs: {
         Row: {
           application_id: string

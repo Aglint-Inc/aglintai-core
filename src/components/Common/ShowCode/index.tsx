@@ -20,5 +20,5 @@ ShowCode.When = ({
   isTrue: boolean;
   children: ReactNode;
 }): any => isTrue && children;
-ShowCode.Else = ({ render, children }: { render: any; children: ReactNode }) =>
+ShowCode.Else = ({ render, children }: { render?: any; children: ReactNode }) =>
   render || children;
