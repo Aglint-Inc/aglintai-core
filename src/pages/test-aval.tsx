@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 
 import AUIButton from '../components/Common/AUIButton';
 import SpecializedDatePicker from '../components/Common/SpecializedDatePicker';
+import UITextField from '../components/Common/UITextField';
 import { InterviewPlanScheduleDbType } from '../components/JobInterviewPlan/types';
 import ToggleBtn from '../components/Scheduling/Settings/Components/ToggleBtn';
 import {
@@ -26,10 +27,56 @@ const Page = () => {
 };
 
 const Comp = () => {
+  const [dateRange, setDateRange] = useState<{
+    start_date: Dayjs;
+    end_date: Dayjs;
+  }>({
+    start_date: dayjs().add(1, 'day'),
+    end_date: dayjs().add(2, 'day'),
+  });
+
+  const [jobId, setJobId] = useState('10bad981-e3b6-4ee8-9e12-9a0d72febc83');
   return (
     <Stack direction={'column'} display={'flex'} height={'600px'} px={'20px'}>
-      <Combination />
-      {/* <FreeTime /> */}
+      <Stack my={5} direction={'row'} gap={2}>
+        <SpecializedDatePicker
+          label='Start'
+          onChange={(e) => {
+            setDateRange((prev) => {
+              prev.start_date = e;
+              return { ...prev };
+            });
+          }}
+          value={dateRange.start_date}
+        />
+        <SpecializedDatePicker
+          label='End'
+          onChange={(e) => {
+            setDateRange((prev) => {
+              prev.end_date = e;
+              return { ...prev };
+            });
+          }}
+          value={dateRange.end_date}
+        />
+        <UITextField
+          label='job Id'
+          value={jobId}
+          onChange={(e) => {
+            setJobId(e.target.value);
+          }}
+        />
+      </Stack>
+      {/* <Combination
+        start_date={dateRange.start_date}
+        end_date={dateRange.end_date}
+        jobId={jobId.trim()}
+      /> */}
+      <FreeTime
+        start_date={dateRange.start_date}
+        end_date={dateRange.end_date}
+        jobId={jobId.trim()}
+      />
     </Stack>
   );
 };
@@ -40,7 +87,15 @@ const Comp = () => {
 
 export default Page;
 
-const Combination = () => {
+const Combination = ({
+  end_date,
+  jobId,
+  start_date,
+}: {
+  jobId: string;
+  start_date: Dayjs;
+  end_date: Dayjs;
+}) => {
   const [isFinding, setIsFinding] = useState(false);
   const [data, setData] = useState<InterviewPlanScheduleDbType[]>([]);
 
@@ -50,10 +105,10 @@ const Combination = () => {
       const { data: r } = await axios.post(
         '/api/scheduling/v2/find_availability',
         {
-          job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
+          job_id: jobId,
           company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
-          start_date: '2024-03-18T14:59:55.247Z',
-          end_date: '2024-03-25T14:59:55.247Z',
+          start_date: start_date.format('DD/MM/YYYY'),
+          end_date: end_date.format('DD/MM/YYYY'),
         },
       );
       setData(r);
@@ -279,20 +334,22 @@ const Combination = () => {
   );
 };
 
-const FreeTime = () => {
+const FreeTime = ({
+  end_date,
+  jobId,
+  start_date,
+}: {
+  jobId: string;
+  start_date: Dayjs;
+  end_date: Dayjs;
+}) => {
   const [isFinding, setIsFinding] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(false);
   const [data2, set2Data] = useState<{
     d1: InterDetailsType[];
     d2: TimeDurationType[];
   } | null>(null);
-  const [dateRange, setDateRange] = useState<{
-    start_date: Dayjs;
-    end_date: Dayjs;
-  }>({
-    start_date: dayjs(),
-    end_date: dayjs(),
-  });
+
   const handleSubmit2 = async () => {
     try {
       setIsFinding(true);
@@ -303,10 +360,10 @@ const FreeTime = () => {
           // company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
           // start_date: dateRange.start_date,
           // end_date: dateRange.end_date
-          job_id: 'e636ef37-edfc-4a1b-8513-325a417c1fbe',
+          job_id: jobId,
           company_id: 'd353b3a0-3e19-45d0-8623-4bd35577f548',
-          start_date: '2024-03-18T14:59:55.247Z',
-          end_date: '2024-03-25T14:59:55.247Z',
+          start_date: start_date.format('DD/MM/YYYY'),
+          end_date: end_date.format('DD/MM/YYYY'),
         },
       );
       set2Data(r);
@@ -320,28 +377,6 @@ const FreeTime = () => {
 
   return (
     <>
-      <Stack my={5} direction={'row'} gap={2}>
-        <SpecializedDatePicker
-          label='Start'
-          onChange={(e) => {
-            setDateRange((prev) => {
-              prev.start_date = e;
-              return { ...prev };
-            });
-          }}
-          value={dateRange.start_date}
-        />
-        <SpecializedDatePicker
-          label='End'
-          onChange={(e) => {
-            setDateRange((prev) => {
-              prev.end_date = e;
-              return { ...prev };
-            });
-          }}
-          value={dateRange.end_date}
-        />
-      </Stack>
       <AUIButton onClick={handleSubmit2}>
         {`${isFinding ? 'finding  ' : 'Find '}`}
         Free times
