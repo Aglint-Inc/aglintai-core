@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { StatusBadge } from "./StatusBadge";
 import { ScheduleInfoPlan } from "./ScheduleInfoPlan";
 import * as _utils from "./utils";
 import _styles from "./ScheduleInfoPending.module.css";
@@ -18,6 +19,8 @@ export function ScheduleInfoPending({
   isConfirmedVisible = false,
   isPendingVisible = true,
   slotProvidedOption,
+  textCurrentRole = "Senior Software Engineer",
+  textEmail = "tomode3243@gmaIl.com",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scheduled-info-wrap")} tag="div">
@@ -35,14 +38,7 @@ export function ScheduleInfoPending({
           >
             {"Schedule Info"}
           </_Builtin.Block>
-          {isPendingVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1119", "pending")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Pending"}</_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
+          <StatusBadge isWaitingVisible={true} isConfirmedVisible={false} />
           {isConfirmedVisible ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
@@ -103,71 +99,6 @@ export function ScheduleInfoPending({
             ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-info-wrapps")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Candidate Info"}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1127")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1128")}
-              tag="div"
-            >
-              {slotProfileImage}
-            </_Builtin.Block>
-            <_Builtin.Block tag="div">{textName}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1131")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1130")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%2224%22%20height%3D%2225%22%20viewBox%3D%220%200%2024%2025%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.39844%205.47656V7.27656H15.5984V5.47656C15.5734%205.10156%2015.3734%204.90156%2014.9984%204.87656H8.99844C8.62344%204.90156%208.42344%205.10156%208.39844%205.47656ZM7.19844%207.27656V5.47656C7.22344%204.97656%207.39844%204.55156%207.72344%204.20156C8.07344%203.87656%208.49844%203.70156%208.99844%203.67656H14.9984C15.4984%203.70156%2015.9234%203.87656%2016.2734%204.20156C16.5984%204.55156%2016.7734%204.97656%2016.7984%205.47656V7.27656H19.1984C19.8734%207.30156%2020.4359%207.53906%2020.8859%207.98906C21.3359%208.43906%2021.5734%209.00156%2021.5984%209.67656V19.2766C21.5734%2019.9516%2021.3359%2020.5141%2020.8859%2020.9641C20.4359%2021.4141%2019.8734%2021.6516%2019.1984%2021.6766H4.79844C4.12344%2021.6516%203.56094%2021.4141%203.11094%2020.9641C2.66094%2020.5141%202.42344%2019.9516%202.39844%2019.2766V9.67656C2.42344%209.00156%202.66094%208.43906%203.11094%207.98906C3.56094%207.53906%204.12344%207.30156%204.79844%207.27656H7.19844ZM16.1984%208.47656H7.79844H4.79844C4.44844%208.47656%204.16094%208.58906%203.93594%208.81406C3.71094%209.03906%203.59844%209.32656%203.59844%209.67656V13.2766H8.99844H10.1984H13.7984H14.9984H20.3984V9.67656C20.3984%209.32656%2020.2859%209.03906%2020.0609%208.81406C19.8359%208.58906%2019.5484%208.47656%2019.1984%208.47656H16.1984ZM20.3984%2014.4766H14.9984V16.2766C14.9984%2016.6266%2014.8859%2016.9141%2014.6609%2017.1391C14.4359%2017.3641%2014.1484%2017.4766%2013.7984%2017.4766H10.1984C9.84844%2017.4766%209.56094%2017.3641%209.33594%2017.1391C9.11094%2016.9141%208.99844%2016.6266%208.99844%2016.2766V14.4766H3.59844V19.2766C3.59844%2019.6266%203.71094%2019.9141%203.93594%2020.1391C4.16094%2020.3641%204.44844%2020.4766%204.79844%2020.4766H19.1984C19.5484%2020.4766%2019.8359%2020.3641%2020.0609%2020.1391C20.2859%2019.9141%2020.3984%2019.6266%2020.3984%2019.2766V14.4766ZM10.1984%2014.4766V16.2766H13.7984V14.4766H10.1984Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1129")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-grey-600")}
-                tag="div"
-              >
-                {textLocation}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1132", "cursor-pointer")}
-            tag="div"
-            {...onClickViewProfile}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.125%201.53906C7.15625%201.19531%207.34375%201.00781%207.6875%200.976562H11.4375C11.7812%201.00781%2011.9688%201.19531%2012%201.53906V5.28906C11.9688%205.63281%2011.7812%205.82031%2011.4375%205.85156C11.0938%205.82031%2010.9062%205.63281%2010.875%205.28906V2.89844L5.64844%208.125C5.38281%208.34375%205.11719%208.34375%204.85156%208.125C4.63281%207.85938%204.63281%207.59375%204.85156%207.32812L10.0781%202.10156H7.6875C7.34375%202.07031%207.15625%201.88281%207.125%201.53906ZM1.6875%201.72656H4.6875C5.03125%201.75781%205.21875%201.94531%205.25%202.28906C5.21875%202.63281%205.03125%202.82031%204.6875%202.85156H1.6875C1.34375%202.88281%201.15625%203.07031%201.125%203.41406V11.2891C1.15625%2011.6328%201.34375%2011.8203%201.6875%2011.8516H9.5625C9.90625%2011.8203%2010.0938%2011.6328%2010.125%2011.2891V8.28906C10.1562%207.94531%2010.3438%207.75781%2010.6875%207.72656C11.0312%207.75781%2011.2188%207.94531%2011.25%208.28906V11.2891C11.2344%2011.7734%2011.0703%2012.1719%2010.7578%2012.4844C10.4453%2012.7969%2010.0469%2012.9609%209.5625%2012.9766H1.6875C1.20312%2012.9609%200.804688%2012.7969%200.492188%2012.4844C0.179688%2012.1719%200.015625%2011.7734%200%2011.2891V3.41406C0.015625%202.92969%200.179688%202.53125%200.492188%202.21875C0.804688%201.90625%201.20312%201.74219%201.6875%201.72656Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500")}
-              tag="div"
-            >
-              {"View Candidate Profile"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.Block>
         {isConfirmedVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-info-wrapps", "hide")}
@@ -192,6 +123,88 @@ export function ScheduleInfoPending({
         className={_utils.cx(_styles, "schedule-info-right-wrap")}
         tag="div"
       >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1232")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Candidate"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1233")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1235")}
+              tag="div"
+            >
+              {slotProfileImage}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1234")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                tag="div"
+              >
+                {textCurrentRole}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                tag="div"
+              >
+                {textEmail}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "text-sm",
+                  "text-blue-500",
+                  "text-underline",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickViewProfile}
+              >
+                {"View Profile"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1093")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Job Details"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1095")}
+            tag="div"
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M16.3984%2012.5V14.3H23.5984V12.5C23.5734%2012.125%2023.3734%2011.925%2022.9984%2011.9H16.9984C16.6234%2011.925%2016.4234%2012.125%2016.3984%2012.5ZM15.1984%2014.3V12.5C15.2234%2012%2015.3984%2011.575%2015.7234%2011.225C16.0734%2010.9%2016.4984%2010.725%2016.9984%2010.7H22.9984C23.4984%2010.725%2023.9234%2010.9%2024.2734%2011.225C24.5984%2011.575%2024.7734%2012%2024.7984%2012.5V14.3H27.1984C27.8734%2014.325%2028.4359%2014.5625%2028.8859%2015.0125C29.3359%2015.4625%2029.5734%2016.025%2029.5984%2016.7V26.3C29.5734%2026.975%2029.3359%2027.5375%2028.8859%2027.9875C28.4359%2028.4375%2027.8734%2028.675%2027.1984%2028.7H12.7984C12.1234%2028.675%2011.5609%2028.4375%2011.1109%2027.9875C10.6609%2027.5375%2010.4234%2026.975%2010.3984%2026.3V16.7C10.4234%2016.025%2010.6609%2015.4625%2011.1109%2015.0125C11.5609%2014.5625%2012.1234%2014.325%2012.7984%2014.3H15.1984ZM24.1984%2015.5H15.7984H12.7984C12.4484%2015.5%2012.1609%2015.6125%2011.9359%2015.8375C11.7109%2016.0625%2011.5984%2016.35%2011.5984%2016.7V20.3H16.9984H18.1984H21.7984H22.9984H28.3984V16.7C28.3984%2016.35%2028.2859%2016.0625%2028.0609%2015.8375C27.8359%2015.6125%2027.5484%2015.5%2027.1984%2015.5H24.1984ZM28.3984%2021.5H22.9984V23.3C22.9984%2023.65%2022.8859%2023.9375%2022.6609%2024.1625C22.4359%2024.3875%2022.1484%2024.5%2021.7984%2024.5H18.1984C17.8484%2024.5%2017.5609%2024.3875%2017.3359%2024.1625C17.1109%2023.9375%2016.9984%2023.65%2016.9984%2023.3V21.5H11.5984V26.3C11.5984%2026.65%2011.7109%2026.9375%2011.9359%2027.1625C12.1609%2027.3875%2012.4484%2027.5%2012.7984%2027.5H27.1984C27.5484%2027.5%2027.8359%2027.3875%2028.0609%2027.1625C28.2859%2026.9375%2028.3984%2026.65%2028.3984%2026.3V21.5ZM18.1984%2021.5V23.3H21.7984V21.5H18.1984Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">
+              <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-gray-600")}
+                tag="div"
+              >
+                {textLocation}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1196")}
           tag="div"

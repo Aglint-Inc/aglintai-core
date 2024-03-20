@@ -11,20 +11,20 @@ import SchedulingOptionComp from '../Common/ScheduleOption';
 import {
   setIsViewProfileOpen,
   setSchedulingOptions,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../store';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 import { transformData } from '../../utils';
 
 function PendingConfirmed() {
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const isViewProfileOpen = useSchedulingApplicationStore(
-    (state) => state.isViewProfileOpen
+    (state) => state.isViewProfileOpen,
   );
   const schedulingOptions = useSchedulingApplicationStore(
-    (state) => state.schedulingOptions
+    (state) => state.schedulingOptions,
   );
 
   useEffect(() => {
@@ -34,13 +34,13 @@ function PendingConfirmed() {
   const findScheduleOptions = async () => {
     const res = await axios.post(
       '/api/scheduling/v2/find_availability',
-      selectedApplication.schedule.filter_json
+      selectedApplication.schedule.filter_json,
     );
     if (res.data) {
       setSchedulingOptions(
         res.data.map((option) => {
           return { ...option, transformedPlan: transformData(option.plans) };
-        })
+        }),
       );
     } else {
       toast.error('Error fetching schedule options');
@@ -66,21 +66,21 @@ function PendingConfirmed() {
             selectedApplication.schedule.status === 'confirmed'
           }
           onClickCancelSchedule={{
-            onClick: () => setIsCancelOpen(true)
+            onClick: () => setIsCancelOpen(true),
           }}
           onClickRequest={{
-            onClick: () => setIsRescheduleOpen(true)
+            onClick: () => setIsRescheduleOpen(true),
           }}
           onClickViewProfile={{
             onClick: () => {
               if (selectedApplication.file.resume_json)
                 setIsViewProfileOpen(true);
-            }
+            },
           }}
           isPendingVisible={selectedApplication.schedule.status === 'pending'}
           textName={getFullName(
             selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name
+            selectedApplication.candidates.last_name,
           )}
           textRole={selectedApplication.public_jobs.job_title}
           textLocation={selectedApplication.public_jobs.location || '--'}
@@ -88,7 +88,7 @@ function PendingConfirmed() {
             <MuiAvatar
               level={getFullName(
                 selectedApplication?.candidates.first_name,
-                selectedApplication?.candidates.last_name
+                selectedApplication?.candidates.last_name,
               )}
               src={selectedApplication?.candidates.avatar}
               variant={'circular'}

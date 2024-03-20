@@ -11,7 +11,7 @@ import { fetchAvailApiDetails } from '@/src/utils/scheduling_v2/db_calls';
 import { findEachInterviewerFreeTimes } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
 import { findPlanCombinations } from '@/src/utils/scheduling_v2/findPlanCombinations';
 
-type BodyParams = {
+export type BodyParams = {
   job_id: string;
   company_id: string;
   start_date: string;

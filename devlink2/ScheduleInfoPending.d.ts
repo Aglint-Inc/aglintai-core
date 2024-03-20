@@ -15,4 +15,6 @@ declare function ScheduleInfoPending(props: {
   isConfirmedVisible?: Types.Visibility.VisibilityConditions;
   isPendingVisible?: Types.Visibility.VisibilityConditions;
   slotProvidedOption?: Types.Devlink.Slot;
+  textCurrentRole?: React.ReactNode;
+  textEmail?: React.ReactNode;
 }): React.JSX.Element;

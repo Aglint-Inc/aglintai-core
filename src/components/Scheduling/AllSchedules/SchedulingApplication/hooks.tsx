@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { BodyParams } from '@/src/pages/api/scheduling/v2/find_availability';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -44,9 +45,10 @@ export const useGetScheduleOptions = () => {
       const res = await axios.post('/api/scheduling/v2/find_availability', {
         job_id: selectedApplication.public_jobs.id,
         company_id: rec_id,
-        start_date: dateRange.start_date,
-        end_date: dateRange.end_date,
-      });
+        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        user_tz: dayjs.tz.guess(),
+      } as BodyParams);
       if (res.data) {
         if (res.data.length === 0) {
           setNoOptions(true);
@@ -91,12 +93,12 @@ export const useSendInviteForCandidate = () => {
     try {
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
-        .select('id')
+        .select('id,status')
         .eq('application_id', selectedApplication.applications.id);
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
-      if (checkSch.length === 0) {
+      if (checkSch.length === 0 || checkSch[0].status === 'reschedule') {
         const { data, error } = await supabase
           .from('interview_schedule')
           .insert({
@@ -108,9 +110,10 @@ export const useSendInviteForCandidate = () => {
             filter_json: {
               job_id: selectedApplication.public_jobs.id,
               company_id: recruiter.id,
-              start_date: dateRange.start_date,
-              end_date: dateRange.end_date,
-            },
+              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            } as BodyParams,
             coordinator_id: selCoordinator,
           })
           .select();
