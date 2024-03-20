@@ -236,6 +236,7 @@ const EditMember = ({
                       data: {
                         first_name: form.first_name,
                         last_name: form.last_name,
+                        interview_location: form.interview_location,
                         department: form.department,
                         position: form.designation,
                         role: form.role.toLowerCase() as typeof form.role,
