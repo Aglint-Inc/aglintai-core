@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -155,6 +156,7 @@ const Dashboard = () => {
         slotBody={
           <JobDashboardDev
             isBanner={!publishable}
+            onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
             textTopMatchPercentage={score_matches.topMatch.percentage}
             textTopMatchCount={score_matches.topMatch.count}
@@ -240,7 +242,29 @@ const BreadCrumbs = () => {
         }}
       />
       <Breadcrum textName={capitalize(job?.job_title ?? 'Job')} showArrow />
+      <Preview />
     </>
+  );
+};
+
+const Preview = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  if (job?.status === 'closed') return <></>;
+  return (
+    <Stack
+      mx={1}
+      gap={'2px'}
+      direction={'row'}
+      style={{ color: palette.blue['400'], cursor: 'pointer' }}
+      onClick={() => push(`/job-post/${job?.id}`)}
+    >
+      <Stack>Preview</Stack>
+      <OpenInNewIcon
+        fontSize='small'
+        style={{ aspectRatio: 1, width: '10px', transform: 'translateY(1px)' }}
+      />
+    </Stack>
   );
 };
 

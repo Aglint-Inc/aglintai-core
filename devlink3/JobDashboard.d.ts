@@ -26,4 +26,5 @@ declare function JobDashboard(props: {
   slotBanner?: Types.Devlink.Slot;
   onClickViewSchedule?: Types.Devlink.RuntimeProps;
   isViewScheduleVisible?: Types.Visibility.VisibilityConditions;
+  onClickImport?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
