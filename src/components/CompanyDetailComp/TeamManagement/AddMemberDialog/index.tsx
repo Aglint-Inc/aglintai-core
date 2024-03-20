@@ -5,7 +5,7 @@ import {
   InviteTeamCard,
   TeamInvite,
   TeamInvitesBlock,
-  TeamPendingInvites
+  TeamPendingInvites,
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
@@ -18,12 +18,21 @@ import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { inviteUserApi, reinviteUser } from '../utils';
-
+export type interviewLocationType = {
+  city: string;
+  line1: string;
+  line2: string;
+  region: string;
+  country: string;
+  zipcode: string;
+  full_address: string;
+  is_headquarter: boolean;
+};
 const AddMember = ({
   open,
   menu,
   pendingList,
-  onClose
+  onClose,
 }: {
   open: boolean;
   menu: 'addMember' | 'pendingMember';
@@ -37,6 +46,7 @@ const AddMember = ({
     last_name: string;
     email: string;
     designation: string;
+    interview_location: string;
     department: string;
     role: RecruiterUserType['role'];
     scheduling_settings: schedulingSettingType;
@@ -44,10 +54,11 @@ const AddMember = ({
     first_name: null,
     last_name: null,
     email: null,
+    interview_location: null,
     designation: null,
     department: null,
     role: null,
-    scheduling_settings: null
+    scheduling_settings: null,
   });
 
   const [inviteData, setInviteData] = useState<
@@ -56,6 +67,7 @@ const AddMember = ({
       last_name: string;
       email: string;
       department: string;
+      interview_location: string;
       designation: string;
       role: RecruiterUserType['role'];
     }[]
@@ -65,14 +77,16 @@ const AddMember = ({
     first_name: boolean;
     email: boolean;
     department: boolean;
+    interview_location: boolean;
     designation: boolean;
     role: boolean;
   }>({
     first_name: false,
     email: false,
     department: false,
+    interview_location: false,
     designation: false,
-    role: false
+    role: false,
   });
 
   const [isDisable, setIsDisable] = useState(false);
@@ -121,13 +135,13 @@ const AddMember = ({
       {
         ...form,
         scheduling_settings:
-          recruiter.scheduling_settings as schedulingSettingType
+          recruiter.scheduling_settings as schedulingSettingType,
       },
       userDetails.user.id,
       {
         name: recruiterUser.first_name,
-        email: recruiterUser.email
-      }
+        email: recruiterUser.email,
+      },
     );
     // eslint-disable-next-line no-console
     console.log(res);
@@ -142,9 +156,10 @@ const AddMember = ({
             last_name: form.last_name,
             email: form.email,
             department: form.department,
+            interview_location: form.interview_location,
             designation: form.designation,
-            role: form.role.toLowerCase() as typeof form.role
-          }
+            role: form.role.toLowerCase() as typeof form.role,
+          },
         ]);
         setInviteCardVisible(true);
         toast.success('Invite sent');
@@ -154,9 +169,10 @@ const AddMember = ({
           last_name: null,
           email: null,
           department: null,
+          interview_location: null,
           designation: null,
           role: null,
-          scheduling_settings: null
+          scheduling_settings: null,
         });
       } else {
         toast.error('User already exists');
@@ -229,15 +245,44 @@ const AddMember = ({
                   />
                   <Autocomplete
                     fullWidth
+                    value={form.interview_location || ''}
+                    onChange={(event: any, newValue: string | null) => {
+                      setForm({
+                        ...form,
+                        interview_location: newValue,
+                      });
+                    }}
+                    options={recruiter?.office_locations.map(
+                      (item: interviewLocationType) => {
+                        return item?.full_address;
+                      },
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        error={formError.interview_location}
+                        onFocus={() => {
+                          setFormError({
+                            ...formError,
+                            interview_location: false,
+                          });
+                        }}
+                        name='Interviewer Location'
+                        placeholder='Interviewer Location'
+                      />
+                    )}
+                  />
+                  <Autocomplete
+                    fullWidth
                     value={form.department}
                     onChange={(event: any, newValue: string | null) => {
                       setForm({
                         ...form,
-                        department: newValue
+                        department: newValue,
                       });
                     }}
                     options={recruiter?.departments?.map((departments) =>
-                      capitalize(departments)
+                      capitalize(departments),
                     )}
                     renderInput={(params) => (
                       <TextField
@@ -260,7 +305,7 @@ const AddMember = ({
                         role: newValue as
                           | 'recruiter'
                           | 'interviewer'
-                          | 'scheduler'
+                          | 'scheduler',
                       });
                     }}
                     id='controllable-states-demo'
@@ -268,7 +313,7 @@ const AddMember = ({
                       [
                         'recruiter',
                         'interviewer',
-                        'scheduler'
+                        'scheduler',
                       ] as Database['public']['Enums']['agent_type'][]
                     ).map((role) => capitalize(role))}
                     renderInput={(params) => (
@@ -312,9 +357,9 @@ const AddMember = ({
                       last_name: null,
                       email: null,
                       department: null,
-                      designation: null
+                      designation: null,
                     });
-                }
+                },
               }}
             />
             {isDisable && <Loader />}
@@ -333,7 +378,7 @@ const AddMember = ({
                     alt={member.first_name}
                     sx={{
                       width: '100%',
-                      height: '100%'
+                      height: '100%',
                     }}
                   />
                 }
@@ -349,7 +394,7 @@ const AddMember = ({
                             return toast.success('Invite sent');
                           }
                           return toast.error(error);
-                        }
+                        },
                       );
                     }}
                   >
@@ -359,7 +404,7 @@ const AddMember = ({
               />
             ))}
             onClickClose={{
-              onClick: () => onClose()
+              onClick: () => onClose(),
             }}
           />
         ) : (

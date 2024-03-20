@@ -10,10 +10,12 @@ import { RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import toast from '@/src/utils/toast';
 
+import { interviewLocationType } from '../AddMemberDialog';
+
 const EditMember = ({
   open,
   member,
-  onClose
+  onClose,
 }: {
   open: boolean;
   member: RecruiterUserType;
@@ -23,15 +25,17 @@ const EditMember = ({
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
+    interview_location: string;
     designation: string;
     department: string;
     role: RecruiterUserType['role'];
   }>({
     first_name: member.first_name,
     last_name: member.last_name,
+    interview_location: member.interview_location,
     department: member.department,
     designation: member.position,
-    role: member.role
+    role: member.role,
   });
 
   const [inviteData, setInviteData] = useState<
@@ -45,9 +49,16 @@ const EditMember = ({
   const [formError, setFormError] = useState<{
     first_name: boolean;
     department: boolean;
+    interview_location: boolean;
     designation: boolean;
     role: boolean;
-  }>({ first_name: false, department: false, designation: false, role: false });
+  }>({
+    first_name: false,
+    department: false,
+    interview_location: false,
+    designation: false,
+    role: false,
+  });
 
   const [isDisable, setIsDisable] = useState(false);
 
@@ -123,15 +134,44 @@ const EditMember = ({
               />
               <Autocomplete
                 fullWidth
+                value={form.interview_location || ''}
+                onChange={(event: any, newValue: string | null) => {
+                  setForm({
+                    ...form,
+                    interview_location: newValue,
+                  });
+                }}
+                options={recruiter?.office_locations.map(
+                  (item: interviewLocationType) => {
+                    return item?.full_address;
+                  },
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={formError.interview_location}
+                    onFocus={() => {
+                      setFormError({
+                        ...formError,
+                        interview_location: false,
+                      });
+                    }}
+                    name='Interviewer Location'
+                    placeholder='Interviewer Location'
+                  />
+                )}
+              />
+              <Autocomplete
+                fullWidth
                 value={capitalize(form.department)}
                 onChange={(event: any, newValue: string | null) => {
                   setForm({
                     ...form,
-                    department: newValue
+                    department: newValue,
                   });
                 }}
                 options={recruiter?.departments?.map((departments) =>
-                  capitalize(departments)
+                  capitalize(departments),
                 )}
                 renderInput={(params) => (
                   <TextField
@@ -155,7 +195,7 @@ const EditMember = ({
                       role: newValue as
                         | 'recruiter'
                         | 'interviewer'
-                        | 'scheduler'
+                        | 'scheduler',
                     });
                   }}
                   id='controllable-states-demo'
@@ -163,7 +203,7 @@ const EditMember = ({
                     [
                       'recruiter',
                       'interviewer',
-                      'scheduler'
+                      'scheduler',
                     ] as Database['public']['Enums']['agent_type'][]
                   ).map((role) => capitalize(role))}
                   renderInput={(params) => (
@@ -198,8 +238,8 @@ const EditMember = ({
                         last_name: form.last_name,
                         department: form.department,
                         position: form.designation,
-                        role: form.role.toLowerCase() as typeof form.role
-                      }
+                        role: form.role.toLowerCase() as typeof form.role,
+                      },
                     })
                       .then(() => {
                         onClose();
@@ -224,10 +264,11 @@ const EditMember = ({
                   first_name: null,
                   last_name: null,
                   department: null,
+                  interview_location: null,
                   designation: null,
-                  role: 'recruiter'
+                  role: 'recruiter',
                 });
-            }
+            },
           }}
         />
       </Stack>

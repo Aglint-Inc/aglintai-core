@@ -7,7 +7,7 @@ import { schedulingSettingType } from '../../Scheduling/Settings/types';
 
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,
-  id: string
+  id: string,
 ) => {
   const { data, error } = await supabase
     .from('recruiter_user')
@@ -34,12 +34,12 @@ export const inviteUserApi = (
   recruiter_user: {
     name: string;
     email: string;
-  }
+  },
 ) => {
   const res = axios.post<InviteUserAPIType['out']>('/api/invite_user', {
     users: [form],
     id: id,
-    recruiter_user: recruiter_user
+    recruiter_user: recruiter_user,
   });
 
   return res;
@@ -49,14 +49,14 @@ export const reinviteUser = (email: string, id: string) => {
   return axios
     .post('/api/invite_user/resend', {
       email,
-      id
+      id,
     })
     .then(
       ({ data }) =>
         data as {
           error: string;
           emailSend: boolean;
-        }
+        },
     );
 };
 
@@ -67,6 +67,7 @@ export type InviteUserAPIType = {
       last_name: string;
       email: string;
       designation: string;
+      interview_location: string;
       department: string;
       role: string;
       scheduling_settings: schedulingSettingType;

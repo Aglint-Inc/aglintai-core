@@ -21,7 +21,7 @@ function SubNav() {
     { text: 'interview Modules', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'email Template', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] }
+    { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] },
   ];
   return (
     <>
@@ -38,15 +38,15 @@ function SubNav() {
                   router.push(
                     `${pageRoutes.SCHEDULING}?tab=${item.replace(
                       ' ',
-                      ''
-                    )}&subtab=${settingsItems[0].value}`
+                      '',
+                    )}&subtab=${settingsItems[0].value}`,
                   );
                 } else {
                   router.push(
-                    `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`
+                    `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`,
                   );
                 }
-              }
+              },
             }}
             isSubMenuVisible={item === 'settings' && router.query.tab === item}
             slotSubLinkSubMenu={<SettingsSubNabItem tab={item} />}
@@ -73,10 +73,10 @@ function SettingsSubNabItem({ tab }: { tab: string }) {
                 router.push(
                   `${pageRoutes.SCHEDULING}?tab=${tab.replace(
                     ' ',
-                    ''
-                  )}&subtab=${item.value}`
+                    '',
+                  )}&subtab=${item.value}`,
                 );
-              }
+              },
             }}
           />
         );

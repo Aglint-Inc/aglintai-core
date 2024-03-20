@@ -742,7 +742,8 @@ export type Database = {
           created_at: string
           error_log: Json
           id: string
-          retell_call_id: string
+          recording_url: string | null
+          retell_call_id: string | null
         }
         Insert: {
           applicant_id?: string
@@ -752,7 +753,8 @@ export type Database = {
           created_at?: string
           error_log: Json
           id?: string
-          retell_call_id: string
+          recording_url?: string | null
+          retell_call_id?: string | null
         }
         Update: {
           applicant_id?: string
@@ -762,7 +764,8 @@ export type Database = {
           created_at?: string
           error_log?: Json
           id?: string
-          retell_call_id?: string
+          recording_url?: string | null
+          retell_call_id?: string | null
         }
         Relationships: [
           {
@@ -2073,6 +2076,7 @@ export type Database = {
           email_auth: Json | null
           email_outreach_templates: Json[] | null
           first_name: string | null
+          interview_location: string | null
           join_status: string
           joined_at: string | null
           last_name: string | null
@@ -2092,6 +2096,7 @@ export type Database = {
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           first_name?: string | null
+          interview_location?: string | null
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
@@ -2111,6 +2116,7 @@ export type Database = {
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
           first_name?: string | null
+          interview_location?: string | null
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
@@ -2946,6 +2952,15 @@ export type Database = {
           training_module_names: string[]
           upcoming_meeting_count: number
           completed_meeting_count: number
+        }[]
+      }
+      get_meetings_by_interviewer: {
+        Args: {
+          int_id: string
+        }
+        Returns: {
+          meeting_id: string
+          interviewer_id: string
         }[]
       }
       get_present_scheduled_jobs: {
