@@ -199,6 +199,10 @@
   grid-row-gap: 10px;
 }
 
+.div-block-1220.cursor-none {
+  cursor: default;
+}
+
 .is_active_bg {
   position: absolute;
   left: 0%;

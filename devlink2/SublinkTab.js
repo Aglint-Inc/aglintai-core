@@ -30,7 +30,7 @@ export function SublinkTab({
       </_Builtin.Block>
       {isSubMenuVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1220")}
+          className={_utils.cx(_styles, "div-block-1220", "cursor-none")}
           tag="div"
         >
           {slotSubLinkSubMenu}
