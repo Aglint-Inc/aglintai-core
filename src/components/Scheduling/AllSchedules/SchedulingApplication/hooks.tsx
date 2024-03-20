@@ -1,6 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -23,6 +24,7 @@ import { ApplicationList } from '../store';
 import { mailHandler } from '../utils';
 
 export const useGetScheduleOptions = () => {
+  const [noOptions, setNoOptions] = useState(false);
   const findScheduleOptions = async ({
     selectedApplication,
     rec_id,
@@ -36,6 +38,7 @@ export const useGetScheduleOptions = () => {
     };
   }) => {
     try {
+      setNoOptions(true);
       setFetchingPlan(true);
       const res = await axios.post('/api/scheduling/v2/find_availability', {
         job_id: selectedApplication.public_jobs.id,
@@ -45,7 +48,7 @@ export const useGetScheduleOptions = () => {
       });
       if (res.data) {
         if (res.data.length === 0) {
-          toast.warning('No schedule options found for the given date range');
+          setNoOptions(true);
           setStep(1);
         } else {
           setSchedulingOptions(res.data);
@@ -63,7 +66,7 @@ export const useGetScheduleOptions = () => {
     }
   };
 
-  return { findScheduleOptions };
+  return { findScheduleOptions, noOptions };
 };
 
 export const useSendInviteForCandidate = () => {

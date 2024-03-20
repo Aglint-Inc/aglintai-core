@@ -70,6 +70,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -170,10 +174,6 @@
   z-index: 2;
 }
 
-.text-first-cap {
-  text-transform: capitalize;
-}
-
 .fw-semibold.sticky_2 {
   position: sticky;
   top: 0px;
@@ -191,6 +191,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .div-block-1114 {
@@ -249,6 +253,25 @@
 
 .text-sm.jenfjker {
   width: 136px;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
 }
 
 .text-20 {

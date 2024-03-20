@@ -7,4 +7,5 @@ declare function AvailableOptionCardDate(props: {
   textDate?: React.ReactNode;
   textDay?: React.ReactNode;
   slotOptionAvailable?: Types.Devlink.Slot;
+  isDateWrapVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

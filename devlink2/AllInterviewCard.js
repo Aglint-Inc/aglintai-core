@@ -8,9 +8,6 @@ export function AllInterviewCard({
   as: _Component = _Builtin.Block,
   textName = "Westly Snedger",
   slotCandidateImage,
-  textStatus = "Pending",
-  colorPropsText = {},
-  colorPropsBg = {},
   textDuration = "1 hour",
   slotPanelImage,
   textInterviewPanel = "This is some text inside of a div block.",
@@ -22,6 +19,7 @@ export function AllInterviewCard({
   propsGrid = {},
   isSelected = false,
   textCurrentRole = "Prodct Designer",
+  slotStatusBadge,
 }) {
   return (
     <_Component
@@ -58,7 +56,7 @@ export function AllInterviewCard({
             {textName}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
+            className={_utils.cx(_styles, "text-gray-600", "one-line-clamp")}
             tag="div"
           >
             {textCurrentRole}
@@ -69,15 +67,7 @@ export function AllInterviewCard({
         className={_utils.cx(_styles, "candidate_cell")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "status_pill")}
-          tag="div"
-          {...colorPropsBg}
-        >
-          <_Builtin.Block tag="div" {...colorPropsText}>
-            {textStatus}
-          </_Builtin.Block>
-        </_Builtin.Block>
+        {slotStatusBadge}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate_cell")}

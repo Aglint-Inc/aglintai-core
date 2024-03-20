@@ -10,4 +10,5 @@ declare function ShadowSessionCard(props: {
   isLineVisible?: Types.Visibility.VisibilityConditions;
   isShadowIconVisible?: Types.Visibility.VisibilityConditions;
   isReverseShadowIconVisible?: Types.Visibility.VisibilityConditions;
+  slotStatusBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

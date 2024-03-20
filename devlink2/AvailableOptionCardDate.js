@@ -10,28 +10,39 @@ export function AvailableOptionCardDate({
   textDate = "27",
   textDay = "FRIDAY",
   slotOptionAvailable,
+  isDateWrapVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1104")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1108")}
+        className={_utils.cx(_styles, "div-block-1274")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600", "text-sm")}
-          tag="div"
-        >
-          {textMonth}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-20", "fw-semibold")}
-          tag="div"
-        >
-          {textDate}
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "text-xsm")} tag="div">
-          {textDay}
-        </_Builtin.Block>
+        {isDateWrapVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1108")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-gray-600", "text-sm")}
+              tag="div"
+            >
+              {textMonth}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-20", "fw-semibold")}
+              tag="div"
+            >
+              {textDate}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-xsm")}
+              tag="div"
+            >
+              {textDay}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1110")}

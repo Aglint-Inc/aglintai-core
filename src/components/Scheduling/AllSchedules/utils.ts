@@ -203,7 +203,7 @@ export const getScheduleTextcolor = (
   status: InterviewScheduleTypeDB['status'],
 ) => {
   return status === 'completed'
-    ? '#2F3941'
+    ? '#186146'
     : status === 'confirmed'
       ? '#0F3554'
       : status === 'pending'

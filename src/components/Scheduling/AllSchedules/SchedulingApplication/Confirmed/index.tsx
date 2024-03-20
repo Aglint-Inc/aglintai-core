@@ -85,6 +85,7 @@ function ConfirmedComp() {
           selectedApplication.candidates.first_name,
           selectedApplication.candidates.last_name,
         )}
+        
         textRole={selectedApplication.public_jobs.job_title}
         textLocation={selectedApplication.public_jobs.location || '--'}
         slotProfileImage={
@@ -97,7 +98,7 @@ function ConfirmedComp() {
             variant={'circular'}
             width={'100%'}
             height={'100%'}
-            fontSize={'12px'}
+            fontSize={'32px'}
           />
         }
       />

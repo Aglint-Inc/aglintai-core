@@ -8,4 +8,6 @@ declare function ScheduleOptions(props: {
   slotInputName?: Types.Devlink.Slot;
   slotDateRangeInput?: Types.Devlink.Slot;
   slotPrimaryButton?: Types.Devlink.Slot;
+  slotInterviewCordinator?: Types.Devlink.Slot;
+  isNoOptionsFoundVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

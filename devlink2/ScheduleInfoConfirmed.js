@@ -9,7 +9,7 @@ export function ScheduleInfoConfirmed({
   slotScheduleInfoCard,
   slotProfileImage,
   textName = "Tom Odel",
-  textRole = "Senior Software Engineer",
+  textCurrentRole = "Senior Software Engineer",
   textLocation = "Onsite , San Fransisco",
   onClickViewProfile = {},
   onClickReschedule = {},
@@ -22,6 +22,12 @@ export function ScheduleInfoConfirmed({
   textScheduleCancelled = "This Schedule has been cancelled on 24t Jan 2023",
   isScheduleCancelVisible = false,
   isScheduleInfoVisible = true,
+  slotAvatarWithName,
+  textEmail = "tomode3243@gmaIl.com",
+  onClickResendInvite = {},
+  copyInviteLink = {},
+  textRole = "Senior Software Engineer",
+  isInviteLinkVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scheduled-info-wrap")} tag="div">
@@ -46,7 +52,7 @@ export function ScheduleInfoConfirmed({
           </_Builtin.Block>
         ) : null}
         <_Builtin.Block
-          className={_utils.cx(_styles, "schedule-info-wrapps")}
+          className={_utils.cx(_styles, "schedule-info-wrapps", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -84,7 +90,7 @@ export function ScheduleInfoConfirmed({
               className={_utils.cx(_styles, "div-block-1129")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
+              <_Builtin.Block tag="div">{textCurrentRole}</_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-sm", "text-grey-600")}
                 tag="div"
@@ -96,7 +102,6 @@ export function ScheduleInfoConfirmed({
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1132", "cursor-pointer")}
             tag="div"
-            {...onClickViewProfile}
           >
             <_Builtin.HtmlEmbed
               className={_utils.cx(_styles, "icons")}
@@ -115,6 +120,135 @@ export function ScheduleInfoConfirmed({
         className={_utils.cx(_styles, "schedule-info-right-wrap")}
         tag="div"
       >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1232")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Candidate"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1233")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1235")}
+              tag="div"
+            >
+              {slotProfileImage}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1234")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                tag="div"
+              >
+                {textCurrentRole}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-grey-600")}
+                tag="div"
+              >
+                {textEmail}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "text-sm",
+                  "text-blue-500",
+                  "text-underline",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickViewProfile}
+              >
+                {"View Profile"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+          {isInviteLinkVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1266")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "div-block-1265",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...onClickResendInvite}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.5%202.625C1.26562%202.64063%201.14062%202.76562%201.125%203V3.51562L5.17969%206.84375C5.42969%207.03125%205.70312%207.125%206%207.125C6.3125%207.125%206.59375%207.03125%206.84375%206.84375L10.875%203.51562V3C10.8594%202.76562%2010.7344%202.64063%2010.5%202.625H1.5ZM1.125%204.96875V9C1.14062%209.23438%201.26562%209.35938%201.5%209.375H10.5C10.7344%209.35938%2010.8594%209.23438%2010.875%209V4.96875L7.54688%207.71094C7.07812%208.07031%206.5625%208.25%206%208.25C5.4375%208.25%204.92188%208.07031%204.45312%207.71094L1.125%204.96875ZM0%203C0.015625%202.57812%200.164062%202.22656%200.445312%201.94531C0.726562%201.66406%201.07812%201.51563%201.5%201.5H10.5C10.9219%201.51563%2011.2734%201.66406%2011.5547%201.94531C11.8359%202.22656%2011.9844%202.57812%2012%203V9C11.9844%209.42188%2011.8359%209.77344%2011.5547%2010.0547C11.2734%2010.3359%2010.9219%2010.4844%2010.5%2010.5H1.5C1.07812%2010.4844%200.726562%2010.3359%200.445312%2010.0547C0.164062%209.77344%200.015625%209.42188%200%209V3Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-blue-500")}
+                  tag="div"
+                >
+                  {"Resend Invite"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "div-block-1265",
+                  "cursor-pointer"
+                )}
+                tag="div"
+                {...copyInviteLink}
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.75%207.875C9.98438%207.85938%2010.1094%207.73438%2010.125%207.5V2.71875L8.53125%201.125H5.25C5.01562%201.14063%204.89062%201.26562%204.875%201.5V7.5C4.89062%207.73438%205.01562%207.85938%205.25%207.875H9.75ZM5.25%209C4.82812%208.98438%204.47656%208.83594%204.19531%208.55469C3.91406%208.27344%203.76562%207.92188%203.75%207.5V1.5C3.76562%201.07812%203.91406%200.726562%204.19531%200.445312C4.47656%200.164062%204.82812%200.015625%205.25%200H8.53125C8.84375%200%209.10938%200.109375%209.32812%200.328125L10.9219%201.92188C11.1406%202.14062%2011.25%202.40625%2011.25%202.71875V7.5C11.2344%207.92188%2011.0859%208.27344%2010.8047%208.55469C10.5234%208.83594%2010.1719%208.98438%209.75%209H5.25ZM2.25%203H3V4.125H2.25C2.01562%204.14062%201.89062%204.26562%201.875%204.5V10.5C1.89062%2010.7344%202.01562%2010.8594%202.25%2010.875H6.75C6.98438%2010.8594%207.10938%2010.7344%207.125%2010.5V9.75H8.25V10.5C8.23438%2010.9219%208.08594%2011.2734%207.80469%2011.5547C7.52344%2011.8359%207.17188%2011.9844%206.75%2012H2.25C1.82812%2011.9844%201.47656%2011.8359%201.19531%2011.5547C0.914062%2011.2734%200.765625%2010.9219%200.75%2010.5V4.5C0.765625%204.07812%200.914062%203.72656%201.19531%203.44531C1.47656%203.16406%201.82812%203.01563%202.25%203Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-blue-500")}
+                  tag="div"
+                >
+                  {"Copy Invite Link"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1093")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Job Details"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1095")}
+            tag="div"
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "icons")}
+              value="%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M16.3984%2012.5V14.3H23.5984V12.5C23.5734%2012.125%2023.3734%2011.925%2022.9984%2011.9H16.9984C16.6234%2011.925%2016.4234%2012.125%2016.3984%2012.5ZM15.1984%2014.3V12.5C15.2234%2012%2015.3984%2011.575%2015.7234%2011.225C16.0734%2010.9%2016.4984%2010.725%2016.9984%2010.7H22.9984C23.4984%2010.725%2023.9234%2010.9%2024.2734%2011.225C24.5984%2011.575%2024.7734%2012%2024.7984%2012.5V14.3H27.1984C27.8734%2014.325%2028.4359%2014.5625%2028.8859%2015.0125C29.3359%2015.4625%2029.5734%2016.025%2029.5984%2016.7V26.3C29.5734%2026.975%2029.3359%2027.5375%2028.8859%2027.9875C28.4359%2028.4375%2027.8734%2028.675%2027.1984%2028.7H12.7984C12.1234%2028.675%2011.5609%2028.4375%2011.1109%2027.9875C10.6609%2027.5375%2010.4234%2026.975%2010.3984%2026.3V16.7C10.4234%2016.025%2010.6609%2015.4625%2011.1109%2015.0125C11.5609%2014.5625%2012.1234%2014.325%2012.7984%2014.3H15.1984ZM24.1984%2015.5H15.7984H12.7984C12.4484%2015.5%2012.1609%2015.6125%2011.9359%2015.8375C11.7109%2016.0625%2011.5984%2016.35%2011.5984%2016.7V20.3H16.9984H18.1984H21.7984H22.9984H28.3984V16.7C28.3984%2016.35%2028.2859%2016.0625%2028.0609%2015.8375C27.8359%2015.6125%2027.5484%2015.5%2027.1984%2015.5H24.1984ZM28.3984%2021.5H22.9984V23.3C22.9984%2023.65%2022.8859%2023.9375%2022.6609%2024.1625C22.4359%2024.3875%2022.1484%2024.5%2021.7984%2024.5H18.1984C17.8484%2024.5%2017.5609%2024.3875%2017.3359%2024.1625C17.1109%2023.9375%2016.9984%2023.65%2016.9984%2023.3V21.5H11.5984V26.3C11.5984%2026.65%2011.7109%2026.9375%2011.9359%2027.1625C12.1609%2027.3875%2012.4484%2027.5%2012.7984%2027.5H27.1984C27.5484%2027.5%2027.8359%2027.3875%2028.0609%2027.1625C28.2859%2026.9375%2028.3984%2026.65%2028.3984%2026.3V21.5ZM18.1984%2021.5V23.3H21.7984V21.5H18.1984Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">
+              <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-gray-600")}
+                tag="div"
+              >
+                {textLocation}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
         {isScheduleStatusVisible ? (
           <_Builtin.Block
             className={_utils.cx(_styles, "schedule-info-wrapps")}
@@ -130,6 +264,10 @@ export function ScheduleInfoConfirmed({
               className={_utils.cx(_styles, "div-block-1119")}
               tag="div"
             >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.25%202C5.59375%202.03125%205.78125%202.21875%205.8125%202.5625V3.5H9.1875V2.5625C9.21875%202.21875%209.40625%202.03125%209.75%202C10.0938%202.03125%2010.2812%202.21875%2010.3125%202.5625V3.5H11.25C11.6719%203.51563%2012.0234%203.66406%2012.3047%203.94531C12.5859%204.22656%2012.7344%204.57812%2012.75%205V5.375V6.5V12.5C12.7344%2012.9219%2012.5859%2013.2734%2012.3047%2013.5547C12.0234%2013.8359%2011.6719%2013.9844%2011.25%2014H3.75C3.32812%2013.9844%202.97656%2013.8359%202.69531%2013.5547C2.41406%2013.2734%202.26562%2012.9219%202.25%2012.5V6.5V5.375V5C2.26562%204.57812%202.41406%204.22656%202.69531%203.94531C2.97656%203.66406%203.32812%203.51563%203.75%203.5H4.6875V2.5625C4.71875%202.21875%204.90625%202.03125%205.25%202ZM11.625%206.5H3.375V12.5C3.39062%2012.7344%203.51562%2012.8594%203.75%2012.875H11.25C11.4844%2012.8594%2011.6094%2012.7344%2011.625%2012.5V6.5ZM9.96094%208.96094L7.33594%2011.5859C7.07031%2011.8047%206.80469%2011.8047%206.53906%2011.5859L5.03906%2010.0859C4.82031%209.82031%204.82031%209.55469%205.03906%209.28906C5.30469%209.07031%205.57031%209.07031%205.83594%209.28906L6.9375%2010.3906L9.16406%208.16406C9.42969%207.94531%209.69531%207.94531%209.96094%208.16406C10.1797%208.42969%2010.1797%208.69531%209.96094%208.96094Z%22%20fill%3D%22%23144A75%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
               <_Builtin.Block tag="div">{"Confirmed"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -199,6 +337,18 @@ export function ScheduleInfoConfirmed({
             >
               {slotInterviewPlan}
             </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1237")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-gray-600")}
+                tag="div"
+              >
+                {"Co-ordinator :"}
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">{slotAvatarWithName}</_Builtin.Block>
+            </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
         {isScheduleCompletedVisible ? (
@@ -216,6 +366,10 @@ export function ScheduleInfoConfirmed({
               className={_utils.cx(_styles, "div-block-1119", "green")}
               tag="div"
             >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.5%203.125C6.60938%203.125%205.79688%203.34375%205.0625%203.78125C4.32812%204.20312%203.73438%204.79688%203.28125%205.5625C2.84375%206.32812%202.625%207.14062%202.625%208C2.625%208.85938%202.84375%209.67188%203.28125%2010.4375C3.73438%2011.2031%204.32812%2011.7969%205.0625%2012.2188C5.79688%2012.6562%206.60938%2012.875%207.5%2012.875C8.39062%2012.875%209.20312%2012.6562%209.9375%2012.2188C10.6719%2011.7969%2011.2656%2011.2031%2011.7188%2010.4375C12.1562%209.67188%2012.375%208.85938%2012.375%208C12.375%207.14062%2012.1562%206.32812%2011.7188%205.5625C11.2656%204.79688%2010.6719%204.20312%209.9375%203.78125C9.20312%203.34375%208.39062%203.125%207.5%203.125ZM7.5%2014C6.40625%2013.9844%205.40625%2013.7188%204.5%2013.2031C3.59375%2012.6719%202.85938%2011.9375%202.29688%2011C1.76562%2010.0469%201.5%209.04688%201.5%208C1.5%206.95312%201.76562%205.95312%202.29688%205C2.85938%204.0625%203.59375%203.32813%204.5%202.79688C5.40625%202.28125%206.40625%202.01563%207.5%202C8.59375%202.01563%209.59375%202.28125%2010.5%202.79688C11.4062%203.32813%2012.1406%204.0625%2012.7031%205C13.2344%205.95312%2013.5%206.95312%2013.5%208C13.5%209.04688%2013.2344%2010.0469%2012.7031%2011C12.1406%2011.9375%2011.4062%2012.6719%2010.5%2013.2031C9.59375%2013.7188%208.59375%2013.9844%207.5%2014ZM10.1484%206.89844L7.14844%209.89844C6.88281%2010.1172%206.61719%2010.1172%206.35156%209.89844L4.85156%208.39844C4.63281%208.13281%204.63281%207.86719%204.85156%207.60156C5.11719%207.38281%205.38281%207.38281%205.64844%207.60156L6.75%208.70312L9.35156%206.10156C9.61719%205.88281%209.88281%205.88281%2010.1484%206.10156C10.3672%206.36719%2010.3672%206.63281%2010.1484%206.89844Z%22%20fill%3D%22%23186146%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
               <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
@@ -241,6 +395,10 @@ export function ScheduleInfoConfirmed({
               className={_utils.cx(_styles, "div-block-1119", "red")}
               tag="div"
             >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.5234%2011.8203L3.67969%204.97656C2.99219%205.82031%202.64062%206.82812%202.625%208C2.65625%209.375%203.13281%2010.5234%204.05469%2011.4453C4.97656%2012.3672%206.125%2012.8438%207.5%2012.875C8.67188%2012.8594%209.67969%2012.5078%2010.5234%2011.8203ZM11.3203%2011.0234C12.0078%2010.1797%2012.3594%209.17188%2012.375%208C12.3438%206.625%2011.8672%205.47656%2010.9453%204.55469C10.0234%203.63281%208.875%203.15625%207.5%203.125C6.32812%203.14063%205.32031%203.49219%204.47656%204.17969L11.3203%2011.0234ZM1.5%208C1.51562%206.90625%201.78125%205.90625%202.29688%205C2.82812%204.09375%203.5625%203.35938%204.5%202.79688C5.45312%202.26562%206.45312%202%207.5%202C8.54688%202%209.54688%202.26562%2010.5%202.79688C11.4375%203.35938%2012.1719%204.09375%2012.7031%205C13.2188%205.90625%2013.4844%206.90625%2013.5%208C13.4844%209.09375%2013.2188%2010.0938%2012.7031%2011C12.1719%2011.9062%2011.4375%2012.6406%2010.5%2013.2031C9.54688%2013.7344%208.54688%2014%207.5%2014C6.45312%2014%205.45312%2013.7344%204.5%2013.2031C3.5625%2012.6406%202.82812%2011.9062%202.29688%2011C1.78125%2010.0938%201.51562%209.09375%201.5%208Z%22%20fill%3D%22%238C232C%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
               <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block

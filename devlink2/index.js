@@ -265,6 +265,7 @@ export * from "./SkeletalUnit";
 export * from "./Skeleton";
 export * from "./SkeletonParagraph";
 export * from "./SortArrows";
+export * from "./StatusBadge";
 export * from "./SubLinkSubMenu";
 export * from "./SublinkTab";
 export * from "./SubmittedCard";

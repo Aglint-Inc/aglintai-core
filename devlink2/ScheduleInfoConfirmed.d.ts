@@ -6,7 +6,7 @@ declare function ScheduleInfoConfirmed(props: {
   slotScheduleInfoCard?: Types.Devlink.Slot;
   slotProfileImage?: Types.Devlink.Slot;
   textName?: React.ReactNode;
-  textRole?: React.ReactNode;
+  textCurrentRole?: React.ReactNode;
   textLocation?: React.ReactNode;
   onClickViewProfile?: Types.Devlink.RuntimeProps;
   onClickReschedule?: Types.Devlink.RuntimeProps;
@@ -19,4 +19,10 @@ declare function ScheduleInfoConfirmed(props: {
   textScheduleCancelled?: React.ReactNode;
   isScheduleCancelVisible?: Types.Visibility.VisibilityConditions;
   isScheduleInfoVisible?: Types.Visibility.VisibilityConditions;
+  slotAvatarWithName?: Types.Devlink.Slot;
+  textEmail?: React.ReactNode;
+  onClickResendInvite?: Types.Devlink.RuntimeProps;
+  copyInviteLink?: Types.Devlink.RuntimeProps;
+  textRole?: React.ReactNode;
+  isInviteLinkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

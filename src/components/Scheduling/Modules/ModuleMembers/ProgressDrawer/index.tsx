@@ -1,6 +1,6 @@
 import { Drawer } from '@mui/material';
 
-import { MutedShadowSession, ShadowSession } from '@/devlink2';
+import { MutedShadowSession, ShadowSession, StatusBadge } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
@@ -46,6 +46,11 @@ function ProgressDrawer({
       }}
     >
       <ShadowSession
+        onClickClose={{
+          onClick: () => {
+            setIsProgressDialaogOpen(false);
+          },
+        }}
         textName={progressUser.user?.first_name}
         slotProfileImage={
           progressUser.user && (
@@ -70,12 +75,18 @@ function ProgressDrawer({
                   key={ind}
                   prog={prog}
                   isLineVisible={true}
-                  session_name={numberToOrdinalText(ind + 1)}
+                  session_name={`${numberToOrdinalText(ind + 1)} Shadow`}
                 />
               );
             })}
             {mutatedShadowProgress.map((_, index) => (
               <MutedShadowSession
+                slotStatusBadge={
+                  <StatusBadge
+                    isNotScheduledVisible={true}
+                    isConfirmedVisible={false}
+                  />
+                }
                 isReverseShadowIconVisible={false}
                 isShadowIconVisible={true}
                 textSessionHeader={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
@@ -96,6 +107,12 @@ function ProgressDrawer({
             })}
             {mutatedReverseShadowProgress.map((_, index) => (
               <MutedShadowSession
+                slotStatusBadge={
+                  <StatusBadge
+                    isNotScheduledVisible={true}
+                    isConfirmedVisible={false}
+                  />
+                }
                 isReverseShadowIconVisible={true}
                 isShadowIconVisible={false}
                 textSessionHeader={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}

@@ -30,6 +30,7 @@ function SchedulingOptionComp({
             slotCardDate={option.plans?.map((pl, ind) => {
               return (
                 <AvailableOptionCardDate
+                  isDateWrapVisible={!pl.isBreak}
                   textDate={dayjs(pl.start_time).format('DD')}
                   textDay={dayjs(pl.start_time).format('dddd')}
                   textMonth={dayjs(pl.start_time).format('MMM')}

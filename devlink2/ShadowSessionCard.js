@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { StatusBadge } from "./StatusBadge";
 import { InterviewScreenCard } from "./InterviewScreenCard";
 import * as _utils from "./utils";
 import _styles from "./ShadowSessionCard.module.css";
@@ -13,6 +14,7 @@ export function ShadowSessionCard({
   isLineVisible = true,
   isShadowIconVisible = true,
   isReverseShadowIconVisible = false,
+  slotStatusBadge,
 }) {
   return (
     <_Component tag="div">
@@ -36,10 +38,18 @@ export function ShadowSessionCard({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+          className={_utils.cx(_styles, "div-block-1271")}
           tag="div"
         >
-          {textSessionName}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+            tag="div"
+          >
+            {textSessionName}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotStatusBadge ?? <StatusBadge />}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       {isInterviewCardVisible ? (

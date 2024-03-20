@@ -5,9 +5,6 @@ declare function AllInterviewCard(props: {
   as?: React.ElementType;
   textName?: React.ReactNode;
   slotCandidateImage?: Types.Devlink.Slot;
-  textStatus?: React.ReactNode;
-  colorPropsText?: Types.Devlink.RuntimeProps;
-  colorPropsBg?: Types.Devlink.RuntimeProps;
   textDuration?: React.ReactNode;
   slotPanelImage?: Types.Devlink.Slot;
   textInterviewPanel?: React.ReactNode;
@@ -19,4 +16,5 @@ declare function AllInterviewCard(props: {
   propsGrid?: Types.Devlink.RuntimeProps;
   isSelected?: Types.Visibility.VisibilityConditions;
   textCurrentRole?: React.ReactNode;
+  slotStatusBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -14,28 +14,31 @@ import { useGetScheduleOptions } from '../../hooks';
 import {
   setDateRange,
   setScheduleName,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../../store';
 
 function GetScheduleOptions() {
   const { recruiter } = useAuthDetails();
   const currentDate = dayjs();
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const scheduleName = useSchedulingApplicationStore(
-    (state) => state.scheduleName
+    (state) => state.scheduleName,
   );
   const dateRange = useSchedulingApplicationStore((state) => state.dateRange);
 
-  const { findScheduleOptions } = useGetScheduleOptions();
+  const { findScheduleOptions, noOptions } = useGetScheduleOptions();
+
   return (
     <ScheduleOptions
+      slotInterviewCordinator={''}
+      isNoOptionsFoundVisible={noOptions}
       slotCandidateImage={
         <MuiAvatar
           level={getFullName(
             selectedApplication?.candidates.first_name,
-            selectedApplication?.candidates.last_name
+            selectedApplication?.candidates.last_name,
           )}
           src={selectedApplication?.candidates.avatar}
           variant={'circular'}
@@ -54,9 +57,9 @@ function GetScheduleOptions() {
                   await findScheduleOptions({
                     dateRange: dateRange,
                     selectedApplication: selectedApplication,
-                    rec_id: recruiter.id
+                    rec_id: recruiter.id,
                   });
-              }
+              },
             }}
           />
         </Stack>
@@ -79,14 +82,14 @@ function GetScheduleOptions() {
                 if (dayjs(newValue) < dayjs(dateRange?.end_date)) {
                   setDateRange({
                     start_date: dayjs(newValue)?.toISOString(),
-                    end_date: dateRange?.end_date
+                    end_date: dateRange?.end_date,
                   });
                 } else {
                   setDateRange({
                     start_date: dayjs(newValue).isValid()
                       ? dayjs(newValue)?.toISOString()
                       : null,
-                    end_date: null
+                    end_date: null,
                   });
                 }
               }}
@@ -96,8 +99,8 @@ function GetScheduleOptions() {
                   fullWidth: true,
                   variant: 'outlined',
                   InputProps: { disableUnderline: true },
-                  placeholder: 'Start Date'
-                }
+                  placeholder: 'Start Date',
+                },
               }}
             />
           </LocalizationProvider>
@@ -109,7 +112,7 @@ function GetScheduleOptions() {
               onChange={(newValue) => {
                 setDateRange({
                   start_date: dateRange?.start_date,
-                  end_date: dayjs(newValue)?.toISOString()
+                  end_date: dayjs(newValue)?.toISOString(),
                 });
               }}
               slotProps={{
@@ -117,8 +120,8 @@ function GetScheduleOptions() {
                   fullWidth: true,
                   variant: 'outlined',
                   InputProps: { disableUnderline: true },
-                  placeholder: 'End Date'
-                }
+                  placeholder: 'End Date',
+                },
               }}
             />
           </LocalizationProvider>
@@ -126,7 +129,7 @@ function GetScheduleOptions() {
       }
       textCandidateName={getFullName(
         selectedApplication.candidates.first_name,
-        selectedApplication.candidates.last_name
+        selectedApplication.candidates.last_name,
       )}
     />
   );

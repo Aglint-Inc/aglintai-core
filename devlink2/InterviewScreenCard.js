@@ -16,6 +16,7 @@ export function InterviewScreenCard({
   textStatus = "Completed",
   colorPropsText = {},
   onClickCard = {},
+  isStatusVisible = true,
 }) {
   return (
     <_Component
@@ -68,18 +69,20 @@ export function InterviewScreenCard({
               >
                 {textDay}
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-xsm",
-                  "text-first-cap",
-                  "mt-5"
-                )}
-                tag="div"
-                {...colorPropsText}
-              >
-                {textStatus}
-              </_Builtin.Block>
+              {isStatusVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-xsm",
+                    "text-first-cap",
+                    "mt-5"
+                  )}
+                  tag="div"
+                  {...colorPropsText}
+                >
+                  {textStatus}
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

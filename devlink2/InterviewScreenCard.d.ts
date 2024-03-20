@@ -14,4 +14,5 @@ declare function InterviewScreenCard(props: {
   textStatus?: React.ReactNode;
   colorPropsText?: Types.Devlink.RuntimeProps;
   onClickCard?: Types.Devlink.RuntimeProps;
+  isStatusVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

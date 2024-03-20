@@ -37,7 +37,7 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
         }
         slotCardDate={
           <OptionAvailableCard
-            isActive={false}
+            isActive={true}
             slotCardDate={schedule?.schedule?.confirmed_option?.plans.map(
               (pl, ind) => {
                 return (

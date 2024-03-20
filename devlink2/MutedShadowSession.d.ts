@@ -7,4 +7,5 @@ declare function MutedShadowSession(props: {
   isShadowIconVisible?: Types.Visibility.VisibilityConditions;
   isReverseShadowIconVisible?: Types.Visibility.VisibilityConditions;
   isLineVisible?: Types.Visibility.VisibilityConditions;
+  slotStatusBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

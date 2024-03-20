@@ -1,5 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { StatusBadge } from "./StatusBadge";
 import * as _utils from "./utils";
 import _styles from "./MutedShadowSession.module.css";
 
@@ -9,6 +10,7 @@ export function MutedShadowSession({
   isShadowIconVisible = true,
   isReverseShadowIconVisible = false,
   isLineVisible = true,
+  slotStatusBadge,
 }) {
   return (
     <_Component tag="div">
@@ -31,15 +33,23 @@ export function MutedShadowSession({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "fw-semibold",
-            "text-gray-500",
-            "text-first-cap"
-          )}
+          className={_utils.cx(_styles, "div-block-1271")}
           tag="div"
         >
-          {textSessionHeader}
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "fw-semibold",
+              "text-gray-500",
+              "text-first-cap"
+            )}
+            tag="div"
+          >
+            {textSessionHeader}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotStatusBadge ?? <StatusBadge />}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

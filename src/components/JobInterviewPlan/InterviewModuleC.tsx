@@ -1,12 +1,16 @@
-import { Badge, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
-import { InterviewBreakCard, InterviewModuleCard } from '@/devlink3';
+import {
+  AvatarWithName,
+  InterviewBreakCard,
+  InterviewModuleCard,
+} from '@/devlink3';
+import { getFullName } from '@/src/utils/jsonResume';
 
 import EditModule from './EditModule';
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
 import { InterviewSession } from './types';
 import MuiAvatar from '../Common/MuiAvatar';
-import UITypography from '../Common/UITypography';
 
 const InterviewModuleC = ({
   module,
@@ -64,84 +68,62 @@ const InterviewModuleC = ({
             <Stack direction={'row'} gap={1} flexWrap={'wrap'} columnGap={2}>
               {module.selectedIntervs.map((mem) => {
                 return (
-                  <Stack
+                  <AvatarWithName
+                    isReverseShadowVisible={false}
+                    isShadowVisible={false}
                     key={mem.interv_id}
-                    direction={'row'}
-                    gap={0.9}
-                    alignItems={'center'}
-                  >
-                    <MuiAvatar
-                      variant='circular'
-                      src={mem.profile_image}
-                      level={mem.name}
-                      fontSize='15px'
-                      height='30px'
-                      width='30px'
-                    />
-                    <UITypography>{mem.name}</UITypography>
-                  </Stack>
+                    textName={mem.name}
+                    slotAvatar={
+                      <MuiAvatar
+                        level={getFullName(mem.name, '')}
+                        src={mem?.profile_image}
+                        variant={'circular'}
+                        width={'24px'}
+                        height={'24px'}
+                        fontSize={'12px'}
+                      />
+                    }
+                  />
                 );
               })}
               {module.shadowIntervs.map((mem) => {
                 return (
-                  <Stack
+                  <AvatarWithName
+                    isReverseShadowVisible={false}
+                    isShadowVisible={true}
                     key={mem.interv_id}
-                    direction={'row'}
-                    gap={0.9}
-                    alignItems={'center'}
-                  >
-                    <Badge
-                      key={mem.interv_id}
-                      color='secondary'
-                      overlap='circular'
-                      badgeContent={<>S</>}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                      }}
-                    >
+                    textName={mem.name}
+                    slotAvatar={
                       <MuiAvatar
-                        variant='circular'
-                        src={mem.profile_image}
-                        level={mem.name}
-                        fontSize='15px'
-                        height='30px'
-                        width='30px'
+                        level={getFullName(mem.name, '')}
+                        src={mem?.profile_image}
+                        variant={'circular'}
+                        width={'24px'}
+                        height={'24px'}
+                        fontSize={'12px'}
                       />
-                    </Badge>
-                    <UITypography>{mem.name}</UITypography>
-                  </Stack>
+                    }
+                  />
                 );
               })}
               {module.revShadowIntervs.map((mem) => {
                 return (
-                  <Stack
+                  <AvatarWithName
+                    isReverseShadowVisible={true}
+                    isShadowVisible={false}
                     key={mem.interv_id}
-                    direction={'row'}
-                    gap={0.9}
-                    alignItems={'center'}
-                  >
-                    <Badge
-                      key={mem.interv_id}
-                      color='secondary'
-                      overlap='circular'
-                      badgeContent={'R'}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                      }}
-                    >
+                    textName={mem.name}
+                    slotAvatar={
                       <MuiAvatar
-                        variant='circular'
-                        src={mem.profile_image}
-                        level={mem.name}
-                        fontSize='15px'
-                        height='30px'
-                        width='30px'
+                        level={getFullName(mem.name, '')}
+                        src={mem?.profile_image}
+                        variant={'circular'}
+                        width={'24px'}
+                        height={'24px'}
+                        fontSize={'12px'}
                       />
-                    </Badge>
-                    <UITypography>{mem.name}</UITypography>
-                  </Stack>
+                    }
+                  />
                 );
               })}
             </Stack>

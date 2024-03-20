@@ -736,31 +736,31 @@ export type Database = {
       candidate_phone_call: {
         Row: {
           applicant_id: string
-          call_title: string | null
+          call_title: string
           call_transcript: Json | null
           call_type: string
           created_at: string
-          error_log: Json | null
+          error_log: Json
           id: string
           retell_call_id: string
         }
         Insert: {
           applicant_id?: string
-          call_title?: string | null
+          call_title: string
           call_transcript?: Json | null
           call_type: string
           created_at?: string
-          error_log?: Json | null
+          error_log: Json
           id?: string
           retell_call_id: string
         }
         Update: {
           applicant_id?: string
-          call_title?: string | null
+          call_title?: string
           call_transcript?: Json | null
           call_type?: string
           created_at?: string
-          error_log?: Json | null
+          error_log?: Json
           id?: string
           retell_call_id?: string
         }
@@ -1178,6 +1178,7 @@ export type Database = {
           calender_event_api_status: Json | null
           completion_time: string | null
           confirmed_option: Json | null
+          coordinator_id: string | null
           created_at: string
           created_by: string
           filter_json: Json | null
@@ -1194,6 +1195,7 @@ export type Database = {
           calender_event_api_status?: Json | null
           completion_time?: string | null
           confirmed_option?: Json | null
+          coordinator_id?: string | null
           created_at?: string
           created_by?: string
           filter_json?: Json | null
@@ -1210,6 +1212,7 @@ export type Database = {
           calender_event_api_status?: Json | null
           completion_time?: string | null
           confirmed_option?: Json | null
+          coordinator_id?: string | null
           created_at?: string
           created_by?: string
           filter_json?: Json | null
@@ -1228,6 +1231,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "public_interview_schedule_created_by_fkey"
@@ -2932,7 +2942,8 @@ export type Database = {
         }
         Returns: {
           rec_user: Json
-          module_names: string[]
+          qualified_module_names: string[]
+          training_module_names: string[]
           upcoming_meeting_count: number
           completed_meeting_count: number
         }[]
