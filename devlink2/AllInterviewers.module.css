@@ -11,7 +11,7 @@
 }
 
 .all-interviewers-header-wrap.decrease-grid {
-  grid-template-columns: 25% 12% 12% 51%;
+  grid-template-columns: 25% 12% 12% 25% 26%;
 }
 
 .all-interviewers-header-wrap.decrease-grid.pb-1 {
@@ -79,6 +79,10 @@
   z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
+}
+
+.text-first-cap {
+  text-transform: capitalize;
 }
 
 .fw-semibold.z-index-5 {
@@ -181,10 +185,6 @@
   z-index: 2;
 }
 
-.text-first-cap {
-  text-transform: capitalize;
-}
-
 .fw-semibold.sticky_2 {
   position: sticky;
   top: 0px;
@@ -202,6 +202,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .div-block-1147 {

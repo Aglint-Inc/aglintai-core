@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { AllInterviewers, AllInterviewersCard, TextWithBg } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
+import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
 import Loader from '../../Common/Loader';
@@ -12,12 +13,14 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
 type interviewerListType = {
   rec_user: RecruiterUserType;
+  qualified_module_names: string[];
+  training_module_names: string[];
   upcoming_meeting_count: number;
   completed_meeting_count: number;
-  module_names: any[];
 };
 const InterviewTab = () => {
   const router = useRouter();
+  const { recruiter } = useAuthDetails();
   const { data: interviewers, isLoading, isFetched } = useInterviewerList();
   return (
     <ShowCode>
@@ -29,10 +32,7 @@ const InterviewTab = () => {
           <AllInterviewers
             slotAllInterviewesCard={
               interviewers &&
-              [
-                ...interviewers.filter((item) => item.module_names[0]),
-                ...interviewers.filter((item) => !item.module_names[0])
-              ].map((member) => {
+              interviewers.map((member) => {
                 return (
                   <Stack
                     key={member.rec_user.user_id}
@@ -40,7 +40,7 @@ const InterviewTab = () => {
                     onClick={() => {
                       // setSelectedInterviewer(member);
                       router.push(
-                        `${router.route}/interviewer/${member.rec_user.user_id}`
+                        `${router.route}/interviewer/${member.rec_user.user_id}`,
                       );
                     }}
                   >
@@ -50,23 +50,52 @@ const InterviewTab = () => {
                       slotProfileImage={
                         <MuiAvatar
                           src={member.rec_user.profile_image}
-                          level={member.rec_user.first_name}
+                          level={getFullName(
+                            member.rec_user.first_name,
+                            member.rec_user.last_name,
+                          )}
                           variant='circular'
-                          height='100%'
-                          width='100%'
+                          height='40px'
+                          width='40px'
                           fontSize='16px'
                         />
                       }
+                      isCalenderNotConnected={
+                        recruiter.service_json === null &&
+                        recruiter.email.split('@')[1] ===
+                          member.rec_user.email.split('@')[1] &&
+                        member.rec_user.schedule_auth === null
+                      }
+                      isConnectedCalenderVisible={
+                        (recruiter.service_json !== null &&
+                          recruiter.email.split('@')[1] ===
+                            member.rec_user.email.split('@')[1]) ||
+                        member.rec_user.schedule_auth !== null
+                      }
                       slotInterviewModules={
                         <>
-                          {member.module_names
+                          {member.qualified_module_names
                             ?.slice(0, 2)
                             .map((item) => (
                               <TextWithBg key={item} text={item} />
                             ))}
-                          {member.module_names?.length > 2 && (
+                          {member.qualified_module_names?.length > 2 && (
                             <TextWithBg
-                              text={`+${member.module_names.length - 2}`}
+                              text={`+${member.qualified_module_names.length - 2}`}
+                            />
+                          )}
+                        </>
+                      }
+                      slotModulesTraining={
+                        <>
+                          {member.training_module_names
+                            ?.slice(0, 2)
+                            .map((item) => (
+                              <TextWithBg key={item} text={item} />
+                            ))}
+                          {member.training_module_names?.length > 2 && (
+                            <TextWithBg
+                              text={`+${member.qualified_module_names.length - 2}`}
                             />
                           )}
                         </>
@@ -94,7 +123,7 @@ const useInterviewerList = () => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['interviewer_list'],
-    queryFn: () => getInterviewerList(recruiter.id)
+    queryFn: () => getInterviewerList(recruiter.id),
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['interviewer_list'] });
@@ -103,7 +132,7 @@ const useInterviewerList = () => {
 
 async function getInterviewerList(recruiter_id: string) {
   const { data, error } = await supabase.rpc('get_interviewers', {
-    rec_id: recruiter_id
+    rec_id: recruiter_id,
   });
   if (error) throw Error(error.message);
   else return data as unknown as interviewerListType[];
