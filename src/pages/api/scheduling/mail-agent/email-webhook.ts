@@ -17,6 +17,7 @@ import { supabaseAdmin } from '../../phone-screening/get-application-info';
 export const config = {
   api: {
     bodyParser: false,
+    maxDuration: 25,
   },
 };
 
