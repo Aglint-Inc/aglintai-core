@@ -74,9 +74,14 @@ export default handler;
 //
 
 const getUserTimeZoneDate = (user_date, userTimeZone, isStartTime = true) => {
-  const d1 = dayjs(user_date, 'DD/MM/YYYY');
-  if (!validate(user_date, 'DD/MM/YYYY'))
-    throw new Error(`invalid date format ${user_date}`);
+  const [day, month, year] = user_date.split('/');
+  const d1 = dayjs(new Date());
+  d1.set('year', Number(year));
+  d1.set('month', Number(month));
+  d1.set('date', Number(day));
+
+  // if (!validate(user_date, 'DD/MM/YYYY'))
+  //   throw new Error(`invalid date format ${user_date}`);
 
   let d: Dayjs;
   d = d1.tz(userTimeZone);
@@ -88,6 +93,6 @@ const getUserTimeZoneDate = (user_date, userTimeZone, isStartTime = true) => {
   return d.format();
 };
 
-function validate(date, format) {
-  return dayjs(date, format).format(format) === date;
-}
+// function validate(date, format) {
+//   return dayjs(date, format).format(format) === date;
+// }
