@@ -243,7 +243,7 @@ export const createJobObject = async (
       location: post.categories.location,
       job_title: post.text,
       status: 'draft',
-      scoring_param_status: 'loading',
+      scoring_criteria_loading: true,
       posted_by: POSTED_BY.LEVER,
       recruiter_id: recruiter.id,
       id: id,

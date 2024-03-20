@@ -23,6 +23,12 @@
   background-color: #f7f9fb;
 }
 
+.discard-btn-score.grey-copy {
+  height: 54px;
+  border-color: #f7f9fb;
+  background-color: #f7f9fb;
+}
+
 .div-block-699 {
   display: flex;
   align-items: center;

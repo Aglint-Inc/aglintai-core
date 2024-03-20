@@ -1,5 +1,6 @@
 .cv-tab-links-wrapper {
   display: flex;
+  overflow: auto;
   padding: 6px;
   grid-auto-columns: 1fr;
   grid-column-gap: 6px;
@@ -352,6 +353,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -440,6 +445,19 @@
   position: sticky;
   top: 0px;
   z-index: 2;
+}
+
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .cv-tab-candidate-count {

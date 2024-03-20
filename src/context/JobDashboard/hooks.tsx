@@ -10,6 +10,7 @@ import {
 import { Assessment } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';
 import {
+  useJobDashboardRefresh,
   useJobLocations,
   useJobMatches,
   useJobSchedules,
@@ -24,7 +25,11 @@ import { useJobs } from '../JobsContext';
 const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
   const router = useRouter();
-  const { jobsData, initialLoad: jobLoad } = useJobs();
+  const {
+    jobsData,
+    initialLoad: jobLoad,
+    handleJobRefresh: jobRefresh,
+  } = useJobs();
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const jobId = job_id ?? (router.query?.id as string);
   const job = initialJobLoad
@@ -50,32 +55,38 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         otherAssessments: [] as Assessment[],
       };
   const skills = useJobSkills();
+  const refreshDashboard = useJobDashboardRefresh();
   const locations = useJobLocations();
   const matches = useJobMatches();
   const tenureAndExperience = useJobTenureAndExperience();
   const schedules = useJobSchedules();
   const scoringPoll = useJobScoringPoll();
 
-  const draftValidity = getDraftValidity(job);
+  const settingsValidity = getSettingsValidity(job);
 
   const jdValidity = !validateJd(job?.draft?.jd_json);
 
-  const publishable = draftValidity && jdValidity;
+  const publishStatus = {
+    settingsValidity,
+    jdValidity,
+    loading: job?.scoring_criteria_loading,
+    publishable:
+      settingsValidity && jdValidity && !job?.scoring_criteria_loading,
+  };
+  settingsValidity && jdValidity && !job.scoring_criteria_loading;
   const [dismiss, setDismiss] = useState(false);
 
   const status = job &&
     jobLoad && {
-      loading: job.scoring_param_status === 'loading',
+      loading: job.scoring_criteria_loading,
       description_error:
-        job.scoring_param_status !== 'loading' &&
+        !job.scoring_criteria_loading &&
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
-        job.scoring_param_status !== 'loading' &&
+        !job.scoring_criteria_loading &&
+        !dismiss &&
         hashCode(job?.draft?.description ?? '') !== job?.description_hash,
-      generation_error:
-        job.scoring_param_status !== 'loading' &&
-        job.scoring_param_status === null &&
-        !validateDescription(job?.draft?.description ?? ''),
+      jd_json_error: !job.scoring_criteria_loading && !jdValidity,
     };
 
   const initialLoad =
@@ -91,16 +102,20 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
       ? true
       : false;
 
+  const handleJobRefresh = async () => {
+    await jobRefresh(job?.id);
+    refreshDashboard();
+  };
+
   const value = {
     job,
     dismiss,
     setDismiss,
-    draftValidity,
-    jdValidity,
+    handleJobRefresh,
     scoringPoll,
     schedules,
     status,
-    publishable,
+    publishStatus,
     initialLoad,
     assessments: {
       ...assessments,
@@ -116,7 +131,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   return value;
 };
 
-export const getDraftValidity = (job: Job) => {
+export const getSettingsValidity = (job: Job) => {
   if (!job) return false;
   //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
   const draft = {

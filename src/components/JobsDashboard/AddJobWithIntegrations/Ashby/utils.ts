@@ -101,7 +101,7 @@ export const createJobObject = async (
       job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
       workplace_type: 'on site',
       company: recruiter.name,
-      scoring_param_status: 'loading',
+      scoring_criteria_loading: true,
       skills: [],
       parameter_weights: {
         skills: 0,

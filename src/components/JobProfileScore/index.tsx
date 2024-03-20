@@ -24,6 +24,7 @@ import {
   BodyWithSidePanel,
   ProfileScoreSkeleton,
 } from '@/devlink3';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
@@ -69,7 +70,8 @@ const ProfileScorePage = () => {
 };
 
 const ProfileScoreControls = () => {
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
+  const { handleJobApplicationRecalculate } = useJobApplications();
   const { job } = useJobDetails();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
@@ -80,6 +82,8 @@ const ProfileScoreControls = () => {
     skills: (jd_json?.skills ?? []).length === 0,
     education: (jd_json?.educations ?? []).length === 0,
   };
+  const allDisabled =
+    disabled.education && disabled.skills && disabled.experience;
   const [weights, setWeight] = useState<ScoreWheelParams>(parameter_weights);
   const safeWeights = Object.entries(weights).reduce((acc, [key, value]) => {
     acc[key] = +value;
@@ -89,6 +93,10 @@ const ProfileScoreControls = () => {
     acc += curr;
     return acc;
   }, 0);
+  const hasChanged = Object.entries(safeWeights).reduce((acc, [key, value]) => {
+    if (!acc && value !== parameter_weights[key]) return true;
+    return acc;
+  }, false);
   const handleChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
@@ -110,8 +118,9 @@ const ProfileScoreControls = () => {
     const obj = distributeScoreWeights(job.draft.jd_json);
     setWeight(obj);
   };
-  const handleSubmit = () => {
-    handleJobUpdate(job.id, { parameter_weights: safeWeights });
+  const handleSubmit = async () => {
+    await handleJobAsyncUpdate(job.id, { parameter_weights: safeWeights });
+    await handleJobApplicationRecalculate();
   };
   useEffect(() => {
     if (!initialRef.current) {
@@ -125,7 +134,7 @@ const ProfileScoreControls = () => {
       initialSubmitRef.current = true;
       return;
     }
-    if (sum === 100) {
+    if (hasChanged && (sum === 100 || allDisabled)) {
       const timeout = setTimeout(() => handleSubmit(), 400);
       return () => clearTimeout(timeout);
     }
@@ -133,8 +142,8 @@ const ProfileScoreControls = () => {
   return (
     <Stack
       style={{
-        opacity: job.scoring_param_status === 'loading' ? 0.4 : 1,
-        pointerEvents: job.scoring_param_status === 'loading' ? 'none' : 'auto',
+        opacity: job.scoring_criteria_loading ? 0.4 : 1,
+        pointerEvents: job.scoring_criteria_loading ? 'none' : 'auto',
       }}
     >
       <ScoreWeightage
@@ -231,26 +240,30 @@ export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
     education: (jd_json?.educations ?? []).length === 0,
   };
   const count = Object.values(disabled).filter((v) => !v).length;
-  const { obj } = Object.entries(disabled).reduce(
-    (acc, [key, value], i) => {
-      const c = Math.trunc(100 / count);
-      if (value) {
-        acc.obj[key] = 0;
-      } else if (i === count - 1) {
-        acc.obj[key] = acc.total;
-        acc.total = 0;
-      } else {
-        acc.obj[key] = c;
-        acc.total -= c;
-      }
-      return acc;
-    },
-    {
-      obj: {} as ScoreWheelParams,
-      total: 100,
-    },
-  );
-  return obj;
+  const resets = Object.entries(disabled).reduce((acc, [key, value]) => {
+    if (value) return { ...acc, [key]: 0 };
+    return acc;
+  }, {} as ScoreWheelParams);
+  const { obj } = Object.entries(disabled)
+    .filter(([, value]) => !value)
+    .reduce(
+      (acc, [key], i) => {
+        const c = Math.trunc(100 / count);
+        if (i === count - 1) {
+          acc.obj[key] = acc.total;
+          acc.total = 0;
+        } else {
+          acc.obj[key] = c;
+          acc.total -= c;
+        }
+        return acc;
+      },
+      {
+        obj: {} as ScoreWheelParams,
+        total: 100,
+      },
+    );
+  return { ...resets, ...obj };
 };
 
 const ProfileScore = () => {
@@ -259,7 +272,7 @@ const ProfileScore = () => {
     <ScoreSetting
       slotBanner={<Banners />}
       slotScoreCardDetails={
-        job.scoring_param_status === 'loading' ? (
+        job.scoring_criteria_loading ? (
           <ProfileScoreSkeleton slotSkeleton={<Skeleton />} />
         ) : (
           <>
@@ -282,14 +295,14 @@ const Banners = () => {
       <BannerWarning
         isDismiss={false}
         isButton={false}
-        textBanner={'Job description is unavailable'}
+        textBanner={'Job description is unavailable.'}
       />
     );
-  if (status.generation_error)
+  if (status.jd_json_error)
     return (
       <BannerAlert
-        textBanner={'Failed to generate profile score'}
-        textButton={'Retry'}
+        textBanner={'No profile score criterias set.'}
+        textButton={'Generate'}
         onClickButton={{
           onClick: () => experimental_handleRegenerateJd(job),
         }}

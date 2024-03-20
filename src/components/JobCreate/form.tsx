@@ -6,8 +6,10 @@ import { FC, memo } from 'react';
 
 import { JobDetailBlock } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { palette } from '@/src/context/Theme/Theme';
 import { JobCreate } from '@/src/queries/job/types';
+import toast from '@/src/utils/toast';
 
 import TipTapAIEditor from '../Common/TipTapAIEditor';
 import UISelect from '../Common/Uiselect';
@@ -26,7 +28,7 @@ export type Form = {
 export const JobForms: FC<JobMetaFormProps> = ({
   fields,
   handleChange,
-  handleCreate = null
+  handleCreate = null,
 }) => {
   const job_title = (
     <JobTitle
@@ -95,8 +97,8 @@ export const JobForms: FC<JobMetaFormProps> = ({
         style: {
           borderColor: fields.description.error.value
             ? palette.red['500']
-            : palette.grey['300']
-        }
+            : palette.grey['300'],
+        },
       }}
       slotRichtextWarning={
         fields.description.error.value && (
@@ -146,7 +148,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
             <Image
               style={{
                 borderRadius: '4px',
-                objectFit: 'contain'
+                objectFit: 'contain',
               }}
               alt='building'
               src={`${recruiter?.logo ?? '/images/svg/Building.svg'}`}
@@ -154,7 +156,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
               height={26}
             />
           </InputAdornment>
-        )
+        ),
       }}
     />
   );
@@ -166,8 +168,8 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const defaultAddress = ((recruiter?.office_locations ?? []) as any[]).map(
     (s) => ({
       label: [s.city, s.region, s.country].filter(Boolean).join(', '),
-      value: [s.city, s.region, s.country].filter(Boolean).join(', ')
-    })
+      value: [s.city, s.region, s.country].filter(Boolean).join(', '),
+    }),
   );
   return (
     <Autocomplete
@@ -189,7 +191,7 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
       )}
       defaultValue={{
         label: value.value,
-        value: value.value
+        value: value.value,
       }}
       freeSolo
       disablePortal
@@ -226,7 +228,7 @@ const defaults: Defaults = {
     'operations',
     'product management',
     'sales',
-    'support'
+    'support',
   ],
   job_type: [
     'contract',
@@ -234,9 +236,9 @@ const defaults: Defaults = {
     'internship',
     'part time',
     'temporary',
-    'volunteer'
+    'volunteer',
   ],
-  workplace_type: ['hybrid', 'off site', 'on site']
+  workplace_type: ['hybrid', 'off site', 'on site'],
 };
 const getOptions = (type: keyof Defaults) => {
   return defaults[type].reduce(
@@ -244,7 +246,7 @@ const getOptions = (type: keyof Defaults) => {
       acc.push({ name: capitalize(curr), value: curr });
       return acc;
     },
-    [] as { name: string; value: string | number }[]
+    [] as { name: string; value: string | number }[],
   );
 };
 
@@ -288,12 +290,30 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobWorkPlace.displayName = 'JobWorkPlace';
 
 const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
+  const { job } = useJobDetails();
+  const disable = job?.scoring_criteria_loading;
+  const handleToast = () => {
+    if (disable)
+      toast.warning(
+        'This job description is currently being used for another task. Please wait.',
+      );
+  };
   return (
-    <TipTapAIEditor
-      initialValue={value.value}
-      handleChange={(e) => onChange(name, e)}
-      placeholder='Enter job description'
-    />
+    <Stack onClick={() => handleToast()}>
+      <Stack
+        style={{
+          opacity: job?.scoring_criteria_loading ? 0.4 : 1,
+          pointerEvents: job?.scoring_criteria_loading ? 'none' : 'auto',
+        }}
+      >
+        <TipTapAIEditor
+          initialValue={value.value}
+          handleChange={(e) => onChange(name, e)}
+          placeholder='Enter job description'
+          disabled={disable}
+        />
+      </Stack>
+    </Stack>
   );
 });
 JobDescription.displayName = 'JobDescription';

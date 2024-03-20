@@ -12,6 +12,7 @@ import {
 } from '@/src/queries/job';
 
 import { JobTypeDashboard } from './types';
+import { hashCode } from '../JobDashboard/hooks';
 
 const useJobActions = () => {
   const { recruiter } = useAuthDetails();
@@ -55,6 +56,7 @@ const useJobActions = () => {
           ...newJob,
           ...newJob.draft,
           status: 'published',
+          description_hash: hashCode(newJob.draft.description),
         });
         if (error) return false;
         return true;
@@ -118,7 +120,7 @@ const useJobActions = () => {
   };
 
   const experimental_handleRegenerateJd = async (job: JobTypeDashboard) => {
-    handleUIJobUpdate({ ...job, scoring_param_status: 'loading' });
+    handleUIJobUpdate({ ...job, scoring_criteria_loading: true });
     await handleGenerateJd(job.id);
     handleJobRefresh(job.id);
   };

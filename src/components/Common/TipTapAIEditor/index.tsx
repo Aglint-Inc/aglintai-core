@@ -30,6 +30,7 @@ export type TipTapAIEditorParams = {
     isLoading: boolean;
     count: number;
   };
+  disabled?: boolean;
 };
 
 const TipTapAIEditor = ({
@@ -42,6 +43,7 @@ const TipTapAIEditor = ({
     count: 1,
   },
   defaultJson,
+  disabled = false,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -69,7 +71,7 @@ const TipTapAIEditor = ({
       Underline,
       TextStyle.configure({}),
     ],
-    editable: true,
+    editable: !disabled,
     content: initialValue || '',
     onBlur() {
       // editor.commands.unsetHighlight();

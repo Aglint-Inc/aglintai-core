@@ -42,7 +42,7 @@ export const useJobCreate = () => {
       return createJob({
         recruiter_id,
         ...job,
-        scoring_param_status: 'loading',
+        scoring_criteria_loading: true,
         draft: {
           ...job,
         },

@@ -6,7 +6,7 @@ import _styles from "./BannerLoading.module.css";
 export function BannerLoading({ as: _Component = _Builtin.Block, slotLoader }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "discard-btn-score", "grey")}
+      className={_utils.cx(_styles, "discard-btn-score", "grey-copy")}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-699")} tag="div">
