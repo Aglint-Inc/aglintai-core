@@ -48,6 +48,12 @@ const handler = async (
     },
   );
   const { job_id } = req.body as JobProfileScoreApi['request'];
+  // await supabase
+  //   .from('public_jobs')
+  //   .update({ scoring_criteria_loading: false })
+  //   .eq('id', job_id);
+  // res.status(200).send();
+  // return;
   const { data } = await supabase
     .from('public_jobs')
     .select('description, draft, job_title')
@@ -63,7 +69,7 @@ const handler = async (
   ) {
     await supabase
       .from('public_jobs')
-      .update({ scoring_param_status: null })
+      .update({ scoring_criteria_loading: false })
       .eq('id', job_id);
     res.status(200).send();
     return;
@@ -76,7 +82,7 @@ const handler = async (
   try {
     await supabase
       .from('public_jobs')
-      .update({ scoring_param_status: 'loading' })
+      .update({ scoring_criteria_loading: true })
       .eq('id', job_id);
     const job = data[0];
     const jsonPromise = newJdJson(
@@ -103,7 +109,7 @@ Job description: ${(job.draft as any).description}`,
         jd_json: j,
         draft: { ...(job.draft as any), jd_json: j },
         description_hash: descriptionHash,
-        scoring_param_status: 'success',
+        scoring_criteria_loading: false,
         parameter_weights: weights,
       })
       .eq('id', job_id);
@@ -112,7 +118,7 @@ Job description: ${(job.draft as any).description}`,
   } catch (e) {
     await supabase
       .from('public_jobs')
-      .update({ scoring_param_status: null })
+      .update({ scoring_criteria_loading: false })
       .eq('id', job_id);
     res.status(200).send();
     return;

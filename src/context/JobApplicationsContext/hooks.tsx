@@ -10,7 +10,7 @@ import {
   FilterParameter,
   getAssessmentStatus,
   getDisqualificationStatus,
-  getScreeningStatus
+  getScreeningStatus,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { JobApplicationDelete } from '@/src/pages/api/job/jobApplications/candidateDelete';
@@ -26,9 +26,11 @@ import {
   JobApplication,
   JobApplicationsData,
   JobApplicationSections,
-  Parameters
+  Parameters,
 } from './types';
-import { getRange } from './utils';
+import { getRange, recalculateDbAction, rescoreDbAction } from './utils';
+import { useJobDetails } from '../JobDashboard';
+import { hashCode } from '../JobDashboard/hooks';
 import { useJobs } from '../JobsContext';
 import { CountJobs } from '../JobsContext/types';
 // eslint-disable-next-line no-unused-vars
@@ -40,7 +42,7 @@ enum ActionType {
   // eslint-disable-next-line no-unused-vars
   SECTION_READ,
   // eslint-disable-next-line no-unused-vars
-  UPDATE
+  UPDATE,
 }
 
 type Action =
@@ -77,20 +79,20 @@ const reducer = (state: JobApplicationsData, action: Action) => {
             },
             Object.assign(
               {},
-              ...action.payload.activeSections.map((s) => ({ [s]: [] }))
-            ) as unknown as JobApplicationsData
+              ...action.payload.activeSections.map((s) => ({ [s]: [] })),
+            ) as unknown as JobApplicationsData,
           )
         : null;
       return newState;
     }
     case ActionType.SECTION_READ: {
       const newState: JobApplicationsData = Object.entries(
-        action.payload.applicationData
+        action.payload.applicationData,
       ).reduce(
         (acc, [key, value]) => {
           return { ...acc, [key]: value };
         },
-        { ...state }
+        { ...state },
       );
       return newState;
     }
@@ -107,13 +109,13 @@ const reducer = (state: JobApplicationsData, action: Action) => {
                       return { ...acc, [key]: { ...v[key], ...value } };
                     else return { ...acc, [key]: value };
                   },
-                  { ...v }
+                  { ...v },
                 );
               }
               return v;
-            })
+            }),
           };
-        })
+        }),
       );
       return applicationState as JobApplicationsData;
     }
@@ -128,12 +130,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
 
   const router = useRouter();
-  const {
-    jobsData,
-    initialLoad: jobLoad,
-    handleUIJobUpdate,
-    handleJobRefresh
-  } = useJobs();
+  const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
+  const { handleJobRefresh } = useJobDetails();
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
@@ -150,13 +148,13 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     initialJobLoad && applications !== undefined ? true : false;
 
   const initialJobApplicationPageNumbers = Object.values(
-    JobApplicationSections
+    JobApplicationSections,
   ).reduce((acc, curr) => {
     return { ...acc, [curr]: 1 };
     // eslint-disable-next-line no-unused-vars
   }, {}) as { [key in JobApplicationSections]: number };
   const [pageNumber, setPageNumber] = useState(
-    initialJobApplicationPageNumbers
+    initialJobApplicationPageNumbers,
   );
 
   const [cardStateManager, setCardStateManager] =
@@ -179,22 +177,22 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             return true;
         }
       }),
-    [job]
+    [job],
   );
   const [section, setSection] = useState<JobApplicationSections>(
-    JobApplicationSections.NEW
+    JobApplicationSections.NEW,
   );
   const cardStates = cardStateManager ? cardStateManager[section] : undefined;
   const setCardStates = cardStates
     ? (
         // eslint-disable-next-line no-unused-vars
-        callBack: (prev: typeof cardStates) => typeof cardStates
+        callBack: (prev: typeof cardStates) => typeof cardStates,
       ) => {
         const newValue = callBack(cardStates);
         setCardStateManager((prev) => {
           return {
             ...prev,
-            [section]: cloneDeep(newValue)
+            [section]: cloneDeep(newValue),
           };
         });
       }
@@ -205,7 +203,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     .reduce((acc, curr) => {
       return {
         ...acc,
-        [curr]: getRange(pageNumber[curr], paginationLimit)
+        [curr]: getRange(pageNumber[curr], paginationLimit),
       };
     }, {}) as ReadJobApplicationApi['request']['ranges'];
 
@@ -214,25 +212,25 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const defaultFilters: FilterParameter = {
     interview_score: {
       max: 100,
-      min: 0
+      min: 0,
     },
     overall_score: {
       max: 100,
-      min: 0
+      min: 0,
     },
     location: {
       name: null,
-      value: 10
-    }
+      value: 10,
+    },
   };
 
   const initialParameters: Parameters = {
     sort: { parameter: 'overall_score', ascending: false },
     filter: { ...defaultFilters },
-    search: null
+    search: null,
   };
   const [searchParameters, setSearchParameters] = useState({
-    ...initialParameters
+    ...initialParameters,
   });
 
   const [allApplicationsDisabled, setAllApplicationsDisabled] = useState(false);
@@ -240,12 +238,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   //PRIMARY
   const handleJobApplicationRead = async (
     request: ReadJobApplicationApi['request'],
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => {
     if (recruiter) {
       const responses = await Promise.allSettled([
-        handleJobRefresh(jobId),
-        handleJobApplicationApi('read', request, signal)
+        handleJobRefresh(),
+        handleJobApplicationApi('read', request, signal),
       ]);
       if (responses[1].status === 'fulfilled') {
         const { data, error, filteredCount } = responses[1].value;
@@ -254,8 +252,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             type: ActionType.READ,
             payload: {
               applicationData: data,
-              activeSections: request.sections
-            }
+              activeSections: request.sections,
+            },
           };
           if (job?.posted_by == POSTED_BY.ASHBY) {
             const is_sync = await checkSyncCand(job);
@@ -270,7 +268,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
-        unFilteredCount: null as CountJobs
+        unFilteredCount: null as CountJobs,
       };
     }
   };
@@ -278,7 +276,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const showDisqualificationEmailComponent = applications
     ? applications[JobApplicationSections.DISQUALIFIED]
         ?.filter(
-          (a) => getDisqualificationStatus(a.status_emails_sent).isNotInvited
+          (a) => getDisqualificationStatus(a.status_emails_sent).isNotInvited,
         )
         ?.filter((a) => cardStateManager.disqualified.checkList.list.has(a.id))
         .length > 0 ?? false
@@ -290,7 +288,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           ?.filter((a) => {
             const { isNotInvited, isPending } = getAssessmentStatus(
               a.status_emails_sent,
-              getSafeAssessmentResult(a.assessment_results)
+              getSafeAssessmentResult(a.assessment_results),
             );
             return isNotInvited || isPending;
           })
@@ -304,7 +302,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           ?.filter((a) => {
             const { isNotInvited, isPending } = getScreeningStatus(
               a.status_emails_sent,
-              a.phone_screening
+              a.phone_screening,
             );
             return isNotInvited || isPending;
           })
@@ -315,7 +313,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   //PRIMARY
   const handleJobApplicationSectionRead = async (
     request: ReadJobApplicationApi['request'],
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => {
     if (recruiter) {
       const { data, error, filteredCount, unFilteredCount } =
@@ -323,7 +321,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       if (data) {
         const action: Action = {
           type: ActionType.SECTION_READ,
-          payload: { applicationData: data }
+          payload: { applicationData: data },
         };
         if (job.posted_by == POSTED_BY.ASHBY) {
           const is_sync = await checkSyncCand(job);
@@ -336,7 +334,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
-        unFilteredCount: null as CountJobs
+        unFilteredCount: null as CountJobs,
       };
     }
   };
@@ -348,7 +346,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         job_id: jobId,
         ranges: ranges,
         sections: activeSections,
-        ...searchParameters
+        ...searchParameters,
       };
       const { confirmation } = await handleJobApplicationRead(request);
       if (confirmation) return true;
@@ -359,19 +357,19 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   //SECONDARY
   const handleJobApplicationPaginate = async (
     pageNumber: number,
-    section: JobApplicationSections
+    section: JobApplicationSections,
   ) => {
     if (recruiter) {
       setAllApplicationsDisabled(true);
       const newRanges = {
         ...ranges,
-        [section]: getRange(pageNumber, paginationLimit)
+        [section]: getRange(pageNumber, paginationLimit),
       } as ReadJobApplicationApi['request']['ranges'];
       const { confirmation } = await handleJobApplicationSectionRead({
         job_id: jobId,
         ranges: newRanges,
         sections: [section],
-        ...searchParameters
+        ...searchParameters,
       });
       if (confirmation) {
         setPageNumber((prev) => {
@@ -393,7 +391,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     },
     purposes?: JobApplicationEmails['request']['purposes'],
     applicationIdSet?: Set<string>,
-    updateAll: boolean = false
+    updateAll: boolean = false,
   ) => {
     if (recruiter) {
       const applicationIds = !updateAll ? [...applicationIdSet] : null;
@@ -403,20 +401,20 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             id: job.id,
             job_title: job.job_title,
             company: job.company,
-            email_template: job.email_template as EmailTemplateType
+            email_template: job.email_template as EmailTemplateType,
           },
           parameter: {
             ranges,
-            ...searchParameters
+            ...searchParameters,
           },
           sections,
           applicationIds,
-          purposes
+          purposes,
         });
       if (data) {
         const action: Action = {
           type: ActionType.SECTION_READ,
-          payload: { applicationData: data }
+          payload: { applicationData: data },
         };
         if (job.posted_by == POSTED_BY.ASHBY) {
           const is_sync = await checkSyncCand(job);
@@ -424,7 +422,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         }
         handleUIJobUpdate({
           ...job,
-          count: { ...job.count, ...unFilteredCount }
+          count: { ...job.count, ...unFilteredCount },
         });
         dispatch(action);
         return { confirmation: true, filteredCount };
@@ -433,7 +431,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
-        unFilteredCount: null as CountJobs
+        unFilteredCount: null as CountJobs,
       };
     }
   };
@@ -442,7 +440,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const handleJobApplicationDelete = async (
     applicationIdSet: Set<string>,
     deleteAll: boolean = false,
-    clearCandidate: boolean = false
+    clearCandidate: boolean = false,
   ) => {
     if (recruiter) {
       const safeApplications = !deleteAll
@@ -452,11 +450,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
                 acc.push({
                   id: curr.id,
                   candidate_id: curr.candidate_id,
-                  email: curr.candidates.email
+                  email: curr.candidates.email,
                 });
               return acc;
             },
-            [] as JobApplicationDelete['request']['applications']
+            [] as JobApplicationDelete['request']['applications'],
           )
         : null;
       const { data, error, filteredCount, unFilteredCount } =
@@ -467,30 +465,30 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           clearCandidate,
           parameter: {
             ranges,
-            ...searchParameters
-          }
+            ...searchParameters,
+          },
         });
       if (data) {
         const action: Action = {
           type: ActionType.SECTION_READ,
-          payload: { applicationData: data }
+          payload: { applicationData: data },
         };
         handleUIJobUpdate({
           ...job,
-          count: { ...job.count, ...unFilteredCount }
+          count: { ...job.count, ...unFilteredCount },
         });
         dispatch(action);
         return {
           confirmation: true,
           filteredCount,
-          unFilteredCount
+          unFilteredCount,
         };
       }
       handleJobApplicationError(error);
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
-        unFilteredCount: null as CountJobs
+        unFilteredCount: null as CountJobs,
       };
     }
   };
@@ -507,18 +505,37 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           e.message
             ? toast.error(`Oops! Something went wrong.\n (${e.message})`)
             : toast.error(
-                `Oops! Something went wrong.\n (${JSON.stringify(e)})`
-              )
+                `Oops! Something went wrong.\n (${JSON.stringify(e)})`,
+              ),
         );
       else
         toast.error(`Oops! Something went wrong.\n ${JSON.stringify(error)}`);
     }
   };
 
+  const handleJobApplicationRescore = async () => {
+    if (recruiter) {
+      if (
+        hashCode(JSON.stringify(job?.draft?.jd_json ?? {})) !==
+        hashCode(JSON.stringify(job?.jd_json ?? {}))
+      ) {
+        await rescoreDbAction(job.id);
+        handleJobApplicationRefresh();
+      }
+    }
+  };
+
+  const handleJobApplicationRecalculate = async () => {
+    if (recruiter) {
+      await recalculateDbAction(job?.id);
+      handleJobApplicationRefresh();
+    }
+  };
+
   //SECONDARY
   const handleJobApplicationFilter = async (
     parameters: Parameters,
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => {
     setSearchParameters({ ...parameters });
     setAllApplicationsDisabled(true);
@@ -527,9 +544,9 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         job_id: jobId,
         ranges: ranges,
         sections: activeSections,
-        ...parameters
+        ...parameters,
       },
-      signal
+      signal,
     );
     setAllApplicationsDisabled(false);
     if (confirmation) {
@@ -539,7 +556,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     return {
       confirmation: false,
       // eslint-disable-next-line no-unused-vars
-      filteredCount: null as CountJobs
+      filteredCount: null as CountJobs,
     };
   };
 
@@ -552,7 +569,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       (prev) =>
         activeSections[
           (activeSections.indexOf(prev) + 1) % activeSections.length
-        ]
+        ],
     );
   };
 
@@ -575,18 +592,18 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             [a]: {
               checkList: {
                 list: new Set<string>(),
-                disabled: false
+                disabled: false,
               },
-              disabledList: new Set<string>()
-            }
-          }))
-        )
+              disabledList: new Set<string>(),
+            },
+          })),
+        ),
       );
       const confirmation = await handleJobApplicationRead({
         job_id: jobId,
         ranges: ranges,
         sections: activeSections,
-        ...searchParameters
+        ...searchParameters,
       });
       if (!confirmation) {
         const action: Action = {
@@ -596,13 +613,13 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             applicationData: Object.assign(
               {},
               ...activeSections.map((section) => ({
-                [section]: []
-              }))
+                [section]: [],
+              })),
             ) as {
               // eslint-disable-next-line no-unused-vars
               [key in JobApplicationSections]: JobApplication[];
-            }
-          }
+            },
+          },
         };
         dispatch(action);
         return false;
@@ -615,7 +632,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const handleJobApplicationNotFound = () => {
     const action: Action = {
-      type: ActionType.NOT_FOUND
+      type: ActionType.NOT_FOUND,
     };
     dispatch(action);
   };
@@ -630,28 +647,28 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             return { [s]: defaults };
           case JobApplicationSections.SCREENING:
             return {
-              [s]: defaults && section !== JobApplicationSections.NEW
+              [s]: defaults && section !== JobApplicationSections.NEW,
             };
           case JobApplicationSections.ASSESSMENT:
             return {
               [s]:
                 defaults &&
                 section !== JobApplicationSections.NEW &&
-                section !== JobApplicationSections.SCREENING
+                section !== JobApplicationSections.SCREENING,
             };
           case JobApplicationSections.INTERVIEW: {
             return {
-              [s]: defaults && section === JobApplicationSections.INTERVIEW
+              [s]: defaults && section === JobApplicationSections.INTERVIEW,
             };
           }
           case JobApplicationSections.QUALIFIED:
             return { [s]: defaults };
           case JobApplicationSections.DISQUALIFIED:
             return {
-              [s]: defaults && section === JobApplicationSections.DISQUALIFIED
+              [s]: defaults && section === JobApplicationSections.DISQUALIFIED,
             };
         }
-      })
+      }),
       // eslint-disable-next-line no-unused-vars
     ) as { [key in JobApplicationSections]: boolean };
   };
@@ -677,7 +694,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     refreshRef.current,
     searchParameters.search,
     searchParameters.sort.ascending,
-    searchParameters.sort.parameter
+    searchParameters.sort.parameter,
   ]);
 
   useEffect(() => {
@@ -688,6 +705,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const value = {
     applications,
+    handleJobApplicationRescore,
+    handleJobApplicationRecalculate,
     activeSections,
     setCardStates,
     cardStates,
@@ -714,7 +733,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     views,
     showDisqualificationEmailComponent,
     showAssessmentEmailComponent,
-    showScreeningEmailComponent
+    showScreeningEmailComponent,
   };
 
   return value;

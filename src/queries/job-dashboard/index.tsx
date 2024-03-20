@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -12,6 +12,12 @@ export const useJobSkills = () => {
   const { queryKey } = jobDashboardQueryKeys.skills({ job_id });
   const response = useQuery({ queryKey, queryFn: () => getSkillsPool(job_id) });
   return response;
+};
+
+export const useJobDashboardRefresh = () => {
+  const queryClient = useQueryClient();
+  const { queryKey } = jobDashboardQueryKeys.all;
+  return () => queryClient.invalidateQueries({ queryKey });
 };
 
 export const useJobLocations = () => {

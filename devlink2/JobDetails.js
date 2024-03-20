@@ -52,27 +52,6 @@ export function JobDetails({
             >
               {slotBreadcrumb ?? <Breadcrum />}
             </_Builtin.Block>
-            <_Builtin.Link
-              className={_utils.cx(
-                _styles,
-                "tablet-left-auto",
-                "no-underline",
-                "clickable",
-                "hide"
-              )}
-              button={false}
-              block="inline"
-              options={{
-                href: "#",
-              }}
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-blue-500", "text-no-wrap")}
-                tag="div"
-              >
-                {"View Job"}
-              </_Builtin.Block>
-            </_Builtin.Link>
             {isEmptyTextVisible ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "max-width-320")}

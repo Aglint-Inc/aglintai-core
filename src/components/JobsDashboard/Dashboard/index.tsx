@@ -18,6 +18,7 @@ import {
 } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import {
+  BannerLoading,
   DarkPill,
   DashboardAlert,
   EnableDisable,
@@ -99,11 +100,11 @@ const Dashboard = () => {
     job,
     matches: { data: counts },
     schedules: { data: schedule },
-    publishable,
-    draftValidity,
+    publishStatus: { settingsValidity, publishable },
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
+  const { handleJobApplicationRescore } = useJobApplications();
 
   const score_matches = getMatches(counts);
 
@@ -137,7 +138,9 @@ const Dashboard = () => {
 
   const handlePublish = async () => {
     if (publishable) {
-      return await handleJobPublish(job);
+      const response = await handleJobPublish(job);
+      if (response) await handleJobApplicationRescore();
+      return response;
     }
     toast.error('Unable to publish. Please check job details.');
   };
@@ -151,7 +154,7 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
-            isBanner={!draftValidity}
+            isBanner={!publishable}
             slotBanner={<Banners />}
             textTopMatchPercentage={score_matches.topMatch.percentage}
             textTopMatchCount={score_matches.topMatch.count}
@@ -194,7 +197,7 @@ const Dashboard = () => {
               <PublishButton onClick={async () => await handlePublish()} />
             }
             isPublish={job.status !== 'closed'}
-            isEditError={!draftValidity}
+            isEditError={!settingsValidity}
             onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
             slotCloseJobButton={
               <>
@@ -364,7 +367,38 @@ const Schedules = () => {
 };
 
 const Banners = () => {
-  return <DashboardAlert />;
+  const { publishStatus } = useJobDetails();
+  if (!publishStatus.settingsValidity)
+    return (
+      <DashboardAlert
+        textTitile={'Job details are incomplete'}
+        textShortDescription={
+          'To proceed, please ensure that all job details are provided correctly'
+        }
+      />
+    );
+  if (publishStatus.loading)
+    return (
+      <BannerLoading
+        slotLoader={
+          <CircularProgress
+            color='inherit'
+            size={'100%'}
+            sx={{ color: palette.grey[400] }}
+          />
+        }
+      />
+    );
+  if (!publishStatus.jdValidity)
+    return (
+      <DashboardAlert
+        textTitile={'Profile score is empty'}
+        textShortDescription={
+          'To proceed , please ensure that profile score is provided'
+        }
+      />
+    );
+  return <></>;
 };
 
 const JobClose = ({
@@ -600,7 +634,7 @@ const InterviewModule = () => {
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}
-      textName={'Interview Plan (Scheduler)'}
+      textName={'Interview Plan'}
       slotIcon={<SchedulingIcon />}
       slotEnableDisable={<></>}
     />
@@ -613,7 +647,7 @@ const ProfileScoreModule = () => {
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);
   };
-  const isAlert = status.generation_error;
+  const isAlert = status.jd_json_error;
   const isWarning =
     !isAlert && (status.description_changed || status.description_error);
   return (

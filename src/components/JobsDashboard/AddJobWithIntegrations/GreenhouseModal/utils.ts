@@ -256,7 +256,7 @@ export const createJobObject = async (
       location: post.location.name,
       job_title: post.title,
       status: 'draft',
-      scoring_param_status: 'loading',
+      scoring_criteria_loading: true,
       posted_by: POSTED_BY.GREENHOUSE,
       id: post.public_job_id,
       recruiter_id: recruiter.id,
