@@ -6,18 +6,21 @@ export type IntwerviewerPlanType = {
   profile_image: string;
 };
 
-export type InterviewSession = {
-  module_id: string;
-  module_name: string;
-  session_name: string;
-  duration: number;
+export type InterviewSession = Pick<
+  InterviewModuleApiType,
+  | 'module_id'
+  | 'module_name'
+  | 'session_name'
+  | 'duration'
+  | 'isBreak'
+  | 'meetingIntervCnt'
+  | 'meeting_type'
+> & {
   selectedIntervs: IntwerviewerPlanType[];
   shadowIntervs: IntwerviewerPlanType[];
   training_ints: IntwerviewerPlanType[];
   revShadowIntervs: IntwerviewerPlanType[];
   allIntervs: IntwerviewerPlanType[];
-  meetingIntervCnt: number;
-  isBreak: boolean;
 };
 
 export type InterviewPlanState = {
@@ -37,7 +40,12 @@ export type InterviewerDbType = Pick<InterviewerPlanApiType, 'interv_id'>;
 
 export type InterviewModuleDbType = Pick<
   InterviewModuleApiType,
-  'duration' | 'isBreak' | 'meetingIntervCnt' | 'module_id' | 'session_name'
+  | 'duration'
+  | 'isBreak'
+  | 'meetingIntervCnt'
+  | 'module_id'
+  | 'session_name'
+  | 'meeting_type'
 > & {
   selectedIntervs: InterviewerDbType[];
   shadowIntervs: InterviewerDbType[];
@@ -63,6 +71,11 @@ export type InterviewModuleApiType = {
   session_name: string;
   duration: number;
   selectedIntervs: InterviewerPlanApiType[];
+  meeting_type: {
+    provider_label: string;
+    value: 'google_meet' | 'zoom';
+    link: string;
+  };
   shadowIntervs: InterviewerPlanApiType[];
   revShadowIntervs: InterviewerPlanApiType[];
   meetingIntervCnt: number;

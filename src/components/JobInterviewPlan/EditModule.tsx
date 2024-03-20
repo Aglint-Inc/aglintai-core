@@ -7,7 +7,7 @@ import { InterviewPlanCard } from '@/devlink3';
 
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
 import { InterviewSession } from './types';
-import { filterAddedModules } from './utils';
+import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '../Common/MuiAvatar';
 import UISelect from '../Common/Uiselect';
 import UITextField from '../Common/UITextField';
@@ -22,7 +22,7 @@ const EditModule = ({
   onClose: any;
   isBreak: boolean;
   isEdit: boolean;
-  editModuleId: string;
+  editModuleId: number;
 }) => {
   const { allModules, modules } = useInterviewPlan();
   const [moduleform, setModule] = useState<InterviewSession>(initModule);
@@ -43,8 +43,8 @@ const EditModule = ({
     if (!isEdit) {
       modifModules = [...modules, moduleform];
     } else {
-      modifModules = modules.map((m) => {
-        if (m.module_id === editModuleId) {
+      modifModules = modules.map((m, idx) => {
+        if (idx === editModuleId) {
           return moduleform;
         } else return m;
       });
@@ -71,7 +71,7 @@ const EditModule = ({
   };
 
   const filteredModules = useMemo(() => {
-    return filterAddedModules(allModules, modules);
+    return allModules;
   }, []);
   return (
     <InterviewPlanCard
@@ -81,6 +81,7 @@ const EditModule = ({
       isQualifiedMemberVisible={!moduleform.isBreak}
       isReverseShadowVisible={!moduleform.isBreak}
       isShadowMemberVisible={!moduleform.isBreak}
+      isScheduleTypeVisible={!moduleform.isBreak}
       slotInterviewModuleInput={
         <>
           <Autocomplete
@@ -130,6 +131,32 @@ const EditModule = ({
               });
             }}
             value={String(moduleform.duration)}
+          />
+        </>
+      }
+      slotScheduleTypeInput={
+        <>
+          <AvatarSelectDropDown
+            defaultValue='google_meet'
+            menuOptions={[
+              {
+                name: 'Google Meet',
+                value: 'google_meet',
+                start_icon_url: '/images/svg/google_meet.svg',
+              },
+            ]}
+            showMenuIcons
+            onChange={() => {
+              setModule((prev) => {
+                prev.meeting_type = {
+                  link: '/images/svg/google_meet.svg',
+                  provider_label: 'Google Meet',
+                  value: 'google_meet',
+                };
+                return { ...prev };
+              });
+            }}
+            value={moduleform.meeting_type.value}
           />
         </>
       }

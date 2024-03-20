@@ -28,10 +28,11 @@ const JobInterviewPlan = () => {
     jobId,
     syncStatus,
   } = useInterviewPlan((state) => state);
-  const [editModuleId, setEditModuleId] = useState('');
+  const [editModuleId, setEditModuleId] = useState(-1);
   const [newModule, setNewModule] = useState<InterviewSession | null>(null);
   const router = useRouter();
   const handleDragEnd = (result) => {
+    if (editModuleId !== -1) return;
     const { source, type, destination } = result;
     if (!destination) return;
     let sourceIdx = Number(source.index);
@@ -74,6 +75,7 @@ const JobInterviewPlan = () => {
       revShadowIntervs: [],
       shadowIntervs: [],
       training_ints: [],
+      meeting_type: null,
     };
     for (let i = 1; i < modules.length; ++i) {
       if (!modules[Number(i)].isBreak && !modules[Number(i - 1)].isBreak) {
@@ -160,6 +162,7 @@ const JobInterviewPlan = () => {
                                 key={module.module_id}
                                 editModuleId={editModuleId}
                                 setEditModuleId={setEditModuleId}
+                                currModuleIdx={idx}
                               />
                             </Drag>
                           );

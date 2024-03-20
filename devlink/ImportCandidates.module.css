@@ -345,6 +345,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .tabs-content-4 {
   overflow: visible;
   width: 700px;

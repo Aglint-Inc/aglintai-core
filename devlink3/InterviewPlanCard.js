@@ -23,6 +23,8 @@ export function InterviewPlanCard({
   slotReverseShadowMemberList,
   slotRsSearch,
   isReverseShadowVisible = true,
+  slotScheduleTypeInput,
+  isScheduleTypeVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-745")} tag="div">
@@ -46,6 +48,20 @@ export function InterviewPlanCard({
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotDurationInput}</_Builtin.Block>
       </_Builtin.Block>
+      {isScheduleTypeVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-746")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Schedule Type"}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotScheduleTypeInput}</_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
       {isInterviewModuleVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-746")}

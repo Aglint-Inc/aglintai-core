@@ -75,6 +75,7 @@ export const handleUpdateDb = async ({
         revShadowInterv: clModule.revShadowIntervs.map((i) => ({
           interv_id: i.interv_id,
         })),
+        meeting_type: clModule.meeting_type,
         duration: clModule.duration,
         isBreak: clModule.isBreak,
         meetingIntervCnt: clModule.meetingIntervCnt,

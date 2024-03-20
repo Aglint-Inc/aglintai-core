@@ -58,6 +58,11 @@ const JobInterviewPlanHoc = ({ children }) => {
           session_name: '',
           revShadowIntervs: [],
           shadowIntervs: [],
+          meeting_type: {
+            link: '/images/svg/google_meet.svg',
+            provider_label: 'Google Meet',
+            value: 'google_meet',
+          },
         };
 
         intMod.training_ints = intModule.relations
@@ -122,6 +127,11 @@ const JobInterviewPlanHoc = ({ children }) => {
           allIntervs: intModule?.allIntervs ?? [], //break
           session_name: dbModule?.session_name ?? '',
           training_ints: [],
+          meeting_type: {
+            link: '/images/svg/google_meet.svg',
+            provider_label: 'Google Meet',
+            value: 'google_meet',
+          },
           revShadowIntervs: dbModule.revShadowInterv
             .filter((r) =>
               allTeamMembers.find((m) => m.interv_id === r.interv_id),
