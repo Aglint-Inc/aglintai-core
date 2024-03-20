@@ -26,7 +26,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         .then(() => {});
       setShowThanks(true);
     } else {
-      toast.error('Please enter name!');
+      toast.error('Please enter tool name!');
     }
   }
 

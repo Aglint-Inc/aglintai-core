@@ -229,7 +229,7 @@ function ATSTools() {
     if (source === 'lever') {
       setLoading(true);
       setIsOpen(true);
-      setReason('connect_lever');
+      setReason('update_lever');
       await axios
         .post(`/api/decryptApiKey`, {
           encryptData: recruiter.lever_key,
@@ -287,7 +287,7 @@ function ATSTools() {
       logo: <LeverLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.lever_key ? 'Edit' : 'Connect'}
+          primaryText={recruiter?.lever_key ? 'Edit API key' : 'Connect'}
           secondaryText={recruiter?.lever_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -309,7 +309,7 @@ function ATSTools() {
       logo: <AshbyLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.ashby_key ? 'Edit' : 'Connect'}
+          primaryText={recruiter?.ashby_key ? 'Edit API key' : 'Connect'}
           secondaryText={recruiter?.ashby_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
