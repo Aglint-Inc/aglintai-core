@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import dayjs, { Dayjs } from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -15,58 +16,48 @@ import {
   InterDetailsType,
   IntervMeta,
   TimeDurationDayjsType,
-  TimeDurationType
+  TimeDurationType,
 } from './types';
 import {
   fetchCalenderEvents,
   fetchCalenderEventsCompanyCred,
-  refreshTokenIfNeeded
+  refreshTokenIfNeeded,
 } from './utils';
-import { NewCalenderEvent } from '../schedule-utils/types';
 
 // returns users calender events on there timezone ,given respective start_date and end_date
 export const findInterviewersEvents = async (
   company_cred: CompServiceKeyCred,
   ints_meta: IntervMeta[],
   start_date: string,
-  end_date: string
+  end_date: string,
 ) => {
   const promiseArr = ints_meta.map(async (int) => {
-    const userTimeZone = int.shedule_settings.timeZone.tzCode;
-
-    const inter_start_time = getUserTimeZoneDate(
-      start_date,
-      userTimeZone,
-      true
-    );
-    const inter_end_time = getUserTimeZoneDate(end_date, userTimeZone, false);
-
     let newInt: InterDetailsType = {
       ...int,
       events: [],
       freeTimes: [],
-      isCalenderConnected: false
+      isCalenderConnected: false,
     };
     try {
       if (newInt.tokens) {
         let tokens_date = await refreshTokenIfNeeded(
           newInt.tokens,
-          int.interviewer_id
+          int.interviewer_id,
         );
 
         const calenderEvents = await fetchCalenderEvents(
           tokens_date.access_token,
           tokens_date.refresh_token,
-          inter_start_time,
-          inter_end_time
+          start_date,
+          end_date,
         );
         newInt.events = calenderEvents;
       } else {
         newInt.events = await fetchCalenderEventsCompanyCred(
           company_cred,
           newInt.email,
-          inter_start_time,
-          inter_end_time
+          start_date,
+          end_date,
         );
       }
       newInt.isCalenderConnected = true;
@@ -87,31 +78,23 @@ export const findEachInterviewerFreeTimes = async (
   company_cred: CompServiceKeyCred,
   ints_meta: IntervMeta[],
   start_date: string,
-  end_date: string
+  end_date: string,
 ) => {
   const intervs_details_with_events = await findInterviewersEvents(
     company_cred,
     ints_meta,
     start_date,
-    end_date
+    end_date,
   );
   const updated_intervs_details = cloneDeep(intervs_details_with_events);
   for (let interv of updated_intervs_details) {
     if (!interv.isCalenderConnected) {
       interv.freeTimes = [];
     } else {
-      // const userTimeZone = interv.shedule_settings.timeZone.tzCode;
-
-      // const user_start_date = getUserTimeZoneDate(
-      //   start_date,
-      //   userTimeZone,
-      //   true
-      // );
-      // const user_end_date = getUserTimeZoneDate(end_date, userTimeZone, false);
       interv.freeTimes = findInterviewerFreeTime(
         interv,
         dayjs(start_date),
-        dayjs(end_date)
+        dayjs(end_date),
       );
     }
   }
@@ -121,20 +104,20 @@ export const findEachInterviewerFreeTimes = async (
 const findInterviewerFreeTime = (
   interviewer: InterDetailsType,
   start_date: Dayjs,
-  end_date: Dayjs
+  end_date: Dayjs,
 ) => {
   const findFreeTimeForTheDay = (current_day: Dayjs): TimeDurationType[] => {
     //is current day holiday
     if (
       interviewer.shedule_settings.totalDaysOff.find((holiday: holidayType) =>
-        current_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date')
+        current_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date'),
       )
     ) {
       return [];
     }
 
     const work_day = interviewer.shedule_settings.workingHours.find(
-      (day) => current_day.format('dddd').toLowerCase() === day.day
+      (day) => current_day.format('dddd').toLowerCase() === day.day,
     );
 
     // is day week off
@@ -148,31 +131,55 @@ const findInterviewerFreeTime = (
         startTime: chageTimeInDay(
           current_day,
           work_day.timeRange.startTime,
-          interviewer.shedule_settings.timeZone.tzCode
+          interviewer.shedule_settings.timeZone.tzCode,
         ),
         endTime: chageTimeInDay(
           current_day,
           work_day.timeRange.endTime,
-          interviewer.shedule_settings.timeZone.tzCode
-        )
-      }
+          interviewer.shedule_settings.timeZone.tzCode,
+        ),
+      },
     ];
 
-    let day_free_times: TimeDurationType[] = [];
-    day_free_times = minusEventsTimeInWorkHours(
-      work_time_duration,
-      interviewer.events.filter((cal_event) => {
+    let current_day_blocked_times: TimeDurationDayjsType[] = interviewer.events
+      .filter((cal_event) => {
         return (
           current_day.isSame(dayjs(cal_event.start.dateTime), 'date') ||
           current_day.isSame(dayjs(cal_event.end.dateTime), 'date')
         );
       })
+      .map((ev) => {
+        return {
+          startTime: dayjs(ev.start.dateTime),
+          endTime: dayjs(ev.end.dateTime),
+        };
+      });
+
+    let curr_user_time = dayjs().tz(
+      interviewer.shedule_settings.timeZone.tzCode,
+    );
+
+    if (current_day.isBefore(curr_user_time, 'day')) {
+      return [];
+    }
+    if (current_day.isSame(curr_user_time, 'day')) {
+      current_day_blocked_times.push({
+        startTime: dayjs(current_day),
+        endTime: dayjs(curr_user_time),
+      });
+    }
+
+    let day_free_times: TimeDurationType[] = [];
+    day_free_times = minusEventsTimeInWorkHours(
+      work_time_duration,
+      current_day_blocked_times,
     );
     return day_free_times;
   };
 
   let free_times: TimeDurationType[] = [];
   let current_date = start_date;
+
   while (!current_date.isAfter(end_date, 'day')) {
     let curr_day_free_times = findFreeTimeForTheDay(current_date);
     free_times = [...free_times, ...curr_day_free_times];
@@ -192,84 +199,217 @@ const chageTimeInDay = (current_day: Dayjs, time: string, timeZone: string) => {
 
 const minusEventsTimeInWorkHours = (
   work_hours_range: TimeDurationType[],
-  calend_events: NewCalenderEvent[]
+  curr_day_blocked_times: TimeDurationDayjsType[],
 ): TimeDurationType[] => {
   const work_hours = cloneDeep(work_hours_range);
-  if (calend_events.length === 0) {
+  if (curr_day_blocked_times.length === 0) {
     return work_hours;
   }
 
-  const work_hr_chunks: TimeDurationDayjsType[] = work_hours_range.map(
-    (work) => {
+  const work_hr_chunks: TimeDurationDayjsType[] = work_hours_range
+    .map((work) => {
       return {
+        startTime: dayjs(work.startTime),
         endTime: dayjs(work.endTime),
-        startTime: dayjs(work.startTime)
-      };
-    }
-  );
-  const cal_events_times: TimeDurationDayjsType[] = calend_events
-    .map((ev) => {
-      return {
-        startTime: dayjs(ev.start.dateTime),
-        endTime: dayjs(ev.end.dateTime)
       };
     })
     .sort((e1, e2) => {
       return e1.startTime.diff(e2.startTime);
     });
+  const cal_events_times: TimeDurationDayjsType[] = curr_day_blocked_times.sort(
+    (e1, e2) => {
+      return e1.startTime.diff(e2.startTime);
+    },
+  );
+
+  // work_hr_chunks.forEach((e) => {
+  //   console.log(dayjs(e.startTime).format('YYYY-MM-DDTHH:mmZ'));
+  //   // console.log(dayjs(e.endTime).format('YYYY-MM-DDTHH:mmZ'));
+  // });
+  // cal_events_times.forEach((e) => {
+  //   console.log(dayjs(e.startTime).format('YYYY-MM-DDTHH:mmZ'));
+  //   console.log(dayjs(e.endTime).format('YYYY-MM-DDTHH:mmZ'));
+  // });
 
   const free_times: TimeDurationType[] = [];
 
-  for (let work_hour of work_hr_chunks) {
-    let currtime = work_hour.startTime;
-    let eventIdx = 0;
-    while (
-      currtime.isBefore(work_hour.endTime) &&
-      eventIdx < cal_events_times.length
+  let workhr_idx = 0;
+  let cal_evt_idx = 0;
+  let curr_freetime_chunk: TimeDurationDayjsType = {
+    startTime: work_hr_chunks[0].startTime,
+    endTime: work_hr_chunks[0].endTime,
+  };
+
+  while (
+    workhr_idx < work_hr_chunks.length &&
+    cal_evt_idx < cal_events_times.length
+  ) {
+    // case 1
+    if (
+      curr_freetime_chunk.startTime.isAfter(
+        cal_events_times[cal_evt_idx].endTime,
+        'minutes',
+      )
     ) {
-      let cal_event = cal_events_times[Number(eventIdx)];
-      if (currtime.isBefore(cal_event.startTime)) {
-        // current time comes before cal_event
-        //gap betwwen curr time and cal event
-        let free_time: TimeDurationType = {
-          startTime: currtime.toISOString(),
-          endTime: cal_event.startTime.toISOString()
+      cal_evt_idx++;
+    }
+
+    // case 2
+    else if (
+      curr_freetime_chunk.endTime.isSameOrBefore(
+        cal_events_times[cal_evt_idx].startTime,
+        'minutes',
+      )
+    ) {
+      free_times.push({
+        startTime: curr_freetime_chunk.startTime.toISOString(),
+        endTime: curr_freetime_chunk.endTime.toISOString(),
+      });
+      workhr_idx++;
+      if (workhr_idx < work_hr_chunks.length) {
+        curr_freetime_chunk = {
+          startTime: work_hr_chunks[workhr_idx].startTime,
+          endTime: work_hr_chunks[workhr_idx].endTime,
         };
-        free_times.push(free_time);
-        currtime = cal_event.endTime;
-      } else if (cal_event.startTime.isAfter(currtime)) {
-        // don know this case  may be not required ??
-        // currtime = cal_event.endTime;
-      } else if (
-        cal_event.endTime.isAfter(work_hour.startTime) &&
-        currtime.isAfter(cal_event.startTime)
-      ) {
-        // event is overlapping on previous event
-        currtime = cal_event.endTime;
       }
-      eventIdx++;
     }
 
-    if (currtime.isBefore(work_hour.endTime)) {
-      let free_time: TimeDurationType = {
-        startTime: currtime.toISOString(),
-        endTime: work_hour.endTime.toISOString()
-      };
-      free_times.push(free_time);
+    // case 3
+    else if (
+      curr_freetime_chunk.startTime.isSameOrAfter(
+        cal_events_times[cal_evt_idx].startTime,
+      ) &&
+      curr_freetime_chunk.endTime.isSameOrAfter(
+        cal_events_times[cal_evt_idx].endTime,
+      )
+    ) {
+      curr_freetime_chunk.startTime = cal_events_times[cal_evt_idx].endTime;
+      cal_evt_idx++;
+    }
+
+    // case 4
+    else if (
+      curr_freetime_chunk.startTime.isSameOrBefore(
+        cal_events_times[cal_evt_idx].startTime,
+        'minutes',
+      ) &&
+      curr_freetime_chunk.endTime.isSameOrBefore(
+        cal_events_times[cal_evt_idx].endTime,
+        'minutes',
+      )
+    ) {
+      free_times.push({
+        startTime: curr_freetime_chunk.startTime.toISOString(),
+        endTime: cal_events_times[cal_evt_idx].startTime.toISOString(),
+      });
+      workhr_idx++;
+      if (workhr_idx < work_hr_chunks.length) {
+        curr_freetime_chunk = {
+          startTime: work_hr_chunks[workhr_idx].startTime,
+          endTime: work_hr_chunks[workhr_idx].endTime,
+        };
+      }
+      cal_evt_idx++;
+    }
+
+    // case 5
+    else if (
+      curr_freetime_chunk.startTime.isSameOrAfter(
+        cal_events_times[cal_evt_idx].startTime,
+        'minutes',
+      ) &&
+      curr_freetime_chunk.endTime.isSameOrBefore(
+        cal_events_times[cal_evt_idx].endTime,
+        'minutes',
+      )
+    ) {
+      workhr_idx++;
+      if (workhr_idx < work_hr_chunks.length) {
+        curr_freetime_chunk = {
+          startTime: work_hr_chunks[workhr_idx].startTime,
+          endTime: work_hr_chunks[workhr_idx].endTime,
+        };
+      }
+    }
+    // case 6
+    else if (
+      curr_freetime_chunk.startTime.isBefore(
+        cal_events_times[cal_evt_idx].startTime,
+        'minutes',
+      ) &&
+      curr_freetime_chunk.endTime.isAfter(
+        cal_events_times[cal_evt_idx].endTime,
+        'minutes',
+      )
+    ) {
+      free_times.push({
+        startTime: curr_freetime_chunk.startTime.toISOString(),
+        endTime: cal_events_times[cal_evt_idx].startTime.toISOString(),
+      });
+      curr_freetime_chunk.startTime = cal_events_times[cal_evt_idx].endTime;
+
+      cal_evt_idx++;
+    }
+
+    // case 7
+    else if (
+      curr_freetime_chunk.startTime.isSame(
+        cal_events_times[cal_evt_idx].startTime,
+        'minutes',
+      ) &&
+      curr_freetime_chunk.endTime.isSame(
+        cal_events_times[cal_evt_idx].endTime,
+        'minutes',
+      )
+    ) {
+      workhr_idx++;
+      if (workhr_idx < work_hr_chunks.length) {
+        curr_freetime_chunk = {
+          startTime: work_hr_chunks[workhr_idx].startTime,
+          endTime: work_hr_chunks[workhr_idx].endTime,
+        };
+      }
+      cal_evt_idx++;
+    }
+
+    // if (
+    //   cal_events_times[cal_evt_idx].startTime.isSameOrBefore(
+    //     curr_freetime_chunk.startTime,
+    //     'minutes',
+    //   ) &&
+    //   cal_events_times[cal_evt_idx].endTime.isSameOrBefore(
+    //     curr_freetime_chunk.endTime,
+    //     'minutes',
+    //   )
+    // ) {
+    //   cal_evt_idx++;
+    // }
+
+    // if (
+    //   cal_events_times[cal_evt_idx].startTime.isAfter(
+    //     work_hr_chunks[workhr_idx].startTime,
+    //     'minutes',
+    //   ) &&
+    //   cal_events_times[cal_evt_idx].endTime.isSameOrBefore(
+    //     work_hr_chunks[workhr_idx].endTime,
+    //     'minutes',
+    //   )
+    // ) {
+    //   //
+    // }
+  }
+  if (workhr_idx < work_hours_range.length) {
+    free_times.push({
+      startTime: curr_freetime_chunk.startTime.toISOString(),
+      endTime: curr_freetime_chunk.endTime.toISOString(),
+    });
+    for (let i = workhr_idx + 1; i < work_hr_chunks.length; ++i) {
+      free_times.push({
+        startTime: work_hr_chunks[i].startTime.toISOString(),
+        endTime: work_hr_chunks[i].endTime.toISOString(),
+      });
     }
   }
+
   return free_times;
-};
-
-const getUserTimeZoneDate = (user_date, userTimeZone, isStartTime = true) => {
-  const d1 = dayjs(user_date);
-  let d: Dayjs;
-
-  d = d1.tz(userTimeZone);
-  if (isStartTime) {
-    d = d.startOf('day');
-  } else {
-    d = d.endOf('day');
-  }
-  return d.format();
 };
