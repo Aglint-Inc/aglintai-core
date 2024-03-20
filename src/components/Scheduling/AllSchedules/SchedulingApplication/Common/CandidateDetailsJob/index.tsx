@@ -61,7 +61,13 @@ function CandidateDetailsJobDrawer({
       >
         <CandidateSideDrawer
           textAppliedOn={dayjs(applications.created_at).format('DD MMM YYYY')}
-          isNavigationButtonVisible={false}
+          isNavigationButtonVisible={true}
+          isLeftRightVisible={false}
+          onClickClose={{
+            onClick: () => {
+              setIsViewProfileOpen(false);
+            }
+          }}
           slotSocialLink={
             <>
               {candidate.linkedin && (

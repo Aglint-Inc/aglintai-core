@@ -23,4 +23,5 @@ declare function CandidateSideDrawer(props: {
   isLocationRoleVisible?: Types.Visibility.VisibilityConditions;
   slotSocialLink?: Types.Devlink.Slot;
   isNavigationButtonVisible?: Types.Visibility.VisibilityConditions;
+  isLeftRightVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
