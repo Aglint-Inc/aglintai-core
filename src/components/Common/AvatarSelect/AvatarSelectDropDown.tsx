@@ -1,6 +1,8 @@
 import { MenuItem, TextField } from '@mui/material';
 import React from 'react';
 
+import { getFullName } from '@/src/utils/jsonResume';
+
 import MuiAvatar from '../MuiAvatar';
 type MenuOption = {
   name: string;
@@ -56,11 +58,11 @@ const AvatarSelectDropDown = ({
                 level={menu.name}
                 variant='circular'
                 fontSize='10px'
-                height='25px'
-                width='25px'
+                height='18px'
+                width='18px'
               />
             )}
-            {menu.name}
+            {getFullName(menu.name, '')}
           </MenuItem>
         ))}
       </TextField>
