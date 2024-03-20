@@ -4,7 +4,7 @@ import {
   IconButton,
   Popover,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
@@ -26,7 +26,7 @@ import {
   RcCheckbox,
   TimeRangeInput,
   WorkingHourDay,
-  WorkingHours
+  WorkingHours,
 } from '@/devlink2';
 import toast from '@/src/utils/toast';
 
@@ -38,7 +38,7 @@ import {
   DailyLimitType,
   holidayType,
   schedulingSettingType,
-  WeeklyLimitType
+  WeeklyLimitType,
 } from './types';
 import { hoursList } from './utils';
 import { settingSubNavItem } from '../SubNav/utils';
@@ -53,18 +53,18 @@ let changeValue = null;
 function SchedulingSettings({
   updateSettings,
   initialData,
-  isOverflow = true
+  isOverflow = true,
 }) {
   const eventRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
-    value: 2
+    value: 2,
   });
   const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
     useState<DailyLimitType>({
       type: 'Hours',
-      value: 16
+      value: 16,
     });
 
   const [workingHours, setWorkingHours] = useState([]);
@@ -145,7 +145,7 @@ function SchedulingSettings({
   function initialLoad() {
     if (initialData) {
       const schedulingSettingData = cloneDeep(
-        initialData
+        initialData,
       ) as schedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
@@ -155,16 +155,16 @@ function SchedulingSettings({
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
       setSelectedDailyLimit({
-        ...schedulingSettingData.interviewLoad.dailyLimit
+        ...schedulingSettingData.interviewLoad.dailyLimit,
       });
       setSelectedWeeklyLimit({
-        ...schedulingSettingData.interviewLoad.weeklyLimit
+        ...schedulingSettingData.interviewLoad.weeklyLimit,
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff] as holidayType[]);
       setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
       setSoftConflictsKeyWords(
-        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || []
+        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
       );
     }
   }
@@ -174,16 +174,16 @@ function SchedulingSettings({
       schedulingSettingObj = {
         interviewLoad: {
           dailyLimit: selectedDailyLimit,
-          weeklyLimit: selectedWeeklyLimit
+          weeklyLimit: selectedWeeklyLimit,
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
         totalDaysOff: daysOff,
         schedulingKeyWords: {
           free: freeKeyWords,
-          SoftConflicts: softConflictsKeyWords
+          SoftConflicts: softConflictsKeyWords,
         },
-        isAutomaticTimezone: isTimeZone
+        isAutomaticTimezone: isTimeZone,
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -200,7 +200,7 @@ function SchedulingSettings({
     selectedTimeZone,
     freeKeyWords,
     softConflictsKeyWords,
-    isTimeZone
+    isTimeZone,
   ]);
 
   useEffect(() => {
@@ -210,7 +210,14 @@ function SchedulingSettings({
       changeValue = null;
     };
   }, []);
+
   const router = useRouter();
+
+  const compareDates = (a: holidayType, b: holidayType) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return Number(dateA) - Number(dateB);
+  };
   return (
     <Stack overflow={isOverflow ? 'auto' : 'visible'}>
       <ShowCode>
@@ -251,7 +258,7 @@ function SchedulingSettings({
                         placeholder='Ex. Healthcare'
                         InputProps={{
                           ...params.InputProps,
-                          autoComplete: 'new-password'
+                          autoComplete: 'new-password',
                         }}
                       />
                     );
@@ -278,7 +285,7 @@ function SchedulingSettings({
 
                                     return [...data];
                                   });
-                                }
+                                },
                               }}
                               isChecked={day.isWorkDay}
                               text={capitalize(day.day)}
@@ -292,14 +299,14 @@ function SchedulingSettings({
                                     .set(
                                       'hour',
                                       parseInt(
-                                        day.timeRange.startTime.split(':')[0]
-                                      )
+                                        day.timeRange.startTime.split(':')[0],
+                                      ),
                                     )
                                     .set(
                                       'minute',
                                       parseInt(
-                                        day.timeRange.startTime.split(':')[1]
-                                      )
+                                        day.timeRange.startTime.split(':')[1],
+                                      ),
                                     )}
                                   onSelect={selectStartTime}
                                   i={i}
@@ -311,14 +318,14 @@ function SchedulingSettings({
                                     .set(
                                       'hour',
                                       parseInt(
-                                        day.timeRange.endTime.split(':')[0]
-                                      )
+                                        day.timeRange.endTime.split(':')[0],
+                                      ),
                                     )
                                     .set(
                                       'minute',
                                       parseInt(
-                                        day.timeRange.endTime.split(':')[1]
-                                      )
+                                        day.timeRange.endTime.split(':')[1],
+                                      ),
                                     )}
                                   onSelect={selectEndTime}
                                   i={i}
@@ -339,8 +346,8 @@ function SchedulingSettings({
                   if (e) {
                     setSelectedTimeZone(
                       timeZones.filter((item) =>
-                        item.label.includes(dayjs.tz.guess())
-                      )[0]
+                        item.label.includes(dayjs.tz.guess()),
+                      )[0],
                     );
                   }
                 }}
@@ -353,12 +360,12 @@ function SchedulingSettings({
           <CompanyDayOff
             slotDayOff={
               <>
-                {daysOff.map((item, i) => {
+                {daysOff.sort(compareDates).map((item, i) => {
                   return (
                     <DayOff
                       isEditVisible={false}
                       onClickRemove={{
-                        onClick: () => removeDayOff(item.date)
+                        onClick: () => removeDayOff(item.date),
                       }}
                       key={i}
                       textDate={item.date}
@@ -373,7 +380,7 @@ function SchedulingSettings({
                   onClose={handleClose}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left'
+                    horizontal: 'left',
                   }}
                 >
                   <Stack width={300} gap={1} p={2}>
@@ -408,9 +415,9 @@ function SchedulingSettings({
                               ...pre,
                               {
                                 date: selectedDate,
-                                event_name: eventRef.current.value
-                              }
-                            ] as holidayType[]
+                                event_name: eventRef.current.value,
+                              },
+                            ] as holidayType[],
                         );
                         handleClose();
                       }}
@@ -422,7 +429,7 @@ function SchedulingSettings({
               </>
             }
             onClickAddDate={{
-              onClick: openAddCompany
+              onClick: openAddCompany,
             }}
           />
         </ShowCode.When>
@@ -500,7 +507,7 @@ function SchedulingSettings({
                           });
                         }}
                         sx={{
-                          p: '5px'
+                          p: '5px',
                         }}
                         deleteIcon={
                           <IconButton>
@@ -551,7 +558,7 @@ function SchedulingSettings({
                           });
                         }}
                         sx={{
-                          p: '5px'
+                          p: '5px',
                         }}
                         deleteIcon={
                           <IconButton>
