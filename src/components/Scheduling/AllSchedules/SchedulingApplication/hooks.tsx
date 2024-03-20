@@ -16,6 +16,7 @@ import {
   setMembers,
   setScheduleName,
   setSchedulingOptions,
+  setSelCoordinator,
   setSelectedApplication,
   setStep,
   useSchedulingApplicationStore,
@@ -78,6 +79,9 @@ export const useSendInviteForCandidate = () => {
   const scheduleName = useSchedulingApplicationStore(
     (state) => state.scheduleName,
   );
+  const selCoordinator = useSchedulingApplicationStore(
+    (state) => state.selCoordinator,
+  );
 
   const sendToCandidate = async ({
     allPlans,
@@ -107,6 +111,7 @@ export const useSendInviteForCandidate = () => {
               start_date: dateRange.start_date,
               end_date: dateRange.end_date,
             },
+            coordinator_id: selCoordinator,
           })
           .select();
 
@@ -135,6 +140,7 @@ export const useSendInviteForCandidate = () => {
 export const useGetScheduleApplication = () => {
   const router = useRouter();
   const currentDate = dayjs();
+  const { recruiter } = useAuthDetails();
   const threeDays = currentDate.add(1, 'day');
   const fetchInterviewDataByApplication = async () => {
     try {
@@ -185,14 +191,17 @@ export const useGetScheduleApplication = () => {
           application?.public_jobs?.interview_plan.coordinator.interv_id,
         );
 
-        const resMem = await axios.post('/api/scheduling/fetchdbusers', {
-          user_ids: [...new Set(userIds)],
+        const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
+          recruiter_id: recruiter.id,
         });
 
         if (resMem?.data?.length > 0) {
           setMembers(resMem.data);
         }
         setSelectedApplication(application);
+        setSelCoordinator(
+          application.public_jobs.interview_plan.coordinator.interv_id,
+        );
       }
     } catch (error) {
       toast.error('Error fetching interview data');

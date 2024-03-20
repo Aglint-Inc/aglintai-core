@@ -5,26 +5,27 @@ import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY,
 );
+
+export interface BodyParamsFetchUserDetails {
+  recruiter_id: string;
+}
+
+export type ApiResponseFetchUserDetails = ReturnType<typeof fetchUsers>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { recruiter_id } = req.body;
+    const { recruiter_id } = req.body as BodyParamsFetchUserDetails;
     const { data, error } = await supabase
       .from('recruiter_relation')
       .select()
       .eq('recruiter_id', recruiter_id);
     if (!error && data.length) {
       const userIds = data.map((item) => item.user_id);
-      const { data: users, error: userError } = await supabase
-        .from('recruiter_user')
-        .select(
-          'user_id, first_name, last_name, email, profile_image, position'
-        )
-        .in('user_id', userIds);
-      if (!userError && users.length) {
-        return res.status(200).json(users);
+      const resUsers = await fetchUsers(userIds);
+      if (resUsers.data) {
+        return res.status(200).json(resUsers.data);
       }
     } else {
       return res.status(200).json([]);
@@ -35,3 +36,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+const fetchUsers = async (user_ids: string[]) => {
+  const { data: users, error: userError } = await supabase
+    .from('recruiter_user')
+    .select('user_id, first_name, last_name, email, profile_image, position')
+    .in('user_id', user_ids);
+
+  return { data: users, error: userError };
+};

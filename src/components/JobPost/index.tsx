@@ -2,7 +2,6 @@
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
@@ -276,10 +275,10 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 <CompanyListingLinks
                   key={ind}
                   slotIcon={
-                    <Image
+                    <Avatar
+                      variant='rounded'
+                      sx={{ width: '16px', height: '16px' }}
                       src={`${process.env.NEXT_PUBLIC_HOST_NAME}/images/logo/${soc[0]}.svg`}
-                      height={16}
-                      width={16}
                       alt=''
                     />
                   }

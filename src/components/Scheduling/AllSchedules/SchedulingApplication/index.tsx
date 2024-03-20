@@ -11,17 +11,18 @@ import NotScheduledApplication from './NotScheduled';
 import PendingConfirmed from './Pending';
 import {
   resetSchedulingApplicationState,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from './store';
 
 function SchedulingApplication() {
   const router = useRouter();
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const scheduleName = useSchedulingApplicationStore(
-    (state) => state.scheduleName
+    (state) => state.scheduleName,
   );
+
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ function SchedulingApplication() {
         onClickBack={{
           onClick: () => {
             window.history.back();
-          }
+          },
         }}
         isBackButton={true}
         slotTopbarLeft={

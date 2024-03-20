@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import { ButtonPrimaryRegular } from '@/devlink';
 import { ScheduleOptions } from '@/devlink2';
+import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -14,6 +15,7 @@ import { useGetScheduleOptions } from '../../hooks';
 import {
   setDateRange,
   setScheduleName,
+  setSelCoordinator,
   useSchedulingApplicationStore,
 } from '../../store';
 
@@ -27,12 +29,37 @@ function GetScheduleOptions() {
     (state) => state.scheduleName,
   );
   const dateRange = useSchedulingApplicationStore((state) => state.dateRange);
+  const members = useSchedulingApplicationStore((state) => state.members);
+  const fetchingPlan = useSchedulingApplicationStore(
+    (state) => state.fetchingPlan,
+  );
+
+  const selCoordinator = useSchedulingApplicationStore(
+    (state) => state.selCoordinator,
+  );
 
   const { findScheduleOptions, noOptions } = useGetScheduleOptions();
 
   return (
     <ScheduleOptions
-      slotInterviewCordinator={''}
+      slotInterviewCordinator={
+        !fetchingPlan && (
+          <AvatarSelectDropDown
+            onChange={(e) => {
+              const cord = members.find((t) => t.user_id === e.target.value);
+              setSelCoordinator(cord.user_id);
+            }}
+            menuOptions={members?.map((m) => ({
+              name: m.first_name,
+              value: m.user_id,
+              start_icon_url: m.profile_image,
+            }))}
+            showMenuIcons
+            value={selCoordinator}
+            defaultValue={members[0]?.user_id}
+          />
+        )
+      }
       isNoOptionsFoundVisible={noOptions}
       slotCandidateImage={
         <MuiAvatar

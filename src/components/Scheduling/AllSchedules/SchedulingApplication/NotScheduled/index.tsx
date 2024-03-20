@@ -31,6 +31,7 @@ dayjs.extend(timezone);
 
 function NotScheduledApplication() {
   const router = useRouter();
+  const { sendToCandidate } = useSendInviteForCandidate();
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication,
   );
@@ -51,17 +52,16 @@ function NotScheduledApplication() {
   const schedulingOptions = useSchedulingApplicationStore(
     (state) => state.schedulingOptions,
   );
+  const selCoordinator = useSchedulingApplicationStore(
+    (state) => state.selCoordinator,
+  );
 
   const allPlans = useMemo(() => {
     return selectedApplication?.public_jobs?.interview_plan?.plan;
   }, [selectedApplication?.public_jobs?.interview_plan?.plan]);
 
-  const { sendToCandidate } = useSendInviteForCandidate();
-
   const coordinator = members.find(
-    (member) =>
-      member.user_id ===
-      selectedApplication?.public_jobs?.interview_plan?.coordinator?.interv_id,
+    (member) => member.user_id === selCoordinator,
   );
 
   const schOptLocalTimeZone = schedulingOptions?.map((option) => ({

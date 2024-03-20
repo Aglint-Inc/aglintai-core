@@ -21,6 +21,7 @@ export interface SchedulingApplication {
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
   fetchingSchedule: boolean;
+  selCoordinator: string | null;
 }
 
 const initialState: SchedulingApplication = {
@@ -38,6 +39,7 @@ const initialState: SchedulingApplication = {
   fetchingPlan: false,
   isViewProfileOpen: false,
   fetchingSchedule: false,
+  selCoordinator: null,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -61,6 +63,9 @@ export const setScheduleName = (scheduleName: string) =>
 export const setSchedulingOptions = (
   schedulingOptions: InterviewPlanScheduleDbType[],
 ) => useSchedulingApplicationStore.setState({ schedulingOptions });
+
+export const setSelCoordinator = (selCoordinator: string | null) =>
+  useSchedulingApplicationStore.setState({ selCoordinator });
 
 export const setIsViewProfileOpen = (isViewProfileOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isViewProfileOpen });

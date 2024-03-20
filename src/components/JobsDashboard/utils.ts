@@ -23,7 +23,7 @@ export const fetchJobs = (recruiter_id) => {
 
 export function filterJobsByStatus(
   jobs: JobType[],
-  statusToFilter: Status
+  statusToFilter: Status,
 ): JobType[] {
   return jobs.filter((job) => job.status === statusToFilter);
 }
@@ -45,11 +45,11 @@ export const fetchApplications = (jobIds) => {
 export function filterApplicationsByStatus(
   jobId: string,
   applications: any,
-  statusToFilter?: string
+  statusToFilter?: string,
 ): JobApplcationDB[] {
   if (statusToFilter) {
     return applications.filter(
-      (app) => app.status === statusToFilter && app.job_id === jobId
+      (app) => app.status === statusToFilter && app.job_id === jobId,
     );
   } else {
     return applications.filter((app) => app.job_id === jobId);
@@ -59,7 +59,7 @@ export function filterApplicationsByStatus(
 export const StatusColor = Object.freeze({
   inactive: '#ED8F1C',
   active: '#228F67',
-  closed: '#D93F4C'
+  closed: '#D93F4C',
 });
 
 export function calculateTimeDifference(postedDate) {
@@ -80,19 +80,11 @@ export function calculateTimeDifference(postedDate) {
 
 export function searchJobs(jobs: any[], searchString: string) {
   const search = searchString.toLowerCase();
-
-  // Use the filter method to search for matching job titles or statuses
-
   if (search) {
     const filteredData = jobs.filter((item) => {
       const jobTitle = item.job_title.toLowerCase();
-      // const status = item.status.toLowerCase();
-
-      // Check if the job title or status contains the search string
       return jobTitle.includes(search);
-      // || status.includes(search);
     });
-
     return filteredData;
   } else {
     return jobs;
@@ -109,7 +101,7 @@ export function sortJobs(jobs) {
     const statusOrder = {
       published: 1,
       draft: 2,
-      closed: 3
+      closed: 3,
     };
 
     const orderA = statusOrder[a.status] || 0;
