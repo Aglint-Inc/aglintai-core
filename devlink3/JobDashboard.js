@@ -227,7 +227,7 @@ export function JobDashboard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-gray-600")}
+              className={_utils.cx(_styles, "fw-semibold")}
               tag="div"
             >
               {"Upcoming Schedules"}

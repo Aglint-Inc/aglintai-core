@@ -16,6 +16,53 @@
   background-color: #f7f9fb;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
 .year_flex {
   display: flex;
   justify-content: flex-start;
@@ -41,10 +88,6 @@
 
 .color-grey-600 {
   color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
 }
 
 .text-sm-copy.text-capitalize {

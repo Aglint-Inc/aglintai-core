@@ -11,6 +11,7 @@ export * from "./AgentTask";
 export * from "./AgentTaskLoading";
 export * from "./AvatarWithName";
 export * from "./BannerAlert";
+export * from "./BannerLoading";
 export * from "./BannerWarning";
 export * from "./BasicButton";
 export * from "./BodyWithSidePanel";

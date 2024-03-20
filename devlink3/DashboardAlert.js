@@ -6,6 +6,8 @@ import _styles from "./DashboardAlert.module.css";
 export function DashboardAlert({
   as: _Component = _Builtin.Block,
   onClickBanner = {},
+  textTitile = "Job details are incomplete",
+  textShortDescription = "To proceed, please ensure that all job details are provided correctly",
 }) {
   return (
     <_Component
@@ -30,13 +32,9 @@ export function DashboardAlert({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Job details are incomplete"}
+          {textTitile}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
-          {
-            "To proceed, please ensure that all job details are provided correctly"
-          }
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textShortDescription}</_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

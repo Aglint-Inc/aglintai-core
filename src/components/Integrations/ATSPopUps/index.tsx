@@ -10,6 +10,7 @@ import {
   LearnHowGreenhouse,
   LearnHowLever,
 } from '@/devlink3';
+import toast from '@/src/utils/toast';
 
 import Loader from '../Loader';
 import { PopUpReasonTypes } from '../types';
@@ -23,6 +24,7 @@ function ATSPopUps({
   action,
   reason,
   isLoading,
+  inputValue,
 }: {
   isOpen: boolean;
   close: () => void;
@@ -30,6 +32,7 @@ function ATSPopUps({
   action: () => void;
   reason: PopUpReasonTypes;
   isLoading: boolean;
+  inputValue: string;
 }) {
   return (
     <Dialog
@@ -215,6 +218,13 @@ function ATSPopUps({
                             borderRadius: 1,
                             borderColor: 'grey.200',
                           }}
+                          onClick={() => {
+                            navigator.clipboard
+                              .writeText(inputValue)
+                              .then(() => {
+                                toast.message('Copied to clipboard');
+                              });
+                          }}
                         >
                           <Icon
                             width='16px'
@@ -251,7 +261,7 @@ function ATSPopUps({
                     reason === 'update_lever'
                   }
                 >
-                  Update changes
+                  Update Changes
                 </ShowCode.When>
               </ShowCode>
             }

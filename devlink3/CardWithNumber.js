@@ -14,7 +14,9 @@ export function CardWithNumber({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cardwithnumber")} tag="div">
-      <_Builtin.Block tag="div">{textTitle}</_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        {textTitle}
+      </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "year_flex")} tag="div">
         <_Builtin.Block tag="div">{textNumber}</_Builtin.Block>
         <_Builtin.Block

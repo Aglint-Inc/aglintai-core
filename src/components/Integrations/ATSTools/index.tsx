@@ -31,6 +31,7 @@ function ATSTools() {
   const [reason, setReason] = useState<PopUpReasonTypes>();
   const [hideApiKey, setHideApiKey] = useState(true);
   const [isLoading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState(null);
 
   async function action() {
     const apiKey = inputRef.current && inputRef.current.value;
@@ -206,6 +207,7 @@ function ATSTools() {
           if (data) {
             setTimeout(() => {
               inputRef.current.value = (data as string) || '';
+              setInputValue(data);
             }, 10);
           }
         });
@@ -222,6 +224,7 @@ function ATSTools() {
           if (data) {
             setTimeout(() => {
               inputRef.current.value = (data as string) || '';
+              setInputValue(data);
             }, 10);
           }
         });
@@ -238,6 +241,7 @@ function ATSTools() {
           if (data) {
             setTimeout(() => {
               inputRef.current.value = (data as string) || '';
+              setInputValue(data);
             }, 10);
           }
         });
@@ -265,7 +269,7 @@ function ATSTools() {
       logo: <GreenHouseLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.greenhouse_key ? 'Edit API key' : 'Connect'}
+          primaryText={recruiter?.greenhouse_key ? 'Edit API Key' : 'Connect'}
           secondaryText={recruiter?.greenhouse_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -287,7 +291,7 @@ function ATSTools() {
       logo: <LeverLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.lever_key ? 'Edit API key' : 'Connect'}
+          primaryText={recruiter?.lever_key ? 'Edit API Key' : 'Connect'}
           secondaryText={recruiter?.lever_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -309,7 +313,7 @@ function ATSTools() {
       logo: <AshbyLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.ashby_key ? 'Edit API key' : 'Connect'}
+          primaryText={recruiter?.ashby_key ? 'Edit API Key' : 'Connect'}
           secondaryText={recruiter?.ashby_key ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -370,6 +374,7 @@ function ATSTools() {
         action={action}
         reason={reason}
         isLoading={isLoading}
+        inputValue={inputValue}
       />
     </>
   );
@@ -396,7 +401,7 @@ function CardButtons({
         }}
         textLabel={secondaryText}
       />
-      {primaryText === 'Edit API key' ? (
+      {primaryText === 'Edit API Key' ? (
         <ButtonPrimaryOutlinedRegular
           buttonProps={{
             onClick: primaryAction,
