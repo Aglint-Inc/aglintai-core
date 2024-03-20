@@ -12,7 +12,7 @@ import {
   NavJobs,
   NavPhoneScreening,
   NavScheduler,
-  NavTickets
+  NavTickets,
 } from '@/devlink';
 import { AssistantLogo } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -24,7 +24,7 @@ function SideNavbar() {
   let isAgentEnabled = posthog.isFeatureEnabled('isAgentEnabled');
   let isAssessmentEnabled = posthog.isFeatureEnabled('isNewAssessmentEnabled');
   let isPhoneScreeningEnabled = posthog.isFeatureEnabled(
-    'isPhoneScreeningEnabled'
+    'isPhoneScreeningEnabled',
   );
   const router = useRouter();
   const { recruiter, recruiterUser, loading } = useAuthDetails();
@@ -36,7 +36,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.AGENT,
       comingsoon: false,
-      isvisible: isAgentEnabled || recruiter?.email === 'dheeraj@aglinthq.com'
+      isvisible: isAgentEnabled || recruiter?.email === 'dheeraj@aglinthq.com',
     },
     {
       icon: <NavJobs isActive={false} />,
@@ -44,7 +44,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.JOBS,
       comingsoon: false,
-      isvisible: true
+      isvisible: true,
     },
     {
       icon: <NavCd isActive={false} />,
@@ -52,7 +52,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
-      isvisible: true
+      isvisible: true,
     },
     {
       icon: <NavTickets isActive={false} />,
@@ -60,7 +60,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.SUPPORT,
       comingsoon: false,
-      isvisible: isSupportEnabled
+      isvisible: isSupportEnabled,
     },
     {
       icon: <NavAssistant isActive={false} />,
@@ -68,7 +68,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.ASSISTANT,
       comingsoon: false,
-      isvisible: isAssistantEnabled
+      isvisible: isAssistantEnabled,
     },
     {
       icon: <NavPhoneScreening isActive={false} />,
@@ -78,7 +78,7 @@ function SideNavbar() {
       comingsoon: false,
       isvisible:
         isPhoneScreeningEnabled ||
-        recruiterUser?.email === 'dheeraj@aglinthq.com'
+        recruiterUser?.email === 'dheeraj@aglinthq.com',
     },
     {
       icon: <NavScheduler isActive={false} />,
@@ -86,7 +86,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.SCHEDULING,
       comingsoon: false,
-      isvisible: true
+      isvisible: true,
     },
     {
       icon: <NavAssessment isActive={false} />,
@@ -95,15 +95,7 @@ function SideNavbar() {
       route: pageRoutes.ASSESSMENTS,
       comingsoon: false,
       isvisible:
-        isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com'
-    },
-    {
-      icon: <NavCompanySetting isActive={false} />,
-      text: 'Company Settings',
-      SubComponents: null,
-      route: pageRoutes.COMPANY,
-      comingsoon: false,
-      isvisible: true
+        isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com',
     },
     {
       icon: <NavIntegration isActive={false} />,
@@ -111,8 +103,16 @@ function SideNavbar() {
       SubComponents: null,
       route: '/integrations',
       comingsoon: false,
-      isvisible: true
-    }
+      isvisible: true,
+    },
+    {
+      icon: <NavCompanySetting isActive={false} />,
+      text: 'Company Settings',
+      SubComponents: null,
+      route: pageRoutes.COMPANY,
+      comingsoon: false,
+      isvisible: true,
+    },
   ];
 
   const newNaveList = useMemo(() => {
@@ -128,7 +128,7 @@ function SideNavbar() {
       }
       case 'scheduler': {
         tempList = navList.filter((item) =>
-          ['Jobs', 'Scheduler'].includes(item.text)
+          ['Jobs', 'Scheduler'].includes(item.text),
         );
         break;
       }
@@ -158,13 +158,13 @@ function SideNavbar() {
                 borderRadius={'10px'}
                 bgcolor={
                   router.pathname.includes(
-                    item.route?.replace('/history', '')
+                    item.route?.replace('/history', ''),
                   ) && 'rgba(233, 235, 237, 0.5)'
                 }
                 sx={{
                   '&:hover': {
-                    bgcolor: 'rgba(233, 235, 237, 0.5)'
-                  }
+                    bgcolor: 'rgba(233, 235, 237, 0.5)',
+                  },
                 }}
               >
                 {item.icon}

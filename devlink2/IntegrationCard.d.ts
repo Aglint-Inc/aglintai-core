@@ -9,4 +9,5 @@ declare function IntegrationCard(props: {
   onClickCopyLink?: Types.Devlink.RuntimeProps;
   slotButton?: Types.Devlink.Slot;
   textLink?: React.ReactNode;
+  isComingSoon?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

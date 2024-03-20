@@ -114,6 +114,7 @@ export * from "./InsightTagReliable";
 export * from "./InsightTagSkilled";
 export * from "./Integration";
 export * from "./IntegrationCard";
+export * from "./IntegrationLoading";
 export * from "./IntegrationThanks";
 export * from "./IntegrationUpload";
 export * from "./InterviewConfirmed";

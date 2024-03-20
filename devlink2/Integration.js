@@ -8,6 +8,7 @@ export function Integration({
   as: _Component = _Builtin.Block,
   slotHrTools,
   slotScheduling,
+  slotMessaging,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "integration-wrapp")} tag="div">
@@ -16,7 +17,7 @@ export function Integration({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"HR tools"}
+          {"ATS"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1241")}
@@ -26,7 +27,7 @@ export function Integration({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1240", "border-none")}
+        className={_utils.cx(_styles, "div-block-1240")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
@@ -37,6 +38,20 @@ export function Integration({
           tag="div"
         >
           {slotScheduling}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1240", "border-none")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Messaging"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1241")}
+          tag="div"
+        >
+          {slotMessaging}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

@@ -12,13 +12,13 @@ import { RecruiterType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import SchedulingPopUps from '../SchedulingToolPopUps';
-import { PopUpReasonTypes, schedulingToolsType } from '../types';
+import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateRecruiter } from '../utils';
 
 function Scheduling() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
-  const [reason, setReason] = useState<PopUpReasonTypes>();
+  const [reason, setReason] = useState<SchedulingReasonTypes>();
   const [isLoading, setLoading] = useState(false);
   const [fileData, setFileData] = useState(null);
   function close() {
@@ -74,14 +74,16 @@ function Scheduling() {
   }
   const SchedulingTools = [
     {
-      name: 'google_workspace' as schedulingToolsType,
+      name: String('google_workspace')
+        .split('_')
+        .join(' ') as schedulingToolsType,
       url: 'workspace.google.com',
       isConnected: recruiter?.service_json,
       logo: <GooglLogo />,
       buttons: (
         <CardButtons
           primaryText={recruiter?.service_json ? 'Edit' : 'Connect'}
-          secondaryText={recruiter?.service_json ? 'Disconnected' : 'Learn How'}
+          secondaryText={recruiter?.service_json ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
             if (recruiter.service_json) disConnectApi('google_workspace');
@@ -124,9 +126,7 @@ function Scheduling() {
           <IntegrationCard
             onClickCopyLink={{
               onClick: () => {
-                navigator.clipboard.writeText(item.url).then(() => {
-                  toast.message('Copied to clipboard');
-                });
+                window.open('https://' + item.url);
               },
             }}
             isConnectedVisible={!!item.isConnected}

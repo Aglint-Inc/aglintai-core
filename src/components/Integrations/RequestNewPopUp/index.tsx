@@ -46,7 +46,9 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
               buttonProps={{
                 onClick: () => {
                   close();
-                  setShowThanks(false);
+                  setTimeout(() => {
+                    setShowThanks(false);
+                  }, 500);
                 },
               }}
             />

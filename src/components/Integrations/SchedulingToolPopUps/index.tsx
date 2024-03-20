@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { ConfirmationPopup, DeletePopup } from '@/devlink3';
 
 import Loader from '../Loader';
-import { PopUpReasonTypes } from '../types';
+import { SchedulingReasonTypes } from '../types';
 import { ShowCode } from '../../Common/ShowCode';
 
 function SchedulingPopUps({
@@ -20,7 +20,7 @@ function SchedulingPopUps({
   close: () => void;
   popUpBody: ReactNode;
   action: () => void;
-  reason: PopUpReasonTypes;
+  reason: SchedulingReasonTypes;
   isLoading: boolean;
 }) {
   return (
@@ -56,9 +56,10 @@ function SchedulingPopUps({
                 <ShowCode.When
                   isTrue={reason === 'disconnect_google_workSpace'}
                 >
-                  By clicking {'"Disconnect"'}, Google workspace will be disconnected from
-                  Aglint and will no longer be accessible in this application.
-                  You can reconnect again on the Integrations page.
+                  By clicking {'"Disconnect"'}, Google workspace will be
+                  disconnected from Aglint and will no longer be accessible in
+                  this application. You can reconnect again on the Integrations
+                  page.
                 </ShowCode.When>
               </ShowCode>
             }

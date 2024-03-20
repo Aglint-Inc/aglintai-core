@@ -150,6 +150,8 @@
 }
 
 .button-block.primary.outlined {
+  justify-content: center;
+  align-items: center;
   border-color: var(--blue600-cb1b4518);
 }
 
@@ -168,10 +170,24 @@
 
 .button-block.disabled {
   position: static;
+
   margin: 3px;
+  justify-content: center;
+  align-items: center;
+
   background-color: var(--grey200-750b0c46);
+
   color: var(--grey400-5470456b);
+
   cursor: default;
+}
+
+.button-block.disabled.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .button-block.danger {

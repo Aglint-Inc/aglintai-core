@@ -5,8 +5,8 @@ import React from 'react';
 import { loaderLottie } from './loader-loattie';
 function Loader() {
   return (
-    <Stack height={100} position={'relative'}>
-      <Stack left={-85} top={-34} position={'absolute'} width={170}>
+    <Stack height={70} position={'relative'}>
+      <Stack left={-85} top={-54} position={'absolute'} width={170}>
         <Lottie
           //   lottieRef={lottieRef}
           animationData={loaderLottie}

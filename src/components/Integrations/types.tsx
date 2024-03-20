@@ -8,8 +8,15 @@ export type PopUpReasonTypes =
   | 'update_greenhouse'
   | 'update_ashby'
   | 'update_lever'
+  | 'learn_how_greenhouse'
+  | 'learn_how_ashby'
+  | 'learn_how_lever';
+
+export type SchedulingReasonTypes =
   | 'connect_google_workSpace'
   | 'disconnect_google_workSpace'
   | 'update_google_workspace';
-export type hrToolsType = 'greenhouse' | 'ashby' | 'lever';
+
+export type ATSType = 'greenhouse' | 'ashby' | 'lever';
 export type schedulingToolsType = 'google_workspace';
+export type MessagingToolsType = 'slack' | 'teams';
