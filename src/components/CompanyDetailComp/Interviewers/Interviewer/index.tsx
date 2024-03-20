@@ -18,12 +18,12 @@ import {
   useInterviewerSchedulesQuery,
 } from '@/src/pages/scheduling/interviewer/[member_id]';
 import { InterviewMeetingTypeDb } from '@/src/types/data.types';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Interviews from '../Interviews';
 import PauseResumeDialog from '../PauseResumeDialog';
-import { getFullName } from '@/src/utils/jsonResume';
 
 function Interviewer({
   openDrawer,
@@ -174,10 +174,10 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                              ? `Till ${dayjs(pause_json.end_date).format(
-                                  'DD MMMM YYYY',
-                                )}`
-                              : '--'
+                            ? `Till ${dayjs(pause_json.end_date).format(
+                                'DD MMMM YYYY',
+                              )}`
+                            : '--'
                           : ''
                       }
                       onClickPauseInterview={{
@@ -244,10 +244,10 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                              ? `Till ${dayjs(pause_json.end_date).format(
-                                  'DD MMMM YYYY',
-                                )}`
-                              : '--'
+                            ? `Till ${dayjs(pause_json.end_date).format(
+                                'DD MMMM YYYY',
+                              )}`
+                            : '--'
                           : ''
                       }
                       onClickPauseInterview={{

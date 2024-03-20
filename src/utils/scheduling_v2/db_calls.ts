@@ -119,6 +119,11 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
             )?.pause_json,
           };
         }),
+        meeting_type: m.meeting_type ?? {
+          link: '',
+          provider_label: 'Google Meet',
+          value: 'google_meet',
+        },
       };
     });
 

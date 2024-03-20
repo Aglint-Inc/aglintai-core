@@ -21,4 +21,6 @@ declare function InterviewPlanCard(props: {
   slotReverseShadowMemberList?: Types.Devlink.Slot;
   slotRsSearch?: Types.Devlink.Slot;
   isReverseShadowVisible?: Types.Visibility.VisibilityConditions;
+  slotScheduleTypeInput?: Types.Devlink.Slot;
+  isScheduleTypeVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
