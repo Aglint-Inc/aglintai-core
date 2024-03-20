@@ -5,6 +5,7 @@ import { IntegrationThanks } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular, ConfirmationPopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 
@@ -17,12 +18,16 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
     const recruiter_id = recruiter.id;
     const tool_name = nameRef.current.value;
     const description = descriptionRef.current.value;
-    supabase
-      .from('request_integration_tool')
-      .insert({ recruiter_id, tool_name, description })
-      .select()
-      .then(() => {});
-    setShowThanks(true);
+    if (tool_name) {
+      supabase
+        .from('request_integration_tool')
+        .insert({ recruiter_id, tool_name, description })
+        .select()
+        .then(() => {});
+      setShowThanks(true);
+    } else {
+      toast.error('Please enter name!');
+    }
   }
 
   return (
