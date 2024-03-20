@@ -28,8 +28,6 @@ import { useResumeList } from './ResumeListContext';
 import { selectJobApplicationQuery } from '../pages/api/job/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
 import { interviewCompleted } from '../utils/email_templates/innterview_completed';
-import { mixPanel } from '../utils/mix-panel';
-import mixpanel from '../utils/mixpanelInstance';
 
 const InterviewPrepContext = createContext();
 const useInterviewPrep = () => useContext(InterviewPrepContext);
@@ -847,7 +845,6 @@ const InterviewPrepProvider = ({ children }) => {
           (getSecound < 10 ? '0' : '') +
           getSecound
       );
-      mixpanel.track(mixPanel.interviewSignUp.InterviewCompletedForSignUp);
       sendEmailAfterCompleteTheInterview();
       return;
     }
@@ -1197,3 +1194,4 @@ const InterviewPrepProvider = ({ children }) => {
 };
 
 export { InterviewPrepContext, InterviewPrepProvider, useInterviewPrep };
+

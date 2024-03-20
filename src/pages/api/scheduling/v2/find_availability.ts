@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import dayjs, { Dayjs } from 'dayjs';
 
-var utc = require('dayjs/plugin/utc');
+// var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
+// dayjs.extend(utc);
 dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -75,11 +75,7 @@ export default handler;
 
 const getUserTimeZoneDate = (user_date, userTimeZone, isStartTime = true) => {
   const [day, month, year] = user_date.split('/');
-  const d1 = dayjs(new Date());
-  d1.set('year', Number(year));
-  d1.set('month', Number(month));
-  d1.set('date', Number(day));
-
+  const d1 = dayjs(`${year}-${month}-${day}`);
   // if (!validate(user_date, 'DD/MM/YYYY'))
   //   throw new Error(`invalid date format ${user_date}`);
 
