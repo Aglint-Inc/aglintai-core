@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import { AllInterviewCard, ScheduleInfoBlock } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from './Icon';
@@ -35,6 +36,10 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
+          textCurrentRole={
+            (app.file?.resume_json as unknown as ResumeJson)?.basics
+              ?.currentJobTitle || '--'
+          }
           isSelected={isSelected}
           propsGrid={{
             style: {

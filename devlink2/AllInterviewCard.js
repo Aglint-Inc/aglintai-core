@@ -21,6 +21,7 @@ export function AllInterviewCard({
   isCheckBoxVisible = false,
   propsGrid = {},
   isSelected = false,
+  textCurrentRole = "Prodct Designer",
 }) {
   return (
     <_Component
@@ -47,10 +48,21 @@ export function AllInterviewCard({
           {slotCandidateImage}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+          className={_utils.cx(_styles, "div-block-1267")}
           tag="div"
         >
-          {textName}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+            tag="div"
+          >
+            {textName}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {textCurrentRole}
+          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

@@ -375,6 +375,12 @@
   grid-row-gap: 10px;
 }
 
+.toggle_wrap.ml--10 {
+  margin-left: -10px;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
 .slot_toggle {
   width: auto;
   height: 20px;

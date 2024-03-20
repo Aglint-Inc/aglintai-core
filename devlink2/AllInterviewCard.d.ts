@@ -18,4 +18,5 @@ declare function AllInterviewCard(props: {
   isCheckBoxVisible?: Types.Visibility.VisibilityConditions;
   propsGrid?: Types.Devlink.RuntimeProps;
   isSelected?: Types.Visibility.VisibilityConditions;
+  textCurrentRole?: React.ReactNode;
 }): React.JSX.Element;

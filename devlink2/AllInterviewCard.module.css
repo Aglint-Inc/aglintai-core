@@ -66,9 +66,18 @@
 }
 
 .div-block-834 {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
   border-radius: 100px;
+}
+
+.div-block-1267 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
 }
 
 .fw-semibold {
@@ -235,6 +244,37 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-xsm {
+  font-size: 10px;
 }
 
 .status_pill {

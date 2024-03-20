@@ -53,7 +53,16 @@ export function WorkingHours({
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
         <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "toggle_wrap")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_timezoneinput")}
+          tag="div"
+        >
+          {slotTimeZoneInput}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "toggle_wrap", "ml--10")}
+          tag="div"
+        >
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_toggle")}
             tag="div"
@@ -66,12 +75,6 @@ export function WorkingHours({
           >
             {"Get timezone automatically"}
           </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "slot_timezoneinput")}
-          tag="div"
-        >
-          {slotTimeZoneInput}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">

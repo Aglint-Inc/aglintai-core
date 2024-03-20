@@ -5,13 +5,13 @@ import _styles from "./SubLinkSubMenu.module.css";
 
 export function SubLinkSubMenu({
   as: _Component = _Builtin.Block,
-  isActive = false,
+  isActive = true,
   textSubMenu = "Keywords",
   onClickSubMenu = {},
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "div-block-1222")}
+      className={_utils.cx(_styles, "div-block-1222", "cursor-pointer")}
       tag="div"
       {...onClickSubMenu}
     >
