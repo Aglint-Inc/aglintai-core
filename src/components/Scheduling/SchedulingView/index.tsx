@@ -8,7 +8,7 @@ import {
   Breadcrum,
   PageLayout,
   ScheduleInfoConfirmed,
-  ScheduleInfoUpcoming
+  ScheduleInfoUpcoming,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import NotFoundPage from '@/src/pages/404';
@@ -19,11 +19,11 @@ import toast from '@/src/utils/toast';
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import CandidateDetailsJobDrawer from '../AllSchedules/SchedulingApplication/Common/CandidateDetailsJob';
 import SchedulingOptionComp from '../AllSchedules/SchedulingApplication/Common/ScheduleOption';
-import { SchedulingOptionType } from '../AllSchedules/SchedulingApplication/store';
 import { getScheduleType } from '../AllSchedules/utils';
 import { TransformSchedule } from '../Modules/types';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
+import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
 
 function SchedulingViewComp() {
   const router = useRouter();
@@ -38,18 +38,20 @@ function SchedulingViewComp() {
         const { data } = await supabase.rpc(
           'get_interview_schedule_by_meeting_id',
           {
-            target_meeting_id: router.query.meeting_id as string
-          }
+            target_meeting_id: router.query.meeting_id as string,
+          },
         );
         if (data.length > 0) {
           const userIds = [];
           const filteredData = (data as unknown as TransformSchedule[])[0];
           filteredData.schedule.confirmed_option?.plans.map((plan) =>
-            plan.selectedIntervs.map((interv) => userIds.push(interv.interv_id))
+            plan.selectedIntervs.map((interv) =>
+              userIds.push(interv.interv_id),
+            ),
           );
 
           setSchedule({
-            ...data[0]
+            ...data[0],
           } as unknown as TransformSchedule);
           setLoading(false);
         }
@@ -59,7 +61,7 @@ function SchedulingViewComp() {
 
   const isMeetVisible = useMemo(() => {
     const planFiltered = schedule?.schedule?.confirmed_option?.plans.find(
-      (plan) => plan.module_id === router.query.module_id
+      (plan) => plan.module_id === router.query.module_id,
     );
     if (!planFiltered) {
       return false;
@@ -80,9 +82,11 @@ function SchedulingViewComp() {
   }, [schedule?.schedule?.confirmed_option?.plans, router.query.module_id]);
 
   const scheduleOptions =
-    ([
-      { transformedPlan: schedule?.schedule?.confirmed_option?.transformedPlan }
-    ] as SchedulingOptionType) || [];
+    [
+      {
+        plans: schedule?.schedule?.confirmed_option?.plans,
+      } as InterviewPlanScheduleDbType,
+    ] || [];
 
   return (
     <>
@@ -100,7 +104,7 @@ function SchedulingViewComp() {
         onClickBack={{
           onClick: () => {
             window.history.back();
-          }
+          },
         }}
         isBackButton={true}
         slotTopbarLeft={
@@ -124,12 +128,12 @@ function SchedulingViewComp() {
                 onClickViewProfile={{
                   onClick: () => {
                     setIsViewProfileOpen(true);
-                  }
+                  },
                 }}
                 isInterviewPlanVisible={true}
                 isScheduleStatusVisible={false}
                 slotInterviewPlan={
-                  schedule?.schedule?.confirmed_option?.transformedPlan ? (
+                  schedule?.schedule?.confirmed_option?.plans ? (
                     <SchedulingOptionComp
                       schedulingOptions={scheduleOptions}
                       isBadgeVisible={true}
@@ -143,10 +147,10 @@ function SchedulingViewComp() {
                     onClickCopyLink={{
                       onClick: () => {
                         navigator.clipboard.writeText(
-                          schedule.interview_meeting.meeting_json.hangoutLink
+                          schedule.interview_meeting.meeting_json.hangoutLink,
                         );
                         toast.success('Link copied');
-                      }
+                      },
                     }}
                     slotMemberProfile={
                       <AvatarGroup
@@ -155,8 +159,8 @@ function SchedulingViewComp() {
                           '& .MuiAvatar-root': {
                             width: '40px',
                             height: '40px',
-                            fontSize: '16px'
-                          }
+                            fontSize: '16px',
+                          },
                         }}
                       >
                         {schedule.users.slice(0, 5)?.map((user) => {
@@ -166,7 +170,7 @@ function SchedulingViewComp() {
                               src={user.profile_image}
                               level={getFullName(
                                 user.first_name,
-                                user.last_name
+                                user.last_name,
                               )}
                               variant='circular'
                               height='40px'
@@ -190,25 +194,25 @@ function SchedulingViewComp() {
                               window.open(
                                 schedule.interview_meeting.meeting_json
                                   .hangoutLink,
-                                '_blank'
+                                '_blank',
                               );
-                            }
+                            },
                           }}
                         />
                       )
                     }
                     textDate={dayjs(schedule.interview_meeting.end_time).format(
-                      'DD'
+                      'DD',
                     )}
                     textDay={dayjs(schedule.interview_meeting.end_time).format(
-                      'dddd'
+                      'dddd',
                     )}
                     textMonth={dayjs(
-                      schedule.interview_meeting.end_time
+                      schedule.interview_meeting.end_time,
                     ).format('MMM')}
                     textStatus={schedule.schedule.status}
                     textPlatformName={getScheduleType(
-                      schedule.schedule.schedule_type
+                      schedule.schedule.schedule_type,
                     )}
                     slotMeetingIcon={
                       <IconScheduleType
@@ -217,9 +221,9 @@ function SchedulingViewComp() {
                     }
                     textTitle={schedule.schedule.schedule_name}
                     textTime={`${dayjs(
-                      schedule.interview_meeting.start_time
+                      schedule.interview_meeting.start_time,
                     ).format('hh:mm A')} - ${dayjs(
-                      schedule.interview_meeting.end_time
+                      schedule.interview_meeting.end_time,
                     ).format('hh:mm A')} ( ${
                       schedule.interview_meeting.duration
                     } Minutes )`}
@@ -227,7 +231,7 @@ function SchedulingViewComp() {
                 }
                 textName={getFullName(
                   schedule.candidates.first_name,
-                  schedule.candidates.last_name
+                  schedule.candidates.last_name,
                 )}
                 textRole={schedule.job.job_title}
                 textLocation={schedule.job.location || '--'}
@@ -235,7 +239,7 @@ function SchedulingViewComp() {
                   <MuiAvatar
                     level={getFullName(
                       schedule?.candidates.first_name,
-                      schedule?.candidates.last_name
+                      schedule?.candidates.last_name,
                     )}
                     src={schedule?.candidates.avatar}
                     variant={'circular'}

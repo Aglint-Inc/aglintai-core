@@ -68,6 +68,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -187,6 +191,10 @@
   padding-left: 16px;
 }
 
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 @media screen and (max-width: 767px) {
   .text-gray-600.mobile-12 {
     font-size: 12px;
@@ -216,6 +224,10 @@
 
 .text-xsm {
   font-size: 10px;
+}
+
+.div-block-1262 {
+  margin-top: 20px;
 }
 
 .div-block-1103 {

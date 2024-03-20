@@ -10,4 +10,5 @@ declare function InterviewConfirmed(props: {
   textMailSent?: React.ReactNode;
   onClickSupport?: Types.Devlink.RuntimeProps;
   textTitle?: React.ReactNode;
+  slotCompanyLogo?: Types.Devlink.Slot;
 }): React.JSX.Element;

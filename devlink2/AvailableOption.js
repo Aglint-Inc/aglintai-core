@@ -8,6 +8,7 @@ export function AvailableOption({
   as: _Component = _Builtin.Block,
   slotOptionAvailableCard,
   slotSendCandidatesButton,
+  slotTimeFixer,
 }) {
   return (
     <_Component
@@ -35,6 +36,12 @@ export function AvailableOption({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotSendCandidatesButton}</_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1262")}
+        tag="div"
+      >
+        {slotTimeFixer}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1103")}

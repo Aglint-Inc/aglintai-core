@@ -18,7 +18,10 @@ export function OptionAvailableCard({
       )}
       tag="div"
     >
-      <_Builtin.Block tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1269")}
+        tag="div"
+      >
         {slotCardDate ?? <AvailableOptionCardDate />}
       </_Builtin.Block>
       {isActive ? (
@@ -27,6 +30,10 @@ export function OptionAvailableCard({
           tag="div"
         />
       ) : null}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1268")}
+        tag="div"
+      />
     </_Component>
   );
 }

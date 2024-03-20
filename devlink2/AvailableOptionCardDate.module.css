@@ -1,13 +1,8 @@
 .div-block-1104 {
   display: flex;
-  padding: 18px 20px;
+  padding: 0px;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
-
-  background-color: white;
 }
 
 .div-block-1108 {
@@ -89,6 +84,19 @@
 
 .text-first-cap {
   text-transform: capitalize;
+}
+
+.text-xsm.text-first-cap.p-16 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.text-xsm.text-first-cap.mt-5 {
+  margin-top: 5px;
 }
 
 .div-block-1110 {

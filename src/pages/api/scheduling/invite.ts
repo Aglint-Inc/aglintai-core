@@ -3,12 +3,11 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { ApplicationList } from '@/src/components/Scheduling/AllSchedules/store';
-import { transformData } from '@/src/components/Scheduling/AllSchedules/utils';
 import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY,
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,8 +25,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase.rpc(
       'fetch_interview_data_by_application_id',
       {
-        app_id: sch[0].application_id as string
-      }
+        app_id: sch[0].application_id as string,
+      },
     );
 
     if (!error && data.length > 0) {
@@ -62,14 +61,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const resMem = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/fetchdbusers`,
         {
-          user_ids: userIds
-        }
+          user_ids: userIds,
+        },
       );
 
       if (sch[0].status == 'pending') {
         const resSchOpt = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/find_availability`,
-          sch[0].filter_json
+          sch[0].filter_json,
         );
 
         return res.status(200).json({
@@ -77,12 +76,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           modules: allModules,
           members: resMem.data,
           schedule: sch[0],
-          schedulingOptions: resSchOpt.data.map((option) => {
-            return { ...option, transformedPlan: transformData(option.plans) };
-          }),
+          schedulingOptions: resSchOpt.data,
           candidate: application.candidates,
           recruiter: rec[0],
-          meetings: []
+          meetings: [],
         });
       } else {
         const { data: meetings } = await supabase
@@ -97,7 +94,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           schedule: sch[0],
           candidate: application.candidates,
           recruiter: rec[0],
-          meetings: meetings
+          meetings: meetings,
         });
       }
     }

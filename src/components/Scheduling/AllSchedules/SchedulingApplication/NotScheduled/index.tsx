@@ -1,12 +1,15 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink';
 import {
   AvailableOption,
   InterviewPlanEmpty,
-  SchedulingFlow
+  SchedulingFlow,
 } from '@/devlink2';
 import { AvatarWithName, InterviewBreakCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
@@ -21,28 +24,32 @@ import InterviewPlanCardComp from '../Common/InterviewPlanCardComp';
 import SchedulingOptionComp from '../Common/ScheduleOption';
 import { useSendInviteForCandidate } from '../hooks';
 import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
+import { filterRecordsByDate, getAllUniqueDates } from '../../utils';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 function NotScheduledApplication() {
   const router = useRouter();
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const interviewModules = useSchedulingApplicationStore(
-    (state) => state.interviewModules
+    (state) => state.interviewModules,
   );
   const members = useSchedulingApplicationStore((state) => state.members);
   const step = useSchedulingApplicationStore((state) => state.step);
   const fetchingPlan = useSchedulingApplicationStore(
-    (state) => state.fetchingPlan
+    (state) => state.fetchingPlan,
   );
   const fetchingSchedule = useSchedulingApplicationStore(
-    (state) => state.fetchingSchedule
+    (state) => state.fetchingSchedule,
   );
   const isViewProfileOpen = useSchedulingApplicationStore(
-    (state) => state.isViewProfileOpen
+    (state) => state.isViewProfileOpen,
   );
   const schedulingOptions = useSchedulingApplicationStore(
-    (state) => state.schedulingOptions
+    (state) => state.schedulingOptions,
   );
 
   const allPlans = useMemo(() => {
@@ -54,8 +61,27 @@ function NotScheduledApplication() {
   const coordinator = members.find(
     (member) =>
       member.user_id ===
-      selectedApplication?.public_jobs?.interview_plan?.coordinator?.interv_id
+      selectedApplication?.public_jobs?.interview_plan?.coordinator?.interv_id,
   );
+
+  const schOptLocalTimeZone = schedulingOptions?.map((option) => ({
+    ...option,
+    plans: option.plans.map((plan) => ({
+      ...plan,
+      start_time: dayjs(plan.start_time).tz(dayjs.tz.guess()).toISOString(),
+      end_time: dayjs(plan.end_time).tz(dayjs.tz.guess()).toISOString(),
+    })),
+  }));
+
+  const uniqueDates = getAllUniqueDates({
+    records: schOptLocalTimeZone,
+  }) as string[];
+
+  const [selectedDate, setSelectedDate] = useState<string>(uniqueDates[0]);
+
+  const filteredRecords = selectedDate
+    ? filterRecordsByDate({ records: schOptLocalTimeZone, date: selectedDate })
+    : schOptLocalTimeZone;
 
   return (
     <>
@@ -77,19 +103,19 @@ function NotScheduledApplication() {
             }
             textName={getFullName(
               selectedApplication.candidates.first_name,
-              selectedApplication.candidates.last_name
+              selectedApplication.candidates.last_name,
             )}
             onClickViewProfile={{
               onClick: () => {
                 setIsViewProfileOpen(true);
-              }
+              },
             }}
             textCandidateMail={selectedApplication.candidates.email}
             slotCandidateImage={
               <MuiAvatar
                 level={getFullName(
                   selectedApplication.candidates.first_name,
-                  selectedApplication.candidates.last_name
+                  selectedApplication.candidates.last_name,
                 )}
                 src={selectedApplication.candidates.avatar}
                 variant={'rounded'}
@@ -101,22 +127,22 @@ function NotScheduledApplication() {
             onClickJobSettings={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
+                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`,
                 );
-              }
+              },
             }}
             slotAvatarWithName={
               coordinator ? (
                 <AvatarWithName
                   textName={getFullName(
                     coordinator.first_name,
-                    coordinator.last_name
+                    coordinator.last_name,
                   )}
                   slotAvatar={
                     <MuiAvatar
                       level={getFullName(
                         coordinator.first_name,
-                        coordinator.last_name
+                        coordinator.last_name,
                       )}
                       src={coordinator.profile_image}
                       variant={'circular'}
@@ -142,6 +168,44 @@ function NotScheduledApplication() {
                   <GetScheduleOptions />
                 ) : (
                   <AvailableOption
+                    slotTimeFixer={
+                      <Stack
+                        gap={2}
+                        direction={'row'}
+                        sx={{
+                          flexWrap: 'wrap',
+                        }}
+                      >
+                        {uniqueDates.map((date) => (
+                          <Stack
+                            direction={'row'}
+                            key={date}
+                            sx={{
+                              cursor: 'pointer',
+                              border: '1px solid #E9EBED',
+                              backgroundColor:
+                                selectedDate === date ? '#F7F9FB' : 'white',
+                              padding: '4px 12px',
+                              borderRadius: '10px',
+                            }}
+                            onClick={() => {
+                              setSelectedDate(date);
+                            }}
+                            spacing={1}
+                          >
+                            <Typography variant='body2' fontWeight={700}>
+                              {dayjs(date).format('DD')}
+                            </Typography>
+                            <Typography variant='body2'>
+                              {dayjs(date).format('MMMM')}
+                            </Typography>
+                            <Typography variant='body2'>
+                              {dayjs(date).format('YYYY')}
+                            </Typography>
+                          </Stack>
+                        ))}
+                      </Stack>
+                    }
                     slotSendCandidatesButton={
                       <Stack direction={'row'} pt={4}>
                         <ButtonPrimaryRegular
@@ -149,16 +213,16 @@ function NotScheduledApplication() {
                           onClickButton={{
                             onClick: async () => {
                               sendToCandidate({
-                                allPlans
+                                allPlans,
                               });
-                            }
+                            },
                           }}
                         />
                       </Stack>
                     }
                     slotOptionAvailableCard={
                       <SchedulingOptionComp
-                        schedulingOptions={schedulingOptions}
+                        schedulingOptions={filteredRecords}
                         isBadgeVisible={true}
                       />
                     }
@@ -170,7 +234,7 @@ function NotScheduledApplication() {
               <>
                 {allPlans.map((plan) => {
                   const mod = interviewModules.find(
-                    (module) => module.id === plan.module_id
+                    (module) => module.id === plan.module_id,
                   );
                   return plan.isBreak ? (
                     <InterviewBreakCard
@@ -193,9 +257,9 @@ function NotScheduledApplication() {
             onClickCreateInterviewPlan={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`
+                  `${pageRoutes.JOBS}/${selectedApplication.public_jobs.id}/interview-plan`,
                 );
-              }
+              },
             }}
           />
         )

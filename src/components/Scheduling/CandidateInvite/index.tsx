@@ -1,26 +1,17 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { ButtonPrimaryLarge, ButtonPrimarySmall, Page404 } from '@/devlink';
-import {
-  AvailableOptionCardDate,
-  InterviewConfirmed,
-  OpenInvitationLink,
-  OptionAvailable,
-  OptionAvailableCard,
-  SessionList
-} from '@/devlink2';
-import { CalendarEvent } from '@/src/utils/schedule-utils/types';
+import { Page404 } from '@/devlink';
 import toast from '@/src/utils/toast';
 
 import CheckAvailibility from './CheckAvailibility';
 import ConfirmDialog from './ConfirmDialog';
+import InvitationConfirmed from './InvitationConfirmed';
+import InvitationPending from './InvitationPending';
 import { ApiResponse } from './type';
-import IconScheduleType from '../AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../AllSchedules/utils';
 import Loader from '../../Common/Loader';
 
 function CandidateInvite() {
@@ -28,8 +19,7 @@ function CandidateInvite() {
   const currentDate = dayjs();
   const sevenDays = currentDate.add(7, 'day');
   const [schedule, setSchedule] = useState<ApiResponse>(null);
-  const [selectedSlot, setSelectedSlot] =
-    useState<ApiResponse['schedulingOptions'][0]>(null);
+  const [selectedSlot, setSelectedSlot] = useState<string>(null);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [changeTime, setChangeTime] = useState(false);
@@ -39,7 +29,7 @@ function CandidateInvite() {
     end_date: string;
   }>({
     start_date: currentDate.toISOString(),
-    end_date: sevenDays.toISOString()
+    end_date: sevenDays.toISOString(),
   });
 
   useEffect(() => {
@@ -49,7 +39,7 @@ function CandidateInvite() {
   const initialFetch = async () => {
     try {
       const res = await axios.post('/api/scheduling/invite', {
-        id: router.query.schedule_id
+        id: router.query.schedule_id,
       });
       if (res.status === 200 && res.data) {
         setSchedule(res.data);
@@ -64,19 +54,23 @@ function CandidateInvite() {
   const handleConfirmSlot = async () => {
     try {
       setSaving(true);
+
+      const confOption = schedule.schedulingOptions.find(
+        (option) => option.id === selectedSlot,
+      );
       const res = await axios.post('/api/scheduling/confirm', {
         id: router.query.schedule_id,
-        selectedSlot: selectedSlot,
+        selectedSlot: confOption,
         schedule_name: schedule.schedule.schedule_name,
         company_logo: schedule.recruiter.logo,
         company_name: schedule.recruiter.name,
-        candidate_email: 'admin@aglinthq.com'
+        candidate_email: 'admin@aglinthq.com',
       });
       if (res.status === 200 && res.data) {
-        schedule.schedule.confirmed_option = selectedSlot;
+        schedule.schedule.confirmed_option = confOption;
         schedule.schedule.status = 'confirmed';
         setSchedule({
-          ...schedule
+          ...schedule,
         });
         setDialogOpen(false);
       }
@@ -87,14 +81,12 @@ function CandidateInvite() {
     }
   };
 
-  const schedulingOptions = schedule?.schedulingOptions;
-
   return (
     <Stack
       sx={{
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
       }}
     >
       <ConfirmDialog
@@ -119,168 +111,16 @@ function CandidateInvite() {
           <Loader />
         </Stack>
       ) : schedule?.schedule.status == 'pending' ? (
-        <OpenInvitationLink
-          onClickAskOptions={{
-            onClick: () => {
-              setChangeTime(true);
-            }
-          }}
-          isNotFindingTextVisible={!selectedSlot}
-          slotButtonPrimary={
-            selectedSlot?.id && (
-              <Stack width={'100%'}>
-                <ButtonPrimaryLarge
-                  onClickButton={{
-                    onClick: () => {
-                      setDialogOpen(true);
-                    }
-                  }}
-                  textLabel={'Proceed'}
-                />
-              </Stack>
-            )
-          }
-          textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
-          slotInviteLinkCard={schedulingOptions?.map((option, ind) => {
-            return (
-              <Stack
-                key={ind}
-                onClick={() => {
-                  setSelectedSlot(option);
-                }}
-                sx={{ cursor: 'pointer' }}
-              >
-                <OptionAvailableCard
-                  isActive={selectedSlot === option}
-                  slotCardDate={option.transformedPlan.map((plan, ind) => {
-                    return Object.entries(plan).map(([date, events]) => {
-                      return (
-                        <AvailableOptionCardDate
-                          textDate={dayjs(date).format('DD')}
-                          textDay={dayjs(date).format('dddd')}
-                          textMonth={dayjs(date).format('MMM')}
-                          key={ind}
-                          slotOptionAvailable={events.map((pl, ind) => {
-                            return (
-                              <OptionAvailable
-                                textTime={`${dayjs(pl.start_time).format(
-                                  'hh:mm A'
-                                )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                                textTitle={pl.module_name}
-                                key={ind}
-                                textBreakTime={
-                                  pl.isBreak ? `${pl.duration} Minutes` : ''
-                                }
-                                isTitleVisible={!pl.isBreak}
-                                isBreakVisible={pl.isBreak}
-                              />
-                            );
-                          })}
-                        />
-                      );
-                    });
-                  })}
-                />
-              </Stack>
-            );
-          })}
+        <InvitationPending
+          schedule={schedule}
+          selectedSlot={selectedSlot}
+          setChangeTime={setChangeTime}
+          setDialogOpen={setDialogOpen}
+          setSelectedSlot={setSelectedSlot}
         />
       ) : schedule?.schedule.status == 'confirmed' ||
         schedule?.schedule.status == 'completed' ? (
-        <InterviewConfirmed
-          textTitle={schedule.schedule.schedule_name}
-          textMailSent={schedule.candidate.email}
-          textMeetingPlatform={getScheduleType(schedule.schedule.schedule_type)}
-          slotPlatformIcon={
-            <IconScheduleType type={schedule.schedule.schedule_type} />
-          }
-          slotCardDate={
-            <OptionAvailableCard
-              isActive={false}
-              slotCardDate={schedule?.schedule?.confirmed_option?.transformedPlan.map(
-                (plan, ind) => {
-                  return Object.entries(plan).map(([date, events]) => {
-                    return (
-                      <AvailableOptionCardDate
-                        textDate={dayjs(date).format('DD')}
-                        textDay={dayjs(date).format('dddd')}
-                        textMonth={dayjs(date).format('MMM')}
-                        key={ind}
-                        slotOptionAvailable={events.map((pl, ind) => {
-                          return (
-                            <>
-                              <OptionAvailable
-                                textTime={`${dayjs(pl.start_time).format(
-                                  'hh:mm A'
-                                )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                                textTitle={pl.module_name}
-                                key={ind}
-                                isTitleVisible={!pl.isBreak}
-                                isBreakVisible={pl.isBreak}
-                                slotMember={
-                                  <Stack spacing={1}>
-                                    <Stack direction={'row'}>
-                                      <ButtonPrimarySmall
-                                        isDisabled={
-                                          dayjs(pl.start_time).isBefore(
-                                            dayjs().subtract(3, 'hour')
-                                          ) ||
-                                          dayjs().isAfter(dayjs(pl.end_time))
-                                        }
-                                        textLabel={'Join Meeting'}
-                                        onClickButton={{
-                                          onClick: () => {
-                                            window.open(
-                                              (
-                                                schedule.meetings.find(
-                                                  (meet) =>
-                                                    meet.module_id ==
-                                                    pl.module_id
-                                                ).meeting_json as CalendarEvent
-                                              ).hangoutLink,
-                                              '_blank'
-                                            );
-                                          }
-                                        }}
-                                      />
-                                    </Stack>
-                                    <Typography variant='caption'>
-                                      Meeting link will get enabled 3 hours
-                                      before meeting
-                                    </Typography>
-                                  </Stack>
-                                }
-                              />
-                            </>
-                          );
-                        })}
-                      />
-                    );
-                  });
-                }
-              )}
-            />
-          }
-          onClickSupport={{
-            onClick: () => {
-              window.open(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${schedule.schedule.application_id}`,
-                '_blank'
-              );
-            }
-          }}
-          slotSessionList={schedule.schedule.confirmed_option.plans
-            .filter((pl) => !pl.isBreak)
-            .map((plan, ind) => {
-              return (
-                <SessionList
-                  key={ind}
-                  textDuration={plan.duration + ' Minutes'}
-                  textSession={plan.module_name}
-                />
-              );
-            })}
-        />
+        <InvitationConfirmed schedule={schedule} />
       ) : (
         <Page404 />
       )}

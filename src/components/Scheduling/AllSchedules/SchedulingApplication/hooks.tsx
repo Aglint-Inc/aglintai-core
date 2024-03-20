@@ -17,16 +17,16 @@ import {
   setSchedulingOptions,
   setSelectedApplication,
   setStep,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from './store';
 import { ApplicationList } from '../store';
-import { mailHandler, transformData } from '../utils';
+import { mailHandler } from '../utils';
 
 export const useGetScheduleOptions = () => {
   const findScheduleOptions = async ({
     selectedApplication,
     rec_id,
-    dateRange
+    dateRange,
   }: {
     selectedApplication: ApplicationList;
     rec_id: string;
@@ -41,21 +41,14 @@ export const useGetScheduleOptions = () => {
         job_id: selectedApplication.public_jobs.id,
         company_id: rec_id,
         start_date: dateRange.start_date,
-        end_date: dateRange.end_date
+        end_date: dateRange.end_date,
       });
       if (res.data) {
         if (res.data.length === 0) {
           toast.warning('No schedule options found for the given date range');
           setStep(1);
         } else {
-          setSchedulingOptions(
-            res.data.map((option) => {
-              return {
-                ...option,
-                transformedPlan: transformData(option.plans)
-              };
-            })
-          );
+          setSchedulingOptions(res.data);
           setStep(2);
         }
         setFetchingPlan(false);
@@ -76,15 +69,15 @@ export const useGetScheduleOptions = () => {
 export const useSendInviteForCandidate = () => {
   const { recruiter } = useAuthDetails();
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const dateRange = useSchedulingApplicationStore((state) => state.dateRange);
   const scheduleName = useSchedulingApplicationStore(
-    (state) => state.scheduleName
+    (state) => state.scheduleName,
   );
 
   const sendToCandidate = async ({
-    allPlans
+    allPlans,
   }: {
     allPlans: InterviewModuleDbType[];
   }) => {
@@ -109,8 +102,8 @@ export const useSendInviteForCandidate = () => {
               job_id: selectedApplication.public_jobs.id,
               company_id: recruiter.id,
               start_date: dateRange.start_date,
-              end_date: dateRange.end_date
-            }
+              end_date: dateRange.end_date,
+            },
           })
           .select();
 
@@ -120,11 +113,11 @@ export const useSendInviteForCandidate = () => {
             candidate_name: selectedApplication.candidates.first_name,
             company_logo: recruiter.logo,
             company_name: recruiter.name,
-            schedule_name: scheduleName
+            schedule_name: scheduleName,
           });
           setSelectedApplication({
             ...selectedApplication,
-            schedule: data[0] as any
+            schedule: data[0] as any,
           });
         }
       }
@@ -146,18 +139,18 @@ export const useGetScheduleApplication = () => {
       const { data, error } = await supabase.rpc(
         'fetch_interview_data_by_application_id',
         {
-          app_id: router.query.application_id as string
-        }
+          app_id: router.query.application_id as string,
+        },
       );
 
       if (!error && data.length > 0) {
         const application = data[0] as unknown as ApplicationList;
         setScheduleName(
-          `Interview for ${application?.public_jobs?.job_title} - ${application?.candidates?.first_name}`
+          `Interview for ${application?.public_jobs?.job_title} - ${application?.candidates?.first_name}`,
         );
         setDateRange({
           start_date: currentDate.toISOString(),
-          end_date: threeDays.toISOString()
+          end_date: threeDays.toISOString(),
         });
         const moduleIds = application?.public_jobs?.interview_plan?.plan
           ?.filter((plan) => !plan.isBreak)
@@ -186,11 +179,11 @@ export const useGetScheduleApplication = () => {
           });
         });
         userIds.push(
-          application?.public_jobs?.interview_plan.coordinator.interv_id
+          application?.public_jobs?.interview_plan.coordinator.interv_id,
         );
 
         const resMem = await axios.post('/api/scheduling/fetchdbusers', {
-          user_ids: [...new Set(userIds)]
+          user_ids: [...new Set(userIds)],
         });
 
         if (resMem?.data?.length > 0) {

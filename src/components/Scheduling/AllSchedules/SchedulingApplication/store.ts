@@ -6,14 +6,6 @@ import { InterviewModuleType } from '@/src/types/data.types';
 
 import { ApplicationList } from '../store';
 
-export type SchedulingOptionType = Array<
-  InterviewPlanScheduleDbType & {
-    transformedPlan: {
-      [key: string]: InterviewPlanScheduleDbType['plans'];
-    }[];
-  }
->;
-
 export interface SchedulingApplication {
   initialLoading: boolean;
   selectedApplication: ApplicationList;
@@ -25,7 +17,7 @@ export interface SchedulingApplication {
   };
   members: InterviewScheduleContextType['members'];
   step: number;
-  schedulingOptions: SchedulingOptionType;
+  schedulingOptions: InterviewPlanScheduleDbType[];
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
   fetchingSchedule: boolean;
@@ -38,20 +30,20 @@ const initialState: SchedulingApplication = {
   scheduleName: '',
   dateRange: {
     start_date: '',
-    end_date: ''
+    end_date: '',
   },
   members: [],
   step: 1,
   schedulingOptions: [],
   fetchingPlan: false,
   isViewProfileOpen: false,
-  fetchingSchedule: false
+  fetchingSchedule: false,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
   () => ({
-    ...initialState
-  })
+    ...initialState,
+  }),
 );
 
 export const setInitalLoading = (initialLoading: boolean) =>
@@ -66,8 +58,9 @@ export const setInterviewModules = (interviewModules: InterviewModuleType[]) =>
 export const setScheduleName = (scheduleName: string) =>
   useSchedulingApplicationStore.setState({ scheduleName });
 
-export const setSchedulingOptions = (schedulingOptions: SchedulingOptionType) =>
-  useSchedulingApplicationStore.setState({ schedulingOptions });
+export const setSchedulingOptions = (
+  schedulingOptions: InterviewPlanScheduleDbType[],
+) => useSchedulingApplicationStore.setState({ schedulingOptions });
 
 export const setIsViewProfileOpen = (isViewProfileOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isViewProfileOpen });

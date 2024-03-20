@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { SchedulingOptionType } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/store';
+import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { Database } from '@/src/types/schema';
 
 import { BookingApiParams } from './v2/book_schedule_plan';
@@ -15,7 +15,7 @@ const supabase = createClient<Database>(
 
 type BodyParams = {
   id: string;
-  selectedSlot: SchedulingOptionType[0];
+  selectedSlot: InterviewPlanScheduleDbType;
   company_logo: string;
   company_name: string;
   schedule_name: string;

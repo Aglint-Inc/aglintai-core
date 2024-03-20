@@ -2,23 +2,20 @@ import dayjs from 'dayjs';
 
 import { ScheduleInfoConfirmed } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import SchedulingOptionComp from '../Common/ScheduleOption';
-import {
-  SchedulingOptionType,
-  setIsViewProfileOpen,
-  useSchedulingApplicationStore
-} from '../store';
+import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 
 function ConfirmedComp() {
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
   const isViewProfileOpen = useSchedulingApplicationStore(
-    (state) => state.isViewProfileOpen
+    (state) => state.isViewProfileOpen,
   );
 
   return (
@@ -39,7 +36,7 @@ function ConfirmedComp() {
             ? `This Schedule has been completed on ${dayjs(
                 selectedApplication.schedule.confirmed_option.plans[
                   selectedApplication.schedule.confirmed_option.plans.length - 1
-                ].end_time
+                ].end_time,
               ).format('DD MMM YYYY')}`
             : ''
         }
@@ -55,33 +52,29 @@ function ConfirmedComp() {
         onClickCancel={{
           onClick: () => {
             setIsCancelOpen(true);
-          }
+          },
         }}
         onClickViewProfile={{
           onClick: () => {
             setIsViewProfileOpen(true);
-          }
+          },
         }}
         isScheduleInfoVisible={Boolean(
-          selectedApplication.schedule.confirmed_option?.transformedPlan
+          selectedApplication.schedule.confirmed_option?.plans,
         )}
         onClickReschedule={{
           onClick: () => {
             setIsRescheduleOpen(true);
-          }
+          },
         }}
         slotScheduleInfoCard={
-          selectedApplication?.schedule?.confirmed_option?.transformedPlan ? (
+          selectedApplication?.schedule.confirmed_option.plans ? (
             <SchedulingOptionComp
-              schedulingOptions={
-                [
-                  {
-                    transformedPlan:
-                      selectedApplication?.schedule?.confirmed_option
-                        ?.transformedPlan
-                  }
-                ] as unknown as SchedulingOptionType
-              }
+              schedulingOptions={[
+                {
+                  plans: selectedApplication?.schedule.confirmed_option.plans,
+                } as InterviewPlanScheduleDbType,
+              ]}
               isBadgeVisible={true}
             />
           ) : (
@@ -90,7 +83,7 @@ function ConfirmedComp() {
         }
         textName={getFullName(
           selectedApplication.candidates.first_name,
-          selectedApplication.candidates.last_name
+          selectedApplication.candidates.last_name,
         )}
         textRole={selectedApplication.public_jobs.job_title}
         textLocation={selectedApplication.public_jobs.location || '--'}
@@ -98,7 +91,7 @@ function ConfirmedComp() {
           <MuiAvatar
             level={getFullName(
               selectedApplication?.candidates.first_name,
-              selectedApplication?.candidates.last_name
+              selectedApplication?.candidates.last_name,
             )}
             src={selectedApplication?.candidates.avatar}
             variant={'circular'}

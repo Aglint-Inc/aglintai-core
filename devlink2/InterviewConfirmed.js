@@ -13,6 +13,7 @@ export function InterviewConfirmed({
   textMailSent = "raimonrts@gmail.com",
   onClickSupport = {},
   textTitle = "Phase 1 Interview for software engineer",
+  slotCompanyLogo,
 }) {
   return (
     <_Component
@@ -32,10 +33,7 @@ export function InterviewConfirmed({
             tag="div"
           >
             <_Builtin.Block tag="div">
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%22101%22%20height%3D%2268%22%20viewBox%3D%220%200%20101%2068%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M64.7024%2032.8766C64.7024%2049.8991%2050.9029%2063.6985%2033.8804%2063.6985C16.8581%2063.6985%203.05859%2049.8991%203.05859%2032.8766C3.05859%2015.8541%2016.8581%202.05469%2033.8804%202.05469C50.9029%202.05469%2064.7024%2015.8541%2064.7024%2032.8766Z%22%20fill%3D%22%2368DBFF%22%2F%3E%0A%3Cpath%20d%3D%22M97.9419%2032.8766C97.9419%2049.8991%2084.2776%2063.6985%2067.4221%2063.6985C50.5666%2063.6985%2036.9023%2049.8991%2036.9023%2032.8766C36.9023%2015.8541%2050.5666%202.05469%2067.4221%202.05469C84.2776%202.05469%2097.9419%2015.8541%2097.9419%2032.8766Z%22%20fill%3D%22%23FF7917%22%2F%3E%0A%3Cpath%20d%3D%22M50.7339%2058.6909C59.1454%2053.1872%2064.7025%2043.683%2064.7025%2032.8805C64.7025%2022.0783%2059.1454%2012.5739%2050.7339%207.07031C42.4049%2012.5739%2036.9023%2022.0783%2036.9023%2032.8805C36.9023%2043.683%2042.4049%2053.1872%2050.7339%2058.6909Z%22%20fill%3D%22%235D2C02%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
+              <_Builtin.Block tag="div">{slotCompanyLogo}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-xl", "fw-semibold")}

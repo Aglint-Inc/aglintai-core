@@ -8,4 +8,6 @@ declare function OpenInvitationLink(props: {
   onClickAskOptions?: Types.Devlink.RuntimeProps;
   slotButtonPrimary?: Types.Devlink.Slot;
   isNotFindingTextVisible?: Types.Visibility.VisibilityConditions;
+  slotCompanyLogo?: Types.Devlink.Slot;
+  slotTimeFixer?: Types.Devlink.Slot;
 }): React.JSX.Element;
