@@ -72,6 +72,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -170,10 +174,6 @@
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.text-first-cap {
-  text-transform: capitalize;
 }
 
 .fw-semibold.sticky_2 {
@@ -383,6 +383,12 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.toggle_wrap.ml--10 {
+  margin-left: -10px;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .slot_toggle {
