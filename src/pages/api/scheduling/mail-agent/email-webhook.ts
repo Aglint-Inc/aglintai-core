@@ -1,60 +1,57 @@
 /* eslint-disable no-console */
-import dayjs from 'dayjs';
+// pages/api/sendgridWebhook.js
+
+import axios from 'axios';
+import formidable from 'formidable';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
-dayjs.extend(utc);
-dayjs.extend(timezone);
-import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
-
 import {
   PublicJobsType,
   ScheduleAgentChatHistoryTypeDB,
 } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
-export type BodyParams = {
-  candidate_email: string;
-  email_body: string;
-};
+import { sendEmailFromAgent } from './init-agent';
+import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
-//this is the webhook it should handle
-// req body includes candidate email, and candidate email_body
-// responsiblilities
-// should handle multiple email
-// whether email exist ?
-// fetching candidate chat history using email and job_title and invoke the agent api wait for the response and after getting response send email to the candidate
-//
-//
-//
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 type AgentPayloadType = {
   history: any[];
   payload: {
-    candidate_name;
-    candidate_email;
-    company_name;
-    job_role;
-    start_date;
-    end_date;
-    new_cand_msg;
-    application_id;
-    job_id;
-    company_id;
-    schedule_id;
-    company_logo;
+    candidate_name: string;
+    candidate_email: string;
+    company_name: string;
+    job_role: string;
+    start_date: string;
+    end_date: string;
+    new_cand_msg: string;
+    application_id: string;
+    job_id: string;
+    company_id: string;
+    schedule_id: string;
+    company_logo: string;
+    cand_application_status: string;
   };
 };
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { candidate_email, email_body } = req.body as BodyParams;
 
-    if (!candidate_email || !email_body) {
-      return res.status(400).send('Missing Fields');
+const allowed_emails = ['agent@ai.aglinthq.com'];
+
+export default async function handler(req, res) {
+  const form = formidable({});
+  try {
+    const [fields] = await form.parse(req);
+    const candidate_email = getEmail(fields.from[0]);
+    const to_email = getEmail(fields.to[0]);
+    // const subject = fields.subject[0];
+    const email_body = fields.text[0];
+
+    if (!allowed_emails.includes(to_email)) {
+      return res.status(204).send('');
     }
 
     const rec = supabaseWrap(
@@ -66,10 +63,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (rec.length === 0) {
       // this email is not from candidate
       // handle this later
+      return res.status(204).send('');
     }
 
     if (rec.length > 1) {
       // cadidate invited for more than one job handle this
+      return res.status(204).send('');
     }
 
     const {
@@ -79,8 +78,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       chat_history,
       company_id,
       schedule_id,
+      scheduling_progress,
     } = rec[0] as ScheduleAgentChatHistoryTypeDB;
-
     const promises = [
       (async () => {
         const [job] = supabaseWrap(
@@ -101,7 +100,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return cand.candidates;
       })(),
     ];
-
     const [job, candidate] = await Promise.all(promises);
 
     const agent_payload: AgentPayloadType = {
@@ -119,6 +117,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         company_id,
         job_id,
         schedule_id,
+        cand_application_status: scheduling_progress,
       },
     };
 
@@ -137,11 +136,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('job_id', job_id)
         .eq('application_id', application_id),
     );
-
-    return res.status(200).send({ history: data.new_history });
-  } catch (error) {
-    return res.status(500).send(error.message);
+    await sendEmailFromAgent({
+      candidate_email,
+      from_name: job.company,
+      mail_body: data.new_history[data.new_history.length - 1].value,
+      subject: `Interview for ${job.job_title} - ${candidate.first_name}`,
+    });
+    return res.status(204).send('');
+  } catch (err) {
+    console.log(err);
+    return res.status(200).send('');
   }
+}
+
+const getEmail = (to_string: string) => {
+  to_string = to_string.trim();
+  return to_string.substring(to_string.indexOf('<') + 1, to_string.length - 1);
 };
 
-export default handler;
+//candidate status
+// reschedule
+// handle cases based on candidate application status
+// api prev time
+// candidate time zone

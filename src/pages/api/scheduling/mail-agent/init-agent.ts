@@ -5,9 +5,11 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
@@ -20,8 +22,6 @@ export type BodyParams = {
   candidate_name: string;
   recruiter_user_id: string;
 };
-
-type SchedulingProgressStatusType = 'initiated' | 'waiting' | 'error' | '';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -60,8 +60,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       start_date: dayjs(date_range[0]).format('DD MMMM'),
       job_role: job.job_title,
     });
-    const status: SchedulingProgressStatusType = 'initiated';
-    console.log('nfkewjnekwj');
 
     const [rec_schedule] = supabaseWrap(
       await supabaseAdmin
@@ -81,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .select(),
     );
-    console.log('nfkewjnekwj');
+    const status: SchedulingProgressStatusType = 'scheduled';
 
     supabaseWrap(
       await supabaseAdmin.from('scheduling-agent-chat-history').insert({
@@ -100,8 +98,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         schedule_id: rec_schedule.id,
       }),
     );
-    console.log('nfkewjnekwj');
-
+    await sendEmailFromAgent({
+      candidate_email,
+      from_name: job.company,
+      mail_body: initMailBody,
+      subject: `Interview for ${job.job_title} - ${
+        candidate_name.split(' ')[0]
+      }`,
+    });
     return res.status(200).send(status);
   } catch (error) {
     console.log(error);
@@ -118,12 +122,26 @@ const getInitialEmailTemplate = ({
   start_date,
   end_date,
 }) => {
-  return `
-  Congratulations, ${candidate_name}! Your resume has passed our initial screening for the ${job_role} position at ${company_name}. Impressive qualifications! Let's schedule your interview.
+  return (
+    `Congratulations, ${candidate_name}! Your resume has passed our initial screening for the ${job_role} position at ${company_name}. Impressive qualifications! Let's schedule your interview.\n` +
+    `Please let me know your availability from the following date range:
+${start_date} - ${end_date}.\n` +
+    `Reply to this email with your preferred date and time. I'll confirm the interview details promptly. Excited to discuss your potential role at ${company_name}. Any questions? Feel free to reach out.
+  `
+  );
+};
 
-Please let me know your availability from the following date range:
-${start_date} - ${end_date}
-
-Reply to this email with your preferred date and time. I'll confirm the interview details promptly. Excited to discuss your potential role at ${company_name}. Any questions? Feel free to reach out.
-  `;
+export const sendEmailFromAgent = async ({
+  candidate_email,
+  from_name,
+  mail_body,
+  subject,
+}) => {
+  await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+    email: candidate_email,
+    fromEmail: 'agent@ai.aglinthq.com',
+    fromName: from_name,
+    subject,
+    text: mail_body,
+  });
 };

@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   getUserCalAuth,
-  Interviewer
+  Interviewer,
 } from '@/src/utils/event_book/book_schedule_plan';
 import { CalendarEvent } from '@/src/utils/schedule-utils/types';
 import { decrypt } from '@/src/utils/scheduling_v2/utils';
@@ -20,11 +20,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!calender_event) return res.status(400).send('missing Fields');
   try {
     const { comp_cred, recruiter } = await getRecruiterCredentials({
-      email: calender_event.organizer.email
+      email: calender_event.organizer.email,
     });
     const auth_cal = await getUserCalAuth({
       company_cred: comp_cred,
-      recruiter
+      recruiter,
     });
     await updateEventStatus(auth_cal, calender_event.id, 'cancelled');
     return res.status(200).send('ok');
@@ -42,16 +42,16 @@ async function updateEventStatus(auth, event_id, status) {
     calendarId: 'primary', // Change to specific calendar ID if needed
     eventId: event_id,
     requestBody: {
-      status: status
+      status: status,
     },
-    sendNotifications: true
+    sendNotifications: true,
   });
   return response.data;
 }
 
 const getRecruiterCredentials = async ({ email }) => {
   const [rec_user] = supabaseWrap(
-    await supabaseAdmin.from('recruiter_user').select().eq('email', email)
+    await supabaseAdmin.from('recruiter_user').select().eq('email', email),
   );
   const user_id = rec_user.user_id;
   const promises = [
@@ -60,11 +60,11 @@ const getRecruiterCredentials = async ({ email }) => {
         await supabaseAdmin
           .from('recruiter_relation')
           .select('recruiter(*)')
-          .eq('user_id', user_id)
+          .eq('user_id', user_id),
       );
       if (!rec.recruiter.service_json) return null;
       return JSON.parse(
-        decrypt(rec.recruiter.service_json, process.env.ENCRYPTION_KEY)
+        decrypt(rec.recruiter.service_json, process.env.ENCRYPTION_KEY),
       );
     })(),
     (async () => {
@@ -72,18 +72,18 @@ const getRecruiterCredentials = async ({ email }) => {
         await supabaseAdmin
           .from('recruiter_user')
           .select('schedule_auth')
-          .eq('user_id', user_id)
+          .eq('user_id', user_id),
       );
 
       return rec.schedule_auth;
-    })()
+    })(),
   ];
 
   const [comp_cred, user_schedule_auth] = await Promise.all(promises);
   const r: Interviewer = {
     email,
     schedule_auth: user_schedule_auth,
-    user_id
+    user_id,
   };
   return { comp_cred, recruiter: r };
 };

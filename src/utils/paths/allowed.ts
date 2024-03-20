@@ -63,5 +63,7 @@ export const allowedPaths = new Set([
   '/api/scheduling/fetchdbusers',
   '/api/scheduling/v2/book_schedule_plan',
   '/api/invite_user',
-  ...cronPaths
+  '/api/scheduling/mail-agent/email-webhook',
+  '/api/scheduling/v2/cancel_interview_scheduling',
+  ...cronPaths,
 ]);
