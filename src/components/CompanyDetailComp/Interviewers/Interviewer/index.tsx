@@ -15,7 +15,7 @@ import { useInterviewerContext } from '@/src/context/InterviewerContext/Intervie
 import {
   interviewerDetailsType,
   useImrQuery,
-  useInterviewerSchedulesQuery
+  useInterviewerSchedulesQuery,
 } from '@/src/pages/scheduling/interviewer/[member_id]';
 import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
@@ -23,11 +23,12 @@ import toast from '@/src/utils/toast';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Interviews from '../Interviews';
 import PauseResumeDialog from '../PauseResumeDialog';
+import { getFullName } from '@/src/utils/jsonResume';
 
 function Interviewer({
   openDrawer,
   setOpenDrawer,
-  interviewerDetails
+  interviewerDetails,
 }: {
   openDrawer: boolean;
   setOpenDrawer: (x: boolean) => void;
@@ -56,7 +57,7 @@ function Interviewer({
     type: 'pause',
     panel_id: null,
     isLoading: false,
-    end_time: ''
+    end_time: '',
   });
   const { refetch } = useImrQuery();
   let interviewsThisWeek = 0;
@@ -64,19 +65,19 @@ function Interviewer({
   const interviewerSchedules = useInterviewerSchedulesQuery();
   if (interviewerSchedules.isFetched) {
     const interviews = interviewerSchedules.data.map(
-      (item) => item.interview_meeting
+      (item) => item.interview_meeting,
     ) as InterviewMeetingTypeDb[];
 
     const today = dayjs().startOf('day');
     const thisWeekStart = dayjs().startOf('week');
 
     interviewsToday = interviews.filter((interview) =>
-      dayjs(interview.end_time).isSame(today, 'day')
+      dayjs(interview.end_time).isSame(today, 'day'),
     ).length;
     interviewsThisWeek = interviews.filter(
       (interview) =>
         dayjs(interview.end_time).isAfter(thisWeekStart) ||
-        dayjs(interview.end_time).isSame(thisWeekStart, 'day')
+        dayjs(interview.end_time).isSame(thisWeekStart, 'day'),
     ).length;
   }
   return (
@@ -96,7 +97,7 @@ function Interviewer({
           updateSettings={(x) => {
             return handelMemberUpdate({
               user_id: interviewerDetails.interviewer.user_id,
-              data: { scheduling_settings: x }
+              data: { scheduling_settings: x },
             });
           }}
           isOverflow={true}
@@ -106,7 +107,7 @@ function Interviewer({
         onClickInterviewSchedule={{
           onClick: () => {
             setOpenDrawer(true);
-          }
+          },
         }}
         textEmail={interviewerDetails.interviewer.email}
         textDepartment={interviewerDetails.interviewer.position}
@@ -119,12 +120,16 @@ function Interviewer({
         }
         slotInterviewerAvatar={
           <MuiAvatar
-            variant='square'
+            key={interviewerDetails.interviewer.user_id}
+            src={interviewerDetails.interviewer.profile_image}
+            level={getFullName(
+              interviewerDetails.interviewer.first_name,
+              interviewerDetails.interviewer.last_name,
+            )}
+            variant='circular'
             height='80px'
             width='80px'
-            fontSize='24px'
-            level={interviewerDetails.interviewer.first_name}
-            src={interviewerDetails.interviewer.profile_image}
+            fontSize='20px'
           />
         }
         textTimeZone={
@@ -144,7 +149,7 @@ function Interviewer({
         }
         slotQualifiedModules={
           interviewerDetails.modules.filter(
-            (item) => item.training_status === 'qualified'
+            (item) => item.training_status === 'qualified',
           ).length
             ? interviewerDetails.modules
                 .filter((item) => item.training_status === 'qualified')
@@ -156,6 +161,8 @@ function Interviewer({
                       isTrainingProgessVisible={false}
                       key={module_id}
                       textName={interview_module.name}
+                      isTextObjectiveVisible={true}
+                      textObjective={interview_module.description}
                       isPauseResumeVisible={Boolean(pause_json)}
                       isPauseVisible={!pause_json}
                       isResumeVisible={Boolean(pause_json)}
@@ -168,7 +175,7 @@ function Interviewer({
                             ? 'Paused indefinably'
                             : pause_json.end_date
                               ? `Till ${dayjs(pause_json.end_date).format(
-                                  'DD MMMM YYYY'
+                                  'DD MMMM YYYY',
                                 )}`
                               : '--'
                           : ''
@@ -180,9 +187,9 @@ function Interviewer({
                             isOpen: true,
                             type: 'pause',
                             panel_id: module_id,
-                            isLoading: false
+                            isLoading: false,
                           }));
-                        }
+                        },
                       }}
                       onClickResumeInterview={{
                         onClick: () => {
@@ -192,9 +199,9 @@ function Interviewer({
                             type: 'resume',
                             panel_id: module_id,
                             isLoading: false,
-                            end_time: module.pause_json.end_date
+                            end_time: module.pause_json.end_date,
                           }));
-                        }
+                        },
                       }}
                       onClickRemoveModule={{
                         onClick: () => {
@@ -203,9 +210,9 @@ function Interviewer({
                             isOpen: true,
                             type: 'remove',
                             panel_id: module_id,
-                            isLoading: false
+                            isLoading: false,
                           }));
-                        }
+                        },
                       }}
                     />
                   );
@@ -214,7 +221,7 @@ function Interviewer({
         }
         slotTrainingModules={
           interviewerDetails.modules.filter(
-            (item) => item.training_status === 'training'
+            (item) => item.training_status === 'training',
           ).length
             ? interviewerDetails.modules
                 .filter((item) => item.training_status === 'training')
@@ -238,7 +245,7 @@ function Interviewer({
                             ? 'Paused indefinably'
                             : pause_json.end_date
                               ? `Till ${dayjs(pause_json.end_date).format(
-                                  'DD MMMM YYYY'
+                                  'DD MMMM YYYY',
                                 )}`
                               : '--'
                           : ''
@@ -250,9 +257,9 @@ function Interviewer({
                             isOpen: true,
                             type: 'pause',
                             panel_id: module_id,
-                            isLoading: false
+                            isLoading: false,
                           }));
-                        }
+                        },
                       }}
                       onClickResumeInterview={{
                         onClick: () => {
@@ -262,9 +269,9 @@ function Interviewer({
                             type: 'resume',
                             panel_id: module_id,
                             isLoading: false,
-                            end_time: module.pause_json.end_date
+                            end_time: module.pause_json.end_date,
                           }));
-                        }
+                        },
                       }}
                       onClickRemoveModule={{
                         onClick: () => {
@@ -273,9 +280,9 @@ function Interviewer({
                             isOpen: true,
                             type: 'remove',
                             panel_id: module_id,
-                            isLoading: false
+                            isLoading: false,
                           }));
-                        }
+                        },
                       }}
                     />
                   );
@@ -287,8 +294,8 @@ function Interviewer({
             <ShowCode.When
               isTrue={Boolean(
                 interviewerDetails.modules.filter(
-                  (item) => item.training_status === 'qualified'
-                ).length
+                  (item) => item.training_status === 'qualified',
+                ).length,
               )}
             >
               <ModulesMoreMenu
@@ -316,9 +323,9 @@ function Interviewer({
                       isAll: true,
                       type: 'remove',
                       training_status: 'qualified',
-                      isLoading: false
+                      isLoading: false,
                     });
-                  }
+                  },
                 }}
                 onClickPause={{
                   onClick: () => {
@@ -333,7 +340,7 @@ function Interviewer({
                         isAll: true,
                         type: 'resume',
                         training_status: 'qualified',
-                        isLoading: false
+                        isLoading: false,
                       }));
                     } else {
                       setPauseResumeDialog({
@@ -341,10 +348,10 @@ function Interviewer({
                         isAll: true,
                         type: 'pause',
                         training_status: 'qualified',
-                        isLoading: false
+                        isLoading: false,
                       });
                     }
-                  }
+                  },
                 }}
               />
             </ShowCode.When>
@@ -355,8 +362,8 @@ function Interviewer({
             <ShowCode.When
               isTrue={Boolean(
                 interviewerDetails.modules.filter(
-                  (item) => item.training_status === 'training'
-                ).length
+                  (item) => item.training_status === 'training',
+                ).length,
               )}
             >
               <ModulesMoreMenu
@@ -384,9 +391,9 @@ function Interviewer({
                       isAll: true,
                       type: 'remove',
                       training_status: 'training',
-                      isLoading: false
+                      isLoading: false,
                     });
-                  }
+                  },
                 }}
                 onClickPause={{
                   onClick: () => {
@@ -401,7 +408,7 @@ function Interviewer({
                         isAll: true,
                         type: 'resume',
                         training_status: 'training',
-                        isLoading: false
+                        isLoading: false,
                       }));
                     } else {
                       setPauseResumeDialog({
@@ -409,10 +416,10 @@ function Interviewer({
                         isAll: true,
                         type: 'pause',
                         training_status: 'training',
-                        isLoading: false
+                        isLoading: false,
                       });
                     }
-                  }
+                  },
                 }}
               />
             </ShowCode.When>
@@ -434,9 +441,9 @@ function Interviewer({
               ...pre,
               isOpen: true,
               type: 'addQualifiedModule',
-              isLoading: false
+              isLoading: false,
             }));
-          }
+          },
         }}
         onClickAddModulesTraining={{
           onClick: () => {
@@ -444,9 +451,9 @@ function Interviewer({
               ...pre,
               isOpen: true,
               type: 'addTrainingModule',
-              isLoading: false
+              isLoading: false,
             }));
-          }
+          },
         }}
       />
 
@@ -457,58 +464,58 @@ function Interviewer({
             ...pre,
             isAll: false,
             isOpen: false,
-            isLoading: false
+            isLoading: false,
           }));
         }}
         pause={async (pause_json) => {
           setPauseResumeDialog((pre) => ({
             ...pre,
-            isLoading: true
+            isLoading: true,
           }));
           await handelUpdateSchedule({
             panel_id: pauseResumeDialog.isAll
               ? undefined
               : pauseResumeDialog.panel_id,
             pause_json,
-            training_status: pauseResumeDialog.training_status
+            training_status: pauseResumeDialog.training_status,
           });
           refetch();
           setPauseResumeDialog((pre) => ({
             ...pre,
             isAll: false,
-            isOpen: false
+            isOpen: false,
           }));
         }}
         resume={async () => {
           setPauseResumeDialog((pre) => ({
             ...pre,
-            isLoading: true
+            isLoading: true,
           }));
           await handelUpdateSchedule({
             panel_id: pauseResumeDialog.isAll
               ? undefined
               : pauseResumeDialog.panel_id,
             pause_json: null,
-            training_status: pauseResumeDialog.training_status
+            training_status: pauseResumeDialog.training_status,
           });
 
           refetch();
           setPauseResumeDialog((pre) => ({
             ...pre,
             isAll: false,
-            isOpen: false
+            isOpen: false,
           }));
         }}
         remove={async () => {
           setPauseResumeDialog((pre) => ({
             ...pre,
-            isLoading: true
+            isLoading: true,
           }));
           await handelRemoveMemberFormPanel({
             panel_id: pauseResumeDialog.isAll
               ? undefined
               : pauseResumeDialog.panel_id,
-            training_status: pauseResumeDialog.training_status
+            training_status: pauseResumeDialog.training_status,
           }).catch((e) => {
             toast.error(e.message);
           });
@@ -516,7 +523,7 @@ function Interviewer({
           setPauseResumeDialog((pre) => ({
             ...pre,
             isAll: false,
-            isOpen: false
+            isOpen: false,
           }));
         }}
       />
