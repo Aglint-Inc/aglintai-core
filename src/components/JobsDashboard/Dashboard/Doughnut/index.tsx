@@ -6,7 +6,7 @@ import {
   CategoryScale,
   Chart as ChartJs,
   LinearScale,
-  Tooltip
+  Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
 import React, { FC } from 'react';
@@ -30,7 +30,7 @@ const DoughnutChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] }
+    { names: [], counts: [], colors: [] },
   );
   const dataBar = {
     labels: names,
@@ -41,30 +41,38 @@ const DoughnutChart: React.FC<{
         borderColor: 'transparent',
         hoverBorderColor: 'transparent',
         spacing: 4,
-        borderRadius: 4
-      }
-    ]
+        borderRadius: 4,
+      },
+    ],
   };
-  const matches = useMediaQuery('(min-width:1920px)');
+  const xl = useMediaQuery('(min-width:1900px)');
+  const l = useMediaQuery('(min-width:1500px)');
+  const m = useMediaQuery('(min-width:1300px)');
+  const s = useMediaQuery('(min-width:1300px)');
 
   return (
-    <Stack width={matches ? '300px' : '250px'} style={{ aspectRatio: 1 }}>
+    <Stack
+      width={
+        s ? (m ? (l ? (xl ? '275px' : '250px') : '225px') : '200px') : '175px'
+      }
+      style={{ aspectRatio: 1 }}
+    >
       <Doughnut
         options={{
           responsive: true,
           plugins: {
             legend: {
-              display: false // Set to false to hide the legend
-            }
+              display: false, // Set to false to hide the legend
+            },
           },
           scales: {
             x: {
-              display: false
+              display: false,
             },
             y: {
-              display: false
-            }
-          }
+              display: false,
+            },
+          },
         }}
         data={dataBar}
       />
@@ -77,7 +85,7 @@ const DashboardDoughnutChart: FC<{
 }> = ({ option }) => {
   const {
     locations: { data: locationPool },
-    job: { count }
+    job: { count },
   } = useJobDetails();
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoData />;
@@ -91,7 +99,7 @@ const DashboardDoughnutChart: FC<{
       sx={{
         bgcolor: '#F7F9FB',
         p: '24px',
-        borderRadius: '16px'
+        borderRadius: '16px',
       }}
       display={'flex'}
       flexDirection={'column'}
@@ -104,7 +112,7 @@ const DashboardDoughnutChart: FC<{
         justifyContent={'space-around'}
       >
         <DoughnutChart locations={safeLocations} />
-        <Stack gap={3} width={'30%'}>
+        <Stack gap={3}>
           {safeLocations.map(({ color, count, name }, i) => {
             return (
               <Stack
@@ -119,7 +127,7 @@ const DashboardDoughnutChart: FC<{
                       bgcolor: color,
                       width: '10px',
                       aspectRatio: 1,
-                      borderRadius: '100%'
+                      borderRadius: '100%',
                     }}
                   />
                   <Typography variant='body2' style={{ textWrap: 'nowrap' }}>

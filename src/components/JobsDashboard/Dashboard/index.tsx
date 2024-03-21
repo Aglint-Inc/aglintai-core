@@ -101,7 +101,7 @@ const Dashboard = () => {
     job,
     matches: { data: counts },
     schedules: { data: schedule },
-    publishStatus: { settingsValidity, publishable },
+    publishStatus: { settingsValidity, publishable, loading },
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
@@ -142,8 +142,13 @@ const Dashboard = () => {
       const response = await handleJobPublish(job);
       if (response) await handleJobApplicationRescore();
       return response;
+    } else {
+      if (loading)
+        toast.warning(
+          'Generating profile score criteria. Please wait to publish.',
+        );
+      else toast.error('Unable to publish. Please check job details.');
     }
-    toast.error('Unable to publish. Please check job details.');
   };
 
   return (
@@ -156,6 +161,7 @@ const Dashboard = () => {
         slotBody={
           <JobDashboardDev
             isBanner={!publishable}
+            isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
             textTopMatchPercentage={score_matches.topMatch.percentage}
@@ -249,7 +255,12 @@ const BreadCrumbs = () => {
 
 const Preview = () => {
   const { job } = useJobDetails();
-  const { push } = useRouter();
+  const handlePreview = () => {
+    window.open(
+      `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job?.id}`,
+      '_blank',
+    );
+  };
   if (job?.status === 'closed') return <></>;
   return (
     <Stack
@@ -257,7 +268,7 @@ const Preview = () => {
       gap={'2px'}
       direction={'row'}
       style={{ color: palette.blue['400'], cursor: 'pointer' }}
-      onClick={() => push(`/job-post/${job?.id}`)}
+      onClick={() => handlePreview()}
     >
       <Stack>Preview</Stack>
       <OpenInNewIcon

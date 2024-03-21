@@ -141,7 +141,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                     // background: palette.grey[100],
                   }}
                 >
-                  <Icon variant='CompanyOutlinedBig' />
+                  <Icon
+                    variant='CompanyOutlinedBig'
+                    height='100%'
+                    width='100%'
+                  />
                 </Avatar>
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
@@ -225,7 +229,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 width: '78px',
               }}
             >
-              <Icon variant='CompanyOutlinedBig' />
+              <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
             </Avatar>
           }
           onClickApplyNow={{

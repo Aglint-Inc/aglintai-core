@@ -66,12 +66,23 @@ const LineChart: React.FC<{
         maintainAspectRatio: false,
         aspectRatio: matches ? 4 : 3,
         plugins: {
+          tooltip: {
+            callbacks: {
+              title: (values) =>
+                `${values[0].label} year${+values[0].label === 1 ? '' : 's'}`,
+            },
+          },
           legend: {
             display: false,
           },
         },
         scales: {
           x: {
+            title: {
+              display: true,
+              font: { weight: 'bold' },
+              text: 'Years',
+            },
             border: {
               color: 'transparent',
             },
@@ -80,6 +91,11 @@ const LineChart: React.FC<{
             },
           },
           y: {
+            title: {
+              display: true,
+              font: { weight: 'bold' },
+              text: 'Candidates',
+            },
             border: {
               color: 'transparent',
             },

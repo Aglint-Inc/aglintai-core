@@ -6,4 +6,5 @@ declare function OnboardingFinalState(props: {
   onClickImportJob?: Types.Devlink.RuntimeProps;
   onClickSourceCandidates?: Types.Devlink.RuntimeProps;
   onClickScheduleInterview?: Types.Devlink.RuntimeProps;
+  isSourcingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

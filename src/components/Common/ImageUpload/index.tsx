@@ -115,8 +115,8 @@ function ImageUpload({
               ) : (
                 <Icon
                   variant='CompanyOutlinedBig'
-                  height='32'
-                  width='32'
+                  height='100%'
+                  width='100%'
                   color='#87929D'
                 />
               )}

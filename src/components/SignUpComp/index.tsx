@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 
 import { OnboardingFinalState, SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
@@ -22,15 +23,17 @@ const SignUpComp = () => {
   const router = useRouter();
   const { step, setStep, setFlow } = useSignupDetails();
   const { recruiter, recruiterUser } = useAuthDetails();
+  const isSourcingEnabled =
+    posthog?.isFeatureEnabled('isSourcingEnabled') ?? false;
 
   async function updateAuthDetails(type: string) {
     await supabase.auth.updateUser({
-      data: { role: type }
+      data: { role: type },
     });
     await supabase
       .from('recruiter')
       .update({
-        recruiter_type: type
+        recruiter_type: type,
       })
       .eq('id', recruiter?.id);
   }
@@ -54,9 +57,9 @@ const SignUpComp = () => {
                     setStep(stepObj.detailsOne);
                     updateAuthDetails(companyType.AGENCY);
                     router.push(`?step=${stepObj.detailsOne}`, undefined, {
-                      shallow: true
+                      shallow: true,
                     });
-                  }
+                  },
                 }}
                 onClickCompany={{
                   onClick: () => {
@@ -65,9 +68,9 @@ const SignUpComp = () => {
                     setStep(stepObj.detailsOne);
                     updateAuthDetails(companyType.COMPANY);
                     router.push(`?step=${stepObj.detailsOne}`, undefined, {
-                      shallow: true
+                      shallow: true,
                     });
-                  }
+                  },
                 }}
                 onClickConsultant={{
                   onClick: () => {
@@ -79,10 +82,10 @@ const SignUpComp = () => {
                       `?step=${stepObj.detailsOne}&category=consultant`,
                       undefined,
                       {
-                        shallow: true
-                      }
+                        shallow: true,
+                      },
                     );
-                  }
+                  },
                 }}
               />
             </YTransform>
@@ -111,27 +114,28 @@ const SignUpComp = () => {
                 router.push(pageRoutes.JOBS);
                 sendOnboardingMail(
                   recruiterUser.email,
-                  recruiterUser.first_name
+                  recruiterUser.first_name,
                 );
-              }
+              },
             }}
+            isSourcingVisible={isSourcingEnabled}
             onClickSourceCandidates={{
               onClick: () => {
                 router.push(pageRoutes.CANDIDATES);
                 sendOnboardingMail(
                   recruiterUser.email,
-                  recruiterUser.first_name
+                  recruiterUser.first_name,
                 );
-              }
+              },
             }}
             onClickScheduleInterview={{
               onClick: () => {
                 router.push(pageRoutes.SCHEDULING);
                 sendOnboardingMail(
                   recruiterUser.email,
-                  recruiterUser.first_name
+                  recruiterUser.first_name,
                 );
-              }
+              },
             }}
           />
         </YTransform>
@@ -161,9 +165,9 @@ const sendOnboardingMail = async (email: string, name: string) => {
         mail_type: 'recruiter-onboarding',
         recipient_email: email,
         payload: {
-          name: name
-        }
-      }
+          name: name,
+        },
+      },
     );
   } catch (err) {
     //
