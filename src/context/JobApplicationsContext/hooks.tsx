@@ -137,7 +137,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const [applications, dispatch] = useReducer(reducer, undefined);
 
   const paginationLimit = 50;
-  const longPolling = 600000;
+  const longPolling = 60000;
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const job = initialJobLoad

@@ -60,6 +60,11 @@ const BarChart: React.FC<{
         },
         scales: {
           x: {
+            title: {
+              display: true,
+              font: { weight: 'bold' },
+              text: 'Skills',
+            },
             border: {
               color: 'transparent',
             },
@@ -68,6 +73,11 @@ const BarChart: React.FC<{
             },
           },
           y: {
+            title: {
+              display: true,
+              font: { weight: 'bold' },
+              text: 'Candidates',
+            },
             border: {
               color: 'transparent',
             },

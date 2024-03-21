@@ -27,4 +27,5 @@ declare function JobDashboard(props: {
   onClickViewSchedule?: Types.Devlink.RuntimeProps;
   isViewScheduleVisible?: Types.Visibility.VisibilityConditions;
   onClickImport?: Types.Devlink.RuntimeProps;
+  isImport?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

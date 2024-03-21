@@ -129,8 +129,8 @@ function CompanyList() {
       >
         <Icon
           variant='CompanyOutlined'
-          height='24'
-          width='24'
+          height='100%'
+          width='100%'
           color='#87929D'
         />
       </Avatar>
