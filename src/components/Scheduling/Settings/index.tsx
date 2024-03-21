@@ -42,6 +42,7 @@ import {
   WeeklyLimitType,
 } from './types';
 import { hoursList } from './utils';
+import SchedulingEmailTemplates from '../SchedulingEmailTemplates';
 import { settingSubNavItem } from '../SubNav/utils';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import Icon from '../../Common/Icons/Icon';
@@ -589,6 +590,11 @@ function SchedulingSettings({
             </>
           }
         />
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
+      >
+        <SchedulingEmailTemplates />
       </ShowCode.When>
     </Stack>
   );

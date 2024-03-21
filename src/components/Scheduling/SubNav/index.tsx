@@ -19,7 +19,6 @@ function SubNav() {
     { text: 'my Schedules' },
     { text: 'all Schedules', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interview Modules', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'email Template', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] },
   ];
@@ -35,12 +34,14 @@ function SubNav() {
             onClickTab={{
               onClick: () => {
                 if (item === 'settings') {
-                  router.push(
-                    `${pageRoutes.SCHEDULING}?tab=${item.replace(
-                      ' ',
-                      '',
-                    )}&subtab=${settingsItems[0].value}`,
-                  );
+                  if (!router.query.subtab) {
+                    router.push(
+                      `${pageRoutes.SCHEDULING}?tab=${item.replace(
+                        ' ',
+                        '',
+                      )}&subtab=${settingsItems[0].value}`,
+                    );
+                  }
                 } else {
                   router.push(
                     `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`,
