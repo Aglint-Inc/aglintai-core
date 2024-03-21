@@ -1,7 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -14,7 +13,9 @@ import {
   setFetchingPlan,
   setFetchingSchedule,
   setInterviewModules,
+  setIsSendToCandidateOpen,
   setMembers,
+  setNoOptions,
   setScheduleName,
   setSchedulingOptions,
   setSelCoordinator,
@@ -26,7 +27,6 @@ import { ApplicationList } from '../store';
 import { mailHandler } from '../utils';
 
 export const useGetScheduleOptions = () => {
-  const [noOptions, setNoOptions] = useState(false);
   const findScheduleOptions = async ({
     selectedApplication,
     rec_id,
@@ -40,7 +40,6 @@ export const useGetScheduleOptions = () => {
     };
   }) => {
     try {
-      setNoOptions(true);
       setFetchingPlan(true);
       const res = await axios.post('/api/scheduling/v2/find_availability', {
         job_id: selectedApplication.public_jobs.id,
@@ -57,19 +56,20 @@ export const useGetScheduleOptions = () => {
           setSchedulingOptions(res.data);
           setStep(2);
         }
-        setFetchingPlan(false);
       } else {
         setStep(1);
         toast.error('Error fetching schedule options');
-        setFetchingPlan(false);
       }
     } catch (e) {
+      toast.error('Error fetching schedule options');
       setStep(1);
       //
+    } finally {
+      setFetchingPlan(false);
     }
   };
 
-  return { findScheduleOptions, noOptions };
+  return { findScheduleOptions };
 };
 
 export const useSendInviteForCandidate = () => {
@@ -87,8 +87,10 @@ export const useSendInviteForCandidate = () => {
 
   const sendToCandidate = async ({
     allPlans,
+    is_get_more_option,
   }: {
     allPlans: InterviewModuleDbType[];
+    is_get_more_option: boolean;
   }) => {
     try {
       const { data: checkSch, error: errorCheckSch } = await supabase
@@ -102,6 +104,7 @@ export const useSendInviteForCandidate = () => {
         const { data, error } = await supabase
           .from('interview_schedule')
           .insert({
+            is_get_more_option: is_get_more_option,
             application_id: selectedApplication.applications.id,
             schedule_name: scheduleName,
             schedule_type: 'google_meet',
@@ -134,6 +137,8 @@ export const useSendInviteForCandidate = () => {
       }
     } catch (e) {
       toast.error('Error sending schedule to candidate');
+    } finally {
+      setIsSendToCandidateOpen(false);
     }
   };
 
@@ -190,9 +195,14 @@ export const useGetScheduleApplication = () => {
             userIds.push(interv.interv_id);
           });
         });
-        userIds.push(
-          application?.public_jobs?.interview_plan.coordinator.interv_id,
-        );
+        if (application?.public_jobs?.interview_plan.coordinator?.interv_id) {
+          userIds.push(
+            application.public_jobs.interview_plan.coordinator.interv_id,
+          );
+          setSelCoordinator(
+            application.public_jobs.interview_plan.coordinator.interv_id,
+          );
+        }
 
         const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
           recruiter_id: recruiter.id,
@@ -202,9 +212,6 @@ export const useGetScheduleApplication = () => {
           setMembers(resMem.data);
         }
         setSelectedApplication(application);
-        setSelCoordinator(
-          application.public_jobs.interview_plan.coordinator.interv_id,
-        );
       }
     } catch (error) {
       toast.error('Error fetching interview data');

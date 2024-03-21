@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink';
 import {
@@ -19,11 +19,15 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import GetScheduleOptions from './GetScheduleOptions';
+import SendCandidateDialog from './GetScheduleOptions/RescheduleDialog';
 import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import InterviewPlanCardComp from '../Common/InterviewPlanCardComp';
 import SchedulingOptionComp from '../Common/ScheduleOption';
-import { useSendInviteForCandidate } from '../hooks';
-import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
+import {
+  setIsSendToCandidateOpen,
+  setIsViewProfileOpen,
+  useSchedulingApplicationStore,
+} from '../store';
 import { filterRecordsByDate, getAllUniqueDates } from '../../utils';
 
 dayjs.extend(utc);
@@ -31,34 +35,30 @@ dayjs.extend(timezone);
 
 function NotScheduledApplication() {
   const router = useRouter();
-  const { sendToCandidate } = useSendInviteForCandidate();
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
-  );
-  const interviewModules = useSchedulingApplicationStore(
-    (state) => state.interviewModules,
-  );
-  const members = useSchedulingApplicationStore((state) => state.members);
-  const step = useSchedulingApplicationStore((state) => state.step);
-  const fetchingPlan = useSchedulingApplicationStore(
-    (state) => state.fetchingPlan,
-  );
-  const fetchingSchedule = useSchedulingApplicationStore(
-    (state) => state.fetchingSchedule,
-  );
-  const isViewProfileOpen = useSchedulingApplicationStore(
-    (state) => state.isViewProfileOpen,
-  );
-  const schedulingOptions = useSchedulingApplicationStore(
-    (state) => state.schedulingOptions,
-  );
-  const selCoordinator = useSchedulingApplicationStore(
-    (state) => state.selCoordinator,
-  );
 
-  const allPlans = useMemo(() => {
-    return selectedApplication?.public_jobs?.interview_plan?.plan;
-  }, [selectedApplication?.public_jobs?.interview_plan?.plan]);
+  const {
+    selectedApplication,
+    interviewModules,
+    selCoordinator,
+    schedulingOptions,
+    isViewProfileOpen,
+    fetchingSchedule,
+    fetchingPlan,
+    members,
+    step,
+  } = useSchedulingApplicationStore((state) => ({
+    selectedApplication: state.selectedApplication,
+    interviewModules: state.interviewModules,
+    selCoordinator: state.selCoordinator,
+    schedulingOptions: state.schedulingOptions,
+    isViewProfileOpen: state.isViewProfileOpen,
+    fetchingSchedule: state.fetchingSchedule,
+    fetchingPlan: state.fetchingPlan,
+    members: state.members,
+    step: state.step,
+  }));
+
+  const allPlans = selectedApplication?.public_jobs?.interview_plan?.plan;
 
   const coordinator = members.find(
     (member) => member.user_id === selCoordinator,
@@ -85,6 +85,10 @@ function NotScheduledApplication() {
 
   return (
     <>
+      {selectedApplication?.public_jobs?.interview_plan && (
+        <SendCandidateDialog />
+      )}
+
       {selectedApplication?.file?.resume_json && (
         <CandidateDetailsJobDrawer
           applications={selectedApplication.applications}
@@ -212,9 +216,7 @@ function NotScheduledApplication() {
                           textLabel={'Send to Candidate'}
                           onClickButton={{
                             onClick: async () => {
-                              sendToCandidate({
-                                allPlans,
-                              });
+                              setIsSendToCandidateOpen(true);
                             },
                           }}
                         />
