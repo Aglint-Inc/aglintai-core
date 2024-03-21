@@ -15,8 +15,7 @@ export default async function handler(req, res) {
 
   if (error) {
     console.log(error);
-    res.status(400).send('Error deleting user');
-    return;
+    res.status(400).send(error.message);
   } else {
     console.log(data);
     res.status(200).send('User deleted');

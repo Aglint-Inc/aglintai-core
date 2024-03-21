@@ -18,13 +18,13 @@ const TeamManagement = () => {
     window: 'addMember' | 'pendingMember';
   }>({
     open: false,
-    window: 'addMember'
+    window: 'addMember',
   });
   const [editMember, setEditMember] = useState<(typeof members)[0] | null>(
-    null
+    null,
   );
   const pendingList = members.filter(
-    (member) => member.join_status?.toLocaleLowerCase() === 'invited'
+    (member) => member.join_status?.toLocaleLowerCase() === 'invited',
   );
   const inviteUser = pendingList.length;
 
@@ -49,11 +49,16 @@ const TeamManagement = () => {
                   if (recruiterUser?.user_id === member.user_id) {
                     toast.error('Cannot remove admin account');
                   } else {
-                    await axios.post('/api/supabase/deleteuser', {
-                      user_id: member.user_id
-                    });
+                    try {
+                      await axios.post('/api/supabase/deleteuser', {
+                        user_id: member.user_id,
+                      });
+                    } catch (error) {
+                      toast.error('This user is connect with scheduling');
+                      return null;
+                    }
                     setMembers((members) =>
-                      members.filter((mem) => mem.user_id !== member.user_id)
+                      members.filter((mem) => mem.user_id !== member.user_id),
                     );
                   }
                 }}
@@ -76,10 +81,10 @@ const TeamManagement = () => {
         onClickViewPendingInvites={{
           onClick: () => {
             setOpenDrawer({ open: true, window: 'pendingMember' });
-          }
+          },
         }}
         textPending={`You currently have ${converter.toWords(
-          pendingList?.length
+          pendingList?.length,
         )} pending invites awaiting your response.`}
       />
 
