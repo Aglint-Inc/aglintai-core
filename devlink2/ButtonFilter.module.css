@@ -7,10 +7,10 @@
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  border: 1px solid #adcce4;
+  border: 1px solid #e9ebed;
   border-radius: 10px;
 
-  background-color: #edf7ff;
+  background-color: white;
 
   transition: all 250ms ease;
 
@@ -21,12 +21,22 @@
   opacity: 0.8;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.text-blue-800 {
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
+}
+
 .dot-indicator {
   position: absolute;
   left: auto;
   top: -5px;
   right: -5px;
   bottom: auto;
+  z-index: 3;
 
   width: 10px;
   height: 10px;
@@ -34,4 +44,17 @@
   border-radius: 100px;
 
   background-color: hsla(29.83783783783783, 92.04%, 60.59%, 1.00);
+}
+
+.active-filter-btn {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: #f8f9f9;
 }

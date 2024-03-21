@@ -11,17 +11,19 @@ export function JobCardSchedule({
   textPlatformName = "Google Meet",
   slotMemberImage,
   textPanelMember = "Team Engineering (2 Members)",
-  textStatus = "Pending",
-  propsBgColor = {},
   onClickViewScheduler = {},
   textTimeDate = "2024 Feb 20 at 09:30 AM",
+  slotStatusBadge,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jobs-card-schedule")} tag="div">
       <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
         {textHeader}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-985")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-985", "hide")}
+        tag="div"
+      >
         <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-984")}
@@ -31,10 +33,16 @@ export function JobCardSchedule({
           <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey-600")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "text-grey-600", "hide")}
+        tag="div"
+      >
         {textTimeDate}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-986")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-986", "hide")}
+        tag="div"
+      >
         <_Builtin.Block tag="div">{"Interview Panel"}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-987")}
@@ -45,13 +53,7 @@ export function JobCardSchedule({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-988")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-989")}
-          tag="div"
-          {...propsBgColor}
-        >
-          <_Builtin.Block tag="div">{textStatus}</_Builtin.Block>
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotStatusBadge}</_Builtin.Block>
         <_Builtin.Block tag="div" {...onClickViewScheduler}>
           <_Builtin.Block
             className={_utils.cx(

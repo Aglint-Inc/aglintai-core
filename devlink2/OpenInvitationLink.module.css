@@ -8,6 +8,8 @@
 }
 
 .invitation-link-wrap.flex-none {
+  position: relative;
+
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;
@@ -90,6 +92,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -104,6 +111,17 @@
 @media screen and (max-width: 767px) {
   .text-lg {
     font-size: 16px;
+  }
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
   }
 }
 
@@ -177,15 +195,6 @@
   white-space: nowrap;
 }
 
-.div-block-1203 {
-  display: flex;
-  width: 380px;
-  margin-right: auto;
-  margin-left: auto;
-  flex-direction: column;
-  flex-wrap: nowrap;
-}
-
 .div-block-1163 {
   position: relative;
   left: 0%;
@@ -241,4 +250,33 @@
 
 .icons.ml--6 {
   margin-left: -6px;
+}
+
+.div-fixed-button {
+  position: fixed;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+  z-index: 3;
+
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+
+  border-top: 1px solid #e9ebed;
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 10px rgba(0, 0, 0, 0.05);
+}
+
+.div-block-1203 {
+  display: flex;
+  width: 260px;
+  margin-right: auto;
+  margin-left: auto;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }

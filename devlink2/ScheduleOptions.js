@@ -44,7 +44,15 @@ export function ScheduleOptions({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block tag="div">{slotInterviewCordinator}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1275")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Interview Cordinator"}
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotInterviewCordinator}</_Builtin.Block>
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1093")}
         tag="div"

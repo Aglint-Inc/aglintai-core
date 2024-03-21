@@ -9,8 +9,7 @@ declare function JobCardSchedule(props: {
   textPlatformName?: React.ReactNode;
   slotMemberImage?: Types.Devlink.Slot;
   textPanelMember?: React.ReactNode;
-  textStatus?: React.ReactNode;
-  propsBgColor?: Types.Devlink.RuntimeProps;
   onClickViewScheduler?: Types.Devlink.RuntimeProps;
   textTimeDate?: React.ReactNode;
+  slotStatusBadge?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -12,6 +12,7 @@ export function OpenInvitationLink({
   isNotFindingTextVisible = true,
   slotCompanyLogo,
   slotTimeFixer,
+  isSelected = false,
 }) {
   return (
     <_Component
@@ -82,12 +83,6 @@ export function OpenInvitationLink({
                 </_Builtin.Span>
               </_Builtin.Block>
             ) : null}
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1203")}
-              tag="div"
-            >
-              {slotButtonPrimary}
-            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -117,6 +112,19 @@ export function OpenInvitationLink({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
+      {isSelected ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-fixed-button")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1203")}
+            tag="div"
+          >
+            {slotButtonPrimary}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

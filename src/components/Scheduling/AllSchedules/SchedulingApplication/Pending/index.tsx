@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ScheduleInfoPending } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -14,7 +14,6 @@ import {
   useSchedulingApplicationStore,
 } from '../store';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
-import { transformData } from '../../utils';
 
 function PendingConfirmed() {
   const selectedApplication = useSchedulingApplicationStore(
@@ -26,24 +25,30 @@ function PendingConfirmed() {
   const schedulingOptions = useSchedulingApplicationStore(
     (state) => state.schedulingOptions,
   );
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     findScheduleOptions();
+    return () => {
+      setLoading(true);
+    };
   }, [selectedApplication?.applications?.id]);
 
   const findScheduleOptions = async () => {
-    const res = await axios.post(
-      '/api/scheduling/v2/find_availability',
-      selectedApplication.schedule.filter_json,
-    );
-    if (res.data) {
-      setSchedulingOptions(
-        res.data.map((option) => {
-          return { ...option, transformedPlan: transformData(option.plans) };
-        }),
+    try {
+      const res = await axios.post(
+        '/api/scheduling/v2/find_availability',
+        selectedApplication.schedule.filter_json,
       );
-    } else {
-      toast.error('Error fetching schedule options');
+      if (res.data) {
+        setSchedulingOptions(res.data);
+      } else {
+        toast.error('Error fetching schedule options');
+      }
+    } catch (e) {
+      //
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,6 +66,10 @@ function PendingConfirmed() {
 
       {selectedApplication?.schedule && (
         <ScheduleInfoPending
+          textCurrentRole={
+            selectedApplication.file?.resume_json?.basics?.currentJobTitle ||
+            '--'
+          }
           isCancelSheduleVisible={true}
           isConfirmedVisible={
             selectedApplication.schedule.status === 'confirmed'
@@ -82,6 +91,11 @@ function PendingConfirmed() {
             selectedApplication.candidates.first_name,
             selectedApplication.candidates.last_name,
           )}
+          textEmail={
+            selectedApplication.candidates.email ||
+            selectedApplication.file?.resume_json?.basics?.email ||
+            '--'
+          }
           textRole={selectedApplication.public_jobs.job_title}
           textLocation={selectedApplication.public_jobs.location || '--'}
           slotProfileImage={
@@ -94,7 +108,7 @@ function PendingConfirmed() {
               variant={'circular'}
               width={'100%'}
               height={'100%'}
-              fontSize={'20px'}
+              fontSize={'36px'}
             />
           }
           slotScheduleInfoPlan={''}
@@ -102,6 +116,7 @@ function PendingConfirmed() {
             <SchedulingOptionComp
               schedulingOptions={schedulingOptions}
               isBadgeVisible={true}
+              loading={loading}
             />
           }
         />

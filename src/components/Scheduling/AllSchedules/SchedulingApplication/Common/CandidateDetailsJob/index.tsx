@@ -9,7 +9,7 @@ import {
   AnalysisBlockSection,
   NewEducationDetails,
   NewExperienceDetails,
-  NewSkillDetails
+  NewSkillDetails,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import EmailIcon from '@/src/components/JobApplicationsDashboard/Common/Icons/emailIcon';
 import LinkedInIcon from '@/src/components/JobApplicationsDashboard/Common/Icons/linkedinIcon';
@@ -18,24 +18,19 @@ import CopyWrapper from '@/src/components/JobApplicationsDashboard/Common/Wrappe
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { CandidateType, JobApplcationDB } from '@/src/types/data.types';
 
+import { ApplicationList } from '../../../store';
+
 function CandidateDetailsJobDrawer({
   isViewProfileOpen,
   applications,
   candidate,
   file,
-  setIsViewProfileOpen
+  setIsViewProfileOpen,
 }: {
   isViewProfileOpen: boolean;
   applications: JobApplcationDB;
   candidate: CandidateType;
-  file: {
-    id: string;
-    created_at: string;
-    file_url: string;
-    candidate_id: string;
-    resume_json: JSON;
-    type: string;
-  };
+  file: ApplicationList['file'];
   // eslint-disable-next-line no-unused-vars
   setIsViewProfileOpen: (value: boolean) => void;
 }) {
@@ -44,9 +39,9 @@ function CandidateDetailsJobDrawer({
       ({
         ...applications,
         candidate: candidate,
-        candidate_files: file
+        candidate_files: file,
       }) as unknown as JobApplication,
-    [applications, candidate, file]
+    [applications, candidate, file],
   );
   const resumeJson: any = file?.resume_json;
 
@@ -66,7 +61,7 @@ function CandidateDetailsJobDrawer({
           onClickClose={{
             onClick: () => {
               setIsViewProfileOpen(false);
-            }
+            },
           }}
           slotSocialLink={
             <>
@@ -103,7 +98,7 @@ function CandidateDetailsJobDrawer({
           onClickResume={{
             onClick: () => {
               window.open(file.file_url, '_blank');
-            }
+            },
           }}
           textRole={resumeJson.currentJobTitle || ''}
           textName={`${candidate.first_name || ''} ${candidate.last_name || ''}`}
@@ -116,8 +111,8 @@ function CandidateDetailsJobDrawer({
               <SummaryBlock
                 arrowProps={{
                   style: {
-                    display: 'none'
-                  }
+                    display: 'none',
+                  },
                 }}
                 title={'Overview'}
                 description={resumeJson.overview}

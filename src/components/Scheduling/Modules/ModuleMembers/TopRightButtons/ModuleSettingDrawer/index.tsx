@@ -103,14 +103,14 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
               />
             </Stack>
           }
-          isRequireTrainingVisible={editModule?.settings?.require_training}
+          isRequireTrainingVisible={localModule?.settings?.require_training}
           slotRequiresTrainingToggle={
             <Checkbox
               isChecked={localModule?.settings?.require_training}
               onClickCheck={{
                 onClick: () => {
                   if (
-                    editModule.relations.filter(
+                    localModule.relations.filter(
                       (relation) => relation.training_status === 'training',
                     ).length == 0
                   ) {
@@ -124,8 +124,8 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
                       }));
                     }
                   } else if (
-                    editModule.settings.require_training === false &&
-                    editModule.relations.filter(
+                    localModule.settings.require_training === false &&
+                    localModule.relations.filter(
                       (relation) => relation.training_status === 'training',
                     ).length > 0
                   ) {
@@ -149,7 +149,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           isApprovalDoneVisible={editModule?.settings?.reqruire_approval}
           slotCheckbox={
             <Checkbox
-              isChecked={editModule?.settings?.reqruire_approval}
+              isChecked={localModule?.settings?.reqruire_approval}
               onClickCheck={{
                 onClick: () => {
                   setEditLocalModule((prev) => ({
@@ -185,7 +185,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           slotInputNoOfReverse={
             <TextField
               select
-              value={editModule.settings.noReverseShadow}
+              value={localModule.settings.noReverseShadow}
               onChange={(e) => {
                 setEditLocalModule((prev) => ({
                   ...prev,
@@ -206,7 +206,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           slotInputNoOfShadow={
             <TextField
               select
-              value={editModule.settings.noShadow}
+              value={localModule.settings.noShadow}
               onChange={(e) => {
                 setEditLocalModule((prev) => ({
                   ...prev,

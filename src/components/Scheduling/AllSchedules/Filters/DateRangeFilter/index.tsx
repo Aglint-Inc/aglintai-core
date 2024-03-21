@@ -13,16 +13,16 @@ import {
   FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../store';
 
 function DateRangeFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
   const filter = useInterviewSchedulingStore((state) => state.filter);
   const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible
+    (state) => state.filterVisible,
   );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,8 +46,8 @@ function DateRangeFilterComp() {
     {
       startDate: new Date(),
       endDate: addDays(new Date(), 7),
-      key: 'selection'
-    }
+      key: 'selection',
+    },
   ]);
 
   useEffect(() => {
@@ -75,9 +75,10 @@ function DateRangeFilterComp() {
             </svg>
           </Stack>
         }
+        isActive={filter.dateRange !== null}
         isDotVisible={filter.dateRange !== null}
         onClickStatus={{
-          onClick: handleClick
+          onClick: handleClick,
         }}
         textLabel={'Date Range'}
         slotRightIcon={
@@ -105,14 +106,14 @@ function DateRangeFilterComp() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
-            borderColor: '#E9EBED'
-          }
+            borderColor: '#E9EBED',
+          },
         }}
       >
         <Stack position={'relative'}>
@@ -137,8 +138,8 @@ function DateRangeFilterComp() {
             <ButtonPrimarySmall
               wrapperProps={{
                 style: {
-                  width: '100%'
-                }
+                  width: '100%',
+                },
               }}
               textLabel='Apply'
               onClickButton={{
@@ -148,24 +149,24 @@ function DateRangeFilterComp() {
                   const dateRangeFilter = `[${startDate},${endDate})`;
                   setFilter({ dateRange: dateRangeFilter });
                   handleClose();
-                }
+                },
               }}
             />
             <ButtonTextSmall
               wrapperProps={{
                 style: {
-                  width: '100%'
-                }
+                  width: '100%',
+                },
               }}
               textLabel='Delete'
               onClickButton={{
                 onClick: () => {
                   setFilter({ dateRange: null });
                   setFilterVisible(
-                    filterVisible.filter((f) => f !== FilterType.dateRange)
+                    filterVisible.filter((f) => f !== FilterType.dateRange),
                   );
                   handleClose();
-                }
+                },
               }}
             />
           </Stack>

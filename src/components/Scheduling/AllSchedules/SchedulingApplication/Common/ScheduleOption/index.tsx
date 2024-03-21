@@ -7,21 +7,32 @@ import {
   OptionAvailableCard,
 } from '@/devlink2';
 import { AvatarWithName } from '@/devlink3';
+import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { getFullName } from '@/src/utils/jsonResume';
+
+interface SchedulingOptionCompProps {
+  isBadgeVisible?: boolean;
+  schedulingOptions: InterviewPlanScheduleDbType[];
+  isInterviewVisible?: boolean;
+  loading?: boolean;
+}
 
 function SchedulingOptionComp({
   isBadgeVisible = false,
   schedulingOptions,
   isInterviewVisible = true,
-}: {
-  isBadgeVisible?: boolean;
-  schedulingOptions: InterviewPlanScheduleDbType[];
-  isInterviewVisible?: boolean;
-}) {
+  loading = false,
+}: SchedulingOptionCompProps) {
   return (
     <>
+      {!loading && schedulingOptions.length === 0 && <div>Unable to fetch</div>}
+      {loading && (
+        <Stack width={'100%'} height={'100%'}>
+          <Loader />
+        </Stack>
+      )}
       {schedulingOptions?.map((option, ind) => {
         return (
           <OptionAvailableCard

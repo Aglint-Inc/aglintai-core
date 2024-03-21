@@ -76,6 +76,7 @@ function FilterScheduleType() {
   return (
     <>
       <ButtonFilter
+        isActive={filter.scheduleType.length > 0}
         isDotVisible={filter.scheduleType.length > 0}
         slotLeftIcon={
           <Stack>

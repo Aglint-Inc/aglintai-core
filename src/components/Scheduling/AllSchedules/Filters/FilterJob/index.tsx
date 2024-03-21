@@ -9,17 +9,17 @@ import {
   FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../store';
 
 function FilterJob() {
   const { jobsData } = useJobs();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
   const filter = useInterviewSchedulingStore((state) => state.filter);
   const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible
+    (state) => state.filterVisible,
   );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,6 +54,7 @@ function FilterJob() {
   return (
     <>
       <ButtonFilter
+        isActive={filter.job_ids.length > 0}
         slotLeftIcon={
           <Stack>
             <svg
@@ -72,7 +73,7 @@ function FilterJob() {
         }
         isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
-          onClick: handleClick
+          onClick: handleClick,
         }}
         textLabel={'Related Jobs'}
         slotRightIcon={
@@ -100,15 +101,15 @@ function FilterJob() {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         transformOrigin={{ vertical: -10, horizontal: 0 }}
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: '10px',
             borderColor: '#E9EBED',
-            minWidth: '176px'
-          }
+            minWidth: '176px',
+          },
         }}
       >
         <FilterDropdown
@@ -125,14 +126,14 @@ function FilterJob() {
                   onClickCheck={{
                     onClick: () => {
                       handleFilterClick(job.id);
-                    }
+                    },
                   }}
                 />
                 <Typography
                   sx={{
                     fontSize: '14px',
                     fontWeight: 600,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
                   }}
                   onClick={() => handleFilterClick(job.id)}
                 >
@@ -145,14 +146,14 @@ function FilterJob() {
             onClick: () => {
               setFilter({ job_ids: [] });
               setFilterVisible(
-                filterVisible.filter((f) => f !== FilterType.relatedJobs)
+                filterVisible.filter((f) => f !== FilterType.relatedJobs),
               );
-            }
+            },
           }}
           onClickReset={{
             onClick: () => {
               setFilter({ job_ids: [] });
-            }
+            },
           }}
         />
       </Popover>

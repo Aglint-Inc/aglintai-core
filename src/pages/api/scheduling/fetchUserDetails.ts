@@ -10,20 +10,22 @@ const supabase = createClient<Database>(
 
 export interface BodyParamsFetchUserDetails {
   recruiter_id: string;
+  status?: 'joined' | 'invited';
 }
 
 export type ApiResponseFetchUserDetails = ReturnType<typeof fetchUsers>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { recruiter_id } = req.body as BodyParamsFetchUserDetails;
+    const { recruiter_id, status = 'joined' } =
+      req.body as BodyParamsFetchUserDetails;
     const { data, error } = await supabase
       .from('recruiter_relation')
       .select()
       .eq('recruiter_id', recruiter_id);
     if (!error && data.length) {
       const userIds = data.map((item) => item.user_id);
-      const resUsers = await fetchUsers(userIds);
+      const resUsers = await fetchUsers(userIds, status);
       if (resUsers.data) {
         return res.status(200).json(resUsers.data);
       }
@@ -37,11 +39,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (user_ids: string[]) => {
+const fetchUsers = async (user_ids: string[], status: string) => {
   const { data: users, error: userError } = await supabase
     .from('recruiter_user')
     .select('user_id, first_name, last_name, email, profile_image, position')
-    .in('user_id', user_ids);
+    .in('user_id', user_ids)
+    .eq('join_status', status);
 
   return { data: users, error: userError };
 };

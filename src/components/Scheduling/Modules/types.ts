@@ -10,6 +10,7 @@ import {
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
+import { ApplicationList } from '../AllSchedules/store';
 import { schedulingSettingType } from '../Settings/types';
 import {
   InterviewModuleDbType,
@@ -69,14 +70,7 @@ export type ScheduleType = {
   applications: JobApplcationDB & {
     score_json: ScoreJson;
   };
-  file: {
-    id: string;
-    created_at: string;
-    file_url: string;
-    candidate_id: string;
-    resume_json: JSON;
-    type: string;
-  };
+  file: ApplicationList['file'];
   candidates: CandidateType;
   schedule: Omit<
     InterviewScheduleTypeDB,

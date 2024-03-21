@@ -68,6 +68,7 @@ function ListCardInterviewSchedule({
           }
           slotStatusBadge={
             <StatusBadge
+              isWaitingVisible={app.schedule?.status === 'pending'}
               isNotScheduledVisible={!app.schedule}
               isCancelledVisible={
                 app.schedule?.status === 'cancelled' ||
@@ -75,7 +76,6 @@ function ListCardInterviewSchedule({
               }
               isConfirmedVisible={app.schedule?.status === 'confirmed'}
               isCompletedVisible={app.schedule?.status === 'completed'}
-              isInProgressVisible={app.schedule?.status === 'pending'}
             />
           }
           textDuration={'--'}

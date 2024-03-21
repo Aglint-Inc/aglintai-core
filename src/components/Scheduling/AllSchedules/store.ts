@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import {
   CandidateType,
   InterviewScheduleTypeDB,
@@ -48,7 +49,7 @@ export enum FilterType {
 const initialState: InterviewSlice = {
   filter: {
     textSearch: '',
-    status: ['not scheduled', 'confirmed', 'pending'],
+    status: ['not scheduled', 'confirmed', 'pending', 'cancelled'],
     sortBy: 'asc',
     job_ids: [],
     panel_ids: [],
@@ -125,7 +126,7 @@ export type ApplicationList = {
     created_at: string;
     file_url: string;
     candidate_id: string;
-    resume_json: JSON;
+    resume_json: ResumeJson;
     type: string;
   };
 };

@@ -108,20 +108,19 @@ function InvitationPending({
             setChangeTime(true);
           },
         }}
-        isNotFindingTextVisible={!selectedSlot}
+        isNotFindingTextVisible={true}
+        isSelected={Boolean(selectedSlot)}
         slotButtonPrimary={
-          selectedSlot && (
-            <Stack width={'100%'}>
-              <ButtonPrimaryLarge
-                onClickButton={{
-                  onClick: () => {
-                    setDialogOpen(true);
-                  },
-                }}
-                textLabel={'Proceed'}
-              />
-            </Stack>
-          )
+          <Stack width={'100%'}>
+            <ButtonPrimaryLarge
+              onClickButton={{
+                onClick: () => {
+                  setDialogOpen(true);
+                },
+              }}
+              textLabel={'Proceed'}
+            />
+          </Stack>
         }
         textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
         slotInviteLinkCard={filteredRecords?.map((option, ind) => {

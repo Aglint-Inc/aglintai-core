@@ -10,4 +10,5 @@ declare function OpenInvitationLink(props: {
   isNotFindingTextVisible?: Types.Visibility.VisibilityConditions;
   slotCompanyLogo?: Types.Devlink.Slot;
   slotTimeFixer?: Types.Devlink.Slot;
+  isSelected?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

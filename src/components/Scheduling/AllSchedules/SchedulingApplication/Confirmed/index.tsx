@@ -29,7 +29,6 @@ function ConfirmedComp() {
           setIsViewProfileOpen={setIsViewProfileOpen}
         />
       )}
-
       <ScheduleInfoConfirmed
         textCompleted={
           selectedApplication.schedule?.confirmed_option?.plans
@@ -68,7 +67,7 @@ function ConfirmedComp() {
           },
         }}
         slotScheduleInfoCard={
-          selectedApplication?.schedule.confirmed_option.plans ? (
+          selectedApplication?.schedule?.confirmed_option?.plans ? (
             <SchedulingOptionComp
               schedulingOptions={[
                 {
@@ -85,7 +84,6 @@ function ConfirmedComp() {
           selectedApplication.candidates.first_name,
           selectedApplication.candidates.last_name,
         )}
-        
         textRole={selectedApplication.public_jobs.job_title}
         textLocation={selectedApplication.public_jobs.location || '--'}
         slotProfileImage={
