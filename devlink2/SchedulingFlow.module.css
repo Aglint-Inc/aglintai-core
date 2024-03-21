@@ -388,6 +388,7 @@
 
 .interview-member-card-list {
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
