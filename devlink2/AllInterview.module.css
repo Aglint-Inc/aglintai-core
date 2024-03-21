@@ -76,7 +76,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 25% 15% 20% 17% 23%;
+  grid-template-columns: 25% 21% 20% 14% 20%;
   grid-template-rows: auto;
 
   border-top: 1px solid #e9ebed;
@@ -178,6 +178,10 @@
   z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
+}
+
+.text-first-cap {
+  text-transform: capitalize;
 }
 
 .fw-semibold.z-index-5 {
@@ -286,6 +290,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .slot_candidaterow {

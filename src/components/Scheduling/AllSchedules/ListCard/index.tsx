@@ -41,7 +41,7 @@ function ListCardInterviewSchedule({
             style: {
               gridTemplateColumns: isJobDasboard
                 ? '25% 15% 15% 20%'
-                : '25% 15% 20% 17% 23%',
+                : '25% 21% 20% 14% 20%',
             },
           }}
           isSchedulerTable={!isJobDasboard}

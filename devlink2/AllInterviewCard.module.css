@@ -7,7 +7,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 25% 15% 20% 17% 23%;
+  grid-template-columns: 25% 21% 20% 14% 20%;
   grid-template-rows: auto;
 
   border-bottom: 1px solid #e9ebed;
