@@ -28,7 +28,8 @@ export function IntegrationUpload({
           _styles,
           "text-blue-500",
           "text-underline",
-          "cursor-pointer"
+          "cursor-pointer",
+          "hide"
         )}
         tag="div"
         {...onClickGetJson}

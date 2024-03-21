@@ -19,4 +19,6 @@ declare function InterviewerDetail(props: {
   onClickAddInterviewModules?: Types.Devlink.RuntimeProps;
   isModuleTrainingVisible?: Types.Visibility.VisibilityConditions;
   onClickInterviewSchedule?: Types.Devlink.RuntimeProps;
+  textInterviewToday?: React.ReactNode;
+  textInterviewWeek?: React.ReactNode;
 }): React.JSX.Element;

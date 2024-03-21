@@ -11,7 +11,7 @@ import { useJobs } from '@/src/context/JobsContext';
 function AgentPage() {
   const router = useRouter();
   const {
-    jobs: { data: jobs }
+    jobs: { data: jobs },
   } = useJobs();
   const [loading, setLoading] = useState(true);
   async function getjobs() {
@@ -46,20 +46,22 @@ function AgentPage() {
             <WidgetGrid3X3 slotWidget={<Typography>Select a job</Typography>} />
           </Stack>
           <WidgetGrid3X3
-            slotWidget={jobs.map((item, i) => {
-              return (
-                <WidgetJobCard
-                  onClickJob={{
-                    onClick: () => {
-                      router.push(`/agent/jobs/${item.id}`);
-                    }
-                  }}
-                  key={i}
-                  textJob={item.job_title}
-                  textSecondary={''}
-                />
-              );
-            })}
+            slotWidget={jobs
+              .filter((item) => item.status === 'published')
+              .map((item, i) => {
+                return (
+                  <WidgetJobCard
+                    onClickJob={{
+                      onClick: () => {
+                        router.push(`/agent/jobs/${item.id}`);
+                      },
+                    }}
+                    key={i}
+                    textJob={item.job_title}
+                    textSecondary={''}
+                  />
+                );
+              })}
           />
         </Stack>
       </JobAssistantProvider>

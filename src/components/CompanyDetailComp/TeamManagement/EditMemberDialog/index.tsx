@@ -143,7 +143,7 @@ const EditMember = ({
                 }}
                 options={recruiter?.office_locations.map(
                   (item: interviewLocationType) => {
-                    return item?.full_address;
+                    return `${item.city}, ${item.region}, ${item.country}`;
                   },
                 )}
                 renderInput={(params) => (

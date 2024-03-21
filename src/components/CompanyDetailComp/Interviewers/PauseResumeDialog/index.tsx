@@ -24,7 +24,7 @@ function PauseResumeDialog({
   close,
   pause,
   resume,
-  remove
+  remove,
 }: {
   pauseResumeDialog: {
     isOpen: boolean;
@@ -71,7 +71,7 @@ function PauseResumeDialog({
 
   const existingModule = data.modules.map((item) => item.module_id);
   const allModules = modules.filter(
-    (item) => !existingModule.includes(item.id)
+    (item) => !existingModule.includes(item.id),
   );
   const [selectedModule, setSelectedModule] = useState<ModuleType>(null);
   async function addModule() {
@@ -84,7 +84,7 @@ function PauseResumeDialog({
           training_status:
             pauseResumeDialog.type === 'addQualifiedModule'
               ? 'qualified'
-              : 'training'
+              : 'training',
         })
         .select();
       setSelectedModule(null);
@@ -101,8 +101,8 @@ function PauseResumeDialog({
           '& .MuiDialog-paper': {
             background: 'transparent',
             border: 'none',
-            borderRadius: '10px'
-          }
+            borderRadius: '10px',
+          },
         }}
         open={pauseResumeDialog.isOpen}
         onClose={() => {
@@ -135,7 +135,7 @@ function PauseResumeDialog({
                           setPauseJson({
                             ...pause_json,
                             isManual: true,
-                            end_date: ''
+                            end_date: '',
                           });
                         }}
                         sx={{ cursor: 'pointer' }}
@@ -158,7 +158,7 @@ function PauseResumeDialog({
                           setPauseJson({
                             isManual: false,
                             start_date: new Date().toISOString(),
-                            end_date: twoWeeks.toDate().toISOString()
+                            end_date: twoWeeks.toDate().toISOString(),
                           });
                         }}
                       >
@@ -180,7 +180,7 @@ function PauseResumeDialog({
                           setPauseJson({
                             isManual: false,
                             start_date: new Date().toISOString(),
-                            end_date: oneMonth.toDate().toISOString()
+                            end_date: oneMonth.toDate().toISOString(),
                           });
                         }}
                       >
@@ -202,7 +202,7 @@ function PauseResumeDialog({
                           setPauseJson({
                             isManual: false,
                             start_date: new Date().toISOString(),
-                            end_date: threeMonth.toDate().toISOString()
+                            end_date: threeMonth.toDate().toISOString(),
                           });
                         }}
                       >
@@ -224,7 +224,7 @@ function PauseResumeDialog({
                           setPauseJson({
                             isManual: false,
                             start_date: new Date().toISOString(),
-                            end_date: ''
+                            end_date: '',
                           });
                         }}
                       >
@@ -246,21 +246,21 @@ function PauseResumeDialog({
                                 ) {
                                   setPauseJson({
                                     ...pause_json,
-                                    start_date: dayjs(newValue).toISOString()
+                                    start_date: dayjs(newValue).toISOString(),
                                   });
                                 } else {
                                   setPauseJson({
                                     ...pause_json,
                                     start_date: dayjs(newValue).toISOString(),
-                                    end_date: null
+                                    end_date: null,
                                   });
                                 }
                               }}
                               minDate={currentDate}
                               slotProps={{
                                 textField: {
-                                  InputProps: { disableUnderline: true }
-                                }
+                                  InputProps: { disableUnderline: true },
+                                },
                               }}
                             />
                           </LocalizationProvider>
@@ -272,13 +272,13 @@ function PauseResumeDialog({
                               onChange={(newValue) => {
                                 setPauseJson({
                                   ...pause_json,
-                                  end_date: newValue.toISOString()
+                                  end_date: newValue.toISOString(),
                                 });
                               }}
                               slotProps={{
                                 textField: {
-                                  InputProps: { disableUnderline: true }
-                                }
+                                  InputProps: { disableUnderline: true },
+                                },
                               }}
                             />
                           </LocalizationProvider>
@@ -291,7 +291,7 @@ function PauseResumeDialog({
                   onClickAction={{
                     onClick: () => {
                       pause(pause_json);
-                    }
+                    },
                   }}
                   textPopupButton={'Pause'}
                 />
@@ -305,7 +305,7 @@ function PauseResumeDialog({
                   }
                   textDescription={`By Clicking resume this member will be included in new interviews scheduled for this module.`}
                   onClickResume={{
-                    onClick: resume
+                    onClick: resume,
                   }}
                   onClickClose={{ onClick: close }}
                 />
@@ -318,7 +318,7 @@ function PauseResumeDialog({
                   isWidget={true}
                   onClickCancel={{ onClick: close }}
                   onClickDelete={{
-                    onClick: remove
+                    onClick: remove,
                   }}
                   buttonText={'Remove'}
                 />
@@ -332,11 +332,11 @@ function PauseResumeDialog({
                 <ConfirmationPopup
                   textPopupTitle={
                     pauseResumeDialog.type === 'addQualifiedModule'
-                      ? 'Add module in Qualified.'
-                      : 'Add module in Training.'
+                      ? 'Add to Qualified Module.'
+                      : 'Add to Training Module.'
                   }
                   textPopupDescription={
-                    'Select a module from your module list.'
+                    'Pick a module from the list to add interviewer to the module.'
                   }
                   isIcon={false}
                   slotWidget={
@@ -371,7 +371,7 @@ function PauseResumeDialog({
                             placeholder='Ex. Healthcare'
                             InputProps={{
                               ...params.InputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: 'new-password',
                             }}
                           />
                         );
@@ -380,12 +380,12 @@ function PauseResumeDialog({
                   }
                   isWidget={true}
                   onClickCancel={{
-                    onClick: close
+                    onClick: close,
                   }}
                   onClickAction={{
                     onClick: () => {
                       addModule();
-                    }
+                    },
                   }}
                   textPopupButton={'Add'}
                 />

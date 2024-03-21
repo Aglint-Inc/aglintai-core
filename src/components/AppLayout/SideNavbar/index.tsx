@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { useMemo } from 'react';
 
 import {
   NavAssessment,
@@ -16,6 +15,7 @@ import {
 } from '@/devlink';
 import { AssistantLogo } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function SideNavbar() {
@@ -28,7 +28,7 @@ function SideNavbar() {
     'isPhoneScreeningEnabled',
   );
   const router = useRouter();
-  const { recruiter, recruiterUser, loading } = useAuthDetails();
+  const { loading, isAllowed } = useAuthDetails();
 
   const navList = [
     {
@@ -37,7 +37,8 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.AGENT,
       comingsoon: false,
-      isvisible: isAgentEnabled || recruiter?.email === 'dheeraj@aglinthq.com',
+      isvisible: isAgentEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavJobs isActive={false} />,
@@ -46,6 +47,7 @@ function SideNavbar() {
       route: pageRoutes.JOBS,
       comingsoon: false,
       isvisible: true,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavCd isActive={false} />,
@@ -54,6 +56,7 @@ function SideNavbar() {
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
       isvisible: isSourcingEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavTickets isActive={false} />,
@@ -62,6 +65,7 @@ function SideNavbar() {
       route: pageRoutes.SUPPORT,
       comingsoon: false,
       isvisible: isSupportEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavAssistant isActive={false} />,
@@ -70,6 +74,7 @@ function SideNavbar() {
       route: pageRoutes.ASSISTANT,
       comingsoon: false,
       isvisible: isAssistantEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavPhoneScreening isActive={false} />,
@@ -77,9 +82,13 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.SCREENING,
       comingsoon: false,
-      isvisible:
-        isPhoneScreeningEnabled ||
-        recruiterUser?.email === 'dheeraj@aglinthq.com',
+      isvisible: isPhoneScreeningEnabled,
+      roles: [
+        'admin',
+        'recruiter',
+        'scheduler',
+        'interviewer',
+      ] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavScheduler isActive={false} />,
@@ -88,6 +97,12 @@ function SideNavbar() {
       route: pageRoutes.SCHEDULING,
       comingsoon: false,
       isvisible: true,
+      roles: [
+        'admin',
+        'recruiter',
+        'scheduler',
+        'interviewer',
+      ] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavAssessment isActive={false} />,
@@ -95,8 +110,8 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.ASSESSMENTS,
       comingsoon: false,
-      isvisible:
-        isAssessmentEnabled || recruiterUser?.email === 'dheeraj@aglinthq.com',
+      isvisible: isAssessmentEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavIntegration isActive={false} />,
@@ -105,6 +120,7 @@ function SideNavbar() {
       route: '/integrations',
       comingsoon: false,
       isvisible: true,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavCompanySetting isActive={false} />,
@@ -113,38 +129,16 @@ function SideNavbar() {
       route: pageRoutes.COMPANY,
       comingsoon: false,
       isvisible: true,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
   ];
-
-  const newNaveList = useMemo(() => {
-    let tempList = [];
-    switch (recruiterUser?.role) {
-      case 'recruiter': {
-        tempList = navList;
-        break;
-      }
-      case 'interviewer': {
-        tempList = navList.filter((item) => item.text === 'Scheduler');
-        break;
-      }
-      case 'scheduler': {
-        tempList = navList.filter((item) =>
-          ['Jobs', 'Scheduler'].includes(item.text),
-        );
-        break;
-      }
-      default: {
-        tempList = navList;
-        break;
-      }
-    }
-    return tempList;
-  }, [recruiter, recruiterUser]);
   return (
     <>
       {!loading &&
-        newNaveList.map((item, i) => {
-          if (item.isvisible)
+        navList
+          .filter((item) => (item.roles ? isAllowed(item.roles) : true))
+          .filter((item) => item.isvisible)
+          .map((item, i) => {
             return (
               <Stack
                 key={i}
@@ -171,7 +165,7 @@ function SideNavbar() {
                 {item.icon}
               </Stack>
             );
-        })}
+          })}
     </>
   );
 }
