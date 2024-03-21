@@ -53,9 +53,7 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
 
   const details = {
     interview_plan: filtered_int_plans,
-    service_json: JSON.parse(
-      decrypt(rec.service_json.service_json, process.env.ENCRYPTION_KEY),
-    ) as CompServiceKeyCred,
+    service_json: null,
     interviewers: rec.interviewer.interviewer as RecruiterUserType[],
     shadowIntervs: (rec.shadow_ints?.shadow_ints ?? []) as RecruiterUserType[],
     rShadowIntervs: (rec.rshadow_ints?.rshadow_ints ??
@@ -65,6 +63,11 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
     int_mod_relns: (rec.int_mod_relns?.int_mod_relns ??
       []) as InterviewModuleRelationType[],
   };
+  if (rec.service_json?.service_json) {
+    details.service_json = JSON.parse(
+      decrypt(rec.service_json.service_json, process.env.ENCRYPTION_KEY),
+    ) as CompServiceKeyCred;
+  }
 
   const interview_plan_api: InterviewModuleApiType[] =
     details.interview_plan.map((m) => {
