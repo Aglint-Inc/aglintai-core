@@ -4,7 +4,7 @@ import {
   IconButton,
   Popover,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
 import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
@@ -21,7 +21,7 @@ import {
   RcCheckbox,
   ScheduleSettings,
   TimeRangeInput,
-  WorkingHourDay
+  WorkingHourDay,
 } from '@/devlink2';
 import { DarkPill, UserLevelSettings } from '@/devlink3';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
@@ -35,7 +35,7 @@ import {
   DailyLimitType,
   holidayType,
   schedulingSettingType,
-  WeeklyLimitType
+  WeeklyLimitType,
 } from '@/src/components/Scheduling/Settings/types';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
 import { useImrQuery } from '@/src/pages/scheduling/interviewer/[member_id]';
@@ -47,17 +47,17 @@ function InterviewerLevelSettings({
   setOpenDrawer,
   updateSettings,
   initialData,
-  isOverflow = false
+  isOverflow = false,
 }) {
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
-    value: 2
+    value: 2,
   });
   const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
     useState<DailyLimitType>({
       type: 'Hours',
-      value: 16
+      value: 16,
     });
 
   const [workingHours, setWorkingHours] = useState([]);
@@ -138,7 +138,7 @@ function InterviewerLevelSettings({
   function initialLoad() {
     if (initialData) {
       const schedulingSettingData = cloneDeep(
-        initialData
+        initialData,
       ) as schedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
@@ -148,16 +148,16 @@ function InterviewerLevelSettings({
       setSelectedTimeZone({ ...schedulingSettingData.timeZone });
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
       setSelectedDailyLimit({
-        ...schedulingSettingData.interviewLoad.dailyLimit
+        ...schedulingSettingData.interviewLoad.dailyLimit,
       });
       setSelectedWeeklyLimit({
-        ...schedulingSettingData.interviewLoad.weeklyLimit
+        ...schedulingSettingData.interviewLoad.weeklyLimit,
       });
       setWorkingHours(workingHoursCopy);
       setDaysOff([...schedulingSettingData.totalDaysOff]);
       setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
       setSoftConflictsKeyWords(
-        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || []
+        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
       );
     }
   }
@@ -167,16 +167,16 @@ function InterviewerLevelSettings({
       schedulingSettingObj = {
         interviewLoad: {
           dailyLimit: selectedDailyLimit,
-          weeklyLimit: selectedWeeklyLimit
+          weeklyLimit: selectedWeeklyLimit,
         },
         timeZone: selectedTimeZone,
         workingHours: workingHours,
         totalDaysOff: daysOff,
         schedulingKeyWords: {
           free: freeKeyWords,
-          SoftConflicts: softConflictsKeyWords
+          SoftConflicts: softConflictsKeyWords,
         },
-        isAutomaticTimezone: isTimeZone
+        isAutomaticTimezone: isTimeZone,
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -195,7 +195,7 @@ function InterviewerLevelSettings({
     selectedTimeZone,
     freeKeyWords,
     softConflictsKeyWords,
-    isTimeZone
+    isTimeZone,
   ]);
 
   useEffect(() => {
@@ -214,7 +214,7 @@ function InterviewerLevelSettings({
         onClickClose={{
           onClick: () => {
             setOpenDrawer(false);
-          }
+          },
         }}
         slotDarkPill={
           <>
@@ -222,7 +222,7 @@ function InterviewerLevelSettings({
               onClickPill={{
                 onClick: () => {
                   setIsAvailability(true);
-                }
+                },
               }}
               isActive={isAvailability}
               textPill={'Availability'}
@@ -231,7 +231,7 @@ function InterviewerLevelSettings({
               onClickPill={{
                 onClick: () => {
                   setIsAvailability(false);
-                }
+                },
               }}
               isActive={!isAvailability}
               textPill={'Keywords'}
@@ -243,16 +243,25 @@ function InterviewerLevelSettings({
             <ScheduleSettings
               isTimeZoneToggleVisible={false}
               slotTimeZoneInput={
-                <Stack spacing={'10px'} width={420}>
-                  <Stack alignItems={'center'} direction={'row'}>
+                <Stack
+                  spacing={'10px'}
+                  width={420}
+                  flexDirection={'column-reverse'}
+                  gap={'10px'}
+                >
+                  <Stack
+                    alignItems={'center'}
+                    direction={'row'}
+                    marginLeft={'-10px !important'}
+                  >
                     <ToggleBtn
                       handleCheck={(e) => {
                         setIsTimeZone(e);
                         if (e) {
                           setSelectedTimeZone(
                             timeZones.filter((item) =>
-                              item.label.includes(dayjs.tz.guess())
-                            )[0]
+                              item.label.includes(dayjs.tz.guess()),
+                            )[0],
                           );
                         }
                       }}
@@ -294,7 +303,7 @@ function InterviewerLevelSettings({
                           placeholder='Ex. Healthcare'
                           InputProps={{
                             ...params.InputProps,
-                            autoComplete: 'new-password'
+                            autoComplete: 'new-password',
                           }}
                         />
                       );
@@ -353,7 +362,7 @@ function InterviewerLevelSettings({
 
                                       return [...data];
                                     });
-                                  }
+                                  },
                                 }}
                                 isChecked={day.isWorkDay}
                                 text={capitalize(day.day)}
@@ -367,14 +376,14 @@ function InterviewerLevelSettings({
                                       .set(
                                         'hour',
                                         parseInt(
-                                          day.timeRange.startTime.split(':')[0]
-                                        )
+                                          day.timeRange.startTime.split(':')[0],
+                                        ),
                                       )
                                       .set(
                                         'minute',
                                         parseInt(
-                                          day.timeRange.startTime.split(':')[1]
-                                        )
+                                          day.timeRange.startTime.split(':')[1],
+                                        ),
                                       )}
                                     onSelect={selectStartTime}
                                     i={i}
@@ -386,14 +395,14 @@ function InterviewerLevelSettings({
                                       .set(
                                         'hour',
                                         parseInt(
-                                          day.timeRange.endTime.split(':')[0]
-                                        )
+                                          day.timeRange.endTime.split(':')[0],
+                                        ),
                                       )
                                       .set(
                                         'minute',
                                         parseInt(
-                                          day.timeRange.endTime.split(':')[1]
-                                        )
+                                          day.timeRange.endTime.split(':')[1],
+                                        ),
                                       )}
                                     onSelect={selectEndTime}
                                     i={i}
@@ -408,7 +417,7 @@ function InterviewerLevelSettings({
                 </>
               }
               onClickAddDate={{
-                onClick: openAddCompany
+                onClick: openAddCompany,
               }}
               isCompanyDaysOffVisible={false}
               slotDayOff={
@@ -417,7 +426,7 @@ function InterviewerLevelSettings({
                     return (
                       <DayOff
                         onClickRemove={{
-                          onClick: () => removeDayOff(item.date)
+                          onClick: () => removeDayOff(item.date),
                         }}
                         key={i}
                         textDate={item.date}
@@ -431,7 +440,7 @@ function InterviewerLevelSettings({
                     onClose={handleClose}
                     anchorOrigin={{
                       vertical: 'bottom',
-                      horizontal: 'left'
+                      horizontal: 'left',
                     }}
                   >
                     <DateSelect
@@ -480,7 +489,7 @@ function InterviewerLevelSettings({
                               });
                             }}
                             sx={{
-                              p: '5px'
+                              p: '5px',
                             }}
                             deleteIcon={
                               <IconButton>
@@ -531,7 +540,7 @@ function InterviewerLevelSettings({
                               });
                             }}
                             sx={{
-                              p: '5px'
+                              p: '5px',
                             }}
                             deleteIcon={
                               <IconButton>

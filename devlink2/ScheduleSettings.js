@@ -104,7 +104,7 @@ export function ScheduleSettings({
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
         <_Builtin.Block tag="div">{"Time Zone"}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "slot_timezoneinput")}
+          className={_utils.cx(_styles, "slot_timezoneinput", "reverse-order")}
           tag="div"
         >
           {slotTimeZoneInput}
