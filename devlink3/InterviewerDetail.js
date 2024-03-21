@@ -21,6 +21,8 @@ export function InterviewerDetail({
   onClickAddInterviewModules = {},
   isModuleTrainingVisible = true,
   onClickInterviewSchedule = {},
+  textInterviewToday = "Interviews today",
+  textInterviewWeek = "Interviews this week",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewerdetail")} tag="div">
@@ -104,7 +106,7 @@ export function InterviewerDetail({
                 >
                   {textInterviewPerDay}
                 </_Builtin.Block>
-                <_Builtin.Block tag="div">{"Interviews today"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{textInterviewToday}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "loadbalance_display")}
@@ -116,9 +118,7 @@ export function InterviewerDetail({
                 >
                   {textInterviewPerWeek}
                 </_Builtin.Block>
-                <_Builtin.Block tag="div">
-                  {"Interviews this week"}
-                </_Builtin.Block>
+                <_Builtin.Block tag="div">{textInterviewWeek}</_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

@@ -60,25 +60,32 @@ function Interviewer({
     end_time: '',
   });
   const { refetch } = useImrQuery();
-  let interviewsThisWeek = 0;
-  let interviewsToday = 0;
+  const today = dayjs().startOf('day');
+  const thisWeekStart = dayjs().endOf('week');
+  let totalInterviewsThisWeek = [];
+  let totalInterviewsToday = [];
+  let totalHoursThisWeek = 0;
+  let totalHoursToday = 0;
+
   const interviewerSchedules = useInterviewerSchedulesQuery();
   if (interviewerSchedules.isFetched) {
     const interviews = interviewerSchedules.data.map(
       (item) => item.interview_meeting,
     ) as InterviewMeetingTypeDb[];
 
-    const today = dayjs().startOf('day');
-    const thisWeekStart = dayjs().startOf('week');
-
-    interviewsToday = interviews.filter((interview) =>
+    const completedInterviews = interviews.filter(
+      (item) => item.status == 'completed',
+    );
+    totalInterviewsToday = completedInterviews.filter((interview) =>
       dayjs(interview.end_time).isSame(today, 'day'),
-    ).length;
-    interviewsThisWeek = interviews.filter(
-      (interview) =>
-        dayjs(interview.end_time).isAfter(thisWeekStart) ||
-        dayjs(interview.end_time).isSame(thisWeekStart, 'day'),
-    ).length;
+    );
+    totalInterviewsThisWeek = completedInterviews.filter((interview) =>
+      dayjs(interview.end_time).isBefore(thisWeekStart),
+    );
+    totalHoursToday =
+      Number(totalInterviewsToday.reduce((a, b) => a + b.duration, 0)) / 60;
+    totalHoursThisWeek =
+      Number(totalInterviewsThisWeek.reduce((a, b) => a + b.duration, 0)) / 60;
   }
   return (
     <>
@@ -92,7 +99,7 @@ function Interviewer({
         <InterviewerLevelSettings
           setOpenDrawer={setOpenDrawer}
           initialData={
-            interviewerDetails.interviewer.scheduling_settings as any
+            interviewerDetails.interviewer?.scheduling_settings as any
           }
           updateSettings={(x) => {
             return handelMemberUpdate({
@@ -136,16 +143,64 @@ function Interviewer({
           interviewerDetails.interviewer.scheduling_settings?.timeZone.label
         }
         textInterviewPerDay={
-          interviewsToday +
-            '/' +
-            interviewerDetails.interviewer.scheduling_settings?.interviewLoad
-              ?.dailyLimit.value || 0
+          <ShowCode>
+            <ShowCode.When
+              isTrue={
+                interviewerDetails.interviewer?.scheduling_settings
+                  ?.interviewLoad?.dailyLimit.type === 'Interviews'
+              }
+            >
+              {totalInterviewsToday.length +
+                ' / ' +
+                interviewerDetails.interviewer.scheduling_settings
+                  ?.interviewLoad?.dailyLimit.value || 0}
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={
+                interviewerDetails.interviewer?.scheduling_settings
+                  ?.interviewLoad?.dailyLimit.type === 'Hours'
+              }
+            >
+              {totalHoursToday +
+                ' / ' +
+                interviewerDetails.interviewer.scheduling_settings
+                  ?.interviewLoad?.dailyLimit.value || 0}
+            </ShowCode.When>
+          </ShowCode>
         }
         textInterviewPerWeek={
-          interviewsThisWeek +
-            '/' +
-            interviewerDetails.interviewer.scheduling_settings?.interviewLoad
-              ?.weeklyLimit.value || 0
+          <ShowCode>
+            <ShowCode.When
+              isTrue={
+                interviewerDetails.interviewer?.scheduling_settings
+                  ?.interviewLoad?.weeklyLimit.type === 'Interviews'
+              }
+            >
+              {totalInterviewsThisWeek.length +
+                ' / ' +
+                interviewerDetails.interviewer.scheduling_settings
+                  ?.interviewLoad?.weeklyLimit.value || 0}
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={
+                interviewerDetails.interviewer?.scheduling_settings
+                  ?.interviewLoad?.weeklyLimit.type === 'Hours'
+              }
+            >
+              {totalHoursThisWeek +
+                ' / ' +
+                interviewerDetails.interviewer.scheduling_settings
+                  ?.interviewLoad?.weeklyLimit.value || 0}
+            </ShowCode.When>
+          </ShowCode>
+        }
+        textInterviewToday={
+          interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
+            ?.dailyLimit.type + ' today'
+        }
+        textInterviewWeek={
+          interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
+            ?.weeklyLimit.type + ' this week'
         }
         slotQualifiedModules={
           interviewerDetails.modules.filter(
