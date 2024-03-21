@@ -1,4 +1,4 @@
-import { Autocomplete, Avatar, Drawer, Stack, TextField } from '@mui/material';
+import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 
 import {
@@ -8,12 +8,13 @@ import {
   TeamPendingInvites,
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import Icon from '@/src/components/Common/Icons/Icon';
 import Loader from '@/src/components/Common/Loader';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -143,8 +144,6 @@ const AddMember = ({
         email: recruiterUser.email,
       },
     );
-    // eslint-disable-next-line no-console
-    console.log(res);
     if (res.status === 200) {
       let { error, created, user } = res.data;
       if (!error && created) {
@@ -195,8 +194,17 @@ const AddMember = ({
                   <>
                     <InviteTeamCard
                       textEmail={data.email}
-                      textName={data.first_name}
-                      slotAvatar={<Icon variant='UserSolo' />}
+                      textName={data.first_name + ' ' + data.last_name}
+                      slotAvatar={
+                        <MuiAvatar
+                          // src={data.}
+                          level={getFullName(data.first_name, data.last_name)}
+                          variant='circular'
+                          height='50px'
+                          width='50px'
+                          fontSize='16px'
+                        />
+                      }
                     />
                   </>
                 );
@@ -267,8 +275,8 @@ const AddMember = ({
                             interview_location: false,
                           });
                         }}
-                        name='Interviewer Location'
-                        placeholder='Interviewer Location'
+                        name='Location'
+                        placeholder='Location'
                       />
                     )}
                   />
@@ -370,16 +378,15 @@ const AddMember = ({
               <TeamInvitesBlock
                 key={member.user_id}
                 email={member.email}
-                name={member.first_name}
+                name={member.first_name + ' ' + member.last_name}
                 slotImage={
-                  <Avatar
-                    variant='circular'
+                  <MuiAvatar
                     src={member.profile_image}
-                    alt={member.first_name}
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                    }}
+                    level={getFullName(member.first_name, member.last_name)}
+                    variant='circular'
+                    height='100%'
+                    width='100%'
+                    fontSize='16px'
                   />
                 }
                 slotButton={

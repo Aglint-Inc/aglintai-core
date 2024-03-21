@@ -14,10 +14,9 @@ import { Modules } from './Modules/Modules';
 import {
   setIsCreateDialogOpen,
   setSearchText,
-  useModulesStore
+  useModulesStore,
 } from './Modules/store';
 import MySchedule from './MySchedule';
-import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SettingsScheduling from './Settings';
 import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
@@ -44,8 +43,8 @@ function SchedulingMainComp() {
       setRecruiter(
         {
           ...updatedRecruiter,
-          socials: updatedRecruiter?.socials as unknown as SocialsType
-        }!
+          socials: updatedRecruiter?.socials as unknown as SocialsType,
+        }!,
       );
     }
     setSaving('saved');
@@ -53,7 +52,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`, undefined, {
-        shallow: true
+        shallow: true,
       });
     }
   }, [router]);
@@ -72,7 +71,7 @@ function SchedulingMainComp() {
                       <InputAdornment position='end'>
                         <Icon variant='JobSearch' height='14' />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   placeholder='Search by name'
                   onChange={(e) => {
@@ -95,7 +94,7 @@ function SchedulingMainComp() {
                   buttonProps={{
                     onClick: () => {
                       setIsCreateDialogOpen(true);
-                    }
+                    },
                   }}
                 />
               </Stack>
@@ -109,7 +108,7 @@ function SchedulingMainComp() {
                 allowAction(<AllSchedules />, [
                   'admin',
                   'recruiter',
-                  'scheduler'
+                  'scheduler',
                 ])
               ) : router.query.tab == 'mySchedules' ? (
                 <>
@@ -118,17 +117,11 @@ function SchedulingMainComp() {
                 </>
               ) : router.query.tab == 'interviewModules' ? (
                 allowAction(<Modules />, ['admin', 'recruiter', 'scheduler'])
-              ) : router.query.tab == 'emailTemplate' ? (
-                allowAction(<SchedulingEmailTemplates />, [
-                  'admin',
-                  'recruiter',
-                  'scheduler'
-                ])
               ) : router.query.tab == 'interviewers' ? (
                 allowAction(<InterviewTab />, [
                   'admin',
                   'recruiter',
-                  'scheduler'
+                  'scheduler',
                 ])
               ) : router.query.tab == 'settings' ? (
                 allowAction(
@@ -136,7 +129,7 @@ function SchedulingMainComp() {
                     updateSettings={updateSettings}
                     initialData={recruiter?.scheduling_settings}
                   />,
-                  ['admin', 'recruiter', 'scheduler']
+                  ['admin', 'recruiter', 'scheduler'],
                 )
               ) : (
                 ''

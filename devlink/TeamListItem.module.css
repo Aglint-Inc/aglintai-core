@@ -9,7 +9,13 @@
 }
 
 .tu-list-block.header-block {
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
   background-color: #e9ebed;
+}
+
+@media screen and (min-width: 1440px) {
+
 }
 
 .tu-list-item {

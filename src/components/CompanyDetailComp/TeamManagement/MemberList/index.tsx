@@ -1,11 +1,13 @@
-import { Avatar, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { TeamListItem } from '@/devlink';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterUserType } from '@/src/types/data.types';
+import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import DeleteMemberDialog from './DeleteMemberDialog';
@@ -14,7 +16,7 @@ dayjs.extend(relativeTime);
 const Member = ({
   member,
   removeMember,
-  editMember
+  editMember,
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
@@ -53,20 +55,19 @@ const Member = ({
         onClickCancelInvite={{
           onClick: () => {
             setOpenForCancel(true);
-          }
+          },
         }}
         isCancelInviteVisible={member.join_status === 'invited' ? true : false}
         key={1}
         dateText={dayjs(member.joined_at).fromNow()}
         slotProfileImage={
-          <Avatar
-            variant='circular'
+          <MuiAvatar
             src={member.profile_image}
-            alt={member.first_name}
-            sx={{
-              width: '100%',
-              height: '100%'
-            }}
+            level={getFullName(member.first_name, member.last_name)}
+            variant='circular'
+            height='100%'
+            width='100%'
+            fontSize='16px'
           />
         }
         userEmail={member.email}
@@ -81,18 +82,18 @@ const Member = ({
             member.join_status === 'invited'
               ? {
                   backgroundColor: palette.yellow[200],
-                  color: palette.yellow[800]
+                  color: palette.yellow[800],
                 }
               : {
                   backgroundColor: palette.green[200],
-                  color: palette.green[800]
-                }
+                  color: palette.green[800],
+                },
         }}
         userStatusText={<Stack>{capitalizeAll(member.join_status)}</Stack>}
         onClickRemove={{
           onClick: () => {
             setOpenForDelete(true);
-          }
+          },
         }}
       />
     </>

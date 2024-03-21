@@ -1,8 +1,8 @@
 import {
   Autocomplete,
   Chip,
+  Dialog,
   IconButton,
-  Popover,
   Stack,
   Typography,
 } from '@mui/material';
@@ -28,6 +28,7 @@ import {
   WorkingHourDay,
   WorkingHours,
 } from '@/devlink2';
+import { ConfirmationPopup } from '@/devlink3';
 import toast from '@/src/utils/toast';
 
 import DateSelect from './Components/DateSelector';
@@ -41,9 +42,9 @@ import {
   WeeklyLimitType,
 } from './types';
 import { hoursList } from './utils';
+import SchedulingEmailTemplates from '../SchedulingEmailTemplates';
 import { settingSubNavItem } from '../SubNav/utils';
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
-import AUIButton from '../../Common/AUIButton';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
@@ -128,7 +129,6 @@ function SchedulingSettings({
     setSelectedDate('');
   };
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   function getDate(e: any) {
     setSelectedDate(dayjs(e).format('DD MMM YYYY'));
@@ -373,59 +373,70 @@ function SchedulingSettings({
                     />
                   );
                 })}
-                <Popover
-                  id={id}
+                <Dialog
+                  sx={{
+                    '& .MuiDialog-paper': {
+                      background: 'transparent',
+                      border: 'none',
+                      borderRadius: '10px',
+                    },
+                  }}
                   open={open}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                  onClose={() => {
+                    // resetState();
+                    close();
                   }}
                 >
-                  <Stack width={300} gap={1} p={2}>
-                    <Stack direction={'row'} justifyContent={'space-between'}>
-                      <Typography variant='subtitle1'>Add holiday</Typography>
-                      <Stack>
-                        <IconButton onClick={handleClose}>
-                          <Icon
-                            width='12px'
-                            height='12px'
-                            variant='CloseIcon'
+                  <ConfirmationPopup
+                    isIcon={false}
+                    textPopupTitle='Add holiday'
+                    textPopupDescription={
+                      <Stack gap={1}>
+                        <Typography variant='body2'>Date</Typography>
+                        <DateSelect
+                          selectedDates={daysOff}
+                          dateRef={dateRef}
+                          getDate={getDate}
+                        />
+                        <Typography variant='body2'>Specialty</Typography>
+                        <Stack>
+                          <UITextField
+                            placeholder='Enter specialty'
+                            fullWidth
+                            ref={eventRef}
                           />
-                        </IconButton>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                    <Typography variant='body2'>Date</Typography>
-                    <DateSelect
-                      selectedDates={daysOff}
-                      dateRef={dateRef}
-                      getDate={getDate}
-                    />
-                    <Typography variant='body2'>Specialty</Typography>
-                    <Stack>
-                      <UITextField ref={eventRef} />
-                    </Stack>
-                    <AUIButton
-                      disabled={!selectedDate}
-                      onClick={() => {
-                        setDaysOff(
-                          (pre) =>
-                            [
-                              ...pre,
-                              {
-                                date: selectedDate,
-                                event_name: eventRef.current.value,
-                              },
-                            ] as holidayType[],
-                        );
-                        handleClose();
-                      }}
-                    >
-                      Add
-                    </AUIButton>
-                  </Stack>
-                </Popover>
+                    }
+                    isGreyButtonVisible={false}
+                    textPopupButton='Add'
+                    onClickCancel={{
+                      onClick: handleClose,
+                    }}
+                    onClickAction={{
+                      onClick: () => {
+                        if (selectedDate) {
+                          setDaysOff(
+                            (pre) =>
+                              [
+                                ...pre,
+                                {
+                                  date: selectedDate,
+                                  event_name: eventRef.current.value,
+                                },
+                              ] as holidayType[],
+                          );
+                          handleClose();
+                          toast.success(
+                            `Holiday added on ${dayjs(dateRef.current.value).format('DD-MMM-YYYY')} ${eventRef.current.value ? 'for' : ''} ${eventRef.current.value}`,
+                          );
+                        } else {
+                          toast.message('Please select a date');
+                        }
+                      },
+                    }}
+                  />
+                </Dialog>
               </>
             }
             onClickAddDate={{
@@ -579,6 +590,11 @@ function SchedulingSettings({
             </>
           }
         />
+      </ShowCode.When>
+      <ShowCode.When
+        isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
+      >
+        <SchedulingEmailTemplates />
       </ShowCode.When>
     </Stack>
   );

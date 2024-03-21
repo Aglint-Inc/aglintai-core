@@ -1,4 +1,5 @@
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import { useRef, useState } from 'react';
 
 import { IntegrationThanks } from '@/devlink2';
@@ -23,7 +24,23 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         .from('request_integration_tool')
         .insert({ recruiter_id, tool_name, description })
         .select()
-        .then(() => {});
+        .then(async () => {
+          await axios.post('/api/sendgrid', {
+            fromEmail: recruiter.email,
+            fromName: recruiter?.name,
+            email: ['raj@aglinthq.com', 'ravi@aglinthq.com'],
+            subject: 'Integration Tool Request',
+            text: `
+                  <body>
+                  <h1>Integration Tool Request</h1>
+                  <p>We urgently need <b>${tool_name}</b> integration tool for improved team communication and collaboration. Can we discuss this further in a meeting?</p>
+                  <p>Description : ${description}</p>
+                  <p>Best regards,<br>
+                  ${recruiter?.name}</p>
+                  </body>
+              `,
+          });
+        });
       setShowThanks(true);
     } else {
       toast.error('Please enter tool name!');

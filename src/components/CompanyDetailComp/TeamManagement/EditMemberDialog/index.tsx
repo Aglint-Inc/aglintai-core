@@ -156,8 +156,8 @@ const EditMember = ({
                         interview_location: false,
                       });
                     }}
-                    name='Interviewer Location'
-                    placeholder='Interviewer Location'
+                    name='Location'
+                    placeholder='Location'
                   />
                 )}
               />

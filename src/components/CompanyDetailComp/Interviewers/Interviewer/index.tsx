@@ -174,10 +174,10 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                            ? `Till ${dayjs(pause_json.end_date).format(
-                                'DD MMMM YYYY',
-                              )}`
-                            : '--'
+                              ? `Till ${dayjs(pause_json.end_date).format(
+                                  'DD MMMM YYYY',
+                                )}`
+                              : '--'
                           : ''
                       }
                       onClickPauseInterview={{
@@ -233,6 +233,8 @@ function Interviewer({
                       isTrainingProgessVisible={false}
                       key={module_id}
                       textName={interview_module.name}
+                      isTextObjectiveVisible={true}
+                      textObjective={interview_module.description}
                       isPauseResumeVisible={Boolean(pause_json)}
                       isPauseVisible={!pause_json}
                       isResumeVisible={Boolean(pause_json)}
@@ -244,10 +246,10 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                            ? `Till ${dayjs(pause_json.end_date).format(
-                                'DD MMMM YYYY',
-                              )}`
-                            : '--'
+                              ? `Till ${dayjs(pause_json.end_date).format(
+                                  'DD MMMM YYYY',
+                                )}`
+                              : '--'
                           : ''
                       }
                       onClickPauseInterview={{

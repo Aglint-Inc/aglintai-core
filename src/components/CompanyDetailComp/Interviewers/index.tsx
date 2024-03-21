@@ -32,80 +32,125 @@ const InterviewTab = () => {
           <AllInterviewers
             slotAllInterviewesCard={
               interviewers &&
-              interviewers.map((member) => {
-                return (
-                  <Stack
-                    key={member.rec_user.user_id}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      // setSelectedInterviewer(member);
-                      router.push(
-                        `${router.route}/interviewer/${member.rec_user.user_id}`,
-                      );
-                    }}
-                  >
-                    <AllInterviewersCard
-                      textCompletedInterviews={member.completed_meeting_count}
-                      textUpcomingInterviews={member.upcoming_meeting_count}
-                      slotProfileImage={
-                        <MuiAvatar
-                          src={member.rec_user.profile_image}
-                          level={getFullName(
-                            member.rec_user.first_name,
-                            member.rec_user.last_name,
-                          )}
-                          variant='circular'
-                          height='40px'
-                          width='40px'
-                          fontSize='16px'
-                        />
-                      }
-                      isCalenderNotConnected={
-                        recruiter.service_json === null &&
-                        recruiter.email.split('@')[1] ===
-                          member.rec_user.email.split('@')[1] &&
-                        member.rec_user.schedule_auth === null
-                      }
-                      isConnectedCalenderVisible={
-                        (recruiter.service_json !== null &&
+              interviewers
+                .sort(
+                  (a, b) =>
+                    b.qualified_module_names.filter((ele) => ele).length -
+                      a.qualified_module_names.filter((ele) => ele).length &&
+                    b.training_module_names.filter((ele) => ele).length -
+                      a.training_module_names.filter((ele) => ele).length,
+                )
+                .map((member) => {
+                  return (
+                    <Stack
+                      key={member.rec_user.user_id}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        // setSelectedInterviewer(member);
+                        router.push(
+                          `${router.route}/interviewer/${member.rec_user.user_id}`,
+                        );
+                      }}
+                    >
+                      <AllInterviewersCard
+                        textCompletedInterviews={member.completed_meeting_count}
+                        textUpcomingInterviews={member.upcoming_meeting_count}
+                        slotProfileImage={
+                          <MuiAvatar
+                            src={member.rec_user.profile_image}
+                            level={getFullName(
+                              member.rec_user.first_name,
+                              member.rec_user.last_name,
+                            )}
+                            variant='circular'
+                            height='40px'
+                            width='40px'
+                            fontSize='16px'
+                          />
+                        }
+                        isCalenderNotConnected={
+                          recruiter.service_json === null &&
                           recruiter.email.split('@')[1] ===
-                            member.rec_user.email.split('@')[1]) ||
-                        member.rec_user.schedule_auth !== null
-                      }
-                      slotInterviewModules={
-                        <>
-                          {member.qualified_module_names
-                            ?.slice(0, 2)
-                            .map((item) => (
-                              <TextWithBg key={item} text={item} />
-                            ))}
-                          {member.qualified_module_names?.length > 2 && (
-                            <TextWithBg
-                              text={`+${member.qualified_module_names.length - 2}`}
-                            />
-                          )}
-                        </>
-                      }
-                      slotModulesTraining={
-                        <>
-                          {member.training_module_names
-                            ?.slice(0, 2)
-                            .map((item) => (
-                              <TextWithBg key={item} text={item} />
-                            ))}
-                          {member.training_module_names?.length > 2 && (
-                            <TextWithBg
-                              text={`+${member.qualified_module_names.length - 2}`}
-                            />
-                          )}
-                        </>
-                      }
-                      textName={`${member.rec_user.first_name} ${member.rec_user.last_name || ''}`}
-                      textRole={member.rec_user?.position}
-                    />
-                  </Stack>
-                );
-              })
+                            member.rec_user.email.split('@')[1] &&
+                          member.rec_user.schedule_auth === null
+                        }
+                        isConnectedCalenderVisible={
+                          (recruiter.service_json !== null &&
+                            recruiter.email.split('@')[1] ===
+                              member.rec_user.email.split('@')[1]) ||
+                          member.rec_user.schedule_auth !== null
+                        }
+                        slotInterviewModules={
+                          <>
+                            <ShowCode>
+                              <ShowCode.When
+                                isTrue={Boolean(
+                                  member.qualified_module_names.filter(
+                                    (ele) => ele,
+                                  ).length,
+                                )}
+                              >
+                                <>
+                                  {member.qualified_module_names
+                                    .filter((ele) => ele)
+                                    ?.slice(0, 2)
+                                    .map((item) => {
+                                      if (item)
+                                        return (
+                                          <TextWithBg key={item} text={item} />
+                                        );
+                                      else return '--';
+                                    })}
+                                  {member.qualified_module_names.filter(
+                                    (ele) => ele,
+                                  )?.length > 2 && (
+                                    <TextWithBg
+                                      text={`+${member.qualified_module_names.filter((ele) => ele).length - 2}`}
+                                    />
+                                  )}
+                                </>
+                              </ShowCode.When>
+                              <ShowCode.Else>--</ShowCode.Else>
+                            </ShowCode>
+                          </>
+                        }
+                        slotModulesTraining={
+                          <>
+                            <ShowCode>
+                              <ShowCode.When
+                                isTrue={Boolean(
+                                  member.training_module_names.filter(
+                                    (ele) => ele,
+                                  ).length,
+                                )}
+                              >
+                                {member.training_module_names
+                                  .filter((ele) => ele)
+                                  ?.slice(0, 2)
+                                  .map((item) => {
+                                    if (item)
+                                      return (
+                                        <TextWithBg key={item} text={item} />
+                                      );
+                                  })}
+                                {member.training_module_names.filter(
+                                  (ele) => ele,
+                                )?.length > 2 && (
+                                  <TextWithBg
+                                    text={`+${member.training_module_names.filter((ele) => ele).length - 2}`}
+                                  />
+                                )}
+                              </ShowCode.When>
+                              <ShowCode.Else>--</ShowCode.Else>
+                            </ShowCode>
+                          </>
+                        }
+                        textName={`${member.rec_user.first_name} ${member.rec_user.last_name || ''}`}
+                        textRole={member.rec_user?.position}
+                      />
+                    </Stack>
+                  );
+                })
             }
           />
         </Stack>
