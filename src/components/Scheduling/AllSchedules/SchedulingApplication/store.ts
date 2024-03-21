@@ -22,6 +22,8 @@ export interface SchedulingApplication {
   fetchingPlan: boolean;
   fetchingSchedule: boolean;
   selCoordinator: string | null;
+  noOptions: boolean;
+  isSendToCandidateOpen: boolean;
 }
 
 const initialState: SchedulingApplication = {
@@ -38,8 +40,10 @@ const initialState: SchedulingApplication = {
   schedulingOptions: [],
   fetchingPlan: false,
   isViewProfileOpen: false,
-  fetchingSchedule: false,
+  fetchingSchedule: true,
   selCoordinator: null,
+  noOptions: false,
+  isSendToCandidateOpen: false,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -50,6 +54,12 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setIsSendToCandidateOpen = (isSendToCandidateOpen: boolean) =>
+  useSchedulingApplicationStore.setState({ isSendToCandidateOpen });
+
+export const setNoOptions = (noOptions: boolean) =>
+  useSchedulingApplicationStore.setState({ noOptions });
 
 export const setSelectedApplication = (selectedApplication: ApplicationList) =>
   useSchedulingApplicationStore.setState({ selectedApplication });

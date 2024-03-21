@@ -6,7 +6,6 @@ import Loader from '@/src/components/Common/Loader';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ListCardInterviewSchedule from '../ListCard';
-import { setFetchingSchedule } from '../SchedulingApplication/store';
 import { ApplicationList } from '../store';
 
 function AllList({
@@ -22,7 +21,6 @@ function AllList({
 }) {
   const router = useRouter();
   const onClickCard = (app: ApplicationList) => {
-    setFetchingSchedule(true);
     router.push(
       `${pageRoutes.SCHEDULING}/application/${app.applications.id}`,
       undefined,

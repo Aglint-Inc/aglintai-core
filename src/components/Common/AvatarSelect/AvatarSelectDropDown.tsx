@@ -28,6 +28,7 @@ const AvatarSelectDropDown = ({
   return (
     <>
       <TextField
+        placeholder='asdasd'
         select
         onChange={onChange}
         sx={{

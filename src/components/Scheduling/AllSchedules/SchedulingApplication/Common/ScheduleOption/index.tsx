@@ -28,7 +28,7 @@ function SchedulingOptionComp({
   return (
     <>
       {!loading && schedulingOptions.length === 0 && <div>Unable to fetch</div>}
-      {loading && (
+      {loading && schedulingOptions.length === 0 && (
         <Stack width={'100%'} height={'100%'}>
           <Loader />
         </Stack>
@@ -41,7 +41,13 @@ function SchedulingOptionComp({
             slotCardDate={option.plans?.map((pl, ind) => {
               return (
                 <AvailableOptionCardDate
-                  isDateWrapVisible={!pl.isBreak}
+                  isDateWrapVisible={
+                    !pl.isBreak &&
+                    !dayjs(option.plans[ind - 1]?.start_time).isSame(
+                      pl.start_time,
+                      'day',
+                    ) // temp fix for hiding date.
+                  }
                   textDate={dayjs(pl.start_time).format('DD')}
                   textDay={dayjs(pl.start_time).format('dddd')}
                   textMonth={dayjs(pl.start_time).format('MMM')}

@@ -736,6 +736,7 @@ export type Database = {
       candidate_phone_call: {
         Row: {
           applicant_id: string
+          call_status: Json | null
           call_title: string
           call_transcript: Json | null
           call_type: string
@@ -747,6 +748,7 @@ export type Database = {
         }
         Insert: {
           applicant_id?: string
+          call_status?: Json | null
           call_title: string
           call_transcript?: Json | null
           call_type: string
@@ -758,6 +760,7 @@ export type Database = {
         }
         Update: {
           applicant_id?: string
+          call_status?: Json | null
           call_title?: string
           call_transcript?: Json | null
           call_type?: string
@@ -1167,7 +1170,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "interview_panel_relation_user_id_fkey"
+            foreignKeyName: "public_interview_module_relation_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
@@ -1187,6 +1190,7 @@ export type Database = {
           filter_json: Json | null
           id: string
           interview_plan: Json[] | null
+          is_get_more_option: boolean
           meeting_json: Json[] | null
           resend_invite: number
           schedule_name: string
@@ -1204,6 +1208,7 @@ export type Database = {
           filter_json?: Json | null
           id?: string
           interview_plan?: Json[] | null
+          is_get_more_option?: boolean
           meeting_json?: Json[] | null
           resend_invite?: number
           schedule_name: string
@@ -1221,6 +1226,7 @@ export type Database = {
           filter_json?: Json | null
           id?: string
           interview_plan?: Json[] | null
+          is_get_more_option?: boolean
           meeting_json?: Json[] | null
           resend_invite?: number
           schedule_name?: string
@@ -2782,6 +2788,7 @@ export type Database = {
           page_number?: number
         }
         Returns: {
+          total_count: number
           applications: Json
           candidates: Json
           public_jobs: Json
@@ -3070,48 +3077,24 @@ export type Database = {
           active_status: Json
           assessment: boolean
           company: string
-          company_details: string
           created_at: string
           department: Database["public"]["Enums"]["public_job_department"]
           description: string
+          description_hash: number
           draft: Json
           email_template: Json
-          end_video: Json
-          experience_in_months: number
           id: string
-          interview_instructions: string
-          interview_plan: Json
-          interview_success: string
-          intro_videos: Json
-          is_ats_sync: boolean
-          jd_changed: boolean
           jd_json: Json
-          job_criteria: Json
           job_title: string
           job_type: Database["public"]["Enums"]["public_job_type"]
           location: string
-          location_json: Json
-          logo: string
-          new_screening_setting: Json
-          overview: string
           parameter_weights: Json
           phone_screen_enabled: boolean
-          phone_screening: Json
           posted_by: string
           recruiter_id: string
-          screening_questions: Json[]
-          screening_setting: Json
-          screening_template: string
-          skills: string[]
-          slug: string
-          start_video: Json
-          status: Database["public"]["Enums"]["public_job_status"]
-          updated_at: string
-          video_assessment: boolean
-          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
-          scoring_param_status: Database["public"]["Enums"]["job_scoring_param_status"]
-          description_hash: number
           scoring_criteria_loading: boolean
+          status: Database["public"]["Enums"]["public_job_status"]
+          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           count: Json
         }[]
       }
@@ -3169,48 +3152,24 @@ export type Database = {
           active_status: Json
           assessment: boolean
           company: string
-          company_details: string
           created_at: string
           department: Database["public"]["Enums"]["public_job_department"]
           description: string
+          description_hash: number
           draft: Json
           email_template: Json
-          end_video: Json
-          experience_in_months: number
           id: string
-          interview_instructions: string
-          interview_plan: Json
-          interview_success: string
-          intro_videos: Json
-          is_ats_sync: boolean
-          jd_changed: boolean
           jd_json: Json
-          job_criteria: Json
           job_title: string
           job_type: Database["public"]["Enums"]["public_job_type"]
           location: string
-          location_json: Json
-          logo: string
-          new_screening_setting: Json
-          overview: string
           parameter_weights: Json
           phone_screen_enabled: boolean
-          phone_screening: Json
           posted_by: string
           recruiter_id: string
-          screening_questions: Json[]
-          screening_setting: Json
-          screening_template: string
-          skills: string[]
-          slug: string
-          start_video: Json
-          status: Database["public"]["Enums"]["public_job_status"]
-          updated_at: string
-          video_assessment: boolean
-          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
-          scoring_param_status: Database["public"]["Enums"]["job_scoring_param_status"]
-          description_hash: number
           scoring_criteria_loading: boolean
+          status: Database["public"]["Enums"]["public_job_status"]
+          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           count: Json
         }[]
       }

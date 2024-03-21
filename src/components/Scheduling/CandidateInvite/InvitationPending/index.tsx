@@ -108,7 +108,7 @@ function InvitationPending({
             setChangeTime(true);
           },
         }}
-        isNotFindingTextVisible={true}
+        isNotFindingTextVisible={schedule.schedule.is_get_more_option}
         isSelected={Boolean(selectedSlot)}
         slotButtonPrimary={
           <Stack width={'100%'}>
@@ -137,6 +137,12 @@ function InvitationPending({
                 slotCardDate={option.plans.map((pl, ind) => {
                   return (
                     <AvailableOptionCardDate
+                      isDateWrapVisible={
+                        !dayjs(option.plans[ind - 1]?.start_time).isSame(
+                          pl.start_time,
+                          'day',
+                        )
+                      }
                       textDate={dayjs(pl.start_time).format('DD')}
                       textDay={dayjs(pl.start_time).format('dddd')}
                       textMonth={dayjs(pl.start_time).format('MMM')}
