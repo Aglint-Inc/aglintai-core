@@ -11,7 +11,7 @@
 
 .div-block-1069 {
   display: flex;
-  width: 280px;
+  max-width: 600px;
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
@@ -211,6 +211,11 @@
 }
 
 .text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
   position: relative;
   z-index: 1;
 }
