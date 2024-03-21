@@ -49,7 +49,7 @@ export const mailHandler = async ({
                 <p style="margin: 5px 0 0px; color: #68737D; font-size: 12px;">30 Minutes <img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/company-logo/public/google-meet.png?t=2024-02-13T13%3A08%3A33.200Z" alt="Company Logo" style="height:12px; width:12px;"><span style="margin-left:10px">Google Meet</span></p>
             </div>
             <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">Pick Your Slot</a>
-            <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© 2023 Aglint Inc. All Rights Reserved.</span> </p>
+            <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© ${dayjs().format('YYYY')} Aglint Inc. All Rights Reserved.</span> </p>
         </div>
     </body>`,
       })
