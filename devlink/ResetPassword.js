@@ -12,7 +12,7 @@ export function ResetPassword({
       className={_utils.cx(_styles, "forgot-password-page")}
       tag="div"
     >
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "div-block-935")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "forgot-password-wrapper", "is-mobile")}
           tag="div"
