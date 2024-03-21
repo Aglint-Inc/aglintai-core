@@ -21,7 +21,7 @@ const DashboardComp = () => {
   const router = useRouter();
   const {
     jobs: { data },
-    initialLoad
+    initialLoad,
   } = useJobs();
   const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(data);
   const { recruiter } = useAuthDetails();
@@ -29,13 +29,13 @@ const DashboardComp = () => {
   useEffect(() => {
     if (recruiter?.name === null) {
       router.push(`/signup?step=${stepObj.detailsOne}`, undefined, {
-        shallow: true
+        shallow: true,
       });
     } else {
       if (router.isReady) {
         if (!router.query.status) {
           router.push(`?status=published`, undefined, {
-            shallow: true
+            shallow: true,
           });
         }
         if (data) {
@@ -109,13 +109,13 @@ const DashboardComp = () => {
                           <InputAdornment position='start'>
                             <Icon variant='Search' width='14' height='14' />
                           </InputAdornment>
-                        )
+                        ),
                       }}
                     />
                   </Stack>
                 }
-                isJobCountTagVisible={filteredJobs?.length > 0}
-                jobCount={filteredJobs?.length}
+                // isJobCountTagVisible={filteredJobs?.length > 0}
+                // jobCount={filteredJobs?.length}
                 textJobsHeader={
                   router.query.status == 'published'
                     ? 'Published Jobs'

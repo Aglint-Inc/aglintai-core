@@ -23,6 +23,7 @@ function SideNavbar() {
   let isSupportEnabled = posthog.isFeatureEnabled('isSupportEnabled');
   let isAgentEnabled = posthog.isFeatureEnabled('isAgentEnabled');
   let isAssessmentEnabled = posthog.isFeatureEnabled('isNewAssessmentEnabled');
+  let isSourcingEnabled = posthog.isFeatureEnabled('isSourcingEnabled');
   let isPhoneScreeningEnabled = posthog.isFeatureEnabled(
     'isPhoneScreeningEnabled',
   );
@@ -52,7 +53,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
-      isvisible: true,
+      isvisible: isSourcingEnabled,
     },
     {
       icon: <NavTickets isActive={false} />,

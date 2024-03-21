@@ -13,21 +13,13 @@ export function JobsListingCard({
   textJobRole = "Software Developer",
   textCompanyLocation = "Microsoft, California, United States",
   textPostedDate = "Posted 2 months ago",
-  rejectedCount = "0",
   assessmentCount = "0",
   qualifiedCount = "0",
   bgColorProps = {},
   textJobsStatus = "Draft",
   onClickCard = {},
-  textColorActivePropsSourcing = {},
-  textColorActiveInterviewingProps = {},
   slotStatusIcon,
   newCount = "0",
-  textSourcing = "Sourcing",
-  slotSourcingIcon,
-  textInterview = "Assessment",
-  slotInterviewIcon,
-  isSourcingInterviewVisible = true,
   slotAtsBadge,
   isStatusVisible = true,
   textStatus = "This is some text inside of a div block.",
@@ -36,6 +28,7 @@ export function JobsListingCard({
   disqualifiedCount = "0",
   isScreeningPillsVisible = true,
   isAssessmentPillVisible = true,
+  interviewCount = "0",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -230,6 +223,26 @@ export function JobsListingCard({
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "applicants-number")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              dyn={{
+                bind: {},
+              }}
+              tag="div"
+            >
+              {interviewCount}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "color-grey-600")}
+              tag="div"
+            >
+              {"Interview"}
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "applicants-number")}
             tag="div"

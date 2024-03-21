@@ -365,6 +365,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .tittle-company-location {
   display: flex;
   width: 100%;

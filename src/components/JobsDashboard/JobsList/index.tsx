@@ -91,9 +91,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         ? StatusColor['inactive']
                         : job.status == 'published'
                           ? StatusColor['active']
-                          : StatusColor['closed']
-                  }
+                          : StatusColor['closed'],
+                  },
                 }}
+                interviewCount={job?.count?.interview}
                 textJobsStatus={job.status}
                 slotStatusIcon={
                   <Image
@@ -122,7 +123,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   onClick: () => {
                     router.push(`${pageRoutes.JOBS}/${job.id}`);
                     posthog.capture('Job Card Clicked');
-                  }
+                  },
                 }}
               />
             </ScrollList>

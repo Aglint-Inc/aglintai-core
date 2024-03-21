@@ -5,7 +5,7 @@ import {
   CategoryScale,
   Chart as ChartJs,
   LinearScale,
-  Tooltip
+  Tooltip,
 } from 'chart.js/auto';
 import React, { FC } from 'react';
 import { Line } from 'react-chartjs-2';
@@ -22,7 +22,7 @@ const LineChart: React.FC<{
 }> = ({ experience }) => {
   const matches = useMediaQuery('(min-width:1920px)');
   const { names, counts, pointBackgroundColor } = Object.entries(
-    experience
+    experience,
   ).reduce(
     (acc, [key, value]) => {
       acc.names.push(key);
@@ -30,7 +30,7 @@ const LineChart: React.FC<{
       acc.pointBackgroundColor.push('#87929d');
       return acc;
     },
-    { names: [], counts: [], pointBackgroundColor: [] }
+    { names: [], counts: [], pointBackgroundColor: [] },
   );
   const dataLines = {
     labels: names,
@@ -43,7 +43,7 @@ const LineChart: React.FC<{
           if (!context.chart.chartArea) return;
           const {
             ctx,
-            chartArea: { top, bottom }
+            chartArea: { top, bottom },
           } = context.chart;
           const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
           gradientBg.addColorStop(0, bgColor[0]);
@@ -53,9 +53,9 @@ const LineChart: React.FC<{
         data: counts,
         borderColor: '#87929d',
         pointBackgroundColor,
-        tension: 0.3
-      }
-    ]
+        tension: 0.3,
+      },
+    ],
   };
 
   return (
@@ -63,31 +63,32 @@ const LineChart: React.FC<{
       id='job_dashboard_line_graph'
       options={{
         responsive: true,
+        maintainAspectRatio: false,
         aspectRatio: matches ? 4 : 3,
         plugins: {
           legend: {
-            display: false
-          }
+            display: false,
+          },
         },
         scales: {
           x: {
             border: {
-              color: 'transparent'
+              color: 'transparent',
             },
             grid: {
-              display: false
-            }
+              display: false,
+            },
           },
           y: {
             border: {
-              color: 'transparent'
+              color: 'transparent',
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)'
-            }
-          }
-        }
+              color: 'rgba(0,0,0,0.05)',
+            },
+          },
+        },
       }}
       data={dataLines}
     />
@@ -101,7 +102,7 @@ const DashboardLineChart: FC<{
   >;
 }> = ({ option }) => {
   const {
-    tenureAndExperience: { data: dataSet }
+    tenureAndExperience: { data: dataSet },
   } = useJobDetails();
   const experience = dataSet?.[option] ?? null;
   const total = experience

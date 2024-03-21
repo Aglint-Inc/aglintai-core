@@ -11,13 +11,9 @@ const _interactionsData = JSON.parse(
 
 export function JobsDashboard({
   as: _Component = _Builtin.Block,
-  onClickCreateNewJob = {},
   slotAllJobs,
   slotSearchInputJob,
-  jobCount = "0",
   textJobsHeader = "All Jobs",
-  isJobCountTagVisible = true,
-  onClickLeverImport = {},
   onClickAddJob = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);

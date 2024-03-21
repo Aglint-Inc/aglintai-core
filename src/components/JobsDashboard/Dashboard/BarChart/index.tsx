@@ -5,7 +5,7 @@ import {
   CategoryScale,
   Chart as ChartJs,
   LinearScale,
-  Tooltip
+  Tooltip,
 } from 'chart.js/auto';
 import { capitalize } from 'lodash';
 import React, { FC } from 'react';
@@ -30,7 +30,7 @@ const BarChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] }
+    { names: [], counts: [], colors: [] },
   );
   const dataBar = {
     labels: names,
@@ -42,40 +42,41 @@ const BarChart: React.FC<{
         borderRadius: 8,
         borderSkipped: false,
         grouped: true,
-        barThickness: 40
-      }
-    ]
+        barThickness: 40,
+      },
+    ],
   };
 
   return (
     <Bar
       options={{
         responsive: true,
+        maintainAspectRatio: false,
         aspectRatio: matches ? 4 : 3,
         plugins: {
           legend: {
-            display: false
-          }
+            display: false,
+          },
         },
         scales: {
           x: {
             border: {
-              color: 'transparent'
+              color: 'transparent',
             },
             grid: {
-              display: false
-            }
+              display: false,
+            },
           },
           y: {
             border: {
-              color: 'transparent'
+              color: 'transparent',
             },
             grid: {
               display: true,
-              color: 'rgba(0,0,0,0.05)'
-            }
-          }
-        }
+              color: 'rgba(0,0,0,0.05)',
+            },
+          },
+        },
       }}
       data={dataBar}
     />
@@ -86,7 +87,7 @@ const DashboardBarChart: FC<{
   option: keyof DashboardGraphOptions<'skills'>;
 }> = ({ option }) => {
   const {
-    skills: { data: skillPool }
+    skills: { data: skillPool },
   } = useJobDetails();
   const skills = skillPool?.[option] ?? null;
   const total = skills

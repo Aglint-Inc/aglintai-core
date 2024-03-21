@@ -11,7 +11,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useState
+  useState,
 } from 'react';
 
 import { LoaderSvg } from '@/devlink';
@@ -20,7 +20,7 @@ import {
   RecruiterRelationsType,
   RecruiterType,
   RecruiterUserType,
-  SocialsType
+  SocialsType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -53,7 +53,7 @@ export interface ContextValue {
   isAllowed: (role: Database['public']['Enums']['user_roles'][]) => boolean;
   allowAction: <T extends Function | ReactNode>(
     func: T,
-    role: Database['public']['Enums']['user_roles'][]
+    role: Database['public']['Enums']['user_roles'][],
   ) => T;
 }
 
@@ -78,7 +78,7 @@ const defaultProvider = {
   setMembers: () => {},
   handelMemberUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
-  allowAction: (func, role) => func
+  allowAction: (func, role) => func,
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -88,7 +88,7 @@ const AuthProvider = ({ children }) => {
   const [userDetails, setUserDetails] = useState<Session | null>(null);
   const [recruiter, setRecruiter] = useState<RecruiterType | null>(null);
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
-    null
+    null,
   );
   const recruiter_id = recruiter?.id ?? null;
   const [allrecruterRelation, setAllrecruterRelation] =
@@ -182,11 +182,11 @@ const AuthProvider = ({ children }) => {
       if (!errorRel && recruiterRel.length > 0) {
         posthog.identify(userDetails.user.email, {
           Email: userDetails.user.email,
-          CompanyId: recruiterRel[0].recruiter.id
+          CompanyId: recruiterRel[0].recruiter.id,
         });
         setRecruiter({
           ...recruiterRel[0].recruiter,
-          socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType
+          socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
         });
         if (
           recruiterUser[0].role === 'admin' ||
@@ -194,7 +194,7 @@ const AuthProvider = ({ children }) => {
         ) {
           await getMembersFromDB(
             recruiterRel[0].recruiter.id,
-            userDetails.user.id
+            userDetails.user.id,
           );
         }
       } else {
@@ -217,8 +217,8 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await fetch('https://ipinfo.io/json', {
         headers: {
-          Authorization: `Bearer e82b96e5cb0802`
-        }
+          Authorization: `Bearer e82b96e5cb0802`,
+        },
       });
       const data = await response.json();
       const country = data.country; // Extract the country code from the response
@@ -230,7 +230,7 @@ const AuthProvider = ({ children }) => {
 
   const handleUpdateProfile = async (
     details: Partial<RecruiterUserType>,
-    id?: string
+    id?: string,
   ): Promise<boolean> => {
     const { data, error } = await supabase
       .from('recruiter_user')
@@ -248,13 +248,13 @@ const AuthProvider = ({ children }) => {
 
   const handleUpdateEmail = async (
     email: string,
-    showToast: boolean = false
+    showToast: boolean = false,
   ): Promise<boolean> => {
     const { error } = await supabase.auth.updateUser(
       {
-        email: email
+        email: email,
       },
-      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` }
+      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
     );
     if (error) {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -267,7 +267,7 @@ const AuthProvider = ({ children }) => {
 
   const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
     user_id,
-    data
+    data,
   }) => {
     if (!user_id && data) return Promise.resolve(false);
     return updateMember({ user_id, data }).then((data) => {
@@ -277,7 +277,7 @@ const AuthProvider = ({ children }) => {
             return data.user_id !== item.user_id
               ? item
               : (data as RecruiterUserType);
-          })
+          }),
         );
         return true;
       }
@@ -293,10 +293,10 @@ const AuthProvider = ({ children }) => {
     return false;
   };
   const allowAction: ContextValue['allowAction'] = <
-    T extends Function | ReactNode
+    T extends Function | ReactNode,
   >(
     func: T,
-    role
+    role,
   ) => {
     if (recruiterUser && role.includes(recruiterUser.role)) {
       return func;
@@ -332,7 +332,7 @@ const AuthProvider = ({ children }) => {
         setMembers,
         handelMemberUpdate,
         isAllowed,
-        allowAction
+        allowAction,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -356,7 +356,7 @@ const isRoutePublic = (path = '') => {
     pageRoutes.SIGNUP,
     pageRoutes.MOCKTEST,
     pageRoutes.PHONESCREEN,
-    pageRoutes.CONFIRM_SCHEDULE
+    pageRoutes.CONFIRM_SCHEDULE,
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {
@@ -370,12 +370,13 @@ const pageFeatureMapper = {
   [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
   [pageRoutes.AGENT]: 'isAgentEnabled',
   [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
-  [pageRoutes.SUPPORT]: 'isSupportEnabled'
+  [pageRoutes.SUPPORT]: 'isSupportEnabled',
+  [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
 };
 
 const updateMember = ({
   user_id,
-  data
+  data,
 }: {
   user_id: string;
   data: Database['public']['Tables']['recruiter_user']['Update'];
