@@ -42,11 +42,7 @@ function SchedulingOptionComp({
               return (
                 <AvailableOptionCardDate
                   isDateWrapVisible={
-                    !pl.isBreak &&
-                    !dayjs(option.plans[ind - 1]?.start_time).isSame(
-                      pl.start_time,
-                      'day',
-                    ) // temp fix for hiding date.
+                    !pl.isBreak // temp fix for hiding date.
                   }
                   textDate={dayjs(pl.start_time).format('DD')}
                   textDay={dayjs(pl.start_time).format('dddd')}
