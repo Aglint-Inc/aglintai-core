@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { ButtonPrimaryLarge } from '@/devlink';
 import {
   AvailableOptionCardDate,
+  EmptyGeneral,
   OpenInvitationLink,
   OptionAvailable,
   OptionAvailableCard,
@@ -57,6 +58,7 @@ function InvitationPending({
 
   return (
     <>
+      {filteredRecords.length < 0}
       <OpenInvitationLink
         slotTimeFixer={
           <Stack
@@ -93,6 +95,11 @@ function InvitationPending({
                 </Typography>
               </Stack>
             ))}
+            {filteredRecords.length === 0 && (
+              <Stack width={'100%'}>
+                <EmptyGeneral textEmpt={'No Meeting Found'} />
+              </Stack>
+            )}
           </Stack>
         }
         slotCompanyLogo={

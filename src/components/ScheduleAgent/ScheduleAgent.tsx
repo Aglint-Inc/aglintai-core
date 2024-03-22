@@ -5,7 +5,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import React, { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { InitAgentBodyParams } from '@/src/pages/scheduling/agent/types';
 import {
   CandidateFileTypeDB,
   CandidateType,
@@ -13,6 +12,7 @@ import {
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { InitAgentBodyParams } from './types';
 import SpecializedDatePicker from '../Common/SpecializedDatePicker';
 import UITextField from '../Common/UITextField';
 import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';

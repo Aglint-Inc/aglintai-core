@@ -9,7 +9,7 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { InitAgentBodyParams } from '@/src/pages/scheduling/agent/types';
+import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
