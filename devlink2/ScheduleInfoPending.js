@@ -72,7 +72,7 @@ export function ScheduleInfoPending({
                 className={_utils.cx(_styles, "text-blue-500")}
                 tag="div"
               >
-                {"Request Reschedule"}
+                {"Reschedule"}
               </_Builtin.Block>
             </_Builtin.Block>
             {isCancelSheduleVisible ? (

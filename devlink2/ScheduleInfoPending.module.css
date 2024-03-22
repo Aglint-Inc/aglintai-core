@@ -215,6 +215,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .div-block-1165 {
   display: flex;
   justify-content: flex-start;

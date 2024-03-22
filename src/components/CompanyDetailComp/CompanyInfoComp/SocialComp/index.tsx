@@ -34,30 +34,30 @@ const SocialComp = ({ setIsSaving }) => {
   const initialError = {
     linkedin: {
       error: false,
-      msg: ''
+      msg: '',
     },
     youtube: {
       error: false,
-      msg: ''
+      msg: '',
     },
     twitter: {
       error: false,
-      msg: ''
+      msg: '',
     },
     facebook: {
       error: false,
-      msg: ''
+      msg: '',
     },
     instagram: {
       error: false,
-      msg: ''
+      msg: '',
     },
     custom: Object.assign(
       {},
       ...customSocials.map((s) => {
         return { [s]: { error: false, msg: '' } };
-      })
-    )
+      }),
+    ),
   };
 
   const [error, setError] = useState(initialError);
@@ -65,7 +65,7 @@ const SocialComp = ({ setIsSaving }) => {
   const handleChange = async (
     recruit: RecruiterType,
     socialName?: string,
-    custom: boolean = false
+    custom: boolean = false,
   ) => {
     if (
       socialName == 'facebook'
@@ -105,13 +105,13 @@ const SocialComp = ({ setIsSaving }) => {
           ...error,
           facebook: {
             error: true,
-            msg: 'Please enter valid facebook url'
-          }
+            msg: 'Please enter valid facebook url',
+          },
         });
       } else {
         setError({
           ...error,
-          facebook: { error: false, msg: '' }
+          facebook: { error: false, msg: '' },
         });
       }
     } else {
@@ -131,13 +131,13 @@ const SocialComp = ({ setIsSaving }) => {
           ...error,
           linkedin: {
             error: true,
-            msg: 'Please enter valid linkedin url'
-          }
+            msg: 'Please enter valid linkedin url',
+          },
         });
       } else {
         setError({
           ...error,
-          linkedin: { error: false, msg: '' }
+          linkedin: { error: false, msg: '' },
         });
       }
     } else {
@@ -156,13 +156,13 @@ const SocialComp = ({ setIsSaving }) => {
           ...error,
           youtube: {
             error: true,
-            msg: 'Please enter valid youtube id'
-          }
+            msg: 'Please enter valid youtube id',
+          },
         });
       } else {
         setError({
           ...error,
-          youtube: { error: false, msg: '' }
+          youtube: { error: false, msg: '' },
         });
       }
     } else {
@@ -181,13 +181,13 @@ const SocialComp = ({ setIsSaving }) => {
           ...error,
           twitter: {
             error: true,
-            msg: 'Please enter valid twitter url'
-          }
+            msg: 'Please enter valid twitter url',
+          },
         });
       } else {
         setError({
           ...error,
-          twitter: { error: false, msg: '' }
+          twitter: { error: false, msg: '' },
         });
       }
     } else {
@@ -206,13 +206,13 @@ const SocialComp = ({ setIsSaving }) => {
           ...error,
           instagram: {
             error: true,
-            msg: 'Please enter valid instagram url'
-          }
+            msg: 'Please enter valid instagram url',
+          },
         });
       } else {
         setError({
           ...error,
-          instagram: { error: false, msg: '' }
+          instagram: { error: false, msg: '' },
         });
       }
     } else {
@@ -231,9 +231,9 @@ const SocialComp = ({ setIsSaving }) => {
               ...prev.custom,
               [socialName]: {
                 error: true,
-                msg: 'Please enter a valid url'
-              }
-            }
+                msg: 'Please enter a valid url',
+              },
+            },
           };
         });
         return false;
@@ -243,8 +243,8 @@ const SocialComp = ({ setIsSaving }) => {
             ...prev,
             custom: {
               ...prev.custom,
-              [socialName]: { error: false, msg: '' }
-            }
+              [socialName]: { error: false, msg: '' },
+            },
           };
         });
         return true;
@@ -272,7 +272,7 @@ const SocialComp = ({ setIsSaving }) => {
                 style={{
                   border: `1px solid ${palette.grey[200]}`,
                   padding: '9px',
-                  borderRadius: '4px'
+                  borderRadius: '4px',
                 }}
               >
                 <Image
@@ -282,7 +282,7 @@ const SocialComp = ({ setIsSaving }) => {
                   alt=''
                 />
               </Stack>
-              <Stack width={'330px'}>
+              <Stack width={'370px'}>
                 <UITextField
                   labelSize='small'
                   fullWidth
@@ -291,9 +291,9 @@ const SocialComp = ({ setIsSaving }) => {
                   onBlur={() => {
                     handleChange(
                       {
-                        ...recruiter
+                        ...recruiter,
                       },
-                      socialName
+                      socialName,
                     );
                   }}
                   onChange={(e) => {
@@ -302,10 +302,10 @@ const SocialComp = ({ setIsSaving }) => {
                         ...recruiter,
                         socials: {
                           ...recruiter.socials,
-                          [socialName]: e.target.value
-                        }
+                          [socialName]: e.target.value,
+                        },
                       },
-                      socialName
+                      socialName,
                     );
                   }}
                   error={error[socialName]?.error}
@@ -328,7 +328,7 @@ const SocialComp = ({ setIsSaving }) => {
                   border: `1px solid ${palette.grey[200]}`,
                   padding: '9px',
                   borderRadius: '4px',
-                  alignItems: 'start'
+                  alignItems: 'start',
                 }}
               >
                 <SocialLogo socialName={socialName} />
@@ -342,10 +342,10 @@ const SocialComp = ({ setIsSaving }) => {
                   onBlur={() => {
                     handleChange(
                       {
-                        ...recruiter
+                        ...recruiter,
                       },
                       socialName,
-                      true
+                      true,
                     );
                   }}
                   onChange={(e) => {
@@ -356,12 +356,12 @@ const SocialComp = ({ setIsSaving }) => {
                           ...recruiter.socials,
                           custom: {
                             ...(recruiter.socials.custom as any),
-                            [socialName]: e.target.value
-                          } as any
-                        }
+                            [socialName]: e.target.value,
+                          } as any,
+                        },
                       },
                       socialName,
-                      true
+                      true,
                     );
                   }}
                   error={error.custom[socialName].error}
@@ -377,8 +377,8 @@ const SocialComp = ({ setIsSaving }) => {
                     ...recruiter,
                     socials: {
                       ...recruiter.socials,
-                      custom: newCustomSocials
-                    }
+                      custom: newCustomSocials,
+                    },
                   });
                 }}
               >
@@ -400,11 +400,11 @@ const socialPlaceholder = {
   youtube: 'https://www.youtube.com/your-company',
   twitter: 'https://www.twitter.com/company-id',
   facebook: 'https://www.facebook.com/company-id',
-  instagram: 'https://www.instagram.com/company-id'
+  instagram: 'https://www.instagram.com/company-id',
 };
 
 const AddSocialLinkButton = ({
-  setError
+  setError,
 }: {
   setError: Dispatch<SetStateAction<any>>;
 }) => {
@@ -412,7 +412,7 @@ const AddSocialLinkButton = ({
   const [open, setOpen] = useState(false);
   const initialSocial = {
     name: { value: null, error: false, type: 'string' },
-    url: { value: null, error: false, type: 'url' }
+    url: { value: null, error: false, type: 'url' },
   };
   const [social, setSocial] = useState(initialSocial);
   const [loading, setLoading] = useState(false);
@@ -425,13 +425,13 @@ const AddSocialLinkButton = ({
             ...acc.newSocial,
             [key]: {
               ...acc.newSocial[key],
-              error: err
-            }
+              error: err,
+            },
           },
-          error: err && !acc.error ? true : acc.error
+          error: err && !acc.error ? true : acc.error,
         };
       },
-      { newSocial: social, error: false }
+      { newSocial: social, error: false },
     );
   };
   const handleSubmit = () => {
@@ -447,9 +447,9 @@ const AddSocialLinkButton = ({
               ...(recruiter.socials.custom as any),
               [newSocial.name.value.trim().toLowerCase()]: newSocial.url.value
                 .trim()
-                .toLowerCase()
-            }
-          }
+                .toLowerCase(),
+            },
+          },
         };
         debouncedSave(newRecruiter, newRecruiter.id);
         setError((prev) => {
@@ -459,9 +459,9 @@ const AddSocialLinkButton = ({
               ...prev.custom,
               [newSocial.name.value.trim().toLowerCase()]: {
                 error: false,
-                msg: ''
-              }
-            }
+                msg: '',
+              },
+            },
           };
         });
         handleClose();
@@ -477,8 +477,8 @@ const AddSocialLinkButton = ({
         [key]: {
           ...prev[key],
           value: e.target.value,
-          error: false
-        }
+          error: false,
+        },
       };
     });
   };
@@ -529,7 +529,7 @@ const AddSocialLinkButton = ({
 
 export const customOrder = {
   linkedin: 1,
-  instagram: 2
+  instagram: 2,
   // Add other social media platforms in the desired order here
 };
 
@@ -541,7 +541,7 @@ export const SocialLogo = ({ socialName }: { socialName: string }) => {
         bgcolor: 'white.700',
         width: '20px',
         height: '20px',
-        color: 'inherit'
+        color: 'inherit',
       }}
       src={`https://logo.clearbit.com/${socialName
         .toLowerCase()
@@ -571,7 +571,7 @@ const validateUrl = (url: string) => {
       '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
       '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
       '(\\#[-a-z\\d_]*)?$', // fragment locator
-    'i'
+    'i',
   );
   return url !== null && pattern.test(url);
 };
