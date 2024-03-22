@@ -1,11 +1,9 @@
 import { create } from 'zustand';
 
-import {
-  InterviewModuleRelationType,
-  RecruiterUserType,
-} from '@/src/types/data.types';
+import { InterviewModuleRelationType } from '@/src/types/data.types';
 
 import {
+  MemberType,
   ModuleType,
   PauseJson,
   SchedulingSlice,
@@ -34,6 +32,7 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   isDeleteMemberDialogOpen: false,
   isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
+  isMovedToQualifiedDialogOpen: false,
   isAddMemberDialogOpen: false,
   isProgressDialaogOpen: false,
   isResumeDialogOpen: false,
@@ -52,7 +51,11 @@ export const useModulesStore = create<SchedulingSlice>()(
 export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
   useModulesStore.setState({ isCreateDialogOpen });
 
-export const setSelectedUsers = (selectedUsers: RecruiterUserType[]) =>
+export const setIsMovedToQualifiedDialogOpen = (
+  isMovedToQualifiedDialogOpen: boolean,
+) => useModulesStore.setState({ isMovedToQualifiedDialogOpen });
+
+export const setSelectedUsers = (selectedUsers: MemberType[]) =>
   useModulesStore.setState({ selectedUsers });
 
 export const setIsDeleteMemberDialogOpen = (

@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -9,40 +8,39 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
+import MoveToQualifiedDialog from '../../MoveToQualified';
 import ProgressDrawer from '../../ProgressDrawer';
 import { ProgressUserType } from '../../type';
 import {
   useGetMeetingsByModuleId,
-  useProgressModuleUsers
+  useProgressModuleUsers,
 } from '../../../queries/hooks';
-import { QueryKeysInteviewModules } from '../../../queries/type';
 import { getHours } from '../../../queries/utils';
 import {
   setIsDeleteMemberDialogOpen,
+  setIsMovedToQualifiedDialogOpen,
   setIsPauseDialogOpen,
   setIsProgressDialaogOpen,
   setIsResumeDialogOpen,
-  setSelUser
+  setSelUser,
+  useModulesStore,
 } from '../../../store';
 import { ModuleType } from '../../../types';
 
 function SlotTrainingMembers({
   editModule,
-  meetingData
+  meetingData,
 }: {
   editModule: ModuleType;
   meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
 }) {
-  const queryClient = useQueryClient();
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { members } = useSchedulingContext();
   const [progressUser, setProgressUser] = useState<ProgressUserType>({
     user: null,
-    progress: []
+    progress: [],
   });
   const allUsers = editModule.relations;
   const currentDay = dayjs();
@@ -57,7 +55,7 @@ function SlotTrainingMembers({
           userSettings.interviewLoad.dailyLimit.type == 'Hours'
             ? getHours({ user, type: 'weekly', meetingData })
             : meetingData.filter(
-                (meet) => meet?.interviewer_id === user.user_id
+                (meet) => meet?.interviewer_id === user.user_id,
               ).length;
         daily =
           userSettings.interviewLoad.dailyLimit.type == 'Hours'
@@ -67,8 +65,8 @@ function SlotTrainingMembers({
                   meet?.interviewer_id === user.user_id &&
                   dayjs(meet?.interview_meeting?.end_time).isSame(
                     currentDay,
-                    'day'
-                  )
+                    'day',
+                  ),
               ).length;
       }
       return { ...user, weekly, daily };
@@ -81,41 +79,10 @@ function SlotTrainingMembers({
     });
 
   const { data: progress } = useProgressModuleUsers({ trainer_ids });
-
-  const moveToQualified = async (user_id: string) => {
-    try {
-      const { error } = await supabase
-        .from('interview_module_relation')
-        .update({ training_status: 'qualified' })
-        .match({ user_id: user_id, module_id: editModule.id });
-      if (error) {
-        throw new Error(error.message);
-      }
-      const updatedEditModule = {
-        ...editModule,
-        relations: editModule.relations.map((rel) => {
-          if (rel.user_id === user_id) {
-            return { ...rel, training_status: 'qualified' };
-          }
-          return rel;
-        })
-      } as ModuleType;
-
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id
-        }),
-        {
-          ...updatedEditModule
-        }
-      );
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
+  const selUser = useModulesStore((state) => state.selUser);
   return (
     <>
+      {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
       {editModule.settings && (
         <ProgressDrawer progressUser={progressUser} module={editModule} />
       )}
@@ -124,7 +91,7 @@ function SlotTrainingMembers({
       )}
       {allTrainees.map((user) => {
         const member = members.find(
-          (member) => member.user_id === user.user_id
+          (member) => member.user_id === user.user_id,
         );
 
         if (!member) return null; //this line added temporarily becasue of data inconsistency
@@ -132,14 +99,14 @@ function SlotTrainingMembers({
         const progressDataUser = progress.filter(
           (prog) =>
             prog.interviewer_id === user.user_id &&
-            prog.interview_meeting?.status == 'completed'
+            prog.interview_meeting?.status == 'completed',
         );
         const revShadowCount = progressDataUser.filter(
-          (prog) => prog.interviewer_type == 'reverse_shadow'
+          (prog) => prog.interviewer_type == 'reverse_shadow',
         ).length;
 
         const shadowCount = progressDataUser.filter(
-          (prog) => prog.interviewer_type == 'shadow'
+          (prog) => prog.interviewer_type == 'shadow',
         ).length;
 
         const isMoveToQualifierVisible =
@@ -157,27 +124,28 @@ function SlotTrainingMembers({
             onClickCard={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`
+                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`,
                 );
-              }
+              },
             }}
             onClickViewProgress={{
               onClick: () => {
                 setProgressUser({
                   progress: progress.filter(
-                    (prog) => prog.interviewer_id === user.user_id
+                    (prog) => prog.interviewer_id === user.user_id,
                   ),
                   user: members.filter(
-                    (member) => member.user_id === user.user_id
-                  )[0]
+                    (member) => member.user_id === user.user_id,
+                  )[0],
                 });
                 setIsProgressDialaogOpen(true);
-              }
+              },
             }}
             onClickMoveToQualifier={{
               onClick: () => {
-                moveToQualified(user.user_id);
-              }
+                setSelUser(user);
+                setIsMovedToQualifiedDialogOpen(true);
+              },
             }}
             key={user.user_id}
             isMoveToQualifierVisible={isMoveToQualifierVisible}
@@ -207,19 +175,19 @@ function SlotTrainingMembers({
               onClick: () => {
                 setSelUser(user);
                 setIsDeleteMemberDialogOpen(true);
-              }
+              },
             }}
             onClickPauseInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsPauseDialogOpen(true);
-              }
+              },
             }}
             onClickResumeInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsResumeDialogOpen(true);
-              }
+              },
             }}
             onHoverDot={false}
             isPauseResumeVisible={Boolean(user.pause_json)}

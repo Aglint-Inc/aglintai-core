@@ -6,7 +6,6 @@ import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
-  RecruiterUserType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
@@ -26,11 +25,12 @@ export type SchedulingSlice = {
   isResumeDialogOpen: boolean;
   isModuleSettingsDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
-  selectedUsers: RecruiterUserType[];
+  selectedUsers: MemberType[];
   selUser: InterviewModuleRelationType | null;
   pause_json: PauseJson | null;
   searchText: string;
   trainingStatus: StatusTraining;
+  isMovedToQualifiedDialogOpen: boolean;
 };
 
 export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
@@ -108,6 +108,7 @@ export type MemberType = {
   email: string;
   profile_image: string;
   position: string;
+  schedule_auth: JSON | null;
 };
 
 export type TransformSchedule = ScheduleType & {

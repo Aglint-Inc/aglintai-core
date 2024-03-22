@@ -38,9 +38,7 @@ function ModuleSchedules({
       return filSch;
     } else if (filter === 'upcoming') {
       return filSch.filter(
-        (sch) =>
-          sch.interview_meeting.start_time > new Date().toISOString() &&
-          sch.interview_meeting.status === 'confirmed',
+        (sch) => sch.interview_meeting.status === 'confirmed',
       );
     } else if (filter === 'cancelled') {
       return filSch.filter(

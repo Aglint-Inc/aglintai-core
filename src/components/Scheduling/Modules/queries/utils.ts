@@ -11,7 +11,7 @@ import {
   ModuleType,
   PauseJson,
   StatusTraining,
-  TransformSchedule
+  TransformSchedule,
 } from '../types';
 import { calculateHourDifference } from '../utils';
 
@@ -19,8 +19,8 @@ export const fetchModules = async (module_id: string) => {
   const { data, error } = await supabase.rpc(
     'get_interview_schedule_by_module_id',
     {
-      target_module_id: module_id
-    }
+      target_module_id: module_id,
+    },
   );
   if (error) throw new Error(error.message);
   return data as TransformSchedule[];
@@ -28,7 +28,7 @@ export const fetchModules = async (module_id: string) => {
 
 export const fetchProgress = async ({
   module_id,
-  trainer_ids
+  trainer_ids,
 }: {
   module_id: string;
   trainer_ids: string[];
@@ -37,8 +37,8 @@ export const fetchProgress = async ({
     .from('interview_meeting_user')
     .select('*,interview_meeting(*,interview_schedule(*))')
     .eq('interview_meeting.module_id', module_id)
-    .in('interviewer_id', trainer_ids);
-
+    .in('interviewer_id', trainer_ids)
+    .not('interview_meeting', 'is', null);
   if (error) {
     throw new Error(error.message);
   }
@@ -47,10 +47,10 @@ export const fetchProgress = async ({
 
 export const fetchInterviewModules = async (rec_id: string) => {
   const { data, error } = await supabase.rpc('get_interview_modules', {
-    rec_id: rec_id
+    rec_id: rec_id,
   });
   if (error) throw new Error(error.message);
-  return data as ModuleDashboard[];
+  return data as unknown as ModuleDashboard[];
 };
 
 export const fetchInterviewModuleById = async (module_id: string) => {
@@ -64,7 +64,7 @@ export const fetchInterviewModuleById = async (module_id: string) => {
   const { data: dataRel, error: errorRel } = await supabase
     .from('interview_module_relation')
     .select(
-      '*,recruiter_user(user_id,first_name,last_name,email,profile_image,scheduling_settings)'
+      '*,recruiter_user(user_id,first_name,last_name,email,profile_image,scheduling_settings)',
     )
     .eq('module_id', module_id);
 
@@ -75,13 +75,13 @@ export const fetchInterviewModuleById = async (module_id: string) => {
   return {
     ...dataModule[0],
     relations: dataRel,
-    settings: dataModule[0].settings || initialEditModule.settings //for some columns setting is null thats why we are adding this
+    settings: dataModule[0].settings || initialEditModule.settings, //for some columns setting is null thats why we are adding this
   } as ModuleType;
 };
 
 export const fetchMembers = async (rec_id: string) => {
   const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
-    recruiter_id: rec_id
+    recruiter_id: rec_id,
   });
   if (resMem.status !== 200) {
     throw new Error('Error fetching user details');
@@ -91,7 +91,7 @@ export const fetchMembers = async (rec_id: string) => {
 
 export const resumePauseDbUpdate = async ({
   module_id,
-  user_id
+  user_id,
 }: {
   module_id: string;
   user_id: string;
@@ -109,7 +109,7 @@ export const resumePauseDbUpdate = async ({
 export const updatePauseJsonByUserId = async ({
   module_id,
   user_id,
-  pause_json
+  pause_json,
 }: {
   module_id: string;
   user_id: string;
@@ -128,7 +128,7 @@ export const updatePauseJsonByUserId = async ({
 
 export const deleteRelationByUserDbDelete = async ({
   module_id,
-  user_id
+  user_id,
 }: {
   module_id: string;
   user_id: string;
@@ -147,7 +147,7 @@ export const deleteRelationByUserDbDelete = async ({
 export const addMemberbyUserIds = async ({
   user_ids,
   module_id,
-  training_status
+  training_status,
 }: {
   user_ids: string[];
   module_id: string;
@@ -159,8 +159,8 @@ export const addMemberbyUserIds = async ({
       user_ids.map((user_id) => ({
         user_id: user_id,
         module_id: module_id,
-        training_status: training_status
-      }))
+        training_status: training_status,
+      })),
     )
     .select();
   if (error) {
@@ -172,7 +172,7 @@ export const addMemberbyUserIds = async ({
 export const getMeetingsByModuleId = async (module_id: string) => {
   const today = new Date();
   const firstDayOfWeek = new Date(
-    today.setDate(today.getDate() - today.getDay() + 1)
+    today.setDate(today.getDate() - today.getDay() + 1),
   );
   const lastDayOfWeek = new Date(firstDayOfWeek);
   lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
@@ -183,11 +183,11 @@ export const getMeetingsByModuleId = async (module_id: string) => {
     .not('interview_meeting', 'is', null)
     .gte(
       'interview_meeting.start_time',
-      firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00'
+      firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00',
     )
     .lte(
       'interview_meeting.end_time',
-      lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59'
+      lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59',
     );
   if (error) throw new Error(error.message);
   return data;
@@ -196,7 +196,7 @@ export const getMeetingsByModuleId = async (module_id: string) => {
 export const getHours = ({
   meetingData,
   user,
-  type
+  type,
 }: {
   meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
   user: { user_id: string };
@@ -208,14 +208,14 @@ export const getHours = ({
       .filter(
         (meet) =>
           meet?.interviewer_id === user.user_id &&
-          dayjs(meet?.interview_meeting?.end_time).isSame(currentDay, 'day')
+          dayjs(meet?.interview_meeting?.end_time).isSame(currentDay, 'day'),
       )
       .reduce((acc, curr) => {
         return (
           acc +
           calculateHourDifference(
             curr.interview_meeting.start_time,
-            curr.interview_meeting.end_time
+            curr.interview_meeting.end_time,
           )
         );
       }, 0);
@@ -227,7 +227,7 @@ export const getHours = ({
         acc +
         calculateHourDifference(
           curr.interview_meeting.start_time,
-          curr.interview_meeting.end_time
+          curr.interview_meeting.end_time,
         )
       );
     }, 0);

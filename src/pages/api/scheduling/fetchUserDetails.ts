@@ -42,7 +42,9 @@ export default handler;
 const fetchUsers = async (user_ids: string[], status: string) => {
   const { data: users, error: userError } = await supabase
     .from('recruiter_user')
-    .select('user_id, first_name, last_name, email, profile_image, position')
+    .select(
+      'user_id, first_name, last_name, email, profile_image, position, schedule_auth',
+    )
     .in('user_id', user_ids)
     .eq('join_status', status);
 

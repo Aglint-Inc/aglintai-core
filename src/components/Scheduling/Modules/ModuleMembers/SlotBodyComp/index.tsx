@@ -12,7 +12,7 @@ import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
 import {
   useAllSchedulesByModuleId,
-  useGetMeetingsByModuleId
+  useGetMeetingsByModuleId,
 } from '../../queries/hooks';
 import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
 import { ModuleType } from '../../types';
@@ -27,7 +27,7 @@ interface SlotBodyCompProps {
 function SlotBodyComp({
   editModule,
   fetchingModule,
-  isFetching
+  isFetching,
 }: SlotBodyCompProps) {
   const { loading } = useSchedulingContext();
   const { data: schedules, isLoading: schedulesLoading } =
@@ -35,7 +35,7 @@ function SlotBodyComp({
 
   const { data: meetingData } = useGetMeetingsByModuleId({
     schedulesLoading: schedulesLoading,
-    user_ids: editModule?.relations?.map((user) => user.user_id) || []
+    user_ids: editModule?.relations?.map((user) => user.user_id) || [],
   });
 
   return (
@@ -64,7 +64,7 @@ function SlotBodyComp({
               onClick: () => {
                 setIsAddMemberDialogOpen(true);
                 setTrainingStatus('training');
-              }
+              },
             }}
             slotQualifiedMemberList={
               !schedulesLoading && (
@@ -84,7 +84,7 @@ function SlotBodyComp({
               onClick: () => {
                 setIsAddMemberDialogOpen(true);
                 setTrainingStatus('qualified');
-              }
+              },
             }}
           />
         )
