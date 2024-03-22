@@ -64,7 +64,7 @@ export const useJobUpdate = () => {
   const queryClient = useQueryClient();
   const { queryKey } = jobQueryKeys.jobs();
   const mutation = useMutation({
-    mutationFn: (newJob: Partial<Job>) => updateJob(newJob),
+    mutationFn: (newJob: JobInsert) => updateJob(newJob),
     onMutate: (newJob) => {
       const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
       const newJobs = previousJobs.reduce((acc, curr) => {
@@ -125,9 +125,6 @@ export const useJobRefresh = () => {
   const { queryKey } = jobQueryKeys.jobs();
   const mutation = useMutation({
     mutationFn: (id: Job['id']) => readJob(id),
-    onError: () => {
-      toast.error('Unable to delete job');
-    },
     onSuccess: (data) => {
       queryClient.setQueryData<Job[]>(queryKey, (prev) => {
         return prev.reduce((acc, curr) => {
@@ -170,7 +167,7 @@ const createJob = async (newJob: JobInsert) => {
   return d2[0] as unknown as Job;
 };
 
-const updateJob = async (newJob: Partial<Job>) => {
+const updateJob = async (newJob: JobInsert) => {
   const { data, error } = await supabase
     .from('public_jobs')
     .update(newJob)

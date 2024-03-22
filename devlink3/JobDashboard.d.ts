@@ -28,4 +28,8 @@ declare function JobDashboard(props: {
   isViewScheduleVisible?: Types.Visibility.VisibilityConditions;
   onClickImport?: Types.Devlink.RuntimeProps;
   isImport?: Types.Visibility.VisibilityConditions;
+  onClickCandidateList?: Types.Devlink.RuntimeProps;
+  textScoreCount?: React.ReactNode;
+  isScoring?: Types.Visibility.VisibilityConditions;
+  slotScoringLoader?: Types.Devlink.Slot;
 }): React.JSX.Element;

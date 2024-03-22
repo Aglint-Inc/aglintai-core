@@ -37,7 +37,7 @@ type JobTable = Database['public']['Tables']['public_jobs'];
 export type Job = Omit<JobTableRPC, keyof CustomJobType> & CustomJobType;
 
 export type JobInsert = Omit<JobTable['Insert'], keyof CustomJobType> &
-  Partial<Omit<CustomJobType, 'count'>>;
+  Partial<Omit<CustomJobType, 'count' | 'processing_count'>>;
 
 export type JobCreate = Required<Job['draft']> & {
   description_hash: Job['description_hash'];
@@ -47,6 +47,10 @@ type CustomJobType = {
   jd_json: JdJsonType;
   active_status: StatusJobs | null;
   count: CountJobs;
+  processing_count: {
+    // eslint-disable-next-line no-unused-vars
+    [id in Database['public']['Enums']['application_processing_status']]: number;
+  };
   parameter_weights: ScoreWheelParams;
   // interview_plan: InterviewPlan;
   draft: Pick<

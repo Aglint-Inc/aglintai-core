@@ -131,13 +131,13 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const router = useRouter();
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
-  const { handleJobRefresh } = useJobDetails();
+  const { handleJobRefresh, jobPolling } = useJobDetails();
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
 
   const paginationLimit = 50;
-  const longPolling = 60000;
+  const longPolling = 10000;
 
   const initialJobLoad = recruiter?.id && jobLoad ? true : false;
   const job = initialJobLoad
@@ -678,14 +678,18 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const refreshRef = useRef(true);
 
   const handleAutoRefresh = async () => {
-    setAllApplicationsDisabled(true);
-    await handleJobApplicationRefresh();
-    setAllApplicationsDisabled(false);
+    if (jobPolling) await handleRefresh();
   };
 
   const handleManualRefresh = async () => {
     refreshRef.current = !refreshRef.current;
-    await handleAutoRefresh();
+    await handleRefresh();
+  };
+
+  const handleRefresh = async () => {
+    setAllApplicationsDisabled(true);
+    await handleJobApplicationRefresh();
+    setAllApplicationsDisabled(false);
   };
 
   usePolling(async () => await handleAutoRefresh(), longPolling, [
@@ -695,6 +699,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     searchParameters.search,
     searchParameters.sort.ascending,
     searchParameters.sort.parameter,
+    jobPolling,
   ]);
 
   useEffect(() => {

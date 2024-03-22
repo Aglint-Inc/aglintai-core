@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 // import posthog from 'posthog-js';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import {
   // AssistantApplicantCount,
@@ -22,6 +22,7 @@ import {
   BannerLoading,
   DarkPill,
   DashboardAlert,
+  DashboardWarning,
   EnableDisable,
   GraphBlock,
   JobDashboard as JobDashboardDev,
@@ -45,6 +46,7 @@ import toast from '@/src/utils/toast';
 import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './Doughnut';
 import DashboardLineChart from './LineChart';
+import ScoringCandidatesLottie from './Lotties/scoringCandidatesLottie';
 import TenureAndExpSummary from './TenureAndExpSummary';
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
@@ -101,7 +103,9 @@ const Dashboard = () => {
     job,
     matches: { data: counts },
     schedules: { data: schedule },
+    status: { description_changed },
     publishStatus: { settingsValidity, publishable, loading },
+    jobPolling,
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
@@ -151,6 +155,15 @@ const Dashboard = () => {
     }
   };
 
+  const scoringLoader = useMemo(
+    () => (
+      <Stack sx={{ width: '16px', aspectRatio: 1 }}>
+        <ScoringCandidatesLottie />
+      </Stack>
+    ),
+    [],
+  );
+
   return (
     <>
       <AddCandidates
@@ -160,7 +173,12 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
-            isBanner={!publishable}
+            isScoring={jobPolling}
+            textScoreCount={`${job?.processing_count?.success ?? '---'}/${
+              counts?.total ?? '---'
+            }`}
+            slotScoringLoader={scoringLoader}
+            isBanner={!publishable || description_changed}
             isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
@@ -402,7 +420,8 @@ const Schedules = () => {
 };
 
 const Banners = () => {
-  const { publishStatus } = useJobDetails();
+  const { push } = useRouter();
+  const { publishStatus, status, setDismiss, job } = useJobDetails();
   if (!publishStatus.settingsValidity)
     return (
       <DashboardAlert
@@ -431,6 +450,13 @@ const Banners = () => {
         textShortDescription={
           'To proceed , please ensure that profile score is provided'
         }
+      />
+    );
+  if (status.description_changed)
+    return (
+      <DashboardWarning
+        onClickDismiss={{ onClick: () => setDismiss(true) }}
+        onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
       />
     );
   return <></>;

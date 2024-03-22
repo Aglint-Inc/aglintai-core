@@ -3038,6 +3038,12 @@ export type Database = {
         }
         Returns: Json
       }
+      getapplicationprocessingstatuscount: {
+        Args: {
+          jobid: string
+        }
+        Returns: Json
+      }
       getassessments: {
         Args: {
           recruiterid: string
@@ -3103,6 +3109,37 @@ export type Database = {
           status: Database["public"]["Enums"]["public_job_status"]
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           count: Json
+          processing_count: Json
+        }[]
+      }
+      getjobaaaaaa: {
+        Args: {
+          jobid: string
+        }
+        Returns: {
+          active_status: Json
+          assessment: boolean
+          company: string
+          created_at: string
+          department: Database["public"]["Enums"]["public_job_department"]
+          description: string
+          description_hash: number
+          draft: Json
+          email_template: Json
+          id: string
+          jd_json: Json
+          job_title: string
+          job_type: Database["public"]["Enums"]["public_job_type"]
+          location: string
+          parameter_weights: Json
+          phone_screen_enabled: boolean
+          posted_by: string
+          recruiter_id: string
+          scoring_criteria_loading: boolean
+          status: Database["public"]["Enums"]["public_job_status"]
+          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
+          count: Json
+          processing_count: Json
         }[]
       }
       getjobapplicationcountforcandidates: {
@@ -3178,6 +3215,7 @@ export type Database = {
           status: Database["public"]["Enums"]["public_job_status"]
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
           count: Json
+          processing_count: Json
         }[]
       }
       getlocationspool: {

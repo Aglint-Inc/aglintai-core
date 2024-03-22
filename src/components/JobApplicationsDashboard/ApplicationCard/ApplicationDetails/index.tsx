@@ -42,7 +42,7 @@ import {
   StatusBadge,
   SummaryBlock,
 } from '@/devlink2';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
+import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import ScoreWheel, {
   scoreWheelDependencies,
@@ -725,7 +725,8 @@ const ResumeBlock: React.FC<{
   setOpenResume: Dispatch<SetStateAction<boolean>>;
   handleDownload: () => Promise<void>;
   job: JobTypeDashboard;
-}> = ({ application, setOpenResume, handleDownload }) => {
+}> = ({ application, setOpenResume, handleDownload, job }) => {
+  if (job.status === 'draft') return <DangerMessage />;
   switch (getApplicationProcessState(application)) {
     case 'unavailable':
       return <ResAbsentError />;

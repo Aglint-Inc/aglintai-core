@@ -8,53 +8,63 @@ import { DashboardTypes } from './types';
 import { useCurrentJob } from '../job-assessment/keys';
 
 export const useJobSkills = () => {
-  const { job_id } = useCurrentJob();
+  const { job_id, job } = useCurrentJob();
   const { queryKey } = jobDashboardQueryKeys.skills({ job_id });
-  const response = useQuery({ queryKey, queryFn: () => getSkillsPool(job_id) });
+  const response = useQuery({
+    queryKey,
+    enabled: !!job,
+    queryFn: () => getSkillsPool(job_id),
+  });
   return response;
 };
 
 export const useJobDashboardRefresh = () => {
   const queryClient = useQueryClient();
-  const { queryKey } = jobDashboardQueryKeys.all;
-  return () => queryClient.invalidateQueries({ queryKey });
+  return (job_id: string) => {
+    const { queryKey } = jobDashboardQueryKeys.job({ job_id });
+    queryClient.invalidateQueries({ queryKey });
+  };
 };
 
 export const useJobLocations = () => {
-  const { job_id } = useCurrentJob();
+  const { job_id, job } = useCurrentJob();
   const { queryKey } = jobDashboardQueryKeys.locations({ job_id });
   const response = useQuery({
     queryKey,
+    enabled: !!job,
     queryFn: () => getLocationPool(job_id),
   });
   return response;
 };
 
 export const useJobMatches = () => {
-  const { job_id } = useCurrentJob();
+  const { job_id, job } = useCurrentJob();
   const { queryKey } = jobDashboardQueryKeys.matches({ job_id });
   const response = useQuery({
     queryKey,
+    enabled: !!job,
     queryFn: () => getResumeMatch(job_id),
   });
   return response;
 };
 
 export const useJobTenureAndExperience = () => {
-  const { job_id } = useCurrentJob();
+  const { job_id, job } = useCurrentJob();
   const { queryKey } = jobDashboardQueryKeys.tenureAndExperience({ job_id });
   const response = useQuery({
     queryKey,
+    enabled: !!job,
     queryFn: () => getTenureAndExperience(job_id),
   });
   return response;
 };
 
 export const useJobSchedules = () => {
-  const { job_id } = useCurrentJob();
+  const { job_id, job } = useCurrentJob();
   const { queryKey } = jobDashboardQueryKeys.schedules({ job_id });
   const response = useQuery({
     queryKey,
+    enabled: !!job,
     queryFn: () => getScheduleData(job_id),
   });
   return response;

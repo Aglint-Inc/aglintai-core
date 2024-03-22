@@ -18,14 +18,14 @@ import {
   // InsightTagReliable,
   InsightTagSkilled,
   RcCheckbox,
-  ScreeningStatus
+  ScreeningStatus,
 } from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
-  ScoreJson
+  ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 
 import { InvitedIcon } from './Icons/invited';
@@ -41,7 +41,7 @@ import {
   getCandidateDetails,
   getDisqualificationStatus,
   getScreeningStatus,
-  mapScoreToAnalysis
+  mapScoreToAnalysis,
 } from '../utils';
 import ListCardInterviewSchedule from '../../Scheduling/AllSchedules/ListCard';
 
@@ -51,7 +51,7 @@ const ApplicationCard = ({
   index,
   handleSelect,
   handleOpenDetails,
-  isSelected = false
+  isSelected = false,
 }: {
   detailedView: boolean;
   application: JobApplication;
@@ -63,25 +63,27 @@ const ApplicationCard = ({
   isSelected: boolean;
 }) => {
   const {
+    job,
     cardStates: {
-      checkList: { list }
+      checkList: { list },
     },
     views,
-    section
+    section,
   } = useJobApplications();
   const creationDate = formatTimeStamp(application?.applied_at || null);
   const handleCheck = () => {
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
-  const resumeScore = <ResumeScore application={application} />;
+  const resumeScore =
+    job.status === 'draft' ? '---' : <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
   const overview =
     (application?.candidate_files?.resume_json as any)?.overview ?? '---';
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
-    [list.has(application.id)]
+    [list.has(application.id)],
   );
 
   const name = getCandidateDetails(application, 'name');
@@ -94,7 +96,7 @@ const ApplicationCard = ({
         app={
           {
             ...application,
-            public_jobs: { id: application.job_id, job_title: jobTitle.value }
+            public_jobs: { id: application.job_id, job_title: jobTitle.value },
           } as any
         }
         isJobDasboard={true}
@@ -127,12 +129,12 @@ const ApplicationCard = ({
           onClick: () => {
             posthog.capture('candidate card clicked');
             handleOpenDetails();
-          }
+          },
         }}
         isHighlighted={isSelected}
         experience={getExperienceCount(
           (application.candidate_files?.resume_json as any)?.basics
-            ?.totalExperience
+            ?.totalExperience,
         )}
         isScreeningVisible={views.screening}
         slotScreening={<ScreeningStatusComponent application={application} />}
@@ -160,7 +162,7 @@ const ApplicationCard = ({
       onclickCandidate={{
         onClick: () => {
           handleOpenDetails();
-        }
+        },
       }}
       slotInsights={<Insights application={application} />}
       slotAnalysis={
@@ -171,7 +173,7 @@ const ApplicationCard = ({
 };
 
 const AnalysisSection: React.FC<{ score_json: ScoreJson }> = ({
-  score_json
+  score_json,
 }) => {
   const reasoning = score_json?.reasoning ?? null;
   const scores = score_json?.scores ?? null;
@@ -199,18 +201,18 @@ const AnalysisSection: React.FC<{ score_json: ScoreJson }> = ({
 };
 
 const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
-  application
+  application,
 }) => {
   const {
-    emailValidity: { isFetching, isValidEmail }
+    emailValidity: { isFetching, isValidEmail },
   } = application;
   const { views } = useJobApplications();
   const { isNotInvited, timeInfo, disqualificationStatus } = useMemo(
     () => getDisqualificationStatus(application.status_emails_sent),
     [
       ...Object.values(application?.status_emails_sent ?? {}),
-      application.phone_screening
-    ]
+      application.phone_screening,
+    ],
   );
   if (!views.disqualified) return <></>;
   if (isFetching) return <FetchingEmail />;
@@ -239,18 +241,18 @@ export const ScreeningStatusComponent: React.FC<{
   application: JobApplication;
 }> = ({ application }) => {
   const {
-    emailValidity: { isFetching, isValidEmail }
+    emailValidity: { isFetching, isValidEmail },
   } = application;
   const { isNotInvited, isPending, timeInfo, screeningStatus } = useMemo(
     () =>
       getScreeningStatus(
         application.status_emails_sent,
-        application.phone_screening
+        application.phone_screening,
       ),
     [
       ...Object.values(application?.status_emails_sent ?? {}),
-      application.phone_screening
-    ]
+      application.phone_screening,
+    ],
   );
   if (isFetching) return <FetchingEmail />;
   if (!isValidEmail) return <InavlidEmail />;
@@ -300,9 +302,9 @@ const Insights = ({ application }: { application: JobApplication }) => {
               getPills(
                 curr,
                 jdScore.relevance,
-                application.candidate_files.resume_json
-              )
-            )
+                application.candidate_files.resume_json,
+              ),
+            ),
           );
         return acc;
       }, [])
@@ -316,7 +318,7 @@ const Insights = ({ application }: { application: JobApplication }) => {
 const getPills = (
   badge: keyof ScoreJson['badges'],
   relevance: ScoreJson['relevance'],
-  resume: any
+  resume: any,
 ) => {
   switch (badge) {
     case 'skills':
@@ -340,7 +342,7 @@ const getSkillPills = (skills: ScoreJson['relevance']['skills']) => {
 
 const getEducationPills = (
   schools,
-  relevance: ScoreJson['relevance']['schools']
+  relevance: ScoreJson['relevance']['schools'],
 ) => {
   const educationList =
     Array.isArray(schools) &&
@@ -349,7 +351,7 @@ const getEducationPills = (
         (e) =>
           e.institution &&
           typeof e.institution === 'string' &&
-          e.institution.trim() !== ''
+          e.institution.trim() !== '',
       )
       .reduce((acc, e, i) => {
         if (relevance && relevance[i] && relevance[i] === 'high')
@@ -363,7 +365,7 @@ const getEducationPills = (
                   ? `${e.degree} - `
                   : ''
               }${e.institution}`}
-            />
+            />,
           );
         return acc;
       }, []);
@@ -372,13 +374,13 @@ const getEducationPills = (
 
 const getPositionPills = (
   positions,
-  relevance: ScoreJson['relevance']['positions']
+  relevance: ScoreJson['relevance']['positions'],
 ) => {
   const positionsList =
     Array.isArray(positions) &&
     positions
       .filter(
-        (e) => e.title && typeof e.title === 'string' && e.title.trim() !== ''
+        (e) => e.title && typeof e.title === 'string' && e.title.trim() !== '',
       )
       .reduce((acc, e, i) => {
         if (relevance && relevance[i] && relevance[i] === 'high')
@@ -390,7 +392,7 @@ const getPositionPills = (
                   ? ` - ${e.org}`
                   : ''
               }`}
-            />
+            />,
           );
         return acc;
       }, []);
@@ -398,7 +400,7 @@ const getPositionPills = (
 };
 
 export const AnalysisPillComponent: React.FC<{ score: number }> = ({
-  score
+  score,
 }) => {
   if (typeof score !== 'number') return <></>;
   const { color, high, low, medium, value: text } = analysisRatings(score);
@@ -419,7 +421,7 @@ const badgePriority = [
   'careerGrowth',
   'positions',
   'skills',
-  'schools'
+  'schools',
 ];
 
 const getBadge = (key: string, count: number, pills: any) => {

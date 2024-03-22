@@ -170,12 +170,16 @@
 
 .score_settings {
   display: flex;
+  padding-left: 10px;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+
+  font-size: 14px;
+  line-height: 20px;
 
   cursor: pointer;
 }
@@ -281,6 +285,12 @@
   background-color: #f7f9fb;
 }
 
+@media screen and (min-width: 1440px) {
+  .graph_wrapper {
+    width: 100%;
+  }
+}
+
 .slot_schedulecards {
   display: flex;
   width: 100%;
@@ -363,7 +373,7 @@
   border-radius: 100px;
 }
 
-.graph_wrapper-copy {
+.graph_wrapper-copy-copy {
   display: flex;
   overflow: hidden;
   height: 100%;
@@ -374,6 +384,12 @@
   border-radius: 10px;
 
   background-color: #f7f9fb;
+}
+
+@media screen and (min-width: 1440px) {
+  .graph_wrapper-copy-copy {
+    padding-left: 0px;
+  }
 }
 
 .jd_graph_skills {
@@ -470,6 +486,14 @@
 #w-node-_455ef4cc-ff1b-729d-620d-560a6abf007f-06b69083 {
 }
 @media screen and (min-width: 1920px) {
+  #w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b690d3-06b69083 {
+    grid-row-start: span 1;
+    grid-row-end: span 1;
+    grid-column-start: span 1;
+    grid-column-end: span 1;
+  }
+}
+@media screen and (min-width: 1440px) {
   #w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b690d3-06b69083 {
     grid-row-start: span 1;
     grid-row-end: span 1;

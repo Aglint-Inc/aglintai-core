@@ -4,13 +4,16 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 export const jobDashboardQueryKeys = {
   all: { queryKey: ['aglint_job_dashboard'] as string[] },
-  matches: ({ job_id }) => ({
+  job: ({ job_id }: { job_id: string }) => ({
+    queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }],
+  }),
+  matches: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'matches'],
   }),
-  skills: ({ job_id }) => ({
+  skills: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'skills'],
   }),
-  locations: ({ job_id }) => ({
+  locations: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'locations'],
   }),
   assessments: ({ job_id }: { job_id: string }) => ({

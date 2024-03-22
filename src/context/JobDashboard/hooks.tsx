@@ -75,6 +75,15 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   };
   settingsValidity && jdValidity && !job.scoring_criteria_loading;
   const [dismiss, setDismiss] = useState(false);
+  // console.log(hashCode(job?.draft?.description ?? ''), job?.description_hash);
+
+  const jobPolling =
+    !!job &&
+    job?.status === 'published' &&
+    (job?.processing_count?.['not started'] !== 0 ||
+      job?.processing_count?.processing !== 0);
+
+  console.log(job?.processing_count);
 
   const status = job &&
     jobLoad && {
@@ -104,12 +113,13 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const handleJobRefresh = async () => {
     await jobRefresh(job?.id);
-    refreshDashboard();
+    refreshDashboard(job?.id);
   };
 
   const value = {
     job,
     dismiss,
+    jobPolling,
     setDismiss,
     handleJobRefresh,
     scoringPoll,

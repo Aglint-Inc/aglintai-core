@@ -10,6 +10,7 @@ import {
   useJobUIUpdate,
   useJobUpdate,
 } from '@/src/queries/job';
+import { JobInsert } from '@/src/queries/job/types';
 
 import { JobTypeDashboard } from './types';
 import { hashCode } from '../JobDashboard/hooks';
@@ -51,7 +52,7 @@ const useJobActions = () => {
     if (recruiter) {
       try {
         // eslint-disable-next-line no-unused-vars
-        const { count, ...newJob } = job;
+        const { count, processing_count, ...newJob } = job;
         const { error } = await jobAsyncUpdate({
           ...newJob,
           ...newJob.draft,
@@ -68,7 +69,7 @@ const useJobActions = () => {
 
   const handleJobUpdate = async (
     jobId: string,
-    newJob: Partial<JobTypeDashboard>,
+    newJob: Omit<JobInsert, 'recruiter_id'>,
   ) => {
     if (recruiter) {
       jobUpdate({
@@ -81,7 +82,7 @@ const useJobActions = () => {
 
   const handleJobAsyncUpdate = async (
     jobId: string,
-    newJob: Partial<JobTypeDashboard>,
+    newJob: Omit<JobInsert, 'recruiter_id'>,
   ) => {
     if (recruiter) {
       try {
@@ -122,7 +123,7 @@ const useJobActions = () => {
   const experimental_handleRegenerateJd = async (job: JobTypeDashboard) => {
     handleUIJobUpdate({ ...job, scoring_criteria_loading: true });
     await handleGenerateJd(job.id);
-    handleJobRefresh(job.id);
+    // handleJobRefresh(job.id);
   };
 
   const handleGetJob = (jobId: string) => {
