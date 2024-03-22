@@ -5,7 +5,12 @@ import dayjs, { Dayjs } from 'dayjs';
 import React, { useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { CandidateFileTypeDB, PublicJobsType } from '@/src/types/data.types';
+import { InitAgentBodyParams } from '@/src/pages/scheduling/agent/types';
+import {
+  CandidateFileTypeDB,
+  CandidateType,
+  PublicJobsType,
+} from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import SpecializedDatePicker from '../Common/SpecializedDatePicker';
@@ -18,51 +23,53 @@ const ScheduleAgent = () => {
   const [selectedCand, setSelectedCand] = useState({
     application_id: '681c0858-fb4d-4180-ab96-c2d13e52e58e',
   });
+  const [status, setStatus] = useState<'loading' | 'done' | '' | 'error'>('');
   const [data, setData] = useState('');
 
   const { recruiter_id, recruiterUser } = useAuthDetails();
 
   const initConversation = async () => {
     try {
+      setStatus('loading');
       const [rec] = supabaseWrap(
         await supabase
           .from('applications')
           .select(
-            'candidate_files(resume_json,candidate_id),public_jobs(id,job_title)',
+            'id, candidate_files(resume_json,candidate_id),public_jobs(id,job_title), candidates(*)',
           )
           .eq('id', selectedCand.application_id),
       ) as {
+        id: string;
         candidate_files: CandidateFileTypeDB;
         public_jobs: PublicJobsType;
+        candidate: CandidateType;
       }[];
-      let resumeJson = rec.candidate_files.resume_json as any;
-      setData(
-        JSON.stringify({
-          application_id: selectedCand.application_id,
-          job_id: rec.public_jobs.id,
-          company_id: rec.public_jobs.recruiter_id,
-          candidate_email: resumeJson.basics.email,
-          date_range: [startDate.toISOString(), endDate.toISOString()],
-          candidate_name: resumeJson.firstName,
-          recruiter_user_id: recruiterUser.user_id,
-        }),
-      );
-      await axios.post('/api/scheduling/mail-agent/init-agent', {
-        application_id: selectedCand.application_id,
+      let payload: InitAgentBodyParams = {
+        application_id: rec.id,
         job_id: rec.public_jobs.id,
-        candidate_email: resumeJson.basics.email,
-        candidate_name: resumeJson.basics.firstName,
+        candidate_email:
+          rec.candidate?.email ??
+          (rec.candidate_files.resume_json as any).basics.email,
+        candidate_name: (rec.candidate_files.resume_json as any).basics
+          .firstName,
         date_range: [startDate.toISOString(), endDate.toISOString()],
         company_id: recruiter_id,
         recruiter_user_id: recruiterUser.user_id,
+      };
+      console.log(rec.candidate_files.resume_json);
+      console.log(payload);
+      setData(JSON.stringify(payload));
+      await axios.post('/api/scheduling/mail-agent/init-agent', {
+        ...payload,
       });
+      setStatus('done');
       // console.log(data);
     } catch (error) {
       console.log(error);
+      setStatus('error');
     }
   };
 
-  console.log('fewkjnekfwj');
   return (
     <>
       <Box
@@ -113,7 +120,7 @@ const ScheduleAgent = () => {
                 variant='contained'
                 color='primary'
               >
-                Init
+                Init {status}
               </Button>
               <div>
                 <>{data}</>

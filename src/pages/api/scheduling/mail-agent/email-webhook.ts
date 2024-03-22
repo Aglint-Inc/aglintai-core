@@ -46,6 +46,7 @@ export default async function handler(req, res) {
   const form = formidable({});
   try {
     const [fields] = await form.parse(req);
+    console.log(fields);
     const candidate_email = getEmail(fields.from[0]);
     const to_email = getEmail(fields.to[0]);
     // const subject = fields.subject[0];

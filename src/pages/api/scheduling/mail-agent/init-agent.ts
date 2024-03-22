@@ -9,19 +9,10 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { InitAgentBodyParams } from '@/src/pages/scheduling/agent/types';
 import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
-
-export type BodyParams = {
-  application_id: string;
-  job_id: string;
-  candidate_email;
-  date_range: string[];
-  company_id: string;
-  candidate_name: string;
-  recruiter_user_id: string;
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -33,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       date_range,
       company_id,
       recruiter_user_id,
-    } = req.body as BodyParams;
+    } = req.body as InitAgentBodyParams;
 
     if (
       !application_id ||
@@ -139,7 +130,10 @@ export const sendEmailFromAgent = async ({
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
-    fromEmail: 'agent@ai.aglinthq.com',
+    fromEmail:
+      process.env.NODE_ENV === 'development'
+        ? 'agent@parse.aglinthq.com'
+        : 'agent@ai.aglinthq.com',
     fromName: from_name,
     subject,
     text: mail_body,
