@@ -38,11 +38,16 @@ function SchedulingOptionComp({
           <OptionAvailableCard
             isActive={false}
             key={ind}
-            slotCardDate={option.plans?.map((pl, ind) => {
+            slotCardDate={option.plans?.map((pl, indOpt) => {
               return (
                 <AvailableOptionCardDate
                   isDateWrapVisible={
-                    !pl.isBreak // temp fix for hiding date.
+                    indOpt == 0 ||
+                    (!pl.isBreak &&
+                      !dayjs(option.plans[indOpt - 1]?.start_time).isSame(
+                        pl.start_time,
+                        'day',
+                      )) // temp fix for hiding date.
                   }
                   textDate={dayjs(pl.start_time).format('DD')}
                   textDay={dayjs(pl.start_time).format('dddd')}

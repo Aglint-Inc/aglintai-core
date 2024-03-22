@@ -138,6 +138,7 @@ function InvitationPending({
                   return (
                     <AvailableOptionCardDate
                       isDateWrapVisible={
+                        !pl.isBreak &&
                         !dayjs(option.plans[ind - 1]?.start_time).isSame(
                           pl.start_time,
                           'day',

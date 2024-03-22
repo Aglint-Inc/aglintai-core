@@ -19,7 +19,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import GetScheduleOptions from './GetScheduleOptions';
-import SendCandidateDialog from './GetScheduleOptions/RescheduleDialog';
+import SendCandidateDialog from './GetScheduleOptions/SendCandidateDialog';
 import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import InterviewPlanCardComp from '../Common/InterviewPlanCardComp';
 import SchedulingOptionComp from '../Common/ScheduleOption';
