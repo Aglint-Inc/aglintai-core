@@ -16,8 +16,24 @@ export function Integration({
         className={_utils.cx(_styles, "div-block-1240")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"ATS"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "integration_title")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"ATS"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {
+              "Integrate your Applicant Tracking System (ATS) with Aglint, enabling seamless job importation from your ATS."
+            }
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1241")}

@@ -107,6 +107,17 @@
   opacity: 0.8;
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-blue-500.ml-12 {
   margin-left: 8px;
 }

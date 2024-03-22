@@ -86,3 +86,7 @@ export type InviteUserAPIType = {
     user: RecruiterUserType;
   };
 };
+
+
+
+

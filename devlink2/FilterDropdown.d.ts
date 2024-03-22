@@ -6,4 +6,5 @@ declare function FilterDropdown(props: {
   slotOption?: Types.Devlink.Slot;
   onClickReset?: Types.Devlink.RuntimeProps;
   onClickDelete?: Types.Devlink.RuntimeProps;
+  isRemoveVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

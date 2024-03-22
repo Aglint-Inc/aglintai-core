@@ -20,5 +20,5 @@ export declare function Twitter({
   size,
   text,
   ...props
-}: TwitterProps): any;
+}: TwitterProps): React.JSX.Element;
 export {};
