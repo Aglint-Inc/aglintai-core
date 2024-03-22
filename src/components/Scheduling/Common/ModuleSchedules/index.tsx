@@ -128,7 +128,7 @@ function ScheduleCard({ sch }) {
       textTitle={sch.schedule.schedule_name}
       colorPropsText={{
         style: {
-          color: getColorStatusSchedule(sch.schedule.status),
+          color: getColorStatusSchedule(sch.interview_meeting.status),
         },
       }}
       slotMemberImage={

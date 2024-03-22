@@ -146,7 +146,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
               }}
             />
           }
-          isApprovalDoneVisible={editModule?.settings?.reqruire_approval}
+          isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
           slotCheckbox={
             <Checkbox
               isChecked={localModule?.settings?.reqruire_approval}

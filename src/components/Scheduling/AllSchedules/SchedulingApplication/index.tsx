@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
+import Loader from '@/src/components/Common/Loader';
 
 import DeleteScheduleDialog from './Common/DeleteDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
@@ -21,6 +22,9 @@ function SchedulingApplication() {
   );
   const scheduleName = useSchedulingApplicationStore(
     (state) => state.scheduleName,
+  );
+  const fetchingSchedule = useSchedulingApplicationStore(
+    (state) => state.fetchingSchedule,
   );
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -52,14 +56,18 @@ function SchedulingApplication() {
         }
         slotBody={
           <>
-            {!selectedApplication?.schedule ||
-            selectedApplication.schedule.status == 'reschedule' ? (
-              <NotScheduledApplication />
-            ) : selectedApplication?.schedule.status == 'pending' ? (
-              <PendingConfirmed />
+            {!fetchingSchedule ? (
+              !selectedApplication?.schedule ||
+              selectedApplication.schedule.status == 'reschedule' ? (
+                <NotScheduledApplication />
+              ) : selectedApplication?.schedule.status == 'pending' ? (
+                <PendingConfirmed />
+              ) : (
+                // confirmed and cancelled and completed same component
+                <ConfirmedComp />
+              )
             ) : (
-              // confirmed and cancelled and completed same component
-              <ConfirmedComp />
+              <Loader />
             )}
           </>
         }

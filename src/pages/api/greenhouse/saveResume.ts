@@ -17,7 +17,15 @@ export default async function handler(req, res) {
 
   let payload = req.body;
 
-  if (payload.application_id && payload.resume) {
+  if (payload.application_id) {
+    if (!payload.resume) {
+      await supabase
+        .from('applications')
+        .update({ processing_status: 'failed', retry: 2 })
+        .eq('application_id', payload.application_id);
+      return res.status(400).json('Resume URL is missing');
+    }
+
     console.log(payload.application_id, 'payload.application_id');
 
     // Supabase credentials

@@ -48,6 +48,7 @@ function ConfirmedComp() {
         isScheduleCancelVisible={
           selectedApplication.schedule.status === 'cancelled'
         }
+        isInviteLinkVisible={false}
         onClickCancel={{
           onClick: () => {
             setIsCancelOpen(true);
