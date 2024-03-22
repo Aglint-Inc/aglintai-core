@@ -6,7 +6,7 @@ import { InviteTeamCard, TeamInvite } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterUserType } from '@/src/types/data.types';
+import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import toast from '@/src/utils/toast';
 
@@ -26,6 +26,7 @@ const EditMember = ({
     first_name: string;
     last_name: string;
     interview_location: string;
+    employment: employmentTypeEnum;
     designation: string;
     department: string;
     role: RecruiterUserType['role'];
@@ -33,6 +34,7 @@ const EditMember = ({
     first_name: member.first_name,
     last_name: member.last_name,
     interview_location: member.interview_location,
+    employment: member.employment,
     department: member.department,
     designation: member.position,
     role: member.role,
@@ -50,12 +52,14 @@ const EditMember = ({
     first_name: boolean;
     department: boolean;
     interview_location: boolean;
+    employment: boolean;
     designation: boolean;
     role: boolean;
   }>({
     first_name: false,
     department: false,
     interview_location: false,
+    employment: false,
     designation: false,
     role: false,
   });
@@ -131,6 +135,33 @@ const EditMember = ({
                 onChange={(e) => {
                   setForm({ ...form, designation: e.target.value });
                 }}
+              />
+              <Autocomplete
+                fullWidth
+                value={form.employment || ''}
+                onChange={(event: any, newValue: employmentTypeEnum | null) => {
+                  setForm({
+                    ...form,
+                    employment: newValue,
+                  });
+                }}
+                options={
+                  ['CONTRACTOR', 'FULLTIME', 'PARTTIME'] as employmentTypeEnum[]
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={formError.employment}
+                    onFocus={() => {
+                      setFormError({
+                        ...formError,
+                        employment: false,
+                      });
+                    }}
+                    name='Employment'
+                    placeholder='Employment'
+                  />
+                )}
               />
               <Autocomplete
                 fullWidth
@@ -237,6 +268,7 @@ const EditMember = ({
                         first_name: form.first_name,
                         last_name: form.last_name,
                         interview_location: form.interview_location,
+                        employment: form.employment,
                         department: form.department,
                         position: form.designation,
                         role: form.role.toLowerCase() as typeof form.role,
@@ -265,6 +297,7 @@ const EditMember = ({
                   first_name: null,
                   last_name: null,
                   department: null,
+                  employment: null,
                   interview_location: null,
                   designation: null,
                   role: 'recruiter',

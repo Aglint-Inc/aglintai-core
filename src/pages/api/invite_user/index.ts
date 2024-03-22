@@ -54,6 +54,7 @@ export default async function handler(
               first_name: user.first_name,
               last_name: user.last_name,
               position: user.designation,
+              employment: user.employment,
               department: user.department,
               role: user.role.toLocaleLowerCase(),
               email: email,

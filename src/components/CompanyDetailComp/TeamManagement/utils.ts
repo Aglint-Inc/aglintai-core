@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { RecruiterUserType } from '@/src/types/data.types';
+import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { schedulingSettingType } from '../../Scheduling/Settings/types';
@@ -26,6 +26,7 @@ export const inviteUserApi = (
     last_name: string;
     email: string;
     designation: string;
+    employment: employmentTypeEnum;
     department: string;
     role: string;
     scheduling_settings: schedulingSettingType;
@@ -68,6 +69,7 @@ export type InviteUserAPIType = {
       email: string;
       designation: string;
       interview_location: string;
+      employment: employmentTypeEnum;
       department: string;
       role: string;
       scheduling_settings: schedulingSettingType;

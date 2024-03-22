@@ -47,7 +47,7 @@ function SideNavbar() {
       route: pageRoutes.JOBS,
       comingsoon: false,
       isvisible: true,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin','recruiter'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavCd isActive={false} />,
@@ -56,7 +56,7 @@ function SideNavbar() {
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
       isvisible: isSourcingEnabled,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin','recruiter'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavTickets isActive={false} />,
@@ -111,7 +111,7 @@ function SideNavbar() {
       route: pageRoutes.ASSESSMENTS,
       comingsoon: false,
       isvisible: isAssessmentEnabled,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin','recruiter'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavIntegration isActive={false} />,

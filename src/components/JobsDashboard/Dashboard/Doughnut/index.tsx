@@ -130,7 +130,7 @@ const DashboardDoughnutChart: FC<{
                       borderRadius: '100%',
                     }}
                   />
-                  <Typography variant='body2' style={{ textWrap: 'nowrap' }}>
+                  <Typography variant='body2' sx={{ textWrap: 'nowrap' }}>
                     {capitalize(name)}
                   </Typography>
                 </Stack>
