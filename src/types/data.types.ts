@@ -239,3 +239,6 @@ export type IntegrationType =
 
 export type ScheduleAgentChatHistoryTypeDB =
   Database['public']['Tables']['scheduling-agent-chat-history']['Row'];
+
+export type employmentTypeEnum =
+  Database['public']['Enums']['employment_type_enum'];

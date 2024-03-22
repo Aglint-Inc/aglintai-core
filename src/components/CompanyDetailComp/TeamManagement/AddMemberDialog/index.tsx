@@ -12,7 +12,7 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterUserType } from '@/src/types/data.types';
+import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
@@ -46,6 +46,7 @@ const AddMember = ({
     first_name: string;
     last_name: string;
     email: string;
+    employment: employmentTypeEnum;
     designation: string;
     interview_location: string;
     department: string;
@@ -55,6 +56,7 @@ const AddMember = ({
     first_name: null,
     last_name: null,
     email: null,
+    employment: null,
     interview_location: null,
     designation: null,
     department: null,
@@ -67,6 +69,7 @@ const AddMember = ({
       first_name: string;
       last_name: string;
       email: string;
+      employment: employmentTypeEnum;
       department: string;
       interview_location: string;
       designation: string;
@@ -78,12 +81,14 @@ const AddMember = ({
     first_name: boolean;
     email: boolean;
     department: boolean;
+    employment: boolean;
     interview_location: boolean;
     designation: boolean;
     role: boolean;
   }>({
     first_name: false,
     email: false,
+    employment: false,
     department: false,
     interview_location: false,
     designation: false,
@@ -158,6 +163,7 @@ const AddMember = ({
             interview_location: form.interview_location,
             designation: form.designation,
             role: form.role.toLowerCase() as typeof form.role,
+            employment: form.employment,
           },
         ]);
         setInviteCardVisible(true);
@@ -172,6 +178,7 @@ const AddMember = ({
           designation: null,
           role: null,
           scheduling_settings: null,
+          employment: null,
         });
       } else {
         toast.error('User already exists');
@@ -250,6 +257,40 @@ const AddMember = ({
                     onChange={(e) => {
                       setForm({ ...form, designation: e.target.value });
                     }}
+                  />
+                  <Autocomplete
+                    fullWidth
+                    value={form.employment || ''}
+                    onChange={(
+                      event: any,
+                      newValue: employmentTypeEnum | null,
+                    ) => {
+                      setForm({
+                        ...form,
+                        employment: newValue,
+                      });
+                    }}
+                    options={
+                      [
+                        'CONTRACTOR',
+                        'FULLTIME',
+                        'PARTTIME',
+                      ] as employmentTypeEnum[]
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        error={formError.employment}
+                        onFocus={() => {
+                          setFormError({
+                            ...formError,
+                            employment: false,
+                          });
+                        }}
+                        name='Employment'
+                        placeholder='Employment'
+                      />
+                    )}
                   />
                   <Autocomplete
                     fullWidth

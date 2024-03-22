@@ -2081,6 +2081,7 @@ export type Database = {
           email: string | null
           email_auth: Json | null
           email_outreach_templates: Json[] | null
+          employment: Database["public"]["Enums"]["employment_type_enum"] | null
           first_name: string | null
           interview_location: string | null
           join_status: string
@@ -2101,6 +2102,9 @@ export type Database = {
           email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
+          employment?:
+            | Database["public"]["Enums"]["employment_type_enum"]
+            | null
           first_name?: string | null
           interview_location?: string | null
           join_status?: string
@@ -2121,6 +2125,9 @@ export type Database = {
           email?: string | null
           email_auth?: Json | null
           email_outreach_templates?: Json[] | null
+          employment?:
+            | Database["public"]["Enums"]["employment_type_enum"]
+            | null
           first_name?: string | null
           interview_location?: string | null
           join_status?: string
@@ -3477,6 +3484,7 @@ export type Database = {
       assessment_mode: "classic" | "verbal" | "visual"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
+      employment_type_enum: "FULLTIME" | "PARTTIME" | "CONTRACTOR"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
       interview_schedule_status:
