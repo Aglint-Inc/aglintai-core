@@ -96,6 +96,7 @@ export * from "./ScheduleCardSmall";
 export * from "./SuggetionCard";
 export * from "./SuggetionPill";
 export * from "./TabMenuButton";
+export * from "./TeamEmpty";
 export * from "./Timeline";
 export * from "./TimelineBlock";
 export * from "./TimelineDummyOne";

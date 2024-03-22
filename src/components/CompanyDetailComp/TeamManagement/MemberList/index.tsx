@@ -67,7 +67,7 @@ const Member = ({
             variant='circular'
             height='100%'
             width='100%'
-            fontSize='16px'
+            fontSize='20px'
           />
         }
         userEmail={member.email}
@@ -76,6 +76,8 @@ const Member = ({
             ? `${member.first_name || ''} ${member.last_name || ''} (You)`
             : `${member.first_name || ''} ${member.last_name || ''}`
         }
+        textDepartment={member.department}
+        textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}
         userStatusProps={{
           style:

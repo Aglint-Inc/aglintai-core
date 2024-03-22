@@ -23,13 +23,15 @@ export function TeamListItem({
   isCancelInviteVisible = true,
   onClickEditInvite = {},
   isEditInviteVisible = true,
+  textDepartment = "Sales",
+  textDesignation = "DesignEngineer",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
   return (
     <_Component className={_utils.cx(_styles, "tu-list-block")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "tu-list-item", "user")}
+        className={_utils.cx(_styles, "tu-list-item", "user-copy")}
         id={_utils.cx(
           _styles,
           "w-node-a60860aa-9493-87fc-f445-b3f1087efc8c-087efc8b"
@@ -37,20 +39,46 @@ export function TeamListItem({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "tu-list-item-user-image")}
+          className={_utils.cx(_styles, "tu-list-item-user-image", "large")}
           tag="div"
         >
-          {slotProfileImage}
+          {slotProfileImage ?? (
+            <_Builtin.Image
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "tu-list-item-user-info")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
+            className={_utils.cx(_styles, "name_wraop")}
             tag="div"
           >
-            {userName}
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {userName}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "tu-list-item-status")}
+              tag="div"
+              {...userStatusProps}
+            >
+              {userStatusText}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-grey-600")}
+            tag="div"
+          >
+            {textDesignation}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-grey-600")}
@@ -71,13 +99,7 @@ export function TeamListItem({
         {slotUserRole}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "tu-list-item")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "tu-list-item-status")}
-          tag="div"
-          {...userStatusProps}
-        >
-          {userStatusText}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textDepartment}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "tu-list-item")}
@@ -95,7 +117,7 @@ export function TeamListItem({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "tu-list-item", "actions")}
+        className={_utils.cx(_styles, "tu-list-item", "actions-copy")}
         id={_utils.cx(
           _styles,
           "w-node-a60860aa-9493-87fc-f445-b3f1087efc9b-087efc8b"

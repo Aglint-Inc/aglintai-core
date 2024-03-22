@@ -17,7 +17,22 @@ type SliderConfig = {
   autoMax: number;
   navInvert: boolean;
 };
-export declare const SliderContext: any;
+type SlideState = {
+  current: number;
+  previous: number;
+};
+export declare const SliderContext: React.Context<
+  SliderConfig & {
+    slideAmount: number;
+    setSlideAmount: React.Dispatch<React.SetStateAction<number>>;
+    slide: SlideState;
+    setCurrentSlide: (current: number) => void;
+    goToNextSlide: () => void;
+    goToPreviousSlide: () => void;
+    isAutoplayPaused: boolean;
+    setAutoplayPause: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+>;
 type SliderChildrenType =
   | SliderSlideProps
   | SliderArrowProps
@@ -32,7 +47,7 @@ type SliderWrapperProps = SliderConfig & {
 export declare function SliderWrapper({
   className,
   ...props
-}: SliderWrapperProps): any;
+}: SliderWrapperProps): React.JSX.Element;
 type SliderMaskProps = React.PropsWithChildren<{
   className?: string;
 }>;
@@ -40,7 +55,7 @@ export declare function SliderMask({
   className,
   children,
   ...props
-}: SliderMaskProps): any;
+}: SliderMaskProps): React.JSX.Element;
 type SliderSlideProps = React.PropsWithChildren<{
   style?: React.CSSProperties;
   tag?: string;
@@ -63,9 +78,12 @@ export declare function SliderArrow({
   dir,
   children,
   ...props
-}: SliderArrowProps): any;
+}: SliderArrowProps): React.JSX.Element;
 type SliderNavProps = {
   className?: string;
 };
-export declare function SliderNav({ className, ...props }: SliderNavProps): any;
+export declare function SliderNav({
+  className,
+  ...props
+}: SliderNavProps): React.JSX.Element;
 export {};

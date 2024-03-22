@@ -16,4 +16,6 @@ declare function TeamListItem(props: {
   isCancelInviteVisible?: Types.Visibility.VisibilityConditions;
   onClickEditInvite?: Types.Devlink.RuntimeProps;
   isEditInviteVisible?: Types.Visibility.VisibilityConditions;
+  textDepartment?: React.ReactNode;
+  textDesignation?: React.ReactNode;
 }): React.JSX.Element;
