@@ -4,11 +4,9 @@
 import axios from 'axios';
 import formidable from 'formidable';
 
+import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import {
-  PublicJobsType,
-  ScheduleAgentChatHistoryTypeDB,
-} from '@/src/types/data.types';
+import { ScheduleAgentChatHistoryTypeDB } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { sendEmailFromAgent } from './init-agent';
@@ -37,31 +35,32 @@ type AgentPayloadType = {
     schedule_id: string;
     company_logo: string;
     cand_application_status: string;
+    candidate_time_zone: string | null;
+    interv_plan_summary: string;
   };
 };
-
-const allowed_emails = ['agent@ai.aglinthq.com'];
 
 export default async function handler(req, res) {
   const form = formidable({});
   try {
     const [fields] = await form.parse(req);
-    console.log(fields);
     const candidate_email = getEmail(fields.from[0]);
     const to_email = getEmail(fields.to[0]);
     // const subject = fields.subject[0];
     const email_body = fields.text[0];
 
-    if (!allowed_emails.includes(to_email)) {
-      return res.status(204).send('');
-    }
+    // if (!allowed_emails.includes(to_email)) {
+    //   return res.status(204).send('');
+    // }
 
+    console.log(to_email);
     const rec = supabaseWrap(
       await supabaseAdmin
         .from('scheduling-agent-chat-history')
         .select()
         .eq('candidate_email', candidate_email),
     );
+
     if (rec.length === 0) {
       // this email is not from candidate
       // handle this later
@@ -70,7 +69,7 @@ export default async function handler(req, res) {
 
     if (rec.length > 1) {
       // cadidate invited for more than one job handle this
-      return res.status(204).send('');
+      // return res.status(200).send('');
     }
 
     const {
@@ -81,15 +80,17 @@ export default async function handler(req, res) {
       company_id,
       schedule_id,
       scheduling_progress,
+      time_zone,
     } = rec[0] as ScheduleAgentChatHistoryTypeDB;
+
     const promises = [
       (async () => {
         const [job] = supabaseWrap(
           await supabaseAdmin
             .from('public_jobs')
-            .select('company,job_title,logo')
+            .select('company,job_title,logo,interview_plan')
             .eq('id', job_id),
-        ) as PublicJobsType[];
+        );
         return job;
       })(),
       (async () => {
@@ -103,6 +104,7 @@ export default async function handler(req, res) {
       })(),
     ];
     const [job, candidate] = await Promise.all(promises);
+    const interv_plan_summary = getPlanSummary(job.interview_plan.plan);
 
     const agent_payload: AgentPayloadType = {
       history: chat_history,
@@ -115,11 +117,13 @@ export default async function handler(req, res) {
         job_role: job.job_title,
         company_logo: job.logo,
         new_cand_msg: email_body,
-        application_id,
         company_id,
         job_id,
         schedule_id,
         cand_application_status: scheduling_progress,
+        candidate_time_zone: time_zone,
+        interv_plan_summary: interv_plan_summary,
+        application_id,
       },
     };
 
@@ -154,6 +158,21 @@ export default async function handler(req, res) {
 const getEmail = (to_string: string) => {
   to_string = to_string.trim();
   return to_string.substring(to_string.indexOf('<') + 1, to_string.length - 1);
+};
+
+const getPlanSummary = (job_plan: InterviewModuleDbType[]) => {
+  let plan_summary = ``;
+
+  let cnt = 1;
+  for (let session of job_plan) {
+    if (session.isBreak) {
+      plan_summary += `\nBreak: ${session.duration} minutes\n`;
+    } else {
+      plan_summary += `Session #${cnt}. ${session.session_name}(${session.meetingIntervCnt} Inteviewers will be present),  Session duraion ${session.duration} minutes ,schedule type ${session.meeting_type.provider_label} \n`;
+      cnt++;
+    }
+  }
+  return plan_summary;
 };
 
 //candidate status

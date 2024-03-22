@@ -36,6 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       selectedSlot,
     } = req.body as BodyParams;
 
+    console.log(selectedSlot);
+    console.log('nfkewjn');
     axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/book_schedule_plan`,
       {
@@ -44,6 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         schedule_id: id,
       } as BookingApiParams,
     );
+    console.log('nfkewjn');
 
     const { data, error } = await supabase
       .from('interview_schedule')
@@ -53,6 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       .eq('id', id)
       .select();
+    console.log('nfkewjn');
 
     await mailThankYouHandler({
       company_logo: company_logo,
@@ -61,6 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id: id,
       mail: candidate_email,
     });
+    console.log('nfkewjn');
 
     if (error) {
       console.log('error', error.message);
@@ -102,9 +107,13 @@ export const mailThankYouHandler = async ({
               <p style="color: #68737D; font-size: 14px; margin-bottom: 30px;">You have confirmed your slot. Please make sure you are available at the selected time.</p>
               <div style="background-color: #f9f9f9; padding: 10px; margin-bottom: 20px;">
                   <h2 style="color: #333333; font-size: 16px; margin: 0;">${schedule_name}</h2>
-                  <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">View Details</a>
+                  <a href="${
+                    process.env.NEXT_PUBLIC_HOST_NAME
+                  }/scheduling/invite/${schedule_id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">View Details</a>
               </div>
-              <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© ${dayjs().format('YYYY')} Aglint Inc. All Rights Reserved.</span> </p>
+              <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© ${dayjs().format(
+                'YYYY',
+              )} Aglint Inc. All Rights Reserved.</span> </p>
           </div>
       </body>`,
       })

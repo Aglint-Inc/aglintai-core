@@ -4,12 +4,11 @@ import axios from 'axios';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { useState } from 'react';
 
+var utc = require('dayjs/plugin/utc');
+var timezone = require('dayjs/plugin/timezone');
+dayjs.extend(utc);
+dayjs.extend(timezone);
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  CandidateFileTypeDB,
-  CandidateType,
-  PublicJobsType,
-} from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { InitAgentBodyParams } from './types';
@@ -38,23 +37,14 @@ const ScheduleAgent = () => {
             'id, candidate_files(resume_json,candidate_id),public_jobs(id,job_title), candidates(*)',
           )
           .eq('id', selectedCand.application_id),
-      ) as {
-        id: string;
-        candidate_files: CandidateFileTypeDB;
-        public_jobs: PublicJobsType;
-        candidate: CandidateType;
-      }[];
+      );
       let payload: InitAgentBodyParams = {
         application_id: rec.id,
-        job_id: rec.public_jobs.id,
-        candidate_email:
-          rec.candidate?.email ??
-          (rec.candidate_files.resume_json as any).basics.email,
-        candidate_name: (rec.candidate_files.resume_json as any).basics
-          .firstName,
-        date_range: [startDate.toISOString(), endDate.toISOString()],
+        end_date: endDate,
+        start_date: startDate,
         company_id: recruiter_id,
         recruiter_user_id: recruiterUser.user_id,
+        organizer_time_zone: dayjs.tz.guess(),
       };
       console.log(rec.candidate_files.resume_json);
       console.log(payload);

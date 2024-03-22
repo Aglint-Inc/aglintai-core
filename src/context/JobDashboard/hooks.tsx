@@ -83,8 +83,6 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     (job?.processing_count?.['not started'] !== 0 ||
       job?.processing_count?.processing !== 0);
 
-  console.log(job?.processing_count);
-
   const status = job &&
     jobLoad && {
       loading: job.scoring_criteria_loading,

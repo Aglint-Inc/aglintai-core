@@ -2250,6 +2250,7 @@ export type Database = {
           job_id: string
           schedule_id: string | null
           scheduling_progress: string | null
+          time_zone: string | null
         }
         Insert: {
           application_id?: string
@@ -2261,6 +2262,7 @@ export type Database = {
           job_id: string
           schedule_id?: string | null
           scheduling_progress?: string | null
+          time_zone?: string | null
         }
         Update: {
           application_id?: string
@@ -2272,6 +2274,7 @@ export type Database = {
           job_id?: string
           schedule_id?: string | null
           scheduling_progress?: string | null
+          time_zone?: string | null
         }
         Relationships: [
           {
@@ -2792,14 +2795,14 @@ export type Database = {
           sch_type?: string[]
           date_range_filter?: unknown
           sort_by?: string
+          module_id_filter?: string[]
           page_number?: number
         }
         Returns: {
-          total_count: number
           applications: Json
           candidates: Json
-          public_jobs: Json
           file: Json
+          public_jobs: Json
           schedule: Json
         }[]
       }
@@ -2896,6 +2899,7 @@ export type Database = {
           status_filter?: string[]
           job_id_filter?: string[]
           sch_type?: string[]
+          module_id_filter?: string[]
           date_range_filter?: unknown
         }
         Returns: number

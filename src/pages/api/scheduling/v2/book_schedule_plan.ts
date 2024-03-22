@@ -28,18 +28,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!plan || !candidate_email || !schedule_id)
       return res.status(400).send('missing fields');
-
+    console.log('fmkelw');
     await saveEventsStatusInSchedule({
       schedule_id,
       api_status: 'started',
       meeting_events: [],
       schedule_plan: plan.plans,
     });
+    console.log('fmkelw');
 
     const { company_cred, recruiters_info } = await getAllIntsFromPlan(
       plan.plans,
     );
-
+    console.log('fmkelw');
+    console.log(plan);
     const promises = plan.plans
       .filter((i) => !i.isBreak)
       .map(async (int_module) => {
@@ -84,6 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
     const events = await Promise.all(promises);
+    console.log('fmkelw');
 
     await saveEventsStatusInSchedule({
       schedule_id,
@@ -91,6 +94,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_events: events,
       schedule_plan: plan.plans,
     });
+    console.log('fmkelw');
 
     return res.status(200).json(events);
   } catch (error) {
