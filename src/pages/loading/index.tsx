@@ -154,7 +154,8 @@ export default function Loading() {
               }
               if (data[0].role === 'interviewer') {
                 router.push(
-                  localStorage.getItem('redirectURL') || pageRoutes.INTERVIEWER,
+                  localStorage.getItem('redirectURL') ||
+                    `${pageRoutes.SCHEDULING}?tab=mySchedules`,
                 );
                 localStorage.removeItem('redirectURL');
               } else {

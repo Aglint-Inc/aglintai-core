@@ -29,7 +29,7 @@ function ModuleSchedules({
 }) {
   const [filter, setFilter] = React.useState<
     'all' | 'upcoming' | 'cancelled' | 'completed'
-  >('all');
+  >('upcoming');
   const router = useRouter();
 
   const filterSchedules = () => {

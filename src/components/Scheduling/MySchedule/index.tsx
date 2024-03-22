@@ -1,14 +1,20 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { MyScheduleLanding } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import ModuleSchedules from '../Common/ModuleSchedules';
 import Loader from '../../Common/Loader';
+import { ShowCode } from '../../Common/ShowCode';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 function MySchedule() {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, recruiter } = useAuthDetails();
   const [interviewsData, setinterviewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   async function getInterviewers() {
@@ -25,14 +31,56 @@ function MySchedule() {
     }
     setLoading(false);
   }
+  const router = useRouter();
   useEffect(() => {
     if (recruiterUser.user_id) getInterviewers();
   }, [recruiterUser]);
+  const getConsent = async () => {
+    try {
+      const { data } = await axios.get('/api/scheduling/google-consent');
+
+      return router.push(data);
+    } catch (error) {
+      toast.error(API_FAIL_MSG);
+    }
+  };
   if (loading) {
     return <Loader />;
   } else
     return (
-      <Stack p={'20px'}>{<ModuleSchedules schedules={interviewsData} />}</Stack>
+      <Stack p={'20px'}>
+        <ShowCode>
+          <ShowCode.When
+            isTrue={
+              recruiter.service_json === null &&
+              !(recruiterUser.schedule_auth as any)?.access_token
+            }
+          >
+            <MyScheduleLanding
+              onClickConnectCalender={{
+                onClick: getConsent,
+              }}
+              textConnectedTo={`Connected to ${(recruiterUser.schedule_auth as any)?.email}`}
+              isConnectedVisible={
+                !(recruiterUser.schedule_auth as any) as unknown as any
+              }
+              isConnectCalenderVisible={
+                !(recruiterUser.schedule_auth as any)?.access_token
+              }
+            />
+          </ShowCode.When>
+          <ShowCode.When
+            isTrue={
+              (recruiterUser.schedule_auth as any)?.access_token ||
+              (recruiter.service_json !== null &&
+                recruiter.email.split('@')[1] ===
+                  recruiterUser.email.split('@')[1])
+            }
+          >
+            <ModuleSchedules schedules={interviewsData} />
+          </ShowCode.When>
+        </ShowCode>
+      </Stack>
     );
 }
 

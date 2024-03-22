@@ -107,7 +107,8 @@ export default function ResetPasswordComponent() {
             throw error;
           }
           if (data[0].role === 'interviewer') {
-            router.push(pageRoutes.INTERVIEWER);
+            router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`);
+            return null;
           } else {
             router.push(pageRoutes.DASHBOARD);
           }
