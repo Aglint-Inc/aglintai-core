@@ -6,6 +6,7 @@ import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
+  RecruiterUserType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
@@ -109,6 +110,7 @@ export type MemberType = {
   profile_image: string;
   position: string;
   schedule_auth: JSON | null;
+  role: RecruiterUserType['role'];
 };
 
 export type TransformSchedule = ScheduleType & {

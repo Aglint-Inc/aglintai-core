@@ -25,6 +25,7 @@ import {
 } from './store';
 import { ApplicationList } from '../store';
 import { mailHandler } from '../utils';
+import { MemberType } from '../../Modules/types';
 
 export const useGetScheduleOptions = () => {
   const findScheduleOptions = async ({
@@ -195,6 +196,15 @@ export const useGetScheduleApplication = () => {
             userIds.push(interv.interv_id);
           });
         });
+
+        const resMem = (await axios.post('/api/scheduling/fetchUserDetails', {
+          recruiter_id: recruiter.id,
+        })) as { data: MemberType[] };
+
+        if (resMem?.data?.length > 0) {
+          setMembers(resMem.data);
+        }
+
         if (application?.public_jobs?.interview_plan.coordinator?.interv_id) {
           userIds.push(
             application.public_jobs.interview_plan.coordinator.interv_id,
@@ -202,15 +212,13 @@ export const useGetScheduleApplication = () => {
           setSelCoordinator(
             application.public_jobs.interview_plan.coordinator.interv_id,
           );
+        } else {
+          const adminUserId = resMem.data.filter(
+            (member) => member.role === 'admin',
+          )[0]?.user_id;
+          adminUserId && setSelCoordinator(adminUserId);
         }
 
-        const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
-          recruiter_id: recruiter.id,
-        });
-
-        if (resMem?.data?.length > 0) {
-          setMembers(resMem.data);
-        }
         setSelectedApplication(application);
       }
     } catch (error) {

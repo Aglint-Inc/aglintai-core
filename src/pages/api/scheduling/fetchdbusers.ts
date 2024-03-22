@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: usersData, error: usersError } = await supabase
       .from('recruiter_user')
       .select(
-        'user_id, first_name, last_name, email, profile_image, position, schedule_auth',
+        'user_id, first_name, last_name, email, profile_image, position, schedule_auth, role',
       )
       .in('user_id', req.body.user_ids);
 
