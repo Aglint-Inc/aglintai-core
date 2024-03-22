@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { LoaderSvg } from '@/devlink';
 import {
@@ -12,7 +12,6 @@ import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -67,7 +66,12 @@ const Google = () => {
         } catch (err) {
           toast.error(API_FAIL_MSG);
         } finally {
-          router.replace(pageRoutes.INTERVIEWER);
+          const path = localStorage.getItem('gmail-redirect-path');
+          if (path) {
+            router.replace(path);
+          } else {
+            router.replace('/jobs');
+          }
         }
       })();
     }

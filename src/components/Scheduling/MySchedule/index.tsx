@@ -37,6 +37,10 @@ function MySchedule() {
   }, [recruiterUser]);
   const getConsent = async () => {
     try {
+      localStorage.setItem(
+        'gmail-redirect-path',
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=mySchedules`,
+      );
       const { data } = await axios.get('/api/scheduling/google-consent');
 
       return router.push(data);

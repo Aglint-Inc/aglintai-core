@@ -34,5 +34,5 @@ export const pageRoutes = Object.freeze({
   CONFIRM_SCHEDULE: '/confirm-availability',
   INTERVIEWER: '/interviewer',
   AGENT: '/agent',
-  SCREENING: '/screening'
+  SCREENING: '/screening',
 });
