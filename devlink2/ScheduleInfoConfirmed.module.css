@@ -279,6 +279,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .icons.ml--6 {
   margin-left: -6px;
 }
@@ -329,6 +334,10 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+.text-sm.copied {
+  display: none;
 }
 
 .div-block-1132 {
@@ -444,6 +453,26 @@
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.div-block-1279 {
+  position: absolute;
+  left: 41px;
+  top: auto;
+  right: 0%;
+  bottom: -24px;
+
+  display: none;
+  width: 60px;
+  padding: 4px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: #2f3941;
+
+  color: white;
 }
 
 .div-block-1093 {
