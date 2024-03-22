@@ -44,6 +44,7 @@ function MySchedule() {
       toast.error(API_FAIL_MSG);
     }
   };
+
   if (loading) {
     return <Loader />;
   } else
@@ -52,32 +53,25 @@ function MySchedule() {
         <ShowCode>
           <ShowCode.When
             isTrue={
-              recruiter.service_json === null &&
-              !(recruiterUser.schedule_auth as any)?.access_token
+              (!!recruiter.service_json &&
+                recruiter.email.split('@')[1] ===
+                  recruiterUser.email.split('@')[1]) ||
+              !!(recruiterUser.schedule_auth as any)?.access_token
             }
+          >
+            <ModuleSchedules schedules={interviewsData} />
+          </ShowCode.When>
+          <ShowCode.When
+            isTrue={!recruiter.service_json || !recruiterUser.schedule_auth}
           >
             <MyScheduleLanding
               onClickConnectCalender={{
                 onClick: getConsent,
               }}
               textConnectedTo={`Connected to ${(recruiterUser.schedule_auth as any)?.email}`}
-              isConnectedVisible={
-                !(recruiterUser.schedule_auth as any) as unknown as any
-              }
-              isConnectCalenderVisible={
-                !(recruiterUser.schedule_auth as any)?.access_token
-              }
+              isConnectedVisible={!!recruiterUser.schedule_auth}
+              isConnectCalenderVisible={!recruiterUser.schedule_auth}
             />
-          </ShowCode.When>
-          <ShowCode.When
-            isTrue={
-              (recruiterUser.schedule_auth as any)?.access_token ||
-              (recruiter.service_json !== null &&
-                recruiter.email.split('@')[1] ===
-                  recruiterUser.email.split('@')[1])
-            }
-          >
-            <ModuleSchedules schedules={interviewsData} />
           </ShowCode.When>
         </ShowCode>
       </Stack>
