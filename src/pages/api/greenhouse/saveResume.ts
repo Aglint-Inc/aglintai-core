@@ -129,6 +129,10 @@ export default async function handler(req, res) {
       }
     } else {
       await supabase
+        .from('applications')
+        .update({ processing_status: 'failed', retry: 2 })
+        .eq('application_id', payload.application_id);
+      await supabase
         .from('greenhouse_reference')
         .update({ resume_saved: true })
         .eq('application_id', payload.application_id)
@@ -136,6 +140,10 @@ export default async function handler(req, res) {
       return res.status(200).json('Invalid file format');
     }
   } else {
+    await supabase
+      .from('applications')
+      .update({ processing_status: 'failed', retry: 2 })
+      .eq('application_id', payload.application_id);
     await supabase
       .from('greenhouse_reference')
       .update({ resume_saved: true })
