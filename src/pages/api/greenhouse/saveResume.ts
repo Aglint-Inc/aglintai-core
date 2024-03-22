@@ -45,7 +45,7 @@ export default async function handler(req, res) {
       return res.status(200).json('No application found');
     }
 
-    let fileUrl = payload.resume;
+    let fileUrl = payload.resume.toLowerCase();
     let bucketName = 'resume-job-post';
     let fileId = uuidv4();
 
