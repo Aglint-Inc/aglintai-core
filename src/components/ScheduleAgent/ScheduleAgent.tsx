@@ -45,6 +45,7 @@ const ScheduleAgent = () => {
         company_id: recruiter_id,
         recruiter_user_id: recruiterUser.user_id,
         organizer_time_zone: dayjs.tz.guess(),
+        schedule_type: 'email',
       };
       console.log(rec.candidate_files.resume_json);
       console.log(payload);

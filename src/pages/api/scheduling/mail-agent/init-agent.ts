@@ -36,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_id,
       recruiter_user_id,
       organizer_time_zone,
+      schedule_type = 'email',
     } = req.body as InitAgentBodyParams;
 
     if (
@@ -50,16 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const cand_details = await fetchCandDetails({ application_id });
-
-    const initMailBody = getInitialEmailTemplate({
-      candidate_name: cand_details.candidate_name,
-      company_name: cand_details.company_name,
-      job_role: cand_details.job_role,
-      end_date,
-      start_date,
-      organizer_time_zone,
-      candidate_time_zone: cand_details.time_zone,
-    });
 
     const [rec_schedule] = supabaseWrap(
       await supabaseAdmin
@@ -79,34 +70,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .select(),
     );
-    const status: SchedulingProgressStatusType = 'scheduled';
-    supabaseWrap(
-      await supabaseAdmin.from('scheduling-agent-chat-history').insert({
-        application_id,
-        job_id: cand_details.job_id,
-        candidate_email: cand_details.candidate_email,
-        date_range: [start_date, end_date],
-        scheduling_progress: status,
-        chat_history: [
-          {
-            type: 'user',
-            value: initMailBody,
-          },
-        ],
-        company_id,
-        schedule_id: rec_schedule.id,
-        time_zone: cand_details.time_zone,
-      }),
-    );
 
-    await sendEmailFromAgent({
-      candidate_email: cand_details.candidate_email,
-      from_name: cand_details.company_name,
-      mail_body: initMailBody,
-      subject: `Interview for ${cand_details.job_role} - ${
-        cand_details.candidate_name.split(' ')[0]
-      }`,
-    });
+    if (schedule_type === 'email') {
+      const initMailBody = getInitialEmailTemplate({
+        candidate_name: cand_details.candidate_name,
+        company_name: cand_details.company_name,
+        job_role: cand_details.job_role,
+        end_date,
+        start_date,
+        organizer_time_zone,
+        candidate_time_zone: cand_details.time_zone,
+      });
+      const status: SchedulingProgressStatusType = 'not scheduled';
+      supabaseWrap(
+        await supabaseAdmin.from('scheduling-agent-chat-history').insert({
+          application_id,
+          job_id: cand_details.job_id,
+          candidate_email: cand_details.candidate_email,
+          date_range: [start_date, end_date],
+          scheduling_progress: status,
+          chat_history: [
+            {
+              type: 'user',
+              value: initMailBody,
+            },
+          ],
+          company_id,
+          schedule_id: rec_schedule.id,
+          time_zone: cand_details.time_zone,
+        }),
+      );
+      await sendEmailFromAgent({
+        candidate_email: cand_details.candidate_email,
+        from_name: cand_details.company_name,
+        mail_body: initMailBody,
+        subject: `Interview for ${cand_details.job_role} - ${
+          cand_details.candidate_name.split(' ')[0]
+        }`,
+      });
+    } else {
+      //
+    }
+
     return res.status(200).send(status);
   } catch (error) {
     console.log(error);

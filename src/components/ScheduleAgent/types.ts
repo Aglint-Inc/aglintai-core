@@ -5,4 +5,5 @@ export type InitAgentBodyParams = {
   company_id;
   recruiter_user_id;
   organizer_time_zone;
+  schedule_type: 'phone' | 'email';
 };
