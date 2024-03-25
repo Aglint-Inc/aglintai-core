@@ -2899,6 +2899,7 @@ export type Database = {
           sch_type?: string[]
           module_id_filter?: string[]
           date_range_filter?: unknown
+          cord_ids?: string[]
         }
         Returns: number
       }

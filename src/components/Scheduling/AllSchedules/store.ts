@@ -58,6 +58,7 @@ const initialState: InterviewSlice = {
     panel_ids: [],
     scheduleType: [],
     dateRange: null,
+    coordinator_ids: [],
   },
   pagination: {
     page: 1,

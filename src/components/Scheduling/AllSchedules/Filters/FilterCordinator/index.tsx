@@ -1,5 +1,5 @@
 import { Popover, Stack, TextField, Typography } from '@mui/material';
-import { capitalize } from 'lodash';
+import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
@@ -36,7 +36,6 @@ function FilterCordinator() {
   const [members, setMembers] = useState<UserType[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<UserType[]>([]);
   const filter = useInterviewSchedulingStore((state) => state.filter);
-
   const filterVisible = useInterviewSchedulingStore(
     (state) => state.filterVisible,
   );
@@ -65,7 +64,11 @@ function FilterCordinator() {
     setAnchorEl(null);
   };
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
+    debouncedHandleSearch();
+  };
+
+  const debouncedHandleSearch = debounce(async () => {
     try {
       const { data, error } = await supabase.rpc('search_members', {
         recruiter_id_param: recruiter.id,
@@ -88,7 +91,7 @@ function FilterCordinator() {
     } catch (e) {
       toast.error(e.message);
     }
-  };
+  }, 300);
 
   return (
     <>

@@ -19,6 +19,8 @@ export const getPaginationDB = async ({
       job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null,
       module_id_filter: filter.panel_ids?.length > 0 ? filter.panel_ids : null,
       date_range_filter: filter.dateRange ? filter.dateRange : null,
+      cord_ids:
+        filter.coordinator_ids?.length > 0 ? filter.coordinator_ids : null,
     });
 
     if (error) {
