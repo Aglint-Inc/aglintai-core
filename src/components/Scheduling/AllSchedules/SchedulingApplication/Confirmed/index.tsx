@@ -39,6 +39,7 @@ function ConfirmedComp() {
               ).format('DD MMM YYYY')}`
             : ''
         }
+        textEmail={selectedApplication.candidates.email || '--'}
         isScheduleStatusVisible={
           selectedApplication.schedule.status === 'confirmed'
         }
