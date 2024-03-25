@@ -1,10 +1,7 @@
 // import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
-import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-isEnvProd();
 
 export type BodyParmsSendgrid = {
   fromEmail: string;
