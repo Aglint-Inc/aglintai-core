@@ -71,7 +71,7 @@ const EditModule = ({
   };
 
   const filteredModules = useMemo(() => {
-    return allModules;
+    return allModules.filter((m) => m.allIntervs.length !== 0);
   }, []);
   return (
     <InterviewPlanCard

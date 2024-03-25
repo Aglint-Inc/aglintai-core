@@ -427,8 +427,9 @@ const Banners = () => {
       <DashboardAlert
         textTitile={'Job details are incomplete'}
         textShortDescription={
-          'To proceed, please ensure that all job details are provided correctly'
+          'Scoring criterias cannot be generated without valid job details. Please ensure that valid job details are provided.'
         }
+        onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
       />
     );
   if (publishStatus.loading)
@@ -448,8 +449,9 @@ const Banners = () => {
       <DashboardAlert
         textTitile={'Profile score is empty'}
         textShortDescription={
-          'To proceed , please ensure that profile score is provided'
+          'Candidate cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
         }
+        onClickBanner={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
       />
     );
   if (status.description_changed)

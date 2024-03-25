@@ -36,6 +36,18 @@ export function DashboardAlert({
         </_Builtin.Block>
         <_Builtin.Block tag="div">{textShortDescription}</_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "right_buttons")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "button_primary")}
+          tag="div"
+          {...onClickBanner}
+        >
+          <_Builtin.Block tag="div">
+            {"View"}
+            <br />
+          </_Builtin.Block>
+        </_Builtin.Block>
+      </_Builtin.Block>
     </_Component>
   );
 }

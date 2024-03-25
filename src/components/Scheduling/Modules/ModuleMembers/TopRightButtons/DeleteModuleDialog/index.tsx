@@ -1,7 +1,9 @@
 import { Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
 
-import { DeletePopup } from '@/devlink3';
+import { CloseJobModal } from '@/devlink';
+import UITextField from '@/src/components/Common/UITextField';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -15,69 +17,83 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   const isDeleteModuleDialogOpen = useModulesStore(
     (state) => state.isDeleteModuleDialogOpen,
   );
+  const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const deleteModule = async () => {
-    try {
-      const { data } = await supabase
-        .from('interview_meeting')
-        .select('*,interview_schedule!inner(*)')
-        .eq('module_id', editModule.id);
+    if (!loading) {
+      try {
+        setLoading(true);
+        const { data } = await supabase
+          .from('interview_meeting')
+          .select('*,interview_schedule!inner(*)')
+          .eq('module_id', editModule.id);
 
-      const isActiveMeeting = data.some(
-        (meet) => meet.start_time > new Date().toISOString(),
-      );
-
-      if (!isActiveMeeting) {
-        const isdeleted = await deleteModuleById(editModule.id);
-        if (isdeleted) {
-          router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
-          toast.success('Module deleted successfully');
-        } else {
-          throw new Error();
-        }
-      } else {
-        toast.error(
-          'Cannot delete module, active schedules are present for this module',
+        const isActiveMeeting = data.some(
+          (meet) => meet.start_time > new Date().toISOString(),
         );
+
+        if (!isActiveMeeting) {
+          const isdeleted = await deleteModuleById(editModule.id);
+          if (isdeleted) {
+            router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
+            toast.success('Module deleted successfully');
+          } else {
+            throw new Error();
+          }
+        } else {
+          toast.error(
+            'Cannot delete module, active schedules are present for this module',
+          );
+        }
+      } catch {
+        toast.error('Error deleting user');
+      } finally {
+        setLoading(false);
+        setIsDeleteModuleDialogOpen(false);
       }
-    } catch {
-      toast.error('Error deleting user');
-    } finally {
-      setIsDeleteModuleDialogOpen(false);
+    } else {
+      toast.warning('Please wait, till the ongoing process is complete');
     }
   };
 
+  const moduleName = (editModule?.name ?? '').trim();
+  const moduleDescription = (editModule?.description ?? '').trim();
+
+  const onClose = useCallback(() => {
+    if (!loading) {
+      setIsDeleteModuleDialogOpen(false);
+      setTimeout(() => setValue(''), 400);
+    } else {
+      toast.warning('Please wait, till the ongoing process is complete');
+    }
+  }, [loading]);
+
   return (
-    <Dialog
-      sx={{
-        '& .MuiDialog-paper': {
-          background: 'transparent',
-          border: 'none',
-          borderRadius: '10px',
-        },
-      }}
-      open={isDeleteModuleDialogOpen}
-      onClose={() => {
-        setIsDeleteModuleDialogOpen(false);
-      }}
-    >
-      <DeletePopup
-        textTitle={'Remove Module'}
-        textDescription={
-          'By clicking remove the module will be permanently removed'
-        }
-        isIcon={false}
+    <Dialog open={isDeleteModuleDialogOpen} onClose={onClose}>
+      <CloseJobModal
+        textPopupTitle={`Remove Module`}
+        textWarning={`By clicking remove the module will be permanently removed`}
+        textButton={'Delete'}
+        textJobTitle={moduleName}
         onClickCancel={{
-          onClick: () => {
-            setIsDeleteModuleDialogOpen(false);
-          },
+          onClick: () => onClose(),
         }}
-        onClickDelete={{
+        onClickCloseJob={{
           onClick: () => {
             if (editModule.id) deleteModule();
           },
         }}
-        buttonText={'Delete'}
+        textLocation={moduleDescription}
+        isDisabled={loading || moduleName !== value.trim()}
+        slotInput={
+          <UITextField
+            disabled={loading}
+            placeholder={moduleName}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        }
       />
     </Dialog>
   );

@@ -100,7 +100,7 @@ const DeleteCandidateDialog = ({
         isWarningVisible={true}
         textWarning={`By clicking 'Delete', the application${
           count === 1 ? '' : 's'
-        } will be removed from this job, and it cannot be undone.`}
+        } will be removed from this job, and it cannot be undone. Any related interview schedules will also be deleted.`}
         textHeader={title}
         textDescription={description}
         isChecked={checked}

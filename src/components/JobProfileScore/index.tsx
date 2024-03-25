@@ -287,6 +287,7 @@ const ProfileScore = () => {
 };
 
 const Banners = () => {
+  const { push } = useRouter();
   const { experimental_handleRegenerateJd } = useJobs();
   const { status, job, dismiss, setDismiss } = useJobDetails();
   if (status.loading) return <></>;
@@ -294,7 +295,8 @@ const Banners = () => {
     return (
       <BannerWarning
         isDismiss={false}
-        isButton={false}
+        onClickButton={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
+        textButton={'View'}
         textBanner={'Job description is unavailable.'}
       />
     );
