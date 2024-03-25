@@ -40,8 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { company_cred, recruiters_info } = await getAllIntsFromPlan(
       plan.plans,
     );
-    console.log('fmkelw');
-    console.log(plan);
+
     const promises = plan.plans
       .filter((i) => !i.isBreak)
       .map(async (int_module) => {
@@ -86,7 +85,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
     const events = await Promise.all(promises);
-    console.log('fmkelw');
 
     await saveEventsStatusInSchedule({
       schedule_id,
@@ -94,10 +92,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_events: events,
       schedule_plan: plan.plans,
     });
-    console.log('fmkelw');
 
     return res.status(200).json(events);
   } catch (error) {
+    console.log(error);
     await saveEventsStatusInSchedule({
       api_status: 'failed',
       meeting_events: [],

@@ -47,8 +47,6 @@ const ScheduleAgent = () => {
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'email',
       };
-      console.log(rec.candidate_files.resume_json);
-      console.log(payload);
       setData(JSON.stringify(payload));
       await axios.post('/api/scheduling/mail-agent/init-agent', {
         ...payload,

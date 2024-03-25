@@ -12,7 +12,7 @@ const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
 export const getAllIntsFromPlan = async (
-  plan: InterviewPlanScheduleDbType['plans']
+  plan: InterviewPlanScheduleDbType['plans'],
 ) => {
   let intSet = new Set();
 
@@ -32,58 +32,62 @@ export const getAllIntsFromPlan = async (
     await supabaseAdmin
       .from('recruiter_relation')
       .select('recruiter(service_json)')
-      .eq('user_id', Array.from(intSet)[0])
+      .eq('user_id', Array.from(intSet)[0]),
   ) as { recruiter: { service_json: string } }[];
 
   const recs = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .select('user_id, schedule_auth, email')
-      .in('user_id', Array.from(intSet))
+      .in('user_id', Array.from(intSet)),
   ) as Pick<RecruiterUserType, 'user_id' | 'schedule_auth' | 'email'>[];
 
   let company_cred = null;
   if (company.recruiter.service_json) {
     company_cred = JSON.parse(
-      decrypt(company.recruiter.service_json, process.env.ENCRYPTION_KEY)
+      decrypt(company.recruiter.service_json, process.env.ENCRYPTION_KEY),
     );
   }
 
   return {
     company_cred: company_cred,
-    recruiters_info: recs
+    recruiters_info: recs,
   };
 };
 
 export const getUserCalAuth = async ({
   company_cred,
-  recruiter
+  recruiter,
 }: {
   company_cred: CompServiceKeyCred;
   recruiter: Interviewer;
 }) => {
-  if (recruiter.schedule_auth) {
-    const oAuth2Client = new OAuth2Client(
-      process.env.GOOGLE_SCHEDULE_CLIENT_ID,
-      process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-      process.env.GOOGLE_SCHEDULE_REDIRECT_URI
-    );
-    const schedule_auth = recruiter.schedule_auth as any;
-    oAuth2Client.setCredentials({
-      access_token: schedule_auth.access_token,
-      refresh_token: schedule_auth.refresh_token
-    });
-    return oAuth2Client;
-  } else {
-    const jwtClient = new google.auth.JWT({
-      email: company_cred.client_email,
-      key: company_cred.private_key,
-      scopes: ['https://www.googleapis.com/auth/calendar'],
-      subject: recruiter.email
-    });
+  try {
+    if (recruiter.schedule_auth) {
+      const oAuth2Client = new OAuth2Client(
+        process.env.GOOGLE_SCHEDULE_CLIENT_ID,
+        process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
+        process.env.GOOGLE_SCHEDULE_REDIRECT_URI,
+      );
+      const schedule_auth = recruiter.schedule_auth as any;
+      oAuth2Client.setCredentials({
+        access_token: schedule_auth.access_token,
+        refresh_token: schedule_auth.refresh_token,
+      });
+      return oAuth2Client;
+    } else {
+      const jwtClient = new google.auth.JWT({
+        email: company_cred.client_email,
+        key: company_cred.private_key,
+        scopes: ['https://www.googleapis.com/auth/calendar'],
+        subject: recruiter.email,
+      });
 
-    await jwtClient.authorize();
-    return jwtClient;
+      await jwtClient.authorize();
+      return jwtClient;
+    }
+  } catch (error) {
+    return null;
   }
 };
 
@@ -105,7 +109,7 @@ export const bookIndividualModule = async ({
   schedule_name,
   start_time,
   company_cred,
-  module_id
+  module_id,
 }: {
   schedule_name: string;
   start_time: string;
@@ -119,39 +123,47 @@ export const bookIndividualModule = async ({
   const calendar_event: NewCalenderEvent = {
     summary: schedule_name,
     start: {
-      dateTime: start_time
+      dateTime: start_time,
     },
     end: {
-      dateTime: end_time
+      dateTime: end_time,
     },
     attendees: interviewers.map((int) => ({
-      email: (int.schedule_auth as any)?.email ?? int.email
+      email: (int.schedule_auth as any)?.email ?? int.email,
     })),
     reminders: {
       useDefault: false,
       overrides: [
         { method: 'email', minutes: 24 * 60 },
-        { method: 'popup', minutes: 10 }
-      ]
+        { method: 'popup', minutes: 10 },
+      ],
     },
     conferenceData: {
       createRequest: {
-        requestId: uuidv4()
-      }
-    }
+        requestId: uuidv4(),
+      },
+    },
   };
   calendar_event.attendees.push({
-    email: candidate_email
+    email: candidate_email,
   });
   const auth = await getUserCalAuth({ company_cred, recruiter: organizer });
+  if (!auth) {
+    throw new Error('invalid organized cred');
+  }
   const event = await createEvent(auth, calendar_event);
-
   const attendees_promises = interviewers.map(async (int) => {
     const auth = await getUserCalAuth({ company_cred, recruiter: int });
+
+    if (!auth) {
+      return null;
+    }
     const email = (int.schedule_auth as any)?.email ?? int.email;
-    return await importEventToAttendee(event, email, auth);
+    await importEventToAttendee(event, email, auth);
+    return;
   });
   await Promise.all(attendees_promises);
+
   return { module_id, event };
 };
 
@@ -162,7 +174,7 @@ export async function createEvent(auth, event) {
     calendarId: 'primary', // 'primary' refers to the user's primary calendar
     resource: event,
     conferenceDataVersion: 1,
-    sendNotifications: true
+    sendNotifications: true,
   });
 
   return response.data;
@@ -173,7 +185,7 @@ export async function importEventToAttendee(event, attendeeEmail, auth) {
   const response = await calendar.events.import({
     calendarId: attendeeEmail, // Use the attendee's email as the calendar ID
     resource: event,
-    sendNotifications: true
+    sendNotifications: true,
   });
   return response.data;
 }

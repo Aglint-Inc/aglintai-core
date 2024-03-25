@@ -6,7 +6,11 @@ import formidable from 'formidable';
 
 import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { ScheduleAgentChatHistoryTypeDB } from '@/src/types/data.types';
+import {
+  CandidateType,
+  PublicJobsType,
+  ScheduleAgentChatHistoryTypeDB,
+} from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { sendEmailFromAgent } from './init-agent';
@@ -45,7 +49,7 @@ export default async function handler(req, res) {
   try {
     const [fields] = await form.parse(req);
     const candidate_email = getEmail(fields.from[0]);
-    const to_email = getEmail(fields.to[0]);
+    // const to_email = getEmail(fields.to[0]);
     // const subject = fields.subject[0];
     const email_body = fields.text[0];
 
@@ -53,21 +57,21 @@ export default async function handler(req, res) {
     //   return res.status(204).send('');
     // }
 
-    console.log(to_email);
-    const rec = supabaseWrap(
+    console.log(candidate_email);
+    const chats = supabaseWrap(
       await supabaseAdmin
         .from('scheduling-agent-chat-history')
         .select()
         .eq('candidate_email', candidate_email),
     );
 
-    if (rec.length === 0) {
+    if (chats.length === 0) {
       // this email is not from candidate
       // handle this later
       return res.status(204).send('');
     }
 
-    if (rec.length > 1) {
+    if (chats.length > 1) {
       // cadidate invited for more than one job handle this
       // return res.status(200).send('');
     }
@@ -81,31 +85,34 @@ export default async function handler(req, res) {
       schedule_id,
       scheduling_progress,
       time_zone,
-    } = rec[0] as ScheduleAgentChatHistoryTypeDB;
+    } = chats[0] as ScheduleAgentChatHistoryTypeDB;
 
-    const promises = [
-      (async () => {
-        const [job] = supabaseWrap(
-          await supabaseAdmin
-            .from('public_jobs')
-            .select('company,job_title,logo,interview_plan')
-            .eq('id', job_id),
-        );
-        return job;
-      })(),
-      (async () => {
-        const [cand] = supabaseWrap(
-          await supabaseAdmin
-            .from('applications')
-            .select('candidates(*)')
-            .eq('id', application_id),
-        );
-        return cand.candidates;
-      })(),
-    ];
-    const [job, candidate] = await Promise.all(promises);
-    const interv_plan_summary = getPlanSummary(job.interview_plan.plan);
+    const [rec] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_schedule')
+        .select(
+          'filter_json, applications(public_jobs(id,company,job_title,logo,interview_plan,recruiter_id), candidates(email,first_name,last_name))',
+        )
+        .eq('application_id', application_id),
+    );
 
+    const job = rec.applications.public_jobs as Pick<
+      PublicJobsType,
+      | 'company'
+      | 'job_title'
+      | 'logo'
+      | 'interview_plan'
+      | 'recruiter_id'
+      | 'id'
+    >;
+    const interv_plan_summary = getPlanSummary(
+      (job.interview_plan as any).plan,
+    );
+
+    const candidate = rec.applications.candidates as Pick<
+      CandidateType,
+      'first_name' | 'email' | 'last_name'
+    >;
     const agent_payload: AgentPayloadType = {
       history: chat_history,
       payload: {
@@ -133,6 +140,7 @@ export default async function handler(req, res) {
         ...agent_payload,
       },
     );
+
     supabaseWrap(
       await supabaseAdmin
         .from('scheduling-agent-chat-history')
@@ -142,12 +150,14 @@ export default async function handler(req, res) {
         .eq('job_id', job_id)
         .eq('application_id', application_id),
     );
+
     await sendEmailFromAgent({
       candidate_email,
       from_name: job.company,
       mail_body: data.new_history[data.new_history.length - 1].value,
       subject: `Interview for ${job.job_title} - ${candidate.first_name}`,
     });
+
     return res.status(204).send('');
   } catch (err) {
     console.log(err);
