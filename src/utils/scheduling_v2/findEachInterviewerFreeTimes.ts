@@ -143,9 +143,18 @@ const findInterviewerFreeTime = (
 
     let current_day_blocked_times: TimeDurationDayjsType[] = interviewer.events
       .filter((cal_event) => {
+        let is_event_free_time = false;
+        interviewer.shedule_settings.schedulingKeyWords.free.forEach(
+          (key_word: string) => {
+            if (cal_event.summary.toLocaleLowerCase().includes(key_word)) {
+              is_event_free_time = true;
+            }
+          },
+        );
         return (
-          current_day.isSame(dayjs(cal_event.start.dateTime), 'date') ||
-          current_day.isSame(dayjs(cal_event.end.dateTime), 'date')
+          (current_day.isSame(dayjs(cal_event.start.dateTime), 'date') ||
+            current_day.isSame(dayjs(cal_event.end.dateTime), 'date')) &&
+          !is_event_free_time
         );
       })
       .map((ev) => {

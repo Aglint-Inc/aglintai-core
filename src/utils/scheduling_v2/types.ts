@@ -12,9 +12,14 @@ export type InterDetailsType = {
   email: string;
   shedule_settings: schedulingSettingType;
   events: NewCalenderEvent[];
-  freeTimes: TimeDurationType[];
+  freeTimes: InterviewFreeTime[];
   isCalenderConnected: boolean;
 };
+
+export type InterviewFreeTime = TimeDurationType & {
+  // priority: number;
+};
+
 export type IntervMeta = Pick<
   InterDetailsType,
   | 'email'
