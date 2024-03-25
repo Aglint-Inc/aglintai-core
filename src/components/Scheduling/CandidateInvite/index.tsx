@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { Page404 } from '@/devlink';
+import { BodyParamsConfirmCandidate } from '@/src/pages/api/scheduling/confirm';
 import toast from '@/src/utils/toast';
 
 import CheckAvailibility from './CheckAvailibility';
@@ -62,10 +63,11 @@ function CandidateInvite() {
         id: router.query.schedule_id,
         selectedSlot: confOption,
         schedule_name: schedule.schedule.schedule_name,
-        company_logo: schedule.recruiter.logo,
-        company_name: schedule.recruiter.name,
-        candidate_email: 'admin@aglinthq.com',
-      });
+        candidate_email: schedule.candidate.email,
+        candidate_name: schedule.candidate.first_name,
+        rec_id: schedule.recruiter.id,
+        position: schedule.job.job_title,
+      } as BodyParamsConfirmCandidate);
       if (res.status === 200 && res.data) {
         schedule.schedule.confirmed_option = confOption;
         schedule.schedule.status = 'confirmed';

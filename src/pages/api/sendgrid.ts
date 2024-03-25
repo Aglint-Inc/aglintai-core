@@ -4,9 +4,18 @@ import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/ut
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-isEnvProd()
+isEnvProd();
+
+export type BodyParmsSendgrid = {
+  fromEmail: string;
+  fromName: string;
+  subject: string;
+  text: string;
+  email: string;
+};
+
 export default async function handler(req, res) {
-  let details = req.body;
+  let details = req.body as BodyParmsSendgrid;
 
   try {
     const msg = {
@@ -22,12 +31,17 @@ export default async function handler(req, res) {
     //   msg.to = ['dileep@aglinthq.com', 'chinmai@aglinthq.com', 'dileepwert@gmail.com',];
     // }
 
-    await sgMail.send({
-      ...msg,
-    })
-    return res.status(200).send("ok")
+    await sgMail
+      .send({
+        ...msg,
+      })
+      .then(() => {
+        return res.status(200).json({ data: 'Email sent' });
+      })
+      .catch((error) => {
+        return res.status(200).json({ data: { error } });
+      });
   } catch (error) {
     return res.status(500).send(error.message);
   }
-
 }

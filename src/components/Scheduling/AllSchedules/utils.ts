@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
+import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
 import { ApiResponse } from '../CandidateInvite/type';
@@ -16,48 +17,62 @@ export interface TimeSlot {
 }
 
 export type MailHandlerparam = {
-  id: string;
-  company_name: string;
-  company_logo: string;
+  rec_id: string;
   candidate_name: string;
   schedule_name: string;
-  mail?: string;
+  mail: string;
+  position: string;
+  schedule_id: string;
 };
 
 export const mailHandler = async ({
-  id,
-  company_name,
-  company_logo,
+  schedule_id,
+  rec_id,
   candidate_name,
   schedule_name,
   mail,
+  position,
 }: MailHandlerparam) => {
   try {
-    await axios
-      .post('/api/sendgrid', {
-        fromEmail: `messenger@aglinthq.com`,
-        fromName: 'Aglint',
-        email: mail ? mail : 'admin@aglinthq.com',
-        subject: `You have been selected for the interview at ${company_name}`,
-        text: `<body style="background-color: #f4f4f4; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
-        <div style="background-color: #ffffff; max-width: 600px; margin: auto; padding: 20px; text-align: center; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-            <img src="${company_logo}" alt="Company Logo" style="width: 60px; height:60px;border-radius:4px; margin-bottom: 20px;">
-            <h1 style="font-size: 18px; color: #333333;">You have selected for the Interview at ${company_name}</h1>
-            <p style="color: #68737D; font-size: 14px; margin-bottom: 30px;">Hi ${candidate_name}, Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!</p>
-            <div style="background-color: #f9f9f9; padding: 10px; margin-bottom: 20px;">
-                <h2 style="color: #333333; font-size: 16px; margin: 0;">${schedule_name}</h2>
-                <p style="margin: 5px 0 0px; color: #68737D; font-size: 12px;">30 Minutes <img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/company-logo/public/google-meet.png?t=2024-02-13T13%3A08%3A33.200Z" alt="Company Logo" style="height:12px; width:12px;"><span style="margin-left:10px">Google Meet</span></p>
-            </div>
-            <a href="${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${id}" style="background-color: #337FBD; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 20px;">Pick Your Slot</a>
-            <p style="color: #999999; font-size: 12px;"><span style="margin-bottom:4px;">Powered By</span> <span style="color: #e67e22; font-weight: bold;"><img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/assets/aglint_logo.png?t=2024-02-13T13%3A14%3A04.632Z" alt="Company Logo" style="height:12px; width:50px;"></span> <span style="margin-left:10px; margin-bottom:4px;">© ${dayjs().format('YYYY')} Aglint Inc. All Rights Reserved.</span> </p>
-        </div>
-    </body>`,
-      })
-      .then((res) =>
-        res.status === 200 && res.data.data === 'Email sent'
-          ? true
-          : toast.error('Unable to send mail. Please try again later.'),
-      );
+    const { data, error } = await supabase
+      .from('recruiter')
+      .select('name, email_template')
+      .eq('id', rec_id);
+    if (error) throw new Error(error.message);
+
+    if (data[0].email_template)
+      await axios
+        .post('/api/sendgrid', {
+          fromEmail: `messenger@aglinthq.com`,
+          fromName: 'Aglint',
+          email: 'admin@aglinthq.com' ?? mail,
+          subject: fillEmailTemplate(
+            data[0].email_template['candidate_availability_request'].subject,
+            {
+              company_name: data[0].name,
+              schedule_name: schedule_name,
+              first_name: candidate_name,
+              last_name: '',
+              job_title: position,
+            },
+          ),
+          text: fillEmailTemplate(
+            data[0].email_template['candidate_availability_request'].body,
+            {
+              company_name: data[0].name,
+              schedule_name: schedule_name,
+              first_name: candidate_name,
+              last_name: '',
+              job_title: position,
+              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}'>Pick Your Slot</a>`,
+            },
+          ),
+        })
+        .then((res) =>
+          res.status === 200 && res.data.data === 'Email sent'
+            ? true
+            : toast.error('Unable to send mail. Please try again later.'),
+        );
   } catch (e) {
     toast.error('Unable to send mail. Please try again later.');
   }

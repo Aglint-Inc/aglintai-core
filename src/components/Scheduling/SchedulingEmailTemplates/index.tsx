@@ -35,7 +35,7 @@ function SchedulingEmailTemplates() {
       }, 500);
     }
   }, []);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<EmailTempPath>(null);
 
   const handlerSave = (recruiter) => {
     setRecruiter(recruiter);
@@ -77,6 +77,7 @@ function SchedulingEmailTemplates() {
               {!isEditorLoad && (
                 <YTransform uniqueKey={selectedTemplate}>
                   <EditEmail
+                    textTipsMessage={tempObj[selectedTemplate]?.dynamicContent}
                     editEmailDescription={
                       tempObj[selectedTemplate]?.description
                     }
@@ -190,48 +191,28 @@ export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
     listing: 'Candidate Availability Request',
     heading: 'Candidate Availability Request Template',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle]
-    and [supportLink].`,
-    triggerInfo: 'Triggered to check candidate availability',
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo: 'Triggered to send schedule options',
     description:
       'Set up a default application recieved email template. You can make specific changes for individual job posts later.',
     descriptionInJob:
       'Customise candidate_availability request email template for this job',
-    subjectPlaceHolder: 'Schedule Your Interview for [positionName]',
-    bodyPlaceHolder: `Dear [candidateName],
+    subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
+    bodyPlaceHolder: `Dear [firstName],
 
-We are excited to move forward with your application for the [positionName] role. Please let us know your availability over the next week so we can schedule your interview.
-
-Best regards,
-[yourCompanyName] Recruitment Team`,
-    trigger: 'Triggered to check candidate availability',
-  },
-  candidate_email_confirmation: {
-    listing: 'Candidate Email Confirmation',
-    heading: 'Candidate Email Confirmation Template',
-    triggerInfo: 'Triggered to send confirmation to candidates.',
-    dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [phoneScreeningLink]
-    and [supportLink].`,
-    descriptionInJob: '',
-    description: '',
-    subjectPlaceHolder: 'Confirmation of Your Application for [positionName]',
-    bodyPlaceHolder: `Dear [candidateName],
-
-Thank you for applying to the [positionName] position at [yourCompanyName]. We have received your application and will be reviewing it shortly.
-
-Best wishes,
-[yourCompanyName] Recruitment Team
-`,
-    trigger: 'Triggered to send confirmation to candidates.',
+    We are pleased to confirm your interview for the [jobTitle] position on [date] at [time]. Please find the details of your interview below.
+    
+    Regards,
+    
+    [companyName] Recruitment Team`,
+    trigger: 'Triggered to send schedule options',
   },
   candidate_invite_confirmation: {
     listing: 'Candidate Invite Confirmation',
     heading: 'Candidate Invite Confirmation Template',
-    dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [phoneScreeningLink]
-    and [supportLink].`,
-    triggerInfo: '',
+    dynamicContent: `For dynamic content, utilize placeholders like [firstName], [lastName], [companyName], [jobTitle] and [viewDetailsLink].`,
+    triggerInfo: 'Triggered after candidate confirms the slot',
     descriptionInJob: '',
     description: '',
     subjectPlaceHolder: 'Your Interview is Scheduled for [positionName]',
@@ -241,15 +222,13 @@ We are pleased to confirm your interview for the [positionName] position on [Dat
 
 Regards,
 [yourCompanyName] Recruitment Team`,
-    trigger: 'Triggered to confirm candidate availability',
+    trigger: 'Triggered after candidate confirms the slot',
   },
   debrief_calendar_invite: {
     listing: 'Debrief Calendar Invite',
     heading: 'Debrief Calendar Invite Template',
     triggerInfo: 'Triggered when the candidate selected for assessment.',
-    dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle]
-    and [supportLink].`,
+    dynamicContent: `For dynamic content, utilize placeholders like [firstName], [lastName], [companyName] and [teamMemberName].`,
     descriptionInJob: '',
     description: '',
     subjectPlaceHolder: 'Interview Debrief for [candidateName]',
@@ -261,59 +240,17 @@ Cheers,
 [yourCompanyName] Recruitment Team`,
     trigger: 'Triggered to send debrief session information',
   },
-  interviewer_calendar_invite: {
-    listing: 'Interviewer Calendar Invite',
-    heading: 'Interviewer Calendar Invite Template',
-    dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle]
-    and [supportLink].`,
-    triggerInfo: '',
-    descriptionInJob: '',
-    description: '',
-    subjectPlaceHolder: 'Interview Assignment for [positionName]',
-    bodyPlaceHolder: `Dear [candidateName],
-
-You have been scheduled to conduct an interview for the [positionName] position on [Date] at [Time]. Please review the candidate's profile attached.
-
-Thank you,
-[yourCompanyName] Recruitment Team`,
-    trigger: 'Triggered to send inverviewer interview details',
-  },
-  self_schedule: {
-    listing: 'Self Schedule',
-    heading: 'Self Schedule Template',
-    dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle]
-    and [supportLink].`,
-    triggerInfo: '.',
-    descriptionInJob: '',
-    description: '',
-    subjectPlaceHolder: 'Choose Your Interview Slot for [positionName] ',
-    bodyPlaceHolder: `Dear [candidateName], 
-
-We invite you to select a convenient time slot for your interview for the [positionName] role. Please follow the link below to schedule your interview. 
-
-Kind regards, 
-[yourCompanyName] Recruitment Team`,
-    trigger: 'Triggered to select interview slot',
-  },
 };
 
 export type EmailTempPath =
   | 'candidate_availability_request'
-  | 'candidate_email_confirmation'
   | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite'
-  | 'interviewer_calendar_invite'
-  | 'self_schedule';
+  | 'debrief_calendar_invite';
 
 export const emailTempKeys: EmailTempPath[] = [
-  'candidate_availability_request',
-  'candidate_email_confirmation',
   'candidate_invite_confirmation',
+  'candidate_availability_request',
   'debrief_calendar_invite',
-  'interviewer_calendar_invite',
-  'self_schedule',
 ];
 
 type EmailTemplatType = {

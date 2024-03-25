@@ -101,7 +101,7 @@ export const useSendInviteForCandidate = () => {
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
-      if (checkSch.length === 0 || checkSch[0].status === 'reschedule') {
+      if (checkSch.length === 0 || checkSch[0].status !== 'reschedule') {
         const { data, error } = await supabase
           .from('interview_schedule')
           .insert({
@@ -124,11 +124,47 @@ export const useSendInviteForCandidate = () => {
 
         if (!error) {
           mailHandler({
-            id: data[0].id,
+            rec_id: recruiter.id,
             candidate_name: selectedApplication.candidates.first_name,
-            company_logo: recruiter.logo,
-            company_name: recruiter.name,
+            mail: selectedApplication.candidates.email,
+            position: selectedApplication.public_jobs.job_title,
             schedule_name: scheduleName,
+            schedule_id: data[0].id,
+          });
+          setSelectedApplication({
+            ...selectedApplication,
+            schedule: data[0] as any,
+          });
+        }
+      } else if (checkSch[0].status === 'reschedule') {
+        const { data, error } = await supabase
+          .from('interview_schedule')
+          .update({
+            is_get_more_option: is_get_more_option,
+            application_id: selectedApplication.applications.id,
+            schedule_name: scheduleName,
+            schedule_type: 'google_meet',
+            interview_plan: allPlans,
+            status: 'pending',
+            filter_json: {
+              job_id: selectedApplication.public_jobs.id,
+              company_id: recruiter.id,
+              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            } as BodyParams,
+            coordinator_id: selCoordinator,
+          })
+          .eq('id', checkSch[0].id)
+          .select();
+        if (!error) {
+          mailHandler({
+            rec_id: recruiter.id,
+            candidate_name: selectedApplication.candidates.first_name,
+            mail: selectedApplication.candidates.email,
+            position: selectedApplication.public_jobs.job_title,
+            schedule_name: scheduleName,
+            schedule_id: data[0].id,
           });
           setSelectedApplication({
             ...selectedApplication,
