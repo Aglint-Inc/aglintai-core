@@ -9,6 +9,8 @@ export function AvatarWithName({
   isShadowVisible = false,
   slotAvatar,
   textName = "Mike",
+  textRole = "Senior software engineer",
+  isRoleVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "avatarwithname")} tag="div">
@@ -17,7 +19,15 @@ export function AvatarWithName({
           className={_utils.cx(_styles, "slot_useravatr", "small")}
           tag="div"
         >
-          {slotAvatar}
+          {slotAvatar ?? (
+            <_Builtin.Image
+              loading="lazy"
+              width="auto"
+              height="auto"
+              alt=""
+              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
+            />
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-758")}
@@ -38,6 +48,14 @@ export function AvatarWithName({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+      {isRoleVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-grey-500")}
+          tag="div"
+        >
+          {textRole}
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

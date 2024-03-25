@@ -48,3 +48,7 @@
 .icons.cursor-pointer {
   cursor: pointer;
 }
+
+.text-grey-500 {
+  color: #87929d;
+}

@@ -36,6 +36,8 @@ export function CandidateSideDrawer({
   slotSocialLink,
   isNavigationButtonVisible = true,
   isLeftRightVisible = true,
+  isHeaderVisible = true,
+  isNameImageVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -45,106 +47,118 @@ export function CandidateSideDrawer({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-714")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-sidebar-header-block", "heading")}
-          tag="div"
-        >
+        {isHeaderVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-815")}
+            className={_utils.cx(_styles, "cv-sidebar-header-block", "heading")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-787")}
+              className={_utils.cx(_styles, "div-block-815")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-intro-profile-image")}
+                className={_utils.cx(_styles, "div-block-787")}
                 tag="div"
               >
-                {slotCandidateImage}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "text-no-wrap")}
-                tag="div"
-              >
-                {textName}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            {isNavigationButtonVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-644")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{slotMoveTo}</_Builtin.Block>
-                {isLeftRightVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "cvs-header-nav-wrapper")}
-                    tag="div"
-                  >
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "cvs-header-nav-icon",
-                        "clickable",
-                        "bg-white"
-                      )}
-                      data-w-id="6f48177e-f948-6cb4-f8f5-030771445e68"
-                      tag="div"
-                      {...onClickPrev}
-                    >
-                      <_Builtin.HtmlEmbed
-                        className={_utils.cx(_styles, "icon-embed")}
-                        value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.242188%206.41406C0.169271%206.30469%200.169271%206.19531%200.242188%206.08594L6.14844%200.179688C6.25781%200.106771%206.36719%200.106771%206.47656%200.179688C6.54948%200.289062%206.54948%200.398438%206.47656%200.507812L0.707031%206.25L6.47656%2011.9922C6.54948%2012.1016%206.54948%2012.2109%206.47656%2012.3203C6.36719%2012.3932%206.25781%2012.3932%206.14844%2012.3203L0.242188%206.41406Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                      />
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "arrow-tooltips-drawer")}
-                        tag="div"
-                      >
-                        <_Builtin.Block tag="div">{"Shift + ←"}</_Builtin.Block>
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(
-                        _styles,
-                        "cvs-header-nav-icon",
-                        "clickable",
-                        "bg-white"
-                      )}
-                      data-w-id="6f48177e-f948-6cb4-f8f5-030771445e6a"
-                      tag="div"
-                      {...onClickNext}
-                    >
-                      <_Builtin.HtmlEmbed
-                        className={_utils.cx(_styles, "icon-embed")}
-                        value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                      />
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "arrow-tooltips-drawer")}
-                        tag="div"
-                      >
-                        <_Builtin.Block tag="div">{"Shift + →"}</_Builtin.Block>
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                ) : null}
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "cvs-header-close-button",
-                    "cursor-pointer"
-                  )}
+                  className={_utils.cx(_styles, "cvs-intro-profile-image")}
                   tag="div"
-                  {...onClickClose}
                 >
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "icon-embed")}
-                    value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.14082%209.76016L5.4002%206.04766L1.6877%209.76016C1.4627%209.92891%201.24707%209.92891%201.04082%209.76016C0.872071%209.55391%200.872071%209.34766%201.04082%209.14141L4.75332%205.40078L1.04082%201.68828C0.872071%201.46328%200.872071%201.24766%201.04082%201.04141C1.24707%200.872656%201.4627%200.872656%201.6877%201.04141L5.4002%204.75391L9.14082%201.04141C9.34707%200.872656%209.55332%200.872656%209.75957%201.04141C9.92832%201.24766%209.92832%201.46328%209.75957%201.68828L6.04707%205.40078L9.75957%209.14141C9.92832%209.34766%209.92832%209.55391%209.75957%209.76016C9.55332%209.92891%209.34707%209.92891%209.14082%209.76016Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                  />
+                  {slotCandidateImage}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "fw-semibold", "text-no-wrap")}
+                  tag="div"
+                >
+                  {textName}
                 </_Builtin.Block>
               </_Builtin.Block>
-            ) : null}
+              {isNavigationButtonVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-644")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{slotMoveTo}</_Builtin.Block>
+                  {isLeftRightVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "cvs-header-nav-wrapper")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "cvs-header-nav-icon",
+                          "clickable",
+                          "bg-white"
+                        )}
+                        data-w-id="6f48177e-f948-6cb4-f8f5-030771445e68"
+                        tag="div"
+                        {...onClickPrev}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icon-embed")}
+                          value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.242188%206.41406C0.169271%206.30469%200.169271%206.19531%200.242188%206.08594L6.14844%200.179688C6.25781%200.106771%206.36719%200.106771%206.47656%200.179688C6.54948%200.289062%206.54948%200.398438%206.47656%200.507812L0.707031%206.25L6.47656%2011.9922C6.54948%2012.1016%206.54948%2012.2109%206.47656%2012.3203C6.36719%2012.3932%206.25781%2012.3932%206.14844%2012.3203L0.242188%206.41406Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "arrow-tooltips-drawer"
+                          )}
+                          tag="div"
+                        >
+                          <_Builtin.Block tag="div">
+                            {"Shift + ←"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "cvs-header-nav-icon",
+                          "clickable",
+                          "bg-white"
+                        )}
+                        data-w-id="6f48177e-f948-6cb4-f8f5-030771445e6a"
+                        tag="div"
+                        {...onClickNext}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icon-embed")}
+                          value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "arrow-tooltips-drawer"
+                          )}
+                          tag="div"
+                        >
+                          <_Builtin.Block tag="div">
+                            {"Shift + →"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "cvs-header-close-button",
+                      "cursor-pointer"
+                    )}
+                    tag="div"
+                    {...onClickClose}
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icon-embed")}
+                      value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.14082%209.76016L5.4002%206.04766L1.6877%209.76016C1.4627%209.92891%201.24707%209.92891%201.04082%209.76016C0.872071%209.55391%200.872071%209.34766%201.04082%209.14141L4.75332%205.40078L1.04082%201.68828C0.872071%201.46328%200.872071%201.24766%201.04082%201.04141C1.24707%200.872656%201.4627%200.872656%201.6877%201.04141L5.4002%204.75391L9.14082%201.04141C9.34707%200.872656%209.55332%200.872656%209.75957%201.04141C9.92832%201.24766%209.92832%201.46328%209.75957%201.68828L6.04707%205.40078L9.75957%209.14141C9.92832%209.34766%209.92832%209.55391%209.75957%209.76016C9.55332%209.92891%209.34707%209.92891%209.14082%209.76016Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-candiate-profile")}
           tag="div"
@@ -158,6 +172,29 @@ export function CandidateSideDrawer({
                 className={_utils.cx(_styles, "cvs-intro-profile-block")}
                 tag="div"
               >
+                {isNameImageVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-787")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "cvs-intro-profile-image")}
+                      tag="div"
+                    >
+                      {slotCandidateImage}
+                    </_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(
+                        _styles,
+                        "fw-semibold",
+                        "text-no-wrap"
+                      )}
+                      tag="div"
+                    >
+                      {textName}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                ) : null}
                 {isLocationRoleVisible ? (
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-789")}

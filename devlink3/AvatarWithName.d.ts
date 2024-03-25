@@ -7,4 +7,6 @@ declare function AvatarWithName(props: {
   isShadowVisible?: Types.Visibility.VisibilityConditions;
   slotAvatar?: Types.Devlink.Slot;
   textName?: React.ReactNode;
+  textRole?: React.ReactNode;
+  isRoleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
