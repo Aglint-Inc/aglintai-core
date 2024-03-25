@@ -191,7 +191,7 @@ function ScheduleCard({ sch, selectedTimeZone }) {
       onClickCard={{
         onClick: () => {
           router.push(
-            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}&meeting_id=${sch.interview_meeting.id}`,
+            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
           );
         },
       }}
