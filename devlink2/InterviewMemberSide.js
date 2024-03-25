@@ -16,92 +16,104 @@ export function InterviewMemberSide({
   onClickAll = {},
   isAllActive = false,
   propsGrids = {},
+  slotInterview,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1077")}
+        className={_utils.cx(_styles, "div-block-1280")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "all-wrap-navi")}
+          className={_utils.cx(_styles, "div-block-1077")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1076")}
+            className={_utils.cx(_styles, "all-wrap-navi")}
             tag="div"
-            {...onClickUpcoming}
           >
-            <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
-          </_Builtin.Block>
-          {isUpcomingActive ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076", "active")}
+              className={_utils.cx(_styles, "div-block-1076")}
               tag="div"
+              {...onClickUpcoming}
             >
               <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "all-wrap-navi")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1076")}
-            tag="div"
-            {...onClickCompleted}
-          >
-            <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
+            {isUpcomingActive ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1076", "active")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
-          {isCompletedActive ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "all-wrap-navi")}
+            tag="div"
+          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076", "active")}
+              className={_utils.cx(_styles, "div-block-1076")}
               tag="div"
+              {...onClickCompleted}
             >
               <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "all-wrap-navi")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1076")}
-            tag="div"
-            {...onClickCancelled}
-          >
-            <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+            {isCompletedActive ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1076", "active")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
-          {isCancelActive ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "all-wrap-navi")}
+            tag="div"
+          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076", "active")}
+              className={_utils.cx(_styles, "div-block-1076")}
               tag="div"
+              {...onClickCancelled}
             >
               <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "all-wrap-navi")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1076")}
-            tag="div"
-            {...onClickAll}
-          >
-            <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
+            {isCancelActive ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1076", "active")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
-          {isAllActive ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "all-wrap-navi")}
+            tag="div"
+          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076", "active")}
+              className={_utils.cx(_styles, "div-block-1076")}
               tag="div"
+              {...onClickAll}
             >
               <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
+            {isAllActive ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1076", "active")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-interview-mod")}
+          tag="div"
+        >
+          {slotInterview}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

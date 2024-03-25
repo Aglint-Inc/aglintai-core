@@ -6,6 +6,12 @@
   grid-row-gap: 10px;
 }
 
+.div-block-1280 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .div-block-1077 {
   display: flex;
   padding-right: 16px;
