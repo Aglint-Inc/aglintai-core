@@ -3,8 +3,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { getPaginationDB } from './utils';
 import { ApplicationList, InterviewSlice, setPagination } from '../store';
-import { getPaginationDB } from '../utils';
 
 export const useAllInterviewSchedules = ({ page, filter, rec_id }) => {
   const query = useQuery({
@@ -37,6 +37,9 @@ const fetchInterviewData = async ({
     job_id_filter: filter.job_ids.length > 0 ? filter.job_ids : null,
     page_number: page,
     date_range_filter: filter.dateRange ? filter.dateRange : null,
+    module_id_filter: filter.panel_ids?.length > 0 ? filter.panel_ids : null,
+    cord_ids:
+      filter.coordinator_ids?.length > 0 ? filter.coordinator_ids : null,
   });
   if (error) {
     throw new Error(error.message);

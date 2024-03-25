@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DateRangeFilterComp from './DateRangeFilter';
+import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
 import FilterScheduleType from './FilterScheduleType';
@@ -27,6 +28,8 @@ function AllFilters() {
             return <FilterScheduleType key={filterType} />;
           case FilterType.status:
             return <FilterStatus key={filterType} />;
+          case FilterType.coordinator:
+            return <FilterCordinator key={filterType} />;
           default:
             return null;
         }

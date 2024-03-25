@@ -65,13 +65,18 @@ function AddFilterComp() {
           }}
         >
           <AllInterviewFilter
+            isCoordinatorVisible={
+              !filterVisible.includes(FilterType.coordinator)
+            }
             isStatusVisible={!filterVisible.includes(FilterType.status)}
             isScheduleTypeVisible={
               !filterVisible.includes(FilterType.scheduleType)
             }
             isDurationVisible={false}
             isDataRangeVisible={!filterVisible.includes(FilterType.dateRange)}
-            isInterviewPanelVisible={false}
+            isInterviewPanelVisible={
+              !filterVisible.includes(FilterType.interviewPanels)
+            }
             isRelatedJobVisible={
               !filterVisible.includes(FilterType.relatedJobs)
             }
@@ -87,6 +92,9 @@ function AddFilterComp() {
             }}
             onClickDateRange={{
               onClick: () => addFilter(FilterType.dateRange),
+            }}
+            onClickCoordinator={{
+              onClick: () => addFilter(FilterType.coordinator),
             }}
           />
         </Popover>

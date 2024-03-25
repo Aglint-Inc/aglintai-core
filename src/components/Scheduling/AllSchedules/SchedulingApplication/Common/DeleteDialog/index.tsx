@@ -6,16 +6,16 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import {
   setSelectedApplication,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../../store';
 import { setIsCancelOpen, useInterviewSchedulingStore } from '../../../store';
 
 function DeleteScheduleDialog() {
   const isCancelOpen = useInterviewSchedulingStore(
-    (state) => state.isCancelOpen
+    (state) => state.isCancelOpen,
   );
   const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+    (state) => state.selectedApplication,
   );
 
   const onClickCancel = async () => {
@@ -24,7 +24,7 @@ function DeleteScheduleDialog() {
         const { data, error: errMeet } = await supabase
           .from('interview_meeting')
           .update({
-            status: 'cancelled'
+            status: 'cancelled',
           })
           .eq('interview_schedule_id', selectedApplication.schedule.id)
           .select();
@@ -38,14 +38,14 @@ function DeleteScheduleDialog() {
         setIsCancelOpen(false);
         setSelectedApplication({
           ...selectedApplication,
-          schedule: { ...selectedApplication.schedule, status: 'cancelled' }
+          schedule: { ...selectedApplication.schedule, status: 'cancelled' },
         });
 
         const allMeeting = data;
         allMeeting.forEach(async (meet) => {
           if (meet.meeting_json)
             axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json
+              calender_event: meet.meeting_json,
             });
         });
       }
@@ -60,8 +60,8 @@ function DeleteScheduleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isCancelOpen}
       onClose={() => {
@@ -77,14 +77,14 @@ function DeleteScheduleDialog() {
         onClickCancel={{
           onClick: () => {
             setIsCancelOpen(false);
-          }
+          },
         }}
         onClickDelete={{
           onClick: () => {
             onClickCancel();
-          }
+          },
         }}
-        buttonText={'Cancel Schedule'}
+        buttonText={'Confirm'}
       />
     </Dialog>
   );

@@ -1,9 +1,14 @@
-import { Popover, Stack, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Popover, Stack, TextField, Typography } from '@mui/material';
+import { capitalize } from 'lodash';
+import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import {
   FilterType,
@@ -12,16 +17,45 @@ import {
   useInterviewSchedulingStore,
 } from '../../store';
 
-function FilterInterviewModule() {
-  const { allModules } = useSchedulingContext();
+type UserType = {
+  user_id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  position: string;
+  role: string;
+  profile_image: string;
+};
+
+function FilterCordinator() {
+  const { recruiter } = useAuthDetails();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
+  const [text, setText] = useState('');
+  const [members, setMembers] = useState<UserType[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<UserType[]>([]);
   const filter = useInterviewSchedulingStore((state) => state.filter);
 
   const filterVisible = useInterviewSchedulingStore(
     (state) => state.filterVisible,
   );
+
+  useEffect(() => {
+    handleSearch();
+  }, []);
+
+  useEffect(() => {
+    if (text) {
+      handleSearch();
+    }
+    return () => {
+      setFilter({ coordinator_ids: [] });
+    };
+  }, [text]);
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'interview-panels' : undefined;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -31,22 +65,30 @@ function FilterInterviewModule() {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'interview-panels' : undefined;
+  const handleSearch = async () => {
+    try {
+      const { data, error } = await supabase.rpc('search_members', {
+        recruiter_id_param: recruiter.id,
+        name_param: text,
+      });
 
-  const handleFilterClick = (panel_id: string) => {
-    if (filter.panel_ids.includes(panel_id)) {
-      setFilter({ panel_ids: filter.panel_ids.filter((s) => s !== panel_id) });
-    } else {
-      setFilter({ panel_ids: [...filter.panel_ids, panel_id] });
+      if (error) throw new Error(error.message);
+
+      const membersMap = (data as { member_info: UserType }[]).map((user) => ({
+        user_id: user.member_info.user_id,
+        email: user.member_info.email,
+        first_name: user.member_info.first_name,
+        last_name: user.member_info.last_name,
+        position: user.member_info.position,
+        role: user.member_info.role,
+        profile_image: user.member_info.profile_image,
+      }));
+
+      setMembers(membersMap);
+    } catch (e) {
+      toast.error(e.message);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      setFilter({ job_ids: [] });
-    };
-  }, []);
 
   return (
     <>
@@ -67,11 +109,11 @@ function FilterInterviewModule() {
             </svg>
           </Stack>
         }
-        isDotVisible={filter.panel_ids.length > 0}
+        isDotVisible={filter.coordinator_ids.length > 0}
         onClickStatus={{
           onClick: handleClick,
         }}
-        textLabel={'Interview Module'}
+        textLabel={'Co-ordinator'}
         slotRightIcon={
           <Stack>
             <svg
@@ -109,47 +151,113 @@ function FilterInterviewModule() {
         }}
       >
         <FilterDropdown
-          slotOption={allModules?.map((mod) => {
-            return (
-              <Stack
-                key={mod.id}
-                direction={'row'}
-                sx={{ alignItems: 'center' }}
-                spacing={1}
-              >
-                <Checkbox
-                  isChecked={filter.panel_ids.includes(mod.id)}
-                  onClickCheck={{
-                    onClick: () => {
-                      handleFilterClick(mod.id);
-                    },
-                  }}
-                />
-                <Typography
+          slotOption={
+            <Stack>
+              <TextField
+                type='search'
+                sx={{ pb: 1 }}
+                placeholder='User name or email'
+                value={text}
+                onChange={(e) => {
+                  setText(e.target.value);
+                }}
+              />
+              {members?.length ? (
+                members
+                  .filter(
+                    (user) =>
+                      !selectedMembers.some((u) => u.user_id == user.user_id),
+                  )
+                  .map((item, index) => (
+                    <Stack
+                      key={index}
+                      direction={'row'}
+                      spacing={1}
+                      sx={{
+                        p: '8px 4px',
+                        cursor: 'pointer',
+                      }}
+                      alignItems={'center'}
+                      onClick={() => {
+                        setMembers((prev) =>
+                          prev.filter((u) => u.user_id !== item.user_id),
+                        );
+                        setSelectedMembers((prev) => [...prev, item]);
+                        setFilter({
+                          coordinator_ids: [
+                            ...filter.coordinator_ids,
+                            item.user_id,
+                          ],
+                        });
+                      }}
+                    >
+                      <Checkbox isChecked={false} />
+                      <MuiAvatar
+                        src={item.profile_image}
+                        level={getFullName(item.first_name, item.last_name)}
+                        variant='circular'
+                        height='20px'
+                        width='20px'
+                        fontSize='10px'
+                      />
+                      <Typography variant='body1'>
+                        {capitalize(item.first_name)}
+                      </Typography>
+                    </Stack>
+                  ))
+              ) : (
+                <Stack sx={{ p: '8px 16px' }}>No result</Stack>
+              )}
+
+              {selectedMembers.map((item) => (
+                <Stack
+                  key={item.user_id}
+                  direction={'row'}
+                  spacing={1}
                   sx={{
-                    fontSize: '14px',
-                    fontWeight: 600,
+                    p: '8px 4px',
                     cursor: 'pointer',
                   }}
-                  onClick={() => handleFilterClick(mod.id)}
+                  alignItems={'center'}
+                  onClick={() => {
+                    setMembers((prev) => [...prev, item]);
+                    setFilter({
+                      ...filter,
+                      coordinator_ids: filter.coordinator_ids.filter(
+                        (id) => id !== item.user_id,
+                      ),
+                    });
+                    setSelectedMembers((prev) => {
+                      return prev.filter((u) => u.user_id !== item.user_id);
+                    });
+                  }}
                 >
-                  {mod.name}
-                </Typography>
-              </Stack>
-            );
-          })}
+                  <Checkbox isChecked={true} />
+                  <MuiAvatar
+                    src={item.profile_image}
+                    level={getFullName(item.first_name, item.last_name)}
+                    variant='circular'
+                    height='20px'
+                    width='20px'
+                    fontSize='10px'
+                  />
+                  <Typography variant='body1'>
+                    {capitalize(item.first_name)}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+          }
           onClickDelete={{
             onClick: () => {
-              setFilter({ panel_ids: [] });
+              setFilter({ coordinator_ids: [] });
               setFilterVisible(
-                filterVisible.filter((f) => f !== FilterType.interviewPanels),
+                filterVisible.filter((f) => f !== FilterType.coordinator),
               );
             },
           }}
           onClickReset={{
-            onClick: () => {
-              setFilter({ panel_ids: [] });
-            },
+            onClick: () => {},
           }}
         />
       </Popover>
@@ -157,4 +265,4 @@ function FilterInterviewModule() {
   );
 }
 
-export default FilterInterviewModule;
+export default FilterCordinator;

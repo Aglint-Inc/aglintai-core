@@ -22,6 +22,7 @@ export interface InterviewSlice {
     duration?: number;
     textSearch?: string;
     sortBy?: 'asc' | 'desc';
+    coordinator_ids?: string[];
   };
   pagination: {
     page: number;
@@ -44,6 +45,8 @@ export enum FilterType {
   scheduleType = 'scheduleType',
   // eslint-disable-next-line no-unused-vars
   status = 'status',
+  // eslint-disable-next-line no-unused-vars
+  coordinator = 'coordinator',
 }
 
 const initialState: InterviewSlice = {

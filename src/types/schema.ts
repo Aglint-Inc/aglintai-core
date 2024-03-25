@@ -1191,7 +1191,6 @@ export type Database = {
           id: string
           interview_plan: Json[] | null
           is_get_more_option: boolean
-          meeting_json: Json[] | null
           resend_invite: number
           schedule_name: string
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1209,7 +1208,6 @@ export type Database = {
           id?: string
           interview_plan?: Json[] | null
           is_get_more_option?: boolean
-          meeting_json?: Json[] | null
           resend_invite?: number
           schedule_name: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1227,7 +1225,6 @@ export type Database = {
           id?: string
           interview_plan?: Json[] | null
           is_get_more_option?: boolean
-          meeting_json?: Json[] | null
           resend_invite?: number
           schedule_name?: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -2795,6 +2792,7 @@ export type Database = {
           sch_type?: string[]
           date_range_filter?: unknown
           sort_by?: string
+          cord_ids?: string[]
           module_id_filter?: string[]
           page_number?: number
         }
@@ -3443,6 +3441,15 @@ export type Database = {
           applications: Json
           candidate: Json
           job: Json
+        }[]
+      }
+      search_members: {
+        Args: {
+          recruiter_id_param: string
+          name_param: string
+        }
+        Returns: {
+          member_info: Json
         }[]
       }
       secondretrybatchcalcresumejdscore: {
