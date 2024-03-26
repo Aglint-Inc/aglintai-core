@@ -416,7 +416,11 @@ const Schedules = () => {
         )}
       />
     ));
-  return <>{cards}</>;
+  return (
+    <Stack width={'100%'} height={'100%'} gap={2}>
+      {cards}
+    </Stack>
+  );
 };
 
 const Banners = () => {
@@ -552,9 +556,9 @@ const Modules = () => {
 
   return (
     <>
+      <ProfileScoreModule />
       {isSchedulingEnabled && <InterviewModule />}
       {isNewAssessmentEnabled && <AssessmentModule />}
-      <ProfileScoreModule />
       {isPhoneScreeningEnabled && <ScreeningModule />}
     </>
   );
