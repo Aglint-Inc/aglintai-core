@@ -12,6 +12,8 @@ export function ScheduleOptions({
   slotPrimaryButton,
   slotInterviewCordinator,
   isNoOptionsFoundVisible = false,
+  slotButtonLeft,
+  slotButtonRight,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1192")} tag="div">
@@ -78,6 +80,23 @@ export function ScheduleOptions({
         <_Builtin.Block tag="div">{slotDateRangeInput}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1286")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1287")}
+          tag="div"
+        >
+          {slotButtonLeft}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1288")}
+          tag="div"
+        >
+          {slotButtonRight}
+        </_Builtin.Block>
+      </_Builtin.Block>
     </_Component>
   );
 }

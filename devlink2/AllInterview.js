@@ -69,73 +69,33 @@ export function AllInterview({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "allinterview_row")}
+              className={_utils.cx(_styles, "div-block-1285")}
               tag="div"
-              {...propsGrid}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
+                className={_utils.cx(_styles, "allinterview_row")}
                 tag="div"
+                {...propsGrid}
               >
-                {isCheckboxVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "allinterview_header_cell")}
+                  tag="div"
+                >
+                  {isCheckboxVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-958")}
+                      tag="div"
+                    >
+                      {slotCheckbox}
+                    </_Builtin.Block>
+                  ) : null}
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-958")}
+                    className={_utils.cx(_styles, "fw-semibold")}
                     tag="div"
                   >
-                    {slotCheckbox}
+                    {"Candidate"}
                   </_Builtin.Block>
-                ) : null}
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Candidate"}
                 </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Status"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Type"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "allinterview_header_cell",
-                  "hide"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Duration"}</_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Interview"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              {isSchedulerTable ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "allinterview_header_cell")}
                   tag="div"
@@ -144,31 +104,81 @@ export function AllInterview({
                     className={_utils.cx(_styles, "fw-semibold")}
                     tag="div"
                   >
-                    {"Job"}
+                    {"Status"}
                   </_Builtin.Block>
                 </_Builtin.Block>
-              ) : null}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "allinterview_header_cell")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {"Type"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "allinterview_header_cell",
+                    "hide"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Duration"}</_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "allinterview_header_cell")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "fw-semibold")}
+                    tag="div"
+                  >
+                    {"Interview"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                {isSchedulerTable ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "allinterview_header_cell")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "fw-semibold")}
+                      tag="div"
+                    >
+                      {"Job"}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                ) : null}
+              </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot_candidaterow")}
+              className={_utils.cx(_styles, "div-block-1281")}
               tag="div"
             >
-              {slotAllInterviewCard ?? (
-                <>
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                  <AllInterviewCard />
-                </>
-              )}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "slot_candidaterow")}
+                tag="div"
+              >
+                {slotAllInterviewCard ?? (
+                  <>
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                    <AllInterviewCard />
+                  </>
+                )}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

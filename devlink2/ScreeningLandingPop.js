@@ -8,6 +8,9 @@ export function ScreeningLandingPop({
   onClickClose = {},
   slotScreeningNameInput,
   slotButtonPrimaryRegular,
+  textHeading = "New Screening",
+  textLabel = "Screening Name",
+  slotDropdown,
 }) {
   return (
     <_Component
@@ -16,7 +19,7 @@ export function ScreeningLandingPop({
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-982")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"New Screening"}
+          {textHeading}
         </_Builtin.Block>
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icons", "cursor-pointer")}
@@ -25,9 +28,10 @@ export function ScreeningLandingPop({
         />
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "div-block-983")} tag="div">
-        <_Builtin.Block tag="div">{"Screening Name"}</_Builtin.Block>
+        <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
         <_Builtin.Block tag="div">{slotScreeningNameInput}</_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block tag="div">{slotDropdown}</_Builtin.Block>
       <_Builtin.Block tag="div">{slotButtonPrimaryRegular}</_Builtin.Block>
     </_Component>
   );

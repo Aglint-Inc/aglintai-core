@@ -292,3 +292,17 @@
 .text-xsm {
   font-size: 10px;
 }
+
+.div-block-1286 {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-1287 {
+  width: 100%;
+}
+
+.div-block-1288 {
+  width: 100%;
+}

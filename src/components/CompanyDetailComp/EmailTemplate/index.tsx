@@ -38,7 +38,7 @@ const EmailTemplate = ({ setIsSaving }) => {
     } else if (path === 'interview' || path === 'interview_resend') {
       return isAssesEnabled;
     }
-    if (path == 'application_recieved') {
+    if (path == 'application_received') {
       return isJobMarketingEnabled;
     } else {
       return true;
@@ -213,10 +213,10 @@ export type EmailTempPath =
   | 'rejection'
   | 'phone_screening'
   | 'phone_screening_resend'
-  | 'application_recieved';
+  | 'application_received';
 
 export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
-  application_recieved: {
+  application_received: {
     listing: 'Application Recieved',
     heading: 'Application Received Email Template',
     dynamicContent: `For dynamic content, utilize placeholders like

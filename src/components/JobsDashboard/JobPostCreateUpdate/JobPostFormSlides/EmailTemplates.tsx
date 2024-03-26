@@ -40,7 +40,7 @@ const Emails = () => {
       if (path === 'phone_screening' || path === 'phone_screening_resend') {
         return jobForm.formFields.isPhoneScreenEnabled;
       }
-      if (path === 'application_recieved') {
+      if (path === 'application_received') {
         return isJobMarketingEnabled;
       } else {
         return true;
@@ -406,7 +406,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
 };
 
 export const emailTempKeys: EmailTempPath[] = [
-  'application_recieved',
+  'application_received',
   'phone_screening',
   'phone_screening_resend',
   'interview',

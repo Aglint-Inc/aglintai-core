@@ -20,7 +20,7 @@
 }
 
 .text-yellow-800 {
-  color: hsla(23.07692307692308, 68.42%, 26.08%, 1);
+  color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
 }
 
 .text-grey-600 {
@@ -28,7 +28,7 @@
 }
 
 .color-black {
-  color: hsla(0, 0%, 0%, 1);
+  color: hsla(0, 0.00%, 0.00%, 1.00);
 }
 
 .inline-block {
@@ -51,7 +51,7 @@
 }
 
 .text-yellow-700 {
-  color: hsla(26.174496644295296, 75.63%, 38.63%, 1);
+  color: hsla(26.174496644295296, 75.63%, 38.63%, 1.00);
 }
 
 .text-gray-500 {
@@ -65,13 +65,17 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
 }
 
 .text-blue-800 {
-  color: hsla(206.95652173913044, 69.7%, 19.41%, 1);
+  color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
 }
 
 .text-lg {
@@ -92,7 +96,7 @@
 }
 
 .text-yellow-600 {
-  color: hsla(33.014354066985646, 85.31%, 51.96%, 1);
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
 }
 
 @media screen and (max-width: 767px) {
@@ -117,7 +121,7 @@
 }
 
 .text-blue-600 {
-  color: hsla(206.8421052631579, 71.03%, 41.96%, 1);
+  color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
 
 .fw-semibold.text-blue-600.text-dec-none {
@@ -125,19 +129,19 @@
 }
 
 .text-red-500 {
-  color: hsla(354.93506493506493, 66.96%, 54.9%, 1);
+  color: hsla(354.93506493506493, 66.96%, 54.90%, 1.00);
 }
 
 .text-green-500 {
-  color: hsla(157.9816513761468, 61.58%, 34.71%, 1);
+  color: hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
 }
 
 .text-fuschia-600 {
-  color: hsla(307.0833333333333, 75%, 37.65%, 1);
+  color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
 .text-blue-500 {
-  color: hsla(206.95652173913044, 57.5%, 47.06%, 1);
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
 
 .text-color-white {
@@ -149,7 +153,7 @@
 }
 
 .text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.9%, 1);
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
 .text-capitalize {
@@ -171,6 +175,23 @@
   z-index: 2;
 }
 
+.relative {
+  position: relative;
+}
+
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -189,6 +210,20 @@
 
 .icons.ml-4 {
   margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.ml--6 {
+  margin-left: -6px;
 }
 
 .div-block-983 {

@@ -222,6 +222,7 @@ export * from "./ScheduleInfoUpcoming";
 export * from "./ScheduleOptions";
 export * from "./SchedulerDashboard";
 export * from "./ScheduleSettings";
+export * from "./ScheduleWithAgent";
 export * from "./SchedulingFlow";
 export * from "./SchedulingSetting";
 export * from "./ScoreErrorIcon";

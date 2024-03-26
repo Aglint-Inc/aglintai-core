@@ -299,7 +299,7 @@ let emailTemps = {
       'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
     fromName: 'aglint'
   },
-  application_recieved: {
+  application_received: {
     body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position [jobTitle]:</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>Sincerely,</p><p>[companyName]</p>',
     default: true,
     subject:

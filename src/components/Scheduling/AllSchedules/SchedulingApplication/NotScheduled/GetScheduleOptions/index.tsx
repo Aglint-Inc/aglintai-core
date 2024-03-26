@@ -1,16 +1,25 @@
-import { Stack } from '@mui/material';
+import { Autocomplete, Stack, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import timeZones from '@utils/timeZone.json';
+import axios from 'axios';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink';
-import { ScheduleOptions } from '@/devlink2';
+import { ButtonWide, ScheduleOptions, ScreeningLandingPop } from '@/devlink2';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { useGetScheduleOptions } from '../../hooks';
 import {
@@ -42,11 +51,121 @@ function GetScheduleOptions() {
     noOptions: state.noOptions,
     fetchingSchedule: state.fetchingSchedule,
   }));
-  const { findScheduleOptions } = useGetScheduleOptions();
 
+  const { findScheduleOptions } = useGetScheduleOptions();
+  const router = useRouter();
+  const { recruiter_id, recruiterUser } = useAuthDetails();
+  const [isloading, setLoading] = useState<boolean>(false);
+  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [input, setInput] = useState<string>(
+    selectedApplication.candidates.phone,
+  );
+  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
+
+  const initConversation = async () => {
+    try {
+      const [rec] = supabaseWrap(
+        await supabase
+          .from('applications')
+          .select(
+            'id, candidate_files(resume_json,candidate_id),public_jobs(id,job_title), candidates(*)',
+          )
+          .eq('id', selectedApplication.applications.id),
+      );
+      let payload: InitAgentBodyParams = {
+        application_id: rec.id,
+        end_date: dateRange.end_date,
+        start_date: dateRange.start_date,
+        company_id: recruiter_id,
+        recruiter_user_id: recruiterUser.user_id,
+        organizer_time_zone: dayjs.tz.guess(),
+        schedule_type: 'email',
+      };
+      await axios.post('/api/scheduling/mail-agent/init-agent', {
+        ...payload,
+      });
+      // console.log(data);
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      toast.success('Email Successfully Sent');
+      router.push(`/scheduling?tab=allSchedules`);
+    }
+  };
+  const makePhoneCal = async () => {
+    try {
+      let payload: InitAgentBodyParams = {
+        application_id: selectedApplication.applications.id,
+        end_date: dateRange.end_date,
+        start_date: dateRange.start_date,
+        company_id: recruiter_id,
+        recruiter_user_id: recruiterUser.user_id,
+        organizer_time_zone: dayjs.tz.guess(),
+        schedule_type: 'phone',
+      };
+      const {
+        data: { schedule_id },
+      } = await axios.post('/api/scheduling/mail-agent/init-agent', {
+        ...payload,
+      });
+
+      const phone_payload = {
+        company_name: 'Figmatic',
+        schedule_id: schedule_id,
+        application_id: selectedApplication.applications.id,
+        caq: 'Based  in Caalifornia',
+        begin_call_sentence:
+          'Hi Dileep, this is Raimon calling from Aglint. We wanted to schedule an interview for the position of SDE, Is this the right time to talk?',
+        from: '+13133491182',
+        to: input,
+        agent: 'd0c8b82eda97db9cea423984875ac469',
+        types: 'Scheduling',
+        title: 'initial',
+        organizer_time_zone: 'Asia/colombo',
+        cand_time_zone: selectedTimeZone.tzCode,
+      };
+
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/create-phone-call`,
+
+        {
+          ...phone_payload,
+        },
+      );
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      toast.success('Call Initiated Successfully');
+      setIsPopupOpen(false);
+      router.push(`/scheduling?tab=allSchedules`);
+    }
+    //
+  };
   return (
     <>
       <ScheduleOptions
+        slotButtonLeft={
+          <ButtonPrimaryRegular
+            isDisabled={isloading}
+            textLabel={'Schedule With Email Agent'}
+            onClickButton={{
+              onClick: () => {
+                initConversation();
+                setLoading(true);
+              },
+            }}
+          />
+        }
+        slotButtonRight={
+          <ButtonPrimaryRegular
+            textLabel={'Schedule With Phone Call Agent'}
+            onClickButton={{
+              onClick: () => {
+                setIsPopupOpen(true);
+              },
+            }}
+          />
+        }
         slotInterviewCordinator={
           !fetchingSchedule && (
             <AvatarSelectDropDown
@@ -169,6 +288,84 @@ function GetScheduleOptions() {
           selectedApplication.candidates.last_name,
         )}
       />
+      <MuiPopup
+        props={{
+          onClose: () => {
+            setIsPopupOpen(false);
+            setLoading(false);
+          },
+          open: isPopupOpen,
+        }}
+      >
+        <ScreeningLandingPop
+          slotDropdown={
+            <Stack width={465}>
+              <Autocomplete
+                disableClearable
+                options={timeZones}
+                value={selectedTimeZone}
+                onChange={(event, value) => {
+                  if (value) {
+                    setSelectedTimeZone(value);
+                  }
+                }}
+                autoComplete={false}
+                getOptionLabel={(option) => option.label}
+                renderOption={(props, option) => {
+                  return (
+                    <li {...props}>
+                      <Typography variant='body2' color={'#000'}>
+                        {option.label}
+                      </Typography>
+                    </li>
+                  );
+                }}
+                renderInput={(params) => {
+                  return (
+                    <UITextField
+                      rest={{ ...params }}
+                      labelSize='medium'
+                      // fullWidth
+                      label=''
+                      placeholder='Asia/Calcutta (GMT+05:30)'
+                      InputProps={{
+                        ...params.InputProps,
+                        autoComplete: 'new-password',
+                      }}
+                    />
+                  );
+                }}
+              />
+            </Stack>
+          }
+          textHeading='Contact Number'
+          textLabel='Please enter the Candidate Contact Number'
+          onClickClose={{ onClick: () => setIsPopupOpen(false) }}
+          slotScreeningNameInput={
+            <UITextField
+              placeholder='Enter Phone Number'
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              defaultValue={selectedApplication.candidates.phone}
+            />
+          }
+          slotButtonPrimaryRegular={
+            <>
+              <ButtonWide
+                isLoading={isloading}
+                isEnabled={input !== ''}
+                textButton={'Make Phone Call'}
+                onClickButton={{
+                  onClick: () => {
+                    setLoading(true);
+                    makePhoneCal();
+                  },
+                }}
+              />
+            </>
+          }
+        />
+      </MuiPopup>
     </>
   );
 }

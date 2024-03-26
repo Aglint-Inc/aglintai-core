@@ -1,7 +1,12 @@
 import { Stack } from '@mui/material';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
-import { AllInterviewCard, ScheduleInfoBlock, StatusBadge } from '@/devlink2';
+import {
+  AllInterviewCard,
+  ScheduleInfoBlock,
+  ScheduleWithAgent,
+  StatusBadge,
+} from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -32,6 +37,9 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
+          slotScheduleWithAgent={
+            <ScheduleWithAgent />
+          }
           textCurrentRole={
             (app.file?.resume_json as unknown as ResumeJson)?.basics
               ?.currentJobTitle || '--'
@@ -41,7 +49,7 @@ function ListCardInterviewSchedule({
             style: {
               gridTemplateColumns: isJobDasboard
                 ? '25% 15% 15% 20%'
-                : '25% 21% 20% 14% 20%',
+                : '250px 200px 200px 160px auto',
             },
           }}
           isSchedulerTable={!isJobDasboard}

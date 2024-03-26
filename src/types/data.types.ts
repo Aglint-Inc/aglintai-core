@@ -99,7 +99,7 @@ export type ApplicationReceived = {
 export type EmailTemplateType = {
   interview: ApplicationReceived;
   rejection: ApplicationReceived;
-  application_recieved: ApplicationReceived;
+  application_received: ApplicationReceived;
   phone_screening: ApplicationReceived;
   interview_resend: ApplicationReceived;
   phone_screening_resend: ApplicationReceived;

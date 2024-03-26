@@ -26,7 +26,7 @@ export type EmailTemplates = {
   rejection: EmailTemplate;
   phone_screening: EmailTemplate;
   interview_resend: EmailTemplate;
-  application_recieved: EmailTemplate;
+  application_received: EmailTemplate;
   phone_screening_resend: EmailTemplate;
 };
 

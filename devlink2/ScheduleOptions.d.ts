@@ -10,4 +10,6 @@ declare function ScheduleOptions(props: {
   slotPrimaryButton?: Types.Devlink.Slot;
   slotInterviewCordinator?: Types.Devlink.Slot;
   isNoOptionsFoundVisible?: Types.Visibility.VisibilityConditions;
+  slotButtonLeft?: Types.Devlink.Slot;
+  slotButtonRight?: Types.Devlink.Slot;
 }): React.JSX.Element;

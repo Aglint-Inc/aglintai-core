@@ -185,14 +185,14 @@ const mailHandler = async (application_id: string, profile, post) => {
       .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
         fromEmail: `messenger@aglinthq.com`,
         fromName:
-          post.email_template.application_recieved.fromName || post.company,
+          post.email_template.application_received.fromName || post.company,
         email: profile?.email,
         subject: fillEmailTemplate(
-          post.email_template.application_recieved.subject,
+          post.email_template.application_received.subject,
           email,
         ),
         text: fillEmailTemplate(
-          post.email_template.application_recieved.body,
+          post.email_template.application_received.body,
           email,
         ),
       })

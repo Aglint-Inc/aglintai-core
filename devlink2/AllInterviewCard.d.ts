@@ -17,4 +17,6 @@ declare function AllInterviewCard(props: {
   isSelected?: Types.Visibility.VisibilityConditions;
   textCurrentRole?: React.ReactNode;
   slotStatusBadge?: Types.Devlink.Slot;
+  slotScheduleWithAgent?: Types.Devlink.Slot;
+  onClickAgent?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

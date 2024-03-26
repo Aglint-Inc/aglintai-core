@@ -11,17 +11,7 @@ type YouTubeVideoProps = {
   muted?: boolean;
   privacyMode?: boolean;
 };
-export declare function YouTubeVideo({
-  className,
-  title,
-  videoId,
-  aspectRatio,
-  startAt,
-  showAllRelatedVideos,
-  controls,
-  autoplay,
-  muted,
-  privacyMode,
-  ...props
-}: YouTubeVideoProps): React.JSX.Element;
+export declare const YouTubeVideo: React.ForwardRefExoticComponent<
+  YouTubeVideoProps & React.RefAttributes<HTMLDivElement>
+>;
 export {};

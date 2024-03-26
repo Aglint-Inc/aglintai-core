@@ -6,4 +6,7 @@ declare function ScreeningLandingPop(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   slotScreeningNameInput?: Types.Devlink.Slot;
   slotButtonPrimaryRegular?: Types.Devlink.Slot;
+  textHeading?: React.ReactNode;
+  textLabel?: React.ReactNode;
+  slotDropdown?: Types.Devlink.Slot;
 }): React.JSX.Element;
