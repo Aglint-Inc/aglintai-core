@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { capitalize, debounce, set } from 'lodash';
+import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';

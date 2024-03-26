@@ -255,7 +255,6 @@ export const useGetScheduleApplication = () => {
           )[0]?.user_id;
           adminUserId && setSelCoordinator(adminUserId);
         }
-
         setSelectedApplication(application);
       }
     } catch (error) {
