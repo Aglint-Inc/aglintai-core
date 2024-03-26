@@ -501,7 +501,7 @@ const DraggableApplicationCard = (props: {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, []);
   return isChecked ? (
-    <Stack ref={dragRef}>
+    <Stack ref={dragRef as any}>
       <ApplicationCard {...props} />
     </Stack>
   ) : (

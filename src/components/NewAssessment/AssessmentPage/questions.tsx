@@ -77,7 +77,7 @@ const DroppableWrapper: FC<{
   children: ReactNode;
 }> = ({ dropRef, children }) => {
   return (
-    <Stack ref={dropRef} gap={2} height={'100%'}>
+    <Stack ref={dropRef as any} gap={2} height={'100%'}>
       {children}
     </Stack>
   );

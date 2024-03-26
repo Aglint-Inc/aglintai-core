@@ -70,7 +70,7 @@ const AssessmentQuestionDetail = () => {
     );
   }
   return (
-    <Stack ref={dropRef} height={'100%'}>
+    <Stack ref={dropRef as any} height={'100%'}>
       <DragAndDrop isDropping={canDrop} />
     </Stack>
   );

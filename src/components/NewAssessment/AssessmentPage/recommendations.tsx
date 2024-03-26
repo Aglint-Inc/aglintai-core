@@ -48,7 +48,7 @@ const RecommendationCard: React.FC<{
   };
 
   return (
-    <Stack ref={dragRef}>
+    <Stack ref={dragRef as any}>
       <RecommendedQuestionCard
         textQuestion={question.question.label}
         textQuestionType={capitalize(getSafeQuestionType(question.type))}

@@ -709,7 +709,7 @@ const JobTab = ({ section }: { section: JobApplicationSections }) => {
   });
   return actionVisibilities[section] ? (
     <SectionCard
-      ref={dropRef}
+      ref={dropRef as any}
       section={section}
       isOver={isOver}
       canDrop={canDrop}
@@ -754,16 +754,16 @@ const SectionCard = forwardRef(
             currentSection === section
               ? 'hsla(205.71428571428586, 17.07%, 91.96%, 1.00)'
               : normalize && !isOver
-                ? 'hsla(210, 33.33%, 97.65%, 1.00)'
-                : canDrop
-                  ? '#edf7ff'
-                  : 'hsla(210, 33.33%, 97.65%, 1.00)',
+              ? 'hsla(210, 33.33%, 97.65%, 1.00)'
+              : canDrop
+              ? '#edf7ff'
+              : 'hsla(210, 33.33%, 97.65%, 1.00)',
           border:
             currentSection === section
               ? '1px solid hsla(208.23529411764707, 21.52%, 84.51%, 1.00)'
               : isOver
-                ? '1px solid #1f73b7'
-                : '1px solid transparent',
+              ? '1px solid #1f73b7'
+              : '1px solid transparent',
           flexDirection: 'row',
           gap: 8,
           alignItems: 'center',
