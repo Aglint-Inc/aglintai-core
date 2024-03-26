@@ -59,6 +59,55 @@ const ScheduleAgent = () => {
     }
   };
 
+  const makePhoneCal = async () => {
+    try {
+      setStatus('loading');
+
+      let payload: InitAgentBodyParams = {
+        application_id: selectedCand.application_id,
+        end_date: endDate,
+        start_date: startDate,
+        company_id: recruiter_id,
+        recruiter_user_id: recruiterUser.user_id,
+        organizer_time_zone: dayjs.tz.guess(),
+        schedule_type: 'phone',
+      };
+      setData(JSON.stringify(payload));
+      const {
+        data: { schedule_id },
+      } = await axios.post('/api/scheduling/mail-agent/init-agent', {
+        ...payload,
+      });
+      const phone_payload = {
+        company_name: 'Figmatic',
+        schedule_id: schedule_id,
+        application_id: selectedCand.application_id,
+        caq: 'Based  in Caalifornia',
+        slots: `${startDate.format('DD MMMM')} - ${endDate.format('DD MMMM')}`,
+        begin_call_sentence:
+          'Hi Dileep, this is Raimon calling from Aglint. We wanted to schedule an interview for the position of SDE, Is this the right time to talk?',
+        from: '+12025194968',
+        to: '+919019664884',
+        agent: 'dcc1869a822931ef646f28e185e7402e',
+        types: 'Scheduling',
+        title: 'initial',
+        organizer_time_zone: 'Asia/colombo',
+      };
+
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/create-phone-call`,
+
+        {
+          ...phone_payload,
+        },
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+    //
+  };
+
   return (
     <>
       <Box
@@ -109,10 +158,20 @@ const ScheduleAgent = () => {
                 variant='contained'
                 color='primary'
               >
-                Init {status}
+                Init Email{status}
+              </Button>
+              <Button
+                type='submit'
+                onClick={() => {
+                  makePhoneCal();
+                }}
+                variant='contained'
+                color='primary'
+              >
+                Init Phone call{status}
               </Button>
               <div>
-                <>{data}</>
+                <>{status === 'done' && data}</>
               </div>
             </Stack>
           </Box>

@@ -109,10 +109,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           cand_details.candidate_name.split(' ')[0]
         }`,
       });
-      return res.status(200).send(status);
+      return res.status(200).json({ status, schedule_id: rec_schedule.id });
     } else {
       const status: SchedulingProgressStatusType = 'not scheduled';
-      return res.status(200).send(status);
+      return res.status(200).json({ status, schedule_id: rec_schedule.id });
     }
   } catch (error) {
     console.log(error);
