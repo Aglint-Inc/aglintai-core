@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   ClickAwayListener,
   Fade,
@@ -16,20 +17,28 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import { MemberType } from '../../Modules/types';
 
+type MemberTypeAutoComplete = Omit<MemberType, 'schedule_auth'> & {
+  schedule_auth?: JSON | null;
+  role?: MemberType['role'];
+};
+
+type MembersAutoCompleteProps = {
+  disabled: boolean;
+  renderUsers: InterviewScheduleContextType['members'];
+  selectedUsers: MemberTypeAutoComplete[];
+  setSelectedUsers: (val: MemberTypeAutoComplete[]) => void;
+  pillColor?: string;
+  maxWidth?: string;
+};
+
 function MembersAutoComplete({
   disabled,
   renderUsers,
   selectedUsers,
   setSelectedUsers,
   pillColor = 'transparent',
-}: {
-  disabled: boolean;
-  renderUsers: InterviewScheduleContextType['members'];
-  selectedUsers: MemberType[];
-  // eslint-disable-next-line no-unused-vars
-  setSelectedUsers: (val: InterviewScheduleContextType['members']) => void;
-  pillColor?: string;
-}) {
+  maxWidth = '400px',
+}: MembersAutoCompleteProps) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -39,7 +48,7 @@ function MembersAutoComplete({
   };
 
   const canBeOpen = open && Boolean(anchorEl);
-  const id = canBeOpen ? 'transition-popper' : undefined;
+  const id = canBeOpen ? 'transition-popper-members' : undefined;
 
   const handleClickAway = () => {
     if (anchorEl && anchorEl.contains(event.target)) {
@@ -98,13 +107,13 @@ function MembersAutoComplete({
         transition
         sx={{
           zIndex: 1300,
-          maxWidth: '400px',
+          maxWidth: maxWidth,
           width: '100%',
         }}
       >
         {({ TransitionProps }) => (
           <ClickAwayListener onClickAway={handleClickAway}>
-            <Fade {...TransitionProps} timeout={350}>
+            <Fade {...TransitionProps} timeout={200}>
               <Stack
                 width={'100%'}
                 sx={{

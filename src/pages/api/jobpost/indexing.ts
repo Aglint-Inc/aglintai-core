@@ -10,6 +10,11 @@ const jwtClient = new google.auth.JWT(
   null,
 );
 
+export type BodyParamsJobIndexing = {
+  url: string;
+  type: 'delete' | 'update';
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -20,6 +25,8 @@ export default async function handler(
   if (req.body.url === undefined) {
     res.status(400).json({ error: 'URL is required' });
   }
+
+  const body = req.body as BodyParamsJobIndexing;
 
   jwtClient.authorize(async function (err, tokens) {
     if (err) {
@@ -35,8 +42,8 @@ export default async function handler(
         Authorization: `Bearer ${tokens.access_token}`,
       },
       data: {
-        url: req.body.url, // Replace with your actual job URL
-        type: req.body?.type === 'delete' ? 'URL_DELETED' : 'URL_UPDATED',
+        url: body.url, // Replace with your actual job URL
+        type: body?.type === 'delete' ? 'URL_DELETED' : 'URL_UPDATED',
       },
     };
 
