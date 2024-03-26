@@ -297,7 +297,7 @@
   height: 368px;
   margin-top: 10px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
   grid-column-gap: 16px;

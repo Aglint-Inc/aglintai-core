@@ -1,4 +1,4 @@
-import { InputAdornment } from '@mui/material';
+import { InputAdornment, Stack } from '@mui/material';
 import axios from 'axios';
 import converter from 'number-to-words';
 import { useEffect, useState } from 'react';
@@ -156,20 +156,22 @@ const TeamManagement = () => {
       <TeamUsersList
         slotSearchAndFilter={
           <>
-            <UITextField
-              width='400px'
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <Icon variant='JobSearch' height='14' />
-                  </InputAdornment>
-                ),
-              }}
-              placeholder='Search by name,email or position'
-              onChange={handleSearchInputChange}
-              borderRadius={10}
-              height={42}
-            />
+            <Stack marginRight={5}>
+              <UITextField
+                width='400px'
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <Icon variant='JobSearch' height='14' />
+                    </InputAdornment>
+                  ),
+                }}
+                placeholder='Search by name,email or position'
+                onChange={handleSearchInputChange}
+                borderRadius={10}
+                height={42}
+              />
+            </Stack>
             <FilterDropDown
               title={'Department'}
               itemList={uniqueDepartments}

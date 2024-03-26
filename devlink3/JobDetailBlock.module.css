@@ -54,7 +54,8 @@
 }
 
 .div-block-759 {
-  max-width: 900px;
+  max-width: 600px;
+  margin-bottom: 60px;
 }
 
 .job_detail_right {
@@ -125,7 +126,7 @@
 
 .button_primary {
   display: flex;
-  padding: 8px 16px;
+  padding: 6px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
@@ -224,6 +225,11 @@
 
 .button_primary.greay_btn-copy-copy:hover {
   background-color: #d8dcde;
+}
+
+.button_primary.success {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 .cj-main-wrapper {

@@ -3,6 +3,10 @@
   padding-bottom: 40px;
 }
 
+.score-setting-wrap.padd-20 {
+  padding: 20px 20px 40px;
+}
+
 .div-block-713 {
   display: flex;
   max-width: 670px;

@@ -91,7 +91,7 @@ export function JobDashboard({
                     )}
                   </_Builtin.Block>
                   <_Builtin.Block tag="div">
-                    {"Scoring caniddates"}
+                    {"Scoring candidates"}
                   </_Builtin.Block>
                   <_Builtin.Block tag="div">{textScoreCount}</_Builtin.Block>
                 </_Builtin.Block>

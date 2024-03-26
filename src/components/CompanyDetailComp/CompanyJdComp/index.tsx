@@ -72,7 +72,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         minRows={6}
         maxRows={6}
       />
-      <UITextField
+      {/* <UITextField
         labelSize='small'
         fullWidth
         label='Application Process'
@@ -87,8 +87,8 @@ const CompanyJdComp = ({ setIsSaving }) => {
         multiline
         minRows={6}
         maxRows={6}
-      />
-      <UITextField
+      /> */}
+      {/* <UITextField
         labelSize='small'
         fullWidth
         label='Mission & Vision Statement'
@@ -103,8 +103,8 @@ const CompanyJdComp = ({ setIsSaving }) => {
         multiline
         minRows={6}
         maxRows={6}
-      />
-      <UITextField
+      /> */}
+      {/* <UITextField
         labelSize='small'
         fullWidth
         label='Company Values'
@@ -119,7 +119,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
         multiline
         minRows={6}
         maxRows={6}
-      />
+      /> */}
 
       <Stack>
         <UITypography

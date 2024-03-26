@@ -10,7 +10,10 @@ export function ScoreSetting({
   slotBanner,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "score-setting-wrap")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "score-setting-wrap", "padd-20")}
+      tag="div"
+    >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-713")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Profile Score"}
