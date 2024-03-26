@@ -220,18 +220,18 @@ export const useGetScheduleApplication = () => {
             setInterviewModules(modules);
           }
         }
-        let userIds = [];
-        application?.public_jobs?.interview_plan?.plan.map((plan) => {
-          plan.selectedIntervs.map((interv) => {
-            userIds.push(interv.interv_id);
-          });
-          plan.revShadowInterv.map((interv) => {
-            userIds.push(interv.interv_id);
-          });
-          plan.shadowIntervs.map((interv) => {
-            userIds.push(interv.interv_id);
-          });
-        });
+        // let userIds = [];
+        // application?.public_jobs?.interview_plan?.plan.map((plan) => {
+        //   plan.selectedIntervs.map((interv) => {
+        //     userIds.push(interv.interv_id);
+        //   });
+        //   plan.revShadowInterv.map((interv) => {
+        //     userIds.push(interv.interv_id);
+        //   });
+        //   plan.shadowIntervs.map((interv) => {
+        //     userIds.push(interv.interv_id);
+        //   });
+        // });
 
         const resMem = (await axios.post('/api/scheduling/fetchUserDetails', {
           recruiter_id: recruiter.id,
@@ -242,9 +242,10 @@ export const useGetScheduleApplication = () => {
         }
 
         if (application?.public_jobs?.interview_plan.coordinator?.interv_id) {
-          userIds.push(
-            application.public_jobs.interview_plan.coordinator.interv_id,
-          );
+          // userIds.push(
+          //   application.public_jobs.interview_plan.coordinator.interv_id,
+          // );
+
           setSelCoordinator(
             application.public_jobs.interview_plan.coordinator.interv_id,
           );
@@ -254,7 +255,6 @@ export const useGetScheduleApplication = () => {
           )[0]?.user_id;
           adminUserId && setSelCoordinator(adminUserId);
         }
-
         setSelectedApplication(application);
       }
     } catch (error) {

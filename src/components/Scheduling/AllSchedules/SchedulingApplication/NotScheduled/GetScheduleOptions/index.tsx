@@ -24,12 +24,13 @@ function GetScheduleOptions() {
   const currentDate = dayjs();
   const {
     selCoordinator,
-    fetchingPlan,
+    fetchingSchedule,
     members,
     dateRange,
     noOptions,
     scheduleName,
     selectedApplication,
+    fetchingPlan,
   } = useSchedulingApplicationStore((state) => ({
     selCoordinator: state.selCoordinator,
     dateRange: state.dateRange,
@@ -38,6 +39,7 @@ function GetScheduleOptions() {
     scheduleName: state.scheduleName,
     selectedApplication: state.selectedApplication,
     noOptions: state.noOptions,
+    fetchingSchedule: state.fetchingSchedule,
   }));
   const { findScheduleOptions } = useGetScheduleOptions();
 
@@ -45,11 +47,11 @@ function GetScheduleOptions() {
     <>
       <ScheduleOptions
         slotInterviewCordinator={
+          !fetchingSchedule &&
           !fetchingPlan && (
             <AvatarSelectDropDown
               onChange={(e) => {
-                const cord = members.find((t) => t.user_id === e.target.value);
-                setSelCoordinator(cord.user_id);
+                setSelCoordinator(e.target.value);
               }}
               menuOptions={members?.map((m) => ({
                 name: m.first_name + ' ' + (m?.last_name || ''),
@@ -58,7 +60,7 @@ function GetScheduleOptions() {
               }))}
               showMenuIcons
               value={selCoordinator}
-              defaultValue={members[0]?.user_id}
+              defaultValue={selCoordinator}
             />
           )
         }
