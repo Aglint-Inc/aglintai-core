@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs, { Dayjs } from 'dayjs';
 import React, { useState } from 'react';
@@ -72,11 +72,12 @@ const Comp = () => {
         end_date={dateRange.end_date}
         jobId={jobId.trim()}
       /> */}
-      <FreeTime
+      {/* <FreeTime
         start_date={dateRange.start_date}
         end_date={dateRange.end_date}
         jobId={jobId.trim()}
-      />
+      /> */}
+      <TestEvStatus />
     </Stack>
   );
 };
@@ -442,6 +443,26 @@ const FreeTime = ({
             );
           })}
       </p>
+    </>
+  );
+};
+
+const TestEvStatus = () => {
+  const handleClick = async () => {
+    try {
+      const { data } = await axios.post(
+        '/api/scheduling/v2/event_attendee_status',
+        {
+          //
+        },
+      );
+    } catch (error) {
+      //
+    }
+  };
+  return (
+    <>
+      <Button onClick={handleClick}>Test Status</Button>
     </>
   );
 };

@@ -11,6 +11,10 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
+export type GetAuthParams = {
+  company_cred: CompServiceKeyCred;
+  recruiter: Interviewer;
+};
 export const getAllIntsFromPlan = async (
   plan: InterviewPlanScheduleDbType['plans'],
 ) => {
@@ -58,10 +62,7 @@ export const getAllIntsFromPlan = async (
 export const getUserCalAuth = async ({
   company_cred,
   recruiter,
-}: {
-  company_cred: CompServiceKeyCred;
-  recruiter: Interviewer;
-}) => {
+}: GetAuthParams) => {
   try {
     if (recruiter.schedule_auth) {
       const oAuth2Client = new OAuth2Client(
