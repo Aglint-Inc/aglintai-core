@@ -40,6 +40,15 @@ const AvatarSelectDropDown = ({
         fullWidth
         value={value}
         defaultValue={defaultValue}
+        SelectProps={{
+          MenuProps: {
+            PaperProps: {
+              style: {
+                maxHeight: '250px',
+              },
+            },
+          },
+        }}
       >
         {...menuOptions.map((menu, idx) => (
           <MenuItem

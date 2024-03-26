@@ -96,6 +96,7 @@ function FilterScheduleType() {
         }
         textLabel={'Schedule Type'}
         onClickStatus={{
+          id: FilterType.scheduleType + 'click',
           onClick: handleClick,
         }}
         slotRightIcon={

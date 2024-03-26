@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { ButtonPrimaryRegular } from '@/devlink';
 import { ScheduleOptions } from '@/devlink2';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
+import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -47,8 +48,7 @@ function GetScheduleOptions() {
     <>
       <ScheduleOptions
         slotInterviewCordinator={
-          !fetchingSchedule &&
-          !fetchingPlan && (
+          !fetchingSchedule && (
             <AvatarSelectDropDown
               onChange={(e) => {
                 setSelCoordinator(e.target.value);
@@ -81,6 +81,12 @@ function GetScheduleOptions() {
         slotPrimaryButton={
           <Stack width={'100%'}>
             <ButtonPrimaryRegular
+              isEndIcon={fetchingPlan}
+              slotEndIcon={
+                <Stack height={'100%'}>
+                  <LoaderGrey />
+                </Stack>
+              }
               textLabel={'Get Schedule Options'}
               onClickButton={{
                 onClick: async () => {

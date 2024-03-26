@@ -124,6 +124,7 @@ function FilterCordinator() {
         }
         isDotVisible={filter.coordinator_ids.length > 0}
         onClickStatus={{
+          id: FilterType.coordinator + 'click',
           onClick: handleClick,
         }}
         textLabel={'Co-ordinator'}

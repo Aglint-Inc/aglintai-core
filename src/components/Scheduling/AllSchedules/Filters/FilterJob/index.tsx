@@ -73,6 +73,7 @@ function FilterJob() {
         }
         isDotVisible={filter.job_ids.length > 0}
         onClickStatus={{
+          id: FilterType.relatedJobs + 'click',
           onClick: handleClick,
         }}
         textLabel={'Related Jobs'}

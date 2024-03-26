@@ -69,6 +69,7 @@ function FilterInterviewModule() {
         }
         isDotVisible={filter.panel_ids.length > 0}
         onClickStatus={{
+          id: FilterType.interviewPanels + 'click',
           onClick: handleClick,
         }}
         textLabel={'Interview Module'}

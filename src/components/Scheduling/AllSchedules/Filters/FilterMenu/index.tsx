@@ -26,6 +26,9 @@ function AddFilterComp() {
   const addFilter = (type: FilterType) => {
     setFilterVisible([...filterVisible, type]);
     handleClose();
+    setTimeout(() => {
+      document.getElementById(type + 'click')?.click(); //auto open filter
+    }, 200);
   };
 
   const open = Boolean(anchorEl);

@@ -12,7 +12,6 @@ import {
   SchedulingFlow,
 } from '@/devlink2';
 import { AvatarWithName, InterviewBreakCard } from '@/devlink3';
-import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -42,7 +41,6 @@ function NotScheduledApplication() {
     selCoordinator,
     schedulingOptions,
     isViewProfileOpen,
-    fetchingPlan,
     members,
     step,
   } = useSchedulingApplicationStore((state) => ({
@@ -165,11 +163,7 @@ function NotScheduledApplication() {
           textLocation={selectedApplication.public_jobs.location || '--'}
           slotScheduleOptions={
             <>
-              {fetchingPlan ? (
-                <Stack height={'100%'} width={'100%'}>
-                  <Loader />
-                </Stack>
-              ) : step === 1 ? (
+              {step === 1 ? (
                 <GetScheduleOptions />
               ) : (
                 <AvailableOption

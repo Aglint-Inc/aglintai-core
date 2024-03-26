@@ -78,6 +78,7 @@ function DateRangeFilterComp() {
         isActive={filter.dateRange !== null}
         isDotVisible={filter.dateRange !== null}
         onClickStatus={{
+          id: FilterType.dateRange + 'click',
           onClick: handleClick,
         }}
         textLabel={'Date Range'}

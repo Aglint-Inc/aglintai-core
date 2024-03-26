@@ -93,6 +93,7 @@ function FilterStatus() {
           </Stack>
         }
         onClickStatus={{
+          id: FilterType.status + 'click',
           onClick: handleClick,
         }}
         textLabel={'Status'}
