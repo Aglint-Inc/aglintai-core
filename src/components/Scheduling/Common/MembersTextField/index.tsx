@@ -17,7 +17,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import { MemberType } from '../../Modules/types';
 
-type MemberTypeAutoComplete = Omit<MemberType, 'schedule_auth'> & {
+export type MemberTypeAutoComplete = Omit<MemberType, 'schedule_auth'> & {
   schedule_auth?: JSON | null;
   role?: MemberType['role'];
 };

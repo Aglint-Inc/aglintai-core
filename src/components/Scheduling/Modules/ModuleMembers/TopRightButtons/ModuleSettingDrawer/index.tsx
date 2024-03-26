@@ -9,10 +9,12 @@ import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMai
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import MembersAutoComplete from '../../../../Common/MembersTextField';
+import MembersAutoComplete, {
+  MemberTypeAutoComplete,
+} from '../../../../Common/MembersTextField';
 import { QueryKeysInteviewModules } from '../../../queries/type';
 import { setIsModuleSettingsDialogOpen, useModulesStore } from '../../../store';
-import { MemberType, ModuleType } from '../../../types';
+import { ModuleType } from '../../../types';
 
 function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
   const queryClient = useQueryClient();
@@ -21,7 +23,9 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
   );
   const { members } = useSchedulingContext();
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
-  const [selectedUsers, setSelectedUsers] = React.useState<MemberType[]>([]);
+  const [selectedUsers, setSelectedUsers] = React.useState<
+    MemberTypeAutoComplete[]
+  >([]);
 
   useEffect(() => {
     if (editModule) {
