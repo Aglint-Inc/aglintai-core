@@ -136,6 +136,13 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const [applications, dispatch] = useReducer(reducer, undefined);
 
+  const [actionProps, setActionProps] = useState({
+    open: false,
+    destination: null,
+  });
+
+  const [selectAll, setSelectAll] = useState(false);
+
   const paginationLimit = 50;
   const longPolling = 10000;
 
@@ -675,6 +682,37 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const views = getSectionVisibilities();
 
+  const actionVisibilities = {
+    new:
+      section === JobApplicationSections.DISQUALIFIED &&
+      activeSections.includes(JobApplicationSections.NEW),
+    screening:
+      section === JobApplicationSections.NEW &&
+      activeSections.includes(JobApplicationSections.SCREENING),
+    assessment:
+      (section === JobApplicationSections.NEW ||
+        section === JobApplicationSections.SCREENING) &&
+      activeSections.includes(JobApplicationSections.ASSESSMENT),
+    interview:
+      (section === JobApplicationSections.NEW ||
+        section === JobApplicationSections.SCREENING ||
+        section === JobApplicationSections.ASSESSMENT) &&
+      activeSections.includes(JobApplicationSections.INTERVIEW),
+    qualified:
+      (section === JobApplicationSections.NEW ||
+        section === JobApplicationSections.SCREENING ||
+        section === JobApplicationSections.ASSESSMENT ||
+        section === JobApplicationSections.INTERVIEW) &&
+      activeSections.includes(JobApplicationSections.QUALIFIED),
+    disqualified:
+      (section === JobApplicationSections.NEW ||
+        section === JobApplicationSections.SCREENING ||
+        section === JobApplicationSections.ASSESSMENT ||
+        section === JobApplicationSections.INTERVIEW ||
+        section === JobApplicationSections.QUALIFIED) &&
+      activeSections.includes(JobApplicationSections.DISQUALIFIED),
+  };
+
   const refreshRef = useRef(true);
 
   const handleAutoRefresh = async () => {
@@ -739,6 +777,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     showDisqualificationEmailComponent,
     showAssessmentEmailComponent,
     showScreeningEmailComponent,
+    actionProps,
+    selectAll,
+    setSelectAll,
+    setActionProps,
+    actionVisibilities,
   };
 
   return value;

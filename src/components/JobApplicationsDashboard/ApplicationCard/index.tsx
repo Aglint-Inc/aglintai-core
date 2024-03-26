@@ -1,7 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { useDrag, useDragLayer, XYCoord } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { CandidateSkillPills } from '@/devlink';
 import {
@@ -21,12 +23,14 @@ import {
   ScreeningStatus,
 } from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
+import { DragPill } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
+import { CountJobs } from '@/src/context/JobsContext/types';
 
 import { InvitedIcon } from './Icons/invited';
 import { SubmittedIcon } from './Icons/submitted';
@@ -470,4 +474,131 @@ export const InavlidEmail = () => {
   );
 };
 
-export default ApplicationCard;
+const DraggableApplicationCard = (props: {
+  detailedView: boolean;
+  application: JobApplication;
+  index: number;
+  // eslint-disable-next-line no-unused-vars
+  handleSelect: (index: number) => void;
+  // eslint-disable-next-line no-unused-vars
+  handleOpenDetails: () => void;
+  isSelected: boolean;
+}) => {
+  // eslint-disable-next-line no-unused-vars
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+  } = useJobApplications();
+  const isChecked = list.has(props.application.id);
+  const [, dragRef, preview] = useDrag({
+    type: 'application-card',
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
+  return isChecked ? (
+    <Stack ref={dragRef}>
+      <ApplicationCard {...props} />
+    </Stack>
+  ) : (
+    <ApplicationCard {...props} />
+  );
+};
+
+const DragCard = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+    section,
+    selectAll,
+  } = useJobApplications();
+  const count = selectAll ? applicationLimit[section] : list.size;
+  return (
+    <Stack style={{ width: '200px' }}>
+      <DragPill
+        textLabel={`Move ${count} candidate${count === 1 ? '' : 's'}`}
+      />
+    </Stack>
+  );
+};
+
+function getItemStyles(
+  initialOffset: XYCoord | null,
+  currentOffset: XYCoord | null,
+) {
+  if (!initialOffset || !currentOffset) {
+    return {
+      display: 'none',
+    };
+  }
+
+  let { x, y } = currentOffset;
+
+  const transform = `translate(${x}px, ${y}px)`;
+  return {
+    transform,
+    WebkitTransform: transform,
+    cursor: 'grabbing',
+  };
+}
+
+export const CustomDragLayer = ({
+  x,
+  applicationLimit,
+}: {
+  x: number;
+  applicationLimit: CountJobs;
+}) => {
+  const { itemType, isDragging, initialOffset, currentOffset } = useDragLayer(
+    (monitor) => ({
+      item: monitor.getItem(),
+      itemType: monitor.getItemType(),
+      initialOffset: monitor.getInitialSourceClientOffset(),
+      currentOffset: monitor.getSourceClientOffset(),
+      isDragging: monitor.isDragging(),
+    }),
+  );
+
+  const renderItem = () => {
+    switch (itemType) {
+      case 'application-card':
+        return <DragCard applicationLimit={applicationLimit} />;
+      default:
+        return null;
+    }
+  };
+
+  if (!isDragging) {
+    return null;
+  }
+
+  return (
+    <Stack
+      style={{
+        position: 'fixed',
+        pointerEvents: 'none',
+        zIndex: 100,
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      <Stack
+        style={getItemStyles(initialOffset, {
+          x: x - 180 + currentOffset.x,
+          y: currentOffset.y,
+        })}
+      >
+        {renderItem()}
+      </Stack>
+    </Stack>
+  );
+};
+
+export default DraggableApplicationCard;

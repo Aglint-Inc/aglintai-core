@@ -7,7 +7,7 @@ import { CandidateSelectionPopup, SelectActionsDropdown } from '@/devlink2';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   // JobApplicationsData,
-  JobApplicationSections
+  JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
@@ -24,89 +24,61 @@ const MoveCandidate: React.FC<{
   const {
     section,
     cardStates: {
-      checkList: { list, disabled }
+      checkList: { list, disabled },
     },
     setCardStates,
     handleJobApplicationSectionUpdate,
-    activeSections
+    actionVisibilities,
+    actionProps,
+    setActionProps,
   } = useJobApplications();
-  const [props, setProps] = useState({
-    open: false,
-    destination: null
-  });
   const [purposes, setPurposes] = useState([]);
   const isChecked = list.size !== 0;
-  const showNew =
-    isChecked &&
-    section === JobApplicationSections.DISQUALIFIED &&
-    activeSections.includes(JobApplicationSections.NEW);
-  const showScreening =
-    isChecked &&
-    section === JobApplicationSections.NEW &&
-    activeSections.includes(JobApplicationSections.SCREENING);
-  const showAssessment =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING) &&
-    activeSections.includes(JobApplicationSections.ASSESSMENT);
-  const showInterview =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT) &&
-    activeSections.includes(JobApplicationSections.INTERVIEW);
-  const showQualified =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT ||
-      section === JobApplicationSections.INTERVIEW) &&
-    activeSections.includes(JobApplicationSections.QUALIFIED);
-  const showDisqualified =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT ||
-      section === JobApplicationSections.INTERVIEW ||
-      section === JobApplicationSections.QUALIFIED) &&
-    activeSections.includes(JobApplicationSections.DISQUALIFIED);
+
+  const showNew = isChecked && actionVisibilities.new;
+  const showScreening = isChecked && actionVisibilities.screening;
+  const showAssessment = isChecked && actionVisibilities.assessment;
+  const showInterview = isChecked && actionVisibilities.interview;
+  const showQualified = isChecked && actionVisibilities.qualified;
+  const showDisqualified = isChecked && actionVisibilities.disqualified;
 
   const handlePopUpCheck = () => {
     setPurposes((prev) =>
-      prev.length !== 0 ? [] : getPurpose(props.destination)
+      prev.length !== 0 ? [] : getPurpose(actionProps.destination),
     );
   };
   const handleMoveCandidate = async () => {
     if (!disabled) {
-      setProps((prev) => ({ ...prev, open: false }));
+      setActionProps((prev) => ({ ...prev, open: false }));
       setCardStates((prev) => ({
         ...prev,
-        checkList: { ...prev.checkList, disabled: true }
+        checkList: { ...prev.checkList, disabled: true },
       }));
       await handleJobApplicationSectionUpdate(
         {
           source: section,
-          destination: props.destination
+          destination: actionProps.destination,
         },
         purposes,
         list,
-        selectAll
+        selectAll,
       );
       setCardStates((prev) => ({
         ...prev,
         checkList: {
           disabled: false,
-          list: new Set()
-        }
+          list: new Set(),
+        },
       }));
       setSelectAll(false);
     }
   };
   const handleOpen = (destination: JobApplicationSections) => {
-    setProps({ open: true, destination });
+    setActionProps({ open: true, destination });
   };
   const handleClose = () => {
-    setProps({ open: false, destination: null });
+    setActionProps((prev) => ({ ...prev, open: false }));
+    setTimeout(() => setActionProps({ open: false, destination: null }), 200);
   };
 
   return (
@@ -114,33 +86,33 @@ const MoveCandidate: React.FC<{
       <SelectActionsDropdown
         isInterview={showInterview}
         onClickInterview={{
-          onClick: () => handleOpen(JobApplicationSections.INTERVIEW)
+          onClick: () => handleOpen(JobApplicationSections.INTERVIEW),
         }}
         isAssessment={showAssessment}
         onClickAssessment={{
-          onClick: () => handleOpen(JobApplicationSections.ASSESSMENT)
+          onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
         }}
         isQualified={showQualified}
         onClickQualified={{
-          onClick: () => handleOpen(JobApplicationSections.QUALIFIED)
+          onClick: () => handleOpen(JobApplicationSections.QUALIFIED),
         }}
         isDisqualified={showDisqualified}
         onClickDisqualified={{
-          onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED)
+          onClick: () => handleOpen(JobApplicationSections.DISQUALIFIED),
         }}
         onClickMoveNew={{
-          onClick: () => handleOpen(JobApplicationSections.NEW)
+          onClick: () => handleOpen(JobApplicationSections.NEW),
         }}
         isMoveNew={showNew}
         onClickScreening={{
-          onClick: () => handleOpen(JobApplicationSections.SCREENING)
+          onClick: () => handleOpen(JobApplicationSections.SCREENING),
         }}
         isScreening={showScreening}
       />
       <MoveCandidateDialog
-        open={props.open}
+        open={actionProps.open}
         onClose={() => handleClose()}
-        destination={props.destination}
+        destination={actionProps.destination}
         onSubmit={async () => await handleMoveCandidate()}
         checked={purposes.length !== 0}
         checkAction={() => handlePopUpCheck()}
@@ -160,7 +132,7 @@ const MoveCandidateDialog = ({
   onSubmit,
   checkAction,
   count = 0,
-  name = null
+  name = null,
 }: {
   open: boolean;
   checked: boolean;
@@ -217,18 +189,18 @@ const checkVisibility = (destination: JobApplicationSections) => {
 const getDescription = (
   destination,
   count: number = 0,
-  name: string = null
+  name: string = null,
 ) => {
   if (name) return `Move ${name} to ${capitalize(destination)} stage?`;
   return `Move ${count} candidate${count !== 1 ? 's' : ''} to ${capitalize(
-    destination
+    destination,
   )} stage`;
 };
 
 const getSubTitle = (
   destination: JobApplicationSections,
   count: number = 0,
-  name: string = null
+  name: string = null,
 ) => {
   if (name) {
     switch (destination) {
@@ -263,7 +235,7 @@ const getSubTitle = (
 };
 
 const getPurpose = (
-  destination: JobApplicationSections
+  destination: JobApplicationSections,
 ): JobApplicationEmails['request']['purposes'] => {
   switch (destination) {
     case JobApplicationSections.NEW:
