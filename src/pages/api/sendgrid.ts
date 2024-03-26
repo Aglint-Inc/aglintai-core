@@ -1,5 +1,7 @@
 // import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
+import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -15,7 +17,7 @@ export default async function handler(req, res) {
   let details = req.body as BodyParmsSendgrid;
 
   try {
-    const msg = {
+    const msg: any = {
       to: details.email, // Change to your recipient
       from: {
         email: details.fromEmail ?? 'admin@aglinthq.com',
@@ -24,9 +26,13 @@ export default async function handler(req, res) {
       subject: details.subject,
       html: details.text,
     };
-    // if (!isEnvProd()) {
-    //   msg.to = ['dileep@aglinthq.com', 'chinmai@aglinthq.com', 'dileepwert@gmail.com',];
-    // }
+    if (!details.email.toLowerCase().includes('aglint') && !isEnvProd()) {
+      msg.to = [
+        'dileep@aglinthq.com',
+        'chinmai@aglinthq.com',
+        'dileepwert@gmail.com',
+      ];
+    }
 
     await sgMail
       .send({
