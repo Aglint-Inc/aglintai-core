@@ -1,5 +1,11 @@
-import { Popover, Stack, TextField, Typography } from '@mui/material';
-import { capitalize, debounce } from 'lodash';
+import {
+  LinearProgress,
+  Popover,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { capitalize, debounce, set } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
@@ -35,6 +41,7 @@ function FilterCordinator() {
   const [text, setText] = useState('');
   const [members, setMembers] = useState<UserType[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<UserType[]>([]);
+  const [loading, setLoading] = useState(false);
   const filter = useInterviewSchedulingStore((state) => state.filter);
   const filterVisible = useInterviewSchedulingStore(
     (state) => state.filterVisible,
@@ -42,15 +49,15 @@ function FilterCordinator() {
 
   useEffect(() => {
     handleSearch();
+    return () => {
+      setFilter({ coordinator_ids: [] });
+    };
   }, []);
 
   useEffect(() => {
     if (text) {
       handleSearch();
     }
-    return () => {
-      setFilter({ coordinator_ids: [] });
-    };
   }, [text]);
 
   const open = Boolean(anchorEl);
@@ -70,6 +77,7 @@ function FilterCordinator() {
 
   const debouncedHandleSearch = debounce(async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase.rpc('search_members', {
         recruiter_id_param: recruiter.id,
         name_param: text,
@@ -90,6 +98,8 @@ function FilterCordinator() {
       setMembers(membersMap);
     } catch (e) {
       toast.error(e.message);
+    } finally {
+      setLoading(false);
     }
   }, 300);
 
@@ -155,18 +165,22 @@ function FilterCordinator() {
       >
         <FilterDropdown
           slotOption={
-            <Stack>
+            <Stack minWidth={'250px'}>
               <TextField
                 type='search'
                 sx={{ pb: 1 }}
-                placeholder='User name or email'
+                placeholder='Search users'
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
                 }}
               />
-              {members?.length ? (
-                members
+              <Stack height='10px'>
+                {loading && <LinearProgress color='info' />}
+              </Stack>
+
+              <Stack maxHeight={'50vh'} overflow={'auto'}>
+                {members
                   .filter(
                     (user) =>
                       !selectedMembers.some((u) => u.user_id == user.user_id),
@@ -206,49 +220,51 @@ function FilterCordinator() {
                       <Typography variant='body1'>
                         {capitalize(item.first_name)}
                       </Typography>
+                      <Typography variant='caption'>
+                        - {item.position}
+                      </Typography>
                     </Stack>
-                  ))
-              ) : (
-                <Stack sx={{ p: '8px 16px' }}>No result</Stack>
-              )}
+                  ))}
 
-              {selectedMembers.map((item) => (
-                <Stack
-                  key={item.user_id}
-                  direction={'row'}
-                  spacing={1}
-                  sx={{
-                    p: '8px 4px',
-                    cursor: 'pointer',
-                  }}
-                  alignItems={'center'}
-                  onClick={() => {
-                    setMembers((prev) => [...prev, item]);
-                    setFilter({
-                      ...filter,
-                      coordinator_ids: filter.coordinator_ids.filter(
-                        (id) => id !== item.user_id,
-                      ),
-                    });
-                    setSelectedMembers((prev) => {
-                      return prev.filter((u) => u.user_id !== item.user_id);
-                    });
-                  }}
-                >
-                  <Checkbox isChecked={true} />
-                  <MuiAvatar
-                    src={item.profile_image}
-                    level={getFullName(item.first_name, item.last_name)}
-                    variant='circular'
-                    height='20px'
-                    width='20px'
-                    fontSize='10px'
-                  />
-                  <Typography variant='body1'>
-                    {capitalize(item.first_name)}
-                  </Typography>
-                </Stack>
-              ))}
+                {selectedMembers.map((item) => (
+                  <Stack
+                    key={item.user_id}
+                    direction={'row'}
+                    spacing={1}
+                    sx={{
+                      p: '8px 4px',
+                      cursor: 'pointer',
+                    }}
+                    alignItems={'center'}
+                    onClick={() => {
+                      setMembers((prev) => [...prev, item]);
+                      setFilter({
+                        ...filter,
+                        coordinator_ids: filter.coordinator_ids.filter(
+                          (id) => id !== item.user_id,
+                        ),
+                      });
+                      setSelectedMembers((prev) => {
+                        return prev.filter((u) => u.user_id !== item.user_id);
+                      });
+                    }}
+                  >
+                    <Checkbox isChecked={true} />
+                    <MuiAvatar
+                      src={item.profile_image}
+                      level={getFullName(item.first_name, item.last_name)}
+                      variant='circular'
+                      height='20px'
+                      width='20px'
+                      fontSize='10px'
+                    />
+                    <Typography variant='body1'>
+                      {capitalize(item.first_name)}
+                    </Typography>
+                    <Typography variant='caption'>- {item.position}</Typography>
+                  </Stack>
+                ))}
+              </Stack>
             </Stack>
           }
           onClickDelete={{
