@@ -26,12 +26,6 @@ function AllSchedules() {
     rec_id: recruiter.id,
   });
 
-  const raimon = () => {
-    console.log('raimon');
-    return;
-    console.log('raimon');
-  };
-
   return (
     <>
       <AllInterview
