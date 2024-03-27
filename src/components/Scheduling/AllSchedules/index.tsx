@@ -19,12 +19,18 @@ function AllSchedules() {
     isPending,
     isError,
     data: applicationList,
-    isFetching
+    isFetching,
   } = useAllInterviewSchedules({
     filter,
     page: pagination.page,
-    rec_id: recruiter.id
+    rec_id: recruiter.id,
   });
+
+  const raimon = () => {
+    console.log('raimon');
+    return;
+    console.log('raimon');
+  };
 
   return (
     <>

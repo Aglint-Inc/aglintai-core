@@ -14,7 +14,8 @@
     "devlink",
     "src/components/Icons",
     "src/components/JobTracker/Activities/devlink",
-    "src/types/schema.ts"
+    "src/types/schema.ts",
+    "README.md"
   ],
   "rules": {
     "no-unused-vars": "error",
