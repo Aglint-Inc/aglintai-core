@@ -1015,6 +1015,7 @@ export type Database = {
           duration: number
           end_time: string
           id: string
+          instructions: string | null
           interview_schedule_id: string
           meeting_json: Json | null
           module_id: string | null
@@ -1027,6 +1028,7 @@ export type Database = {
           duration: number
           end_time: string
           id?: string
+          instructions?: string | null
           interview_schedule_id: string
           meeting_json?: Json | null
           module_id?: string | null
@@ -1039,6 +1041,7 @@ export type Database = {
           duration?: number
           end_time?: string
           id?: string
+          instructions?: string | null
           interview_schedule_id?: string
           meeting_json?: Json | null
           module_id?: string | null

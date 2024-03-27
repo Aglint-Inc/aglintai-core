@@ -18,4 +18,5 @@ declare function ScheduleDetailSidepanel(props: {
   isCandidateInfoVisible?: Types.Visibility.VisibilityConditions;
   isJobVisible?: Types.Visibility.VisibilityConditions;
   isJoinLinkVisible?: Types.Visibility.VisibilityConditions;
+  isScheduleButtonVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

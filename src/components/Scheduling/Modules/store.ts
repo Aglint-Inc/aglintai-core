@@ -25,6 +25,7 @@ export const initialEditModule: ModuleType = {
     approve_users: [],
   },
   description: '',
+  instructions: '',
 };
 
 export const initialStateSchedulingStore: SchedulingSlice = {

@@ -74,6 +74,8 @@ export * from "./GraphBlock";
 export * from "./IconRegular";
 export * from "./IconSmall";
 export * from "./InlineEditField";
+export * from "./Instructions";
+export * from "./InstructionsButton";
 export * from "./InterviewBreakCard";
 export * from "./InterviewModuleCard";
 export * from "./InterviewPlan";
