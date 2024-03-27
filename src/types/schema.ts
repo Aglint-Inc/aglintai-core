@@ -1065,6 +1065,7 @@ export type Database = {
       interview_meeting_user: {
         Row: {
           created_at: string
+          feedback: Json | null
           id: string
           interview_meeting_id: string
           interviewer_id: string | null
@@ -1072,6 +1073,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          feedback?: Json | null
           id?: string
           interview_meeting_id: string
           interviewer_id?: string | null
@@ -1079,6 +1081,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          feedback?: Json | null
           id?: string
           interview_meeting_id?: string
           interviewer_id?: string | null
@@ -1107,6 +1110,7 @@ export type Database = {
           description: string | null
           duration_available: Json | null
           id: string
+          instructions: string | null
           name: string
           recruiter_id: string
           settings: Json | null
@@ -1116,6 +1120,7 @@ export type Database = {
           description?: string | null
           duration_available?: Json | null
           id?: string
+          instructions?: string | null
           name: string
           recruiter_id: string
           settings?: Json | null
@@ -1125,6 +1130,7 @@ export type Database = {
           description?: string | null
           duration_available?: Json | null
           id?: string
+          instructions?: string | null
           name?: string
           recruiter_id?: string
           settings?: Json | null

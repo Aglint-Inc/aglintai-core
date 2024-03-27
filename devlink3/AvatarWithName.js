@@ -19,15 +19,7 @@ export function AvatarWithName({
           className={_utils.cx(_styles, "slot_useravatr", "small")}
           tag="div"
         >
-          {slotAvatar ?? (
-            <_Builtin.Image
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt=""
-              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d6e2cb5b27ca42119ddbb3_you.jpg"
-            />
-          )}
+          {slotAvatar}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-758")}

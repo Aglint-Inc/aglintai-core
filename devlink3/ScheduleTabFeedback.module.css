@@ -1,0 +1,105 @@
+.feedback_layout {
+  width: 100%;
+  background-color: white;
+}
+
+.all-interview-table-copy {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.allinterview_row {
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+
+  display: grid;
+  width: 100%;
+  align-items: center;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 25% 22% auto;
+  grid-template-rows: auto;
+
+  border-top: 1px solid #e9ebed;
+  border-bottom: 1px solid #e9ebed;
+
+  background-color: #f8f9f9;
+}
+
+.allinterview_header_cell {
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.allinterview_header_cell.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.div-block-958 {
+  margin-right: 4px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
+.slot_candidaterow {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
