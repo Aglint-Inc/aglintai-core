@@ -5,14 +5,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import {
   ActionType,
   candDbContextType,
   CandidateStateType,
 } from './candFilter.type';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const initialState: CandidateStateType = {
   candidates: [],

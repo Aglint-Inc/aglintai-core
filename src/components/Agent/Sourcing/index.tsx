@@ -43,12 +43,12 @@ import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import { processing_sourcing } from './util';
 import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
 import { calculateTotalExperience } from '../../CandidateDatabase/AppoloSearch/utils';
 import MuiAvatar from '../../Common/MuiAvatar';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import LottieAnimations from '../../lottie/LottieIcons';
+import { processing_sourcing } from './util';
 
 export type messageType = {
   sender: string;

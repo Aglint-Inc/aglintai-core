@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import OpenAI from 'openai';
 
-import { getPrompts } from './prompts';
 import { openai } from '../config';
 import { JobJson, Prompt, PromptBuilderResponse, ResumeJson } from '../types';
 import { rejectAfterDelay } from '../utils';
+import { getPrompts } from './prompts';
 // import { rejectAfterDelay } from "../utils";
 
 const TIMEOUT = 20000; // 20 sec

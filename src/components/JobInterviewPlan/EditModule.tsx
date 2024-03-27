@@ -5,12 +5,12 @@ import { useMemo, useState } from 'react';
 import { PanelMemberPill } from '@/devlink2';
 import { InterviewPlanCard } from '@/devlink3';
 
-import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
-import { InterviewSession } from './types';
 import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '../Common/MuiAvatar';
 import UISelect from '../Common/Uiselect';
 import UITextField from '../Common/UITextField';
+import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
+import { InterviewSession } from './types';
 
 const EditModule = ({
   initModule,

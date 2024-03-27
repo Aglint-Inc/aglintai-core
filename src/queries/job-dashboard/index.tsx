@@ -3,9 +3,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { useCurrentJob } from '../job-assessment/keys';
 import { jobDashboardQueryKeys } from './keys';
 import { DashboardTypes } from './types';
-import { useCurrentJob } from '../job-assessment/keys';
 
 export const useJobSkills = () => {
   const { job_id, job } = useCurrentJob();

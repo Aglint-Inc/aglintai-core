@@ -6,10 +6,10 @@ import { ScrQuestion, ScrQuestionDefault } from '@/devlink2';
 import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
+import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import PhoneScreenNewQnForm from './PhoneScreenNewQnForm';
 import { qnTypeToIcon } from './ScreeningComp';
 import { qnTypeToLabel2 } from './utils';
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const KnowOffQn = ({ qnPath, isEditMode, changeMode }) => {
   const { handleUpdateFormFields, phoneScreenignForm } = usePhoneScreening();

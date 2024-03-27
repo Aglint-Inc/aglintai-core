@@ -28,6 +28,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import LoaderLever from '../Loader';
+import { POSTED_BY } from '../utils';
 import FetchingJobsLever from './Loader';
 import { ExtendedJobGreenhouse, JobGreenhouse } from './types';
 import {
@@ -37,8 +39,6 @@ import {
   filterJobs,
   getGreenhouseStatusColor,
 } from './utils';
-import LoaderLever from '../Loader';
-import { POSTED_BY } from '../utils';
 
 export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();

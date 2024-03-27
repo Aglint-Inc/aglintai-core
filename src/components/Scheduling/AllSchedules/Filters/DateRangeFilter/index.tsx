@@ -1,10 +1,10 @@
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css';
+
 import { Popover, Stack } from '@mui/material';
 import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
-
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css';
 
 import { ButtonPrimarySmall, ButtonTextSmall } from '@/devlink';
 import { ButtonFilter } from '@/devlink2';

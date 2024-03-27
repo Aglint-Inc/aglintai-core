@@ -11,10 +11,10 @@ import {
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
+import { ScoreWheelParams } from '../../Common/ScoreWheel';
 import { FormErrorParams } from './JobForm/JobForm';
 import { dbToClientjobPostForm, getSeedJobFormData } from './seedFormData';
 import { findDisclaimers, saveJobPostToDb } from './utils';
-import { ScoreWheelParams } from '../../Common/ScoreWheel';
 
 export type QuestionType = {
   id: string;

@@ -4,11 +4,11 @@ import { isArray } from 'lodash';
 import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import {
   CandidateSearchRes,
   CandidateSearchState,
 } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],

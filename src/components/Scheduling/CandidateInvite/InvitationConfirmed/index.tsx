@@ -14,9 +14,9 @@ import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/Compan
 import { CalendarEvent } from '@/src/utils/schedule-utils/types';
 import toast from '@/src/utils/toast';
 
-import { ApiResponse } from '../type';
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../AllSchedules/utils';
+import { ApiResponse } from '../type';
 
 function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
   return (

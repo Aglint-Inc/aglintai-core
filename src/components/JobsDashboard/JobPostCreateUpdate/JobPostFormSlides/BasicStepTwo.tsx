@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import { NewJobStep2 } from '@/devlink';
 
-import { useJobForm } from '../JobPostFormProvider';
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
+import { useJobForm } from '../JobPostFormProvider';
 
 const BasicStepTwo = ({ showWarnOnEdit }: { showWarnOnEdit?: () => void }) => {
   const {

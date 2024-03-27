@@ -13,8 +13,8 @@ import {
 } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { sendEmailFromAgent } from './init-agent';
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { sendEmailFromAgent } from './init-agent';
 
 export const config = {
   api: {

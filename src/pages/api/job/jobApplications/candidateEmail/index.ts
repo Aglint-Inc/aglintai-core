@@ -11,14 +11,14 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { type EmailTemplateType, type JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
+import { type ReadJobApplicationApi } from '../read';
+import { handleRead } from '../read/utils';
 import {
   readCandidates,
   readSomeCandidates,
   sendMails,
   updateApplication,
 } from './utils';
-import { type ReadJobApplicationApi } from '../read';
-import { handleRead } from '../read/utils';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

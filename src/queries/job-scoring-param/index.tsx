@@ -2,10 +2,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { jobScoringParamKeys } from './keys';
 import { jobQueryKeys } from '../job/keys';
 import { Job } from '../job/types';
 import { useCurrentJob } from '../job-assessment/keys';
+import { jobScoringParamKeys } from './keys';
 
 export const useJobScoringPoll = () => {
   const queryClient = useQueryClient();

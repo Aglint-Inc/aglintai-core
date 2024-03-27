@@ -6,9 +6,9 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 
-import { debouncedSave } from '../utils';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
+import { debouncedSave } from '../utils';
 
 const CompanyJdComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();

@@ -1,6 +1,6 @@
-import { getAIResponse } from '.';
 import { MessageType } from '../types';
 import { requestJson } from '../utils';
+import { getAIResponse } from '.';
 
 export const generateInterviewQns = async (
   prevQns: string[],

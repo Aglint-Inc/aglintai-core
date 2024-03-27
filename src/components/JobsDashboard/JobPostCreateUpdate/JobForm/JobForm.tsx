@@ -25,8 +25,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import CloseJobPopup from './CloseJobPopup';
-import JobPublishButton from './PublishButton';
+import MuiPopup from '../../../Common/MuiPopup';
 import { copyJobForm } from '../copies/copyJobForm';
 import { JobFormState, useJobForm } from '../JobPostFormProvider';
 import ScreeningSettings from '../JobPostFormSlides/Assessment';
@@ -46,7 +45,8 @@ import {
   slidePathToNum,
   supabaseWrap,
 } from '../utils';
-import MuiPopup from '../../../Common/MuiPopup';
+import CloseJobPopup from './CloseJobPopup';
+import JobPublishButton from './PublishButton';
 
 export type JobFormErrorParams = {
   jobTitle: string;

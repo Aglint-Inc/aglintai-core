@@ -8,6 +8,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import UITextField from '../../Common/UITextField';
+import UITypography from '../../Common/UITypography';
 import AddToListComp from './AddToList';
 import CandidateDetail from './CdDetails';
 import CdTableRecords from './CdTableRecords';
@@ -35,8 +37,6 @@ import {
 } from './types';
 import { processCandidatesInBatches } from './utils';
 import ViewSavedList from './ViewSavedList';
-import UITextField from '../../Common/UITextField';
-import UITypography from '../../Common/UITypography';
 
 function AppoloSearch() {
   const router = useRouter();

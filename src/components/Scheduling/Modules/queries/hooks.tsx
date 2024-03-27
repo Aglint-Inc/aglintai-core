@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
+import { PauseType } from '../ModuleMembers/type';
+import { MemberType, ModuleType, PauseJson } from '../types';
 import { QueryKeysInteviewModules } from './type';
 import {
   addMemberbyUserIds,
@@ -16,8 +18,6 @@ import {
   resumePauseDbUpdate,
   updatePauseJsonByUserId
 } from './utils';
-import { PauseType } from '../ModuleMembers/type';
-import { MemberType, ModuleType, PauseJson } from '../types';
 
 export const useAllInterviewModules = () => {
   const { recruiter } = useAuthDetails();

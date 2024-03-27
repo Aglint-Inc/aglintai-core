@@ -18,9 +18,9 @@ import UITypography from '@/src/components/Common/UITypography';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';
 import toast from '@/src/utils/toast';
 
-import { isAutoGenJson, removeAutogenJson } from './BasicStepTwo';
 import { JdJsonType, JobFormState, useJobForm } from '../JobPostFormProvider';
 import { API_FAIL_MSG } from '../utils';
+import { isAutoGenJson, removeAutogenJson } from './BasicStepTwo';
 
 type ScoreParam = {
   paramKey: string;

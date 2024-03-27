@@ -12,8 +12,8 @@ import {
 } from '@/src/queries/job';
 import { JobInsert } from '@/src/queries/job/types';
 
-import { JobTypeDashboard } from './types';
 import { hashCode } from '../JobDashboard/hooks';
+import { JobTypeDashboard } from './types';
 
 const useJobActions = () => {
   const { recruiter } = useAuthDetails();

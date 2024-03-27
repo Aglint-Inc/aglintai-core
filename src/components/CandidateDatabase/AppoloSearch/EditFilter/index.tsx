@@ -17,6 +17,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import FilterInput from '../../Search/FilterInput';
 import {
   setCandidateHistory,
   setCandidates,
@@ -29,7 +30,6 @@ import {
 } from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { employeeRange, initialQuery, updateCredits } from '../utils';
-import FilterInput from '../../Search/FilterInput';
 
 function EditFilter() {
   const router = useRouter();

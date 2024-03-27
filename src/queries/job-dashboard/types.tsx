@@ -1,7 +1,7 @@
 import { TransformSchedule } from '@/src/components/Scheduling/Modules/types';
 
-import { resumeMatchRPCFormatter } from '.';
 import { Assessment } from '../assessment/types';
+import { resumeMatchRPCFormatter } from '.';
 
 export type DashboardTypes = {
   assessments: Assessment[];

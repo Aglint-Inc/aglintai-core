@@ -9,9 +9,9 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
-import JobAssessment from './list';
 import Loader from '../Common/Loader';
 import AssessmentResetWrapper from '../NewAssessment/Common/wrapper/resetWrapper';
+import JobAssessment from './list';
 
 const JobAssessmentDashboard = () => {
   const { initialLoad } = useJobs();

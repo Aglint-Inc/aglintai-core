@@ -3,9 +3,9 @@ import { get, isEmpty } from 'lodash';
 import { JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
 import { FormErrorParams } from './JobForm/JobForm';
 import { FormJobType, JobFormState } from './JobPostFormProvider';
-import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
 
 export const supabaseWrap = <T extends unknown, U extends unknown>({
   data,

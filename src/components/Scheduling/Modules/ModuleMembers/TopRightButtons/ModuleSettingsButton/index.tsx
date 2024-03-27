@@ -2,9 +2,9 @@ import React from 'react';
 
 import { ButtonSetting } from '@/devlink2';
 
-import ModuleSettingDrawer from '../ModuleSettingDrawer';
 import { setIsModuleSettingsDialogOpen } from '../../../store';
 import { ModuleType } from '../../../types';
+import ModuleSettingDrawer from '../ModuleSettingDrawer';
 
 function ModuleSettingsButton({ editModule }: { editModule: ModuleType }) {
   return (

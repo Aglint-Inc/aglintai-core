@@ -1,5 +1,5 @@
-import { getAIResponse } from '.';
 import { MessageType } from '../types';
+import { getAIResponse } from '.';
 
 export type JDGenParams = {
   companyOverview?: string;

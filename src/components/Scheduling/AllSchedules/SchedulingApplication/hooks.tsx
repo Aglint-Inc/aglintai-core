@@ -8,6 +8,9 @@ import { BodyParams } from '@/src/pages/api/scheduling/v2/find_availability';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { MemberType } from '../../Modules/types';
+import { ApplicationList } from '../store';
+import { mailHandler } from '../utils';
 import {
   setDateRange,
   setFetchingPlan,
@@ -23,9 +26,6 @@ import {
   setStep,
   useSchedulingApplicationStore,
 } from './store';
-import { ApplicationList } from '../store';
-import { mailHandler } from '../utils';
-import { MemberType } from '../../Modules/types';
 
 export const useGetScheduleOptions = () => {
   const findScheduleOptions = async ({

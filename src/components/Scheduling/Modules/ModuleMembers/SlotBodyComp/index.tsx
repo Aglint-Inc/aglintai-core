@@ -4,19 +4,19 @@ import { InterviewMemberList } from '@/devlink2';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
-import SlotQualifiedMembers from './SlotQualifiedMembers';
-import SlotTrainingMembers from './SlotTrainingMembers';
-import AddMemberDialog from '../AddMemberDialog';
-import DeleteMemberDialog from '../DeleteMemberDialog';
-import PauseDialog from '../PauseDialog';
-import ResumeMemberDialog from '../ResumeMemberDialog';
+import ModuleSchedules from '../../../Common/ModuleSchedules';
 import {
   useAllSchedulesByModuleId,
   useGetMeetingsByModuleId,
 } from '../../queries/hooks';
 import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
 import { ModuleType } from '../../types';
-import ModuleSchedules from '../../../Common/ModuleSchedules';
+import AddMemberDialog from '../AddMemberDialog';
+import DeleteMemberDialog from '../DeleteMemberDialog';
+import PauseDialog from '../PauseDialog';
+import ResumeMemberDialog from '../ResumeMemberDialog';
+import SlotQualifiedMembers from './SlotQualifiedMembers';
+import SlotTrainingMembers from './SlotTrainingMembers';
 
 interface SlotBodyCompProps {
   editModule: ModuleType;

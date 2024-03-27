@@ -16,10 +16,10 @@ import { SocialsType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
+import { stepObj } from '../SlideSignup/utils';
 
 function SelectAtsSystem() {
   const { setStep } = useSignupDetails();

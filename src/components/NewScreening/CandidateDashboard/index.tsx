@@ -20,11 +20,11 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import SideBar from '../SideBar/SideBar';
-import { CandidateScreeningType } from '../types';
 import Icon from '../../Common/Icons/Icon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
+import SideBar from '../SideBar/SideBar';
+import { CandidateScreeningType } from '../types';
 
 const CandidateDashboard = () => {
   const { recruiter_id } = useAuthDetails();

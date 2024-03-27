@@ -17,8 +17,7 @@ import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import GetScheduleOptions from './GetScheduleOptions';
-import SendCandidateDialog from './GetScheduleOptions/SendCandidateDialog';
+import { filterRecordsByDate, getAllUniqueDates } from '../../utils';
 import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import InterviewPlanCardComp from '../Common/InterviewPlanCardComp';
 import SchedulingOptionComp from '../Common/ScheduleOption';
@@ -27,7 +26,8 @@ import {
   setIsViewProfileOpen,
   useSchedulingApplicationStore,
 } from '../store';
-import { filterRecordsByDate, getAllUniqueDates } from '../../utils';
+import GetScheduleOptions from './GetScheduleOptions';
+import SendCandidateDialog from './GetScheduleOptions/SendCandidateDialog';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

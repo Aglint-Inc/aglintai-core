@@ -11,9 +11,9 @@ import { SocialsType } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
+import { stepObj } from '../SlideSignup/utils';
 
 interface Details {
   website: string;

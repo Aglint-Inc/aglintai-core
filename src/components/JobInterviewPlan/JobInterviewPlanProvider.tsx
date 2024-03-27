@@ -7,6 +7,11 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { fetchInterviewModule } from '../Scheduling/Modules/utils';
 import { initialState, initilizeIntPlan } from './store';
 import {
   InterviewModuleDbType,
@@ -14,11 +19,6 @@ import {
   InterviewSession,
   IntwerviewerPlanType,
 } from './types';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
-import { fetchInterviewModule } from '../Scheduling/Modules/utils';
 
 const JobInterviewPlanHoc = ({ children }) => {
   const router = useRouter();

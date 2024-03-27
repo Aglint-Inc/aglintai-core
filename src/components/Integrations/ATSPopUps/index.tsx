@@ -12,10 +12,10 @@ import {
 } from '@/devlink3';
 import toast from '@/src/utils/toast';
 
-import Loader from '../Loader';
-import { PopUpReasonTypes } from '../types';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
+import Loader from '../Loader';
+import { PopUpReasonTypes } from '../types';
 
 function ATSPopUps({
   isOpen,

@@ -31,6 +31,12 @@ import {
 import { ConfirmationPopup } from '@/devlink3';
 import toast from '@/src/utils/toast';
 
+import FilterInput from '../../CandidateDatabase/Search/FilterInput';
+import Icon from '../../Common/Icons/Icon';
+import { ShowCode } from '../../Common/ShowCode';
+import UITextField from '../../Common/UITextField';
+import SchedulingEmailTemplates from '../SchedulingEmailTemplates';
+import { settingSubNavItem } from '../SubNav/utils';
 import DateSelect from './Components/DateSelector';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
@@ -42,12 +48,6 @@ import {
   WeeklyLimitType,
 } from './types';
 import { hoursList } from './utils';
-import SchedulingEmailTemplates from '../SchedulingEmailTemplates';
-import { settingSubNavItem } from '../SubNav/utils';
-import FilterInput from '../../CandidateDatabase/Search/FilterInput';
-import Icon from '../../Common/Icons/Icon';
-import { ShowCode } from '../../Common/ShowCode';
-import UITextField from '../../Common/UITextField';
 let schedulingSettingObj = {};
 let changeValue = null;
 

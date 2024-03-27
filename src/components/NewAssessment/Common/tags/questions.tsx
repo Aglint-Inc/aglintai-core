@@ -4,8 +4,8 @@ import React from 'react';
 
 import { type AssessmentQuestion } from '@/src/queries/assessment/types';
 
-import AssessmentQuestionIcon from '../icons/questions';
 import { getSafeQuestionType } from '../../utils';
+import AssessmentQuestionIcon from '../icons/questions';
 
 const QuestionTags: React.FC<{ type: AssessmentQuestion['type'] }> = ({
   type,

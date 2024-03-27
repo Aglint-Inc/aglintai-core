@@ -65,9 +65,6 @@ import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/can
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import ResumePreviewer from './ResumePreviewer';
-// import ConversationCard from './ConversationCard';
-import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import EmailIcon from '../../Common/Icons/emailIcon';
@@ -93,6 +90,9 @@ import {
   handleOngoingWarning,
   mapScoreToAnalysis,
 } from '../../utils';
+// import ConversationCard from './ConversationCard';
+import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
+import ResumePreviewer from './ResumePreviewer';
 
 const ApplicationDetails = ({
   open,

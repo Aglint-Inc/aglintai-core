@@ -21,6 +21,10 @@ import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/uti
 import { EmailTemplateType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
+import { useJobDetails } from '../JobDashboard';
+import { hashCode } from '../JobDashboard/hooks';
+import { useJobs } from '../JobsContext';
+import { CountJobs } from '../JobsContext/types';
 import {
   CardStateManager,
   JobApplication,
@@ -29,10 +33,6 @@ import {
   Parameters,
 } from './types';
 import { getRange, recalculateDbAction, rescoreDbAction } from './utils';
-import { useJobDetails } from '../JobDashboard';
-import { hashCode } from '../JobDashboard/hooks';
-import { useJobs } from '../JobsContext';
-import { CountJobs } from '../JobsContext/types';
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
   // eslint-disable-next-line no-unused-vars

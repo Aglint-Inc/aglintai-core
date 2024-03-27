@@ -5,9 +5,9 @@ import { CreateNewJob } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
+import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import ScreeningComp from './TemplateComps/ScreeningComp';
 import ScreeningSideBar from './TemplateComps/SideBar';
-import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 
 export const ScreeningDashboardBread = () => {
   const router = useRouter();

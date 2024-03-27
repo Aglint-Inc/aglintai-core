@@ -10,13 +10,13 @@ import {
 } from '@/devlink2';
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
 
+import { useRecommendationCardDrop } from '../hooks';
+import useAssessmentStore from '../Stores';
+import { getQuestionDefaults } from '../utils';
 import { useAssessment } from './context';
 import AssessmentQuestionEditor from './editor';
 import AssessmentQuestions from './questions';
 import AssessmentRecommendations from './recommendations';
-import { useRecommendationCardDrop } from '../hooks';
-import useAssessmentStore from '../Stores';
-import { getQuestionDefaults } from '../utils';
 
 const AssessmentPageBody = () => {
   const {

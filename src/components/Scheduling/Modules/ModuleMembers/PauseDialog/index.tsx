@@ -8,13 +8,13 @@ import { useMemo, useState } from 'react';
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
 
-import { PauseType } from '../type';
 import { usePauseHandler } from '../../queries/hooks';
 import {
   setIsPauseDialogOpen,
   setPauseJson,
   useModulesStore,
 } from '../../store';
+import { PauseType } from '../type';
 
 function PauseDialog() {
   const isPauseDialogOpen = useModulesStore((state) => state.isPauseDialogOpen);

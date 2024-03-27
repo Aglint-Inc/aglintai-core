@@ -14,8 +14,8 @@ import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import { Form, JobForms } from './form';
 import Loader from '../Common/Loader';
+import { Form, JobForms } from './form';
 
 const JobCreate = () => {
   const { recruiter } = useAuthDetails();

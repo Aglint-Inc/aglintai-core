@@ -12,9 +12,9 @@ import {
 import { CountJobs } from '@/src/context/JobsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
+import AUIButton from '../../Common/AUIButton';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
-import AUIButton from '../../Common/AUIButton';
 
 const MoveCandidate: React.FC<{
   applicationLimit: CountJobs;

@@ -5,14 +5,14 @@ import { Breadcrum, PageLayout } from '@/devlink2';
 import { BodyWithSidePanel, DarkPill, ScheduleDetailTabs } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
 
+import Loader from '../../Common/Loader';
+import { ShowCode } from '../../Common/ShowCode';
+import { TransformSchedule } from '../Modules/types';
 import CandidateInfo from './CandidateDetails';
 import Feedback from './Feedback';
 import Instructions from './Instructions';
 import Overview from './Overview';
 import RightPanel from './RightPanel';
-import { TransformSchedule } from '../Modules/types';
-import Loader from '../../Common/Loader';
-import { ShowCode } from '../../Common/ShowCode';
 
 function SchedulingViewComp() {
   const router = useRouter();

@@ -43,11 +43,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import DashboardBarChart from './BarChart';
-import DashboardDoughnutChart from './Doughnut';
-import DashboardLineChart from './LineChart';
-import ScoringCandidatesLottie from './Lotties/scoringCandidatesLottie';
-import TenureAndExpSummary from './TenureAndExpSummary';
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
@@ -60,6 +55,11 @@ import { AddCandidates } from '../../JobApplicationsDashboard';
 import PublishButton from '../../publishButton';
 import IconScheduleType from '../../Scheduling/AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../Scheduling/AllSchedules/utils';
+import DashboardBarChart from './BarChart';
+import DashboardDoughnutChart from './Doughnut';
+import DashboardLineChart from './LineChart';
+import ScoringCandidatesLottie from './Lotties/scoringCandidatesLottie';
+import TenureAndExpSummary from './TenureAndExpSummary';
 
 const JobDashboard = () => {
   const { initialLoad, job } = useJobDetails();

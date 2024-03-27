@@ -8,9 +8,9 @@ import { Job } from '@/src/queries/job/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import UITextField from '../../../Common/UITextField';
 import { useJobForm } from '../JobPostFormProvider';
 import { supabaseWrap } from '../utils';
-import UITextField from '../../../Common/UITextField';
 
 const CloseJobPopup = ({ onClose }) => {
   const { handleUIJobUpdate } = useJobs();

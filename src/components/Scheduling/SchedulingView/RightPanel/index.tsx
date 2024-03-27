@@ -17,12 +17,12 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import DeleteScheduleDialog from './DeleteDialog';
-import RescheduleDialog from './RescheduleDialog';
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
 import SchedulingOptionComp from '../../AllSchedules/SchedulingApplication/Common/ScheduleOption';
 import { getScheduleType } from '../../AllSchedules/utils';
 import { TransformSchedule } from '../../Modules/types';
+import DeleteScheduleDialog from './DeleteDialog';
+import RescheduleDialog from './RescheduleDialog';
 
 // import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
 // import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';

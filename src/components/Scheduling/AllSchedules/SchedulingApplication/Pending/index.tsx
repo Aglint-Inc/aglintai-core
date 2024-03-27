@@ -6,6 +6,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import SchedulingOptionComp from '../Common/ScheduleOption';
 import {
@@ -13,7 +14,6 @@ import {
   setSchedulingOptions,
   useSchedulingApplicationStore,
 } from '../store';
-import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 
 function PendingConfirmed() {
   const selectedApplication = useSchedulingApplicationStore(

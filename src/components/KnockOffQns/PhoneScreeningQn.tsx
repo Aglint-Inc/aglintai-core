@@ -7,14 +7,14 @@ import { Checkbox, PhoneScreeningQ } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
 
+import UITypography from '../Common/UITypography';
+import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyLogo from './CompanyLogo';
 import {
   PhoneScreeningResponseType,
   useScreeningCtx,
 } from './ScreeningCtxProvider';
 import { phoneScreenEmail } from './utils';
-import UITypography from '../Common/UITypography';
-import { API_FAIL_MSG } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 const PhoneScreeningQn = ({ path, qnNo }) => {
   const { state, updateState } = useScreeningCtx();

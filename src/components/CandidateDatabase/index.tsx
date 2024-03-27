@@ -28,10 +28,7 @@ import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { Candidate } from './AppoloSearch/types';
-import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
-import EmptyState from './Search/EmptyState';
-import { getRelevantCndidates } from './utils';
+import { CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
@@ -39,7 +36,10 @@ import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
-import { CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { Candidate } from './AppoloSearch/types';
+import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
+import EmptyState from './Search/EmptyState';
+import { getRelevantCndidates } from './utils';
 
 function CandidateSearchHistory() {
   const router = useRouter();

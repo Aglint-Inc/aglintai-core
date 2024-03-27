@@ -34,9 +34,9 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Icon from '../Common/Icons/Icon';
 import ThankYou from './ThankYouLottie';
 import UploadDB from './UploadDB';
-import Icon from '../Common/Icons/Icon';
 
 interface JobsListProps {
   post: JobTypeDB;

@@ -10,11 +10,11 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useCreateAssessment } from '@/src/queries/assessment';
 
+import useAssessmentStore from '../../Stores';
 import SelectionComp from '../components/selection';
 import LevelTag from '../tags/levels';
 import ModeTags from '../tags/modes';
 import TypeTags from '../tags/types';
-import useAssessmentStore from '../../Stores';
 
 export type CreateEditPayload = Parameters<
   ReturnType<typeof useCreateAssessment>['mutation']['mutate']

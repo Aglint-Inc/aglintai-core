@@ -5,10 +5,10 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
+import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 import CandidateDetailsJobDrawer from '../Common/CandidateDetailsJob';
 import SchedulingOptionComp from '../Common/ScheduleOption';
 import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
-import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 
 function ConfirmedComp() {
   const selectedApplication = useSchedulingApplicationStore(

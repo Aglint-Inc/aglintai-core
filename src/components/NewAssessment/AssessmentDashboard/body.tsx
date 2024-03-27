@@ -8,9 +8,9 @@ import {
 } from '@/devlink2';
 import { useAllAssessments } from '@/src/queries/assessment';
 
-import AssessmentCard from './card';
 import OptimisticWrapper from '../Common/wrapper/loadingWapper';
 import useAssessmentStore from '../Stores';
+import AssessmentCard from './card';
 
 const AssessmentDashboardBody = () => {
   return <AssessmentLandingBody slotAssessmentCards={<AssessmentGroups />} />;

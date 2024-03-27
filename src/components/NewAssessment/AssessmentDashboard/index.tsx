@@ -1,8 +1,8 @@
 import { Breadcrum, PageLayout } from '@/devlink2';
 
+import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 import AssessmentDashboardActions from './actions';
 import AssessmentDashboardBody from './body';
-import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 
 const AssessmentDashboard = () => {
   return (

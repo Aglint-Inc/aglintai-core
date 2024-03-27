@@ -8,14 +8,14 @@ import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
-import JobsList from './JobsList';
-import { searchJobs, sortJobs } from './utils';
 import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 import { stepObj } from '../SignUpComp/SlideSignup/utils';
+import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import JobsList from './JobsList';
+import { searchJobs, sortJobs } from './utils';
 
 const DashboardComp = () => {
   const router = useRouter();

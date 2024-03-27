@@ -23,6 +23,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 import { AgentActivityType } from '@/src/types/data.types';
 
+import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
 import Activity from './Activity';
 import ActivityDrawer from './ActivityDrawer';
 import ChatBlockAssistant from './ChatBlockAssistant/ChatAssistant';
@@ -41,7 +42,6 @@ import {
   useSchedulingAgentStore,
 } from './store';
 import SuggetionCards from './SuggestionCards';
-import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
 
 dayjs.extend(relativeTime);
 export type AisubmitHandlerParams = {

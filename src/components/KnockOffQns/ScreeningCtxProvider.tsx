@@ -15,12 +15,12 @@ import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningC
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { defaultLogo } from './utils';
 import { PhoneScreenQuestion } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { defaultLogo } from './utils';
 
 type PhoneScreenCandQnType = Omit<PhoneScreenQuestion, 'options'>;
 export interface PhoneScreeningResponseType extends PhoneScreenCandQnType {

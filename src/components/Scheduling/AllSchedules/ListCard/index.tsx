@@ -11,9 +11,9 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import IconScheduleType from './Icon';
 import { ApplicationList } from '../store';
 import { getScheduleType } from '../utils';
+import IconScheduleType from './Icon';
 
 function ListCardInterviewSchedule({
   app,

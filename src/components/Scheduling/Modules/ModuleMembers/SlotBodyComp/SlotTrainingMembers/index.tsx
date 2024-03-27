@@ -9,9 +9,6 @@ import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMai
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import MoveToQualifiedDialog from '../../MoveToQualified';
-import ProgressDrawer from '../../ProgressDrawer';
-import { ProgressUserType } from '../../type';
 import {
   useGetMeetingsByModuleId,
   useProgressModuleUsers,
@@ -27,6 +24,9 @@ import {
   useModulesStore,
 } from '../../../store';
 import { ModuleType } from '../../../types';
+import MoveToQualifiedDialog from '../../MoveToQualified';
+import ProgressDrawer from '../../ProgressDrawer';
+import { ProgressUserType } from '../../type';
 
 function SlotTrainingMembers({
   editModule,

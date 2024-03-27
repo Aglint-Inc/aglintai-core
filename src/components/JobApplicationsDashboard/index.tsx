@@ -42,6 +42,9 @@ import {
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
 
+import Loader from '../Common/Loader';
+import RefreshButton from '../Common/RefreshButton';
+import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
 import ApplicationCard, { CustomDragLayer } from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import DeleteCandidate from './CandidateActions/deleteCandidates';
@@ -57,9 +60,6 @@ import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
-import Loader from '../Common/Loader';
-import RefreshButton from '../Common/RefreshButton';
-import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();

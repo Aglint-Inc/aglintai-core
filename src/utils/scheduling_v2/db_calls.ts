@@ -9,10 +9,10 @@ import {
   RecruiterUserType,
 } from '@/src/types/data.types';
 
-import { CompServiceKeyCred, IntervMeta } from './types';
-import { decrypt } from './utils';
 import { getFullName } from '../jsonResume';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { CompServiceKeyCred, IntervMeta } from './types';
+import { decrypt } from './utils';
 
 export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
   const [rec] = supabaseWrap(

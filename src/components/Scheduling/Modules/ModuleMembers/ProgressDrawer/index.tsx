@@ -5,10 +5,10 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
 
-import SessionCard from './SessionCard';
-import { ProgressUserType } from '../type';
 import { setIsProgressDialaogOpen, useModulesStore } from '../../store';
 import { ModuleType } from '../../types';
+import { ProgressUserType } from '../type';
+import SessionCard from './SessionCard';
 
 function ProgressDrawer({
   module,

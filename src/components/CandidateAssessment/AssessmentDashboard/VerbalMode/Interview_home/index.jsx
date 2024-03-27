@@ -7,19 +7,19 @@ import { DisconnectInterviewModal, NewInterviewScreen } from '@/devlink';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 
+import MuiAvatar from '../../../../Common/MuiAvatar';
+import MuiPopup from '../../../../Common/MuiPopup';
+import SidePanelDrawer from '../../../../Common/SidePanelDrawer';
+import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
 import CandidatePanel from './CandidatePanel';
 import VideoCandidatePanel from './CandidatePanel/VideoCandidatePanel';
 import InterviewerPanel from './InterviewerPanel';
 import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
-import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
-import MuiAvatar from '../../../../Common/MuiAvatar';
-import MuiPopup from '../../../../Common/MuiPopup';
-import SidePanelDrawer from '../../../../Common/SidePanelDrawer';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const {
     conversations,
     getFeedback,
@@ -32,7 +32,7 @@ function Interview_home() {
     disconnecting,
     videoAssessment,
   } = useInterviewContext();
-  const { assessmentDetails } = useCandidateAssessment()
+  const { assessmentDetails } = useCandidateAssessment();
 
   return (
     <Stack>

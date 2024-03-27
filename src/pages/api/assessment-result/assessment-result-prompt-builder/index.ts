@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { AssessmentResult } from '@/src/queries/assessment/types';
 
-import { getQnaPrompt } from './prompts';
 import { AssessmentResponse } from '../result';
+import { getQnaPrompt } from './prompts';
 
 export const getAssessmentAnalyses = async (
   responses: AssessmentResponse[],

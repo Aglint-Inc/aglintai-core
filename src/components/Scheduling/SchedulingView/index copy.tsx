@@ -16,14 +16,14 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Loader from '../../Common/Loader';
+import MuiAvatar from '../../Common/MuiAvatar';
+import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import CandidateDetailsJobDrawer from '../AllSchedules/SchedulingApplication/Common/CandidateDetailsJob';
 import SchedulingOptionComp from '../AllSchedules/SchedulingApplication/Common/ScheduleOption';
 import { getScheduleType } from '../AllSchedules/utils';
 import { TransformSchedule } from '../Modules/types';
-import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
-import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
 
 function SchedulingViewComp() {
   const router = useRouter();

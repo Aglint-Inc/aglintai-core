@@ -17,9 +17,9 @@ import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 import { palette } from '@/src/context/Theme/Theme';
 
+import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import KnowOffQn from './KnowOffQn';
 import { seedQns } from './utils';
-import { PhoneScreenQuestion } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 
 const ScreeningComp = () => {
   const [messageOpen, setMessageOpen] = useState<{

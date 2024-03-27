@@ -15,10 +15,10 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
+import Icon from '../Common/Icons/Icon';
 import CompanyList from './CompanyList';
 import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
-import Icon from '../Common/Icons/Icon';
 
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);

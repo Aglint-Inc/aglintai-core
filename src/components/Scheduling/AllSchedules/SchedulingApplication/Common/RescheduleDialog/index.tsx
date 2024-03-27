@@ -7,14 +7,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  setSelectedApplication,
-  useSchedulingApplicationStore
-} from '../../store';
-import {
   setIsCancelOpen,
   setIsRescheduleOpen,
   useInterviewSchedulingStore
 } from '../../../store';
+import {
+  setSelectedApplication,
+  useSchedulingApplicationStore
+} from '../../store';
 
 function RescheduleDialog() {
   const isRescheduleOpen = useInterviewSchedulingStore(

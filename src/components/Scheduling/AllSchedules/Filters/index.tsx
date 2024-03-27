@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { FilterType, useInterviewSchedulingStore } from '../store';
 import DateRangeFilterComp from './DateRangeFilter';
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
@@ -7,7 +8,6 @@ import FilterJob from './FilterJob';
 import FilterScheduleType from './FilterScheduleType';
 import FilterSearchField from './FilterSearchField';
 import FilterStatus from './FilterStatus';
-import { FilterType, useInterviewSchedulingStore } from '../store';
 
 function AllFilters() {
   const filterVisible = useInterviewSchedulingStore(

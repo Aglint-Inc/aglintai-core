@@ -11,10 +11,10 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
-import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import UIPhoneInput from '../../Common/UIPhoneInput';
+import useUploadCandidate from './hooks';
 
 type FormEntries = {
   first_name: FormField;

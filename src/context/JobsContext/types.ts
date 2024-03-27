@@ -1,9 +1,9 @@
 import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { Job } from '@/src/queries/job/types';
 
+import { JobApplicationSections } from '../JobApplicationsContext/types';
 // import { Assessment } from '@/src/queries/assessment/types';
 import useJobActions from './hooks';
-import { JobApplicationSections } from '../JobApplicationsContext/types';
 
 export type JobsData = {
   jobs: JobTypeDashboard[] | undefined;

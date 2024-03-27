@@ -7,10 +7,10 @@ import React from 'react';
 
 import { JobEditWarning, JobWarningList, NewJobStep1 } from '@/devlink';
 
-import { useJobForm } from '../JobPostFormProvider';
-import { isShoWWarn, slidePathToNum } from '../utils';
 import UISelect from '../../../Common/Uiselect';
 import UITextField from '../../../Common/UITextField';
+import { useJobForm } from '../JobPostFormProvider';
+import { isShoWWarn, slidePathToNum } from '../utils';
 const BasicStepOne = () => {
   const {
     jobForm: { formFields, formType, jobPostId },

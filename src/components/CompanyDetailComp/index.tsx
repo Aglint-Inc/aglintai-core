@@ -7,6 +7,7 @@ import { CompanySetting, NavSublink, SavedChanges } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 
+import LoaderGrey from '../Common/LoaderGrey';
 import CompanyInfoComp from './CompanyInfoComp';
 import { tabs } from './utils';
 import {
@@ -14,7 +15,6 @@ import {
   generateRoles,
   generateSpecialities,
 } from './utils';
-import LoaderGrey from '../Common/LoaderGrey';
 
 const CompanyDetailComp = () => {
   const router = useRouter();

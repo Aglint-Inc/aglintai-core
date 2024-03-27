@@ -16,9 +16,9 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Loader from '../../Common/Loader';
 import { Details, SignUpError } from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
-import Loader from '../../Common/Loader';
 
 const SlideTwoSignUp = () => {
   const router = useRouter();

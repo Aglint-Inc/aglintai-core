@@ -15,9 +15,9 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { QuestionnaireData } from '../types';
 import MuiPopup from '../../Common/MuiPopup';
 import UITextField from '../../Common/UITextField';
+import { QuestionnaireData } from '../types';
 
 const Screening = () => {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);

@@ -18,11 +18,11 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { StatusJobs } from '@/src/types/data.types';
 
-import { capitalize } from '../utils';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import SpecializedDatePicker from '../../Common/SpecializedDatePicker';
 import UITextField from '../../Common/UITextField';
+import { capitalize } from '../utils';
 
 const JobApplicationStatus = () => {
   const { job } = useJobApplications();

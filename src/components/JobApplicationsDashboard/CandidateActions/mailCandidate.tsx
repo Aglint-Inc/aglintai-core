@@ -12,12 +12,12 @@ import {
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 
+import AUIButton from '../../Common/AUIButton';
 import {
   getAssessmentStatus,
   getDisqualificationStatus,
   getScreeningStatus
 } from '../utils';
-import AUIButton from '../../Common/AUIButton';
 
 const MailCandidateDialog: React.FC<{
   open: boolean;

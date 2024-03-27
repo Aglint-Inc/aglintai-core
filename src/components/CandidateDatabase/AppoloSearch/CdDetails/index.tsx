@@ -15,6 +15,8 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import MuiAvatar from '../../../Common/MuiAvatar';
+import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
 import AddToListComp from '../AddToList';
 import {
   setCandidates,
@@ -24,8 +26,6 @@ import {
 } from '../store';
 import { Candidate } from '../types';
 import { updateCredits } from '../utils';
-import MuiAvatar from '../../../Common/MuiAvatar';
-import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
 
 function CandidateDetail() {
   const selectedCandidate = useCandidateStore(

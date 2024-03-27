@@ -6,11 +6,11 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import MySchedule from './MySchedule';
-import SubNav from './SubNav';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import SchedulingSettings from '../Scheduling/Settings';
 import { schedulingSettingType } from '../Scheduling/Settings/types';
+import MySchedule from './MySchedule';
+import SubNav from './SubNav';
 
 function InterviewerScheduling() {
   const { recruiterUser, setRecruiterUser } = useAuthDetails();

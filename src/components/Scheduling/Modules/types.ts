@@ -10,12 +10,12 @@ import {
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { ApplicationList } from '../AllSchedules/store';
-import { schedulingSettingType } from '../Settings/types';
 import {
   InterviewModuleDbType,
   InterviewPlanScheduleDbType,
 } from '../../JobInterviewPlan/types';
+import { ApplicationList } from '../AllSchedules/store';
+import { schedulingSettingType } from '../Settings/types';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;

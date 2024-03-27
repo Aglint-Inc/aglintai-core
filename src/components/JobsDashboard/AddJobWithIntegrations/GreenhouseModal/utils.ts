@@ -13,12 +13,12 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { POSTED_BY } from '../utils';
 import {
   ExtendedJobGreenhouse,
   GreenhouseApplication,
   JobGreenhouse,
 } from './types';
-import { POSTED_BY } from '../utils';
 
 export const createJobApplications = async (
   selectedLeverPostings: ExtendedJobGreenhouse[],

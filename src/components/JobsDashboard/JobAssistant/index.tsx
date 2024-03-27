@@ -21,15 +21,15 @@ import {
 } from '@/src/context/JobAssistant/utils';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 
-import CandidateCard from './CandidateCard';
-import ChatEditor, { SendIcon } from './ChatEditor';
-import DynamicSuggestion from './DynanicSuggetions';
-import LeftPanel from './LeftPannel';
 import EmptyState from '../../CandidateDatabase/Search/EmptyState';
 import Loader from '../../Common/Loader';
 import { CalculatingResumeScore } from '../../Common/Lotties/Calculating';
 import MuiAvatar from '../../Common/MuiAvatar';
 import ApplicationDetails from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
+import CandidateCard from './CandidateCard';
+import ChatEditor, { SendIcon } from './ChatEditor';
+import DynamicSuggestion from './DynanicSuggetions';
+import LeftPanel from './LeftPannel';
 function JobAssistant({ setMaximizeChat, maximizeChat }) {
   const { recruiter, recruiterUser } = useAuthDetails();
   const {

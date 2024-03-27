@@ -4,9 +4,9 @@ import { ReactNode } from 'react';
 
 import { ConfirmationPopup, DeletePopup } from '@/devlink3';
 
+import { ShowCode } from '../../Common/ShowCode';
 import Loader from '../Loader';
 import { SchedulingReasonTypes } from '../types';
-import { ShowCode } from '../../Common/ShowCode';
 
 function SchedulingPopUps({
   isOpen,

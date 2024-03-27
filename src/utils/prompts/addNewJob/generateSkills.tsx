@@ -1,6 +1,6 @@
-import { getAIResponse } from '.';
 import { MessageType } from '../types';
 import { requestJson } from '../utils';
+import { getAIResponse } from '.';
 
 const skills = {
   skills: ['Sample skill1', 'Sample skill2', 'Sample skill3'],

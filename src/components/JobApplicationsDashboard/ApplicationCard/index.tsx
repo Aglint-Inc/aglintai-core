@@ -32,9 +32,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 
-import { InvitedIcon } from './Icons/invited';
-import { SubmittedIcon } from './Icons/submitted';
-import { UninvitedIcon } from './Icons/uninvited';
+import ListCardInterviewSchedule from '../../Scheduling/AllSchedules/ListCard';
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
 import ResumeScore from '../Common/ResumeScore';
@@ -47,7 +45,9 @@ import {
   getScreeningStatus,
   mapScoreToAnalysis,
 } from '../utils';
-import ListCardInterviewSchedule from '../../Scheduling/AllSchedules/ListCard';
+import { InvitedIcon } from './Icons/invited';
+import { SubmittedIcon } from './Icons/submitted';
+import { UninvitedIcon } from './Icons/uninvited';
 
 const ApplicationCard = ({
   detailedView,

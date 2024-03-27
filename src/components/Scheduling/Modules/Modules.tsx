@@ -10,12 +10,12 @@ import {
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import CreateModuleDialog from './CreateModuleDialog';
-import { useAllInterviewModules } from './queries/hooks';
-import { resetModulesStore, useModulesStore } from './store';
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
+import CreateModuleDialog from './CreateModuleDialog';
+import { useAllInterviewModules } from './queries/hooks';
+import { resetModulesStore, useModulesStore } from './store';
 
 export function Modules() {
   const router = useRouter();

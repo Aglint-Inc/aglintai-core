@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { useModuleAndUsers } from '../queries/hooks';
 import Instructions from './Instructions';
 import SlotBodyComp from './SlotBodyComp';
 import TopRightButtons from './TopRightButtons';
-import { useModuleAndUsers } from '../queries/hooks';
 
 function ModuleMembersComp() {
   const router = useRouter();

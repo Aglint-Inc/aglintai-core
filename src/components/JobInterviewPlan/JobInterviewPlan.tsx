@@ -10,14 +10,14 @@ import { Breadcrum, InterviewCordinator, PageLayout } from '@/devlink2';
 import { InterviewPlan } from '@/devlink3';
 import { palette } from '@/src/context/Theme/Theme';
 
+import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
+import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
+import { reorder } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/reorder';
 import EditModule from './EditModule';
 import InterviewModuleC from './InterviewModuleC';
 import { handleUpdateDb, useInterviewPlan } from './store';
 import { InterviewSession } from './types';
 import { filterAddedModules } from './utils';
-import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
-import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
-import { reorder } from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/reorder';
 
 const JobInterviewPlan = () => {
   const {

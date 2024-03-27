@@ -16,11 +16,11 @@ import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import { debouncedSave } from '../utils';
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { emailTempKeys } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/EmailTemplates';
+import { debouncedSave } from '../utils';
 
 const EmailTemplate = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();

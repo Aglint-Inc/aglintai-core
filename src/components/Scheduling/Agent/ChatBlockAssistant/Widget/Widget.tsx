@@ -1,6 +1,6 @@
+import { FunctionResponse } from '../../types';
 import SelectPanel from './SchedulingFlow/SelectPanel';
 import SelectUsers from './SchedulingFlow/SelectUsers';
-import { FunctionResponse } from '../../types';
 
 function WidgetComp({
   functionResp,

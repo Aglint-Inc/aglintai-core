@@ -4,9 +4,9 @@ import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { InterviewContextProvider } from '@/src/context/InterviewContext';
 import ScreenSizeProvider from '@/src/context/ResizeWindow/ResizeWindow';
 
+import Loader from '../../Common/Loader';
 import ClassicMode from './ClassicMode';
 import VerbalMode from './VerbalMode';
-import Loader from '../../Common/Loader';
 
 function AssessmentDashboard() {
   const { fetching, selectedAssessment } = useCandidateAssessment();

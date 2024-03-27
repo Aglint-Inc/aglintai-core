@@ -10,9 +10,9 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CsvUploadApi } from '@/src/pages/api/job/jobApplications/candidateUpload/types';
 import toast from '@/src/utils/toast';
 
-import CandidatesListTable from './CandidatesListTable';
-import useUploadCandidate from '../ImportManualCandidates/hooks';
 import AUIButton from '../../Common/AUIButton';
+import useUploadCandidate from '../ImportManualCandidates/hooks';
+import CandidatesListTable from './CandidatesListTable';
 
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 

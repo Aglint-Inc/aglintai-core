@@ -10,8 +10,8 @@ import { ButtonPrimaryRegular } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import toast from '@/src/utils/toast';
 
-import { ApiResponse } from '../type';
 import { transformData } from '../../AllSchedules/utils';
+import { ApiResponse } from '../type';
 
 function CheckAvailibility({
   changeTime,

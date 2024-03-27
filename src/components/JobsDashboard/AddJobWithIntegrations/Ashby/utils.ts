@@ -10,8 +10,8 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
 import { POSTED_BY } from '../utils';
+import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
 
 export const fetchAllCandidates = async (
   apiKey: string,

@@ -26,6 +26,8 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import LoaderLever from '../Loader';
+import { POSTED_BY } from '../utils';
 import FetchingJobsLever from './Loader';
 import {
   createJobApplications,
@@ -34,8 +36,6 @@ import {
   fetchAllJobs,
   getLeverStatusColor
 } from './utils';
-import LoaderLever from '../Loader';
-import { POSTED_BY } from '../utils';
 
 export function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();

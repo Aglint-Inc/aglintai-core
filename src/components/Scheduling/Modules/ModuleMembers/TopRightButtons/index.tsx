@@ -3,10 +3,10 @@ import React from 'react';
 
 import { MoreButton } from '@/devlink3';
 
-import DeleteModuleDialog from './DeleteModuleDialog';
-import ModuleSettingsButton from './ModuleSettingsButton';
 import { setIsDeleteModuleDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
+import DeleteModuleDialog from './DeleteModuleDialog';
+import ModuleSettingsButton from './ModuleSettingsButton';
 
 function TopRightButtons({ editModule }: { editModule: ModuleType }) {
   return (

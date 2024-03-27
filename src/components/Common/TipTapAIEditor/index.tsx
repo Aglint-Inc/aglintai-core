@@ -11,12 +11,11 @@ import { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useState } from 'react';
 
-import styles from './TipTapAIEditor.module.scss';
-
 import { SkeletonParagraph } from '@/devlink2';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
 import MenuBtns from './MenuBtns';
+import styles from './TipTapAIEditor.module.scss';
 
 export type TipTapAIEditorParams = {
   placeholder: string;

@@ -7,8 +7,8 @@ import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { InterviewModuleType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { convertNumberToWord } from '../../utils';
 import { MemberType } from '../../../Modules/types';
+import { convertNumberToWord } from '../../utils';
 
 function InterviewPlanCardComp({
   plan,

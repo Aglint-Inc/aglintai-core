@@ -28,11 +28,11 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import LoaderLever from '../Loader';
+import { POSTED_BY } from '../utils';
 import FetchingJobsLever from './Loader';
 import { JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
-import LoaderLever from '../Loader';
-import { POSTED_BY } from '../utils';
 
 export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();

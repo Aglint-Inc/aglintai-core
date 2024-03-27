@@ -1,14 +1,18 @@
 import { Drawer, Stack } from '@mui/material';
 
-import { setEmailOutReach, useCandidateStore } from '../store';
 import EmailOutReach from '../../Database/EmailOutReach/EmailOutReach';
 import EmailOutReachMultiple from '../../Database/EmailOutReach/EmailOutReachMultiple';
 import { OutReachCtxProvider } from '../../Database/EmailOutReach/OutReachCtx';
+import { setEmailOutReach, useCandidateStore } from '../store';
 
 function EmailOutReachComp() {
   const emailOutReach = useCandidateStore((state) => state.emailOutReach);
-  const selectedCandidate = useCandidateStore((state) => state.selectedCandidate);
-  const selectedCandidates = useCandidateStore((state) => state.selectedCandidates);
+  const selectedCandidate = useCandidateStore(
+    (state) => state.selectedCandidate,
+  );
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
+  );
 
   const selCands = selectedCandidates.map((candidate) => {
     return {

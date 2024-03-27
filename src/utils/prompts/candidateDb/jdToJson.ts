@@ -2,10 +2,10 @@ import { get } from 'lodash';
 
 import { CandidateSearchState } from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 
-import { similarJobs } from './similarJobs';
-import { similarSkills } from './similarSkills';
 import { extractJson } from '../addNewJob';
 import { MessageType } from '../types';
+import { similarJobs } from './similarJobs';
+import { similarSkills } from './similarSkills';
 
 interface JobDetails {
   jobRoles: string[];

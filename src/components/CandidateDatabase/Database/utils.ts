@@ -1,8 +1,8 @@
 import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { Candidate } from './candFilter.type';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { Candidate } from './candFilter.type';
 
 type CandidateSearchType = {
   candidate_id: string;

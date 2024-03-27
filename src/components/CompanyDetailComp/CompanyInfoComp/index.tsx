@@ -7,19 +7,19 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import AddDepartmentsDialog from './AddDepartmentsDialog';
-import AddLocationDialog from './AddLocationDialog';
-import AddRolesDialog from './AddRolesDialog';
-import AddSpecialityDialog from './AddSpecialityDialog';
-import SocialComp from './SocialComp';
+import ImageUpload from '../../Common/ImageUpload';
+import UITextField from '../../Common/UITextField';
 import AssessmentSettings from '../AssessmentSettings';
 import Assistant from '../Assistant';
 import CompanyJdComp from '../CompanyJdComp';
 import EmailTemplate from '../EmailTemplate';
 import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
-import ImageUpload from '../../Common/ImageUpload';
-import UITextField from '../../Common/UITextField';
+import AddDepartmentsDialog from './AddDepartmentsDialog';
+import AddLocationDialog from './AddLocationDialog';
+import AddRolesDialog from './AddRolesDialog';
+import AddSpecialityDialog from './AddSpecialityDialog';
+import SocialComp from './SocialComp';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();

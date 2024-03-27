@@ -8,12 +8,12 @@ import { Page404 } from '@/devlink';
 import { BodyParamsConfirmCandidate } from '@/src/pages/api/scheduling/confirm';
 import toast from '@/src/utils/toast';
 
+import Loader from '../../Common/Loader';
 import CheckAvailibility from './CheckAvailibility';
 import ConfirmDialog from './ConfirmDialog';
 import InvitationConfirmed from './InvitationConfirmed';
 import InvitationPending from './InvitationPending';
 import { ApiResponse } from './type';
-import Loader from '../../Common/Loader';
 
 function CandidateInvite() {
   const router = useRouter();

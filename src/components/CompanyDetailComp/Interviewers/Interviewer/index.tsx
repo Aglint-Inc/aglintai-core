@@ -21,9 +21,9 @@ import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Interviews from '../Interviews';
 import PauseResumeDialog from '../PauseResumeDialog';
+import InterviewerLevelSettings from './InterviewerLevelSettings';
 
 function Interviewer({
   openDrawer,

@@ -2,10 +2,10 @@ import { useRouter } from 'next/router';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
 
+import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 import AssessmentPageActions from './actions';
 import AssessmentPageBody from './body';
 import { AssessmentPageContextProvider, useAssessment } from './context';
-import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 
 const AssessmentComponent = () => {
   return (

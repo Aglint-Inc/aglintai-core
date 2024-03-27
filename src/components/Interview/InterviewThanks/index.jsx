@@ -3,10 +3,10 @@ import { Stack } from '@mui/material';
 import { InterviewCompleted } from '@/devlink';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
-import CompleteLottie from './CompletedLottie';
-import InCompleteLottie from './IncompleteLottie';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
+import CompleteLottie from './CompletedLottie';
+import InCompleteLottie from './IncompleteLottie';
 
 function InterviewThanks() {
   const { jobDetails, candidateDetails, initialLoading } =

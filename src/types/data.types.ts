@@ -1,5 +1,5 @@
-import { Database } from './schema';
 import { schedulingSettingType } from '../components/Scheduling/Settings/types';
+import { Database } from './schema';
 
 export type AddressType = {
   line1: string;

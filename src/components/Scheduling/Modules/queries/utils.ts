@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { useGetMeetingsByModuleId } from './hooks';
 import { initialEditModule } from '../store';
 import {
   MemberType,
@@ -14,6 +13,7 @@ import {
   TransformSchedule,
 } from '../types';
 import { calculateHourDifference } from '../utils';
+import { useGetMeetingsByModuleId } from './hooks';
 
 export const fetchModules = async (module_id: string) => {
   const { data, error } = await supabase.rpc(

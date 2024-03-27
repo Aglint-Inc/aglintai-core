@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
 
+import { newCandJob } from '../Search/Search';
 import { useCandFilter } from './CandDbProvider';
 import CandidateDrawer from './CandidateDetailsDrawer';
-import { newCandJob } from '../Search/Search';
 
 const SelectedCandidate = ({
   path,

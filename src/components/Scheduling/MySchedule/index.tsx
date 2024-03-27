@@ -8,10 +8,10 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import ModuleSchedules from '../Common/ModuleSchedules';
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import ModuleSchedules from '../Common/ModuleSchedules';
 
 function MySchedule() {
   const { recruiterUser, recruiter } = useAuthDetails();

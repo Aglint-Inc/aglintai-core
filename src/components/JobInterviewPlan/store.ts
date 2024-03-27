@@ -5,14 +5,14 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
+  API_FAIL_MSG,
+  supabaseWrap,
+} from '../JobsDashboard/JobPostCreateUpdate/utils';
+import {
   InterviewerDbType,
   InterviewModuleDbType,
   InterviewPlanState,
 } from './types';
-import {
-  API_FAIL_MSG,
-  supabaseWrap,
-} from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const initialState: InterviewPlanState = {
   interviewCordinator: null,

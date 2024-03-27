@@ -11,10 +11,10 @@ dayjs.extend(timezone);
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { InitAgentBodyParams } from './types';
 import SpecializedDatePicker from '../Common/SpecializedDatePicker';
 import UITextField from '../Common/UITextField';
 import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
+import { InitAgentBodyParams } from './types';
 
 const ScheduleAgent = () => {
   const [startDate, setStartDate] = useState<Dayjs>(dayjs(new Date()));

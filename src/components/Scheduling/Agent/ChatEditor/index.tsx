@@ -9,8 +9,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingAgent } from '@/src/context/SchedulingAgent/SchedulingAgentProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
-import suggestion from './suggestion';
 import { setUserText, useSchedulingAgentStore } from '../store';
+import suggestion from './suggestion';
 
 const ChatEditorScheduling = () => {
   const { recruiter } = useAuthDetails();

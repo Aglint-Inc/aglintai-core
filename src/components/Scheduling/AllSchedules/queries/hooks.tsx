@@ -3,8 +3,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { getPaginationDB } from './utils';
 import { ApplicationList, InterviewSlice, setPagination } from '../store';
+import { getPaginationDB } from './utils';
 
 export const useAllInterviewSchedules = ({ page, filter, rec_id }) => {
   const query = useQuery({

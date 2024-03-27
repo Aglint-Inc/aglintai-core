@@ -15,11 +15,11 @@ import {
 } from '@/devlink2';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 
-import { ApiResponse } from '../type';
 import {
   filterRecordsByDate,
   getAllUniqueDates,
 } from '../../AllSchedules/utils';
+import { ApiResponse } from '../type';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

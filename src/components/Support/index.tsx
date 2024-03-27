@@ -35,10 +35,10 @@ import {
 } from '@/src/utils/support/supportUtils';
 import { capitalizeAll, getRandomColor } from '@/src/utils/text/textUtils';
 
-import SupportEmptyLottie from './EmptyLottie';
-import SupportTicketDetails from './SupportTicket';
 import Loader from '../Common/Loader';
 import { capitalize } from '../JobApplicationsDashboard/utils';
+import SupportEmptyLottie from './EmptyLottie';
+import SupportTicketDetails from './SupportTicket';
 dayjs.extend(relativeTime);
 
 function Support() {

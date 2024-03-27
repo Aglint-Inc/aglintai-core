@@ -5,6 +5,7 @@ import { ConfirmationPopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
+import MembersAutoComplete from '../../../Common/MembersTextField';
 import { useAddMemberHandler } from '../../queries/hooks';
 import {
   setIsAddMemberDialogOpen,
@@ -12,7 +13,6 @@ import {
   useModulesStore,
 } from '../../store';
 import { ModuleType } from '../../types';
-import MembersAutoComplete from '../../../Common/MembersTextField';
 
 function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
   const { recruiter } = useAuthDetails();

@@ -5,9 +5,9 @@ import {
   InterviewScheduleTypeDB,
 } from '@/src/types/data.types';
 
+import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
 import { ApplicationList } from '../AllSchedules/store';
 import { MemberType } from '../Modules/types';
-import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
 
 export type ApiResponse = {
   job: ApplicationList['public_jobs'];

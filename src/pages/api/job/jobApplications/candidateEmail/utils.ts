@@ -17,11 +17,11 @@ import { EmailTemplateType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
-import { JobApplicationEmails } from '.';
 import {
   readNewJobApplicationDbAction,
   upsertNewJobApplicationDbAction,
 } from '../read/utils';
+import { JobApplicationEmails } from '.';
 
 export const readSomeCandidates = async (
   supabase: ReturnType<typeof createServerClient<Database>>,

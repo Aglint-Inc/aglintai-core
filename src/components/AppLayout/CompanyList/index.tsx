@@ -11,13 +11,13 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 import { companyType } from '@/src/utils/userRoles';
 
-import AddNewCompany from './AddNewCompany';
 import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import AddNewCompany from './AddNewCompany';
 
 type CompanyTYpe = {
   recName: string;

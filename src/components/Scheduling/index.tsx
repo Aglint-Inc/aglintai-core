@@ -9,6 +9,10 @@ import { SocialsType } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 
+import Icon from '../Common/Icons/Icon';
+import UITextField from '../Common/UITextField';
+import InterviewTab from '../CompanyDetailComp/Interviewers';
+import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import AllSchedules from './AllSchedules';
 import { Modules } from './Modules/Modules';
 import {
@@ -21,10 +25,6 @@ import SettingsScheduling from './Settings';
 import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
 import { SchedulingTab } from './types';
-import Icon from '../Common/Icons/Icon';
-import UITextField from '../Common/UITextField';
-import InterviewTab from '../CompanyDetailComp/Interviewers';
-import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 
 function SchedulingMainComp() {
   const router = useRouter();

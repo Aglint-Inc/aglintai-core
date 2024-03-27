@@ -8,10 +8,10 @@ import {
 } from '@/devlink3';
 import { getFullName } from '@/src/utils/jsonResume';
 
+import MuiAvatar from '../Common/MuiAvatar';
 import EditModule from './EditModule';
 import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
 import { InterviewSession } from './types';
-import MuiAvatar from '../Common/MuiAvatar';
 
 const InterviewModuleC = ({
   module,
