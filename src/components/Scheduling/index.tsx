@@ -20,6 +20,7 @@ import MySchedule from './MySchedule';
 import SettingsScheduling from './Settings';
 import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
+import { SchedulingTab } from './types';
 import Icon from '../Common/Icons/Icon';
 import UITextField from '../Common/UITextField';
 import InterviewTab from '../CompanyDetailComp/Interviewers';
@@ -56,6 +57,8 @@ function SchedulingMainComp() {
       });
     }
   }, [router]);
+
+  const tab = router.query.tab as SchedulingTab;
 
   return (
     <>
@@ -104,26 +107,23 @@ function SchedulingMainComp() {
         slotBody={
           <BodyWithSublink
             slotTabContent={
-              router.query.tab == 'allSchedules' ? (
+              tab == 'candidates' ? (
                 allowAction(<AllSchedules />, [
                   'admin',
                   'recruiter',
                   'scheduler',
                 ])
-              ) : router.query.tab == 'mySchedules' ? (
-                <>
-                  <MySchedule />
-                  {/* <InterviewerComp /> */}
-                </>
-              ) : router.query.tab == 'interviewModules' ? (
+              ) : tab == 'mySchedules' ? (
+                <MySchedule />
+              ) : tab == 'interviewModules' ? (
                 allowAction(<Modules />, ['admin', 'recruiter', 'scheduler'])
-              ) : router.query.tab == 'interviewers' ? (
+              ) : tab == 'interviewers' ? (
                 allowAction(<InterviewTab />, [
                   'admin',
                   'recruiter',
                   'scheduler',
                 ])
-              ) : router.query.tab == 'settings' ? (
+              ) : tab == 'settings' ? (
                 allowAction(
                   <SettingsScheduling
                     updateSettings={updateSettings}
