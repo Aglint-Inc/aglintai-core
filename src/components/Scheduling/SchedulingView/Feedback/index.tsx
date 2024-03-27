@@ -1,6 +1,7 @@
 import { Dialog, Typography } from '@mui/material';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   AvatarWithName,
@@ -14,6 +15,7 @@ import {
 import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
+import DynamicLoader from '@/src/components/CompanyDetailComp/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -23,11 +25,13 @@ import toast from '@/src/utils/toast';
 const FeedbackWindow = () => {
   const param = useSearchParams();
   const meeting_id = param.get('meeting_id');
+  const { data: interviewers, isLoading, refetch } = useInterviewerList();
   const { isAllowed, userDetails } = useAuthDetails();
   const user_id = userDetails?.user.id;
-  const [interviewers, setInterviewers] = useState<
-    Awaited<ReturnType<typeof getInterviewers>>
-  >([]);
+  // const [loading, setLoading] = useState(true);
+  // const [interviewers, setInterviewers] = useState<
+  //   Awaited<ReturnType<typeof getInterviewers>>
+  // >([]);
 
   const handelSubmit = async (
     feedback: CustomDatabase['public']['Tables']['interview_meeting_user']['Row']['feedback'],
@@ -37,27 +41,26 @@ const FeedbackWindow = () => {
       feedback,
       id: user_id,
       meeting_id,
-    }).then((row) => {
-      const temp = interviewers.map((item) => {
-        if (item.id === row.id) return { ...item, ...row };
-        return item;
-      });
-      setInterviewers(temp);
+    }).then(() => {
+      refetch();
       return true;
     });
     return false;
   };
-
-  useEffect(() => {
-    if (meeting_id && user_id) {
-      getInterviewers({ meeting_id }).then((data) => {
-        setInterviewers(data);
-      });
-    }
-  }, [meeting_id, user_id]);
+  // useEffect(() => {
+  //   if (meeting_id && user_id) {
+  //     getInterviewers({ meeting_id })
+  //       .then((data) => {
+  //         setInterviewers(data);
+  //       })
+  //   }
+  // }, [meeting_id, user_id]);
   return (
     <>
       <ShowCode>
+        <ShowCode.When isTrue={isLoading}>
+          <DynamicLoader />
+        </ShowCode.When>
         <ShowCode.When isTrue={isAllowed(['admin'])}>
           <AdminFeedback {...{ user_id, interviewers, handelSubmit }} />
         </ShowCode.When>
@@ -137,8 +140,8 @@ const AdminFeedback = ({
                       setSelectedInterviewers(
                         interviewers[Number(currentIndex)],
                       );
-                      // !interviewers[Number(currentIndex)].feedback &&
-                      //   setEdit(true);
+                      !interviewers[Number(currentIndex)].feedback &&
+                        setEdit(true);
                     },
                   }}
                   slotAvatar={
@@ -358,7 +361,6 @@ const InterviewerFeedback = ({
   ) => Promise<Boolean>;
 }) => {
   const [interviewer, setInterviewer] = useState(interviewers[0]);
-
   const [edit, setEdit] = useState(false);
 
   return (
@@ -509,6 +511,19 @@ const InterviewerFeedback = ({
   );
 };
 
+const useInterviewerList = () => {
+  const param = useSearchParams();
+  const meeting_id = param.get('meeting_id');
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['interviewers_details'],
+    queryFn: () => getInterviewers({ meeting_id }),
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({ queryKey: ['interviewers_details'] });
+  return { ...query, refetch };
+};
+
 const getInterviewers = async ({ meeting_id }: { meeting_id: string }) => {
   const interviewers = await supabase
     .from('interview_meeting_user')
@@ -554,13 +569,13 @@ const saveInterviewerFeedback = async ({
     .from('interview_meeting_user')
     .update({ feedback })
     .eq('interviewer_id', id)
-    .eq('interview_meeting_id', meeting_id)
-    .select()
-    .single()
-    .then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      return data as unknown as CustomDatabase['public']['Tables']['interview_meeting_user']['Row'];
-    });
+    .eq('interview_meeting_id', meeting_id);
+  // .select()
+  // .single()
+  // .then(({ data, error }) => {
+  //   if (error) throw new Error(error.message);
+  //   return data as unknown as CustomDatabase['public']['Tables']['interview_meeting_user']['Row'];
+  // });
 };
 
 const re_mapper = {
