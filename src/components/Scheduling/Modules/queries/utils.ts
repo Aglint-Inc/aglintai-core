@@ -35,14 +35,15 @@ export const fetchProgress = async ({
 }) => {
   const { data, error } = await supabase
     .from('interview_meeting_user')
-    .select('*,interview_meeting(*,interview_schedule(*))')
+    .select('*,interview_meeting!inner(*,interview_schedule(*))')
     .eq('interview_meeting.module_id', module_id)
     .in('interviewer_id', trainer_ids)
-    .not('interview_meeting', 'is', null);
+    .eq('interview_meeting.status', 'completed');
+
   if (error) {
     throw new Error(error.message);
   }
-  return data;
+  return data.filter((d) => d.interview_meeting !== null);
 };
 
 export const fetchInterviewModules = async (rec_id: string) => {
