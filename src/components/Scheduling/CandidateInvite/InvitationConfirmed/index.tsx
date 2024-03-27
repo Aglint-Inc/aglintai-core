@@ -12,6 +12,7 @@ import {
 } from '@/devlink2';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { CalendarEvent } from '@/src/utils/schedule-utils/types';
+import toast from '@/src/utils/toast';
 
 import { ApiResponse } from '../type';
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
@@ -40,6 +41,11 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
             isActive={true}
             slotCardDate={schedule?.schedule?.confirmed_option?.plans.map(
               (pl, ind) => {
+                const meetingLink = (
+                  schedule?.meetings?.find(
+                    (meet) => meet.module_id == pl.module_id,
+                  )?.meeting_json as CalendarEvent
+                )?.hangoutLink;
                 return (
                   <AvailableOptionCardDate
                     textDate={dayjs(pl.start_time).format('DD')}
@@ -60,22 +66,20 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
                             <Stack direction={'row'}>
                               <ButtonPrimarySmall
                                 isDisabled={
-                                  dayjs(pl.start_time).isAfter(
+                                  (dayjs(pl.start_time).isAfter(
                                     dayjs().add(3, 'hour'),
-                                  ) || dayjs().isAfter(dayjs(pl.end_time))
+                                  ) ||
+                                    dayjs().isAfter(dayjs(pl.end_time))) &&
+                                  !meetingLink
                                 }
                                 textLabel={'Join Meeting'}
                                 onClickButton={{
                                   onClick: () => {
-                                    window.open(
-                                      (
-                                        schedule.meetings.find(
-                                          (meet) =>
-                                            meet.module_id == pl.module_id,
-                                        ).meeting_json as CalendarEvent
-                                      ).hangoutLink,
-                                      '_blank',
-                                    );
+                                    meetingLink
+                                      ? window.open(meetingLink, '_blank')
+                                      : toast.error(
+                                          'Meeting link not available. Please contact support for more information.',
+                                        );
                                   },
                                 }}
                               />

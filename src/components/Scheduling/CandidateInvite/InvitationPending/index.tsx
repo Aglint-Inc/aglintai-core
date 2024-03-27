@@ -141,15 +141,16 @@ function InvitationPending({
             >
               <OptionAvailableCard
                 isActive={selectedSlot === option.id}
-                slotCardDate={option.plans.map((pl, ind) => {
+                slotCardDate={option.plans.map((pl, indOpt) => {
                   return (
                     <AvailableOptionCardDate
                       isDateWrapVisible={
-                        !pl.isBreak &&
-                        !dayjs(option.plans[ind - 1]?.start_time).isSame(
-                          pl.start_time,
-                          'day',
-                        )
+                        indOpt == 0 ||
+                        (!pl.isBreak &&
+                          !dayjs(option.plans[indOpt - 1]?.start_time).isSame(
+                            pl.start_time,
+                            'day',
+                          ))
                       }
                       textDate={dayjs(pl.start_time).format('DD')}
                       textDay={dayjs(pl.start_time).format('dddd')}
