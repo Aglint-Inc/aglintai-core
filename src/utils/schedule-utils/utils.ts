@@ -28,7 +28,8 @@ export const getRecruiterAuthTokens = async (userId: string) => {
   );
   let schedule_auth = user.schedule_auth as ScheduleAuthType;
   if (!schedule_auth) throw new Error('Calender not connected');
-  const isDateExpired = user.schedule_auth.expiry_date - Date.now();
+  const isDateExpired =
+    (user.schedule_auth as ScheduleAuthType).expiry_date - Date.now();
   if (isDateExpired) {
     const newAccessToken = await refreshAccessToken(
       schedule_auth.refresh_token,

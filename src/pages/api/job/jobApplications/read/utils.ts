@@ -6,11 +6,11 @@ import axios from 'axios';
 import {
   candidateEmailValidity,
   FilterParameter,
-  SortParameter
+  SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
-  JobApplicationSections
+  JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { Database } from '@/src/types/schema';
 
@@ -26,7 +26,7 @@ export const handleRead = async (
   ranges?: ReadJobApplicationApi['request']['ranges'],
   sort?: ReadJobApplicationApi['request']['sort'],
   filter?: ReadJobApplicationApi['request']['filter'],
-  search?: ReadJobApplicationApi['request']['search']
+  search?: ReadJobApplicationApi['request']['search'],
 ) => {
   const safeSections = [...new Set(sections.filter((s) => s))];
   const promises = await createMultiPromise(
@@ -36,7 +36,7 @@ export const handleRead = async (
     ranges ?? null,
     sort ?? null,
     filter ?? null,
-    search ?? null
+    search ?? null,
   );
   const responses = await Promise.allSettled([...promises]);
   const result = await handleMultiPromiseValidation(responses, safeSections);
@@ -50,7 +50,7 @@ const createMultiPromise = (
   ranges?: ReadJobApplicationApi['request']['ranges'],
   sort?: ReadJobApplicationApi['request']['sort'],
   filter?: ReadJobApplicationApi['request']['filter'],
-  search?: ReadJobApplicationApi['request']['search']
+  search?: ReadJobApplicationApi['request']['search'],
 ) => {
   return sections.map((section) =>
     newReadNewJobApplicationDbAction(
@@ -60,8 +60,8 @@ const createMultiPromise = (
       sort,
       ranges[section] ?? null,
       search,
-      filter
-    )
+      filter,
+    ),
   );
 };
 
@@ -73,20 +73,20 @@ const handleSinglePromiseValidation = (
     filteredCount: number;
     unFilteredCount: number;
   }>,
-  status: JobApplicationSections
+  status: JobApplicationSections,
 ) => {
   if (responses.status === 'fulfilled')
     return {
       data: { [status]: responses.value.data },
       error: null,
       filteredCount: { [status]: responses.value.filteredCount },
-      unFilteredCount: { [status]: responses.value.unFilteredCount }
+      unFilteredCount: { [status]: responses.value.unFilteredCount },
     };
   return {
     data: null,
     error: { [status]: responses.reason.message },
     filteredCount: null,
-    unFilteredCount: null
+    unFilteredCount: null,
   };
 };
 
@@ -98,45 +98,45 @@ const handleMultiPromiseValidation = (
     filteredCount: number;
     unFilteredCount: number;
   }>[],
-  sections: ReadJobApplicationApi['request']['sections']
+  sections: ReadJobApplicationApi['request']['sections'],
 ) => {
   const response = sections.reduce(
     (acc, curr, i) => {
       const { data, error, filteredCount, unFilteredCount } =
         handleSinglePromiseValidation(
           responses[i],
-          curr as JobApplicationSections
+          curr as JobApplicationSections,
         );
       if (data && !error)
         return {
           ...acc,
           data: {
             ...acc.data,
-            ...data
+            ...data,
           },
           filteredCount: {
             ...acc.filteredCount,
-            ...filteredCount
+            ...filteredCount,
           },
           unFilteredCount: {
             ...acc.unFilteredCount,
-            ...unFilteredCount
-          }
+            ...unFilteredCount,
+          },
         };
       return {
         ...acc,
         error: {
           ...acc.error,
-          ...(error || { message: 'Data returned is null' })
-        }
+          ...(error || { message: 'Data returned is null' }),
+        },
       };
     },
     {
       data: null,
       error: null,
       filteredCount: null,
-      unFilteredCount: null
-    }
+      unFilteredCount: null,
+    },
   ) as {
     data: {
       // eslint-disable-next-line no-unused-vars
@@ -158,7 +158,7 @@ const handleMultiPromiseValidation = (
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>
+  supabase: ReturnType<typeof createServerClient<Database>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -180,7 +180,7 @@ export const newReadNewJobApplicationDbAction = async (
     end: number;
   } | null,
   search?: string,
-  filter?: FilterParameter
+  filter?: FilterParameter,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -192,13 +192,13 @@ export const newReadNewJobApplicationDbAction = async (
       sort,
       range,
       search,
-      filter
+      filter,
     ),
     supabase
       .from('applications')
       .select('*', { count: 'exact', head: true })
       .eq('job_id', job_id)
-      .eq('status', status)
+      .eq('status', status),
   ]);
   if (response[0].status === 'rejected') {
     throw new Error(response[0].reason);
@@ -214,7 +214,7 @@ export const newReadNewJobApplicationDbAction = async (
     data: safeData.data,
     error: null,
     filteredCount: safeData.filteredCount,
-    unFilteredCount: response[1].value.count
+    unFilteredCount: response[1].value.count,
   };
 };
 
@@ -228,13 +228,13 @@ export const readNewJobApplicationDbAction = async (
     end: number;
   } | null,
   search?: string,
-  filter?: FilterParameter
+  filter?: FilterParameter,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
   const coordinates = await getBoundingBox(
     filter.location.name,
-    filter.location.value
+    filter.location.value,
   );
   // console.log(searchFormatter(search));
   const { data, error } = await supabase
@@ -259,19 +259,19 @@ export const readNewJobApplicationDbAction = async (
       max_long: coordinates?.longitude?.max ?? null,
       min_long: coordinates?.longitude?.min ?? null,
       from_rec_num: range?.start ?? null,
-      end_rec_num: range?.end + 1 ?? null
+      end_rec_num: range?.end + 1 ?? null,
     })
     .abortSignal(controller.signal);
   if (error) throw new Error(`RPC function failure : ${error.message}`);
   const safeData = rpcDataFormatter(data);
   return {
     data: safeData.data,
-    filteredCount: safeData.filteredCount
+    filteredCount: safeData.filteredCount,
   };
 };
 
 const rpcDataFormatter = (
-  unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns']
+  unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {
     // (curr.job_app as unknown as JobApplication).panel =
@@ -287,7 +287,7 @@ const rpcDataFormatter = (
     (curr.job_app as unknown as JobApplication).emailValidity =
       candidateEmailValidity(
         (curr.cand as unknown as JobApplication['candidates']).email,
-        (curr.cand as unknown as JobApplication['candidates']).id
+        (curr.cand as unknown as JobApplication['candidates']).id,
       );
     acc.push(curr.job_app as unknown as JobApplication);
     return acc;
@@ -319,13 +319,13 @@ const getLocation = async (address: string) => {
   const locationData = await axios.get(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${
       address?.trim() || ''
-    }&key=AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI`
+    }&key=AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI`,
   );
   const result = (locationData as any)?.data?.results[0];
   if (result?.geometry?.location.lng && result?.geometry?.location.lat)
     return {
       lat: result?.geometry?.location?.lat,
-      long: result?.geometry?.location?.lng
+      long: result?.geometry?.location?.lng,
     };
   return { lat: null, long: null };
 };
@@ -343,12 +343,12 @@ export const getBoundingBox = async (name: string, range: number) => {
     return {
       latitude: {
         min: null,
-        max: null
+        max: null,
       },
       longitude: {
         min: null,
-        max: null
-      }
+        max: null,
+      },
     };
   const { lat: latitudeInDegrees, long: longitudeInDegrees } =
     await getLocation(name);
@@ -365,18 +365,18 @@ export const getBoundingBox = async (name: string, range: number) => {
   return {
     latitude: {
       min: rad2deg(latMin),
-      max: rad2deg(latMax)
+      max: rad2deg(latMax),
     },
     longitude: {
       min: rad2deg(lonMin),
-      max: rad2deg(lonMax)
-    }
+      max: rad2deg(lonMax),
+    },
   };
 };
 
 export const upsertNewJobApplicationDbAction = async (
   inputData: Partial<JobApplication>[],
-  supabase: ReturnType<typeof createServerClient<Database>>
+  supabase: ReturnType<typeof createServerClient<Database>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);

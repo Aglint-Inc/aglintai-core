@@ -7,7 +7,13 @@ import { FormErrorParams } from './JobForm/JobForm';
 import { FormJobType, JobFormState } from './JobPostFormProvider';
 import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
 
-export const supabaseWrap = ({ data, error }: { data: any; error: any }) => {
+export const supabaseWrap = <T extends unknown, U extends unknown>({
+  data,
+  error,
+}: {
+  data: T;
+  error: U;
+}) => {
   if (error) throw error;
   return data;
 };

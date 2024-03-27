@@ -20,7 +20,8 @@ export const fetchAvailApiDetails = async ({ job_id, recruiter_id }) => {
       job_id,
       recruiter_id,
     }),
-  );
+  ) as unknown as any;
+  //TODO: supabaseWrap type fix needed
   const all_ints = [
     ...(rec.shadow_ints?.shadow_ints ?? []),
     ...(rec.rshadow_ints?.rshadow_ints ?? []),

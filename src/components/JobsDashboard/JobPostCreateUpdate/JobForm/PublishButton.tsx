@@ -7,7 +7,7 @@ import { useState } from 'react';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { PublicJobsType } from '@/src/types/data.types';
+// import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -16,7 +16,7 @@ import {
   API_FAIL_MSG,
   getjobformToDbcolumns,
   isWarningsCleared,
-  supabaseWrap
+  supabaseWrap,
 } from '../utils';
 
 const JobPublishButton = () => {
@@ -36,11 +36,11 @@ const JobPublishButton = () => {
           .update({
             ...jobFormData,
             status: 'published',
-            draft: null
+            draft: null,
           })
           .eq('id', jobFormData.id)
-          .select()
-      ) as PublicJobsType[];
+          .select(),
+      );
 
       if (!job.slug) {
         supabaseWrap(
@@ -51,18 +51,18 @@ const JobPublishButton = () => {
                 job.id,
                 job.job_title,
                 job.company,
-                job.location
-              )
+                job.location,
+              ),
             })
-            .eq('id', jobFormData.id)
+            .eq('id', jobFormData.id),
         );
       }
 
       dispatch({
         type: 'updateJobPublishstatus',
         payload: {
-          status: 'published'
-        }
+          status: 'published',
+        },
       });
       if (jobForm.formType === 'new') {
         router.replace(`/jobs/${jobForm.jobPostId}`);
@@ -70,8 +70,8 @@ const JobPublishButton = () => {
       await handleUIJobUpdate({
         ...(job as any),
         count: {
-          ...jobsData.jobs.find((j) => j.id === job.id)?.count
-        }
+          ...jobsData.jobs.find((j) => j.id === job.id)?.count,
+        },
       });
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       axios.post('/api/editjob/publishjob', { job: job });
@@ -116,7 +116,7 @@ const getjobPostSlug = (
   jobId: string,
   jobTitle: string,
   company: string,
-  location: string
+  location: string,
 ) => {
   if (!jobId || !jobTitle || !company || !location) return '';
 

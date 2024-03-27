@@ -1,5 +1,4 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { RecruiterType, RecruiterUserType } from '@/src/types/data.types';
 
 import {
   GetAuthParams,
@@ -24,10 +23,7 @@ export class GoogleCalender {
         .from('recruiter_relation')
         .select('recruiter(service_json),recruiter_user(email,schedule_auth)')
         .eq('user_id', this.recruiter_user_id),
-    ) as {
-      recruiter: Pick<RecruiterType, 'service_json'>;
-      recruiter_user: Pick<RecruiterUserType, 'email' | 'schedule_auth'>;
-    }[];
+    );
     const authDetails: GetAuthParams = {
       company_cred: null,
       recruiter: {

@@ -12,7 +12,6 @@ import React, {
 
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { FormJobType } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
-import { PublicJobsType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -134,15 +133,12 @@ export const ScreeningCtxProvider = ({ children }) => {
     const phoneScreeningJob = async () => {
       try {
         setIsLoading(true);
-        const [job] = (await supabaseWrap(
+        const [job] = await supabaseWrap(
           await supabase
             .from('public_jobs')
             .select('logo,draft,job_title,company,screening_template')
             .eq('id', router.query.job_post_id),
-        )) as Pick<
-          PublicJobsType,
-          'logo' | 'draft' | 'job_title' | 'company' | 'screening_template'
-        >[];
+        );
         const [templateQuestions] = await supabaseWrap(
           await supabase
             .from('screening_questions')

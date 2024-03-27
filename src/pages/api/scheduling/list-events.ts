@@ -60,7 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .eq('user_id', recUserId),
       );
       let schedule_auth = user.schedule_auth as ScheduleAuthType;
-      const isDateExpired = user.schedule_auth.expiry_date - Date.now();
+      const isDateExpired =
+        (user.schedule_auth as ScheduleAuthType).expiry_date - Date.now();
       if (isDateExpired) {
         const newAccessToken = await refreshAccessToken(
           schedule_auth.refresh_token,

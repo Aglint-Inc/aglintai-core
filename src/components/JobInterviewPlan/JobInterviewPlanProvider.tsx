@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { PublicJobsType, RecruiterUserType } from '@/src/types/data.types';
+import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -28,7 +28,7 @@ const JobInterviewPlanHoc = ({ children }) => {
     try {
       const [rec] = supabaseWrap(
         await supabase.from('public_jobs').select().eq('id', router.query.id),
-      ) as PublicJobsType[];
+      );
       if (!rec) {
         toast.error('job doesnot exist');
         return router.back();
@@ -238,13 +238,14 @@ const fetchAllMembers = async () => {
       .select(
         'recruiter_id,recruiter_user(user_id, email, profile_image,first_name,last_name))',
       ),
-  ) as {
+  ) as unknown as {
     recruiter_id: string;
     recruiter_user: Pick<
       RecruiterUserType,
       'email' | 'first_name' | 'last_name' | 'profile_image' | 'user_id'
     > | null;
   }[];
+  //TODO: supabaseWrap type fix needed
   const allMembers: (IntwerviewerPlanType & { email: string })[] = recs
     .filter((u) => u.recruiter_user)
     .map((r) => ({

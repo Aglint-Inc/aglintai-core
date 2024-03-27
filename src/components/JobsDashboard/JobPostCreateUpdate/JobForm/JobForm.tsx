@@ -14,7 +14,7 @@ import {
   JobWarningList,
   NavSublink,
   ScorePercentage,
-  ScoreWeightage
+  ScoreWeightage,
 } from '@/devlink';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
 import Loader from '@/src/components/Common/Loader';
@@ -36,7 +36,7 @@ import Emails from '../JobPostFormSlides/EmailTemplates';
 import ScreeningComp from '../JobPostFormSlides/PhoneScreening/PhoneScreening';
 import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
 import ScoreSettings, {
-  getBalancedScore
+  getBalancedScore,
 } from '../JobPostFormSlides/ScoreSettings';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import {
@@ -44,7 +44,7 @@ import {
   isShoWWarn,
   jobSlides,
   slidePathToNum,
-  supabaseWrap
+  supabaseWrap,
 } from '../utils';
 import MuiPopup from '../../../Common/MuiPopup';
 
@@ -95,8 +95,8 @@ function JobForm() {
             await supabase
               .from('applications')
               .select()
-              .eq('job_id', jobForm.jobPostId)
-          ) as any[];
+              .eq('job_id', jobForm.jobPostId),
+          );
           if (applications.length === 0) {
             setIsJobHasAppls(false);
           }
@@ -140,8 +140,8 @@ function JobForm() {
     dispatch({
       type: 'moveToSlide',
       payload: {
-        nextSlide: nextSlide
-      }
+        nextSlide: nextSlide,
+      },
     });
     handleUpdateMaxVisitedSlideNo(slidePathToNum[String(nextSlide)]);
   };
@@ -149,12 +149,12 @@ function JobForm() {
   const handleUpdateMaxVisitedSlideNo = (slideNo: number) => {
     if (jobForm.formType === 'edit') return;
     const currMax = Number(
-      localStorage.getItem(`MaxVisitedSlideNo-${jobForm.jobPostId}`) || -1
+      localStorage.getItem(`MaxVisitedSlideNo-${jobForm.jobPostId}`) || -1,
     );
     if (slideNo > currMax) {
       localStorage.setItem(
         `MaxVisitedSlideNo-${jobForm.jobPostId}`,
-        String(slideNo)
+        String(slideNo),
       );
     }
   };
@@ -198,17 +198,17 @@ function JobForm() {
         await supabase
           .from('public_jobs')
           .update({
-            draft: null
+            draft: null,
           })
           .eq('id', jobForm.jobPostId)
-          .select()
+          .select(),
       );
       handleInitializeForm({
         type: 'edit',
         currSlide: jobForm.currSlide,
         job: publishedJobPost,
         recruiter,
-        recruiterUser
+        recruiterUser,
       });
       toast.success('Reverted successfully');
     } catch (err) {
@@ -222,11 +222,11 @@ function JobForm() {
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
   const isJobMarketingEnabled = posthog.isFeatureEnabled(
-    'isJobMarketingEnabled'
+    'isJobMarketingEnabled',
   );
 
   const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
-    'isPhoneScreeningEnabled'
+    'isPhoneScreeningEnabled',
   );
 
   let allSlides = jobSlides.filter((slide) => {
@@ -268,7 +268,7 @@ function JobForm() {
         onClickScreening={{
           onClick: () => {
             changeSlide('phoneScreening');
-          }
+          },
         }}
         slotSavedChanges={
           <>
@@ -287,7 +287,7 @@ function JobForm() {
             const nextSlide =
               allSlides[slidePathToNum[String(currSlide)]]?.path;
             if (nextSlide) changeSlide(nextSlide);
-          }
+          },
         }}
         isAssessmentPreviewVisible={
           currSlide === 'resumeScore' ||
@@ -305,18 +305,18 @@ function JobForm() {
               `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(
                 jobForm,
                 'jobPostId',
-                ''
+                '',
               )}?preview=true`,
-              '_blank'
+              '_blank',
             );
             posthog.capture('Preview Job Post clicked');
-          }
+          },
         }}
         isUnpublishWarningVisible={isShowChangesWarn}
         onClickDiscardChanges={{
           onClick: () => {
             setDiscardPop(true);
-          }
+          },
         }}
         slotUnpublishDisclaimer={
           <>{isShowChangesWarn && <PublishDesclaimer />}</>
@@ -325,30 +325,30 @@ function JobForm() {
           onClick: () => {
             changeSlide('templates');
             posthog.capture('Email Template Flow Button clicked');
-          }
+          },
         }}
         onClickDetails={{
           onClick: () => {
             changeSlide('details');
             posthog.capture('Details Flow Button clicked');
-          }
+          },
         }}
         onClickScoreSetting={{
           onClick: () => {
             changeSlide('resumeScore');
             posthog.capture('Profile Score Flow Button clicked');
-          }
+          },
         }}
         onClickWorkflows={{
           onClick: () => {
             changeSlide('workflow');
             posthog.capture('Workflow Flow Button clicked');
-          }
+          },
         }}
         onClickBack={{
           onClick: () => {
             router.back();
-          }
+          },
         }}
         onClickPreviewChanges={{
           onClick: () => {
@@ -356,11 +356,11 @@ function JobForm() {
               `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${get(
                 jobForm,
                 'jobPostId',
-                ''
+                '',
               )}?preview=true`,
-              '_blank'
+              '_blank',
             );
-          }
+          },
         }}
         slotPublishButton={<>{<PublishButton />}</>}
         isProductionVisible={
@@ -376,7 +376,7 @@ function JobForm() {
                   } else {
                     setPopupEl(e.currentTarget);
                   }
-                }
+                },
               }}
             />
           </>
@@ -392,7 +392,7 @@ function JobForm() {
           onClose: () => {
             setIsDeletePopupOpen(false);
           },
-          open: isDeletePopupOpen
+          open: isDeletePopupOpen,
         }}
       >
         <CloseJobPopup
@@ -406,7 +406,7 @@ function JobForm() {
           onClose: () => {
             setShowDraftPopup(false);
           },
-          open: showDraftPopup
+          open: showDraftPopup,
         }}
       >
         <DeleteDraft
@@ -423,7 +423,7 @@ function JobForm() {
           onClickCancel={{
             onClick: () => {
               setShowDraftPopup(false);
-            }
+            },
           }}
           onClickClear={{
             onClick: () => {
@@ -432,7 +432,7 @@ function JobForm() {
               } else {
                 handleDeleteDraft();
               }
-            }
+            },
           }}
         />
       </MuiPopup>
@@ -444,14 +444,14 @@ function JobForm() {
         }}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left'
+          horizontal: 'left',
         }}
         sx={{
           mt: 2,
           '& .MuiPaper-root': {
             border: 'none !important',
-            overflow: 'visible !important'
-          }
+            overflow: 'visible !important',
+          },
         }}
       >
         <CloseDeleteJob
@@ -463,7 +463,7 @@ function JobForm() {
               showCloseJob
                 ? setIsDeletePopupOpen(true)
                 : setShowDraftPopup(true);
-            }
+            },
           }}
         />
       </Popover>
@@ -472,20 +472,20 @@ function JobForm() {
           onClose: () => {
             setDiscardPop(false);
           },
-          open: discardPop
+          open: discardPop,
         }}
       >
         <JobDiscardChanges
           onClickCancel={{
             onClick: () => {
               setDiscardPop(false);
-            }
+            },
           }}
           onClickDiscardChanges={{
             onClick: () => {
               handleRevertChanges();
               setDiscardPop(false);
-            }
+            },
           }}
         />
       </MuiPopup>
@@ -501,7 +501,7 @@ const SideNavs = ({ changeSlide }) => {
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
   const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
-    'isPhoneScreeningEnabled'
+    'isPhoneScreeningEnabled',
   );
 
   let allSlides = jobSlides.filter((slide) => {
@@ -522,7 +522,7 @@ const SideNavs = ({ changeSlide }) => {
           formWarnings,
           sl.path,
           slidePathToNum[sl.path],
-          jobForm.jobPostId
+          jobForm.jobPostId,
         );
 
         if (sl.path === 'resumeScore') {
@@ -532,14 +532,14 @@ const SideNavs = ({ changeSlide }) => {
               formWarnings,
               'details',
               slidePathToNum[sl.path],
-              jobForm.jobPostId
+              jobForm.jobPostId,
             ) ||
             isShoWWarn(
               jobForm.formType,
               formWarnings,
               'resumeScore',
               slidePathToNum[sl.path],
-              jobForm.jobPostId
+              jobForm.jobPostId,
             );
         } else {
           isWarn = isShoWWarn(
@@ -547,7 +547,7 @@ const SideNavs = ({ changeSlide }) => {
             formWarnings,
             sl.path,
             slidePathToNum[sl.path],
-            jobForm.jobPostId
+            jobForm.jobPostId,
           );
         }
 
@@ -563,7 +563,7 @@ const SideNavs = ({ changeSlide }) => {
                 // isTabMuted(jobForm.formType, warning, sl.path);
                 changeSlide(sl.path);
                 posthog.capture(`${sl.title} Flow Button clicked`);
-              }
+              },
             }}
             textLink={sl.title}
             isMute={false}
@@ -600,7 +600,7 @@ const SideSection = () => {
     if (Number(e.target.value) < 0 || Number(e.target.value) > 100) return;
     handleUpdateFormFields({
       path: `resumeScoreSettings.${paramKey}`,
-      value: Number(e.target.value)
+      value: Number(e.target.value),
     });
   };
 
@@ -624,9 +624,9 @@ const SideSection = () => {
           onClick: () => {
             handleUpdateFormFields({
               path: 'isPhoneScreenEnabled',
-              value: false
+              value: false,
             });
-          }
+          },
         }}
         onClickAssessmentPreview={{
           onClick: () => {
@@ -636,14 +636,14 @@ const SideSection = () => {
               }/candidate-phone-screening?job_post_id=${get(
                 jobForm,
                 'jobPostId',
-                ''
+                '',
               )}&recruiter_email=${recruiterUser.email}&recruiter_name=${[
                 recruiterUser.first_name,
-                recruiterUser.last_name
+                recruiterUser.last_name,
               ].join(' ')}`,
-              '_blank'
+              '_blank',
             );
-          }
+          },
         }}
       />
     );
@@ -688,8 +688,8 @@ const SideSection = () => {
                 <ScorePercentage
                   colorPropsBg={{
                     style: {
-                      backgroundColor: '#30AABC'
-                    }
+                      backgroundColor: '#30AABC',
+                    },
                   }}
                   textTitle={'Experience'}
                   slotInputPercent={
@@ -711,8 +711,8 @@ const SideSection = () => {
                 <ScorePercentage
                   colorPropsBg={{
                     style: {
-                      backgroundColor: '#886BD8'
-                    }
+                      backgroundColor: '#886BD8',
+                    },
                   }}
                   textTitle={'Skill'}
                   slotInputPercent={
@@ -732,8 +732,8 @@ const SideSection = () => {
                 <ScorePercentage
                   colorPropsBg={{
                     style: {
-                      backgroundColor: '#5D7DF5'
-                    }
+                      backgroundColor: '#5D7DF5',
+                    },
                   }}
                   textTitle={'Education'}
                   slotInputPercent={
@@ -760,10 +760,10 @@ const SideSection = () => {
                   value: getBalancedScore(
                     jdJson.rolesResponsibilities.length === 0,
                     jdJson.educations.length === 0,
-                    jdJson.skills.length === 0
-                  )
+                    jdJson.skills.length === 0,
+                  ),
                 });
-              }
+              },
             }}
           />
         </Stack>

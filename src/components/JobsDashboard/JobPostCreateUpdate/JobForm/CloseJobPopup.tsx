@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { CloseJobModal } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
+import { Job } from '@/src/queries/job/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -30,7 +31,8 @@ const CloseJobPopup = ({ onClose }) => {
       }
       const [publicJob] = supabaseWrap(
         await supabase.from('public_jobs').select().eq('id', jobForm.jobPostId),
-      );
+      ) as unknown as any;
+      //TODO: supabaseWrap type fix needed
       const newActiveStatus = publicJob.active_status;
       set(newActiveStatus, 'closed.isActive', true);
       const [job] = supabaseWrap(
@@ -47,9 +49,19 @@ const CloseJobPopup = ({ onClose }) => {
       );
       handleUIJobUpdate({
         ...job,
+        jd_json: job.jd_json as Job['jd_json'],
+        active_status: job.active_status as Job['active_status'],
+        parameter_weights: job.parameter_weights as Job['parameter_weights'],
+        draft: job.draft as Job['draft'],
+        processing_count: {
+          'not started': 0,
+          failed: 0,
+          processing: 0,
+          success: 0,
+        },
         count: {
           new: 0,
-          interviewing: 0,
+          interview: 0,
           qualified: 0,
           disqualified: 0,
         },

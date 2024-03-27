@@ -56,7 +56,8 @@ const EmailTemplateModalComp = ({
           .from('recruiter_user')
           .select('email_outreach_templates')
           .eq('user_id', recruiterUser.user_id),
-      ) as { email_outreach_templates: null | TemplateType[] }[];
+      ) as unknown as { email_outreach_templates: null | TemplateType[] }[];
+      //TODO: supabaseWrap type fix needed
 
       const newOutReachTemp: TemplateType = {
         id: selectedTemplate,

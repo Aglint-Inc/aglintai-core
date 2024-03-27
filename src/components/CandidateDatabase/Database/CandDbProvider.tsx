@@ -69,8 +69,7 @@ const CandDbProvider = ({ children }) => {
           .from('applications')
           .select()
           .or(jobAppIds.map((j) => `id.eq.${j}`).join(',')),
-      ) as any[];
-
+      );
       let newJobApps: {
         candidate_id: string;
         job_id: string;

@@ -16,6 +16,7 @@ type Props = {
   showMenuIcons: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   defaultValue: string;
+  children?: React.JSX.Element;
 };
 
 const AvatarSelectDropDown = ({
@@ -24,6 +25,7 @@ const AvatarSelectDropDown = ({
   value,
   onChange,
   defaultValue,
+  children = <></>,
 }: Props) => {
   return (
     <>
@@ -72,6 +74,7 @@ const AvatarSelectDropDown = ({
               />
             )}
             {getFullName(menu.name, '')}
+            {children}
           </MenuItem>
         ))}
       </TextField>

@@ -11,11 +11,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-import {
-  CandidateFileTypeDB,
-  CandidateType,
-  PublicJobsType,
-} from '@/src/types/data.types';
 
 type GeoPoint = {
   type: string;
@@ -174,12 +169,13 @@ const fetchCandDetails = async ({ application_id }) => {
         'id, candidate_files(resume_json,candidate_id),public_jobs(id,job_title,company,interview_plan,recruiter_id), candidates(*)',
       )
       .eq('id', application_id),
-  ) as {
-    id: string;
-    candidate_files: CandidateFileTypeDB;
-    public_jobs: PublicJobsType;
-    candidates: CandidateType;
-  }[];
+  );
+  // as {
+  //   id: string;
+  //   candidate_files: CandidateFileTypeDB;
+  //   public_jobs: PublicJobsType;
+  //   candidates: CandidateType;
+  // }[];
 
   if (!rec) {
     throw new Error('Invalid Application');

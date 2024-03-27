@@ -36,7 +36,7 @@ export type PhoneScreeningState = {
     endMessage: string;
     questions: PhoneScreenQuestion[];
   };
-  title:string;
+  title: string;
   syncStatus: 'saving' | 'saved' | '';
   isLoading: boolean;
 };
@@ -49,7 +49,7 @@ const initialState: PhoneScreeningState = {
       'Thank you for taking your time. We will get back to you shortly',
     questions: [],
   },
-  title : '',
+  title: '',
   syncStatus: '',
   isLoading: true,
 };
@@ -170,7 +170,8 @@ const PhoneScreeningProvider = ({ children }) => {
               .from('screening_questions')
               .select()
               .eq('id', templateId),
-          );
+          ) as unknown as any;
+          //TODO: supabaseWrap type fix needed
           let phoneScreenState: PhoneScreeningState = {
             syncStatus: '',
             phoneScreening: {
@@ -182,7 +183,7 @@ const PhoneScreeningProvider = ({ children }) => {
                 rec.questions.startMessage ??
                 initialState.phoneScreening.startMessage,
             },
-            title:rec.title ?? initialState.title,
+            title: rec.title ?? initialState.title,
             isLoading: false,
           };
           dispatch({

@@ -14,7 +14,6 @@ import {
   ViewMoreSkills,
 } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
-import { SearchHistoryType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -72,7 +71,7 @@ const CandidatesSearch = () => {
             .from('candidate_search_history')
             .select()
             .eq('id', searchQryId),
-        ) as SearchHistoryType[];
+        );
         const searchResults = searchRec.search_results as any;
         const bookmarked_cands = searchRec.bookmarked_candidates || [];
         const canididatesDto = await joinSearchResultWithBookMarkAndJobApplied(

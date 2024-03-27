@@ -6,14 +6,14 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { Database } from '@/src/types/schema';
 import {
   createEvent,
-  importEventToAttendee
+  importEventToAttendee,
 } from '@/src/utils/event_book/book_schedule_plan';
 import { NewCalenderEvent } from '@/src/utils/schedule-utils/types';
 import { getRecruiterAuthTokens } from '@/src/utils/schedule-utils/utils';
 
 const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY,
 );
 
 type BodyParams = {
@@ -31,7 +31,7 @@ const { OAuth2Client } = require('google-auth-library');
 const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_SCHEDULE_CLIENT_ID,
   process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-  process.env.GOOGLE_SCHEDULE_REDIRECT_URI
+  process.env.GOOGLE_SCHEDULE_REDIRECT_URI,
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     schedule_name,
     candidate_email,
     end_time,
-    start_time
+    start_time,
   } = req.body as BodyParams;
   if (
     !organizer_id ||
@@ -58,47 +58,48 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await supabaseAdmin
           .from('recruiter_user')
           .select('schedule_auth')
-          .eq('user_id', int_id)
-      );
+          .eq('user_id', int_id),
+      ) as unknown as any;
+      //TODO: supabaseWrap type fix needed
       return rec.schedule_auth.email;
     });
     const interviewers_email = await Promise.all(interviewers_promises);
     const calendar_event: NewCalenderEvent = {
       summary: schedule_name,
       start: {
-        dateTime: start_time
+        dateTime: start_time,
       },
       end: {
-        dateTime: end_time
+        dateTime: end_time,
       },
       attendees: interviewers_email.map((email) => ({ email })),
       reminders: {
         useDefault: false,
         overrides: [
           { method: 'email', minutes: 24 * 60 },
-          { method: 'popup', minutes: 10 }
-        ]
+          { method: 'popup', minutes: 10 },
+        ],
       },
       conferenceData: {
         createRequest: {
-          requestId: uuidv4()
-        }
-      }
+          requestId: uuidv4(),
+        },
+      },
     };
     calendar_event.attendees.push({
-      email: candidate_email
+      email: candidate_email,
     });
     const authTokens = await getRecruiterAuthTokens(organizer_id);
     oAuth2Client.setCredentials({
       access_token: authTokens.access_token,
-      refresh_token: authTokens.refresh_token
+      refresh_token: authTokens.refresh_token,
     });
     const event = await createEvent(oAuth2Client, calendar_event);
     const attendees_promises = interviewers_id.map(async (int_id: string) => {
       const tokenInfo = await getRecruiterAuthTokens(int_id);
       oAuth2Client.setCredentials({
         access_token: tokenInfo.access_token,
-        refresh_token: tokenInfo.refresh_token
+        refresh_token: tokenInfo.refresh_token,
       });
       return await importEventToAttendee(event, tokenInfo.email, oAuth2Client);
     });

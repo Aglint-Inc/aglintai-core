@@ -92,7 +92,7 @@ function CandidateSearchHistory() {
           .from('candidates')
           .select()
           .eq('recruiter_id', recruiter.id),
-      ) as SearchHistoryType[];
+      );
 
       if (history.length === 0) {
         setIsCandidates(false);
@@ -111,7 +111,7 @@ function CandidateSearchHistory() {
           .from('candidate_search_history')
           .delete()
           .eq('id', deleteHistoryId),
-      ) as SearchHistoryType[];
+      );
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
@@ -324,7 +324,7 @@ function CandidateSearchHistory() {
     try {
       supabaseWrap(
         await supabase.from('candidate_list').delete().eq('id', deleteList.id),
-      ) as CandidateListTypeDB[];
+      );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -782,7 +782,9 @@ function CandidateSearchHistory() {
           textDesc={
             'Are you sure you want to delete this list? Once deleted, it cannot be recovered.'
           }
-          textHeader={`Delete ${list.filter((l) => l.id === deleteList?.id)[0]?.name || ''}`}
+          textHeader={`Delete ${
+            list.filter((l) => l.id === deleteList?.id)[0]?.name || ''
+          }`}
           onClickCancel={{
             onClick: () => {
               setDeleteList(null);
@@ -809,9 +811,9 @@ function CandidateSearchHistory() {
       >
         <ClearHistory
           textDesc={`By clicking 'Delete,' you're confirming that you want to remove this search history, and it cannot be undone.`}
-          textHeader={`Delete ${
-            history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
-          }`}
+          textHeader={`Delete ${history.filter(
+            (h) => h.id === deleteHistoryId,
+          )[0]?.search_query}`}
           onClickCancel={{
             onClick: () => {
               setDeleteHistory(false);

@@ -9,7 +9,7 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { InterviewMeetingTypeDb } from '@/src/types/data.types';
+// import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .from('interview_meeting')
         .select()
         .eq('interview_schedule_id', schedule_id),
-    ) as InterviewMeetingTypeDb[];
+    ); // as InterviewMeetingTypeDb[];
     if (meetings.length === 0) return res.status(200).send('no meetings found');
 
     const promises = meetings.map(async (meeting) => {

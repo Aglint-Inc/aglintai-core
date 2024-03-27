@@ -37,14 +37,14 @@ export const getAllIntsFromPlan = async (
       .from('recruiter_relation')
       .select('recruiter(service_json)')
       .eq('user_id', Array.from(intSet)[0]),
-  ) as { recruiter: { service_json: string } }[];
+  );
 
   const recs = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .select('user_id, schedule_auth, email')
       .in('user_id', Array.from(intSet)),
-  ) as Pick<RecruiterUserType, 'user_id' | 'schedule_auth' | 'email'>[];
+  );
 
   let company_cred = null;
   if (company.recruiter.service_json) {

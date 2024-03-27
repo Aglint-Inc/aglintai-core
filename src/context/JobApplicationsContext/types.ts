@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
+import { EmailTempPath } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import {
   FilterParameter,
-  SortParameter
+  SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
 import { ModuleType } from '@/src/components/Scheduling/Modules/types';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
@@ -22,7 +23,7 @@ export enum JobApplicationSections {
   ASSESSMENT = 'assessment',
   INTERVIEW = 'interview',
   QUALIFIED = 'qualified',
-  DISQUALIFIED = 'disqualified'
+  DISQUALIFIED = 'disqualified',
 }
 
 export type CardStateManager = {
@@ -48,6 +49,7 @@ export type JobApplication = Applications & {
     isFetching: boolean;
     isValidEmail: boolean;
   };
+  status_emails_sent: Partial<{ [key in EmailTempPath]: string }>;
 };
 
 export type Parameters = {

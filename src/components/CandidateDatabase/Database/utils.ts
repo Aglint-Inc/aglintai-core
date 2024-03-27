@@ -51,6 +51,7 @@ export const getFilteredCands = async ({
       job_title_filter: filterSqlQryfromString(job_role),
     }),
   ) as CandidateSearchType[];
+  //TODO: supabaseWrap type fix needed
 
   //NOTE: filter cands old json
   const filteredCands = candidates
