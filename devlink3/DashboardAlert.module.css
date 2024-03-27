@@ -2,8 +2,8 @@
   display: grid;
   padding: 16px;
   grid-auto-columns: 1fr;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
   grid-template-columns: max-content 1fr;
   grid-template-rows: auto;
 
