@@ -1,7 +1,8 @@
-import { Stack, TextField } from '@mui/material';
+import { IconButton, Stack, TextField } from '@mui/material';
+import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import axios from 'axios';
 import { capitalize } from 'lodash';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { ButtonPrimaryRegular } from '@/devlink';
@@ -9,15 +10,20 @@ import { IntegrationCard, IntegrationUpload } from '@/devlink2';
 import { ButtonGrey, ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
+import { ZOOM_REDIRECT_URI } from '@/src/utils/integrations/constants';
 import toast from '@/src/utils/toast';
 
+import { ShowCode } from '../../Common/ShowCode';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
-import { GooglLogo, updateRecruiter } from '../utils';
+import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
 
 function Scheduling() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
+  const [hideApiKey, setHideApiKey] = useState(true);
+
   const [reason, setReason] = useState<SchedulingReasonTypes>();
   const [isLoading, setLoading] = useState(false);
   const [fileData, setFileData] = useState(null);
@@ -47,19 +53,36 @@ function Scheduling() {
         setRecruiter(data);
       });
     }
+
+    if (reason === 'disconnect_zoom') {
+      await updateRecruiter(recruiter.id, {
+        zoom_auth: null,
+      } as RecruiterType).then((data: RecruiterType) => {
+        setRecruiter(data);
+      });
+    }
     setFileData(null);
     close();
   }
   function connectApi(source: schedulingToolsType) {
-    setIsOpen(true);
     if (source === 'google_workspace') {
+      setIsOpen(true);
       setReason('connect_google_workSpace');
+    }
+    if (source === 'zoom') {
+      handleGetAuthUri();
     }
   }
   async function updateApi(source: schedulingToolsType) {
-    setIsOpen(true);
+    setTimeout(() => {
+      inputRef.current.value = recruiter?.zoom_auth;
+    }, 10);
     if (source === 'google_workspace') {
+      setIsOpen(true);
       setReason('update_google_workspace');
+    }
+    if (source === 'zoom') {
+      setReason('update_zoom');
     }
   }
   function disConnectApi(source: schedulingToolsType) {
@@ -67,10 +90,14 @@ function Scheduling() {
     if (source === 'google_workspace') {
       setReason('disconnect_google_workSpace');
     }
+    if (source === 'zoom') {
+      handleGetAuthUri();
+    }
   }
   function readDocs(source: schedulingToolsType) {
     if (source === 'google_workspace')
       window.open('https://www.workspace.google.com');
+    if (source === 'zoom') window.open('https://www.zoom.com');
   }
   const SchedulingTools = [
     {
@@ -97,6 +124,28 @@ function Scheduling() {
         />
       ),
     },
+    {
+      name: String('zoom') as schedulingToolsType,
+      url: 'zoom.com',
+      logo: <ZoomLogo />,
+      isConnected: recruiter?.zoom_auth,
+      buttons: (
+        <CardButtons
+          primaryText={recruiter?.zoom_auth ? 'Edit' : 'Connect'}
+          secondaryText={recruiter?.zoom_auth ? 'Disconnect' : 'Learn How'}
+          secondaryAction={() => {
+            setLoading(false);
+            if (recruiter.zoom_auth) disConnectApi('zoom');
+            else readDocs('zoom');
+          }}
+          primaryAction={() => {
+            setLoading(false);
+            if (recruiter.zoom_auth) updateApi('zoom');
+            else connectApi('zoom');
+          }}
+        />
+      ),
+    },
   ];
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -119,8 +168,33 @@ function Scheduling() {
       else reader.readAsArrayBuffer(file);
     },
   });
+
+  const handleGetAuthUri = async () => {
+    try {
+      let zoom_auth_url = `https://zoom.us/oauth/authorize?redirect_uri=${ZOOM_REDIRECT_URI}&client_id=${process.env.NEXT_PUBLIC_ZOOM_CLIENT_ID}&response_type=code`;
+      const popup = window.open(zoom_auth_url, 'popup', 'popup=true');
+      const checkPopup = setInterval(() => {
+        if (popup && !popup.closed) {
+          try {
+            if (popup.window.location.href.includes('zoom-auth=sucess')) {
+              toast.success('Zoom auth sucess');
+              popup.close();
+              clearInterval(checkPopup);
+            }
+            if (popup.window.location.href.includes('zoom-auth=failed')) {
+              toast.error('Zoom auth failed');
+            }
+          } catch (error) {
+            // console.log(error);
+          }
+        }
+      }, 1000);
+    } catch (error) {
+      // console.log(error);
+    }
+  };
   return (
-    <div>
+    <>
       {SchedulingTools.map((item, i) => {
         return (
           <IntegrationCard
@@ -144,24 +218,58 @@ function Scheduling() {
         action={action}
         isLoading={isLoading}
         popUpBody={
-          fileData ? (
-            <TextField fullWidth disabled value={fileData} />
-          ) : (
-            <Stack {...getRootProps()}>
-              <input id='uploadServiceJson' {...getInputProps()} />
-              <IntegrationUpload
-                onClickGetJson={{
-                  onClick: (e: { stopPropagation: () => void }) => {
-                    e.stopPropagation();
-                  },
+          <ShowCode>
+            <ShowCode.When
+              isTrue={
+                reason === 'connect_zoom' ||
+                reason === 'disconnect_zoom' ||
+                reason === 'update_zoom'
+              }
+            >
+              <TextField
+                type={hideApiKey ? 'password' : 'text'}
+                fullWidth
+                inputRef={inputRef}
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      onClick={() => {
+                        setHideApiKey((pre) => !pre);
+                      }}
+                    >
+                      {hideApiKey ? <IconEyeOff /> : <IconEye />}
+                    </IconButton>
+                  ),
                 }}
               />
-            </Stack>
-          )
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={
+                reason === 'connect_google_workSpace' ||
+                reason === 'disconnect_google_workSpace' ||
+                reason === 'update_google_workspace'
+              }
+            >
+              {fileData ? (
+                <TextField fullWidth disabled value={fileData} />
+              ) : (
+                <Stack {...getRootProps()}>
+                  <input id='uploadServiceJson' {...getInputProps()} />
+                  <IntegrationUpload
+                    onClickGetJson={{
+                      onClick: (e: { stopPropagation: () => void }) => {
+                        e.stopPropagation();
+                      },
+                    }}
+                  />
+                </Stack>
+              )}
+            </ShowCode.When>
+          </ShowCode>
         }
         reason={reason}
       />
-    </div>
+    </>
   );
 }
 

@@ -40,7 +40,12 @@ function SchedulingPopUps({
         <ShowCode.When isTrue={isLoading}>
           <Loader />
         </ShowCode.When>
-        <ShowCode.When isTrue={reason === 'disconnect_google_workSpace'}>
+        <ShowCode.When
+          isTrue={
+            reason === 'disconnect_google_workSpace' ||
+            reason === 'disconnect_zoom'
+          }
+        >
           <DeletePopup
             textTitle={
               <ShowCode>
@@ -48,6 +53,9 @@ function SchedulingPopUps({
                   isTrue={reason === 'disconnect_google_workSpace'}
                 >
                   Disconnect Google workspace
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'disconnect_zoom'}>
+                  Disconnect Zoom
                 </ShowCode.When>
               </ShowCode>
             }
@@ -60,6 +68,11 @@ function SchedulingPopUps({
                   disconnected from Aglint and will no longer be accessible in
                   this application. You can reconnect again on the Integrations
                   page.
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'disconnect_zoom'}>
+                  By clicking {'"Disconnect"'}, Zoom will be disconnected from
+                  Aglint and will no longer be accessible in this application.
+                  You can reconnect again on the Integrations page.
                 </ShowCode.When>
               </ShowCode>
             }
@@ -89,6 +102,15 @@ function SchedulingPopUps({
                 <ShowCode.When isTrue={reason === 'update_google_workspace'}>
                   Google Workspace
                 </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'connect_zoom'}>
+                  Connect Zoom
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'disconnect_zoom'}>
+                  Disconnect Zoom
+                </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'update_zoom'}>
+                  Google Workspace
+                </ShowCode.When>
               </ShowCode>
             }
             textPopupDescription={<>{popUpBody}</>}
@@ -96,10 +118,20 @@ function SchedulingPopUps({
             textPopupButton={
               <>
                 <ShowCode>
-                  <ShowCode.When isTrue={reason === 'connect_google_workSpace'}>
+                  <ShowCode.When
+                    isTrue={
+                      reason === 'connect_google_workSpace' ||
+                      reason === 'connect_zoom'
+                    }
+                  >
                     Connect
                   </ShowCode.When>
-                  <ShowCode.When isTrue={reason === 'update_google_workspace'}>
+                  <ShowCode.When
+                    isTrue={
+                      reason === 'update_google_workspace' ||
+                      reason === 'update_zoom'
+                    }
+                  >
                     Update changes
                   </ShowCode.When>
                 </ShowCode>
