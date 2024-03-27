@@ -1,6 +1,7 @@
-import { MenuItem, TextField } from '@mui/material';
+import { MenuItem, Stack, TextField } from '@mui/material';
 import React from 'react';
 
+import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../MuiAvatar';
@@ -8,6 +9,10 @@ type MenuOption = {
   name: string;
   value: string | number;
   start_icon_url?: string;
+  meta?: {
+    title: string;
+    icon: React.JSX.Element;
+  }[];
 };
 
 type Props = {
@@ -16,7 +21,6 @@ type Props = {
   showMenuIcons: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   defaultValue: string;
-  children?: React.JSX.Element;
 };
 
 const AvatarSelectDropDown = ({
@@ -25,7 +29,6 @@ const AvatarSelectDropDown = ({
   value,
   onChange,
   defaultValue,
-  children = <></>,
 }: Props) => {
   return (
     <>
@@ -74,7 +77,11 @@ const AvatarSelectDropDown = ({
               />
             )}
             {getFullName(menu.name, '')}
-            {children}
+            <Stack direction={'row'} gap={2} ml={'auto'}>
+              {(menu.meta ?? []).map(({ title, icon }, i) => (
+                <Meta key={i} title={title} icon={icon} />
+              ))}
+            </Stack>
           </MenuItem>
         ))}
       </TextField>
@@ -83,3 +90,23 @@ const AvatarSelectDropDown = ({
 };
 
 export default AvatarSelectDropDown;
+
+const Meta = ({
+  title,
+  icon = <></>,
+}: {
+  title: string;
+  icon?: React.JSX.Element;
+}) => {
+  if (title)
+    return (
+      <Stack
+        direction={'row'}
+        gap={'4px'}
+        style={{ fontSize: '12px', color: palette.grey['500'] }}
+      >
+        {icon}
+        {title}
+      </Stack>
+    );
+};

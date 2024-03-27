@@ -78,6 +78,8 @@ const JobInterviewPlanHoc = ({ children }) => {
               profile_image: member.profile_image,
               email: member.email,
               pause_json: null,
+              department: member.department,
+              position: member.position,
             };
           });
         intMod.allIntervs = intModule.relations
@@ -91,6 +93,8 @@ const JobInterviewPlanHoc = ({ children }) => {
               profile_image: member.profile_image,
               interv_id: member.interv_id,
               name: member.name,
+              department: member.department,
+              position: member.position,
             };
           });
         allIntModules.push(intMod);
@@ -122,6 +126,8 @@ const JobInterviewPlanHoc = ({ children }) => {
                 interv_id: i.interv_id,
                 name: member.name,
                 profile_image: member.profile_image,
+                department: member.department,
+                position: member.position,
               };
             }),
           allIntervs: intModule?.allIntervs ?? [], //break
@@ -147,6 +153,8 @@ const JobInterviewPlanHoc = ({ children }) => {
                 email: member.email,
                 profile_img: member.profile_image,
                 pause_json: null,
+                department: member.department,
+                position: member.position,
               };
             }),
           shadowIntervs: dbModule.shadowIntervs
@@ -164,6 +172,8 @@ const JobInterviewPlanHoc = ({ children }) => {
                 email: member.email,
                 profile_img: member.profile_image,
                 pause_json: null,
+                department: member.department,
+                position: member.position,
               };
             }),
         };
@@ -181,6 +191,8 @@ const JobInterviewPlanHoc = ({ children }) => {
               profile_image: member.profile_image,
               email: member.email,
               pause_json: null,
+              department: member.department,
+              position: member.position,
             };
           });
         clModules.push(clModule);
@@ -196,6 +208,8 @@ const JobInterviewPlanHoc = ({ children }) => {
             interv_id: mem.interv_id,
             name: mem.name,
             profile_image: mem.profile_image,
+            department: mem.department,
+            position: mem.position,
           };
         }
       }
@@ -236,13 +250,19 @@ const fetchAllMembers = async () => {
     await supabase
       .from('recruiter_relation')
       .select(
-        'recruiter_id,recruiter_user(user_id, email, profile_image,first_name,last_name))',
+        'recruiter_id, recruiter_user(user_id, email, profile_image,first_name,last_name, position, department))',
       ),
   ) as unknown as {
     recruiter_id: string;
     recruiter_user: Pick<
       RecruiterUserType,
-      'email' | 'first_name' | 'last_name' | 'profile_image' | 'user_id'
+      | 'email'
+      | 'first_name'
+      | 'last_name'
+      | 'profile_image'
+      | 'user_id'
+      | 'position'
+      | 'department'
     > | null;
   }[];
   //TODO: supabaseWrap type fix needed
@@ -256,6 +276,8 @@ const fetchAllMembers = async () => {
       ),
       profile_image: r.recruiter_user.profile_image,
       email: r.recruiter_user.email,
+      position: r.recruiter_user.position,
+      department: r.recruiter_user.department,
     }));
   return allMembers;
 };

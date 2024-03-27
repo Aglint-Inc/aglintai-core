@@ -4,6 +4,8 @@ export type IntwerviewerPlanType = {
   name: string;
   interv_id: string;
   profile_image: string;
+  position: string;
+  department: string;
 };
 
 export type InterviewSession = Pick<
