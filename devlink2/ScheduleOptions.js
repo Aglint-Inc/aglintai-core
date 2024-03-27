@@ -79,7 +79,12 @@ export function ScheduleOptions({
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotDateRangeInput}</_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1289")}
+        tag="div"
+      >
+        {slotPrimaryButton}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1286")}
         tag="div"

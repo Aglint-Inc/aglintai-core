@@ -7,8 +7,13 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink';
-import { ButtonWide, ScheduleOptions, ScreeningLandingPop } from '@/devlink2';
+import { RadioButton } from '@/devlink';
+import { ButtonWide, ScheduleOptions } from '@/devlink2';
+import {
+  ButtonGrey,
+  ButtonPrimaryDefaultRegular,
+  SchedulingPop,
+} from '@/devlink3';
 import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -61,6 +66,8 @@ function GetScheduleOptions() {
     selectedApplication.candidates.phone,
   );
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
+  const [isEmail, setEmail] = useState(true);
+  const [isPhone, setPhone] = useState(false);
 
   const initConversation = async () => {
     try {
@@ -89,7 +96,7 @@ function GetScheduleOptions() {
       toast.error(error);
     } finally {
       toast.success('Email Successfully Sent');
-      router.push(`/scheduling?tab=allSchedules`);
+      router.push(`/scheduling?tab=candidates`);
     }
   };
   const makePhoneCal = async () => {
@@ -137,35 +144,13 @@ function GetScheduleOptions() {
     } finally {
       toast.success('Call Initiated Successfully');
       setIsPopupOpen(false);
-      router.push(`/scheduling?tab=allSchedules`);
+      router.push(`/scheduling?tab=candidates`);
     }
     //
   };
   return (
     <>
       <ScheduleOptions
-        slotButtonLeft={
-          <ButtonPrimaryRegular
-            isDisabled={isloading}
-            textLabel={'Schedule With Email Agent'}
-            onClickButton={{
-              onClick: () => {
-                initConversation();
-                setLoading(true);
-              },
-            }}
-          />
-        }
-        slotButtonRight={
-          <ButtonPrimaryRegular
-            textLabel={'Schedule With Phone Call Agent'}
-            onClickButton={{
-              onClick: () => {
-                setIsPopupOpen(true);
-              },
-            }}
-          />
-        }
         slotInterviewCordinator={
           !fetchingSchedule && (
             <AvatarSelectDropDown
@@ -198,16 +183,17 @@ function GetScheduleOptions() {
           />
         }
         slotPrimaryButton={
-          <Stack width={'100%'}>
-            <ButtonPrimaryRegular
-              isEndIcon={fetchingPlan}
-              slotEndIcon={
-                <Stack height={'100%'}>
-                  <LoaderGrey />
-                </Stack>
-              }
-              textLabel={'Get Schedule Options'}
+          <>
+            <ButtonGrey
+              textLabel={'Schedule With Agent'}
               onClickButton={{
+                onClick: () => {
+                  setIsPopupOpen(true);
+                },
+              }}
+            />
+            <ButtonPrimaryDefaultRegular
+              buttonProps={{
                 onClick: async () => {
                   if (dateRange.start_date && dateRange.end_date)
                     await findScheduleOptions({
@@ -217,8 +203,18 @@ function GetScheduleOptions() {
                     });
                 },
               }}
+              endIconSlot={
+                fetchingPlan ? (
+                  <Stack height={'100%'} width={'20px'}>
+                    <LoaderGrey />
+                  </Stack>
+                ) : (
+                  ''
+                )
+              }
+              buttonText={'Get Schedule Options'}
             />
-          </Stack>
+          </>
         }
         slotInputName={
           <UITextField
@@ -297,8 +293,57 @@ function GetScheduleOptions() {
           open: isPopupOpen,
         }}
       >
-        <ScreeningLandingPop
-          slotDropdown={
+        <SchedulingPop
+          textEmail={'Schedule With Email Agent'}
+          textPhone={'Schedule With Phone Agent'}
+          isEmailActive={isEmail}
+          isPhoneActive={isPhone}
+          slotRadioEmail={
+            <RadioButton
+              textLabel=''
+              isChecked={isEmail}
+              onClickCheck={{
+                onClick: () => {
+                  setEmail(true);
+                  setPhone(false);
+                },
+              }}
+            />
+          }
+          slotRadiophone={
+            <RadioButton
+              textLabel=''
+              isChecked={isPhone}
+              onClickCheck={{
+                onClick: () => {
+                  setEmail(false);
+                  setPhone(true);
+                },
+              }}
+            />
+          }
+          slotPrimaryButton={
+            <ButtonWide
+              isLoading={isloading}
+              isEnabled={input !== ''}
+              textButton={'Schedule'}
+              onClickButton={{
+                onClick: () => {
+                  setLoading(true);
+                  isEmail ? initConversation() : makePhoneCal();
+                },
+              }}
+            />
+          }
+          slotInput1={
+            <UITextField
+              placeholder='Enter Phone Number'
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              defaultValue={selectedApplication.candidates.phone}
+            />
+          }
+          slotInput2={
             <Stack width={465}>
               <Autocomplete
                 disableClearable
@@ -338,32 +383,11 @@ function GetScheduleOptions() {
               />
             </Stack>
           }
-          textHeading='Contact Number'
-          textLabel='Please enter the Candidate Contact Number'
-          onClickClose={{ onClick: () => setIsPopupOpen(false) }}
-          slotScreeningNameInput={
-            <UITextField
-              placeholder='Enter Phone Number'
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              defaultValue={selectedApplication.candidates.phone}
-            />
-          }
-          slotButtonPrimaryRegular={
-            <>
-              <ButtonWide
-                isLoading={isloading}
-                isEnabled={input !== ''}
-                textButton={'Make Phone Call'}
-                onClickButton={{
-                  onClick: () => {
-                    setLoading(true);
-                    makePhoneCal();
-                  },
-                }}
-              />
-            </>
-          }
+          onClickClose={{
+            onClick: () => {
+              setIsPopupOpen(false);
+            },
+          }}
         />
       </MuiPopup>
     </>
