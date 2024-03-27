@@ -1,5 +1,4 @@
 import { Dialog, Typography } from '@mui/material';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -19,8 +18,14 @@ import DynamicLoader from '@/src/components/CompanyDetailComp/Interviewers/Dynam
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
+import {
+  getInterviewers,
+  re_mapper,
+  saveInterviewerFeedback,
+  useInterviewerList,
+} from './util.function';
 
 const FeedbackWindow = () => {
   const param = useSearchParams();
@@ -86,33 +91,12 @@ const AdminFeedback = ({
     x: CustomDatabase['public']['Tables']['interview_meeting_user']['Row']['feedback'],
   ) => Promise<Boolean>;
 }) => {
-  let currentIndex: number | null = null;
-  const [selectedInterviewers, setSelectedInterviewers] =
-    useState<(typeof interviewers)[number]>(null);
+  const [selectedInterviewer, setSelectedInterviewer] = useState<{
+    index: number;
+    interviewer: (typeof interviewers)[number];
+  }>({ index: null, interviewer: null });
 
   const [edit, setEdit] = useState(false);
-
-  // const handelSubmit = (feedback) => {
-  //   saveInterviewerFeedback({
-  //     // feedback: JSON.stringify(feedback),
-  //     feedback: selectedInterviewers.feedback,
-  //     id: user_id,
-  //     meeting_id,
-  //   }).then((row) => {
-  //     setEdit(false);
-  //     const temp = [...interviewers];
-  //     temp[Number(currentIndex)] = { ...temp[Number(currentIndex)], ...row };
-  //     //  temp.map((item) => {
-  //     //    if (item.id === row.id)
-  //     //      return { ...temp[Number(currentIndex)], ...row };
-  //     //    return item;
-  //     //  });
-  //     setInterviewers(temp);
-  //     currentIndex = null;
-  //     setSelectedInterviewers(null);
-  //     toast.success('Feedback Saved.');
-  //   });
-  // };
 
   return (
     <>
@@ -136,12 +120,11 @@ const AdminFeedback = ({
                   isNoFeedback={!int.feedback}
                   onClickFeedback={{
                     onClick: () => {
-                      currentIndex = index;
-                      setSelectedInterviewers(
-                        interviewers[Number(currentIndex)],
-                      );
-                      !interviewers[Number(currentIndex)].feedback &&
-                        setEdit(true);
+                      setSelectedInterviewer({
+                        index,
+                        interviewer: interviewers[Number(index)],
+                      });
+                      !interviewers[Number(index)].feedback && setEdit(true);
                     },
                   }}
                   slotAvatar={
@@ -173,23 +156,43 @@ const AdminFeedback = ({
           </>
         }
       />
-      {selectedInterviewers !== null &&
+      {selectedInterviewer?.interviewer &&
         [1].map(() => {
           return (
             <Dialog
               key={1}
               // fullWidth
-              open={selectedInterviewers !== null}
+              open={selectedInterviewer.interviewer !== null}
               maxWidth={'lg'}
               // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
             >
               <ShowCode>
                 <ShowCode.When isTrue={edit}>
-                  <MyFeedbackPopup
+                  <FeedbackForm
+                    interviewerData={selectedInterviewer.interviewer}
+                    onSubmit={(feedback) =>
+                      handelSubmit(feedback).then(() => {
+                        toast.success('Feedback Saved.');
+                        setEdit(false);
+                        setSelectedInterviewer({
+                          index: null,
+                          interviewer: null,
+                        });
+                      })
+                    }
+                    onClose={() => {
+                      setEdit(false);
+                      setSelectedInterviewer({
+                        index: null,
+                        interviewer: null,
+                      });
+                    }}
+                  />
+                  {/* <MyFeedbackPopup
                     onClickClose={{
                       onClick: () => {
                         currentIndex = null;
-                        setSelectedInterviewers(null);
+                        setSelectedInterviewer(null);
                         setEdit(false);
                       },
                     }}
@@ -200,7 +203,7 @@ const AdminFeedback = ({
                         }
                         handelSubmit(selectedInterviewers.feedback).then(() => {
                           currentIndex = null;
-                          setSelectedInterviewers(null);
+                          setSelectedInterviewer(null);
                           toast.success('Feedback Saved.');
                           setEdit(false);
                         });
@@ -226,7 +229,7 @@ const AdminFeedback = ({
                                       ...temp.feedback,
                                       recommendation: i + 1,
                                     };
-                                    setSelectedInterviewers(temp);
+                                    setSelectedInterviewer(temp);
                                   },
                                 }}
                               />
@@ -261,17 +264,17 @@ const AdminFeedback = ({
                             ...temp.feedback,
                             objective: html,
                           };
-                          setSelectedInterviewers(temp);
+                          setSelectedInterviewer(temp);
                         }}
                       />
                       // </Stack>
                     }
-                  />
+                  /> */}
                 </ShowCode.When>
                 <ShowCode.Else>
                   <FeedbackViewPopup
                     isEditFeedbackVisible={
-                      selectedInterviewers.interviewer_id === user_id
+                      selectedInterviewer.interviewer.interviewer_id === user_id
                     }
                     onClickEditFeedback={{
                       onClick: () => {
@@ -280,43 +283,46 @@ const AdminFeedback = ({
                     }}
                     onClickClose={{
                       onClick: () => {
-                        setSelectedInterviewers(null);
+                        setSelectedInterviewer(null);
                         setEdit(false);
                       },
                     }}
                     onClickNext={{
                       onClick: () => {
-                        currentIndex = (currentIndex + 1) % interviewers.length;
-                        setSelectedInterviewers(
-                          interviewers[Number(currentIndex)],
-                        );
+                        const index =
+                          (selectedInterviewer.index + 1) % interviewers.length;
+                        setSelectedInterviewer({
+                          index,
+                          interviewer: interviewers[Number(index)],
+                        });
                       },
                     }}
                     onClickPrev={{
                       onClick: () => {
-                        currentIndex =
-                          currentIndex - 1 > 0
-                            ? currentIndex - 1
+                        const index =
+                          selectedInterviewer.index - 1 > -1
+                            ? selectedInterviewer.index - 1
                             : interviewers.length - 1;
-                        setSelectedInterviewers(
-                          interviewers[Number(currentIndex)],
-                        );
+                        setSelectedInterviewer({
+                          index,
+                          interviewer: interviewers[Number(index)],
+                        });
                       },
                     }}
                     slotAvatarWithName={
                       <AvatarWithName
-                        textName={`${selectedInterviewers.interviewerDetails.first_name} ${selectedInterviewers.interviewerDetails.last_name}`}
+                        textName={`${selectedInterviewer.interviewer.interviewerDetails.first_name} ${selectedInterviewer.interviewer.interviewerDetails.last_name}`}
                         slotAvatar={
                           <Avatar
                             variant='circular'
                             src={
-                              selectedInterviewers.interviewerDetails
+                              selectedInterviewer.interviewer.interviewerDetails
                                 ?.profile_image
                             }
                             level={getFullName(
-                              selectedInterviewers.interviewerDetails
+                              selectedInterviewer.interviewer.interviewerDetails
                                 ?.first_name,
-                              selectedInterviewers.interviewerDetails
+                              selectedInterviewer.interviewer.interviewerDetails
                                 ?.last_name,
                             )}
                             dynamicSizing
@@ -328,15 +334,18 @@ const AdminFeedback = ({
                       <Typography
                         dangerouslySetInnerHTML={{
                           __html:
-                            selectedInterviewers.feedback?.objective ||
-                            'Feedback not Submitted',
+                            selectedInterviewer.interviewer.feedback
+                              ?.objective || 'Feedback not Submitted',
                         }}
                       />
                     }
                     textRecomendation={
-                      selectedInterviewers.feedback
+                      selectedInterviewer.interviewer.feedback
                         ? re_mapper[
-                            Number(selectedInterviewers.feedback.recommendation)
+                            Number(
+                              selectedInterviewer.interviewer.feedback
+                                .recommendation,
+                            )
                           ]
                         : '-'
                     }
@@ -360,7 +369,7 @@ const InterviewerFeedback = ({
     x: CustomDatabase['public']['Tables']['interview_meeting_user']['Row']['feedback'],
   ) => Promise<Boolean>;
 }) => {
-  const [interviewer, setInterviewer] = useState(interviewers[0]);
+  const interviewer = interviewers[0];
   const [edit, setEdit] = useState(false);
 
   return (
@@ -378,61 +387,6 @@ const InterviewerFeedback = ({
         textRecommendLevel={
           re_mapper[interviewer.feedback?.recommendation] || '-'
         }
-        // slotFeedbackTableRow={
-        //   <>
-        //     {interviewers.map((int, index) => {
-        //       int.interviewerDetails = int.interviewerDetails || {
-        //         user_id: 'something',
-        //         first_name: 'No',
-        //         last_name: 'Name',
-        //         position: 'No Position',
-        //         profile_image: '',
-        //       };
-        //       return (
-        //         <FeedbackTableRow
-        //           key={int.id}
-        //           isAddFeedback={
-        //             !int.feedback && int.interviewer_id === user_id
-        //           }
-        //           isNoFeedback={!int.feedback}
-        //           onClickFeedback={{
-        //             onClick: () => {
-        //               currentIndex = index;
-        //               setSelectedInterviewers(
-        //                 interviewers[Number(currentIndex)],
-        //               );
-        //               // !interviewers[Number(currentIndex)].feedback &&
-        //               //   setEdit(true);
-        //             },
-        //           }}
-        //           slotAvatar={
-        //             <Avatar
-        //               variant='circular'
-        //               src={int.interviewerDetails.profile_image}
-        //               level={getFullName(
-        //                 int.interviewerDetails.first_name,
-        //                 int.interviewerDetails.last_name,
-        //               )}
-        //             />
-        //           }
-        //           textInterviewerName={`${int.interviewerDetails?.first_name} ${int.interviewerDetails?.last_name}`.trim()}
-        //           // @ts-ignore
-        //           textFeedback={
-        //             <Typography
-        //               dangerouslySetInnerHTML={{
-        //                 __html:
-        //                   int.feedback?.objective || 'Feedback not Submitted',
-        //               }}
-        //             />
-        //           }
-        //           // @ts-ignore
-        //           textRecommendation={re_mapper[int.feedback?.recommendation]}
-        //           textjobTitle={int.interviewerDetails.position}
-        //         />
-        //       );
-        //     })}
-        //   </>
-        // }
       />
       {edit && (
         <Dialog
@@ -442,68 +396,17 @@ const InterviewerFeedback = ({
           maxWidth={'lg'}
           // sx={{ '& .MuiPaper-root': { maxWidth: '650px' } }}
         >
-          <MyFeedbackPopup
-            onClickClose={{
-              onClick: () => {
+          <FeedbackForm
+            interviewerData={interviewers[0]}
+            onSubmit={(feedback) =>
+              handelSubmit(feedback).then(() => {
+                toast.success('Feedback Saved.');
                 setEdit(false);
-              },
+              })
+            }
+            onClose={() => {
+              setEdit(false);
             }}
-            onClickSubmitFeedback={{
-              onClick: () => {
-                if (!interviewer.feedback) {
-                  return toast.warning('Please give Feedback');
-                }
-                handelSubmit(interviewer.feedback).then(() => {
-                  toast.success('Feedback Saved.');
-                  setEdit(false);
-                });
-              },
-            }}
-            slotRoundedNumber={
-              <>
-                {Array(10)
-                  .fill(1)
-                  .map((_, i) => {
-                    return (
-                      <RoundedNumber
-                        key={i}
-                        textNumber={i + 1}
-                        isActive={
-                          (interviewer.feedback?.recommendation || 0) > i
-                        }
-                        onClickRound={{
-                          onClick: () => {
-                            const temp = { ...interviewer };
-                            temp.feedback = {
-                              ...temp.feedback,
-                              recommendation: i + 1,
-                            };
-                            setInterviewer(temp);
-                          },
-                        }}
-                      />
-                    );
-                  })}
-              </>
-            }
-            textRecommendation={
-              re_mapper[interviewer.feedback?.recommendation || 0]
-            }
-            slotObjective={
-              <TipTapAIEditor
-                placeholder='Give Your Feedback.'
-                initialValue={interviewer.feedback?.objective || ''}
-                border
-                handleChange={(html) => {
-                  const temp = { ...interviewer };
-                  temp.feedback = {
-                    ...temp.feedback,
-                    objective: html,
-                  };
-                  setInterviewer(temp);
-                }}
-              />
-            }
           />
         </Dialog>
       )}
@@ -511,83 +414,73 @@ const InterviewerFeedback = ({
   );
 };
 
-const useInterviewerList = () => {
-  const param = useSearchParams();
-  const meeting_id = param.get('meeting_id');
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['interviewers_details'],
-    queryFn: () => getInterviewers({ meeting_id }),
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({ queryKey: ['interviewers_details'] });
-  return { ...query, refetch };
-};
-
-const getInterviewers = async ({ meeting_id }: { meeting_id: string }) => {
-  const interviewers = await supabase
-    .from('interview_meeting_user')
-    .select()
-    .eq('interview_meeting_id', meeting_id)
-    .then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      return data as unknown as CustomDatabase['public']['Tables']['interview_meeting_user']['Row'][];
-    });
-  if (interviewers.length) {
-    const interviewersDetails = await supabase
-      .from('recruiter_user')
-      .select('user_id, first_name, last_name, position, profile_image')
-      .in(
-        'user_id',
-        interviewers
-          .map((da) => da.interviewer_id)
-          .filter((item) => Boolean(item)),
-      )
-      .then(({ data: userData, error }) => {
-        if (error) throw new Error(error.message);
-        return userData;
-      });
-    const temp: { [key: string]: (typeof interviewersDetails)[number] } = {};
-    interviewersDetails.forEach((detail) => (temp[detail.user_id] = detail));
-    return interviewers.map((int) => ({
-      ...int,
-      interviewerDetails: temp[int.interviewer_id],
-    }));
-  } else interviewers.map((int) => ({ ...int, interviewerDetails: null }));
-};
-
-const saveInterviewerFeedback = async ({
-  feedback,
-  id,
-  meeting_id,
+const FeedbackForm = ({
+  interviewerData,
+  onSubmit,
+  onClose,
 }: {
-  feedback: any;
-  id: string;
-  meeting_id: string;
+  interviewerData: Awaited<ReturnType<typeof getInterviewers>>[number];
+  onSubmit: (
+    // eslint-disable-next-line no-unused-vars
+    x: CustomDatabase['public']['Tables']['interview_meeting_user']['Row']['feedback'],
+  ) => void;
+  onClose: () => void;
 }) => {
-  return supabase
-    .from('interview_meeting_user')
-    .update({ feedback })
-    .eq('interviewer_id', id)
-    .eq('interview_meeting_id', meeting_id);
-  // .select()
-  // .single()
-  // .then(({ data, error }) => {
-  //   if (error) throw new Error(error.message);
-  //   return data as unknown as CustomDatabase['public']['Tables']['interview_meeting_user']['Row'];
-  // });
-};
-
-const re_mapper = {
-  0: 'Strongly not recommended',
-  1: 'Not recommended',
-  2: 'Not recommended',
-  3: 'Not recommended',
-  4: 'Not recommended',
-  5: 'Neutral',
-  6: 'Mildly recommended',
-  7: 'Recommended',
-  8: 'Recommended',
-  9: 'Highly recommended',
-  10: 'Exceptionally recommended',
+  const [interviewer, setInterviewer] = useState(interviewerData);
+  return (
+    <MyFeedbackPopup
+      onClickClose={{
+        onClick: onClose,
+      }}
+      onClickSubmitFeedback={{
+        onClick: () => {
+          if (!interviewer.feedback) {
+            return toast.warning('Please give Feedback');
+          }
+          onSubmit(interviewer.feedback);
+        },
+      }}
+      slotRoundedNumber={
+        <>
+          {Array(10)
+            .fill(1)
+            .map((_, i) => {
+              return (
+                <RoundedNumber
+                  key={i}
+                  textNumber={i + 1}
+                  isActive={(interviewer.feedback?.recommendation || 0) > i}
+                  onClickRound={{
+                    onClick: () => {
+                      const temp = { ...interviewer };
+                      temp.feedback = {
+                        ...temp.feedback,
+                        recommendation: i + 1,
+                      };
+                      setInterviewer(temp);
+                    },
+                  }}
+                />
+              );
+            })}
+        </>
+      }
+      textRecommendation={re_mapper[interviewer.feedback?.recommendation || 0]}
+      slotObjective={
+        <TipTapAIEditor
+          placeholder='Give Your Feedback.'
+          initialValue={interviewer.feedback?.objective || ''}
+          border
+          handleChange={(html) => {
+            const temp = { ...interviewer };
+            temp.feedback = {
+              ...temp.feedback,
+              objective: html,
+            };
+            setInterviewer(temp);
+          }}
+        />
+      }
+    />
+  );
 };
