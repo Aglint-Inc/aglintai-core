@@ -26,10 +26,7 @@ function SchedulingViewComp() {
     {
       name: 'Feedback',
       tab: 'feedback',
-      hide:
-        schedule?.schedule.status === 'cancelled' ||
-        schedule?.schedule.status === 'reschedule' ||
-        schedule?.schedule.status === 'confirmed',
+      hide: false,
     },
   ];
   return (

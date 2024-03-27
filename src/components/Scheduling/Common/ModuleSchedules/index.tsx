@@ -109,21 +109,23 @@ function ModuleSchedules({
                   })}
               </Grid>
             ) : (
-              <Grid container spacing={2}>
-                {!loading &&
-                  filterSchedules().map((sch, ind) => {
-                    return (
-                      <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
-                        {selectedTimeZone && (
-                          <ScheduleCard
-                            selectedTimeZone={selectedTimeZone}
-                            sch={sch}
-                          />
-                        )}
-                      </Grid>
-                    );
-                  })}
-              </Grid>
+              <Stack overflow={'auto'} height={'calc(100vh - 145px)'}>
+                <Grid container spacing={2}>
+                  {!loading &&
+                    filterSchedules().map((sch, ind) => {
+                      return (
+                        <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
+                          {selectedTimeZone && (
+                            <ScheduleCard
+                              selectedTimeZone={selectedTimeZone}
+                              sch={sch}
+                            />
+                          )}
+                        </Grid>
+                      );
+                    })}
+                </Grid>
+              </Stack>
             )}
           </ShowCode.When>
           <ShowCode.When isTrue={!loading && filterSchedules().length === 0}>
