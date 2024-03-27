@@ -124,7 +124,7 @@ export function MyFeedbackPopup({
               )}
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+              className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
               {textRecommendation}
@@ -148,7 +148,7 @@ export function MyFeedbackPopup({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "button_primary", "success")}
+            className={_utils.cx(_styles, "button_primary", "green-btn")}
             tag="div"
             {...onClickSubmitFeedback}
           >

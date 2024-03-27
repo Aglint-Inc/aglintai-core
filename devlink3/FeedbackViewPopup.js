@@ -12,6 +12,8 @@ export function FeedbackViewPopup({
   textObjective = "During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.During the interview, the candidate showcased a strong understanding of both front-end and back-end development concepts. They effectively demonstrated their proficiency in various programming languages and frameworks. Their problem-solving skills and ability to communicate technical ideas were impressive. Overall, the candidate appears to be a promising fit for the full stack developer role.",
   onClickNext = {},
   onClickPrev = {},
+  onClickEditFeedback = {},
+  isEditFeedbackVisible = true,
 }) {
   return (
     <_Component
@@ -71,13 +73,37 @@ export function FeedbackViewPopup({
             {textObjective}
           </_Builtin.Block>
         </_Builtin.Block>
+        {isEditFeedbackVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1294")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-blue-500",
+                "text-underline",
+                "cursor-pointer"
+              )}
+              tag="div"
+              {...onClickEditFeedback}
+            >
+              {"Edit Feedback"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "wide_button-copy")}
+        className={_utils.cx(_styles, "wide_button-copy", "right-corner")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "button_primary", "greay_btn")}
+          className={_utils.cx(
+            _styles,
+            "button_primary",
+            "greay_btn",
+            "width-auto"
+          )}
           tag="div"
           {...onClickPrev}
         >
@@ -88,7 +114,12 @@ export function FeedbackViewPopup({
           <_Builtin.Block tag="div">{"Previous"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "button_primary", "greay_btn")}
+          className={_utils.cx(
+            _styles,
+            "button_primary",
+            "greay_btn",
+            "width-auto"
+          )}
           tag="div"
           {...onClickNext}
         >

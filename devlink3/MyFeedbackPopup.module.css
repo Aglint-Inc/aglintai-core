@@ -141,21 +141,8 @@
   grid-row-gap: 8px;
 }
 
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-sm.color-grey-600 {
-  color: #68737d;
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.text-sm.text-capitalize {
-  text-transform: uppercase;
+.text-grey-500 {
+  color: #87929d;
 }
 
 .wide_button-copy-copy {
@@ -228,6 +215,10 @@
   background-color: #d8dcde;
 }
 
+.button_primary.greay_btn.width-auto {
+  width: auto;
+}
+
 .button_primary.is_outline {
   border: 1px solid #1f73b7;
   background-color: white;
@@ -288,6 +279,12 @@
 .button_primary.success {
   padding-top: 8px;
   padding-bottom: 8px;
+}
+
+.button_primary.green-btn {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
 }
 
 .embed_css_block {

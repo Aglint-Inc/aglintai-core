@@ -12,6 +12,7 @@ import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useState } from 'react';
 
 import { SkeletonParagraph } from '@/devlink2';
+import { palette } from '@/src/context/Theme/Theme';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';
 import MenuBtns from './MenuBtns';
@@ -30,6 +31,8 @@ export type TipTapAIEditorParams = {
     count: number;
   };
   disabled?: boolean;
+  border?: boolean;
+  borderRadius?: React.CSSProperties['borderRadius'];
 };
 
 const TipTapAIEditor = ({
@@ -43,6 +46,8 @@ const TipTapAIEditor = ({
   },
   defaultJson,
   disabled = false,
+  border = false,
+  borderRadius,
 }: TipTapAIEditorParams) => {
   const [selectionRange, setSelectionRange] = useState<
     TipTapAIEditorCtxType['selectionRange']
@@ -104,7 +109,6 @@ const TipTapAIEditor = ({
   useEffect(() => {
     if (editor && defaultJson) editor.commands.setContent(defaultJson, true);
   }, [defaultJson, editor]);
-
   return (
     <TipTapCtx.Provider
       value={{
@@ -114,36 +118,46 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <div className={styles.tipTapEditorContainer}>
-        {editor && (
-          <>
-            <MenuBtns />
-          </>
-        )}
-        <Stack
-          position={'relative'}
-          sx={{
-            '& .ProseMirror': {
-              minHeight: '250px',
-              width: '100%',
-              wordBreak: 'break-word',
-            },
-            '& .ProseMirror *::selection': {
-              background: '#EDF8F4',
-            },
-            '.tiptap p.is-editor-empty:first-child::before ': {
-              color: '#adb5bd',
-              content: 'attr(data-placeholder)',
-              float: 'left',
-              height: 0,
-              'pointer-events': 'none',
-            },
-            '& .ProseMirror-focused': {
-              outline: 0,
-            },
-          }}
-        >
-          {/* {isAiGenerating && (
+      <Stack
+        sx={{
+          ...(border && {
+            mt: '8px',
+            border: '1px solid',
+            borderColor: palette.grey[300],
+            borderRadius: borderRadius || '4px',
+          }),
+        }}
+      >
+        <div className={styles.tipTapEditorContainer}>
+          {editor && (
+            <>
+              <MenuBtns borderRadius={(border && borderRadius) || '4px'} />
+            </>
+          )}
+          <Stack
+            position={'relative'}
+            sx={{
+              '& .ProseMirror': {
+                minHeight: '250px',
+                width: '100%',
+                wordBreak: 'break-word',
+              },
+              '& .ProseMirror *::selection': {
+                background: '#EDF8F4',
+              },
+              '.tiptap p.is-editor-empty:first-child::before ': {
+                color: '#adb5bd',
+                content: 'attr(data-placeholder)',
+                float: 'left',
+                height: 0,
+                'pointer-events': 'none',
+              },
+              '& .ProseMirror-focused': {
+                outline: 0,
+              },
+            }}
+          >
+            {/* {isAiGenerating && (
             <Stack
               zIndex={1}
               position={'absolute'}
@@ -158,26 +172,27 @@ const TipTapAIEditor = ({
             </Stack>
           )} */}
 
-          <Stack p={2}>
-            {loader.isLoading ? (
-              <Stack gap={1}>
-                {[...Array(loader.count)].map((e, i) => (
-                  <SkeletonParagraph key={i} />
-                ))}
-              </Stack>
-            ) : (
-              <EditorContent editor={editor} />
-            )}
+            <Stack p={2}>
+              {loader.isLoading ? (
+                <Stack gap={1}>
+                  {[...Array(loader.count)].map((e, i) => (
+                    <SkeletonParagraph key={i} />
+                  ))}
+                </Stack>
+              ) : (
+                <EditorContent editor={editor} />
+              )}
+            </Stack>
           </Stack>
-        </Stack>
 
-        {/* {enablAI && (
+          {/* {enablAI && (
           <GenerateDescription
             isAiGenerating={isAiGenerating}
             setIsAiGenerating={setIsAiGenerating}
           />
         )} */}
-      </div>
+        </div>
+      </Stack>
     </TipTapCtx.Provider>
   );
 };

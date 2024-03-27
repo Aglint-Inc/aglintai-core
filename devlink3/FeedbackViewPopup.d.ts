@@ -9,4 +9,6 @@ declare function FeedbackViewPopup(props: {
   textObjective?: React.ReactNode;
   onClickNext?: Types.Devlink.RuntimeProps;
   onClickPrev?: Types.Devlink.RuntimeProps;
+  onClickEditFeedback?: Types.Devlink.RuntimeProps;
+  isEditFeedbackVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

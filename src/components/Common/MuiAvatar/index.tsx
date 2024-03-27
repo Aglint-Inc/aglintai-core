@@ -9,6 +9,7 @@ interface MuiAvatarProps {
   variant: 'circular' | 'rounded' | 'square';
   src?: string;
   fontSize?: string;
+  dynamicSizing?: boolean;
 }
 
 export default function MuiAvatar({
@@ -17,7 +18,8 @@ export default function MuiAvatar({
   height,
   variant,
   src,
-  fontSize
+  fontSize,
+  dynamicSizing,
 }: MuiAvatarProps): React.JSX.Element {
   function stringToColor(string: string): string {
     let hash = 0;
@@ -44,9 +46,13 @@ export default function MuiAvatar({
   } {
     return {
       sx: {
-        width: width ? width : '40px',
-        height: height ? height : '40px',
-        bgcolor: value && stringToColor(value)
+        ...(dynamicSizing
+          ? { width: '100%', height: '100%' }
+          : {
+              width: width ? width : '40px',
+              height: height ? height : '40px',
+            }),
+        bgcolor: value && stringToColor(value),
       },
       children: (
         <Typography
@@ -56,7 +62,7 @@ export default function MuiAvatar({
         >
           {value ? value[0].toUpperCase() : '0'}
         </Typography>
-      )
+      ),
     };
   }
 

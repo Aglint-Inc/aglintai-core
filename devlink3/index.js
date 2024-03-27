@@ -68,6 +68,7 @@ export * from "./DummyNavigation";
 export * from "./EditJobTopBarRight";
 export * from "./EditJobTopbarLeft";
 export * from "./EnableDisable";
+export * from "./Feedback";
 export * from "./FeedbackTableRow";
 export * from "./FeedbackViewPopup";
 export * from "./GraphBlock";
