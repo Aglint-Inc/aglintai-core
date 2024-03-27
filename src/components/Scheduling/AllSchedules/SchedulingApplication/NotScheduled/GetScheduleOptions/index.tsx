@@ -65,9 +65,15 @@ function GetScheduleOptions() {
   const [input, setInput] = useState<string>(
     selectedApplication.candidates.phone,
   );
+  const [inputEmail, setInputEmail] = useState<string>(
+    selectedApplication.candidates.email,
+  );
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   const [isEmail, setEmail] = useState(true);
   const [isPhone, setPhone] = useState(false);
+  const cordinatorName =
+    members.find((user) => user.user_id === selCoordinator).first_name ||
+    members[0].first_name;
 
   const initConversation = async () => {
     try {
@@ -87,6 +93,7 @@ function GetScheduleOptions() {
         recruiter_user_id: recruiterUser.user_id,
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'email',
+        candidate_email: inputEmail,
       };
       await axios.post('/api/scheduling/mail-agent/init-agent', {
         ...payload,
@@ -109,6 +116,7 @@ function GetScheduleOptions() {
         recruiter_user_id: recruiterUser.user_id,
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'phone',
+        candidate_email: '',
       };
       const {
         data: { schedule_id },
@@ -117,12 +125,11 @@ function GetScheduleOptions() {
       });
 
       const phone_payload = {
-        company_name: 'Figmatic',
+        company_name: recruiter.name,
         schedule_id: schedule_id,
         application_id: selectedApplication.applications.id,
         caq: 'Based  in Caalifornia',
-        begin_call_sentence:
-          'Hi Dileep, this is Raimon calling from Aglint. We wanted to schedule an interview for the position of SDE, Is this the right time to talk?',
+        begin_call_sentence: `Hi ${selectedApplication.candidates.first_name}, this is ${cordinatorName} calling from ${recruiter.name}. We wanted to schedule an interview for the position of SDE, Is this the right time to talk?`,
         from: '+12512066348',
         to: input,
         agent: 'd874c616f28ef76fe4eefe45af69cda7',
@@ -205,7 +212,7 @@ function GetScheduleOptions() {
               }}
               endIconSlot={
                 fetchingPlan ? (
-                  <Stack height={'100%'} width={'20px'}>
+                  <Stack height={'100%'} width={'14px'}>
                     <LoaderGrey />
                   </Stack>
                 ) : (
@@ -341,6 +348,14 @@ function GetScheduleOptions() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               defaultValue={selectedApplication.candidates.phone}
+            />
+          }
+          slotInput3={
+            <UITextField
+              placeholder='Enter Email'
+              value={inputEmail}
+              onChange={(e) => setInputEmail(e.target.value)}
+              defaultValue={selectedApplication.candidates.email}
             />
           }
           slotInput2={

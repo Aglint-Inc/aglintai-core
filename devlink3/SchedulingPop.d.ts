@@ -13,4 +13,5 @@ declare function SchedulingPop(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   textEmail?: React.ReactNode;
   textPhone?: React.ReactNode;
+  slotInput3?: Types.Devlink.Slot;
 }): React.JSX.Element;

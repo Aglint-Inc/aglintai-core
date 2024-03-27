@@ -33,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_user_id,
       organizer_time_zone,
       schedule_type = 'email',
+      candidate_email,
     } = req.body as InitAgentBodyParams;
 
     if (
@@ -82,7 +83,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await supabaseAdmin.from('scheduling-agent-chat-history').insert({
           application_id,
           job_id: cand_details.job_id,
-          candidate_email: cand_details.candidate_email,
+          candidate_email: candidate_email,
           date_range: [start_date, end_date],
           scheduling_progress: status,
           chat_history: [
@@ -97,7 +98,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }),
       );
       await sendEmailFromAgent({
-        candidate_email: cand_details.candidate_email,
+        candidate_email: candidate_email,
         from_name: cand_details.company_name,
         mail_body: initMailBody,
         subject: `Interview for ${cand_details.job_role} - ${

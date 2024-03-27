@@ -15,6 +15,7 @@ export function SchedulingPop({
   onClickClose = {},
   textEmail = "Forem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.",
   textPhone = "Torem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.",
+  slotInput3,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1282")} tag="div">
@@ -102,6 +103,9 @@ export function SchedulingPop({
       ) : null}
       {isPhoneActive ? (
         <_Builtin.Block tag="div">{slotInput2}</_Builtin.Block>
+      ) : null}
+      {isEmailActive ? (
+        <_Builtin.Block tag="div">{slotInput3}</_Builtin.Block>
       ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1289")}

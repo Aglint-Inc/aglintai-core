@@ -46,6 +46,7 @@ const ScheduleAgent = () => {
         recruiter_user_id: recruiterUser.user_id,
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'email',
+        candidate_email: '',
       };
       setData(JSON.stringify(payload));
       await axios.post('/api/scheduling/mail-agent/init-agent', {
@@ -71,6 +72,7 @@ const ScheduleAgent = () => {
         recruiter_user_id: recruiterUser.user_id,
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'phone',
+        candidate_email: '',
       };
       setData(JSON.stringify(payload));
       const {
