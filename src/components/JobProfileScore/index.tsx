@@ -269,7 +269,7 @@ export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
 const ProfileScore = () => {
   const { job } = useJobDetails();
   return (
-    <Stack mx={4} my={3}>
+    <Stack>
       <ScoreSetting
         slotBanner={<Banners />}
         slotScoreCardDetails={
