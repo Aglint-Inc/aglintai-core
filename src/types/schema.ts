@@ -1935,6 +1935,7 @@ export type Database = {
           use_of_purpose: Json | null
           video_assessment: boolean | null
           workplace_type: Json
+          zoom_auth: string | null
         }
         Insert: {
           ai_avatar?: Json | null
@@ -1978,6 +1979,7 @@ export type Database = {
           use_of_purpose?: Json | null
           video_assessment?: boolean | null
           workplace_type?: Json
+          zoom_auth?: string | null
         }
         Update: {
           ai_avatar?: Json | null
@@ -2021,6 +2023,7 @@ export type Database = {
           use_of_purpose?: Json | null
           video_assessment?: boolean | null
           workplace_type?: Json
+          zoom_auth?: string | null
         }
         Relationships: []
       }
