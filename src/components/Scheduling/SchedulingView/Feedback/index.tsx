@@ -20,6 +20,7 @@ import { CustomDatabase } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import { TransformSchedule } from '../../Modules/types';
 import {
   getInterviewers,
   re_mapper,
@@ -27,7 +28,7 @@ import {
   useInterviewerList,
 } from './util.function';
 
-const FeedbackWindow = () => {
+const FeedbackWindow = ({ schedule }: { schedule: TransformSchedule }) => {
   const param = useSearchParams();
   const meeting_id = param.get('meeting_id');
   const { data: interviewers, isLoading, refetch } = useInterviewerList();
@@ -63,6 +64,15 @@ const FeedbackWindow = () => {
   return (
     <>
       <ShowCode>
+        <ShowCode.When
+          isTrue={
+            schedule.interview_meeting.status === 'cancelled' ||
+            schedule.interview_meeting.status === 'confirmed' ||
+            schedule.interview_meeting.status === 'reschedule'
+          }
+        >
+          {`You can not give feedback because this interview is in ${schedule.interview_meeting.status} state`}
+        </ShowCode.When>
         <ShowCode.When isTrue={isLoading}>
           <DynamicLoader />
         </ShowCode.When>

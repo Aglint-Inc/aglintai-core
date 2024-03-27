@@ -97,7 +97,7 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
         slotScheduleCard={
           <ScheduleCard
             textTitle={schedule.schedule.schedule_name}
-            textStatus={schedule.schedule.status}
+            textStatus={schedule.interview_meeting.status}
             textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
             textDay={dayjs(schedule.interview_meeting.end_time).format('dddd')}
             textMonth={dayjs(schedule.interview_meeting.end_time).format('MMM')}
@@ -112,11 +112,11 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
             colorPropsText={{
               style: {
                 color:
-                  schedule.schedule.status === 'completed'
+                  schedule.interview_meeting.status === 'completed'
                     ? '#228F67'
-                    : schedule.schedule.status === 'confirmed'
+                    : schedule.interview_meeting.status === 'confirmed'
                       ? '#337FBD'
-                      : schedule.schedule.status === 'pending'
+                      : schedule.interview_meeting.status === 'pending'
                         ? '#ED8F1C'
                         : '#D93F4C',
               },
@@ -166,19 +166,19 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
         slotStatusPill={
           <>
             <StatusBadge
-              isCancelledVisible={schedule.schedule.status === 'cancelled'}
-              isCompletedVisible={schedule.schedule.status === 'completed'}
-              isConfirmedVisible={schedule.schedule.status === 'confirmed'}
-              isInProgressVisible={schedule.schedule.status === 'pending'}
-              isWaitingVisible={schedule.schedule.status === 'pending'}
+              isCancelledVisible={schedule.interview_meeting.status === 'cancelled'}
+              isCompletedVisible={schedule.interview_meeting.status === 'completed'}
+              isConfirmedVisible={schedule.interview_meeting.status === 'confirmed'}
+              isInProgressVisible={schedule.interview_meeting.status === 'pending'}
+              isWaitingVisible={schedule.interview_meeting.status === 'pending'}
             />
           </>
         }
         isScheduleButtonVisible={
           recruiter.email === recruiterUser.email &&
-          schedule.schedule.status === 'confirmed'
+          schedule.interview_meeting.status === 'confirmed'
         }
-        textScheduleConfirmed={`This Schedule has been ${schedule.schedule.status} on ${dayjs(schedule.schedule.created_at).format('DD MMM YYYY')}`}
+        textScheduleConfirmed={`This Schedule has been ${schedule.interview_meeting.status} on ${dayjs(schedule.schedule.created_at).format('DD MMM YYYY')}`}
         onClickCancelSchedule={{
           onClick: () => {
             setIsCancelOpen(true);

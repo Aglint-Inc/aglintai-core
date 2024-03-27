@@ -51,7 +51,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
       slotScheduleCard={
         <ScheduleCard
           textTitle={scheduleDetails.schedule_name}
-          textStatus={scheduleDetails.status}
+          textStatus={schedule.interview_meeting.status}
           textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
           textDay={dayjs(schedule.interview_meeting.end_time).format('dddd')}
           textMonth={dayjs(schedule.interview_meeting.end_time).format('MMM')}
@@ -64,11 +64,11 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
           colorPropsText={{
             style: {
               color:
-                scheduleDetails.status === 'completed'
+                schedule.interview_meeting.status === 'completed'
                   ? '#228F67'
-                  : scheduleDetails.status === 'confirmed'
+                  : schedule.interview_meeting.status === 'confirmed'
                     ? '#337FBD'
-                    : scheduleDetails.status === 'pending'
+                    : schedule.interview_meeting.status === 'pending'
                       ? '#ED8F1C'
                       : '#D93F4C',
             },

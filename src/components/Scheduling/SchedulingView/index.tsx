@@ -89,7 +89,7 @@ function SchedulingViewComp() {
                         <Instructions />
                       </ShowCode.When>
                       <ShowCode.When isTrue={router.query.tab === 'feedback'}>
-                        <Feedback />
+                        <Feedback schedule={schedule} />
                       </ShowCode.When>
                     </ShowCode>
                   }
