@@ -7,4 +7,5 @@ export type InitAgentBodyParams = {
   organizer_time_zone;
   schedule_type: 'phone' | 'email';
   candidate_email: string;
+  schedule_id: string;
 };
