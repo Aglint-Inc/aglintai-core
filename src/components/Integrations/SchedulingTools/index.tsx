@@ -74,15 +74,12 @@ function Scheduling() {
     }
   }
   async function updateApi(source: schedulingToolsType) {
-    setTimeout(() => {
-      inputRef.current.value = recruiter?.zoom_auth;
-    }, 10);
     if (source === 'google_workspace') {
       setIsOpen(true);
       setReason('update_google_workspace');
     }
     if (source === 'zoom') {
-      setReason('update_zoom');
+      handleGetAuthUri();
     }
   }
   function disConnectApi(source: schedulingToolsType) {
