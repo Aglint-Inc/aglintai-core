@@ -53,6 +53,7 @@ const CloseJobPopup = ({ onClose }) => {
         active_status: job.active_status as Job['active_status'],
         parameter_weights: job.parameter_weights as Job['parameter_weights'],
         draft: job.draft as Job['draft'],
+        email_template: job.email_template as Job['email_template'],
         processing_count: {
           'not started': 0,
           failed: 0,

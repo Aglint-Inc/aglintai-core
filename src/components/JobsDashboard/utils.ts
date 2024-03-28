@@ -30,7 +30,7 @@ export function filterJobsByStatus(
 
 export const fetchApplications = (jobIds) => {
   return supabase
-    .from('job_applications')
+    .from('applications')
     .select(`${selectJobApplicationQuery}`)
     .in('job_id', jobIds)
     .then(({ data, error }) => {

@@ -47,6 +47,8 @@ type CustomJobType = {
   jd_json: JdJsonType;
   active_status: StatusJobs | null;
   count: CountJobs;
+  // eslint-disable-next-line no-unused-vars
+  email_template: { [key in EmailTemplateTypes]: EmailTemplate };
   processing_count: {
     // eslint-disable-next-line no-unused-vars
     [id in Database['public']['Enums']['application_processing_status']]: number;
@@ -63,4 +65,19 @@ type CustomJobType = {
     | 'job_type'
     | 'location'
   > & { jd_json: JdJsonType };
+};
+
+type EmailTemplateTypes =
+  | 'interview'
+  | 'interview_resend'
+  | 'rejection'
+  | 'phone_screening'
+  | 'phone_screening_resend'
+  | 'application_received';
+
+type EmailTemplate = {
+  body: string;
+  default: string;
+  subject: string;
+  fromName: string;
 };

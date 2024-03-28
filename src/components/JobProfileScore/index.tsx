@@ -269,22 +269,20 @@ export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
 const ProfileScore = () => {
   const { job } = useJobDetails();
   return (
-    <Stack>
-      <ScoreSetting
-        slotBanner={<Banners />}
-        slotScoreCardDetails={
-          job.scoring_criteria_loading ? (
-            <ProfileScoreSkeleton slotSkeleton={<Skeleton />} />
-          ) : (
-            <>
-              <Section type='experience' />
-              <Section type='education' />
-              <Section type='skills' />
-            </>
-          )
-        }
-      />
-    </Stack>
+    <ScoreSetting
+      slotBanner={<Banners />}
+      slotScoreCardDetails={
+        job.scoring_criteria_loading ? (
+          <ProfileScoreSkeleton slotSkeleton={<Skeleton />} />
+        ) : (
+          <>
+            <Section type='experience' />
+            <Section type='education' />
+            <Section type='skills' />
+          </>
+        )
+      }
+    />
   );
 };
 

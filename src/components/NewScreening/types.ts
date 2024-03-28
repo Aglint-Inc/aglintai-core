@@ -1,3 +1,5 @@
+import { Job } from '@/src/queries/job/types';
+
 export type QuestionOption = {
   id: string;
   option: string;
@@ -12,22 +14,6 @@ export type Question = {
   description: string;
   questionLabel: string;
   showDescription: boolean;
-};
-
-export type EmailTemplate = {
-  body: string;
-  default: boolean;
-  subject: string;
-  fromName: string;
-};
-
-export type EmailTemplates = {
-  interview: EmailTemplate;
-  rejection: EmailTemplate;
-  phone_screening: EmailTemplate;
-  interview_resend: EmailTemplate;
-  application_received: EmailTemplate;
-  phone_screening_resend: EmailTemplate;
 };
 
 export type CandidateScreeningType = {
@@ -49,19 +35,17 @@ export type CandidateScreeningType = {
   company: string;
   email: string;
   candidate_id: string;
-  email_template: EmailTemplates;
+  email_template: Job['email_template'];
   result_created_at: string | null;
   assessment_result: any;
 };
 
-
-
-export type Option= {
+export type Option = {
   id: string;
   option: string;
-}
+};
 
-export type  QuestionTypes= {
+export type QuestionTypes = {
   id: string;
   type: string;
   options: Option[];
@@ -70,17 +54,16 @@ export type  QuestionTypes= {
   description: string;
   questionLabel: string;
   showDescription: boolean;
-}
+};
 
-export type QuestionnaireTypes ={
+export type QuestionnaireTypes = {
   questions: QuestionTypes[];
   startMessage: string;
   endMessage: string;
-}
+};
 
-export type QuestionnaireData ={
+export type QuestionnaireData = {
   id: string;
   title: string;
   questions: QuestionnaireTypes;
-}
-
+};

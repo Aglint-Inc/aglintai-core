@@ -45,6 +45,7 @@ import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
+import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
 // import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
@@ -372,6 +373,7 @@ const Schedules = () => {
   const {
     schedules: { data },
   } = useJobDetails();
+  const { push } = useRouter();
   if (data.length === 0) return <NoData />;
   const cards = data
     .sort(
@@ -381,40 +383,46 @@ const Schedules = () => {
     )
     .slice(0, 3)
     .map((sch, i) => (
-      <ScheduleCardSmall
+      <Stack
         key={i}
-        slotCandidatePic={
-          <MuiAvatar
-            key={sch.candidates.id}
-            src={sch.candidates.avatar}
-            level={getFullName(
-              sch.candidates.first_name,
-              sch.candidates.last_name,
-            )}
-            variant='circular'
-            height='28px'
-            width='28px'
-            fontSize='12px'
-          />
+        onClick={() =>
+          push(`/scheduling/view?schedule_id=${sch.schedule.id}&tab=overview`)
         }
-        textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
-        textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
-        textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
-        textPlatformName={getScheduleType(sch.schedule.schedule_type)}
-        textScheduleName={sch.schedule.schedule_name}
-        textTimeRange={`${dayjs(sch.interview_meeting.start_time).format(
-          'hh:mm A',
-        )} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${
-          sch.interview_meeting.duration
-        } Minutes )`}
-        slotPlatformLogo={
-          <IconScheduleType type={sch.schedule.schedule_type} />
-        }
-        textCandidateName={getFullName(
-          sch.candidates.first_name,
-          sch.candidates.last_name,
-        )}
-      />
+      >
+        <ScheduleCardSmall
+          slotCandidatePic={
+            <MuiAvatar
+              key={sch.candidates.id}
+              src={sch.candidates.avatar}
+              level={getFullName(
+                sch.candidates.first_name,
+                sch.candidates.last_name,
+              )}
+              variant='circular'
+              height='28px'
+              width='28px'
+              fontSize='12px'
+            />
+          }
+          textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
+          textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
+          textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
+          textPlatformName={getScheduleType(sch.schedule.schedule_type)}
+          textScheduleName={sch.schedule.schedule_name}
+          textTimeRange={`${dayjs(sch.interview_meeting.start_time).format(
+            'hh:mm A',
+          )} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${
+            sch.interview_meeting.duration
+          } Minutes )`}
+          slotPlatformLogo={
+            <IconScheduleType type={sch.schedule.schedule_type} />
+          }
+          textCandidateName={getFullName(
+            sch.candidates.first_name,
+            sch.candidates.last_name,
+          )}
+        />
+      </Stack>
     ));
   return (
     <Stack width={'100%'} height={'100%'} gap={2}>
@@ -560,6 +568,7 @@ const Modules = () => {
       {isSchedulingEnabled && <InterviewModule />}
       {isNewAssessmentEnabled && <AssessmentModule />}
       {isPhoneScreeningEnabled && <ScreeningModule />}
+      <EmailTemplatesModule />
     </>
   );
 };
@@ -576,6 +585,22 @@ const AssessmentModule = () => {
       textName={'Assessment'}
       slotIcon={<AssessmentIcon />}
       slotEnableDisable={<EnableDisable isEnabled={job.assessment} />}
+    />
+  );
+};
+
+const EmailTemplatesModule = () => {
+  const { job, emailTemplateValidity } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(`/jobs/${job.id}/email-templates`);
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Email Templates'}
+      slotIcon={<EmailTemplateIcon />}
+      isWarning={emailTemplateValidity?.length !== 0}
     />
   );
 };

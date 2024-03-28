@@ -408,7 +408,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             id: job.id,
             job_title: job.job_title,
             company: job.company,
-            email_template: job.email_template as EmailTemplateType,
+            email_template: job.email_template as unknown as EmailTemplateType,
           },
           parameter: {
             ranges,
