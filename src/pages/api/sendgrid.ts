@@ -1,6 +1,4 @@
-// import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-
-import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { getOutboundEmail } from '@/src/utils/schedule-utils/get-outbound-email';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -26,16 +24,8 @@ export default async function handler(req, res) {
       subject: details.subject,
       html: details.text,
     };
-    if (
-      !details.email.toLowerCase().includes('@aglinthq.com') &&
-      !isEnvProd()
-    ) {
-      msg.to = [
-        'dileep@aglinthq.com',
-        'chinmai@aglinthq.com',
-        'ravi@aglinthq.com',
-      ];
-    }
+
+    msg.to = getOutboundEmail(msg.to, true);
 
     await sgMail
       .send({

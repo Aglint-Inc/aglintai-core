@@ -103,7 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meeting_events: events,
       schedule_plan: plan.plans,
     });
-
+    console.log('log');
     return res.status(200).json(events);
   } catch (error) {
     console.log(error);

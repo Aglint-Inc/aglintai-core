@@ -2,15 +2,13 @@ import {
   InterviewModuleApiType,
   InterviewPlanScheduleDbType,
 } from '@/src/components/JobInterviewPlan/types';
-import {
-  isEnvProd,
-  supabaseWrap,
-} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 const { v4: uuidv4 } = require('uuid');
 
 import { RecruiterUserType } from '@/src/types/data.types';
 
 import { ZoomMeet } from '../integrations/zoom-meet';
+import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
 import { NewCalenderEvent } from '../schedule-utils/types';
 import { CompServiceKeyCred } from '../scheduling_v2/types';
 import { decrypt } from '../scheduling_v2/utils';
@@ -193,8 +191,9 @@ export const bookIndividualModule = async ({
       },
     ];
   }
+
   calendar_event.attendees.push({
-    email: !isEnvProd() ? 'johndoe@example.co' : candidate_email,
+    email: getOutboundEmail(candidate_email, false) as string,
   });
 
   const auth = await getUserCalAuth({ company_cred, recruiter: organizer });

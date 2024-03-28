@@ -94,12 +94,14 @@ function GetScheduleOptions() {
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'email',
         candidate_email: inputEmail,
+        schedule_id: selectedApplication.schedule?.id ?? undefined,
       };
       await axios.post('/api/scheduling/mail-agent/init-agent', {
         ...payload,
       });
       // console.log(data);
     } catch (error) {
+      // console.log(error);
       toast.error(error);
     } finally {
       toast.success('Email Successfully Sent');
@@ -117,6 +119,7 @@ function GetScheduleOptions() {
         organizer_time_zone: dayjs.tz.guess(),
         schedule_type: 'phone',
         candidate_email: '',
+        schedule_id: selectedApplication.schedule.id,
       };
       const {
         data: { schedule_id },

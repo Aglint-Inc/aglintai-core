@@ -34,6 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_time_zone,
       schedule_type = 'email',
       candidate_email,
+      schedule_id,
     } = req.body as InitAgentBodyParams;
 
     if (
@@ -53,6 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await supabaseAdmin
         .from('interview_schedule')
         .upsert({
+          id: schedule_id,
           application_id,
           schedule_name: cand_details.schedule_name,
           interview_plan: (cand_details.interview_plan as any).plan,

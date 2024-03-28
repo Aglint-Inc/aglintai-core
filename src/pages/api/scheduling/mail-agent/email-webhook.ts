@@ -116,7 +116,7 @@ export default async function handler(req, res) {
     const agent_payload: AgentPayloadType = {
       history: chat_history,
       payload: {
-        candidate_email: candidate.email,
+        candidate_email: candidate_email,
         candidate_name: getFullName(candidate.first_name, candidate.last_name),
         company_name: job.company,
         start_date: date_range[0],
