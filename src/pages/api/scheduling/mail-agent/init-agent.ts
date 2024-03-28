@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const [rec_schedule] = supabaseWrap(
       await supabaseAdmin
         .from('interview_schedule')
-        .insert({
+        .upsert({
           application_id,
           schedule_name: cand_details.schedule_name,
           interview_plan: (cand_details.interview_plan as any).plan,
@@ -64,6 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             end_date,
           },
           created_by: recruiter_user_id,
+          status: 'pending',
         })
         .select(),
     );
