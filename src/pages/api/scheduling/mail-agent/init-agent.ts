@@ -82,6 +82,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         candidate_time_zone: cand_details.time_zone,
       });
       const status: SchedulingProgressStatusType = 'not scheduled';
+
+      supabaseWrap(
+        await supabaseAdmin
+          .from('scheduling-agent-chat-history')
+          .delete()
+          .eq('candidate_email', candidate_email),
+      );
       supabaseWrap(
         await supabaseAdmin.from('scheduling-agent-chat-history').insert({
           application_id,
