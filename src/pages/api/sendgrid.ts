@@ -26,11 +26,14 @@ export default async function handler(req, res) {
       subject: details.subject,
       html: details.text,
     };
-    if (!details.email.toLowerCase().includes('aglint') && !isEnvProd()) {
+    if (
+      !details.email.toLowerCase().includes('@aglinthq.com') &&
+      !isEnvProd()
+    ) {
       msg.to = [
         'dileep@aglinthq.com',
         'chinmai@aglinthq.com',
-        'dileepwert@gmail.com',
+        'ravi@aglinthq.com',
       ];
     }
 
