@@ -63,7 +63,9 @@
 
 .candidate_cell.space-between {
   position: static;
-  justify-content: space-between;
+  justify-content: flex-start;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .div-block-958 {
@@ -284,6 +286,7 @@
 
 .div-block-840 {
   display: flex;
+  width: 250px;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;

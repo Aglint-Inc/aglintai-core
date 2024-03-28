@@ -2,6 +2,7 @@ import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
 import { ScheduleInfoBlock } from "./ScheduleInfoBlock";
+import { ScheduleWithAgent } from "./ScheduleWithAgent";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewCard.module.css";
 
@@ -127,7 +128,7 @@ export function AllInterviewCard({
               className={_utils.cx(_styles, "div-block-1284")}
               tag="div"
             >
-              {slotScheduleWithAgent}
+              {slotScheduleWithAgent ?? <ScheduleWithAgent />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
