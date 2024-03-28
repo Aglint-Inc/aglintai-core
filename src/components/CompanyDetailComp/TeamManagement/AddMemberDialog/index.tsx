@@ -1,7 +1,9 @@
 import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import converter from 'number-to-words';
 import { useState } from 'react';
 
 import {
+  ButtonPrimaryRegular,
   InviteTeamCard,
   TeamInvite,
   TeamInvitesBlock,
@@ -189,10 +191,30 @@ const AddMember = ({
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '500px' }}>
+      <Stack sx={{ width: '500px', height: '100%' }}>
         {menu === 'addMember' ? (
           <>
             <TeamInvite
+              isFixedButtonVisible
+              slotPrimaryButton={
+                <ButtonPrimaryRegular
+                  textLabel={'Done'}
+                  onClickButton={{
+                    onClick: () => {
+                      onClose(),
+                        setInviteData([]),
+                        setForm({
+                          ...form,
+                          first_name: null,
+                          last_name: null,
+                          email: null,
+                          department: null,
+                          designation: null,
+                        });
+                    },
+                  }}
+                />
+              }
               textTitle={'Add Member'}
               isInviteSentVisible={false}
               isInviteTeamCardVisible={isInviteCardVisible}
@@ -415,6 +437,9 @@ const AddMember = ({
           </>
         ) : menu === 'pendingMember' ? (
           <TeamPendingInvites
+            textTitleDescription={`You currently have ${converter.toWords(
+              pendingList?.length,
+            )} pending invites awaiting your response.`}
             slotList={pendingList.map((member) => (
               <TeamInvitesBlock
                 key={member.user_id}

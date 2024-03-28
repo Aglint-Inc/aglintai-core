@@ -3397,7 +3397,7 @@ export function CompanySetting({
           {slotNavSublink}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-698")}
+          className={_utils.cx(_styles, "div-block-698", "no-padding")}
           tag="div"
         >
           {slotCompany ?? (
