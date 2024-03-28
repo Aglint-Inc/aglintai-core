@@ -10,29 +10,30 @@ export type ModuleCombination = Pick<
   | 'selectedIntervs'
   | 'revShadowIntervs'
   | 'shadowIntervs'
+  | 'meeting_type'
 >;
 export const calcIntervCombsForModule = (plan: InterviewModuleApiType[]) => {
   const calcSingleModuleCombinations = (
     plan_module: InterviewModuleApiType,
-    comb: number
+    comb: number,
   ) => {
     let module_combs: ModuleCombination[] = [];
     const combs = findCombinationOfStrings(
       [...plan_module.selectedIntervs.map((int) => int.interv_id)],
-      comb
+      comb,
     );
     for (let comb of combs) {
       module_combs.push({
         selectedIntervs: comb.map((id) => {
           const inter = plan_module.selectedIntervs.find(
-            (i) => i.interv_id === id
+            (i) => i.interv_id === id,
           );
           return {
             interv_id: inter.interv_id,
             email: inter.email,
             profile_img: inter.profile_img,
             name: inter.name,
-            pause_json: inter.pause_json
+            pause_json: inter.pause_json,
           };
         }),
         duration: plan_module.duration,
@@ -41,7 +42,8 @@ export const calcIntervCombsForModule = (plan: InterviewModuleApiType[]) => {
         module_name: plan_module.module_name,
         session_name: plan_module.session_name,
         revShadowIntervs: plan_module.revShadowIntervs,
-        shadowIntervs: plan_module.shadowIntervs
+        shadowIntervs: plan_module.shadowIntervs,
+        meeting_type: plan_module.meeting_type,
       });
     }
     return module_combs;
@@ -54,7 +56,7 @@ export const calcIntervCombsForModule = (plan: InterviewModuleApiType[]) => {
     // module level filter settings
     const combs = calcSingleModuleCombinations(
       int_module,
-      int_module.meetingIntervCnt
+      int_module.meetingIntervCnt,
     );
     total_combs.push(combs);
   }
@@ -71,7 +73,7 @@ const findCombinationOfStrings = (str_arr: string[], comb: number) => {
     start: number,
     end: number,
     index: number,
-    r: number
+    r: number,
   ) => {
     if (index === r) {
       total_combs.push([...single_comb]);

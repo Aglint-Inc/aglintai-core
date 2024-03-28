@@ -12,7 +12,7 @@ import {
   supabaseWrap,
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import { fetchInterviewModule } from '../Scheduling/Modules/utils';
-import { initialState, initilizeIntPlan } from './store';
+import { allConferenceTypes, initialState, initilizeIntPlan } from './store';
 import {
   InterviewModuleDbType,
   InterviewPlanState,
@@ -35,7 +35,6 @@ const JobInterviewPlanHoc = ({ children }) => {
       }
       let jobModules = ((rec.interview_plan as any)?.plan ??
         []) as InterviewModuleDbType[];
-
       const fetchedDbModules = await fetchInterviewModule(recruiter.id);
       const allIntModules: InterviewSession[] = [];
       let coordinator_db = (rec.interview_plan as any)
@@ -58,11 +57,7 @@ const JobInterviewPlanHoc = ({ children }) => {
           session_name: '',
           revShadowIntervs: [],
           shadowIntervs: [],
-          meeting_type: {
-            link: '/images/svg/google_meet.svg',
-            provider_label: 'Google Meet',
-            value: 'google_meet',
-          },
+          meeting_type: allConferenceTypes[0],
         };
 
         intMod.training_ints = intModule.relations
@@ -102,7 +97,24 @@ const JobInterviewPlanHoc = ({ children }) => {
 
       let clModules: InterviewSession[] = [];
       for (let dbModule of jobModules) {
-        if (dbModule.isBreak) continue;
+        if (dbModule.isBreak) {
+          clModules.push({
+            allIntervs: [],
+            duration: dbModule.duration,
+            isBreak: dbModule.isBreak,
+            meeting_type: dbModule.meeting_type,
+            training_ints: [],
+            shadowIntervs: [],
+            session_name: dbModule.session_name,
+            meetingIntervCnt: 0,
+            module_id: dbModule.module_id,
+            module_name: '',
+            revShadowIntervs: [],
+            selectedIntervs: [],
+          });
+
+          continue;
+        }
         let intModule = allIntModules.find(
           (i) => i.module_id === dbModule.module_id,
         );
@@ -133,11 +145,10 @@ const JobInterviewPlanHoc = ({ children }) => {
           allIntervs: intModule?.allIntervs ?? [], //break
           session_name: dbModule?.session_name ?? '',
           training_ints: [],
-          meeting_type: {
-            link: '/images/svg/google_meet.svg',
-            provider_label: 'Google Meet',
-            value: 'google_meet',
-          },
+          meeting_type:
+            allConferenceTypes.find(
+              (c) => c.value === dbModule?.meeting_type?.value,
+            ) ?? allConferenceTypes[0],
           revShadowIntervs: dbModule.revShadowInterv
             .filter((r) =>
               allTeamMembers.find((m) => m.interv_id === r.interv_id),

@@ -28,18 +28,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!plan || !candidate_email || !schedule_id)
       return res.status(400).send('missing fields');
-    console.log('fmkelw');
     await saveEventsStatusInSchedule({
       schedule_id,
       api_status: 'started',
       meeting_events: [],
       schedule_plan: plan.plans,
     });
-    console.log('fmkelw');
 
-    const { company_cred, recruiters_info } = await getAllIntsFromPlan(
-      plan.plans,
-    );
+    const { company_cred, recruiters_info, company_id } =
+      await getAllIntsFromPlan(plan.plans);
 
     const promises = plan.plans
       .filter((i) => !i.isBreak)
@@ -60,27 +57,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           ...filt_shadow_intervs,
           ...filt_revShadow_intervs,
         ];
+        const organizer_time_zone =
+          (
+            recruiters_info.find((r) => r.user_id === organizer.interv_id)
+              .scheduling_settings as any
+          )?.time_zone?.tzCode || '';
         return await bookIndividualModule({
           candidate_email,
           company_cred,
           end_time: int_module.end_time,
           start_time: int_module.start_time,
-          interviewers: attended_inters.map((int) => ({
-            email: int.email,
-            schedule_auth: recruiters_info.find(
+          interviewers: attended_inters.map((int) => {
+            const rec = recruiters_info.find(
               (r) => r.user_id === int.interv_id,
-            )?.schedule_auth as any,
-            user_id: int.interv_id,
-          })),
+            );
+            return {
+              email: int.email,
+              schedule_auth: rec?.schedule_auth,
+              user_id: int.interv_id,
+              time_zone:
+                (rec.scheduling_settings as any)?.time_zone?.tzCode || '',
+            };
+          }),
           organizer: {
             email: organizer.email,
             schedule_auth: recruiters_info.find(
               (r) => r.user_id === organizer.interv_id,
             )?.schedule_auth as any,
             user_id: organizer.interv_id,
+            timezone: organizer_time_zone,
           },
           schedule_name: int_module.module_name,
           module_id: int_module.module_id,
+          meet_type: int_module.meeting_type,
+          company_id,
+          duration: int_module.duration,
         });
       });
 

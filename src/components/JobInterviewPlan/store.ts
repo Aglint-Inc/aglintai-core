@@ -12,6 +12,7 @@ import {
   InterviewerDbType,
   InterviewModuleDbType,
   InterviewPlanState,
+  InterviewSession,
 } from './types';
 
 export const initialState: InterviewPlanState = {
@@ -112,3 +113,16 @@ export const handleUpdateDb = async ({
     toast.error(API_FAIL_MSG);
   }
 };
+
+export const allConferenceTypes: InterviewSession['meeting_type'][] = [
+  {
+    link: '/images/svg/google_meet.svg',
+    provider_label: 'Google Meet',
+    value: 'google_meet',
+  },
+  {
+    link: '/images/svg/zoom.svg',
+    provider_label: 'Zoom',
+    value: 'zoom',
+  },
+];

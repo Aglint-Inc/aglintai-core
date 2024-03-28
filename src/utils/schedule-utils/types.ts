@@ -30,7 +30,19 @@ export type NewCalenderEvent = {
     overrides: { method: string; minutes: number }[];
   };
   conferenceData: {
-    createRequest: { requestId: string };
+    createRequest?: { requestId: string };
+    conferenceSolution?: {
+      key: {
+        type: string;
+      };
+      name: string;
+    };
+    entryPoints?: {
+      uri: string;
+      label: string;
+      entryPointType: string;
+      passcode: string;
+    }[];
   };
 };
 
@@ -81,7 +93,7 @@ export type CalendarEvent = {
       entryPointType: string;
     }[];
     conferenceId: string;
-    createRequest: {
+    createRequest?: {
       status: {
         statusCode: string;
       };
@@ -90,7 +102,7 @@ export type CalendarEvent = {
         type: string;
       };
     };
-    conferenceSolution: {
+    conferenceSolution?: {
       key: {
         type: string;
       };

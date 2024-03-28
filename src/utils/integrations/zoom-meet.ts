@@ -5,7 +5,7 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';
 import { decrypt_string } from './crypt-funcs';
-import { TokenType, ZoomCreateMeetingParams } from './types';
+import { TokenType, ZoomCreateMeetingParams, ZoomMeetingResp } from './types';
 
 export class ZoomMeet {
   private recruiter_id;
@@ -55,7 +55,7 @@ export class ZoomMeet {
         },
       },
     );
-    return data;
+    return data as ZoomMeetingResp;
   }
   public async;
   public async cancel_meet() {

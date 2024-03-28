@@ -1,9 +1,16 @@
-import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  InterviewModuleApiType,
+  InterviewPlanScheduleDbType,
+} from '@/src/components/JobInterviewPlan/types';
+import {
+  isEnvProd,
+  supabaseWrap,
+} from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 const { v4: uuidv4 } = require('uuid');
 
 import { RecruiterUserType } from '@/src/types/data.types';
 
+import { ZoomMeet } from '../integrations/zoom-meet';
 import { NewCalenderEvent } from '../schedule-utils/types';
 import { CompServiceKeyCred } from '../scheduling_v2/types';
 import { decrypt } from '../scheduling_v2/utils';
@@ -35,14 +42,14 @@ export const getAllIntsFromPlan = async (
   const [company] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_relation')
-      .select('recruiter(service_json)')
+      .select('recruiter_id, recruiter(service_json)')
       .eq('user_id', Array.from(intSet)[0]),
   );
 
   const recs = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
-      .select('user_id, schedule_auth, email')
+      .select('user_id, schedule_auth, email,scheduling_settings')
       .in('user_id', Array.from(intSet)),
   );
 
@@ -56,6 +63,7 @@ export const getAllIntsFromPlan = async (
   return {
     company_cred: company_cred,
     recruiters_info: recs,
+    company_id: company.recruiter_id as any,
   };
 };
 
@@ -100,7 +108,7 @@ export type Interviewer = Pick<
 export type Organizer = Pick<
   RecruiterUserType,
   'user_id' | 'schedule_auth' | 'email'
->;
+> & { timezone: string };
 
 export const bookIndividualModule = async ({
   candidate_email,
@@ -111,6 +119,9 @@ export const bookIndividualModule = async ({
   start_time,
   company_cred,
   module_id,
+  meet_type,
+  company_id,
+  duration,
 }: {
   schedule_name: string;
   start_time: string;
@@ -120,6 +131,9 @@ export const bookIndividualModule = async ({
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
   module_id: string;
+  meet_type: InterviewModuleApiType['meeting_type'];
+  company_id: string;
+  duration: number;
 }) => {
   const calendar_event: NewCalenderEvent = {
     summary: schedule_name,
@@ -140,14 +154,49 @@ export const bookIndividualModule = async ({
       ],
     },
     conferenceData: {
-      createRequest: {
-        requestId: uuidv4(),
-      },
+      createRequest: null,
     },
   };
+  if (meet_type.value === 'google_meet') {
+    calendar_event.conferenceData.createRequest = {
+      requestId: uuidv4(),
+    };
+  } else if (meet_type.value === 'zoom') {
+    const zoom_meet = new ZoomMeet(company_id);
+    await zoom_meet.authorizeUser();
+    const schd_meet = await zoom_meet.createMeeting({
+      topic: schedule_name,
+      agenda: schedule_name,
+      default_password: false,
+      duration: duration,
+      start_time: start_time,
+      timezone: organizer.timezone ?? 'Asia/columbo',
+      type: 2,
+      settings: {
+        host_video: false,
+        join_before_host: true,
+        participant_video: false,
+      },
+    });
+    calendar_event.conferenceData.conferenceSolution = {
+      key: {
+        type: 'addOn',
+      },
+      name: 'zoom',
+    };
+    calendar_event.conferenceData.entryPoints = [
+      {
+        entryPointType: 'video',
+        uri: schd_meet.join_url,
+        passcode: schd_meet.password,
+        label: schd_meet.topic,
+      },
+    ];
+  }
   calendar_event.attendees.push({
-    email: candidate_email,
+    email: !isEnvProd() ? 'johndoe@example.co' : candidate_email,
   });
+
   const auth = await getUserCalAuth({ company_cred, recruiter: organizer });
   if (!auth) {
     throw new Error('invalid organized cred');
@@ -164,7 +213,6 @@ export const bookIndividualModule = async ({
     return;
   });
   await Promise.all(attendees_promises);
-
   return { module_id, event };
 };
 

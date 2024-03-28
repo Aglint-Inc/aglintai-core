@@ -91,7 +91,7 @@ function Scheduling() {
       setReason('disconnect_google_workSpace');
     }
     if (source === 'zoom') {
-      handleGetAuthUri();
+      setReason('disconnect_zoom');
     }
   }
   function readDocs(source: schedulingToolsType) {

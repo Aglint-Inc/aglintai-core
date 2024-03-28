@@ -9,7 +9,12 @@ import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '../Common/MuiAvatar';
 import UISelect from '../Common/Uiselect';
 import UITextField from '../Common/UITextField';
-import { defaultDurations, handleUpdateDb, useInterviewPlan } from './store';
+import {
+  allConferenceTypes,
+  defaultDurations,
+  handleUpdateDb,
+  useInterviewPlan,
+} from './store';
 import { InterviewSession } from './types';
 
 const EditModule = ({
@@ -136,28 +141,29 @@ const EditModule = ({
       }
       slotScheduleTypeInput={
         <>
-          <AvatarSelectDropDown
-            defaultValue='google_meet'
-            menuOptions={[
-              {
-                name: 'Google Meet',
-                value: 'google_meet',
-                start_icon_url: '/images/svg/google_meet.svg',
-              },
-            ]}
-            showMenuIcons
-            onChange={() => {
-              setModule((prev) => {
-                prev.meeting_type = {
-                  link: '/images/svg/google_meet.svg',
-                  provider_label: 'Google Meet',
-                  value: 'google_meet',
-                };
-                return { ...prev };
-              });
-            }}
-            value={moduleform.meeting_type.value}
-          />
+          {!moduleform.isBreak && (
+            <AvatarSelectDropDown
+              defaultValue='google_meet'
+              menuOptions={allConferenceTypes.map((c) => ({
+                name: c.provider_label,
+                value: c.value,
+                start_icon_url: c.link,
+              }))}
+              showMenuIcons
+              onChange={(e) => {
+                setModule((prev) => {
+                  const conf_type = allConferenceTypes.find(
+                    (c) => c.value === e.target.value,
+                  );
+                  if (conf_type) {
+                    prev.meeting_type = conf_type;
+                  }
+                  return { ...prev };
+                });
+              }}
+              value={moduleform.meeting_type.value}
+            />
+          )}
         </>
       }
       slotQualifiedMemberList={

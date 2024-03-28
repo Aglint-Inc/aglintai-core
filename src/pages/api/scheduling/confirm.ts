@@ -36,7 +36,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       position,
     } = req.body as BodyParamsConfirmCandidate;
 
-    console.log(selectedSlot);
     axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/book_schedule_plan`,
       {
