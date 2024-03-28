@@ -261,7 +261,7 @@ function ATSPopUps({
                     reason === 'update_lever'
                   }
                 >
-                  Upload
+                  Update
                 </ShowCode.When>
               </ShowCode>
             }

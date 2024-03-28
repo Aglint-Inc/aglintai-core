@@ -280,9 +280,11 @@ const object = [
   },
 ];
 const objectData = [
-  'Sourcing new candidates',
+  'Applicant tracking system (ATS)',
   'Filtering candidates',
-  'AI-based candidate screening',
+  'Sourcing  candidates',
+  'Candidate screening',
+  'Scheduling',
   'All of it',
 ];
 

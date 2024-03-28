@@ -1,8 +1,7 @@
-import { IconButton, Stack, TextField } from '@mui/material';
-import { IconEye, IconEyeOff } from '@tabler/icons-react';
+import { Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { ButtonPrimaryRegular } from '@/devlink';
@@ -14,22 +13,24 @@ import { ZOOM_REDIRECT_URI } from '@/src/utils/integrations/constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
 
 function Scheduling() {
-  const inputRef = useRef<HTMLInputElement>(null);
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
-  const [hideApiKey, setHideApiKey] = useState(true);
 
   const [reason, setReason] = useState<SchedulingReasonTypes>();
   const [isLoading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
   const [fileData, setFileData] = useState(null);
   function close() {
     setIsOpen(false);
+    setFileData(null);
   }
   async function action() {
     if (
@@ -94,7 +95,7 @@ function Scheduling() {
   }
   function readDocs(source: schedulingToolsType) {
     if (source === 'google_workspace')
-      window.open('https://www.workspace.google.com');
+      window.open('https://workspace.google.com');
     if (source === 'zoom') window.open('https://www.zoom.com');
   }
   const SchedulingTools = [
@@ -107,7 +108,7 @@ function Scheduling() {
       logo: <GooglLogo />,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.service_json ? 'Edit' : 'Connect'}
+          primaryText={recruiter?.service_json ? 'Re-Upload' : 'Connect'}
           secondaryText={recruiter?.service_json ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -129,7 +130,7 @@ function Scheduling() {
       isConnected: recruiter?.zoom_auth,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.zoom_auth ? 'Reconnect' : 'Connect'}
+          primaryText={recruiter?.zoom_auth ? 'Re-Connect' : 'Connect'}
           secondaryText={recruiter?.zoom_auth ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -153,6 +154,7 @@ function Scheduling() {
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
       reader.onload = async (e) => {
+        setUploading(true);
         if (e.target) {
           /* Parse data */
           const readData = e.target.result;
@@ -160,6 +162,7 @@ function Scheduling() {
             planData: readData,
           });
           setFileData(data);
+          setUploading(false);
         }
       };
       if (rABS) reader.readAsBinaryString(file);
@@ -230,49 +233,32 @@ function Scheduling() {
           <ShowCode>
             <ShowCode.When
               isTrue={
-                reason === 'connect_zoom' ||
-                reason === 'disconnect_zoom' ||
-                reason === 'update_zoom'
-              }
-            >
-              <TextField
-                type={hideApiKey ? 'password' : 'text'}
-                fullWidth
-                inputRef={inputRef}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      onClick={() => {
-                        setHideApiKey((pre) => !pre);
-                      }}
-                    >
-                      {hideApiKey ? <IconEyeOff /> : <IconEye />}
-                    </IconButton>
-                  ),
-                }}
-              />
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={
                 reason === 'connect_google_workSpace' ||
                 reason === 'disconnect_google_workSpace' ||
                 reason === 'update_google_workspace'
               }
             >
-              {fileData ? (
-                <TextField fullWidth disabled value={fileData} />
-              ) : (
-                <Stack {...getRootProps()}>
-                  <input id='uploadServiceJson' {...getInputProps()} />
-                  <IntegrationUpload
-                    onClickGetJson={{
-                      onClick: (e: { stopPropagation: () => void }) => {
-                        e.stopPropagation();
-                      },
-                    }}
-                  />
-                </Stack>
-              )}
+              <ShowCode>
+                <ShowCode.When isTrue={uploading}>
+                  <Loader />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  {fileData ? (
+                    <TextField fullWidth disabled value={fileData} />
+                  ) : (
+                    <Stack {...getRootProps()}>
+                      <input id='uploadServiceJson' {...getInputProps()} />
+                      <IntegrationUpload
+                        onClickGetJson={{
+                          onClick: (e: { stopPropagation: () => void }) => {
+                            e.stopPropagation();
+                          },
+                        }}
+                      />
+                    </Stack>
+                  )}
+                </ShowCode.Else>
+              </ShowCode>
             </ShowCode.When>
           </ShowCode>
         }
@@ -303,7 +289,9 @@ function CardButtons({
         }}
         textLabel={secondaryText}
       />
-      {primaryText === 'Edit' ? (
+      {primaryText === 'Edit' ||
+      primaryText === 'Re-Connect' ||
+      primaryText === 'Re-Upload' ? (
         <ButtonPrimaryOutlinedRegular
           buttonProps={{
             onClick: primaryAction,
