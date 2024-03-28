@@ -18,7 +18,7 @@ export function AssesmentSetting({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "assessment-setting-wrap")}
+      className={_utils.cx(_styles, "assessment-setting-wrap", "pl-20")}
       tag="div"
     >
       <_Builtin.Block

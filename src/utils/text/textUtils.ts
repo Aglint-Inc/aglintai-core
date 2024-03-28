@@ -1,3 +1,5 @@
+import { capitalize as cap } from 'lodash';
+
 import { palette } from '@/src/context/Theme/Theme';
 
 export const capitalize = (str: string) => {
@@ -6,7 +8,7 @@ export const capitalize = (str: string) => {
 export const capitalizeAll = (str: string) => {
   return str
     .split(' ')
-    .map((item) => capitalize(item))
+    .map((item) => cap(item))
     .join(' ');
 };
 export const getRandomColor = (): string => {

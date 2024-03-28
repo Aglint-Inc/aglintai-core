@@ -5,6 +5,10 @@
   align-items: flex-start;
 }
 
+.assessment-setting-wrap.pl-20 {
+  padding-left: 20px;
+}
+
 .ai-assessment-setting-wrap {
   display: flex;
   max-width: 678px;
@@ -273,6 +277,10 @@
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .color-grey-600.max-width-350 {

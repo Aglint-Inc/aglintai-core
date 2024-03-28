@@ -20,7 +20,12 @@ export function CompanyInfo({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "rd-company-primary-info-2", "width-585")}
+      className={_utils.cx(
+        _styles,
+        "rd-company-primary-info-2",
+        "width-585",
+        "pl-20"
+      )}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">

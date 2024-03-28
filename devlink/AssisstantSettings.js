@@ -13,7 +13,7 @@ export function AssisstantSettings({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "cb-assisstant-settings-wrapper")}
+      className={_utils.cx(_styles, "cb-assisstant-settings-wrapper", "pl-20")}
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "cb-as-main")} tag="div">

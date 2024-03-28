@@ -18,4 +18,5 @@ declare function TeamListItem(props: {
   isEditInviteVisible?: Types.Visibility.VisibilityConditions;
   textDepartment?: React.ReactNode;
   textDesignation?: React.ReactNode;
+  textLocation?: React.ReactNode;
 }): React.JSX.Element;
