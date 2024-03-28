@@ -591,8 +591,8 @@ export const CustomDragLayer = ({
     >
       <Stack
         style={getItemStyles(initialOffset, {
-          x: x - 180 + currentOffset.x,
-          y: currentOffset.y,
+          x: x - 180 + (currentOffset?.x ?? 0),
+          y: currentOffset?.y ?? 0,
         })}
       >
         {renderItem()}

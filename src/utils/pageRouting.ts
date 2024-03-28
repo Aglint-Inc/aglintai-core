@@ -11,6 +11,7 @@ export const pageRoutes = Object.freeze({
   EDITJOB: '/jobs/[id]/edit',
   PROFILESCORE: '/jobs/[id]/profile-score',
   JOBASSESSMENT: '/jobs/[id]/assessment',
+  JOBEMAILTEMPLATES: '/jobs/[id]/email-templates',
   COMPANY: '/company',
   CANDIDATES: '/candidates/history',
   AGLINTDB: '/candidates/aglintdb',

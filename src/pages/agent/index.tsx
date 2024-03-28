@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 
 import { WelcomeAssistant } from '@/devlink3';
 import Seo from '@/src/components/Common/Seo';
@@ -6,6 +7,7 @@ import { JobAssistantProvider } from '@/src/context/JobAssistant';
 
 function AgentPage() {
   const router = useRouter();
+  const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
   return (
     <>
       <Seo
@@ -25,6 +27,7 @@ function AgentPage() {
             },
           }}
           onClickSourcing={{
+            style: { display: isSourcingEnabled ? 'flex' : 'none' },
             onClick: () => {
               router.push(`/agent/sourcing`);
             },

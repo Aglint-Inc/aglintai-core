@@ -30,7 +30,7 @@ export const createCandidateDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates_files')
+    .from('candidate_files')
     .insert({ ...candidate })
     .select()
     .abortSignal(signal)
@@ -47,7 +47,7 @@ export const bulkCreateCandidateDbAction = async (
     const timerSignal = new AbortController();
     const timeout = setTimeout(() => timerSignal.abort(), 60000);
     const { data, error } = await supabase
-      .from('candidates_files')
+      .from('candidate_files')
       .insert(candidates)
       .select()
       .abortSignal(signal)
@@ -64,7 +64,7 @@ export const readCandidatesDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates_files')
+    .from('candidate_files')
     .select('*')
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
@@ -79,7 +79,7 @@ export const updateCandidateDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates_files')
+    .from('candidate_files')
     .update(candidate)
     .select()
     .abortSignal(signal)
@@ -95,7 +95,7 @@ export const bulkUpdateCandidateDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates_files')
+    .from('candidate_files')
     .upsert(candidates)
     .select()
     .abortSignal(signal)
@@ -111,7 +111,7 @@ export const deleteCandidateDbAction = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
   const { data, error } = await supabase
-    .from('candidates_files')
+    .from('candidate_files')
     .delete()
     .eq('id', candidateId)
     .abortSignal(signal)

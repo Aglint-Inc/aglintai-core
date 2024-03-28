@@ -13,6 +13,7 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { Job } from '@/src/queries/job/types';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -207,15 +208,10 @@ const EmailTemplate = ({ setIsSaving }) => {
 
 export default EmailTemplate;
 
-export type EmailTempPath =
-  | 'interview'
-  | 'interview_resend'
-  | 'rejection'
-  | 'phone_screening'
-  | 'phone_screening_resend'
-  | 'application_received';
-
-export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
+export const templateObj: Record<
+  keyof Job['email_template'],
+  EmailTemplatInfoType
+> = {
   application_received: {
     listing: 'Application Recieved',
     heading: 'Application Received Email Template',

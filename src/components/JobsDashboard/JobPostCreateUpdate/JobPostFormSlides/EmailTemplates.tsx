@@ -14,18 +14,16 @@ import {
   EmailTemplatesStart,
   JobEditWarning,
   JobWarningList,
-  LoaderSvg
+  LoaderSvg,
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import {
-  EmailTempPath,
-  templateObj
-} from '@/src/components/CompanyDetailComp/EmailTemplate';
+import { templateObj } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { Job } from '@/src/queries/job/types';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -49,7 +47,7 @@ const Emails = () => {
     .map((email) => ({
       title: templateObj[`${email}`],
       excerpt: '',
-      path: email
+      path: email,
     }));
   const [editTemplate, setEditTemplate] = useState(emails[0].path);
 
@@ -90,12 +88,12 @@ const Emails = () => {
                   onClickEdit={{
                     onClick: () => {
                       handleChangeTemplate(email.path);
-                    }
+                    },
                   }}
                   onClickApplicationRecieved={{
                     onClick: () => {
                       handleChangeTemplate(email.path);
-                    }
+                    },
                   }}
                 />
               );
@@ -147,7 +145,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
     last_name: '',
     job_title: '',
     email: '',
-    company_name: recruiter.name
+    company_name: recruiter.name,
   });
   const handleDrawerClose = () => {
     setTemplatePath('');
@@ -159,8 +157,8 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
     {
       fromName: '',
       body: '',
-      subject: ''
-    }
+      subject: '',
+    },
   ) as EmailDetails;
 
   const emailHandler = async () => {
@@ -184,7 +182,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
           fromName: template.fromName || recruiter?.name,
           email: email?.email,
           subject: fillEmailTemplate(template.subject, email),
-          text: fillEmailTemplate(template.body, email)
+          text: fillEmailTemplate(template.body, email),
         })
         .then((res) => {
           if (res.status === 200 && res.data.data === 'Email sent') {
@@ -207,12 +205,12 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
             onClickSaveChanges={{
               onClick: () => {
                 // handlerSave();
-              }
+              },
             }}
             onClickClose={{
               onClick: () => {
                 handleDrawerClose();
-              }
+              },
             }}
             textEmailName={templateObj[String(templatePath)]?.heading}
             slotForm={
@@ -226,7 +224,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                   onChange={(e) => {
                     handleUpdateFormFields({
                       path: `screeningEmail.emailTemplates.${templatePath}.fromName`,
-                      value: e.target.value
+                      value: e.target.value,
                     });
 
                     // setSelectedTemplate((prev) => ({
@@ -246,7 +244,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                   onChange={(e) => {
                     handleUpdateFormFields({
                       path: `screeningEmail.emailTemplates.${templatePath}.subject`,
-                      value: e.target.value
+                      value: e.target.value,
                     });
                   }}
                   minRows={1}
@@ -259,7 +257,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                       mt: '8px',
                       border: '1px solid',
                       borderColor: palette.grey[300],
-                      borderRadius: '4px'
+                      borderRadius: '4px',
                     }}
                   >
                     <TipTapAIEditor
@@ -270,7 +268,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                       handleChange={(html) => {
                         handleUpdateFormFields({
                           path: `screeningEmail.emailTemplates.${templatePath}.body`,
-                          value: html
+                          value: html,
                         });
                       }}
                       initialValue={template.body}
@@ -284,7 +282,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                 sx={{
                   bgcolor: palette.grey[100],
                   p: 2,
-                  borderRadius: '8px'
+                  borderRadius: '8px',
                 }}
                 spacing={2}
               >
@@ -305,7 +303,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                           onChange={(e) => {
                             setEmail((prev) => ({
                               ...prev,
-                              first_name: e.target.value
+                              first_name: e.target.value,
                             }));
                           }}
                         />
@@ -319,7 +317,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                           onChange={(e) => {
                             setEmail((prev) => ({
                               ...prev,
-                              last_name: e.target.value
+                              last_name: e.target.value,
                             }));
                           }}
                         />
@@ -333,7 +331,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                           onChange={(e) => {
                             setEmail((prev) => ({
                               ...prev,
-                              job_title: e.target.value
+                              job_title: e.target.value,
                             }));
                           }}
                         />
@@ -347,7 +345,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                           onChange={(e) => {
                             setEmail((prev) => ({
                               ...prev,
-                              company_name: e.target.value
+                              company_name: e.target.value,
                             }));
                           }}
                         />
@@ -361,7 +359,7 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
                           onChange={(e) => {
                             setEmail((prev) => ({
                               ...prev,
-                              email: e.target.value
+                              email: e.target.value,
                             }));
                           }}
                         />
@@ -405,11 +403,11 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
   );
 };
 
-export const emailTempKeys: EmailTempPath[] = [
+export const emailTempKeys: (keyof Job['email_template'])[] = [
   'application_received',
   'phone_screening',
   'phone_screening_resend',
   'interview',
   'interview_resend',
-  'rejection'
+  'rejection',
 ];

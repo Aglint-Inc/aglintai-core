@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
-import { EmailTempPath } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import {
   FilterParameter,
   SortParameter,
@@ -10,6 +9,7 @@ import { ModuleType } from '@/src/components/Scheduling/Modules/types';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
+import { Job } from '@/src/queries/job/types';
 import { Applications } from '@/src/types/applications.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
@@ -49,7 +49,7 @@ export type JobApplication = Applications & {
     isFetching: boolean;
     isValidEmail: boolean;
   };
-  status_emails_sent: Partial<{ [key in EmailTempPath]: string }>;
+  status_emails_sent: Partial<{ [key in keyof Job['email_template']]: string }>;
 };
 
 export type Parameters = {

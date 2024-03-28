@@ -2,6 +2,8 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { getHelper } from '@/src/components/JobEmailTemplates';
+import { templateObj } from '@/src/components/JobEmailTemplates/utils';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import {
   useAllAssessments,
@@ -114,10 +116,13 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     refreshDashboard(job?.id);
   };
 
+  const emailTemplateValidity = validateEmailTemplates(job?.email_template);
+
   const value = {
     job,
     dismiss,
     jobPolling,
+    emailTemplateValidity,
     setDismiss,
     handleJobRefresh,
     scoringPoll,
@@ -199,6 +204,22 @@ export const hashCode = (str: string) => {
     hash = hash & hash;
   }
   return hash;
+};
+
+export const validateEmailTemplates = (
+  emailTemplates: Job['email_template'],
+) => {
+  return (
+    emailTemplates &&
+    Object.entries(emailTemplates).reduce((acc, [key, value]) => {
+      const label = templateObj[key]?.heading;
+      Object.entries(value).forEach(([key, value]) => {
+        if (key !== 'default' && validateString(value))
+          acc.push(`${getHelper(key as any)} in ${label}`);
+      });
+      return acc;
+    }, [] as string[])
+  );
 };
 
 export default useProviderJobDashboardActions;

@@ -332,7 +332,7 @@ type JobMetaFormProps = {
   handleCreate?: () => void;
 };
 
-const WarningSvg = () => {
+export const WarningSvg = () => {
   return (
     <svg
       width='22'
