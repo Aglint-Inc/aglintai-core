@@ -1,4 +1,6 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import {
   AvatarWithName,
@@ -16,6 +18,7 @@ import { getScheduleType } from '../../AllSchedules/utils';
 import { TransformSchedule } from '../../Modules/types';
 
 function Overview({ schedule }: { schedule: TransformSchedule }) {
+  const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   if (!schedule) {
     return null;
@@ -100,12 +103,21 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
         />
       }
       slotRelatedJobCard={
-        <RelatedJobCard
-          textJobTitle={job.job_title}
-          textJobTypeAndLocation={
-            (job.jd_json as any)?.level + ', ' + job.location
-          }
-        />
+        <Stack
+          onClick={() => {
+            router.push(`/jobs/${job.id}`);
+          }}
+          sx={{
+            cursor: 'pointer',
+          }}
+        >
+          <RelatedJobCard
+            textJobTitle={job.job_title}
+            textJobTypeAndLocation={
+              (job.jd_json as any)?.level + ', ' + job.location
+            }
+          />
+        </Stack>
       }
     />
   );

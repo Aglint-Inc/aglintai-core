@@ -132,7 +132,7 @@ function SchedulingPopUps({
                       reason === 'update_zoom'
                     }
                   >
-                    Update changes
+                    Upload
                   </ShowCode.When>
                 </ShowCode>
               </>

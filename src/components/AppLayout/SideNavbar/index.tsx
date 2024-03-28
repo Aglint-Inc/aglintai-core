@@ -46,7 +46,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.JOBS,
       comingsoon: false,
-      isvisible: true,
+      isvisible: isSourcingEnabled,
       roles: [
         'admin',
         'recruiter',
