@@ -1,6 +1,5 @@
 import { Stack, Typography } from '@mui/material';
 import posthog from 'posthog-js';
-import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -14,7 +13,7 @@ import { debouncedSave } from '../utils';
 
 const CompanyJdComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
-  let isJobMarketing = posthog.isFeatureEnabled('isJobMarketing');
+  let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
   const handleChange = async (recruit: RecruiterType) => {
     setIsSaving(true);
@@ -27,7 +26,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
 
   return (
     <Stack p={'4px'} width={'500px'} spacing={'20px'} pt={'20px'}>
-      <ShowCode.When isTrue={isJobMarketing}>
+      <ShowCode.When isTrue={isJobMarketingEnabled}>
         <UITextField
           labelSize='small'
           fullWidth

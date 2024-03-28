@@ -9,11 +9,10 @@ import { palette } from '@/src/context/Theme/Theme';
 
 import LoaderGrey from '../Common/LoaderGrey';
 import CompanyInfoComp from './CompanyInfoComp';
-import { tabs } from './utils';
 import {
   generateDepartments,
   generateRoles,
-  generateSpecialities,
+  generateSpecialities, tabs
 } from './utils';
 
 const CompanyDetailComp = () => {
@@ -94,7 +93,7 @@ const CompanyDetailComp = () => {
                 }}
               />
             )}
-            <NavSublink
+            {/* <NavSublink
               textLink={'Email Templates'}
               isActive={router.query?.tab === 'email'}
               onClickNav={{
@@ -102,7 +101,7 @@ const CompanyDetailComp = () => {
                   router.replace(`/company?tab=${tabs.email}`);
                 },
               }}
-            />
+            /> */}
             <NavSublink
               textLink={'Team'}
               isActive={router.query?.tab === 'team'}

@@ -14,7 +14,6 @@ import UITextField from '../../Common/UITextField';
 import AssessmentSettings from '../AssessmentSettings';
 import Assistant from '../Assistant';
 import CompanyJdComp from '../CompanyJdComp';
-import EmailTemplate from '../EmailTemplate';
 import TeamManagement from '../TeamManagement';
 import { debouncedSave } from '../utils';
 import AddDepartmentsDialog from './AddDepartmentsDialog';
@@ -29,7 +28,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
-  let isJobMarketing = posthog.isFeatureEnabled('isJobMarketing');
+  let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
   useEffect(() => {
     setLogo(recruiter?.logo);
@@ -212,12 +211,10 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                   setDialog({ ...dialog, stacks: true });
                 },
               }}
-              slotAdditionalInfoForm={
-                <CompanyJdComp setIsSaving={setIsSaving} />
-              }
-              isAvailableRolesVisible={isJobMarketing}
-              isSpecialistVisible={isJobMarketing}
+              isAvailableRolesVisible={isJobMarketingEnabled}
+              isSpecialistVisible={isJobMarketingEnabled}
             />
+            <CompanyJdComp setIsSaving={setIsSaving} />
           </>
         )}
         {router.query?.tab === 'basic-info' && (
@@ -343,7 +340,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                   />
 
-                  <ShowCode.When isTrue={isJobMarketing}>
+                  <ShowCode.When isTrue={isJobMarketingEnabled}>
                     <SocialComp setIsSaving={setIsSaving} />
                   </ShowCode.When>
                 </Stack>
@@ -362,11 +359,11 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         {router.query?.tab === 'job-assistant' && (
           <Assistant setIsSaving={setIsSaving} />
         )}
-        {router.query?.tab === 'email' && (
+        {/* {router.query?.tab === 'email' && (
           <>
             <EmailTemplate setIsSaving={setIsSaving} />
           </>
-        )}
+        )} */}
         {router.query?.tab === 'team' && <TeamManagement />}
       </YTransform>
     </Stack>
