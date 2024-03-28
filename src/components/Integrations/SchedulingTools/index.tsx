@@ -11,6 +11,7 @@ import { ButtonGrey, ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 import { ZOOM_REDIRECT_URI } from '@/src/utils/integrations/constants';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
@@ -128,7 +129,7 @@ function Scheduling() {
       isConnected: recruiter?.zoom_auth,
       buttons: (
         <CardButtons
-          primaryText={recruiter?.zoom_auth ? 'Edit' : 'Connect'}
+          primaryText={recruiter?.zoom_auth ? 'Reconnect' : 'Connect'}
           secondaryText={recruiter?.zoom_auth ? 'Disconnect' : 'Learn How'}
           secondaryAction={() => {
             setLoading(false);
@@ -174,6 +175,17 @@ function Scheduling() {
         if (popup && !popup.closed) {
           try {
             if (popup.window.location.href.includes('zoom-auth=sucess')) {
+              supabase
+                .from('recruiter')
+                .select()
+                .eq('id', recruiter.id)
+                .single()
+                .then(({ data: updatedRecruiter, error }) => {
+                  if (!error) {
+                    setRecruiter(updatedRecruiter as RecruiterType);
+                  }
+                });
+
               toast.success('Zoom auth sucess');
               popup.close();
               clearInterval(checkPopup);
