@@ -2462,15 +2462,3 @@ em {
 .w-checkbox-input--inputType-custom.w--redirected-focus {
   box-shadow: 0px 0px 3px 1px rgba(56, 152, 236, 1);
 }
-
-@keyframes jobSectionTabsDroppableAnimation {
-  0% {background-color: hsla(210, 33.33%, 97.65%, 1.00);}
-  50% {background-color: #edf7ff}
-  100% {background-color: hsla(210, 33.33%, 97.65%, 1.00);}
-}
-
-@keyframes jobSectionTabsOverAnimation {
-  0% {background-color: hsla(210, 33.33%, 97.65%, 1.00);}
-  50% {background-color: hsla(205.71428571428586, 17.07%, 91.96%, 1.00);}
-  100% {background-color: hsla(210, 33.33%, 97.65%, 1.00);}
-}

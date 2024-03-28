@@ -1,4 +1,5 @@
 import { Stack, Typography } from '@mui/material';
+import posthog from 'posthog-js';
 import React from 'react';
 
 import { Checkbox } from '@/devlink';
@@ -6,12 +7,14 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 
+import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { debouncedSave } from '../utils';
 
 const CompanyJdComp = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
+  let isJobMarketing = posthog.isFeatureEnabled('isJobMarketing');
 
   const handleChange = async (recruit: RecruiterType) => {
     setIsSaving(true);
@@ -23,55 +26,58 @@ const CompanyJdComp = ({ setIsSaving }) => {
   };
 
   return (
-    <Stack p={'4px'} width={'500px'} spacing={'20px'} pb={'40px'} pt={'20px'}>
-      <UITextField
-        labelSize='small'
-        fullWidth
-        label='Company Overview'
-        placeholder='Consider adding this to provide context for generating job descriptions.'
-        value={recruiter?.company_overview}
-        onChange={(e) => {
-          handleChange({
-            ...recruiter,
-            company_overview: e.target.value,
-          });
-        }}
-        multiline
-        minRows={6}
-        maxRows={6}
-      />
-      <UITextField
-        labelSize='small'
-        fullWidth
-        label='Benefits'
-        placeholder='Consider highlighting perks and advantages to enrich your job descriptions.'
-        value={recruiter?.benefits}
-        onChange={(e) => {
-          handleChange({
-            ...recruiter,
-            benefits: e.target.value,
-          });
-        }}
-        multiline
-        minRows={6}
-        maxRows={6}
-      />
-      <UITextField
-        labelSize='small'
-        fullWidth
-        label='Equal Opportunity Statement'
-        placeholder='Consider adding an inclusivity statement to enhance your job descriptions.'
-        value={recruiter?.e_o_statement}
-        onChange={(e) => {
-          handleChange({
-            ...recruiter,
-            e_o_statement: e.target.value,
-          });
-        }}
-        multiline
-        minRows={6}
-        maxRows={6}
-      />
+    <Stack p={'4px'} width={'500px'} spacing={'20px'} pt={'20px'}>
+      <ShowCode.When isTrue={isJobMarketing}>
+        <UITextField
+          labelSize='small'
+          fullWidth
+          label='Company Overview'
+          placeholder='Consider adding this to provide context for generating job descriptions.'
+          value={recruiter?.company_overview}
+          onChange={(e) => {
+            handleChange({
+              ...recruiter,
+              company_overview: e.target.value,
+            });
+          }}
+          multiline
+          minRows={6}
+          maxRows={6}
+        />
+        <UITextField
+          labelSize='small'
+          fullWidth
+          label='Benefits'
+          placeholder='Consider highlighting perks and advantages to enrich your job descriptions.'
+          value={recruiter?.benefits}
+          onChange={(e) => {
+            handleChange({
+              ...recruiter,
+              benefits: e.target.value,
+            });
+          }}
+          multiline
+          minRows={6}
+          maxRows={6}
+        />
+        <UITextField
+          labelSize='small'
+          fullWidth
+          label='Equal Opportunity Statement'
+          placeholder='Consider adding an inclusivity statement to enhance your job descriptions.'
+          value={recruiter?.e_o_statement}
+          onChange={(e) => {
+            handleChange({
+              ...recruiter,
+              e_o_statement: e.target.value,
+            });
+          }}
+          multiline
+          minRows={6}
+          maxRows={6}
+        />
+      </ShowCode.When>
+
       {/* <UITextField
         labelSize='small'
         fullWidth

@@ -72,15 +72,6 @@ const CompanyDetailComp = () => {
                 },
               }}
             />
-            <NavSublink
-              textLink={'About Company'}
-              isActive={router.query?.tab === 'about'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace(`/company?tab=${tabs.about}`);
-                },
-              }}
-            />
             {isAssesEnabled && (
               <NavSublink
                 textLink={'Assessment'}

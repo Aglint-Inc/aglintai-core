@@ -1,5 +1,6 @@
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { BasicInfo, CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
@@ -8,6 +9,7 @@ import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ImageUpload from '../../Common/ImageUpload';
+import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import AssessmentSettings from '../AssessmentSettings';
 import Assistant from '../Assistant';
@@ -27,6 +29,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
+  let isJobMarketing = posthog.isFeatureEnabled('isJobMarketing');
 
   useEffect(() => {
     setLogo(recruiter?.logo);
@@ -94,121 +97,128 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           edit={dialog.location.edit}
         />
         {router.query?.tab === 'additional-info' && (
-          <CompanyInfo
-            slotLocation={
-              <Stack p={'4px'}>
-                {recruiter?.office_locations &&
-                  recruiter?.office_locations.map((loc: any, i) => {
-                    const location = [loc.city, loc.region, loc.country]
-                      .filter(Boolean)
-                      .join(', ');
+          <>
+            <CompanyInfo
+              slotLocation={
+                <Stack p={'4px'}>
+                  {recruiter?.office_locations &&
+                    recruiter?.office_locations.map((loc: any, i) => {
+                      const location = [loc.city, loc.region, loc.country]
+                        .filter(Boolean)
+                        .join(', ');
 
-                    return (
-                      <>
-                        <Stack p={'4px'}>
-                          <CompanyLocation
-                            onClickEdit={{
-                              onClick: () => {
-                                setDialog({
-                                  ...dialog,
-                                  location: { open: true, edit: i },
-                                });
-                              },
-                            }}
-                            textLocation={location}
-                            onClickDelete={{
-                              onClick: () => handleDeleteLocation(i),
-                            }}
-                          />
-                        </Stack>
-                      </>
-                    );
-                  })}
-              </Stack>
-            }
-            slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
-              return (
-                <RolesPill
-                  key={ind}
-                  textRoles={rol}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      let roles = recruiter.available_roles.filter(
-                        (role) => role != rol,
+                      return (
+                        <>
+                          <Stack p={'4px'}>
+                            <CompanyLocation
+                              onClickEdit={{
+                                onClick: () => {
+                                  setDialog({
+                                    ...dialog,
+                                    location: { open: true, edit: i },
+                                  });
+                                },
+                              }}
+                              textLocation={location}
+                              onClickDelete={{
+                                onClick: () => handleDeleteLocation(i),
+                              }}
+                            />
+                          </Stack>
+                        </>
                       );
-                      handleChange({
-                        ...recruiter,
-                        available_roles: roles,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
-              return (
-                <RolesPill
-                  key={ind}
-                  textRoles={dep}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      let departments = recruiter.departments.filter(
-                        (depart) => depart != dep,
-                      );
-                      handleChange({
-                        ...recruiter,
-                        departments: departments,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotTechStackPills={recruiter?.technology_score?.map(
-              (stack, ind) => {
+                    })}
+                </Stack>
+              }
+              slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (
                   <RolesPill
                     key={ind}
-                    textRoles={stack}
+                    textRoles={rol}
                     onClickRemoveRoles={{
                       onClick: () => {
-                        let technologies = recruiter.technology_score.filter(
-                          (tech) => tech != stack,
+                        let roles = recruiter.available_roles.filter(
+                          (role) => role != rol,
                         );
                         handleChange({
                           ...recruiter,
-                          technology_score: technologies,
+                          available_roles: roles,
                         });
                       },
                     }}
                   />
                 );
-              },
-            )}
-            onClickAddLocation={{
-              onClick: () => {
-                setDialog({ ...dialog, location: { open: true, edit: -1 } });
-              },
-            }}
-            onClickAddAvailableRoles={{
-              onClick: () => {
-                setDialog({ ...dialog, roles: true });
-              },
-            }}
-            onClickAddDepartments={{
-              onClick: () => {
-                setDialog((prev) => ({
-                  ...prev,
-                  departments: true,
-                }));
-              },
-            }}
-            onClickAddTechStacks={{
-              onClick: () => {
-                setDialog({ ...dialog, stacks: true });
-              },
-            }}
-          />
+              })}
+              slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
+                return (
+                  <RolesPill
+                    key={ind}
+                    textRoles={dep}
+                    onClickRemoveRoles={{
+                      onClick: () => {
+                        let departments = recruiter.departments.filter(
+                          (depart) => depart != dep,
+                        );
+                        handleChange({
+                          ...recruiter,
+                          departments: departments,
+                        });
+                      },
+                    }}
+                  />
+                );
+              })}
+              slotTechStackPills={recruiter?.technology_score?.map(
+                (stack, ind) => {
+                  return (
+                    <RolesPill
+                      key={ind}
+                      textRoles={stack}
+                      onClickRemoveRoles={{
+                        onClick: () => {
+                          let technologies = recruiter.technology_score.filter(
+                            (tech) => tech != stack,
+                          );
+                          handleChange({
+                            ...recruiter,
+                            technology_score: technologies,
+                          });
+                        },
+                      }}
+                    />
+                  );
+                },
+              )}
+              onClickAddLocation={{
+                onClick: () => {
+                  setDialog({ ...dialog, location: { open: true, edit: -1 } });
+                },
+              }}
+              onClickAddAvailableRoles={{
+                onClick: () => {
+                  setDialog({ ...dialog, roles: true });
+                },
+              }}
+              onClickAddDepartments={{
+                onClick: () => {
+                  setDialog((prev) => ({
+                    ...prev,
+                    departments: true,
+                  }));
+                },
+              }}
+              onClickAddTechStacks={{
+                onClick: () => {
+                  setDialog({ ...dialog, stacks: true });
+                },
+              }}
+              slotAdditionalInfoForm={
+                <CompanyJdComp setIsSaving={setIsSaving} />
+              }
+              isAvailableRolesVisible={isJobMarketing}
+              isSpecialistVisible={isJobMarketing}
+            />
+          </>
         )}
         {router.query?.tab === 'basic-info' && (
           <>
@@ -241,7 +251,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                       } else {
                         setError(false);
                       }
-                      
                     }}
                   />
                   {/* <ImageUpload
@@ -334,7 +343,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                   />
 
-                  <SocialComp setIsSaving={setIsSaving} />
+                  <ShowCode.When isTrue={isJobMarketing}>
+                    <SocialComp setIsSaving={setIsSaving} />
+                  </ShowCode.When>
                 </Stack>
               }
               textLogoUpdate={'Update Logo'}
@@ -357,9 +368,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           </>
         )}
         {router.query?.tab === 'team' && <TeamManagement />}
-        {router.query?.tab === 'about' && (
-          <CompanyJdComp setIsSaving={setIsSaving} />
-        )}
       </YTransform>
     </Stack>
   );
