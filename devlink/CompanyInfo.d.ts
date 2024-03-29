@@ -14,4 +14,5 @@ declare function CompanyInfo(props: {
   slotRolesPills?: Types.Devlink.Slot;
   isSpecialistVisible?: Types.Visibility.VisibilityConditions;
   isAvailableRolesVisible?: Types.Visibility.VisibilityConditions;
+  slotEmploymentType?: Types.Devlink.Slot;
 }): React.JSX.Element;

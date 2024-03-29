@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { AllInterviewers, AllInterviewersCard, TextWithBg } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -11,7 +12,8 @@ import { supabase } from '@/src/utils/supabase/client';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
-export type interviewerListType = {
+import Filters from './Filters';
+type interviewerListType = {
   rec_user: RecruiterUserType;
   qualified_module_names: string[];
   training_module_names: string[];
@@ -22,6 +24,8 @@ const InterviewTab = () => {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
   const { data: interviewers, isLoading, isFetched } = useInterviewerList();
+  const [filteredInterviewer, setFilteredInterviewer] = useState(interviewers);
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={isLoading}>
@@ -29,10 +33,11 @@ const InterviewTab = () => {
       </ShowCode.When>
       <ShowCode.When isTrue={isFetched}>
         <Stack position={'relative'}>
+          <Filters setFilteredInterviewer={setFilteredInterviewer} />
           <AllInterviewers
             slotAllInterviewesCard={
-              interviewers &&
-              interviewers
+              filteredInterviewer &&
+              filteredInterviewer
                 .sort(
                   (a, b) =>
                     b.qualified_module_names.filter((ele) => ele).length -
