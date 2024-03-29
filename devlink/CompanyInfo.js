@@ -17,6 +17,7 @@ export function CompanyInfo({
   slotRolesPills,
   isSpecialistVisible = true,
   isAvailableRolesVisible = true,
+  slotEmploymentType,
 }) {
   return (
     <_Component
@@ -242,6 +243,7 @@ export function CompanyInfo({
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
+        <_Builtin.Block tag="div">{slotEmploymentType}</_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );
