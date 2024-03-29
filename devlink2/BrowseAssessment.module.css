@@ -95,6 +95,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -209,6 +213,15 @@
   color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .is_active_bg {
   position: absolute;
   left: 0%;
@@ -219,7 +232,7 @@
 
   border-radius: 10px;
 
-  background-color: #e9ebed;
+  background-color: #f8f9f9;
 }
 
 .is_active_bg.no_radius {
@@ -247,6 +260,11 @@
 }
 
 .icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
   position: relative;
   z-index: 1;
 }

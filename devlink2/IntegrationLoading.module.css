@@ -36,6 +36,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -50,5 +55,16 @@
 @media screen and (max-width: 767px) {
   .text-lg {
     font-size: 16px;
+  }
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
   }
 }

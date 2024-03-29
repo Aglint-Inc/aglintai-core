@@ -76,6 +76,20 @@
   max-width: 292px;
 }
 
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
+}
+
 .slot_question_detail {
   overflow: auto;
   height: 100%;
@@ -131,6 +145,10 @@
 .embed_flex.relative_3 {
   position: relative;
   z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
 }
 
 #w-node-_2f34ab5e-3b60-bfa9-d8a9-1d5e5a5f16c4-5a5f16c4 {

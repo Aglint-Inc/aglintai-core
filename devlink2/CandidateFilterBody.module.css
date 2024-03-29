@@ -87,6 +87,20 @@
   max-width: 292px;
 }
 
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
+}
+
 .cl-filters-buttons {
   display: flex;
   padding: 16px 32px 24px 24px;

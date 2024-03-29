@@ -78,6 +78,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -186,6 +190,19 @@
 
 .relative {
   position: relative;
+}
+
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .svg-icon {

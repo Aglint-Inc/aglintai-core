@@ -12,9 +12,11 @@ export function InterviewerScreens({
   isUpcomingActive = false,
   onClickCompleted = {},
   isCompletedActive = false,
-  onClickNotConfirmed = {},
-  isNotConfirmedActive = false,
   slotInterviewScreenCard,
+  onClickCancel = {},
+  onClickScheduling = {},
+  isSchedulingActive = false,
+  isCancelActive = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interviewer-screens")} tag="div">
@@ -97,16 +99,36 @@ export function InterviewerScreens({
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1076")}
                 tag="div"
-                {...onClickNotConfirmed}
+                {...onClickScheduling}
               >
-                <_Builtin.Block tag="div">{"Not Confimed"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Scheduling"}</_Builtin.Block>
               </_Builtin.Block>
-              {isNotConfirmedActive ? (
+              {isSchedulingActive ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-1076", "active")}
                   tag="div"
                 >
-                  <_Builtin.Block tag="div">{"Not Confimed"}</_Builtin.Block>
+                  <_Builtin.Block tag="div">{"Scheduling"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "all-wrap-navi")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1076")}
+                tag="div"
+                {...onClickCancel}
+              >
+                <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+              </_Builtin.Block>
+              {isCancelActive ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-1076", "active")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>

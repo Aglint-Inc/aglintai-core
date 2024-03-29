@@ -212,6 +212,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .div-block-1116 {
   display: flex;
   flex-direction: row;
@@ -366,6 +371,13 @@
 
 .setting_wrap.p-b-40 {
   padding-bottom: 40px;
+}
+
+.slot_timezoneinput.reverse-order {
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  align-items: stretch;
 }
 
 .toggle_wrap {
