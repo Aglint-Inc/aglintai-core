@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 
 import {
   NavAssessment,
@@ -19,12 +19,12 @@ import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function SideNavbar() {
-  let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
-  let isSupportEnabled = posthog.isFeatureEnabled('isSupportEnabled');
-  let isAgentEnabled = posthog.isFeatureEnabled('isAgentEnabled');
-  let isAssessmentEnabled = posthog.isFeatureEnabled('isNewAssessmentEnabled');
-  let isSourcingEnabled = posthog.isFeatureEnabled('isSourcingEnabled');
-  let isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+  let isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
+  let isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
+  let isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
+  let isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
+  let isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
+  let isPhoneScreeningEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningEnabled',
   );
   const router = useRouter();
