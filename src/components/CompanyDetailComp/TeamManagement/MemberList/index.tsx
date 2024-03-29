@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { TeamListItem } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -11,6 +11,7 @@ import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
+import { useInterviewerList } from '../../Interviewers';
 import DeleteMemberDialog from './DeleteMemberDialog';
 dayjs.extend(relativeTime);
 
@@ -31,6 +32,23 @@ const Member = ({
   const [openForDelete, setOpenForDelete] = useState(false);
   const [openForCancel, setOpenForCancel] = useState(false);
 
+  const { data: memDetails } = useInterviewerList();
+  const membersDetails = useMemo(() => {
+    const temp: {
+      [key: string]: (typeof memDetails)[number] & { allModules: string[] };
+    } = {};
+    memDetails?.forEach((element) => {
+      temp[element.rec_user.user_id] = {
+        ...element,
+        allModules: [
+          ...element.qualified_module_names,
+          ...element.training_module_names,
+        ].filter((item) => Boolean(item)),
+      };
+    });
+    return temp;
+  }, [memDetails]);
+
   function ClosePopUp() {
     setOpenForDelete(false);
     setOpenForCancel(false);
@@ -47,9 +65,18 @@ const Member = ({
   return (
     <>
       <DeleteMemberDialog
+        name={`${member.first_name} ${member.last_name}`.trim()}
         action={handelRemove}
         openForDelete={openForDelete}
         openForCancel={openForCancel}
+        warning={
+          openForDelete && membersDetails[member.user_id].allModules.length
+            ? `User is part of scheduling Module- ${membersDetails[member.user_id].allModules}.`.replaceAll(
+                ',',
+                ', ',
+              )
+            : undefined
+        }
         close={ClosePopUp}
       />
       <TeamListItem
