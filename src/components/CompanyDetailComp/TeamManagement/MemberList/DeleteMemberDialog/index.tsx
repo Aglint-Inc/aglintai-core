@@ -1,19 +1,25 @@
 /* eslint-disable no-unused-vars */
-import { Dialog } from '@mui/material';
+import { Dialog, Typography } from '@mui/material';
 import React from 'react';
 
 import { DeletePopup, ResumePop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
+import { useInterviewerList } from '../../../Interviewers';
+
 function DeleteMemberDialog({
+  name,
   openForDelete,
   openForCancel,
   action,
-  close
+  warning,
+  close,
 }: {
+  name: string;
   openForDelete: boolean;
   openForCancel: boolean;
   action: (x: null) => void;
+  warning?: string;
   close: () => void;
 }) {
   return (
@@ -22,8 +28,8 @@ function DeleteMemberDialog({
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={openForDelete || openForCancel}
       onClose={() => {
@@ -34,28 +40,57 @@ function DeleteMemberDialog({
       <ShowCode>
         <ShowCode.When isTrue={openForDelete}>
           <DeletePopup
-            textTitle={`Delete the member`}
-            textDescription={`By Clicking delete the member will be permanently deleted from the member list.`}
+            textTitle={
+              <Typography variant='subtitle1' fontWeight={500}>
+                Delete the member:{' '}
+                <span style={{ fontWeight: 700 }}>{name}</span>
+              </Typography>
+            }
+            textDescription={
+              <>
+                <Typography variant='subtitle2'>
+                  By Clicking delete the member will be permanently deleted.
+                </Typography>
+                {warning && (
+                  <>
+                    <br />
+                    <Typography variant='subtitle2' color={'yellow.500'}>
+                      Warning: {warning}
+                    </Typography>
+                  </>
+                )}
+              </>
+            }
             isIcon={false}
             isWidget={true}
             onClickCancel={{ onClick: close }}
             onClickDelete={{
-              onClick: action
+              onClick: action,
             }}
             buttonText={'Delete'}
           />
         </ShowCode.When>
         <ShowCode.When isTrue={openForCancel}>
           <DeletePopup
-            textTitle={`Cancel invitation`}
-            textDescription={`By Clicking cancel invitation will be cancelled and deleted from the member list.`}
+            textTitle={
+              <Typography variant='subtitle1' fontWeight={500}>
+                Cancel invitation to:{' '}
+                <span style={{ fontWeight: 700 }}>{name}</span>
+              </Typography>
+            }
+            textDescription={
+              <Typography variant='subtitle2'>
+                By Clicking cancel invitation will be cancelled and removed from
+                the members list.
+              </Typography>
+            }
             isIcon={false}
             isWidget={true}
             onClickCancel={{ onClick: close }}
             onClickDelete={{
-              onClick: action
+              onClick: action,
             }}
-            buttonText={'Delete'}
+            buttonText={'Cancel Invite'}
           />
         </ShowCode.When>
       </ShowCode>
