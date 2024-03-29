@@ -9,10 +9,8 @@ const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
-  const { data, error } = await supabase.auth.admin.deleteUser(
-    req.body.user_id,
-  );
-
+  const { data, error } = await supabase.auth.admin
+    .deleteUser(req.body.user_id)
   if (error) {
     console.log(error);
     res.status(400).send(error.message);

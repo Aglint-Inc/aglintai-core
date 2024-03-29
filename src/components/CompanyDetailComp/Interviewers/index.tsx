@@ -11,7 +11,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
-type interviewerListType = {
+export type interviewerListType = {
   rec_user: RecruiterUserType;
   qualified_module_names: string[];
   training_module_names: string[];
@@ -163,7 +163,7 @@ const InterviewTab = () => {
 // };
 export default InterviewTab;
 
-const useInterviewerList = () => {
+export const useInterviewerList = () => {
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
