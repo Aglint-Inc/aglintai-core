@@ -59,6 +59,10 @@
   opacity: 0.8;
 }
 
+.embed_flex.fixedd {
+  width: 23px;
+}
+
 .gemini_hello {
   font-size: 80px;
   line-height: 90px;
@@ -71,6 +75,7 @@
 
 .grid-2 {
   max-width: 900px;
+  grid-template-rows: auto;
 }
 
 @media screen and (min-width: 1280px) {
@@ -99,6 +104,10 @@
 .option_chat_card:hover {
   box-shadow: 3px 4px 5px 0 hsla(0, 0.00%, 0.00%, 0.08);
   transform: translate(0px, -4px);
+}
+
+.option_chat_card.hide {
+  display: none;
 }
 
 .fw-semibold {
