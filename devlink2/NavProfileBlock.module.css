@@ -184,6 +184,23 @@
   color: #68737d;
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
+.text-xsm.text-first-cap.p-16 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.text-xsm.text-first-cap.mt-5 {
+  margin-top: 5px;
+}
+
 .icon-block {
   display: flex;
   justify-content: center;

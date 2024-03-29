@@ -50,6 +50,10 @@
   z-index: 3;
 }
 
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -98,6 +102,10 @@
   z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
+}
+
+.text-first-cap {
+  text-transform: capitalize;
 }
 
 .fw-semibold.z-index-5 {
@@ -214,6 +222,15 @@
   color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .popup_body {
   display: flex;
   flex-direction: column;
@@ -246,6 +263,10 @@
 .text-gray-600.relative_2 {
   position: relative;
   z-index: 2;
+}
+
+.text-xsm {
+  font-size: 10px;
 }
 
 .popup_loader {

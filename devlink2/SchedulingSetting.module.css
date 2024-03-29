@@ -22,6 +22,10 @@
   grid-row-gap: 4px;
 }
 
+.div-block-1115.keyword-head {
+  width: 620px;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -70,6 +74,10 @@
   z-index: 3;
   max-width: 414px;
   color: var(--gray-400);
+}
+
+.text-first-cap {
+  text-transform: capitalize;
 }
 
 .fw-semibold.z-index-5 {
@@ -186,7 +194,21 @@
   color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
   position: relative;
   z-index: 1;
 }
@@ -199,6 +221,10 @@
   align-items: center;
   grid-column-gap: 26px;
   grid-row-gap: 26px;
+}
+
+.div-block-1116.hide {
+  display: none;
 }
 
 .cursor-pointer {

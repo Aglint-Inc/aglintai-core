@@ -172,6 +172,10 @@
   z-index: 3;
 }
 
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -206,6 +210,20 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
 }
 
 .hide {
@@ -252,11 +270,6 @@
 .button_text.relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
 }
 
 .text-yellow-800 {
@@ -329,6 +342,33 @@
 
 .text-sm.jenfjker {
   width: 136px;
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.text-sm.copied {
+  display: none;
 }
 
 .question_card_bottom {

@@ -1,6 +1,7 @@
 .screening-landing-wrap {
   display: grid;
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   grid-auto-columns: 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;

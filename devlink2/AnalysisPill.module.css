@@ -265,3 +265,26 @@
 .text-sm.jenfjker {
   width: 136px;
 }
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.text-sm.copied {
+  display: none;
+}

@@ -77,6 +77,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -187,6 +191,19 @@
   position: relative;
 }
 
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .sidebar_close {
   display: flex;
   align-items: center;
@@ -214,6 +231,10 @@
 .embed_flex.relative_3 {
   position: relative;
   z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
 }
 
 .sidebar_body {
@@ -293,6 +314,15 @@
   grid-row-gap: 10px;
 }
 
+.ps_input_slot.is_grid {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
 .ps_group_title {
   display: flex;
   flex-direction: column;
@@ -320,6 +350,15 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-xsm {
+  font-size: 10px;
 }
 
 .ps_teams {
@@ -451,6 +490,19 @@
   padding-bottom: 8px;
 }
 
+.button_primary.is_enabled.main {
+  position: static;
+}
+
+.button_primary.is_enabled.main-green {
+  position: static;
+  background-color: #228f67;
+}
+
+.button_primary.is_enabled.main-green:hover {
+  background-color: hsla(157.9816513761468, 65.44%, 30.22%, 1.00);
+}
+
 .button_primary.is_loading {
   position: absolute;
   left: 0%;
@@ -486,6 +538,35 @@
 
 .button_primary.is_grey:hover {
   background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
+}
+
+.button_primary.is_primarruy {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button_primary.greay_btn {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.greay_btn:hover {
+  background-color: #d8dcde;
+}
+
+.button_primary.danger {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #d93f4c;
+}
+
+.button_primary.danger:hover {
+  background-color: #cc3340;
 }
 
 .embed_css {

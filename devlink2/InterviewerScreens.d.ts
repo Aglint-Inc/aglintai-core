@@ -9,7 +9,9 @@ declare function InterviewerScreens(props: {
   isUpcomingActive?: Types.Visibility.VisibilityConditions;
   onClickCompleted?: Types.Devlink.RuntimeProps;
   isCompletedActive?: Types.Visibility.VisibilityConditions;
-  onClickNotConfirmed?: Types.Devlink.RuntimeProps;
-  isNotConfirmedActive?: Types.Visibility.VisibilityConditions;
   slotInterviewScreenCard?: Types.Devlink.Slot;
+  onClickCancel?: Types.Devlink.RuntimeProps;
+  onClickScheduling?: Types.Devlink.RuntimeProps;
+  isSchedulingActive?: Types.Visibility.VisibilityConditions;
+  isCancelActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

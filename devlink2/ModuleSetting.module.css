@@ -61,6 +61,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -161,10 +165,6 @@
   z-index: 2;
 }
 
-.text-first-cap {
-  text-transform: capitalize;
-}
-
 .fw-semibold.sticky_2 {
   position: sticky;
   top: 0px;
@@ -182,6 +182,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .icons {
@@ -205,6 +209,11 @@
 }
 
 .icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
   position: relative;
   z-index: 1;
 }

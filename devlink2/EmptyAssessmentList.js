@@ -39,7 +39,7 @@ export function EmptyAssessmentList({
             className={_utils.cx(_styles, "text-blue-500")}
             tag="div"
           >
-            {"Browse Assessments"}
+            {"Browse Your Assessments"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
