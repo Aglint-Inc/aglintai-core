@@ -2,30 +2,24 @@ import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 
 import {
-  InterviewModuleApiType,
-  InterviewPlanScheduleDbType,
-} from '@/src/components/JobInterviewPlan/types';
-
-import {
-  calcIntervCombsForModule,
-  ModuleCombination,
-} from './calcIntervCombsForModule';
+  InterviewSessionApiType,
+  PlanCombinationType,
+} from '../scheduling_v1/types';
+import { calcIntervCombsForModule } from './calcIntervCombsForModule';
 import { findCommonTimeRange } from './findCommonTimeRange';
 import { InterDetailsType, IntervCntApp, TimeDurationType } from './types';
 
 export const findPlanCombinations = (
-  interview_plan: InterviewModuleApiType[],
+  interview_plan: InterviewSessionApiType[],
   interv_free_time: InterDetailsType[],
 ) => {
   const cached_free_time = new Map<string, TimeDurationType[]>();
-  let all_schedule_combs: InterviewPlanScheduleDbType[] = [];
+  let all_schedule_combs: PlanCombinationType[] = [];
 
-  const module_combs = calcIntervCombsForModule(
-    interview_plan.filter((item) => !item.isBreak),
-  );
+  const module_combs = calcIntervCombsForModule(interview_plan);
 
   const explore_module_combs = (
-    current_comb: ModuleCombination[],
+    current_comb: InterviewSessionApiType[],
     module_idx,
   ) => {
     if (module_idx === module_combs.length) {
@@ -42,27 +36,30 @@ export const findPlanCombinations = (
   };
 
   // given one combination of plan find all possible times for that plan
-  const calcMeetingCombinsForPlan = (plan_comb: ModuleCombination[]) => {
-    const schedule_combs: InterviewPlanScheduleDbType[] = [];
-    const getInterviewersCommonTime = (curr_module: ModuleCombination) => {
+  const calcMeetingCombinsForPlan = (plan_comb: InterviewSessionApiType[]) => {
+    const schedule_combs: PlanCombinationType[] = [];
+    const getInterviewersCommonTime = (
+      curr_session: InterviewSessionApiType,
+    ) => {
       const all_int_attendees = [
-        ...curr_module.selectedIntervs,
-        ...curr_module.shadowIntervs,
-        ...curr_module.revShadowIntervs,
+        ...curr_session.selectedIntervs,
+        ...curr_session.shadowIntervs,
+        ...curr_session.revShadowIntervs,
       ];
       let map_key: string[] = [
-        curr_module.module_id,
-        ...all_int_attendees.map((s) => s.interv_id),
+        curr_session.session_id,
+        ...all_int_attendees.map((s) => s.user_id),
       ];
       map_key = map_key.sort();
       if (cached_free_time.has(map_key.join('_'))) {
         return cached_free_time.get(map_key.join('_'));
       }
+
       const common_time_range = findCommonTimeRange(
         all_int_attendees.map((s) => ({
-          inter_id: s.interv_id,
+          inter_id: s.user_id,
           time_ranges: interv_free_time.find(
-            (i) => i.interviewer_id === s.interv_id,
+            (i) => i.interviewer_id === s.user_id,
           ).freeTimes,
           interviewer_pause: s.pause_json,
         })),
@@ -71,55 +68,27 @@ export const findPlanCombinations = (
       return common_time_range;
     };
 
-    const getMeetingBreakDuration = (module_id) => {
-      let mod_idx = interview_plan.findIndex((m) => m.module_id === module_id);
-      if (
-        mod_idx > 0 &&
-        mod_idx <= interview_plan.length &&
-        interview_plan[Number(mod_idx - 1)].isBreak
-      ) {
-        return interview_plan[Number(mod_idx - 1)].duration;
-      }
-      return 0;
-    };
-
     const findIsModuleAvailable = (
       module_idx: number,
       prev_time_range: TimeDurationType,
-      shedule_comb: InterviewPlanScheduleDbType,
+      shedule_comb: PlanCombinationType,
     ) => {
       if (module_idx === plan_comb.length) {
         return true;
       }
-      const module_comb = plan_comb[Number(module_idx)];
-      const break_duration = getMeetingBreakDuration(module_comb.module_id);
-      if (break_duration > 0) {
-        shedule_comb.plans.push({
-          isBreak: true,
-          duration: break_duration,
-          start_time: prev_time_range.endTime,
-          end_time: dayjs(prev_time_range.endTime)
-            .add(break_duration, 'minutes')
-            .toISOString(),
-          module_id: '',
-          module_name: '',
-          revShadowIntervs: [],
-          session_name: '',
-          shadowIntervs: [],
-          selectedIntervs: [],
-          meeting_type: null,
-        });
-      }
+      const plan_session = plan_comb[Number(module_idx)];
+      const break_duration = plan_session.break_duration;
+
       let required_time: TimeDurationType = {
         startTime: dayjs(prev_time_range.endTime)
           .add(break_duration, 'minutes')
           .toISOString(),
         endTime: dayjs(prev_time_range.endTime)
-          .add(module_comb.duration + break_duration, 'minutes')
+          .add(plan_session.duration + break_duration, 'minutes')
           .toISOString(),
       };
 
-      const common_time = getInterviewersCommonTime(module_comb);
+      const common_time = getInterviewersCommonTime(plan_session);
 
       for (let free_time of common_time) {
         if (
@@ -127,18 +96,10 @@ export const findPlanCombinations = (
             dayjs(required_time.startTime).unix() &&
           dayjs(free_time.endTime).unix() >= dayjs(required_time.endTime).unix()
         ) {
-          shedule_comb.plans.push({
-            module_id: module_comb.module_id,
-            isBreak: false,
+          shedule_comb.sessions.push({
+            ...plan_session,
             start_time: required_time.startTime,
             end_time: required_time.endTime,
-            selectedIntervs: module_comb.selectedIntervs,
-            duration: module_comb.duration,
-            module_name: module_comb.module_name,
-            session_name: module_comb.session_name,
-            revShadowIntervs: module_comb.revShadowIntervs,
-            shadowIntervs: module_comb.shadowIntervs,
-            meeting_type: module_comb.meeting_type,
           });
           return findIsModuleAvailable(
             module_idx + 1,
@@ -162,7 +123,7 @@ export const findPlanCombinations = (
           ...mod.revShadowIntervs,
         ];
         for (const int of all_ints) {
-          let int_cnt = mp.get(int.interv_id);
+          let int_cnt = mp.get(int.user_id);
           if (int_cnt) {
             int_cnt.meet_cnt += 1;
             int_cnt.dur_cnt += mod.duration;
@@ -171,7 +132,7 @@ export const findPlanCombinations = (
               meet_cnt: 1,
               dur_cnt: mod.duration,
             };
-            mp.set(int.interv_id, int_cnt);
+            mp.set(int.user_id, int_cnt);
           }
         }
       }
@@ -193,13 +154,13 @@ export const findPlanCombinations = (
 
     // check for load balance setting
     if (!isPlanPossible()) return schedule_combs;
-    const first_meeting = plan_comb[0];
-    const first_mod_comon_time = getInterviewersCommonTime(first_meeting);
+    const first_session = plan_comb[0];
+    const first_mod_comon_time = getInterviewersCommonTime(first_session);
     for (let time_range of first_mod_comon_time) {
       const curr_time_range: TimeDurationType = {
         startTime: time_range.startTime,
         endTime: dayjs(time_range.startTime)
-          .add(first_meeting.duration, 'minutes')
+          .add(first_session.duration, 'minutes')
           .toISOString(),
       };
 
@@ -209,26 +170,19 @@ export const findPlanCombinations = (
         dayjs(curr_time_range.endTime).unix() <=
           dayjs(time_range.endTime).unix()
       ) {
-        let schedule_plan: InterviewPlanScheduleDbType = {
-          id: nanoid(),
-          plans: [
+        let plan_comb: PlanCombinationType = {
+          plan_comb_id: nanoid(),
+          sessions: [
             {
-              module_id: first_meeting.module_id,
-              isBreak: false,
-              selectedIntervs: first_meeting.selectedIntervs,
-              duration: first_meeting.duration,
+              ...first_session,
               start_time: curr_time_range.startTime,
               end_time: curr_time_range.endTime,
-              module_name: first_meeting.module_name,
-              session_name: first_meeting.session_name,
-              revShadowIntervs: first_meeting.revShadowIntervs,
-              shadowIntervs: first_meeting.shadowIntervs,
-              meeting_type: first_meeting.meeting_type,
             },
           ],
         };
-        if (findIsModuleAvailable(1, curr_time_range, schedule_plan)) {
-          schedule_combs.push(schedule_plan);
+
+        if (findIsModuleAvailable(1, curr_time_range, plan_comb)) {
+          schedule_combs.push(plan_comb);
         }
 
         curr_time_range.startTime = dayjs(curr_time_range.startTime)
@@ -242,6 +196,5 @@ export const findPlanCombinations = (
     return schedule_combs;
   };
   explore_module_combs([], 0);
-
   return all_schedule_combs;
 };

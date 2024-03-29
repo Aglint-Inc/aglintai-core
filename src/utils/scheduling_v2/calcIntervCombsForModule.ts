@@ -1,62 +1,37 @@
-import { InterviewModuleApiType } from '@/src/components/JobInterviewPlan/types';
+import { InterviewSessionApiType } from '../scheduling_v1/types';
 
-export type ModuleCombination = Pick<
-  InterviewModuleApiType,
-  | 'module_id'
-  | 'duration'
-  | 'meetingIntervCnt'
-  | 'module_name'
-  | 'session_name'
-  | 'selectedIntervs'
-  | 'revShadowIntervs'
-  | 'shadowIntervs'
-  | 'meeting_type'
->;
-export const calcIntervCombsForModule = (plan: InterviewModuleApiType[]) => {
+export const calcIntervCombsForModule = (
+  sessions: InterviewSessionApiType[],
+) => {
   const calcSingleModuleCombinations = (
-    plan_module: InterviewModuleApiType,
+    session: InterviewSessionApiType,
     comb: number,
   ) => {
-    let module_combs: ModuleCombination[] = [];
+    let session_combs: InterviewSessionApiType[] = [];
     const combs = findCombinationOfStrings(
-      [...plan_module.selectedIntervs.map((int) => int.interv_id)],
+      [...session.selectedIntervs.map((int) => int.user_id)],
       comb,
     );
     for (let comb of combs) {
-      module_combs.push({
+      session_combs.push({
+        ...session,
         selectedIntervs: comb.map((id) => {
-          const inter = plan_module.selectedIntervs.find(
-            (i) => i.interv_id === id,
-          );
+          const inter = session.selectedIntervs.find((i) => i.user_id === id);
           return {
-            interv_id: inter.interv_id,
-            email: inter.email,
-            profile_img: inter.profile_img,
-            name: inter.name,
-            pause_json: inter.pause_json,
+            ...inter,
           };
         }),
-        duration: plan_module.duration,
-        meetingIntervCnt: plan_module.meetingIntervCnt,
-        module_id: plan_module.module_id,
-        module_name: plan_module.module_name,
-        session_name: plan_module.session_name,
-        revShadowIntervs: plan_module.revShadowIntervs,
-        shadowIntervs: plan_module.shadowIntervs,
-        meeting_type: plan_module.meeting_type,
       });
     }
-    return module_combs;
+    return session_combs;
   };
 
-  let total_combs: ModuleCombination[][] = [];
+  let total_combs: InterviewSessionApiType[][] = [];
 
-  for (const int_module of plan) {
-    if (int_module.isBreak) continue;
-    // module level filter settings
+  for (const session of sessions) {
     const combs = calcSingleModuleCombinations(
-      int_module,
-      int_module.meetingIntervCnt,
+      session,
+      session.interviewer_cnt,
     );
     total_combs.push(combs);
   }
@@ -90,5 +65,3 @@ const findCombinationOfStrings = (str_arr: string[], comb: number) => {
 
   return total_combs;
 };
-
-// given  array of items, find all the combinations of picking each item in in arry item

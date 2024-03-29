@@ -242,3 +242,9 @@ export type ScheduleAgentChatHistoryTypeDB =
 
 export type employmentTypeEnum =
   Database['public']['Enums']['employment_type_enum'];
+
+export type InterviewSession =
+  Database['public']['Tables']['interview_session']['Row'];
+
+export type InterviewerSessionRelation =
+  Database['public']['Tables']['interview_session_relation']['Row'];
