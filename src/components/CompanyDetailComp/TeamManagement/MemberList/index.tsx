@@ -35,7 +35,7 @@ const Member = ({
     setOpenForDelete(false);
     setOpenForCancel(false);
   }
-  if (member.join_status !== 'invited') {
+  if (member.join_status === 'joined') {
     const diffTime = Math.abs(
       (new Date() as unknown as number) -
         (new Date(member.last_login) as unknown as number),
