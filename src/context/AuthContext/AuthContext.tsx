@@ -97,30 +97,6 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [members, setMembers] = useState<RecruiterUserType[]>([]);
 
-  useEffect(() => {
-    Promise.all([getSupabaseSession(), fetchUserLocation()]);
-  }, []);
-
-  useEffect(() => {
-    if (router.isReady) {
-      const redirect = window.location.href;
-      if (isRoutePublic(router.route)) return;
-      else if (!loading && !userDetails?.user)
-        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
-    }
-  }, [router.isReady, loading]);
-
-  useEffect(() => {
-    if (router.isReady && userDetails?.user) {
-      const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
-      if (feature && !posthog.isFeatureEnabled(feature)) {
-        // eslint-disable-next-line no-console
-        console.log('Feature not enabled');
-        router.push(pageRoutes.JOBS);
-      }
-    }
-  }, [router.pathname, userDetails]);
-
   const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
     const { data, error } = await supabase
       .from('recruiter_relation')
@@ -292,6 +268,7 @@ const AuthProvider = ({ children }) => {
     }
     return false;
   };
+
   const allowAction: ContextValue['allowAction'] = <
     T extends Function | ReactNode,
   >(
@@ -309,6 +286,31 @@ const AuthProvider = ({ children }) => {
     // Return an empty fragment if func is a React node
     return (<></>) as T;
   };
+
+    useEffect(() => {
+      Promise.all([getSupabaseSession(), fetchUserLocation()]);
+    }, []);
+
+    useEffect(() => {
+      if (router.isReady) {
+        const redirect = window.location.href;
+        if (isRoutePublic(router.route)) return;
+        else if (!loading && !userDetails?.user)
+          router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+      }
+    }, [router.isReady, loading]);
+
+    useEffect(() => {
+      if (router.isReady && userDetails?.user) {
+        const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
+        if (feature && !posthog.isFeatureEnabled(feature)) {
+          // eslint-disable-next-line no-console
+          console.log('Feature not enabled');
+          router.push(pageRoutes.JOBS);
+        }
+      }
+    }, [router.pathname, userDetails]);
+
 
   return (
     <AuthContext.Provider

@@ -14,7 +14,12 @@ export function BasicInfo({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "rd-company-primary-info-2", "width-420")}
+      className={_utils.cx(
+        _styles,
+        "rd-company-primary-info-2",
+        "width-420",
+        "pl-20"
+      )}
       tag="div"
     >
       <_Builtin.Block tag="div">

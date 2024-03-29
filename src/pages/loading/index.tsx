@@ -152,6 +152,14 @@ export default function Loading() {
               if (error) {
                 throw error;
               }
+              // last login time stamp Update
+              const temp_time = new Date().toISOString();
+              supabase
+                .from('recruiter_user')
+                .update({ last_login: temp_time })
+                .eq('user_id', userDetails.user.id)
+                .then(() => {});
+              //last login END
               if (data[0].role === 'interviewer') {
                 router.push(
                   localStorage.getItem('redirectURL') ||

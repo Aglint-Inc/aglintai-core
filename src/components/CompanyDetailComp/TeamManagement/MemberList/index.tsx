@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import { TeamListItem } from '@/devlink';
@@ -34,6 +35,14 @@ const Member = ({
     setOpenForDelete(false);
     setOpenForCancel(false);
   }
+  if (member.join_status !== 'invited') {
+    const diffTime = Math.abs(
+      (new Date() as unknown as number) -
+        (new Date(member.last_login) as unknown as number),
+    );
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+    member.join_status = diffDays <= 1 ? 'Active' : 'Not Active';
+  }
 
   return (
     <>
@@ -46,6 +55,7 @@ const Member = ({
       <TeamListItem
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
+        textLocation={member.interview_location}
         onClickEditInvite={{ onClick: editMember }}
         isDeleteVisible={
           member.role === 'admin' || member.join_status === 'invited'
@@ -91,7 +101,7 @@ const Member = ({
                   color: palette.green[800],
                 },
         }}
-        userStatusText={<Stack>{capitalizeAll(member.join_status)}</Stack>}
+        userStatusText={<Stack>{capitalize(member.join_status)}</Stack>}
         onClickRemove={{
           onClick: () => {
             setOpenForDelete(true);

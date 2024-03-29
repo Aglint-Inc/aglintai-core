@@ -7,6 +7,10 @@
   grid-row-gap: 64px;
 }
 
+.cb-assisstant-settings-wrapper.pl-20 {
+  padding-left: 20px;
+}
+
 .cb-as-main {
   display: flex;
   flex-direction: column;
@@ -273,6 +277,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .cb-as-main-wrapper {
   display: flex;
   margin-top: 20px;
@@ -347,6 +355,10 @@
 }
 
 .text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
+.mt-9 {
   margin-top: 9px;
 }
 

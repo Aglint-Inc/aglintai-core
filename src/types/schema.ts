@@ -2095,6 +2095,7 @@ export type Database = {
           interview_location: string | null
           join_status: string
           joined_at: string | null
+          last_login: string
           last_name: string | null
           phone: string | null
           position: string | null
@@ -2118,6 +2119,7 @@ export type Database = {
           interview_location?: string | null
           join_status?: string
           joined_at?: string | null
+          last_login?: string
           last_name?: string | null
           phone?: string | null
           position?: string | null
@@ -2141,6 +2143,7 @@ export type Database = {
           interview_location?: string | null
           join_status?: string
           joined_at?: string | null
+          last_login?: string
           last_name?: string | null
           phone?: string | null
           position?: string | null
