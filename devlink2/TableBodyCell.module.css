@@ -164,5 +164,28 @@
   width: 40%;
 }
 
+.text_md_line._70 {
+  width: 70%;
+}
+
+.blue-200 {
+  background-color: hsla(206.66666666666666, 58.06%, 87.84%, 1.00);
+}
+
+.div-block-1020 {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.text_md_line._20 {
+  width: 20%;
+}
+
 #w-node-c52da277-c925-7ed6-541f-cd820280171c-0280171c {
 }

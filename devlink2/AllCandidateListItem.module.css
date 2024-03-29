@@ -10,6 +10,7 @@
   position: sticky;
   top: 0px;
   z-index: 9;
+  flex: 0 0 auto;
   background-color: #f8f9f9;
 }
 
@@ -144,6 +145,7 @@
   padding-right: 0px;
   padding-left: 0px;
   align-items: center;
+  flex: 0 0 auto;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
@@ -182,6 +184,20 @@
   overflow: visible;
 }
 
+.cv-list-column.name.overflow-visible.width-100 {
+  width: 100%;
+  min-width: 100%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.cv-list-column.name.width-100 {
+  width: 100%;
+  min-width: 100%;
+}
+
 .cv-list-column.assessment {
   width: 220px;
   min-width: 220px;
@@ -189,9 +205,19 @@
   grid-row-gap: 12px;
 }
 
+.cv-list-column.assessment.width-100 {
+  width: 100%;
+  min-width: 100%;
+}
+
 .cv-list-column.job {
   width: 280px;
   min-width: 280px;
+}
+
+.cv-list-column.job.width-100 {
+  width: 100%;
+  min-width: 100%;
 }
 
 .cv-list-column.experience {
@@ -206,9 +232,19 @@
   text-align: right;
 }
 
+.cv-list-column.date.width-100 {
+  width: 100%;
+  min-width: 100%;
+}
+
 .cv-list-column.location {
   width: 230px;
   min-width: 230px;
+}
+
+.cv-list-column.location.width-100 {
+  width: 100%;
+  min-width: 100%;
 }
 
 .cv-list-column.resume {
@@ -221,6 +257,11 @@
 
 .cv-list-column.resume.overflow-visible:hover {
   overflow: visible;
+}
+
+.cv-list-column.resume.width-100 {
+  width: 100%;
+  min-width: 100%;
 }
 
 .cv-list-column.analysis {
@@ -257,11 +298,21 @@
   min-width: 220px;
 }
 
+.cv-list-column.screening.width-100 {
+  width: 100%;
+  min-width: 100%;
+}
+
 .cv-list-column.disqualified {
   width: 220px;
   min-width: 220px;
   grid-column-gap: 12px;
   grid-row-gap: 12px;
+}
+
+.cv-list-column.disqualified.width-100 {
+  width: 100%;
+  min-width: 100%;
 }
 
 .cv-list-checkbox {
@@ -379,6 +430,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -487,6 +542,19 @@
 
 .relative {
   position: relative;
+}
+
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
 }
 
 .text-titlecase {

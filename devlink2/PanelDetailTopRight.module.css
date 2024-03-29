@@ -51,6 +51,10 @@
   z-index: 3;
 }
 
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
 .menu_more {
   display: flex;
   width: 32px;

@@ -65,6 +65,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -163,10 +167,6 @@
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
-}
-
-.text-first-cap {
-  text-transform: capitalize;
 }
 
 .fw-semibold.sticky_2 {

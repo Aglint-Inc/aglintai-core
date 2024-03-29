@@ -48,3 +48,7 @@
   position: relative;
   z-index: 3;
 }
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}

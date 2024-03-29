@@ -29,6 +29,10 @@
   z-index: 3;
 }
 
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -63,4 +67,18 @@
 
 .text-gray-600.maxwidth-custom {
   max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
 }

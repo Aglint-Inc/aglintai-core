@@ -226,6 +226,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .icons.ml--6 {
   margin-left: -6px;
 }

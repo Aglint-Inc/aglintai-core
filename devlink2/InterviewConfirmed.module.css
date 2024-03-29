@@ -8,6 +8,8 @@
 }
 
 .invitation-link-wrap.flex-none {
+  position: relative;
+
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;
@@ -90,6 +92,11 @@
   z-index: 1;
 }
 
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -104,6 +111,17 @@
 @media screen and (max-width: 767px) {
   .text-lg {
     font-size: 16px;
+  }
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
   }
 }
 
@@ -307,7 +325,7 @@
 
 .div-block-1203 {
   display: flex;
-  width: 380px;
+  width: 260px;
   margin-right: auto;
   margin-left: auto;
   flex-direction: column;

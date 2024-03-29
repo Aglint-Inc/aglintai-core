@@ -67,6 +67,10 @@
   color: var(--gray-400);
 }
 
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .fw-semibold.z-index-5 {
   position: relative;
   z-index: 5;
@@ -177,7 +181,25 @@
   position: relative;
 }
 
+.text-red-600 {
+  color: hsla(354.90196078431376, 60.00%, 50.00%, 1.00);
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.fw-semibold.text-width-100 {
+  width: 100px;
+}
+
 .text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
   position: relative;
   z-index: 1;
 }
@@ -232,6 +254,10 @@
 .embed_flex.relative_3 {
   position: relative;
   z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
 }
 
 #w-node-_40c5256d-4659-c0c1-dc54-95a455fc1442-55fc1442 {
