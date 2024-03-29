@@ -149,7 +149,15 @@ function Scheduling() {
 
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
+    accept: {
+      'application/json': ['.json'],
+    },
     onDrop: (acceptedFiles) => {
+      if (acceptedFiles.length < 1) {
+        toast.warning('Please provide correct file format!');
+        return null;
+      }
+
       const file = acceptedFiles.map((file) => Object.assign(file))[0];
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
