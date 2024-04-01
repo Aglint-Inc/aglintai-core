@@ -7,16 +7,12 @@ import {
   JobApplcationDB,
 } from '@/src/types/data.types';
 
-import {
-  InterviewModuleDbType,
-  InterviewPlanScheduleDbType,
-} from '../../JobInterviewPlan/types';
+import { InterviewModuleDbType } from '../../JobInterviewPlan/types';
 
 export interface InterviewSlice {
   filter: {
-    status?: (InterviewScheduleTypeDB['status'] | 'not scheduled')[];
+    status?: ('not scheduled' | 'ongoing' | 'completed')[];
     job_ids?: string[];
-    scheduleType?: InterviewScheduleTypeDB['schedule_type'][];
     panel_ids?: string[];
     dateRange?: string;
     duration?: number;
@@ -52,11 +48,10 @@ export enum FilterType {
 const initialState: InterviewSlice = {
   filter: {
     textSearch: '',
-    status: ['not scheduled', 'confirmed', 'pending', 'cancelled'],
+    status: ['not scheduled', 'ongoing', 'completed'],
     sortBy: 'asc',
     job_ids: [],
     panel_ids: [],
-    scheduleType: [],
     dateRange: null,
     coordinator_ids: [],
   },
@@ -107,12 +102,7 @@ export const resetInterviewState = () =>
 export type ApplicationList = {
   applications: JobApplcationDB;
   candidates: CandidateType;
-  schedule:
-    | (Omit<InterviewScheduleTypeDB, 'interview_plan' | 'confirmed_option'> & {
-        confirmed_option: InterviewPlanScheduleDbType;
-        interview_plan: InterviewModuleDbType[];
-      })
-    | null;
+  schedule: InterviewScheduleTypeDB | null;
   public_jobs: {
     id: string;
     job_title: string;

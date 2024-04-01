@@ -104,17 +104,6 @@ export function AllInterview({
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Type"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
                 className={_utils.cx(
                   _styles,
                   "allinterview_header_cell",

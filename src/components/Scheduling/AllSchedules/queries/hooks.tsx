@@ -30,14 +30,10 @@ const fetchInterviewData = async ({
   getPagination({ rec_id, filter });
   const { data: appNew, error } = await supabase.rpc('fetch_interview_data', {
     rec_id: rec_id,
-    status_filter: filter.status.length > 0 ? filter.status : null,
     text_search_filter: filter.textSearch,
-    sch_type: filter.scheduleType.length > 0 ? filter.scheduleType : null,
     sort_by: filter.sortBy,
     job_id_filter: filter.job_ids.length > 0 ? filter.job_ids : null,
     page_number: page,
-    date_range_filter: filter.dateRange ? filter.dateRange : null,
-    module_id_filter: filter.panel_ids?.length > 0 ? filter.panel_ids : null,
     cord_ids:
       filter.coordinator_ids?.length > 0 ? filter.coordinator_ids : null,
   });

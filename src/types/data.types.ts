@@ -240,5 +240,14 @@ export type IntegrationType =
 export type ScheduleAgentChatHistoryTypeDB =
   Database['public']['Tables']['scheduling-agent-chat-history']['Row'];
 
+export type InterviewPlanTypeDB =
+  Database['public']['Tables']['interview_plan']['Row'];
+
+export type InterviewSessionTypeDB =
+  Database['public']['Tables']['interview_session']['Row'];
+
+export type InterviewSessionRelationTypeDB =
+  Database['public']['Tables']['interview_session_relation']['Row'];
+
 export type employmentTypeEnum =
   Database['public']['Enums']['employment_type_enum'];

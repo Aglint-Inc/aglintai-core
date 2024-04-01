@@ -12,4 +12,15 @@ declare function ScheduleOptions(props: {
   isNoOptionsFoundVisible?: Types.Visibility.VisibilityConditions;
   slotButtonLeft?: Types.Devlink.Slot;
   slotButtonRight?: Types.Devlink.Slot;
+  textDuration?: React.ReactNode;
+  textPlatformName?: React.ReactNode;
+  slotPlatformIcon?: Types.Devlink.Slot;
+  textSessionName?: React.ReactNode;
+  onClickClose?: Types.Devlink.RuntimeProps;
+  textPopHeader?: React.ReactNode;
+  isBasicDetailsVisible?: Types.Visibility.VisibilityConditions;
+  slotAvailableOptionsDate?: Types.Devlink.Slot;
+  isMultipleOptionVisible?: Types.Visibility.VisibilityConditions;
+  slotSendtoCandidateButton?: Types.Devlink.Slot;
+  slotAvailableCard?: Types.Devlink.Slot;
 }): React.JSX.Element;

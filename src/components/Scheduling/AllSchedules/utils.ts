@@ -3,6 +3,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
@@ -82,11 +83,12 @@ const TYPE_LABELS = {
   google_meet: 'Google Meet',
   in_person_meeting: 'In Person Meeting',
   phone_call: 'Phone Call',
+  zoom: 'Zoom',
 };
 
 export const getScheduleType = (
-  schedule_type: InterviewScheduleTypeDB['schedule_type'],
-) => TYPE_LABELS[schedule_type] || 'Zoom';
+  schedule_type: Database['public']['Enums']['interview_schedule_type'],
+) => TYPE_LABELS[schedule_type] || 'Google Meet';
 
 export function convertNumberToWord(number) {
   const units = [

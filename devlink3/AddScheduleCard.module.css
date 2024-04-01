@@ -1,0 +1,43 @@
+.div-block-1324 {
+  position: relative;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-block-1325 {
+  width: 100%;
+  height: 2px;
+  background-color: #5293c7;
+}
+
+.div-block-1326 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
