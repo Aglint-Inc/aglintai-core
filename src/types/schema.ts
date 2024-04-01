@@ -985,29 +985,6 @@ export type Database = {
         }
         Relationships: []
       }
-      interview_availabilties: {
-        Row: {
-          slot_availability: Json[] | null
-          user_id: string
-        }
-        Insert: {
-          slot_availability?: Json[] | null
-          user_id: string
-        }
-        Update: {
-          slot_availability?: Json[] | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "interview_availabilties_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
-        ]
-      }
       interview_meeting: {
         Row: {
           break_time: number

@@ -1,10 +1,13 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'next/router';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
-import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { BodyParams } from '@/src/pages/api/scheduling/v2/find_availability';
+import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -35,11 +38,11 @@ import { getApplicationSchedule, SelectedApplicationTypeDB } from './types';
 
 export const useGetScheduleOptions = () => {
   const findScheduleOptions = async ({
-    selectedApplication,
+    session_ids,
     rec_id,
     dateRange,
   }: {
-    selectedApplication: ApplicationList;
+    session_ids: string[];
     rec_id: string;
     dateRange: {
       start_date: string;
@@ -47,10 +50,9 @@ export const useGetScheduleOptions = () => {
     };
   }) => {
     try {
-      setFetchingPlan(true);
-      const res = await axios.post('/api/scheduling/v2/find_availability', {
-        job_id: selectedApplication.public_jobs.id,
-        company_id: rec_id,
+      const res = await axios.post('/api/scheduling/v1/find_availability', {
+        session_ids: session_ids,
+        recruiter_id: rec_id,
         start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
@@ -68,7 +70,7 @@ export const useGetScheduleOptions = () => {
         toast.error('Error fetching schedule options');
       }
     } catch (e) {
-      toast.error('Error fetching schedule options');
+      toast.error(e.message);
       setStep(1);
       //
     } finally {
@@ -93,33 +95,30 @@ export const useSendInviteForCandidate = () => {
   );
 
   const sendToCandidate = async ({
-    allPlans,
+    session_ids,
     is_get_more_option,
   }: {
-    allPlans: InterviewModuleDbType[];
+    session_ids: string[];
     is_get_more_option: boolean;
   }) => {
     try {
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
         .select('id,status')
-        .eq('application_id', selectedApplication.applications.id);
+        .eq('application_id', selectedApplication.id);
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
-      if (checkSch.length === 0 || checkSch[0].status !== 'reschedule') {
+      if (checkSch.length === 0) {
         const { data, error } = await supabase
           .from('interview_schedule')
           .insert({
             is_get_more_option: is_get_more_option,
-            application_id: selectedApplication.applications.id,
+            application_id: selectedApplication.id,
             schedule_name: scheduleName,
-            schedule_type: 'google_meet',
-            interview_plan: allPlans,
-            status: 'pending',
             filter_json: {
-              job_id: selectedApplication.public_jobs.id,
-              company_id: recruiter.id,
+              session_ids: session_ids,
+              recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
@@ -128,41 +127,6 @@ export const useSendInviteForCandidate = () => {
           })
           .select();
 
-        if (!error) {
-          mailHandler({
-            rec_id: recruiter.id,
-            candidate_name: selectedApplication.candidates.first_name,
-            mail: selectedApplication.candidates.email,
-            position: selectedApplication.public_jobs.job_title,
-            schedule_name: scheduleName,
-            schedule_id: data[0].id,
-          });
-          setSelectedApplication({
-            ...selectedApplication,
-            schedule: data[0] as any,
-          });
-        }
-      } else if (checkSch[0].status === 'reschedule') {
-        const { data, error } = await supabase
-          .from('interview_schedule')
-          .update({
-            is_get_more_option: is_get_more_option,
-            application_id: selectedApplication.applications.id,
-            schedule_name: scheduleName,
-            schedule_type: 'google_meet',
-            interview_plan: allPlans,
-            status: 'pending',
-            filter_json: {
-              job_id: selectedApplication.public_jobs.id,
-              company_id: recruiter.id,
-              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-              user_tz: dayjs.tz.guess(),
-            } as BodyParams,
-            coordinator_id: selCoordinator,
-          })
-          .eq('id', checkSch[0].id)
-          .select();
         if (!error) {
           mailHandler({
             rec_id: recruiter.id,

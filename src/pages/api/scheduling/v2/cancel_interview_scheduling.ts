@@ -37,14 +37,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     });
     await Promise.all(promises);
-    supabaseWrap(
-      await supabaseAdmin
-        .from('interview_schedule')
-        .update({
-          status: 'cancelled',
-        })
-        .eq('id', schedule_id),
-    );
+    // supabaseWrap(
+    //   await supabaseAdmin
+    //     .from('interview_schedule')
+    //     .update({
+    //       status: 'cancelled',
+    //     })
+    //     .eq('id', schedule_id),
+    // );
     let status: SchedulingProgressStatusType = 'cancelled';
     supabaseWrap(
       await supabaseAdmin

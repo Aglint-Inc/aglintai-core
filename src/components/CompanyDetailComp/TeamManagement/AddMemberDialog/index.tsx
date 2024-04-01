@@ -10,7 +10,6 @@ import {
   TeamPendingInvites,
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
-import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -20,6 +19,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { inviteUserApi, reinviteUser } from '../utils';
 export type interviewLocationType = {
   city: string;
@@ -98,7 +98,7 @@ const AddMember = ({
   });
 
   const [isDisable, setIsDisable] = useState(false);
-  const [isResendDisable, setResendDisable] = useState(false);
+  const [isResendDisable, setResendDisable] = useState<string>(null);
   const [isInviteCardVisible, setInviteCardVisible] = useState(false);
 
   const checkValidation = () => {
@@ -198,6 +198,7 @@ const AddMember = ({
               isFixedButtonVisible
               slotPrimaryButton={
                 <ButtonPrimaryRegular
+                  isDisabled={!inviteData?.length}
                   textLabel={'Done'}
                   onClickButton={{
                     onClick: () => {
@@ -239,9 +240,10 @@ const AddMember = ({
                 );
               })}
               slotForm={
-                <Stack spacing={2}>
+                <Stack spacing={2} component={'form'} autoComplete='on'>
                   <TextField
                     value={form.first_name ? form.first_name : ''}
+                    name='first_name'
                     placeholder='First Name'
                     error={formError.first_name}
                     onFocus={() => {
@@ -253,6 +255,7 @@ const AddMember = ({
                   />
                   <TextField
                     value={form.last_name ? form.last_name : ''}
+                    name='last_name'
                     placeholder='Last Name'
                     onChange={(e) => {
                       setForm({ ...form, last_name: e.target.value });
@@ -260,6 +263,7 @@ const AddMember = ({
                   />
                   <TextField
                     value={form.email ? form.email : ''}
+                    name='email'
                     placeholder='Email'
                     error={formError.email}
                     onFocus={() => {
@@ -271,6 +275,7 @@ const AddMember = ({
                   />
                   <TextField
                     value={form.designation ? form.designation : ''}
+                    name='designation'
                     placeholder='Designation'
                     error={formError.designation}
                     onFocus={() => {
@@ -309,7 +314,7 @@ const AddMember = ({
                             employment: false,
                           });
                         }}
-                        name='Employment'
+                        name='employment'
                         placeholder='Employment'
                       />
                     )}
@@ -338,7 +343,7 @@ const AddMember = ({
                             interview_location: false,
                           });
                         }}
-                        name='Location'
+                        name='location'
                         placeholder='Location'
                       />
                     )}
@@ -362,7 +367,7 @@ const AddMember = ({
                         onFocus={() => {
                           setFormError({ ...formError, department: false });
                         }}
-                        name='Department'
+                        name='department'
                         placeholder='Department'
                       />
                     )}
@@ -433,7 +438,7 @@ const AddMember = ({
                 },
               }}
             />
-            {isDisable && <Loader />}
+            {isDisable && <DynamicLoader />}
           </>
         ) : menu === 'pendingMember' ? (
           <TeamPendingInvites
@@ -457,12 +462,13 @@ const AddMember = ({
                 }
                 slotButton={
                   <AUIButton
-                    disabled={isResendDisable}
+                    disabled={isResendDisable === member.user_id}
                     size='small'
                     onClick={() => {
-                      setResendDisable(true);
+                      setResendDisable(member.user_id);
                       reinviteUser(member.email, userDetails.user.id).then(
                         ({ error, emailSend }) => {
+                          setResendDisable(null);
                           if (!error && emailSend) {
                             return toast.success('Invite sent');
                           }

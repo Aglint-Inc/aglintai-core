@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { RadioButton } from '@/devlink';
 import { ButtonWide, ScheduleOptions } from '@/devlink2';
@@ -45,6 +45,7 @@ function GetScheduleOptionsDialog() {
     isScheduleNowOpen,
     initialSessions,
     step,
+    selectedSessionIds,
   } = useSchedulingApplicationStore((state) => ({
     selCoordinator: state.selCoordinator,
     dateRange: state.dateRange,
@@ -57,9 +58,11 @@ function GetScheduleOptionsDialog() {
     isScheduleNowOpen: state.isScheduleNowOpen,
     initialSessions: state.initialSessions,
     step: state.step,
+    selectedSessionIds: state.selectedSessionIds,
   }));
 
   const { findScheduleOptions } = useGetScheduleOptions();
+
   // const router = useRouter();
   // const { recruiter_id, recruiterUser } = useAuthDetails();
   // const [isloading, setLoading] = useState<boolean>(false);
@@ -73,6 +76,12 @@ function GetScheduleOptionsDialog() {
   // const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   // const [isEmail, setEmail] = useState(true);
   // const [isPhone, setPhone] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setIsScheduleNowOpen(false);
+    };
+  }, []);
 
   return (
     <>
@@ -96,32 +105,6 @@ function GetScheduleOptionsDialog() {
               setIsScheduleNowOpen(false);
             },
           }}
-          slotButtonRight={
-            <>
-              <ButtonPrimaryDefaultRegular
-                buttonProps={{
-                  onClick: async () => {
-                    if (dateRange.start_date && dateRange.end_date)
-                      await findScheduleOptions({
-                        dateRange: dateRange,
-                        selectedApplication: selectedApplication,
-                        rec_id: recruiter.id,
-                      });
-                  },
-                }}
-                endIconSlot={
-                  fetchingPlan ? (
-                    <Stack height={'100%'} width={'14px'}>
-                      <LoaderGrey />
-                    </Stack>
-                  ) : (
-                    ''
-                  )
-                }
-                buttonText={'Get Schedule Options'}
-              />
-            </>
-          }
           slotSendtoCandidateButton={
             <>
               <ButtonGrey />
@@ -144,12 +127,13 @@ function GetScheduleOptionsDialog() {
               <ButtonPrimaryDefaultRegular
                 buttonProps={{
                   onClick: async () => {
-                    if (dateRange.start_date && dateRange.end_date)
+                    if (dateRange.start_date && dateRange.end_date) {
                       await findScheduleOptions({
                         dateRange: dateRange,
-                        selectedApplication: selectedApplication,
+                        session_ids: selectedSessionIds,
                         rec_id: recruiter.id,
                       });
+                    }
                   },
                 }}
                 endIconSlot={

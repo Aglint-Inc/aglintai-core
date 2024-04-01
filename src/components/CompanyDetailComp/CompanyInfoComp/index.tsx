@@ -213,8 +213,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
               }}
               isAvailableRolesVisible={isJobMarketingEnabled}
               isSpecialistVisible={isJobMarketingEnabled}
+              slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
             />
-            <CompanyJdComp setIsSaving={setIsSaving} />
           </>
         )}
         {router.query?.tab === 'basic-info' && (

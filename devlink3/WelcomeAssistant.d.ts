@@ -7,4 +7,6 @@ declare function WelcomeAssistant(props: {
   onClickSourcing?: Types.Devlink.RuntimeProps;
   onClickScreening?: Types.Devlink.RuntimeProps;
   onClickJobAssistant?: Types.Devlink.RuntimeProps;
+  isSourcingVisible?: Types.Visibility.VisibilityConditions;
+  isScreeningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
