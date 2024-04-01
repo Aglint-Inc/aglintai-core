@@ -1,6 +1,5 @@
 import { Dialog } from '@mui/material';
 import axios from 'axios';
-import React from 'react';
 
 import { ConfirmationPopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
@@ -9,52 +8,43 @@ import toast from '@/src/utils/toast';
 import {
   setIsCancelOpen,
   setIsRescheduleOpen,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../../store';
 import {
-  setSelectedApplication,
+  setIsScheduleNowOpen,
+  setSelectedSessionIds,
   useSchedulingApplicationStore
 } from '../../store';
 
 function RescheduleDialog() {
   const isRescheduleOpen = useInterviewSchedulingStore(
-    (state) => state.isRescheduleOpen
+    (state) => state.isRescheduleOpen,
   );
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+  const selectedMeeting = useSchedulingApplicationStore(
+    (state) => state.selectedMeeting,
   );
 
   const onClickReschedule = async () => {
     try {
-      if (selectedApplication.schedule.id) {
+      if (selectedMeeting.id) {
         const { data, error } = await supabase
           .from('interview_meeting')
-          .update({ status: 'cancelled' })
-          .eq('interview_schedule_id', selectedApplication.schedule.id)
-          .select();
+          .select()
+          .eq('id', selectedMeeting.id);
 
         if (error) {
           throw new Error(error.message);
         }
-
-        await supabase
-          .from('interview_schedule')
-          .update({
-            status: 'reschedule'
-          })
-          .eq('id', selectedApplication.schedule.id);
         setIsCancelOpen(false);
-        setSelectedApplication({
-          ...selectedApplication,
-          schedule: { ...selectedApplication.schedule, status: 'reschedule' }
-        });
         setIsRescheduleOpen(false);
+        setSelectedSessionIds([selectedMeeting.session_id]);
+        setIsScheduleNowOpen(true);
 
         const allMeeting = data;
         allMeeting.forEach(async (meet) => {
           if (meet.meeting_json)
             axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json
+              calender_event: meet.meeting_json,
             });
         });
       }
@@ -69,8 +59,8 @@ function RescheduleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isRescheduleOpen}
       onClose={() => {
@@ -86,10 +76,10 @@ function RescheduleDialog() {
         onClickCancel={{
           onClick: () => {
             setIsRescheduleOpen(false);
-          }
+          },
         }}
         onClickAction={{
-          onClick: onClickReschedule
+          onClick: onClickReschedule,
         }}
         textPopupButton={'Confirm'}
       />

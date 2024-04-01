@@ -985,47 +985,70 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_filter_json: {
+        Row: {
+          created_at: string
+          filter_json: Json
+          id: string
+          schedule_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          filter_json: Json
+          id?: string
+          schedule_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          filter_json?: Json
+          id?: string
+          schedule_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_interview_filter_json_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_meeting: {
         Row: {
-          break_time: number
           created_at: string
-          duration: number
-          end_time: string
+          end_time: string | null
           id: string
           instructions: string | null
           interview_schedule_id: string
           meeting_json: Json | null
           meeting_link: string | null
           session_id: string | null
-          start_time: string
+          start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Insert: {
-          break_time?: number
           created_at?: string
-          duration: number
-          end_time: string
+          end_time?: string | null
           id?: string
           instructions?: string | null
           interview_schedule_id: string
           meeting_json?: Json | null
           meeting_link?: string | null
           session_id?: string | null
-          start_time: string
+          start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Update: {
-          break_time?: number
           created_at?: string
-          duration?: number
-          end_time?: string
+          end_time?: string | null
           id?: string
           instructions?: string | null
           interview_schedule_id?: string
           meeting_json?: Json | null
           meeting_link?: string | null
           session_id?: string | null
-          start_time?: string
+          start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Relationships: [
@@ -1210,8 +1233,8 @@ export type Database = {
           coordinator_id: string | null
           created_at: string
           created_by: string
-          filter_json: Json | null
           id: string
+          is_completed: boolean
           is_get_more_option: boolean
           schedule_name: string
         }
@@ -1221,8 +1244,8 @@ export type Database = {
           coordinator_id?: string | null
           created_at?: string
           created_by?: string
-          filter_json?: Json | null
           id?: string
+          is_completed?: boolean
           is_get_more_option?: boolean
           schedule_name: string
         }
@@ -1232,8 +1255,8 @@ export type Database = {
           coordinator_id?: string | null
           created_at?: string
           created_by?: string
-          filter_json?: Json | null
           id?: string
+          is_completed?: boolean
           is_get_more_option?: boolean
           schedule_name?: string
         }
@@ -1266,7 +1289,7 @@ export type Database = {
           break_duration: number | null
           created_at: string
           id: string
-          interview_plan_id: string
+          interview_plan_id: string | null
           interviewer_cnt: number | null
           location: string | null
           module_id: string | null
@@ -1280,7 +1303,7 @@ export type Database = {
           break_duration?: number | null
           created_at?: string
           id?: string
-          interview_plan_id: string
+          interview_plan_id?: string | null
           interviewer_cnt?: number | null
           location?: string | null
           module_id?: string | null
@@ -1294,7 +1317,7 @@ export type Database = {
           break_duration?: number | null
           created_at?: string
           id?: string
-          interview_plan_id?: string
+          interview_plan_id?: string | null
           interviewer_cnt?: number | null
           location?: string | null
           module_id?: string | null
@@ -1327,18 +1350,21 @@ export type Database = {
           interview_module_relation_id: string | null
           interviewer_type: Database["public"]["Enums"]["status_training"]
           session_id: string
+          training_type: Database["public"]["Enums"]["interviewer_type"]
         }
         Insert: {
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
           session_id: string
+          training_type?: Database["public"]["Enums"]["interviewer_type"]
         }
         Update: {
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
           session_id?: string
+          training_type?: Database["public"]["Enums"]["interviewer_type"]
         }
         Relationships: [
           {
@@ -2693,6 +2719,54 @@ export type Database = {
           },
         ]
       }
+      tasks: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: string
+          name: string
+          recruiter_id: string
+          status: Database["public"]["Enums"]["task_status"]
+          sub_tasks: Json[]
+          user_id: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: string
+          name: string
+          recruiter_id: string
+          status?: Database["public"]["Enums"]["task_status"]
+          sub_tasks?: Json[]
+          user_id?: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          recruiter_id?: string
+          status?: Database["public"]["Enums"]["task_status"]
+          sub_tasks?: Json[]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_tasks_recruter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       template_question_relation: {
         Row: {
           created_at: string
@@ -2974,6 +3048,7 @@ export type Database = {
           job_id_filter?: string[]
           sort_by?: string
           cord_ids?: string[]
+          status_filter?: string[]
           page_number?: number
         }
         Returns: {
@@ -3147,11 +3222,14 @@ export type Database = {
       }
       get_interview_session_data: {
         Args: {
-          plan_id: string
+          sess_ids: string[]
+          company_id: string
         }
         Returns: {
           interview_sessions: Json[]
           interviewers: Json[]
+          service_cred: string
+          interview_modules: Json[]
         }[]
       }
       get_interviewers: {
@@ -3733,11 +3811,12 @@ export type Database = {
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
       interview_schedule_status:
-        | "pending"
+        | "waiting"
         | "confirmed"
         | "completed"
         | "cancelled"
         | "reschedule"
+        | "not_scheduled"
       interview_schedule_type:
         | "in_person_meeting"
         | "google_meet"
@@ -3785,6 +3864,7 @@ export type Database = {
       sender_type: "aglint" | "you" | "system" | "user"
       session_type: "panel" | "individual" | "debrief"
       status_training: "qualified" | "training"
+      task_status: "pending" | "in_progress" | "completed"
       template_type:
         | "cognitive"
         | "language"

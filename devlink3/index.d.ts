@@ -69,6 +69,7 @@ export * from "./DummyChatTwo";
 export * from "./DummyNavigation";
 export * from "./EditJobTopbarLeft";
 export * from "./EditJobTopBarRight";
+export * from "./EditOptionModule";
 export * from "./EnableDisable";
 export * from "./Feedback";
 export * from "./FeedbackTableRow";

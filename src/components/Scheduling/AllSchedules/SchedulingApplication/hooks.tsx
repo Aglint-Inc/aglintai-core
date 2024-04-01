@@ -3,26 +3,28 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'next/router';
+import { v4 as uuidv4 } from 'uuid';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
-import { InterviewMeetingTypeDb } from '@/src/types/data.types';
+import {
+  InterviewMeetingTypeDb,
+  InterviewSessionRelationTypeDB,
+  InterviewSessionTypeDB,
+} from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { MemberType } from '../../Modules/types';
-import { ApplicationList } from '../store';
 import { mailHandler } from '../utils';
 import {
   setDateRange,
   setFetchingPlan,
   setFetchingSchedule,
-  setInitialPlan,
-  setInitialPlans,
   setinitialSessions,
-  setInterviewModules,
+  setIsScheduleNowOpen,
   setIsSendToCandidateOpen,
   setMembers,
   setNoOptions,
@@ -50,6 +52,7 @@ export const useGetScheduleOptions = () => {
     };
   }) => {
     try {
+      setFetchingPlan(true);
       const res = await axios.post('/api/scheduling/v1/find_availability', {
         session_ids: session_ids,
         recruiter_id: rec_id,
@@ -93,6 +96,9 @@ export const useSendInviteForCandidate = () => {
   const selCoordinator = useSchedulingApplicationStore(
     (state) => state.selCoordinator,
   );
+  const initialSessions = useSchedulingApplicationStore(
+    (state) => state.initialSessions,
+  );
 
   const sendToCandidate = async ({
     session_ids,
@@ -104,7 +110,7 @@ export const useSendInviteForCandidate = () => {
     try {
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
-        .select('id,status')
+        .select('id')
         .eq('application_id', selectedApplication.id);
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
@@ -116,34 +122,164 @@ export const useSendInviteForCandidate = () => {
             is_get_more_option: is_get_more_option,
             application_id: selectedApplication.id,
             schedule_name: scheduleName,
+            coordinator_id: selCoordinator,
+          })
+          .select();
+
+        if (error) throw new Error(error.message);
+
+        const refSessions = initialSessions.map((session) => ({
+          ...session,
+          newId: uuidv4(),
+          isSelected: session_ids.includes(session.id),
+        }));
+
+        const { error: errorInsertedSessions } = await supabase
+          .from('interview_session')
+          .insert(
+            initialSessions.map((session) => ({
+              interview_plan_id: null,
+              id: refSessions.find((ref) => ref.id === session.id).newId,
+              break_duration: session.break_duration,
+              interviewer_cnt: session.interviewer_cnt,
+              location: session.location,
+              module_id: session.module_id,
+              name: session.name,
+              schedule_type: session.schedule_type,
+              session_duration: session.session_duration,
+              session_order: session.session_order,
+              session_type: session.session_type,
+            })) as InterviewSessionTypeDB[],
+          );
+
+        if (errorInsertedSessions)
+          throw new Error(errorInsertedSessions.message);
+
+        let insertableUserRelation = [];
+        refSessions.map((session) => {
+          session.users.map((user) => {
+            insertableUserRelation.push({
+              interview_module_relation_id: user.interview_module_relation.id,
+              interviewer_type: user.interviewer_type,
+              session_id: session.newId,
+              training_type: user.training_type,
+            } as InterviewSessionRelationTypeDB);
+          });
+        });
+
+        const { error: errorInsertedUserRelation } = await supabase
+          .from('interview_session_relation')
+          .insert(insertableUserRelation);
+
+        if (errorInsertedUserRelation)
+          throw new Error(errorInsertedUserRelation.message);
+
+        const insertableMeetings = refSessions.map((session) => ({
+          status: session.isSelected ? 'waiting' : 'not_scheduled',
+          session_id: session.newId,
+          instructions: refSessions.find((s) => s.id === session.id)
+            .interview_module.instructions,
+          interview_schedule_id: data[0].id,
+        })) as InterviewMeetingTypeDb[];
+
+        const { data: insertedMeetings, error: errorInsertedMeetings } =
+          await supabase
+            .from('interview_meeting')
+            .insert(insertableMeetings)
+            .select();
+
+        if (errorInsertedMeetings)
+          throw new Error(errorInsertedMeetings.message);
+
+        setinitialSessions(
+          initialSessions.map((session) => ({
+            ...session,
+            interview_meeting: insertedMeetings.find(
+              (meet) =>
+                refSessions.find((s) => s.id === session.id).newId ===
+                meet.session_id,
+            ),
+          })),
+        );
+
+        const { data: filterJson, error: errorFilterJson } = await supabase
+          .from('interview_filter_json')
+          .insert({
             filter_json: {
               session_ids: session_ids,
               recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
-            } as BodyParams,
-            coordinator_id: selCoordinator,
+            },
+            schedule_id: data[0].id,
           })
           .select();
 
-        if (!error) {
-          mailHandler({
-            rec_id: recruiter.id,
-            candidate_name: selectedApplication.candidates.first_name,
-            mail: selectedApplication.candidates.email,
-            position: selectedApplication.public_jobs.job_title,
-            schedule_name: scheduleName,
-            schedule_id: data[0].id,
-          });
-          setSelectedApplication({
-            ...selectedApplication,
-            schedule: data[0] as any,
-          });
-        }
+        if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        mailHandler({
+          filter_id: filterJson[0].id,
+          rec_id: recruiter.id,
+          candidate_name: selectedApplication.candidates.first_name,
+          mail: selectedApplication.candidates.email,
+          position: selectedApplication.public_jobs.job_title,
+          schedule_name: scheduleName,
+          schedule_id: data[0].id,
+        });
+
+        setIsScheduleNowOpen(false);
+      } else {
+        const { data: updatedMeetings, error: errorUpdatedMeetings } =
+          await supabase
+            .from('interview_meeting')
+            .upsert(
+              session_ids.map((session_id) => ({
+                status: 'waiting',
+                id: session_id,
+              })) as InterviewMeetingTypeDb[],
+            )
+            .select();
+
+        if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
+
+        setinitialSessions(
+          initialSessions.map((session) => ({
+            ...session,
+            interview_meeting: updatedMeetings.find(
+              (meet) => meet.id === session.id,
+            ),
+          })),
+        );
+
+        const { data: filterJson, error: errorFilterJson } = await supabase
+          .from('interview_filter_json')
+          .insert({
+            filter_json: {
+              session_ids: session_ids,
+              recruiter_id: recruiter.id,
+              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            },
+            schedule_id: checkSch[0].id,
+          })
+          .select();
+
+        if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        mailHandler({
+          filter_id: filterJson[0].id,
+          rec_id: recruiter.id,
+          candidate_name: selectedApplication.candidates.first_name,
+          mail: selectedApplication.candidates.email,
+          position: selectedApplication.public_jobs.job_title,
+          schedule_name: scheduleName,
+          schedule_id: checkSch[0].id,
+        });
       }
     } catch (e) {
-      toast.error('Error sending schedule to candidate');
+      toast.error(e.message);
     } finally {
       setIsSendToCandidateOpen(false);
     }
@@ -161,13 +297,13 @@ export const useGetScheduleApplication = () => {
     try {
       setFetchingSchedule(true);
 
-      const { data, error } = await supabase
+      const { data: schedule, error } = await supabase
         .from('interview_schedule')
         .select('*')
         .eq('application_id', router.query.application_id);
 
       if (!error) {
-        setSelectedSchedule(data[0]);
+        setSelectedSchedule(schedule[0]);
 
         const resMem = (await axios.post('/api/scheduling/fetchUserDetails', {
           recruiter_id: recruiter.id,
@@ -177,27 +313,50 @@ export const useGetScheduleApplication = () => {
           setMembers(resMem.data);
         }
 
-        const { data: application, error: errorApplication } =
-          await getApplicationSchedule.eq('id', router.query.application_id);
+        const res = await getApplicationSchedule({
+          application_id: router.query.application_id as string,
+        });
 
-        if (!errorApplication && data.length == 0) {
-          const typedApplication = application[0] as SelectedApplicationTypeDB;
-          setSelectedApplication(typedApplication);
+        const typedApplication = res as SelectedApplicationTypeDB;
 
+        setSelectedApplication(typedApplication);
+        setDateRange({
+          start_date: currentDate.toISOString(),
+          end_date: threeDays.toISOString(),
+        });
+
+        if (schedule.length == 0) {
           const sessionsWithPlan = await fetchInterviewData(
             typedApplication.public_jobs.id,
           );
-          setinitialSessions(sessionsWithPlan.sessions);
-
+          setinitialSessions(
+            sessionsWithPlan.sessions.sort(
+              (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
+            ),
+          );
           setScheduleName(
             `Interview for ${typedApplication?.public_jobs?.job_title} - ${typedApplication?.candidates?.first_name}`,
           );
-          setDateRange({
-            start_date: currentDate.toISOString(),
-            end_date: threeDays.toISOString(),
-          });
           if (sessionsWithPlan?.interviewPlan?.coordinator_id) {
             setSelCoordinator(sessionsWithPlan?.interviewPlan?.coordinator_id);
+          } else {
+            const adminUserId = resMem.data.filter(
+              (member) => member.role === 'admin',
+            )[0]?.user_id;
+            adminUserId && setSelCoordinator(adminUserId);
+          }
+        } else {
+          const sessionsWithPlan = await fetchInterviewDataSchedule(
+            schedule[0].id,
+          );
+          setinitialSessions(
+            sessionsWithPlan.sort(
+              (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
+            ),
+          );
+          setScheduleName(schedule[0].schedule_name);
+          if (schedule[0].coordinator_id) {
+            setSelCoordinator(schedule[0].coordinator_id);
           } else {
             const adminUserId = resMem.data.filter(
               (member) => member.role === 'admin',
@@ -207,7 +366,7 @@ export const useGetScheduleApplication = () => {
         }
       }
     } catch (error) {
-      toast.error('Error fetching interview data');
+      toast.error(error.message);
     } finally {
       setFetchingSchedule(false);
     }
@@ -260,6 +419,57 @@ export const fetchInterviewData = async (job_id: string) => {
       sessions,
       interviewPlan: interviewPlan[0],
     };
+  } catch (e) {
+    toast.error(e.message);
+  }
+};
+
+export const fetchInterviewDataSchedule = async (schedule_id: string) => {
+  try {
+    const { data: interviewMeetings, error: interviewSessionError } =
+      await supabase
+        .from('interview_meeting')
+        .select('*,interview_session(*,interview_module(*))')
+        .eq('interview_schedule_id', schedule_id);
+
+    if (interviewSessionError) throw new Error(interviewSessionError.message);
+
+    const {
+      data: interviewSessionRelations,
+      error: interviewSessionRelationsError,
+    } = await supabase
+      .from('interview_session_relation')
+      .select(
+        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position))',
+      )
+      .in(
+        'session_id',
+        interviewMeetings.map((meet) => meet.interview_session.id),
+      );
+
+    if (interviewSessionRelationsError)
+      throw new Error(interviewSessionRelationsError.message);
+
+    const sessions = interviewMeetings.map((meet) => ({
+      ...meet.interview_session,
+      interview_meeting: {
+        end_time: meet.end_time,
+        id: meet.id,
+        instructions: meet.instructions,
+        session_id: meet.session_id,
+        start_time: meet.start_time,
+        status: meet.status,
+        interview_schedule_id: meet.interview_schedule_id,
+        meeting_json: meet.meeting_json,
+        meeting_link: meet.meeting_link,
+        created_at: meet.created_at,
+      } as InterviewMeetingTypeDb,
+      users: interviewSessionRelations.filter(
+        (relation) => relation.session_id === meet.interview_session.id,
+      ),
+    }));
+
+    return sessions;
   } catch (e) {
     toast.error(e.message);
   }

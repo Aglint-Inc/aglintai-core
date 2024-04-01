@@ -1,32 +1,24 @@
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { RadioButton } from '@/devlink';
-import { ButtonWide, ScheduleOptions } from '@/devlink2';
-import {
-  ButtonGrey,
-  ButtonPrimaryDefaultRegular,
-  SchedulingPop,
-} from '@/devlink3';
-import AvatarSelectDropDown from '@/src/components/Common/AvatarSelect/AvatarSelectDropDown';
+import { ScheduleOptions } from '@/devlink2';
+import { ButtonGrey, ButtonPrimaryDefaultRegular } from '@/devlink3';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import MuiPopup from '@/src/components/Common/MuiPopup';
-import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { useGetScheduleOptions } from '../hooks';
+import SchedulingOptionComp from '../Common/ScheduleOption';
+import { useGetScheduleOptions, useSendInviteForCandidate } from '../hooks';
 import {
   setDateRange,
   setIsScheduleNowOpen,
-  setScheduleName,
-  setSelCoordinator,
+  setSchedulingOptions,
+  setSelectedSessionIds,
+  setStep,
   useSchedulingApplicationStore,
 } from '../store';
 
@@ -34,18 +26,14 @@ function GetScheduleOptionsDialog() {
   const { recruiter } = useAuthDetails();
   const currentDate = dayjs();
   const {
-    selCoordinator,
-    fetchingSchedule,
-    members,
     dateRange,
     noOptions,
-    scheduleName,
     selectedApplication,
     fetchingPlan,
     isScheduleNowOpen,
-    initialSessions,
     step,
     selectedSessionIds,
+    schedulingOptions,
   } = useSchedulingApplicationStore((state) => ({
     selCoordinator: state.selCoordinator,
     dateRange: state.dateRange,
@@ -59,9 +47,11 @@ function GetScheduleOptionsDialog() {
     initialSessions: state.initialSessions,
     step: state.step,
     selectedSessionIds: state.selectedSessionIds,
+    schedulingOptions: state.schedulingOptions,
   }));
 
   const { findScheduleOptions } = useGetScheduleOptions();
+  const { sendToCandidate } = useSendInviteForCandidate();
 
   // const router = useRouter();
   // const { recruiter_id, recruiterUser } = useAuthDetails();
@@ -80,6 +70,9 @@ function GetScheduleOptionsDialog() {
   useEffect(() => {
     return () => {
       setIsScheduleNowOpen(false);
+      setStep(1);
+      setSchedulingOptions([]);
+      setSelectedSessionIds([]);
     };
   }, []);
 
@@ -107,13 +100,36 @@ function GetScheduleOptionsDialog() {
           }}
           slotSendtoCandidateButton={
             <>
-              <ButtonGrey />
-              <ButtonPrimaryDefaultRegular />
+              <ButtonGrey
+                textLabel={'Back'}
+                onClickButton={{
+                  onClick: () => {
+                    setStep(1);
+                  },
+                }}
+              />
+              <ButtonPrimaryDefaultRegular
+                buttonText={'Send to Candidate'}
+                buttonProps={{
+                  onClick: () => {
+                    sendToCandidate({
+                      session_ids: selectedSessionIds,
+                      is_get_more_option: false,
+                    });
+                  },
+                }}
+              />
             </>
           }
           isBasicDetailsVisible={step === 1}
           isMultipleOptionVisible={step === 2}
-          slotAvailableCard={'Asdasd'}
+          slotAvailableCard={
+            <SchedulingOptionComp
+              schedulingOptions={schedulingOptions}
+              isBadgeVisible={true}
+              isInterviewVisible={true}
+            />
+          }
           slotPrimaryButton={
             <>
               {/* <ButtonGrey
@@ -161,15 +177,6 @@ function GetScheduleOptionsDialog() {
               width={'100%'}
               height={'100%'}
               fontSize={'12px'}
-            />
-          }
-          slotInputName={
-            <UITextField
-              placeholder='Name your Schedule'
-              onChange={(e) => {
-                setScheduleName(e.target.value);
-              }}
-              value={scheduleName}
             />
           }
           slotDateRangeInput={
@@ -230,6 +237,9 @@ function GetScheduleOptionsDialog() {
             selectedApplication.candidates.first_name,
             selectedApplication.candidates.last_name,
           )}
+          textPopHeader={
+            step === 1 ? 'Enter Basic details' : 'Available Options'
+          }
         />
       </Dialog>
       {/* <MuiPopup

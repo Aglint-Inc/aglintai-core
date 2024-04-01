@@ -28,7 +28,7 @@ function ConfirmDialog({
   schedule: ApiResponse;
 }) {
   const confOption = schedule?.schedulingOptions?.find(
-    (option) => option.id === selectedSlot,
+    (option) => option.plan_comb_id === selectedSlot,
   );
 
   return (
@@ -44,23 +44,37 @@ function ConfirmDialog({
           slotInviteLinkCard={
             <OptionAvailableCard
               isActive={false}
-              slotCardDate={confOption?.plans.map((pl, ind) => {
+              slotCardDate={confOption?.sessions.map((ses, ind) => {
                 return (
                   <AvailableOptionCardDate
-                    textDate={dayjs(pl.start_time).format('DD')}
-                    textDay={dayjs(pl.start_time).format('dddd')}
-                    textMonth={dayjs(pl.start_time).format('MMM')}
+                    textDate={dayjs(ses.start_time).format('DD')}
+                    textDay={dayjs(ses.start_time).format('dddd')}
+                    textMonth={dayjs(ses.start_time).format('MMM')}
                     key={ind}
                     slotOptionAvailable={
-                      <OptionAvailable
-                        textTime={`${dayjs(pl.start_time).format(
-                          'hh:mm A',
-                        )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                        textTitle={pl.module_name}
-                        key={ind}
-                        isTitleVisible={!pl.isBreak}
-                        isBreakVisible={pl.isBreak}
-                      />
+                      <>
+                        <OptionAvailable
+                          textTime={`${dayjs(ses.start_time).format(
+                            'hh:mm A',
+                          )} - ${dayjs(ses.end_time).format('hh:mm A')}`}
+                          textTitle={ses.module_name}
+                          key={ind}
+                          isTitleVisible={true}
+                          isBreakVisible={false}
+                        />
+                        {ses.break_duration > 0 &&
+                          ind !== confOption?.sessions.length - 1 && (
+                            <OptionAvailable
+                              key={ind}
+                              textTime={''}
+                              textBreakTime={
+                                `${ses.break_duration} Minutes` || ''
+                              }
+                              isTitleVisible={false}
+                              isBreakVisible={true}
+                            />
+                          )}
+                      </>
                     }
                   />
                 );

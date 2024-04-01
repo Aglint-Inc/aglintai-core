@@ -2,7 +2,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
@@ -24,6 +24,7 @@ export type MailHandlerparam = {
   mail: string;
   position: string;
   schedule_id: string;
+  filter_id: string;
 };
 
 export const mailHandler = async ({
@@ -33,6 +34,7 @@ export const mailHandler = async ({
   schedule_name,
   mail,
   position,
+  filter_id,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
@@ -65,7 +67,7 @@ export const mailHandler = async ({
               first_name: candidate_name,
               last_name: '',
               job_title: position,
-              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}'>Pick Your Slot</a>`,
+              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
             },
           ),
         })
@@ -172,25 +174,25 @@ export function transformData(inputData) {
 }
 
 export const getScheduleBgcolor = (
-  status: InterviewScheduleTypeDB['status'],
+  status: InterviewMeetingTypeDb['status'],
 ) => {
   return status === 'completed'
     ? '#D1E8DF80'
     : status === 'confirmed'
       ? '#CEE2F2'
-      : status === 'pending'
+      : status === 'waiting'
         ? '#FFEDC2'
         : '#FFF0F1';
 };
 
 export const getScheduleTextcolor = (
-  status: InterviewScheduleTypeDB['status'],
+  status: InterviewMeetingTypeDb['status'],
 ) => {
   return status === 'completed'
     ? '#186146'
     : status === 'confirmed'
       ? '#0F3554'
-      : status === 'pending'
+      : status === 'waiting'
         ? '#703815'
         : '#681219';
 };
@@ -203,7 +205,7 @@ export function getAllUniqueDates({
   const dates = new Set();
 
   records.forEach((record) => {
-    record.plans.forEach((plan) => {
+    record.sessions.forEach((plan) => {
       const planDate = dayjs(plan.start_time).format('YYYY-MM-DD');
       dates.add(planDate);
     });
@@ -220,7 +222,7 @@ export function filterRecordsByDate({
   date: string;
 }) {
   const filteredRecords = records.filter((record) => {
-    return record.plans.some((plan) => {
+    return record.sessions.some((plan) => {
       const planDate = dayjs(plan.start_time).format('YYYY-MM-DD');
       return planDate === date;
     });

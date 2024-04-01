@@ -291,6 +291,10 @@
   grid-row-gap: 10px;
 }
 
+.div-block-1093.hide {
+  display: none;
+}
+
 .div-block-1097 {
   display: flex;
   flex-direction: column;
@@ -346,6 +350,7 @@
 .div-block-1299 {
   overflow: auto;
   height: 100%;
+  margin-bottom: 60px;
 }
 
 .div-block-1298 {
@@ -354,6 +359,7 @@
   top: auto;
   right: 0%;
   bottom: 0%;
+  z-index: 4;
 
   display: grid;
   padding: 20px;

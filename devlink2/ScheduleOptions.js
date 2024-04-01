@@ -100,7 +100,7 @@ export function ScheduleOptions({
       ) : null}
       {isBasicDetailsVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1093")}
+          className={_utils.cx(_styles, "div-block-1093", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -139,9 +139,6 @@ export function ScheduleOptions({
         >
           {slotPrimaryButton}
         </_Builtin.Block>
-      ) : null}
-      {isMultipleOptionVisible ? (
-        <_Builtin.Block tag="div">{slotAvailableOptionsDate}</_Builtin.Block>
       ) : null}
       {isMultipleOptionVisible ? (
         <_Builtin.Block

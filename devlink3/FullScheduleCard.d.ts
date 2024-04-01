@@ -8,6 +8,9 @@ declare function FullScheduleCard(props: {
   textDate?: React.ReactNode;
   textDay?: React.ReactNode;
   slotGeneralScheduleCard?: Types.Devlink.Slot;
-  isNotScheduledActive?: Types.Visibility.VisibilityConditions;
+  isNotScheduledVisible?: Types.Visibility.VisibilityConditions;
   isCardSelected?: Types.Visibility.VisibilityConditions;
+  textStatus?: React.ReactNode;
+  isNotScheduleActive?: Types.Visibility.VisibilityConditions;
+  isLineVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

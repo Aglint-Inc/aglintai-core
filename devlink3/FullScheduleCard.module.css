@@ -60,6 +60,10 @@
   bottom: 0%;
 }
 
+.schedule_dateblcok.height-90.center.width-85.not-schedule.active {
+  z-index: 3;
+}
+
 .schedule_dateblcok.height-90.center.width-85.active {
   position: absolute;
   left: 0%;

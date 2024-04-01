@@ -91,6 +91,10 @@
   text-transform: capitalize;
 }
 
+.text-red-600 {
+  color: #cc3340;
+}
+
 .fw-semibold.text-purple {
   color: #a81897;
 }
@@ -128,21 +132,8 @@
   position: relative;
 }
 
-.div-block-1329 {
-  position: absolute;
-  left: auto;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
-
-  width: 165px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
-
-  background-color: white;
-
-  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+.sloteditoptions {
+  display: none;
 }
 
 .div-block-1302 {

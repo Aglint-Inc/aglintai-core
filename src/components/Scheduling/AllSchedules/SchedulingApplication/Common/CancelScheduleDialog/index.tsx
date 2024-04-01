@@ -5,41 +5,49 @@ import { DeletePopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { setIsCancelOpen, useInterviewSchedulingStore } from '../../../store';
-import {
-  setSelectedApplication,
-  useSchedulingApplicationStore,
-} from '../../store';
+import { setinitialSessions, useSchedulingApplicationStore } from '../../store';
 
-function DeleteScheduleDialog() {
+function CancelScheduleDialog() {
   const isCancelOpen = useInterviewSchedulingStore(
     (state) => state.isCancelOpen,
   );
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
+  const selectedMeeting = useSchedulingApplicationStore(
+    (state) => state.selectedMeeting,
+  );
+  const initialSessions = useSchedulingApplicationStore(
+    (state) => state.initialSessions,
   );
 
   const onClickCancel = async () => {
     try {
-      if (selectedApplication.schedule.id) {
+      if (selectedMeeting.id) {
         const { data, error: errMeet } = await supabase
           .from('interview_meeting')
           .update({
             status: 'cancelled',
           })
-          .eq('interview_schedule_id', selectedApplication.schedule.id)
+          .eq('id', selectedMeeting.id)
           .select();
         if (errMeet) {
           throw new Error(errMeet.message);
         }
-        await supabase
-          .from('interview_schedule')
-          .update({ status: 'cancelled' })
-          .eq('id', selectedApplication.schedule.id);
         setIsCancelOpen(false);
-        setSelectedApplication({
-          ...selectedApplication,
-          schedule: { ...selectedApplication.schedule, status: 'cancelled' },
-        });
+
+        setinitialSessions(
+          initialSessions.map((session) => {
+            if (session.interview_meeting.id === selectedMeeting.id) {
+              return {
+                ...session,
+                interview_meeting: {
+                  ...session.interview_meeting,
+                  status: 'cancelled',
+                },
+              };
+            } else {
+              return session;
+            }
+          }),
+        );
 
         const allMeeting = data;
         allMeeting.forEach(async (meet) => {
@@ -90,4 +98,4 @@ function DeleteScheduleDialog() {
   );
 }
 
-export default DeleteScheduleDialog;
+export default CancelScheduleDialog;

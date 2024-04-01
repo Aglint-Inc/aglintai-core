@@ -39,7 +39,7 @@ function InvitationPending({
 }) {
   const schedulingOptions = schedule.schedulingOptions.map((option) => ({
     ...option,
-    plans: option.plans.map((plan) => ({
+    plans: option.sessions.map((plan) => ({
       ...plan,
       start_time: dayjs(plan.start_time).tz(dayjs.tz.guess()).toISOString(),
       end_time: dayjs(plan.end_time).tz(dayjs.tz.guess()).toISOString(),
@@ -135,42 +135,53 @@ function InvitationPending({
             <Stack
               key={ind}
               onClick={() => {
-                setSelectedSlot(option.id);
+                setSelectedSlot(option.plan_comb_id);
               }}
               sx={{ cursor: 'pointer' }}
             >
               <OptionAvailableCard
-                isActive={selectedSlot === option.id}
-                slotCardDate={option.plans.map((pl, indOpt) => {
+                isActive={selectedSlot === option.plan_comb_id}
+                slotCardDate={option.sessions.map((ses, indOpt) => {
                   return (
-                    <AvailableOptionCardDate
-                      isDateWrapVisible={
-                        indOpt == 0 ||
-                        (!pl.isBreak &&
-                          !dayjs(option.plans[indOpt - 1]?.start_time).isSame(
-                            pl.start_time,
-                            'day',
-                          ))
-                      }
-                      textDate={dayjs(pl.start_time).format('DD')}
-                      textDay={dayjs(pl.start_time).format('dddd')}
-                      textMonth={dayjs(pl.start_time).format('MMM')}
-                      key={ind}
-                      slotOptionAvailable={
-                        <OptionAvailable
-                          textTime={`${dayjs(pl.start_time).format(
-                            'hh:mm A',
-                          )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                          textTitle={pl.module_name}
-                          key={ind}
-                          textBreakTime={
-                            pl.isBreak ? `${pl.duration} Minutes` : ''
-                          }
-                          isTitleVisible={!pl.isBreak}
-                          isBreakVisible={pl.isBreak}
-                        />
-                      }
-                    />
+                    <>
+                      <AvailableOptionCardDate
+                        isDateWrapVisible={
+                          indOpt == 0 ||
+                          !dayjs(
+                            option.sessions[indOpt - 1]?.start_time,
+                          ).isSame(ses.start_time, 'day')
+                        }
+                        textDate={dayjs(ses.start_time).format('DD')}
+                        textDay={dayjs(ses.start_time).format('dddd')}
+                        textMonth={dayjs(ses.start_time).format('MMM')}
+                        key={ind}
+                        slotOptionAvailable={
+                          <>
+                            <OptionAvailable
+                              textTime={`${dayjs(ses.start_time).format(
+                                'hh:mm A',
+                              )} - ${dayjs(ses.end_time).format('hh:mm A')}`}
+                              textTitle={ses.module_name}
+                              key={ind}
+                              isTitleVisible={true}
+                              isBreakVisible={false}
+                            />
+                            {ses.break_duration > 0 &&
+                              indOpt !== option.sessions.length - 1 && (
+                                <OptionAvailable
+                                  key={ind}
+                                  textTime={''}
+                                  textBreakTime={
+                                    `${ses.break_duration} Minutes` || ''
+                                  }
+                                  isTitleVisible={false}
+                                  isBreakVisible={true}
+                                />
+                              )}
+                          </>
+                        }
+                      />
+                    </>
                   );
                 })}
               />

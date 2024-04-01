@@ -18,7 +18,6 @@ declare function GeneralScheduleCard(props: {
   isTimingVisible?: Types.Visibility.VisibilityConditions;
   onClickLink?: Types.Devlink.RuntimeProps;
   textLink?: React.ReactNode;
-  slotInterviewer?: Types.Devlink.Slot;
   textSelected?: React.ReactNode;
   isTextSelectedVisible?: Types.Visibility.VisibilityConditions;
   textInterviewers?: React.ReactNode;
@@ -37,4 +36,7 @@ declare function GeneralScheduleCard(props: {
   isAddCardVisible?: Types.Visibility.VisibilityConditions;
   onClickScheduleNow?: Types.Devlink.RuntimeProps;
   isScheduleNowVisible?: Types.Visibility.VisibilityConditions;
+  isSubHeaderVisible?: Types.Visibility.VisibilityConditions;
+  slotEditOptions?: Types.Devlink.Slot;
+  isEditOptionVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

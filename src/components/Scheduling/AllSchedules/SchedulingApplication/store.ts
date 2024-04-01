@@ -1,12 +1,12 @@
-import { use } from 'react';
 import { create } from 'zustand';
 
-import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import {
+  InterviewMeetingTypeDb,
   InterviewModuleType,
   InterviewScheduleTypeDB,
 } from '@/src/types/data.types';
+import { PlanCombinationType } from '@/src/utils/scheduling_v1/types';
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
 
@@ -16,6 +16,7 @@ export interface SchedulingApplication {
   initialSessions: SessionsType;
   selectedSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
+  selectedMeeting: InterviewMeetingTypeDb | null;
   selectedSchedule: InterviewScheduleTypeDB;
   interviewModules: InterviewModuleType[];
   scheduleName: string;
@@ -25,7 +26,7 @@ export interface SchedulingApplication {
   };
   members: InterviewScheduleContextType['members'];
   step: number;
-  schedulingOptions: InterviewPlanScheduleDbType[];
+  schedulingOptions: PlanCombinationType[];
   isScheduleNowOpen: boolean;
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
@@ -40,10 +41,11 @@ const initialState: SchedulingApplication = {
   selectedApplication: null,
   selectedSessionIds: [],
   tab: 'full_schedule',
+  selectedMeeting: null,
   initialSessions: null,
   selectedSchedule: null,
   interviewModules: [],
-  isScheduleNowOpen: true,
+  isScheduleNowOpen: false,
   scheduleName: '',
   dateRange: {
     start_date: '',
@@ -68,6 +70,9 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setSelectedMeeting = (selectedMeeting: InterviewMeetingTypeDb) =>
+  useSchedulingApplicationStore.setState({ selectedMeeting });
 
 export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,
@@ -102,7 +107,7 @@ export const setScheduleName = (scheduleName: string) =>
   useSchedulingApplicationStore.setState({ scheduleName });
 
 export const setSchedulingOptions = (
-  schedulingOptions: InterviewPlanScheduleDbType[],
+  schedulingOptions: PlanCombinationType[],
 ) => useSchedulingApplicationStore.setState({ schedulingOptions });
 
 export const setSelCoordinator = (selCoordinator: string | null) =>

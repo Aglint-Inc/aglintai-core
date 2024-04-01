@@ -36,6 +36,7 @@ const fetchInterviewData = async ({
     page_number: page,
     cord_ids:
       filter.coordinator_ids?.length > 0 ? filter.coordinator_ids : null,
+    status_filter: filter.status.length > 0 ? filter.status : null,
   });
   if (error) {
     throw new Error(error.message);
