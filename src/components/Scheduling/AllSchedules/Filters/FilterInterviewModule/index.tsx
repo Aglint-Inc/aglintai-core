@@ -35,10 +35,10 @@ function FilterInterviewModule() {
   const id = open ? 'interview-panels' : undefined;
 
   const handleFilterClick = (panel_id: string) => {
-    if (filter.panel_ids.includes(panel_id)) {
-      setFilter({ panel_ids: filter.panel_ids.filter((s) => s !== panel_id) });
+    if (filter.module_ids.includes(panel_id)) {
+      setFilter({ module_ids: filter.module_ids.filter((s) => s !== panel_id) });
     } else {
-      setFilter({ panel_ids: [...filter.panel_ids, panel_id] });
+      setFilter({ module_ids: [...filter.module_ids, panel_id] });
     }
   };
 
@@ -67,7 +67,7 @@ function FilterInterviewModule() {
             </svg>
           </Stack>
         }
-        isDotVisible={filter.panel_ids.length > 0}
+        isDotVisible={filter.module_ids.length > 0}
         onClickStatus={{
           id: FilterType.interviewPanels + 'click',
           onClick: handleClick,
@@ -119,7 +119,7 @@ function FilterInterviewModule() {
                 spacing={1}
               >
                 <Checkbox
-                  isChecked={filter.panel_ids.includes(mod.id)}
+                  isChecked={filter.module_ids.includes(mod.id)}
                   onClickCheck={{
                     onClick: () => {
                       handleFilterClick(mod.id);
@@ -141,7 +141,7 @@ function FilterInterviewModule() {
           })}
           onClickDelete={{
             onClick: () => {
-              setFilter({ panel_ids: [] });
+              setFilter({ module_ids: [] });
               setFilterVisible(
                 filterVisible.filter((f) => f !== FilterType.interviewPanels),
               );
@@ -149,7 +149,7 @@ function FilterInterviewModule() {
           }}
           onClickReset={{
             onClick: () => {
-              setFilter({ panel_ids: [] });
+              setFilter({ module_ids: [] });
             },
           }}
         />

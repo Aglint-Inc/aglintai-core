@@ -985,47 +985,70 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_filter_json: {
+        Row: {
+          created_at: string
+          filter_json: Json
+          id: string
+          schedule_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          filter_json: Json
+          id?: string
+          schedule_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          filter_json?: Json
+          id?: string
+          schedule_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_interview_filter_json_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_meeting: {
         Row: {
-          break_time: number
           created_at: string
-          duration: number
-          end_time: string
+          end_time: string | null
           id: string
           instructions: string | null
           interview_schedule_id: string
           meeting_json: Json | null
           meeting_link: string | null
           session_id: string | null
-          start_time: string
+          start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Insert: {
-          break_time?: number
           created_at?: string
-          duration: number
-          end_time: string
+          end_time?: string | null
           id?: string
           instructions?: string | null
           interview_schedule_id: string
           meeting_json?: Json | null
           meeting_link?: string | null
           session_id?: string | null
-          start_time: string
+          start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Update: {
-          break_time?: number
           created_at?: string
-          duration?: number
-          end_time?: string
+          end_time?: string | null
           id?: string
           instructions?: string | null
           interview_schedule_id?: string
           meeting_json?: Json | null
           meeting_link?: string | null
           session_id?: string | null
-          start_time?: string
+          start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Relationships: [
@@ -1207,33 +1230,33 @@ export type Database = {
         Row: {
           application_id: string
           calender_event_api_status: Json | null
+          coordinator_id: string | null
           created_at: string
           created_by: string
-          filter_json: Json | null
           id: string
-          interview_plan_id: string | null
+          is_completed: boolean
           is_get_more_option: boolean
           schedule_name: string
         }
         Insert: {
           application_id: string
           calender_event_api_status?: Json | null
+          coordinator_id?: string | null
           created_at?: string
           created_by?: string
-          filter_json?: Json | null
           id?: string
-          interview_plan_id?: string | null
+          is_completed?: boolean
           is_get_more_option?: boolean
           schedule_name: string
         }
         Update: {
           application_id?: string
           calender_event_api_status?: Json | null
+          coordinator_id?: string | null
           created_at?: string
           created_by?: string
-          filter_json?: Json | null
           id?: string
-          interview_plan_id?: string | null
+          is_completed?: boolean
           is_get_more_option?: boolean
           schedule_name?: string
         }
@@ -1246,18 +1269,18 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_interview_plan_id_fkey"
-            columns: ["interview_plan_id"]
+            foreignKeyName: "public_interview_schedule_created_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
-            referencedRelation: "interview_plan"
-            referencedColumns: ["id"]
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -2696,6 +2719,54 @@ export type Database = {
           },
         ]
       }
+      tasks: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: string
+          name: string
+          recruiter_id: string
+          status: Database["public"]["Enums"]["task_status"]
+          sub_tasks: Json[]
+          user_id: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: string
+          name: string
+          recruiter_id: string
+          status?: Database["public"]["Enums"]["task_status"]
+          sub_tasks?: Json[]
+          user_id?: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          recruiter_id?: string
+          status?: Database["public"]["Enums"]["task_status"]
+          sub_tasks?: Json[]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_tasks_recruter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       template_question_relation: {
         Row: {
           created_at: string
@@ -2977,6 +3048,7 @@ export type Database = {
           job_id_filter?: string[]
           sort_by?: string
           cord_ids?: string[]
+          status_filter?: string[]
           page_number?: number
         }
         Returns: {
@@ -3739,11 +3811,12 @@ export type Database = {
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"
       interview_schedule_status:
-        | "pending"
+        | "waiting"
         | "confirmed"
         | "completed"
         | "cancelled"
         | "reschedule"
+        | "not_scheduled"
       interview_schedule_type:
         | "in_person_meeting"
         | "google_meet"

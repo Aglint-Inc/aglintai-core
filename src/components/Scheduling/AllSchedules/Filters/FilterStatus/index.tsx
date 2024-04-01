@@ -3,10 +3,10 @@ import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 import {
   FilterType,
+  InterviewSlice,
   setFilter,
   setFilterVisible,
   useInterviewSchedulingStore,
@@ -32,9 +32,7 @@ function FilterStatus() {
   const open = Boolean(anchorEl);
   const id = open ? 'filter-status' : undefined;
 
-  const handleFilterClick = (
-    status: InterviewScheduleTypeDB['status'] | 'not scheduled',
-  ) => {
+  const handleFilterClick = (status: InterviewSlice['filter']['status'][0]) => {
     if (filter.status.includes(status)) {
       setFilter({ status: filter.status.filter((s) => s !== status) });
     } else {
@@ -43,7 +41,7 @@ function FilterStatus() {
   };
 
   const renderStatus = (
-    status: InterviewScheduleTypeDB['status'] | 'not scheduled',
+    status: InterviewSlice['filter']['status'][0],
     label: string,
   ) => {
     return (
@@ -136,11 +134,9 @@ function FilterStatus() {
         <FilterDropdown
           slotOption={
             <>
-              {renderStatus('confirmed', 'Confirmed')}
-              {renderStatus('pending', 'Pending')}
-              {renderStatus('not scheduled', 'Not Scheduled')}
+              {renderStatus('ongoing', 'Ongoing')}
+              {renderStatus('not_scheduled', 'Not Scheduled')}
               {renderStatus('completed', 'Completed')}
-              {renderStatus('cancelled', 'Canceled')}
             </>
           }
           onClickDelete={{

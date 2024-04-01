@@ -44,7 +44,9 @@ function ModuleSchedules({
   const router = useRouter();
 
   const filterSchedules = () => {
-    const filSch = schedules.filter((sch) => sch.schedule.status !== 'pending');
+    const filSch = schedules.filter(
+      (sch) => sch.interview_meeting.status !== 'waiting',
+    );
     if (filter === 'all') {
       return filSch;
     } else if (filter === 'upcoming') {

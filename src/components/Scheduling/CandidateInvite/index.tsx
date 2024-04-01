@@ -41,6 +41,7 @@ function CandidateInvite() {
     try {
       const res = await axios.post('/api/scheduling/invite', {
         id: router.query.schedule_id,
+        filter_id: router.query.filter_id,
       });
       if (res.status === 200 && res.data) {
         setSchedule(res.data);
@@ -57,7 +58,7 @@ function CandidateInvite() {
       setSaving(true);
 
       const confOption = schedule.schedulingOptions.find(
-        (option) => option.id === selectedSlot,
+        (option) => option.plan_comb_id === selectedSlot,
       );
       const res = await axios.post('/api/scheduling/confirm', {
         id: router.query.schedule_id,
@@ -69,8 +70,6 @@ function CandidateInvite() {
         position: schedule.job.job_title,
       } as BodyParamsConfirmCandidate);
       if (res.status === 200 && res.data) {
-        schedule.schedule.confirmed_option = confOption;
-        schedule.schedule.status = 'confirmed';
         setSchedule({
           ...schedule,
         });
@@ -112,7 +111,7 @@ function CandidateInvite() {
         <Stack height={'100vh'} width={'100%'}>
           <Loader />
         </Stack>
-      ) : schedule?.schedule.status == 'pending' ? (
+      ) : !schedule?.schedule.is_completed ? (
         <InvitationPending
           schedule={schedule}
           selectedSlot={selectedSlot}
@@ -120,8 +119,7 @@ function CandidateInvite() {
           setDialogOpen={setDialogOpen}
           setSelectedSlot={setSelectedSlot}
         />
-      ) : schedule?.schedule.status == 'confirmed' ||
-        schedule?.schedule.status == 'completed' ? (
+      ) : schedule?.schedule.is_completed ? (
         <InvitationConfirmed schedule={schedule} />
       ) : (
         <Page404 />

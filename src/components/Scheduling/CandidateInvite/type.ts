@@ -1,27 +1,21 @@
 import {
   CandidateType,
-  InterviewMeetingTypeDb,
-  InterviewModuleType,
-  InterviewScheduleTypeDB,
+  InterviewScheduleTypeDB
 } from '@/src/types/data.types';
+import { PlanCombinationType } from '@/src/utils/scheduling_v1/types';
 
-import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
+import { SessionsType } from '../AllSchedules/SchedulingApplication/types';
 import { ApplicationList } from '../AllSchedules/store';
-import { MemberType } from '../Modules/types';
 
 export type ApiResponse = {
   job: ApplicationList['public_jobs'];
-  modules: InterviewModuleType[];
-  members: MemberType[];
-  schedule: InterviewScheduleTypeDB & {
-    confirmed_option: InterviewPlanScheduleDbType;
-  };
-  schedulingOptions: InterviewPlanScheduleDbType[];
+  schedule: InterviewScheduleTypeDB;
+  schedulingOptions: PlanCombinationType[];
   candidate: CandidateType;
   recruiter: {
     id: string;
     logo: string;
     name: string;
   };
-  meetings: InterviewMeetingTypeDb[];
+  meetings: SessionsType;
 };

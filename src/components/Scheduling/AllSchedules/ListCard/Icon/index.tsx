@@ -1,12 +1,11 @@
 import { Stack } from '@mui/material';
-import React from 'react';
 
-import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 
 function IconScheduleType({
   type,
 }: {
-  type: InterviewScheduleTypeDB['schedule_type'];
+  type: Database['public']['Enums']['interview_schedule_type'];
 }) {
   return (
     <Stack height={'100%'} justifyContent={'center'} alignItems={'center'}>

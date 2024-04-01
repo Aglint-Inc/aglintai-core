@@ -1,0 +1,141 @@
+.div-block-1316 {
+  display: flex;
+  width: 700px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.div-block-1318 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.div-block-1320 {
+  position: relative;
+}
+
+.div-block-1321 {
+  position: relative;
+}
+
+.schedule_dateblcok {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.schedule_dateblcok.height-90 {
+  height: 90px;
+}
+
+.schedule_dateblcok.height-90.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.schedule_dateblcok.height-90.center.width-85 {
+  width: 85px;
+}
+
+.schedule_dateblcok.height-90.center.width-85.not-schedule {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.schedule_dateblcok.height-90.center.width-85.not-schedule.active {
+  z-index: 3;
+}
+
+.schedule_dateblcok.height-90.center.width-85.active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #edf7ff;
+}
+
+.data_wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
+}
+
+.schedule_month {
+  color: #68737d;
+  font-size: 14px;
+}
+
+.scheduledate {
+  font-size: 20px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.day {
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-xsm {
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.div-block-1317 {
+  width: 1px;
+  height: 100%;
+  background-color: #e9ebed;
+}
+
+.div-block-1319 {
+  width: 100%;
+  padding-bottom: 20px;
+}

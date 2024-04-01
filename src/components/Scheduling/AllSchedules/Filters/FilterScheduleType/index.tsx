@@ -3,7 +3,9 @@ import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import {
+  InterviewSession
+} from '@/src/types/data.types';
 
 import {
   FilterType,
@@ -33,7 +35,7 @@ function FilterScheduleType() {
   const id = open ? 'filter-schedule-type' : undefined;
 
   const handleFilterClick = (
-    scheduleType: InterviewScheduleTypeDB['schedule_type'],
+    scheduleType: InterviewSession['schedule_type'],
   ) => {
     if (filter.scheduleType.includes(scheduleType)) {
       setFilter({
@@ -45,7 +47,7 @@ function FilterScheduleType() {
   };
 
   const renderScheduleType = (
-    scheduleType: InterviewScheduleTypeDB['schedule_type'],
+    scheduleType: InterviewSession['schedule_type'],
     label: string,
   ) => {
     return (

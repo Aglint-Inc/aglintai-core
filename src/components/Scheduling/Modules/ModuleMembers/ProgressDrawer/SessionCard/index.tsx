@@ -35,7 +35,7 @@ function SessionCard({
           isConfirmedVisible={prog.interview_meeting.status == 'confirmed'}
           isCancelledVisible={prog.interview_meeting.status == 'cancelled'}
           isCompletedVisible={prog.interview_meeting.status == 'completed'}
-          isInProgressVisible={prog.interview_meeting.status == 'pending'}
+          isInProgressVisible={prog.interview_meeting.status == 'waiting'}
         />
       }
       slotInterviewScreenCard={

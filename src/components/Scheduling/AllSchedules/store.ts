@@ -4,25 +4,21 @@ import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import {
   CandidateType,
   InterviewScheduleTypeDB,
+  InterviewSession,
   JobApplcationDB,
 } from '@/src/types/data.types';
 
-import {
-  InterviewModuleDbType,
-  InterviewPlanScheduleDbType,
-} from '../../JobInterviewPlan/types';
-
 export interface InterviewSlice {
   filter: {
-    status?: (InterviewScheduleTypeDB['status'] | 'not scheduled')[];
+    status?: ('not_scheduled' | 'ongoing' | 'completed')[];
     job_ids?: string[];
-    scheduleType?: InterviewScheduleTypeDB['schedule_type'][];
-    panel_ids?: string[];
+    module_ids?: string[];
     dateRange?: string;
     duration?: number;
     textSearch?: string;
     sortBy?: 'asc' | 'desc';
     coordinator_ids?: string[];
+    scheduleType?: InterviewSession['schedule_type'][];
   };
   pagination: {
     page: number;
@@ -52,13 +48,13 @@ export enum FilterType {
 const initialState: InterviewSlice = {
   filter: {
     textSearch: '',
-    status: ['not scheduled', 'confirmed', 'pending', 'cancelled'],
+    status: ['not_scheduled', 'ongoing'],
     sortBy: 'asc',
     job_ids: [],
-    panel_ids: [],
-    scheduleType: [],
+    module_ids: [],
     dateRange: null,
     coordinator_ids: [],
+    scheduleType: [],
   },
   pagination: {
     page: 1,
@@ -107,21 +103,10 @@ export const resetInterviewState = () =>
 export type ApplicationList = {
   applications: JobApplcationDB;
   candidates: CandidateType;
-  schedule:
-    | (Omit<InterviewScheduleTypeDB, 'interview_plan' | 'confirmed_option'> & {
-        confirmed_option: InterviewPlanScheduleDbType;
-        interview_plan: InterviewModuleDbType[];
-      })
-    | null;
+  schedule: InterviewScheduleTypeDB | null;
   public_jobs: {
     id: string;
     job_title: string;
-    interview_plan: {
-      plan: InterviewModuleDbType[];
-      coordinator: {
-        interv_id: string;
-      };
-    };
     location: string;
     recruiter_id: string;
   };

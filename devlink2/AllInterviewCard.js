@@ -76,12 +76,7 @@ export function AllInterviewCard({
         className={_utils.cx(_styles, "candidate_cell")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1292")}
-          tag="div"
-        >
-          {slotStatusBadge}
-        </_Builtin.Block>
+        {slotStatusBadge}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate_cell", "hide")}
