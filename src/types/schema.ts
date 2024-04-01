@@ -1207,33 +1207,33 @@ export type Database = {
         Row: {
           application_id: string
           calender_event_api_status: Json | null
-          coordinator_id: string | null
           created_at: string
           created_by: string
           filter_json: Json | null
           id: string
+          interview_plan_id: string | null
           is_get_more_option: boolean
           schedule_name: string
         }
         Insert: {
           application_id: string
           calender_event_api_status?: Json | null
-          coordinator_id?: string | null
           created_at?: string
           created_by?: string
           filter_json?: Json | null
           id?: string
+          interview_plan_id?: string | null
           is_get_more_option?: boolean
           schedule_name: string
         }
         Update: {
           application_id?: string
           calender_event_api_status?: Json | null
-          coordinator_id?: string | null
           created_at?: string
           created_by?: string
           filter_json?: Json | null
           id?: string
+          interview_plan_id?: string | null
           is_get_more_option?: boolean
           schedule_name?: string
         }
@@ -1246,18 +1246,18 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
-            columns: ["coordinator_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
-          {
             foreignKeyName: "public_interview_schedule_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_interview_plan_id_fkey"
+            columns: ["interview_plan_id"]
+            isOneToOne: false
+            referencedRelation: "interview_plan"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1266,7 +1266,7 @@ export type Database = {
           break_duration: number | null
           created_at: string
           id: string
-          interview_plan_id: string
+          interview_plan_id: string | null
           interviewer_cnt: number | null
           location: string | null
           module_id: string | null
@@ -1280,7 +1280,7 @@ export type Database = {
           break_duration?: number | null
           created_at?: string
           id?: string
-          interview_plan_id: string
+          interview_plan_id?: string | null
           interviewer_cnt?: number | null
           location?: string | null
           module_id?: string | null
@@ -1294,7 +1294,7 @@ export type Database = {
           break_duration?: number | null
           created_at?: string
           id?: string
-          interview_plan_id?: string
+          interview_plan_id?: string | null
           interviewer_cnt?: number | null
           location?: string | null
           module_id?: string | null
@@ -3150,7 +3150,7 @@ export type Database = {
       }
       get_interview_session_data: {
         Args: {
-          plan_id: string
+          sess_ids: string[]
           company_id: string
         }
         Returns: {
@@ -3791,6 +3791,7 @@ export type Database = {
       sender_type: "aglint" | "you" | "system" | "user"
       session_type: "panel" | "individual" | "debrief"
       status_training: "qualified" | "training"
+      task_status: "pending" | "in_progress" | "completed"
       template_type:
         | "cognitive"
         | "language"

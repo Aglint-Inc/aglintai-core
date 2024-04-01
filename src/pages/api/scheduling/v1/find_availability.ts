@@ -22,12 +22,11 @@ export type BodyParams = {
   user_tz: string;
 };
 
-const required_fields = ['plan_id', 'recruiter_id', 'start_date', 'end_date'];
+const required_fields = ['recruiter_id', 'start_date', 'end_date'];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     let {
-      plan_id,
       session_ids,
       recruiter_id,
       start_date,
@@ -45,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     end_date = getUserTimeZoneDate(end_date, user_tz, false);
 
     const { ses_with_ints, company_cred, all_inters } = await find_api_details(
-      plan_id,
+      session_ids,
       recruiter_id,
     );
 

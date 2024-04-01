@@ -6,10 +6,13 @@ import { CompServiceKeyCred } from '../scheduling_v2/types';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { InterviewSessionApiType, SessionInterviewerType } from './types';
 
-export const find_api_details = async (plan_id: string, company_id: string) => {
+export const find_api_details = async (
+  session_ids: string[],
+  company_id: string,
+) => {
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
-      plan_id,
+      sess_ids: session_ids,
       company_id,
     }),
   );
