@@ -229,7 +229,7 @@ export const findMultiDayComb = (
   let curr_round = 0;
   for (let sess of interview_sessions) {
     session_rounds[curr_round].push({ ...sess });
-    if (sess.break_duration >= 24 * 60 * 60) {
+    if (sess.break_duration >= 24 * 60) {
       session_rounds.push([]);
       curr_round++;
     }
@@ -288,7 +288,7 @@ export const findMultiDayComb = (
     const days_gap = Math.floor(
       session_rounds[curr_day_idx][session_rounds[curr_day_idx].length - 1]
         .break_duration /
-        (24 * 60 * 60),
+        (24 * 60),
     );
 
     const next_day = dayjs(curr_date).add(days_gap, 'day');
@@ -392,7 +392,7 @@ export const findMultiDaySlots = (
     const days_gap = Math.floor(
       session_rounds[curr_day_idx][session_rounds[curr_day_idx].length - 1]
         .break_duration /
-        (24 * 60 * 60),
+        (24 * 60),
     );
 
     const next_day = dayjs(curr_date).add(days_gap, 'day');
@@ -440,7 +440,7 @@ export const findMultiDaySlots = (
   let curr_round = 0;
   for (let sess of interview_sessions) {
     session_rounds[curr_round].push({ ...sess });
-    if (sess.break_duration >= 24 * 60 * 60) {
+    if (sess.break_duration >= 24 * 60) {
       session_rounds.push([]);
       curr_round++;
     }
