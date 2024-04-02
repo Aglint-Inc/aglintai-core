@@ -1068,48 +1068,6 @@ export type Database = {
           },
         ]
       }
-      interview_meeting_user: {
-        Row: {
-          created_at: string
-          feedback: Json | null
-          id: string
-          interview_meeting_id: string
-          interviewer_id: string | null
-          interviewer_type: Database["public"]["Enums"]["interviewer_type"]
-        }
-        Insert: {
-          created_at?: string
-          feedback?: Json | null
-          id?: string
-          interview_meeting_id: string
-          interviewer_id?: string | null
-          interviewer_type?: Database["public"]["Enums"]["interviewer_type"]
-        }
-        Update: {
-          created_at?: string
-          feedback?: Json | null
-          id?: string
-          interview_meeting_id?: string
-          interviewer_id?: string | null
-          interviewer_type?: Database["public"]["Enums"]["interviewer_type"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_interview_meeting_user_interview_meeting_id_fkey"
-            columns: ["interview_meeting_id"]
-            isOneToOne: false
-            referencedRelation: "interview_meeting"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_meeting_user_interviewer_id_fkey"
-            columns: ["interviewer_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
-        ]
-      }
       interview_module: {
         Row: {
           created_at: string
@@ -3206,6 +3164,7 @@ export type Database = {
         }
         Returns: {
           interview_meeting: Json
+          interview_session: Json
           schedule: Json
           users: Json
         }[]
@@ -3216,6 +3175,7 @@ export type Database = {
         }
         Returns: {
           interview_meeting: Json
+          interview_session: Json
           schedule: Json
           users: Json
         }[]

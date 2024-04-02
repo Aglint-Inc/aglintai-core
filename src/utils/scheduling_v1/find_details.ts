@@ -37,7 +37,6 @@ export const find_api_details = async (
     .reduce((tot, curr) => {
       return [...tot, ...curr];
     });
-
   const ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
       let session: InterviewSessionApiType = {

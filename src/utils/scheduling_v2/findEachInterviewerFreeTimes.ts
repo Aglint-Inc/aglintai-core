@@ -22,14 +22,26 @@ import {
   TimeDurationDayjsType,
   TimeDurationType,
 } from './types';
+import { convertDayjsToUserTimeZoneDate } from './utils';
 
 // returns users calender events on there timezone ,given respective start_date and end_date
 export const findInterviewersEvents = async (
   company_cred: CompServiceKeyCred,
   ints_meta: IntervMeta[],
-  start_date: string,
-  end_date: string,
+  dayjs_start_date: Dayjs,
+  dayjs_end_date: Dayjs,
+  user_tz,
 ) => {
+  const start_date = convertDayjsToUserTimeZoneDate(
+    dayjs_start_date,
+    user_tz,
+    true,
+  );
+  const end_date = convertDayjsToUserTimeZoneDate(
+    dayjs_end_date,
+    user_tz,
+    false,
+  );
   const promiseArr = ints_meta.map(async (int) => {
     let newInt: InterDetailsType = {
       ...int,
@@ -66,19 +78,12 @@ export const findInterviewersEvents = async (
 };
 
 // returns users free time ranges on there timezone, given respective start_date and end_date
-export const findEachInterviewerFreeTimes = async (
-  company_cred: CompServiceKeyCred,
-  ints_meta: IntervMeta[],
+export const findEachInterviewerFreeTimes = (
+  ints_details: InterDetailsType[],
   start_date: string,
   end_date: string,
 ) => {
-  const intervs_details_with_events = await findInterviewersEvents(
-    company_cred,
-    ints_meta,
-    start_date,
-    end_date,
-  );
-  const updated_intervs_details = cloneDeep(intervs_details_with_events);
+  const updated_intervs_details = cloneDeep(ints_details);
   for (let interv of updated_intervs_details) {
     if (!interv.isCalenderConnected) {
       interv.freeTimes = [];
@@ -256,8 +261,8 @@ const minusEventsTimeInWorkHours = (
       )
     ) {
       free_times.push({
-        startTime: curr_freetime_chunk.startTime.toISOString(),
-        endTime: curr_freetime_chunk.endTime.toISOString(),
+        startTime: curr_freetime_chunk.startTime.format(),
+        endTime: curr_freetime_chunk.endTime.format(),
       });
       workhr_idx++;
       if (workhr_idx < work_hr_chunks.length) {
@@ -293,8 +298,8 @@ const minusEventsTimeInWorkHours = (
       )
     ) {
       free_times.push({
-        startTime: curr_freetime_chunk.startTime.toISOString(),
-        endTime: cal_events_times[cal_evt_idx].startTime.toISOString(),
+        startTime: curr_freetime_chunk.startTime.format(),
+        endTime: cal_events_times[cal_evt_idx].startTime.format(),
       });
       workhr_idx++;
       if (workhr_idx < work_hr_chunks.length) {
@@ -337,8 +342,8 @@ const minusEventsTimeInWorkHours = (
       )
     ) {
       free_times.push({
-        startTime: curr_freetime_chunk.startTime.toISOString(),
-        endTime: cal_events_times[cal_evt_idx].startTime.toISOString(),
+        startTime: curr_freetime_chunk.startTime.format(),
+        endTime: cal_events_times[cal_evt_idx].startTime.format(),
       });
       curr_freetime_chunk.startTime = cal_events_times[cal_evt_idx].endTime;
 
@@ -394,13 +399,13 @@ const minusEventsTimeInWorkHours = (
   }
   if (workhr_idx < work_hours_range.length) {
     free_times.push({
-      startTime: curr_freetime_chunk.startTime.toISOString(),
-      endTime: curr_freetime_chunk.endTime.toISOString(),
+      startTime: curr_freetime_chunk.startTime.format(),
+      endTime: curr_freetime_chunk.endTime.format(),
     });
     for (let i = workhr_idx + 1; i < work_hr_chunks.length; ++i) {
       free_times.push({
-        startTime: work_hr_chunks[i].startTime.toISOString(),
-        endTime: work_hr_chunks[i].endTime.toISOString(),
+        startTime: work_hr_chunks[i].startTime.format(),
+        endTime: work_hr_chunks[i].endTime.format(),
       });
     }
   }
