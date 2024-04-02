@@ -212,7 +212,7 @@ export const useSendInviteForCandidate = () => {
           .from('interview_filter_json')
           .insert({
             filter_json: {
-              session_ids: session_ids,
+              session_ids: refSessions.map((session) => session.newId),
               recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),

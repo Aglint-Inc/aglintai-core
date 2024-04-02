@@ -68,5 +68,6 @@ export const allowedPaths = new Set([
   '/api/test',
   '/api/scheduling/mail-agent/email-webhook',
   '/api/scheduling/v2/cancel_interview_scheduling',
+  '/api/scheduling/v1/find_interview_slots',
   ...cronPaths,
 ]);
