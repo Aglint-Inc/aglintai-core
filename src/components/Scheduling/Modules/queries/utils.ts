@@ -34,16 +34,15 @@ export const fetchProgress = async ({
   trainer_ids: string[];
 }) => {
   const { data, error } = await supabase
-    .from('interview_meeting_user')
-    .select('*,interview_meeting!inner(*,interview_schedule(*))')
-    .eq('interview_meeting.module_id', module_id)
-    .in('interviewer_id', trainer_ids)
-    .eq('interview_meeting.status', 'completed');
+    .from('interview_session_relation')
+    .select('*,interview_session(*,interview_module(*))')
+    .eq('interview_session_relation.interview_session.module_id', module_id)
+    .in('', trainer_ids);
 
   if (error) {
     throw new Error(error.message);
   }
-  return data.filter((d) => d.interview_meeting !== null);
+  return data;
 };
 
 export const fetchInterviewModules = async (rec_id: string) => {
@@ -178,9 +177,9 @@ export const getMeetingsByModuleId = async (module_id: string) => {
   const lastDayOfWeek = new Date(firstDayOfWeek);
   lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
   const { data, error } = await supabase
-    .from('interview_meeting_user')
-    .select('*,interview_meeting(*)')
-    .eq('interview_meeting.module_id', module_id as string)
+    .from('interview_session_relation')
+    .select('*,interview_session(*)')
+    .eq('interview_session.module_id', module_id as string)
     .not('interview_meeting', 'is', null)
     .gte(
       'interview_meeting.start_time',

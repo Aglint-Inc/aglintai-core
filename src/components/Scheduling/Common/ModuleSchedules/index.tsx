@@ -159,7 +159,13 @@ function ModuleSchedules({
 
 export default ModuleSchedules;
 
-function ScheduleCard({ sch, selectedTimeZone }) {
+function ScheduleCard({
+  sch,
+  selectedTimeZone,
+}: {
+  sch: Omit<TransformSchedule, 'applications' | 'job' | 'candidates' | 'file'>;
+  selectedTimeZone: string;
+}) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -190,12 +196,13 @@ function ScheduleCard({ sch, selectedTimeZone }) {
     setStartDate(convertedStartDateTime);
     setEndDate(convertedEndDateTime);
   }, [selectedTimeZone]);
+
   return (
     <InterviewScreenCard
       onClickCard={{
         onClick: () => {
           router.push(
-            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
+            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_session.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
           );
         },
       }}
@@ -203,9 +210,11 @@ function ScheduleCard({ sch, selectedTimeZone }) {
       textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
       textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
       textStatus={sch.interview_meeting.status ?? ''}
-      textTime={`${dayjs(startDate).format('hh:mm A')} - ${dayjs(endDate).format('hh:mm A')} ( ${sch.interview_meeting.duration} Minutes )`}
-      textMeetingPlatform={getScheduleType(sch.schedule.schedule_type)}
-      slotMeetingIcon={<IconScheduleType type={sch.schedule.schedule_type} />}
+      textTime={`${dayjs(startDate).format('hh:mm A')} - ${dayjs(endDate).format('hh:mm A')}`}
+      textMeetingPlatform={getScheduleType(sch.interview_session.schedule_type)}
+      slotMeetingIcon={
+        <IconScheduleType type={sch.interview_session.schedule_type} />
+      }
       textTitle={sch.schedule.schedule_name}
       colorPropsText={{
         style: {
