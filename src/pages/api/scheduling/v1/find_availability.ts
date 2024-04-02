@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -10,9 +10,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { getFullName } from '@/src/utils/jsonResume';
 import { find_api_details } from '@/src/utils/scheduling_v1/find_details';
-import { findEachInterviewerFreeTimes } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
-import { findPlanCombinations } from '@/src/utils/scheduling_v2/findPlanCombinations';
-
+import { findInterviewersEvents } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
+import { findMultiDayComb } from '@/src/utils/scheduling_v2/findPlanCombinations';
+import { convertDateFormatToDayjs } from '@/src/utils/scheduling_v2/utils';
 export type BodyParams = {
   session_ids: string[];
   plan_id: string;
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       start_date,
       end_date,
-      user_tz = 'Asia/Colombo',
+      user_tz = 'Asia/colombo',
     } = req.body as BodyParams;
 
     required_fields.forEach((field) => {
@@ -40,18 +40,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
 
-    start_date = getUserTimeZoneDate(start_date, user_tz, true);
-    end_date = getUserTimeZoneDate(end_date, user_tz, false);
+    const dayjs_start_date = convertDateFormatToDayjs(start_date);
+    const dayjs_end_date = convertDateFormatToDayjs(end_date);
 
-    const { ses_with_ints, company_cred, all_inters } = await find_api_details(
+    const { company_cred, all_inters, ses_with_ints } = await find_api_details(
       session_ids,
       recruiter_id,
     );
 
-    const selected_sessions = ses_with_ints.filter((s) =>
-      session_ids.includes(s.session_id),
-    );
-    const inters_with_free_time_ranges = await findEachInterviewerFreeTimes(
+    const intervs_details_with_events = await findInterviewersEvents(
       company_cred,
       all_inters.map((i) => ({
         email: i.email,
@@ -61,19 +58,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         shedule_settings: i.scheduling_settings,
         tokens: i.schedule_auth as any,
       })),
-      start_date,
-      end_date,
+      dayjs_start_date,
+      dayjs_end_date,
+      user_tz,
     );
-    const combs = findPlanCombinations(
-      selected_sessions,
-      inters_with_free_time_ranges,
-    );
-    return res.status(200).json(combs);
 
-    // return res
-    //   .status(200)
-    //   .json({ d1: inters_with_free_time_ranges, d2: common_free_time });
-    // return res.status(200).send(inters_with_free_time_ranges);
+    const combs = findMultiDayComb(
+      ses_with_ints,
+      intervs_details_with_events,
+      dayjs_start_date,
+      dayjs_end_date,
+      user_tz,
+    );
+    return res.status(200).json({
+      plan_combs: combs.slice(0, 20),
+      total: combs.length,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);
@@ -84,22 +84,3 @@ export default handler;
 
 // given n persons with there availability time_ranges in the format {startTime:string, endTime:string}[] for each person find the commn  time range which all n person are available on that
 //
-
-const getUserTimeZoneDate = (user_date, userTimeZone, isStartTime = true) => {
-  const [day, month, year] = user_date.split('/');
-  if (!day || !month || !year) {
-    throw new Error(`Date should in the format DD/MM/YYYY`);
-  }
-  const d1 = dayjs(`${year}-${month}-${day}`);
-  // if (!validate(user_date, 'DD/MM/YYYY'))
-  //   throw new Error(`invalid date format ${user_date}`);
-
-  let d: Dayjs;
-  d = d1.tz(userTimeZone);
-  if (isStartTime) {
-    d = d.startOf('day');
-  } else {
-    d = d.endOf('day');
-  }
-  return d.format();
-};

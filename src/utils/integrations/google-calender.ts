@@ -44,8 +44,12 @@ export class GoogleCalender {
           decrypt(rec_relns.recruiter.service_json, process.env.ENCRYPTION_KEY),
         );
       }
+    } else {
+      this.user_auth = await getUserCalAuth({
+        recruiter: this.auth_details.recruiter,
+        company_cred: this.auth_details.company_cred,
+      });
     }
-    this.user_auth = await getUserCalAuth(this.auth_details);
     return this.user_auth;
   }
 

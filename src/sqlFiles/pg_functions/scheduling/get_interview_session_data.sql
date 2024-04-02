@@ -1,7 +1,7 @@
 DROP FUNCTION IF EXISTS get_interview_session_data;
 
-CREATE OR REPLACE FUNCTION get_interview_session_data(plan_id uuid,company_id uuid)
-RETURNS TABLE (
+CREATE
+OR REPLACE FUNCTION get_interview_session_data (session_ids uuid[], company_id uuid) RETURNS TABLE (
   interview_sessions jsonb[],
   interviewers jsonb[],
   service_cred text,
@@ -15,7 +15,7 @@ BEGIN
   FOR session_record IN
     SELECT *
     FROM interview_session AS int_sess
-    WHERE int_sess.interview_plan_id = plan_id
+    WHERE int_sess.id = any(session_ids)
   LOOP
     -- Append each session as JSONB directly to interview_sessions
     interview_sessions := interview_sessions || ROW_TO_JSON(session_record)::jsonb;
@@ -54,8 +54,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
-
 -- Call the function with your plan ID
-SELECT * FROM get_interview_session_data('76f6d467-950a-4d11-95c5-c45804f44786','d353b3a0-3e19-45d0-8623-4bd35577f548');
-
+SELECT
+  *
+FROM
+  get_interview_session_data (
+    '{d52e7178-8674-4fce-8d3b-58fde2fdc8a9,2d96db8f-5edb-419d-9e4a-f36b60e2ccfe}',
+    'd353b3a0-3e19-45d0-8623-4bd35577f548'
+  );

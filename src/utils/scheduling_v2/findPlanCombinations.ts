@@ -1,23 +1,39 @@
-import dayjs from 'dayjs';
+/* eslint-disable security/detect-object-injection */
+import dayjs, { Dayjs } from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
 
 import {
   InterviewSessionApiType,
+  PlanCombinationRespType,
   PlanCombinationType,
+  SessionCombinationRespType,
+  SessionInterviewerApiRespType,
+  SessionInterviewerType,
 } from '../scheduling_v1/types';
 import { calcIntervCombsForModule } from './calcIntervCombsForModule';
 import { findCommonTimeRange } from './findCommonTimeRange';
+import { findEachInterviewerFreeTimes } from './findEachInterviewerFreeTimes';
 import { InterDetailsType, IntervCntApp, TimeDurationType } from './types';
+import { convertDayjsToUserTimeZoneDate } from './utils';
 
-export const findPlanCombinations = (
-  interview_plan: InterviewSessionApiType[],
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
+
+export const findFixedTimeCombs = (
+  interview_sessions: InterviewSessionApiType[],
   interv_free_time: InterDetailsType[],
 ) => {
   const cached_free_time = new Map<string, TimeDurationType[]>();
   let all_schedule_combs: PlanCombinationType[] = [];
 
-  const module_combs = calcIntervCombsForModule(interview_plan);
-
+  const module_combs = calcIntervCombsForModule(interview_sessions);
   const explore_module_combs = (
     current_comb: InterviewSessionApiType[],
     module_idx,
@@ -76,18 +92,17 @@ export const findPlanCombinations = (
       if (module_idx === plan_comb.length) {
         return true;
       }
-      const plan_session = plan_comb[Number(module_idx)];
-      const break_duration = plan_session.break_duration;
-
+      const prev_session = plan_comb[Number(module_idx - 1)];
+      const break_duration = prev_session.break_duration;
       let required_time: TimeDurationType = {
         startTime: dayjs(prev_time_range.endTime)
           .add(break_duration, 'minutes')
-          .toISOString(),
+          .format(),
         endTime: dayjs(prev_time_range.endTime)
-          .add(plan_session.duration + break_duration, 'minutes')
-          .toISOString(),
+          .add(prev_session.duration + break_duration, 'minutes')
+          .format(),
       };
-
+      const plan_session = plan_comb[Number(module_idx)];
       const common_time = getInterviewersCommonTime(plan_session);
 
       for (let free_time of common_time) {
@@ -170,7 +185,7 @@ export const findPlanCombinations = (
         dayjs(curr_time_range.endTime).unix() <=
           dayjs(time_range.endTime).unix()
       ) {
-        let plan_comb: PlanCombinationType = {
+        let session_comb: PlanCombinationType = {
           plan_comb_id: nanoid(),
           sessions: [
             {
@@ -181,8 +196,8 @@ export const findPlanCombinations = (
           ],
         };
 
-        if (findIsModuleAvailable(1, curr_time_range, plan_comb)) {
-          schedule_combs.push(plan_comb);
+        if (findIsModuleAvailable(1, curr_time_range, session_comb)) {
+          schedule_combs.push(session_comb);
         }
 
         curr_time_range.startTime = dayjs(curr_time_range.startTime)
@@ -197,4 +212,134 @@ export const findPlanCombinations = (
   };
   explore_module_combs([], 0);
   return all_schedule_combs;
+};
+
+export const findMultiDayComb = (
+  interview_sessions: InterviewSessionApiType[],
+  intervs_details_with_events: InterDetailsType[],
+  dayjs_start_date: Dayjs,
+  dayjs_end_date: Dayjs,
+  user_tz: string,
+) => {
+  let session_rounds: InterviewSessionApiType[][] = [[]];
+
+  let curr_round = 0;
+  for (let sess of interview_sessions) {
+    session_rounds[curr_round].push({ ...sess });
+    if (sess.break_duration >= 24 * 60 * 60) {
+      session_rounds.push([]);
+      curr_round++;
+    }
+  }
+
+  session_rounds = session_rounds.filter(Boolean);
+
+  const findMultiDayPlanUtil = (
+    final_combs: PlanCombinationType[],
+    curr_date: Dayjs,
+    curr_day_idx: number,
+  ): PlanCombinationType[] => {
+    if (curr_day_idx === session_rounds.length) {
+      return final_combs;
+    }
+
+    if (dayjs(curr_date).isAfter(dayjs_end_date)) {
+      return [];
+    }
+
+    const curr_day_start_time = convertDayjsToUserTimeZoneDate(
+      curr_date,
+      user_tz,
+      true,
+    );
+    const curr_day_end_time = convertDayjsToUserTimeZoneDate(
+      curr_date,
+      user_tz,
+      false,
+    );
+
+    const interv_curr_day_free_time = findEachInterviewerFreeTimes(
+      intervs_details_with_events,
+      curr_day_start_time,
+      curr_day_end_time,
+    );
+
+    const combs = findFixedTimeCombs(
+      cloneDeep(session_rounds[curr_day_idx]),
+      interv_curr_day_free_time,
+    );
+    if (final_combs.length === 0) {
+      final_combs = cloneDeep(combs);
+    } else {
+      const temp_combs: PlanCombinationType[] = [];
+      const next_day_combs: PlanCombinationType[] = cloneDeep(combs);
+      for (let final_slot of final_combs) {
+        for (let nextdaySlot of next_day_combs) {
+          temp_combs.push({
+            plan_comb_id: nanoid(),
+            sessions: [...final_slot.sessions, ...nextdaySlot.sessions],
+          });
+        }
+      }
+      final_combs = cloneDeep(temp_combs);
+    }
+
+    const days_gap = Math.floor(
+      session_rounds[curr_day_idx][session_rounds[curr_day_idx].length - 1]
+        .break_duration /
+        (24 * 60 * 60),
+    );
+
+    const next_day = dayjs(curr_date).add(days_gap, 'day');
+    return findMultiDayPlanUtil(final_combs, next_day, ++curr_day_idx);
+  };
+
+  let curr_date = dayjs_start_date;
+  let all_combs: PlanCombinationRespType[] = [];
+  while (curr_date.isSameOrBefore(dayjs_end_date)) {
+    let combs = findMultiDayPlanUtil([], curr_date, 0);
+    const tra_combs = combs.map((c) => {
+      const sessions: SessionCombinationRespType[] = c.sessions.map((s) => {
+        let sess: SessionCombinationRespType = {
+          break_duration: s.break_duration,
+          duration: s.duration,
+          interviewer_cnt: s.interviewer_cnt,
+          module_name: s.module_name,
+          schedule_type: s.schedule_type,
+          session_id: s.session_id,
+          session_name: s.session_name,
+          session_order: s.session_order,
+          session_type: s.session_type,
+          selectedIntervs: convertIntToResp(s.selectedIntervs),
+          revShadowIntervs: convertIntToResp(s.revShadowIntervs),
+          shadowIntervs: convertIntToResp(s.shadowIntervs),
+          end_time: s.end_time,
+          start_time: s.start_time,
+        };
+
+        return sess;
+      });
+      const p: PlanCombinationRespType = {
+        plan_comb_id: nanoid(),
+        sessions: sessions,
+      };
+      return p;
+    });
+    all_combs = [...all_combs, ...tra_combs];
+    curr_date = curr_date.add(1, 'day');
+  }
+  return all_combs;
+};
+
+const convertIntToResp = (inters: SessionInterviewerType[]) => {
+  const r: SessionInterviewerApiRespType[] = inters.map((i) => ({
+    email: i.email,
+    first_name: i.first_name,
+    last_name: i.last_name,
+    profile_image: i.profile_image,
+    training_type: i.training_type,
+    interviewer_type: i.interviewer_type,
+  }));
+
+  return r;
 };

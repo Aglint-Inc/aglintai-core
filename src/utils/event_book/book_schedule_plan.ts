@@ -1,7 +1,3 @@
-import {
-  InterviewModuleApiType,
-  InterviewPlanScheduleDbType,
-} from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 const { v4: uuidv4 } = require('uuid');
 
