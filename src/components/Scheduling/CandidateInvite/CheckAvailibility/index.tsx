@@ -19,7 +19,7 @@ function CheckAvailibility({
   dateRange,
   setDateRange,
   schedule,
-  setSchedule
+  setSchedule,
 }: {
   changeTime: any;
   setChangeTime: any;
@@ -29,7 +29,7 @@ function CheckAvailibility({
   };
   setDateRange: ({
     start_date,
-    end_date
+    end_date,
   }: {
     start_date: string;
     end_date: string;
@@ -47,15 +47,9 @@ function CheckAvailibility({
         job_id: schedule.job.id,
         company_id: schedule.recruiter.id,
         start_date: dateRange.start_date,
-        end_date: dateRange.end_date
+        end_date: dateRange.end_date,
       });
       if (res.data) {
-        setSchedule({
-          ...schedule,
-          schedulingOptions: res.data.map((option) => {
-            return { ...option, transformedPlan: transformData(option.plans) };
-          })
-        });
         setFetchingPlan(false);
       } else {
         toast.error('Error fetching schedule options');
@@ -86,12 +80,12 @@ function CheckAvailibility({
                 if (dayjs(newValue) < dayjs(dateRange?.end_date)) {
                   setDateRange({
                     start_date: dayjs(newValue).toISOString(),
-                    end_date: dateRange?.end_date
+                    end_date: dateRange?.end_date,
                   });
                 } else {
                   setDateRange({
                     start_date: dayjs(newValue).toISOString(),
-                    end_date: null
+                    end_date: null,
                   });
                 }
               }}
@@ -101,8 +95,8 @@ function CheckAvailibility({
                   fullWidth: true,
                   variant: 'outlined',
                   InputProps: { disableUnderline: true },
-                  placeholder: 'Start Date'
-                }
+                  placeholder: 'Start Date',
+                },
               }}
             />
           </LocalizationProvider>
@@ -114,7 +108,7 @@ function CheckAvailibility({
               onChange={(newValue) => {
                 setDateRange({
                   start_date: dateRange?.start_date,
-                  end_date: dayjs(newValue).toISOString()
+                  end_date: dayjs(newValue).toISOString(),
                 });
               }}
               slotProps={{
@@ -122,8 +116,8 @@ function CheckAvailibility({
                   fullWidth: true,
                   variant: 'outlined',
                   InputProps: { disableUnderline: true },
-                  placeholder: 'Start Date'
-                }
+                  placeholder: 'Start Date',
+                },
               }}
             />
           </LocalizationProvider>
@@ -138,7 +132,7 @@ function CheckAvailibility({
           isDisabled={fetchingPlan}
           textLabel={'Get Schedule Options'}
           onClickButton={{
-            onClick: findScheduleOptions
+            onClick: findScheduleOptions,
           }}
         />
       </Stack>
