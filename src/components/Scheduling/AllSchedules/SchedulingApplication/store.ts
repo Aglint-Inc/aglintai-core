@@ -6,7 +6,7 @@ import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
 } from '@/src/types/data.types';
-import { PlanCombinationType } from '@/src/utils/scheduling_v1/types';
+import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
 
@@ -26,7 +26,7 @@ export interface SchedulingApplication {
   };
   members: InterviewScheduleContextType['members'];
   step: number;
-  schedulingOptions: PlanCombinationType[];
+  schedulingOptions: PlanCombinationRespType[];
   isScheduleNowOpen: boolean;
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
@@ -107,7 +107,7 @@ export const setScheduleName = (scheduleName: string) =>
   useSchedulingApplicationStore.setState({ scheduleName });
 
 export const setSchedulingOptions = (
-  schedulingOptions: PlanCombinationType[],
+  schedulingOptions: PlanCombinationRespType[],
 ) => useSchedulingApplicationStore.setState({ schedulingOptions });
 
 export const setSelCoordinator = (selCoordinator: string | null) =>
