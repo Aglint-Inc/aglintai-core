@@ -10,11 +10,11 @@ import { AvatarWithName } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
-import { PlanCombinationType } from '@/src/utils/scheduling_v1/types';
+import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 
 interface SchedulingOptionCompProps {
   isBadgeVisible?: boolean;
-  schedulingOptions: PlanCombinationType[];
+  schedulingOptions: PlanCombinationRespType[];
   isInterviewVisible?: boolean;
   loading?: boolean;
 }
@@ -75,7 +75,7 @@ function SchedulingOptionComp({
                               {ses.selectedIntervs?.map((int) => {
                                 return (
                                   <AvatarWithName
-                                    key={int.user_id}
+                                    key={int.email}
                                     textName={int.first_name}
                                     slotAvatar={
                                       <MuiAvatar
@@ -96,7 +96,7 @@ function SchedulingOptionComp({
                               {ses.shadowIntervs?.map((int) => {
                                 return (
                                   <AvatarWithName
-                                    key={int.user_id}
+                                    key={int.email}
                                     isShadowVisible={isBadgeVisible && true}
                                     isReverseShadowVisible={
                                       isBadgeVisible && false
@@ -121,7 +121,7 @@ function SchedulingOptionComp({
                               {ses.revShadowIntervs?.map((int) => {
                                 return (
                                   <AvatarWithName
-                                    key={int.user_id}
+                                    key={int.email}
                                     isShadowVisible={isBadgeVisible && false}
                                     isReverseShadowVisible={
                                       isBadgeVisible && true

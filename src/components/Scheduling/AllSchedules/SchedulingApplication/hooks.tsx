@@ -14,6 +14,7 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
 } from '@/src/types/data.types';
+import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -60,12 +61,17 @@ export const useGetScheduleOptions = () => {
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
       } as BodyParams);
-      if (res.data) {
-        if (res.data.length === 0) {
+
+      if (res.status === 200) {
+        const respTyped = res.data as {
+          plan_combs: PlanCombinationRespType[];
+          total: number;
+        };
+        if (respTyped.plan_combs.length === 0) {
           setNoOptions(true);
           setStep(1);
         } else {
-          setSchedulingOptions(res.data);
+          setSchedulingOptions(respTyped.plan_combs);
           setStep(2);
         }
       } else {

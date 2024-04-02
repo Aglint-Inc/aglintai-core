@@ -31,18 +31,40 @@ export const fetchProgress = async ({
   trainer_ids,
 }: {
   module_id: string;
-  trainer_ids: string[];
+  trainer_ids: string[]; // interview_module_relation_id
 }) => {
-  const { data, error } = await supabase
+  const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
-    .select('*,interview_session(*,interview_module(*))')
-    .eq('interview_session_relation.interview_session.module_id', module_id)
-    .in('', trainer_ids);
+    .select('*,interview_session(*,interview_plan(*))')
+    .eq('interview_session.module_id', module_id)
+    .in('interview_module_relation_id', trainer_ids);
 
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
+  if (errSelRel) throw new Error(errSelRel.message);
+
+  const filteredIntSesRel = intSesRel.filter(
+    (ses) => !ses.interview_session?.interview_plan?.id,
+  );
+
+  const uniqueSessionIds = [
+    ...new Set(filteredIntSesRel.map((sesrel) => sesrel.interview_session.id)),
+  ];
+
+  const { data, error } = await supabase
+    .from('interview_meeting')
+    .select('*,interview_session(*)')
+    .in('interview_session.id', uniqueSessionIds);
+
+  const resRel = filteredIntSesRel
+    .map((sesRel) => ({
+      ...sesRel,
+      interview_meeting: data.find(
+        (meet) => meet.interview_session.id === sesRel.interview_session.id,
+      ),
+    }))
+    .filter((sesRel) => sesRel?.interview_meeting?.id);
+
+  if (error) throw new Error(error.message);
+  return resRel;
 };
 
 export const fetchInterviewModules = async (rec_id: string) => {
@@ -176,21 +198,40 @@ export const getMeetingsByModuleId = async (module_id: string) => {
   );
   const lastDayOfWeek = new Date(firstDayOfWeek);
   lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
-  const { data, error } = await supabase
+
+  const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
+    .select('*,interview_session(*,interview_plan(*))')
+    .eq('interview_session.module_id', module_id as string);
+
+  if (errSelRel) throw new Error(errSelRel.message);
+
+  const filteredIntSesRel = intSesRel.filter(
+    (ses) => !ses.interview_session?.interview_plan?.id,
+  );
+
+  const uniqueSessionIds = [
+    ...new Set(filteredIntSesRel.map((sesrel) => sesrel.interview_session.id)),
+  ];
+
+  const { data, error } = await supabase
+    .from('interview_meeting')
     .select('*,interview_session(*)')
-    .eq('interview_session.module_id', module_id as string)
-    .not('interview_meeting', 'is', null)
-    .gte(
-      'interview_meeting.start_time',
-      firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00',
-    )
-    .lte(
-      'interview_meeting.end_time',
-      lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59',
-    );
+    .in('interview_session.id', uniqueSessionIds)
+    .gte('start_time', firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00')
+    .lte('end_time', lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59');
+
+  const resRel = filteredIntSesRel
+    .map((sesRel) => ({
+      ...sesRel,
+      interview_meeting: data.find(
+        (meet) => meet.interview_session.id === sesRel.interview_session.id,
+      ),
+    }))
+    .filter((sesRel) => sesRel?.interview_meeting?.id);
+
   if (error) throw new Error(error.message);
-  return data;
+  return resRel;
 };
 
 export const getHours = ({
@@ -199,7 +240,7 @@ export const getHours = ({
   type,
 }: {
   meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
-  user: { user_id: string };
+  user: { id: string };
   type: 'daily' | 'weekly';
 }) => {
   let currentDay = dayjs();
@@ -207,7 +248,7 @@ export const getHours = ({
     return meetingData
       .filter(
         (meet) =>
-          meet?.interviewer_id === user.user_id &&
+          meet?.interview_module_relation_id === user.id &&
           dayjs(meet?.interview_meeting?.end_time).isSame(currentDay, 'day'),
       )
       .reduce((acc, curr) => {
@@ -221,7 +262,7 @@ export const getHours = ({
       }, 0);
   }
   return meetingData
-    .filter((meet) => meet?.interviewer_id === user.user_id)
+    .filter((meet) => meet?.interview_module_relation_id === user.id)
     .reduce((acc, curr) => {
       return (
         acc +
