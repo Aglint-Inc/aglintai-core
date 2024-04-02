@@ -64,7 +64,6 @@ export const find_api_details = async (
       return session;
     })
     .sort((s1, s2) => s1.session_order - s2.session_order);
-
   return {
     company_cred,
     ses_with_ints,

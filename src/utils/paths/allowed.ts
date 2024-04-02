@@ -61,6 +61,7 @@ export const allowedPaths = new Set([
   '/api/scheduling/fetch-calender-atendees-status',
   '/api/scheduling/v2/find_availability',
   '/api/scheduling/v1/find_availability',
+  '/api/scheduling/v1/find_interview_slots',
   '/api/scheduling/fetchdbusers',
   '/api/scheduling/v2/book_schedule_plan',
   '/api/invite_user',
