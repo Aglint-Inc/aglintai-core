@@ -12,8 +12,11 @@ import {
   PlanCombinationRespType,
   PlanCombinationType,
   SessionCombinationRespType,
+  SessionCombinationType,
   SessionInterviewerApiRespType,
   SessionInterviewerType,
+  SessionsCombType,
+  SessionSlotType,
 } from '../scheduling_v1/types';
 import { calcIntervCombsForModule } from './calcIntervCombsForModule';
 import { findCommonTimeRange } from './findCommonTimeRange';
@@ -214,6 +217,7 @@ export const findFixedTimeCombs = (
   return all_schedule_combs;
 };
 
+// recruiter side
 export const findMultiDayComb = (
   interview_sessions: InterviewSessionApiType[],
   intervs_details_with_events: InterDetailsType[],
@@ -222,7 +226,6 @@ export const findMultiDayComb = (
   user_tz: string,
 ) => {
   let session_rounds: InterviewSessionApiType[][] = [[]];
-
   let curr_round = 0;
   for (let sess of interview_sessions) {
     session_rounds[curr_round].push({ ...sess });
@@ -231,9 +234,7 @@ export const findMultiDayComb = (
       curr_round++;
     }
   }
-
   session_rounds = session_rounds.filter(Boolean);
-
   const findMultiDayPlanUtil = (
     final_combs: PlanCombinationType[],
     curr_date: Dayjs,
@@ -293,7 +294,6 @@ export const findMultiDayComb = (
     const next_day = dayjs(curr_date).add(days_gap, 'day');
     return findMultiDayPlanUtil(final_combs, next_day, ++curr_day_idx);
   };
-
   let curr_date = dayjs_start_date;
   let all_combs: PlanCombinationRespType[] = [];
   while (curr_date.isSameOrBefore(dayjs_end_date)) {
@@ -342,4 +342,116 @@ const convertIntToResp = (inters: SessionInterviewerType[]) => {
   }));
 
   return r;
+};
+
+// candidate side
+export const findMultiDaySlots = (
+  interview_sessions: InterviewSessionApiType[],
+  intervs_details_with_events: InterDetailsType[],
+  dayjs_start_date: Dayjs,
+  dayjs_end_date: Dayjs,
+  user_tz: string,
+) => {
+  const findMultiDaySlotsUtil = (
+    final_combs: PlanCombinationType[][],
+    curr_date: Dayjs,
+    curr_day_idx: number,
+  ): PlanCombinationType[][] => {
+    if (curr_day_idx === session_rounds.length) {
+      return final_combs;
+    }
+
+    if (dayjs(curr_date).isAfter(dayjs_end_date)) {
+      return [];
+    }
+
+    const curr_day_start_time = convertDayjsToUserTimeZoneDate(
+      curr_date,
+      user_tz,
+      true,
+    );
+
+    const curr_day_end_time = convertDayjsToUserTimeZoneDate(
+      curr_date,
+      user_tz,
+      false,
+    );
+
+    const interv_curr_day_free_time = findEachInterviewerFreeTimes(
+      intervs_details_with_events,
+      curr_day_start_time,
+      curr_day_end_time,
+    );
+
+    const combs = findFixedTimeCombs(
+      cloneDeep(session_rounds[curr_day_idx]),
+      interv_curr_day_free_time,
+    );
+    final_combs.push([...cloneDeep(combs)]);
+
+    const days_gap = Math.floor(
+      session_rounds[curr_day_idx][session_rounds[curr_day_idx].length - 1]
+        .break_duration /
+        (24 * 60 * 60),
+    );
+
+    const next_day = dayjs(curr_date).add(days_gap, 'day');
+    return findMultiDaySlotsUtil(final_combs, next_day, ++curr_day_idx);
+  };
+
+  const convertCombsToTimeSlot = (all_plan_combs: PlanCombinationType[]) => {
+    const convertSessionCombToSlot = (session_comb: SessionCombinationType) => {
+      const session_slot: SessionSlotType = {
+        break_duration: session_comb.break_duration,
+        duration: session_comb.duration,
+        interviewer_cnt: session_comb.interviewer_cnt,
+        location: session_comb.location,
+        module_name: session_comb.module_name,
+        schedule_type: session_comb.schedule_type,
+        session_id: session_comb.session_id,
+        session_name: session_comb.session_name,
+        session_order: session_comb.session_order,
+        session_type: session_comb.session_type,
+        start_time: session_comb.start_time,
+        end_time: session_comb.end_time,
+      };
+      return session_slot;
+    };
+
+    let mp = new Map<string, SessionsCombType>();
+    for (const plan_comb of all_plan_combs) {
+      const slot_start_time = plan_comb.sessions[0].start_time;
+      const slot = mp.get(slot_start_time);
+      if (slot) {
+        slot.slot_cnt += 1;
+        mp.set(slot_start_time, slot);
+      } else {
+        mp.set(slot_start_time, {
+          slot_comb_id: nanoid(),
+          sessions: plan_comb.sessions.map((s) => convertSessionCombToSlot(s)),
+          slot_cnt: 1,
+        });
+      }
+    }
+
+    return Array.from(mp.values());
+  };
+  let session_rounds: InterviewSessionApiType[][] = [[]];
+  let curr_round = 0;
+  for (let sess of interview_sessions) {
+    session_rounds[curr_round].push({ ...sess });
+    if (sess.break_duration >= 24 * 60 * 60) {
+      session_rounds.push([]);
+      curr_round++;
+    }
+  }
+  session_rounds = session_rounds.filter(Boolean);
+
+  const plan_combs = findMultiDaySlotsUtil([], dayjs_start_date, 0);
+  const multi_day_slots = [];
+  for (const curr_comb of plan_combs) {
+    const curr_day_session_slots = convertCombsToTimeSlot(curr_comb);
+    multi_day_slots.push(curr_day_session_slots);
+  }
+  return multi_day_slots;
 };
