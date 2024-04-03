@@ -1,12 +1,9 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
-import {
-  GetAuthParams,
-  getUserCalAuth,
-} from '../event_book/book_schedule_plan';
-import { CalendarEvent } from '../schedule-utils/types';
-import { decrypt } from '../scheduling_v2/utils';
+import { GetAuthParams, getUserCalAuth } from '../event_book/book_session';
+import { CalendarEvent, NewCalenderEvent } from '../schedule-utils/types';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { decrypt_string } from './crypt-funcs';
 
 const { google } = require('googleapis');
 
@@ -14,7 +11,10 @@ export class GoogleCalender {
   private recruiter_user_id;
   private auth_details: GetAuthParams;
   private user_auth: any;
-  constructor(_auth_details: GetAuthParams | null, _recruiter_user_id: string) {
+  constructor(
+    _auth_details: GetAuthParams | null,
+    _recruiter_user_id: string = null,
+  ) {
     if (_auth_details) {
       this.auth_details = _auth_details;
     }
@@ -41,7 +41,7 @@ export class GoogleCalender {
       };
       if (rec_relns.recruiter.service_json) {
         this.auth_details.company_cred = JSON.parse(
-          decrypt(rec_relns.recruiter.service_json, process.env.ENCRYPTION_KEY),
+          decrypt_string(rec_relns.recruiter.service_json),
         );
       }
     } else {
@@ -52,7 +52,6 @@ export class GoogleCalender {
     }
     return this.user_auth;
   }
-
   public async getAllCalenderEvents(start_date: string, end_date: string) {
     if (!this.user_auth) {
       throw new Error('user not authorized');
@@ -76,5 +75,37 @@ export class GoogleCalender {
       eventId: event_id,
     });
     return event as CalendarEvent;
+  }
+
+  public async createCalenderEvent(new_cal_event: NewCalenderEvent) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const response = await calendar.events.insert({
+      calendarId: 'primary', // 'primary' refers to the user's primary calendar
+      resource: new_cal_event,
+      conferenceDataVersion: 1,
+      sendNotifications: true,
+    });
+    return response.data as CalendarEvent;
+  }
+  public async importEvent(event, attendeeEmail) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const response = await calendar.events.import({
+      calendarId: attendeeEmail, // Use the attendee's email as the calendar ID
+      resource: event,
+      sendNotifications: true,
+    });
+    return response.data;
+  }
+  public async updateEventStatus(event_id: string, status: 'cancelled') {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const response = await calendar.events.patch({
+      calendarId: 'primary', // Change to specific calendar ID if needed
+      eventId: event_id,
+      requestBody: {
+        status: status,
+      },
+      sendNotifications: true,
+    });
+    return response.data;
   }
 }

@@ -83,42 +83,6 @@ export type InterviewSessionApiRespType = {
   module_name: InterviewModuleType['name'];
 };
 
-// planCombination reuiter side reponse types
-
-export type PlanCombinationRespType = {
-  plan_comb_id: string;
-  sessions: SessionCombinationRespType[];
-};
-
-export type SessionCombinationRespType = InterviewSessionApiRespType & {
-  start_time: string;
-  end_time: string;
-};
-
-export type SessionInterviewerApiRespType = Pick<
-  RecruiterUserType,
-  'first_name' | 'last_name' | 'email' | 'profile_image'
-> &
-  Pick<InterviewerSessionRelation, 'training_type' | 'interviewer_type'>;
-
-export type InterviewSessionApiRespType = {
-  session_id: InterviewSession['id'];
-  session_name: InterviewSession['name'];
-  duration: InterviewSession['session_duration'];
-  schedule_type: InterviewSession['schedule_type'];
-  session_type: InterviewSession['session_type'];
-  location: InterviewSession['location'];
-  selectedIntervs: SessionInterviewerApiRespType[];
-  shadowIntervs: SessionInterviewerApiRespType[];
-  revShadowIntervs: SessionInterviewerApiRespType[];
-  break_duration: InterviewSession['break_duration'];
-  session_order: InterviewSession['session_order'];
-  interviewer_cnt: InterviewSession['interviewer_cnt'];
-  module_name: InterviewModuleType['name'];
-};
-
-// planCombination candidate  side reponse types
-
 export type SessionsCombType = {
   slot_comb_id: string;
   slot_cnt: number;

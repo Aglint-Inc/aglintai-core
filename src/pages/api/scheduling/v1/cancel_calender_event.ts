@@ -4,9 +4,9 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import {
   getUserCalAuth,
   Interviewer,
-} from '@/src/utils/event_book/book_schedule_plan';
+} from '@/src/utils/event_book/book_session';
+import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { CalendarEvent } from '@/src/utils/schedule-utils/types';
-import { decrypt } from '@/src/utils/scheduling_v2/utils';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 const { google } = require('googleapis');
@@ -63,9 +63,7 @@ const getRecruiterCredentials = async ({ email }) => {
           .eq('user_id', user_id),
       );
       if (!rec.recruiter.service_json) return null;
-      return JSON.parse(
-        decrypt(rec.recruiter.service_json, process.env.ENCRYPTION_KEY),
-      );
+      return JSON.parse(decrypt_string(rec.recruiter.service_json));
     })(),
     (async () => {
       const [rec] = supabaseWrap(

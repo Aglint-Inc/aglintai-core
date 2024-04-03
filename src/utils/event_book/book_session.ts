@@ -1,64 +1,18 @@
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 const { v4: uuidv4 } = require('uuid');
 
-import { RecruiterUserType } from '@/src/types/data.types';
+import { InterviewSession, RecruiterUserType } from '@/src/types/data.types';
 
+import { GoogleCalender } from '../integrations/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
 import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
 import { NewCalenderEvent } from '../schedule-utils/types';
 import { CompServiceKeyCred } from '../scheduling_v2/types';
-import { decrypt } from '../scheduling_v2/utils';
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
 export type GetAuthParams = {
   company_cred: CompServiceKeyCred;
   recruiter: Interviewer;
-};
-export const getAllIntsFromPlan = async (
-  plan: InterviewPlanScheduleDbType['plans'],
-) => {
-  let intSet = new Set();
-
-  for (const module_slot of plan) {
-    module_slot.selectedIntervs.forEach((int) => {
-      intSet.add(int.interv_id);
-    });
-    module_slot.shadowIntervs.forEach((int) => {
-      intSet.add(int.interv_id);
-    });
-    module_slot.revShadowIntervs.forEach((int) => {
-      intSet.add(int.interv_id);
-    });
-  }
-
-  const [company] = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_relation')
-      .select('recruiter_id, recruiter(service_json)')
-      .eq('user_id', Array.from(intSet)[0]),
-  );
-
-  const recs = supabaseWrap(
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select('user_id, schedule_auth, email,scheduling_settings')
-      .in('user_id', Array.from(intSet)),
-  );
-
-  let company_cred = null;
-  if (company.recruiter.service_json) {
-    company_cred = JSON.parse(
-      decrypt(company.recruiter.service_json, process.env.ENCRYPTION_KEY),
-    );
-  }
-
-  return {
-    company_cred: company_cred,
-    recruiters_info: recs,
-    company_id: company.recruiter_id as any,
-  };
 };
 
 export const getUserCalAuth = async ({
@@ -104,7 +58,7 @@ export type Organizer = Pick<
   'user_id' | 'schedule_auth' | 'email'
 > & { timezone: string };
 
-export const bookIndividualModule = async ({
+export const bookSession = async ({
   candidate_email,
   end_time,
   interviewers,
@@ -112,7 +66,7 @@ export const bookIndividualModule = async ({
   schedule_name,
   start_time,
   company_cred,
-  module_id,
+  session_id,
   meet_type,
   company_id,
   duration,
@@ -124,8 +78,8 @@ export const bookIndividualModule = async ({
   candidate_email: string;
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
-  module_id: string;
-  meet_type: InterviewModuleApiType['meeting_type'];
+  session_id: string;
+  meet_type: InterviewSession['schedule_type'];
   company_id: string;
   duration: number;
 }) => {
@@ -151,11 +105,11 @@ export const bookIndividualModule = async ({
       createRequest: null,
     },
   };
-  if (meet_type.value === 'google_meet') {
+  if (meet_type === 'google_meet') {
     calendar_event.conferenceData.createRequest = {
       requestId: uuidv4(),
     };
-  } else if (meet_type.value === 'zoom') {
+  } else if (meet_type === 'zoom') {
     const zoom_meet = new ZoomMeet(company_id);
     await zoom_meet.authorizeUser();
     const schd_meet = await zoom_meet.createMeeting({
@@ -192,44 +146,25 @@ export const bookIndividualModule = async ({
     email: getOutboundEmail(candidate_email, false) as string,
   });
 
-  const auth = await getUserCalAuth({ company_cred, recruiter: organizer });
-  if (!auth) {
-    throw new Error('invalid organized cred');
-  }
-  const event = await createEvent(auth, calendar_event);
+  const google_cal = new GoogleCalender({
+    recruiter: organizer,
+    company_cred,
+  });
+  await google_cal.authorizeUser();
+  const cal_event = await google_cal.createCalenderEvent(calendar_event);
   const attendees_promises = interviewers.map(async (int) => {
-    const auth = await getUserCalAuth({ company_cred, recruiter: int });
-
-    if (!auth) {
-      return null;
+    try {
+      const email = (int.schedule_auth as any)?.email ?? int.email;
+      const int_cal = new GoogleCalender({
+        company_cred,
+        recruiter: int,
+      });
+      await int_cal.authorizeUser();
+      await int_cal.importEvent(cal_event, email);
+    } catch (err) {
+      //ignore if importing the event is failed
     }
-    const email = (int.schedule_auth as any)?.email ?? int.email;
-    await importEventToAttendee(event, email, auth);
-    return;
   });
   await Promise.all(attendees_promises);
-  return { module_id, event };
+  return { session_id, cal_event };
 };
-
-export async function createEvent(auth, event) {
-  const calendar = google.calendar({ version: 'v3', auth: auth });
-
-  const response = await calendar.events.insert({
-    calendarId: 'primary', // 'primary' refers to the user's primary calendar
-    resource: event,
-    conferenceDataVersion: 1,
-    sendNotifications: true,
-  });
-
-  return response.data;
-}
-
-export async function importEventToAttendee(event, attendeeEmail, auth) {
-  const calendar = google.calendar({ version: 'v3', auth: auth });
-  const response = await calendar.events.import({
-    calendarId: attendeeEmail, // Use the attendee's email as the calendar ID
-    resource: event,
-    sendNotifications: true,
-  });
-  return response.data;
-}
