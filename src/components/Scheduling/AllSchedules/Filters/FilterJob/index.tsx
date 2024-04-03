@@ -114,35 +114,39 @@ function FilterJob() {
         }}
       >
         <FilterDropdown
-          slotOption={allJobs?.map((job) => {
-            return (
-              <Stack
-                key={job.id}
-                direction={'row'}
-                sx={{ alignItems: 'center' }}
-                spacing={1}
-              >
-                <Checkbox
-                  isChecked={filter.job_ids.includes(job.id)}
-                  onClickCheck={{
-                    onClick: () => {
-                      handleFilterClick(job.id);
-                    },
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleFilterClick(job.id)}
-                >
-                  {job.job_title}
-                </Typography>
-              </Stack>
-            );
-          })}
+          slotOption={
+            <Stack spacing={2} maxHeight={'50vh'} overflow={'auto'}>
+              {allJobs?.map((job) => {
+                return (
+                  <Stack
+                    key={job.id}
+                    direction={'row'}
+                    sx={{ alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <Checkbox
+                      isChecked={filter.job_ids.includes(job.id)}
+                      onClickCheck={{
+                        onClick: () => {
+                          handleFilterClick(job.id);
+                        },
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleFilterClick(job.id)}
+                    >
+                      {job.job_title}
+                    </Typography>
+                  </Stack>
+                );
+              })}
+            </Stack>
+          }
           onClickDelete={{
             onClick: () => {
               setFilter({ job_ids: [] });

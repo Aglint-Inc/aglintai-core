@@ -36,8 +36,6 @@ export enum FilterType {
   // eslint-disable-next-line no-unused-vars
   interviewPanels = 'interviewPanels',
   // eslint-disable-next-line no-unused-vars
-  dateRange = 'dateRange',
-  // eslint-disable-next-line no-unused-vars
   scheduleType = 'scheduleType',
   // eslint-disable-next-line no-unused-vars
   status = 'status',

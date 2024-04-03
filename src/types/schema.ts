@@ -3071,6 +3071,8 @@ export type Database = {
           sort_by?: string
           cord_ids?: string[]
           status_filter?: string[]
+          schedule_type_filter?: string[]
+          module_ids?: string[]
           page_number?: number
         }
         Returns: {
@@ -3183,6 +3185,9 @@ export type Database = {
           text_search_filter?: string
           job_id_filter?: string[]
           cord_ids?: string[]
+          status_filter?: string[]
+          schedule_type_filter?: string[]
+          module_ids?: string[]
         }
         Returns: number
       }

@@ -81,6 +81,7 @@ function SlotTrainingMembers({
 
   const { data: progress } = useProgressModuleUsers({ trainer_ids });
   const selUser = useModulesStore((state) => state.selUser);
+
   return (
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}

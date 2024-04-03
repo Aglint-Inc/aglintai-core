@@ -22,7 +22,7 @@ function ProgressDrawer({
   );
 
   const shadowProgress = progressUser?.progress.filter(
-    (prog) => prog.interviewer_type == 'shadow',
+    (prog) => prog.training_type == 'shadow',
   );
 
   const mutatedShadowProgress = Array.from({
@@ -30,7 +30,7 @@ function ProgressDrawer({
   });
 
   const reverseShadowProgress = progressUser?.progress.filter(
-    (prog) => prog.interviewer_type == 'reverse_shadow',
+    (prog) => prog.training_type == 'reverse_shadow',
   );
 
   const mutatedReverseShadowProgress = Array.from({
