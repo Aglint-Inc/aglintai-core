@@ -16,36 +16,24 @@ function RescheduleDialog({
   setIsRescheduleOpen: (x: boolean) => void;
 }) {
   const router = useRouter();
-  const module_id = router.query.module_id;
+  const schedule_id = router.query.schedule_id;
 
   const onClickReschedule = async () => {
     try {
-      if (module_id) {
+      if (schedule_id) {
         const { data, error } = await supabase
           .from('interview_meeting')
           .update({ status: 'cancelled' })
-          .eq('interview_schedule_id', module_id)
+          .eq('interview_schedule_id', schedule_id)
           .select();
-
         if (error) {
           throw new Error(error.message);
         }
-
-        await supabase
-          .from('interview_schedule')
-          .update({
-            status: 'reschedule',
-          })
-          .eq('id', module_id);
         setIsRescheduleOpen(false);
-
-        const allMeeting = data;
-        allMeeting.forEach(async (meet) => {
-          if (meet.meeting_json)
-            axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json,
-            });
-        });
+        if (data[0].meeting_json)
+          axios.post('/api/scheduling/v2/cancel_calender_event', {
+            calender_event: data[0].meeting_json,
+          });
       }
     } catch (e) {
       toast.error(e.message);

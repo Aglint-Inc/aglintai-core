@@ -31,19 +31,12 @@ function DeleteScheduleDialog({
         if (errMeet) {
           throw new Error(errMeet.message);
         }
-        await supabase
-          .from('interview_schedule')
-          .update({ status: 'cancelled' })
-          .eq('id', schedule_id);
         refetch();
         setIsCancelOpen(false);
-        const allMeeting = data;
-        allMeeting.forEach(async (meet) => {
-          if (meet.meeting_json)
-            axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json,
-            });
-        });
+        if (data[0].meeting_json)
+          axios.post('/api/scheduling/v2/cancel_calender_event', {
+            calender_event: data[0].meeting_json,
+          });
       }
     } catch {
       //

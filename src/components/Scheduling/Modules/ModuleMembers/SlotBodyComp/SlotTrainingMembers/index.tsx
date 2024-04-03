@@ -23,10 +23,14 @@ import {
   setSelUser,
   useModulesStore,
 } from '../../../store';
-import { ModuleType } from '../../../types';
+import { MemberType, ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
 import ProgressDrawer from '../../ProgressDrawer';
-import { ProgressUserType } from '../../type';
+
+export type ProgressUser = {
+  user: MemberType;
+  progress: ReturnType<typeof useProgressModuleUsers>['data'];
+};
 
 function SlotTrainingMembers({
   editModule,
@@ -38,7 +42,7 @@ function SlotTrainingMembers({
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { members } = useSchedulingContext();
-  const [progressUser, setProgressUser] = useState<ProgressUserType>({
+  const [progressUser, setProgressUser] = useState<ProgressUser>({
     user: null,
     progress: [],
   });

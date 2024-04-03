@@ -4,11 +4,11 @@
 import axios from 'axios';
 import formidable from 'formidable';
 
-import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
+// import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
-  CandidateType,
-  PublicJobsType,
+  // CandidateType,
+  // PublicJobsType,
   ScheduleAgentChatHistoryTypeDB,
 } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -91,28 +91,21 @@ export default async function handler(req, res) {
       await supabaseAdmin
         .from('interview_schedule')
         .select(
-          'filter_json, applications(public_jobs(id,company,job_title,logo,interview_plan,recruiter_id), candidates(email,first_name,last_name))',
+          '*, applications(public_jobs(id,company,job_title,logo,interview_plan,recruiter_id), candidates(email,first_name,last_name))',
         )
         .eq('application_id', application_id),
     );
 
-    const job = rec.applications.public_jobs as Pick<
-      PublicJobsType,
-      | 'company'
-      | 'job_title'
-      | 'logo'
-      | 'interview_plan'
-      | 'recruiter_id'
-      | 'id'
-    >;
+    const job = rec.applications.public_jobs;
     const interv_plan_summary = getPlanSummary(
       (job.interview_plan as any).plan,
     );
 
-    const candidate = rec.applications.candidates as Pick<
-      CandidateType,
-      'first_name' | 'email' | 'last_name'
-    >;
+    // const candidate = rec.applications.candidates as Pick<
+    //   CandidateType,
+    //   'first_name' | 'email' | 'last_name'
+    // >;
+    const candidate = rec.applications.candidates as any;
     const agent_payload: AgentPayloadType = {
       history: chat_history,
       payload: {
@@ -170,7 +163,7 @@ const getEmail = (to_string: string) => {
   return to_string.substring(to_string.indexOf('<') + 1, to_string.length - 1);
 };
 
-const getPlanSummary = (job_plan: InterviewModuleDbType[]) => {
+const getPlanSummary = (job_plan: any) => {
   let plan_summary = ``;
 
   let cnt = 1;

@@ -7,7 +7,7 @@ import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalTex
 
 import { setIsProgressDialaogOpen, useModulesStore } from '../../store';
 import { ModuleType } from '../../types';
-import { ProgressUserType } from '../type';
+import { ProgressUser } from '../SlotBodyComp/SlotTrainingMembers';
 import SessionCard from './SessionCard';
 
 function ProgressDrawer({
@@ -15,7 +15,7 @@ function ProgressDrawer({
   progressUser,
 }: {
   module: ModuleType;
-  progressUser: ProgressUserType;
+  progressUser: ProgressUser;
 }) {
   const isProgressDialogOpen = useModulesStore(
     (state) => state.isProgressDialaogOpen,

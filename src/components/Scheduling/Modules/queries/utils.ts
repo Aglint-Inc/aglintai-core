@@ -53,8 +53,8 @@ export const fetchProgress = async ({
   const { data, error } = await supabase
     .from('interview_meeting')
     .select('*,interview_session!inner(*)')
-    .in('interview_session.id', uniqueSessionIds)
-    .eq('status', 'completed');
+    .in('interview_session.id', uniqueSessionIds);
+  // .eq('status', 'completed');
 
   const resRel = filteredIntSesRel
     .map((sesRel) => ({

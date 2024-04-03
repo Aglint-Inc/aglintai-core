@@ -1,4 +1,4 @@
-import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
+// import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { Job } from '@/src/queries/job/types';
 
 import { JobApplicationSections } from '../JobApplicationsContext/types';
@@ -25,6 +25,4 @@ export type JobTypeDashboard = Job;
 // eslint-disable-next-line no-unused-vars
 export type CountJobs = { [key in JobApplicationSections]?: number };
 
-export type InterviewPlan = {
-  plan: InterviewPlanScheduleDbType['plans'];
-};
+export type InterviewPlan = any; //update or delete this line once new interview plan is implemented

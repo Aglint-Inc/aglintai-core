@@ -12,7 +12,7 @@ import {
   getScheduleType,
 } from '@/src/components/Scheduling/AllSchedules/utils';
 
-import { ProgressType } from '../../type';
+import { ProgressUser } from '../../SlotBodyComp/SlotTrainingMembers';
 
 function SessionCard({
   session_name,
@@ -20,15 +20,15 @@ function SessionCard({
   isLineVisible,
 }: {
   session_name: string;
-  prog: ProgressType;
+  prog: ProgressUser['progress'][0];
   isLineVisible: boolean;
 }) {
   const router = useRouter();
   return (
     <ShadowSessionCard
       textSessionName={session_name}
-      isShadowIconVisible={prog.interviewer_type === 'shadow'}
-      isReverseShadowIconVisible={prog.interviewer_type === 'reverse_shadow'}
+      isShadowIconVisible={prog.training_type === 'shadow'}
+      isReverseShadowIconVisible={prog.training_type === 'reverse_shadow'}
       slotStatusBadge={
         <StatusBadge
           isNotScheduledVisible={false}
@@ -43,7 +43,7 @@ function SessionCard({
           onClickCard={{
             onClick: () => {
               router.push(
-                `/scheduling/view?schedule_id=${prog.interview_meeting.interview_schedule_id}&module_id=${prog.interview_meeting.module_id}`,
+                `/scheduling/view?schedule_id=${prog.interview_meeting.interview_schedule_id}&module_id=${prog.interview_session.module_id}`,
               );
             },
           }}
@@ -56,16 +56,14 @@ function SessionCard({
           textDay={dayjs(prog.interview_meeting.end_time).format('dddd')}
           textMonth={dayjs(prog.interview_meeting.end_time).format('MMM')}
           isStatusVisible={false}
-          textTime={`${dayjs(prog.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(prog.interview_meeting.end_time).format('hh:mm A')} ( ${prog.interview_meeting.duration} Minutes )`}
+          textTime={`${dayjs(prog.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(prog.interview_meeting.end_time).format('hh:mm A')}`}
           textMeetingPlatform={getScheduleType(
-            prog.interview_meeting.interview_schedule.schedule_type,
+            prog.interview_session.schedule_type,
           )}
           slotMeetingIcon={
-            <IconScheduleType
-              type={prog.interview_meeting.interview_schedule.schedule_type}
-            />
+            <IconScheduleType type={prog.interview_session.schedule_type} />
           }
-          textTitle={prog.interview_meeting.interview_schedule.schedule_name}
+          textTitle={prog.interview_session.name}
         />
       }
       isLineVisible={isLineVisible}
