@@ -47,9 +47,10 @@ function CandidateInvite() {
     }
   };
 
-  const isConfirmed = schedule?.meetings?.every(
-    (meeting) => meeting.interview_meeting.status === 'confirmed',
-  );
+  const isConfirmed = false;
+  // schedule?.meetings?.every(
+  //   (meeting) => meeting.interview_meeting.status === 'confirmed',
+  // );
 
   const isInvalid =
     !schedule?.schedule ||
