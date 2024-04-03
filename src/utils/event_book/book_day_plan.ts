@@ -28,10 +28,8 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
 
-  const { company_cred, all_inters, ses_with_ints } = await find_api_details(
-    all_sess_ids,
-    recruiter_id,
-  );
+  const { company_cred, all_inters, ses_with_ints, comp_schedule_setting } =
+    await find_api_details(all_sess_ids, recruiter_id);
 
   const bookDayPlan = async ({
     day_plan,
@@ -100,6 +98,7 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
       curr_date,
       curr_date,
       user_tz,
+      comp_schedule_setting,
     );
     const assisgned_slot = assignCandidateSlot(plan_combs[0], curr_date);
 
