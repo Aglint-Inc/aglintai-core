@@ -35,9 +35,10 @@ export const fetchProgress = async ({
 }) => {
   const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
-    .select('*,interview_session(*,interview_plan(*))')
+    .select('*,interview_session!inner(*,interview_plan(*))')
     .eq('interview_session.module_id', module_id)
-    .in('interview_module_relation_id', trainer_ids);
+    .in('interview_module_relation_id', trainer_ids)
+    .eq('is_confirmed', true);
 
   if (errSelRel) throw new Error(errSelRel.message);
 
@@ -51,8 +52,9 @@ export const fetchProgress = async ({
 
   const { data, error } = await supabase
     .from('interview_meeting')
-    .select('*,interview_session(*)')
+    .select('*,interview_session!inner(*)')
     .in('interview_session.id', uniqueSessionIds);
+  // .eq('status', 'completed');
 
   const resRel = filteredIntSesRel
     .map((sesRel) => ({
@@ -201,31 +203,32 @@ export const getMeetingsByModuleId = async (module_id: string) => {
 
   const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
-    .select('*,interview_session(*,interview_plan(*))')
-    .eq('interview_session.module_id', module_id as string);
+    .select('*,interview_session!inner(*,interview_plan(*))')
+    .eq('interview_session.module_id', module_id as string)
+    .is('interview_session.interview_plan', null);
 
   if (errSelRel) throw new Error(errSelRel.message);
 
-  const filteredIntSesRel = intSesRel.filter(
-    (ses) => !ses.interview_session?.interview_plan?.id,
-  );
-
   const uniqueSessionIds = [
-    ...new Set(filteredIntSesRel.map((sesrel) => sesrel.interview_session.id)),
+    ...new Set(
+      intSesRel
+        .map((sesrel) => sesrel?.interview_session?.id)
+        .filter((id) => id),
+    ),
   ];
 
   const { data, error } = await supabase
     .from('interview_meeting')
-    .select('*,interview_session(*)')
+    .select('*,interview_session!inner(*)')
     .in('interview_session.id', uniqueSessionIds)
     .gte('start_time', firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00')
     .lte('end_time', lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59');
 
-  const resRel = filteredIntSesRel
+  const resRel = intSesRel
     .map((sesRel) => ({
       ...sesRel,
       interview_meeting: data.find(
-        (meet) => meet.interview_session.id === sesRel.interview_session.id,
+        (meet) => meet.interview_session.id === sesRel?.session_id,
       ),
     }))
     .filter((sesRel) => sesRel?.interview_meeting?.id);

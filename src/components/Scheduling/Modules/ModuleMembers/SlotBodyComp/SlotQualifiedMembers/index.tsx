@@ -57,7 +57,7 @@ function SlotQualifiedMembers({
               ).length;
       }
       return { ...user, weekly, daily };
-    }); // need to right rpc which calc everything in db and return
+    }); // need to write rpc which calc everything in db and return
 
   return (
     <>

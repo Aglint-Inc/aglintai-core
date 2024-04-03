@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Seo from '@/src/components/Common/Seo';
-import JobInterviewPlan from '@/src/components/JobInterviewPlan/JobInterviewPlan';
-import JobInterviewPlanHoc from '@/src/components/JobInterviewPlan/JobInterviewPlanProvider';
+// import JobInterviewPlan from '@/src/components/JobInterviewPlan/JobInterviewPlan';
+// import JobInterviewPlanHoc from '@/src/components/JobInterviewPlan/JobInterviewPlanProvider';
 
 const Page = () => {
   return (
@@ -11,9 +11,9 @@ const Page = () => {
         title='Aglint | Interview Plan'
         description='AI Powered Talent Development Platform.'
       />
-      <JobInterviewPlanHoc>
+      {/* <JobInterviewPlanHoc>
         <JobInterviewPlan />
-      </JobInterviewPlanHoc>
+      </JobInterviewPlanHoc> */}
     </>
   );
 };

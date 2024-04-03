@@ -42,7 +42,7 @@ export function AllInterview({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-830")}
+            className={_utils.cx(_styles, "div-block-830", "hide")}
             tag="div"
           >
             <_Builtin.Block

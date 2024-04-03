@@ -17,33 +17,26 @@ function DeleteScheduleDialog({
 }) {
   const router = useRouter();
   const { refetch } = useScheduleDetails();
-  const schedule_id = router.query.schedule_id;
+  const meeting_id = router.query.meeting_id;
   const onClickCancel = async () => {
     try {
-      if (schedule_id) {
+      if (meeting_id) {
         const { data, error: errMeet } = await supabase
           .from('interview_meeting')
           .update({
             status: 'cancelled',
           })
-          .eq('interview_schedule_id', schedule_id)
+          .eq('id', meeting_id)
           .select();
         if (errMeet) {
           throw new Error(errMeet.message);
         }
-        await supabase
-          .from('interview_schedule')
-          .update({ status: 'cancelled' })
-          .eq('id', schedule_id);
         refetch();
         setIsCancelOpen(false);
-        const allMeeting = data;
-        allMeeting.forEach(async (meet) => {
-          if (meet.meeting_json)
-            axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json,
-            });
-        });
+        if (data[0].meeting_json)
+          axios.post('/api/scheduling/v2/cancel_calender_event', {
+            calender_event: data[0].meeting_json,
+          });
       }
     } catch {
       //

@@ -3,7 +3,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import AllList from './AllList';
 import AllFilters from './Filters';
-import DateFilter from './Filters/DateFilter';
 import AddFilterComp from './Filters/FilterMenu';
 import { useAllInterviewSchedules } from './queries/hooks';
 import SlotPagination from './SlotPagination';
@@ -39,7 +38,6 @@ function AllSchedules() {
         }
         slotAddFilter={<AddFilterComp />}
         slotFilterButton={<AllFilters />}
-        slotDate={<DateFilter />}
         slotAllInterviewCard={
           <AllList
             isPending={isPending}

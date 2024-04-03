@@ -1,4 +1,4 @@
-import { decrypt } from '@/src/utils/scheduling_v2/utils';
+import { decrypt } from './lever/candidateSync';
 
 export default async function handler(req, res) {
   const { encryptData } = req.body;

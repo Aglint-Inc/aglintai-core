@@ -41,8 +41,14 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
     );
     const isMeetingInFuture =
       new Date(schedule.interview_meeting.start_time) > new Date();
-    return isUserInvolved && isMeetingInFuture;
-  }, [router.query.module_id]);
+    return (
+      isUserInvolved &&
+      isMeetingInFuture &&
+      schedule.interview_meeting.status === 'confirmed' &&
+      (schedule.interview_session.schedule_type === 'google_meet' ||
+        schedule.interview_session.schedule_type === 'zoom')
+    );
+  }, [router.query.module_id, schedule]);
 
   async function getCoordinator() {
     const resMem = await axios.post('/api/scheduling/fetchUserDetails', {

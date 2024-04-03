@@ -220,9 +220,6 @@ export type InterviewModuleRelationType =
     };
   };
 
-export type InterviewAvailabilityType =
-  Database['public']['Tables']['interview_availabilties']['Row'];
-
 export type AgentChatType = Database['public']['Tables']['agent_chatx']['Row'];
 
 export type AgentActivityType =
@@ -230,9 +227,6 @@ export type AgentActivityType =
 
 export type InterviewMeetingTypeDb =
   Database['public']['Tables']['interview_meeting']['Insert'];
-
-export type InterviewMeetingUserTypeDb =
-  Database['public']['Tables']['interview_meeting_user']['Insert'];
 
 export type IntegrationType =
   Database['public']['Tables']['request_integration_tool']['Row'];
