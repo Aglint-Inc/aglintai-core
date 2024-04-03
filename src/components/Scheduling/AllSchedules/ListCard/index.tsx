@@ -68,10 +68,11 @@ function ListCardInterviewSchedule({
           textInterviewPanel={'0'}
           slotStatusBadge={
             <StatusBadge
-              isWaitingVisible={Boolean(app.schedule)}
+              isWaitingVisible={false}
               isNotScheduledVisible={!app.schedule}
               isCancelledVisible={false}
               isConfirmedVisible={false}
+              isInProgressVisible={Boolean(app.schedule)}
             />
           }
           textRelatedJob={app.public_jobs?.job_title}

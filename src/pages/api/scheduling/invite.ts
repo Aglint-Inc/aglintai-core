@@ -47,8 +47,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select('id,logo,name')
       .eq('id', application.public_jobs.recruiter_id);
 
-    
-
     const filterJsonTyped = filterJson[0]
       .filter_json as unknown as FilterJsonDateRangeCandidateInvite;
 
@@ -74,7 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       interview_session: session,
       interview_meeting: intMeet.filter(
         (meeting) => meeting.session_id === session.id,
-      ),
+      )[0],
     }));
 
     if (errMeet) throw new Error(errMeet.message);

@@ -34,6 +34,7 @@ function GetScheduleOptionsDialog() {
     step,
     selectedSessionIds,
     schedulingOptions,
+    totalSlots,
   } = useSchedulingApplicationStore((state) => ({
     selCoordinator: state.selCoordinator,
     dateRange: state.dateRange,
@@ -48,6 +49,7 @@ function GetScheduleOptionsDialog() {
     step: state.step,
     selectedSessionIds: state.selectedSessionIds,
     schedulingOptions: state.schedulingOptions,
+    totalSlots: state.totalSlots,
   }));
 
   const { findScheduleOptions } = useGetScheduleOptions();
@@ -66,8 +68,13 @@ function GetScheduleOptionsDialog() {
   // const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   // const [isEmail, setEmail] = useState(true);
   // const [isPhone, setPhone] = useState(false);
+  const initialEndDate = currentDate.add(5, 'day');
 
   useEffect(() => {
+    setDateRange({
+      start_date: currentDate.toISOString(),
+      end_date: initialEndDate.toISOString(),
+    });
     return () => {
       setIsScheduleNowOpen(false);
       setStep(1);
@@ -128,6 +135,7 @@ function GetScheduleOptionsDialog() {
               schedulingOptions={schedulingOptions}
               isBadgeVisible={true}
               isInterviewVisible={true}
+              total={totalSlots}
             />
           }
           slotPrimaryButton={

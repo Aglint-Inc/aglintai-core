@@ -232,7 +232,7 @@ function ScheduleCard({
             },
           }}
         >
-          {sch.users.slice(0, 5)?.map((user) => {
+          {sch.users?.map((user) => {
             return (
               <MuiAvatar
                 key={user.id}

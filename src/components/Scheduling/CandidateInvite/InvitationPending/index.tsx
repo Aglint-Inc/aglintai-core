@@ -22,10 +22,6 @@ import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/Compan
 import { SessionsCombType } from '@/src/utils/scheduling_v1/types';
 import toast from '@/src/utils/toast';
 
-import {
-  filterRecordsByDate,
-  getAllUniqueDates,
-} from '../../AllSchedules/utils';
 import ConfirmDialog from '../ConfirmDialog';
 import { ApiResponse } from '../type';
 
@@ -45,14 +41,6 @@ type BookApiBodyParams = {
 };
 
 function InvitationPending({ schedule }: { schedule: ApiResponse }) {
-  // const schedulingOptions = schedule.schedulingOptions.map((option) => ({
-  //   ...option,
-  //   plans: option.sessions.map((plan) => ({
-  //     ...plan,
-  //     start_time: dayjs(plan.start_time).tz(dayjs.tz.guess()).toISOString(),
-  //     end_time: dayjs(plan.end_time).tz(dayjs.tz.guess()).toISOString(),
-  //   })),
-  // }));
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState(0);
   const [selectedDate, setSelectedDate] =

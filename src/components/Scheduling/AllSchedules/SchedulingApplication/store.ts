@@ -27,6 +27,7 @@ export interface SchedulingApplication {
   members: InterviewScheduleContextType['members'];
   step: number;
   schedulingOptions: PlanCombinationRespType[];
+  totalSlots: number;
   isScheduleNowOpen: boolean;
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
@@ -44,6 +45,7 @@ const initialState: SchedulingApplication = {
   selectedMeeting: null,
   initialSessions: null,
   selectedSchedule: null,
+  totalSlots: 0,
   interviewModules: [],
   isScheduleNowOpen: false,
   scheduleName: '',
@@ -73,6 +75,9 @@ export const setInitalLoading = (initialLoading: boolean) =>
 
 export const setSelectedMeeting = (selectedMeeting: InterviewMeetingTypeDb) =>
   useSchedulingApplicationStore.setState({ selectedMeeting });
+
+export const setTotalSlots = (totalSlots: number) =>
+  useSchedulingApplicationStore.setState({ totalSlots });
 
 export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,

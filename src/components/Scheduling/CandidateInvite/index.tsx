@@ -47,6 +47,15 @@ function CandidateInvite() {
     }
   };
 
+  const isConfirmed = schedule?.meetings?.some(
+    (meeting) => meeting.interview_meeting.status === 'confirmed',
+  );
+
+  const isInvalid =
+    !schedule?.schedule ||
+    schedule?.meetings.length === 0 ||
+    schedule.schedule.is_completed;
+
   return (
     <Stack
       sx={{
@@ -68,12 +77,14 @@ function CandidateInvite() {
         <Stack height={'100vh'} width={'100%'}>
           <Loader />
         </Stack>
-      ) : !schedule?.schedule.is_completed ? (
+      ) : !isConfirmed ? (
         <InvitationPending schedule={schedule} />
-      ) : schedule?.schedule.is_completed ? (
+      ) : isConfirmed ? (
         <InvitationConfirmed schedule={schedule} />
-      ) : (
+      ) : isInvalid ? (
         <Page404 />
+      ) : (
+        ''
       )}
     </Stack>
   );

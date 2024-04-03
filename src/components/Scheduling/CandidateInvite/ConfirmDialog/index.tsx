@@ -1,4 +1,5 @@
 import { Dialog, Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -10,6 +11,7 @@ import {
   OptionAvailableCard,
 } from '@/devlink2';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import { SessionsCombType } from '@/src/utils/scheduling_v1/types';
 import toast from '@/src/utils/toast';
 
@@ -53,10 +55,22 @@ function ConfirmDialog({
         candidate_plan: selectedSessions,
         recruiter_id: schedule.recruiter.id,
         user_tz: dayjs.tz.guess(),
-      };
+        candidate_email: schedule.candidate.email,
+        schedule_id: schedule.schedule.id,
+      } as ConfirmApiBodyParams;
+
+      const res = await axios.post(
+        '/api/scheduling/v1/confirm_interview_slot',
+        bodyParams,
+      );
+
+      if (res.status === 200) {
+        toast.success('Slot confirmed successfully');
+      } else {
+        toast.error('Error confirming slot. Please try again later.');
+      }
 
       // eslint-disable-next-line no-console
-      console.log(bodyParams);
 
       setDialogOpen(false);
     } catch (e) {
