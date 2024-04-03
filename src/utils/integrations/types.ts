@@ -97,3 +97,9 @@ export type ZoomMeetingResp = {
   };
   pre_schedule: boolean;
 };
+
+export type ZoomMeetCred = {
+  account_id: string;
+  client_id: string;
+  client_secret: string;
+};

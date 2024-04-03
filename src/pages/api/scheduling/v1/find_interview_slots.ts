@@ -16,9 +16,9 @@ import {
   combineSlots,
   convertDateFormatToDayjs,
 } from '@/src/utils/scheduling_v2/utils';
+
 export type BodyParams = {
   session_ids: string[];
-  plan_id: string;
   recruiter_id: string;
   start_date: string;
   end_date: string;

@@ -1,7 +1,16 @@
 import axios from 'axios';
 
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+
+import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';
-import { TokenType, ZoomCreateMeetingParams, ZoomMeetingResp } from './types';
+import { decrypt_string } from './crypt-funcs';
+import {
+  TokenType,
+  ZoomCreateMeetingParams,
+  ZoomMeetCred,
+  ZoomMeetingResp,
+} from './types';
 
 export class ZoomMeet {
   private recruiter_id;
@@ -10,9 +19,19 @@ export class ZoomMeet {
     this.recruiter_id = _recruiter_id;
   }
   public async authorizeUser() {
-    const client_id = 'XCHwT3TQR6KXCWqn7fTHYw';
-    const client_secret = 'cJ2w5Q9M0mZZ27soJ07RcjHwXdNjB0pw';
-    const account_id = 'XhuslCbVRLGMY1qIRZmBDw';
+    const [rec] = supabaseWrap(
+      await supabaseAdmin
+        .from('recruiter')
+        .select('zoom_auth')
+        .eq('id', this.recruiter_id),
+    );
+    if (!rec.zoom_auth) {
+      throw new Error('Zoom credential not found for the company');
+    }
+    const zoom_cred: ZoomMeetCred = JSON.parse(decrypt_string(rec.zoom_auth));
+    const client_id = zoom_cred.client_id;
+    const client_secret = zoom_cred.client_secret;
+    const account_id = zoom_cred.account_id;
     const authHeader = `Basic ${Buffer.from(
       `${client_id}:${client_secret}`,
     ).toString('base64')}`;
@@ -49,7 +68,6 @@ export class ZoomMeet {
     );
     return data as ZoomMeetingResp;
   }
-  public async;
   public async cancel_meet() {
     //
   }
