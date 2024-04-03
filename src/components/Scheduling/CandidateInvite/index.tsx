@@ -47,7 +47,7 @@ function CandidateInvite() {
     }
   };
 
-  const isConfirmed = schedule?.meetings?.some(
+  const isConfirmed = schedule?.meetings?.every(
     (meeting) => meeting.interview_meeting.status === 'confirmed',
   );
 
