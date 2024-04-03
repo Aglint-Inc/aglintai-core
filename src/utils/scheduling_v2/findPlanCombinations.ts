@@ -230,7 +230,7 @@ export const findMultiDayComb = (
       curr_round++;
     }
   }
-  session_rounds = session_rounds.filter(Boolean);
+  session_rounds = session_rounds.filter((s) => s.length > 0);
   const findMultiDayPlanUtil = (
     final_combs: PlanCombinationType[],
     curr_date: Dayjs,
