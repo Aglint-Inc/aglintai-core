@@ -991,18 +991,21 @@ export type Database = {
           filter_json: Json
           id: string
           schedule_id: string | null
+          session_ids: string[]
         }
         Insert: {
           created_at?: string
           filter_json: Json
           id?: string
           schedule_id?: string | null
+          session_ids?: string[]
         }
         Update: {
           created_at?: string
           filter_json?: Json
           id?: string
           schedule_id?: string | null
+          session_ids?: string[]
         }
         Relationships: [
           {
@@ -3585,6 +3588,22 @@ export type Database = {
       greenhousecandidatesync: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      insert_interview_session: {
+        Args: {
+          module_id: string
+          interview_plan_id: string
+          session_order: number
+          session_duration: number
+          break_duration: number
+          interviewer_cnt: number
+          session_type: Database["public"]["Enums"]["session_type"]
+          location: string
+          schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
+          name: string
+          interview_module_relation_entries: Json
+        }
+        Returns: undefined
       }
       interviewing_state_active: {
         Args: Record<PropertyKey, never>

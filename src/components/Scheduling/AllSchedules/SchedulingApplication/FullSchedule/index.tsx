@@ -39,8 +39,6 @@ function FullSchedule() {
     (state) => state.selectedSessionIds,
   );
 
-  console.log('initialSessions', initialSessions);
-
   return (
     <>
       <CancelScheduleDialog />
@@ -139,6 +137,7 @@ function FullSchedule() {
                     setStep(1);
                   },
                 }}
+                textTiming={`${dayjs(session.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(session.interview_meeting?.end_time).format('hh:mm A')}`}
                 isScheduleNowVisible={!session.interview_meeting}
                 isCardSelected={selectedSessionIds.includes(session.id)}
                 slotStatusPill={

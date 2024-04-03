@@ -40,7 +40,13 @@ type BookApiBodyParams = {
   user_tz: string;
 };
 
-function InvitationPending({ schedule }: { schedule: ApiResponse }) {
+function InvitationPending({
+  schedule,
+  setSchedule,
+}: {
+  schedule: ApiResponse;
+  setSchedule: (schedule: ApiResponse) => void;
+}) {
   const [loading, setLoading] = useState(true);
   const [step, setStep] = useState(0);
   const [selectedDate, setSelectedDate] =
@@ -101,6 +107,7 @@ function InvitationPending({ schedule }: { schedule: ApiResponse }) {
         allScheduleOptions={allScheduleOptions}
         selectedSlots={selectedSlots}
         setDialogOpen={setDialogOpen}
+        setSchedule={setSchedule}
       />
       <OpenInvitationLink
         slotDatePill={

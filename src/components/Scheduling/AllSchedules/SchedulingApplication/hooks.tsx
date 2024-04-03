@@ -210,18 +210,21 @@ export const useSendInviteForCandidate = () => {
           })),
         );
 
+        const newSessionIds = refSessions
+          .filter((ses) => ses.isSelected)
+          .map((session) => session.newId);
+
         const { data: filterJson, error: errorFilterJson } = await supabase
           .from('interview_filter_json')
           .insert({
             filter_json: {
-              session_ids: refSessions
-                .filter((ses) => ses.isSelected)
-                .map((session) => session.newId),
+              session_ids: newSessionIds,
               recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
             },
+            session_ids: newSessionIds,
             schedule_id: data[0].id,
           })
           .select();
@@ -271,6 +274,7 @@ export const useSendInviteForCandidate = () => {
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
             },
+            session_ids: session_ids,
             schedule_id: checkSch[0].id,
           })
           .select();

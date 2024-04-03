@@ -23,12 +23,15 @@ function ConfirmDialog({
   setDialogOpen,
   schedule,
   allScheduleOptions,
+  setSchedule,
 }: {
   selectedSlots: string[];
   dialogOpen: boolean;
   setDialogOpen: any;
   schedule: ApiResponse;
   allScheduleOptions: SessionsCombType[][];
+  // eslint-disable-next-line no-unused-vars
+  setSchedule: (schedule: ApiResponse) => void;
 }) {
   const [saving, setSaving] = useState(false);
 
@@ -66,8 +69,21 @@ function ConfirmDialog({
 
       if (res.status === 200) {
         toast.success('Slot confirmed successfully');
+        const updatedMeetings = schedule.meetings.map((meeting) => ({
+          ...meeting,
+          interview_meeting: {
+            ...meeting.interview_meeting,
+            status: 'confirmed',
+          },
+        }));
+        setSchedule({
+          ...schedule,
+          meetings: updatedMeetings,
+        } as ApiResponse);
       } else {
-        toast.error('Error confirming slot. Please try again later.');
+        toast.error(
+          'Error confirming slot. Please try again later or contact support',
+        );
       }
 
       // eslint-disable-next-line no-console

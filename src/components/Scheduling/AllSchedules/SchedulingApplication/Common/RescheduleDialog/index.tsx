@@ -11,9 +11,10 @@ import {
   useInterviewSchedulingStore,
 } from '../../../store';
 import {
+  setinitialSessions,
   setIsScheduleNowOpen,
   setSelectedSessionIds,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../../store';
 
 function RescheduleDialog() {
@@ -23,30 +24,73 @@ function RescheduleDialog() {
   const selectedMeeting = useSchedulingApplicationStore(
     (state) => state.selectedMeeting,
   );
+  const initialSessions = useSchedulingApplicationStore(
+    (state) => state.initialSessions,
+  );
 
   const onClickReschedule = async () => {
     try {
       if (selectedMeeting.id) {
-        const { data, error } = await supabase
-          .from('interview_meeting')
-          .select()
-          .eq('id', selectedMeeting.id);
+        const { data: checkFilterJson, error: errMeetFilterJson } =
+          await supabase
+            .from('interview_filter_json')
+            .select('*')
+            .contains('session_ids', [selectedMeeting.session_id]);
 
-        if (error) {
-          throw new Error(error.message);
+        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+        if (!checkFilterJson.length) {
+          throw new Error('No filter json found');
         }
+
+        const updateDbArray = checkFilterJson.map((filterJson) => ({
+          ...filterJson,
+          session_ids: filterJson.session_ids.filter(
+            (id) => id !== selectedMeeting.session_id,
+          ),
+        }));
+
+        const { error: errFilterJson } = await supabase
+          .from('interview_filter_json')
+          .upsert(updateDbArray);
+
+        if (errFilterJson) throw new Error(errFilterJson.message);
+
+        const { data, error: errMeet } = await supabase
+          .from('interview_meeting')
+          .update({
+            status: 'cancelled',
+          })
+          .eq('id', selectedMeeting.id)
+          .select();
+        if (errMeet) {
+          throw new Error(errMeet.message);
+        }
+
+        setinitialSessions(
+          initialSessions.map((session) => {
+            if (session.interview_meeting.id === selectedMeeting.id) {
+              return {
+                ...session,
+                interview_meeting: {
+                  ...session.interview_meeting,
+                  status: 'cancelled',
+                },
+              };
+            } else {
+              return session;
+            }
+          }),
+        );
         setIsCancelOpen(false);
         setIsRescheduleOpen(false);
         setSelectedSessionIds([selectedMeeting.session_id]);
         setIsScheduleNowOpen(true);
 
-        const allMeeting = data;
-        allMeeting.forEach(async (meet) => {
-          if (meet.meeting_json)
-            axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json,
-            });
-        });
+        if (data[0]?.meeting_json)
+          axios.post('/api/scheduling/v2/cancel_calender_event', {
+            calender_event: data[0]?.meeting_json,
+          });
       }
     } catch (e) {
       toast.error(e.message);
@@ -70,7 +114,7 @@ function RescheduleDialog() {
       <ConfirmationPopup
         textPopupTitle={'Confirm Reschedule'}
         textPopupDescription={
-          'Old schedule will be deleted and new schedule will be created. Are you sure you want to reschedule?'
+          'Old schedule will be canceled and new schedule will be created. Are you sure you want to reschedule?'
         }
         isIcon={false}
         onClickCancel={{

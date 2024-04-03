@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: intSes, error: errSes } = await supabase
       .from('interview_session')
       .select('*')
-      .in('id', filterJsonTyped.session_ids);
+      .in('id', filterJson[0].session_ids);
 
     if (errSes) throw new Error(errSes.message);
 

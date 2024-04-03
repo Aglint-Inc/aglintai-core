@@ -47,10 +47,9 @@ function CandidateInvite() {
     }
   };
 
-  const isConfirmed = false;
-  // schedule?.meetings?.every(
-  //   (meeting) => meeting.interview_meeting.status === 'confirmed',
-  // );
+  const isConfirmed = schedule?.meetings?.every(
+    (meeting) => meeting.interview_meeting.status === 'confirmed',
+  );
 
   const isInvalid =
     !schedule?.schedule ||
@@ -79,7 +78,7 @@ function CandidateInvite() {
           <Loader />
         </Stack>
       ) : !isConfirmed ? (
-        <InvitationPending schedule={schedule} />
+        <InvitationPending schedule={schedule} setSchedule={setSchedule} />
       ) : isConfirmed ? (
         <InvitationConfirmed schedule={schedule} />
       ) : isInvalid ? (
