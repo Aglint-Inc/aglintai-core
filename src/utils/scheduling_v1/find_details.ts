@@ -12,7 +12,7 @@ export const find_api_details = async (
 ) => {
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
-      sess_ids: session_ids,
+      session_ids: session_ids,
       company_id,
     }),
   );
