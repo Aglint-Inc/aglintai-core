@@ -96,6 +96,7 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
     profile_image: i.profile_image,
     training_type: i.training_type,
     interviewer_type: i.interviewer_type,
+    interview_module_relation_id: i.interview_module_relation_id,
   }));
 
   return r;

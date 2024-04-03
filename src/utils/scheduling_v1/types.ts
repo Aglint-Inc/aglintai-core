@@ -18,7 +18,10 @@ export type SessionInterviewerType = Pick<
 > &
   Pick<
     InterviewerSessionRelation,
-    'training_type' | 'session_id' | 'interviewer_type'
+    | 'training_type'
+    | 'session_id'
+    | 'interviewer_type'
+    | 'interview_module_relation_id'
   > & {
     pause_json: PauseJson;
   };
@@ -66,7 +69,10 @@ export type SessionInterviewerApiRespType = Pick<
   RecruiterUserType,
   'first_name' | 'last_name' | 'email' | 'profile_image'
 > &
-  Pick<InterviewerSessionRelation, 'training_type' | 'interviewer_type'>;
+  Pick<
+    InterviewerSessionRelation,
+    'training_type' | 'interviewer_type' | 'interview_module_relation_id'
+  >;
 
 export type InterviewSessionApiRespType = {
   session_id: InterviewSession['id'];
