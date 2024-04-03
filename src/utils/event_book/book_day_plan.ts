@@ -165,6 +165,13 @@ export const update_meetings_info = async ({
     session_id: string;
     cal_event: CalendarEvent;
   }) => {
+    let meeting_link = '';
+    if (cal_event.conferenceData.conferenceSolution.name === 'zoom') {
+      meeting_link = cal_event.conferenceData.entryPoints[0].uri;
+    } else {
+      meeting_link = cal_event.hangoutLink;
+    }
+    // console.log(meeting_link);
     return supabaseWrap(
       await supabaseAdmin
         .from('interview_meeting')
@@ -172,7 +179,7 @@ export const update_meetings_info = async ({
           end_time: cal_event.end.dateTime,
           start_time: cal_event.start.dateTime,
           meeting_json: cal_event,
-          meeting_link: cal_event.hangoutLink,
+          meeting_link: meeting_link,
           status: 'confirmed',
         })
         .eq('session_id', session_id)
