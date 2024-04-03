@@ -84,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate: application.candidates,
       recruiter: rec[0],
       meetings: resMeetings,
-      numberOfDays: Math.ceil(maxBreakDuration / 1440),
+      numberOfDays: Math.floor((maxBreakDuration + 1440) / 1440),
     });
   } catch (error) {
     res.status(400).send(error.message);

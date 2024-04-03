@@ -73,7 +73,7 @@ function InvitationPending({ schedule }: { schedule: ApiResponse }) {
           ),
           recruiter_id: schedule.recruiter.id,
           start_date: selectedDate.start_date,
-          end_date: selectedDate.end_date,
+          end_date: selectedDate.end_date || selectedDate.start_date,
           user_tz: dayjs.tz.guess(),
         },
       );
@@ -126,7 +126,7 @@ function InvitationPending({ schedule }: { schedule: ApiResponse }) {
         slotDaysPill={
           <>
             {!loading &&
-              allScheduleOptions.length === schedule.numberOfDays + 1 &&
+              allScheduleOptions.length === schedule.numberOfDays &&
               Array.from({ length: allScheduleOptions.length }).map(
                 (_, ind) => {
                   return (
@@ -156,7 +156,7 @@ function InvitationPending({ schedule }: { schedule: ApiResponse }) {
         }
         isNotFindingTextVisible={schedule.schedule.is_get_more_option}
         isSelected={
-          !loading && allScheduleOptions.length === schedule.numberOfDays + 1
+          !loading && allScheduleOptions.length === schedule.numberOfDays
         }
         slotButtonPrimary={
           <Stack width={'100%'}>
@@ -164,7 +164,7 @@ function InvitationPending({ schedule }: { schedule: ApiResponse }) {
               onClickButton={{
                 onClick: () => {
                   if (
-                    schedule.numberOfDays + 1 ===
+                    schedule.numberOfDays ===
                     selectedSlots.filter((f) => Boolean(f)).length
                   ) {
                     setDialogOpen(true);
@@ -184,7 +184,7 @@ function InvitationPending({ schedule }: { schedule: ApiResponse }) {
         textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
         slotInviteLinkCard={
           !loading ? (
-            allScheduleOptions.length === schedule.numberOfDays + 1 ? (
+            allScheduleOptions.length === schedule.numberOfDays ? (
               schedulingOptions?.map((option, ind) => {
                 return (
                   <Stack
