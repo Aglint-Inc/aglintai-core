@@ -265,6 +265,9 @@ export const findMultiDayComb = (
       cloneDeep(session_rounds[curr_day_idx]),
       interv_curr_day_free_time,
     );
+    if (combs.length === 0) {
+      return [];
+    }
     if (final_combs.length === 0) {
       final_combs = cloneDeep(combs);
     } else {
