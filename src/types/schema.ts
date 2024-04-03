@@ -3826,6 +3826,18 @@ export type Database = {
           total_results: number
         }[]
       }
+      update_debrief_session: {
+        Args: {
+          session_id: string
+          session_duration: number
+          break_duration: number
+          location: string
+          schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
+          name: string
+          members: Json
+        }
+        Returns: undefined
+      }
       update_interview_schedule_status: {
         Args: Record<PropertyKey, never>
         Returns: undefined

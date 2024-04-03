@@ -36,4 +36,5 @@ export const pageRoutes = Object.freeze({
   INTERVIEWER: '/interviewer',
   AGENT: '/agent',
   SCREENING: '/screening',
+  TASKS:'/tasks'
 });

@@ -127,7 +127,7 @@ function FilterDropDown({
           })}
           onClickReset={{
             onClick: () => {
-              setSelectedItems([]);
+              setSelectedItems(() => []);
             },
           }}
         />

@@ -259,6 +259,7 @@ export * from "./NavMenu";
 export * from "./NavPhoneScreening";
 export * from "./NavScheduler";
 export * from "./NavSublink";
+export * from "./NavTask";
 export * from "./NavTickets";
 export * from "./NewInterviewScreen";
 export * from "./NewInterviewTranscript";
