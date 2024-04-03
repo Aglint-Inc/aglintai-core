@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import {
@@ -17,6 +17,7 @@ interface SchedulingOptionCompProps {
   schedulingOptions: PlanCombinationRespType[];
   isInterviewVisible?: boolean;
   loading?: boolean;
+  total?: number;
 }
 
 function SchedulingOptionComp({
@@ -24,6 +25,7 @@ function SchedulingOptionComp({
   schedulingOptions,
   isInterviewVisible = true,
   loading = false,
+  total = 0,
 }: SchedulingOptionCompProps) {
   return (
     <Stack spacing={2}>
@@ -164,6 +166,9 @@ function SchedulingOptionComp({
           />
         );
       })}
+      <Typography variant={'body2'} textAlign={'center'}>
+        {total - schedulingOptions.length} more options available
+      </Typography>
     </Stack>
   );
 }

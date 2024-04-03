@@ -52,7 +52,7 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
                           ).format(
                             'hh:mm A',
                           )} - ${dayjs(ses.interview_meeting.end_time).format('hh:mm A')}`}
-                          textTitle={ses.name}
+                          textTitle={ses.interview_session.name}
                           key={ind}
                           isTitleVisible={true}
                           isBreakVisible={false}
@@ -61,12 +61,15 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
                               <Stack direction={'row'}>
                                 <ButtonPrimarySmall
                                   isDisabled={
-                                    (dayjs(
+                                    (!dayjs(
                                       ses.interview_meeting.start_time,
-                                    ).isAfter(dayjs().add(3, 'hour')) ||
-                                      dayjs().isAfter(
-                                        dayjs(ses.interview_meeting.end_time),
-                                      )) &&
+                                    ).isSame(dayjs(), 'day') &&
+                                      (dayjs(
+                                        ses.interview_meeting.start_time,
+                                      ).isAfter(dayjs().add(3, 'hour')) ||
+                                        dayjs().isAfter(
+                                          dayjs(ses.interview_meeting.end_time),
+                                        ))) ||
                                     !ses.interview_meeting.meeting_link
                                   }
                                   textLabel={'Join Meeting'}
@@ -91,12 +94,13 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
                             </Stack>
                           }
                         />
-                        {ses.break_duration > 0 &&
+                        {ses.interview_session.break_duration > 0 &&
                           ind !== schedule?.meetings.length - 1 && (
                             <OptionAvailable
                               key={ind}
                               textBreakTime={
-                                `${ses.break_duration} Minutes` || ''
+                                `${ses.interview_session.break_duration} Minutes` ||
+                                ''
                               }
                               isTitleVisible={false}
                               isBreakVisible={true}

@@ -21,12 +21,10 @@ import toast from '@/src/utils/toast';
 import { MemberType } from '../../Modules/types';
 import { mailHandler } from '../utils';
 import {
-  setDateRange,
   setFetchingPlan,
   setFetchingSchedule,
   setinitialSessions,
   setIsScheduleNowOpen,
-  setIsSendToCandidateOpen,
   setMembers,
   setNoOptions,
   setScheduleName,
@@ -34,7 +32,9 @@ import {
   setSelCoordinator,
   setSelectedApplication,
   setSelectedSchedule,
+  setSelectedSessionIds,
   setStep,
+  setTotalSlots,
   useSchedulingApplicationStore,
 } from './store';
 import { getApplicationSchedule, SelectedApplicationTypeDB } from './types';
@@ -71,6 +71,7 @@ export const useGetScheduleOptions = () => {
           setNoOptions(true);
           setStep(1);
         } else {
+          setTotalSlots(respTyped.total);
           setSchedulingOptions(respTyped.plan_combs);
           setStep(2);
         }
@@ -169,6 +170,7 @@ export const useSendInviteForCandidate = () => {
               interviewer_type: user.interviewer_type,
               session_id: session.newId,
               training_type: user.training_type,
+              user_id: user.user_id,
             } as InterviewSessionRelationTypeDB);
           });
         });
@@ -212,7 +214,9 @@ export const useSendInviteForCandidate = () => {
           .from('interview_filter_json')
           .insert({
             filter_json: {
-              session_ids: refSessions.map((session) => session.newId),
+              session_ids: refSessions
+                .filter((ses) => ses.isSelected)
+                .map((session) => session.newId),
               recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
@@ -233,8 +237,7 @@ export const useSendInviteForCandidate = () => {
           schedule_name: scheduleName,
           schedule_id: data[0].id,
         });
-
-        setIsScheduleNowOpen(false);
+        setSelectedSessionIds([]);
       } else {
         const { data: updatedMeetings, error: errorUpdatedMeetings } =
           await supabase
@@ -273,7 +276,6 @@ export const useSendInviteForCandidate = () => {
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
-
         mailHandler({
           filter_id: filterJson[0].id,
           rec_id: recruiter.id,
@@ -283,11 +285,12 @@ export const useSendInviteForCandidate = () => {
           schedule_name: scheduleName,
           schedule_id: checkSch[0].id,
         });
+        setSelectedSessionIds([]);
       }
     } catch (e) {
       toast.error(e.message);
     } finally {
-      setIsSendToCandidateOpen(false);
+      setIsScheduleNowOpen(false);
     }
   };
 
@@ -296,9 +299,7 @@ export const useSendInviteForCandidate = () => {
 
 export const useGetScheduleApplication = () => {
   const router = useRouter();
-  const currentDate = dayjs();
   const { recruiter } = useAuthDetails();
-  const threeDays = currentDate.add(1, 'day');
   const fetchInterviewDataByApplication = async () => {
     try {
       setFetchingSchedule(true);
@@ -326,10 +327,6 @@ export const useGetScheduleApplication = () => {
         const typedApplication = res as SelectedApplicationTypeDB;
 
         setSelectedApplication(typedApplication);
-        setDateRange({
-          start_date: currentDate.toISOString(),
-          end_date: threeDays.toISOString(),
-        });
 
         if (schedule.length == 0) {
           const sessionsWithPlan = await fetchInterviewData(
@@ -403,7 +400,7 @@ export const fetchInterviewData = async (job_id: string) => {
     } = await supabase
       .from('interview_session_relation')
       .select(
-        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position))',
+        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position)),recruiter_user(user_id,first_name,last_name,email,profile_image,position)',
       )
       .in(
         'session_id',
@@ -446,7 +443,7 @@ export const fetchInterviewDataSchedule = async (schedule_id: string) => {
     } = await supabase
       .from('interview_session_relation')
       .select(
-        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position))',
+        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position)),recruiter_user(user_id,first_name,last_name,email,profile_image,position)',
       )
       .in(
         'session_id',

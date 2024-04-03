@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
@@ -8,7 +7,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
-import { ApiResponse } from '../CandidateInvite/type';
 
 export interface TimeSlot {
   startTime: string;
@@ -196,37 +194,3 @@ export const getScheduleTextcolor = (
         ? '#703815'
         : '#681219';
 };
-
-export function getAllUniqueDates({
-  records,
-}: {
-  records: ApiResponse['schedulingOptions'];
-}) {
-  const dates = new Set();
-
-  records.forEach((record) => {
-    record.sessions.forEach((plan) => {
-      const planDate = dayjs(plan.start_time).format('YYYY-MM-DD');
-      dates.add(planDate);
-    });
-  });
-
-  return Array.from(dates).sort();
-}
-
-export function filterRecordsByDate({
-  records,
-  date,
-}: {
-  records: ApiResponse['schedulingOptions'];
-  date: string;
-}) {
-  const filteredRecords = records.filter((record) => {
-    return record.sessions.some((plan) => {
-      const planDate = dayjs(plan.start_time).format('YYYY-MM-DD');
-      return planDate === date;
-    });
-  });
-
-  return filteredRecords;
-}
