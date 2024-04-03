@@ -7,6 +7,8 @@ import utc from 'dayjs/plugin/utc';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
 
+import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
+
 import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
   InterviewSessionApiType,
@@ -18,7 +20,11 @@ import { calcIntervCombsForModule } from './calcIntervCombsForModule';
 import { findCommonTimeRange } from './findCommonTimeRange';
 import { findEachInterviewerFreeTimes } from './findEachInterviewerFreeTimes';
 import { InterDetailsType, IntervCntApp, TimeDurationType } from './types';
-import { convertDayjsToUserTimeZoneDate, convertIntToResp } from './utils';
+import {
+  convertDayjsToUserTimeZoneDate,
+  convertIntToResp,
+  getNextWorkingDay,
+} from './utils';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -220,6 +226,7 @@ export const findMultiDayComb = (
   dayjs_start_date: Dayjs,
   dayjs_end_date: Dayjs,
   user_tz: string,
+  comp_schedule_setting: schedulingSettingType,
 ) => {
   let session_rounds: InterviewSessionApiType[][] = [[]];
   let curr_round = 0;
@@ -231,6 +238,7 @@ export const findMultiDayComb = (
     }
   }
   session_rounds = session_rounds.filter((s) => s.length > 0);
+
   const findMultiDayPlanUtil = (
     final_combs: PlanCombinationType[],
     curr_date: Dayjs,
@@ -289,9 +297,14 @@ export const findMultiDayComb = (
         .break_duration / SINGLE_DAY_TIME,
     );
 
-    const next_day = dayjs(curr_date).add(days_gap, 'day');
+    const next_day = getNextWorkingDay(
+      comp_schedule_setting,
+      curr_date,
+      days_gap,
+    );
     return findMultiDayPlanUtil(final_combs, next_day, ++curr_day_idx);
   };
+
   let curr_date = dayjs_start_date;
   let all_combs: PlanCombinationRespType[] = [];
   while (curr_date.isSameOrBefore(dayjs_end_date)) {
@@ -324,7 +337,7 @@ export const findMultiDayComb = (
       return p;
     });
     all_combs = [...all_combs, ...tra_combs];
-    curr_date = curr_date.add(1, 'day');
+    curr_date = getNextWorkingDay(comp_schedule_setting, curr_date);
   }
   return all_combs;
 };

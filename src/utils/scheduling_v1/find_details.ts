@@ -1,4 +1,5 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { InterviewModuleType, InterviewSession } from '@/src/types/data.types';
 
 import { decrypt_string } from '../integrations/crypt-funcs';
@@ -26,6 +27,9 @@ export const find_api_details = async (
   let inter_data = r[0].interviewers as unknown as SessionInterviewerType[][];
   let int_modules_data = r[0]
     .interview_modules as unknown as InterviewModuleType[][];
+
+  let comp_schedule_setting = r[0]
+    .comp_schedule_setting as unknown as schedulingSettingType;
 
   let interviewers: SessionInterviewerType[] = inter_data
     .filter(Boolean)
@@ -67,6 +71,7 @@ export const find_api_details = async (
     company_cred,
     ses_with_ints,
     all_inters: getUniqueInts(interviewers),
+    comp_schedule_setting,
   };
 };
 

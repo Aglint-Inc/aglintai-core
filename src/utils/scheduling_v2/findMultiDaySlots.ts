@@ -2,6 +2,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep } from 'lodash';
 
+import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
+
 import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
   InterviewSessionApiType,
@@ -10,7 +12,7 @@ import {
 import { findEachInterviewerFreeTimes } from './findEachInterviewerFreeTimes';
 import { findFixedTimeCombs } from './findPlanCombinations';
 import { InterDetailsType } from './types';
-import { convertDayjsToUserTimeZoneDate } from './utils';
+import { convertDayjsToUserTimeZoneDate, getNextWorkingDay } from './utils';
 
 // candidate side slots fetch api
 export const findMultiDaySlots = (
@@ -19,6 +21,7 @@ export const findMultiDaySlots = (
   dayjs_start_date: Dayjs,
   dayjs_end_date: Dayjs,
   user_tz: string,
+  comp_schedule_setting: schedulingSettingType,
 ) => {
   let session_rounds: InterviewSessionApiType[][] = [[]];
   let curr_round = 0;
@@ -66,6 +69,10 @@ export const findMultiDaySlots = (
       interv_curr_day_free_time,
     );
 
+    if (combs.length === 0) {
+      return [];
+    }
+
     final_combs.push([...cloneDeep(combs)]);
 
     const days_gap = Math.floor(
@@ -73,10 +80,13 @@ export const findMultiDaySlots = (
         .break_duration / SINGLE_DAY_TIME,
     );
 
-    const next_day = dayjs(curr_date).add(days_gap, 'day');
+    const next_day = getNextWorkingDay(
+      comp_schedule_setting,
+      curr_date,
+      days_gap,
+    );
     return findMultiDaySlotsUtil(final_combs, next_day, ++curr_day_idx);
   };
-
   const plan_combs = findMultiDaySlotsUtil([], dayjs_start_date, 0);
   return plan_combs;
 };

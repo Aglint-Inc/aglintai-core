@@ -3071,6 +3071,8 @@ export type Database = {
           sort_by?: string
           cord_ids?: string[]
           status_filter?: string[]
+          schedule_type_filter?: string[]
+          module_ids?: string[]
           page_number?: number
         }
         Returns: {
@@ -3183,6 +3185,9 @@ export type Database = {
           text_search_filter?: string
           job_id_filter?: string[]
           cord_ids?: string[]
+          status_filter?: string[]
+          schedule_type_filter?: string[]
+          module_ids?: string[]
         }
         Returns: number
       }
@@ -3255,6 +3260,7 @@ export type Database = {
           interviewers: Json[]
           service_cred: string
           interview_modules: Json[]
+          comp_schedule_setting: Json
         }[]
       }
       get_interviewers: {
@@ -3589,6 +3595,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      insert_debrief_session: {
+        Args: {
+          interview_plan_id: string
+          session_order: number
+          session_duration: number
+          break_duration: number
+          location: string
+          schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
+          name: string
+          members: Json
+        }
+        Returns: undefined
+      }
       insert_interview_session: {
         Args: {
           module_id: string
@@ -3809,6 +3828,21 @@ export type Database = {
       }
       update_interview_schedule_status: {
         Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      update_interview_session: {
+        Args: {
+          session_id: string
+          module_id: string
+          session_duration: number
+          break_duration: number
+          interviewer_cnt: number
+          session_type: Database["public"]["Enums"]["session_type"]
+          location: string
+          schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
+          name: string
+          interview_module_relation_entries: Json
+        }
         Returns: undefined
       }
       update_meeting_status: {

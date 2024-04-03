@@ -44,10 +44,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const dayjs_start_date = convertDateFormatToDayjs(start_date);
     const dayjs_end_date = convertDateFormatToDayjs(end_date);
 
-    const { company_cred, all_inters, ses_with_ints } = await find_api_details(
-      session_ids,
-      recruiter_id,
-    );
+    const { company_cred, all_inters, ses_with_ints, comp_schedule_setting } =
+      await find_api_details(session_ids, recruiter_id);
 
     const intervs_details_with_events = await findInterviewersEvents(
       company_cred,
@@ -70,6 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       dayjs_start_date,
       dayjs_end_date,
       user_tz,
+      comp_schedule_setting,
     );
     return res.status(200).json({
       plan_combs: combs.slice(0, 20),

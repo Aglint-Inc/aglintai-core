@@ -10,6 +10,11 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import {
+  holidayType,
+  schedulingSettingType,
+} from '@/src/components/Scheduling/Settings/types';
+
+import {
   PlanCombinationType,
   SessionCombinationType,
   SessionInterviewerApiRespType,
@@ -100,4 +105,36 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
   }));
 
   return r;
+};
+
+export const getNextWorkingDay = (
+  comp_schedule_setting: schedulingSettingType,
+  curr_day: Dayjs,
+  day_gap = 1,
+) => {
+  let nxt_day = curr_day.add(day_gap, 'day');
+
+  let flag = true;
+  while (flag) {
+    // is curr day holiday
+    if (
+      comp_schedule_setting.totalDaysOff.find((holiday: holidayType) =>
+        nxt_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date'),
+      )
+    ) {
+      nxt_day = nxt_day.add(1, 'day');
+      continue;
+    }
+    const work_day = comp_schedule_setting.workingHours.find(
+      (day) => nxt_day.format('dddd').toLowerCase() === day.day,
+    );
+    // is day week off
+    if (!work_day.isWorkDay) {
+      nxt_day = nxt_day.add(1, 'day');
+      continue;
+    }
+
+    break;
+  }
+  return nxt_day;
 };
