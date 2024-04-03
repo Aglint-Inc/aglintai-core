@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
@@ -88,9 +89,11 @@ function FullSchedule() {
             isLineVisible={ind !== initialSessions.length - 1}
             isCardSelected={selectedSessionIds.includes(session.id)}
             key={session.id}
-            textDate={'--'}
-            textDay={'--'}
-            textMonth={'--'}
+            textDate={dayjs(session.interview_meeting.start_time).format('DD')}
+            textDay={dayjs(session.interview_meeting.start_time).format('dddd')}
+            textMonth={dayjs(session.interview_meeting.start_time).format(
+              'MMM',
+            )}
             slotGeneralScheduleCard={
               <GeneralScheduleCard
                 slotEditOptions={

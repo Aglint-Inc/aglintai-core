@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
 import {
@@ -26,7 +27,6 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
   const { candidates, job, schedule: scheduleDetails, users } = schedule;
   return (
     <ScheduleTabOverview
-    
       slotAvatarWithName={users.map((item, i) => {
         return (
           <AvatarWithName
@@ -54,16 +54,18 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
       slotScheduleCard={
         <ScheduleCard
           textTitle={scheduleDetails.schedule_name}
-          textStatus={schedule.interview_meeting.status}
+          textStatus={capitalize(schedule.interview_meeting.status)}
           textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
           textDay={dayjs(schedule.interview_meeting.end_time).format('dddd')}
           textMonth={dayjs(schedule.interview_meeting.end_time).format('MMM')}
-          textPlatformName={getScheduleType(schedule.schedule.schedule_type)}
+          textPlatformName={getScheduleType(
+            schedule.interview_session.schedule_type,
+          )}
           textDuration={`${dayjs(schedule.interview_meeting.start_time).format(
             'hh:mm A',
           )} - ${dayjs(schedule.interview_meeting.end_time).format(
             'hh:mm A',
-          )} ( ${schedule.interview_meeting.duration} Minutes )`}
+          )} ( ${schedule.interview_session.session_duration} Minutes )`}
           colorPropsText={{
             style: {
               color:
@@ -71,13 +73,13 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
                   ? '#228F67'
                   : schedule.interview_meeting.status === 'confirmed'
                     ? '#337FBD'
-                    : schedule.interview_meeting.status === 'pending'
+                    : schedule.interview_meeting.status === 'waiting'
                       ? '#ED8F1C'
                       : '#D93F4C',
             },
           }}
           slotPlatformIcon={
-            <IconScheduleType type={scheduleDetails.schedule_type} />
+            <IconScheduleType type={schedule.interview_session.schedule_type} />
           }
         />
       }

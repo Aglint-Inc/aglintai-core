@@ -1,5 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -12,13 +13,11 @@ import {
 } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
-import SchedulingOptionComp from '../../AllSchedules/SchedulingApplication/Common/ScheduleOption';
 import { getScheduleType } from '../../AllSchedules/utils';
 import { TransformSchedule } from '../../Modules/types';
 import DeleteScheduleDialog from './DeleteDialog';
@@ -34,34 +33,16 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
   const { recruiterUser, recruiter } = useAuthDetails();
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
-  const isMeetVisible = useMemo(() => {
-    const planFiltered = schedule?.schedule?.confirmed_option?.plans.find(
-      (plan) => plan.module_id === router.query.module_id,
-    );
-    if (!planFiltered) {
-      return false;
-    }
-    const currentUserID = recruiterUser?.user_id.toString();
-    const isUserSelected = (plan) =>
-      plan.selectedIntervs.some((int) => int.interv_id === currentUserID);
-    const isUserRevShadow = (plan) =>
-      plan.revShadowIntervs.some((int) => int.interv_id === currentUserID);
-    const isUserShadow = (plan) =>
-      plan.shadowIntervs.some((int) => int.interv_id === currentUserID);
-    const isUserInvolved =
-      isUserSelected(planFiltered) ||
-      isUserRevShadow(planFiltered) ||
-      isUserShadow(planFiltered);
-    const isMeetingInFuture = new Date(planFiltered.start_time) > new Date();
-    return isUserInvolved && isMeetingInFuture;
-  }, [schedule?.schedule?.confirmed_option?.plans, router.query.module_id]);
 
-  const scheduleOptions =
-    [
-      {
-        plans: schedule?.schedule?.confirmed_option?.plans,
-      } as InterviewPlanScheduleDbType,
-    ] || [];
+  const isMeetVisible = useMemo(() => {
+    const currentUserID = recruiterUser?.user_id;
+    const isUserInvolved = schedule?.users?.some(
+      (user) => user.id === currentUserID,
+    );
+    const isMeetingInFuture =
+      new Date(schedule.interview_meeting.start_time) > new Date();
+    return isUserInvolved && isMeetingInFuture;
+  }, [router.query.module_id]);
 
   async function getCoordinator() {
     const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
@@ -97,18 +78,20 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
         slotScheduleCard={
           <ScheduleCard
             textTitle={schedule.schedule.schedule_name}
-            textStatus={schedule.interview_meeting.status}
+            textStatus={capitalize(schedule.interview_meeting.status)}
             textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
             textDay={dayjs(schedule.interview_meeting.end_time).format('dddd')}
             textMonth={dayjs(schedule.interview_meeting.end_time).format('MMM')}
-            textPlatformName={getScheduleType(schedule.schedule.schedule_type)}
+            textPlatformName={getScheduleType(
+              schedule.interview_session.schedule_type,
+            )}
             textDuration={`${dayjs(
               schedule.interview_meeting.start_time,
             ).format('hh:mm A')} - ${dayjs(
               schedule.interview_meeting.end_time,
             ).format(
               'hh:mm A',
-            )} ( ${schedule.interview_meeting.duration} Minutes )`}
+            )} ( ${schedule.interview_session.session_duration} Minutes )`}
             colorPropsText={{
               style: {
                 color:
@@ -116,30 +99,29 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
                     ? '#228F67'
                     : schedule.interview_meeting.status === 'confirmed'
                       ? '#337FBD'
-                      : schedule.interview_meeting.status === 'pending'
+                      : schedule.interview_meeting.status === 'waiting'
                         ? '#ED8F1C'
                         : '#D93F4C',
               },
             }}
             slotPlatformIcon={
-              <IconScheduleType type={schedule.schedule.schedule_type} />
+              <IconScheduleType
+                type={schedule.interview_session.schedule_type}
+              />
             }
           />
         }
         isJoinLinkVisible={isMeetVisible}
         onClickJoinMeet={{
           onClick: () => {
-            window.open(
-              schedule.interview_meeting.meeting_json.hangoutLink,
-              '_blank',
-            );
+            window.open(schedule.interview_meeting.meeting_link, '_blank');
           },
         }}
-        textUrl={schedule.interview_meeting.meeting_json.hangoutLink}
+        textUrl={schedule.interview_meeting.meeting_link}
         onClickCopy={{
           onClick: () => {
             navigator.clipboard
-              .writeText(schedule.interview_meeting.meeting_json.hangoutLink)
+              .writeText(schedule.interview_meeting.meeting_link)
               .then(() => {
                 toast.success('Link copied');
               });
@@ -155,22 +137,23 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
             }
           />
         }
-        slotInterviewPlanCard={
-          <SchedulingOptionComp
-            schedulingOptions={scheduleOptions}
-            isBadgeVisible={true}
-          />
-        }
+        slotInterviewPlanCard={''}
         isCandidateInfoVisible={false}
         isJobVisible={false}
         slotStatusPill={
           <>
             <StatusBadge
-              isCancelledVisible={schedule.interview_meeting.status === 'cancelled'}
-              isCompletedVisible={schedule.interview_meeting.status === 'completed'}
-              isConfirmedVisible={schedule.interview_meeting.status === 'confirmed'}
-              isInProgressVisible={schedule.interview_meeting.status === 'pending'}
-              isWaitingVisible={schedule.interview_meeting.status === 'pending'}
+              isCancelledVisible={
+                schedule.interview_meeting.status === 'cancelled'
+              }
+              isCompletedVisible={
+                schedule.interview_meeting.status === 'completed'
+              }
+              isConfirmedVisible={
+                schedule.interview_meeting.status === 'confirmed'
+              }
+              isInProgressVisible={false}
+              isWaitingVisible={schedule.interview_meeting.status === 'waiting'}
             />
           </>
         }
@@ -178,7 +161,7 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
           recruiter.email === recruiterUser.email &&
           schedule.interview_meeting.status === 'confirmed'
         }
-        textScheduleConfirmed={`This Schedule has been ${schedule.interview_meeting.status} on ${dayjs(schedule.schedule.created_at).format('DD MMM YYYY')}`}
+        textScheduleConfirmed={``}
         onClickCancelSchedule={{
           onClick: () => {
             setIsCancelOpen(true);
