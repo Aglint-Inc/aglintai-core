@@ -48,6 +48,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
     );
 
+    console.log(all_inters);
+    console.log(ses_with_ints);
     const intervs_details_with_events = await findInterviewersEvents(
       company_cred,
       all_inters.map((i) => ({

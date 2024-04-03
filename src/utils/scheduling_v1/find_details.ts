@@ -37,6 +37,7 @@ export const find_api_details = async (
     .reduce((tot, curr) => {
       return [...tot, ...curr];
     });
+
   const ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
       let session: InterviewSessionApiType = {
@@ -52,14 +53,12 @@ export const find_api_details = async (
         interviewer_cnt: s.interviewer_cnt,
         session_order: s.session_order,
         selectedIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.training_type === 'qualified',
+          (i) => i.session_id === s.id && i.interviewer_type === 'qualified',
         ),
         shadowIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.training_type === 'shadow',
+          (i) => i.session_id === s.id && i.interviewer_type === 'training',
         ),
-        revShadowIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.training_type === 'reverse_shadow',
-        ),
+        revShadowIntervs: [],
       };
       return session;
     })
