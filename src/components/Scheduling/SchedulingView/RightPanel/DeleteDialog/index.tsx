@@ -17,16 +17,16 @@ function DeleteScheduleDialog({
 }) {
   const router = useRouter();
   const { refetch } = useScheduleDetails();
-  const schedule_id = router.query.schedule_id;
+  const meeting_id = router.query.meeting_id;
   const onClickCancel = async () => {
     try {
-      if (schedule_id) {
+      if (meeting_id) {
         const { data, error: errMeet } = await supabase
           .from('interview_meeting')
           .update({
             status: 'cancelled',
           })
-          .eq('interview_schedule_id', schedule_id)
+          .eq('id', meeting_id)
           .select();
         if (errMeet) {
           throw new Error(errMeet.message);

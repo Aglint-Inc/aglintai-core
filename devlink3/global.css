@@ -2240,6 +2240,10 @@ h2 {
   line-height: 1.4;
 }
 
+figure {
+  margin-bottom: 10px;
+}
+
 .w-layout-grid {
   display: grid;
   grid-auto-columns: 1fr;

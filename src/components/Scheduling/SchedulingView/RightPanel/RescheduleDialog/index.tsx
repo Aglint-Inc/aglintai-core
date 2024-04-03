@@ -16,15 +16,15 @@ function RescheduleDialog({
   setIsRescheduleOpen: (x: boolean) => void;
 }) {
   const router = useRouter();
-  const schedule_id = router.query.schedule_id;
+  const meeting_id = router.query.meeting_id;
 
   const onClickReschedule = async () => {
     try {
-      if (schedule_id) {
+      if (meeting_id) {
         const { data, error } = await supabase
           .from('interview_meeting')
           .update({ status: 'cancelled' })
-          .eq('interview_schedule_id', schedule_id)
+          .eq('id', meeting_id)
           .select();
         if (error) {
           throw new Error(error.message);
