@@ -13,6 +13,7 @@ import { find_api_details } from '@/src/utils/scheduling_v1/find_details';
 import { findInterviewersEvents } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
 import { findMultiDayComb } from '@/src/utils/scheduling_v2/findPlanCombinations';
 import { convertDateFormatToDayjs } from '@/src/utils/scheduling_v2/utils';
+
 export type BodyParams = {
   session_ids: string[];
   plan_id: string;
@@ -84,3 +85,17 @@ export default handler;
 
 // given n persons with there availability time_ranges in the format {startTime:string, endTime:string}[] for each person find the commn  time range which all n person are available on that
 //
+
+// const d = async () => {
+//   supabaseWrap(
+//     await supabaseAdmin.from('recruiter').update({
+//       zoom_auth: decrypt_string(
+//         JSON.stringify({
+//           account_id: 'XhuslCbVRLGMY1qIRZmBDw',
+//           client_id: 'XCHwT3TQR6KXCWqn7fTHYw',
+//           client_secret: 'cJ2w5Q9M0mZZ27soJ07RcjHwXdNjB0pw',
+//         }),
+//       ),
+//     }),
+//   );
+// };
