@@ -10,6 +10,7 @@ import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_inte
 import { getFullName } from '../jsonResume';
 import { CalendarEvent } from '../schedule-utils/types';
 import { find_api_details } from '../scheduling_v1/find_details';
+import { SessionInterviewerType } from '../scheduling_v1/types';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { findInterviewersEvents } from '../scheduling_v2/findEachInterviewerFreeTimes';
 import { findMultiDaySlots } from '../scheduling_v2/findMultiDaySlots';
@@ -43,6 +44,37 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
       }[];
     };
   }) => {
+    const confirmInterviewers = async (inters: SessionInterviewerType[]) => {
+      await Promise.all(
+        inters.map(async (int) => {
+          if (int.interview_module_relation_id) {
+            supabaseWrap(
+              await supabaseAdmin
+                .from('interview_session_relation')
+                .update({
+                  is_confirmed: true,
+                })
+                .eq(
+                  'interview_module_relation_id',
+                  int.interview_module_relation_id,
+                )
+                .eq('session_id', int.session_id),
+            );
+          } else {
+            supabaseWrap(
+              await supabaseAdmin
+                .from('interview_session_relation')
+                .update({
+                  is_confirmed: true,
+                })
+                .eq('user_id', int.user_id)
+                .eq('session_id', int.session_id),
+            );
+          }
+        }),
+      );
+    };
+
     const curr_date = dayjs(day_plan.sessions[0].start_time).tz(user_tz);
     const intervs_details_with_events = await findInterviewersEvents(
       company_cred,
@@ -78,7 +110,7 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
         ...session.revShadowIntervs,
       ];
       const organizer = session.selectedIntervs[0];
-      return await bookSession({
+      const booked_sessions = await bookSession({
         candidate_email,
         company_cred,
         company_id: recruiter_id,
@@ -96,6 +128,8 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
         schedule_name: session.session_name,
         session_id: session.session_id,
       });
+      await confirmInterviewers([organizer, ...all_inters]);
+      return booked_sessions;
     });
 
     const meeting_events = await Promise.all(meet_promises);

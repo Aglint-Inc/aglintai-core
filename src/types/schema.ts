@@ -1307,6 +1307,7 @@ export type Database = {
           id: string
           interview_module_relation_id: string | null
           interviewer_type: Database["public"]["Enums"]["status_training"]
+          is_confirmed: boolean
           session_id: string
           training_type: Database["public"]["Enums"]["interviewer_type"] | null
           user_id: string | null
@@ -1315,6 +1316,7 @@ export type Database = {
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
+          is_confirmed?: boolean
           session_id: string
           training_type?: Database["public"]["Enums"]["interviewer_type"] | null
           user_id?: string | null
@@ -1323,6 +1325,7 @@ export type Database = {
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
+          is_confirmed?: boolean
           session_id?: string
           training_type?: Database["public"]["Enums"]["interviewer_type"] | null
           user_id?: string | null
@@ -2568,7 +2571,7 @@ export type Database = {
         Row: {
           agent: Database["public"]["Enums"]["task_agent_type"] | null
           assignee: string[]
-          completion_date: string
+          completion_date: string | null
           created_at: string
           id: string
           name: string
@@ -2578,7 +2581,7 @@ export type Database = {
         Insert: {
           agent?: Database["public"]["Enums"]["task_agent_type"] | null
           assignee: string[]
-          completion_date: string
+          completion_date?: string | null
           created_at?: string
           id?: string
           name: string
@@ -2588,7 +2591,7 @@ export type Database = {
         Update: {
           agent?: Database["public"]["Enums"]["task_agent_type"] | null
           assignee?: string[]
-          completion_date?: string
+          completion_date?: string | null
           created_at?: string
           id?: string
           name?: string
@@ -3208,6 +3211,7 @@ export type Database = {
         }
         Returns: {
           interview_meeting: Json
+          interview_session: Json
           schedule: Json
           applications: Json
           candidates: Json
@@ -3240,7 +3244,7 @@ export type Database = {
       }
       get_interview_session_data: {
         Args: {
-          sess_ids: string[]
+          session_ids: string[]
           company_id: string
         }
         Returns: {
@@ -3882,7 +3886,12 @@ export type Database = {
       sender_type: "aglint" | "you" | "system" | "user"
       session_type: "panel" | "individual" | "debrief"
       status_training: "qualified" | "training"
-      sub_task_status: "completed" | "pending" | "in_progress" | "failed"
+      sub_task_status:
+        | "completed"
+        | "pending"
+        | "in_progress"
+        | "failed"
+        | "closed"
       task_agent_type: "call" | "email" | "job"
       task_status: "pending" | "in_progress" | "completed" | "closed"
       template_type:
