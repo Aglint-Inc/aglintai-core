@@ -39,6 +39,8 @@ function FullSchedule() {
     (state) => state.selectedSessionIds,
   );
 
+  console.log('initialSessions', initialSessions);
+
   return (
     <>
       <CancelScheduleDialog />
