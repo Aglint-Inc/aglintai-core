@@ -50,6 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     return res.status(200).json('sucess');
   } catch (error) {
+    console.log(error);
     await saveEventsStatusInSchedule({
       api_status: 'failed',
       schedule_id: req_body.schedule_id,
