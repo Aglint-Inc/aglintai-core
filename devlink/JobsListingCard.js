@@ -316,18 +316,13 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative_2",
-                  "text-sm"
-                )}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {"New"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2", "text-sm")}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {newCount}
@@ -374,18 +369,13 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative_2",
-                  "text-sm"
-                )}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {"Screening"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2", "text-sm")}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {screeningCount}
@@ -432,18 +422,13 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative_2",
-                  "text-sm"
-                )}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {"Assessment"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2", "text-sm")}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {assessmentCount}
@@ -490,18 +475,13 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative_2",
-                  "text-sm"
-                )}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {"Interview"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2", "text-sm")}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {interviewCount}
@@ -548,18 +528,13 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative_2",
-                  "text-sm"
-                )}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {"Qualified"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2", "text-sm")}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {qualifiedCount}
@@ -606,18 +581,13 @@ export function JobsListingCard({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "fw-semibold",
-                  "relative_2",
-                  "text-sm"
-                )}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {"Disqualified"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2", "text-sm")}
+                className={_utils.cx(_styles, "relative_2")}
                 tag="div"
               >
                 {disqualifiedCount}
