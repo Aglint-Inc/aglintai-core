@@ -1308,21 +1308,24 @@ export type Database = {
           interview_module_relation_id: string | null
           interviewer_type: Database["public"]["Enums"]["status_training"]
           session_id: string
-          training_type: Database["public"]["Enums"]["interviewer_type"]
+          training_type: Database["public"]["Enums"]["interviewer_type"] | null
+          user_id: string | null
         }
         Insert: {
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
           session_id: string
-          training_type?: Database["public"]["Enums"]["interviewer_type"]
+          training_type?: Database["public"]["Enums"]["interviewer_type"] | null
+          user_id?: string | null
         }
         Update: {
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
           session_id?: string
-          training_type?: Database["public"]["Enums"]["interviewer_type"]
+          training_type?: Database["public"]["Enums"]["interviewer_type"] | null
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -1331,6 +1334,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "interview_module_relation"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_relation_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "public_inteview_session_relation_session_id_fkey"
@@ -2554,6 +2564,47 @@ export type Database = {
         }
         Relationships: []
       }
+      sub_tasks: {
+        Row: {
+          agent: Database["public"]["Enums"]["task_agent_type"] | null
+          assignee: string[]
+          completion_date: string
+          created_at: string
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["sub_task_status"]
+          task_id: string
+        }
+        Insert: {
+          agent?: Database["public"]["Enums"]["task_agent_type"] | null
+          assignee: string[]
+          completion_date: string
+          created_at?: string
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["sub_task_status"]
+          task_id: string
+        }
+        Update: {
+          agent?: Database["public"]["Enums"]["task_agent_type"] | null
+          assignee?: string[]
+          completion_date?: string
+          created_at?: string
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["sub_task_status"]
+          task_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_sub_tasks_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       support_groups: {
         Row: {
           company_id: string | null
@@ -2679,34 +2730,34 @@ export type Database = {
       }
       tasks: {
         Row: {
-          application_id: string
+          application_id: string | null
           created_at: string
+          created_by: Json
           id: string
+          interviewer_Id: string | null
           name: string
           recruiter_id: string
           status: Database["public"]["Enums"]["task_status"]
-          sub_tasks: Json[]
-          user_id: string
         }
         Insert: {
-          application_id: string
+          application_id?: string | null
           created_at?: string
+          created_by?: Json
           id?: string
+          interviewer_Id?: string | null
           name: string
           recruiter_id: string
           status?: Database["public"]["Enums"]["task_status"]
-          sub_tasks?: Json[]
-          user_id?: string
         }
         Update: {
-          application_id?: string
+          application_id?: string | null
           created_at?: string
+          created_by?: Json
           id?: string
+          interviewer_Id?: string | null
           name?: string
           recruiter_id?: string
           status?: Database["public"]["Enums"]["task_status"]
-          sub_tasks?: Json[]
-          user_id?: string
         }
         Relationships: [
           {
@@ -2715,6 +2766,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_tasks_interviewer_Id_fkey"
+            columns: ["interviewer_Id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "public_tasks_recruter_id_fkey"
@@ -3824,7 +3882,9 @@ export type Database = {
       sender_type: "aglint" | "you" | "system" | "user"
       session_type: "panel" | "individual" | "debrief"
       status_training: "qualified" | "training"
-      task_status: "pending" | "in_progress" | "completed"
+      sub_task_status: "completed" | "pending" | "in_progress" | "failed"
+      task_agent_type: "call" | "email" | "job"
+      task_status: "pending" | "in_progress" | "completed" | "closed"
       template_type:
         | "cognitive"
         | "language"

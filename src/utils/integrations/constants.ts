@@ -7,3 +7,5 @@ export const allowed_outbound_emails = [
   'krhebbar@gmail.com',
   'ravi.webflow@gmail.com',
 ];
+
+export const SINGLE_DAY_TIME = 24 * 60;
