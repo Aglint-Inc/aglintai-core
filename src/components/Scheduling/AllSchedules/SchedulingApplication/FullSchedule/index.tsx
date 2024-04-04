@@ -209,7 +209,7 @@ function FullSchedule() {
                 isPanelIconVisible={session.session_type === 'panel'}
                 isOnetoOneIconVisible={session.session_type === 'individual'}
                 isTimingVisible={Boolean(session.interview_meeting?.start_time)}
-                textLink={session.interview_module.name || '--'}
+                textLink={session.interview_module?.name || '--'}
                 textModuleName={session.name || '--'}
                 slotTrainees={
                   (session.session_type == 'individual' ||
