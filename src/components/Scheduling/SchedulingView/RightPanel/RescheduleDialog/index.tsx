@@ -8,12 +8,16 @@ import { ConfirmationPopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { TransformSchedule } from '../../../Modules/types';
+
 function RescheduleDialog({
   isRescheduleOpen,
   setIsRescheduleOpen,
+  schedule,
 }: {
   isRescheduleOpen: boolean;
   setIsRescheduleOpen: (x: boolean) => void;
+  schedule: TransformSchedule;
 }) {
   const router = useRouter();
   const meeting_id = router.query.meeting_id;
@@ -21,6 +25,29 @@ function RescheduleDialog({
   const onClickReschedule = async () => {
     try {
       if (meeting_id) {
+        const { data: checkFilterJson, error: errMeetFilterJson } =
+          await supabase
+            .from('interview_filter_json')
+            .select('*')
+            .contains('session_ids', [meeting_id]);
+
+        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+        if (checkFilterJson.length > 0) {
+          const updateDbArray = checkFilterJson.map((filterJson) => ({
+            ...filterJson,
+            session_ids: filterJson.session_ids.filter(
+              (id) => id !== schedule.interview_session.id,
+            ),
+          }));
+
+          const { error: errFilterJson } = await supabase
+            .from('interview_filter_json')
+            .upsert(updateDbArray);
+
+          if (errFilterJson) throw new Error(errFilterJson.message);
+        }
+
         const { data, error } = await supabase
           .from('interview_meeting')
           .update({ status: 'cancelled' })

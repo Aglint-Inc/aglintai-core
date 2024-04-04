@@ -29,22 +29,20 @@ function CancelScheduleDialog() {
 
         if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
-        if (!checkFilterJson.length) {
-          throw new Error('No filter json found');
+        if (checkFilterJson.length > 0) {
+          const updateDbArray = checkFilterJson.map((filterJson) => ({
+            ...filterJson,
+            session_ids: filterJson.session_ids.filter(
+              (id) => id !== selectedMeeting.session_id,
+            ),
+          }));
+
+          const { error: errFilterJson } = await supabase
+            .from('interview_filter_json')
+            .upsert(updateDbArray);
+
+          if (errFilterJson) throw new Error(errFilterJson.message);
         }
-
-        const updateDbArray = checkFilterJson.map((filterJson) => ({
-          ...filterJson,
-          session_ids: filterJson.session_ids.filter(
-            (id) => id !== selectedMeeting.session_id,
-          ),
-        }));
-
-        const { error: errFilterJson } = await supabase
-          .from('interview_filter_json')
-          .upsert(updateDbArray);
-
-        if (errFilterJson) throw new Error(errFilterJson.message);
 
         const { data, error: errMeet } = await supabase
           .from('interview_meeting')

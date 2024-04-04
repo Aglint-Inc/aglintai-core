@@ -417,6 +417,71 @@ export const fetchInterviewDataJob = async (job_id: string) => {
   }
 };
 
+export const fetchInterviewSessionTask = async ({
+  job_id,
+  application_id,
+}: {
+  job_id: string;
+  application_id: string;
+}) => {
+  try {
+    const { data: schedule, error } = await supabase
+      .from('interview_schedule')
+      .select('*')
+      .eq('application_id', application_id);
+
+    if (error) throw new Error(error.message);
+
+    if (schedule.length == 0) {
+      const { data: interviewSession, error: interviewSessionError } =
+        await supabase
+          .from('interview_session')
+          .select('*,interview_module(*),interview_plan!inner(*)')
+          .eq('interview_plan.job_id', job_id);
+
+      if (interviewSessionError) throw new Error(interviewSessionError.message);
+      const sessions = interviewSession.map(
+        (meet) =>
+          ({
+            break_duration: meet.break_duration,
+            created_at: meet.created_at,
+            id: meet.id,
+            interview_plan_id: meet.interview_plan_id,
+            interviewer_cnt: meet.interviewer_cnt,
+            location: meet.location,
+            module_id: meet.module_id,
+            name: meet.name,
+            schedule_type: meet.schedule_type,
+            session_duration: meet.session_duration,
+            session_order: meet.session_order,
+            session_type: meet.session_type,
+          }) as InterviewSessionTypeDB,
+      );
+
+      return sessions.sort(
+        (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
+      ) as InterviewSessionTypeDB[];
+    } else {
+      const { data: interviewMeetings, error: interviewSessionError } =
+        await supabase
+          .from('interview_meeting')
+          .select('*,interview_session(*,interview_module(*))')
+          .eq('interview_schedule_id', schedule[0].id)
+          .or('status.eq.not_scheduled,status.eq.cancelled');
+
+      if (interviewSessionError) throw new Error(interviewSessionError.message);
+
+      const sessions = interviewMeetings.map((meet) => meet.interview_session);
+
+      return sessions.sort(
+        (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
+      ) as InterviewSessionTypeDB[];
+    }
+  } catch (e) {
+    toast.error(e.message);
+  }
+};
+
 export const fetchInterviewDataSchedule = async (schedule_id: string) => {
   try {
     const { data: interviewMeetings, error: interviewSessionError } =

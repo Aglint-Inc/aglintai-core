@@ -73,10 +73,12 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
   return (
     <>
       <DeleteScheduleDialog
+        schedule={schedule}
         isCancelOpen={isCancelOpen}
         setIsCancelOpen={setIsCancelOpen}
       />
       <RescheduleDialog
+        schedule={schedule}
         isRescheduleOpen={isRescheduleOpen}
         setIsRescheduleOpen={setIsRescheduleOpen}
       />

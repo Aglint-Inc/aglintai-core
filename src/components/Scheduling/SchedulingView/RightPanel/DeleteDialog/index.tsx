@@ -6,14 +6,17 @@ import { useRouter } from 'next/router';
 import { DeletePopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { TransformSchedule } from '../../../Modules/types';
 import { useScheduleDetails } from '../..';
 
 function DeleteScheduleDialog({
   isCancelOpen,
   setIsCancelOpen,
+  schedule,
 }: {
   isCancelOpen: boolean;
   setIsCancelOpen: (x: boolean) => void;
+  schedule: TransformSchedule;
 }) {
   const router = useRouter();
   const { refetch } = useScheduleDetails();
@@ -21,6 +24,29 @@ function DeleteScheduleDialog({
   const onClickCancel = async () => {
     try {
       if (meeting_id) {
+        const { data: checkFilterJson, error: errMeetFilterJson } =
+          await supabase
+            .from('interview_filter_json')
+            .select('*')
+            .contains('session_ids', [meeting_id]);
+
+        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+        if (checkFilterJson.length > 0) {
+          const updateDbArray = checkFilterJson.map((filterJson) => ({
+            ...filterJson,
+            session_ids: filterJson.session_ids.filter(
+              (id) => id !== schedule.interview_session.id,
+            ),
+          }));
+
+          const { error: errFilterJson } = await supabase
+            .from('interview_filter_json')
+            .upsert(updateDbArray);
+
+          if (errFilterJson) throw new Error(errFilterJson.message);
+        }
+
         const { data, error: errMeet } = await supabase
           .from('interview_meeting')
           .update({

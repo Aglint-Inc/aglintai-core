@@ -17,7 +17,7 @@ import CandidateInfo from '../../SchedulingView/CandidateDetails';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { useGetScheduleApplication } from './hooks';
+import { fetchInterviewSessionTask, useGetScheduleApplication } from './hooks';
 import {
   resetSchedulingApplicationState,
   setIsScheduleNowOpen,
@@ -46,6 +46,10 @@ function SchedulingApplication() {
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
       fetchInterviewDataByApplication();
+      fetchInterviewSessionTask({
+        application_id: router.query.application_id as string,
+        job_id: '10bad981-e3b6-4ee8-9e12-9a0d72febc83',
+      });
     }
     return () => {
       resetSchedulingApplicationState();
