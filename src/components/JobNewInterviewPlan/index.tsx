@@ -201,7 +201,7 @@ const InterviewPlan = () => {
         slotInterviewCoordinator={<InterviewCoordinator />}
         isEmptyVisible={sessions.length === 0}
         slotPrimaryButton={
-          <AUIButton onClick={() => handleCreate('session', 1)}>
+          <AUIButton onClick={() => handleCreate('session', 0)}>
             Create Session
           </AUIButton>
         }
