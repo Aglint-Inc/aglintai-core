@@ -8,7 +8,18 @@
 
 .div-block-1333.pl-24 {
   width: 100%;
-  padding-left: 24px;
+  height: 75px;
+  padding-right: 16px;
+  padding-left: 30px;
+  justify-content: space-between;
+}
+
+.div-block-1362 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
 .div-block-1359 {
@@ -65,10 +76,26 @@
   grid-row-gap: 6px;
 }
 
+.div-block-1363 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
 .div-block-1358 {
+  display: flex;
+  width: 36px;
+  height: 36px;
   padding: 4px 16px;
-  border-radius: 100px;
-  background-color: #f8f9f9;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid #e9ebed;
+  border-radius: 4px;
+
+  background-color: white;
 }
 
 .div-block-1358.cursor-pointer {

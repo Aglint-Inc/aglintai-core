@@ -1,9 +1,13 @@
-import { Grid, Skeleton, Stack } from '@mui/material';
+import { Button, Chip, Grid, Skeleton, Stack } from '@mui/material';
+// import { EditorState } from '@tiptap/core/dist/packages/core/src/Editor';
+import { Editor } from '@tiptap/react';
 import axios from 'axios';
 import { useState } from 'react';
 
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useInterviewerList } from '@/src/components/CompanyDetailComp/Interviewers';
 import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvider';
+import { ScrollList } from '@/src/utils/framer-motions/Animation';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../utils';
@@ -28,25 +32,21 @@ const agentsDetails = [
 function AddSubTask({ taskId }: { taskId: string }) {
   const { data: interviewers } = useInterviewerList();
   const members = interviewers.map((item) => item.rec_user);
-
+  let getEditorRef: () => Editor = null;
   const assigner = [
     ...agentsDetails,
     ...members.map((item) => {
       return { ...item, assignee: 'Interviewers' };
     }),
   ];
-  const {
-    selectedMemberId,
-    setSelectedMemberId,
-    setAddingSubTask,
-  } = useTaskStatesContext();
+  const { selectedMemberId, setSelectedMemberId, setAddingSubTask } =
+    useTaskStatesContext();
   const { handelAddSubTask } = useTasksAgentContext();
   const [textInput, setTextInput] = useState({
     html: null,
     text: null,
     wordCount: null,
   });
-
   async function handleChange() {
     setAddingSubTask(true);
     const { data } = await axios.post('/api/ai/queryToJson', {
@@ -112,16 +112,65 @@ function AddSubTask({ taskId }: { taskId: string }) {
           // setBackEndText(div.textContent);
           setTextInput(event);
         }}
+        getEditorRef={(func) => (getEditorRef = func)}
         onClick={handleChange}
         value={textInput.html}
         dataList={assigner as assigneeType[]}
       />
+
+      <ShowCode.When
+        isTrue={
+          textInput.text &&
+          (String(textInput.text).toLowerCase().includes('sche') ||
+            String(textInput.text).toLowerCase().includes('schedule'))
+        }
+      >
+        <ScrollList
+          uniqueKey={
+            textInput.text &&
+            (String(textInput.text).toLowerCase().includes('sche') ||
+              String(textInput.text).toLowerCase().includes('schedule'))
+          }
+        >
+          <Stack py={'10px'}>
+            <Grid container spacing={1}>
+              {sessionList.map(({ name, id }) => {
+                return (
+                  <Grid key={id} item>
+                    <Button
+                      onClick={() => {
+                        const text = textInput.text + ' ' + `${name} `;
+                        const html =
+                          textInput.html.replace('</p>', '') +
+                          `<span class='module_session_name'>&nbsp;${name}&nbsp;</span></p>`;
+                        const wordCount = textInput.wordCount + name.length;
+                        setTextInput({
+                          html,
+                          text,
+                          wordCount,
+                        });
+                        getEditorRef().commands.setContent(html);
+                        getEditorRef().commands.focus(text.length + 2);
+                      }}
+                    >
+                      <Chip label={name} />
+                    </Button>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Stack>
+        </ScrollList>
+      </ShowCode.When>
     </Stack>
   );
 }
 
 export default AddSubTask;
-
+const sessionList = [
+  { name: 'Hr interview', id: crypto.randomUUID() },
+  { name: 'Software Interview', id: crypto.randomUUID() },
+];
 export function SubTaskCardSkeleton() {
   return (
     <Grid

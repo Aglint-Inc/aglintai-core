@@ -15,12 +15,14 @@ function TextArea({
   onClick,
   onChange,
   dataList,
+  getEditorRef,
 }: {
   value: string;
   onClick: () => void;
   // eslint-disable-next-line no-unused-vars
   onChange: (x: { text: string; html: string; wordCount: number }) => void;
   dataList: assigneeType[];
+  getEditorRef: any;
 }) {
   let { isPopUpOpen, setIsPopUpOpen } = useTaskStatesContext();
   let editor = useEditor({
@@ -95,7 +97,7 @@ function TextArea({
   const resetText = () => {
     editor.commands.clearContent(true);
   };
-
+  getEditorRef(() => editor);
   return (
     <Stack
       border={`1px solid`}

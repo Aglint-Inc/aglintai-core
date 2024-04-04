@@ -24,8 +24,9 @@ type TasksReducerType = {
   tasks: Awaited<ReturnType<typeof getAllTasks>>;
   search: string;
   filter: {
-    status: { options: string[]; values: string[] };
-    assignee: { options: string[]; values: string[] };
+    status: { options: { id: string; label: string }[]; values: string[] };
+    assignee: { options: { id: string; label: string }[]; values: string[] };
+    jobTitle: { options: { id: string; label: string }[]; values: string[] };
   };
   // filterOptions: {
   //   status: DatabaseTable['tasks']['status'][];
@@ -59,10 +60,16 @@ const reducerInitialState: TasksReducerType = {
   search: '',
   filter: {
     status: {
-      options: ['completed', 'in_progress', 'pending', 'closed'],
+      options: [
+        { id: 'completed', label: 'Completed' },
+        { id: 'in_progress', label: 'In Progress' },
+        { id: 'pending', label: 'Pending' },
+        { id: 'closed', label: 'Closed' },
+      ],
       values: [],
     },
     assignee: { options: [], values: [] },
+    jobTitle: { options: [], values: [] },
   },
   sort: 'date',
 };
@@ -97,7 +104,10 @@ type TasksReducerActionType =
     }
   | {
       type: TasksReducerAction.ADD_TASK;
-      payload: TasksAgentContextType['tasks'];
+      payload: {
+        tasks: TasksAgentContextType['tasks'];
+        filterOption: TasksReducerType['filter'];
+      };
     }
   | {
       type: TasksReducerAction.SEARCH;
@@ -126,14 +136,8 @@ const reducer = (
     }
     case TasksReducerAction.ADD_TASK: {
       const temp = cloneDeep(reducerInitialState);
-      temp.tasks = action.payload;
-      temp.filter.assignee.options = [
-        ...new Set(
-          action.payload
-            .map((task) => task.sub_tasks.map((subTask) => subTask.assignee))
-            .flat(2),
-        ),
-      ];
+      temp.tasks = action.payload.tasks;
+      temp.filter = action.payload.filterOption;
       return temp;
     }
     case TasksReducerAction.SEARCH: {
@@ -158,9 +162,71 @@ const reducer = (
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id, members } = useAuthDetails();
   const init = (data: TasksReducerType) => {
+    data.filter.assignee.options = [
+      ...new Set(
+        data.tasks
+          .map((task) => task.sub_tasks.map((subTask) => subTask.assignee))
+          .flat(2),
+      ),
+    ]
+      .map((item) => {
+        const temp = members.find((mem) => mem.user_id === item);
+        return temp;
+      })
+      .filter((item) => Boolean(item))
+      .map((temp) => {
+        return {
+          id: temp.user_id,
+          label: `${temp.first_name} ${temp.last_name}`.trim(),
+        };
+      });
+
+    data.filter.jobTitle.options = [
+      ...new Set(
+        data.tasks
+          .filter((task) => Boolean(task.application_id))
+          .map((task) => ({
+            id: task.applications.public_jobs.id,
+            label: task.applications.public_jobs.job_title,
+          }))
+          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
+      ),
+    ];
     dispatch({ type: TasksReducerAction.INIT, payload: data });
+  };
+  const handelTaskChanges = (tasks: TasksAgentContextType['tasks']) => {
+    const filterOption = cloneDeep(tasksReducer.filter);
+    filterOption.assignee.options = [
+      ...new Set(
+        tasks
+          .map((task) => task.sub_tasks.map((subTask) => subTask.assignee))
+          .flat(2),
+      ),
+    ]
+      .map((item) => {
+        const temp = members.find((mem) => mem.user_id === item);
+        return temp;
+      })
+      .filter((item) => Boolean(item))
+      .map((temp) => {
+        return {
+          id: temp.user_id,
+          label: `${temp.first_name} ${temp.last_name}`.trim(),
+        };
+      });
+    filterOption.jobTitle.options = tasks
+      .filter((task) => Boolean(task.application_id))
+      .map((task) => ({
+        id: task.applications.public_jobs.id,
+        label: task.applications.public_jobs.job_title,
+      }))
+      .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
+    dispatch({
+      type: TasksReducerAction.ADD_TASK,
+      payload: { tasks, filterOption },
+    });
   };
 
   const handelAddTask: TasksAgentContextType['handelAddTask'] = (task) => {
@@ -169,7 +235,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
         { ...taskData, sub_tasks: [] },
         ...cloneDeep(tasksReducer.tasks),
       ];
-      dispatch({ type: TasksReducerAction.ADD_TASK, payload: tempTask });
+      handelTaskChanges(tempTask);
       return true;
     });
     return false;
@@ -186,7 +252,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       const tempTask = cloneDeep(tasksReducer.tasks).map((item) =>
         item.id === taskData.id ? { ...item, ...taskData } : item,
       );
-      dispatch({ type: TasksReducerAction.ADD_TASK, payload: tempTask });
+      handelTaskChanges(tempTask);
       return true;
     });
     return false;
@@ -205,7 +271,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
           ? { ...item, sub_tasks: [...item.sub_tasks, taskData] }
           : item,
       );
-      dispatch({ type: TasksReducerAction.ADD_TASK, payload: tempTask });
+      handelTaskChanges(tempTask);
       return true;
     });
     return false;
@@ -229,7 +295,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
             }
           : item,
       );
-      dispatch({ type: TasksReducerAction.ADD_TASK, payload: tempTask });
+      handelTaskChanges(tempTask);
       return true;
     });
     return false;
@@ -263,6 +329,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const filterTask: TasksAgentContextType['tasks'] = useMemo(() => {
     const status = tasksReducer.filter.status;
     const assignee = tasksReducer.filter.assignee;
+    const jobTitle = tasksReducer.filter.jobTitle;
     let temp = [...sortedTask];
 
     if (status.values.length) {
@@ -289,6 +356,11 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       }, []);
     }
 
+    if (jobTitle.values.length) {
+      temp = temp.filter((task) =>
+        jobTitle.values.includes(task?.applications?.public_jobs?.id),
+      );
+    }
     return temp;
   }, [tasksReducer.filter, sortedTask]);
 
@@ -310,13 +382,6 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     if (recruiter_id) {
       getAllTasks(recruiter_id).then((data) => {
         const temp = cloneDeep(reducerInitialState);
-        temp.filter.assignee.options = [
-          ...new Set(
-            data
-              .map((task) => task.sub_tasks.map((subTask) => subTask.assignee))
-              .flat(2),
-          ),
-        ];
         init({ ...temp, tasks: data });
       });
     }

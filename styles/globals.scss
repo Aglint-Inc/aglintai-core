@@ -222,6 +222,15 @@ textarea::placeholder {
   // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
   margin: 1px;
 }
+.module_session_name {
+  color: #bdab33;
+  background-color: #fffdd6;
+  text-transform: capitalize;
+  padding: 4px;
+  border-radius: 4px;
+  // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
+  margin: 1px;
+}
 
 #list-popup {
   background: #fff;
