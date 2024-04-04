@@ -140,7 +140,6 @@ export const useSendInviteForCandidate = () => {
           newId: uuidv4(),
           isSelected: session_ids.includes(session.id),
         }));
-        console.log(refSessions);
 
         const { error: errorInsertedSessions } = await supabase
           .from('interview_session')
@@ -175,7 +174,6 @@ export const useSendInviteForCandidate = () => {
             } as InterviewSessionRelationTypeDB);
           });
         });
-        console.log(insertableUserRelation);
 
         const { error: errorInsertedUserRelation } = await supabase
           .from('interview_session_relation')
