@@ -14,6 +14,7 @@ type MenuOption = {
         name: string;
         url: string;
       }[];
+  icon?: React.JSX.Element;
   meta?: {
     title: string;
     icon: React.JSX.Element;
@@ -72,7 +73,9 @@ const AvatarSelectDropDown = ({
             value={menu.value}
           >
             {showMenuIcons &&
-              (Array.isArray(menu.start_icon_url) ? (
+              (menu.icon ? (
+                menu.icon
+              ) : Array.isArray(menu.start_icon_url) ? (
                 <Stack direction={'row'}>
                   {menu.start_icon_url
                     .slice(0, 3)

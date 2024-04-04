@@ -33,6 +33,7 @@ import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
+import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
 import InterviewDrawers from './sideDrawer';
 
 const JobNewInterviewPlanDashboard = () => {
@@ -309,16 +310,7 @@ const InterviewSession = ({
           isPanelIconVisible={session.session_type === 'panel'}
           isTimingVisible={false}
           textDuration={`${session.session_duration} minutes`}
-          slotPlatformIcon={
-            <MuiAvatar
-              src={`/images/svg/${session.schedule_type}.svg`}
-              level={session.schedule_type}
-              variant='circular'
-              fontSize='10px'
-              height='20px'
-              width='20px'
-            />
-          }
+          slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
           isLinkVisilble={session.session_type !== 'debrief'}
           textPlatformName={capitalizeAll(session.schedule_type)}
           textLink={session?.interview_module?.name ?? '---'}

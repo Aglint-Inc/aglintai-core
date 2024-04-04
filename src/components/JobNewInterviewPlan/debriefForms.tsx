@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import {
+import React, {
   ChangeEventHandler,
   Dispatch,
   SetStateAction,
@@ -19,6 +19,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../Common/MuiAvatar';
 import UITextField from '../Common/UITextField';
+import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { DropDown } from './sessionForms';
 
@@ -187,27 +188,27 @@ const ScheduleTypeField = ({
     {
       name: 'Google meet',
       value: 'google_meet',
-      start_icon_url: '/images/svg/google_meet.svg',
+      icon: <IconScheduleType type={'google_meet'} />,
     },
     {
       name: 'Zoom',
       value: 'zoom',
-      start_icon_url: '/images/svg/zoom.svg',
+      icon: <IconScheduleType type={'zoom'} />,
     },
     {
       name: 'In person ',
       value: 'in_person_meeting',
-      start_icon_url: '/images/svg/in_person.svg',
+      icon: <IconScheduleType type={'in_person_meeting'} />,
     },
     {
       name: 'Phone call',
       value: 'phone_call',
-      start_icon_url: '/images/svg/phone_call.svg',
+      icon: <IconScheduleType type={'phone_call'} />,
     },
   ] as {
     name: string;
     value: DebriefFormProps['schedule_type'];
-    start_icon_url: string;
+    icon: React.JSX.Element;
   }[];
   // eslint-disable-next-line no-unused-vars
   const onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
