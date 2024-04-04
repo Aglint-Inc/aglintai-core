@@ -138,3 +138,49 @@ export const getNextWorkingDay = (
   }
   return nxt_day;
 };
+
+export const getCompWorkingDaysRange = (
+  start_date: string,
+  end_date: string,
+  comp_schedule_setting: schedulingSettingType,
+  inter_days_cnt,
+) => {
+  const isCurrDayHoliday = (curr_day: Dayjs) => {
+    // is curr day holiday
+    if (
+      comp_schedule_setting.totalDaysOff.find((holiday: holidayType) =>
+        curr_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date'),
+      )
+    ) {
+      return true;
+    }
+    const work_day = comp_schedule_setting.workingHours.find(
+      (day) => curr_day.format('dddd').toLowerCase() === day.day,
+    );
+    // is day week off
+    if (!work_day.isWorkDay) {
+      return true;
+    }
+  };
+
+  const date_ranges: string[] = [];
+  let curr_day = dayjs(start_date);
+  const end_day = dayjs(end_date);
+  while (curr_day.isSameOrBefore(end_day, 'day')) {
+    if (!isCurrDayHoliday(curr_day)) {
+      const next_day = getNextWorkingDay(
+        comp_schedule_setting,
+        curr_day,
+        inter_days_cnt,
+      );
+      if (next_day.isSameOrBefore(end_day, 'day')) {
+        date_ranges.push(
+          `${curr_day.format('DD-MMMM')} -  ${next_day.format('DD-MMMM')}`,
+        );
+      }
+    }
+    curr_day = getNextWorkingDay(comp_schedule_setting, curr_day, 1);
+  }
+
+  return date_ranges;
+};

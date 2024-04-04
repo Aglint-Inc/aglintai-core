@@ -118,14 +118,13 @@ const Comp = () => {
           id: '',
           created_at: '2024-04-01T10:07:06.826456+00:00',
           module_id: '24535995-ec9e-4c91-a273-859e3c41bfe4',
-          interview_plan_id: '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4',
           session_order: 1,
           session_duration: 30,
           break_duration: 30,
           interviewer_cnt: 1,
           session_type: 'panel',
           location: null,
-          schedule_type: 'google_meet',
+          schedule_type: 'zoom',
           name: 'session 1',
         },
         {
@@ -139,7 +138,7 @@ const Comp = () => {
           interviewer_cnt: 1,
           session_type: 'debrief',
           location: null,
-          schedule_type: 'google_meet',
+          schedule_type: 'zoom',
           name: 'session 2',
         },
         {
@@ -219,6 +218,7 @@ const Comp = () => {
                 session_type: s.session_type as any,
                 schedule_type: s.schedule_type as any,
                 module_id: s.module_id,
+                name: s.name,
               })
               .select(),
           );
