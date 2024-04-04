@@ -10,6 +10,9 @@ interface MuiAvatarProps {
   src?: string;
   fontSize?: string;
   dynamicSizing?: boolean;
+  extended?: boolean;
+  bgColor?: string;
+  color?: string;
 }
 
 export default function MuiAvatar({
@@ -20,6 +23,9 @@ export default function MuiAvatar({
   src,
   fontSize,
   dynamicSizing,
+  bgColor,
+  color,
+  extended,
 }: MuiAvatarProps): React.JSX.Element {
   function stringToColor(string: string): string {
     let hash = 0;
@@ -37,11 +43,11 @@ export default function MuiAvatar({
       color += `00${value.toString(16)}`.slice(-2);
     }
     /* eslint-enable no-bitwise */
-    return color + 'cc';
+    return color;
   }
 
   function stringAvatar(value: string): {
-    sx: { width: string; height: string; bgcolor: string };
+    sx: { width: string; height: string; bgcolor: string; color: string };
     children: React.JSX.Element;
   } {
     return {
@@ -52,7 +58,8 @@ export default function MuiAvatar({
               width: width ? width : '40px',
               height: height ? height : '40px',
             }),
-        bgcolor: value && stringToColor(value),
+        bgcolor: bgColor ? bgColor : value && stringToColor(value),
+        color: color ? color : 'white',
       },
       children: (
         <Typography
@@ -60,7 +67,11 @@ export default function MuiAvatar({
           color={'white.700'}
           fontSize={fontSize}
         >
-          {value ? value[0].toUpperCase() : '0'}
+          {value
+            ? extended
+              ? value.slice(0, 2).toUpperCase()
+              : value[0].toUpperCase()
+            : '0'}
         </Typography>
       ),
     };

@@ -1,21 +1,27 @@
 import React from 'react';
 
 import Seo from '@/src/components/Common/Seo';
-// import JobInterviewPlan from '@/src/components/JobInterviewPlan/JobInterviewPlan';
-// import JobInterviewPlanHoc from '@/src/components/JobInterviewPlan/JobInterviewPlanProvider';
+import JobNewInterviewPlanDashboard from '@/src/components/JobNewInterviewPlan';
+import JobDashboardProvider from '@/src/context/JobDashboard';
+import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
-const Page = () => {
+const InterviewPlanJobPage = () => {
   return (
     <>
       <Seo
         title='Aglint | Interview Plan'
         description='AI Powered Talent Development Platform.'
       />
-      {/* <JobInterviewPlanHoc>
-        <JobInterviewPlan />
-      </JobInterviewPlanHoc> */}
+      <JobNewInterviewPlanDashboard />
     </>
   );
 };
+InterviewPlanJobPage.getProvider = function getProvider(page) {
+  return (
+    <JobDashboardProvider>
+      <JobInterviewPlanProvider>{page}</JobInterviewPlanProvider>
+    </JobDashboardProvider>
+  );
+};
 
-export default Page;
+export default InterviewPlanJobPage;

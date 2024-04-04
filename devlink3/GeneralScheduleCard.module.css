@@ -115,6 +115,11 @@
   color: #d93f4c;
 }
 
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .div-block-1310 {
   display: flex;
   justify-content: flex-start;
@@ -250,4 +255,8 @@
 
   border: 1px solid #337fbd;
   border-radius: 10px;
+}
+
+.div-block-1352 {
+  padding-top: 10px;
 }

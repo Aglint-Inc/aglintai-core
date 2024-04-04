@@ -1,6 +1,6 @@
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { CountJobs /*, InterviewPlan*/ } from '@/src/context/JobsContext/types';
+import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
 import { StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
@@ -54,7 +54,7 @@ type CustomJobType = {
     [id in Database['public']['Enums']['application_processing_status']]: number;
   };
   parameter_weights: ScoreWheelParams;
-  // interview_plan: InterviewPlan;
+  interview_plan: InterviewPlan;
   draft: Pick<
     JobTableRPC,
     | 'job_title'

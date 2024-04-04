@@ -3042,6 +3042,12 @@ export type Database = {
             }
             Returns: boolean
           }
+      delete_session: {
+        Args: {
+          session_id: string
+        }
+        Returns: undefined
+      }
       duplicateassessment: {
         Args: {
           assessmentid: string

@@ -39,4 +39,6 @@ declare function GeneralScheduleCard(props: {
   isSubHeaderVisible?: Types.Visibility.VisibilityConditions;
   slotEditOptions?: Types.Devlink.Slot;
   isEditOptionVisible?: Types.Visibility.VisibilityConditions;
+  slotBreakCard?: Types.Devlink.Slot;
+  isBreakCardVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

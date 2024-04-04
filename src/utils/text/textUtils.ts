@@ -7,6 +7,7 @@ export const capitalize = (str: string) => {
 };
 export const capitalizeAll = (str: string) => {
   return str
+    .replaceAll('_', ' ')
     .split(' ')
     .map((item) => cap(item))
     .join(' ');
