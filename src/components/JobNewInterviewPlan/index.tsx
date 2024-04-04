@@ -393,7 +393,7 @@ const sessionToEdit = (
 
 type InterviewSessionMemberProps = { member: InterviewCoordinatorType };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
-  const name = capitalizeAll(getFullName(member.first_name, member.last_name));
+  const name = getFullName(member.first_name, member.last_name);
   return (
     <AvatarWithName
       textName={name}

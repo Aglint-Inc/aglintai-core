@@ -2570,6 +2570,44 @@ export type Database = {
         }
         Relationships: []
       }
+      sub_task_progress: {
+        Row: {
+          created_at: string
+          created_by: Json
+          id: string
+          jsonb_data: Json
+          progress_type: Database["public"]["Enums"]["progress_type"]
+          sub_task_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: Json
+          id?: string
+          jsonb_data: Json
+          progress_type?: Database["public"]["Enums"]["progress_type"]
+          sub_task_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: Json
+          id?: string
+          jsonb_data?: Json
+          progress_type?: Database["public"]["Enums"]["progress_type"]
+          sub_task_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_sub_task_progress_sub_task_id_fkey"
+            columns: ["sub_task_id"]
+            isOneToOne: false
+            referencedRelation: "sub_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sub_tasks: {
         Row: {
           agent: Database["public"]["Enums"]["task_agent_type"] | null
@@ -3196,6 +3234,12 @@ export type Database = {
           module_ids?: string[]
         }
         Returns: number
+      }
+      get_interview_data_job: {
+        Args: {
+          job_id_param: string
+        }
+        Returns: Json
       }
       get_interview_modules: {
         Args: {
@@ -3917,6 +3961,11 @@ export type Database = {
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
       job_scoring_param_status: "loading" | "success"
+      progress_type:
+        | "standered"
+        | "interview_schedule"
+        | "email_messages"
+        | "call_completed"
       public_job_department:
         | "legal"
         | "sales"

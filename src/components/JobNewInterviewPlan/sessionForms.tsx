@@ -22,6 +22,7 @@ import {
   InterviewCoordinatorType,
   InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
+import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
@@ -30,7 +31,10 @@ import UITextField from '../Common/UITextField';
 import { AntSwitch } from '../NewAssessment/AssessmentPage/editor';
 import { DepartmentIcon, RoleIcon } from '.';
 
-export type SessionUser = InterviewCoordinatorType & { moduleUserId: string };
+export type SessionUser = InterviewCoordinatorType & {
+  moduleUserId: string;
+  training_status: Database['public']['Enums']['status_training'];
+};
 
 type SessionFormProps = Pick<
   InterviewSessionType,
@@ -301,9 +305,26 @@ const Interview = ({
           .includes(user_id),
     ) ?? [];
 
-  const showMembers = moduleMemberRecommendations.length !== 0;
-  const showTraining =
-    currentModuleMembers.length !== interviewers.value.length;
+  const {
+    qualified: qualifiedModuleMemberRecommendations,
+    training: trainingModuleMemberRecommendations,
+  } = moduleMemberRecommendations.reduce(
+    (acc, curr) => {
+      acc[curr.training_status].push(curr);
+      return acc;
+    },
+    { qualified: [], training: [] } as {
+      // eslint-disable-next-line no-unused-vars
+      [key in SessionUser['training_status']]: SessionUser[];
+    },
+  );
+
+  const showInterviewingMembers =
+    qualifiedModuleMemberRecommendations.length !== 0;
+  const showTrainingMembers = trainingModuleMemberRecommendations.length !== 0;
+  const showTraining = !!currentModuleMembers.find(
+    ({ training_status }) => training_status === 'training',
+  );
 
   const handleChange: HandleChange = useCallback((key, value) => {
     setFields((prev) => ({
@@ -326,23 +347,23 @@ const Interview = ({
       interviewer_cnt: {
         ...prev.interviewer_cnt,
         error: false,
-        value: 0,
+        value: prev.interviewer_cnt.value === 0 ? 0 : 1,
       },
-      interviewers: {
-        ...prev.interviewers,
-        error: false,
-        value: [],
-      },
-      training: {
-        ...prev.training,
-        error: false,
-        value: false,
-      },
-      trainees: {
-        ...prev.trainees,
-        error: false,
-        value: [],
-      },
+      // interviewers: {
+      //   ...prev.interviewers,
+      //   error: false,
+      //   value: [],
+      // },
+      // training: {
+      //   ...prev.training,
+      //   error: false,
+      //   value: false,
+      // },
+      // trainees: {
+      //   ...prev.trainees,
+      //   error: false,
+      //   value: [],
+      // },
     }));
   }, []);
   const handleTrainingChange: HandleTrainingChange = useCallback((value) => {
@@ -450,15 +471,14 @@ const Interview = ({
           handleModeChange={handleModeChange}
         />
       }
-      isInterviewerDropVisible={showMembers}
+      isInterviewerDropVisible={showInterviewingMembers}
       slotMemberCountDropdown={countField}
       slotInterviewersDropdown={
-        showMembers && (
+        showInterviewingMembers && (
           <InterviewersField
-            session_type={session_type.value}
             value={interviewers.value}
             type='interviewers'
-            moduleMemberRecommendations={moduleMemberRecommendations}
+            moduleMemberRecommendations={qualifiedModuleMemberRecommendations}
             handleMemberAdd={handleMemberAdd}
           />
         )
@@ -478,13 +498,13 @@ const Interview = ({
           handleMemberRemove={handleMemberRemove}
         />
       }
-      isTraineesDropVisible={showMembers}
+      isTraineesDropVisible={showTrainingMembers}
       slotTraineesDropdown={
-        showMembers && (
+        showTrainingMembers && (
           <InterviewersField
             value={trainees.value}
             type='trainees'
-            moduleMemberRecommendations={moduleMemberRecommendations}
+            moduleMemberRecommendations={trainingModuleMemberRecommendations}
             handleMemberAdd={handleMemberAdd}
           />
         )
@@ -585,13 +605,11 @@ const InterviewersField = ({
   moduleMemberRecommendations,
   type,
   handleMemberAdd,
-  session_type,
 }: {
   value: SessionFormProps['interviewers'];
   type: Parameters<HandleMemberAdd>['0'];
   moduleMemberRecommendations: SessionUser[];
   handleMemberAdd: HandleMemberAdd;
-  session_type?: SessionFormProps['session_type'];
 }) => {
   const options = moduleMemberRecommendations.map((m) => ({
     name: getFullName(m.first_name, m.last_name),
@@ -608,10 +626,7 @@ const InterviewersField = ({
     const interview_member = moduleMemberRecommendations.find(
       (m) => m.user_id === e.target.value,
     );
-    const newInterviewMembers =
-      session_type === 'individual'
-        ? [interview_member]
-        : [...value, interview_member];
+    const newInterviewMembers = [...value, interview_member];
     if (interview_member) handleMemberAdd(type, newInterviewMembers);
   };
 
@@ -874,11 +889,13 @@ export const getSessionPayload = (
     interviewers.map(({ moduleUserId }) => ({
       id: moduleUserId,
       interviewer_type: 'qualified',
+      training_type: 'qualified',
     }));
   const safeTrainees: CreateInterviewSession['interview_module_relation_entries'] =
     trainees.map(({ moduleUserId }) => ({
       id: moduleUserId,
       interviewer_type: 'training',
+      training_type: null,
     }));
   return {
     session_type,

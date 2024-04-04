@@ -224,7 +224,7 @@ export const getInterviewPlans = async (job_id: string) => {
   const { data, error } = await supabase
     .from('interview_plan')
     .select(
-      `*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
+      `*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
     )
     .eq('job_id', job_id);
   if (error) throw new Error(error.message);
@@ -243,7 +243,7 @@ export type CreateInterviewSession = Omit<
 > & {
   interview_module_relation_entries: Pick<
     InterviewSessionRelationType[number],
-    'id' | 'interviewer_type'
+    'id' | 'interviewer_type' | 'training_type'
   >[];
 };
 export const createInterviewSession = async (args: CreateInterviewSession) => {
@@ -257,7 +257,7 @@ export type EditInterviewSession = Omit<
 > & {
   interview_module_relation_entries: Pick<
     InterviewSessionRelationType[number],
-    'id' | 'interviewer_type'
+    'id' | 'interviewer_type' | 'training_type'
   >[];
 };
 export const editInterviewSession = async (args: EditInterviewSession) => {

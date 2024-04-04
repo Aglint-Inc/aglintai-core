@@ -26,8 +26,9 @@ export const interviewPlanRecruiterUserQuery =
 export const getInterviewCoordinators = async (recruiter_id: string) => {
   const { data, error } = await supabase
     .from('recruiter_relation')
-    .select(`recruiter_user(${interviewPlanRecruiterUserQuery})`)
-    .eq('recruiter_id', recruiter_id);
+    .select(`recruiter_user!inner(${interviewPlanRecruiterUserQuery})`)
+    .eq('recruiter_id', recruiter_id)
+    .eq('recruiter_user.join_status', 'joined');
   if (error) throw new Error(error.message);
   return data.map(({ recruiter_user }) => recruiter_user);
 };

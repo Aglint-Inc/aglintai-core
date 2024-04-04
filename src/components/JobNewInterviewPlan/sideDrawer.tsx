@@ -150,11 +150,13 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         acc.interviewers.push({
           ...curr.interview_module_relation.recruiter_user,
           moduleUserId: curr.interview_module_relation.id,
+          training_status: curr.interview_module_relation.training_status,
         });
       else
         acc.trainees.push({
           ...curr.interview_module_relation.recruiter_user,
           moduleUserId: curr.interview_module_relation.id,
+          training_status: curr.interview_module_relation.training_status,
         });
       return acc;
     },
