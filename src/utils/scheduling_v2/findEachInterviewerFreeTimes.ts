@@ -144,7 +144,10 @@ const findInterviewerFreeTime = (
         let is_event_free_time = false;
         interviewer.shedule_settings.schedulingKeyWords.free.forEach(
           (key_word: string) => {
-            if (cal_event.summary.toLocaleLowerCase().includes(key_word)) {
+            if (
+              cal_event.summary &&
+              cal_event.summary.toLocaleLowerCase().includes(key_word)
+            ) {
               is_event_free_time = true;
             }
           },
