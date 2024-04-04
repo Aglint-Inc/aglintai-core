@@ -33,7 +33,16 @@ function SideNavbar() {
 
   const navList = [
     {
-      icon: <NavTask />,
+      icon: <AssistantLogo />,
+      text: 'Agent',
+      SubComponents: null,
+      route: pageRoutes.AGENT,
+      comingsoon: false,
+      isvisible: isAgentEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavTask isActive={false} />,
       text: 'Tasks',
       SubComponents: null,
       route: pageRoutes.TASKS,
@@ -44,15 +53,6 @@ function SideNavbar() {
         'interviewer',
         'recruiter',
       ] as Database['public']['Enums']['user_roles'][],
-    },
-    {
-      icon: <AssistantLogo />,
-      text: 'Agent',
-      SubComponents: null,
-      route: pageRoutes.AGENT,
-      comingsoon: false,
-      isvisible: isAgentEnabled,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavJobs isActive={false} />,

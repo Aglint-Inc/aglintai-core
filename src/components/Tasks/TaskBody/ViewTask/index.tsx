@@ -77,10 +77,23 @@ function ViewTaskDrawer() {
                   }
                 />
               }
-              slotTaskProgress={<TaskProgress 
-              // slotImage={}
-              
-              />}
+              slotTaskProgress={taskProgressData.map((item, i) => {
+                return (
+                  <TaskProgress
+                    key={i}
+                    slotImage={
+                      <MuiAvatar
+                        level={item.assignee.first_name}
+                        src='/'
+                        variant='circular'
+                        width='24px'
+                        height='24px'
+                        fontSize='12px'
+                      />
+                    }
+                  />
+                );
+              })}
               onClickClose={{
                 onClick: () => {
                   setOpenViewTask(false);
@@ -96,3 +109,29 @@ function ViewTaskDrawer() {
 }
 
 export default ViewTaskDrawer;
+
+const taskProgressData = [
+  {
+    assignee: { first_name: 'Dheeraj' },
+    progressTitle: 'Task create for scheduling interview',
+  },
+  {
+    assignee: { first_name: 'Dheeraj' },
+    progressTitle: 'Task create for scheduling interview',
+  },
+
+  {
+    assignee: { first_name: 'Dheeraj' },
+    progressTitle: 'Task create for scheduling interview',
+  },
+
+  {
+    assignee: { first_name: 'Dheeraj' },
+    progressTitle: 'Task create for scheduling interview',
+  },
+
+  {
+    assignee: { first_name: 'Dheeraj' },
+    progressTitle: 'Task create for scheduling interview',
+  },
+];

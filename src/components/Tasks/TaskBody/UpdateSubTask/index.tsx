@@ -25,6 +25,7 @@ import toast from '@/src/utils/toast';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../utils';
 import DateField from './DateField';
+import SelectStatus from './SelecteStatus';
 export type assigneeType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
@@ -59,10 +60,12 @@ function UpdateSubTask({
 
   const nameRef = useRef<HTMLInputElement | null>(null);
   const dateRef = useRef<HTMLInputElement | null>(null);
-  const statusRef = useRef<HTMLInputElement | null>(null);
   const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
     null,
   );
+  const [selectedStatus, setSelectedStatus] = useState<
+    CustomDatabase['public']['Enums']['sub_task_status'] | null
+  >(null);
 
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -77,8 +80,8 @@ function UpdateSubTask({
   const handleClick = () => {
     const name = nameRef.current.value;
     const completion_date = selectedDate;
-    const status = statusRef.current
-      .value as CustomDatabase['public']['Enums']['sub_task_status'];
+    const status =
+      selectedStatus as CustomDatabase['public']['Enums']['sub_task_status'];
 
     if (name && selectedAssignee) {
       handelUpdateSubTask({
@@ -111,27 +114,14 @@ function UpdateSubTask({
       ) as assigneeType,
     );
     setSelectedDate(subTask?.completion_date);
+    setSelectedStatus(subTask.status);
   }, []);
   return (
     <Grid columnGap={'10px'} container>
-      <Grid item sm={2}>
-        <Autocomplete
-          fullWidth
-          clearIcon
-          id='combo-box-demo'
-          options={['pending', 'in_progress', 'completed', 'closed']}
-          defaultValue={subTask?.status || 'pending'}
-          // onChange={(e, value) => {
-          //   setSelectedStatus(value);
-          // }}
-          renderInput={(params) => (
-            <TextField
-              placeholder='Select status'
-              variant='outlined'
-              inputRef={statusRef}
-              {...params}
-            />
-          )}
+      <Grid justifyContent={'end'} display={'flex'} item sm={2}>
+        <SelectStatus
+          status={selectedStatus}
+          setSelectedStatus={setSelectedStatus}
         />
       </Grid>
       <Grid item sm={4}>
@@ -160,8 +150,7 @@ function UpdateSubTask({
           getDate={getDate}
         />
       </Grid>
-
-      <Grid item sm={2}>
+      <Grid item sm={2.5}>
         <Autocomplete
           fullWidth
           clearIcon

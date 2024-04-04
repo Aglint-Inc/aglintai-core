@@ -94,22 +94,25 @@ function SchedulingPopUps({
                 <ShowCode.When isTrue={reason === 'connect_google_workSpace'}>
                   Connect Google Workspace
                 </ShowCode.When>
+                <ShowCode.When isTrue={reason === 'connect_zoom'}>
+                  Connect Zoom
+                </ShowCode.When>
+
                 <ShowCode.When
                   isTrue={reason === 'disconnect_google_workSpace'}
                 >
                   Disconnect Google Workspace
                 </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_google_workspace'}>
-                  Google Workspace
-                </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'connect_zoom'}>
-                  Connect Zoom
-                </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'disconnect_zoom'}>
                   Disconnect Zoom
                 </ShowCode.When>
-                <ShowCode.When isTrue={reason === 'update_zoom'}>
+
+                <ShowCode.When isTrue={reason === 'update_google_workspace'}>
                   Google Workspace
+                </ShowCode.When>
+
+                <ShowCode.When isTrue={reason === 'update_zoom'}>
+                  Zoom
                 </ShowCode.When>
               </ShowCode>
             }
