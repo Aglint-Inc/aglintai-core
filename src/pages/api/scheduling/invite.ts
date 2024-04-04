@@ -10,7 +10,9 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
+import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { Database } from '@/src/types/schema';
+import { getCompWorkingDaysRange } from '@/src/utils/scheduling_v2/utils';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -44,7 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { data: rec } = await supabase
       .from('recruiter')
-      .select('id,logo,name')
+      .select('id,logo,name,scheduling_settings')
       .eq('id', application.public_jobs.recruiter_id);
 
     const filterJsonTyped = filterJson[0]
@@ -61,7 +63,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       intSes.reduce((acc, curr) => Math.max(acc, curr.break_duration), 0),
     );
 
-    const possibleDateRange = getDateRange(filterJsonTyped, maxBreakDuration);
+    const maxDurationInDays = Math.floor((maxBreakDuration + 1440) / 1440);
+
+    const possibleDateRange = getDateRange(
+      { ...filterJsonTyped, user_tz: req.body.user_tz },
+      maxBreakDuration,
+      rec[0].scheduling_settings as any,
+      maxDurationInDays,
+      intSes,
+    );
 
     const { data: intMeet, error: errMeet } = await supabase
       .from('interview_meeting')
@@ -109,6 +119,9 @@ interface FilterJsonDateRangeCandidateInvite {
 function getDateRange(
   input: FilterJsonDateRangeCandidateInvite,
   durationInMinutes: number,
+  schedule_settings: schedulingSettingType,
+  maxDurationInDays,
+  intSes,
 ): DateRangeCandidateInvite[] {
   const { start_date, end_date, user_tz } = input;
 
@@ -128,15 +141,14 @@ function getDateRange(
       dateRanges.push({ start_date: currentDate, end_date: null });
     }
   } else {
-    // If duration is greater than 1 day
-    for (let i = 0; i < numberOfDays - 1; i++) {
-      const currentStartDate = startDate.add(i, 'day').format('DD/MM/YYYY');
-      const currentEndDate = startDate.add(i + 1, 'day').format('DD/MM/YYYY');
-      dateRanges.push({
-        start_date: currentStartDate,
-        end_date: currentEndDate,
-      });
-    }
+    const range = getCompWorkingDaysRange(
+      dayjs(start_date, 'DD/MM/YYYY').tz(user_tz).format(),
+      dayjs(end_date, 'DD/MM/YYYY').tz(user_tz).format(),
+      schedule_settings,
+      intSes,
+    );
+
+    dateRanges.push(...range);
   }
 
   return dateRanges;

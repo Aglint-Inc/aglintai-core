@@ -141,22 +141,22 @@ function FullSchedule() {
                 isScheduleNowVisible={!session.interview_meeting}
                 isCardSelected={selectedSessionIds.includes(session.id)}
                 slotStatusPill={
-                  session.interview_meeting ? (
+                  session.interview_meeting?.status ? (
                     <StatusBadge
                       isCancelledVisible={
-                        session.interview_meeting?.status === 'cancelled'
+                        session.interview_meeting.status === 'cancelled'
                       }
                       isConfirmedVisible={
-                        session.interview_meeting?.status === 'confirmed'
+                        session.interview_meeting.status === 'confirmed'
                       }
                       isWaitingVisible={
-                        session.interview_meeting?.status === 'waiting'
+                        session.interview_meeting.status === 'waiting'
                       }
                       isCompletedVisible={
-                        session.interview_meeting?.status === 'completed'
+                        session.interview_meeting.status === 'completed'
                       }
                       isNotScheduledVisible={
-                        session.interview_meeting?.status === 'not_scheduled'
+                        session.interview_meeting.status === 'not_scheduled'
                       }
                     />
                   ) : (

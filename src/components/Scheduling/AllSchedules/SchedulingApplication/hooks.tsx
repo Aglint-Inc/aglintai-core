@@ -140,6 +140,7 @@ export const useSendInviteForCandidate = () => {
           newId: uuidv4(),
           isSelected: session_ids.includes(session.id),
         }));
+        console.log(refSessions);
 
         const { error: errorInsertedSessions } = await supabase
           .from('interview_session')
@@ -166,7 +167,7 @@ export const useSendInviteForCandidate = () => {
         refSessions.map((session) => {
           session.users.map((user) => {
             insertableUserRelation.push({
-              interview_module_relation_id: user.interview_module_relation.id,
+              interview_module_relation_id: user.interview_module_relation?.id,
               interviewer_type: user.interviewer_type,
               session_id: session.newId,
               training_type: user.training_type,
@@ -174,6 +175,7 @@ export const useSendInviteForCandidate = () => {
             } as InterviewSessionRelationTypeDB);
           });
         });
+        console.log(insertableUserRelation);
 
         const { error: errorInsertedUserRelation } = await supabase
           .from('interview_session_relation')
@@ -186,7 +188,7 @@ export const useSendInviteForCandidate = () => {
           status: session.isSelected ? 'waiting' : 'not_scheduled',
           session_id: session.newId,
           instructions: refSessions.find((s) => s.id === session.id)
-            .interview_module.instructions,
+            ?.interview_module?.instructions,
           interview_schedule_id: data[0].id,
         })) as InterviewMeetingTypeDb[];
 
@@ -333,7 +335,7 @@ export const useGetScheduleApplication = () => {
         setSelectedApplication(typedApplication);
 
         if (schedule.length == 0) {
-          const sessionsWithPlan = await fetchInterviewData(
+          const sessionsWithPlan = await fetchInterviewDataJob(
             typedApplication.public_jobs.id,
           );
           setinitialSessions(
@@ -381,7 +383,7 @@ export const useGetScheduleApplication = () => {
   return { fetchInterviewDataByApplication };
 };
 
-export const fetchInterviewData = async (job_id: string) => {
+export const fetchInterviewDataJob = async (job_id: string) => {
   try {
     const { data: interviewPlan, error: interviewPlanError } = await supabase
       .from('interview_plan')

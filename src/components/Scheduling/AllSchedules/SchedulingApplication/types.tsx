@@ -1,7 +1,7 @@
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { fetchInterviewData } from './hooks';
+import { fetchInterviewDataJob } from './hooks';
 
 export async function getApplicationSchedule({
   application_id,
@@ -28,7 +28,7 @@ export type SelectedApplicationTypeDB = ResultType & {
 };
 
 export type SessionsType =
-  ReturnType<typeof fetchInterviewData> extends Promise<infer T>
+  ReturnType<typeof fetchInterviewDataJob> extends Promise<infer T>
     ? T extends { sessions: infer S }
       ? S
       : never

@@ -36,6 +36,7 @@ function CandidateInvite() {
       const res = await axios.post('/api/scheduling/invite', {
         id: router.query.schedule_id,
         filter_id: router.query.filter_id,
+        user_tz: dayjs.tz.guess(),
       });
       if (res.status === 200 && res.data) {
         setSchedule(res.data);

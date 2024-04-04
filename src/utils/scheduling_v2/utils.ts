@@ -148,7 +148,7 @@ export const getCompWorkingDaysRange = (
   int_sessions: InterviewSessionApiRespType[],
 ) => {
   let day_break_cnt = 0;
-  int_sessions.forEach((s) => {
+  int_sessions.slice(0, -1).forEach((s) => {
     const day_break = Math.floor(s.break_duration / SINGLE_DAY_TIME);
     if (day_break > 0) {
       day_break_cnt += day_break;
@@ -172,7 +172,10 @@ export const getCompWorkingDaysRange = (
     }
   };
 
-  const date_ranges: string[] = [];
+  const date_ranges: {
+    start_date: string;
+    end_date: string;
+  }[] = [];
   let curr_day = dayjs(start_date);
   const end_day = dayjs(end_date);
   while (curr_day.isSameOrBefore(end_day, 'day')) {
@@ -183,9 +186,10 @@ export const getCompWorkingDaysRange = (
         day_break_cnt,
       );
       if (next_day.isSameOrBefore(end_day, 'day')) {
-        date_ranges.push(
-          `${curr_day.format('DD-MMMM')} -  ${next_day.format('DD-MMMM')}`,
-        );
+        date_ranges.push({
+          start_date: curr_day.format('DD/MM/YYYY'),
+          end_date: next_day.format('DD/MM/YYYY'),
+        });
       }
     }
     curr_day = getNextWorkingDay(comp_schedule_setting, curr_day, 1);
