@@ -12,4 +12,6 @@ declare function CandidateDetails(props: {
   slotEducation?: Types.Devlink.Slot;
   slotExperiences?: Types.Devlink.Slot;
   slotSkills?: Types.Devlink.Slot;
+  isFullWidthVisible?: Types.Visibility.VisibilityConditions;
+  isSmallWidthVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

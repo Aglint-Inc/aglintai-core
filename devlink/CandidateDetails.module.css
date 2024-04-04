@@ -7,6 +7,10 @@
   grid-row-gap: 28px;
 }
 
+.cv-sidebar-info-wrapper.width-600 {
+  width: 600px;
+}
+
 .cvs-info-navbar {
   position: sticky;
   top: 0px;

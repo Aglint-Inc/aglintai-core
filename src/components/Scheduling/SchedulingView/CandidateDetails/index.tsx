@@ -37,6 +37,8 @@ function CandidateInfo({ applications, candidate, file }) {
           textAppliedOn={dayjs(applications.created_at).format('DD MMM YYYY')}
           isNavigationButtonVisible={true}
           isLeftRightVisible={false}
+          isSmallWidthVisible={false}
+          isFullWidthVisible={true}
           slotSocialLink={
             <>
               {candidate.linkedin && (
@@ -95,6 +97,8 @@ function CandidateInfo({ applications, candidate, file }) {
           }
           slotCandidateDetails={
             <CandidateDetails
+              isFullWidthVisible={true}
+              isSmallWidthVisible={false}
               slotInterviewScore={
                 <>
                   <AnalysisBlockSection application={application} />

@@ -26,4 +26,6 @@ declare function CandidateSideDrawer(props: {
   isLeftRightVisible?: Types.Visibility.VisibilityConditions;
   isHeaderVisible?: Types.Visibility.VisibilityConditions;
   isNameImageVisible?: Types.Visibility.VisibilityConditions;
+  isFullWidthVisible?: Types.Visibility.VisibilityConditions;
+  isSmallWidthVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
