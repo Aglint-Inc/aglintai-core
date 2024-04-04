@@ -315,46 +315,54 @@ export const useGetScheduleApplication = () => {
         });
 
         const typedApplication = res as SelectedApplicationTypeDB;
-
         setSelectedApplication(typedApplication);
 
         if (schedule.length == 0) {
           const sessionsWithPlan = await fetchInterviewDataJob(
             typedApplication.public_jobs.id,
           );
-          setinitialSessions(
-            sessionsWithPlan.sessions.sort(
-              (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
-            ),
-          );
           setScheduleName(
             `Interview for ${typedApplication?.public_jobs?.job_title} - ${typedApplication?.candidates?.first_name}`,
           );
-          if (sessionsWithPlan?.interviewPlan?.coordinator_id) {
-            setSelCoordinator(sessionsWithPlan?.interviewPlan?.coordinator_id);
-          } else {
-            const adminUserId = resMem.data.filter(
-              (member) => member.role === 'admin',
-            )[0]?.user_id;
-            adminUserId && setSelCoordinator(adminUserId);
+          if (sessionsWithPlan.sessions.length > 0) {
+            setinitialSessions(
+              sessionsWithPlan.sessions.sort(
+                (itemA, itemB) =>
+                  itemA['session_order'] - itemB['session_order'],
+              ),
+            );
+
+            if (sessionsWithPlan?.interviewPlan?.coordinator_id) {
+              setSelCoordinator(
+                sessionsWithPlan?.interviewPlan?.coordinator_id,
+              );
+            } else {
+              const adminUserId = resMem.data.filter(
+                (member) => member.role === 'admin',
+              )[0]?.user_id;
+              adminUserId && setSelCoordinator(adminUserId);
+            }
           }
         } else {
           const sessionsWithPlan = await fetchInterviewDataSchedule(
             schedule[0].id,
           );
-          setinitialSessions(
-            sessionsWithPlan.sort(
-              (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
-            ),
-          );
-          setScheduleName(schedule[0].schedule_name);
-          if (schedule[0].coordinator_id) {
-            setSelCoordinator(schedule[0].coordinator_id);
-          } else {
-            const adminUserId = resMem.data.filter(
-              (member) => member.role === 'admin',
-            )[0]?.user_id;
-            adminUserId && setSelCoordinator(adminUserId);
+          if (sessionsWithPlan.length > 0) {
+            setinitialSessions(
+              sessionsWithPlan.sort(
+                (itemA, itemB) =>
+                  itemA['session_order'] - itemB['session_order'],
+              ),
+            );
+            setScheduleName(schedule[0].schedule_name);
+            if (schedule[0].coordinator_id) {
+              setSelCoordinator(schedule[0].coordinator_id);
+            } else {
+              const adminUserId = resMem.data.filter(
+                (member) => member.role === 'admin',
+              )[0]?.user_id;
+              adminUserId && setSelCoordinator(adminUserId);
+            }
           }
         }
       }
@@ -376,6 +384,13 @@ export const fetchInterviewDataJob = async (job_id: string) => {
 
     if (interviewPlanError) throw new Error(interviewPlanError.message);
 
+    if (interviewPlan.length == 0) {
+      return {
+        sessions: [],
+        interviewPlan: null,
+      };
+    }
+
     const { data: interviewSession, error: interviewSessionError } =
       await supabase
         .from('interview_session')
@@ -383,6 +398,13 @@ export const fetchInterviewDataJob = async (job_id: string) => {
         .eq('interview_plan_id', interviewPlan[0].id);
 
     if (interviewSessionError) throw new Error(interviewSessionError.message);
+
+    if (interviewSession.length == 0) {
+      return {
+        sessions: [],
+        interviewPlan: null,
+      };
+    }
 
     const {
       data: interviewSessionRelations,

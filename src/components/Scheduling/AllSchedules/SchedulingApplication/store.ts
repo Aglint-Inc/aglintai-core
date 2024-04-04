@@ -43,7 +43,7 @@ const initialState: SchedulingApplication = {
   selectedSessionIds: [],
   tab: 'full_schedule',
   selectedMeeting: null,
-  initialSessions: null,
+  initialSessions: [],
   selectedSchedule: null,
   totalSlots: 0,
   interviewModules: [],

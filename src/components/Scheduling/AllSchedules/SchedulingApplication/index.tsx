@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { ButtonPrimaryLarge } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { Breadcrum, InterviewPlanEmpty, PageLayout } from '@/devlink2';
 import {
   CandidateCard,
   CandidateSchedule,
@@ -17,7 +17,7 @@ import CandidateInfo from '../../SchedulingView/CandidateDetails';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { fetchInterviewSessionTask, useGetScheduleApplication } from './hooks';
+import { useGetScheduleApplication } from './hooks';
 import {
   resetSchedulingApplicationState,
   setIsScheduleNowOpen,
@@ -40,16 +40,15 @@ function SchedulingApplication() {
   const selectedSessionIds = useSchedulingApplicationStore(
     (state) => state.selectedSessionIds,
   );
+  const initialSessions = useSchedulingApplicationStore(
+    (state) => state.initialSessions,
+  );
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
       fetchInterviewDataByApplication();
-      fetchInterviewSessionTask({
-        application_id: router.query.application_id as string,
-        job_id: '10bad981-e3b6-4ee8-9e12-9a0d72febc83',
-      });
     }
     return () => {
       resetSchedulingApplicationState();
@@ -74,7 +73,19 @@ function SchedulingApplication() {
         }
         slotBody={
           <>
-            {!fetchingSchedule ? (
+            {fetchingSchedule ? (
+              <Loader />
+            ) : initialSessions.length === 0 ? (
+              <InterviewPlanEmpty
+                onClickCreateInterviewPlan={{
+                  onClick: () => {
+                    router.push(
+                      `/jobs/${selectedApplication.job_id}/interview-plan`,
+                    );
+                  },
+                }}
+              />
+            ) : (
               <CandidateSchedule
                 slotDarkPill={
                   <>
@@ -164,8 +175,6 @@ function SchedulingApplication() {
                   )
                 }
               />
-            ) : (
-              <Loader />
             )}
           </>
         }
