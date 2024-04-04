@@ -112,12 +112,13 @@ const Comp = () => {
 
   const handleUpdate = async () => {
     try {
+      const plan_id = '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4';
       const sessions = [
         {
-          id: '8e017bad-4b5e-45b1-b91d-44fee879776c',
+          id: '',
           created_at: '2024-04-01T10:07:06.826456+00:00',
           module_id: '24535995-ec9e-4c91-a273-859e3c41bfe4',
-          interview_plan_id: null,
+          interview_plan_id: '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4',
           session_order: 1,
           session_duration: 30,
           break_duration: 30,
@@ -128,13 +129,13 @@ const Comp = () => {
           name: 'session 1',
         },
         {
-          id: 'dd541013-39ef-4d5f-9862-67d10186e180',
+          id: '',
           created_at: '2024-04-01T10:07:06.72572+00:00',
           module_id: null,
-          interview_plan_id: null,
+          interview_plan_id: '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4',
           session_order: 2,
           session_duration: 30,
-          break_duration: 86400,
+          break_duration: 1440,
           interviewer_cnt: 1,
           session_type: 'debrief',
           location: null,
@@ -142,10 +143,10 @@ const Comp = () => {
           name: 'session 2',
         },
         {
-          id: 'ab8fea09-c638-4403-a3ca-8cfae659fbb1',
+          id: '',
           created_at: '2024-04-01T10:07:06.807092+00:00',
           module_id: '24535995-ec9e-4c91-a273-859e3c41bfe4',
-          interview_plan_id: null,
+          interview_plan_id: '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4',
           session_order: 3,
           session_duration: 30,
           break_duration: 30,
@@ -156,13 +157,13 @@ const Comp = () => {
           name: 'session 3',
         },
         {
-          id: '889a0e19-5a3b-4dab-a199-ded61997dda2',
+          id: '',
           created_at: '2024-04-01T10:07:06.759923+00:00',
           module_id: '24535995-ec9e-4c91-a273-859e3c41bfe4',
-          interview_plan_id: null,
+          interview_plan_id: '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4',
           session_order: 4,
           session_duration: 30,
-          break_duration: 86400,
+          break_duration: 1440,
           interviewer_cnt: 1,
           session_type: 'individual',
           location: null,
@@ -171,10 +172,10 @@ const Comp = () => {
         },
 
         {
-          id: 'e22f9df3-9cc0-4030-8171-b9dcd5d3ebd4',
+          id: '',
           created_at: '2024-04-01T10:07:06.874566+00:00',
           module_id: '24535995-ec9e-4c91-a273-859e3c41bfe4',
-          interview_plan_id: null,
+          interview_plan_id: '6e4ce1b4-6c6f-4f85-916e-c3baf8629fe4',
           session_order: 5,
           session_duration: 30,
           break_duration: 30,
@@ -188,47 +189,77 @@ const Comp = () => {
 
       const sess_relns = [
         {
-          session_id: '8e017bad-4b5e-45b1-b91d-44fee879776c',
           interview_module_relation_id: '497f4850-0ae2-441d-a99a-f7bf88815bfd',
         },
         {
-          session_id: 'e22f9df3-9cc0-4030-8171-b9dcd5d3ebd4',
           interview_module_relation_id: '8a88736f-1d37-4dca-a3c9-410206864522',
         },
         {
-          session_id: '889a0e19-5a3b-4dab-a199-ded61997dda2',
           interview_module_relation_id: '8a88736f-1d37-4dca-a3c9-410206864522',
         },
         {
-          session_id: 'ab8fea09-c638-4403-a3ca-8cfae659fbb1',
+          interview_module_relation_id: '497f4850-0ae2-441d-a99a-f7bf88815bfd',
+        },
+        {
           interview_module_relation_id: '497f4850-0ae2-441d-a99a-f7bf88815bfd',
         },
       ];
 
-      // sess_relns.forEach(async (reln) => {
-      //   supabaseWrap(
-      //     await supabase.from('interview_session_relation').insert({
-      //       session_id: reln.session_id,
-      //       interview_module_relation_id: reln.interview_module_relation_id,
-      //     }),
-      //   );
-      //   console.log('nvekjn');
-      // });
+      sessions.map(async (s, idx) => {
+        try {
+          const [rec] = supabaseWrap(
+            await supabase
+              .from('interview_session')
+              .insert({
+                interview_plan_id: plan_id,
+                session_order: s.session_order,
+                break_duration: s.break_duration,
+                session_duration: s.session_duration,
+                interviewer_cnt: s.interviewer_cnt,
+                session_type: s.session_type as any,
+                schedule_type: s.schedule_type as any,
+                module_id: s.module_id,
+              })
+              .select(),
+          );
+          if (rec.session_type !== 'debrief') {
+            supabaseWrap(
+              await supabase.from('interview_session_relation').insert({
+                session_id: rec.id,
+                interview_module_relation_id:
+                  sess_relns[idx].interview_module_relation_id,
+              }),
+            );
+          } else {
+            supabaseWrap(
+              await supabase.from('interview_session_relation').insert({
+                session_id: rec.id,
+                user_id: '9afe3700-c509-4f65-af0d-7892718ecde2',
+              }),
+            );
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      });
 
       // console.log('nfwkejefnk');
 
-      sessions.forEach(async (s) => {
-        supabaseWrap(
-          await supabase
-            .from('interview_session')
-            .update({
-              session_order: s.session_order,
-              break_duration: s.break_duration,
-              name: s.name,
-            })
-            .eq('id', s.id),
-        );
-      });
+      // sessions.forEach(async (s) => {
+      //   console.log(
+      //     supabaseWrap(
+      //       await supabase
+      //         .from('interview_session')
+      //         .insert({
+      //           session_order: s.session_order,
+      //           break_duration: s.break_duration,
+      //           name: s.name,
+      //         })
+      //         .eq('id', s.id)
+      //         .select(),
+      //     ),
+      //   );
+      // });
       // console.log('nfwkejefnk');
 
       //
