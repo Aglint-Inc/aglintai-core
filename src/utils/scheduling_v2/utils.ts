@@ -14,7 +14,9 @@ import {
   schedulingSettingType,
 } from '@/src/components/Scheduling/Settings/types';
 
+import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
+  InterviewSessionApiRespType,
   PlanCombinationType,
   SessionCombinationType,
   SessionInterviewerApiRespType,
@@ -143,8 +145,15 @@ export const getCompWorkingDaysRange = (
   start_date: string,
   end_date: string,
   comp_schedule_setting: schedulingSettingType,
-  inter_days_cnt,
+  int_sessions: InterviewSessionApiRespType[],
 ) => {
+  let day_break_cnt = 0;
+  int_sessions.forEach((s) => {
+    const day_break = Math.floor(s.break_duration / SINGLE_DAY_TIME);
+    if (day_break > 0) {
+      day_break_cnt += day_break;
+    }
+  });
   const isCurrDayHoliday = (curr_day: Dayjs) => {
     // is curr day holiday
     if (
@@ -171,7 +180,7 @@ export const getCompWorkingDaysRange = (
       const next_day = getNextWorkingDay(
         comp_schedule_setting,
         curr_day,
-        inter_days_cnt,
+        day_break_cnt,
       );
       if (next_day.isSameOrBefore(end_day, 'day')) {
         date_ranges.push(
