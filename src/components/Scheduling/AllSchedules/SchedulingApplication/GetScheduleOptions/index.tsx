@@ -15,6 +15,7 @@ import SchedulingOptionComp from '../Common/ScheduleOption';
 import { useGetScheduleOptions, useSendInviteForCandidate } from '../hooks';
 import {
   setDateRange,
+  setinitialSessions,
   setIsScheduleNowOpen,
   setSchedulingOptions,
   setSelectedSessionIds,
@@ -26,10 +27,12 @@ function GetScheduleOptionsDialog() {
   const { recruiter } = useAuthDetails();
   const currentDate = dayjs();
   const {
+    selCoordinator,
     dateRange,
     noOptions,
     selectedApplication,
     fetchingPlan,
+    initialSessions,
     isScheduleNowOpen,
     step,
     selectedSessionIds,
@@ -38,14 +41,11 @@ function GetScheduleOptionsDialog() {
   } = useSchedulingApplicationStore((state) => ({
     selCoordinator: state.selCoordinator,
     dateRange: state.dateRange,
-    fetchingPlan: state.fetchingPlan,
-    members: state.members,
-    scheduleName: state.scheduleName,
-    selectedApplication: state.selectedApplication,
     noOptions: state.noOptions,
-    fetchingSchedule: state.fetchingSchedule,
-    isScheduleNowOpen: state.isScheduleNowOpen,
+    selectedApplication: state.selectedApplication,
+    fetchingPlan: state.fetchingPlan,
     initialSessions: state.initialSessions,
+    isScheduleNowOpen: state.isScheduleNowOpen,
     step: state.step,
     selectedSessionIds: state.selectedSessionIds,
     schedulingOptions: state.schedulingOptions,
@@ -55,19 +55,6 @@ function GetScheduleOptionsDialog() {
   const { findScheduleOptions } = useGetScheduleOptions();
   const { sendToCandidate } = useSendInviteForCandidate();
 
-  // const router = useRouter();
-  // const { recruiter_id, recruiterUser } = useAuthDetails();
-  // const [isloading, setLoading] = useState<boolean>(false);
-  // const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-  // const [input, setInput] = useState<string>(
-  //   selectedApplication.candidates.phone,
-  // );
-  // const [inputEmail, setInputEmail] = useState<string>(
-  //   selectedApplication.candidates.email,
-  // );
-  // const [selectedTimeZone, setSelectedTimeZone] = useState(null);
-  // const [isEmail, setEmail] = useState(true);
-  // const [isPhone, setPhone] = useState(false);
   const initialEndDate = currentDate.add(5, 'day');
 
   useEffect(() => {
@@ -82,6 +69,37 @@ function GetScheduleOptionsDialog() {
       setSelectedSessionIds([]);
     };
   }, []);
+
+  const onClickSendToCandidate = async () => {
+    const res = await sendToCandidate({
+      session_ids: selectedSessionIds,
+      is_get_more_option: false,
+      allSessions: initialSessions,
+      coordinator_id: selCoordinator,
+      recruiter_id: recruiter.id,
+      job_title: selectedApplication.public_jobs.job_title,
+      application_id: selectedApplication.id,
+      candidate_email: selectedApplication.candidates.email,
+      candidate_name: getFullName(
+        selectedApplication.candidates.first_name,
+        selectedApplication.candidates.last_name,
+      ),
+      dateRange: dateRange,
+      is_mail: true,
+    });
+    if (res) {
+      setinitialSessions(
+        initialSessions.map((session) => ({
+          ...session,
+          interview_meeting: selectedSessionIds.includes(session.id)
+            ? { status: 'waiting', interview_schedule_id: null }
+            : null,
+        })),
+      );
+    }
+    setSelectedSessionIds([]);
+    setIsScheduleNowOpen(false);
+  };
 
   return (
     <>
@@ -119,10 +137,7 @@ function GetScheduleOptionsDialog() {
                 buttonText={'Send to Candidate'}
                 buttonProps={{
                   onClick: () => {
-                    sendToCandidate({
-                      session_ids: selectedSessionIds,
-                      is_get_more_option: false,
-                    });
+                    onClickSendToCandidate();
                   },
                 }}
               />
@@ -140,14 +155,6 @@ function GetScheduleOptionsDialog() {
           }
           slotPrimaryButton={
             <>
-              {/* <ButtonGrey
-                textLabel={'Schedule With Agent'}
-                onClickButton={{
-                  onClick: () => {
-                    setIsPopupOpen(true);
-                  },
-                }}
-              /> */}
               <ButtonPrimaryDefaultRegular
                 buttonProps={{
                   onClick: async () => {

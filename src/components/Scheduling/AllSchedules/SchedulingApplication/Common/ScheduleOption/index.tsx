@@ -166,9 +166,11 @@ function SchedulingOptionComp({
           />
         );
       })}
-      <Typography variant={'body2'} textAlign={'center'}>
-        {total - schedulingOptions.length} more options available
-      </Typography>
+      {total - schedulingOptions.length > 0 && (
+        <Typography variant={'body2'} textAlign={'center'}>
+          {total - schedulingOptions.length} more options available
+        </Typography>
+      )}
     </Stack>
   );
 }

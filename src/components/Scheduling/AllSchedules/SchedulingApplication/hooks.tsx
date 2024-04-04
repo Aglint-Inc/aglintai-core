@@ -21,10 +21,10 @@ import toast from '@/src/utils/toast';
 import { MemberType } from '../../Modules/types';
 import { mailHandler } from '../utils';
 import {
+  SchedulingApplication,
   setFetchingPlan,
   setFetchingSchedule,
   setinitialSessions,
-  setIsScheduleNowOpen,
   setMembers,
   setNoOptions,
   setScheduleName,
@@ -32,10 +32,8 @@ import {
   setSelCoordinator,
   setSelectedApplication,
   setSelectedSchedule,
-  setSelectedSessionIds,
   setStep,
   setTotalSlots,
-  useSchedulingApplicationStore,
 } from './store';
 import { getApplicationSchedule, SelectedApplicationTypeDB } from './types';
 
@@ -92,33 +90,40 @@ export const useGetScheduleOptions = () => {
 };
 
 export const useSendInviteForCandidate = () => {
-  const { recruiter } = useAuthDetails();
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
-  );
-  const dateRange = useSchedulingApplicationStore((state) => state.dateRange);
-  const scheduleName = useSchedulingApplicationStore(
-    (state) => state.scheduleName,
-  );
-  const selCoordinator = useSchedulingApplicationStore(
-    (state) => state.selCoordinator,
-  );
-  const initialSessions = useSchedulingApplicationStore(
-    (state) => state.initialSessions,
-  );
-
   const sendToCandidate = async ({
     session_ids,
     is_get_more_option,
+    application_id,
+    allSessions,
+    coordinator_id,
+    job_title,
+    candidate_name,
+    dateRange,
+    recruiter_id,
+    candidate_email,
+    is_mail,
   }: {
     session_ids: string[];
     is_get_more_option: boolean;
+    application_id: string;
+    allSessions: SchedulingApplication['initialSessions'];
+    coordinator_id: string;
+    job_title: string;
+    candidate_name: string;
+    dateRange: {
+      start_date: string;
+      end_date: string;
+    };
+    recruiter_id: string;
+    candidate_email: string;
+    is_mail: boolean;
   }) => {
     try {
+      const scheduleName = `Interview for ${job_title} - ${candidate_name}`;
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
         .select('id')
-        .eq('application_id', selectedApplication.id);
+        .eq('application_id', application_id);
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
@@ -127,15 +132,15 @@ export const useSendInviteForCandidate = () => {
           .from('interview_schedule')
           .insert({
             is_get_more_option: is_get_more_option,
-            application_id: selectedApplication.id,
+            application_id: application_id,
             schedule_name: scheduleName,
-            coordinator_id: selCoordinator,
+            coordinator_id: coordinator_id,
           })
           .select();
 
         if (error) throw new Error(error.message);
 
-        const refSessions = initialSessions.map((session) => ({
+        const refSessions = allSessions.map((session) => ({
           ...session,
           newId: uuidv4(),
           isSelected: session_ids.includes(session.id),
@@ -144,7 +149,7 @@ export const useSendInviteForCandidate = () => {
         const { error: errorInsertedSessions } = await supabase
           .from('interview_session')
           .insert(
-            initialSessions.map((session) => ({
+            allSessions.map((session) => ({
               interview_plan_id: null,
               id: refSessions.find((ref) => ref.id === session.id).newId,
               break_duration: session.break_duration,
@@ -190,25 +195,12 @@ export const useSendInviteForCandidate = () => {
           interview_schedule_id: data[0].id,
         })) as InterviewMeetingTypeDb[];
 
-        const { data: insertedMeetings, error: errorInsertedMeetings } =
-          await supabase
-            .from('interview_meeting')
-            .insert(insertableMeetings)
-            .select();
+        const { error: errorInsertedMeetings } = await supabase
+          .from('interview_meeting')
+          .insert(insertableMeetings);
 
         if (errorInsertedMeetings)
           throw new Error(errorInsertedMeetings.message);
-
-        setinitialSessions(
-          initialSessions.map((session) => ({
-            ...session,
-            interview_meeting: insertedMeetings.find(
-              (meet) =>
-                refSessions.find((s) => s.id === session.id).newId ===
-                meet.session_id,
-            ),
-          })),
-        );
 
         const newSessionIds = refSessions
           .filter((ses) => ses.isSelected)
@@ -219,7 +211,7 @@ export const useSendInviteForCandidate = () => {
           .insert({
             filter_json: {
               session_ids: newSessionIds,
-              recruiter_id: recruiter.id,
+              recruiter_id: recruiter_id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
@@ -231,45 +223,39 @@ export const useSendInviteForCandidate = () => {
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        mailHandler({
-          filter_id: filterJson[0].id,
-          rec_id: recruiter.id,
-          candidate_name: selectedApplication.candidates.first_name,
-          mail: selectedApplication.candidates.email,
-          position: selectedApplication.public_jobs.job_title,
-          schedule_name: scheduleName,
-          schedule_id: data[0].id,
-        });
-        setSelectedSessionIds([]);
+        is_mail &&
+          mailHandler({
+            filter_id: filterJson[0].id,
+            rec_id: recruiter_id,
+            candidate_name: candidate_name,
+            mail: candidate_email,
+            position: job_title,
+            schedule_name: scheduleName,
+            schedule_id: data[0].id,
+          });
       } else {
-        const { data: updatedMeetings, error: errorUpdatedMeetings } =
-          await supabase
-            .from('interview_meeting')
-            .upsert(
-              session_ids.map((session_id) => ({
+        const { error: errorUpdatedMeetings } = await supabase
+          .from('interview_meeting')
+          .upsert(
+            allSessions
+              .filter((ses) => session_ids.includes(ses.id))
+              .map((ses) => ({
                 status: 'waiting',
-                id: session_id,
+                id: ses.interview_meeting.id,
+                interview_schedule_id:
+                  ses.interview_meeting.interview_schedule_id,
+                session_id: ses.interview_meeting.session_id,
               })) as InterviewMeetingTypeDb[],
-            )
-            .select();
+          );
 
         if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
-
-        setinitialSessions(
-          initialSessions.map((session) => ({
-            ...session,
-            interview_meeting: updatedMeetings.find(
-              (meet) => meet.id === session.id,
-            ),
-          })),
-        );
 
         const { data: filterJson, error: errorFilterJson } = await supabase
           .from('interview_filter_json')
           .insert({
             filter_json: {
               session_ids: session_ids,
-              recruiter_id: recruiter.id,
+              recruiter_id: recruiter_id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
@@ -280,21 +266,21 @@ export const useSendInviteForCandidate = () => {
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
-        mailHandler({
-          filter_id: filterJson[0].id,
-          rec_id: recruiter.id,
-          candidate_name: selectedApplication.candidates.first_name,
-          mail: selectedApplication.candidates.email,
-          position: selectedApplication.public_jobs.job_title,
-          schedule_name: scheduleName,
-          schedule_id: checkSch[0].id,
-        });
-        setSelectedSessionIds([]);
+
+        is_mail &&
+          mailHandler({
+            filter_id: filterJson[0].id,
+            rec_id: recruiter_id,
+            candidate_name: candidate_name,
+            mail: candidate_email,
+            position: job_title,
+            schedule_name: scheduleName,
+            schedule_id: checkSch[0].id,
+          });
       }
+      return true;
     } catch (e) {
       toast.error(e.message);
-    } finally {
-      setIsScheduleNowOpen(false);
     }
   };
 
