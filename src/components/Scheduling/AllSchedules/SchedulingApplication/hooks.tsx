@@ -465,7 +465,7 @@ export const fetchInterviewSessionTask = async ({
       const { data: interviewMeetings, error: interviewSessionError } =
         await supabase
           .from('interview_meeting')
-          .select('*,interview_session(*,interview_module(*))')
+          .select('*,interview_session!inner(*)')
           .eq('interview_schedule_id', schedule[0].id)
           .or('status.eq.not_scheduled,status.eq.cancelled');
 
