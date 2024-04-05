@@ -147,6 +147,12 @@ const AuthProvider = ({ children }) => {
       .select('*')
       .eq('user_id', userDetails.user.id);
     if (!errorUser && recruiterUser.length > 0) {
+      if (recruiterUser[0].is_suspended) {
+        toast.error('Your account is Suspended.');
+        return setTimeout(() => {
+          handleLogout();
+        }, 300);
+      }
       setRecruiterUser(recruiterUser[0] as RecruiterUserType);
       (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
@@ -287,30 +293,29 @@ const AuthProvider = ({ children }) => {
     return (<></>) as T;
   };
 
-    useEffect(() => {
-      Promise.all([getSupabaseSession(), fetchUserLocation()]);
-    }, []);
+  useEffect(() => {
+    Promise.all([getSupabaseSession(), fetchUserLocation()]);
+  }, []);
 
-    useEffect(() => {
-      if (router.isReady) {
-        const redirect = window.location.href;
-        if (isRoutePublic(router.route)) return;
-        else if (!loading && !userDetails?.user)
-          router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+  useEffect(() => {
+    if (router.isReady) {
+      const redirect = window.location.href;
+      if (isRoutePublic(router.route)) return;
+      else if (!loading && !userDetails?.user)
+        router.push(`/login?redirect=${encodeURIComponent(redirect)}`);
+    }
+  }, [router.isReady, loading]);
+
+  useEffect(() => {
+    if (router.isReady && userDetails?.user) {
+      const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
+      if (feature && !posthog.isFeatureEnabled(feature)) {
+        // eslint-disable-next-line no-console
+        console.log('Feature not enabled');
+        router.push(pageRoutes.JOBS);
       }
-    }, [router.isReady, loading]);
-
-    useEffect(() => {
-      if (router.isReady && userDetails?.user) {
-        const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
-        if (feature && !posthog.isFeatureEnabled(feature)) {
-          // eslint-disable-next-line no-console
-          console.log('Feature not enabled');
-          router.push(pageRoutes.JOBS);
-        }
-      }
-    }, [router.pathname, userDetails]);
-
+    }
+  }, [router.pathname, userDetails]);
 
   return (
     <AuthContext.Provider
