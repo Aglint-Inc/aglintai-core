@@ -7,4 +7,7 @@ declare function InterviewPlan(props: {
   onClickAddModule?: Types.Devlink.RuntimeProps;
   onClickAddBreak?: Types.Devlink.RuntimeProps;
   onClickScheduler?: Types.Devlink.RuntimeProps;
+  slotInterviewCoordinator?: Types.Devlink.Slot;
+  slotPrimaryButton?: Types.Devlink.Slot;
+  isEmptyVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

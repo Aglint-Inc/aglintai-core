@@ -3,8 +3,10 @@ import { useRouter } from 'next/router';
 import { useJobs } from '@/src/context/JobsContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { appKey } from '..';
+
 export const jobAssessmentQueryKeys = {
-  all: { queryKey: ['aglint_job_assessment'] as string[] },
+  all: { queryKey: [appKey, 'job_assessment'] as string[] },
   assessments: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobAssessmentQueryKeys.all.queryKey, { job_id }],
   }),

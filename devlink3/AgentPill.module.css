@@ -1,0 +1,36 @@
+.div-block-1335 {
+  display: flex;
+  padding: 4px 16px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 100px;
+
+  background-color: #fff7ed;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-yellow-800 {
+  color: #703815;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}

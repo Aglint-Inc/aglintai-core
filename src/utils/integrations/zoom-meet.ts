@@ -5,7 +5,12 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';
 import { decrypt_string } from './crypt-funcs';
-import { TokenType, ZoomCreateMeetingParams, ZoomMeetingResp } from './types';
+import {
+  TokenType,
+  ZoomCreateMeetingParams,
+  ZoomMeetCred,
+  ZoomMeetingResp,
+} from './types';
 
 export class ZoomMeet {
   private recruiter_id;
@@ -21,17 +26,20 @@ export class ZoomMeet {
         .eq('id', this.recruiter_id),
     );
     if (!rec.zoom_auth) {
-      throw new Error('Zoom not integrated');
+      throw new Error('Zoom credential not found for the company');
     }
-    const zoom_auth = JSON.parse(decrypt_string(rec.zoom_auth)) as TokenType;
+    const zoom_cred: ZoomMeetCred = JSON.parse(decrypt_string(rec.zoom_auth));
+    const client_id = zoom_cred.client_id;
+    const client_secret = zoom_cred.client_secret;
+    const account_id = zoom_cred.account_id;
     const authHeader = `Basic ${Buffer.from(
-      `${process.env.NEXT_PUBLIC_ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`,
+      `${client_id}:${client_secret}`,
     ).toString('base64')}`;
     const { data } = await axios.post(
       'https://zoom.us/oauth/token',
       {
-        refresh_token: zoom_auth.refresh_token,
-        grant_type: 'refresh_token',
+        grant_type: 'account_credentials',
+        account_id: account_id,
       },
       {
         headers: {
@@ -43,6 +51,9 @@ export class ZoomMeet {
     this.user_auth = data;
   }
   public async createMeeting(meet_info: ZoomCreateMeetingParams) {
+    if (!this.user_auth.access_token) {
+      throw new Error('zoom not authorized');
+    }
     const { data } = await axios.post(
       `${ZOOM_API_URL}/users/me/meetings`,
       {
@@ -57,7 +68,6 @@ export class ZoomMeet {
     );
     return data as ZoomMeetingResp;
   }
-  public async;
   public async cancel_meet() {
     //
   }

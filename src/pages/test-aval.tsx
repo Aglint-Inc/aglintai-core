@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import AUIButton from '../components/Common/AUIButton';
 import SpecializedDatePicker from '../components/Common/SpecializedDatePicker';
 import UITextField from '../components/Common/UITextField';
-import { InterviewPlanScheduleDbType } from '../components/JobInterviewPlan/types';
+// import { InterviewPlanScheduleDbType } from '../components/JobInterviewPlan/types';
 import ToggleBtn from '../components/Scheduling/Settings/Components/ToggleBtn';
 import {
   InterDetailsType,
@@ -98,7 +98,8 @@ const Combination = ({
   end_date: Dayjs;
 }) => {
   const [isFinding, setIsFinding] = useState(false);
-  const [data, setData] = useState<InterviewPlanScheduleDbType[]>([]);
+  // const [data, setData] = useState<InterviewPlanScheduleDbType[]>([]);
+  const [data, setData] = useState<any>([]);
 
   const handlSubmit = async () => {
     try {

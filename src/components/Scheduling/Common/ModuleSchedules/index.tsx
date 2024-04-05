@@ -1,22 +1,15 @@
-import { AvatarGroup, Grid, Stack, Typography } from '@mui/material';
+import { AvatarGroup, Grid, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-// Extend Day.js with utc and timezone plugins
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import React from 'react';
 
 import {
   AllInterviewEmpty,
   InterviewMemberSide,
   InterviewScreenCard,
-  ToggleButton,
 } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
@@ -34,17 +27,15 @@ function ModuleSchedules({
   >[];
   loading?: boolean;
 }) {
-  const { recruiterUser } = useAuthDetails();
-  const [selectedTimeZone, setsSelectedTimeZone] = useState(null);
-  const [toggleEnabled, setToggleEnabled] = useState(true);
-
   const [filter, setFilter] = React.useState<
     'all' | 'upcoming' | 'cancelled' | 'completed'
   >('upcoming');
   const router = useRouter();
 
   const filterSchedules = () => {
-    const filSch = schedules.filter((sch) => sch.schedule.status !== 'pending');
+    const filSch = schedules.filter(
+      (sch) => sch.interview_meeting.status !== 'waiting',
+    );
     if (filter === 'all') {
       return filSch;
     } else if (filter === 'upcoming') {
@@ -61,15 +52,6 @@ function ModuleSchedules({
       );
     }
   };
-
-  useEffect(() => {
-    if (recruiterUser && !toggleEnabled) {
-      setsSelectedTimeZone(recruiterUser.scheduling_settings.timeZone.tzCode);
-    }
-    if (recruiterUser && toggleEnabled) {
-      setsSelectedTimeZone(dayjs.tz.guess());
-    }
-  }, [recruiterUser, toggleEnabled]);
 
   return (
     <InterviewMemberSide
@@ -98,12 +80,7 @@ function ModuleSchedules({
                   filterSchedules().map((sch, ind) => {
                     return (
                       <Grid item sm={12} md={12} lg={12} xl={12} key={ind}>
-                        {selectedTimeZone && (
-                          <ScheduleCard
-                            selectedTimeZone={selectedTimeZone}
-                            sch={sch}
-                          />
-                        )}
+                        <ScheduleCard sch={sch} />
                       </Grid>
                     );
                   })}
@@ -115,12 +92,7 @@ function ModuleSchedules({
                     filterSchedules().map((sch, ind) => {
                       return (
                         <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
-                          {selectedTimeZone && (
-                            <ScheduleCard
-                              selectedTimeZone={selectedTimeZone}
-                              sch={sch}
-                            />
-                          )}
+                          <ScheduleCard sch={sch} />
                         </Grid>
                       );
                     })}
@@ -133,67 +105,24 @@ function ModuleSchedules({
           </ShowCode.When>
         </ShowCode>
       }
-      slotInterview={
-        <ShowCode.When
-          isTrue={!router.query.member_id && !router.query.module_id}
-        >
-          <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
-            <ToggleButton
-              onclickToggle={{
-                onClick: () => {
-                  setToggleEnabled((pre: any) => !pre);
-                },
-              }}
-              isActive={toggleEnabled}
-              isInactive={!toggleEnabled}
-            />
-            <Typography>Get timezone automatically</Typography>
-          </Stack>
-        </ShowCode.When>
-      }
     />
   );
 }
 
 export default ModuleSchedules;
 
-function ScheduleCard({ sch, selectedTimeZone }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-
-  const { recruiterUser } = useAuthDetails();
+function ScheduleCard({
+  sch,
+}: {
+  sch: Omit<TransformSchedule, 'applications' | 'job' | 'candidates' | 'file'>;
+}) {
   const router = useRouter();
-  // Set the timezone for the original time
-  const originalTimezone = recruiterUser.scheduling_settings.timeZone.tzCode;
-  const originalStartTime = dayjs(sch.interview_meeting.start_time).format(
-    'HH:mm:ss',
-  );
-  const originalStartDateTime = dayjs.tz(
-    `${dayjs(sch.interview_meeting.start_time).format('YYYY-MM-DDT')}${originalStartTime}`,
-    originalTimezone,
-  );
-  const convertedStartDateTime = originalStartDateTime.tz(selectedTimeZone);
-
-  const originalEndTime = dayjs(sch.interview_meeting.end_time).format(
-    'HH:mm:ss',
-  );
-  const originalEndDateTime = dayjs.tz(
-    `${dayjs(sch.interview_meeting.end_time).format('YYYY-MM-DDT')}${originalEndTime}`,
-    originalTimezone,
-  );
-
-  const convertedEndDateTime = originalEndDateTime.tz(selectedTimeZone);
-
-  useEffect(() => {
-    setStartDate(convertedStartDateTime);
-    setEndDate(convertedEndDateTime);
-  }, [selectedTimeZone]);
   return (
     <InterviewScreenCard
       onClickCard={{
         onClick: () => {
           router.push(
-            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_meeting.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
+            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_session.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
           );
         },
       }}
@@ -201,9 +130,11 @@ function ScheduleCard({ sch, selectedTimeZone }) {
       textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
       textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
       textStatus={sch.interview_meeting.status ?? ''}
-      textTime={`${dayjs(startDate).format('hh:mm A')} - ${dayjs(endDate).format('hh:mm A')} ( ${sch.interview_meeting.duration} Minutes )`}
-      textMeetingPlatform={getScheduleType(sch.schedule.schedule_type)}
-      slotMeetingIcon={<IconScheduleType type={sch.schedule.schedule_type} />}
+      textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}`}
+      textMeetingPlatform={getScheduleType(sch.interview_session.schedule_type)}
+      slotMeetingIcon={
+        <IconScheduleType type={sch.interview_session.schedule_type} />
+      }
       textTitle={sch.schedule.schedule_name}
       colorPropsText={{
         style: {
@@ -221,7 +152,7 @@ function ScheduleCard({ sch, selectedTimeZone }) {
             },
           }}
         >
-          {sch.users.slice(0, 5)?.map((user) => {
+          {sch.users?.map((user) => {
             return (
               <MuiAvatar
                 key={user.id}

@@ -2,8 +2,10 @@ import { useRouter } from 'next/router';
 
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { appKey } from '..';
+
 export const jobDashboardQueryKeys = {
-  all: { queryKey: ['aglint_job_dashboard'] as string[] },
+  all: { queryKey: [appKey, 'job_dashboard'] as string[] },
   job: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }],
   }),

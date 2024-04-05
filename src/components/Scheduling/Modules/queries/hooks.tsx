@@ -69,7 +69,7 @@ export const useGetMeetingsByModuleId = ({
 export const useProgressModuleUsers = ({
   trainer_ids
 }: {
-  trainer_ids: string[];
+  trainer_ids: string[]; // interview_module_relation_id
 }) => {
   const router = useRouter();
 

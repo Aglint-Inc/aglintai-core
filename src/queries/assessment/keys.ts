@@ -3,27 +3,30 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { pageRoutes } from '@/src/utils/pageRouting';
 
+import { appKey } from '..';
 import { type Assessment } from './types';
 export const assessmentQueryKeys = {
-  all: { queryKey: ['aglint_assessment'] as string[] },
   templates: () => ({
-    queryKey: [...assessmentQueryKeys.all.queryKey, 'templates']
+    queryKey: [appKey, 'templates'],
   }),
   assessments: () => ({
-    queryKey: [...assessmentQueryKeys.all.queryKey, 'assessments']
+    queryKey: [appKey, 'assessments'],
   }),
   assessment: ({ assessment_id }: { assessment_id: string }) => ({
-    queryKey: [...assessmentQueryKeys.assessments().queryKey, { assessment_id }]
+    queryKey: [
+      ...assessmentQueryKeys.assessments().queryKey,
+      { assessment_id },
+    ],
   }),
   questions: ({ assessment_id }: { assessment_id: string }) => ({
     queryKey: [
       ...assessmentQueryKeys.assessment({ assessment_id }).queryKey,
-      'questions'
-    ]
+      'questions',
+    ],
   }),
   question: ({
     assessment_id,
-    question_id
+    question_id,
   }: {
     assessment_id: string;
     question_id: string;
@@ -31,12 +34,12 @@ export const assessmentQueryKeys = {
     queryKey: [
       ...assessmentQueryKeys.questions({ assessment_id }).queryKey,
       'questions',
-      { question_id }
-    ]
+      { question_id },
+    ],
   }),
   recommendations: ({
     assessment_id,
-    mode
+    mode,
   }: {
     assessment_id: Assessment['id'];
     mode: Assessment['mode'];
@@ -44,9 +47,9 @@ export const assessmentQueryKeys = {
     queryKey: [
       ...assessmentQueryKeys.assessment({ assessment_id }).queryKey,
       'recommendations',
-      { mode }
-    ]
-  })
+      { mode },
+    ],
+  }),
 } as const;
 
 export const useAssessmentId = () => {

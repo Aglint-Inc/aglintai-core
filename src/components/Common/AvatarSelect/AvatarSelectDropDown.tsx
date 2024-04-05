@@ -8,7 +8,13 @@ import MuiAvatar from '../MuiAvatar';
 type MenuOption = {
   name: string;
   value: string | number;
-  start_icon_url?: string;
+  start_icon_url?:
+    | string
+    | {
+        name: string;
+        url: string;
+      }[];
+  icon?: React.JSX.Element;
   meta?: {
     title: string;
     icon: React.JSX.Element;
@@ -20,7 +26,7 @@ type Props = {
   menuOptions: MenuOption[];
   showMenuIcons: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  defaultValue: string;
+  defaultValue?: string;
 };
 
 const AvatarSelectDropDown = ({
@@ -28,7 +34,7 @@ const AvatarSelectDropDown = ({
   showMenuIcons = false,
   value,
   onChange,
-  defaultValue,
+  defaultValue = null,
 }: Props) => {
   return (
     <>
@@ -66,16 +72,56 @@ const AvatarSelectDropDown = ({
             key={idx}
             value={menu.value}
           >
-            {showMenuIcons && (
-              <MuiAvatar
-                src={menu.start_icon_url}
-                level={menu.name}
-                variant='circular'
-                fontSize='10px'
-                height='18px'
-                width='18px'
-              />
-            )}
+            {showMenuIcons &&
+              (menu.icon ? (
+                menu.icon
+              ) : Array.isArray(menu.start_icon_url) ? (
+                <Stack direction={'row'}>
+                  {menu.start_icon_url
+                    .slice(0, 3)
+                    .map(({ name, url }, index) => (
+                      <Stack
+                        key={index}
+                        sx={{
+                          zIndex: menu.start_icon_url.length - index,
+                          transform: `translateX(-${index * 30}%)`,
+                        }}
+                      >
+                        <MuiAvatar
+                          src={url}
+                          level={name}
+                          variant='circular'
+                          fontSize='10px'
+                          height='18px'
+                          width='18px'
+                        />
+                      </Stack>
+                    ))}
+                  {(menu?.start_icon_url?.slice(3) ?? []).length > 0 && (
+                    <Stack sx={{ transform: `translateX(-80%)` }}>
+                      <MuiAvatar
+                        src={null}
+                        level={`${menu.start_icon_url.slice(3).length}+`}
+                        variant='circular'
+                        fontSize='10px'
+                        height='18px'
+                        width='18px'
+                        bgColor={palette.grey['400']}
+                        extended={true}
+                      />
+                    </Stack>
+                  )}
+                </Stack>
+              ) : (
+                <MuiAvatar
+                  src={menu.start_icon_url}
+                  level={menu.name}
+                  variant='circular'
+                  fontSize='10px'
+                  height='18px'
+                  width='18px'
+                />
+              ))}
             {getFullName(menu.name, '')}
             <Stack direction={'row'} gap={2} ml={'auto'}>
               {(menu.meta ?? []).map(({ title, icon }, i) => (

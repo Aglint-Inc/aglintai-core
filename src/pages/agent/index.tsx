@@ -16,6 +16,7 @@ function AgentPage() {
       />
       <JobAssistantProvider>
         <WelcomeAssistant
+
           onClickJobAssistant={{
             onClick: () => {
               router.push(`/agent/jobs`);

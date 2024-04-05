@@ -329,6 +329,21 @@
   margin-top: 20px;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .div-block-644 {
   display: flex;
   align-items: center;
@@ -454,6 +469,10 @@
 .cvs-intro-profile-block.horizont {
   flex-direction: row;
   align-items: center;
+}
+
+.cvs-intro-profile-block.width-600 {
+  width: 600px;
 }
 
 .div-block-789 {
@@ -680,11 +699,6 @@
   cursor: pointer;
 }
 
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 .text-white {
   color: white;
 }
@@ -773,6 +787,10 @@
   flex-direction: column;
   grid-column-gap: 18px;
   grid-row-gap: 18px;
+}
+
+.div-block-673.width-600 {
+  width: 600px;
 }
 
 .slot-candidate-details {

@@ -1,0 +1,135 @@
+.div-block-1324 {
+  position: relative;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-block-1325 {
+  width: 100%;
+  height: 2px;
+  background-color: #5293c7;
+}
+
+.div-block-1326 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.add-icon-module {
+  position: relative;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.slot-add-icon-options {
+  position: absolute;
+  left: auto;
+  top: 17px;
+  right: 0%;
+  bottom: auto;
+  z-index: 3;
+
+  display: flex;
+}
+
+.div-block-1329 {
+  position: absolute;
+  left: auto;
+  top: 27px;
+  right: 0%;
+  bottom: auto;
+  z-index: 4;
+
+  width: 165px;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  grid-column-gap: 13px;
+  grid-row-gap: 13px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+}
+
+.div-block-1329.static {
+  position: static;
+}
+
+.div-block-1329.static.width-180 {
+  width: 180px;
+}
+
+.div-block-1331 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.div-block-1330 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.div-block-1330.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.div-block-1330.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-blue-500.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}

@@ -48,9 +48,7 @@ export function ScheduleDetailSidepanel({
               tag="div"
               {...onClickJoinMeet}
             >
-              <_Builtin.Block tag="div">
-                {"Join with Google Meet"}
-              </_Builtin.Block>
+              <_Builtin.Block tag="div">{"Join Meeting"}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "meeting_link", "cursor-pointer")}

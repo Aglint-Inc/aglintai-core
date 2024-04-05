@@ -98,7 +98,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
     };
 
-  const initialLoad =
+  const initialLoad = !!(
     jobLoad &&
     assessments.status !== 'pending' &&
     schedules.status !== 'pending' &&
@@ -108,8 +108,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     matches.status !== 'pending' &&
     skills.status !== 'pending' &&
     locations.status !== 'pending'
-      ? true
-      : false;
+  );
 
   const handleJobRefresh = async () => {
     await jobRefresh(job?.id);

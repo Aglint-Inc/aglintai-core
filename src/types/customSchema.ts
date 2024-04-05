@@ -25,13 +25,49 @@ export type CustomDatabase = {
                   feedback: interview_meeting_user_feedback;
                 };
               }
-            : Database['public']['Tables'][Table];
+            : Table extends 'tasks'
+              ? {
+                  Row: Omit<
+                    Database['public']['Tables'][Table]['Row'],
+                    'created_by'
+                  > & {
+                    created_by: task_created_by;
+                  };
+                  Insert: Omit<
+                    Database['public']['Tables'][Table]['Insert'],
+                    'created_by'
+                  > & {
+                    created_by?: task_created_by;
+                  };
+                  Update: Omit<
+                    Database['public']['Tables'][Table]['Update'],
+                    'created_by'
+                  > & {
+                    created_by?: task_created_by;
+                  };
+                }
+              : Database['public']['Tables'][Table];
         }
       : Database['public'][keys];
   };
 };
 
+export type DatabaseTable = {
+  [Table in keyof CustomDatabase['public']['Tables']]: CustomDatabase['public']['Tables'][Table]['Row'];
+};
+export type DatabaseTableInsert = {
+  [Table in keyof CustomDatabase['public']['Tables']]: CustomDatabase['public']['Tables'][Table]['Insert'];
+};
+export type DatabaseTableUpdate = {
+  [Table in keyof CustomDatabase['public']['Tables']]: CustomDatabase['public']['Tables'][Table]['Update'];
+};
+
 type interview_meeting_user_feedback = {
   recommendation: number;
   objective: string;
+};
+
+type task_created_by = {
+  id?: string;
+  name: 'system' | string;
 };

@@ -15,7 +15,6 @@ import {
   CloseDeleteJob,
   CloseJobButton,
   CloseJobModal,
-  // DashboardMenu,
 } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import {
@@ -54,8 +53,6 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import { AddCandidates } from '../../JobApplicationsDashboard';
 import PublishButton from '../../publishButton';
-import IconScheduleType from '../../Scheduling/AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../../Scheduling/AllSchedules/utils';
 import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './Doughnut';
 import DashboardLineChart from './LineChart';
@@ -407,16 +404,14 @@ const Schedules = () => {
           textDate={dayjs(sch.interview_meeting.end_time).format('DD')}
           textDay={dayjs(sch.interview_meeting.end_time).format('dddd')}
           textMonth={dayjs(sch.interview_meeting.end_time).format('MMM')}
-          textPlatformName={getScheduleType(sch.schedule.schedule_type)}
-          textScheduleName={sch.schedule.schedule_name}
+          // textPlatformName={getScheduleType(sch.interview_meeting.schedule_type)}
+          // textScheduleName={sch.schedule.schedule_name}
           textTimeRange={`${dayjs(sch.interview_meeting.start_time).format(
             'hh:mm A',
-          )} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')} ( ${
-            sch.interview_meeting.duration
-          } Minutes )`}
-          slotPlatformLogo={
-            <IconScheduleType type={sch.schedule.schedule_type} />
-          }
+          )} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}`}
+          // slotPlatformLogo={
+          //   <IconScheduleType type={sch.schedule.schedule_type} />
+          // }
           textCandidateName={getFullName(
             sch.candidates.first_name,
             sch.candidates.last_name,

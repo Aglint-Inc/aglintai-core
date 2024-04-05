@@ -1,6 +1,5 @@
 import { Dialog } from '@mui/material';
 import axios from 'axios';
-import React from 'react';
 
 import { ConfirmationPopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
@@ -9,54 +8,87 @@ import toast from '@/src/utils/toast';
 import {
   setIsCancelOpen,
   setIsRescheduleOpen,
-  useInterviewSchedulingStore
+  useInterviewSchedulingStore,
 } from '../../../store';
 import {
-  setSelectedApplication,
-  useSchedulingApplicationStore
+  setinitialSessions,
+  setIsScheduleNowOpen,
+  setSelectedSessionIds,
+  useSchedulingApplicationStore,
 } from '../../store';
 
 function RescheduleDialog() {
   const isRescheduleOpen = useInterviewSchedulingStore(
-    (state) => state.isRescheduleOpen
+    (state) => state.isRescheduleOpen,
   );
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication
+  const selectedMeeting = useSchedulingApplicationStore(
+    (state) => state.selectedMeeting,
+  );
+  const initialSessions = useSchedulingApplicationStore(
+    (state) => state.initialSessions,
   );
 
   const onClickReschedule = async () => {
     try {
-      if (selectedApplication.schedule.id) {
-        const { data, error } = await supabase
-          .from('interview_meeting')
-          .update({ status: 'cancelled' })
-          .eq('interview_schedule_id', selectedApplication.schedule.id)
-          .select();
+      if (selectedMeeting.id) {
+        const { data: checkFilterJson, error: errMeetFilterJson } =
+          await supabase
+            .from('interview_filter_json')
+            .select('*')
+            .contains('session_ids', [selectedMeeting.session_id]);
 
-        if (error) {
-          throw new Error(error.message);
+        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+        if (checkFilterJson.length > 0) {
+          const updateDbArray = checkFilterJson.map((filterJson) => ({
+            ...filterJson,
+            session_ids: filterJson.session_ids.filter(
+              (id) => id !== selectedMeeting.session_id,
+            ),
+          }));
+
+          const { error: errFilterJson } = await supabase
+            .from('interview_filter_json')
+            .upsert(updateDbArray);
+
+          if (errFilterJson) throw new Error(errFilterJson.message);
         }
 
-        await supabase
-          .from('interview_schedule')
+        const { data, error: errMeet } = await supabase
+          .from('interview_meeting')
           .update({
-            status: 'reschedule'
+            status: 'cancelled',
           })
-          .eq('id', selectedApplication.schedule.id);
-        setIsCancelOpen(false);
-        setSelectedApplication({
-          ...selectedApplication,
-          schedule: { ...selectedApplication.schedule, status: 'reschedule' }
-        });
-        setIsRescheduleOpen(false);
+          .eq('id', selectedMeeting.id)
+          .select();
+        if (errMeet) {
+          throw new Error(errMeet.message);
+        }
 
-        const allMeeting = data;
-        allMeeting.forEach(async (meet) => {
-          if (meet.meeting_json)
-            axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json
-            });
-        });
+        setinitialSessions(
+          initialSessions.map((session) => {
+            if (session.interview_meeting.id === selectedMeeting.id) {
+              return {
+                ...session,
+                interview_meeting: {
+                  ...session.interview_meeting,
+                  status: 'cancelled',
+                },
+              };
+            } else {
+              return session;
+            }
+          }),
+        );
+        setIsCancelOpen(false);
+        setIsRescheduleOpen(false);
+        setSelectedSessionIds([selectedMeeting.session_id]);
+        setIsScheduleNowOpen(true);
+
+        if (data[0]?.meeting_json)
+          axios.post('/api/scheduling/v1/cancel_calender_event', {
+            calender_event: data[0]?.meeting_json,
+          });
       }
     } catch (e) {
       toast.error(e.message);
@@ -69,8 +101,8 @@ function RescheduleDialog() {
         '& .MuiDialog-paper': {
           background: 'transparent',
           border: 'none',
-          borderRadius: '10px'
-        }
+          borderRadius: '10px',
+        },
       }}
       open={isRescheduleOpen}
       onClose={() => {
@@ -80,16 +112,16 @@ function RescheduleDialog() {
       <ConfirmationPopup
         textPopupTitle={'Confirm Reschedule'}
         textPopupDescription={
-          'Old schedule will be deleted and new schedule will be created. Are you sure you want to reschedule?'
+          'Old schedule will be canceled and new schedule will be created. Are you sure you want to reschedule?'
         }
         isIcon={false}
         onClickCancel={{
           onClick: () => {
             setIsRescheduleOpen(false);
-          }
+          },
         }}
         onClickAction={{
-          onClick: onClickReschedule
+          onClick: onClickReschedule,
         }}
         textPopupButton={'Confirm'}
       />

@@ -5,15 +5,12 @@ import {
   InterviewModuleRelationType,
   InterviewModuleType,
   InterviewScheduleTypeDB,
+  InterviewSessionTypeDB,
   JobApplcationDB,
   RecruiterUserType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import {
-  InterviewModuleDbType,
-  InterviewPlanScheduleDbType,
-} from '../../JobInterviewPlan/types';
 import { ApplicationList } from '../AllSchedules/store';
 import { schedulingSettingType } from '../Settings/types';
 
@@ -73,13 +70,7 @@ export type ScheduleType = {
   };
   file: ApplicationList['file'];
   candidates: CandidateType;
-  schedule: Omit<
-    InterviewScheduleTypeDB,
-    'interview_plan' | 'confirmed_option'
-  > & {
-    interview_plan: InterviewModuleDbType[];
-    confirmed_option: InterviewPlanScheduleDbType;
-  };
+  schedule: InterviewScheduleTypeDB;
   job: {
     id: string;
     created_at: string;
@@ -114,11 +105,8 @@ export type MemberType = {
 };
 
 export type TransformSchedule = ScheduleType & {
-  interview_meeting: InterviewMeetingTypeDb & {
-    meeting_json: {
-      hangoutLink: string;
-    };
-  };
+  interview_meeting: InterviewMeetingTypeDb;
+  interview_session: InterviewSessionTypeDB;
   users: {
     id: string;
     first_name: string;

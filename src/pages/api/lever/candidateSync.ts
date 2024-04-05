@@ -175,7 +175,7 @@ export default async function handler(req, res) {
 }
 
 // Decrypt data using AES-256
-function decrypt(encryptedData, encryptionKey) {
+export function decrypt(encryptedData, encryptionKey) {
   const decipher = crypto.createDecipher('aes256', encryptionKey);
   let decryptedData = decipher.update(encryptedData, 'hex', 'utf8');
   decryptedData += decipher.final('utf8');

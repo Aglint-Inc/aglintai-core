@@ -12,6 +12,7 @@ export const pageRoutes = Object.freeze({
   PROFILESCORE: '/jobs/[id]/profile-score',
   JOBASSESSMENT: '/jobs/[id]/assessment',
   JOBEMAILTEMPLATES: '/jobs/[id]/email-templates',
+  JOBINTERVIEWPLAN: '/jobs/[id]/interview-plan',
   COMPANY: '/company',
   CANDIDATES: '/candidates/history',
   AGLINTDB: '/candidates/aglintdb',
@@ -36,4 +37,5 @@ export const pageRoutes = Object.freeze({
   INTERVIEWER: '/interviewer',
   AGENT: '/agent',
   SCREENING: '/screening',
+  TASKS:'/tasks'
 });

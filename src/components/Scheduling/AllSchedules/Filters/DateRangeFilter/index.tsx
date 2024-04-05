@@ -10,9 +10,9 @@ import { ButtonPrimarySmall, ButtonTextSmall } from '@/devlink';
 import { ButtonFilter } from '@/devlink2';
 
 import {
-  FilterType,
+  // FilterType,
   setFilter,
-  setFilterVisible,
+  // setFilterVisible,
   useInterviewSchedulingStore,
 } from '../../store';
 
@@ -21,9 +21,9 @@ function DateRangeFilterComp() {
     null,
   );
   const filter = useInterviewSchedulingStore((state) => state.filter);
-  const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible,
-  );
+  // const filterVisible = useInterviewSchedulingStore(
+  //   (state) => state.filterVisible,
+  // );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -78,7 +78,7 @@ function DateRangeFilterComp() {
         isActive={filter.dateRange !== null}
         isDotVisible={filter.dateRange !== null}
         onClickStatus={{
-          id: FilterType.dateRange + 'click',
+          // id: FilterType.dateRange + 'click',
           onClick: handleClick,
         }}
         textLabel={'Date Range'}
@@ -163,9 +163,9 @@ function DateRangeFilterComp() {
               onClickButton={{
                 onClick: () => {
                   setFilter({ dateRange: null });
-                  setFilterVisible(
-                    filterVisible.filter((f) => f !== FilterType.dateRange),
-                  );
+                  // setFilterVisible(
+                  //   filterVisible.filter((f) => f !== FilterType.dateRange),
+                  // );
                   handleClose();
                 },
               }}

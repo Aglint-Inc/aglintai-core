@@ -1,20 +1,20 @@
-import { Stack, TextField } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { ButtonPrimaryRegular } from '@/devlink';
-import { IntegrationCard, IntegrationUpload } from '@/devlink2';
+import { IntegrationCard, IntegrationUpload, ToggleButton } from '@/devlink2';
 import { ButtonGrey, ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
-import { ZOOM_REDIRECT_URI } from '@/src/utils/integrations/constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
+import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { SchedulingReasonTypes, schedulingToolsType } from '../types';
 import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
@@ -22,6 +22,7 @@ import { GooglLogo, updateRecruiter, ZoomLogo } from '../utils';
 function Scheduling() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
+  const [hideApiKey, setHideApiKey] = useState(true);
 
   const [reason, setReason] = useState<SchedulingReasonTypes>();
   const [isLoading, setLoading] = useState(false);
@@ -32,6 +33,10 @@ function Scheduling() {
     setIsOpen(false);
     setFileData(null);
   }
+  const accountIdRef = useRef<HTMLInputElement>(null);
+  const clientIdRef = useRef<HTMLInputElement>(null);
+  const clientSecretRef = useRef<HTMLInputElement>(null);
+
   async function action() {
     if (
       reason === 'connect_google_workSpace' ||
@@ -63,25 +68,65 @@ function Scheduling() {
         setRecruiter(data);
       });
     }
+    if (reason === 'connect_zoom') {
+      const client_id = clientIdRef.current.value;
+      const client_secret = clientSecretRef.current.value;
+      const account_id = accountIdRef.current.value;
+
+      if (!client_id && !client_secret && !account_id) {
+        toast.warning('Give api keys!');
+        return null;
+      }
+      updateZoomAuth({ client_id, client_secret, account_id });
+    }
+    if (reason === 'update_zoom') {
+      const client_id = clientIdRef.current.value;
+      const client_secret = clientSecretRef.current.value;
+      const account_id = accountIdRef.current.value;
+
+      if (!client_id && !client_secret && !account_id) {
+        toast.warning('Give api keys!');
+        return null;
+      }
+      updateZoomAuth({ client_id, client_secret, account_id });
+    }
     setFileData(null);
     close();
   }
   function connectApi(source: schedulingToolsType) {
+    setIsOpen(true);
     if (source === 'google_workspace') {
-      setIsOpen(true);
       setReason('connect_google_workSpace');
     }
     if (source === 'zoom') {
-      handleGetAuthUri();
+      setReason('connect_zoom');
     }
   }
   async function updateApi(source: schedulingToolsType) {
+    setIsOpen(true);
     if (source === 'google_workspace') {
-      setIsOpen(true);
       setReason('update_google_workspace');
     }
     if (source === 'zoom') {
-      handleGetAuthUri();
+      setReason('update_zoom');
+      await axios
+        .post(`/api/decryptApiKey`, {
+          encryptData: recruiter.zoom_auth,
+        })
+        .then(({ data }) => {
+          if (data) {
+            setTimeout(() => {
+              const keys = JSON.parse(data) as {
+                client_id: string;
+                client_secret: string;
+                account_id: string;
+              };
+              clientIdRef.current.value = keys.client_id;
+              accountIdRef.current.value = keys.account_id;
+              clientSecretRef.current.value = keys.client_secret;
+            }, 100);
+          }
+        });
     }
   }
   function disConnectApi(source: schedulingToolsType) {
@@ -96,8 +141,12 @@ function Scheduling() {
   function readDocs(source: schedulingToolsType) {
     if (source === 'google_workspace')
       window.open('https://workspace.google.com');
-    if (source === 'zoom') window.open('https://www.zoom.com');
+    if (source === 'zoom')
+      window.open(
+        'https://marketplace.zoom.us/develop/applications/6yi2AYxkRASH4rVcP-8c9Q/information?mode=dev',
+      );
   }
+
   const SchedulingTools = [
     {
       name: String('google_workspace')
@@ -149,7 +198,15 @@ function Scheduling() {
 
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
+    accept: {
+      'application/json': ['.json'],
+    },
     onDrop: (acceptedFiles) => {
+      if (acceptedFiles.length < 1) {
+        toast.warning('Please provide correct file format!');
+        return null;
+      }
+
       const file = acceptedFiles.map((file) => Object.assign(file))[0];
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
@@ -170,41 +227,30 @@ function Scheduling() {
     },
   });
 
-  const handleGetAuthUri = async () => {
-    try {
-      let zoom_auth_url = `https://zoom.us/oauth/authorize?redirect_uri=${ZOOM_REDIRECT_URI}&client_id=${process.env.NEXT_PUBLIC_ZOOM_CLIENT_ID}&response_type=code`;
-      const popup = window.open(zoom_auth_url, 'popup', 'popup=true');
-      const checkPopup = setInterval(() => {
-        if (popup && !popup.closed) {
-          try {
-            if (popup.window.location.href.includes('zoom-auth=sucess')) {
-              supabase
-                .from('recruiter')
-                .select()
-                .eq('id', recruiter.id)
-                .single()
-                .then(({ data: updatedRecruiter, error }) => {
-                  if (!error) {
-                    setRecruiter(updatedRecruiter as RecruiterType);
-                  }
-                });
+  const updateZoomAuth = async ({ client_id, client_secret, account_id }) => {
+    const zoom_auth = {
+      client_id,
+      client_secret,
+      account_id,
+    };
+    const auth_str = JSON.stringify(zoom_auth);
+    const { data: encrypted_cred } = await axios.post(`/api/encryptData`, {
+      planData: auth_str,
+    });
 
-              toast.success('Zoom auth sucess');
-              popup.close();
-              clearInterval(checkPopup);
-            }
-            if (popup.window.location.href.includes('zoom-auth=failed')) {
-              toast.error('Zoom auth failed');
-            }
-          } catch (error) {
-            // console.log(error);
-          }
-        }
-      }, 1000);
-    } catch (error) {
-      // console.log(error);
-    }
+    const data = supabaseWrap(
+      await supabase
+        .from('recruiter')
+        .update({
+          zoom_auth: encrypted_cred,
+        })
+        .eq('id', recruiter.id)
+        .select()
+        .single(),
+    );
+    setRecruiter(data as RecruiterType);
   };
+
   return (
     <>
       {SchedulingTools.map((item, i) => {
@@ -259,6 +305,51 @@ function Scheduling() {
                   )}
                 </ShowCode.Else>
               </ShowCode>
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={
+                reason === 'connect_zoom' ||
+                reason === 'disconnect_zoom' ||
+                reason === 'update_zoom'
+              }
+            >
+              <Stack
+                justifyContent={'end'}
+                alignItems={'center'}
+                direction={'row'}
+                spacing={2}
+              >
+                <Typography variant='body2'>Show keys</Typography>
+                <ToggleButton
+                  onclickToggle={{
+                    onClick: () => {
+                      setHideApiKey((pre) => !pre);
+                    },
+                  }}
+                  isActive={!hideApiKey}
+                  isInactive={hideApiKey}
+                />
+              </Stack>
+              <Stack direction={'column'} spacing={1}>
+                <Typography variant='body2'>Account Id</Typography>
+                <TextField
+                  type={hideApiKey ? 'password' : 'text'}
+                  fullWidth
+                  inputRef={accountIdRef}
+                />
+                <Typography variant='body2'>Client Id</Typography>
+                <TextField
+                  type={hideApiKey ? 'password' : 'text'}
+                  fullWidth
+                  inputRef={clientIdRef}
+                />
+                <Typography variant='body2'>Client Secrete</Typography>
+                <TextField
+                  type={hideApiKey ? 'password' : 'text'}
+                  fullWidth
+                  inputRef={clientSecretRef}
+                />
+              </Stack>
             </ShowCode.When>
           </ShowCode>
         }

@@ -76,7 +76,7 @@ function AddFilterComp() {
               !filterVisible.includes(FilterType.scheduleType)
             }
             isDurationVisible={false}
-            isDataRangeVisible={!filterVisible.includes(FilterType.dateRange)}
+            isDataRangeVisible={false}
             isInterviewPanelVisible={
               !filterVisible.includes(FilterType.interviewPanels)
             }
@@ -92,9 +92,6 @@ function AddFilterComp() {
             }}
             onClickInterviewPanel={{
               onClick: () => addFilter(FilterType.interviewPanels),
-            }}
-            onClickDateRange={{
-              onClick: () => addFilter(FilterType.dateRange),
             }}
             onClickCoordinator={{
               onClick: () => addFilter(FilterType.coordinator),

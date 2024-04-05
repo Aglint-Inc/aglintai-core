@@ -7,4 +7,5 @@ declare function PanelMemberPill(props: {
   textMemberName?: React.ReactNode;
   onClickClose?: Types.Devlink.RuntimeProps;
   propsBgColor?: Types.Devlink.RuntimeProps;
+  isCloseVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

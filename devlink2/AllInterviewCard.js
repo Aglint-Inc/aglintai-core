@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
-import { ScheduleInfoBlock } from "./ScheduleInfoBlock";
 import { ScheduleWithAgent } from "./ScheduleWithAgent";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewCard.module.css";
@@ -77,13 +76,12 @@ export function AllInterviewCard({
         className={_utils.cx(_styles, "candidate_cell")}
         tag="div"
       >
-        {slotStatusBadge}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
-        tag="div"
-      >
-        {slotScheduleInfo ?? <ScheduleInfoBlock />}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1292")}
+          tag="div"
+        >
+          {slotStatusBadge}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "candidate_cell", "hide")}
@@ -115,7 +113,7 @@ export function AllInterviewCard({
             <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1282")}
+            className={_utils.cx(_styles, "div-block-1282", "hide")}
             data-w-id="74900e4c-b1fd-7af5-7374-5caedc41babe"
             tag="div"
             {...onClickAgent}

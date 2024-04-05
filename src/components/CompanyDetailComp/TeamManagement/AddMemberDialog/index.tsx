@@ -98,7 +98,7 @@ const AddMember = ({
   });
 
   const [isDisable, setIsDisable] = useState(false);
-  const [isResendDisable, setResendDisable] = useState(false);
+  const [isResendDisable, setResendDisable] = useState<string>(null);
   const [isInviteCardVisible, setInviteCardVisible] = useState(false);
 
   const checkValidation = () => {
@@ -462,12 +462,13 @@ const AddMember = ({
                 }
                 slotButton={
                   <AUIButton
-                    disabled={isResendDisable}
+                    disabled={isResendDisable === member.user_id}
                     size='small'
                     onClick={() => {
-                      setResendDisable(true);
+                      setResendDisable(member.user_id);
                       reinviteUser(member.email, userDetails.user.id).then(
                         ({ error, emailSend }) => {
+                          setResendDisable(null);
                           if (!error && emailSend) {
                             return toast.success('Invite sent');
                           }

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -27,6 +28,8 @@ export function CandidateListItem({
   isScreeningVisible = true,
   slotResumeScore,
   isChecked = true,
+  onClickCandidate = {},
+  isHighlighted = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -36,14 +39,18 @@ export function CandidateListItem({
         _styles,
         "div-block-1291",
         "no-sticky",
-        "relative-1"
+        "relative-1",
+        "no-bg"
       )}
       tag="div"
+      {...onClickCandidate}
     >
-      <_Builtin.Block
-        className={_utils.cx(_styles, "cv-list-item-highlight")}
-        tag="div"
-      />
+      {isHighlighted ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cv-list-item-highlight")}
+          tag="div"
+        />
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "cv-list-hover-bg")}
         tag="div"
@@ -58,6 +65,12 @@ export function CandidateListItem({
         tag="div"
         {...onClickSelect}
       >
+        {isHighlighted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-item-highlight")}
+            tag="div"
+          />
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-column")}
           tag="div"
@@ -88,10 +101,6 @@ export function CandidateListItem({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-item-highlight")}
-          tag="div"
-        />
-        <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-hover-bg")}
           tag="div"
         />
@@ -121,10 +130,12 @@ export function CandidateListItem({
         )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-item-highlight")}
-          tag="div"
-        />
+        {isHighlighted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-item-highlight")}
+            tag="div"
+          />
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-hover-bg")}
           tag="div"
@@ -150,10 +161,12 @@ export function CandidateListItem({
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-item-highlight")}
-            tag="div"
-          />
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-item-highlight")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-hover-bg")}
             tag="div"
@@ -182,10 +195,12 @@ export function CandidateListItem({
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-item-highlight")}
-            tag="div"
-          />
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-item-highlight")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-hover-bg")}
             tag="div"
@@ -212,10 +227,12 @@ export function CandidateListItem({
           )}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-item-highlight")}
-            tag="div"
-          />
+          {isHighlighted ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "cv-list-item-highlight")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-hover-bg")}
             tag="div"
@@ -241,10 +258,12 @@ export function CandidateListItem({
         )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-item-highlight")}
-          tag="div"
-        />
+        {isHighlighted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-item-highlight")}
+            tag="div"
+          />
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-hover-bg")}
           tag="div"
@@ -269,10 +288,12 @@ export function CandidateListItem({
         )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-item-highlight")}
-          tag="div"
-        />
+        {isHighlighted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-item-highlight")}
+            tag="div"
+          />
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-hover-bg")}
           tag="div"
@@ -302,10 +323,12 @@ export function CandidateListItem({
         )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-item-highlight")}
-          tag="div"
-        />
+        {isHighlighted ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cv-list-item-highlight")}
+            tag="div"
+          />
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "cv-list-hover-bg")}
           tag="div"
