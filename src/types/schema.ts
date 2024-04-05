@@ -745,6 +745,8 @@ export type Database = {
           id: string
           recording_url: string | null
           retell_call_id: string | null
+          sub_task_id: string | null
+          transcript: Json[] | null
         }
         Insert: {
           applicant_id?: string
@@ -757,6 +759,8 @@ export type Database = {
           id?: string
           recording_url?: string | null
           retell_call_id?: string | null
+          sub_task_id?: string | null
+          transcript?: Json[] | null
         }
         Update: {
           applicant_id?: string
@@ -769,6 +773,8 @@ export type Database = {
           id?: string
           recording_url?: string | null
           retell_call_id?: string | null
+          sub_task_id?: string | null
+          transcript?: Json[] | null
         }
         Relationships: [
           {
@@ -776,6 +782,13 @@ export type Database = {
             columns: ["applicant_id"]
             isOneToOne: false
             referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_candidate_phone_call_sub_task_id_fkey"
+            columns: ["sub_task_id"]
+            isOneToOne: false
+            referencedRelation: "sub_tasks"
             referencedColumns: ["id"]
           },
         ]
@@ -2083,6 +2096,7 @@ export type Database = {
           email_template: Json
           employee_size: string | null
           employment_type: Json
+          google_workspace_domain: string | null
           greenhouse_key: string | null
           hr_contact: Json | null
           id: string
@@ -2127,6 +2141,7 @@ export type Database = {
           email_template?: Json
           employee_size?: string | null
           employment_type?: Json
+          google_workspace_domain?: string | null
           greenhouse_key?: string | null
           hr_contact?: Json | null
           id?: string
@@ -2171,6 +2186,7 @@ export type Database = {
           email_template?: Json
           employee_size?: string | null
           employment_type?: Json
+          google_workspace_domain?: string | null
           greenhouse_key?: string | null
           hr_contact?: Json | null
           id?: string
@@ -2262,9 +2278,9 @@ export type Database = {
           employment: Database["public"]["Enums"]["employment_type_enum"] | null
           first_name: string | null
           interview_location: string | null
+          is_suspended: boolean
           join_status: string
           joined_at: string | null
-          last_login: string
           last_name: string | null
           phone: string | null
           position: string | null
@@ -2286,9 +2302,9 @@ export type Database = {
             | null
           first_name?: string | null
           interview_location?: string | null
+          is_suspended?: boolean
           join_status?: string
           joined_at?: string | null
-          last_login?: string
           last_name?: string | null
           phone?: string | null
           position?: string | null
@@ -2310,9 +2326,9 @@ export type Database = {
             | null
           first_name?: string | null
           interview_location?: string | null
+          is_suspended?: boolean
           join_status?: string
           joined_at?: string | null
-          last_login?: string
           last_name?: string | null
           phone?: string | null
           position?: string | null
@@ -2431,6 +2447,7 @@ export type Database = {
           job_id: string
           schedule_id: string | null
           scheduling_progress: string | null
+          sub_task_id: string | null
           time_zone: string | null
         }
         Insert: {
@@ -2443,6 +2460,7 @@ export type Database = {
           job_id: string
           schedule_id?: string | null
           scheduling_progress?: string | null
+          sub_task_id?: string | null
           time_zone?: string | null
         }
         Update: {
@@ -2455,6 +2473,7 @@ export type Database = {
           job_id?: string
           schedule_id?: string | null
           scheduling_progress?: string | null
+          sub_task_id?: string | null
           time_zone?: string | null
         }
         Relationships: [
@@ -2484,6 +2503,13 @@ export type Database = {
             columns: ["schedule_id"]
             isOneToOne: false
             referencedRelation: "interview_schedule"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_scheduling-agent-chat-history_sub_task_id_fkey"
+            columns: ["sub_task_id"]
+            isOneToOne: false
+            referencedRelation: "sub_tasks"
             referencedColumns: ["id"]
           },
         ]
@@ -2575,7 +2601,7 @@ export type Database = {
           created_at: string
           created_by: Json
           id: string
-          jsonb_data: Json
+          jsonb_data: Json | null
           progress_type: Database["public"]["Enums"]["progress_type"]
           sub_task_id: string
           title: string
@@ -2584,7 +2610,7 @@ export type Database = {
           created_at?: string
           created_by: Json
           id?: string
-          jsonb_data: Json
+          jsonb_data?: Json | null
           progress_type?: Database["public"]["Enums"]["progress_type"]
           sub_task_id: string
           title: string
@@ -2593,7 +2619,7 @@ export type Database = {
           created_at?: string
           created_by?: Json
           id?: string
-          jsonb_data?: Json
+          jsonb_data?: Json | null
           progress_type?: Database["public"]["Enums"]["progress_type"]
           sub_task_id?: string
           title?: string
@@ -2616,6 +2642,8 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          session_ids: Json[] | null
+          start_date: string | null
           status: Database["public"]["Enums"]["sub_task_status"]
           task_id: string
         }
@@ -2626,6 +2654,8 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          session_ids?: Json[] | null
+          start_date?: string | null
           status?: Database["public"]["Enums"]["sub_task_status"]
           task_id: string
         }
@@ -2636,6 +2666,8 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          session_ids?: Json[] | null
+          start_date?: string | null
           status?: Database["public"]["Enums"]["sub_task_status"]
           task_id?: string
         }
@@ -3083,6 +3115,7 @@ export type Database = {
       delete_session: {
         Args: {
           session_id: string
+          interview_plan_id: string
         }
         Returns: undefined
       }
@@ -3259,6 +3292,7 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           schedule: Json
+          interview_session: Json
           candidates: Json
           users: Json
         }[]
@@ -3962,7 +3996,7 @@ export type Database = {
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
       job_scoring_param_status: "loading" | "success"
       progress_type:
-        | "standered"
+        | "standard"
         | "interview_schedule"
         | "email_messages"
         | "call_completed"

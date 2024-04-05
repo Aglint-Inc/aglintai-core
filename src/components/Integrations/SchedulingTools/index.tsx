@@ -36,8 +36,9 @@ function Scheduling() {
   const accountIdRef = useRef<HTMLInputElement>(null);
   const clientIdRef = useRef<HTMLInputElement>(null);
   const clientSecretRef = useRef<HTMLInputElement>(null);
-
+  const domainRef = useRef<HTMLInputElement>(null);
   async function action() {
+    const google_workspace_domain = domainRef.current.value;
     if (
       reason === 'connect_google_workSpace' ||
       reason === 'update_google_workspace'
@@ -45,6 +46,7 @@ function Scheduling() {
       if (fileData) {
         await updateRecruiter(recruiter.id, {
           service_json: fileData,
+          google_workspace_domain,
         } as RecruiterType).then((data: RecruiterType) => {
           setRecruiter(data);
         });
@@ -284,27 +286,62 @@ function Scheduling() {
                 reason === 'update_google_workspace'
               }
             >
-              <ShowCode>
-                <ShowCode.When isTrue={uploading}>
-                  <Loader />
-                </ShowCode.When>
-                <ShowCode.Else>
-                  {fileData ? (
-                    <TextField fullWidth disabled value={fileData} />
-                  ) : (
-                    <Stack {...getRootProps()}>
-                      <input id='uploadServiceJson' {...getInputProps()} />
-                      <IntegrationUpload
-                        onClickGetJson={{
-                          onClick: (e: { stopPropagation: () => void }) => {
-                            e.stopPropagation();
-                          },
-                        }}
-                      />
-                    </Stack>
-                  )}
-                </ShowCode.Else>
-              </ShowCode>
+              <Stack direction={'column'} spacing={'5px'}>
+                <Typography mb={0.5} variant='body2'>
+                  Domain Name
+                </Typography>
+
+                <TextField
+                  defaultValue={
+                    recruiter.google_workspace_domain ||
+                    recruiter.company_website
+                  }
+                  placeholder='Enter domain name'
+                  fullWidth
+                  inputRef={domainRef}
+                />
+                <ShowCode>
+                  <ShowCode.When isTrue={fileData}>
+                    <>
+                      <Typography mb={0.5} variant='body2'>
+                        Service Key
+                      </Typography>
+                      <TextField fullWidth disabled value={fileData} />
+                    </>
+                  </ShowCode.When>
+                  <ShowCode.Else>
+                    <ShowCode>
+                      <ShowCode.When isTrue={uploading}>
+                        <Stack
+                          height={140}
+                          width={'100%'}
+                          direction={'row'}
+                          alignItems={'center'}
+                          justifyContent={'center'}
+                        >
+                          <Loader />
+                        </Stack>
+                      </ShowCode.When>
+                      <ShowCode.Else>
+                        <Stack>
+                          <input id='uploadServiceJson' {...getInputProps()} />
+                          <div {...getRootProps()}>
+                            <IntegrationUpload
+                              onClickGetJson={{
+                                onClick: (e: {
+                                  stopPropagation: () => void;
+                                }) => {
+                                  e.stopPropagation();
+                                },
+                              }}
+                            />
+                          </div>
+                        </Stack>
+                      </ShowCode.Else>
+                    </ShowCode>
+                  </ShowCode.Else>
+                </ShowCode>
+              </Stack>
             </ShowCode.When>
             <ShowCode.When
               isTrue={
