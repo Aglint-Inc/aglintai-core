@@ -220,9 +220,6 @@ export type InterviewModuleRelationType =
     };
   };
 
-export type InterviewAvailabilityType =
-  Database['public']['Tables']['interview_availabilties']['Row'];
-
 export type AgentChatType = Database['public']['Tables']['agent_chatx']['Row'];
 
 export type AgentActivityType =
@@ -231,14 +228,26 @@ export type AgentActivityType =
 export type InterviewMeetingTypeDb =
   Database['public']['Tables']['interview_meeting']['Insert'];
 
-export type InterviewMeetingUserTypeDb =
-  Database['public']['Tables']['interview_meeting_user']['Insert'];
-
 export type IntegrationType =
   Database['public']['Tables']['request_integration_tool']['Row'];
 
 export type ScheduleAgentChatHistoryTypeDB =
   Database['public']['Tables']['scheduling-agent-chat-history']['Row'];
 
+export type InterviewPlanTypeDB =
+  Database['public']['Tables']['interview_plan']['Row'];
+
+export type InterviewSessionTypeDB =
+  Database['public']['Tables']['interview_session']['Row'];
+
+export type InterviewSessionRelationTypeDB =
+  Database['public']['Tables']['interview_session_relation']['Row'];
+
 export type employmentTypeEnum =
   Database['public']['Enums']['employment_type_enum'];
+
+export type InterviewSession =
+  Database['public']['Tables']['interview_session']['Row'];
+
+export type InterviewerSessionRelation =
+  Database['public']['Tables']['interview_session_relation']['Row'];

@@ -8,44 +8,59 @@ import { ConfirmationPopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { TransformSchedule } from '../../../Modules/types';
+
 function RescheduleDialog({
   isRescheduleOpen,
   setIsRescheduleOpen,
+  schedule,
 }: {
   isRescheduleOpen: boolean;
   setIsRescheduleOpen: (x: boolean) => void;
+  schedule: TransformSchedule;
 }) {
   const router = useRouter();
-  const module_id = router.query.module_id;
+  const meeting_id = router.query.meeting_id;
 
   const onClickReschedule = async () => {
     try {
-      if (module_id) {
+      if (meeting_id) {
+        const { data: checkFilterJson, error: errMeetFilterJson } =
+          await supabase
+            .from('interview_filter_json')
+            .select('*')
+            .contains('session_ids', [meeting_id]);
+
+        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+        if (checkFilterJson.length > 0) {
+          const updateDbArray = checkFilterJson.map((filterJson) => ({
+            ...filterJson,
+            session_ids: filterJson.session_ids.filter(
+              (id) => id !== schedule.interview_session.id,
+            ),
+          }));
+
+          const { error: errFilterJson } = await supabase
+            .from('interview_filter_json')
+            .upsert(updateDbArray);
+
+          if (errFilterJson) throw new Error(errFilterJson.message);
+        }
+
         const { data, error } = await supabase
           .from('interview_meeting')
           .update({ status: 'cancelled' })
-          .eq('interview_schedule_id', module_id)
+          .eq('id', meeting_id)
           .select();
-
         if (error) {
           throw new Error(error.message);
         }
-
-        await supabase
-          .from('interview_schedule')
-          .update({
-            status: 'reschedule',
-          })
-          .eq('id', module_id);
         setIsRescheduleOpen(false);
-
-        const allMeeting = data;
-        allMeeting.forEach(async (meet) => {
-          if (meet.meeting_json)
-            axios.post('/api/scheduling/v2/cancel_calender_event', {
-              calender_event: meet.meeting_json,
-            });
-        });
+        if (data[0].meeting_json)
+          axios.post('/api/scheduling/v2/cancel_calender_event', {
+            calender_event: data[0].meeting_json,
+          });
       }
     } catch (e) {
       toast.error(e.message);

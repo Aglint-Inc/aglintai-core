@@ -7,9 +7,10 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { CandidateSkillPills } from '@/devlink';
 import {
-  AllCandidateListItem,
+  // AllCandidateListItem,
   AnalysisBlock,
   AnalysisPill,
+  CandidateListItem,
   InsightTagAmbitious,
   InsightTagEmpty,
   // InsightTagAmbitious,
@@ -117,9 +118,10 @@ const ApplicationCard = ({
         }
       />
     ) : (
-      <AllCandidateListItem
+      <CandidateListItem
+        // AllCandidateListItem
         key={key1}
-        onclickSelect={{ onClick: handleCheck }}
+        onClickSelect={{ onClick: handleCheck }}
         isChecked={isChecked}
         slotProfileImage={profile}
         name={name.value}
@@ -129,17 +131,17 @@ const ApplicationCard = ({
         isInterviewVisible={views.assessment}
         slotAssessmentScore={interviewScore}
         appliedDate={creationDate}
-        onclickCandidate={{
+        onClickCandidate={{
           onClick: () => {
             posthog.capture('candidate card clicked');
             handleOpenDetails();
           },
         }}
         isHighlighted={isSelected}
-        experience={getExperienceCount(
-          (application.candidate_files?.resume_json as any)?.basics
-            ?.totalExperience,
-        )}
+        // experience={getExperienceCount(
+        //   (application.candidate_files?.resume_json as any)?.basics
+        //     ?.totalExperience,
+        // )}
         isScreeningVisible={views.screening}
         slotScreening={<ScreeningStatusComponent application={application} />}
         isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
@@ -289,9 +291,9 @@ export const ScreeningStatusComponent: React.FC<{
   );
 };
 
-const getExperienceCount = (months: number) => {
-  return months ? Math.trunc(months / 12) : '---';
-};
+// const getExperienceCount = (months: number) => {
+//   return months ? Math.trunc(months / 12) : '---';
+// };
 
 const Insights = ({ application }: { application: JobApplication }) => {
   const jdScore = application.score_json as ScoreJson;

@@ -3,35 +3,62 @@ import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
 import _styles from "./CandidateCard.module.css";
 
-export function CandidateCard({ as: _Component = _Builtin.Block }) {
+export function CandidateCard({
+  as: _Component = _Builtin.Block,
+  slotProfileImage,
+  textName = "Tom Odel",
+  textRole = "Senior software Engineer",
+  textMail = "tomode3243@gmaIl.com",
+  onClickViewProfile = {},
+  isViewProfileVisible = false,
+}) {
   return (
-    <_Component className={_utils.cx(_styles, "candidatecard")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot_candidate_image")}
-        tag="div"
-      >
-        <_Builtin.Image
-          className={_utils.cx(_styles, "image_cover")}
-          loading="lazy"
-          width="auto"
-          height="auto"
-          alt=""
-          src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9a0e9f0451bc3536c_user2.png"
-        />
+    <_Component className={_utils.cx(_styles, "div-block-1232")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        {"Candidate"}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "schedule_details-copy")}
+        className={_utils.cx(_styles, "div-block-1233")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Tom Odel"}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{"Senior software Engineer"}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
+          className={_utils.cx(_styles, "div-block-1235")}
           tag="div"
         >
-          {"tomode3243@gmaIl.com"}
+          {slotProfileImage}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1234")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-sm-4", "text-grey-600")}
+            tag="div"
+          >
+            {textRole}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-sm-4", "text-grey-600")}
+            tag="div"
+          >
+            {textMail}
+          </_Builtin.Block>
+          {isViewProfileVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-sm-4",
+                "text-blue-500",
+                "text-underline",
+                "cursor-pointer"
+              )}
+              tag="div"
+              {...onClickViewProfile}
+            >
+              {"View Profile"}
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

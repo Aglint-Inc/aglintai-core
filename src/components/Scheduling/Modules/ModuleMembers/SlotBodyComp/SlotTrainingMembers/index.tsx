@@ -23,10 +23,14 @@ import {
   setSelUser,
   useModulesStore,
 } from '../../../store';
-import { ModuleType } from '../../../types';
+import { MemberType, ModuleType } from '../../../types';
 import MoveToQualifiedDialog from '../../MoveToQualified';
 import ProgressDrawer from '../../ProgressDrawer';
-import { ProgressUserType } from '../../type';
+
+export type ProgressUser = {
+  user: MemberType;
+  progress: ReturnType<typeof useProgressModuleUsers>['data'];
+};
 
 function SlotTrainingMembers({
   editModule,
@@ -38,12 +42,13 @@ function SlotTrainingMembers({
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { members } = useSchedulingContext();
-  const [progressUser, setProgressUser] = useState<ProgressUserType>({
+  const [progressUser, setProgressUser] = useState<ProgressUser>({
     user: null,
     progress: [],
   });
   const allUsers = editModule.relations;
   const currentDay = dayjs();
+
   const allTrainees = allUsers
     .filter((user) => user.training_status === 'training')
     .map((user) => {
@@ -55,14 +60,14 @@ function SlotTrainingMembers({
           userSettings.interviewLoad.dailyLimit.type == 'Hours'
             ? getHours({ user, type: 'weekly', meetingData })
             : meetingData.filter(
-                (meet) => meet?.interviewer_id === user.user_id,
+                (meet) => meet?.interview_module_relation_id === user.id,
               ).length;
         daily =
           userSettings.interviewLoad.dailyLimit.type == 'Hours'
             ? getHours({ user, type: 'daily', meetingData })
             : meetingData.filter(
                 (meet) =>
-                  meet?.interviewer_id === user.user_id &&
+                  meet?.interview_module_relation_id === user.id &&
                   dayjs(meet?.interview_meeting?.end_time).isSame(
                     currentDay,
                     'day',
@@ -75,11 +80,12 @@ function SlotTrainingMembers({
   const trainer_ids = allUsers
     .filter((user) => user.training_status === 'training')
     .map((user) => {
-      return user.user_id;
+      return user.id;
     });
 
   const { data: progress } = useProgressModuleUsers({ trainer_ids });
   const selUser = useModulesStore((state) => state.selUser);
+
   return (
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
@@ -98,15 +104,15 @@ function SlotTrainingMembers({
 
         const progressDataUser = progress.filter(
           (prog) =>
-            prog.interviewer_id === user.user_id &&
+            prog.interview_module_relation_id === user.id &&
             prog.interview_meeting?.status == 'completed',
         );
         const revShadowCount = progressDataUser.filter(
-          (prog) => prog.interviewer_type == 'reverse_shadow',
+          (prog) => prog.training_type === 'reverse_shadow',
         ).length;
 
         const shadowCount = progressDataUser.filter(
-          (prog) => prog.interviewer_type == 'shadow',
+          (prog) => prog.training_type == 'shadow',
         ).length;
 
         const isMoveToQualifierVisible =
@@ -132,7 +138,7 @@ function SlotTrainingMembers({
               onClick: () => {
                 setProgressUser({
                   progress: progress.filter(
-                    (prog) => prog.interviewer_id === user.user_id,
+                    (prog) => prog.interview_module_relation_id === user.id,
                   ),
                   user: members.filter(
                     (member) => member.user_id === user.user_id,

@@ -1,9 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
-import axios from 'axios';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { ApplicationList } from '@/src/components/Scheduling/AllSchedules/store';
+// Extend Day.js with necessary plugins
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
+
+import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { Database } from '@/src/types/schema';
+import { getCompWorkingDaysRange } from '@/src/utils/scheduling_v2/utils';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -17,90 +26,130 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select('*')
       .eq('id', req.body.id as string);
 
-    if (errSch) {
-      res.status(400).send(errSch.message);
-      return;
-    }
+    if (errSch) throw new Error(errSch.message);
 
-    const { data, error } = await supabase.rpc(
-      'fetch_interview_data_by_application_id',
-      {
-        app_id: sch[0].application_id as string,
-      },
+    const { data: filterJson, error: errFilterJson } = await supabase
+      .from('interview_filter_json')
+      .select('*')
+      .eq('id', req.body.filter_id as string);
+
+    if (errFilterJson) throw new Error(errFilterJson.message);
+
+    const { data: app } = await supabase
+      .from('applications')
+      .select(
+        '*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)',
+      )
+      .eq('id', sch[0].application_id);
+
+    const application = app[0];
+
+    const { data: rec } = await supabase
+      .from('recruiter')
+      .select('id,logo,name,scheduling_settings')
+      .eq('id', application.public_jobs.recruiter_id);
+
+    const filterJsonTyped = filterJson[0]
+      .filter_json as unknown as FilterJsonDateRangeCandidateInvite;
+
+    const { data: intSes, error: errSes } = await supabase
+      .from('interview_session')
+      .select('*')
+      .in('id', filterJson[0].session_ids);
+
+    if (errSes) throw new Error(errSes.message);
+
+    const maxBreakDuration = Math.max(
+      intSes.reduce((acc, curr) => Math.max(acc, curr.break_duration), 0),
     );
 
-    if (!error && data.length > 0) {
-      const application = data[0] as unknown as ApplicationList;
+    const maxDurationInDays = Math.floor((maxBreakDuration + 1440) / 1440);
 
-      const { data: rec } = await supabase
-        .from('recruiter')
-        .select('id,logo,name')
-        .eq('id', application.public_jobs.recruiter_id);
+    const possibleDateRange = getDateRange(
+      { ...filterJsonTyped, user_tz: req.body.user_tz },
+      maxBreakDuration,
+      rec[0].scheduling_settings as any,
+      maxDurationInDays,
+      intSes,
+    );
 
-      let allModules = [];
-      const moduleIds = application?.public_jobs?.interview_plan?.plan
-        ?.filter((plan) => !plan.isBreak)
-        ?.map((plan) => plan.module_id);
+    const { data: intMeet, error: errMeet } = await supabase
+      .from('interview_meeting')
+      .select('*')
+      .in('session_id', filterJsonTyped.session_ids);
 
-      if (moduleIds?.length > 0) {
-        const { data: modules, error: moduleError } = await supabase
-          .from('interview_module')
-          .select('*')
-          .in('id', moduleIds);
-        if (!moduleError) {
-          allModules = modules;
-        }
-      }
-      let userIds = [];
-      application?.public_jobs?.interview_plan?.plan.map((plan) => {
-        plan.selectedIntervs.map((interv) => {
-          userIds.push(interv.interv_id);
-        });
-      });
+    const resMeetings = intSes.map((session) => ({
+      interview_session: session,
+      interview_meeting: intMeet.filter(
+        (meeting) => meeting.session_id === session.id,
+      )[0],
+    }));
 
-      const resMem = await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/fetchdbusers`,
-        {
-          user_ids: userIds,
-        },
-      );
+    if (errMeet) throw new Error(errMeet.message);
 
-      if (sch[0].status == 'pending') {
-        const resSchOpt = await axios.post(
-          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/find_availability`,
-          sch[0].filter_json,
-        );
-
-        return res.status(200).json({
-          job: application.public_jobs,
-          modules: allModules,
-          members: resMem.data,
-          schedule: sch[0],
-          schedulingOptions: resSchOpt.data,
-          candidate: application.candidates,
-          recruiter: rec[0],
-          meetings: [],
-        });
-      } else {
-        const { data: meetings } = await supabase
-          .from('interview_meeting')
-          .select('*')
-          .eq('interview_schedule_id', sch[0].id);
-        return res.status(200).json({
-          job: application.public_jobs,
-          modules: allModules,
-          members: resMem.data,
-          schedulingOptions: [],
-          schedule: sch[0],
-          candidate: application.candidates,
-          recruiter: rec[0],
-          meetings: meetings,
-        });
-      }
-    }
+    return res.status(200).json({
+      job: application.public_jobs,
+      schedule: sch[0],
+      dateRange: possibleDateRange,
+      candidate: application.candidates,
+      recruiter: rec[0],
+      meetings: resMeetings,
+      numberOfDays: Math.floor((maxBreakDuration + 1440) / 1440),
+    });
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
 
 export default handler;
+
+export interface DateRangeCandidateInvite {
+  start_date: string;
+  end_date: string | null;
+}
+
+interface FilterJsonDateRangeCandidateInvite {
+  user_tz: string;
+  start_date: string;
+  end_date: string;
+  session_ids: string[];
+  recruiter_id: string;
+}
+
+function getDateRange(
+  input: FilterJsonDateRangeCandidateInvite,
+  durationInMinutes: number,
+  schedule_settings: schedulingSettingType,
+  maxDurationInDays,
+  intSes,
+): DateRangeCandidateInvite[] {
+  const { start_date, end_date, user_tz } = input;
+
+  // Parse start and end dates using Day.js
+  const startDate = dayjs(start_date, 'DD/MM/YYYY').tz(user_tz);
+
+  // Calculate the number of days between the start and end dates
+  const numberOfDays = dayjs(end_date, 'DD/MM/YYYY').diff(startDate, 'day') + 1;
+
+  // Create an array to store date ranges
+  const dateRanges: DateRangeCandidateInvite[] = [];
+
+  // If duration is less than or equal to 1 day
+  if (durationInMinutes < 1440) {
+    for (let i = 0; i < numberOfDays; i++) {
+      const currentDate = startDate.add(i, 'day').format('DD/MM/YYYY');
+      dateRanges.push({ start_date: currentDate, end_date: null });
+    }
+  } else {
+    const range = getCompWorkingDaysRange(
+      dayjs(start_date, 'DD/MM/YYYY').tz(user_tz).format(),
+      dayjs(end_date, 'DD/MM/YYYY').tz(user_tz).format(),
+      schedule_settings,
+      intSes,
+    );
+
+    dateRanges.push(...range);
+  }
+
+  return dateRanges;
+}

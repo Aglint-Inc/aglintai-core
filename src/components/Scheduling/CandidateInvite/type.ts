@@ -1,27 +1,26 @@
+import { DateRangeCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import {
   CandidateType,
   InterviewMeetingTypeDb,
-  InterviewModuleType,
   InterviewScheduleTypeDB,
+  InterviewSession,
 } from '@/src/types/data.types';
 
-import { InterviewPlanScheduleDbType } from '../../JobInterviewPlan/types';
 import { ApplicationList } from '../AllSchedules/store';
-import { MemberType } from '../Modules/types';
 
 export type ApiResponse = {
   job: ApplicationList['public_jobs'];
-  modules: InterviewModuleType[];
-  members: MemberType[];
-  schedule: InterviewScheduleTypeDB & {
-    confirmed_option: InterviewPlanScheduleDbType;
-  };
-  schedulingOptions: InterviewPlanScheduleDbType[];
+  schedule: InterviewScheduleTypeDB;
+  dateRange: DateRangeCandidateInvite[];
   candidate: CandidateType;
   recruiter: {
     id: string;
     logo: string;
     name: string;
   };
-  meetings: InterviewMeetingTypeDb[];
+  meetings: {
+    interview_session: InterviewSession;
+    interview_meeting: InterviewMeetingTypeDb;
+  }[];
+  numberOfDays: number;
 };

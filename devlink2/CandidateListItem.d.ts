@@ -17,4 +17,6 @@ declare function CandidateListItem(props: {
   isScreeningVisible?: Types.Visibility.VisibilityConditions;
   slotResumeScore?: Types.Devlink.Slot;
   isChecked?: Types.Visibility.VisibilityConditions;
+  onClickCandidate?: Types.Devlink.RuntimeProps;
+  isHighlighted?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

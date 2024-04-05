@@ -1,0 +1,57 @@
+.new-candidate-schedule-grid {
+  display: flex;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 100% 454px;
+  grid-template-rows: auto;
+}
+
+.candidate-schedule-left-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.cd-schedule-header {
+  display: flex;
+  height: 52px;
+  padding: 10px 20px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-bottom: 1px solid #e9ebed;
+}
+
+.new-schedule-cd-card-wrap {
+  position: relative;
+
+  overflow: auto;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  height: calc(100vh - 112px);
+}
+
+.div-block-1327 {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2;
+}
+
+.candidate-schedule-right-wrap {
+  display: flex;
+  width: 454px;
+  padding: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border-left: 1px solid #e9ebed;
+}
+
+#w-node-b4f8c833-3062-0810-c58b-254fa7da7af2-a7da7af1 {
+}

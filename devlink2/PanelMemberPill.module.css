@@ -6,7 +6,7 @@
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 
-  border: 1px solid #e9ebed;
+  border: 1px none #e9ebed;
   border-radius: 100px;
 
   background-color: #f7f9fb;

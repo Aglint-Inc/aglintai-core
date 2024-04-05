@@ -1,7 +1,8 @@
+import { appKey } from '..';
+
 export const jobQueryKeys = {
-  all: { queryKey: ['aglint_jobs'] as string[] },
   jobs: () => ({
-    queryKey: [...jobQueryKeys.all.queryKey, 'jobs'],
+    queryKey: [appKey, 'jobs'],
   }),
   job: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobQueryKeys.jobs().queryKey, { job_id }],

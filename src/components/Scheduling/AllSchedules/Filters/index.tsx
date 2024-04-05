@@ -1,7 +1,5 @@
-import React from 'react';
 
 import { FilterType, useInterviewSchedulingStore } from '../store';
-import DateRangeFilterComp from './DateRangeFilter';
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
@@ -22,8 +20,6 @@ function AllFilters() {
             return <FilterJob key={filterType} />;
           case FilterType.interviewPanels:
             return <FilterInterviewModule key={filterType} />;
-          case FilterType.dateRange:
-            return <DateRangeFilterComp key={filterType} />;
           case FilterType.scheduleType:
             return <FilterScheduleType key={filterType} />;
           case FilterType.status:

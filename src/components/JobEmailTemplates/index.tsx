@@ -226,19 +226,22 @@ const Sections = ({
     path: email,
   }));
 
-  return templateEntries.map((email) => (
-    <EmailTemplateCards
-      key={email.path}
-      textTitle={email.title.listing}
-      textDescription={templateObj[email.path].triggerInfo}
-      isActive={selection === email.path}
-      onClickApplicationRecieved={{
-        onClick: () => {
-          setSelection(email.path as keyof Job['email_template']);
-        },
-      }}
-    />
-  ));
+  return templateEntries.map((email) => {
+    if (email.title)
+      return (
+        <EmailTemplateCards
+          key={email?.path}
+          textTitle={email?.title?.listing}
+          textDescription={templateObj[email.path]?.triggerInfo}
+          isActive={selection === email?.path}
+          onClickApplicationRecieved={{
+            onClick: () => {
+              setSelection(email?.path as keyof Job['email_template']);
+            },
+          }}
+        />
+      );
+  });
 };
 
 const validateForms = (fields: AllForms) => {

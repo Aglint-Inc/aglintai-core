@@ -113,7 +113,7 @@ export function AllInterviewCard({
             <_Builtin.Block tag="div">{textRelatedJob}</_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1282")}
+            className={_utils.cx(_styles, "div-block-1282", "hide")}
             data-w-id="74900e4c-b1fd-7af5-7374-5caedc41babe"
             tag="div"
             {...onClickAgent}

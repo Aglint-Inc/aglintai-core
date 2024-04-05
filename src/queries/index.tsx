@@ -20,7 +20,10 @@ const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
   pageRoutes.PROFILESCORE,
   pageRoutes.SCHEDULINGINTERVIEWER,
   pageRoutes.JOBEMAILTEMPLATES,
+  pageRoutes.JOBINTERVIEWPLAN,
 ];
+
+export const appKey = 'app';
 
 export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
   children,

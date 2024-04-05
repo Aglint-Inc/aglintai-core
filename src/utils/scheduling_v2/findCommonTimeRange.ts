@@ -23,7 +23,7 @@ type DayjsTimeRange = {
 };
 
 export const findCommonTimeRange = (
-  ints_meta: FuncParams
+  ints_meta: FuncParams,
 ): TimeDurationType[] => {
   const inters = subtractpauseTimeFromFreeTimeRange(ints_meta);
 
@@ -36,8 +36,8 @@ export const findCommonTimeRange = (
       })
       .map((t) => ({
         startTime: dayjs(t.startTime),
-        endTime: dayjs(t.endTime)
-      }))
+        endTime: dayjs(t.endTime),
+      })),
   }));
 
   let curr_intersection: TimeDurationDayjsType[] =
@@ -52,16 +52,16 @@ export const findCommonTimeRange = (
       if (
         curr_intersection[j].startTime.isSameOrBefore(
           current_time_ranges[k].startTime,
-          'minutes'
+          'minutes',
         ) &&
         curr_intersection[j].endTime.isSameOrAfter(
           current_time_ranges[k].endTime,
-          'minutes'
+          'minutes',
         )
       ) {
         new_intersection.push({
           startTime: current_time_ranges[k].startTime,
-          endTime: current_time_ranges[k].endTime
+          endTime: current_time_ranges[k].endTime,
         });
         k++;
         continue;
@@ -70,16 +70,16 @@ export const findCommonTimeRange = (
       if (
         current_time_ranges[k].startTime.isSameOrBefore(
           curr_intersection[j].startTime,
-          'minutes'
+          'minutes',
         ) &&
         current_time_ranges[k].endTime.isSameOrAfter(
           curr_intersection[j].endTime,
-          'minutes'
+          'minutes',
         )
       ) {
         new_intersection.push({
           startTime: curr_intersection[j].startTime,
-          endTime: curr_intersection[j].endTime
+          endTime: curr_intersection[j].endTime,
         });
         j++;
         continue;
@@ -88,7 +88,7 @@ export const findCommonTimeRange = (
       if (
         current_time_ranges[k].endTime.isSameOrBefore(
           curr_intersection[j].startTime,
-          'minutes'
+          'minutes',
         )
       ) {
         // disjoint case 1
@@ -98,7 +98,7 @@ export const findCommonTimeRange = (
       else if (
         curr_intersection[j].endTime.isSameOrBefore(
           current_time_ranges[k].startTime,
-          'minutes'
+          'minutes',
         )
       ) {
         j++;
@@ -109,24 +109,24 @@ export const findCommonTimeRange = (
       else if (
         current_time_ranges[k].endTime.isSameOrBefore(
           curr_intersection[j].endTime,
-          'minutes'
+          'minutes',
         )
       ) {
         new_intersection.push({
           startTime: dayjs(
             Math.max(
               current_time_ranges[k].startTime.unix(),
-              curr_intersection[j].startTime.unix()
-            ) * 1000
+              curr_intersection[j].startTime.unix(),
+            ) * 1000,
           ),
-          endTime: current_time_ranges[k].endTime
+          endTime: current_time_ranges[k].endTime,
         });
         k++;
         continue;
       } else if (
         current_time_ranges[k].startTime.isSameOrBefore(
           curr_intersection[j].endTime,
-          'minutes'
+          'minutes',
         )
       ) {
         new_intersection.push({
@@ -134,9 +134,9 @@ export const findCommonTimeRange = (
           endTime: dayjs(
             Math.min(
               current_time_ranges[k].endTime.unix(),
-              curr_intersection[j].endTime.unix()
-            ) * 1000
-          )
+              curr_intersection[j].endTime.unix(),
+            ) * 1000,
+          ),
         });
         j++;
       } else {
@@ -149,7 +149,7 @@ export const findCommonTimeRange = (
 
   return curr_intersection.map((t) => ({
     startTime: t.startTime.toISOString(),
-    endTime: t.endTime.toISOString()
+    endTime: t.endTime.toISOString(),
   }));
 };
 

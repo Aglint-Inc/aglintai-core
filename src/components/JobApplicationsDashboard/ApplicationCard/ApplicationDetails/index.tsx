@@ -50,8 +50,6 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
-import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
-import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -72,7 +70,6 @@ import LinkedInIcon from '../../Common/Icons/linkedinIcon';
 import PhoneIcon from '../../Common/Icons/phoneIcon';
 import InterviewScore, {
   getInterviewScores,
-  // getOverallInterviewScore,
 } from '../../Common/InterviewScore';
 // import InterviewScore, {
 //   getInterviewScores,
@@ -597,8 +594,6 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
   const schedule = application.schedule;
   return (
     <JobCardSchedule
-      slotPlatformIcon={<IconScheduleType type={schedule.schedule_type} />}
-      textPlatformName={getScheduleType(schedule.schedule_type)}
       onClickViewScheduler={{
         onClick: () => {
           push(
@@ -612,11 +607,10 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
       }}
       slotStatusBadge={
         <StatusBadge
-          isCancelledVisible={schedule.status === 'cancelled'}
-          isCompletedVisible={schedule.status === 'completed'}
-          isConfirmedVisible={schedule.status === 'confirmed'}
-          isWaitingVisible={schedule.status === 'pending'}
-          isNotScheduledVisible={!schedule.status}
+          isCancelledVisible={false}
+          isCompletedVisible={schedule?.is_completed}
+          isWaitingVisible={!schedule?.is_completed}
+          isNotScheduledVisible={!schedule}
         />
       }
       textHeader={schedule.schedule_name}

@@ -1,17 +1,27 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { ButtonPrimaryLarge } from '@/devlink';
+import { Breadcrum, InterviewPlanEmpty, PageLayout } from '@/devlink2';
+import {
+  CandidateCard,
+  CandidateSchedule,
+  DarkPill,
+  JobCards,
+} from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { getFullName } from '@/src/utils/jsonResume';
 
-import DeleteScheduleDialog from './Common/DeleteDialog';
+import CandidateInfo from '../../SchedulingView/CandidateDetails';
+import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
-import ConfirmedComp from './Confirmed';
+import FullSchedule from './FullSchedule';
 import { useGetScheduleApplication } from './hooks';
-import NotScheduledApplication from './NotScheduled';
-import PendingConfirmed from './Pending';
 import {
   resetSchedulingApplicationState,
+  setIsScheduleNowOpen,
+  setTab,
   useSchedulingApplicationStore,
 } from './store';
 
@@ -25,6 +35,13 @@ function SchedulingApplication() {
   );
   const fetchingSchedule = useSchedulingApplicationStore(
     (state) => state.fetchingSchedule,
+  );
+  const tab = useSchedulingApplicationStore((state) => state.tab);
+  const selectedSessionIds = useSchedulingApplicationStore(
+    (state) => state.selectedSessionIds,
+  );
+  const initialSessions = useSchedulingApplicationStore(
+    (state) => state.initialSessions,
   );
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -56,18 +73,108 @@ function SchedulingApplication() {
         }
         slotBody={
           <>
-            {!fetchingSchedule ? (
-              !selectedApplication?.schedule ||
-              selectedApplication.schedule.status == 'reschedule' ? (
-                <NotScheduledApplication />
-              ) : selectedApplication?.schedule.status == 'pending' ? (
-                <PendingConfirmed />
-              ) : (
-                // confirmed and cancelled and completed same component
-                <ConfirmedComp />
-              )
-            ) : (
+            {fetchingSchedule ? (
               <Loader />
+            ) : initialSessions.length === 0 ? (
+              <InterviewPlanEmpty
+                onClickCreateInterviewPlan={{
+                  onClick: () => {
+                    router.push(
+                      `/jobs/${selectedApplication.job_id}/interview-plan`,
+                    );
+                  },
+                }}
+              />
+            ) : (
+              <CandidateSchedule
+                slotDarkPill={
+                  <>
+                    <DarkPill
+                      textPill={'Full Schedule'}
+                      isActive={tab === 'full_schedule'}
+                      onClickPill={{
+                        onClick: () => {
+                          setTab('full_schedule');
+                        },
+                      }}
+                    />
+                    <DarkPill
+                      textPill={'Candidate Info'}
+                      isActive={tab === 'candidate_info'}
+                      onClickPill={{
+                        onClick: () => {
+                          setTab('candidate_info');
+                        },
+                      }}
+                    />
+                    <DarkPill
+                      textPill={'Feedback'}
+                      isActive={tab === 'feedback'}
+                      onClickPill={{
+                        onClick: () => {
+                          setTab('feedback');
+                        },
+                      }}
+                    />
+                  </>
+                }
+                slotScheduleNowButton={
+                  <ButtonPrimaryLarge
+                    textLabel={'Schedule Now'}
+                    onClickButton={{
+                      onClick: () => {
+                        setIsScheduleNowOpen(true);
+                      },
+                    }}
+                  />
+                }
+                isScheduleNowVisible={selectedSessionIds.length > 0}
+                slotCandidateCard={
+                  <>
+                    <CandidateCard
+                      slotProfileImage={
+                        <MuiAvatar
+                          level={getFullName(
+                            selectedApplication.candidates.first_name,
+                            selectedApplication.candidates.last_name,
+                          )}
+                          src={selectedApplication.candidates.avatar}
+                          variant={'rounded'}
+                          width={'74px'}
+                          height={'74px'}
+                          fontSize={'36px'}
+                        />
+                      }
+                      textName={getFullName(
+                        selectedApplication?.candidates.first_name,
+                        selectedApplication?.candidates.last_name,
+                      )}
+                      textMail={selectedApplication?.candidates.email}
+                      textRole={
+                        selectedApplication?.candidate_files?.resume_json
+                          ?.basics?.currentJobTitle || '--'
+                      }
+                    />
+                    <JobCards
+                      textLocation={selectedApplication.public_jobs.location}
+                      textRole={selectedApplication.public_jobs.job_title}
+                    />
+                  </>
+                }
+                slotFullScheduleCard={
+                  tab === 'candidate_info' ? (
+                    <CandidateInfo
+                      applications={selectedApplication}
+                      candidate={selectedApplication.candidates}
+                      file={selectedApplication.candidate_files}
+                    />
+                  ) : tab === 'full_schedule' ? (
+                    <FullSchedule />
+                  ) : (
+                    ''
+                  )
+                }
+              />
             )}
           </>
         }

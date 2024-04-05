@@ -19,89 +19,185 @@ export function CandidateDetails({
   slotEducation,
   slotExperiences,
   slotSkills,
+  isFullWidthVisible = false,
+  isSmallWidthVisible = true,
 }) {
   return (
-    <_Component
-      className={_utils.cx(_styles, "cv-sidebar-info-wrapper")}
-      tag="div"
-    >
-      <_Builtin.NavbarWrapper
-        className={_utils.cx(_styles, "cvs-info-navbar", "hide")}
-        tag="div"
-        config={{
-          animation: "default",
-          collapse: "medium",
-          docHeight: false,
-          duration: 400,
-          easing: "ease",
-          easing2: "ease",
-          noScroll: false,
-        }}
-      >
-        <_Builtin.NavbarMenu
-          className={_utils.cx(_styles, "cvs-info-nav-menu")}
-          tag="nav"
-          role="navigation"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cvs-nav-link")}
-            tag="div"
-            {...onClickScore}
-          >
-            <_Builtin.Block tag="div">{"Score"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cvs-nav-link")}
-            tag="div"
-            {...onClickEducation}
-          >
-            <_Builtin.Block tag="div">{"Education"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cvs-nav-link")}
-            tag="div"
-            {...onClickExperience}
-          >
-            <_Builtin.Block tag="div">{"Experience"}</_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cvs-nav-link")}
-            tag="div"
-            {...onClickSkills}
-          >
-            <_Builtin.Block tag="div">{"Skills"}</_Builtin.Block>
-          </_Builtin.Block>
-        </_Builtin.NavbarMenu>
-        <_Builtin.NavbarButton className={_utils.cx(_styles, "hide")} tag="div">
-          <_Builtin.Icon
-            widget={{
-              type: "icon",
-              icon: "nav-menu",
-            }}
-          />
-        </_Builtin.NavbarButton>
-      </_Builtin.NavbarWrapper>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "cvs-info-content-main")}
-        tag="div"
-      >
+    <_Component tag="div">
+      {isSmallWidthVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-517")}
+          className={_utils.cx(_styles, "cv-sidebar-info-wrapper")}
           tag="div"
         >
-          {slotInterviewScore ?? (
-            <>
-              <CandidateInterviewScore />
-              <CandidateResumeScore />
-              <CandidateExperience />
-              <CandidateEducation />
-              <CandidateEducation />
-              <CandidateSkill />
-            </>
-          )}
+          <_Builtin.NavbarWrapper
+            className={_utils.cx(_styles, "cvs-info-navbar", "hide")}
+            tag="div"
+            config={{
+              animation: "default",
+              collapse: "medium",
+              docHeight: false,
+              duration: 400,
+              easing: "ease",
+              easing2: "ease",
+              noScroll: false,
+            }}
+          >
+            <_Builtin.NavbarMenu
+              className={_utils.cx(_styles, "cvs-info-nav-menu")}
+              tag="nav"
+              role="navigation"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickScore}
+              >
+                <_Builtin.Block tag="div">{"Score"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickEducation}
+              >
+                <_Builtin.Block tag="div">{"Education"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickExperience}
+              >
+                <_Builtin.Block tag="div">{"Experience"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickSkills}
+              >
+                <_Builtin.Block tag="div">{"Skills"}</_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.NavbarMenu>
+            <_Builtin.NavbarButton
+              className={_utils.cx(_styles, "hide")}
+              tag="div"
+            >
+              <_Builtin.Icon
+                widget={{
+                  type: "icon",
+                  icon: "nav-menu",
+                }}
+              />
+            </_Builtin.NavbarButton>
+          </_Builtin.NavbarWrapper>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cvs-info-content-main")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-517")}
+              tag="div"
+            >
+              {slotInterviewScore ?? (
+                <>
+                  <CandidateInterviewScore />
+                  <CandidateResumeScore />
+                  <CandidateExperience />
+                  <CandidateEducation />
+                  <CandidateEducation />
+                  <CandidateSkill />
+                </>
+              )}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.HtmlEmbed className={_utils.cx(_styles, "hide")} />
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.HtmlEmbed className={_utils.cx(_styles, "hide")} />
+      ) : null}
+      {isFullWidthVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cv-sidebar-info-wrapper", "width-600")}
+          tag="div"
+        >
+          <_Builtin.NavbarWrapper
+            className={_utils.cx(_styles, "cvs-info-navbar", "hide")}
+            tag="div"
+            config={{
+              animation: "default",
+              collapse: "medium",
+              docHeight: false,
+              duration: 400,
+              easing: "ease",
+              easing2: "ease",
+              noScroll: false,
+            }}
+          >
+            <_Builtin.NavbarMenu
+              className={_utils.cx(_styles, "cvs-info-nav-menu")}
+              tag="nav"
+              role="navigation"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickScore}
+              >
+                <_Builtin.Block tag="div">{"Score"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickEducation}
+              >
+                <_Builtin.Block tag="div">{"Education"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickExperience}
+              >
+                <_Builtin.Block tag="div">{"Experience"}</_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cvs-nav-link")}
+                tag="div"
+                {...onClickSkills}
+              >
+                <_Builtin.Block tag="div">{"Skills"}</_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.NavbarMenu>
+            <_Builtin.NavbarButton
+              className={_utils.cx(_styles, "hide")}
+              tag="div"
+            >
+              <_Builtin.Icon
+                widget={{
+                  type: "icon",
+                  icon: "nav-menu",
+                }}
+              />
+            </_Builtin.NavbarButton>
+          </_Builtin.NavbarWrapper>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "cvs-info-content-main")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-517")}
+              tag="div"
+            >
+              {slotInterviewScore ?? (
+                <>
+                  <CandidateInterviewScore />
+                  <CandidateResumeScore />
+                  <CandidateExperience />
+                  <CandidateEducation />
+                  <CandidateEducation />
+                  <CandidateSkill />
+                </>
+              )}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.HtmlEmbed className={_utils.cx(_styles, "hide")} />
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

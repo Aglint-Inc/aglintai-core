@@ -1,6 +1,5 @@
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import React from 'react';
 
 import { ButtonPrimarySmall } from '@/devlink';
 import {
@@ -8,14 +7,10 @@ import {
   InterviewConfirmed,
   OptionAvailable,
   OptionAvailableCard,
-  SessionList,
 } from '@/devlink2';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
-import { CalendarEvent } from '@/src/utils/schedule-utils/types';
 import toast from '@/src/utils/toast';
 
-import IconScheduleType from '../../AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../../AllSchedules/utils';
 import { ApiResponse } from '../type';
 
 function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
@@ -32,70 +27,91 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
         }
         textTitle={schedule.schedule.schedule_name}
         textMailSent={schedule.candidate.email}
-        textMeetingPlatform={getScheduleType(schedule.schedule.schedule_type)}
-        slotPlatformIcon={
-          <IconScheduleType type={schedule.schedule.schedule_type} />
-        }
         slotCardDate={
           <OptionAvailableCard
             isActive={true}
-            slotCardDate={schedule?.schedule?.confirmed_option?.plans.map(
-              (pl, ind) => {
-                const meetingLink = (
-                  schedule?.meetings?.find(
-                    (meet) => meet.module_id == pl.module_id,
-                  )?.meeting_json as CalendarEvent
-                )?.hangoutLink;
-                return (
+            slotCardDate={schedule?.meetings.map((ses, ind) => {
+              return (
+                <>
                   <AvailableOptionCardDate
-                    textDate={dayjs(pl.start_time).format('DD')}
-                    textDay={dayjs(pl.start_time).format('dddd')}
-                    textMonth={dayjs(pl.start_time).format('MMM')}
+                    textDate={dayjs(ses.interview_meeting.start_time).format(
+                      'DD',
+                    )}
+                    textDay={dayjs(ses.interview_meeting.start_time).format(
+                      'dddd',
+                    )}
+                    textMonth={dayjs(ses.interview_meeting.start_time).format(
+                      'MMM',
+                    )}
                     key={ind}
                     slotOptionAvailable={
-                      <OptionAvailable
-                        textTime={`${dayjs(pl.start_time).format(
-                          'hh:mm A',
-                        )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                        textTitle={pl.module_name}
-                        key={ind}
-                        isTitleVisible={!pl.isBreak}
-                        isBreakVisible={pl.isBreak}
-                        slotMember={
-                          <Stack spacing={1}>
-                            <Stack direction={'row'}>
-                              <ButtonPrimarySmall
-                                isDisabled={
-                                  (dayjs(pl.start_time).isAfter(
-                                    dayjs().add(3, 'hour'),
-                                  ) ||
-                                    dayjs().isAfter(dayjs(pl.end_time))) &&
-                                  !meetingLink
-                                }
-                                textLabel={'Join Meeting'}
-                                onClickButton={{
-                                  onClick: () => {
-                                    meetingLink
-                                      ? window.open(meetingLink, '_blank')
-                                      : toast.error(
-                                          'Meeting link not available. Please contact support for more information.',
-                                        );
-                                  },
-                                }}
-                              />
+                      <>
+                        <OptionAvailable
+                          textTime={`${dayjs(
+                            ses.interview_meeting.start_time,
+                          ).format(
+                            'hh:mm A',
+                          )} - ${dayjs(ses.interview_meeting.end_time).format('hh:mm A')}`}
+                          textTitle={ses.interview_session.name}
+                          key={ind}
+                          isTitleVisible={true}
+                          isBreakVisible={false}
+                          slotMember={
+                            <Stack spacing={1}>
+                              <Stack direction={'row'}>
+                                <ButtonPrimarySmall
+                                  isDisabled={
+                                    (!dayjs(
+                                      ses.interview_meeting.start_time,
+                                    ).isSame(dayjs(), 'day') &&
+                                      (dayjs(
+                                        ses.interview_meeting.start_time,
+                                      ).isAfter(dayjs().add(3, 'hour')) ||
+                                        dayjs().isAfter(
+                                          dayjs(ses.interview_meeting.end_time),
+                                        ))) ||
+                                    !ses.interview_meeting.meeting_link
+                                  }
+                                  textLabel={'Join Meeting'}
+                                  onClickButton={{
+                                    onClick: () => {
+                                      ses.interview_meeting.meeting_link
+                                        ? window.open(
+                                            ses.interview_meeting.meeting_link,
+                                            '_blank',
+                                          )
+                                        : toast.error(
+                                            'Meeting link not available. Please contact support for more information.',
+                                          );
+                                    },
+                                  }}
+                                />
+                              </Stack>
+                              <Typography variant='caption'>
+                                Meeting link will get enabled 3 hours before
+                                meeting
+                              </Typography>
                             </Stack>
-                            <Typography variant='caption'>
-                              Meeting link will get enabled 3 hours before
-                              meeting
-                            </Typography>
-                          </Stack>
-                        }
-                      />
+                          }
+                        />
+                        {ses.interview_session.break_duration > 0 &&
+                          ind !== schedule?.meetings.length - 1 && (
+                            <OptionAvailable
+                              key={ind}
+                              textBreakTime={
+                                `${ses.interview_session.break_duration} Minutes` ||
+                                ''
+                              }
+                              isTitleVisible={false}
+                              isBreakVisible={true}
+                            />
+                          )}
+                      </>
                     }
                   />
-                );
-              },
-            )}
+                </>
+              );
+            })}
           />
         }
         onClickSupport={{
@@ -106,17 +122,6 @@ function InvitationConfirmed({ schedule }: { schedule: ApiResponse }) {
             );
           },
         }}
-        slotSessionList={schedule.schedule.confirmed_option.plans
-          .filter((pl) => !pl.isBreak)
-          .map((plan, ind) => {
-            return (
-              <SessionList
-                key={ind}
-                textDuration={plan.duration + ' Minutes'}
-                textSession={plan.module_name}
-              />
-            );
-          })}
       />
     </>
   );

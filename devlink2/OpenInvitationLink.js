@@ -1,5 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { DatePill } from "./DatePill";
+import { DaysPill } from "./DaysPill";
 import * as _utils from "./utils";
 import _styles from "./OpenInvitationLink.module.css";
 
@@ -12,11 +14,18 @@ export function OpenInvitationLink({
   isNotFindingTextVisible = true,
   slotCompanyLogo,
   slotTimeFixer,
-  isSelected = false,
+  isSelected = true,
+  slotDatePill,
+  slotDaysPill,
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "invitation-link-wrap", "flex-none")}
+      className={_utils.cx(
+        _styles,
+        "invitation-link-wrap",
+        "flex-none",
+        "no-scroll"
+      )}
       tag="div"
     >
       <_Builtin.Block
@@ -48,15 +57,37 @@ export function OpenInvitationLink({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1261")}
+            className={_utils.cx(_styles, "div-block-1261", "hide")}
             tag="div"
           >
             {slotTimeFixer}
           </_Builtin.Block>
-          <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
-            <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "", "open-invitation-wrappers")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1301")}
+              tag="div"
+            >
+              {slotDatePill ?? <DatePill />}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "", "div-block-1300")}
+              tag="div"
+            >
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1157")}
+                className={_utils.cx(_styles, "div-block-1306")}
+                tag="div"
+              >
+                {slotDaysPill ?? <DaysPill />}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "div-block-1157",
+                  "invite-link-grid"
+                )}
                 tag="div"
               >
                 {slotInviteLinkCard}

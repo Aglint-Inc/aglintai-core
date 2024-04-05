@@ -14,18 +14,35 @@ export function ScheduleOptions({
   isNoOptionsFoundVisible = false,
   slotButtonLeft,
   slotButtonRight,
+  textDuration = "45 Minutes",
+  textPlatformName = "Google Meet",
+  slotPlatformIcon,
+  textSessionName = "Self Indroduction Session",
+  onClickClose = {},
+  textPopHeader = "Enter basic details",
+  isBasicDetailsVisible = true,
+  slotAvailableOptionsDate,
+  isMultipleOptionVisible = false,
+  slotSendtoCandidateButton,
+  slotAvailableCard,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1192")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1193")}
+        className={_utils.cx(_styles, "div-block-1294")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
-          {
-            "You haven't yet scheduled an interview with the candidate. Please provide a name for the interview schedule and specify the timeframe during which you'd like to schedule the interview to explore available options."
-          }
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-grey-600")}
+          tag="div"
+        >
+          {textPopHeader}
         </_Builtin.Block>
+        <_Builtin.HtmlEmbed
+          className={_utils.cx(_styles, "icons", "cursor-pointer")}
+          value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.7812%202.28125L7.0625%206L10.7812%209.71875C11.0729%2010.0729%2011.0729%2010.4271%2010.7812%2010.7812C10.4271%2011.0729%2010.0729%2011.0729%209.71875%2010.7812L6%207.0625L2.28125%2010.7812C1.92708%2011.0729%201.57292%2011.0729%201.21875%2010.7812C0.927083%2010.4271%200.927083%2010.0729%201.21875%209.71875L4.9375%206L1.21875%202.28125C0.927083%201.92708%200.927083%201.57292%201.21875%201.21875C1.57292%200.927083%201.92708%200.927083%202.28125%201.21875L6%204.9375L9.71875%201.21875C10.0729%200.927083%2010.4271%200.927083%2010.7812%201.21875C11.0729%201.57292%2011.0729%201.92708%2010.7812%202.28125Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+          {...onClickClose}
+        />
       </_Builtin.Block>
       {isNoOptionsFoundVisible ? (
         <_Builtin.Block
@@ -46,62 +63,99 @@ export function ScheduleOptions({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1275")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Cordinator"}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotInterviewCordinator}</_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1093")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Schedule Name"}
-        </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotInputName}</_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1097")}
-        tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Date Range"}
-        </_Builtin.Block>
+      {isBasicDetailsVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-gray-600")}
+          className={_utils.cx(_styles, "div-block-1295", "hide")}
           tag="div"
         >
-          {"Pick a start and end date where you have to conduct interview."}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {textSessionName}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1297")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1296")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons")}
+                value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6%200C7.125%200.015625%208.13281%200.289062%209.02344%200.820312C9.92969%201.35156%2010.6484%202.07031%2011.1797%202.97656C11.7109%203.86719%2011.9844%204.875%2012%206C11.9844%207.125%2011.7109%208.13281%2011.1797%209.02344C10.6484%209.92969%209.92969%2010.6484%209.02344%2011.1797C8.13281%2011.7109%207.125%2011.9844%206%2012C4.875%2011.9844%203.86719%2011.7109%202.97656%2011.1797C2.07031%2010.6484%201.35156%209.92969%200.820312%209.02344C0.289062%208.13281%200.015625%207.125%200%206C0.015625%204.73438%200.359375%203.60938%201.03125%202.625C1.25%202.35938%201.50781%202.3125%201.80469%202.48438C2.07031%202.70312%202.125%202.96094%201.96875%203.25781C1.42188%204.05469%201.14062%204.96875%201.125%206C1.15625%207.375%201.63281%208.52344%202.55469%209.44531C3.47656%2010.3672%204.625%2010.8438%206%2010.875C7.375%2010.8438%208.52344%2010.3672%209.44531%209.44531C10.3672%208.52344%2010.8438%207.375%2010.875%206C10.8438%204.71875%2010.4297%203.63281%209.63281%202.74219C8.82031%201.85156%207.79688%201.32031%206.5625%201.14844V2.4375C6.53125%202.78125%206.34375%202.96875%206%203C5.65625%202.96875%205.46875%202.78125%205.4375%202.4375V0.5625C5.46875%200.21875%205.65625%200.03125%206%200ZM4.52344%203.72656L6.39844%205.60156C6.61719%205.86719%206.61719%206.13281%206.39844%206.39844C6.13281%206.61719%205.86719%206.61719%205.60156%206.39844L3.72656%204.52344C3.50781%204.25781%203.50781%203.99219%203.72656%203.72656C3.99219%203.50781%204.25781%203.50781%204.52344%203.72656Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1296")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{slotPlatformIcon}</_Builtin.Block>
+              <_Builtin.Block tag="div">{textPlatformName}</_Builtin.Block>
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotDateRangeInput}</_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1289")}
-        tag="div"
-      >
-        {slotPrimaryButton}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1286")}
-        tag="div"
-      >
+      ) : null}
+      {isBasicDetailsVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1287")}
+          className={_utils.cx(_styles, "div-block-1093", "hide")}
           tag="div"
         >
-          {slotButtonLeft}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Schedule Name"}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotInputName}</_Builtin.Block>
         </_Builtin.Block>
+      ) : null}
+      {isBasicDetailsVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1288")}
+          className={_utils.cx(_styles, "div-block-1097")}
           tag="div"
         >
-          {slotButtonRight}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Date Range"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {"Pick a start and end date where you have to conduct interview."}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{slotDateRangeInput}</_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
+      {isBasicDetailsVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1289")}
+          tag="div"
+        >
+          {slotPrimaryButton}
+        </_Builtin.Block>
+      ) : null}
+      {isMultipleOptionVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1299")}
+          tag="div"
+        >
+          {slotAvailableCard}
+        </_Builtin.Block>
+      ) : null}
+      {isMultipleOptionVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1298")}
+          tag="div"
+        >
+          {slotSendtoCandidateButton}
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

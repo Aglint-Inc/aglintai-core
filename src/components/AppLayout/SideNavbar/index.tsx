@@ -11,6 +11,7 @@ import {
   NavJobs,
   NavPhoneScreening,
   NavScheduler,
+  NavTask,
   NavTickets,
 } from '@/devlink';
 import { AssistantLogo } from '@/devlink2';
@@ -39,6 +40,19 @@ function SideNavbar() {
       comingsoon: false,
       isvisible: isAgentEnabled,
       roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavTask isActive={false} />,
+      text: 'Tasks',
+      SubComponents: null,
+      route: pageRoutes.TASKS,
+      comingsoon: false,
+      isvisible: isAgentEnabled,
+      roles: [
+        'admin',
+        'interviewer',
+        'recruiter',
+      ] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavJobs isActive={false} />,

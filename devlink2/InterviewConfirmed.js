@@ -63,7 +63,7 @@ export function InterviewConfirmed({
                   {textTitle}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1209")}
+                  className={_utils.cx(_styles, "div-block-1209", "hide")}
                   tag="div"
                 >
                   <_Builtin.Block
@@ -85,7 +85,7 @@ export function InterviewConfirmed({
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1209")}
+                  className={_utils.cx(_styles, "div-block-1209", "hide")}
                   tag="div"
                 >
                   <_Builtin.Block

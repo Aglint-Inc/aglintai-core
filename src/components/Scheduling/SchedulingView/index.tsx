@@ -9,7 +9,7 @@ import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { TransformSchedule } from '../Modules/types';
 import CandidateInfo from './CandidateDetails';
-import Feedback from './Feedback';
+// import Feedback from './Feedback';
 import Instructions from './Instructions';
 import Overview from './Overview';
 import RightPanel from './RightPanel';
@@ -88,9 +88,9 @@ function SchedulingViewComp() {
                       >
                         <Instructions />
                       </ShowCode.When>
-                      <ShowCode.When isTrue={router.query.tab === 'feedback'}>
+                      {/* <ShowCode.When isTrue={router.query.tab === 'feedback'}>
                         <Feedback schedule={schedule} />
-                      </ShowCode.When>
+                      </ShowCode.When> */}
                     </ShowCode>
                   }
                 />
@@ -128,11 +128,6 @@ async function getSchedule(meeting_id: string) {
     },
   );
   if (data.length > 0) {
-    const userIds = [];
-    const filteredData = (data as unknown as TransformSchedule[])[0];
-    filteredData.schedule.confirmed_option?.plans.map((plan) =>
-      plan.selectedIntervs.map((interv) => userIds.push(interv.interv_id)),
-    );
     if (error) throw Error(error.message);
     else return data[0] as unknown as TransformSchedule;
   }

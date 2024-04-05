@@ -13,13 +13,13 @@ import {
   setIsDeleteMemberDialogOpen,
   setIsPauseDialogOpen,
   setIsResumeDialogOpen,
-  setSelUser
+  setSelUser,
 } from '../../../store';
 import { ModuleType } from '../../../types';
 
 function SlotQualifiedMembers({
   editModule,
-  meetingData
+  meetingData,
 }: {
   editModule: ModuleType;
   meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
@@ -42,22 +42,22 @@ function SlotQualifiedMembers({
           userSettings.interviewLoad.dailyLimit.type == 'Hours'
             ? getHours({ user, type: 'weekly', meetingData })
             : meetingData.filter(
-                (meet) => meet?.interviewer_id === user.user_id
+                (meet) => meet?.interview_module_relation_id === user.id,
               ).length;
         daily =
           userSettings.interviewLoad.dailyLimit.type == 'Hours'
             ? getHours({ user, type: 'daily', meetingData })
             : meetingData.filter(
                 (meet) =>
-                  meet?.interviewer_id === user.user_id &&
+                  meet?.interview_module_relation_id === user.id &&
                   dayjs(meet?.interview_meeting?.end_time).isSame(
                     currentDay,
-                    'day'
-                  )
+                    'day',
+                  ),
               ).length;
       }
       return { ...user, weekly, daily };
-    }); // need to right rpc which calc everything in db and return
+    }); // need to write rpc which calc everything in db and return
 
   return (
     <>
@@ -66,7 +66,7 @@ function SlotQualifiedMembers({
       )}
       {allQualified.map((user) => {
         const member = members.filter(
-          (member) => member.user_id === user.user_id
+          (member) => member.user_id === user.user_id,
         )[0];
         if (!member) return null; //this line added temporarily becasue of data inconsistency
 
@@ -79,9 +79,9 @@ function SlotQualifiedMembers({
             onClickCard={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`
+                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`,
                 );
-              }
+              },
             }}
             key={user.user_id}
             isMoveToQualifierVisible={false}
@@ -99,19 +99,19 @@ function SlotQualifiedMembers({
               onClick: () => {
                 setSelUser(user);
                 setIsDeleteMemberDialogOpen(true);
-              }
+              },
             }}
             onClickPauseInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsPauseDialogOpen(true);
-              }
+              },
             }}
             onClickResumeInterview={{
               onClick: () => {
                 setSelUser(user);
                 setIsResumeDialogOpen(true);
-              }
+              },
             }}
             onHoverDot={false}
             isPauseResumeVisible={Boolean(user.pause_json)}

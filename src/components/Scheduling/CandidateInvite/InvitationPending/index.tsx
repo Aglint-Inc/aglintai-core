@@ -1,128 +1,187 @@
 /* eslint-disable no-unused-vars */
-import { Stack, Typography } from '@mui/material';
+import { LinearProgress, Stack, Typography } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { useState } from 'react';
+import { set } from 'lodash';
+import { useEffect, useState } from 'react';
 
 import { ButtonPrimaryLarge } from '@/devlink';
 import {
   AvailableOptionCardDate,
+  DatePill,
+  DaysPill,
   EmptyGeneral,
   OpenInvitationLink,
   OptionAvailable,
   OptionAvailableCard,
 } from '@/devlink2';
+import Loader from '@/src/components/Common/Loader';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
+import { SessionsCombType } from '@/src/utils/scheduling_v1/types';
+import toast from '@/src/utils/toast';
 
-import {
-  filterRecordsByDate,
-  getAllUniqueDates,
-} from '../../AllSchedules/utils';
+import ConfirmDialog from '../ConfirmDialog';
 import { ApiResponse } from '../type';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+type BookApiBodyParams = {
+  candidate_plan: {
+    sessions: {
+      session_id: string;
+      start_time: string;
+      end_time: string;
+    }[];
+  }[];
+  recruiter_id: string;
+  user_tz: string;
+};
+
 function InvitationPending({
   schedule,
-  setChangeTime,
-  selectedSlot,
-  setDialogOpen,
-  setSelectedSlot,
+  setSchedule,
 }: {
   schedule: ApiResponse;
-  setChangeTime: (value: boolean) => void;
-  selectedSlot: string;
-  setDialogOpen: (value: boolean) => void;
-  setSelectedSlot: (value: string) => void;
+  setSchedule: (schedule: ApiResponse) => void;
 }) {
-  const schedulingOptions = schedule.schedulingOptions.map((option) => ({
-    ...option,
-    plans: option.plans.map((plan) => ({
-      ...plan,
-      start_time: dayjs(plan.start_time).tz(dayjs.tz.guess()).toISOString(),
-      end_time: dayjs(plan.end_time).tz(dayjs.tz.guess()).toISOString(),
-    })),
-  }));
+  const [loading, setLoading] = useState(true);
+  const [step, setStep] = useState(0);
+  const [selectedDate, setSelectedDate] =
+    useState<ApiResponse['dateRange'][0]>();
+  const [allScheduleOptions, setAllScheduleOptions] = useState<
+    SessionsCombType[][]
+  >([]);
+  const [selectedSlots, setSelectedSlots] = useState([]);
 
-  const uniqueDates = getAllUniqueDates({
-    records: schedulingOptions,
-  }) as string[];
+  useEffect(() => {
+    if (selectedDate) {
+      fetchSlots();
+    }
+  }, [selectedDate]);
 
-  const [selectedDate, setSelectedDate] = useState<string>(uniqueDates[0]);
+  useEffect(() => {
+    if (schedule.dateRange) setSelectedDate(schedule.dateRange[0]);
+  }, [schedule.dateRange]);
 
-  const filteredRecords = selectedDate
-    ? filterRecordsByDate({ records: schedulingOptions, date: selectedDate })
-    : schedulingOptions;
+  const fetchSlots = async () => {
+    try {
+      setLoading(true);
+      setStep(0);
+      setSelectedSlots([]);
+      const resSchOpt = await axios.post(
+        `/api/scheduling/v1/find_interview_slots`,
+        {
+          session_ids: schedule.meetings.map(
+            (meeting) => meeting.interview_session.id,
+          ),
+          recruiter_id: schedule.recruiter.id,
+          start_date: selectedDate.start_date,
+          end_date: selectedDate.end_date || selectedDate.start_date,
+          user_tz: dayjs.tz.guess(),
+        },
+      );
+      if (resSchOpt.status !== 200) {
+        throw new Error('Failed to fetch slots');
+      }
+      setAllScheduleOptions(
+        resSchOpt.data.filter((subArr) => subArr.length > 0),
+      );
+    } catch (e) {
+      toast.error('Failed to fetch slots');
+    } finally {
+      setLoading(false);
+    }
+  };
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const schedulingOptions = allScheduleOptions[Number(step)];
 
   return (
     <>
-      {filteredRecords.length < 0}
+      <ConfirmDialog
+        dialogOpen={dialogOpen}
+        schedule={schedule}
+        allScheduleOptions={allScheduleOptions}
+        selectedSlots={selectedSlots}
+        setDialogOpen={setDialogOpen}
+        setSchedule={setSchedule}
+      />
       <OpenInvitationLink
-        slotTimeFixer={
-          <Stack
-            gap={2}
-            direction={'row'}
-            sx={{
-              flexWrap: 'wrap',
-            }}
-          >
-            {uniqueDates.map((date, ind) => (
-              <Stack
-                direction={'row'}
-                key={date}
-                sx={{
-                  cursor: 'pointer',
-                  border: '1px solid #E9EBED',
-                  backgroundColor: selectedDate === date ? '#F7F9FB' : 'white',
-                  padding: '4px 12px',
-                  borderRadius: '10px',
-                }}
-                onClick={() => {
-                  setSelectedDate(date);
-                }}
-                spacing={1}
-              >
-                <Typography variant='body2' fontWeight={700}>
-                  {dayjs(date).format('DD')}
-                </Typography>
-                <Typography variant='body2'>
-                  {dayjs(date).format('MMMM')}
-                </Typography>
-                <Typography variant='body2'>
-                  {dayjs(date).format('YYYY')}
-                </Typography>
-              </Stack>
-            ))}
-            {filteredRecords.length === 0 && (
-              <Stack width={'100%'}>
-                <EmptyGeneral textEmpt={'No Meeting Found'} />
-              </Stack>
-            )}
-          </Stack>
+        slotDatePill={
+          <>
+            {schedule.dateRange.map((date, ind) => {
+              return (
+                <DatePill
+                  key={ind + 'date'}
+                  textDate={`${dayjs(date.start_date, 'DD/MM/YYYY').format('DD')}${date.end_date ? ' - ' + dayjs(date.end_date, 'DD/MM/YYYY').format('DD') : ''} ${dayjs(date.start_date, 'DD/MM/YYYY').format('MMMM YYYY')}`}
+                  onClickDate={{
+                    onClick: () => {
+                      if (!loading) {
+                        setSelectedDate(date);
+                      }
+                    },
+                  }}
+                  isActive={selectedDate === date}
+                />
+              );
+            })}
+          </>
+        }
+        slotDaysPill={
+          <>
+            {!loading &&
+              allScheduleOptions.length === schedule.numberOfDays &&
+              Array.from({ length: allScheduleOptions.length }).map(
+                (_, ind) => {
+                  return (
+                    <DaysPill
+                      key={ind + 'day'}
+                      onClickDay={{
+                        onClick: () => {
+                          setStep(ind);
+                        },
+                      }}
+                      isActive={step === ind}
+                      textDay={`Day ${ind + 1}`}
+                    />
+                  );
+                },
+              )}
+          </>
         }
         slotCompanyLogo={
           <Stack height={'60px'}>
             <CompanyLogo
               companyName={schedule.recruiter.name}
               companyLogo={schedule.recruiter.logo}
+              borderRadius={4}
             />
           </Stack>
         }
-        onClickAskOptions={{
-          onClick: () => {
-            setChangeTime(true);
-          },
-        }}
         isNotFindingTextVisible={schedule.schedule.is_get_more_option}
-        isSelected={Boolean(selectedSlot)}
+        isSelected={
+          !loading && allScheduleOptions.length === schedule.numberOfDays
+        }
         slotButtonPrimary={
           <Stack width={'100%'}>
             <ButtonPrimaryLarge
               onClickButton={{
                 onClick: () => {
-                  setDialogOpen(true);
+                  if (
+                    schedule.numberOfDays ===
+                    selectedSlots.filter((f) => Boolean(f)).length
+                  ) {
+                    setDialogOpen(true);
+                  } else {
+                    if (step < schedule.numberOfDays) {
+                      setStep((prev) => prev + 1);
+                    } else {
+                      toast.error('Please select all slots to proceed');
+                    }
+                  }
                 },
               }}
               textLabel={'Proceed'}
@@ -130,53 +189,77 @@ function InvitationPending({
           </Stack>
         }
         textDesc={`Hi ${schedule?.candidate?.first_name}, pick an option that suits you best and take the first step towards joining our team. We look forward to meeting you!`}
-        slotInviteLinkCard={filteredRecords?.map((option, ind) => {
-          return (
-            <Stack
-              key={ind}
-              onClick={() => {
-                setSelectedSlot(option.id);
-              }}
-              sx={{ cursor: 'pointer' }}
-            >
-              <OptionAvailableCard
-                isActive={selectedSlot === option.id}
-                slotCardDate={option.plans.map((pl, indOpt) => {
-                  return (
-                    <AvailableOptionCardDate
-                      isDateWrapVisible={
-                        indOpt == 0 ||
-                        (!pl.isBreak &&
-                          !dayjs(option.plans[indOpt - 1]?.start_time).isSame(
-                            pl.start_time,
-                            'day',
-                          ))
+        slotInviteLinkCard={
+          !loading ? (
+            allScheduleOptions.length === schedule.numberOfDays ? (
+              schedulingOptions?.map((option, ind) => {
+                return (
+                  <Stack
+                    key={ind + 'main'}
+                    onClick={() => {
+                      selectedSlots[Number(step)] = option.slot_comb_id;
+                      setSelectedSlots([...selectedSlots]);
+                    }}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    <OptionAvailableCard
+                      isActive={
+                        selectedSlots[Number(step)] === option.slot_comb_id
                       }
-                      textDate={dayjs(pl.start_time).format('DD')}
-                      textDay={dayjs(pl.start_time).format('dddd')}
-                      textMonth={dayjs(pl.start_time).format('MMM')}
-                      key={ind}
-                      slotOptionAvailable={
-                        <OptionAvailable
-                          textTime={`${dayjs(pl.start_time).format(
-                            'hh:mm A',
-                          )} - ${dayjs(pl.end_time).format('hh:mm A')}`}
-                          textTitle={pl.module_name}
-                          key={ind}
-                          textBreakTime={
-                            pl.isBreak ? `${pl.duration} Minutes` : ''
-                          }
-                          isTitleVisible={!pl.isBreak}
-                          isBreakVisible={pl.isBreak}
-                        />
-                      }
+                      slotCardDate={option.sessions.map((ses, indOpt) => {
+                        return (
+                          <>
+                            <AvailableOptionCardDate
+                              isDateWrapVisible={
+                                indOpt == 0 ||
+                                !dayjs(
+                                  option.sessions[indOpt - 1]?.start_time,
+                                ).isSame(ses.start_time, 'day')
+                              }
+                              textDate={dayjs(ses.start_time).format('DD')}
+                              textDay={dayjs(ses.start_time).format('dddd')}
+                              textMonth={dayjs(ses.start_time).format('MMM')}
+                              key={ses.session_id}
+                              slotOptionAvailable={
+                                <>
+                                  <OptionAvailable
+                                    textTime={`${dayjs(ses.start_time).format(
+                                      'hh:mm A',
+                                    )} - ${dayjs(ses.end_time).format('hh:mm A')}`}
+                                    textTitle={ses.module_name}
+                                    key={ind}
+                                    isTitleVisible={true}
+                                    isBreakVisible={false}
+                                  />
+                                  {ses.break_duration > 0 &&
+                                    indOpt !== option.sessions.length - 1 && (
+                                      <OptionAvailable
+                                        key={ind}
+                                        textTime={''}
+                                        textBreakTime={
+                                          `${ses.break_duration} Minutes` || ''
+                                        }
+                                        isTitleVisible={false}
+                                        isBreakVisible={true}
+                                      />
+                                    )}
+                                </>
+                              }
+                            />
+                          </>
+                        );
+                      })}
                     />
-                  );
-                })}
-              />
-            </Stack>
-          );
-        })}
+                  </Stack>
+                );
+              })
+            ) : (
+              'No slots available for the selected date range'
+            )
+          ) : (
+            <LinearProgress color='info' />
+          )
+        }
       />
     </>
   );
