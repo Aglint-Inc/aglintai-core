@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -29,7 +30,7 @@ export function InterviewModuleCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "fw-semibold")}
+          className={_utils.cx(_styles, "fw-semibold", "text-capitalize-word")}
           id={_utils.cx(
             _styles,
             "w-node-_1eadd607-1492-0d1b-a196-62336e91e7a9-6e91e7a7"

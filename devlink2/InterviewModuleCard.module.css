@@ -206,6 +206,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .text-grey-600.relative-1 {
   position: relative;
   z-index: 1;

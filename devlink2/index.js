@@ -190,6 +190,7 @@ export * from "./PhoneScreening";
 export * from "./PhoneScreeningTopRight";
 export * from "./PwResetConfirm";
 export * from "./PwResetForm";
+export * from "./QualifiedIcons";
 export * from "./QuestionCard";
 export * from "./QuestionCardLoader";
 export * from "./QuestionsEmpty";

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { DarkPill } from "./DarkPill";
@@ -30,12 +31,17 @@ export function ScheduleDetailTabs({
         className={_utils.cx(_styles, "scheduletab_content")}
         tag="div"
       >
-        {slotTabContent ?? (
-          <>
-            <ScheduleTabOverview />
-            <ScheduleTabCandidateDetails />
-          </>
-        )}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1365")}
+          tag="div"
+        >
+          {slotTabContent ?? (
+            <>
+              <ScheduleTabOverview />
+              <ScheduleTabCandidateDetails />
+            </>
+          )}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );
