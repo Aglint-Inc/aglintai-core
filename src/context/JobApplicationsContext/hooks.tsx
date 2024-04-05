@@ -22,7 +22,6 @@ import { EmailTemplateType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { useJobDetails } from '../JobDashboard';
-import { hashCode } from '../JobDashboard/hooks';
 import { useJobs } from '../JobsContext';
 import { CountJobs } from '../JobsContext/types';
 import {
@@ -522,13 +521,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const handleJobApplicationRescore = async () => {
     if (recruiter) {
-      if (
-        hashCode(JSON.stringify(job?.draft?.jd_json ?? {})) !==
-        hashCode(JSON.stringify(job?.jd_json ?? {}))
-      ) {
-        await rescoreDbAction(job.id);
-        handleJobApplicationRefresh();
-      }
+      await rescoreDbAction(job.id);
+      handleJobApplicationRefresh();
     }
   };
 

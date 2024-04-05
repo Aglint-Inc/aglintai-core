@@ -22,6 +22,7 @@ import UITextField from '../Common/UITextField';
 import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { DropDown } from './sessionForms';
+import { getBreakLabel } from './utils';
 
 type DebriefFormProps = Pick<
   InterviewSessionType,
@@ -112,15 +113,15 @@ const DebriefForms = ({
     }));
   }, []);
 
-  const handleSessionDuration: ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = useCallback((e) => {
-    const entry = e.target.value as any;
-    const safeEntry = +entry;
-    if (entry === null || entry === '') handleChange('session_duration', null);
-    else if (safeEntry < 0) handleChange('session_duration', 0);
-    else handleChange('session_duration', safeEntry);
-  }, []);
+  // const handleSessionDuration: ChangeEventHandler<
+  //   HTMLInputElement | HTMLTextAreaElement
+  // > = useCallback((e) => {
+  //   const entry = e.target.value as any;
+  //   const safeEntry = +entry;
+  //   if (entry === null || entry === '') handleChange('session_duration', null);
+  //   else if (safeEntry < 0) handleChange('session_duration', 0);
+  //   else handleChange('session_duration', safeEntry);
+  // }, []);
 
   const nameField = useMemo(
     () => (
@@ -138,15 +139,19 @@ const DebriefForms = ({
 
   const sessionDurationField = useMemo(
     () => (
-      <UITextField
-        name={'session_duration'}
-        type='number'
-        placeholder={'Session duration'}
+      <SessionDurationField
         value={session_duration.value}
-        error={session_duration.error}
-        helperText={session_duration.helper}
-        onChange={handleSessionDuration}
+        handleChange={handleChange}
       />
+      // <UITextField
+      //   name={'session_duration'}
+      //   type='number'
+      //   placeholder={'Session duration'}
+      //   value={session_duration.value}
+      //   error={session_duration.error}
+      //   helperText={session_duration.helper}
+      //   onChange={handleSessionDuration}
+      // />
     ),
     [session_duration],
   );
@@ -260,6 +265,38 @@ const InterviewerPills = ({
       />
     );
   });
+};
+
+const SessionDurationField = ({
+  value,
+  handleChange,
+}: {
+  value: DebriefFormProps['session_duration'];
+  handleChange: HandleChange;
+}) => {
+  const options = [30, 45, 60, 120].reduce(
+    (acc, curr) => {
+      acc.push({ name: getBreakLabel(curr), value: curr });
+      return acc;
+    },
+    [] as { name: string; value: number }[],
+  );
+  const onChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = useCallback((e) => {
+    if ((e?.target?.value ?? null) && typeof e.target.value === 'number')
+      handleChange('session_duration', e.target.value);
+  }, []);
+
+  return (
+    <DropDown
+      placeholder='Select session duration'
+      showIcons={false}
+      options={options}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 const InterviewersField = ({

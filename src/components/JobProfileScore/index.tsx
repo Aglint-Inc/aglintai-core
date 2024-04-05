@@ -277,8 +277,8 @@ const ProfileScore = () => {
         ) : (
           <>
             <Section type='experience' />
-            <Section type='education' />
             <Section type='skills' />
+            <Section type='education' />
           </>
         )
       }
@@ -315,6 +315,9 @@ const Banners = () => {
       <></>
     ) : (
       <BannerWarning
+        textBanner={
+          'Job description has changed. Regenerate for updated scoring criterias.'
+        }
         onClickDismiss={{ onClick: () => setDismiss(true) }}
         onClickButton={{
           onClick: () => experimental_handleRegenerateJd(job),

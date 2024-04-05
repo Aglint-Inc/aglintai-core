@@ -31,6 +31,7 @@ import UITextField from '../Common/UITextField';
 import { AntSwitch } from '../NewAssessment/AssessmentPage/editor';
 import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
+import { getBreakLabel } from './utils';
 
 export type SessionUser = InterviewCoordinatorType & {
   moduleUserId: string;
@@ -44,7 +45,6 @@ type SessionFormProps = Pick<
   | 'schedule_type'
   | 'session_type'
   | 'interview_module'
-  | 'interviewer_cnt'
 > &
   CustomSessionFormProps;
 
@@ -52,6 +52,7 @@ type CustomSessionFormProps = {
   training: boolean;
   trainees: SessionUser[];
   interviewers: SessionUser[];
+  interviewer_cnt: number;
 };
 
 type SessionFormFields = {
@@ -105,7 +106,7 @@ export const initialSessionFields: SessionFormProps = {
   session_type: 'panel',
   interview_module: null,
   interviewers: [],
-  interviewer_cnt: 0,
+  interviewer_cnt: null,
   training: false,
   trainees: [],
 };
@@ -186,7 +187,7 @@ const SessionForms = ({
       interviewer_cnt: {
         ...prev.interviewer_cnt,
         error: false,
-        value: 0,
+        value: null,
       },
       training: {
         ...prev.training,
@@ -200,15 +201,15 @@ const SessionForms = ({
       },
     }));
   }, []);
-  const handleSessionDuration: ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = useCallback((e) => {
-    const entry = e.target.value as any;
-    const safeEntry = +entry;
-    if (entry === null || entry === '') handleChange('session_duration', null);
-    else if (safeEntry < 0) handleChange('session_duration', 0);
-    else handleChange('session_duration', safeEntry);
-  }, []);
+  // const handleSessionDuration: ChangeEventHandler<
+  //   HTMLInputElement | HTMLTextAreaElement
+  // > = useCallback((e) => {
+  //   const entry = e.target.value as any;
+  //   const safeEntry = +entry;
+  //   if (entry === null || entry === '') handleChange('session_duration', null);
+  //   else if (safeEntry < 0) handleChange('session_duration', 0);
+  //   else handleChange('session_duration', safeEntry);
+  // }, []);
 
   const nameField = useMemo(
     () => (
@@ -226,15 +227,19 @@ const SessionForms = ({
 
   const sessionDurationField = useMemo(
     () => (
-      <UITextField
-        name={'session_duration'}
-        type='number'
-        placeholder={'Session duration'}
+      <SessionDurationField
         value={session_duration.value}
-        error={session_duration.error}
-        helperText={session_duration.helper}
-        onChange={handleSessionDuration}
+        handleChange={handleChange}
       />
+      // <UITextField
+      //   name={'session_duration'}
+      //   type='number'
+      //   placeholder={'Session duration'}
+      //   value={session_duration.value}
+      //   error={session_duration.error}
+      //   helperText={session_duration.helper}
+      //   onChange={handleSessionDuration}
+      // />
     ),
     [session_duration],
   );
@@ -348,23 +353,8 @@ const Interview = ({
       interviewer_cnt: {
         ...prev.interviewer_cnt,
         error: false,
-        value: prev.interviewer_cnt.value === 0 ? 0 : 1,
+        value: prev.interviewer_cnt.value === null ? null : 1,
       },
-      // interviewers: {
-      //   ...prev.interviewers,
-      //   error: false,
-      //   value: [],
-      // },
-      // training: {
-      //   ...prev.training,
-      //   error: false,
-      //   value: false,
-      // },
-      // trainees: {
-      //   ...prev.trainees,
-      //   error: false,
-      //   value: [],
-      // },
     }));
   }, []);
   const handleTrainingChange: HandleTrainingChange = useCallback((value) => {
@@ -392,7 +382,7 @@ const Interview = ({
             ...prev.interviewer_cnt,
             error: false,
             value:
-              type === 'interviewers' && prev.interviewer_cnt.value < 1
+              type === 'interviewers' && prev.interviewer_cnt.value === null
                 ? value.length
                 : prev.interviewer_cnt.value,
           },
@@ -411,8 +401,12 @@ const Interview = ({
           ...prev.interviewer_cnt,
           error: false,
           value:
-            type === 'interviewers' && value.length < prev.interviewer_cnt.value
-              ? value.length
+            type === 'interviewers' &&
+            prev.interviewer_cnt.value &&
+            value.length < prev.interviewer_cnt.value
+              ? value.length === 0
+                ? null
+                : value.length
               : prev.interviewer_cnt.value,
         },
       };
@@ -440,7 +434,7 @@ const Interview = ({
         name={'interviewer_cnt'}
         type='number'
         width='40px'
-        value={interviewer_cnt.value}
+        value={interviewer_cnt?.value ?? ''}
         error={interviewer_cnt.error}
         helperText={interviewer_cnt.helper}
         onChange={handleCountChange}
@@ -462,7 +456,7 @@ const Interview = ({
   return (
     <InterviewMode
       isIndividual={session_type.value === 'individual'}
-      isPanel={session_type.value === 'panel'}
+      isPanel={interviewers.value.length > 1 && session_type.value === 'panel'}
       isTraining={training.value}
       textToggleLabel={`Training ${training.value ? 'On' : 'Off'}`}
       slotToggle={trainingSwitch}
@@ -599,6 +593,38 @@ const InterviewerPills = ({
       />
     );
   });
+};
+
+const SessionDurationField = ({
+  value,
+  handleChange,
+}: {
+  value: SessionFormProps['session_duration'];
+  handleChange: HandleChange;
+}) => {
+  const options = [30, 45, 60, 120].reduce(
+    (acc, curr) => {
+      acc.push({ name: getBreakLabel(curr), value: curr });
+      return acc;
+    },
+    [] as { name: string; value: number }[],
+  );
+  const onChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = useCallback((e) => {
+    if ((e?.target?.value ?? null) && typeof e.target.value === 'number')
+      handleChange('session_duration', e.target.value);
+  }, []);
+
+  return (
+    <DropDown
+      placeholder='Select session duration'
+      showIcons={false}
+      options={options}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 const InterviewersField = ({
@@ -750,7 +776,7 @@ type MemberSelectionDropDownProps = {
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   options: {
     name: string;
-    value: string;
+    value: string | number;
     start_icon_url?:
       | string
       | {
@@ -759,7 +785,8 @@ type MemberSelectionDropDownProps = {
         }[];
     icon?: React.JSX.Element;
   }[];
-  value: string;
+  value: string | number;
+  showIcons?: boolean;
 };
 
 export const DropDown = ({
@@ -767,6 +794,7 @@ export const DropDown = ({
   onChange,
   options,
   value,
+  showIcons = true,
 }: MemberSelectionDropDownProps) => {
   return (
     <Stack
@@ -787,7 +815,7 @@ export const DropDown = ({
       <AvatarSelectDropDown
         onChange={onChange}
         menuOptions={options}
-        showMenuIcons
+        showMenuIcons={showIcons}
         value={value}
       />
     </Stack>

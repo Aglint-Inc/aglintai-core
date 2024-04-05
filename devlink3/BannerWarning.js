@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -29,11 +30,11 @@ export function BannerWarning({
       <_Builtin.Block className={_utils.cx(_styles, "right_buttons")} tag="div">
         {isDismiss ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-block-29", "cursor-pointer")}
+            className={_utils.cx(_styles, "text-blue-500", "cursor-pointer")}
             tag="div"
             {...onClickDismiss}
           >
-            {"Dismiss"}
+            {"Ignore"}
           </_Builtin.Block>
         ) : null}
         {isButton ? (
