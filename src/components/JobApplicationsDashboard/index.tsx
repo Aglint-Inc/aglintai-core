@@ -22,9 +22,10 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
-  AllApplicantsTable,
+  // AllApplicantsTable,
   AllInterview,
   ApplicantsListEmpty,
+  ApplicantsTable,
   Breadcrum,
   CandidatesListPagination,
   JobDetails,
@@ -376,8 +377,9 @@ const ApplicationTable = ({
         }
       />
     ) : (
-      <AllApplicantsTable
-        onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
+      <ApplicantsTable
+        // <AllApplicantsTable
+        onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
         isAllChecked={isAllChecked}
         isInterviewVisible={views.assessment}
         slotCandidatesList={applicantsList}

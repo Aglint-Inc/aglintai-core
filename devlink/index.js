@@ -152,6 +152,7 @@ export * from "./DetailedFeedback";
 export * from "./DetailedFeedbackButton";
 export * from "./DetailedFeedbackCard";
 export * from "./DetailedFeedbackCardSmall";
+export * from "./DevLinkProvider";
 export * from "./DisconnectInterviewModal";
 export * from "./DropdownEntry";
 export * from "./EditEmail";

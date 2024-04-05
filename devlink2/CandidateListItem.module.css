@@ -1,6 +1,7 @@
 .div-block-1291 {
   position: sticky;
   top: 0px;
+  z-index: 3;
 
   display: grid;
   grid-auto-columns: 1fr;
@@ -22,6 +23,10 @@
 .relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.div-block-1291.no-sticky.relative-1.no-bg {
+  background-color: transparent;
 }
 
 .cv-list-item-highlight {
@@ -177,10 +182,6 @@
 .cv-list-column.name.overflow-visible.width-100 {
   width: 100%;
   min-width: 100%;
-}
-
-.width-100 {
-  width: 100%;
 }
 
 .cv-list-column.name.width-100 {

@@ -98,6 +98,7 @@ export * from "./DaysPill";
 export * from "./DelJobBtn";
 export * from "./DeleteAssessmentPopup";
 export * from "./DeleteJobPopup";
+export * from "./DevLinkProvider";
 export * from "./DragAndDrop";
 export * from "./DropdownList";
 export * from "./DuplicateAssessmentPopup";
