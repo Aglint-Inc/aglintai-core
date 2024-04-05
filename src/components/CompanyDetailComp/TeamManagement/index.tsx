@@ -32,7 +32,9 @@ const debounce = (func, delay) => {
   };
 };
 const TeamManagement = () => {
-  const { recruiterUser, members, setMembers } = useAuthDetails();
+  const { recruiterUser, members, setMembers, handelMemberUpdate } =
+    useAuthDetails();
+
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
     window: 'addMember' | 'pendingMember';
@@ -48,12 +50,6 @@ const TeamManagement = () => {
   const [searchText, setSearchText] = useState('');
   const [filteredMembers, setFilteredMembers] = useState(members);
 
-  useEffect(() => {
-    const debouncedFilter = debounce(filterMembers, 300);
-    debouncedFilter(searchText);
-    return () => clearTimeout(debouncedFilter as any);
-  }, [searchText]);
-
   const filterMembers = (searchText: string) => {
     const filtered = members.filter(
       (member) =>
@@ -67,9 +63,11 @@ const TeamManagement = () => {
   const [selectedDepartments, setSelectedDepartments] = useState<ItemType[]>(
     [],
   );
+
   const [selectedLocations, setSelectedLocations] = useState<ItemType[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<ItemType[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<ItemType[]>([]);
+
   const uniqueDepartments = [
     ...new Set(
       members
@@ -77,6 +75,7 @@ const TeamManagement = () => {
         .map((item) => String(item.department).toLowerCase()),
     ),
   ];
+
   const uniqueLocations = [
     ...new Set(
       members
@@ -106,6 +105,12 @@ const TeamManagement = () => {
         ),
     ),
   ];
+
+  useEffect(() => {
+    const debouncedFilter = debounce(filterMembers, 300);
+    debouncedFilter(searchText);
+    return () => clearTimeout(debouncedFilter as any);
+  }, [searchText]);
 
   useEffect(() => {
     const filtered = members.filter((member) => {
@@ -232,6 +237,19 @@ const TeamManagement = () => {
                       );
                     }
                   }}
+                  updateMember={(updatedMem) => {
+                    handelMemberUpdate({
+                      user_id: member.user_id,
+                      data: updatedMem,
+                    }).then(() => {
+                      toast.success(
+                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'Suspended' : 'Activated'}.`,
+                      );
+                    });
+                  }}
+                  canSuspend={
+                    member.join_status !== 'invited' && member.role !== 'admin'
+                  }
                 />
               ))}
             </ShowCode.When>

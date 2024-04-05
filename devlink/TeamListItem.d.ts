@@ -19,4 +19,8 @@ declare function TeamListItem(props: {
   textDepartment?: React.ReactNode;
   textDesignation?: React.ReactNode;
   textLocation?: React.ReactNode;
+  isActiveVisible?: Types.Visibility.VisibilityConditions;
+  onClickActive?: Types.Devlink.RuntimeProps;
+  isSuspendVisible?: Types.Visibility.VisibilityConditions;
+  onClickSuspend?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

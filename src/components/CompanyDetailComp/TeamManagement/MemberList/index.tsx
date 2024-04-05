@@ -18,12 +18,17 @@ dayjs.extend(relativeTime);
 const Member = ({
   member,
   removeMember,
+  updateMember,
   editMember,
+  canSuspend,
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
   // eslint-disable-next-line no-unused-vars
+  updateMember: (x: RecruiterUserType) => void;
+  // eslint-disable-next-line no-unused-vars
   editMember: (member: RecruiterUserType) => void;
+  canSuspend: boolean;
 }) => {
   const handelRemove = (e) => {
     e.stopPropagation();
@@ -53,14 +58,14 @@ const Member = ({
     setOpenForDelete(false);
     setOpenForCancel(false);
   }
-  if (member.join_status === 'joined') {
-    const diffTime = Math.abs(
-      (new Date() as unknown as number) -
-        (new Date(member.last_login) as unknown as number),
-    );
-    const diffDays = diffTime / (1000 * 60 * 60 * 24);
-    member.join_status = diffDays <= 1 ? 'Active' : 'Not Active';
-  }
+  // if (member.join_status === 'joined') {
+  //   const diffTime = Math.abs(
+  //     (new Date() as unknown as number) -
+  //       (new Date(member.last_login) as unknown as number),
+  //   );
+  //   const diffDays = diffTime / (1000 * 60 * 60 * 24);
+  //   member.join_status = diffDays <= 1 ? 'Active' : 'Not Active';
+  // }
 
   return (
     <>
@@ -82,6 +87,14 @@ const Member = ({
       <TeamListItem
         // isDeleteDisable={member.role !== 'admin' ? false : true}
         // isEditInviteVisible={member.join_status === 'invited'}
+        isActiveVisible={canSuspend && member.is_suspended}
+        isSuspendVisible={canSuspend && !member.is_suspended}
+        onClickSuspend={{
+          onClick: () => updateMember({ ...member, is_suspended: true }),
+        }}
+        onClickActive={{
+          onClick: () => updateMember({ ...member, is_suspended: false }),
+        }}
         textLocation={member.interview_location}
         onClickEditInvite={{ onClick: editMember }}
         isDeleteVisible={
@@ -123,12 +136,21 @@ const Member = ({
                   backgroundColor: palette.yellow[200],
                   color: palette.yellow[800],
                 }
-              : {
-                  backgroundColor: palette.green[200],
-                  color: palette.green[800],
-                },
+              : member.is_suspended === true
+                ? {
+                    backgroundColor: palette.red[200],
+                    color: palette.red[800],
+                  }
+                : {
+                    backgroundColor: palette.green[200],
+                    color: palette.green[800],
+                  },
         }}
-        userStatusText={<Stack>{capitalize(member.join_status)}</Stack>}
+        userStatusText={
+          <Stack>
+            {capitalize(member.is_suspended ? 'Suspended' : member.join_status)}
+          </Stack>
+        }
         onClickRemove={{
           onClick: () => {
             setOpenForDelete(true);
@@ -140,3 +162,15 @@ const Member = ({
 };
 
 export default Member;
+
+// const setStatus = (id: string, is_suspended: boolean) => {
+//   return supabase
+//     .from('recruiter_user')
+//     .update({ is_suspended })
+//     .eq('user_id', id)
+//     .select()
+//     .then(({ data, error }) => {
+//       if (error) throw new Error(error.message);
+//       return data;
+//     });
+// };
