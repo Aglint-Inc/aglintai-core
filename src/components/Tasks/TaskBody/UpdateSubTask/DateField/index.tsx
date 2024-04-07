@@ -7,10 +7,12 @@ function DateField({
   getDate,
   dateRef,
   defaultDate,
+  onClose,
 }: {
   getDate: any;
-  dateRef: any;
-  defaultDate: any;
+  dateRef?: any;
+  defaultDate?: any;
+  onClose?: any;
 }) {
   return (
     <Stack
@@ -30,9 +32,11 @@ function DateField({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DesktopDateTimePicker
           defaultValue={dayjs(defaultDate)}
-          format='DD dddd, MMM YYYY'
+          format='DD ddd, MMM YYYY'
           ref={dateRef}
-          onChange={getDate}
+          // onChange={getDate}
+          onClose={onClose}
+          onAccept={getDate}
         />
       </LocalizationProvider>
     </Stack>

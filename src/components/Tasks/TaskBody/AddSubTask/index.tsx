@@ -1,19 +1,19 @@
-import { Button, Chip, Grid, Skeleton, Stack } from '@mui/material';
+import { Button, Chip, Grid, Stack, Typography } from '@mui/material';
 // import { EditorState } from '@tiptap/core/dist/packages/core/src/Editor';
 import { Editor } from '@tiptap/react';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useInterviewerList } from '@/src/components/CompanyDetailComp/Interviewers';
+import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
 import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvider';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../utils';
-import { assigneeType } from '../UpdateSubTask';
-import TextArea from './TaxtArea';
-const agentsDetails = [
+import DateField from '../UpdateSubTask/DateField';
+import TextArea from './TextArea';
+export const agentsDetails = [
   {
     user_id: EmailAgentId,
     first_name: 'email',
@@ -30,23 +30,26 @@ const agentsDetails = [
   },
 ];
 function AddSubTask({ taskId }: { taskId: string }) {
-  const { data: interviewers } = useInterviewerList();
-  const members = interviewers.map((item) => item.rec_user);
   let getEditorRef: () => Editor = null;
-  const assigner = [
-    ...agentsDetails,
-    ...members.map((item) => {
-      return { ...item, assignee: 'Interviewers' };
-    }),
-  ];
-  const { selectedMemberId, setSelectedMemberId, setAddingSubTask } =
-    useTaskStatesContext();
-  const { handelAddSubTask } = useTasksAgentContext();
+
+  const {
+    selectedMemberId,
+    setSelectedMemberId,
+    setAddingSubTask,
+    assignerList,
+  } = useTaskStatesContext();
+  const { handelAddSubTask, tasks } = useTasksAgentContext();
   const [textInput, setTextInput] = useState({
     html: null,
     text: null,
     wordCount: null,
   });
+  const [sessionList, setSessionList] = useState([]);
+  const [selectedSession, setSelectedSession] = useState([]);
+
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
   async function handleChange() {
     setAddingSubTask(true);
     const { data } = await axios.post('/api/ai/queryToJson', {
@@ -58,9 +61,10 @@ function AddSubTask({ taskId }: { taskId: string }) {
         set this data to json object
         {
             "name":"get the task name",
-            "completion_date":"extract the date and time( MM-DD-YYYY HH:mm:ss )",
+            "start_date":"extract the date and time ( MM-DD-YYYY HH:mm:ss ) if mentioned only else pass null",
+            "completion_date":"extract the date and time ( MM-DD-YYYY HH:mm:ss ) if mentioned only else pass null",
             "status":"enum("completed" | "closed" | "pending" | "failed" |"in_progress")",
-            "agent":"enum("call"|"email")"
+            "agent":"enum("call"|"email"|null)"
             "assignee":"
             if(agent==='call')
             return ${PhoneAgentId}
@@ -81,21 +85,44 @@ function AddSubTask({ taskId }: { taskId: string }) {
     const assignee = selectedMemberId
       ? [selectedMemberId]
       : [taskData.assignee];
-    const agent = selectedMemberId ? null : taskData.agent;
-    const completion_date = new Date(taskData.completion_date);
+    const agent = taskData.agent ? taskData.agent : null;
+    const start_date = taskData.start_date
+      ? new Date(taskData.start_date)
+      : selectedStartDate;
+    const completion_date = taskData.completion_date
+      ? new Date(taskData.completion_date)
+      : selectedEndDate;
     handelAddSubTask({
       taskId: taskId,
       data: {
         ...taskData,
-        completion_date,
         assignee,
         agent,
+        start_date,
+        completion_date,
         task_id: taskId,
+        session_ids: selectedSession,
       },
     });
+
     setSelectedMemberId(null);
     setAddingSubTask(false);
+    setSelectedSession([]);
   }
+
+  async function getSessionList() {
+    const selectedTask = tasks.find((item) => item.id === taskId);
+    const data = await fetchInterviewSessionTask({
+      application_id: selectedTask.application_id,
+      job_id: selectedTask.applications.public_jobs.id,
+    });
+    setSessionList(data);
+    return data;
+  }
+  useEffect(() => {
+    getSessionList();
+  }, []);
+
   return (
     <Stack width={'100%'}>
       <TextArea
@@ -115,50 +142,113 @@ function AddSubTask({ taskId }: { taskId: string }) {
         getEditorRef={(func) => (getEditorRef = func)}
         onClick={handleChange}
         value={textInput.html}
-        dataList={assigner as assigneeType[]}
+        dataList={assignerList}
       />
 
       <ShowCode.When
         isTrue={
           textInput.text &&
-          (String(textInput.text).toLowerCase().includes('sche') ||
-            String(textInput.text).toLowerCase().includes('schedule'))
+          String(textInput.text).toLowerCase().includes('sche')
         }
       >
         <ScrollList
           uniqueKey={
             textInput.text &&
-            (String(textInput.text).toLowerCase().includes('sche') ||
-              String(textInput.text).toLowerCase().includes('schedule'))
+            String(textInput.text).toLowerCase().includes('sche')
           }
         >
-          <Stack py={'10px'}>
-            <Grid container spacing={1}>
-              {sessionList.map(({ name, id }) => {
+          <Stack direction={'column'} spacing={'5px'} py={'10px'}>
+            <Typography variant='body2'>Select a session*</Typography>
+            <Grid container>
+              {sessionList.map((item, i) => {
                 return (
-                  <Grid key={id} item>
+                  <Grid key={i} item>
                     <Button
                       onClick={() => {
-                        const text = textInput.text + ' ' + `${name} `;
-                        const html =
-                          textInput.html.replace('</p>', '') +
-                          `<span class='module_session_name'>&nbsp;${name}&nbsp;</span></p>`;
-                        const wordCount = textInput.wordCount + name.length;
-                        setTextInput({
-                          html,
-                          text,
-                          wordCount,
+                        setSelectedSession((pre) => {
+                          if (pre.includes(item.id)) {
+                            // set in tiptap editor
+                            const text = String(textInput.text).replaceAll(
+                              item.name,
+                              '',
+                            );
+                            const html = String(textInput.html).replaceAll(
+                              `<span class='module_session_name'>&nbsp;${item.name}&nbsp;</span>`,
+                              '',
+                            );
+                            const wordCount =
+                              textInput.wordCount + item.name.length;
+                            setTextInput({
+                              html,
+                              text,
+                              wordCount,
+                            });
+                            getEditorRef().commands.setContent(html);
+                            return pre.filter((ele) => ele !== item.id);
+                          }
+                          // set in tiptap editor
+                          const text = textInput.text + ' ' + `${item.name} `;
+                          const html =
+                            textInput.html.replace('</p>', '') +
+                            `<span class='module_session_name'>&nbsp;${item.name}&nbsp;</span></p>`;
+                          const wordCount =
+                            textInput.wordCount + item.name.length;
+                          setTextInput({
+                            html,
+                            text,
+                            wordCount,
+                          });
+                          getEditorRef().commands.setContent(html);
+                          getEditorRef().commands.focus(text.length + 2);
+
+                          return [item.id, ...pre];
                         });
-                        getEditorRef().commands.setContent(html);
-                        getEditorRef().commands.focus(text.length + 2);
                       }}
                     >
-                      <Chip label={name} />
+                      <Chip
+                        sx={{
+                          bgcolor: selectedSession.includes(item.id)
+                            ? 'blue.300'
+                            : 'grey.200',
+                        }}
+                        label={item.name}
+                      />
                     </Button>
                   </Grid>
                 );
               })}
             </Grid>
+            {/* <Autocomplete
+              // fullWidth
+              multiple
+              clearIcon
+              id='combo-box-demo'
+              options={sessionList || []}
+              getOptionLabel={(option) => option.name}
+              onChange={(e, value) => {
+                setSelectedSession(value.map((item) => item.id));
+              }}
+              renderInput={(params) => (
+                <TextField
+                  placeholder='Select Candidate'
+                  variant='outlined'
+                  {...params}
+                />
+              )}
+            /> */}
+            <Typography variant='body2'>Select date range*</Typography>
+            <Stack direction={'row'} spacing={1}>
+              <DateField
+                getDate={(e) => {
+                  setSelectedStartDate(new Date(e));
+                }}
+              />
+              <DateField
+                getDate={(e) => {
+                  setSelectedEndDate(new Date(e));
+                }}
+              />
+            </Stack>
           </Stack>
         </ScrollList>
       </ShowCode.When>
@@ -167,38 +257,3 @@ function AddSubTask({ taskId }: { taskId: string }) {
 }
 
 export default AddSubTask;
-const sessionList = [
-  { name: 'Hr interview', id: crypto.randomUUID() },
-  { name: 'Software Interview', id: crypto.randomUUID() },
-];
-export function SubTaskCardSkeleton() {
-  return (
-    <Grid
-      direction={'row'}
-      alignItems={'center'}
-      pl={3}
-      width={'80%'}
-      container
-      spacing={1}
-    >
-      <Grid item xs>
-        <Stack width={'100%'} direction={'row'} alignItems={'center'} gap={2}>
-          <Skeleton width={'25px'} height={'30px'} />
-          <Skeleton
-            component={'h2'}
-            sx={{ borderRadius: '20px', width: '100%' }}
-          />
-        </Stack>
-      </Grid>
-      <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
-      </Grid>
-      <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
-      </Grid>
-      <Grid item xs>
-        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
-      </Grid>
-    </Grid>
-  );
-}
