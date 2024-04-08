@@ -280,8 +280,9 @@ function JobForm() {
           currSlide !== 'templates'
         }
         isProceedDisable={false}
-        textProceed={`Proceed to ${allSlides[slidePathToNum[String(currSlide)]]
-          ?.title}`}
+        textProceed={`Proceed to ${
+          allSlides[slidePathToNum[String(currSlide)]]?.title
+        }`}
         onClickProceed={{
           onClick: () => {
             const nextSlide =

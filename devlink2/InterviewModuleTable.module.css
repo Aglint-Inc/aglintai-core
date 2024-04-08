@@ -14,7 +14,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 35% 21.6% 21.6% 21.6%;
+  grid-template-columns: 39.8% 20% 20% 20%;
   grid-template-rows: auto;
 
   border-top: 1px solid #e9ebed;
@@ -209,6 +209,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 .div-block-1068 {

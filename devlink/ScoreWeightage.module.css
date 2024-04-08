@@ -1,5 +1,5 @@
 .div-block-936 {
-  padding: 20px;
+  padding: 20px 40px;
 }
 
 .right-score-card {
@@ -272,6 +272,21 @@
 
 .mt-20 {
   margin-top: 20px;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .slot-score-wrap {

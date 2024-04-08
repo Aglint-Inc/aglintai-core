@@ -392,6 +392,11 @@
   background-color: white;
 }
 
+.cvs-header-nav-icon.clickable.bg-white.width-24 {
+  width: 24px;
+  height: 24px;
+}
+
 .icon-embed {
   display: flex;
   width: 100%;

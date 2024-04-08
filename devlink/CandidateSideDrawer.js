@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -91,7 +92,8 @@ export function CandidateSideDrawer({
                           _styles,
                           "cvs-header-nav-icon",
                           "clickable",
-                          "bg-white"
+                          "bg-white",
+                          "width-24"
                         )}
                         data-w-id="6f48177e-f948-6cb4-f8f5-030771445e68"
                         tag="div"
@@ -118,7 +120,8 @@ export function CandidateSideDrawer({
                           _styles,
                           "cvs-header-nav-icon",
                           "clickable",
-                          "bg-white"
+                          "bg-white",
+                          "width-24"
                         )}
                         data-w-id="6f48177e-f948-6cb4-f8f5-030771445e6a"
                         tag="div"

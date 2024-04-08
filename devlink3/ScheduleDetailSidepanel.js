@@ -57,7 +57,7 @@ export function ScheduleDetailSidepanel({
               {...onClickCopy}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm")}
+                className={_utils.cx(_styles, "text-sm", "one-line-clamp")}
                 tag="div"
               >
                 {textUrl}
