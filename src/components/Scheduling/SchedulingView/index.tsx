@@ -9,6 +9,7 @@ import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';
 import { TransformSchedule } from '../Modules/types';
 import CandidateInfo from './CandidateDetails';
+import FeedbackWindow from './Feedback';
 // import Feedback from './Feedback';
 import Instructions from './Instructions';
 import Overview from './Overview';
@@ -88,9 +89,19 @@ function SchedulingViewComp() {
                       >
                         <Instructions />
                       </ShowCode.When>
-                      {/* <ShowCode.When isTrue={router.query.tab === 'feedback'}>
-                        <Feedback schedule={schedule} />
-                      </ShowCode.When> */}
+                      <ShowCode.When isTrue={router.query.tab === 'feedback'}>
+                        <FeedbackWindow
+                          multiSession={false}
+                          interview_sessions={[
+                            {
+                              id: schedule?.interview_session.id,
+                              title: schedule?.interview_session.name,
+                              created_at:
+                                schedule?.interview_session.created_at,
+                            },
+                          ]}
+                        />
+                      </ShowCode.When>
                     </ShowCode>
                   }
                 />

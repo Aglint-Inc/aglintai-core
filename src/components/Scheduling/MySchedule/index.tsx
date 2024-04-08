@@ -33,7 +33,7 @@ function MySchedule() {
   }
   const router = useRouter();
   useEffect(() => {
-    if (recruiterUser.user_id) getInterviewers();
+    if (recruiterUser?.user_id) getInterviewers();
   }, [recruiterUser]);
   const getConsent = async () => {
     try {

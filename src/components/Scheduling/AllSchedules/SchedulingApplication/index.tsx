@@ -14,6 +14,7 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import CandidateInfo from '../../SchedulingView/CandidateDetails';
+import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
@@ -171,6 +172,15 @@ function SchedulingApplication() {
                     />
                   ) : tab === 'full_schedule' ? (
                     <FullSchedule />
+                  ) : tab === 'feedback' ? (
+                    <FeedbackWindow
+                      interview_sessions={initialSessions.map((item) => ({
+                        id: item.id,
+                        title: item.name,
+                        created_at: item.created_at,
+                      }))}
+                      multiSession={true}
+                    />
                   ) : (
                     ''
                   )

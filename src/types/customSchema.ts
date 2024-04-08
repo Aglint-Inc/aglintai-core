@@ -4,7 +4,7 @@ export type CustomDatabase = {
   public: {
     [keys in keyof Database['public']]: keys extends 'Tables'
       ? {
-          [Table in keyof Database['public']['Tables']]: Table extends 'interview_meeting_user'
+          [Table in keyof Database['public']['Tables']]: Table extends 'interview_session_relation'
             ? {
                 Row: Omit<
                   Database['public']['Tables'][Table]['Row'],
@@ -22,7 +22,7 @@ export type CustomDatabase = {
                   Database['public']['Tables'][Table]['Update'],
                   'feedback'
                 > & {
-                  feedback: interview_meeting_user_feedback;
+                  feedback?: interview_meeting_user_feedback;
                 };
               }
             : Table extends 'tasks'
