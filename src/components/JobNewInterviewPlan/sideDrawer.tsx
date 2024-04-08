@@ -1,8 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { Drawer } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { SideDrawerBlock } from '@/devlink2';
+import { InterviewPlanEmpty, SideDrawerBlock } from '@/devlink2';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { InterviewCoordinatorType } from '@/src/queries/interview-plans/types';
 import toast from '@/src/utils/toast';
@@ -38,12 +39,24 @@ const InterviewDrawers = ({
   drawers,
   handleClose,
 }: InterviewDrawersProps) => {
+  const { push } = useRouter();
+  const {
+    interviewModules: { data },
+  } = useJobInterviewPlan();
   return (
     <Drawer open={open} onClose={() => handleClose()} anchor='right'>
-      <InterviewSideDrawer
-        drawers={drawers}
-        handleClose={() => handleClose()}
-      />
+      {data.length ? (
+        <InterviewSideDrawer
+          drawers={drawers}
+          handleClose={() => handleClose()}
+        />
+      ) : (
+        <InterviewPlanEmpty
+          onClickCreateInterviewPlan={{
+            onClick: () => push('/scheduling?tab=interviewModules'),
+          }}
+        />
+      )}
     </Drawer>
   );
 };

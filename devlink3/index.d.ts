@@ -88,6 +88,7 @@ export * from "./Instructions";
 export * from "./InstructionsButton";
 export * from "./InterviewBreakCard";
 export * from "./InterviewModuleCard";
+export * from "./InterviewModuleEmpty";
 export * from "./InterviewPlan";
 export * from "./InterviewPlanCard";
 export * from "./InterviewerDetail";
