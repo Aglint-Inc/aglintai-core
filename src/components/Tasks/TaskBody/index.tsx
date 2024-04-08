@@ -113,12 +113,11 @@ function TaskBody() {
             <ShowCode.When isTrue={!!tasks}>
               {tasks &&
                 tasks.map((item, index) => {
-                  return <TaskCardBox task={item} key={index} />;
+                  return <TaskCardBox  task={item} key={index} />;
                 })}
             </ShowCode.When>
           </ShowCode>
         }
-        
       />
     </>
   );

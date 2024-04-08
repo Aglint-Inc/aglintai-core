@@ -146,8 +146,9 @@ const EditMember = ({
                   });
                 }}
                 options={
-                  ['CONTRACTOR', 'FULLTIME', 'PARTTIME'] as employmentTypeEnum[]
+                  ['contractor', 'fulltime', 'parttime'] as employmentTypeEnum[]
                 }
+                getOptionLabel={(option) => capitalize(option)}
                 renderInput={(params) => (
                   <TextField
                     {...params}

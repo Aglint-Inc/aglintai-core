@@ -139,6 +139,7 @@ export * from "./TimelineBlock";
 export * from "./TimelineDummyOne";
 export * from "./TimelineDummyTwo";
 export * from "./TimelineEmpty";
+export * from "./TranscriptCard";
 export * from "./UserLevelSettings";
 export * from "./ViewTask";
 export * from "./ViewTaskCard";
