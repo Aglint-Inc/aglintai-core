@@ -6,6 +6,7 @@ import formidable from 'formidable';
 
 // import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { EmailAgentId } from '@/src/components/Tasks/utils';
 import {
   CandidateType,
   InterviewFilterJsonType,
@@ -51,6 +52,7 @@ type AgentPayloadType = {
     interv_plan_summary: string;
     interview_sessions: InterviewSession[];
     sub_task_id: string;
+    candidate_id: string;
   };
 };
 
@@ -91,13 +93,13 @@ export default async function handler(req, res) {
       transcript: data.new_history.map((c) => {
         if (c.type === 'assistant') {
           return {
-            role: 'agent',
-            content: c.value,
+            id: EmailAgentId,
+            message: c.value,
           };
         }
         return {
-          role: 'candidate',
-          content: c.value,
+          id: agent_payload.payload.application_id,
+          message: c.value,
         };
       }),
     });
@@ -186,6 +188,9 @@ export const fetchCandidateDetails = async (
       new_cand_msg: cand_email_body,
       interview_sessions: sessions.filter((s) => s.session_type !== 'debrief'),
       sub_task_id: cand_rec.sub_task_id,
+      candidate_id:
+        cand_rec.interview_filter_json.interview_schedule.applications
+          .candidates.id,
     },
   };
 
@@ -199,7 +204,10 @@ type CandidateScheduleDetails = ScheduleAgentChatHistoryTypeDB & {
       'id' | 'application_id'
     > & {
       applications: Pick<JobApplcationDB, 'id'> & {
-        candidates: Pick<CandidateType, 'first_name' | 'last_name' | 'email'>;
+        candidates: Pick<
+          CandidateType,
+          'first_name' | 'last_name' | 'email' | 'id'
+        >;
         public_jobs: Pick<
           PublicJobsType,
           'recruiter_id' | 'company' | 'id' | 'logo' | 'job_title'
