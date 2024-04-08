@@ -281,6 +281,15 @@ export const scheduleWithAgent = async ({
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
+        const { error: eroorSubTasks } = await supabase
+          .from('sub_tasks')
+          .update({
+            session_ids: createCloneRes.session_ids,
+          })
+          .eq('id', sub_task_id);
+
+        if (eroorSubTasks) throw new Error(eroorSubTasks.message);
+
         await axios.post('/api/scheduling/mail-agent/init-agent', {
           cand_email: sessionsWithPlan.application.candidates.email,
           cand_time_zone: dayjs.tz.guess(),
