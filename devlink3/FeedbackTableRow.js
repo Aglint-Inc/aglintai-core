@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -13,6 +14,9 @@ export function FeedbackTableRow({
   textRecommendation = "Strongly Recommended (9/10)",
   textFeedback = "During the interview, the candidate showcased a strong understanding of both front-end and..",
   onClickFeedback = {},
+  isSessionVisible = false,
+  textSessionTime = "12 Feb 2024 09:00 AM to 09:30 PM",
+  textSessionTitle = "Company Introduction",
 }) {
   return (
     <_Component
@@ -21,22 +25,14 @@ export function FeedbackTableRow({
       {...onClickFeedback}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
+        className={_utils.cx(_styles, "candidate_cell", "width-300px")}
         tag="div"
       >
         <_Builtin.Block
           className={_utils.cx(_styles, "inteerviewr_avatar")}
           tag="div"
         >
-          {slotAvatar ?? (
-            <_Builtin.Image
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt=""
-              src="https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65d8b0e9fcc50326d2974c84_user3.png"
-            />
-          )}
+          {slotAvatar}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1267")}
@@ -56,8 +52,36 @@ export function FeedbackTableRow({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
+      {isSessionVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1368")}
+          id={_utils.cx(
+            _styles,
+            "w-node-_888f2502-cf8c-c06c-a284-56e23ac3f545-c708ad2a"
+          )}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1369")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-600")}
+              tag="div"
+            >
+              {textSessionTime}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
+              tag="div"
+            >
+              {textSessionTitle}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
+        className={_utils.cx(_styles, "candidate_cell", "width-324")}
         tag="div"
       >
         <_Builtin.Block tag="div">{textRecommendation}</_Builtin.Block>
@@ -90,7 +114,7 @@ export function FeedbackTableRow({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
+        className={_utils.cx(_styles, "candidate_cell", "min-324px")}
         tag="div"
       >
         <_Builtin.Block

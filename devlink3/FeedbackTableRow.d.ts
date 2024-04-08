@@ -11,4 +11,7 @@ declare function FeedbackTableRow(props: {
   textRecommendation?: React.ReactNode;
   textFeedback?: React.ReactNode;
   onClickFeedback?: Types.Devlink.RuntimeProps;
+  isSessionVisible?: Types.Visibility.VisibilityConditions;
+  textSessionTime?: React.ReactNode;
+  textSessionTitle?: React.ReactNode;
 }): React.JSX.Element;

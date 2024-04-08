@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { FeedbackTableRow } from "./FeedbackTableRow";
@@ -7,6 +8,7 @@ import _styles from "./ScheduleTabFeedback.module.css";
 export function ScheduleTabFeedback({
   as: _Component = _Builtin.Block,
   slotFeedbackTableRow,
+  isSessionVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "feedback_layout")} tag="div">
@@ -19,7 +21,11 @@ export function ScheduleTabFeedback({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "allinterview_header_cell")}
+            className={_utils.cx(
+              _styles,
+              "allinterview_header_cell",
+              "width-25"
+            )}
             tag="div"
           >
             <_Builtin.Block
@@ -33,8 +39,33 @@ export function ScheduleTabFeedback({
               {"Interviewer"}
             </_Builtin.Block>
           </_Builtin.Block>
+          {isSessionVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "allinterview_header_cell",
+                "width-324"
+              )}
+              id={_utils.cx(
+                _styles,
+                "w-node-_6b67c368-b168-fb6f-e0a0-4f34fed2f971-03362df7"
+              )}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Session"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "allinterview_header_cell")}
+            className={_utils.cx(
+              _styles,
+              "allinterview_header_cell",
+              "widthh-324px"
+            )}
             tag="div"
           >
             <_Builtin.Block
@@ -45,7 +76,11 @@ export function ScheduleTabFeedback({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "allinterview_header_cell")}
+            className={_utils.cx(
+              _styles,
+              "allinterview_header_cell",
+              "width-324"
+            )}
             tag="div"
           >
             <_Builtin.Block
@@ -61,7 +96,7 @@ export function ScheduleTabFeedback({
           tag="div"
         >
           {slotFeedbackTableRow ?? (
-            <FeedbackTableRow isAddFeedback={true} isNoFeedback={false} />
+            <FeedbackTableRow isAddFeedback={false} isNoFeedback={false} />
           )}
         </_Builtin.Block>
       </_Builtin.Block>
