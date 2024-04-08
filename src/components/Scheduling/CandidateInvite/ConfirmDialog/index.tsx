@@ -69,11 +69,17 @@ function ConfirmDialog({
 
       if (res.status === 200) {
         toast.success('Slot confirmed successfully');
-        const updatedMeetings = schedule.meetings.map((meeting) => ({
+        const updatedMeetings = schedule.meetings.map((meeting, ind) => ({
           ...meeting,
           interview_meeting: {
             ...meeting.interview_meeting,
             status: 'confirmed',
+            start_time: selectedSessions[Number(ind)]?.sessions?.find(
+              (ses) => ses.session_id === meeting.interview_meeting.session_id,
+            )?.start_time,
+            end_time: selectedSessions[Number(ind)]?.sessions?.find(
+              (ses) => ses.session_id === meeting.interview_meeting.session_id,
+            )?.end_time,
           },
         }));
         setSchedule({

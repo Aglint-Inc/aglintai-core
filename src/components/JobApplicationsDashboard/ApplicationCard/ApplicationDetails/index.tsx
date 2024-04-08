@@ -609,8 +609,10 @@ const InterviewScheduled: FC<{ application: JobApplication }> = ({
         <StatusBadge
           isCancelledVisible={false}
           isCompletedVisible={schedule?.is_completed}
-          isWaitingVisible={!schedule?.is_completed}
+          isWaitingVisible={false}
           isNotScheduledVisible={!schedule}
+          isInProgressVisible={!schedule?.is_completed}
+          isConfirmedVisible={false}
         />
       }
       textHeader={schedule.schedule_name}

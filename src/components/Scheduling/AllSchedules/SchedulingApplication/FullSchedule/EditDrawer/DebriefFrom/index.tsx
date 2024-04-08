@@ -1,16 +1,23 @@
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 
 import { SelectedMemberPill, SidedrawerBodyDebrief } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { MemberType } from '@/src/components/Scheduling/Modules/types';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewSession } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../../../ListCard/Icon';
-import { setEditSession, useSchedulingApplicationStore } from '../../../store';
+import {
+  setEditSession,
+  setMembers,
+  useSchedulingApplicationStore,
+} from '../../../store';
 
 function DebriedForm({
   debriefMembers,
@@ -19,6 +26,7 @@ function DebriedForm({
   optionMembers,
   setDebriefMembers,
 }) {
+  const { recruiter } = useAuthDetails();
   const editSession = useSchedulingApplicationStore(
     (state) => state.editSession,
   );
@@ -41,6 +49,20 @@ function DebriedForm({
           start_icon_url: selectedUser.profile_image,
         },
       ]);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllMembers();
+  }, []);
+
+  const fetchAllMembers = async () => {
+    const resMem = (await axios.post('/api/scheduling/fetchUserDetails', {
+      recruiter_id: recruiter.id,
+    })) as { data: MemberType[] };
+
+    if (resMem?.data?.length > 0) {
+      setMembers(resMem.data);
     }
   };
 

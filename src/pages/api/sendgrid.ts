@@ -27,17 +27,11 @@ export default async function handler(req, res) {
 
     msg.to = getOutboundEmail(msg.to, true);
 
-    await sgMail
-      .send({
-        ...msg,
-      })
-      .then(() => {
-        return res.status(200).json({ data: 'Email sent' });
-      })
-      .catch((error) => {
-        return res.status(200).json({ data: { error } });
-      });
+    await sgMail.send({
+      ...msg,
+    });
+    return res.status(200).json({ data: 'Email sent' });
   } catch (error) {
-    return res.status(500).send(error.message);
+    return res.status(200).json({ data: { error: error.message } });
   }
 }

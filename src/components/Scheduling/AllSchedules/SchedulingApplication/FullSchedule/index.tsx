@@ -148,7 +148,7 @@ function FullSchedule() {
                   },
                 }}
                 textTiming={`${dayjs(session.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(session.interview_meeting?.end_time).format('hh:mm A')}`}
-                isScheduleNowVisible={!session.interview_meeting}
+                isScheduleNowVisible={!session.interview_meeting?.start_time}
                 isCardSelected={selectedSessionIds.includes(session.id)}
                 slotStatusPill={
                   session.interview_meeting?.status ? (

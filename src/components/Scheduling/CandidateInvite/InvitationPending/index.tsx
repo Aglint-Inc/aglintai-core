@@ -133,6 +133,7 @@ function InvitationPending({
         slotDaysPill={
           <>
             {!loading &&
+              allScheduleOptions.length > 1 &&
               allScheduleOptions.length === schedule.numberOfDays &&
               Array.from({ length: allScheduleOptions.length }).map(
                 (_, ind) => {

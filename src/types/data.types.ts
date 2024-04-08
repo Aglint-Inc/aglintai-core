@@ -239,6 +239,8 @@ export type InterviewPlanTypeDB =
 
 export type InterviewSessionTypeDB =
   Database['public']['Tables']['interview_session']['Row'];
+export type InterviewFilterJsonType =
+  Database['public']['Tables']['interview_filter_json']['Row'];
 
 export type InterviewSessionRelationTypeDB =
   Database['public']['Tables']['interview_session_relation']['Row'];

@@ -1,8 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import {
   Breadcrum,
@@ -20,8 +23,10 @@ import {
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
+import { interviewPlanKeys } from '@/src/queries/interview-plans/keys';
 import {
   InterviewCoordinatorType,
+  InterviewPlansType,
   InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
@@ -35,6 +40,7 @@ import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
 
@@ -138,9 +144,9 @@ const InterviewPlan = () => {
     getLoadingState,
   } = useJobInterviewPlan();
   const [drawers, setDrawers] = useState<DrawerType>(initalDrawer);
-  const [modal, seModal] = useState(false);
-  const handleClose = useCallback(() => {
-    seModal(false);
+  const [drawerModal, setDrawerModal] = useState(false);
+  const handleDrawerClose = useCallback(() => {
+    setDrawerModal(false);
     setTimeout(
       () =>
         setDrawers(
@@ -161,9 +167,15 @@ const InterviewPlan = () => {
       400,
     );
   }, []);
+  const [popup, setPopup] = useState<InterviewDeletePopupType['popup']>(null);
+  const [popupModal, setPopupModal] = useState(false);
+  const handlePopupClose = useCallback(() => {
+    setPopupModal(false);
+    setTimeout(() => setPopup(null), 400);
+  }, []);
   const handleCreate = useCallback(
     (key: keyof DrawerType['create'], order: number) => {
-      seModal(true);
+      setDrawerModal(true);
       setDrawers((prev) => ({
         ...prev,
         create: { ...prev.create, [key]: { open: true, id: '', order } },
@@ -173,11 +185,18 @@ const InterviewPlan = () => {
   );
   const handleEdit = useCallback(
     (key: keyof DrawerType['edit'], id: string, order: number) => {
-      seModal(true);
+      setDrawerModal(true);
       setDrawers((prev) => ({
         ...prev,
         edit: { ...prev.edit, [key]: { open: true, id, order } },
       }));
+    },
+    [],
+  );
+  const handleDeletionSelect = useCallback(
+    (args: InterviewDeletePopupType['popup']) => {
+      setPopupModal(true);
+      setPopup(args);
     },
     [],
   );
@@ -196,7 +215,8 @@ const InterviewPlan = () => {
       session={session}
       handleCreate={(key) => handleCreate(key, order + 1)}
       handleEdit={(key, id) => handleEdit(key, id, order + 1)}
-      handleDelete={handleDelete}
+      handleDeletionSelect={handleDeletionSelect}
+      index={order}
       lastSession={order === sessionsCount - 1}
     />
   ));
@@ -210,12 +230,22 @@ const InterviewPlan = () => {
             Create Session
           </AUIButton>
         }
-        slotInterviewPlan={sessions}
+        slotInterviewPlan={
+          <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
+        }
       />
       <InterviewDrawers
-        open={modal}
+        open={drawerModal}
         drawers={drawers}
-        handleClose={handleClose}
+        handleClose={handleDrawerClose}
+      />
+      <InterviewDeletePopup
+        open={popupModal}
+        popup={popup}
+        handleClose={handlePopupClose}
+        handleDelete={() =>
+          handleDelete({ session_id: popup.id, interview_plan_id: data.id })
+        }
       />
     </>
   );
@@ -234,8 +264,9 @@ type InterviewSessionProps = {
     id: string,
   ) => void;
   // eslint-disable-next-line no-unused-vars
-  handleDelete: (args: DeleteInterviewSession) => void;
+  handleDeletionSelect: (args: InterviewDeletePopupType['popup']) => void;
   lastSession: boolean;
+  index: number;
 };
 type InterviewSessionMemeberTypes =
   InterviewSessionType['interview_session_relation'][number]['interviewer_type'];
@@ -247,11 +278,20 @@ const InterviewSession = ({
   session,
   handleCreate,
   handleEdit,
-  handleDelete,
+  handleDeletionSelect,
   lastSession,
+  index,
 }: InterviewSessionProps) => {
-  const { handleUpdateSession, getLoadingState } = useJobInterviewPlan();
-  const [breakDeletion, setBreakDeletion] = useState(false);
+  const ref = useRef(null);
+
+  const queryClient = useQueryClient();
+
+  const {
+    getLoadingState,
+    interviewPlans: { data },
+    job,
+    handleReorderSessions,
+  } = useJobInterviewPlan();
   const [hover, setHover] = useState(false);
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
@@ -273,106 +313,155 @@ const InterviewSession = ({
   );
   const isLoading = getLoadingState(session.id);
 
-  const handleDeleteBreak = useCallback(async () => {
-    if (!breakDeletion) {
-      setBreakDeletion(true);
-      await handleUpdateSession({
-        session_id: session.id,
-        session: { break_duration: 0 },
-      });
-      setBreakDeletion(false);
-    } else {
-      toast.warning('Removing break. Please wait.');
-    }
-  }, [breakDeletion, session?.id]);
+  const { queryKey } = interviewPlanKeys.interview_plan({ job_id: job.id });
 
+  const handleMoveCard = (dragIndex, hoverIndex) => {
+    const sessions = structuredClone(data.interview_session);
+    const temp = structuredClone(sessions[dragIndex]);
+    sessions[dragIndex] = structuredClone(sessions[hoverIndex]);
+    sessions[dragIndex]['session_order'] = dragIndex + 1;
+    sessions[hoverIndex] = temp;
+    sessions[hoverIndex]['session_order'] = hoverIndex + 1;
+    queryClient.setQueryData<InterviewPlansType>(queryKey, {
+      ...data,
+      interview_session: sessions,
+    });
+  };
+
+  const [{ handlerId }, drop] = useDrop({
+    accept: 'session-card',
+    collect: (monitor) => ({
+      handlerId: monitor.getHandlerId(),
+    }),
+    drop: () => {
+      handleReorderSessions({
+        interviewPlanId: data.id,
+        updatedInterviewSessions: data.interview_session,
+      });
+    },
+    hover: (item: any, monitor) => {
+      if (!ref.current) return;
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) return;
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+      if (dragIndex !== undefined && hoverIndex !== undefined)
+        handleMoveCard(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    type: 'session-card',
+    item: { session },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  drag(drop(ref));
   return (
-    <OptimisticWrapper loading={isLoading && !breakDeletion}>
-      <Stack
-        onMouseOver={() => setHover(true)}
-        onMouseOut={() => setHover(false)}
-        mb={hover ? 1 : 4}
-      >
-        <GeneralScheduleCard
-          textModuleName={
-            <Stack style={{ flexDirection: 'row', gap: '12px' }}>
-              <>{session.name}</>
-              <Stack
-                style={{
-                  color: palette.grey[400],
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                }}
-              >
-                {getSessionType(session.session_type)}
+    <Stack
+      ref={ref}
+      style={{ backgroundColor: 'white', opacity: isDragging ? 0 : 1 }}
+      data-handler-id={handlerId}
+    >
+      <OptimisticWrapper loading={isLoading}>
+        <Stack
+          onMouseOver={() => setHover(true)}
+          onMouseOut={() => setHover(false)}
+          mb={hover ? 1 : 4}
+        >
+          <GeneralScheduleCard
+            textModuleName={
+              <Stack style={{ flexDirection: 'row', gap: '12px' }}>
+                <>{session.name}</>
+                <Stack
+                  style={{
+                    color: palette.grey[400],
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {getSessionType(session.session_type)}
+                </Stack>
               </Stack>
-            </Stack>
-          }
-          isSubHeaderVisible={false}
-          isHeaderTitleVisible={true}
-          isDebriefIconVisible={session.session_type === 'debrief'}
-          isOnetoOneIconVisible={session.session_type === 'individual'}
-          isPanelIconVisible={session.session_type === 'panel'}
-          isTimingVisible={false}
-          textDuration={`${session.session_duration} minutes`}
-          slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
-          isLinkVisilble={session.session_type !== 'debrief'}
-          textPlatformName={capitalizeAll(session.schedule_type)}
-          textLink={session?.interview_module?.name ?? '---'}
-          isTextSelectedVisible={session.session_type === 'panel'}
-          textSelected={`(${session.interviewer_cnt} out of the members will be selected)`}
-          isTraineesVisible={members.training.length !== 0}
-          slotTrainees={members.training.map((member) => (
-            <InterviewSessionMember key={member.user_id} member={member} />
-          ))}
-          isInterviewersVisible={members.qualified.length !== 0}
-          slotInterviewers={members.qualified.map((member) => (
-            <InterviewSessionMember key={member.user_id} member={member} />
-          ))}
-          isMembersVisible={session.session_type === 'debrief'}
-          slotMembers={members.members.map((member) => (
-            <InterviewSessionMember key={member.user_id} member={member} />
-          ))}
-          onClickLink={{
-            onClick: () =>
-              window.open(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/module/members/${session.interview_module.id}`,
-                '_blank',
-              ),
-          }}
-          isBreakCardVisible={!lastSession && session.break_duration !== 0}
-          slotBreakCard={
-            <OptimisticWrapper loading={breakDeletion}>
+            }
+            isSubHeaderVisible={false}
+            isHeaderTitleVisible={true}
+            isDebriefIconVisible={session.session_type === 'debrief'}
+            isOnetoOneIconVisible={session.session_type === 'individual'}
+            isPanelIconVisible={session.session_type === 'panel'}
+            isTimingVisible={false}
+            textDuration={`${session.session_duration} minutes`}
+            slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
+            isLinkVisilble={session.session_type !== 'debrief'}
+            textPlatformName={capitalizeAll(session.schedule_type)}
+            textLink={session?.interview_module?.name ?? '---'}
+            isTextSelectedVisible={session.session_type === 'panel'}
+            textSelected={`(${session.interviewer_cnt} out of the members will be selected)`}
+            isTraineesVisible={members.training.length !== 0}
+            slotTrainees={members.training.map((member) => (
+              <InterviewSessionMember key={member.user_id} member={member} />
+            ))}
+            isInterviewersVisible={members.qualified.length !== 0}
+            slotInterviewers={members.qualified.map((member) => (
+              <InterviewSessionMember key={member.user_id} member={member} />
+            ))}
+            isMembersVisible={session.session_type === 'debrief'}
+            slotMembers={members.members.map((member) => (
+              <InterviewSessionMember key={member.user_id} member={member} />
+            ))}
+            onClickLink={{
+              onClick: () =>
+                window.open(
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/module/members/${session.interview_module.id}`,
+                  '_blank',
+                ),
+            }}
+            isBreakCardVisible={!lastSession && session.break_duration !== 0}
+            slotBreakCard={
               <InterviewBreak
                 duration={session.break_duration}
                 handleEdit={() => handleEdit('break', session.id)}
-                handleDelete={handleDeleteBreak}
+                handleDelete={() =>
+                  handleDeletionSelect({
+                    id: session.id,
+                    name: session.name,
+                    break: true,
+                  })
+                }
               />
-            </OptimisticWrapper>
-          }
-          isAddCardVisible={hover}
-          slotAddScheduleCard={
-            <AddScheduleCard
-              handleCreate={handleCreate}
-              showBreak={!lastSession && session.break_duration === 0}
-              handleEdit={(key) => handleEdit(key, session.id)}
-            />
-          }
-          onClickEdit={{
-            onClick: () =>
-              handleEdit(sessionToEdit(session.session_type), session.id),
-          }}
-          onClickDelete={{
-            onClick: () =>
-              handleDelete({
-                session_id: session.id,
-                interview_plan_id: session.interview_plan_id,
-              }),
-          }}
-        />
-      </Stack>
-    </OptimisticWrapper>
+            }
+            isAddCardVisible={hover}
+            slotAddScheduleCard={
+              <AddScheduleCard
+                handleCreate={handleCreate}
+                showBreak={!lastSession && session.break_duration === 0}
+                handleEdit={(key) => handleEdit(key, session.id)}
+              />
+            }
+            onClickEdit={{
+              onClick: () =>
+                handleEdit(sessionToEdit(session.session_type), session.id),
+            }}
+            onClickDelete={{
+              onClick: () =>
+                handleDeletionSelect({
+                  id: session.id,
+                  name: session.name,
+                  break: false,
+                }),
+            }}
+          />
+        </Stack>
+      </OptimisticWrapper>
+    </Stack>
   );
 };
 

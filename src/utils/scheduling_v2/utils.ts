@@ -9,10 +9,12 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   holidayType,
   schedulingSettingType,
 } from '@/src/components/Scheduling/Settings/types';
+import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 
 import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
@@ -24,13 +26,14 @@ import {
   SessionsCombType,
   SessionSlotType,
 } from '../scheduling_v1/types';
+import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 export const convertDateFormatToDayjs = (user_date) => {
   const [day, month, year] = user_date.split('/');
   if (!day || !month || !year) {
     throw new Error(`Date should in the format DD/MM/YYYY`);
   }
-  return dayjs(`${year}-${month}-${day}`);
+  return dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
 };
 
 export const convertDayjsToUserTimeZoneDate = (
@@ -196,4 +199,48 @@ export const getCompWorkingDaysRange = (
   }
 
   return date_ranges;
+};
+
+// email agent
+export const log_task_progress = async ({
+  sub_task_id,
+  log_msg,
+  is_completed,
+  transcript,
+  agent_type = 'email_agent',
+  candidate_name,
+}: {
+  sub_task_id: string | null;
+  log_msg: string;
+  is_completed: boolean;
+  transcript?: { role: 'candidate' | 'agent'; content: string }[];
+  agent_type?: 'email_agent' | 'phone_agent';
+  candidate_name?: string;
+}) => {
+  if (!sub_task_id) return;
+  if (candidate_name) {
+    log_msg = log_msg.replace(
+      '{candidate}',
+      `<span class="mention">@${candidate_name}</span>`,
+    );
+  }
+  try {
+    supabaseWrap(
+      await supabaseAdmin
+        .from('sub_task_progress')
+        .insert({
+          created_by: {
+            id: agent_type == 'email_agent' ? EmailAgentId : PhoneAgentId,
+            name: agent_type == 'email_agent' ? 'Email Agent' : 'Phone Agent',
+          },
+          title: log_msg,
+          jsonb_data: transcript ?? null,
+          sub_task_id: sub_task_id,
+          progress_type: is_completed ? 'call_completed' : 'standard',
+        })
+        .select(),
+    );
+  } catch (error) {
+    // console.log(error);
+  }
 };
