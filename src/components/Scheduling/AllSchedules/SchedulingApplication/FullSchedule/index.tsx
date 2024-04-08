@@ -22,12 +22,15 @@ import CancelScheduleDialog from '../Common/CancelScheduleDialog';
 import RescheduleDialog from '../Common/RescheduleDialog';
 import GetScheduleOptionsDialog from '../GetScheduleOptions';
 import {
+  setEditSession,
+  setIsEditOpen,
   setIsScheduleNowOpen,
   setSelectedMeeting,
   setSelectedSessionIds,
   setStep,
   useSchedulingApplicationStore,
 } from '../store';
+import SideDrawerEdit from './EditDrawer';
 
 function FullSchedule() {
   const router = useRouter();
@@ -41,6 +44,7 @@ function FullSchedule() {
 
   return (
     <>
+      <SideDrawerEdit />
       <CancelScheduleDialog />
       <RescheduleDialog />
       <GetScheduleOptionsDialog />
@@ -126,6 +130,12 @@ function FullSchedule() {
                       onClick: () => {
                         setSelectedMeeting(session.interview_meeting);
                         setIsRescheduleOpen(true);
+                      },
+                    }}
+                    onClickEdit={{
+                      onClick: () => {
+                        setEditSession(session);
+                        setIsEditOpen(true);
                       },
                     }}
                   />
@@ -223,7 +233,10 @@ function FullSchedule() {
                             <AvatarWithName
                               isRoleVisible={false}
                               isShadowVisible={false}
-                              textName={user.first_name}
+                              textName={getFullName(
+                                user.first_name,
+                                user.last_name,
+                              )}
                               textRole={user.position || '--'}
                               slotAvatar={
                                 <MuiAvatar
@@ -250,7 +263,10 @@ function FullSchedule() {
                         if (user)
                           return (
                             <AvatarWithName
-                              textName={user.first_name}
+                              textName={getFullName(
+                                user.first_name,
+                                user.last_name,
+                              )}
                               isRoleVisible={true}
                               textRole={user.position || '--'}
                               slotAvatar={
@@ -272,9 +288,9 @@ function FullSchedule() {
                     : '--'
                 }
                 isTraineesVisible={
-                  session.session_type == 'individual' ||
-                  (session.session_type == 'panel' &&
-                    trainingInterviewers.length > 0)
+                  (session.session_type == 'individual' ||
+                    session.session_type == 'panel') &&
+                  trainingInterviewers.length > 0
                 }
                 onClickLink={{
                   onClick: () => {
