@@ -1,9 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+
+import { RecruiterUserType } from '@/src/types/data.types';
+
+import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
+import { EmailAgentId, PhoneAgentId } from '../utils';
 
 // let setTime;
 type SubTaskIndex = { taskIndex: number | null; subTaskIndex: number | null };
-
+export type AssignerType = RecruiterUserType & {
+  assignee: 'Agents' | 'Interviewers';
+};
 interface ContextValue {
   taskId: string | null;
   setTaskId: (x: string | null) => void;
@@ -14,6 +21,9 @@ interface ContextValue {
   setAddTaskPopUp: (x: boolean) => void;
   selectedSubTaskId: string | null;
   setSelectedSubTaskId: (x: string | null) => void;
+
+  assignerList: AssignerType[] | null;
+  setAssignerList: (x: AssignerType[] | null) => void;
 
   addingSubTask: boolean;
   setAddingSubTask: (x: boolean) => void;
@@ -37,6 +47,9 @@ const defaultProvider: ContextValue = {
   addingSubTask: false,
   setAddingSubTask: () => {},
 
+  assignerList: null,
+  setAssignerList: () => {},
+
   // for textInput while creating subtask
   isPopUpOpen: false,
   setIsPopUpOpen: () => {},
@@ -53,11 +66,27 @@ function TaskStatesProvider({ children }) {
     null,
   );
 
+  const { data: interviewers } = useInterviewerList();
+
+  const [assignerList, setAssignerList] = useState<AssignerType[] | null>(null);
+
   const [addingSubTask, setAddingSubTask] = useState(false);
 
   // for textInput while creating subTask
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<null | string>(null);
+
+  useEffect(() => {
+    if (interviewers) {
+      const members = interviewers?.map((item) => item.rec_user);
+      setAssignerList([
+        ...agentsDetails,
+        ...members.map((item) => {
+          return { ...item, assignee: 'Interviewers' };
+        }),
+      ] as AssignerType[]);
+    }
+  }, [interviewers]);
   return (
     <TaskStatesContext.Provider
       value={{
@@ -75,6 +104,8 @@ function TaskStatesProvider({ children }) {
         setSelectedMemberId,
         addingSubTask,
         setAddingSubTask,
+        assignerList,
+        setAssignerList,
       }}
     >
       {children}
@@ -83,3 +114,20 @@ function TaskStatesProvider({ children }) {
 }
 
 export { TaskStatesProvider, useTaskStatesContext };
+
+export const agentsDetails = [
+  {
+    user_id: EmailAgentId,
+    first_name: 'email',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+  {
+    user_id: PhoneAgentId,
+    first_name: 'phone',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+];

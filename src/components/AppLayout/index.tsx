@@ -16,6 +16,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
 import Icon from '../Common/Icons/Icon';
+import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
 import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
@@ -76,7 +77,7 @@ export default function AppLayout({ children }) {
       }, 1000);
     }
   }, [router]);
-  if (process.env.NODE_ENV === 'production' && windowSize?.innerWidth < 1000) {
+  if (isEnvProd() && windowSize?.innerWidth < 1000) {
     return <ResponsiveBanner />;
   }
   return (

@@ -10,4 +10,10 @@ declare function TaskProgress(props: {
   isTaskCompletedVisible?: Types.Visibility.VisibilityConditions;
   onClickViewTranscript?: Types.Devlink.RuntimeProps;
   textTimeCompleted?: React.ReactNode;
+  slotMailContent?: Types.Devlink.Slot;
+  isMailContentVisible?: Types.Visibility.VisibilityConditions;
+  onClickViewEmail?: Types.Devlink.RuntimeProps;
+  textResponseTime?: React.ReactNode;
+  textResponseTitle?: React.ReactNode;
+  isResponseVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

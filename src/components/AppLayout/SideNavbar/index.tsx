@@ -32,6 +32,7 @@ function SideNavbar() {
     'isPhoneScreeningEnabled',
   );
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+  let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
 
   const navList = [
     {
@@ -49,7 +50,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.TASKS,
       comingsoon: false,
-      isvisible: isAgentEnabled,
+      isvisible: isTasksEnabled,
       roles: [
         'admin',
         'interviewer',

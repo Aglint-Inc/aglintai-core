@@ -21,6 +21,14 @@
   grid-row-gap: 6px;
 }
 
+.tab_row.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -250,6 +258,15 @@
   color: #68737d;
 }
 
+.text-sm.text-grey_600.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .text-blue-500 {
   color: #337fbd;
 }
@@ -279,10 +296,6 @@
 }
 
 .text-grey_600.hide {
-  display: none;
-}
-
-.hide {
   display: none;
 }
 

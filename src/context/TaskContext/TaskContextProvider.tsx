@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 'use client';
 import { tasks } from 'googleapis/build/src/apis/tasks';
-import { cloneDeep } from 'lodash';
+import { capitalize, cloneDeep } from 'lodash';
 import {
   createContext,
   ReactNode,
@@ -11,6 +11,7 @@ import {
   useReducer,
 } from 'react';
 
+import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
   DatabaseTable,
   DatabaseTableInsert,
@@ -22,6 +23,7 @@ import { useAuthDetails } from '../AuthContext/AuthContext';
 
 type TasksReducerType = {
   tasks: Awaited<ReturnType<typeof getAllTasks>>;
+  progress_logs: DatabaseTable['sub_task_progress'][];
   search: string;
   filter: {
     status: { options: { id: string; label: string }[]; values: string[] };
@@ -37,19 +39,23 @@ type TasksReducerType = {
 
 export type TasksAgentContextType = TasksReducerType & {
   // eslint-disable-next-line no-unused-vars
-  handelAddTask: (x: DatabaseTableInsert['tasks']) => boolean;
+  handelAddTask: (x: DatabaseTableInsert['tasks']) => Promise<boolean>;
   handelUpdateTask: (x: {
     id: string;
     data: DatabaseTableInsert['tasks'];
-  }) => boolean;
+  }) => Promise<boolean>;
   handelAddSubTask: (x: {
     taskId: string;
     data: DatabaseTableInsert['sub_tasks'];
-  }) => boolean;
+  }) => Promise<boolean>;
   handelUpdateSubTask: (x: {
     SubTaskId: string;
     data: DatabaseTableInsert['sub_tasks'];
-  }) => boolean;
+  }) => Promise<boolean>;
+  handelGetTaskLog: (SubTaskId: string) => ReturnType<typeof getTaskLogs>;
+  handelAddTaskLog: (
+    x: DatabaseTableInsert['sub_task_progress'],
+  ) => ReturnType<typeof createTaskLog>;
   handelSearch: (x: string) => void;
   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
   handelSort: (x: TasksReducerType['sort']) => void;
@@ -57,6 +63,7 @@ export type TasksAgentContextType = TasksReducerType & {
 
 const reducerInitialState: TasksReducerType = {
   tasks: [],
+  progress_logs: [],
   search: '',
   filter: {
     status: {
@@ -77,10 +84,12 @@ const reducerInitialState: TasksReducerType = {
 const contextInitialState: TasksAgentContextType = {
   ...reducerInitialState,
   // eslint-disable-next-line no-unused-vars
-  handelAddTask: (x) => false,
-  handelUpdateTask: (x) => false,
-  handelAddSubTask: (x) => false,
-  handelUpdateSubTask: (x) => false,
+  handelAddTask: (x) => Promise.resolve(false),
+  handelUpdateTask: (x) => Promise.resolve(false),
+  handelAddSubTask: (x) => Promise.resolve(false),
+  handelUpdateSubTask: (x) => Promise.resolve(false),
+  handelGetTaskLog: (x) => Promise.resolve([]),
+  handelAddTaskLog: (x) => Promise.resolve(null),
   handelSearch: (x) => {},
   handelFilter: (x) => {},
   handelSort: (x) => {},
@@ -95,6 +104,7 @@ enum TasksReducerAction {
   FILTER,
   SORT,
   SET_ASSIGNEE_OPTIONS,
+  SET_TASK_PROGRESS_LOGS,
 }
 
 type TasksReducerActionType =
@@ -108,6 +118,10 @@ type TasksReducerActionType =
         tasks: TasksAgentContextType['tasks'];
         filterOption: TasksReducerType['filter'];
       };
+    }
+  | {
+      type: TasksReducerAction.SET_TASK_PROGRESS_LOGS;
+      payload: TasksAgentContextType['progress_logs'];
     }
   | {
       type: TasksReducerAction.SEARCH;
@@ -140,6 +154,11 @@ const reducer = (
       temp.filter = action.payload.filterOption;
       return temp;
     }
+    case TasksReducerAction.SET_TASK_PROGRESS_LOGS: {
+      const temp = cloneDeep(reducerInitialState);
+      temp.progress_logs = action.payload;
+      return temp;
+    }
     case TasksReducerAction.SEARCH: {
       return { ...state, search: action.payload };
     }
@@ -162,7 +181,7 @@ const reducer = (
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
-  const { recruiter_id, members } = useAuthDetails();
+  const { recruiter_id, members, recruiterUser } = useAuthDetails();
   const init = (data: TasksReducerType) => {
     data.filter.assignee.options = [
       ...new Set(
@@ -229,8 +248,10 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const handelAddTask: TasksAgentContextType['handelAddTask'] = (task) => {
-    NewUpdateTasks({ type: 'new', task }).then((taskData) => {
+  const handelAddTask: TasksAgentContextType['handelAddTask'] = async (
+    task,
+  ) => {
+    return NewUpdateTasks({ type: 'new', task }).then((taskData) => {
       const tempTask = [
         { ...taskData, sub_tasks: [] },
         ...cloneDeep(tasksReducer.tasks),
@@ -238,14 +259,13 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       handelTaskChanges(tempTask);
       return true;
     });
-    return false;
   };
 
-  const handelUpdateTask: TasksAgentContextType['handelUpdateTask'] = ({
+  const handelUpdateTask: TasksAgentContextType['handelUpdateTask'] = async ({
     id,
     data,
   }) => {
-    NewUpdateTasks({
+    return NewUpdateTasks({
       type: 'update',
       task: { ...data, id },
     }).then((taskData) => {
@@ -255,14 +275,13 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       handelTaskChanges(tempTask);
       return true;
     });
-    return false;
   };
 
-  const handelAddSubTask: TasksAgentContextType['handelAddSubTask'] = ({
+  const handelAddSubTask: TasksAgentContextType['handelAddSubTask'] = async ({
     taskId,
     data,
   }) => {
-    NewUpdateSubTask({
+    return NewUpdateSubTask({
       type: 'new',
       subTask: { ...data, task_id: taskId },
     }).then((taskData) => {
@@ -271,34 +290,68 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
           ? { ...item, sub_tasks: [...item.sub_tasks, taskData] }
           : item,
       );
+
+      const assigner = [
+        ...agentsDetails,
+        ...members.map((item) => {
+          return { ...item, assignee: 'Interviewers' };
+        }),
+      ].find((item) => item.user_id === data.assignee[0]);
+
+      handelAddTaskLog({
+        sub_task_id: taskData.id,
+        title: `Task created and assigned to <span class="mention">@${capitalize(assigner.first_name + ' ' + assigner.last_name)}</span> by ${recruiterUser.first_name + ' ' + recruiterUser.last_name}`,
+        created_by: {
+          name: recruiterUser.first_name,
+          id: recruiterUser.user_id,
+        },
+        progress_type: 'standard',
+      });
       handelTaskChanges(tempTask);
       return true;
     });
-    return false;
   };
 
-  const handelUpdateSubTask: TasksAgentContextType['handelUpdateSubTask'] = ({
-    SubTaskId,
-    data,
-  }) => {
-    NewUpdateSubTask({
-      type: 'update',
-      subTask: { ...data, id: SubTaskId },
-    }).then((taskData) => {
-      const tempTask = cloneDeep(tasksReducer.tasks).map((item) =>
-        item.id === taskData.task_id
-          ? {
-              ...item,
-              sub_tasks: item.sub_tasks.map((st) =>
-                st.id === taskData.id ? taskData : st,
-              ),
-            }
-          : item,
-      );
-      handelTaskChanges(tempTask);
-      return true;
+  const handelUpdateSubTask: TasksAgentContextType['handelUpdateSubTask'] =
+    async ({ SubTaskId, data }) => {
+      return NewUpdateSubTask({
+        type: 'update',
+        subTask: { ...data, id: SubTaskId },
+      }).then((taskData) => {
+        const tempTask = cloneDeep(tasksReducer.tasks).map((item) =>
+          item.id === taskData.task_id
+            ? {
+                ...item,
+                sub_tasks: item.sub_tasks.map((st) =>
+                  st.id === taskData.id ? taskData : st,
+                ),
+              }
+            : item,
+        );
+        handelTaskChanges(tempTask);
+
+        return true;
+      });
+    };
+
+  const handelGetTaskLog: TasksAgentContextType['handelGetTaskLog'] = async (
+    subTaskId,
+  ) => {
+    return getTaskLogs(subTaskId).then((data) => {
+      // dispatch({
+      //   type: TasksReducerAction.SET_TASK_PROGRESS_LOGS,
+      //   payload: data,
+      // });
+      return data;
     });
-    return false;
+  };
+
+  const handelAddTaskLog: TasksAgentContextType['handelAddTaskLog'] = async (
+    log,
+  ) => {
+    return createTaskLog(log).then((data) => {
+      return data;
+    });
   };
 
   const handelSearch: TasksAgentContextType['handelSearch'] = (str) => {
@@ -392,6 +445,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       <TaskContext.Provider
         value={{
           tasks: searchedTask,
+          progress_logs: tasksReducer.progress_logs,
           search: tasksReducer.search,
           filter: tasksReducer.filter,
           sort: tasksReducer.sort,
@@ -399,6 +453,8 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
           handelAddSubTask,
           handelUpdateTask,
           handelUpdateSubTask,
+          handelGetTaskLog,
+          handelAddTaskLog,
           handelSearch,
           handelFilter,
           handelSort,
@@ -499,3 +555,42 @@ type AtLeastOneRequired<T> = {
     [P in keyof T]: P extends K ? T[P] : never;
   }[keyof T];
 };
+
+const getTaskLogs = (id: string) => {
+  return supabase
+    .from('sub_task_progress')
+    .select()
+    .eq('sub_task_id', id)
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data;
+    });
+};
+
+const createTaskLog = (data: DatabaseTableInsert['sub_task_progress']) => {
+  return supabase
+    .from('sub_task_progress')
+    .insert({ ...data })
+    .select()
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data;
+    });
+};
+
+export const agentsDetails = [
+  {
+    user_id: EmailAgentId,
+    first_name: 'email',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+  {
+    user_id: PhoneAgentId,
+    first_name: 'phone',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+];

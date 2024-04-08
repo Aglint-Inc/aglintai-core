@@ -13,7 +13,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { AgentPill } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useInterviewerList } from '@/src/components/CompanyDetailComp/Interviewers';
 import {
   TasksAgentContextType,
   useTasksAgentContext,
@@ -23,26 +22,12 @@ import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import { EmailAgentId, PhoneAgentId } from '../../utils';
 import DateField from './DateField';
 import SelectStatus from './SelecteStatus';
 export type assigneeType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
-const agentsDetails = [
-  {
-    user_id: EmailAgentId,
-    first_name: 'email',
-    last_name: 'agent',
-    profile_image: '',
-  },
-  {
-    user_id: PhoneAgentId,
-    first_name: 'phone',
-    last_name: 'agent',
-    profile_image: '',
-  },
-];
+
 function UpdateSubTask({
   subTask,
   taskId,
@@ -50,12 +35,7 @@ function UpdateSubTask({
   subTask: TasksAgentContextType['tasks'][number]['sub_tasks'][number];
   taskId: string;
 }) {
-  // const { members } = useAuthDetails();
-  const { data: interviewers } = useInterviewerList();
-  const members = interviewers.map((item) => item.rec_user);
-  const assigner = [...agentsDetails, ...members];
-
-  const { setSelectedSubTaskId } = useTaskStatesContext();
+  const { setSelectedSubTaskId, assignerList } = useTaskStatesContext();
   const { handelUpdateSubTask } = useTasksAgentContext();
 
   const nameRef = useRef<HTMLInputElement | null>(null);
@@ -67,19 +47,13 @@ function UpdateSubTask({
     CustomDatabase['public']['Enums']['sub_task_status'] | null
   >(null);
 
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  function getDate(e: any) {
-    if (e) {
-      setSelectedDate(new Date(e));
-    } else {
-      setSelectedDate(null);
-    }
-  }
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
 
   const handleClick = () => {
     const name = nameRef.current.value;
-    const completion_date = selectedDate;
+    const start_date = selectedStartDate;
+    const completion_date = selectedEndDate;
     const status =
       selectedStatus as CustomDatabase['public']['Enums']['sub_task_status'];
 
@@ -90,6 +64,7 @@ function UpdateSubTask({
           // ...subTask,
           assignee: [selectedAssignee.user_id],
           name,
+          start_date,
           completion_date,
           agent:
             selectedAssignee.first_name === 'email'
@@ -109,22 +84,23 @@ function UpdateSubTask({
   };
   useEffect(() => {
     setSelectedAssignee(
-      assigner.find(
+      assignerList.find(
         (item) => item.user_id === subTask?.assignee[0],
       ) as assigneeType,
     );
-    setSelectedDate(subTask?.completion_date);
+    setSelectedEndDate(subTask?.completion_date);
+    setSelectedStartDate(subTask?.start_date);
     setSelectedStatus(subTask.status);
   }, []);
   return (
-    <Grid columnGap={'10px'} container>
-      <Grid justifyContent={'end'} display={'flex'} item sm={2}>
+    <Grid columnSpacing={'10px'} container>
+      <Grid justifyContent={'end'} display={'flex'} item sm={1.5}>
         <SelectStatus
           status={selectedStatus}
           setSelectedStatus={setSelectedStatus}
         />
       </Grid>
-      <Grid item sm={4}>
+      <Grid item sm={3}>
         <TextField
           placeholder='Task name'
           inputRef={nameRef}
@@ -134,34 +110,45 @@ function UpdateSubTask({
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={true}
         />
-        {/* <TextArea
-          dataList={assigner as assigneeType[]}
-          onChange={(event) => {
-            console.log(event.html);
+      </Grid>
+      <Grid item sm={2}>
+        <DateField
+          defaultDate={subTask?.start_date}
+          dateRef={dateRef}
+          getDate={(e) => {
+            if (e) {
+              setSelectedStartDate(new Date(e));
+            } else {
+              setSelectedStartDate(null);
+            }
           }}
-          value={subTask.name}
-          onClick={handleClick}
-        /> */}
+        />
       </Grid>
       <Grid item sm={2}>
         <DateField
           defaultDate={subTask?.completion_date}
           dateRef={dateRef}
-          getDate={getDate}
+          getDate={(e) => {
+            if (e) {
+              setSelectedEndDate(new Date(e));
+            } else {
+              setSelectedEndDate(null);
+            }
+          }}
         />
       </Grid>
-      <Grid item sm={2.5}>
+      <Grid item sm={2}>
         <Autocomplete
           fullWidth
           clearIcon
           id='combo-box-demo'
           defaultValue={
-            assigner.find(
+            assignerList.find(
               (item) => item.user_id === subTask?.assignee[0],
             ) as assigneeType
           }
           // groupBy={(option) => option.assignee}
-          options={assigner}
+          options={assignerList}
           getOptionLabel={(option) => {
             const fullName =
               (option.first_name || '') + ' ' + (option.last_name || '');
