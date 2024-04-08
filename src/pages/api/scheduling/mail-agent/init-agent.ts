@@ -18,108 +18,108 @@ type GeoPoint = {
 };
 
 // import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
+import {
+  CandidateType,
+  InterviewFilterJsonType,
+  InterviewScheduleTypeDB,
+  JobApplcationDB,
+  PublicJobsType,
+  RecruiterType,
+} from '@/src/types/data.types';
+import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
 import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
+import {
+  convertDateFormatToDayjs,
+  log_task_progress,
+} from '@/src/utils/scheduling_v2/utils';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
-      application_id,
-      start_date,
-      end_date,
-      company_id,
-      recruiter_user_id,
-      organizer_time_zone,
-      schedule_type = 'email',
-      candidate_email,
-      schedule_id,
+      cand_email,
+      filter_json_id,
+      interviewer_name,
+      cand_time_zone = 'Asia/colombo',
+      organizer_time_zone = 'Asia/colombo',
+      sub_task_id,
     } = req.body as InitAgentBodyParams;
 
     if (
-      !application_id ||
-      !start_date ||
-      !end_date ||
-      !company_id ||
-      !recruiter_user_id ||
-      !organizer_time_zone
+      !cand_email ||
+      !cand_time_zone ||
+      !filter_json_id ||
+      !interviewer_name ||
+      !organizer_time_zone ||
+      !sub_task_id
     ) {
       return res.status(400).send('missing fields');
     }
 
-    const cand_details = await fetchCandDetails({ application_id });
+    const cand_details = await fetchCandDetails({
+      filter_json_id,
+      candidate_email: cand_email,
+    });
 
-    const [rec_schedule] = supabaseWrap(
+    const initMailBody = getInitialEmailTemplate({
+      candidate_name: cand_details.candidate_name,
+      company_name: cand_details.company_name,
+      job_role: cand_details.job_role,
+      end_date: convertDateFormatToDayjs(cand_details.filter_json.end_date)
+        .tz(cand_details.filter_json.user_tz)
+        .format('DD/MM/YYYY'),
+      start_date: convertDateFormatToDayjs(cand_details.filter_json.start_date)
+        .tz(cand_details.filter_json.user_tz)
+        .format('DD/MM/YYYY'),
+      organizer_time_zone,
+      candidate_time_zone: cand_details.filter_json.user_tz,
+    });
+    const status: SchedulingProgressStatusType = 'not scheduled';
+
+    // delete previous chat hitory of that candidate email email
+    // testing purpose only
+    supabaseWrap(
       await supabaseAdmin
-        .from('interview_schedule')
-        .upsert({
-          id: schedule_id,
-          application_id,
-          schedule_name: cand_details.schedule_name,
-          interview_plan: (cand_details.interview_plan as any).plan,
-          schedule_type: 'google_meet',
-          filter_json: {
-            job_id: cand_details.job_id,
-            company_id: company_id,
-            start_date,
-            end_date,
-          },
-          created_by: recruiter_user_id,
-          status: 'pending',
-        })
-        .select(),
+        .from('scheduling-agent-chat-history')
+        .delete()
+        .eq('candidate_email', cand_email),
     );
-
-    if (schedule_type === 'email') {
-      const initMailBody = getInitialEmailTemplate({
-        candidate_name: cand_details.candidate_name,
-        company_name: cand_details.company_name,
-        job_role: cand_details.job_role,
-        end_date,
-        start_date,
-        organizer_time_zone,
-        candidate_time_zone: cand_details.time_zone,
-      });
-      const status: SchedulingProgressStatusType = 'not scheduled';
-
-      supabaseWrap(
-        await supabaseAdmin
-          .from('scheduling-agent-chat-history')
-          .delete()
-          .eq('candidate_email', candidate_email),
-      );
-      supabaseWrap(
-        await supabaseAdmin.from('scheduling-agent-chat-history').insert({
-          application_id,
-          job_id: cand_details.job_id,
-          candidate_email: candidate_email,
-          date_range: [start_date, end_date],
-          scheduling_progress: status,
-          chat_history: [
-            {
-              type: 'user',
-              value: initMailBody,
-            },
-          ],
-          company_id,
-          schedule_id: rec_schedule.id,
-          time_zone: cand_details.time_zone,
-        }),
-      );
-      await sendEmailFromAgent({
-        candidate_email: candidate_email,
-        from_name: cand_details.company_name,
-        mail_body: initMailBody,
-        subject: `Interview for ${cand_details.job_role} - ${
-          cand_details.candidate_name.split(' ')[0]
-        }`,
-      });
-      return res.status(200).json({ status, schedule_id: rec_schedule.id });
-    } else {
-      const status: SchedulingProgressStatusType = 'not scheduled';
-      return res.status(200).json({ status, schedule_id: rec_schedule.id });
-    }
+    supabaseWrap(
+      await supabaseAdmin.from('scheduling-agent-chat-history').insert({
+        application_id: cand_details.application_id,
+        job_id: cand_details.job_id,
+        candidate_email: cand_email,
+        scheduling_progress: status,
+        chat_history: [
+          {
+            type: 'assistant',
+            value: initMailBody,
+          },
+        ],
+        company_id: cand_details.company_id,
+        filter_json_id: filter_json_id,
+        time_zone: cand_details.time_zone,
+        sub_task_id: sub_task_id,
+      }),
+    );
+    await sendEmailFromAgent({
+      candidate_email: cand_email,
+      from_name: cand_details.company_name,
+      mail_body: initMailBody,
+      subject: `Interview for ${cand_details.job_role} - ${
+        cand_details.candidate_name.split(' ')[0]
+      }`,
+    });
+    await log_task_progress({
+      agent_type: 'email_agent',
+      is_completed: false,
+      log_msg: 'Sent interview schedule email to {candidate}',
+      sub_task_id: sub_task_id,
+      candidate_name: cand_details.candidate_name,
+    });
+    return res.status(200).send('ok');
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);
@@ -141,8 +141,8 @@ const getInitialEmailTemplate = ({
     `Congratulations, ${candidate_name}! Your resume has passed our initial screening for the ${job_role} position at ${company_name}.` +
     `Impressive qualifications! Let's schedule your interview.\n` +
     `Please let me know your availability from the following date range (${organizer_time_zone}) :` +
-    `${dayjs(start_date).tz(organizer_time_zone).format('DD MMMM')}` +
-    `- ${dayjs(end_date).tz(organizer_time_zone).format('DD MMMM')}.\n` +
+    `${start_date}` +
+    `- ${end_date}.\n` +
     `Reply to this email with your preferred date and time.\n` +
     `${
       candidate_time_zone
@@ -171,47 +171,60 @@ export const sendEmailFromAgent = async ({
   });
 };
 
-const fetchCandDetails = async ({ application_id }) => {
-  //considering only 1 application of the candidate
+const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
   const [rec] = supabaseWrap(
     await supabaseAdmin
-      .from('applications')
+      .from('interview_filter_json')
       .select(
-        'id, candidate_files(resume_json,candidate_id),public_jobs(id,job_title,company,interview_plan,recruiter_id), candidates(*)',
+        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,recruiter(scheduling_settings)), candidates(*)))',
       )
-      .eq('id', application_id),
-  );
-  // as {
-  //   id: string;
-  //   candidate_files: CandidateFileTypeDB;
-  //   public_jobs: PublicJobsType;
-  //   candidates: CandidateType;
-  // }[];
+      .eq('id', filter_json_id),
+  ) as CandidateScheduleDetails[];
 
   if (!rec) {
     throw new Error('Invalid Application');
   }
+  const cand_basic_info = rec.interview_schedule.applications.candidates;
+  const job = rec.interview_schedule.applications.public_jobs;
+  // const sched_setting = rec.interview_schedule;
+  const filter_json = rec.filter_json as {
+    user_tz: string;
+    end_date: string;
+    start_date: string;
+    session_ids: string[];
+    recruiter_id: string;
+  };
 
-  if (!rec.public_jobs.interview_plan) {
-    throw new Error('Interview plan not set the job');
-  }
-  const geo = rec.candidates.geolocation as GeoPoint | null;
+  const geo = cand_basic_info.geolocation as GeoPoint | null;
+
+  const int_sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select()
+      .in('id', filter_json.session_ids),
+  );
 
   let cand_details = {
-    application_id: rec.id,
-    job_id: rec.public_jobs.id,
-    candidate_email:
-      rec.candidates?.email ??
-      (rec.candidate_files.resume_json as any).basics.email,
-    candidate_name: (rec.candidate_files.resume_json as any).basics.firstName,
+    application_id: rec.interview_schedule.applications.id,
+    job_id: job.id,
+    candidate_email: candidate_email,
+    filter_json: filter_json,
+    candidate_name: getFullName(
+      cand_basic_info.first_name,
+      cand_basic_info.last_name,
+    ),
     // date_range: [start_date, end_date],
-    company_id: rec.public_jobs.recruiter_id,
+    company_id: job.recruiter_id,
     // recruiter_user_id:,
-    time_zone: null,
-    company_name: rec.public_jobs.company,
-    job_role: rec.public_jobs.job_title,
-    schedule_name: `Interview for ${rec.public_jobs.job_title} - ${rec.candidates.first_name}`,
-    interview_plan: (rec.public_jobs.interview_plan as any).plan,
+    time_zone: filter_json.user_tz,
+    company_name: job.company,
+    job_role: job.job_title,
+    schedule_name: `Interview for ${job.job_title} - ${getFullName(
+      cand_basic_info.first_name,
+      cand_basic_info.last_name,
+    )}`,
+    interview_sessions: int_sessions,
+    schedule_id: rec.schedule_id,
   };
   if (geo) {
     const timeZoneCode = await getTimeZoneOfGeo({
@@ -222,4 +235,21 @@ const fetchCandDetails = async ({ application_id }) => {
   }
 
   return cand_details;
+};
+
+type CandidateScheduleDetails = InterviewFilterJsonType & {
+  interview_schedule: Pick<InterviewScheduleTypeDB, 'id' | 'application_id'> & {
+    applications: Pick<JobApplcationDB, 'id'> & {
+      candidates: Pick<
+        CandidateType,
+        'first_name' | 'last_name' | 'email' | 'geolocation'
+      >;
+      public_jobs: Pick<
+        PublicJobsType,
+        'recruiter_id' | 'company' | 'id' | 'logo' | 'job_title'
+      > & {
+        recruiter: Pick<RecruiterType, 'scheduling_settings'>;
+      };
+    };
+  };
 };

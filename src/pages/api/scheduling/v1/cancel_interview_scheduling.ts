@@ -15,36 +15,33 @@ import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagen
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 export type BookingApiParams = {
-  schedule_id: string;
+  session_ids: string[];
+  cand_email: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { schedule_id } = req.body as BookingApiParams;
-  if (!schedule_id) return res.status(400).send('missing fields');
+  let { session_ids, cand_email } = req.body as BookingApiParams;
+  if (!session_ids) return res.status(400).send('missing fields');
   try {
     const meetings = supabaseWrap(
       await supabaseAdmin
         .from('interview_meeting')
-        .select()
-        .eq('interview_schedule_id', schedule_id),
-    ); // as InterviewMeetingTypeDb[];
+        .update({
+          status: 'cancelled',
+        })
+        .in('session_id', session_ids)
+        .select(),
+    );
     if (meetings.length === 0) return res.status(200).send('no meetings found');
 
     const promises = meetings.map(async (meeting) => {
       await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v2/cancel_calender_event`,
-        meeting.meeting_json,
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/cancel_calender_event`,
+        { calender_event: meeting.meeting_json },
       );
     });
     await Promise.all(promises);
-    // supabaseWrap(
-    //   await supabaseAdmin
-    //     .from('interview_schedule')
-    //     .update({
-    //       status: 'cancelled',
-    //     })
-    //     .eq('id', schedule_id),
-    // );
+
     let status: SchedulingProgressStatusType = 'cancelled';
     supabaseWrap(
       await supabaseAdmin
@@ -52,10 +49,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .update({
           scheduling_progress: status,
         })
-        .eq('schedule_id', schedule_id),
+        .eq('candidate_email', cand_email),
     );
     return res.status(200).send('ok');
   } catch (error) {
+    console.log(error);
     return res.status(500).send(error.message);
   }
 };

@@ -1,11 +1,8 @@
 export type InitAgentBodyParams = {
-  application_id;
-  start_date;
-  end_date;
-  company_id;
-  recruiter_user_id;
-  organizer_time_zone;
-  schedule_type: 'phone' | 'email';
-  candidate_email: string;
-  schedule_id: string;
+  interviewer_name: string;
+  filter_json_id: string;
+  organizer_time_zone: string;
+  cand_time_zone: string;
+  cand_email: string;
+  sub_task_id: string;
 };

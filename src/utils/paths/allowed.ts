@@ -54,12 +54,12 @@ export const allowedPaths = new Set([
   '/api/scheduling/update-calender-event-status',
   '/api/scheduling/fetch-calender-atendees-status',
   '/api/scheduling/v1/find_availability',
-  '/api/scheduling/v1/find_interview_slots',
   '/api/scheduling/v1/confirm_interview_slot',
   '/api/scheduling/fetchdbusers',
   '/api/invite_user',
   '/api/scheduling/mail-agent/email-webhook',
   '/api/scheduling/v1/find_interview_slots',
   '/api/scheduling/v1/cancel_calender_event',
+  '/api/scheduling/v1/cancel_interview_scheduling',
   ...cronPaths,
 ]);

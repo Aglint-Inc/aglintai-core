@@ -110,36 +110,42 @@ export const bookSession = async ({
       requestId: uuidv4(),
     };
   } else if (meet_type === 'zoom') {
-    const zoom_meet = new ZoomMeet(company_id);
-    await zoom_meet.authorizeUser();
-    const schd_meet = await zoom_meet.createMeeting({
-      topic: schedule_name,
-      agenda: schedule_name,
-      default_password: false,
-      duration: duration,
-      start_time: start_time,
-      timezone: organizer.timezone ?? 'Asia/columbo',
-      type: 2,
-      settings: {
-        host_video: false,
-        join_before_host: true,
-        participant_video: false,
-      },
-    });
-    calendar_event.conferenceData.conferenceSolution = {
-      key: {
-        type: 'addOn',
-      },
-      name: 'zoom',
-    };
-    calendar_event.conferenceData.entryPoints = [
-      {
-        entryPointType: 'video',
-        uri: schd_meet.join_url,
-        passcode: schd_meet.password,
-        label: schd_meet.topic,
-      },
-    ];
+    try {
+      const zoom_meet = new ZoomMeet(company_id);
+      await zoom_meet.authorizeUser();
+      const schd_meet = await zoom_meet.createMeeting({
+        topic: schedule_name,
+        agenda: schedule_name,
+        default_password: false,
+        duration: duration,
+        start_time: start_time,
+        timezone: organizer.timezone ?? 'Asia/columbo',
+        type: 2,
+        settings: {
+          host_video: false,
+          join_before_host: true,
+          participant_video: false,
+        },
+      });
+      calendar_event.conferenceData.conferenceSolution = {
+        key: {
+          type: 'addOn',
+        },
+        name: 'zoom',
+      };
+      calendar_event.conferenceData.entryPoints = [
+        {
+          entryPointType: 'video',
+          uri: schd_meet.join_url,
+          passcode: schd_meet.password,
+          label: schd_meet.topic,
+        },
+      ];
+    } catch (err) {
+      calendar_event.conferenceData.createRequest = {
+        requestId: uuidv4(),
+      };
+    }
   }
 
   calendar_event.attendees.push({
