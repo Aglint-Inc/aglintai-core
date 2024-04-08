@@ -220,6 +220,109 @@ export const useSendInviteForCandidate = () => {
   return { sendToCandidate };
 };
 
+export const scheduleWithAgent = async ({
+  type,
+  session_ids,
+  application_id,
+  dateRange,
+  recruiter_id,
+}: {
+  type: 'phone_agent' | 'email_agent';
+  session_ids: string[];
+  application_id: string;
+  dateRange: {
+    start_date: string | null;
+    end_date: string | null;
+  };
+  recruiter_id: string;
+}) => {
+  try {
+    if (type) {
+      const { data: checkSch, error: errorCheckSch } = await supabase
+        .from('interview_schedule')
+        .select('id')
+        .eq('application_id', application_id);
+
+      if (errorCheckSch) throw new Error(errorCheckSch.message);
+
+      if (checkSch.length === 0) {
+        const sessionsWithPlan = await fetchInterviewDataJob(application_id);
+
+        const scheduleName = `Interview for ${sessionsWithPlan.application.public_jobs.job_title} - ${sessionsWithPlan.application.candidates.first_name}`;
+
+        const createCloneRes = await createCloneSession({
+          is_get_more_option: false,
+          application_id,
+          allSessions: sessionsWithPlan.sessions,
+          session_ids,
+          scheduleName,
+          coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
+        });
+
+        const { error: errorFilterJson } = await supabase
+          .from('interview_filter_json')
+          .insert({
+            filter_json: {
+              session_ids: createCloneRes.session_ids,
+              recruiter_id: recruiter_id,
+              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            },
+            session_ids: createCloneRes.session_ids,
+            schedule_id: createCloneRes.schedule.id,
+          });
+
+        if (errorFilterJson) throw new Error(errorFilterJson.message);
+      } else {
+        const sessionsWithPlan = await fetchInterviewDataSchedule(
+          checkSch[0].id,
+          application_id,
+        );
+
+        const { error: errorUpdatedMeetings } = await supabase
+          .from('interview_meeting')
+          .upsert(
+            sessionsWithPlan.sessions
+              .filter((ses) => session_ids.includes(ses.id))
+              .map((ses) => ({
+                status: 'waiting',
+                id: ses.interview_meeting.id,
+                interview_schedule_id:
+                  ses.interview_meeting.interview_schedule_id,
+                session_id: ses.interview_meeting.session_id,
+              })) as InterviewMeetingTypeDb[],
+          );
+
+        if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
+
+        const { error: errorFilterJson } = await supabase
+          .from('interview_filter_json')
+          .insert({
+            filter_json: {
+              session_ids: session_ids,
+              recruiter_id: recruiter_id,
+              start_date:
+                dateRange.start_date &&
+                dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date:
+                dateRange.end_date &&
+                dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            },
+            session_ids: session_ids,
+            schedule_id: checkSch[0].id,
+          });
+
+        if (errorFilterJson) throw new Error(errorFilterJson.message);
+      }
+      return true;
+    }
+  } catch (e) {
+    toast.error(e.message);
+  }
+};
+
 export const createCloneSession = async ({
   is_get_more_option,
   application_id,
