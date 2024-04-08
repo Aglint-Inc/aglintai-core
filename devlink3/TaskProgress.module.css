@@ -8,6 +8,10 @@
   margin-top: 10px;
 }
 
+.mt-10 {
+  margin-top: 10px;
+}
+
 .div-block-1349 {
   display: flex;
   flex-direction: column;
@@ -20,6 +24,10 @@
   width: 24px;
   height: 24px;
   border-radius: 100px;
+}
+
+.div-block-1347.stroke {
+  border: 1px solid #d8dcde;
 }
 
 .div-block-1348 {
@@ -68,6 +76,15 @@
   color: #68737d;
 }
 
+.text-sm.text-grey_600.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .text-blue-500 {
   color: #337fbd;
 }
@@ -102,4 +119,19 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.div-block-1366 {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.div-block-1367 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }

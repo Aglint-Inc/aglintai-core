@@ -11,6 +11,7 @@ import { DrawerType } from '.';
 import BreakForms, {
   getBreakFields,
   getBreakSessionPayload,
+  initialBreakFields,
   validateBreakSessionFields,
 } from './breakForms';
 import DebriefForms, {
@@ -327,7 +328,8 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     (session) => id === session.id,
   );
   const initialFields = {
-    break_duration,
+    break_duration:
+      break_duration === 0 ? initialBreakFields.break_duration : break_duration,
   };
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getBreakFields(initialFields));

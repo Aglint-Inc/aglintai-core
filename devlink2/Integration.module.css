@@ -1,4 +1,5 @@
 .integration-wrapp {
+  overflow: auto;
   padding-right: 0px;
   height: calc(100vh - 60px);
 }
@@ -201,6 +202,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 @media screen and (max-width: 767px) {

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React from 'react';

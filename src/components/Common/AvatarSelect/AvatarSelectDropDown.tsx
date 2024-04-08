@@ -2,7 +2,6 @@ import { MenuItem, Stack, TextField } from '@mui/material';
 import React from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
-import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../MuiAvatar';
 type MenuOption = {
@@ -22,7 +21,7 @@ type MenuOption = {
 };
 
 type Props = {
-  value: string;
+  value: string | number;
   menuOptions: MenuOption[];
   showMenuIcons: boolean;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -122,7 +121,7 @@ const AvatarSelectDropDown = ({
                   width='18px'
                 />
               ))}
-            {getFullName(menu.name, '')}
+            {menu.name}
             <Stack direction={'row'} gap={2} ml={'auto'}>
               {(menu.meta ?? []).map(({ title, icon }, i) => (
                 <Meta key={i} title={title} icon={icon} />
@@ -148,6 +147,7 @@ const Meta = ({
     return (
       <Stack
         direction={'row'}
+        minWidth={'120px'}
         gap={'4px'}
         style={{ fontSize: '12px', color: palette.grey['500'] }}
       >

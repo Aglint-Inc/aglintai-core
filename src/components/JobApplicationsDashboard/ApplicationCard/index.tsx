@@ -119,7 +119,6 @@ const ApplicationCard = ({
       />
     ) : (
       <CandidateListItem
-        // AllCandidateListItem
         key={key1}
         onClickSelect={{ onClick: handleCheck }}
         isChecked={isChecked}
@@ -138,10 +137,6 @@ const ApplicationCard = ({
           },
         }}
         isHighlighted={isSelected}
-        // experience={getExperienceCount(
-        //   (application.candidate_files?.resume_json as any)?.basics
-        //     ?.totalExperience,
-        // )}
         isScreeningVisible={views.screening}
         slotScreening={<ScreeningStatusComponent application={application} />}
         isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
@@ -290,10 +285,6 @@ export const ScreeningStatusComponent: React.FC<{
     />
   );
 };
-
-// const getExperienceCount = (months: number) => {
-//   return months ? Math.trunc(months / 12) : '---';
-// };
 
 const Insights = ({ application }: { application: JobApplication }) => {
   const jdScore = application.score_json as ScoreJson;

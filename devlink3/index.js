@@ -63,6 +63,7 @@ export * from "./DashboardAlert";
 export * from "./DashboardWarning";
 export * from "./DefaultButton";
 export * from "./DeletePopup";
+export * from "./DevLinkProvider";
 export * from "./DragPill";
 export * from "./DummyChatFour";
 export * from "./DummyChatOne";

@@ -4,13 +4,10 @@ import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
-// import posthog from 'posthog-js';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useCallback, useMemo, useState } from 'react';
 
 import {
-  // AssistantApplicantCount,
-  // AssistantDashboard,
   AssistStatus,
   CloseDeleteJob,
   CloseJobButton,
@@ -101,7 +98,7 @@ const Dashboard = () => {
     job,
     matches: { data: counts },
     schedules: { data: schedule },
-    status: { description_changed },
+    status: { description_changed, scoring_criteria_changed },
     publishStatus: { settingsValidity, publishable, loading },
     jobPolling,
   } = useJobDetails();
@@ -142,7 +139,8 @@ const Dashboard = () => {
   const handlePublish = async () => {
     if (publishable) {
       const response = await handleJobPublish(job);
-      if (response) await handleJobApplicationRescore();
+      if (response && scoring_criteria_changed)
+        await handleJobApplicationRescore();
       return response;
     } else {
       if (loading)
@@ -176,7 +174,9 @@ const Dashboard = () => {
               counts?.total ?? '---'
             }`}
             slotScoringLoader={scoringLoader}
-            isBanner={!publishable || description_changed}
+            isBanner={
+              !publishable || description_changed //|| scoring_criteria_changed
+            }
             isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
@@ -468,6 +468,13 @@ const Banners = () => {
         onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
       />
     );
+  // if (status.scoring_criteria_changed)
+  //   return (
+  //     <DashboardWarning
+  //       onClickDismiss={{ onClick: () => setDismiss(true) }}
+  //       onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
+  //     />
+  //   );
   return <></>;
 };
 
@@ -549,11 +556,11 @@ const JobClose = ({
 };
 
 const Modules = () => {
-  const isNewAssessmentEnabled = posthog.isFeatureEnabled(
+  const isNewAssessmentEnabled = useFeatureFlagEnabled(
     'isNewAssessmentEnabled',
   );
-  const isSchedulingEnabled = posthog.isFeatureEnabled('isSchedulingEnabled');
-  const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+  const isPhoneScreeningEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningEnabled',
   );
 
@@ -734,7 +741,7 @@ const ProfileScoreModule = () => {
   const handleClick = () => {
     push(`/jobs/${job.id}/profile-score`);
   };
-  const isAlert = status.jd_json_error;
+  const isAlert = status.jd_json_error && !status.description_error;
   const isWarning =
     !isAlert && (status.description_changed || status.description_error);
   return (

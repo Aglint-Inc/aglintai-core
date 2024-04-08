@@ -4,11 +4,13 @@ import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { BasicInfo, CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
+import { DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ImageUpload from '../../Common/ImageUpload';
+import MuiPopup from '../../Common/MuiPopup';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import AssessmentSettings from '../AssessmentSettings';
@@ -28,6 +30,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
+  const [isDetele, setDeletPopup] = useState(false);
   let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
   useEffect(() => {
@@ -119,11 +122,43 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                 },
                               }}
                               textLocation={location}
+                              // onClickDelete={{
+                              //   onClick: () => handleDeleteLocation(i),
+                              // }}
                               onClickDelete={{
-                                onClick: () => handleDeleteLocation(i),
+                                onClick: () => {
+                                  setDeletPopup(true);
+                                },
                               }}
                             />
                           </Stack>
+                          <MuiPopup
+                            props={{
+                              open: isDetele,
+                              onClose: () => {
+                                setDeletPopup(false);
+                              },
+                            }}
+                          >
+                            <DeletePopup
+                              textDescription={
+                                'Are u sure u want to delete this office location? This action cannot be undone.'
+                              }
+                              textTitle={'Delete Office Location'}
+                              isIcon={false}
+                              onClickCancel={{
+                                onClick: () => {
+                                  setDeletPopup(false);
+                                },
+                              }}
+                              onClickDelete={{
+                                onClick: () => {
+                                  handleDeleteLocation(i), setDeletPopup(false);
+                                },
+                              }}
+                            />
+                            ;
+                          </MuiPopup>
                         </>
                       );
                     })}

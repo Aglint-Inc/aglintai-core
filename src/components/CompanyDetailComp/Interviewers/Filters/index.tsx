@@ -1,7 +1,8 @@
 import { InputAdornment, Stack } from '@mui/material';
-import { IconBox } from '@tabler/icons-react';
+// import { IconBox } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 
+import { QualifiedIcons } from '@/devlink2';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 
@@ -119,14 +120,24 @@ function Filters({ setFilteredInterviewer }) {
           itemList={uniqueQualifiedModules}
           selectedItems={selectedQualifiedModule}
           setSelectedItems={setSelectedQualifiedModule}
-          icon={<IconBox />}
+          icon={
+            <QualifiedIcons
+              isQualifiedVisible={true}
+              isTrainingVisible={false}
+            />
+          }
         />
         <FilterDropDown
           title={'Training Module'}
           itemList={uniqueTrainingModules}
           selectedItems={selectedTrainingModule}
           setSelectedItems={setSelectedTrainingModule}
-          icon={<IconBox />}
+          icon={
+            <QualifiedIcons
+              isTrainingVisible={true}
+              isQualifiedVisible={false}
+            />
+          }
         />
       </Stack>
     </div>

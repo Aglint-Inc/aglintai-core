@@ -40,3 +40,12 @@
   grid-row-gap: 30px;
   height: calc(100vh - 109px);
 }
+
+.div-block-1365 {
+  display: flex;
+  width: 700px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+}
