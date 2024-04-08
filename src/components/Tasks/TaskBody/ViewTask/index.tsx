@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 
 import { PanelMemberPill } from '@/devlink2';
-import { TaskProgress, ViewTask, ViewTaskCard } from '@/devlink3';
+import { ViewTask, ViewTaskCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -12,6 +12,7 @@ import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvi
 import AssigneeChip from '../../Components/AssigneeChip';
 import StatusChip from '../../Components/StatusChip';
 import { useTaskStatesContext } from '../../TaskStatesContext';
+import SubTaskProgress from './Progress';
 
 function ViewTaskDrawer() {
   const {
@@ -47,12 +48,13 @@ function ViewTaskDrawer() {
             <ViewTask
               slotTaskCard={
                 <ViewTaskCard
-                  isMarkVisible={false}
+
                   textDate={dayjs(selectedSubTask?.completion_date).format(
                     'ddd, MMMM D YYYY',
                   )}
                   textTaskName={selectedSubTask?.name}
-                  textMark={'asasd'}
+                  isMarkVisible={false}
+                  textMark={'Mark this task as completed'}
                   slotAgentPill={
                     <AssigneeChip assigneeId={selectedSubTask?.assignee[0]} />
                   }
@@ -77,29 +79,14 @@ function ViewTaskDrawer() {
                   }
                 />
               }
-              slotTaskProgress={taskProgressData.map((item, i) => {
-                return (
-                  <TaskProgress
-                    key={i}
-                    slotImage={
-                      <MuiAvatar
-                        level={item.assignee.first_name}
-                        src='/'
-                        variant='circular'
-                        width='24px'
-                        height='24px'
-                        fontSize='12px'
-                      />
-                    }
-                  />
-                );
-              })}
+              slotTaskProgress={<SubTaskProgress />}
               onClickClose={{
                 onClick: () => {
                   setOpenViewTask(false);
                   setSelectedSubTaskId(null);
                 },
               }}
+              
             />
           </ShowCode.Else>
         </ShowCode>
@@ -109,29 +96,3 @@ function ViewTaskDrawer() {
 }
 
 export default ViewTaskDrawer;
-
-const taskProgressData = [
-  {
-    assignee: { first_name: 'Dheeraj' },
-    progressTitle: 'Task create for scheduling interview',
-  },
-  {
-    assignee: { first_name: 'Dheeraj' },
-    progressTitle: 'Task create for scheduling interview',
-  },
-
-  {
-    assignee: { first_name: 'Dheeraj' },
-    progressTitle: 'Task create for scheduling interview',
-  },
-
-  {
-    assignee: { first_name: 'Dheeraj' },
-    progressTitle: 'Task create for scheduling interview',
-  },
-
-  {
-    assignee: { first_name: 'Dheeraj' },
-    progressTitle: 'Task create for scheduling interview',
-  },
-];

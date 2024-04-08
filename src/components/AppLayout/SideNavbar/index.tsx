@@ -20,16 +20,19 @@ import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function SideNavbar() {
-  let isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
-  let isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
-  let isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
-  let isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  let isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
-  let isPhoneScreeningEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningEnabled',
-  );
   const router = useRouter();
   const { loading, isAllowed } = useAuthDetails();
+
+  const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
+  const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
+  const isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
+  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
+  const isPhoneScreeningEnabled = useFeatureFlagEnabled(
+    'isPhoneScreeningEnabled',
+  );
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+  let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
 
   const navList = [
     {
@@ -47,7 +50,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.TASKS,
       comingsoon: false,
-      isvisible: isAgentEnabled,
+      isvisible: isTasksEnabled,
       roles: [
         'admin',
         'interviewer',
@@ -116,7 +119,7 @@ function SideNavbar() {
       SubComponents: null,
       route: pageRoutes.SCHEDULING,
       comingsoon: false,
-      isvisible: true,
+      isvisible: isSchedulingEnabled,
       roles: [
         'admin',
         'recruiter',

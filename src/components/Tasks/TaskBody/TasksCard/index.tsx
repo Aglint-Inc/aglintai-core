@@ -3,8 +3,9 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useInterviewerList } from '@/src/components/CompanyDetailComp/Interviewers';
 import { TasksAgentContextType } from '@/src/context/TaskContext/TaskContextProvider';
 
+import SubTaskCardSkeleton from '../../Components/SubTaskCardSkeleton';
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import AddSubTask, { SubTaskCardSkeleton } from '../AddSubTask';
+import AddSubTask from '../AddSubTask';
 import UpdateSubTask from '../UpdateSubTask';
 import SubTaskCard from './SubTaskCard';
 

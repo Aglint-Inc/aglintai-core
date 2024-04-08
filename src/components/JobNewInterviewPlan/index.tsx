@@ -19,6 +19,7 @@ import {
 } from '@/devlink3';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { DeleteInterviewSession } from '@/src/queries/interview-plans';
 import {
   InterviewCoordinatorType,
   InterviewSessionType,
@@ -35,6 +36,7 @@ import MuiAvatar from '../Common/MuiAvatar';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
 import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
 import InterviewDrawers from './sideDrawer';
+import { getBreakLabel } from './utils';
 
 const JobNewInterviewPlanDashboard = () => {
   const load = useJobInterviewPlan();
@@ -179,14 +181,15 @@ const InterviewPlan = () => {
     },
     [],
   );
-  const handleDelete = useCallback(async (session_id: string) => {
-    const isLoading = getLoadingState(session_id);
+  const handleDelete = useCallback(async (args: DeleteInterviewSession) => {
+    const isLoading = getLoadingState(args.session_id);
     if (!isLoading) {
-      handleDeleteSession({ session_id });
+      handleDeleteSession(args);
     } else {
       toast.warning('Session under deletion. Please wait.');
     }
   }, []);
+  const sessionsCount = data.interview_session.length;
   const sessions = data.interview_session.map((session, order) => (
     <InterviewSession
       key={session.id}
@@ -194,6 +197,7 @@ const InterviewPlan = () => {
       handleCreate={(key) => handleCreate(key, order + 1)}
       handleEdit={(key, id) => handleEdit(key, id, order + 1)}
       handleDelete={handleDelete}
+      lastSession={order === sessionsCount - 1}
     />
   ));
   return (
@@ -230,7 +234,8 @@ type InterviewSessionProps = {
     id: string,
   ) => void;
   // eslint-disable-next-line no-unused-vars
-  handleDelete: (session_id: string) => void;
+  handleDelete: (args: DeleteInterviewSession) => void;
+  lastSession: boolean;
 };
 type InterviewSessionMemeberTypes =
   InterviewSessionType['interview_session_relation'][number]['interviewer_type'];
@@ -243,6 +248,7 @@ const InterviewSession = ({
   handleCreate,
   handleEdit,
   handleDelete,
+  lastSession,
 }: InterviewSessionProps) => {
   const { handleUpdateSession, getLoadingState } = useJobInterviewPlan();
   const [breakDeletion, setBreakDeletion] = useState(false);
@@ -328,7 +334,14 @@ const InterviewSession = ({
           slotMembers={members.members.map((member) => (
             <InterviewSessionMember key={member.user_id} member={member} />
           ))}
-          isBreakCardVisible={session.break_duration !== 0}
+          onClickLink={{
+            onClick: () =>
+              window.open(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/module/members/${session.interview_module.id}`,
+                '_blank',
+              ),
+          }}
+          isBreakCardVisible={!lastSession && session.break_duration !== 0}
           slotBreakCard={
             <OptimisticWrapper loading={breakDeletion}>
               <InterviewBreak
@@ -342,7 +355,7 @@ const InterviewSession = ({
           slotAddScheduleCard={
             <AddScheduleCard
               handleCreate={handleCreate}
-              showBreak={session.break_duration === 0}
+              showBreak={!lastSession && session.break_duration === 0}
               handleEdit={(key) => handleEdit(key, session.id)}
             />
           }
@@ -351,7 +364,11 @@ const InterviewSession = ({
               handleEdit(sessionToEdit(session.session_type), session.id),
           }}
           onClickDelete={{
-            onClick: () => handleDelete(session.id),
+            onClick: () =>
+              handleDelete({
+                session_id: session.id,
+                interview_plan_id: session.interview_plan_id,
+              }),
           }}
         />
       </Stack>
@@ -452,7 +469,7 @@ const InterviewBreak = ({
 }) => {
   return (
     <InterviewBreakCard
-      textDuration={`${duration} minutes`}
+      textDuration={getBreakLabel(duration)}
       onClickEdit={{ onClick: () => handleEdit() }}
       onClickDelete={{ onClick: () => handleDelete() }}
     />

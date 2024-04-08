@@ -106,6 +106,7 @@ function FilterDropDown({
                 />
                 <Typography
                   sx={{
+                    textTransform: 'capitalize',
                     fontSize: '14px',
                     fontWeight: 600,
                     cursor: 'pointer',

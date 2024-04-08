@@ -378,7 +378,6 @@ const ApplicationTable = ({
       />
     ) : (
       <ApplicantsTable
-        // <AllApplicantsTable
         onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
         isAllChecked={isAllChecked}
         isInterviewVisible={views.assessment}

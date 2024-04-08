@@ -46,7 +46,31 @@ export type CustomDatabase = {
                     created_by?: task_created_by;
                   };
                 }
-              : Database['public']['Tables'][Table];
+              : Table extends 'sub_task_progress'
+                ? {
+                    Row: Omit<
+                      Database['public']['Tables'][Table]['Row'],
+                      'created_by' | 'jsonb_data'
+                    > & {
+                      created_by: task_created_by;
+                      jsonb_data: sub_task_log_jsonb_data;
+                    };
+                    Insert: Omit<
+                      Database['public']['Tables'][Table]['Insert'],
+                      'created_by' | 'jsonb_data'
+                    > & {
+                      created_by?: task_created_by;
+                      jsonb_data?: sub_task_log_jsonb_data;
+                    };
+                    Update: Omit<
+                      Database['public']['Tables'][Table]['Update'],
+                      'created_by' | 'jsonb_data'
+                    > & {
+                      created_by?: task_created_by;
+                      jsonb_data?: sub_task_log_jsonb_data;
+                    };
+                  }
+                : Database['public']['Tables'][Table];
         }
       : Database['public'][keys];
   };
@@ -70,4 +94,7 @@ type interview_meeting_user_feedback = {
 type task_created_by = {
   id?: string;
   name: 'system' | string;
+};
+type sub_task_log_jsonb_data = {
+  [key: string]: any;
 };

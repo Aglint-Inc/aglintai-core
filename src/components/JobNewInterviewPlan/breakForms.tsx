@@ -1,17 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  ChangeEventHandler,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 
 import { SidedrawerBodyBreak } from '@/devlink2';
 import { UpdateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 
-import UITextField from '../Common/UITextField';
+import { DropDown } from './sessionForms';
+import { getBreakLabel } from './utils';
 
 type BreakFormProps = Pick<InterviewSessionType, 'break_duration'>;
 
@@ -71,27 +66,31 @@ const BreakForms = ({
     }));
   }, []);
 
-  const handleBreakDuration: ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = useCallback((e) => {
-    const entry = e.target.value as any;
-    const safeEntry = +entry;
-    if (entry === null || entry === '') handleChange('break_duration', null);
-    else if (safeEntry < 0) handleChange('break_duration', 0);
-    else handleChange('break_duration', safeEntry);
-  }, []);
+  // const handleBreakDuration: ChangeEventHandler<
+  //   HTMLInputElement | HTMLTextAreaElement
+  // > = useCallback((e) => {
+  //   const entry = e.target.value as any;
+  //   const safeEntry = +entry;
+  //   if (entry === null || entry === '') handleChange('break_duration', null);
+  //   else if (safeEntry < 0) handleChange('break_duration', 0);
+  //   else handleChange('break_duration', safeEntry);
+  // }, []);
 
   const sessionDurationField = useMemo(
     () => (
-      <UITextField
-        name={'break_duration'}
-        type='number'
-        placeholder={'Break duration'}
+      <SessionDurationField
         value={break_duration.value}
-        error={break_duration.error}
-        helperText={break_duration.helper}
-        onChange={handleBreakDuration}
+        handleChange={handleChange}
       />
+      // <UITextField
+      //   name={'break_duration'}
+      //   type='number'
+      //   placeholder={'Break duration'}
+      //   value={break_duration.value}
+      //   error={break_duration.error}
+      //   helperText={break_duration.helper}
+      //   onChange={handleBreakDuration}
+      // />
     ),
     [break_duration],
   );
@@ -125,6 +124,38 @@ export const validateBreakSessionFields = (fields: BreakFormFields) => {
     },
   );
   return safeFields;
+};
+
+const SessionDurationField = ({
+  value,
+  handleChange,
+}: {
+  value: BreakFormProps['break_duration'];
+  handleChange: HandleChange;
+}) => {
+  const options = [30, 45, 60, 120, 1440, 2880, 4320].reduce(
+    (acc, curr) => {
+      acc.push({ name: getBreakLabel(curr), value: curr });
+      return acc;
+    },
+    [] as { name: string; value: number }[],
+  );
+  const onChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = useCallback((e) => {
+    if ((e?.target?.value ?? null) && typeof e.target.value === 'number')
+      handleChange('break_duration', e.target.value);
+  }, []);
+
+  return (
+    <DropDown
+      placeholder='Select break duration'
+      showIcons={false}
+      options={options}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export const getBreakSessionPayload = (

@@ -96,6 +96,10 @@
   text-transform: capitalize;
 }
 
+.text-red-600 {
+  color: #cc3340;
+}
+
 .fw-semibold.text-purple {
   color: #a81897;
 }
@@ -114,6 +118,11 @@
 
 .fw-semibold.text-red {
   color: #d93f4c;
+}
+
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
 }
 
 .text-gray-600 {
@@ -213,6 +222,7 @@
 
 .module_title_button {
   display: flex;
+  padding-right: 5px;
   justify-content: space-between;
   align-items: center;
 }
@@ -250,11 +260,38 @@
 }
 
 .icons.cursor-pointer {
+  transition: all 250ms ease;
   cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .text-blue-500 {
   color: #337fbd;
+}
+
+.text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-blue-500.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .slot-models-morement {
@@ -322,5 +359,6 @@
 
 .height_100 {
   height: 100%;
+  padding-bottom: 20px;
   padding-left: 20px;
 }

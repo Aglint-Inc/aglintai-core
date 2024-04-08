@@ -194,14 +194,14 @@ function Interviewer({
             </ShowCode.When>
           </ShowCode>
         }
-        textInterviewToday={
-          interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
-            ?.dailyLimit.type + ' today'
-        }
-        textInterviewWeek={
-          interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
-            ?.weeklyLimit.type + ' this week'
-        }
+        // textInterviewToday={
+        //   interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
+        //     ?.dailyLimit.type + ' today'
+        // }
+        // textInterviewWeek={
+        //   interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
+        //     ?.weeklyLimit.type + ' this week'
+        // }
         slotQualifiedModules={
           interviewerDetails.modules.filter(
             (item) => item.training_status === 'qualified',

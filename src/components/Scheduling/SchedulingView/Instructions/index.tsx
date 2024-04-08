@@ -42,6 +42,7 @@ function Instructions() {
             <Stack
               sx={{
                 mt: '8px',
+                maxWidth: '600px',
                 border: '1px solid',
                 borderColor: palette.grey[300],
                 borderRadius: '4px',
@@ -59,7 +60,12 @@ function Instructions() {
                 }
               />
             </Stack>
-            <Stack mt={'10px'} direction={'row'} justifyContent={'end'}>
+            <Stack
+              mt={'10px'}
+              direction={'row'}
+              justifyContent={'end'}
+              maxWidth='600px'
+            >
               <AUIButton onClick={updateInstruction}>Update</AUIButton>
             </Stack>
           </>

@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react';
 
 import { palette } from '@/src/context/Theme/Theme';
 
-const PublishButton = ({ onClick }: { onClick: () => Promise<boolean> }) => {
+const PublishButton = ({
+  onClick,
+  disabled = false,
+}: {
+  onClick: () => Promise<boolean>;
+  disabled?: boolean;
+}) => {
   const [publishing, setPublishing] = useState(0);
   const rocketPosition =
     publishing === 0 ? '-11px' : publishing === 1 ? '-40px' : '-68px';
@@ -14,7 +20,7 @@ const PublishButton = ({ onClick }: { onClick: () => Promise<boolean> }) => {
         ? 'Publishing'
         : 'Published';
   const handlClick = async () => {
-    if (publishing === 0) {
+    if (!disabled && publishing === 0) {
       setPublishing(1);
       const confirmation = await onClick();
       if (confirmation) setTimeout(() => setPublishing(2), 1000);
@@ -25,77 +31,84 @@ const PublishButton = ({ onClick }: { onClick: () => Promise<boolean> }) => {
     if (publishing === 2) setTimeout(() => setPublishing(0), 1500);
   }, [publishing]);
   return (
-    <Button
-      sx={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '20px',
-        justifyContent: 'flex-start',
-        backgroundColor:
-          publishing === 0
-            ? '#1f73b7'
-            : publishing === 1
-              ? '#144a75'
-              : '#228f67',
-        fontWeight: 'inherit',
-        padding: '8px 16px',
-        width: /*publishing === 0 ? 'inherit' :*/ '120px',
-        transition: 'all 1s ease !important',
-        overflow: 'hidden',
-        borderRadius: '6px',
-        '&:hover': {
-          backgroundColor: publishing === 2 ? '#228f67' : '#144a75'
-        }
-      }}
-      style={{ color: 'white' }}
-      onClick={async () => await handlClick()}
-    >
-      <Stack
+    <Stack sx={{ cursor: 'pointer' }}>
+      <Button
         sx={{
+          pointerEvents: disabled ? 'none' : 'auto',
           flexDirection: 'row',
           alignItems: 'center',
           gap: '20px',
-          transform: 'translateX(-4px)'
+          justifyContent: 'flex-start',
+          backgroundColor:
+            publishing === 0
+              ? disabled
+                ? palette.grey['400']
+                : '#1f73b7'
+              : publishing === 1
+                ? '#144a75'
+                : '#228f67',
+          fontWeight: 'inherit',
+          padding: '8px 16px',
+          width: '120px',
+          transition: 'all 1s ease !important',
+          overflow: 'hidden',
+          borderRadius: '6px',
+          '&:hover': {
+            backgroundColor: publishing === 2 ? '#228f67' : '#144a75',
+          },
         }}
+        style={{ color: 'white' }}
+        onClick={async () => await handlClick()}
       >
         <Stack
           sx={{
-            position: 'relative',
-            transform: `translateY(${rocketPosition})`,
-            transition:
-              publishing === 0 ? 'none' : 'all 1s cubic-bezier(1, 0, 0, 1)'
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '20px',
+            transform: 'translateX(-4px)',
           }}
         >
           <Stack
             sx={{
-              position: 'absolute',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
+              position: 'relative',
+              transform: `translateY(${rocketPosition})`,
+              transition:
+                publishing === 0 ? 'none' : 'all 1s cubic-bezier(1, 0, 0, 1)',
             }}
           >
-            <RocketIcon />
-            {
-              <CircularProgress
-                color='inherit'
-                size={'10px'}
-                sx={{
-                  color: palette.white[400],
-                  opacity: publishing === 1 ? 1 : 0,
-                  transition: '500ms'
-                }}
-              />
-            }
-            <RocketIcon />
+            <Stack
+              sx={{
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <RocketIcon />
+              {
+                <CircularProgress
+                  color='inherit'
+                  size={'10px'}
+                  sx={{
+                    color: palette.white[400],
+                    opacity: publishing === 1 ? 1 : 0,
+                    transition: '500ms',
+                  }}
+                />
+              }
+              <RocketIcon />
+            </Stack>
+          </Stack>
+          <Stack
+            sx={{
+              transform: `translateX(${publishing === 0 ? '10px' : '0px'})`,
+            }}
+          >
+            {text}
           </Stack>
         </Stack>
-        <Stack
-          sx={{ transform: `translateX(${publishing === 0 ? '10px' : '0px'})` }}
-        >
-          {text}
-        </Stack>
-      </Stack>
-    </Button>
+      </Button>
+    </Stack>
   );
 };
 

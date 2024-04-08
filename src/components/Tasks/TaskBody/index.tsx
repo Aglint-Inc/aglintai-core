@@ -91,7 +91,7 @@ function TaskBody() {
               {
                 type: 'button',
                 name: 'My Tasks',
-                active: filter.assignee.values.includes(userDetails.user.id),
+                active: filter.assignee.values.includes(userDetails?.user?.id),
                 onClick: () => {
                   {
                     filter.assignee.values = filter.assignee.values.includes(
@@ -118,6 +118,7 @@ function TaskBody() {
             </ShowCode.When>
           </ShowCode>
         }
+        
       />
     </>
   );

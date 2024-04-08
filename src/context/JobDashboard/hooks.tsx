@@ -96,6 +96,9 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         !dismiss &&
         hashCode(job?.draft?.description ?? '') !== job?.description_hash,
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
+      scoring_criteria_changed:
+        hashCode(JSON.stringify(job?.draft?.jd_json ?? {})) !==
+        hashCode(JSON.stringify(job?.jd_json ?? {})),
     };
 
   const initialLoad = !!(

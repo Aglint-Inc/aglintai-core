@@ -66,7 +66,7 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
               },
             }}
             slotButton={
-              <Stack direction={'row'} justifyContent={'end'}>
+              <Stack direction={'column'} justifyContent={'end'}>
                 <AUIButton
                   onClick={() => {
                     updateInstruction();
