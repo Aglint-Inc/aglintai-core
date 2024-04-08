@@ -47,7 +47,7 @@ export type TasksAgentContextType = TasksReducerType & {
   handelAddSubTask: (x: {
     taskId: string;
     data: DatabaseTableInsert['sub_tasks'];
-  }) => Promise<boolean>;
+  }) => Promise<TasksReducerType['tasks'][number]['sub_tasks'][number]>;
   handelUpdateSubTask: (x: {
     SubTaskId: string;
     data: DatabaseTableInsert['sub_tasks'];
@@ -86,7 +86,7 @@ const contextInitialState: TasksAgentContextType = {
   // eslint-disable-next-line no-unused-vars
   handelAddTask: (x) => Promise.resolve(false),
   handelUpdateTask: (x) => Promise.resolve(false),
-  handelAddSubTask: (x) => Promise.resolve(false),
+  handelAddSubTask: (x) => Promise.resolve(null),
   handelUpdateSubTask: (x) => Promise.resolve(false),
   handelGetTaskLog: (x) => Promise.resolve([]),
   handelAddTaskLog: (x) => Promise.resolve(null),
@@ -297,18 +297,19 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
           return { ...item, assignee: 'Interviewers' };
         }),
       ].find((item) => item.user_id === data.assignee[0]);
-
-      handelAddTaskLog({
-        sub_task_id: taskData.id,
-        title: `Task created and assigned to <span class="mention">@${capitalize(assigner.first_name + ' ' + assigner.last_name)}</span> by ${recruiterUser.first_name + ' ' + recruiterUser.last_name}`,
-        created_by: {
-          name: recruiterUser.first_name,
-          id: recruiterUser.user_id,
-        },
-        progress_type: 'standard',
-      });
+      if (assigner) {
+        handelAddTaskLog({
+          sub_task_id: taskData.id,
+          title: `Task created and assigned to <span class="mention">@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by ${recruiterUser.first_name + ' ' + recruiterUser.last_name}`,
+          created_by: {
+            name: recruiterUser.first_name,
+            id: recruiterUser.user_id,
+          },
+          progress_type: 'standard',
+        });
+      }
       handelTaskChanges(tempTask);
-      return true;
+      return taskData;
     });
   };
 

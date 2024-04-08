@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { TaskCard } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useInterviewerList } from '@/src/components/CompanyDetailComp/Interviewers';
@@ -11,12 +13,22 @@ import SubTaskCard from './SubTaskCard';
 
 function TaskCardBox({
   task,
+  index,
 }: {
   task: TasksAgentContextType['tasks'][number];
+  index: number;
 }) {
   const { data: members } = useInterviewerList();
   const { taskId, setTaskId, selectedSubTaskId, addingSubTask, openViewTask } =
     useTaskStatesContext();
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  useEffect(() => {
+    return () => {
+      if (taskId) {
+        setSelectedIndex(null);
+      }
+    };
+  }, [taskId]);
   if (members)
     return (
       <TaskCard
@@ -54,10 +66,11 @@ function TaskCardBox({
         onClickAddTask={{
           onClick: () => {
             setTaskId(task.id);
+            setSelectedIndex(index);
           },
         }}
         slotNewTask={<AddSubTask taskId={task.id} />}
-        isNewTaskVisible={task.id === taskId}
+        isNewTaskVisible={selectedIndex === index && task.id === taskId}
       />
     );
 }

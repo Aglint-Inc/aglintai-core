@@ -93,8 +93,22 @@ function UpdateSubTask({
     setSelectedStatus(subTask.status);
   }, []);
   return (
-    <Grid columnSpacing={'10px'} container>
-      <Grid justifyContent={'end'} display={'flex'} item sm={1.5}>
+    <Grid
+      justifyContent={'center'}
+      alignItems={'center'}
+      height={'50px'}
+      columnSpacing={'10px'}
+      container
+      ml={'30px'}
+    >
+      <Grid
+        width={'100%'}
+        justifyContent={'end'}
+        alignItems={'center'}
+        display={'flex'}
+        item
+        sm={1.5}
+      >
         <SelectStatus
           status={selectedStatus}
           setSelectedStatus={setSelectedStatus}
