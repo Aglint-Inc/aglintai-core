@@ -105,6 +105,19 @@
   color: #68737d;
 }
 
+.div-block-1366 {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -119,19 +132,4 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
-}
-
-.div-block-1366 {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
-}
-
-.div-block-1367 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 }

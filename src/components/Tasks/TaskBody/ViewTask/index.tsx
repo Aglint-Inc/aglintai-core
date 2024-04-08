@@ -48,7 +48,6 @@ function ViewTaskDrawer() {
             <ViewTask
               slotTaskCard={
                 <ViewTaskCard
-
                   textDate={dayjs(selectedSubTask?.completion_date).format(
                     'ddd, MMMM D YYYY',
                   )}
@@ -86,7 +85,6 @@ function ViewTaskDrawer() {
                   setSelectedSubTaskId(null);
                 },
               }}
-              
             />
           </ShowCode.Else>
         </ShowCode>
