@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { PanelMemberPill } from '@/devlink2';
+import { InviteLinkCard, InvitePills, PanelMemberPill } from '@/devlink2';
 import { AgentPill, TaskProgress, TranscriptCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -136,7 +136,8 @@ function SubTaskProgress() {
                   textTime={dayjs(item.created_at).fromNow()}
                   isMailContentVisible={
                     item.progress_type === 'call_completed' ||
-                    item.progress_type === 'email_messages'
+                    item.progress_type === 'email_messages' ||
+                    item.progress_type === 'interview_schedule'
                   }
                   slotMailContent={
                     <ShowCode>
@@ -156,7 +157,9 @@ function SubTaskProgress() {
                           overflow={'auto'}
                           direction={'column'}
                           gap={2}
+                          p={1}
                         >
+                          <Typography variant='body1'>Transcript</Typography>
                           {item.jsonb_data &&
                             item.jsonb_data.length &&
                             (
@@ -216,6 +219,53 @@ function SubTaskProgress() {
                               );
                             })}
                         </Stack>
+                      </ShowCode.When>
+                      <ShowCode.When
+                        isTrue={item.progress_type === 'interview_schedule'}
+                      >
+                        {item.jsonb_data &&
+                          item.jsonb_data.length &&
+                          (
+                            item.jsonb_data as {
+                              name: string;
+                              created_at: string;
+                            }[]
+                          ).map((ele, i) => {
+                            return (
+                              <Stack width={400} key={i}>
+                                <InviteLinkCard
+                                  textDate={
+                                    <>{dayjs(ele.created_at).format('DD')}</>
+                                  }
+                                  textDay={dayjs(ele.created_at).format('ddd')}
+                                  textMonth={dayjs(ele.created_at).format(
+                                    'MMM',
+                                  )}
+                                  slotInvitePills={
+                                    <>
+                                      <InvitePills
+                                        textTime={'9:30-10:30'}
+                                        textTitle={ele.name}
+                                      />
+                                      <PanelMemberPill
+                                        slotImage={
+                                          <MuiAvatar
+                                            variant='circular'
+                                            level={'Chinmai c r'}
+                                            fontSize='12px'
+                                            width='100%'
+                                            height='100%'
+                                          />
+                                        }
+                                        isCloseVisible={false}
+                                        textMemberName='Chinmai c r'
+                                      />
+                                    </>
+                                  }
+                                />
+                              </Stack>
+                            );
+                          })}
                       </ShowCode.When>
                     </ShowCode>
                   }
