@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import {
   InterviewMeetingTypeDb,
@@ -226,6 +227,8 @@ export const scheduleWithAgent = async ({
   application_id,
   dateRange,
   recruiter_id,
+  sub_task_id,
+  recruiter_user_name,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -235,6 +238,8 @@ export const scheduleWithAgent = async ({
     end_date: string | null;
   };
   recruiter_id: string;
+  sub_task_id: string;
+  recruiter_user_name: string;
 }) => {
   try {
     if (type) {
@@ -259,7 +264,7 @@ export const scheduleWithAgent = async ({
           coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
         });
 
-        const { error: errorFilterJson } = await supabase
+        const { data: filterJson, error: errorFilterJson } = await supabase
           .from('interview_filter_json')
           .insert({
             filter_json: {
@@ -271,9 +276,19 @@ export const scheduleWithAgent = async ({
             },
             session_ids: createCloneRes.session_ids,
             schedule_id: createCloneRes.schedule.id,
-          });
+          })
+          .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        await axios.post('/api/scheduling/mail-agent/init-agent', {
+          cand_email: sessionsWithPlan.application.candidates.email,
+          cand_time_zone: dayjs.tz.guess(),
+          filter_json_id: filterJson[0].id,
+          interviewer_name: recruiter_user_name,
+          organizer_time_zone: dayjs.tz.guess(),
+          sub_task_id: sub_task_id,
+        } as InitAgentBodyParams);
       } else {
         const sessionsWithPlan = await fetchInterviewDataSchedule(
           checkSch[0].id,
@@ -296,7 +311,7 @@ export const scheduleWithAgent = async ({
 
         if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
 
-        const { error: errorFilterJson } = await supabase
+        const { data: filterJson, error: errorFilterJson } = await supabase
           .from('interview_filter_json')
           .insert({
             filter_json: {
@@ -312,9 +327,19 @@ export const scheduleWithAgent = async ({
             },
             session_ids: session_ids,
             schedule_id: checkSch[0].id,
-          });
+          })
+          .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        await axios.post('/api/scheduling/mail-agent/init-agent', {
+          cand_email: sessionsWithPlan.application.candidates.email,
+          cand_time_zone: dayjs.tz.guess(),
+          filter_json_id: filterJson[0].id,
+          interviewer_name: recruiter_user_name,
+          organizer_time_zone: dayjs.tz.guess(),
+          sub_task_id: sub_task_id,
+        } as InitAgentBodyParams);
       }
       return true;
     }
