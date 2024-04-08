@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScheduleCard } from "./ScheduleCard";
@@ -136,30 +137,15 @@ export function ScheduleDetailSidepanel({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "tab_row")} tag="div">
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Plan"}
-        </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "co_ordinator")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "text-grey_600")}
           tag="div"
         >
-          {"This schedule is part of the interview plan below."}
+          {"Co-ordinator :"}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotInterviewPlanCard}</_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "co_ordinator")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey_600")}
-            tag="div"
-          >
-            {"Co-ordinator :"}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotAvatarWithName ?? <AvatarWithName />}
-          </_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotAvatarWithName ?? <AvatarWithName />}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
