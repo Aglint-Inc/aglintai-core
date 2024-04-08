@@ -13,6 +13,7 @@ import {
   useEditDebriefSession,
   useEditInterviewSession,
   useInterviewPlans,
+  useReorderInterviewSessions,
   useUpdateInterviewSession,
 } from '@/src/queries/interview-plans';
 import { interviewSessionMutationKeys } from '@/src/queries/interview-plans/keys';
@@ -33,6 +34,7 @@ const useJobInterviewPlanActions = () => {
   const { mutateAsync: createDebriefSession } = useAddDebriefSession();
   const { mutate: handleEditDebriefSession } = useEditDebriefSession();
   const { mutate: handleSelectCoordinator } = useAddInterviewCoordinator();
+  const { mutate: handleReorderSessions } = useReorderInterviewSessions();
 
   const { mutationKey: updateMutationKey } =
     interviewSessionMutationKeys.update();
@@ -101,6 +103,7 @@ const useJobInterviewPlanActions = () => {
     handleDeleteSession,
     getLoadingState,
     handleCreatePlan,
+    handleReorderSessions,
     interviewPlans,
     coordinator,
     plan_id,

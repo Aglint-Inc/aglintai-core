@@ -111,6 +111,9 @@ const Dashboard = () => {
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
   const [popover, setPopover] = useState(false);
 
+  const canPublish =
+    job.status === 'draft' || description_changed || scoring_criteria_changed;
+
   const handleCloseJob = useCallback(async () => {
     return await handleJobAsyncUpdate(job.id, { status: 'closed' });
   }, [job.id]);
@@ -174,9 +177,7 @@ const Dashboard = () => {
               counts?.total ?? '---'
             }`}
             slotScoringLoader={scoringLoader}
-            isBanner={
-              !publishable || description_changed //|| scoring_criteria_changed
-            }
+            isBanner={!publishable || description_changed}
             isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
@@ -218,7 +219,10 @@ const Dashboard = () => {
               />
             }
             slotPublishButton={
-              <PublishButton onClick={async () => await handlePublish()} />
+              <PublishButton
+                onClick={async () => await handlePublish()}
+                disabled={!canPublish}
+              />
             }
             isPublish={job.status !== 'closed'}
             isEditError={!settingsValidity}

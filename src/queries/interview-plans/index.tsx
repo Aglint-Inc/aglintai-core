@@ -180,6 +180,45 @@ export const useAddInterviewCoordinator = () => {
   return mutation;
 };
 
+export const useReorderInterviewSessions = () => {
+  const queryClient = useQueryClient();
+  const { job_id } = useCurrentJob();
+  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
+  const mutation = useMutation({
+    mutationFn: async (args: {
+      updatedInterviewSessions: InterviewPlansType['interview_session'];
+      interviewPlanId: string;
+    }) => {
+      const sessions = args.updatedInterviewSessions.map(
+        ({ id, session_order }) => ({ id, session_order }),
+      );
+      await reorderSessions({
+        sessions,
+        interview_plan_id: args.interviewPlanId,
+      });
+      await queryClient.invalidateQueries({ queryKey });
+    },
+    onMutate: async (payload) => {
+      await queryClient.cancelQueries({ queryKey });
+      const oldInterviewPlan =
+        queryClient.getQueryData<InterviewPlansType>(queryKey);
+      queryClient.setQueryData<InterviewPlansType>(queryKey, {
+        ...oldInterviewPlan,
+        interview_session: payload.updatedInterviewSessions,
+      });
+      return { oldInterviewPlan };
+    },
+    onError: (error, variables, context) => {
+      toast.error('Unable to reorder sessions');
+      queryClient.setQueryData<InterviewPlansType>(
+        queryKey,
+        context.oldInterviewPlan,
+      );
+    },
+  });
+  return mutation;
+};
+
 export type DeleteInterviewSession = Parameters<
   typeof deleteInterviewSession
 >[0];
@@ -303,4 +342,16 @@ export const addInterviewCoordinator = async ({
     .select(`recruiter_user(${interviewPlanRecruiterUserQuery})`);
   if (error) throw new Error(error.message);
   return data[0]['recruiter_user'];
+};
+
+export type ReorderSessions = Omit<
+  Database['public']['Functions']['reorder_sessions']['Args'],
+  'sessions'
+> & {
+  sessions: { id: string; session_order: number }[];
+};
+
+export const reorderSessions = async (args: ReorderSessions) => {
+  const { error } = await supabase.rpc('reorder_sessions', args);
+  if (error) throw new Error(error.message);
 };

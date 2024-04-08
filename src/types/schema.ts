@@ -1320,6 +1320,7 @@ export type Database = {
       }
       interview_session_relation: {
         Row: {
+          feedback: Json | null
           id: string
           interview_module_relation_id: string | null
           interviewer_type: Database["public"]["Enums"]["status_training"]
@@ -1329,6 +1330,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          feedback?: Json | null
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
@@ -1338,6 +1340,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          feedback?: Json | null
           id?: string
           interview_module_relation_id?: string | null
           interviewer_type?: Database["public"]["Enums"]["status_training"]
@@ -2439,9 +2442,8 @@ export type Database = {
           chat_history: Json[]
           company_id: string | null
           created_at: string
-          date_range: string[] | null
+          filter_json_id: string | null
           job_id: string
-          schedule_id: string | null
           scheduling_progress: string | null
           sub_task_id: string | null
           time_zone: string | null
@@ -2452,9 +2454,8 @@ export type Database = {
           chat_history?: Json[]
           company_id?: string | null
           created_at?: string
-          date_range?: string[] | null
+          filter_json_id?: string | null
           job_id: string
-          schedule_id?: string | null
           scheduling_progress?: string | null
           sub_task_id?: string | null
           time_zone?: string | null
@@ -2465,9 +2466,8 @@ export type Database = {
           chat_history?: Json[]
           company_id?: string | null
           created_at?: string
-          date_range?: string[] | null
+          filter_json_id?: string | null
           job_id?: string
-          schedule_id?: string | null
           scheduling_progress?: string | null
           sub_task_id?: string | null
           time_zone?: string | null
@@ -2488,17 +2488,17 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "public_scheduling-agent-chat-history_filter_json_id_fkey"
+            columns: ["filter_json_id"]
+            isOneToOne: true
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_scheduling-agent-chat-history_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "public_jobs"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_scheduling-agent-chat-history_schedule_id_fkey"
-            columns: ["schedule_id"]
-            isOneToOne: false
-            referencedRelation: "interview_schedule"
             referencedColumns: ["id"]
           },
           {
@@ -3841,6 +3841,13 @@ export type Database = {
       overviewgenerate: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      reorder_sessions: {
+        Args: {
+          sessions: Json
+          interview_plan_id: string
+        }
+        Returns: undefined
       }
       retrybatchcalcresumejdscore: {
         Args: Record<PropertyKey, never>
