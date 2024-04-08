@@ -595,7 +595,7 @@ const InterviewerPills = ({
   });
 };
 
-const SessionDurationField = ({
+export const SessionDurationField = ({
   value,
   handleChange,
 }: {
@@ -741,7 +741,7 @@ const InterviewModePills = ({
   );
 };
 
-const PanelIcon = () => (
+export const PanelIcon = () => (
   <svg
     width='24'
     height='24'
@@ -756,7 +756,7 @@ const PanelIcon = () => (
   </svg>
 );
 
-const IndividualIcon = () => (
+export const IndividualIcon = () => (
   <svg
     width='24'
     height='24'

@@ -35,6 +35,8 @@ export interface SchedulingApplication {
   selCoordinator: string | null;
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
+  isEditOpen: boolean;
+  editSession: SessionsType[0];
 }
 
 const initialState: SchedulingApplication = {
@@ -62,6 +64,8 @@ const initialState: SchedulingApplication = {
   selCoordinator: null,
   noOptions: false,
   isSendToCandidateOpen: false,
+  isEditOpen: false,
+  editSession: null,
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -73,8 +77,16 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
 
+export const setIsEditOpen = (isEditOpen: boolean) =>
+  useSchedulingApplicationStore.setState({ isEditOpen });
+
 export const setSelectedMeeting = (selectedMeeting: InterviewMeetingTypeDb) =>
   useSchedulingApplicationStore.setState({ selectedMeeting });
+
+export const setEditSession = (editSession: Partial<SessionsType[0]>) =>
+  useSchedulingApplicationStore.setState((state) => ({
+    editSession: { ...state.editSession, ...editSession },
+  }));
 
 export const setTotalSlots = (totalSlots: number) =>
   useSchedulingApplicationStore.setState({ totalSlots });

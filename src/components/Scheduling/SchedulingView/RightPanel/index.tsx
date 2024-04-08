@@ -66,7 +66,7 @@ function RightPanel({ schedule }: { schedule: TransformSchedule }) {
   useEffect(() => {
     setCoordinator(null);
     if (schedule) getCoordinator();
-  }, [schedule, router]);
+  }, [schedule]);
   if (!schedule) {
     return null;
   }

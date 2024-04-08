@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash';
+import { capitalize } from '@mui/material';
 
 import { DateInfoType } from '../types/resume_json.types';
 
@@ -8,7 +8,7 @@ export const getFullName = (firstName, lastName) => {
       .filter(Boolean)
       .map((s) => s.trim())
       .filter(Boolean)
-      .join(' ')
+      .join(' '),
   );
 };
 
@@ -73,7 +73,7 @@ function monthIndexToString(monthIndex) {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ];
 
   // Check if the month index is within a valid range

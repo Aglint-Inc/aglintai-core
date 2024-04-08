@@ -20,6 +20,7 @@ import FullSchedule from './FullSchedule';
 import { useGetScheduleApplication } from './hooks';
 import {
   resetSchedulingApplicationState,
+  setFetchingSchedule,
   setIsScheduleNowOpen,
   setTab,
   useSchedulingApplicationStore,
@@ -27,27 +28,27 @@ import {
 
 function SchedulingApplication() {
   const router = useRouter();
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
-  );
-  const scheduleName = useSchedulingApplicationStore(
-    (state) => state.scheduleName,
-  );
-  const fetchingSchedule = useSchedulingApplicationStore(
-    (state) => state.fetchingSchedule,
-  );
-  const tab = useSchedulingApplicationStore((state) => state.tab);
-  const selectedSessionIds = useSchedulingApplicationStore(
-    (state) => state.selectedSessionIds,
-  );
-  const initialSessions = useSchedulingApplicationStore(
-    (state) => state.initialSessions,
-  );
+  const {
+    fetchingSchedule,
+    initialSessions,
+    selectedSessionIds,
+    selectedApplication,
+    scheduleName,
+    tab,
+  } = useSchedulingApplicationStore((state) => ({
+    fetchingSchedule: state.fetchingSchedule,
+    initialSessions: state.initialSessions,
+    selectedSessionIds: state.selectedSessionIds,
+    selectedApplication: state.selectedApplication,
+    scheduleName: state.scheduleName,
+    tab: state.tab,
+  }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
+      setFetchingSchedule(true);
       fetchInterviewDataByApplication();
     }
     return () => {

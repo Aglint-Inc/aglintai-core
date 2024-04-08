@@ -5,7 +5,8 @@ import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
 import { PanelMemberPill } from '@/devlink2';
-import { AgentPill, TaskProgress } from '@/devlink3';
+import { AgentPill, TaskProgress, TranscriptCard } from '@/devlink3';
+import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
@@ -27,6 +28,7 @@ function SubTaskProgress() {
     const data = await handelGetTaskLog(selectedSubTaskId);
     setProgressList(data);
   }
+
   //   const { data: emailLog, isLoading: emailLogLoading } = useEmailAgentLog();
   //   if (emailLogLoading) {
   //     console.log('isLoading', emailLogLoading);
@@ -47,157 +49,183 @@ function SubTaskProgress() {
     }
   }, [selectedSubTaskId]);
   return (
-    <>
-      {progressList &&
-        progressList.map((item, i) => {
-          return (
-            <TaskProgress
-              key={i}
-              isTaskProgressVisible={true}
-              textTask={
-                <div
-                  dangerouslySetInnerHTML={{ __html: capitalize(item.title) }}
-                ></div>
-              }
-              slotImage={
-                <ShowCode>
-                  <ShowCode.When isTrue={item.created_by.id === EmailAgentId}>
-                    <Stack
-                      border={'1px solid'}
-                      borderColor={'grey.300'}
-                      borderRadius={'100%'}
-                      direction={'row'}
-                      alignItems={'center'}
-                      justifyContent={'center'}
-                      width={'24px'}
-                      height={'24px'}
-                    >
-                      <EmailAgentIcon />
-                    </Stack>
-                  </ShowCode.When>
-                  <ShowCode.When isTrue={item.created_by.id === PhoneAgentId}>
-                    <Stack
-                      border={'1px solid'}
-                      borderColor={'grey.300'}
-                      borderRadius={'100%'}
-                      direction={'row'}
-                      alignItems={'center'}
-                      justifyContent={'center'}
-                      width={'24px'}
-                      height={'24px'}
-                    >
-                      <PhoneAgentIcon />
-                    </Stack>
-                  </ShowCode.When>
-                  <ShowCode.Else>
-                    <MuiAvatar
-                      level={
-                        assignerList.find(
-                          (ele) => ele.user_id === item.created_by.id,
-                        ).first_name
-                      }
-                      src={
-                        assignerList.find(
-                          (ele) => ele.user_id === item.created_by.id,
-                        ).profile_image
-                      }
-                      variant='circular'
-                      width='24px'
-                      height='24px'
-                      fontSize='12px'
-                    />
-                  </ShowCode.Else>
-                </ShowCode>
-              }
-              textTime={dayjs(item.created_at).fromNow()}
-              textTimeCompleted={'sd'}
-              textResponseTitle={'Email Messages.'}
-              isTaskCompletedVisible={false}
-              isResponseVisible={item.progress_type === 'email_messages'}
-              isMailContentVisible={true}
-              slotMailContent={
-                <Stack direction={'column'} spacing={2}>
-                  {item?.jsonb_data?.map((ele, i) => {
-                    return (
-                      <Stack direction={'column'} spacing={1} key={i}>
-                        <Typography>
-                          <ShowCode>
-                            <ShowCode.When isTrue={ele.id === EmailAgentId}>
-                              <Stack width={150}>
-                                <AgentPill
-                                  isEmailAgentVisible
-                                  isPhoneAgentVisible={false}
-                                />
-                              </Stack>
-                            </ShowCode.When>
-                            <ShowCode.Else>
-                              <Stack width={150}>
-                                <PanelMemberPill
-                                  isCloseVisible={false}
-                                  textMemberName={
-                                    tasks
-                                      .map(
-                                        (item) => item.applications.candidates,
-                                      )
-                                      .find((item) => item.id === ele.id)
-                                      ?.first_name +
-                                    ' ' +
-                                    tasks
-                                      .map(
-                                        (item) => item.applications.candidates,
-                                      )
-                                      .find((item) => item.id === ele.id)
-                                      ?.last_name
-                                  }
-                                  slotImage={
-                                    <MuiAvatar
-                                      height={'25px'}
-                                      width={'25px'}
-                                      src={
-                                        tasks
-                                          .map(
-                                            (item) =>
-                                              item.applications.candidates,
-                                          )
-                                          .find((item) => item.id === ele.id)
-                                          ?.avatar
-                                      }
-                                      variant='circular'
-                                      fontSize='14px'
-                                      level={capitalize(
-                                        tasks
-                                          .map(
-                                            (item) =>
-                                              item.applications.candidates,
-                                          )
-                                          .find((item) => item.id === ele.id)
-                                          ?.first_name +
-                                          ' ' +
-                                          tasks
-                                            .map(
-                                              (item) =>
-                                                item.applications.candidates,
-                                            )
-                                            .find((item) => item.id === ele.id)
-                                            ?.last_name,
-                                      )}
-                                    />
-                                  }
-                                />
-                              </Stack>
-                            </ShowCode.Else>
-                          </ShowCode>
-                        </Typography>
-                        <Typography>{ele.message}</Typography>
-                      </Stack>
-                    );
-                  })}
-                </Stack>
-              }
-            />
-          );
-        })}
-    </>
+    <ShowCode>
+      <ShowCode.When isTrue={progressList === null}>
+        <Loader />
+      </ShowCode.When>
+      <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
+        {progressList
+          ? progressList.map((item, i) => {
+              const CandidateCreator = tasks
+                .map((ele) => ele.applications.candidates)
+                .find((ele) => ele.id === item.created_by.id);
+
+              const InterviewerCreator = assignerList.find(
+                (ele) => ele.user_id === item.created_by.id,
+              );
+
+              return (
+                <TaskProgress
+                  key={i}
+                  isTaskProgressVisible={true}
+                  textTask={
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: capitalize(item.title),
+                      }}
+                    ></div>
+                  }
+                  slotImage={
+                    <ShowCode>
+                      <ShowCode.When
+                        isTrue={item.created_by.id === EmailAgentId}
+                      >
+                        <Stack
+                          border={'1px solid'}
+                          borderColor={'grey.300'}
+                          borderRadius={'100%'}
+                          direction={'row'}
+                          alignItems={'center'}
+                          justifyContent={'center'}
+                          width={'24px'}
+                          height={'24px'}
+                        >
+                          <EmailAgentIcon />
+                        </Stack>
+                      </ShowCode.When>
+                      <ShowCode.When
+                        isTrue={item.created_by.id === PhoneAgentId}
+                      >
+                        <Stack
+                          border={'1px solid'}
+                          borderColor={'grey.300'}
+                          borderRadius={'100%'}
+                          direction={'row'}
+                          alignItems={'center'}
+                          justifyContent={'center'}
+                          width={'24px'}
+                          height={'24px'}
+                        >
+                          <PhoneAgentIcon />
+                        </Stack>
+                      </ShowCode.When>
+                      <ShowCode.When isTrue={!!CandidateCreator?.id}>
+                        <MuiAvatar
+                          level={CandidateCreator?.first_name}
+                          src={CandidateCreator?.avatar}
+                          variant='circular'
+                          width='24px'
+                          height='24px'
+                          fontSize='12px'
+                        />
+                      </ShowCode.When>
+                      <ShowCode.When isTrue={!!InterviewerCreator?.user_id}>
+                        <MuiAvatar
+                          level={InterviewerCreator?.first_name}
+                          src={InterviewerCreator?.profile_image}
+                          variant='circular'
+                          width='24px'
+                          height='24px'
+                          fontSize='12px'
+                        />
+                      </ShowCode.When>
+                    </ShowCode>
+                  }
+                  isTaskCompletedVisible={false}
+                  textTimeCompleted={'sd'}
+                  textTime={dayjs(item.created_at).fromNow()}
+                  isMailContentVisible={
+                    item.progress_type === 'call_completed' ||
+                    item.progress_type === 'email_messages'
+                  }
+                  slotMailContent={
+                    <ShowCode>
+                      <ShowCode.When
+                        isTrue={item.progress_type === 'email_messages'}
+                      >
+                        <Typography>{item.jsonb_data?.message}</Typography>
+                      </ShowCode.When>
+                      <ShowCode.When
+                        isTrue={
+                          item.progress_type === 'call_completed' &&
+                          Boolean(item.jsonb_data.length)
+                        }
+                      >
+                        <Stack
+                          maxHeight={400}
+                          overflow={'auto'}
+                          direction={'column'}
+                          gap={2}
+                        >
+                          {item.jsonb_data &&
+                            item.jsonb_data.length &&
+                            (
+                              item.jsonb_data as unknown as {
+                                id: string;
+                                message: string;
+                              }[]
+                            ).map((ele, i) => {
+                              const receiver = tasks
+                                .map((item) => item.applications.candidates)
+                                .find((item) => item.id === ele.id);
+                              return (
+                                <Stack gap={1} key={i}>
+                                  <TranscriptCard
+                                    isBackgroundActive={ele.id !== PhoneAgentId}
+                                    slotAgent={
+                                      <Stack width={150}>
+                                        <ShowCode>
+                                          <ShowCode.When
+                                            isTrue={ele.id === PhoneAgentId}
+                                          >
+                                            <AgentPill
+                                              isPhoneAgentVisible={true}
+                                              isEmailAgentVisible={false}
+                                            />
+                                          </ShowCode.When>
+                                          <ShowCode.Else>
+                                            <PanelMemberPill
+                                              isCloseVisible={false}
+                                              textMemberName={
+                                                receiver?.first_name +
+                                                ' ' +
+                                                receiver?.last_name
+                                              }
+                                              slotImage={
+                                                <MuiAvatar
+                                                  height={'25px'}
+                                                  width={'25px'}
+                                                  src={receiver?.avatar}
+                                                  variant='circular'
+                                                  fontSize='14px'
+                                                  level={capitalize(
+                                                    receiver?.first_name +
+                                                      ' ' +
+                                                      receiver?.last_name,
+                                                  )}
+                                                />
+                                              }
+                                            />
+                                          </ShowCode.Else>
+                                        </ShowCode>
+                                      </Stack>
+                                    }
+                                    textScript={ele.message}
+                                  />
+                                </Stack>
+                              );
+                            })}
+                        </Stack>
+                      </ShowCode.When>
+                    </ShowCode>
+                  }
+                />
+              );
+            })
+          : null}
+      </ShowCode.When>
+      <ShowCode.Else>Progress not found!</ShowCode.Else>
+    </ShowCode>
   );
 }
 
@@ -277,15 +305,21 @@ export function PhoneAgentIcon() {
 export function EmailAgentIcon() {
   return (
     <svg
-      width='16'
-      height='12'
-      viewBox='0 0 16 12'
+      width='25'
+      height='24'
+      viewBox='0 0 25 24'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
       <path
-        d='M2 1C1.70833 1 1.46875 1.09375 1.28125 1.28125C1.09375 1.46875 1 1.70833 1 2V3.25L7.125 7.71875C7.70833 8.11458 8.29167 8.11458 8.875 7.71875L15 3.25V2C15 1.70833 14.9062 1.46875 14.7188 1.28125C14.5312 1.09375 14.2917 1 14 1H2ZM1 4.5V10C1 10.2917 1.09375 10.5312 1.28125 10.7188C1.46875 10.9062 1.70833 11 2 11H14C14.2917 11 14.5312 10.9062 14.7188 10.7188C14.9062 10.5312 15 10.2917 15 10V4.5L9.46875 8.53125C9.03125 8.86458 8.54167 9.03125 8 9.03125C7.45833 9.03125 6.96875 8.86458 6.53125 8.53125L1 4.5ZM0 2C0.0208333 1.4375 0.21875 0.96875 0.59375 0.59375C0.96875 0.21875 1.4375 0.0208333 2 0H14C14.5625 0.0208333 15.0312 0.21875 15.4062 0.59375C15.7812 0.96875 15.9792 1.4375 16 2V10C15.9792 10.5625 15.7812 11.0312 15.4062 11.4062C15.0312 11.7812 14.5625 11.9792 14 12H2C1.4375 11.9792 0.96875 11.7812 0.59375 11.4062C0.21875 11.0312 0.0208333 10.5625 0 10V2Z'
+        d='M6 7C5.70833 7 5.46875 7.09375 5.28125 7.28125C5.09375 7.46875 5 7.70833 5 8V9.25L11.125 13.7188C11.7083 14.1146 12.2917 14.1146 12.875 13.7188L19 9.25V8C19 7.70833 18.9062 7.46875 18.7188 7.28125C18.5312 7.09375 18.2917 7 18 7H6ZM5 10.5V16C5 16.2917 5.09375 16.5312 5.28125 16.7188C5.46875 16.9062 5.70833 17 6 17H18C18.2917 17 18.5312 16.9062 18.7188 16.7188C18.9062 16.5312 19 16.2917 19 16V10.5L13.4688 14.5312C13.0312 14.8646 12.5417 15.0312 12 15.0312C11.4583 15.0312 10.9688 14.8646 10.5312 14.5312L5 10.5ZM4 8C4.02083 7.4375 4.21875 6.96875 4.59375 6.59375C4.96875 6.21875 5.4375 6.02083 6 6H18C18.5625 6.02083 19.0312 6.21875 19.4062 6.59375C19.7812 6.96875 19.9792 7.4375 20 8V16C19.9792 16.5625 19.7812 17.0312 19.4062 17.4062C19.0312 17.7812 18.5625 17.9792 18 18H6C5.4375 17.9792 4.96875 17.7812 4.59375 17.4062C4.21875 17.0312 4.02083 16.5625 4 16V8Z'
         fill='#FF6224'
+      />
+      <path
+        d='M22.9395 8.71844L22.9395 8.71845L24.0639 9L22.9395 9.28155L22.9395 9.28156L22.8975 9.29208C22.2419 9.45634 21.732 9.5841 21.3283 9.72903C20.9111 9.87884 20.5895 10.0528 20.3208 10.3197L20.3203 10.3203C20.0529 10.5877 19.8788 10.9097 19.729 11.3272C19.5847 11.7295 19.4574 12.2376 19.2941 12.8892L19.2816 12.9395L19.2815 12.9395L19 14.0639L18.7185 12.9395L18.7184 12.9395L18.7079 12.8975C18.5437 12.2419 18.4159 11.732 18.271 11.3283C18.1212 10.9111 17.9472 10.5895 17.6803 10.3208L17.6797 10.3203C17.4123 10.0529 17.0903 9.87877 16.6728 9.72901C16.2705 9.5847 15.7624 9.4574 15.1108 9.29415L15.0605 9.28156L15.0605 9.28155L13.9361 9L15.0605 8.71845L15.0605 8.71844L15.1025 8.70793C15.7581 8.54366 16.268 8.4159 16.6717 8.27097C17.0889 8.12116 17.4105 7.94716 17.6792 7.68026L17.6797 7.67972C17.9471 7.4123 18.1212 7.09033 18.271 6.67282C18.4153 6.2705 18.5426 5.7624 18.7059 5.11079L18.7184 5.06053L18.7185 5.06049L19 3.93608L19.2815 5.06049L19.2816 5.06053L19.2921 5.1025C19.4563 5.75813 19.5841 6.26804 19.729 6.6717C19.8788 7.08893 20.0528 7.41049 20.3197 7.67918L20.3203 7.67972C20.5877 7.94714 20.9097 8.12123 21.3272 8.27099C21.7295 8.4153 22.2376 8.5426 22.8892 8.70585L22.9395 8.71844Z'
+        fill='#FF6224'
+        stroke='white'
+        stroke-width='0.454737'
       />
     </svg>
   );
