@@ -588,16 +588,17 @@ export const fetchInterviewDataSchedule = async (
       ...item.interview_session,
       interview_meeting: item.interview_meeting,
       interview_module: item.interview_module,
-      users: item.interview_session_relations.interview_module_relation.map(
-        (sesitem) => ({
-          ...sesitem.interview_session_relation,
-          interview_module_relation: {
-            ...sesitem.interview_module_relation,
-            recruiter_user: sesitem.recruiter_user,
-          },
-          recruiter_user: sesitem.debrief_user,
-        }),
-      ),
+      users:
+        item.interview_session_relations?.interview_module_relation?.map(
+          (sesitem) => ({
+            ...sesitem.interview_session_relation,
+            interview_module_relation: {
+              ...sesitem.interview_module_relation,
+              recruiter_user: sesitem.recruiter_user,
+            },
+            recruiter_user: sesitem.debrief_user,
+          }),
+        ) || [],
     }));
 
     return {
