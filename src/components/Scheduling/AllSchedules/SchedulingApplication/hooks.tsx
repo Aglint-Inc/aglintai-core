@@ -7,10 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import {
   InterviewMeetingTypeDb,
+  InterviewPlanTypeDB,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
 } from '@/src/types/data.types';
@@ -18,14 +18,12 @@ import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { MemberType } from '../../Modules/types';
 import { mailHandler } from '../utils';
 import {
   SchedulingApplication,
   setFetchingPlan,
   setFetchingSchedule,
   setinitialSessions,
-  setMembers,
   setNoOptions,
   setScheduleName,
   setSchedulingOptions,
@@ -35,7 +33,10 @@ import {
   setStep,
   setTotalSlots,
 } from './store';
-import { getApplicationSchedule, SelectedApplicationTypeDB } from './types';
+import {
+  ApplicationDataResponseType,
+  InterviewDataResponseType,
+} from './types';
 
 export const useGetScheduleOptions = () => {
   const findScheduleOptions = async ({
@@ -319,7 +320,6 @@ export const createCloneSession = async ({
 
 export const useGetScheduleApplication = () => {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
   const fetchInterviewDataByApplication = async () => {
     try {
       const { data: schedule, error } = await supabase
@@ -330,27 +330,13 @@ export const useGetScheduleApplication = () => {
       if (!error) {
         setSelectedSchedule(schedule[0]);
 
-        const resMem = (await axios.post('/api/scheduling/fetchUserDetails', {
-          recruiter_id: recruiter.id,
-        })) as { data: MemberType[] };
-
-        if (resMem?.data?.length > 0) {
-          setMembers(resMem.data);
-        }
-
-        const res = await getApplicationSchedule({
-          application_id: router.query.application_id as string,
-        });
-
-        const typedApplication = res as SelectedApplicationTypeDB;
-        setSelectedApplication(typedApplication);
-
         if (schedule.length == 0) {
           const sessionsWithPlan = await fetchInterviewDataJob(
-            typedApplication.public_jobs.id,
+            router.query.application_id as string,
           );
+          setSelectedApplication(sessionsWithPlan.application);
           setScheduleName(
-            `Interview for ${typedApplication?.public_jobs?.job_title} - ${typedApplication?.candidates?.first_name}`,
+            `Interview for ${sessionsWithPlan.application?.public_jobs?.job_title} - ${sessionsWithPlan.application?.candidates?.first_name}`,
           );
           if (sessionsWithPlan.sessions.length > 0) {
             setinitialSessions(
@@ -364,32 +350,26 @@ export const useGetScheduleApplication = () => {
               setSelCoordinator(
                 sessionsWithPlan?.interviewPlan?.coordinator_id,
               );
-            } else {
-              const adminUserId = resMem.data.filter(
-                (member) => member.role === 'admin',
-              )[0]?.user_id;
-              adminUserId && setSelCoordinator(adminUserId);
             }
           }
         } else {
           const sessionsWithPlan = await fetchInterviewDataSchedule(
             schedule[0].id,
+            router.query.application_id as string,
           );
-          if (sessionsWithPlan.length > 0) {
+          setSelectedApplication(sessionsWithPlan.application);
+
+          if (sessionsWithPlan.sessions.length > 0) {
             setinitialSessions(
-              sessionsWithPlan.sort(
+              sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
                   itemA['session_order'] - itemB['session_order'],
               ),
             );
+
             setScheduleName(schedule[0].schedule_name);
             if (schedule[0].coordinator_id) {
               setSelCoordinator(schedule[0].coordinator_id);
-            } else {
-              const adminUserId = resMem.data.filter(
-                (member) => member.role === 'admin',
-              )[0]?.user_id;
-              adminUserId && setSelCoordinator(adminUserId);
             }
           }
         }
@@ -403,64 +383,94 @@ export const useGetScheduleApplication = () => {
   return { fetchInterviewDataByApplication };
 };
 
-export const fetchInterviewDataJob = async (job_id: string) => {
+export const fetchInterviewDataJob = async (application_id: string) => {
   try {
-    const { data: interviewPlan, error: interviewPlanError } = await supabase
-      .from('interview_plan')
-      .select('*')
-      .eq('job_id', job_id);
-
-    if (interviewPlanError) throw new Error(interviewPlanError.message);
-
-    if (interviewPlan.length == 0) {
-      return {
-        sessions: [],
-        interviewPlan: null,
+    const { data, error } = (await supabase.rpc('get_interview_data_job', {
+      application_id_param: application_id,
+    })) as {
+      data: {
+        interview_data: InterviewDataResponseType[];
+        interview_plan_data: InterviewPlanTypeDB;
+        application_data: ApplicationDataResponseType;
       };
-    }
+      error: any;
+    };
 
-    const { data: interviewSession, error: interviewSessionError } =
-      await supabase
-        .from('interview_session')
-        .select('*,interview_module(*)')
-        .eq('interview_plan_id', interviewPlan[0].id);
+    if (error) throw new Error(error.message);
 
-    if (interviewSessionError) throw new Error(interviewSessionError.message);
-
-    if (interviewSession.length == 0) {
-      return {
-        sessions: [],
-        interviewPlan: null,
-      };
-    }
-
-    const {
-      data: interviewSessionRelations,
-      error: interviewSessionRelationsError,
-    } = await supabase
-      .from('interview_session_relation')
-      .select(
-        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position)),recruiter_user(user_id,first_name,last_name,email,profile_image,position)',
-      )
-      .in(
-        'session_id',
-        interviewSession.map((session) => session.id),
-      );
-
-    if (interviewSessionRelationsError)
-      throw new Error(interviewSessionRelationsError.message);
-
-    const sessions = interviewSession.map((session) => ({
-      ...session,
+    const sessions = data.interview_data.map((item) => ({
+      ...item.interview_session,
       interview_meeting: null as InterviewMeetingTypeDb,
-      users: interviewSessionRelations.filter(
-        (relation) => relation.session_id === session.id,
+      interview_module: item.interview_module,
+      users: item.interview_session_relations.interview_module_relation.map(
+        (sesitem) => ({
+          ...sesitem.interview_session_relation,
+          interview_module_relation: {
+            ...sesitem.interview_module_relation,
+            recruiter_user: sesitem.recruiter_user,
+          },
+          recruiter_user: sesitem.debrief_user,
+        }),
       ),
     }));
 
     return {
-      sessions,
-      interviewPlan: interviewPlan[0],
+      sessions: sessions,
+      interviewPlan: data.interview_plan_data,
+      application: {
+        ...data.application_data.application,
+        candidate_files: data.application_data.candidate_files,
+        candidates: data.application_data.candidate,
+        public_jobs: data.application_data.public_jobs,
+      } as SchedulingApplication['selectedApplication'],
+    };
+  } catch (e) {
+    toast.error(e.message);
+  }
+};
+
+export const fetchInterviewDataSchedule = async (
+  schedule_id: string,
+  application_id: string,
+) => {
+  try {
+    const { data, error } = (await supabase.rpc('get_interview_data_schedule', {
+      schedule_id_param: schedule_id,
+      application_id_param: application_id,
+    })) as {
+      data: {
+        interview_data: InterviewDataResponseType[];
+        application_data: ApplicationDataResponseType;
+      };
+      error: any;
+    };
+
+    if (error) throw new Error(error.message);
+
+    const sessions = data.interview_data.map((item) => ({
+      ...item.interview_session,
+      interview_meeting: item.interview_meeting,
+      interview_module: item.interview_module,
+      users: item.interview_session_relations.interview_module_relation.map(
+        (sesitem) => ({
+          ...sesitem.interview_session_relation,
+          interview_module_relation: {
+            ...sesitem.interview_module_relation,
+            recruiter_user: sesitem.recruiter_user,
+          },
+          recruiter_user: sesitem.debrief_user,
+        }),
+      ),
+    }));
+
+    return {
+      sessions: sessions,
+      application: {
+        ...data.application_data.application,
+        candidate_files: data.application_data.candidate_files,
+        candidates: data.application_data.candidate,
+        public_jobs: data.application_data.public_jobs,
+      } as SchedulingApplication['selectedApplication'],
     };
   } catch (e) {
     toast.error(e.message);
@@ -527,57 +537,6 @@ export const fetchInterviewSessionTask = async ({
         (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
       ) as InterviewSessionTypeDB[];
     }
-  } catch (e) {
-    toast.error(e.message);
-  }
-};
-
-export const fetchInterviewDataSchedule = async (schedule_id: string) => {
-  try {
-    const { data: interviewMeetings, error: interviewSessionError } =
-      await supabase
-        .from('interview_meeting')
-        .select('*,interview_session(*,interview_module(*))')
-        .eq('interview_schedule_id', schedule_id);
-
-    if (interviewSessionError) throw new Error(interviewSessionError.message);
-
-    const {
-      data: interviewSessionRelations,
-      error: interviewSessionRelationsError,
-    } = await supabase
-      .from('interview_session_relation')
-      .select(
-        '*,interview_module_relation(*,recruiter_user(user_id,first_name,last_name,email,profile_image,position)),recruiter_user(user_id,first_name,last_name,email,profile_image,position)',
-      )
-      .in(
-        'session_id',
-        interviewMeetings.map((meet) => meet.interview_session.id),
-      );
-
-    if (interviewSessionRelationsError)
-      throw new Error(interviewSessionRelationsError.message);
-
-    const sessions = interviewMeetings.map((meet) => ({
-      ...meet.interview_session,
-      interview_meeting: {
-        end_time: meet.end_time,
-        id: meet.id,
-        instructions: meet.instructions,
-        session_id: meet.session_id,
-        start_time: meet.start_time,
-        status: meet.status,
-        interview_schedule_id: meet.interview_schedule_id,
-        meeting_json: meet.meeting_json,
-        meeting_link: meet.meeting_link,
-        created_at: meet.created_at,
-      } as InterviewMeetingTypeDb,
-      users: interviewSessionRelations.filter(
-        (relation) => relation.session_id === meet.interview_session.id,
-      ),
-    }));
-
-    return sessions;
   } catch (e) {
     toast.error(e.message);
   }
