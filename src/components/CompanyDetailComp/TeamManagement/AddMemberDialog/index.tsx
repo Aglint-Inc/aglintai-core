@@ -299,11 +299,12 @@ const AddMember = ({
                     }}
                     options={
                       [
-                        'CONTRACTOR',
-                        'FULLTIME',
-                        'PARTTIME',
+                        'contractor',
+                        'fulltime',
+                        'parttime',
                       ] as employmentTypeEnum[]
                     }
+                    getOptionLabel={(option) => capitalize(option)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
