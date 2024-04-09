@@ -48,7 +48,7 @@ function SideNavbar() {
       icon: <NavTask isActive={false} />,
       text: 'Tasks',
       SubComponents: null,
-      route: pageRoutes.TASKS,
+      route: pageRoutes.TASKS + '?myTasks',
       comingsoon: false,
       isvisible: isTasksEnabled,
       roles: [
@@ -179,7 +179,9 @@ function SideNavbar() {
                 borderRadius={'10px'}
                 bgcolor={
                   router.pathname.includes(
-                    item.route?.replace('/history', ''),
+                    item.route
+                      ?.replace('/history', '')
+                      .replaceAll('?myTasks', ''),
                   ) && 'rgba(233, 235, 237, 0.5)'
                 }
                 sx={{

@@ -1,5 +1,4 @@
 import { Task } from '@/devlink3';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvider';
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 
@@ -33,7 +32,6 @@ export type TaskType = {
 function TaskBody() {
   const { tasks, search, filter, handelSearch, handelFilter } =
     useTasksAgentContext();
-  const { userDetails } = useAuthDetails();
 
   return (
     <>
@@ -47,6 +45,7 @@ function TaskBody() {
               setValue: (e) => {
                 handelSearch(e);
               },
+              placeholder: 'Search by candidate\'s name or job title',
             }}
             filters={[
               {
@@ -88,23 +87,6 @@ function TaskBody() {
                 },
                 value: filter.jobTitle.values,
               },
-              {
-                type: 'button',
-                name: 'My Tasks',
-                active: filter.assignee.values.includes(userDetails?.user?.id),
-                onClick: () => {
-                  {
-                    filter.assignee.values = filter.assignee.values.includes(
-                      userDetails.user.id,
-                    )
-                      ? []
-                      : [userDetails.user.id];
-                    handelFilter({
-                      ...filter,
-                    });
-                  }
-                },
-              },
             ]}
           />
         }
@@ -113,7 +95,7 @@ function TaskBody() {
             <ShowCode.When isTrue={!!tasks}>
               {tasks &&
                 tasks.map((item, index) => {
-                  return <TaskCardBox  task={item} key={index} />;
+                  return <TaskCardBox task={item} index={index} key={index} />;
                 })}
             </ShowCode.When>
           </ShowCode>

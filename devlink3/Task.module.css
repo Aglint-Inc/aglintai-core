@@ -2,7 +2,7 @@
   display: flex;
   overflow: auto;
   height: 100%;
-  padding: 16px;
+  padding: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
@@ -11,6 +11,7 @@
 
 .div-block-1337 {
   display: flex;
+  padding: 16px 16px 0px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 16px;
@@ -19,8 +20,12 @@
 
 .task-card-wrapper {
   display: flex;
+  overflow: auto;
+  padding-right: 16px;
+  padding-left: 16px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  height: calc(100vh - 128px);
 }

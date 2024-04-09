@@ -5,7 +5,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import {
+  fetchInterviewSessionTask,
+  scheduleWithAgent,
+} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvider';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 
@@ -31,7 +35,7 @@ export const agentsDetails = [
 ];
 function AddSubTask({ taskId }: { taskId: string }) {
   let getEditorRef: () => Editor = null;
-
+  const { recruiter, recruiterUser } = useAuthDetails();
   const {
     selectedMemberId,
     setSelectedMemberId,
@@ -64,7 +68,7 @@ function AddSubTask({ taskId }: { taskId: string }) {
             "start_date":"extract the date and time ( MM-DD-YYYY HH:mm:ss ) if mentioned only else pass null",
             "completion_date":"extract the date and time ( MM-DD-YYYY HH:mm:ss ) if mentioned only else pass null",
             "status":"enum("completed" | "closed" | "pending" | "failed" |"in_progress")",
-            "agent":"enum("call"|"email"|null)"
+            // "agent":"enum("call"|"email"|null)"
             "assignee":"
             if(agent==='call')
             return ${PhoneAgentId}
@@ -85,7 +89,7 @@ function AddSubTask({ taskId }: { taskId: string }) {
     const assignee = selectedMemberId
       ? [selectedMemberId]
       : [taskData.assignee];
-    const agent = taskData.agent ? taskData.agent : null;
+    // const agent = taskData.agent ? taskData.agent : null;
     const start_date = taskData.start_date
       ? new Date(taskData.start_date)
       : selectedStartDate;
@@ -97,12 +101,37 @@ function AddSubTask({ taskId }: { taskId: string }) {
       data: {
         ...taskData,
         assignee,
-        agent,
+        agent: null,
         start_date,
         completion_date,
         task_id: taskId,
         session_ids: selectedSession,
       },
+    }).then((data) => {
+      // chinmai code for cron job
+      const selectedTask = tasks.find((item) => item.id === taskId);
+
+      if (assignee[0] === EmailAgentId || assignee[0] === PhoneAgentId) {
+        scheduleWithAgent({
+          application_id: selectedTask.application_id,
+          dateRange: {
+            start_date: start_date,
+            end_date: completion_date,
+          },
+          recruiter_id: recruiter.id,
+          recruiter_user_name:
+            recruiterUser.first_name + ' ' + recruiterUser.last_name,
+          session_ids: selectedSession,
+          sub_task_id: data.id,
+          type:
+            assignee[0] === EmailAgentId
+              ? 'email_agent'
+              : assignee[0] === PhoneAgentId
+                ? 'phone_agent'
+                : null,
+        });
+      }
+      //end
     });
 
     setSelectedMemberId(null);

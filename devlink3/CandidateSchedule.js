@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { FullScheduleCard } from "./FullScheduleCard";
@@ -48,7 +49,11 @@ export function CandidateSchedule({
         </_Builtin.Block>
         {isScheduleNowVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1327")}
+            className={_utils.cx(
+              _styles,
+              "div-block-1327",
+              "schedule-button-wrap"
+            )}
             tag="div"
           >
             {slotScheduleNowButton}

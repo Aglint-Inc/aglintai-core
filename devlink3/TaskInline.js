@@ -68,6 +68,11 @@ export function TaskInline({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1373")}
+        tag="div"
+        {...onClickOpen}
+      />
+      <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1363")}
         tag="div"
       >

@@ -26,7 +26,7 @@
   overflow: auto;
   padding-top: 20px;
   padding-right: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 60px;
   padding-left: 20px;
   height: calc(100vh - 112px);
 }
@@ -38,6 +38,23 @@
   right: 20px;
   bottom: 20px;
   z-index: 2;
+}
+
+.div-block-1327.schedule-button-wrap {
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+  z-index: 6;
+
+  display: flex;
+  padding: 16px 16px 16px 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  background-color: white;
 }
 
 .candidate-schedule-right-wrap {

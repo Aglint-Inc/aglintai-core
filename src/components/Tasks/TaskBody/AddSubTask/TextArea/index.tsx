@@ -24,7 +24,8 @@ function TextArea({
   dataList: assigneeType[];
   getEditorRef: any;
 }) {
-  let { isPopUpOpen, setIsPopUpOpen } = useTaskStatesContext();
+  let { isPopUpOpen, setIsPopUpOpen, setTaskId } = useTaskStatesContext();
+
   let editor = useEditor({
     autofocus: 0,
     extensions: [
@@ -165,6 +166,10 @@ function TextArea({
             if (pop_id) {
               setIsPopUpOpen(false);
             }
+          }
+
+          if (e.key === 'Escape') {
+            setTaskId(null);
           }
         }}
         onKeyUp={(e) => {
