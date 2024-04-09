@@ -490,8 +490,8 @@ const getAllTasks = (id: string) => {
         (typeof data)[number],
         'applications, recruiter_user'
       > & {
-        applications: (typeof data)[number]['applications'][number];
-        recruiter_user: (typeof data)[number]['recruiter_user'][number];
+        applications: (typeof data)[number]['applications'];
+        recruiter_user: (typeof data)[number]['recruiter_user'];
       })[];
       if (error) throw new Error(error.message);
       return temp;
@@ -521,8 +521,8 @@ const NewUpdateTasks = ({
         typeof data,
         'applications, recruiter_user'
       > & {
-        applications: (typeof data)['applications'][number];
-        recruiter_user: (typeof data)['recruiter_user'][number];
+        applications: (typeof data)['applications'];
+        recruiter_user: (typeof data)['recruiter_user'];
       };
       if (error) throw new Error(error.message);
       return temp;

@@ -64,7 +64,7 @@ const FeedbackWindow = ({
       (relationsData || []) as unknown as {
         session_id: string;
         feedback: (typeof relationsData)[number]['feedback'];
-        interview_module_relation: (typeof relationsData)[number]['interview_module_relation'][number];
+        interview_module_relation: (typeof relationsData)[number]['interview_module_relation'];
       }[]
     ).filter((item) => Boolean(item.interview_module_relation?.id));
 
