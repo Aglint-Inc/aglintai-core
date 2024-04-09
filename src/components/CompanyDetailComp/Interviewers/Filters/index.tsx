@@ -71,20 +71,19 @@ function Filters({ setFilteredInterviewer }) {
   useEffect(() => {
     const filtered = interviewers.filter((interviewer) => {
       const qualifiedModuleMatch =
-        !selectedQualifiedModule.length ||
+        selectedQualifiedModule.length &&
         selectedQualifiedModule.every((element) =>
           interviewer.qualified_module_names.includes(element),
         );
-
       const trainingModuleMatch =
-        !selectedTrainingModule.length ||
+        selectedTrainingModule.length &&
         selectedTrainingModule.every((element) =>
           interviewer.training_module_names.includes(element),
         );
 
-      return qualifiedModuleMatch && trainingModuleMatch;
+      return qualifiedModuleMatch || trainingModuleMatch;
     });
-    setFilteredInterviewer(filtered);
+    setFilteredInterviewer(filtered.length ? filtered : interviewers);
   }, [selectedQualifiedModule, selectedTrainingModule]);
 
   // filters by column END

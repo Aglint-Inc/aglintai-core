@@ -51,8 +51,11 @@ function Scheduling() {
           setRecruiter(data);
         });
       } else {
-        toast.warning('Please select file!');
-        return;
+        await updateRecruiter(recruiter.id, {
+          google_workspace_domain,
+        } as RecruiterType).then((data: RecruiterType) => {
+          setRecruiter(data);
+        });
       }
     }
     if (reason === 'disconnect_google_workSpace') {
