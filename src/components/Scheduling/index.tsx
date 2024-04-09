@@ -21,7 +21,7 @@ import {
   useModulesStore,
 } from './Modules/store';
 import MySchedule from './MySchedule';
-import SettingsScheduling from './Settings';
+import SchedulingSettings from './Settings';
 import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
 import { SchedulingTab } from './types';
@@ -125,7 +125,7 @@ function SchedulingMainComp() {
                 ])
               ) : tab == 'settings' ? (
                 allowAction(
-                  <SettingsScheduling
+                  <SchedulingSettings
                     updateSettings={updateSettings}
                     initialData={recruiter?.scheduling_settings}
                   />,

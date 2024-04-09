@@ -16,6 +16,10 @@ export type schedulingSettingType = {
     free: any[];
     SoftConflicts: any[];
   };
+  break_hour: {
+    break_at: string;
+    break_time: string;
+  };
 };
 export type holidayType = {
   date: string;

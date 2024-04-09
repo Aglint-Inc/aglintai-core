@@ -8,7 +8,7 @@ function SelectTime({
   value,
   onSelect,
 }: {
-  i: number;
+  i?: number;
   value: any;
   onSelect: any;
 }) {

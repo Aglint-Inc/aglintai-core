@@ -77,6 +77,11 @@ function SchedulingSettings({
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
 
+  const [selectedHourBreak, setSelectedHourBreak] = useState<{
+    break_at: string;
+    break_time: string;
+  } | null>({ break_at: '', break_time: '' });
+
   const handleSelectWeeklyType = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
       pre.type = value.target.value as string;
@@ -166,6 +171,10 @@ function SchedulingSettings({
       setSoftConflictsKeyWords(
         schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
       );
+      setSelectedHourBreak({
+        break_at: schedulingSettingData.break_hour?.break_at,
+        break_time: schedulingSettingData.break_hour?.break_time,
+      });
     }
   }
 
@@ -184,6 +193,10 @@ function SchedulingSettings({
           SoftConflicts: softConflictsKeyWords,
         },
         isAutomaticTimezone: isTimeZone,
+        break_hour: {
+          break_at: selectedHourBreak.break_at,
+          break_time: selectedHourBreak.break_time,
+        },
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -201,6 +214,7 @@ function SchedulingSettings({
     freeKeyWords,
     softConflictsKeyWords,
     isTimeZone,
+    selectedHourBreak,
   ]);
 
   useEffect(() => {
@@ -268,7 +282,7 @@ function SchedulingSettings({
             }
             // slotTimeZoneToggle={}
             slotWorkingHourDay={
-              <>
+              <Stack>
                 {!!workingHours.length &&
                   workingHours.map((day, i) => {
                     return (
@@ -337,7 +351,66 @@ function SchedulingSettings({
                       </>
                     );
                   })}
-              </>
+
+                <Stack direction={'column'} spacing={1}>
+                  <Stack direction={'column'} spacing={0.5}>
+                    <Typography variant='body1' fontSize={'15px'}>
+                      Break Hour
+                    </Typography>
+                    <Typography variant='body2'>
+                      Setup company Break hour.
+                    </Typography>
+                  </Stack>
+                  <Stack spacing={1} direction={'column'}>
+                    <Stack direction={'row'} alignItems={'center'} gap={1}>
+                      <Typography fontSize={'14px'}>Break Time</Typography>
+                      <MuiSelect
+                        dataset={['30', '45', '60', '120']}
+                        handleSelect={(event) => {
+                          const value = event.target.value as unknown as string;
+                          setSelectedHourBreak((pre) => {
+                            pre.break_time = value;
+                            return { ...pre };
+                          });
+                        }}
+                        value={selectedHourBreak?.break_time}
+                      />
+                      <Typography fontSize={'14px'}>Minutes</Typography>
+                    </Stack>
+                    <Stack
+                      spacing={3.5}
+                      direction={'row'}
+                      alignItems={'center'}
+                    >
+                      <Typography fontSize={'14px'}>Break at</Typography>
+                      {selectedHourBreak.break_at && (
+                        <SelectTime
+                          value={dayjs()
+                            .set(
+                              'hour',
+                              parseInt(
+                                selectedHourBreak?.break_at?.split(':')[0],
+                              ),
+                            )
+                            .set(
+                              'minute',
+                              parseInt(
+                                selectedHourBreak?.break_at?.split(':')[1],
+                              ),
+                            )}
+                          onSelect={(e) => {
+                            setSelectedHourBreak((pre) => {
+                              pre.break_at = `${dayjs(e).format('HH:mm')}`;
+                              return { ...pre };
+                            });
+                          }}
+                          key={0}
+                        />
+                      )}
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </Stack>
             }
             slotTimeZoneToggle={
               <ToggleBtn
