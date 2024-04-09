@@ -24,6 +24,7 @@ export type CustomDatabase = {
                 > & {
                   feedback?: interview_meeting_user_feedback;
                 };
+                Relationships: Database['public']['Tables'][Table]['Relationships'];
               }
             : Table extends 'tasks'
               ? {
@@ -45,6 +46,7 @@ export type CustomDatabase = {
                   > & {
                     created_by?: task_created_by;
                   };
+                  Relationships: Database['public']['Tables'][Table]['Relationships'];
                 }
               : Table extends 'sub_task_progress'
                 ? {
@@ -69,6 +71,7 @@ export type CustomDatabase = {
                       created_by?: task_created_by;
                       jsonb_data?: sub_task_log_jsonb_data;
                     };
+                    Relationships: Database['public']['Tables'][Table]['Relationships'];
                   }
                 : Database['public']['Tables'][Table];
         }
