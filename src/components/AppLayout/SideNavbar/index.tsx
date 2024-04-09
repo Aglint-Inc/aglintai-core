@@ -48,7 +48,7 @@ function SideNavbar() {
       icon: <NavTask isActive={false} />,
       text: 'Tasks',
       SubComponents: null,
-      route: pageRoutes.TASKS + '?myTask',
+      route: pageRoutes.TASKS + '?myTasks',
       comingsoon: false,
       isvisible: isTasksEnabled,
       roles: [
