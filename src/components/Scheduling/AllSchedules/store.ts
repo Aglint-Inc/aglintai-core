@@ -48,7 +48,7 @@ const initialState: InterviewSlice = {
     textSearch: '',
     status: ['not_scheduled'],
     sortBy: 'asc',
-    job_ids: [],
+    job_ids: ['01387eb0-5ba4-4ac8-a6f6-f94ef7164eb0'],
     module_ids: [],
     dateRange: null,
     coordinator_ids: [],
@@ -59,7 +59,7 @@ const initialState: InterviewSlice = {
     total: 0,
   },
   fetching: false,
-  filterVisible: [FilterType.status],
+  filterVisible: [FilterType.status,FilterType.relatedJobs],
   isRescheduleOpen: false,
   isCancelOpen: false,
 };
