@@ -127,7 +127,7 @@ export const getScheduleData = async (job_id: string) => {
     },
   );
   if (error) throw new Error(error.message);
-  return data as DashboardTypes['schedules'];
+  return data as unknown as DashboardTypes['schedules'];
 };
 
 const getResumeMatch = async (job_id: string) => {

@@ -11,12 +11,16 @@ import { type Assessment } from '@/src/queries/assessment/types';
 import LevelIcon from '../Common/icons/levels';
 import TypeIcon from '../Common/icons/types';
 import StatusTag from '../Common/tags/status';
+import useAssessmentStore from '../Stores';
 
 const AssessmentCard: React.FC<{
   id: string;
   assessment: Assessment;
 }> = ({ id, assessment }) => {
   const router = useRouter();
+  const setCurrentQuestion = useAssessmentStore(
+    (state) => state.setCurrentQuestion,
+  );
   return (
     <AssementCardDev
       textAssessmentName={assessment.title}
@@ -28,7 +32,12 @@ const AssessmentCard: React.FC<{
         />
       }
       slotAssessmentType={<TypeIcon type={assessment.type} />}
-      onClickCard={{ onClick: () => router.push(`/assessment-new/${id}`) }}
+      onClickCard={{
+        onClick: () => {
+          if (assessment.duration) setCurrentQuestion(0);
+          router.push(`/assessment-new/${id}`);
+        },
+      }}
       slotAssessmentStatus={<StatusTag jobs={assessment.jobs} />}
     />
   );

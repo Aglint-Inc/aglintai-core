@@ -36,7 +36,10 @@ export type DashboardTypes = {
     average_tenure: number;
     average_experience: number;
   };
-  schedules: Omit<TransformSchedule, 'applications' | 'job' | 'file'>[];
+  schedules: Omit<
+    TransformSchedule,
+    'applications' | 'job' | 'file' | 'schedule'
+  >[];
 };
 
 type Matches =
