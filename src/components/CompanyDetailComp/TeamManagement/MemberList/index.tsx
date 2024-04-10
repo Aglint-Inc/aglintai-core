@@ -148,7 +148,13 @@ const Member = ({
         }}
         userStatusText={
           <Stack>
-            {capitalize(member.is_suspended ? 'Suspended' : member.join_status)}
+            {capitalize(
+              member.is_suspended
+                ? 'Suspended'
+                : member.join_status === 'joined'
+                  ? 'Active'
+                  : member.join_status,
+            )}
           </Stack>
         }
         onClickRemove={{
