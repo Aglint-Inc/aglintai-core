@@ -69,10 +69,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       job_role: cand_details.job_role,
       end_date: convertDateFormatToDayjs(cand_details.filter_json.end_date)
         .tz(cand_details.filter_json.user_tz)
-        .format('DD/MM/YYYY'),
+        .format('DD MMMM'),
       start_date: convertDateFormatToDayjs(cand_details.filter_json.start_date)
         .tz(cand_details.filter_json.user_tz)
-        .format('DD/MM/YYYY'),
+        .format('DD MMMM'),
       organizer_time_zone,
       candidate_time_zone: cand_details.filter_json.user_tz,
     });
