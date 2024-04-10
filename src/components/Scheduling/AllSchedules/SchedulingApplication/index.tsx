@@ -33,7 +33,6 @@ import {
   setDateRange,
   setFetchingSchedule,
   setinitialSessions,
-  setIsScheduleNowOpen,
   setSelectedSessionIds,
   setTab,
   useSchedulingApplicationStore,
@@ -241,7 +240,6 @@ function SchedulingApplication() {
                               session_ids: selectedSessionIds,
                               rec_id: recruiter.id,
                             });
-                            setIsScheduleNowOpen(true);
                           }
                         },
                       }}

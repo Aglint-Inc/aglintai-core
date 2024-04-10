@@ -46,7 +46,7 @@ export enum FilterType {
 const initialState: InterviewSlice = {
   filter: {
     textSearch: '',
-    status: ['not_scheduled', 'ongoing'],
+    status: ['not_scheduled'],
     sortBy: 'asc',
     job_ids: [],
     module_ids: [],

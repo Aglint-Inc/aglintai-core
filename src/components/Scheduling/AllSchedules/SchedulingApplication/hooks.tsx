@@ -25,6 +25,7 @@ import {
   setFetchingPlan,
   setFetchingSchedule,
   setinitialSessions,
+  setIsScheduleNowOpen,
   setNoOptions,
   setScheduleName,
   setSchedulingOptions,
@@ -69,12 +70,11 @@ export const useGetScheduleOptions = () => {
           total: number;
         };
         if (respTyped.plan_combs.length === 0) {
-          setNoOptions(true);
-          setStep(1);
+          toast.error('No slots available');
         } else {
           setTotalSlots(respTyped.total);
           setSchedulingOptions(respTyped.plan_combs);
-          setStep(2);
+          setIsScheduleNowOpen(true);
         }
       } else {
         setStep(1);
@@ -530,6 +530,7 @@ export const fetchInterviewSessionTask = async ({
           .from('interview_meeting')
           .select('*,interview_session!inner(*)')
           .eq('interview_schedule_id', schedule[0].id)
+          .neq('interview_session.session_type', 'debrief')
           .or('status.eq.not_scheduled,status.eq.cancelled');
 
       if (interviewSessionError) throw new Error(interviewSessionError.message);

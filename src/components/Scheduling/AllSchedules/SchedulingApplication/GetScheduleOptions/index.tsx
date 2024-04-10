@@ -102,6 +102,12 @@ function GetScheduleOptionsDialog() {
     .filter((ses) => selectedSessionIds.includes(ses.id))
     .some((ses) => ses.session_type == 'debrief');
 
+  const resetState = () => {
+    setIsScheduleNowOpen(false);
+    setSchedulingOptions([]);
+    setSelectedSessionIds([]);
+  };
+
   return (
     <>
       <Dialog
@@ -115,13 +121,13 @@ function GetScheduleOptionsDialog() {
         maxWidth='xl'
         open={isScheduleNowOpen}
         onClose={() => {
-          setIsScheduleNowOpen(false);
+          resetState();
         }}
       >
         <ScheduleOptions
           onClickClose={{
             onClick: () => {
-              setIsScheduleNowOpen(false);
+              resetState();
             },
           }}
           slotSendtoCandidateButton={

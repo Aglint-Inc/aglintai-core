@@ -18,19 +18,19 @@ function MoveToQualifiedDialog({ editModule }: { editModule: ModuleType }) {
   const selUser = useModulesStore((state) => state.selUser);
   const queryClient = useQueryClient();
 
-  const moveToQualified = async (user_id: string) => {
+  const moveToQualified = async () => {
     try {
       const { error } = await supabase
         .from('interview_module_relation')
         .update({ training_status: 'qualified' })
-        .match({ user_id: user_id, module_id: editModule.id });
+        .match({ user_id: selUser.user_id, module_id: editModule.id });
       if (error) {
         throw new Error(error.message);
       }
       const updatedEditModule = {
         ...editModule,
         relations: editModule.relations.map((rel) => {
-          if (rel.user_id === user_id) {
+          if (rel.user_id === selUser.user_id) {
             return { ...rel, training_status: 'qualified' };
           }
           return rel;
