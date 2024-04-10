@@ -90,7 +90,7 @@ export default async function handler(req, res) {
       log_msg: 'Candidate Agent chat',
       sub_task_id: agent_payload.payload.sub_task_id,
       agent_type: 'email_agent',
-      transcript: data.new_history.map((c) => {
+      transcript: data.new_history.slice(-2).map((c) => {
         if (c.type === 'assistant') {
           return {
             id: EmailAgentId,
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
           };
         }
         return {
-          id: agent_payload.payload.application_id,
+          id: agent_payload.payload.candidate_id,
           message: c.value,
         };
       }),
