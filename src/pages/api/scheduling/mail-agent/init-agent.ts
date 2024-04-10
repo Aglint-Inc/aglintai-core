@@ -86,24 +86,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .delete()
         .eq('candidate_email', cand_email),
     );
-    supabaseWrap(
-      await supabaseAdmin.from('scheduling-agent-chat-history').insert({
-        application_id: cand_details.application_id,
-        job_id: cand_details.job_id,
-        candidate_email: cand_email,
-        scheduling_progress: status,
-        chat_history: [
-          {
-            type: 'assistant',
-            value: initMailBody,
-          },
-        ],
-        company_id: cand_details.company_id,
-        filter_json_id: filter_json_id,
-        time_zone: cand_details.time_zone,
-        sub_task_id: sub_task_id,
-      }),
-    );
+    if (sub_task_id) {
+      supabaseWrap(
+        await supabaseAdmin.from('scheduling-agent-chat-history').insert({
+          application_id: cand_details.application_id,
+          job_id: cand_details.job_id,
+          candidate_email: cand_email,
+          scheduling_progress: status,
+          chat_history: [
+            {
+              type: 'assistant',
+              value: initMailBody,
+            },
+          ],
+          company_id: cand_details.company_id,
+          filter_json_id: filter_json_id,
+          time_zone: cand_details.time_zone,
+          sub_task_id: sub_task_id,
+        }),
+      );
+    }
+
     await sendEmailFromAgent({
       candidate_email: cand_email,
       from_name: cand_details.company_name,
@@ -113,14 +116,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }`,
     });
 
-    supabaseWrap(
-      await supabaseAdmin
-        .from('sub_tasks')
-        .update({
-          status: 'in_progress',
-        })
-        .eq('id', sub_task_id),
-    );
+    if (sub_task_id) {
+      supabaseWrap(
+        await supabaseAdmin
+          .from('sub_tasks')
+          .update({
+            status: 'in_progress',
+          })
+          .eq('id', sub_task_id),
+      );
+    }
+
     await log_task_progress({
       agent_type: 'email_agent',
       log_msg: 'Sent interview schedule email to {candidate}',
