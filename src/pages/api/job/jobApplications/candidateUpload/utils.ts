@@ -251,6 +251,49 @@ export const createFile = async (
   return data[0];
 };
 
+export const reCreateFile = async (
+  supabase: Supabase,
+  candidate_id: string,
+  file_url: string,
+  candidate_file_id: string,
+  contentType: keyof typeof supportedTypes,
+  tries: number = 0,
+  prev_error?: PostgrestError,
+  signal?: CandidateCreateAction['request']['signal'],
+): Promise<CandidateFiles> => {
+  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  const timerSignal = new AbortController();
+  const timeout = setTimeout(() => timerSignal.abort(), 25000);
+  await supabase
+    .from('candidate_files')
+    .delete()
+    .eq('candidate_id', candidate_id)
+    .eq('type', 'resume');
+  const { data, error } = await supabase
+    .from('candidate_files')
+    .insert({ candidate_id, type: 'resume', file_url, id: candidate_file_id })
+    .select()
+    .abortSignal(signal)
+    .abortSignal(timerSignal.signal);
+  clearTimeout(timeout);
+  if (error) {
+    if (tries < MAX_TRIES)
+      return await reCreateFile(
+        supabase,
+        candidate_id,
+        file_url,
+        candidate_file_id,
+        contentType,
+        tries,
+        error,
+        signal,
+      );
+    throw new Error(error.message);
+  }
+  // console.log('NEW CANDIDATE FILE CREATED');
+  return data[0];
+};
+
 export const deleteFile = async (
   supabase: Supabase,
   candidate_file_id: CandidateDeleteAction['request']['inputData'],
@@ -307,6 +350,41 @@ export const createApplication = async (
         supabase,
         job_id,
         candidate_id,
+        candidate_file_id,
+        tries,
+        error,
+        signal,
+      );
+    throw new Error(error.message);
+  }
+  // console.log('NEW CANDIDATE APPLICATION CREATED');
+  return data[0];
+};
+
+export const reProcessApplication = async (
+  supabase: Supabase,
+  application_id: string,
+  candidate_file_id: string,
+  tries: number = 0,
+  prev_error?: PostgrestError,
+  signal?: CandidateCreateAction['request']['signal'],
+): Promise<Applications> => {
+  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  const timerSignal = new AbortController();
+  const timeout = setTimeout(() => timerSignal.abort(), 15000);
+  const { data, error } = await supabase
+    .from('applications')
+    .update({ candidate_file_id, processing_status: 'not started' })
+    .eq('id', application_id)
+    .select()
+    .abortSignal(signal)
+    .abortSignal(timerSignal.signal);
+  clearTimeout(timeout);
+  if (error) {
+    if (tries < MAX_TRIES)
+      return await reProcessApplication(
+        supabase,
+        application_id,
         candidate_file_id,
         tries,
         error,

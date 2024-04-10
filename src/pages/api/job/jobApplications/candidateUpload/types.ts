@@ -56,6 +56,20 @@ export type ResumeUploadApi = {
   }[];
 };
 
+export type ResumeReuploadApi = {
+  request: {
+    [UploadApiFormData.PARAMS]: {
+      candidate_id: string;
+      application_id: string;
+    };
+    [UploadApiFormData.FILES]: FormData;
+  };
+  response: {
+    confirmation: boolean;
+    error: PostgrestError['message'];
+  };
+};
+
 export enum UploadApiFormData {
   // eslint-disable-next-line no-unused-vars
   PARAMS = 'params',

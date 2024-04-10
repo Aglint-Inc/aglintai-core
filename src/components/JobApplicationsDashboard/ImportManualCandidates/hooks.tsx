@@ -1,9 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { createBatches } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 import {
   CsvUploadApi,
-  UploadApiFormData
+  UploadApiFormData,
 } from '@/src/pages/api/job/jobApplications/candidateUpload/types';
 import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/utils';
 import { CandidateInsert } from '@/src/types/candidates.types';
@@ -16,7 +17,7 @@ const useUploadCandidate = () => {
   const handleUploadCandidate = async (
     candidate: Omit<CandidateInsert, 'recruiter_id'>,
     file: File,
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => {
     const formData = new FormData();
     formData.append(UploadApiFormData.FILES, file);
@@ -28,19 +29,41 @@ const useUploadCandidate = () => {
         last_name: candidate.last_name,
         phone: candidate.phone || null,
         linkedin: candidate.linkedin || null,
-        recruiter_id: job.recruiter_id
+        recruiter_id: job.recruiter_id,
       },
-      files: formData
+      files: formData,
     };
     const response = await handleJobApplicationApi(
       'candidateUpload/manualUpload',
       request,
-      signal
+      signal,
     );
     if (response.confirmation) {
       await handleJobApplicationPaginate(pageNumber[section], section);
       toast.success('Candidates uploaded');
     } else if (response.error) toast.error(response.error);
+    return response;
+  };
+
+  const handleResumeReupload = async (
+    file: File,
+    application: Pick<JobApplication, 'id' | 'candidate_id'>,
+    signal?: AbortSignal,
+  ) => {
+    const formData = new FormData();
+    formData.append(UploadApiFormData.FILES, file);
+    const request = {
+      params: {
+        candidate_id: application.candidate_id,
+        application_id: application.id,
+      },
+      files: formData,
+    };
+    const response = await handleJobApplicationApi(
+      'candidateUpload/resumeReupload',
+      request,
+      signal,
+    );
     return response;
   };
 
@@ -50,21 +73,21 @@ const useUploadCandidate = () => {
     const request = {
       params: {
         job_id: job.id,
-        recruiter_id: job.recruiter_id
+        recruiter_id: job.recruiter_id,
       },
-      files: formData
+      files: formData,
     };
     const response = await handleJobApplicationApi(
       'candidateUpload/resumeUpload',
       request,
-      signal
+      signal,
     );
     return response;
   };
 
   const handleBulkResumeUpload = async (
     files: File[],
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => {
     const batches = createBatches(files, 5);
     const promises = batches
@@ -82,12 +105,12 @@ const useUploadCandidate = () => {
       toast.success(
         `${successCount} resume${
           successCount === 1 ? '' : 's'
-        } successfully uploaded!`
+        } successfully uploaded!`,
       );
     }
     if (failedCount > 0) {
       toast.error(
-        `${failedCount} resume${failedCount === 1 ? '' : 's'} failed to upload`
+        `${failedCount} resume${failedCount === 1 ? '' : 's'} failed to upload`,
       );
     }
     return { confirmation: true, error: null };
@@ -95,17 +118,17 @@ const useUploadCandidate = () => {
 
   const handleBulkCsvUpload = async (
     candidates: CsvUploadApi['request']['candidates'],
-    signal?: AbortSignal
+    signal?: AbortSignal,
   ) => {
     const formData = {
       job_id: job.id,
       recruiter_id: job.recruiter_id,
-      candidates
+      candidates,
     };
     const response = await handleJobApplicationApi(
       'candidateUpload/csvUpload',
       formData,
-      signal
+      signal,
     );
     if (response.confirmation) {
       await handleJobApplicationPaginate(pageNumber[section], section);
@@ -114,7 +137,12 @@ const useUploadCandidate = () => {
     return response;
   };
 
-  return { handleUploadCandidate, handleBulkResumeUpload, handleBulkCsvUpload };
+  return {
+    handleUploadCandidate,
+    handleBulkResumeUpload,
+    handleBulkCsvUpload,
+    handleResumeReupload,
+  };
 };
 
 export default useUploadCandidate;

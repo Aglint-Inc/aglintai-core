@@ -246,6 +246,15 @@
   opacity: 0.8;
 }
 
+.text-blue-500.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .div-block-1322 {
   position: absolute;
   left: 0%;

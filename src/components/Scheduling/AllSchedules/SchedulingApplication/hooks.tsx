@@ -730,3 +730,36 @@ const agentTrigger = async ({
     toast.error(e.message);
   }
 };
+
+export const fetchInterviewMeetingProgresstask = async ({
+  session_ids,
+}: {
+  session_ids: string[];
+}) => {
+  try {
+    const { data: intSes, error: errSes } = await supabase
+      .from('interview_session')
+      .select('*')
+      .in('id', session_ids);
+
+    if (errSes) throw new Error(errSes.message);
+
+    const { data: intMeet, error: errMeet } = await supabase
+      .from('interview_meeting')
+      .select('*')
+      .in('session_id', session_ids);
+
+    if (errMeet) throw new Error(errMeet.message);
+
+    const resMeetings = intSes.map((session) => ({
+      interview_session: session,
+      interview_meeting: intMeet.filter(
+        (meeting) => meeting.session_id === session.id,
+      )[0],
+    }));
+
+    return resMeetings;
+  } catch (e) {
+    toast.error(e.message);
+  }
+};
