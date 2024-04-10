@@ -18,7 +18,7 @@ function SubNav() {
   }[] = [
     { text: 'my Schedules' },
     { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'interview Modules', roles: ['admin', 'recruiter', 'scheduler'] },
+    { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] },
   ];
