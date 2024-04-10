@@ -18,6 +18,7 @@ type GeoPoint = {
 };
 
 // import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
+import { EmailAgentId } from '@/src/components/Tasks/utils';
 import {
   CandidateType,
   InterviewFilterJsonType,
@@ -114,10 +115,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     await log_task_progress({
       agent_type: 'email_agent',
-      is_completed: false,
       log_msg: 'Sent interview schedule email to {candidate}',
       sub_task_id: sub_task_id,
       candidate_name: cand_details.candidate_name,
+      created_by: {
+        id: EmailAgentId,
+        name: 'Email Agent',
+      },
     });
     return res.status(200).send('ok');
   } catch (error) {
