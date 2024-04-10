@@ -70,6 +70,27 @@ export const useJobSchedules = () => {
   return response;
 };
 
+export const useJobInterviewPlanEnabled = () => {
+  const { job_id, job } = useCurrentJob();
+  const { queryKey } = jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
+  const response = useQuery({
+    queryKey,
+    enabled: !!job,
+    queryFn: () => getInterviewPlanEnabled(job_id),
+  });
+  return response;
+};
+
+const getInterviewPlanEnabled = async (job_id: string) => {
+  const { data, error } = await supabase
+    .from('interview_plan')
+    .select('interview_session(id)')
+    .eq('job_id', job_id);
+  if (error) throw new Error(error.message);
+  if (data.length === 0) return false;
+  return data[0].interview_session.length > 0;
+};
+
 const getTenureAndExperience = async (job_id: string) => {
   const { data, error } = await supabase.rpc('getexperienceandtenure', {
     jobid: job_id,

@@ -68,13 +68,7 @@ export default async function handler(req, res) {
     //clean incoming email body
     const cleaned_email_body = raw_email_body
       .split('\r\n')
-      .filter(
-        (s) =>
-          !(
-            s.startsWith('> ') ||
-            s.includes('<agent@parse.aglinthq.com> wrote:')
-          ),
-      )
+      .filter((s) => !(s.includes('>') || s.endsWith('wrote:')))
       .filter((s) => s.length > 0)
       .join('\r\n');
 

@@ -35,6 +35,13 @@ export const jobDashboardQueryKeys = {
   schedules: ({ job_id }: { job_id: string }) => ({
     queryKey: [...jobDashboardQueryKeys.all.queryKey, { job_id }, 'schedules'],
   }),
+  interviewPlanEnabled: ({ job_id }: { job_id: string }) => ({
+    queryKey: [
+      ...jobDashboardQueryKeys.all.queryKey,
+      { job_id },
+      'interviewPlanEnabled',
+    ],
+  }),
 } as const;
 
 export const useJobId = () => {

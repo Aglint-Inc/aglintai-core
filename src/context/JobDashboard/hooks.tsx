@@ -13,6 +13,7 @@ import { Assessment } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';
 import {
   useJobDashboardRefresh,
+  useJobInterviewPlanEnabled,
   useJobLocations,
   useJobMatches,
   useJobSchedules,
@@ -62,6 +63,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const matches = useJobMatches();
   const tenureAndExperience = useJobTenureAndExperience();
   const schedules = useJobSchedules();
+  const interviewPlanEnabled = useJobInterviewPlanEnabled();
   const scoringPoll = useJobScoringPoll();
 
   const settingsValidity = getSettingsValidity(job);
@@ -106,6 +108,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     assessments.status !== 'pending' &&
     schedules.status !== 'pending' &&
     scoringPoll.status !== 'pending' &&
+    interviewPlanEnabled.status !== 'pending' &&
     tenureAndExperience.status !== 'pending' &&
     templates.status !== 'pending' &&
     matches.status !== 'pending' &&
@@ -125,6 +128,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     dismiss,
     jobPolling,
     emailTemplateValidity,
+    interviewPlanEnabled,
     setDismiss,
     handleJobRefresh,
     scoringPoll,

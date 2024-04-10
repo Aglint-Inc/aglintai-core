@@ -44,7 +44,7 @@ const initialFormField: FormField = {
   value: null,
   error: false,
   validation: 'text',
-  required: true
+  required: true,
 };
 
 const initialFormFields: FormEntries = {
@@ -54,7 +54,7 @@ const initialFormFields: FormEntries = {
   phone: { ...initialFormField, validation: 'phone', required: false },
   linkedin: { ...initialFormField, validation: 'url', required: false },
   resume: { ...initialFormField, validation: 'file' },
-  status: { ...initialFormField, value: JobApplicationSections.NEW }
+  status: { ...initialFormField, value: JobApplicationSections.NEW },
 };
 
 const validatePhone = (value: string) => {
@@ -72,7 +72,7 @@ const validatePhone = (value: string) => {
 };
 
 const ImportManualCandidates = ({
-  setOpenImportCandidates
+  setOpenImportCandidates,
 }: {
   setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -93,8 +93,8 @@ const ImportManualCandidates = ({
             ...acc,
             newApplicant: {
               ...acc.newApplicant,
-              [key]: { ...acc.newApplicant[key], value: '', error }
-            }
+              [key]: { ...acc.newApplicant[key], value: '', error },
+            },
           };
         }
         switch (curr.validation) {
@@ -110,7 +110,7 @@ const ImportManualCandidates = ({
                 value &&
                 value.trim() !== '' &&
                 /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
-                  value.trim()
+                  value.trim(),
                 )
               )
                 value = value.trim();
@@ -123,7 +123,7 @@ const ImportManualCandidates = ({
                 value &&
                 value.trim() !== '' &&
                 /^(http(s):\/\/.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
-                  value.trim()
+                  value.trim(),
                 ) &&
                 value.trim().toLowerCase().includes('linkedin')
               )
@@ -146,12 +146,12 @@ const ImportManualCandidates = ({
         return {
           newApplicant: {
             ...acc.newApplicant,
-            [key]: { ...acc.newApplicant[key], value, error }
+            [key]: { ...acc.newApplicant[key], value, error },
           },
-          validation: error && acc.validation ? false : acc.validation
+          validation: error && acc.validation ? false : acc.validation,
         };
       },
-      { newApplicant: applicant, validation: true }
+      { newApplicant: applicant, validation: true },
     );
   };
   const handleSubmit = async () => {
@@ -164,9 +164,9 @@ const ImportManualCandidates = ({
           last_name: applicant.last_name.value,
           email: applicant.email.value,
           phone: applicant.phone.value,
-          linkedin: applicant.linkedin.value
+          linkedin: applicant.linkedin.value,
         },
-        applicant.resume.value
+        applicant.resume.value,
       );
 
       if (confirmation) {
@@ -185,7 +185,7 @@ const ImportManualCandidates = ({
       <Stack
         style={{
           opacity: loading ? 0.3 : 1,
-          pointerEvents: loading ? 'none' : 'auto'
+          pointerEvents: loading ? 'none' : 'auto',
         }}
       >
         <FormBody applicant={applicant} setApplicant={setApplicant} />
@@ -201,7 +201,7 @@ const ImportManualCandidates = ({
         height={'100%'}
         style={{
           opacity: loading ? 1 : 0,
-          pointerEvents: loading ? 'auto' : 'none'
+          pointerEvents: loading ? 'auto' : 'none',
         }}
       >
         <Loader />
@@ -219,7 +219,7 @@ type TPhone = {
 
 const FormBody = ({
   applicant,
-  setApplicant
+  setApplicant,
 }: {
   applicant: FormEntries;
   setApplicant: Dispatch<SetStateAction<FormEntries>>;
@@ -234,8 +234,8 @@ const FormBody = ({
         [key]: {
           ...prev[key],
           value: key === 'resume' ? e : e.target.value,
-          error: false
-        }
+          error: false,
+        },
       };
     });
   };
@@ -284,8 +284,8 @@ const FormBody = ({
           sx={{
             '& .react-tel-input .form-control': {
               height: '50px !important',
-              font: 'inherit'
-            }
+              font: 'inherit',
+            },
           }}
         >
           <UIPhoneInput
@@ -335,7 +335,7 @@ const FormBody = ({
                 py: '34px',
                 px: '20px',
                 cursor: 'pointer',
-                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);'
+                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
               }}
               direction='row'
               spacing={'8px'}
@@ -348,7 +348,7 @@ const FormBody = ({
                 sx={{ textAlgin: 'center', fontSize: '14px' }}
                 style={{
                   color: applicant.resume.error ? 'red' : 'inherit',
-                  fontWeight: applicant.resume.value ? 600 : 400
+                  fontWeight: applicant.resume.value ? 600 : 400,
                 }}
               >
                 {applicant.resume.value
@@ -373,7 +373,7 @@ const getHelper = (title: string) => {
   return `Please provide a valid ${title}`;
 };
 
-const FileIcon = () => {
+export const FileIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -392,7 +392,7 @@ const FileIcon = () => {
   );
 };
 
-const UploadIcon = () => {
+export const UploadIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -409,7 +409,7 @@ const UploadIcon = () => {
   );
 };
 
-const CheckIcon = () => {
+export const CheckIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

@@ -150,6 +150,7 @@ const ApplicationCard = ({
   ) : (
     <TopCandidateListItem
       key={key2}
+      isDragVisible={isChecked}
       slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
       name={name.value}
