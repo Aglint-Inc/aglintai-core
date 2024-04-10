@@ -67,7 +67,7 @@ function AddTask() {
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Create Task Group'}
+        textPopupTitle={'New List'}
         isIcon={false}
         textPopupDescription={
           <Stack spacing={'10px'}>

@@ -15,8 +15,8 @@ function AddTaskButton() {
           setAddTaskPopUp(true);
         },
       }}
-      startIconSlot={<IconPlus size={20} />}
-      buttonText={'Create new group'}
+      startIconSlot={<IconPlus size={20} display={'flex'} />}
+      buttonText={'New List'}
     />
   );
 }
