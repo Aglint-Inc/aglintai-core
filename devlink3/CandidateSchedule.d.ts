@@ -8,4 +8,5 @@ declare function CandidateSchedule(props: {
   slotCandidateCard?: Types.Devlink.Slot;
   slotScheduleNowButton?: Types.Devlink.Slot;
   isScheduleNowVisible?: Types.Visibility.VisibilityConditions;
+  onClickClose?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;
