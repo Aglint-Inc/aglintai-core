@@ -221,142 +221,6 @@ export const useSendInviteForCandidate = () => {
   return { sendToCandidate };
 };
 
-export const scheduleWithAgent = async ({
-  type,
-  session_ids,
-  application_id,
-  dateRange,
-  recruiter_id,
-  sub_task_id,
-  recruiter_user_name,
-}: {
-  type: 'phone_agent' | 'email_agent';
-  session_ids: string[];
-  application_id: string;
-  dateRange: {
-    start_date: string | null;
-    end_date: string | null;
-  };
-  recruiter_id: string;
-  sub_task_id: string;
-  recruiter_user_name: string;
-}) => {
-  try {
-    if (type) {
-      const { data: checkSch, error: errorCheckSch } = await supabase
-        .from('interview_schedule')
-        .select('id')
-        .eq('application_id', application_id);
-
-      if (errorCheckSch) throw new Error(errorCheckSch.message);
-
-      if (checkSch.length === 0) {
-        const sessionsWithPlan = await fetchInterviewDataJob(application_id);
-
-        const scheduleName = `Interview for ${sessionsWithPlan.application.public_jobs.job_title} - ${sessionsWithPlan.application.candidates.first_name}`;
-
-        const createCloneRes = await createCloneSession({
-          is_get_more_option: false,
-          application_id,
-          allSessions: sessionsWithPlan.sessions,
-          session_ids,
-          scheduleName,
-          coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
-        });
-
-        const { data: filterJson, error: errorFilterJson } = await supabase
-          .from('interview_filter_json')
-          .insert({
-            filter_json: {
-              session_ids: createCloneRes.session_ids,
-              recruiter_id: recruiter_id,
-              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-              user_tz: dayjs.tz.guess(),
-            },
-            session_ids: createCloneRes.session_ids,
-            schedule_id: createCloneRes.schedule.id,
-          })
-          .select();
-
-        if (errorFilterJson) throw new Error(errorFilterJson.message);
-
-        const { error: eroorSubTasks } = await supabase
-          .from('sub_tasks')
-          .update({
-            session_ids: createCloneRes.session_ids,
-          })
-          .eq('id', sub_task_id);
-
-        if (eroorSubTasks) throw new Error(eroorSubTasks.message);
-
-        await axios.post('/api/scheduling/mail-agent/init-agent', {
-          cand_email: sessionsWithPlan.application.candidates.email,
-          cand_time_zone: dayjs.tz.guess(),
-          filter_json_id: filterJson[0].id,
-          interviewer_name: recruiter_user_name,
-          organizer_time_zone: dayjs.tz.guess(),
-          sub_task_id: sub_task_id,
-        } as InitAgentBodyParams);
-      } else {
-        const sessionsWithPlan = await fetchInterviewDataSchedule(
-          checkSch[0].id,
-          application_id,
-        );
-
-        const { error: errorUpdatedMeetings } = await supabase
-          .from('interview_meeting')
-          .upsert(
-            sessionsWithPlan.sessions
-              .filter((ses) => session_ids.includes(ses.id))
-              .map((ses) => ({
-                status: 'waiting',
-                id: ses.interview_meeting.id,
-                interview_schedule_id:
-                  ses.interview_meeting.interview_schedule_id,
-                session_id: ses.interview_meeting.session_id,
-              })) as InterviewMeetingTypeDb[],
-          );
-
-        if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
-
-        const { data: filterJson, error: errorFilterJson } = await supabase
-          .from('interview_filter_json')
-          .insert({
-            filter_json: {
-              session_ids: session_ids,
-              recruiter_id: recruiter_id,
-              start_date:
-                dateRange.start_date &&
-                dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-              end_date:
-                dateRange.end_date &&
-                dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-              user_tz: dayjs.tz.guess(),
-            },
-            session_ids: session_ids,
-            schedule_id: checkSch[0].id,
-          })
-          .select();
-
-        if (errorFilterJson) throw new Error(errorFilterJson.message);
-
-        await axios.post('/api/scheduling/mail-agent/init-agent', {
-          cand_email: sessionsWithPlan.application.candidates.email,
-          cand_time_zone: dayjs.tz.guess(),
-          filter_json_id: filterJson[0].id,
-          interviewer_name: recruiter_user_name,
-          organizer_time_zone: dayjs.tz.guess(),
-          sub_task_id: sub_task_id,
-        } as InitAgentBodyParams);
-      }
-      return true;
-    }
-  } catch (e) {
-    toast.error(e.message);
-  }
-};
-
 export const createCloneSession = async ({
   is_get_more_option,
   application_id,
@@ -674,6 +538,186 @@ export const fetchInterviewSessionTask = async ({
       return sessions.sort(
         (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
       ) as InterviewSessionTypeDB[];
+    }
+  } catch (e) {
+    toast.error(e.message);
+  }
+};
+
+export const scheduleWithAgent = async ({
+  type,
+  session_ids,
+  application_id,
+  dateRange,
+  recruiter_id,
+  sub_task_id,
+  recruiter_user_name,
+  candidate_name = 'chinmai',
+  company_name = 'aglint',
+}: {
+  type: 'phone_agent' | 'email_agent';
+  session_ids: string[];
+  application_id: string;
+  dateRange: {
+    start_date: string | null;
+    end_date: string | null;
+  };
+  recruiter_id: string;
+  sub_task_id: string;
+  recruiter_user_name: string;
+  candidate_name: string;
+  company_name: string;
+}) => {
+  try {
+    if (type) {
+      const { data: checkSch, error: errorCheckSch } = await supabase
+        .from('interview_schedule')
+        .select('id')
+        .eq('application_id', application_id);
+
+      if (errorCheckSch) throw new Error(errorCheckSch.message);
+
+      if (checkSch.length === 0) {
+        const sessionsWithPlan = await fetchInterviewDataJob(application_id);
+
+        const scheduleName = `Interview for ${sessionsWithPlan.application.public_jobs.job_title} - ${sessionsWithPlan.application.candidates.first_name}`;
+
+        const createCloneRes = await createCloneSession({
+          is_get_more_option: false,
+          application_id,
+          allSessions: sessionsWithPlan.sessions,
+          session_ids,
+          scheduleName,
+          coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
+        });
+
+        const { data: filterJson, error: errorFilterJson } = await supabase
+          .from('interview_filter_json')
+          .insert({
+            filter_json: {
+              session_ids: createCloneRes.session_ids,
+              recruiter_id: recruiter_id,
+              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            },
+            session_ids: createCloneRes.session_ids,
+            schedule_id: createCloneRes.schedule.id,
+          })
+          .select();
+
+        if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        const { error: eroorSubTasks } = await supabase
+          .from('sub_tasks')
+          .update({
+            session_ids: createCloneRes.session_ids,
+          })
+          .eq('id', sub_task_id);
+
+        if (eroorSubTasks) throw new Error(eroorSubTasks.message);
+
+        if (type === 'email_agent') {
+          await axios.post('/api/scheduling/mail-agent/init-agent', {
+            cand_email:
+              'chinmai@aglinthq.com' ||
+              sessionsWithPlan.application.candidates.email,
+            cand_time_zone: dayjs.tz.guess(),
+            filter_json_id: filterJson[0].id,
+            interviewer_name: recruiter_user_name,
+            organizer_time_zone: dayjs.tz.guess(),
+            sub_task_id: sub_task_id,
+          } as InitAgentBodyParams);
+        } else if (type === 'phone_agent') {
+          await axios.post(
+            'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+            {
+              begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of {jobRole}, Is this the right time to talk?`,
+              interviewer_name: recruiter_user_name,
+              from_phone_no: '+12512066348',
+              to_phone_no: '+919482306657',
+              retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
+              filter_json_id: filterJson[0].id,
+              cand_email:
+                'chinmai@aglinthq.com' ||
+                sessionsWithPlan.application.candidates.email,
+              sub_task_id: sub_task_id,
+            },
+          );
+        }
+      } else {
+        const sessionsWithPlan = await fetchInterviewDataSchedule(
+          checkSch[0].id,
+          application_id,
+        );
+
+        const { error: errorUpdatedMeetings } = await supabase
+          .from('interview_meeting')
+          .upsert(
+            sessionsWithPlan.sessions
+              .filter((ses) => session_ids.includes(ses.id))
+              .map((ses) => ({
+                status: 'waiting',
+                id: ses.interview_meeting.id,
+                interview_schedule_id:
+                  ses.interview_meeting.interview_schedule_id,
+                session_id: ses.interview_meeting.session_id,
+              })) as InterviewMeetingTypeDb[],
+          );
+
+        if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
+
+        const { data: filterJson, error: errorFilterJson } = await supabase
+          .from('interview_filter_json')
+          .insert({
+            filter_json: {
+              session_ids: session_ids,
+              recruiter_id: recruiter_id,
+              start_date:
+                dateRange.start_date &&
+                dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+              end_date:
+                dateRange.end_date &&
+                dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              user_tz: dayjs.tz.guess(),
+            },
+            session_ids: session_ids,
+            schedule_id: checkSch[0].id,
+          })
+          .select();
+
+        if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        if (type === 'email_agent') {
+          await axios.post('/api/scheduling/mail-agent/init-agent', {
+            cand_email:
+              'chinmai@aglinthq.com' ||
+              sessionsWithPlan.application.candidates.email,
+            cand_time_zone: dayjs.tz.guess(),
+            filter_json_id: filterJson[0].id,
+            interviewer_name: recruiter_user_name,
+            organizer_time_zone: dayjs.tz.guess(),
+            sub_task_id: sub_task_id,
+          } as InitAgentBodyParams);
+        } else if (type === 'phone_agent') {
+          await axios.post(
+            'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+            {
+              begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of {jobRole}, Is this the right time to talk?`,
+              interviewer_name: recruiter_user_name,
+              from_phone_no: '+12512066348',
+              to_phone_no: '+919482306657',
+              retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
+              filter_json_id: filterJson[0].id,
+              cand_email:
+                'chinmai@aglinthq.com' ||
+                sessionsWithPlan.application.candidates.email,
+              sub_task_id: sub_task_id,
+            },
+          );
+        }
+      }
+      return true;
     }
   } catch (e) {
     toast.error(e.message);
