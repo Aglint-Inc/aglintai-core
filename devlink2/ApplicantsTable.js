@@ -29,7 +29,8 @@ export function ApplicantsTable({
             "header",
             "width-auto",
             "no_border-copy",
-            "gap-12"
+            "gap-12",
+            "z-index-6"
           )}
           tag="div"
         >

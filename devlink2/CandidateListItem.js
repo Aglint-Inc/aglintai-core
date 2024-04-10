@@ -63,7 +63,8 @@ export function CandidateListItem({
           "cv-list-column-wrapper",
           "width-auto",
           "items-v-center",
-          "gap-12"
+          "gap-12",
+          "z-index-6"
         )}
         tag="div"
         {...onClickSelect}
