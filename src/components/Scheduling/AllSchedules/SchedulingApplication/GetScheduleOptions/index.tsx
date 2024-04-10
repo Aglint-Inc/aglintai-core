@@ -6,13 +6,12 @@ import { useEffect } from 'react';
 
 import { ScheduleOptions } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import SchedulingOptionComp from '../Common/ScheduleOption';
-import { useGetScheduleOptions, useSendInviteForCandidate } from '../hooks';
+import { useSendInviteForCandidate } from '../hooks';
 import {
   setDateRange,
   setinitialSessions,
@@ -31,7 +30,6 @@ function GetScheduleOptionsDialog() {
     dateRange,
     noOptions,
     selectedApplication,
-    fetchingPlan,
     initialSessions,
     isScheduleNowOpen,
     step,
@@ -52,7 +50,6 @@ function GetScheduleOptionsDialog() {
     totalSlots: state.totalSlots,
   }));
 
-  const { findScheduleOptions } = useGetScheduleOptions();
   const { sendToCandidate } = useSendInviteForCandidate();
 
   const initialEndDate = currentDate.add(5, 'day');
@@ -101,6 +98,10 @@ function GetScheduleOptionsDialog() {
     setIsScheduleNowOpen(false);
   };
 
+  const isDebrief = initialSessions
+    .filter((ses) => selectedSessionIds.includes(ses.id))
+    .some((ses) => ses.session_type == 'debrief');
+
   return (
     <>
       <Dialog
@@ -126,7 +127,7 @@ function GetScheduleOptionsDialog() {
           slotSendtoCandidateButton={
             <>
               <ButtonPrimaryDefaultRegular
-                buttonText={'Send to Candidate'}
+                buttonText={isDebrief ? 'Schedule Now' : 'Send to Candidate'}
                 buttonProps={{
                   onClick: () => {
                     onClickSendToCandidate();
@@ -135,8 +136,8 @@ function GetScheduleOptionsDialog() {
               />
             </>
           }
-          isBasicDetailsVisible={step === 1}
-          isMultipleOptionVisible={step === 2}
+          isBasicDetailsVisible={false}
+          isMultipleOptionVisible={true}
           slotAvailableCard={
             <SchedulingOptionComp
               schedulingOptions={schedulingOptions}
@@ -144,33 +145,6 @@ function GetScheduleOptionsDialog() {
               isInterviewVisible={true}
               total={totalSlots}
             />
-          }
-          slotPrimaryButton={
-            <>
-              <ButtonPrimaryDefaultRegular
-                buttonProps={{
-                  onClick: async () => {
-                    if (dateRange.start_date && dateRange.end_date) {
-                      await findScheduleOptions({
-                        dateRange: dateRange,
-                        session_ids: selectedSessionIds,
-                        rec_id: recruiter.id,
-                      });
-                    }
-                  },
-                }}
-                endIconSlot={
-                  fetchingPlan ? (
-                    <Stack height={'100%'} width={'14px'}>
-                      <LoaderGrey />
-                    </Stack>
-                  ) : (
-                    ''
-                  )
-                }
-                buttonText={'Get Schedule Options'}
-              />
-            </>
           }
           isNoOptionsFoundVisible={noOptions}
           slotCandidateImage={

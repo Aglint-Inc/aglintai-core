@@ -14,6 +14,7 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../ListCard/Icon';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
@@ -80,10 +81,28 @@ function FullSchedule() {
                           selectedSessionIds.filter((id) => id !== session.id),
                         );
                       } else {
-                        setSelectedSessionIds([
-                          ...selectedSessionIds,
-                          session.id,
-                        ]);
+                        if (session.session_type == 'debrief') {
+                          const isOtherThanDebrief = initialSessions
+                            .filter((ses) =>
+                              selectedSessionIds.includes(ses.id),
+                            )
+                            .some((ses) => ses.session_type !== 'debrief');
+                          if (isOtherThanDebrief) {
+                            toast.warning(
+                              'Schedule defbrief sesssion separately',
+                            );
+                          } else {
+                            setSelectedSessionIds([
+                              ...selectedSessionIds,
+                              session.id,
+                            ]);
+                          }
+                        } else {
+                          setSelectedSessionIds([
+                            ...selectedSessionIds,
+                            session.id,
+                          ]);
+                        }
                       }
                     },
                   }}

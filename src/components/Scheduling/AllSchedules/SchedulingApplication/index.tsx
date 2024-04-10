@@ -16,6 +16,7 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import toast from '@/src/utils/toast';
 
 import CandidateInfo from '../../SchedulingView/CandidateDetails';
 import FeedbackWindow from '../../SchedulingView/Feedback';
@@ -87,24 +88,26 @@ function SchedulingApplication() {
       company_name: recruiter.name,
     });
 
-    setSelectedSessionIds([]);
-
     if (res) {
-      initialSessions.map((session) => {
-        if (selectedSessionIds.includes(session.id)) {
-          return {
-            ...session,
-            interview_meeting: {
-              ...session.interview_meeting,
-              status: 'waiting',
-            },
-          };
-        } else {
-          return session;
-        }
-      });
-      setinitialSessions([...initialSessions]);
+      toast.success(
+        type === 'email_agent'
+          ? 'Email Agent Initiated'
+          : 'Phone Call scheduled',
+      );
+      setinitialSessions(
+        initialSessions.map((session) => ({
+          ...session,
+          interview_meeting: selectedSessionIds.includes(session.id)
+            ? { status: 'waiting', interview_schedule_id: null }
+            : null,
+        })),
+      );
+    } else {
+      toast.error(
+        'Failed to schedule with agent. Please try again later or contact support.',
+      );
     }
+    setSelectedSessionIds([]);
   };
 
   return (
