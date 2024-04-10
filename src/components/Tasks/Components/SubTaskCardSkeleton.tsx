@@ -1,6 +1,4 @@
-import { Grid, Skeleton, Stack } from '@mui/material';
-
-
+import { Grid, Skeleton } from '@mui/material';
 
 export default function SubTaskCardSkeleton() {
   return (
@@ -13,13 +11,7 @@ export default function SubTaskCardSkeleton() {
       spacing={1}
     >
       <Grid item xs>
-        <Stack width={'100%'} direction={'row'} alignItems={'center'} gap={2}>
-          <Skeleton width={'25px'} height={'30px'} />
-          <Skeleton
-            component={'h2'}
-            sx={{ borderRadius: '20px', width: '100%' }}
-          />
-        </Stack>
+        <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />
       </Grid>
       <Grid item xs>
         <Skeleton component={'h2'} sx={{ borderRadius: '10px' }} />

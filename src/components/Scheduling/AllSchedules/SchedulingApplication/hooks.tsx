@@ -701,7 +701,7 @@ const agentTrigger = async ({
     if (type === 'email_agent') {
       await axios.post('/api/scheduling/mail-agent/init-agent', {
         cand_email:
-          'chinmai@aglinthq.com' ||
+          'dheeraj@aglinthq.com' ||
           sessionsWithPlan.application.candidates.email,
         cand_time_zone: dayjs.tz.guess(),
         filter_json_id: filterJsonId,
@@ -720,7 +720,7 @@ const agentTrigger = async ({
           retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           filter_json_id: filterJsonId,
           cand_email:
-            'chinmai@aglinthq.com' ||
+            'dheeraj@aglinthq.com' ||
             sessionsWithPlan.application.candidates.email,
           sub_task_id: sub_task_id,
         },
@@ -763,7 +763,7 @@ export const fetchInterviewMeetingProgresstask = async ({
       interview_meeting: intMeet.filter(
         (meeting) => meeting.session_id === session.id,
       )[0],
-      interview_module: intSesRel.filter(
+      interview_session_relation: intSesRel.filter(
         (rel) => rel.session_id === session.id,
       ),
     }));

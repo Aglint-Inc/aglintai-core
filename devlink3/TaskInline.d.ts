@@ -11,4 +11,5 @@ declare function TaskInline(props: {
   onClickStatus?: Types.Devlink.RuntimeProps;
   onClickOpen?: Types.Devlink.RuntimeProps;
   onClickEdit?: Types.Devlink.RuntimeProps;
+  isDateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
