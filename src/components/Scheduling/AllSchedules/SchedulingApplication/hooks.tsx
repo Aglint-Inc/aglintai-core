@@ -744,6 +744,13 @@ export const fetchInterviewMeetingProgresstask = async ({
 
     if (errSes) throw new Error(errSes.message);
 
+    const { data: intSesRel, error: errSesRel } = await supabase
+      .from('interview_session_relation')
+      .select('*,interview_module_relation(*,recruiter_user(*))')
+      .in('session_id', session_ids);
+
+    if (errSesRel) throw new Error(errSesRel.message);
+
     const { data: intMeet, error: errMeet } = await supabase
       .from('interview_meeting')
       .select('*')
@@ -756,6 +763,9 @@ export const fetchInterviewMeetingProgresstask = async ({
       interview_meeting: intMeet.filter(
         (meeting) => meeting.session_id === session.id,
       )[0],
+      interview_module: intSesRel.filter(
+        (rel) => rel.session_id === session.id,
+      ),
     }));
 
     return resMeetings;
