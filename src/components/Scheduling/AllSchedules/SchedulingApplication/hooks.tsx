@@ -565,8 +565,8 @@ export const scheduleWithAgent = async ({
   recruiter_id: string;
   sub_task_id: string;
   recruiter_user_name: string;
-  candidate_name: string;
-  company_name: string;
+  candidate_name?: string;
+  company_name?: string;
 }) => {
   try {
     if (type) {
@@ -617,34 +617,15 @@ export const scheduleWithAgent = async ({
 
         if (eroorSubTasks) throw new Error(eroorSubTasks.message);
 
-        if (type === 'email_agent') {
-          await axios.post('/api/scheduling/mail-agent/init-agent', {
-            cand_email:
-              'chinmai@aglinthq.com' ||
-              sessionsWithPlan.application.candidates.email,
-            cand_time_zone: dayjs.tz.guess(),
-            filter_json_id: filterJson[0].id,
-            interviewer_name: recruiter_user_name,
-            organizer_time_zone: dayjs.tz.guess(),
-            sub_task_id: sub_task_id,
-          } as InitAgentBodyParams);
-        } else if (type === 'phone_agent') {
-          await axios.post(
-            'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
-            {
-              begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of {jobRole}, Is this the right time to talk?`,
-              interviewer_name: recruiter_user_name,
-              from_phone_no: '+12512066348',
-              to_phone_no: '+919482306657',
-              retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
-              filter_json_id: filterJson[0].id,
-              cand_email:
-                'chinmai@aglinthq.com' ||
-                sessionsWithPlan.application.candidates.email,
-              sub_task_id: sub_task_id,
-            },
-          );
-        }
+        agentTrigger({
+          type,
+          sessionsWithPlan,
+          filterJsonId: filterJson[0].id,
+          sub_task_id,
+          recruiter_user_name,
+          candidate_name,
+          company_name,
+        });
       } else {
         const sessionsWithPlan = await fetchInterviewDataSchedule(
           checkSch[0].id,
@@ -688,38 +669,57 @@ export const scheduleWithAgent = async ({
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        if (type === 'email_agent') {
-          await axios.post('/api/scheduling/mail-agent/init-agent', {
-            cand_email:
-              'chinmai@aglinthq.com' ||
-              sessionsWithPlan.application.candidates.email,
-            cand_time_zone: dayjs.tz.guess(),
-            filter_json_id: filterJson[0].id,
-            interviewer_name: recruiter_user_name,
-            organizer_time_zone: dayjs.tz.guess(),
-            sub_task_id: sub_task_id,
-          } as InitAgentBodyParams);
-        } else if (type === 'phone_agent') {
-          await axios.post(
-            'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
-            {
-              begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of {jobRole}, Is this the right time to talk?`,
-              interviewer_name: recruiter_user_name,
-              from_phone_no: '+12512066348',
-              to_phone_no: '+919482306657',
-              retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
-              filter_json_id: filterJson[0].id,
-              cand_email:
-                'chinmai@aglinthq.com' ||
-                sessionsWithPlan.application.candidates.email,
-              sub_task_id: sub_task_id,
-            },
-          );
-        }
+        agentTrigger({
+          type,
+          sessionsWithPlan,
+          filterJsonId: filterJson[0].id,
+          sub_task_id,
+          recruiter_user_name,
+          candidate_name,
+          company_name,
+        });
       }
       return true;
     }
   } catch (e) {
     toast.error(e.message);
+  }
+};
+
+const agentTrigger = async ({
+  type,
+  sessionsWithPlan,
+  filterJsonId,
+  sub_task_id,
+  recruiter_user_name,
+  candidate_name,
+  company_name,
+}) => {
+  if (type === 'email_agent') {
+    await axios.post('/api/scheduling/mail-agent/init-agent', {
+      cand_email:
+        'chinmai@aglinthq.com' || sessionsWithPlan.application.candidates.email,
+      cand_time_zone: dayjs.tz.guess(),
+      filter_json_id: filterJsonId,
+      interviewer_name: recruiter_user_name,
+      organizer_time_zone: dayjs.tz.guess(),
+      sub_task_id: sub_task_id,
+    } as InitAgentBodyParams);
+  } else if (type === 'phone_agent') {
+    await axios.post(
+      'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+      {
+        begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of {jobRole}, Is this the right time to talk?`,
+        interviewer_name: recruiter_user_name,
+        from_phone_no: '+12512066348',
+        to_phone_no: '+919482306657',
+        retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
+        filter_json_id: filterJsonId,
+        cand_email:
+          'chinmai@aglinthq.com' ||
+          sessionsWithPlan.application.candidates.email,
+        sub_task_id: sub_task_id,
+      },
+    );
   }
 };
