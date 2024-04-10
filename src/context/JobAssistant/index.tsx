@@ -116,6 +116,7 @@ function JobAssistantProvider({ children }) {
     if (job_id) {
       getCompanyDetails(job_id);
       getApplications(job_id);
+      getCandidates();
     }
   }, [job_id]);
 
@@ -376,27 +377,13 @@ function JobAssistantProvider({ children }) {
   }
 
   ////////////////////////////Fetch candidates and applications/////////////////////////////////////
-  async function getCandidates(applications) {
+  async function getCandidates() {
     setFetching(true);
     const { data: candidates } = await supabase
-      .from('candidates')
-      .select()
-      .eq('recruiter_id', recruiter?.id);
-
-    let tempCandidates = [];
-    if (candidates?.length) {
-      applications.map((application) => {
-        // console.log(application.candidate_id);
-        candidates.map((candidate) => {
-          if (candidate.id === application.candidate_id)
-            tempCandidates.push({
-              ...application,
-              candidates: { ...candidate },
-            });
-        });
-      });
-    }
-    setCandidates([...tempCandidates]);
+      .from('applications')
+      .select('*, candidates (*)')
+      .eq('job_id', job_id);
+    setCandidates(candidates);
     setFetching(false);
   }
   async function getApplications(job_id: string) {
@@ -406,7 +393,6 @@ function JobAssistantProvider({ children }) {
       .eq('job_id', job_id);
     if (!error) {
       setApplications(applications);
-      getCandidates(applications);
     }
   }
   // async function getCandidatesFiles() {
