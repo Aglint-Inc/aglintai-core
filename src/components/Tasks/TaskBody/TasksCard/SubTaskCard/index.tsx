@@ -1,4 +1,4 @@
-import { Checkbox } from '@mui/material';
+// import { Checkbox } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 
@@ -43,20 +43,21 @@ function SubTaskCard({
           ></div>
         </>
       }
+      isDateVisible={!!subTask.completion_date}
       textDate={
         subTask.completion_date
           ? dayjs(subTask.completion_date).format('ddd, MMMM D YYYY')
           : 'Time not mentioned'
       }
-      slotCheckbox={
-        <Checkbox
-          // onChange={(e) => {
-          //   console.log(e.target.checked);
-          // }}
-          size='medium'
-          color='info'
-        />
-      }
+      // slotCheckbox={
+      //   <Checkbox
+      //     // onChange={(e) => {
+      //     //   console.log(e.target.checked);
+      //     // }}
+      //     size='medium'
+      //     color='info'
+      //   />
+      // }
       slotPill={<AssigneeChip assigneeId={subTask.assignee[0]} />}
       slotTaskStatus={<StatusChip status={subTask.status} />}
     />

@@ -4,11 +4,12 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import { InviteLinkCard, InvitePills, PanelMemberPill } from '@/devlink2';
+import { PanelMemberPill } from '@/devlink2';
 import { AgentPill, TaskProgress, TranscriptCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
 import {
   TasksAgentContextType,
   useTasksAgentContext,
@@ -17,6 +18,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { useTaskStatesContext } from '../../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../../utils';
+import SessionCard from './SessionCard';
 
 function SubTaskProgress() {
   const { handelGetTaskLog, tasks } = useTasksAgentContext();
@@ -26,7 +28,13 @@ function SubTaskProgress() {
   >(null);
   async function getProgress() {
     const data = await handelGetTaskLog(selectedSubTaskId);
-    setProgressList(data);
+    if (data.some((ele) => ele.progress_type === 'interview_schedule')) {
+      let lastElement = data.pop(); // Remove the last element and store it
+      data.splice(data.length - 2, 0, lastElement); // Insert the last element at index 2
+      setProgressList(data);
+    } else {
+      setProgressList(data);
+    }
   }
 
   //   const { data: emailLog, isLoading: emailLogLoading } = useEmailAgentLog();
@@ -42,7 +50,7 @@ function SubTaskProgress() {
   //   } else {
   //     console.log(phoneLog);
   //   }
-
+  const { data: sessionList } = useScheduleSession();
   useEffect(() => {
     if (selectedSubTaskId) {
       getProgress();
@@ -63,7 +71,6 @@ function SubTaskProgress() {
               const InterviewerCreator = assignerList.find(
                 (ele) => ele.user_id === item.created_by.id,
               );
-
               return (
                 <TaskProgress
                   key={i}
@@ -133,7 +140,11 @@ function SubTaskProgress() {
                   }
                   isTaskCompletedVisible={false}
                   textTimeCompleted={'sd'}
-                  textTime={dayjs(item.created_at).fromNow()}
+                  textTime={
+                    dayjs(item.created_at).fromNow() +
+                    ' | ' +
+                    dayjs(item.created_at).format('hh:mm:ss')
+                  }
                   isMailContentVisible={
                     item.progress_type === 'call_completed' ||
                     (item.progress_type === 'email_messages' &&
@@ -156,9 +167,7 @@ function SubTaskProgress() {
                         >
                           <span
                             dangerouslySetInnerHTML={{
-                              __html: String(item.jsonb_data?.message).split(
-                                '\r\n\r\n\r\n',
-                              )[0],
+                              __html: String(item.jsonb_data?.message),
                             }}
                           ></span>
                         </Typography>
@@ -243,49 +252,17 @@ function SubTaskProgress() {
                       <ShowCode.When
                         isTrue={item.progress_type === 'interview_schedule'}
                       >
-                        {item.jsonb_data &&
-                          item.jsonb_data.length &&
-                          (
-                            item.jsonb_data as {
-                              name: string;
-                              created_at: string;
-                            }[]
-                          ).map((ele, i) => {
+                        <Stack direction={'column'} spacing={2} width={400}>
+                          {sessionList?.map((ses, indOpt) => {
                             return (
-                              <Stack width={400} key={i}>
-                                <InviteLinkCard
-                                  textDate={
-                                    <>{dayjs(ele.created_at).format('DD')}</>
-                                  }
-                                  textDay={dayjs(ele.created_at).format('ddd')}
-                                  textMonth={dayjs(ele.created_at).format(
-                                    'MMM',
-                                  )}
-                                  slotInvitePills={
-                                    <>
-                                      <InvitePills
-                                        textTime={'9:30-10:30'}
-                                        textTitle={ele.name}
-                                      />
-                                      <PanelMemberPill
-                                        slotImage={
-                                          <MuiAvatar
-                                            variant='circular'
-                                            level={'Chinmai c r'}
-                                            fontSize='12px'
-                                            width='100%'
-                                            height='100%'
-                                          />
-                                        }
-                                        isCloseVisible={false}
-                                        textMemberName='Chinmai c r'
-                                      />
-                                    </>
-                                  }
-                                />
-                              </Stack>
+                              <SessionCard
+                                indOpt={indOpt}
+                                ses={ses}
+                                key={indOpt}
+                              />
                             );
                           })}
+                        </Stack>
                       </ShowCode.When>
                     </ShowCode>
                   }
@@ -347,6 +324,38 @@ async function getPhoneAgentLogs(selectedSubTaskId: string) {
     .eq('sub_task_id', selectedSubTaskId);
   if (error) throw Error(error.message);
   else return data;
+}
+
+// phone log
+
+export const useScheduleSession = () => {
+  const { selectedSubTaskId } = useTaskStatesContext();
+  const { tasks } = useTasksAgentContext();
+
+  const subTasks = tasks
+    .map((task) => task.sub_tasks.map((subTask) => subTask))
+    .flat(1);
+  let selectedSubTask = subTasks.find((item) => item.id === selectedSubTaskId);
+  // const selectedTask = tasks.find((item) => item.id === taskId);
+
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['schedule_sessions'],
+    queryFn: () => getScheduleSessions(selectedSubTask.session_ids as string[]),
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({
+      queryKey: ['schedule_sessions'],
+    });
+  return { ...query, refetch };
+};
+
+async function getScheduleSessions(session_ids: string[]) {
+  const data = await fetchInterviewMeetingProgresstask({
+    session_ids,
+  });
+
+  return data;
 }
 
 export function PhoneAgentIcon() {

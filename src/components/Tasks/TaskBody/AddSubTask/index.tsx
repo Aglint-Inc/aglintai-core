@@ -15,7 +15,7 @@ import { ScrollList } from '@/src/utils/framer-motions/Animation';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../utils';
-import DateField from '../UpdateSubTask/DateField';
+// import DateField from '../UpdateSubTask/DateField';
 import TextArea from './TextArea';
 export const agentsDetails = [
   {
@@ -53,6 +53,11 @@ function AddSubTask({ taskId }: { taskId: string }) {
 
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  useEffect(() => {
+    setSelectedStartDate(new Date());
+    setSelectedEndDate(new Date());
+  }, []);
 
   async function handleChange() {
     setAddingSubTask(true);
@@ -177,13 +182,13 @@ function AddSubTask({ taskId }: { taskId: string }) {
       <ShowCode.When
         isTrue={
           textInput.text &&
-          String(textInput.text).toLowerCase().includes('sche')
+          String(textInput.text).toLowerCase().includes('schedule')
         }
       >
         <ScrollList
           uniqueKey={
             textInput.text &&
-            String(textInput.text).toLowerCase().includes('sche')
+            String(textInput.text).toLowerCase().includes('schedule')
           }
         >
           <Stack direction={'column'} spacing={'5px'} py={'10px'}>
@@ -265,8 +270,8 @@ function AddSubTask({ taskId }: { taskId: string }) {
                 />
               )}
             /> */}
-            <Typography variant='body2'>Select date range*</Typography>
-            <Stack direction={'row'} spacing={1}>
+            {/* <Typography variant='body2'>Select date range*</Typography> */}
+            {/* <Stack direction={'row'} spacing={1}>
               <DateField
                 getDate={(e) => {
                   setSelectedStartDate(new Date(e));
@@ -277,7 +282,7 @@ function AddSubTask({ taskId }: { taskId: string }) {
                   setSelectedEndDate(new Date(e));
                 }}
               />
-            </Stack>
+            </Stack> */}
           </Stack>
         </ScrollList>
       </ShowCode.When>

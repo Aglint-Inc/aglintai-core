@@ -764,7 +764,7 @@ export const fetchInterviewMeetingProgresstask = async ({
       interview_meeting: intMeet.filter(
         (meeting) => meeting.session_id === session.id,
       )[0],
-      interview_module: intSesRel.filter(
+      interview_session_relation: intSesRel.filter(
         (rel) => rel.session_id === session.id,
       ),
     }));

@@ -108,7 +108,7 @@ export default async function handler(req, res) {
       log_msg: 'Candidate Agent chat',
       sub_task_id: agent_payload.payload.sub_task_id,
       transcript: {
-        message: data.new_history[data.new_history.length - 1]?.content,
+        message: data.new_history[data.new_history.length - 1]?.value,
       },
       created_by: {
         id: EmailAgentId,

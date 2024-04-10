@@ -562,8 +562,8 @@ const getTaskLogs = (id: string) => {
     .from('sub_task_progress')
     .select()
     .eq('sub_task_id', id)
-    .order('created_by', {
-      ascending: false,
+    .order('created_at', {
+      ascending: true,
     })
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
