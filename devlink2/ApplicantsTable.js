@@ -13,6 +13,8 @@ export function ApplicantsTable({
   isScreeningVisible = true,
   isInterviewVisible = true,
   isDisqualifiedVisible = true,
+  propsDrag = {},
+  isDragVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1290")} tag="div">
@@ -26,10 +28,17 @@ export function ApplicantsTable({
             "cv-list-column-wrapper",
             "header",
             "width-auto",
-            "no_border-copy"
+            "no_border-copy",
+            "gap-12"
           )}
           tag="div"
         >
+          {isDragVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1311")}
+              tag="div"
+            />
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-column")}
             tag="div"

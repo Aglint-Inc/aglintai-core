@@ -33,6 +33,7 @@ const MoveCandidate: React.FC<{
     setActionProps,
   } = useJobApplications();
   const [purposes, setPurposes] = useState([]);
+  const [task, setTask] = useState(false);
   const isChecked = list.size !== 0;
 
   const showNew = isChecked && actionVisibilities.new;
@@ -43,9 +44,11 @@ const MoveCandidate: React.FC<{
   const showDisqualified = isChecked && actionVisibilities.disqualified;
 
   const handlePopUpCheck = () => {
-    setPurposes((prev) =>
-      prev.length !== 0 ? [] : getPurpose(actionProps.destination),
-    );
+    actionProps.destination === 'interview'
+      ? setTask((prev) => !prev)
+      : setPurposes((prev) =>
+          prev.length !== 0 ? [] : getPurpose(actionProps.destination),
+        );
   };
   const handleMoveCandidate = async () => {
     if (!disabled) {
@@ -59,6 +62,7 @@ const MoveCandidate: React.FC<{
           source: section,
           destination: actionProps.destination,
         },
+        task,
         purposes,
         list,
         selectAll,
@@ -114,7 +118,9 @@ const MoveCandidate: React.FC<{
         onClose={() => handleClose()}
         destination={actionProps.destination}
         onSubmit={async () => await handleMoveCandidate()}
-        checked={purposes.length !== 0}
+        checked={
+          actionProps.destination === 'interview' ? task : purposes.length !== 0
+        }
         checkAction={() => handlePopUpCheck()}
         count={selectAll ? applicationLimit[section] : list.size}
       />
@@ -169,7 +175,7 @@ const MoveCandidateDialog = ({
               Cancel
             </AUIButton>
             <AUIButton onClick={() => onSubmit()} variant={'primary'}>
-              {checked && showCheck ? 'Send Email & Move' : title}
+              {title}
             </AUIButton>
           </Stack>
         }
@@ -182,6 +188,7 @@ const checkVisibility = (destination: JobApplicationSections) => {
   return (
     destination === JobApplicationSections.SCREENING ||
     destination === JobApplicationSections.ASSESSMENT ||
+    destination === JobApplicationSections.INTERVIEW ||
     destination === JobApplicationSections.DISQUALIFIED
   );
 };
@@ -208,6 +215,8 @@ const getSubTitle = (
         return `Proceed to send a screening email to ${name}`;
       case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to ${name}`;
+      case JobApplicationSections.INTERVIEW:
+        return `Create a task on this action.`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to ${name}`;
       default:
@@ -224,6 +233,8 @@ const getSubTitle = (
         return `Proceed to send an assessment email to the candidate${
           count !== 1 ? 's' : ''
         }`;
+      case JobApplicationSections.INTERVIEW:
+        return `Create a task on this action.`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to the candidate${
           count !== 1 ? 's' : ''

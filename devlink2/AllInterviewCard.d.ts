@@ -19,4 +19,6 @@ declare function AllInterviewCard(props: {
   slotStatusBadge?: Types.Devlink.Slot;
   slotScheduleWithAgent?: Types.Devlink.Slot;
   onClickAgent?: Types.Devlink.RuntimeProps;
+  isDragVisible?: Types.Visibility.VisibilityConditions;
+  onClickDrag?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -19,6 +19,7 @@ import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/can
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/utils';
 import { EmailTemplateType } from '@/src/types/data.types';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { useJobDetails } from '../JobDashboard';
@@ -126,7 +127,7 @@ const reducer = (state: JobApplicationsData, action: Action) => {
 };
 
 const useProviderJobApplicationActions = (job_id: string = undefined) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
 
   const router = useRouter();
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
@@ -395,6 +396,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
+    task: boolean,
     purposes?: JobApplicationEmails['request']['purposes'],
     applicationIdSet?: Set<string>,
     updateAll: boolean = false,
@@ -407,12 +409,21 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
             id: job.id,
             job_title: job.job_title,
             company: job.company,
+            recruiter_id: job.recruiter_id,
+            recruiterUser: {
+              id: recruiterUser.user_id,
+              name: getFullName(
+                recruiterUser.first_name,
+                recruiterUser.last_name,
+              ),
+            },
             email_template: job.email_template as unknown as EmailTemplateType,
           },
           parameter: {
             ranges,
             ...searchParameters,
           },
+          task,
           sections,
           applicationIds,
           purposes,

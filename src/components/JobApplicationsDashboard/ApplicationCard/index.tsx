@@ -116,10 +116,12 @@ const ApplicationCard = ({
             text={<></>}
           />
         }
+        isChecked={isChecked}
       />
     ) : (
       <CandidateListItem
         key={key1}
+        isDragVisible={isChecked}
         onClickSelect={{ onClick: handleCheck }}
         isChecked={isChecked}
         slotProfileImage={profile}

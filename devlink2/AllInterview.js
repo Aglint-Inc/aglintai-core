@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AddFilter } from "./AddFilter";
@@ -77,6 +78,10 @@ export function AllInterview({
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-1312")}
+                  tag="div"
+                />
                 {isCheckboxVisible ? (
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-958")}

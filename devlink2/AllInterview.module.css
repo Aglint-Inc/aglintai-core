@@ -134,6 +134,12 @@
   display: none;
 }
 
+.div-block-1312 {
+  width: 14px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
 .div-block-958 {
   margin-right: 4px;
 }
@@ -302,6 +308,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 .div-block-1281 {

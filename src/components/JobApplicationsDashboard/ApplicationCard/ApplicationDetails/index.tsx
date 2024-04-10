@@ -454,6 +454,7 @@ const NewInterviewStatus = ({
           source: section,
           destination: null,
         },
+        false,
         [purpose],
         new Set([application.id]),
       );
@@ -930,6 +931,7 @@ const PhoneScreeningSection = ({
           source: section,
           destination: null,
         },
+        false,
         [purpose],
         new Set([application.id]),
       );

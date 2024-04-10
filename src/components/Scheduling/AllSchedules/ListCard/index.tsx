@@ -14,6 +14,7 @@ function ListCardInterviewSchedule({
   slotCheckbox = <></>,
   isJobDasboard = false,
   isSelected = false,
+  isChecked = false,
 }: {
   app: ApplicationList;
   // eslint-disable-next-line no-unused-vars
@@ -21,6 +22,7 @@ function ListCardInterviewSchedule({
   isJobDasboard?: boolean;
   slotCheckbox?: ReactNode;
   isSelected?: boolean;
+  isChecked?: boolean;
 }) {
   return (
     <>
@@ -30,6 +32,7 @@ function ListCardInterviewSchedule({
         }}
       >
         <AllInterviewCard
+          isDragVisible={isChecked}
           slotScheduleWithAgent={<ScheduleWithAgent />}
           textCurrentRole={
             (app.file?.resume_json as unknown as ResumeJson)?.basics

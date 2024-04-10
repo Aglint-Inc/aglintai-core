@@ -9,4 +9,6 @@ declare function ApplicantsTable(props: {
   isScreeningVisible?: Types.Visibility.VisibilityConditions;
   isInterviewVisible?: Types.Visibility.VisibilityConditions;
   isDisqualifiedVisible?: Types.Visibility.VisibilityConditions;
+  propsDrag?: Types.Devlink.RuntimeProps;
+  isDragVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

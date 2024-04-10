@@ -19,4 +19,6 @@ declare function CandidateListItem(props: {
   isChecked?: Types.Visibility.VisibilityConditions;
   onClickCandidate?: Types.Devlink.RuntimeProps;
   isHighlighted?: Types.Visibility.VisibilityConditions;
+  propsDrag?: Types.Devlink.RuntimeProps;
+  isDragVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

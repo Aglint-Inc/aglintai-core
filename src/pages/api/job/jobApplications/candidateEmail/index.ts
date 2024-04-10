@@ -14,6 +14,7 @@ import { Database } from '@/src/types/schema';
 import { type ReadJobApplicationApi } from '../read';
 import { handleRead } from '../read/utils';
 import {
+  createTasks,
   readCandidates,
   readSomeCandidates,
   sendMails,
@@ -42,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         },
       },
     );
-    const { job, purposes, applicationIds, sections, parameter } =
+    const { job, purposes, applicationIds, sections, parameter, task } =
       req.body as JobApplicationEmails['request'];
     const errorMessages = purposes.reduce((acc, curr) => {
       if (!job?.email_template[curr])
@@ -67,6 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
+      if (task) await createTasks(supabase, job, candidates);
       res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
         sendMails(supabase, job, purposes, candidates, sgMail);
@@ -81,6 +83,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
+      if (task) await createTasks(supabase, job, candidates);
       res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
         sendMails(supabase, job, purposes, candidates, sgMail);
@@ -164,14 +167,19 @@ const updateAllApplications = async (
 
 export type JobApplicationEmails = {
   request: {
-    job: Pick<JobType, 'company' | 'id' | 'job_title'> & {
+    job: Pick<JobType, 'company' | 'id' | 'job_title' | 'recruiter_id'> & {
       email_template: EmailTemplateType;
+      recruiterUser: {
+        id: string;
+        name: string;
+      };
     };
     sections: {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     };
     purposes: (keyof EmailTemplateType)[];
+    task: boolean;
     applicationIds?: string[]; //Awaited<ReturnType<typeof readCandidates>>;
     parameter: Omit<
       ReadJobApplicationApi['request'],

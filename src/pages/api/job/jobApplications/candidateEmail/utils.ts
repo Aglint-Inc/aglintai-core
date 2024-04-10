@@ -15,6 +15,7 @@ import {
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+import { getFullName } from '@/src/utils/jsonResume';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
 import {
@@ -128,6 +129,24 @@ export const sendMails = async (
   }, []);
   if (failedResponses.length !== 0)
     rerollEmailUpdates(supabase, job, failedResponses);
+};
+
+export const createTasks = async (
+  supabase: ReturnType<typeof createServerClient<Database>>,
+  job: JobApplicationEmails['request']['job'],
+  candidates: Awaited<ReturnType<typeof readCandidates>>,
+) => {
+  const safeData = candidates.map((candidate) => ({
+    name: `${job.job_title} (${getFullName(
+      candidate.first_name,
+      candidate.last_name,
+    )})`,
+    recruiter_id: job.recruiter_id,
+    application_id: candidate.application_id,
+    created_by: job.recruiterUser,
+  }));
+  const { error } = await supabase.from('tasks').insert(safeData);
+  if (error) throw new Error(error.message);
 };
 
 const rerollEmailUpdates = async (
