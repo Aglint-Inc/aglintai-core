@@ -69,6 +69,16 @@ export default async function handler(req, res) {
       email_body,
     );
 
+    await log_task_progress({
+      log_msg: 'Candidate Agent chat',
+      sub_task_id: agent_payload.payload.sub_task_id,
+      transcript: { message: email_body },
+      created_by: {
+        id: agent_payload.payload.candidate_id,
+        name: agent_payload.payload.candidate_name,
+      },
+    });
+
     const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_AI_HOST}/api/email-agent`,
       {
@@ -86,23 +96,17 @@ export default async function handler(req, res) {
     );
 
     await log_task_progress({
-      is_completed: true,
       log_msg: 'Candidate Agent chat',
       sub_task_id: agent_payload.payload.sub_task_id,
-      agent_type: 'email_agent',
-      transcript: data.new_history.slice(-2).map((c) => {
-        if (c.type === 'assistant') {
-          return {
-            id: EmailAgentId,
-            message: c.value,
-          };
-        }
-        return {
-          id: agent_payload.payload.candidate_id,
-          message: c.value,
-        };
-      }),
+      transcript: {
+        message: data.new_history[-1]?.content,
+      },
+      created_by: {
+        id: EmailAgentId,
+        name: `Email Agent`,
+      },
     });
+
     await sendEmailFromAgent({
       candidate_email,
       from_name: agent_payload.payload.company_name,
