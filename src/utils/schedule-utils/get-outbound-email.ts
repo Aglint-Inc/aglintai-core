@@ -15,6 +15,9 @@ export const getOutboundEmail = (email: string, is_sendgrid = false) => {
         'chinmail@aglinthq.com',
         'ravi@aglinthq.com',
         'dileep@aglinthq.com',
+        'dheeraj@aglinthq.com',
+        'punith@aglinthq.com',
+        'raj@aglinthq.com',
       ];
     }
     return 'chinmai@aglinthq.com';
