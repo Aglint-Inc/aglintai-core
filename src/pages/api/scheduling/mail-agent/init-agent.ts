@@ -113,6 +113,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         cand_details.candidate_name.split(' ')[0]
       }`,
     });
+
+    supabaseWrap(
+      await supabaseAdmin
+        .from('sub_tasks')
+        .update({
+          status: 'in_progress',
+        })
+        .eq('id', sub_task_id),
+    );
     await log_task_progress({
       agent_type: 'email_agent',
       log_msg: 'Sent interview schedule email to {candidate}',
@@ -125,7 +134,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id: EmailAgentId,
         name: 'Email Agent',
       },
+      progress_type: 'email_messages',
     });
+
     return res.status(200).send('ok');
   } catch (error) {
     console.log(error);
