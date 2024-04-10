@@ -22,19 +22,40 @@ import SessionCard from './SessionCard';
 
 function SubTaskProgress() {
   const { handelGetTaskLog, tasks } = useTasksAgentContext();
-  const { selectedSubTaskId, assignerList } = useTaskStatesContext();
+  const { selectedSubTaskId, assignerList, taskId } = useTaskStatesContext();
   const [progressList, setProgressList] = useState<
     TasksAgentContextType['progress_logs'] | null
   >(null);
   async function getProgress() {
     const data = await handelGetTaskLog(selectedSubTaskId);
-    if (data.some((ele) => ele.progress_type === 'interview_schedule')) {
-      let lastElement = data.pop(); // Remove the last element and store it
-      data.splice(data.length - 2, 0, lastElement); // Insert the last element at index 2
-      setProgressList(data);
+
+    let seenIds = new Set();
+
+    let filteredData = data.filter((item) => {
+      if (seenIds.has(item.title)) {
+        return false; // Skip duplicate ID
+      }
+      seenIds.add(item.title);
+      return true; // Include unique ID
+    });
+
+    const selectedSubTask = tasks
+      .find((ele) => ele.id === taskId)
+      .sub_tasks.find((ele) => ele.id === selectedSubTaskId);
+    if (selectedSubTask.assignee[0] === PhoneAgentId) {
+      setProgressList(filteredData);
     } else {
       setProgressList(data);
     }
+    // if (
+    //   filteredData.some((ele) => ele.progress_type === 'interview_schedule')
+    // ) {
+    //   let lastElement = filteredData.pop(); // Remove the last element and store it
+    //   filteredData.splice(filteredData.length - 2, 0, lastElement); // Insert the last element at index 2
+    //   setProgressList(filteredData);
+    // } else {
+    //   setProgressList(filteredData);
+    // }
   }
 
   //   const { data: emailLog, isLoading: emailLogLoading } = useEmailAgentLog();
