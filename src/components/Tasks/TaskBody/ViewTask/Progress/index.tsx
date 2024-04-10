@@ -69,11 +69,11 @@ function SubTaskProgress() {
                   key={i}
                   isTaskProgressVisible={true}
                   textTask={
-                    <div
+                    <span
                       dangerouslySetInnerHTML={{
                         __html: capitalize(item.title),
                       }}
-                    ></div>
+                    ></span>
                   }
                   slotImage={
                     <ShowCode>
@@ -136,15 +136,32 @@ function SubTaskProgress() {
                   textTime={dayjs(item.created_at).fromNow()}
                   isMailContentVisible={
                     item.progress_type === 'call_completed' ||
-                    item.progress_type === 'email_messages' ||
+                    (item.progress_type === 'email_messages' &&
+                      item.jsonb_data?.message) ||
                     item.progress_type === 'interview_schedule'
                   }
                   slotMailContent={
                     <ShowCode>
                       <ShowCode.When
-                        isTrue={item.progress_type === 'email_messages'}
+                        isTrue={
+                          item.progress_type === 'email_messages' &&
+                          item.jsonb_data?.message
+                        }
                       >
-                        <Typography>{item.jsonb_data?.message}</Typography>
+                        <Typography
+                          sx={{
+                            whiteSpace: 'pre-wrap',
+                          }}
+                          variant='body2'
+                        >
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: String(item.jsonb_data?.message).split(
+                                '\r\n\r\n\r\n',
+                              )[0],
+                            }}
+                          ></span>
+                        </Typography>
                       </ShowCode.When>
                       <ShowCode.When
                         isTrue={
@@ -171,52 +188,55 @@ function SubTaskProgress() {
                               const receiver = tasks
                                 .map((item) => item.applications.candidates)
                                 .find((item) => item.id === ele.id);
-                              return (
-                                <Stack gap={1} key={i}>
-                                  <TranscriptCard
-                                    isBackgroundActive={ele.id !== PhoneAgentId}
-                                    slotAgent={
-                                      <Stack width={150}>
-                                        <ShowCode>
-                                          <ShowCode.When
-                                            isTrue={ele.id === PhoneAgentId}
-                                          >
-                                            <AgentPill
-                                              isPhoneAgentVisible={true}
-                                              isEmailAgentVisible={false}
-                                            />
-                                          </ShowCode.When>
-                                          <ShowCode.Else>
-                                            <PanelMemberPill
-                                              isCloseVisible={false}
-                                              textMemberName={
-                                                receiver?.first_name +
-                                                ' ' +
-                                                receiver?.last_name
-                                              }
-                                              slotImage={
-                                                <MuiAvatar
-                                                  height={'25px'}
-                                                  width={'25px'}
-                                                  src={receiver?.avatar}
-                                                  variant='circular'
-                                                  fontSize='14px'
-                                                  level={capitalize(
-                                                    receiver?.first_name +
-                                                      ' ' +
-                                                      receiver?.last_name,
-                                                  )}
-                                                />
-                                              }
-                                            />
-                                          </ShowCode.Else>
-                                        </ShowCode>
-                                      </Stack>
-                                    }
-                                    textScript={ele.message}
-                                  />
-                                </Stack>
-                              );
+                              if (ele.message && ele.message.trim())
+                                return (
+                                  <Stack gap={1} key={i}>
+                                    <TranscriptCard
+                                      isBackgroundActive={
+                                        ele.id !== PhoneAgentId
+                                      }
+                                      slotAgent={
+                                        <Stack width={150}>
+                                          <ShowCode>
+                                            <ShowCode.When
+                                              isTrue={ele.id === PhoneAgentId}
+                                            >
+                                              <AgentPill
+                                                isPhoneAgentVisible={true}
+                                                isEmailAgentVisible={false}
+                                              />
+                                            </ShowCode.When>
+                                            <ShowCode.Else>
+                                              <PanelMemberPill
+                                                isCloseVisible={false}
+                                                textMemberName={
+                                                  receiver?.first_name +
+                                                  ' ' +
+                                                  receiver?.last_name
+                                                }
+                                                slotImage={
+                                                  <MuiAvatar
+                                                    height={'25px'}
+                                                    width={'25px'}
+                                                    src={receiver?.avatar}
+                                                    variant='circular'
+                                                    fontSize='14px'
+                                                    level={capitalize(
+                                                      receiver?.first_name +
+                                                        ' ' +
+                                                        receiver?.last_name,
+                                                    )}
+                                                  />
+                                                }
+                                              />
+                                            </ShowCode.Else>
+                                          </ShowCode>
+                                        </Stack>
+                                      }
+                                      textScript={ele.message}
+                                    />
+                                  </Stack>
+                                );
                             })}
                         </Stack>
                       </ShowCode.When>
