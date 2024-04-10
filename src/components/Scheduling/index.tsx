@@ -59,14 +59,13 @@ function SchedulingMainComp() {
   }, [router]);
 
   const tab = router.query.tab as SchedulingTab;
-
   return (
     <>
       <PageLayout
         slotSaving={<SyncStatus status={saving} />}
         slotTopbarRight={
           <>
-            {router.query.tab == 'interviewModules' && (
+            {router.query.tab == 'interviewtypes' && (
               <Stack direction={'row'} alignItems={'center'} spacing={2}>
                 <UITextField
                   InputProps={{
@@ -115,7 +114,7 @@ function SchedulingMainComp() {
                 ])
               ) : tab == 'mySchedules' ? (
                 <MySchedule />
-              ) : tab == 'interviewModules' ? (
+              ) : tab === 'interviewtypes' ? (
                 allowAction(<Modules />, ['admin', 'recruiter', 'scheduler'])
               ) : tab == 'interviewers' ? (
                 allowAction(<InterviewTab />, [

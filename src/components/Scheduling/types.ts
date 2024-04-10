@@ -1,6 +1,6 @@
 export type SchedulingTab =
   | 'candidates'
   | 'mySchedules'
-  | 'interviewModules'
+  | 'interviewtypes'
   | 'interviewers'
   | 'settings';
