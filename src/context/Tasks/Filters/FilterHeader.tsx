@@ -1,12 +1,12 @@
 import { Button, InputAdornment, Popover, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import { capitalize } from 'lodash';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 // eslint-disable-next-line no-unused-vars
 // type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any
@@ -63,7 +63,6 @@ export const FilterHeader = ({
             }}
             borderRadius={10}
             height={42}
-            
           />
         </Stack>
       )}
@@ -231,7 +230,7 @@ function FilterDropDown({
                         //   }
                         // }}
                       >
-                        {capitalize(label)}
+                        {capitalizeAll(label || '')}
                       </Typography>
                     </Stack>
                   );

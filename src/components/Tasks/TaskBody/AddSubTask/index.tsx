@@ -65,16 +65,16 @@ function AddSubTask({ taskId }: { taskId: string }) {
         set this data to json object
         {
             "name":"get the task name",
-            "start_date":"extract the date and time ( MM-DD-YYYY HH:mm:ss ) if mentioned only else pass null",
-            "completion_date":"extract the date and time ( MM-DD-YYYY HH:mm:ss ) if mentioned only else pass null",
+            "start_date":"if(time_mention) extract the date and time ( MM-DD-YYYY HH:mm:ss ) else pass null",
+            "completion_date":"if(time_mention) extract the date and time ( MM-DD-YYYY HH:mm:ss ) else pass null",
             "status":"enum("completed" | "closed" | "pending" | "failed" |"in_progress")",
-            // "agent":"enum("call"|"email"|null)"
+            "agent":"enum("phone"|"email"|null)"
             "assignee":"
             if(agent==='call')
             return ${PhoneAgentId}
             else if(agent==='email') 
             return ${EmailAgentId}
-            else null
+            else ${recruiterUser.user_id}
             ",
         } 
 
