@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
 import { AgentPill } from '@/devlink3';
@@ -19,6 +18,7 @@ import {
 } from '@/src/context/TaskContext/TaskContextProvider';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { RecruiterUserType } from '@/src/types/data.types';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
@@ -99,7 +99,6 @@ function UpdateSubTask({
       height={'50px'}
       columnSpacing={'10px'}
       container
-      ml={'30px'}
     >
       <Grid
         width={'100%'}
@@ -164,13 +163,14 @@ function UpdateSubTask({
           // groupBy={(option) => option.assignee}
           options={assignerList}
           getOptionLabel={(option) => {
-            const fullName =
-              (option.first_name || '') + ' ' + (option.last_name || '');
-            return capitalize(fullName);
+            return capitalizeAll(
+              `${option.first_name || ''} ${option.last_name || ''}`.trim(),
+            );
           }}
           renderOption={(props, option) => {
-            const fullName =
-              (option.first_name || '') + ' ' + (option.last_name || '');
+            const fullName = capitalizeAll(
+              `${option.first_name || ''} ${option.last_name || ''}`.trim(),
+            );
             if (option.first_name === 'email') {
               return (
                 <Box component='li' {...props}>
@@ -202,10 +202,10 @@ function UpdateSubTask({
                     src={option.profile_image}
                     variant='circular'
                     fontSize='14px'
-                    level={capitalize(fullName)}
+                    level={capitalizeAll(fullName)}
                   />
                   <Typography variant='subtitle2'>
-                    {capitalize(fullName)}
+                    {capitalizeAll(fullName)}
                   </Typography>
                 </Stack>
               </Box>

@@ -43,7 +43,11 @@ function SubTaskCard({
           ></div>
         </>
       }
-      textDate={dayjs(subTask.completion_date).format('ddd, MMMM D YYYY')}
+      textDate={
+        subTask.completion_date
+          ? dayjs(subTask.completion_date).format('ddd, MMMM D YYYY')
+          : 'Time not mentioned'
+      }
       slotCheckbox={
         <Checkbox
           // onChange={(e) => {
