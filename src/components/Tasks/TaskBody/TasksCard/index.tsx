@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { TaskCard } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -22,13 +22,13 @@ function TaskCardBox({
   const { taskId, setTaskId, selectedSubTaskId, addingSubTask, openViewTask } =
     useTaskStatesContext();
   const [selectedIndex, setSelectedIndex] = useState(null);
-  useEffect(() => {
-    return () => {
-      if (taskId) {
-        setSelectedIndex(null);
-      }
-    };
-  }, [taskId]);
+  // useEffect(() => {
+  //   return () => {
+  //     if (taskId) {
+  //       setSelectedIndex(null);
+  //     }
+  //   };
+  // }, [taskId]);
   if (members)
     return (
       <TaskCard

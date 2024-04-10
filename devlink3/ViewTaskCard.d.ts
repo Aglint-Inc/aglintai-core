@@ -4,7 +4,6 @@ import * as Types from "./types";
 declare function ViewTaskCard(props: {
   as?: React.ElementType;
   textTaskName?: React.ReactNode;
-  onClickEdit?: Types.Devlink.RuntimeProps;
   textDate?: React.ReactNode;
   slotAgentPill?: Types.Devlink.Slot;
   onClickMark?: Types.Devlink.RuntimeProps;
