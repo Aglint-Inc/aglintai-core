@@ -57,18 +57,28 @@ function SelectStatus({
       >
         <Stack direction={'column'}>
           {[
-            { status: 'pending', backgroundColor: '#FFF7ED' },
-            { status: 'in_progress', backgroundColor: '#CEE2F2' },
-            { status: 'completed', backgroundColor: '#D1E8DF' },
-            { status: 'closed', backgroundColor: '#E9EBED' },
+            { status: 'pending', backgroundColor: '#FFF7ED', label: 'pending' },
+            {
+              status: 'in_progress',
+              backgroundColor: '#CEE2F2',
+              label: 'in progress',
+            },
+            {
+              status: 'completed',
+              backgroundColor: '#D1E8DF',
+              label: 'completed',
+            },
+            { status: 'closed', backgroundColor: '#E9EBED', label: 'closed' },
           ].map(
             (
               {
                 backgroundColor,
                 status,
+                label,
               }: {
                 backgroundColor: string;
                 status: CustomDatabase['public']['Enums']['sub_task_status'];
+                label: string;
               },
               i,
             ) => {
@@ -87,7 +97,7 @@ function SelectStatus({
                         style: { backgroundColor },
                       }}
                       key={i}
-                      textStatus={status}
+                      textStatus={label}
                     />
                   }
                   key={i}
