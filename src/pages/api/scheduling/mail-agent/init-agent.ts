@@ -53,8 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !cand_time_zone ||
       !filter_json_id ||
       !interviewer_name ||
-      !organizer_time_zone ||
-      !sub_task_id
+      !organizer_time_zone
     ) {
       return res.status(400).send('missing fields');
     }
