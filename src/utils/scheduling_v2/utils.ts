@@ -14,7 +14,6 @@ import {
   holidayType,
   schedulingSettingType,
 } from '@/src/components/Scheduling/Settings/types';
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 
 import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
@@ -205,17 +204,19 @@ export const getCompWorkingDaysRange = (
 export const log_task_progress = async ({
   sub_task_id,
   log_msg,
-  is_completed,
   transcript,
-  agent_type = 'email_agent',
   candidate_name,
+  created_by,
 }: {
   sub_task_id: string | null;
   log_msg: string;
-  is_completed: boolean;
-  transcript?: { role: 'candidate' | 'agent'; content: string }[];
+  transcript?: { message: string };
   agent_type?: 'email_agent' | 'phone_agent';
   candidate_name?: string;
+  created_by: {
+    id: string;
+    name: string;
+  };
 }) => {
   if (!sub_task_id) return;
   if (candidate_name) {
@@ -229,14 +230,11 @@ export const log_task_progress = async ({
       await supabaseAdmin
         .from('sub_task_progress')
         .insert({
-          created_by: {
-            id: agent_type == 'email_agent' ? EmailAgentId : PhoneAgentId,
-            name: agent_type == 'email_agent' ? 'Email Agent' : 'Phone Agent',
-          },
+          created_by: created_by,
           title: log_msg,
           jsonb_data: transcript ?? null,
           sub_task_id: sub_task_id,
-          progress_type: is_completed ? 'call_completed' : 'standard',
+          progress_type: 'email_messages',
         })
         .select(),
     );
