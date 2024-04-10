@@ -14,6 +14,7 @@ import {
   holidayType,
   schedulingSettingType,
 } from '@/src/components/Scheduling/Settings/types';
+import { SubTaskProgress } from '@/src/types/data.types';
 
 import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
@@ -207,6 +208,7 @@ export const log_task_progress = async ({
   transcript,
   candidate_name,
   created_by,
+  progress_type = 'standard',
 }: {
   sub_task_id: string | null;
   log_msg: string;
@@ -217,6 +219,7 @@ export const log_task_progress = async ({
     id: string;
     name: string;
   };
+  progress_type: SubTaskProgress['progress_type'];
 }) => {
   if (!sub_task_id) return;
   if (candidate_name) {
@@ -234,7 +237,7 @@ export const log_task_progress = async ({
           title: log_msg,
           jsonb_data: transcript ?? null,
           sub_task_id: sub_task_id,
-          progress_type: 'email_messages',
+          progress_type: progress_type,
         })
         .select(),
     );

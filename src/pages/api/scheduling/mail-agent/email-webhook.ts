@@ -91,6 +91,7 @@ export default async function handler(req, res) {
         id: agent_payload.payload.candidate_id,
         name: agent_payload.payload.candidate_name,
       },
+      progress_type: 'email_messages',
     });
 
     const { data } = await axios.post(
@@ -119,6 +120,7 @@ export default async function handler(req, res) {
         id: EmailAgentId,
         name: `Email Agent`,
       },
+      progress_type: 'email_messages',
     });
 
     await sendEmailFromAgent({
