@@ -168,10 +168,10 @@ export const sendEmailFromAgent = async ({
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
-    fromEmail:
-      process.env.NODE_ENV === 'development'
-        ? 'agent@parse.aglinthq.com'
-        : 'agent@ai.aglinthq.com',
+    fromEmail: 'agent@ai.aglinthq.com',
+    // process.env.NODE_ENV === 'development'
+    //   ? 'agent@parse.aglinthq.com'
+    //   : 'agent@ai.aglinthq.com',
     fromName: from_name,
     subject,
     text: mail_body,

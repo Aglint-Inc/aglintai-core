@@ -70,18 +70,18 @@ function CandidateInfo({ applications, candidate, file }) {
           }
           isLocationVisible={Boolean(candidate.country)}
           isResumeVisible={Boolean(file.file_url)}
-          isRoleVisible={Boolean(resumeJson.currentJobTitle)}
+          isRoleVisible={Boolean(resumeJson?.currentJobTitle)}
           onClickResume={{
             onClick: () => {
               window.open(file.file_url, '_blank');
             },
           }}
-          textRole={resumeJson.currentJobTitle || ''}
+          textRole={resumeJson?.currentJobTitle || ''}
           textName={`${candidate.first_name || ''} ${candidate.last_name || ''}`}
           textLocation={[candidate.city, candidate.state, candidate.country]
             .filter(Boolean)
             .join(', ')}
-          isOverviewVisible={resumeJson.overview}
+          isOverviewVisible={resumeJson?.overview}
           slotOverview={
             <>
               <SummaryBlock
@@ -91,7 +91,7 @@ function CandidateInfo({ applications, candidate, file }) {
                   },
                 }}
                 title={'Overview'}
-                description={resumeJson.overview}
+                description={resumeJson?.overview}
               />
             </>
           }
@@ -103,19 +103,19 @@ function CandidateInfo({ applications, candidate, file }) {
                 <>
                   <AnalysisBlockSection application={application} />
                   <NewExperienceDetails
-                    positions={resumeJson.positions}
+                    positions={resumeJson?.positions}
                     relevance={
                       (applications.score_json as any)?.relevance?.positions
                     }
                   />
                   <NewEducationDetails
-                    schools={resumeJson.schools}
+                    schools={resumeJson?.schools}
                     relevance={
                       (applications.score_json as any)?.relevance?.schools
                     }
                   />
                   <NewSkillDetails
-                    skills={resumeJson.skills}
+                    skills={resumeJson?.skills}
                     relevance={(applications.score_json as any)?.skills}
                   />
                 </>

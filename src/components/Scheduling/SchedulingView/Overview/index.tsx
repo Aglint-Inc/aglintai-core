@@ -88,7 +88,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
           isLinks={false}
           textMail={candidates.email}
           textName={candidates.first_name + ' ' + candidates.last_name}
-          textRole={schedule.file.resume_json.basics.currentJobTitle}
+          textRole={schedule.file?.resume_json?.basics?.currentJobTitle}
           slotImage={
             <MuiAvatar
               level={getFullName(

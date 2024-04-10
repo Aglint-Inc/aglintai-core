@@ -39,7 +39,7 @@ export const fetchProgress = async ({
     .eq('interview_session.module_id', module_id)
     .in('interview_module_relation_id', trainer_ids)
     .eq('is_confirmed', true);
-  
+
   if (errSelRel) throw new Error(errSelRel.message);
 
   const filteredIntSesRel = intSesRel.filter(
