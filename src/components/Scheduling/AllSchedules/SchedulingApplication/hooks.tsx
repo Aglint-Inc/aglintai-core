@@ -627,6 +627,7 @@ export const scheduleWithAgent = async ({
           recruiter_user_name,
           candidate_name,
           company_name,
+          jobRole: sessionsWithPlan.application.public_jobs.job_title,
         });
       } else {
         const sessionsWithPlan = await fetchInterviewDataSchedule(
@@ -679,6 +680,7 @@ export const scheduleWithAgent = async ({
           recruiter_user_name,
           candidate_name,
           company_name,
+          jobRole: sessionsWithPlan.application.public_jobs.job_title,
         });
       }
       return true;
@@ -696,13 +698,13 @@ const agentTrigger = async ({
   recruiter_user_name,
   candidate_name,
   company_name,
+  jobRole,
 }) => {
   try {
     if (type === 'email_agent') {
       await axios.post('/api/scheduling/mail-agent/init-agent', {
         cand_email:
-          'chinmai@aglinthq.com' ||
-          sessionsWithPlan.application.candidates.email,
+          'raj@aglinthq.com' || sessionsWithPlan.application.candidates.email,
         cand_time_zone: dayjs.tz.guess(),
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
@@ -713,15 +715,14 @@ const agentTrigger = async ({
       await axios.post(
         'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
         {
-          begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of {jobRole}, Is this the right time to talk?`,
+          begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
           interviewer_name: recruiter_user_name,
           from_phone_no: '+12512066348',
-          to_phone_no: '+919482306657',
+          to_phone_no: '+14088873921',
           retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           filter_json_id: filterJsonId,
           cand_email:
-            'chinmai@aglinthq.com' ||
-            sessionsWithPlan.application.candidates.email,
+            'raj@aglinthq.com' || sessionsWithPlan.application.candidates.email,
           sub_task_id: sub_task_id,
         },
       );

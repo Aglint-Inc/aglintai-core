@@ -52,7 +52,7 @@ function GetScheduleOptionsDialog() {
 
   const { sendToCandidate } = useSendInviteForCandidate();
 
-  const initialEndDate = currentDate.add(5, 'day');
+  const initialEndDate = currentDate.add(15, 'day');
 
   useEffect(() => {
     setDateRange({
