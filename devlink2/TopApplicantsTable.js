@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -28,10 +29,15 @@ export function TopApplicantsTable({
             "cv-list-column-wrapper",
             "header",
             "width-auto",
-            "no_border"
+            "no_border",
+            "gap-6"
           )}
           tag="div"
         >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1312")}
+            tag="div"
+          />
           <_Builtin.Block
             className={_utils.cx(_styles, "cv-list-column")}
             tag="div"

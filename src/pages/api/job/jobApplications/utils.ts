@@ -7,6 +7,7 @@ import {
   type CsvUploadApi,
   type ManualUploadApi,
   type ResumeUploadApi,
+  ResumeReuploadApi,
   UploadApiFormData,
 } from './candidateUpload/types';
 import { type ReadJobApplicationApi } from './read';
@@ -17,6 +18,7 @@ type ApiRouteTypes = {
   'candidateUpload/csvUpload': CsvUploadApi;
   'candidateUpload/manualUpload': ManualUploadApi;
   'candidateUpload/resumeUpload': ResumeUploadApi;
+  'candidateUpload/resumeReupload': ResumeReuploadApi;
   candidateDelete: JobApplicationDelete;
 };
 

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Collapse, Dialog, Stack } from '@mui/material';
+import { Collapse, Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 // import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { FileUploader } from 'react-drag-drop-files';
 
 import {
   AssessmentInvite,
@@ -41,8 +42,10 @@ import {
   SidebarScreening,
   StatusBadge,
   SummaryBlock,
+  UploadCandidateResume,
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
+import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import ScoreWheel, {
   scoreWheelDependencies,
@@ -58,6 +61,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { palette } from '@/src/context/Theme/Theme';
 import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 // import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -77,6 +81,8 @@ import InterviewScore, {
 import ResumeScore from '../../Common/ResumeScore';
 import CopyWrapper from '../../Common/Wrappers/copyWrapper';
 import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
+import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
+import useUploadCandidate from '../../ImportManualCandidates/hooks';
 import {
   capitalize,
   formatTimeStamp,
@@ -209,6 +215,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
+  const { interviewPlanEnabled } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -257,7 +264,9 @@ const NewJobApplicationSideDrawer = ({
       slotMoveTo={<></>}
       slotOverview={
         <>
-          {<InterviewStatusBlock application={application} />}
+          {(interviewPlanEnabled?.data ?? false) && (
+            <InterviewStatusBlock application={application} />
+          )}
           {overview.valid && (
             <OverviewBlock title={'Overview'} description={overview.value} />
           )}
@@ -664,14 +673,7 @@ const NewResumeSection: React.FC<{
   setOpenResume: Dispatch<SetStateAction<boolean>>;
 }> = ({ application, openResume, setOpenResume }) => {
   const { job } = useJobApplications();
-  const [downloading, setDownloading] = useState(false);
-  const handleDownload = async () => {
-    if (!downloading) {
-      setDownloading(true);
-      await fetchFile(application);
-      setDownloading(false);
-    }
-  };
+  const [upload, setUpload] = useState(false);
   return (
     <>
       <ResumeViewer
@@ -681,11 +683,96 @@ const NewResumeSection: React.FC<{
       />
       <ResumeBlock
         application={application}
-        setOpenResume={setOpenResume}
-        handleDownload={handleDownload}
         job={job}
+        handleUpload={() => setUpload((prev) => !prev)}
+      />
+      <ResumeUpload
+        application={application}
+        upload={upload}
+        setUpload={setUpload}
       />
     </>
+  );
+};
+
+const ResumeUpload: React.FC<{
+  application: JobApplication;
+  upload: boolean;
+  setUpload: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, setUpload, upload }) => {
+  const fileTypes = ['PDF', 'DOCX', 'TXT'];
+  const { handleJobApplicationRefresh } = useJobApplications();
+  const { handleResumeReupload } = useUploadCandidate();
+  const [resume, setResume] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const handleClose = () => {
+    setUpload(false);
+    setTimeout(() => setResume(null), 400);
+  };
+  const handleSubmit = async () => {
+    if (resume) {
+      if (!loading) {
+        setLoading(true);
+        const { confirmation } = await handleResumeReupload(resume, {
+          candidate_id: application.candidate_id,
+          id: application.id,
+        });
+        if (confirmation) {
+          handleClose();
+          await handleJobApplicationRefresh();
+        }
+        setLoading(false);
+      } else {
+        toast.warning('Uploading candidate resume. Please wait');
+      }
+    } else {
+      toast.error('Upload a valid file');
+    }
+  };
+  return (
+    <Dialog open={upload} onClose={() => setUpload(false)}>
+      <UploadCandidateResume
+        slotUploadButton={
+          <Stack>
+            <AUIButton onClick={async () => await handleSubmit()}>
+              Upload
+            </AUIButton>
+          </Stack>
+        }
+        slotDrag={
+          <FileUploader handleChange={(e) => setResume(e)} types={fileTypes}>
+            <Stack
+              sx={{
+                border: '1px dashed',
+                borderColor: palette.blue[300],
+                borderRadius: 1,
+                py: '34px',
+                px: '20px',
+                cursor: 'pointer',
+                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+              }}
+              direction='row'
+              spacing={'8px'}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {resume ? <FileIcon /> : <UploadIcon />}
+              <Typography
+                variant='body2'
+                sx={{ textAlgin: 'center', fontSize: '14px' }}
+                style={{
+                  fontWeight: resume ? 600 : 400,
+                }}
+              >
+                {resume ? resume.name : 'Upload candidate resume [PDF/DOCX]'}
+              </Typography>
+              {resume && <CheckIcon />}
+            </Stack>
+          </FileUploader>
+        }
+        onClickClose={{ onClick: () => handleClose() }}
+      />
+    </Dialog>
   );
 };
 
@@ -719,14 +806,17 @@ const ResumeViewer: React.FC<{
 
 const ResumeBlock: React.FC<{
   application: JobApplication;
-  setOpenResume: Dispatch<SetStateAction<boolean>>;
-  handleDownload: () => Promise<void>;
   job: JobTypeDashboard;
-}> = ({ application, setOpenResume, handleDownload, job }) => {
+  handleUpload: () => void;
+}> = ({ application, job, handleUpload }) => {
   if (job.status === 'draft') return <DangerMessage />;
   switch (getApplicationProcessState(application)) {
     case 'unavailable':
-      return <ResAbsentError />;
+      return (
+        <ResAbsentError
+          onClickUploadResume={{ onClick: () => handleUpload() }}
+        />
+      );
     case 'fetching':
       return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
     case 'processing':
@@ -734,15 +824,7 @@ const ResumeBlock: React.FC<{
     case 'unparsable':
       return (
         <UnableFetchResume
-          propsLink={{ href: application.candidate_files.file_url }}
-          onClickViewResume={{
-            onClick: () => {
-              setOpenResume(true);
-            },
-          }}
-          onClickDownloadResume={{
-            onClick: async () => await handleDownload(),
-          }}
+          onClickReuploadResume={{ onClick: () => handleUpload() }}
         />
       );
     case 'processed':
