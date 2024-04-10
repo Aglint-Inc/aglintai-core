@@ -33,7 +33,7 @@ const MoveCandidate: React.FC<{
     setActionProps,
   } = useJobApplications();
   const [purposes, setPurposes] = useState([]);
-  const [task, setTask] = useState(false);
+  const [task, setTask] = useState(true);
   const isChecked = list.size !== 0;
 
   const showNew = isChecked && actionVisibilities.new;
@@ -82,7 +82,10 @@ const MoveCandidate: React.FC<{
   };
   const handleClose = () => {
     setActionProps((prev) => ({ ...prev, open: false }));
-    setTimeout(() => setActionProps({ open: false, destination: null }), 200);
+    setTimeout(() => {
+      setActionProps({ open: false, destination: null });
+      setTask(true);
+    }, 200);
   };
 
   return (

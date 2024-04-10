@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -75,30 +76,32 @@ const Screening = () => {
     <div>
       <PageLayout
         slotBody={
-          !isloader && templates.length === 0 ? (
-            <EmptyPhoneScreening />
-          ) : (
-            <ScreeningLanding
-              slotScreeningLandingCard={templates.map((data) => {
-                const questionCount = data.questions.questions
-                  ? Object.keys(data.questions.questions).length
-                  : 0;
-                return (
-                  <ScreeningLandingCard
-                    isChange={false}
-                    textTitle={data.title}
-                    key={data.id}
-                    textQuestionCount={questionCount}
-                    onClickCard={{
-                      onClick: () => {
-                        router.push(`/screening/${data.id}`);
-                      },
-                    }}
-                  />
-                );
-              })}
-            />
-          )
+          <Stack px={2}>
+            {!isloader && templates.length === 0 ? (
+              <EmptyPhoneScreening />
+            ) : (
+              <ScreeningLanding
+                slotScreeningLandingCard={templates.map((data) => {
+                  const questionCount = data.questions.questions
+                    ? Object.keys(data.questions.questions).length
+                    : 0;
+                  return (
+                    <ScreeningLandingCard
+                      isChange={false}
+                      textTitle={data.title}
+                      key={data.id}
+                      textQuestionCount={questionCount}
+                      onClickCard={{
+                        onClick: () => {
+                          router.push(`/screening/${data.id}`);
+                        },
+                      }}
+                    />
+                  );
+                })}
+              />
+            )}
+          </Stack>
         }
         slotTopbarLeft={<ScreeningDashboardBreadCrumbs />}
         slotTopbarRight={

@@ -224,6 +224,9 @@ function JobAgent() {
                                       (a, b) =>
                                         b?.overall_score - a?.overall_score,
                                     )
+                                    .filter((application) =>
+                                      Boolean(application?.id),
+                                    )
                                     .map((application) => {
                                       return (
                                         <>
