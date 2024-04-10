@@ -40,7 +40,7 @@ export const find_api_details = async (
     .filter(Boolean)
     .reduce((tot, curr) => {
       return [...tot, ...curr];
-    });
+    }, []);
 
   const ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
