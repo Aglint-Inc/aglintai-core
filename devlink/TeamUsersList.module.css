@@ -316,6 +316,21 @@
   margin-top: 20px;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .text-grey-600.width-90 {
   width: 90%;
 }
@@ -418,8 +433,8 @@
 .tu-list {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .tu-pending-invites-block {
@@ -478,7 +493,9 @@
 .slot_search-filter {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   flex-wrap: nowrap;
+  align-items: stretch;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
@@ -505,6 +522,15 @@
   }
 }
 
+.tu-list-wrapper.mlr-20 {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.tu-list-wrapper.mlr-20.radius-10 {
+  border-radius: 10px;
+}
+
 .tu-list-block {
   display: grid;
   padding-top: 10px;
@@ -512,14 +538,14 @@
   justify-content: space-between;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 350px 150px 200px 150px 200px 100px;
+  grid-template-columns: 30% 15% 15% 17% 13% 10%;
   grid-template-rows: auto;
 }
 
 .tu-list-block.header-block {
   padding-top: 0px;
   padding-bottom: 0px;
-  grid-template-columns: 350px 150px 200px 150px 200px 100px;
+  grid-template-columns: 30% 15% 15% 17% 13% 10%;
   background-color: #e9ebed;
 }
 

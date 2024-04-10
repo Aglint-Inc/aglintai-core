@@ -41,7 +41,7 @@ function Instructions() {
           <>
             <Stack
               sx={{
-                mt: '8px',
+                margin: '20px',
                 maxWidth: '600px',
                 border: '1px solid',
                 borderColor: palette.grey[300],

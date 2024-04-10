@@ -111,21 +111,6 @@ export function TeamListItem({
         className={_utils.cx(_styles, "tu-list-item")}
         id={_utils.cx(
           _styles,
-          "w-node-a60860aa-9493-87fc-f445-b3f1087efc98-087efc8b"
-        )}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-color-black")}
-          tag="div"
-        >
-          {dateText}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "tu-list-item")}
-        id={_utils.cx(
-          _styles,
           "w-node-_655f2e9d-3d61-7fc0-5d9e-46701b5d918f-087efc8b"
         )}
         tag="div"
@@ -135,6 +120,21 @@ export function TeamListItem({
           tag="div"
         >
           {textLocation}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "tu-list-item")}
+        id={_utils.cx(
+          _styles,
+          "w-node-a60860aa-9493-87fc-f445-b3f1087efc98-087efc8b"
+        )}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-color-black")}
+          tag="div"
+        >
+          {dateText}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

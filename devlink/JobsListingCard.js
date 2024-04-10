@@ -329,7 +329,12 @@ export function JobsListingCard({
                 {newCount}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                className={_utils.cx(
+                  _styles,
+                  "is_end",
+                  "change_on_hover",
+                  "starting"
+                )}
                 tag="div"
               />
             </_Builtin.Block>

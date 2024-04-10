@@ -177,34 +177,36 @@ const TeamManagement = () => {
                 height={42}
               />
             </Stack>
-            <FilterDropDown
-              title={'Department'}
-              itemList={uniqueDepartments}
-              selectedItems={selectedDepartments}
-              setSelectedItems={setSelectedDepartments}
-              icon={<DepartmentIcon />}
-            />
-            <FilterDropDown
-              icon={<LocationIcon />}
-              title={'Location'}
-              itemList={uniqueLocations}
-              selectedItems={selectedLocations}
-              setSelectedItems={setSelectedLocations}
-            />
-            <FilterDropDown
-              icon={<UserRoleIcon />}
-              title={'Role'}
-              itemList={uniqueRoles}
-              selectedItems={selectedRoles}
-              setSelectedItems={setSelectedRoles}
-            />
-            <FilterDropDown
-              icon={<StatusIcon />}
-              title={'Status'}
-              itemList={uniqueStatus}
-              selectedItems={selectedStatus}
-              setSelectedItems={setSelectedStatus}
-            />
+            <Stack display={'flex'} flexDirection={'row'} gap={'10px'}>
+              <FilterDropDown
+                icon={<StatusIcon />}
+                title={'Status'}
+                itemList={uniqueStatus}
+                selectedItems={selectedStatus}
+                setSelectedItems={setSelectedStatus}
+              />
+              <FilterDropDown
+                icon={<UserRoleIcon />}
+                title={'Role'}
+                itemList={uniqueRoles}
+                selectedItems={selectedRoles}
+                setSelectedItems={setSelectedRoles}
+              />
+              <FilterDropDown
+                title={'Department'}
+                itemList={uniqueDepartments}
+                selectedItems={selectedDepartments}
+                setSelectedItems={setSelectedDepartments}
+                icon={<DepartmentIcon />}
+              />
+              <FilterDropDown
+                icon={<LocationIcon />}
+                title={'Location'}
+                itemList={uniqueLocations}
+                selectedItems={selectedLocations}
+                setSelectedItems={setSelectedLocations}
+              />
+            </Stack>
           </>
         }
         slotTeamList={
