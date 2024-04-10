@@ -134,6 +134,8 @@ function AddSubTask({ taskId }: { taskId: string }) {
               : assignee[0] === PhoneAgentId
                 ? 'phone_agent'
                 : null,
+          candidate_name: selectedTask.applications.candidates?.first_name,
+          company_name: recruiter?.name,
         });
       }
       //end
