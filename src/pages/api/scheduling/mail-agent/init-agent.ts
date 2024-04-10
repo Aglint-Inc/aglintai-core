@@ -118,6 +118,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       log_msg: 'Sent interview schedule email to {candidate}',
       sub_task_id: sub_task_id,
       candidate_name: cand_details.candidate_name,
+      transcript: {
+        message: initMailBody,
+      },
       created_by: {
         id: EmailAgentId,
         name: 'Email Agent',
