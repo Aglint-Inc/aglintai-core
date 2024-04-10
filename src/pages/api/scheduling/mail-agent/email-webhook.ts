@@ -63,16 +63,30 @@ export default async function handler(req, res) {
     const candidate_email = getEmail(fields.from[0]);
     // const to_email = getEmail(fields.to[0]);
     // const subject = fields.subject[0];
-    const email_body = fields.text[0];
+    const raw_email_body: string = fields.text[0];
+
+    //clean incoming email body
+    const cleaned_email_body = raw_email_body
+      .split('\r\n')
+      .filter(
+        (s) =>
+          !(
+            s.startsWith('> ') ||
+            s.includes('<agent@parse.aglinthq.com> wrote:')
+          ),
+      )
+      .filter((s) => s.length > 0)
+      .join('\r\n');
+
     const agent_payload = await fetchCandidateDetails(
       candidate_email,
-      email_body,
+      cleaned_email_body,
     );
 
     await log_task_progress({
       log_msg: 'Candidate Agent chat',
       sub_task_id: agent_payload.payload.sub_task_id,
-      transcript: { message: email_body },
+      transcript: { message: cleaned_email_body },
       created_by: {
         id: agent_payload.payload.candidate_id,
         name: agent_payload.payload.candidate_name,
