@@ -608,14 +608,15 @@ export const scheduleWithAgent = async ({
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        const { error: eroorSubTasks } = await supabase
-          .from('sub_tasks')
-          .update({
-            session_ids: createCloneRes.session_ids,
-          })
-          .eq('id', sub_task_id);
-
-        if (eroorSubTasks) throw new Error(eroorSubTasks.message);
+        if (sub_task_id) {
+          const { error: eroorSubTasks } = await supabase
+            .from('sub_tasks')
+            .update({
+              session_ids: createCloneRes.session_ids,
+            })
+            .eq('id', sub_task_id);
+          if (eroorSubTasks) throw new Error(eroorSubTasks.message);
+        }
 
         agentTrigger({
           type,

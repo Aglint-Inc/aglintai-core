@@ -267,6 +267,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .div-block-1297 {
   display: flex;
   justify-content: flex-start;
@@ -366,7 +370,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
 
   background-color: white;

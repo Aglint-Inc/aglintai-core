@@ -149,15 +149,18 @@ function SchedulingOptionComp({
                           )
                         }
                       />
-                      {indOpt !== option.sessions.length - 1 && (
-                        <OptionAvailable
-                          key={ind}
-                          textTime={''}
-                          textBreakTime={`${ses.break_duration} Minutes` || ''}
-                          isTitleVisible={false}
-                          isBreakVisible={true}
-                        />
-                      )}
+                      {indOpt !== option.sessions.length - 1 &&
+                        ses.break_duration > 0 && (
+                          <OptionAvailable
+                            key={ind}
+                            textTime={''}
+                            textBreakTime={
+                              `${ses.break_duration} Minutes` || ''
+                            }
+                            isTitleVisible={false}
+                            isBreakVisible={true}
+                          />
+                        )}
                     </>
                   }
                 />

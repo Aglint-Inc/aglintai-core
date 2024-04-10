@@ -1,11 +1,11 @@
-import { Dialog, Stack } from '@mui/material';
+import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
 import { ScheduleOptions } from '@/devlink2';
-import { ButtonGrey, ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -125,14 +125,6 @@ function GetScheduleOptionsDialog() {
           }}
           slotSendtoCandidateButton={
             <>
-              <ButtonGrey
-                textLabel={'Back'}
-                onClickButton={{
-                  onClick: () => {
-                    setStep(1);
-                  },
-                }}
-              />
               <ButtonPrimaryDefaultRegular
                 buttonText={'Send to Candidate'}
                 buttonProps={{
@@ -196,6 +188,7 @@ function GetScheduleOptionsDialog() {
           }
           slotDateRangeInput={
             <Stack direction={'row'} width={'100%'} spacing={2}>
+              <TextField fullWidth />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={dayjs(dateRange?.start_date)}
