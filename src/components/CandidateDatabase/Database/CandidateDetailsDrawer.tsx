@@ -81,12 +81,13 @@ const CandidateDrawer = ({
       {
         from: '+12512066348',
         to: phoneInput,
-        agent: '09030ae37cb1fd538c0cf812e512f2dd',
+        agent: 'd874c616f28ef76fe4eefe45af69cda7',
         candidate_id: candidate.candidate_id,
         begin_message: `Hi ${candidate.first_name}, this is ${recruiterUser.first_name} calling from Aglint, California. We have your resume and we wanted few details from you to be considerd for other position in our organisation. If u are free could you share few details with us??`,
         questions: parametersInput,
       },
     );
+    toast.success('Call Initiated');
   };
   const resumeNullCheck = (resume: any) => {
     const array = [];
