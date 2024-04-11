@@ -309,6 +309,8 @@ export * from "./ScheduleInterview";
 export * from "./ScheduleInterviewFill";
 export * from "./ScheduleInterviewLoadedSlots";
 export * from "./ScheduleInterviewLoading";
+export * from "./ScheduleProgress";
+export * from "./ScheduleProgressPill";
 export * from "./ScoreCard";
 export * from "./ScoreCardEdit";
 export * from "./ScorePercentage";
