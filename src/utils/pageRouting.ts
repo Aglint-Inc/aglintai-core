@@ -31,11 +31,12 @@ export const pageRoutes = Object.freeze({
   PHONESCREEN: '/candidate-phone-screening',
   LOADING: '/loading',
   SCHEDULING: '/scheduling',
+  SCHEDULING_APPLICATION: '/scheduling/application/[application_id]',
   SCHEDULINGINTERVIEWER: '/scheduling/interviewer',
   INTERVIEWMODULE: '/scheduling/module',
   CONFIRM_SCHEDULE: '/confirm-availability',
   INTERVIEWER: '/interviewer',
   AGENT: '/agent',
   SCREENING: '/screening',
-  TASKS:'/tasks'
+  TASKS: '/tasks',
 });

@@ -7,7 +7,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 250px 200px 160px auto;
+  grid-template-columns: 300px 700px 250px;
   grid-template-rows: auto;
 
   border-bottom: 1px solid #e9ebed;
@@ -23,7 +23,6 @@
 
 .candidate_cell {
   position: relative;
-  z-index: 2;
 
   display: flex;
   width: 100%;
@@ -337,6 +336,10 @@
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.div-block-840.hide {
+  display: none;
 }
 
 .div-block-1282 {

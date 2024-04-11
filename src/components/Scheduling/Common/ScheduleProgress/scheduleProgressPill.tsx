@@ -34,7 +34,8 @@ const ScheduleProgressPill = memo(
       const isStarting = position !== 'ending' && position !== 'lone';
       const isEnding = position !== 'starting' && position !== 'lone';
       const isScheduleDate =
-        props.status !== 'completed' && props.status !== 'confirmed' && !!date;
+        (props.status === 'completed' || props.status === 'confirmed') &&
+        !!date;
       const scheduleDate = getScheduleDate(date);
       const backgroundColor = statusToColor(props.status);
       const scheduleType = getScheduleType(props.scheduleType);
@@ -265,8 +266,16 @@ const statusToColor = (status: ScheduleProgressPillProps['status']) => {
 
 const getScheduleDate = (date: ScheduleProgressPillProps['date']) => {
   if (!date) return '---';
-  const startTime = dayjs(date.startTime).format('hh:mm A');
-  const endTime = dayjs(date.endTime).format('hh:mm A');
+  const startTime = `${dayjs(date.startTime).format('MMM')} ${dayjs(
+    date.startTime,
+  ).format('DD')}, ${dayjs(date.startTime).format('YYYY')}, ${dayjs(
+    date.startTime,
+  ).format('hh:mm A')}`;
+  const endTime = `${dayjs(date.endTime).format('MMM')} ${dayjs(
+    date.endTime,
+  ).format('DD')}, ${dayjs(date.endTime).format('YYYY')}, ${dayjs(
+    date.endTime,
+  ).format('hh:mm A')}`;
   return `${startTime} - ${endTime}`;
 };
 

@@ -21,6 +21,8 @@ const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
   pageRoutes.SCHEDULINGINTERVIEWER,
   pageRoutes.JOBEMAILTEMPLATES,
   pageRoutes.JOBINTERVIEWPLAN,
+  pageRoutes.SCHEDULING,
+  pageRoutes.SCHEDULING_APPLICATION,
 ];
 
 export const appKey = 'app';

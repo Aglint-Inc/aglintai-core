@@ -30,6 +30,7 @@ export function AllInterviewCard({
   onClickAgent = {},
   isDragVisible = false,
   onClickDrag = {},
+  slotInterviewProgress,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -88,7 +89,7 @@ export function AllInterviewCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
+        className={_utils.cx(_styles, "candidate_cell", "hide")}
         tag="div"
       >
         <_Builtin.Block
@@ -108,13 +109,15 @@ export function AllInterviewCard({
         className={_utils.cx(_styles, "candidate_cell")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-840")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div">{slotPanelImage}</_Builtin.Block>
-          <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
-        </_Builtin.Block>
+        {slotInterviewProgress ?? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-840", "hide")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">{slotPanelImage}</_Builtin.Block>
+            <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
+          </_Builtin.Block>
+        )}
       </_Builtin.Block>
       {isSchedulerTable ? (
         <_Builtin.Block

@@ -21,4 +21,5 @@ declare function AllInterviewCard(props: {
   onClickAgent?: Types.Devlink.RuntimeProps;
   isDragVisible?: Types.Visibility.VisibilityConditions;
   onClickDrag?: Types.Devlink.RuntimeProps;
+  slotInterviewProgress?: Types.Devlink.Slot;
 }): React.JSX.Element;

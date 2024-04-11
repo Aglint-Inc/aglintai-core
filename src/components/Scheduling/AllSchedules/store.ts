@@ -2,10 +2,11 @@ import { create } from 'zustand';
 
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import {
-  CandidateType,
-  InterviewScheduleTypeDB,
-  InterviewSession,
-  JobApplcationDB,
+  type CandidateType,
+  type InterviewMeetingTypeDb,
+  type InterviewScheduleTypeDB,
+  type InterviewSession,
+  type JobApplcationDB,
 } from '@/src/types/data.types';
 
 export interface InterviewSlice {
@@ -59,7 +60,7 @@ const initialState: InterviewSlice = {
     total: 0,
   },
   fetching: false,
-  filterVisible: [FilterType.status,FilterType.relatedJobs],
+  filterVisible: [FilterType.status, FilterType.relatedJobs],
   isRescheduleOpen: false,
   isCancelOpen: false,
 };
@@ -101,13 +102,6 @@ export const resetInterviewState = () =>
 export type ApplicationList = {
   applications: JobApplcationDB;
   candidates: CandidateType;
-  schedule: InterviewScheduleTypeDB | null;
-  public_jobs: {
-    id: string;
-    job_title: string;
-    location: string;
-    recruiter_id: string;
-  };
   file: {
     id: string;
     created_at: string;
@@ -116,4 +110,13 @@ export type ApplicationList = {
     resume_json: ResumeJson;
     type: string;
   };
+  schedule: InterviewScheduleTypeDB | null;
+  public_jobs: {
+    id: string;
+    job_title: string;
+  };
+  interview_session_meetings: {
+    interview_meeting: null | InterviewMeetingTypeDb;
+    interview_session: InterviewSession;
+  }[];
 };

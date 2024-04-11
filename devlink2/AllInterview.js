@@ -98,7 +98,11 @@ export function AllInterview({
                 </_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
+                className={_utils.cx(
+                  _styles,
+                  "allinterview_header_cell",
+                  "hide"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
@@ -126,7 +130,7 @@ export function AllInterview({
                   className={_utils.cx(_styles, "fw-semibold")}
                   tag="div"
                 >
-                  {"Interview"}
+                  {"Interview Progress"}
                 </_Builtin.Block>
               </_Builtin.Block>
               {isSchedulerTable ? (

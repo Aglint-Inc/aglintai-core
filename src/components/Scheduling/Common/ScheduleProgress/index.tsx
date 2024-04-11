@@ -31,7 +31,9 @@ const ScheduleProgress = forwardRef(
     ));
     return (
       <Stack ref={ref}>
-        <ScheduleProgressDev slotScheduleProgressPill={pills} />
+        <ScheduleProgressDev
+          slotScheduleProgressPill={pills.length ? pills : '---'}
+        />
       </Stack>
     );
   },

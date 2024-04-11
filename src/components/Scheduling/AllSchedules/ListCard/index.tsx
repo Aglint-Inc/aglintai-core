@@ -1,11 +1,12 @@
 import { Stack } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { AllInterviewCard, ScheduleWithAgent, StatusBadge } from '@/devlink2';
+import { AllInterviewCard, ScheduleWithAgent } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
+import ScheduleProgress from '../../Common/ScheduleProgress';
 import { ApplicationList } from '../store';
 
 function ListCardInterviewSchedule({
@@ -41,9 +42,7 @@ function ListCardInterviewSchedule({
           isSelected={isSelected}
           propsGrid={{
             style: {
-              gridTemplateColumns: isJobDasboard
-                ? '25% 15% 15% 20%'
-                : '250px 200px 160px auto',
+              gridTemplateColumns: isJobDasboard && '25% 15% 15% 20%',
             },
           }}
           isSchedulerTable={!isJobDasboard}
@@ -69,20 +68,46 @@ function ListCardInterviewSchedule({
             </>
           }
           textInterviewPanel={'0'}
-          slotStatusBadge={
-            <StatusBadge
-              isWaitingVisible={false}
-              isNotScheduledVisible={!app.schedule}
-              isCancelledVisible={false}
-              isConfirmedVisible={false}
-              isInProgressVisible={Boolean(app.schedule)}
-            />
-          }
+          slotInterviewProgress={<SessionProgressPipeline app={app} />}
           textRelatedJob={app.public_jobs?.job_title}
         />
       </Stack>
     </>
   );
 }
+
+const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
+  const sessions: Parameters<typeof ScheduleProgress>[0]['sessions'] = (
+    app?.interview_session_meetings ?? []
+  ).map(
+    ({
+      interview_meeting,
+      interview_session: {
+        session_duration,
+        name,
+        schedule_type,
+        session_type,
+      },
+    }) => {
+      const response: (typeof sessions)[number] = {
+        duration: session_duration,
+        name,
+        scheduleType: schedule_type,
+        sessionType: session_type,
+        status: 'not_scheduled',
+        date: null,
+      };
+      if (interview_meeting) {
+        response.status = interview_meeting.status;
+        response.date = {
+          startTime: interview_meeting.start_time,
+          endTime: interview_meeting.end_time,
+        };
+      }
+      return response;
+    },
+  );
+  return <ScheduleProgress sessions={sessions} />;
+};
 
 export default ListCardInterviewSchedule;
