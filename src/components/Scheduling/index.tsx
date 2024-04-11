@@ -63,7 +63,6 @@ function SchedulingMainComp() {
   }, [router]);
 
   const tab = router.query.tab as SchedulingTab;
-
   return (
     <>
       <PageLayout

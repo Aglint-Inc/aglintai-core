@@ -44,9 +44,15 @@ export const FilterHeader = ({
   filters: FilterType[];
 }) => {
   return (
-    <Stack direction={'row'} gap={1} px={2}>
+    <Stack
+      direction={'row'}
+      width={'100%'}
+      justifyContent={'space-between'}
+      gap={2}
+      pr={1}
+    >
       {Boolean(search) && (
-        <Stack marginRight={5}>
+        <Stack>
           <UITextField
             width='400px'
             value={search.value}
@@ -66,26 +72,28 @@ export const FilterHeader = ({
           />
         </Stack>
       )}
-      {filters.map((filter, index) => (
-        <>
-          {filter.type === 'filter' ? (
-            <FilterDropDown
-              key={index}
-              title={filter.name}
-              itemList={filter.options}
-              selectedItems={filter.value}
-              setSelectedItems={(values) => {
-                filter.setValue(values);
-              }}
-              icon={filter.icon}
-            />
-          ) : (
-            <Button key={index} variant='outlined' onClick={filter.onClick}>
-              {filter.name}
-            </Button>
-          )}
-        </>
-      ))}
+      <Stack direction={'row'} gap={2}>
+        {filters.map((filter, index) => (
+          <>
+            {filter.type === 'filter' ? (
+              <FilterDropDown
+                key={index}
+                title={filter.name}
+                itemList={filter.options}
+                selectedItems={filter.value}
+                setSelectedItems={(values) => {
+                  filter.setValue(values);
+                }}
+                icon={filter.icon}
+              />
+            ) : (
+              <Button key={index} variant='outlined' onClick={filter.onClick}>
+                {filter.name}
+              </Button>
+            )}
+          </>
+        ))}
+      </Stack>
     </Stack>
   );
 };
