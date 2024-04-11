@@ -49,7 +49,7 @@ const initialState: InterviewSlice = {
     textSearch: '',
     status: ['not_scheduled'],
     sortBy: 'asc',
-    job_ids: ['01387eb0-5ba4-4ac8-a6f6-f94ef7164eb0'],
+    job_ids: [],
     module_ids: [],
     dateRange: null,
     coordinator_ids: [],
