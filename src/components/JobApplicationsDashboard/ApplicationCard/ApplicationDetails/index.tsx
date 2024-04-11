@@ -4,6 +4,7 @@ import axios from 'axios';
 // import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, {
   Dispatch,
   FC,
@@ -33,9 +34,11 @@ import {
 } from '@/devlink';
 import {
   AnalysisBlock,
+  ButtonWide,
   JobCardSchedule,
   ResAbsentError,
   ResumeErrorBlock,
+  ScreeningLandingPop,
   ScrQuestionListItem,
   SidebarAnalysisBlock,
   SidebarBlockNotScheduled,
@@ -47,12 +50,15 @@ import {
 import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
+import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
+import UITextField from '@/src/components/Common/UITextField';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
@@ -226,64 +232,138 @@ const NewJobApplicationSideDrawer = ({
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
   const overview = getCandidateDetails(application, 'overview');
+  const firstName = getCandidateDetails(application, 'name');
 
   const [openResume, setOpenResume] = useState(false);
+  const [isPhonePopUp, setPhonePopUp] = useState(false);
+  const [phoneInput, setPhoneInput] = useState('');
+  const [parametersInput, setParameter] = useState(undefined);
+  const { recruiterUser } = useAuthDetails();
 
   const processState = getApplicationProcessState(application);
-
+  const makePhoneCll = async () => {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/create-screening-phone-call`,
+      {
+        from: '+12512066348',
+        to: phoneInput,
+        agent: '09030ae37cb1fd538c0cf812e512f2dd',
+        candidate_id: application.candidate_id,
+        begin_message: `Hi ${firstName.value}, this is ${recruiterUser.first_name} calling from Aglint, California. We have your resume and we wanted few details from you to proceed to next step. If u are free could you share few details with us??`,
+        questions: parametersInput,
+      },
+    );
+  };
+  const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
+    'isPhoneScreeningPhoneCallEnabled',
+  );
   return (
-    <CandidateSideDrawer
-      slotCandidateImage={candidateImage}
-      textName={name}
-      onClickPrev={{
-        onClick: () => handleSelectPrevApplication(),
-        style: {
-          display: hideNextPrev ? 'none' : 'block',
-        },
-      }}
-      onClickNext={{
-        onClick: () => handleSelectNextApplication(),
-        style: {
-          display: hideNextPrev ? 'none' : 'block',
-        },
-      }}
-      onClickClose={{
-        onClick: () => onClose(),
-      }}
-      slotSocialLink={<SocialsBlock application={application} />}
-      isOverviewVisible={overview.valid}
-      isLocationRoleVisible={jobTitle.valid || location.valid}
-      isRoleVisible={jobTitle.valid}
-      textRole={jobTitle.value}
-      isLocationVisible={location.valid}
-      textLocation={location.value}
-      isResumeVisible={
-        processState !== 'unavailable' && processState !== 'fetching'
-      }
-      onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
-      slotMoveTo={<></>}
-      slotOverview={
-        <>
-          {(interviewPlanEnabled?.data ?? false) && (
-            <InterviewStatusBlock application={application} />
-          )}
-          {overview.valid && (
-            <OverviewBlock title={'Overview'} description={overview.value} />
-          )}
-        </>
-      }
-      slotCandidateDetails={
-        <>
-          <NewCandidateDetails
-            application={application}
-            openResume={openResume}
-            setOpenResume={setOpenResume}
-          />
-        </>
-      }
-      isAppliedOnVisible={true}
-      textAppliedOn={creationDate}
-    />
+    <>
+      <CandidateSideDrawer
+        isPhoneScreeningVisible={isPhoneScreeningPhoneCallEnabled}
+        onClickPhoneScreening={{
+          onClick: () => {
+            setPhonePopUp(true);
+          },
+        }}
+        slotCandidateImage={candidateImage}
+        textName={name}
+        onClickPrev={{
+          onClick: () => handleSelectPrevApplication(),
+          style: {
+            display: hideNextPrev ? 'none' : 'block',
+          },
+        }}
+        onClickNext={{
+          onClick: () => handleSelectNextApplication(),
+          style: {
+            display: hideNextPrev ? 'none' : 'block',
+          },
+        }}
+        onClickClose={{
+          onClick: () => onClose(),
+        }}
+        slotSocialLink={<SocialsBlock application={application} />}
+        isOverviewVisible={overview.valid}
+        isLocationRoleVisible={jobTitle.valid || location.valid}
+        isRoleVisible={jobTitle.valid}
+        textRole={jobTitle.value}
+        isLocationVisible={location.valid}
+        textLocation={location.value}
+        isResumeVisible={
+          processState !== 'unavailable' && processState !== 'fetching'
+        }
+        onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
+        slotMoveTo={<></>}
+        slotOverview={
+          <>
+            {(interviewPlanEnabled?.data ?? false) && (
+              <InterviewStatusBlock application={application} />
+            )}
+            {overview.valid && (
+              <OverviewBlock title={'Overview'} description={overview.value} />
+            )}
+          </>
+        }
+        slotCandidateDetails={
+          <>
+            <NewCandidateDetails
+              application={application}
+              openResume={openResume}
+              setOpenResume={setOpenResume}
+            />
+          </>
+        }
+        isAppliedOnVisible={true}
+        textAppliedOn={creationDate}
+      />
+      <MuiPopup
+        props={{
+          open: isPhonePopUp,
+          onClose: () => {
+            ('');
+          },
+        }}
+      >
+        <ScreeningLandingPop
+          isDropdownVisible={true}
+          textHeading={'Make Phone Call'}
+          textLabel={''}
+          slotDropdown={
+            <UITextField
+              placeholder='Enter Call Fields'
+              value={parametersInput}
+              onChange={(e) => setParameter(e.target.value)}
+            />
+          }
+          slotScreeningNameInput={
+            <UITextField
+              placeholder='Enter Phone Number'
+              value={phoneInput}
+              onChange={(e) => setPhoneInput(e.target.value)}
+            />
+          }
+          slotButtonPrimaryRegular={
+            <ButtonWide
+              isEnabled={phoneInput !== ''}
+              textButton={'Submit'}
+              onClickButton={{
+                onClick: () => {
+                  makePhoneCll();
+                  setPhonePopUp(false);
+                },
+              }}
+            />
+          }
+          onClickClose={{
+            onClick: () => {
+              setPhonePopUp(false);
+              setParameter('');
+            },
+          }}
+        />
+      </MuiPopup>
+    </>
   );
 };
 

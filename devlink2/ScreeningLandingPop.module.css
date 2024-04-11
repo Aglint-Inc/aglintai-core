@@ -192,6 +192,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .icons {
   display: flex;
   flex-direction: column;

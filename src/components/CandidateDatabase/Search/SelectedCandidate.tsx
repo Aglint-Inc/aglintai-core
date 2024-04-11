@@ -60,6 +60,7 @@ const SelectedCandidate = ({
   return (
     <>
       <CandidateDrawer
+        type='Talent'
         candidate={candidate}
         eligibleJobs={eligibleJobs}
         handleAddApplications={handleAddApplications}

@@ -36,6 +36,7 @@ const SelectedCandidate = ({
   return (
     <>
       <CandidateDrawer
+        type='CandiDatabase'
         showClose={showClose}
         showBookmark={false}
         candidate={{

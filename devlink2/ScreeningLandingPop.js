@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -11,6 +12,7 @@ export function ScreeningLandingPop({
   textHeading = "New Screening",
   textLabel = "Screening Name",
   slotDropdown,
+  isDropdownVisible = true,
 }) {
   return (
     <_Component
@@ -31,7 +33,9 @@ export function ScreeningLandingPop({
         <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
         <_Builtin.Block tag="div">{slotScreeningNameInput}</_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{slotDropdown}</_Builtin.Block>
+      {isDropdownVisible ? (
+        <_Builtin.Block tag="div">{slotDropdown}</_Builtin.Block>
+      ) : null}
       <_Builtin.Block tag="div">{slotButtonPrimaryRegular}</_Builtin.Block>
     </_Component>
   );

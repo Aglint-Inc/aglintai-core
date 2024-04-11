@@ -1,6 +1,7 @@
 import { Collapse, Dialog, Stack } from '@mui/material';
 import axios from 'axios';
 import { isEmpty } from 'lodash';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import {
@@ -12,16 +13,21 @@ import {
   EmailOutReach,
 } from '@/devlink';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
+import { ButtonWide, ScreeningLandingPop } from '@/devlink2';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { CandidateSearchRes } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 import MuiAvatar from '../../Common/MuiAvatar';
+import MuiPopup from '../../Common/MuiPopup';
+import UITextField from '../../Common/UITextField';
 import ResumePreviewer from '../../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import AddToJobOptions from './CandAddToJobMenu';
 
 const CandidateDrawer = ({
+  type,
   candidate,
   onClickClose,
   onClickNext,
@@ -33,6 +39,7 @@ const CandidateDrawer = ({
   showClose = true,
   onClickEmailOutreach = () => {},
 }: {
+  type: string;
   candidate: Omit<CandidateSearchRes, 'application_id' | 'similarity'>;
   onClickNext: () => void;
   onClickPrev: () => void;
@@ -48,7 +55,10 @@ const CandidateDrawer = ({
   const [resume, setResume] = useState(false);
   const [isEducationShow, setIseducationShow] = useState(false);
   const [isExperienceShow, setIsExperienceShow] = useState(false);
-
+  const [isPhonePopUp, setPhonePopUp] = useState(false);
+  const [phoneInput, setPhoneInput] = useState('');
+  const [parametersInput, setParameter] = useState(undefined);
+  const { recruiterUser } = useAuthDetails();
   const keyPressedRef = useRef({});
   let location = candidate.json_resume.basics.location;
   const linkedin = candidate.json_resume.basics.linkedIn;
@@ -65,6 +75,54 @@ const CandidateDrawer = ({
     }
   };
 
+  const makePhoneCll = async () => {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/create-screening-phone-call`,
+      {
+        from: '+12512066348',
+        to: phoneInput,
+        agent: '09030ae37cb1fd538c0cf812e512f2dd',
+        candidate_id: candidate.candidate_id,
+        begin_message: `Hi ${candidate.first_name}, this is ${recruiterUser.first_name} calling from Aglint, California. We have your resume and we wanted few details from you to be considerd for other position in our organisation. If u are free could you share few details with us??`,
+        questions: parametersInput,
+      },
+    );
+  };
+  const resumeNullCheck = (resume: any) => {
+    const array = [];
+    if (resume.basics.location === null) {
+      array.push('Location');
+    }
+    if (resume.schools.length === 0) {
+      array.push('education');
+    }
+    if (resume.postion?.length === 0) {
+      array.push('postion');
+    }
+    if (resume.currentJobTitle === null) {
+      array.push('currentTtitle');
+    }
+    if (resume.currentCompany === null) {
+      array.push('currentCompany');
+    }
+    if (resume.totalExperienceInMonths === null) {
+      array.push('totalExperienceInMonths');
+    }
+    if (resume.skills.length === 0) {
+      array.push('skills');
+    }
+    if (resume.certificates?.length === 0) {
+      array.push('certificates');
+    }
+    if (resume.projects.length === 0) {
+      array.push('projects');
+    }
+
+    return array;
+  };
+  const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
+    'isPhoneScreeningPhoneCallEnabled',
+  );
   useEffect(() => {
     const checkKeyCombination = () => {
       const key1 = 'Shift';
@@ -104,6 +162,20 @@ const CandidateDrawer = ({
   return (
     <>
       <CandidateDialog
+        isPhoneScreeningVisible={
+          !isPhoneScreeningPhoneCallEnabled
+            ? false
+            : type == 'Talent'
+              ? true
+              : resumeNullCheck(candidate.json_resume).length !== 0
+                ? true
+                : false
+        }
+        onClickPhoneScreening={{
+          onClick: () => {
+            setPhonePopUp(true);
+          },
+        }}
         isGitVisible={false}
         isFacebookVisible={false}
         isTwitterVisible={false}
@@ -292,6 +364,52 @@ const CandidateDrawer = ({
           <ResumePreviewer url={candidate.resume_link} />
         </Stack>
       </Dialog>
+      <MuiPopup
+        props={{
+          open: isPhonePopUp,
+          onClose: () => {
+            ('');
+          },
+        }}
+      >
+        <ScreeningLandingPop
+          textHeading={'Make Phone Call'}
+          textLabel={''}
+          isDropdownVisible={type == 'Talent'}
+          slotDropdown={
+            <UITextField
+              placeholder='Enter Call Fields'
+              value={parametersInput}
+              onChange={(e) => setParameter(e.target.value)}
+            />
+          }
+          slotScreeningNameInput={
+            <UITextField
+              placeholder='Enter Phone Number'
+              value={phoneInput}
+              onChange={(e) => setPhoneInput(e.target.value)}
+            />
+          }
+          slotButtonPrimaryRegular={
+            <ButtonWide
+              isEnabled={phoneInput !== ''}
+              textButton={'Submit'}
+              onClickButton={{
+                onClick: () => {
+                  makePhoneCll();
+                  setPhonePopUp(false);
+                },
+              }}
+            />
+          }
+          onClickClose={{
+            onClick: () => {
+              setPhonePopUp(false);
+              setParameter('');
+            },
+          }}
+        />
+      </MuiPopup>
     </>
   );
 };

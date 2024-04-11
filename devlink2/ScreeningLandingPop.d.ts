@@ -9,4 +9,5 @@ declare function ScreeningLandingPop(props: {
   textHeading?: React.ReactNode;
   textLabel?: React.ReactNode;
   slotDropdown?: Types.Devlink.Slot;
+  isDropdownVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

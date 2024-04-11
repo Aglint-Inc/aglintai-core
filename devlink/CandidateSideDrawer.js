@@ -41,6 +41,8 @@ export function CandidateSideDrawer({
   isNameImageVisible = false,
   isFullWidthVisible = false,
   isSmallWidthVisible = true,
+  onClickPhoneScreening = {},
+  isPhoneScreeningVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -281,6 +283,33 @@ export function CandidateSideDrawer({
                             tag="div"
                           >
                             {"Resume"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                      {isPhoneScreeningVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "relative")}
+                          tag="div"
+                          {...onClickPhoneScreening}
+                        >
+                          <_Builtin.Block
+                            className={_utils.cx(
+                              _styles,
+                              "email-outreach-button",
+                              "p-4"
+                            )}
+                            tag="div"
+                          >
+                            <_Builtin.Block
+                              className={_utils.cx(_styles, "text-email-out")}
+                              tag="div"
+                            >
+                              {"Phone Screening"}
+                            </_Builtin.Block>
+                            <_Builtin.HtmlEmbed
+                              className={_utils.cx(_styles, "icons")}
+                              value="%3Csvg%20width%3D%226%22%20height%3D%226%22%20viewBox%3D%220%200%206%206%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.66328%200.225C5.82734%200.235937%205.91484%200.323437%205.92578%200.4875V4.1625C5.91484%204.32656%205.82734%204.41406%205.66328%204.425C5.49922%204.41406%205.41172%204.32656%205.40078%204.1625V1.12734L1.11875%205.39297C0.998437%205.50234%200.878125%205.50234%200.757812%205.39297C0.648437%205.27266%200.648437%205.15234%200.757812%205.03203L5.02344%200.75H1.98828C1.82422%200.739062%201.73672%200.651562%201.72578%200.4875C1.73672%200.323437%201.82422%200.235937%201.98828%200.225H5.66328Z%22%20fill%3D%22%23A81897%22%20style%3D%22fill%3A%23A81897%3Bfill%3Acolor(display-p3%200.6588%200.0941%200.5922)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+                            />
                           </_Builtin.Block>
                         </_Builtin.Block>
                       ) : null}
