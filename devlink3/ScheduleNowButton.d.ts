@@ -7,4 +7,7 @@ declare function ScheduleNowButton(props: {
   onClickEmailAgent?: Types.Devlink.RuntimeProps;
   onClickPhoneAgent?: Types.Devlink.RuntimeProps;
   isScheduleManuallyVisible?: Types.Visibility.VisibilityConditions;
+  isLoaderVisible?: Types.Visibility.VisibilityConditions;
+  isDropIconVisible?: Types.Visibility.VisibilityConditions;
+  slotLoaderIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;

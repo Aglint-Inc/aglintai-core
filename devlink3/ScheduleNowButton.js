@@ -6,7 +6,7 @@ import * as _utils from "./utils";
 import _styles from "./ScheduleNowButton.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-39":{"id":"e-39","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-23","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-40"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"aaab3739-c46d-1437-efb8-84eb64e564cb"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712728132934},"e-40":{"id":"e-40","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-24","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-39"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"aaab3739-c46d-1437-efb8-84eb64e564cb"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712728132935}},"actionLists":{"a-23":{"id":"a-23","title":"Schedule Now hover in","actionItemGroups":[{"actionItems":[{"id":"a-23-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]}}},{"id":"a-23-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-23-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]},"value":1,"unit":""}},{"id":"a-23-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"block","target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]}}}]}],"createdOn":1712728138351,"useFirstGroupAsInitialState":true},"a-24":{"id":"a-24","title":"Schedule Now hover out","actionItemGroups":[{"actionItems":[{"id":"a-24-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]},"value":0,"unit":""}},{"id":"a-24-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]}}}]}],"createdOn":1712728138351,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-43":{"id":"e-43","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-23","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-44"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"aaab3739-c46d-1437-efb8-84eb64e564cb"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712829998271},"e-44":{"id":"e-44","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-24","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-43"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"aaab3739-c46d-1437-efb8-84eb64e564cb"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1712829998271}},"actionLists":{"a-23":{"id":"a-23","title":"Schedule Now hover in","actionItemGroups":[{"actionItems":[{"id":"a-23-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]}}},{"id":"a-23-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-23-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]},"value":1,"unit":""}},{"id":"a-23-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"block","target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]}}}]}],"createdOn":1712728138351,"useFirstGroupAsInitialState":true},"a-24":{"id":"a-24","title":"Schedule Now hover out","actionItemGroups":[{"actionItems":[{"id":"a-24-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]},"value":0,"unit":""}},{"id":"a-24-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1381","selectorGuids":["a359a436-8763-7c22-967e-83cd73f71f6f"]}}}]}],"createdOn":1712728138351,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function ScheduleNowButton({
@@ -15,6 +15,9 @@ export function ScheduleNowButton({
   onClickEmailAgent = {},
   onClickPhoneAgent = {},
   isScheduleManuallyVisible = true,
+  isLoaderVisible = false,
+  isDropIconVisible = true,
+  slotLoaderIcon,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -27,6 +30,7 @@ export function ScheduleNowButton({
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1379")}
         tag="div"
+        {...onClickScheduleManually}
       >
         <_Builtin.Block tag="div">{"Schedule Now"}</_Builtin.Block>
       </_Builtin.Block>
@@ -34,33 +38,20 @@ export function ScheduleNowButton({
         className={_utils.cx(_styles, "div-block-1380")}
         tag="div"
       >
-        <_Builtin.HtmlEmbed
-          className={_utils.cx(_styles, "icons")}
-          value="%3Csvg%20width%3D%2212%22%20height%3D%226%22%20viewBox%3D%220%200%2012%206%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.6877%200.609584C10.9033%200.437079%2011.2179%200.47204%2011.3905%200.687671C11.5438%200.879343%2011.5332%201.14925%2011.3775%201.32802L11.3124%201.39045L6.31237%205.39045C6.15584%205.51567%205.94285%205.53356%205.77019%205.44412L5.68767%205.39045L0.687671%201.39045C0.47204%201.21795%200.437079%200.903302%200.609584%200.687671C0.762922%200.495999%201.02857%200.447079%201.23715%200.55973L1.31237%200.609584L6.00002%204.35902L10.6877%200.609584Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
-        />
+        {isDropIconVisible ? (
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "icons")}
+            value="%3Csvg%20width%3D%2212%22%20height%3D%226%22%20viewBox%3D%220%200%2012%206%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M10.6877%200.609584C10.9033%200.437079%2011.2179%200.47204%2011.3905%200.687671C11.5438%200.879343%2011.5332%201.14925%2011.3775%201.32802L11.3124%201.39045L6.31237%205.39045C6.15584%205.51567%205.94285%205.53356%205.77019%205.44412L5.68767%205.39045L0.687671%201.39045C0.47204%201.21795%200.437079%200.903302%200.609584%200.687671C0.762922%200.495999%201.02857%200.447079%201.23715%200.55973L1.31237%200.609584L6.00002%204.35902L10.6877%200.609584Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+          />
+        ) : null}
+        {isLoaderVisible ? (
+          <_Builtin.Block tag="div">{slotLoaderIcon}</_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1381")}
         tag="div"
       >
-        {isScheduleManuallyVisible ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1382", "border-down")}
-            tag="div"
-            {...onClickScheduleManually}
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "icons")}
-              value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M4.875%202C5.10938%202.01563%205.23438%202.14062%205.25%202.375V3.5H9.75V2.375C9.76562%202.14062%209.89062%202.01563%2010.125%202C10.3594%202.01563%2010.4844%202.14062%2010.5%202.375V3.5H11.25C11.6719%203.51563%2012.0234%203.66406%2012.3047%203.94531C12.5859%204.22656%2012.7344%204.57812%2012.75%205V5.75V6.5V12.5C12.7344%2012.9219%2012.5859%2013.2734%2012.3047%2013.5547C12.0234%2013.8359%2011.6719%2013.9844%2011.25%2014H3.75C3.32812%2013.9844%202.97656%2013.8359%202.69531%2013.5547C2.41406%2013.2734%202.26562%2012.9219%202.25%2012.5V6.5V5.75V5C2.26562%204.57812%202.41406%204.22656%202.69531%203.94531C2.97656%203.66406%203.32812%203.51563%203.75%203.5H4.5V2.375C4.51562%202.14062%204.64062%202.01563%204.875%202ZM12%206.5H3V12.5C3%2012.7188%203.07031%2012.8984%203.21094%2013.0391C3.35156%2013.1797%203.53125%2013.25%203.75%2013.25H11.25C11.4688%2013.25%2011.6484%2013.1797%2011.7891%2013.0391C11.9297%2012.8984%2012%2012.7188%2012%2012.5V6.5ZM11.25%204.25H3.75C3.53125%204.25%203.35156%204.32031%203.21094%204.46094C3.07031%204.60156%203%204.78125%203%205V5.75H12V5C12%204.78125%2011.9297%204.60156%2011.7891%204.46094C11.6484%204.32031%2011.4688%204.25%2011.25%204.25Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-blue-500")}
-              tag="div"
-            >
-              {"Schedule manually"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1382", "border-down")}
           tag="div"

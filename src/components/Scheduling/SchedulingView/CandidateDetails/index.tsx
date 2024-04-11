@@ -100,25 +100,31 @@ function CandidateInfo({ applications, candidate, file }) {
               isFullWidthVisible={true}
               isSmallWidthVisible={false}
               slotInterviewScore={
-                <>
-                  <AnalysisBlockSection application={application} />
+                <Stack spacing={2}>
+                  <AnalysisBlockSection
+                    application={application}
+                    noCollapse={true}
+                  />
                   <NewExperienceDetails
                     positions={resumeJson?.positions}
                     relevance={
                       (applications.score_json as any)?.relevance?.positions
                     }
+                    noCollapse={true}
                   />
                   <NewEducationDetails
                     schools={resumeJson?.schools}
                     relevance={
                       (applications.score_json as any)?.relevance?.schools
                     }
+                    noCollapse={true}
                   />
                   <NewSkillDetails
                     skills={resumeJson?.skills}
                     relevance={(applications.score_json as any)?.skills}
+                    noCollapse={true}
                   />
-                </>
+                </Stack>
               }
             />
           }

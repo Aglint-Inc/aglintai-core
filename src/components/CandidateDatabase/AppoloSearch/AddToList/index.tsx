@@ -7,9 +7,8 @@ import {
   AddToList,
   ButtonPrimarySmall,
   CdSavedList,
-  Checkbox,
   SavedList,
-  SavedListMenu,
+  SavedListMenu
 } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
@@ -271,19 +270,19 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
               )}
               {candidateLists.map((list) => (
                 <SavedList
-                  slotCheckbox={
-                    <Checkbox
-                      isChecked={Boolean(
-                        selectedList.find((l) => l.id === list.id),
-                      )}
-                      onClickCheck={{
-                        onClick: async (e) => {
-                          e.stopPropagation();
-                          checkboxHandler(list);
-                        },
-                      }}
-                    />
-                  }
+                  // slotCheckbox={
+                  //   <Checkbox
+                  //     isChecked={Boolean(
+                  //       selectedList.find((l) => l.id === list.id),
+                  //     )}
+                  //     onClickCheck={{
+                  //       onClick: async (e) => {
+                  //         e.stopPropagation();
+                  //         checkboxHandler(list);
+                  //       },
+                  //     }}
+                  //   />
+                  // }
                   key={list.id}
                   textRole={list.name}
                   textCountCandidate={`(${list.candidates.length} candidates)`}

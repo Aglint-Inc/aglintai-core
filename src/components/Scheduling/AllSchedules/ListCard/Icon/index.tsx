@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import Image from 'next/image';
 
 import { Database } from '@/src/types/schema';
 
@@ -36,47 +37,7 @@ function IconScheduleType({
           />
         </svg>
       ) : type == 'zoom' ? (
-        <svg
-          width='20'
-          height='20'
-          viewBox='0 0 20 20'
-          fill='none'
-          xmlns='http://www.w3.org/2000/svg'
-        >
-          <g clip-path='url(#clip0_4066_197751)'>
-            <path
-              d='M20 10C20 11.06 19.92 12.12 19.74 13.14C19.2 16.52 16.52 19.2 13.14 19.74C12.12 19.92 11.06 20 10 20C8.94 20 7.88 19.92 6.86 19.74C3.48 19.2 0.8 16.52 0.26 13.14C0.08 12.12 0 11.06 0 10C0 8.94 0.08 7.88 0.26 6.86C0.8 3.48 3.48 0.8 6.86 0.26C7.88 0.08 8.94 0 10 0C11.06 0 12.12 0.08 13.14 0.26C16.52 0.8 19.2 3.48 19.74 6.86C19.92 7.88 20 8.94 20 10Z'
-              fill='url(#paint0_linear_4066_197751)'
-            />
-            <path
-              d='M15.9401 16.2383H5.86006C5.20006 16.2383 4.56006 15.8783 4.26006 15.2983C3.90006 14.6183 4.04006 13.7983 4.58006 13.2583L11.6001 6.23828H6.56006C5.18006 6.23828 4.06006 5.11828 4.06006 3.73828H13.3401C14.0001 3.73828 14.6401 4.09828 14.9401 4.67828C15.3001 5.35828 15.1601 6.17828 14.6201 6.71828L7.62006 13.7583H13.4401C14.8201 13.7583 15.9401 14.8583 15.9401 16.2383Z'
-              fill='white'
-            />
-          </g>
-          <defs>
-            <linearGradient
-              id='paint0_linear_4066_197751'
-              x1='473.32'
-              y1='1912.24'
-              x2='1526.68'
-              y2='87.76'
-              gradientUnits='userSpaceOnUse'
-            >
-              <stop stop-color='#0845BF' />
-              <stop offset='0.1911' stop-color='#0950DE' />
-              <stop offset='0.3823' stop-color='#0B59F6' />
-              <stop offset='0.5' stop-color='#0B5CFF' />
-              <stop offset='0.6732' stop-color='#0E5EFE' />
-              <stop offset='0.7774' stop-color='#1665FC' />
-              <stop offset='0.8633' stop-color='#246FF9' />
-              <stop offset='0.9388' stop-color='#387FF4' />
-              <stop offset='1' stop-color='#4F90EE' />
-            </linearGradient>
-            <clipPath id='clip0_4066_197751'>
-              <rect width='20' height='20' fill='white' />
-            </clipPath>
-          </defs>
-        </svg>
+        <Image src={'/images/logo/zoom.svg'} alt='' height={20} width={20} />
       ) : (
         <svg
           width='20'

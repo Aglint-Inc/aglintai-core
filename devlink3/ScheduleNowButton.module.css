@@ -11,7 +11,11 @@
 }
 
 .div-block-1379 {
-  padding: 10px 16px;
+  display: flex;
+  height: 36px;
+  padding: 6px 16px;
+  justify-content: center;
+  align-items: center;
   flex: 0 0 auto;
 
   border-top-left-radius: 4px;
@@ -25,7 +29,7 @@
 .div-block-1380 {
   display: flex;
   width: 40px;
-  height: 40px;
+  height: 36px;
   flex-direction: column;
   justify-content: center;
   flex-wrap: nowrap;
@@ -54,12 +58,18 @@
   opacity: 0.8;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .div-block-1381 {
   position: absolute;
   left: 0%;
-  top: auto;
-  right: auto;
-  bottom: 49px;
+  top: 41px;
+  right: 0%;
+  bottom: auto;
+  z-index: 3;
 
   display: none;
   width: 217px;

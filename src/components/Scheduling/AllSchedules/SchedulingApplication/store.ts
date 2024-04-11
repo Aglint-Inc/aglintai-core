@@ -12,7 +12,7 @@ import { SelectedApplicationTypeDB, SessionsType } from './types';
 
 export interface SchedulingApplication {
   initialLoading: boolean;
-  tab: 'full_schedule' | 'candidate_info' | 'feedback';
+  tab: 'interview_plan' | 'candidate_detail' | 'feedback';
   initialSessions: SessionsType;
   selectedSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
@@ -43,7 +43,7 @@ const initialState: SchedulingApplication = {
   initialLoading: true,
   selectedApplication: null,
   selectedSessionIds: [],
-  tab: 'full_schedule',
+  tab: 'interview_plan',
   selectedMeeting: null,
   initialSessions: [],
   selectedSchedule: null,

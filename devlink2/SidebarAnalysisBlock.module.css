@@ -1,7 +1,10 @@
 .sidebar-analysis-wrapper {
   width: 100%;
   padding: 16px;
-  border: 1px solid var(--gray-200);
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
   border-radius: 10px;
 }
 
@@ -346,6 +349,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 .ml-auto {

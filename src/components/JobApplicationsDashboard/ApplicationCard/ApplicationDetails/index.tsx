@@ -445,7 +445,8 @@ export const NewCandidateDetails: React.FC<{
 
 export const AnalysisBlockSection: React.FC<{
   application: JobApplication;
-}> = ({ application }) => {
+  noCollapse?: boolean;
+}> = ({ application, noCollapse = false }) => {
   const score_json = application.score_json as ScoreJson;
   const [collapse, setCollapse] = useState(true);
   const reasoning = score_json?.reasoning ?? null;
@@ -472,20 +473,33 @@ export const AnalysisBlockSection: React.FC<{
   });
   return (
     <SidebarAnalysisBlock
+      propsStyle={{
+        style: {
+          border: noCollapse ? 'none' : '1px solid #E9EBED',
+          padding: noCollapse ? '0px' : '16px',
+        },
+      }}
       slotPill={<ResumeScore application={application} />}
       onclickArrow={{
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
           transform: `rotate(${collapse ? '180deg' : '0deg'})`,
+          display: noCollapse ? 'none' : 'block',
         },
       }}
       slotBody={
-        <Collapse in={collapse}>
+        noCollapse ? (
           <Stack gap={'20px'} marginTop={'20px'}>
             {analyses}
           </Stack>
-        </Collapse>
+        ) : (
+          <Collapse in={collapse}>
+            <Stack gap={'20px'} marginTop={'20px'}>
+              {analyses}
+            </Stack>
+          </Collapse>
+        )
       }
     />
   );
@@ -1267,9 +1281,11 @@ const fetchFile = async (application: JobApplication) => {
 export const NewEducationDetails = ({
   schools,
   relevance,
+  noCollapse = false,
 }: {
   schools;
   relevance: ScoreJson['relevance']['schools'];
+  noCollapse?: boolean;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (schools && schools instanceof Array && schools.length !== 0) {
@@ -1301,19 +1317,32 @@ export const NewEducationDetails = ({
       });
     return (
       <CandidateEducation
+        onClickCard={{
+          style: {
+            border: noCollapse ? 'none' : '1px solid #E9EBED',
+            padding: noCollapse ? '0px' : '16px',
+          },
+        }}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+            display: noCollapse ? 'none' : 'block',
           },
         }}
         slotEducationCard={
-          <Collapse in={collapse}>
+          noCollapse ? (
             <Stack gap={'20px'} marginTop={'20px'}>
               {educationList}
             </Stack>
-          </Collapse>
+          ) : (
+            <Collapse in={collapse}>
+              <Stack gap={'20px'} marginTop={'20px'}>
+                {educationList}
+              </Stack>
+            </Collapse>
+          )
         }
       />
     );
@@ -1324,9 +1353,11 @@ export const NewEducationDetails = ({
 export const NewExperienceDetails = ({
   positions,
   relevance,
+  noCollapse = false,
 }: {
   positions;
   relevance: ScoreJson['relevance']['positions'];
+  noCollapse?: boolean;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (positions && positions instanceof Array && positions.length !== 0) {
@@ -1355,19 +1386,32 @@ export const NewExperienceDetails = ({
     }, []);
     return (
       <CandidateExperience
+        onClickCards={{
+          style: {
+            border: noCollapse ? 'none' : '1px solid #E9EBED',
+            padding: noCollapse ? '0px' : '16px',
+          },
+        }}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+            display: noCollapse ? 'none' : 'block',
           },
         }}
         slotCandidateExperienceCard={
-          <Collapse in={collapse} style={{ gap: '2px' }}>
+          noCollapse ? (
             <Stack gap={'20px'} marginTop={'20px'}>
               {workList}
             </Stack>
-          </Collapse>
+          ) : (
+            <Collapse in={collapse} style={{ gap: '2px' }}>
+              <Stack gap={'20px'} marginTop={'20px'}>
+                {workList}
+              </Stack>
+            </Collapse>
+          )
         }
       />
     );
@@ -1401,9 +1445,11 @@ const timeRange = (startDate: string, endDate: string) => {
 export const NewSkillDetails = ({
   skills,
   relevance,
+  noCollapse = false,
 }: {
   skills;
   relevance: ScoreJson['relevance']['skills'];
+  noCollapse?: boolean;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (skills && skills instanceof Array && skills.length !== 0) {
@@ -1436,15 +1482,22 @@ export const NewSkillDetails = ({
       );
       return (
         <CandidateSkill
+          propsStyle={{
+            style: {
+              border: noCollapse ? 'none' : '1px solid #E9EBED',
+              padding: noCollapse ? '0px' : '16px',
+            },
+          }}
           onClickIcons={{
             onClick: () => setCollapse((prev) => !prev),
             style: {
               cursor: 'pointer',
               transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+              display: noCollapse ? 'none' : 'block',
             },
           }}
           slotCandidateSkill={
-            <Collapse in={collapse}>
+            noCollapse ? (
               <Stack
                 display={'flex'}
                 flexDirection={'row'}
@@ -1455,7 +1508,20 @@ export const NewSkillDetails = ({
                 {relevant}
                 {others}
               </Stack>
-            </Collapse>
+            ) : (
+              <Collapse in={collapse}>
+                <Stack
+                  display={'flex'}
+                  flexDirection={'row'}
+                  flexWrap={'wrap'}
+                  gap={'6px'}
+                  marginTop={'20px'}
+                >
+                  {relevant}
+                  {others}
+                </Stack>
+              </Collapse>
+            )
           }
         />
       );
@@ -1471,6 +1537,13 @@ export const NewSkillDetails = ({
     ));
     return (
       <CandidateSkill
+        propsStyle={{
+          style: {
+            border: noCollapse ? 'none' : '1px solid #E9EBED',
+            padding: noCollapse ? '0px' : '16px',
+            display: noCollapse ? 'none' : 'block',
+          },
+        }}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
@@ -1479,7 +1552,7 @@ export const NewSkillDetails = ({
           },
         }}
         slotCandidateSkill={
-          <Collapse in={collapse}>
+          noCollapse ? (
             <Stack
               display={'flex'}
               flexDirection={'row'}
@@ -1489,7 +1562,19 @@ export const NewSkillDetails = ({
             >
               {others}
             </Stack>
-          </Collapse>
+          ) : (
+            <Collapse in={collapse}>
+              <Stack
+                display={'flex'}
+                flexDirection={'row'}
+                flexWrap={'wrap'}
+                gap={'6px'}
+                marginTop={'20px'}
+              >
+                {others}
+              </Stack>
+            </Collapse>
+          )
         }
       />
     );

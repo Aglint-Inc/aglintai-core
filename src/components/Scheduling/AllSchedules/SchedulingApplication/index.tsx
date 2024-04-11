@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -6,18 +7,17 @@ import { useEffect } from 'react';
 
 import { Breadcrum, InterviewPlanEmpty, PageLayout } from '@/devlink2';
 import {
-  CandidateCard,
   CandidateSchedule,
   DarkPill,
   JobCards,
   ScheduleNowButton,
 } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
+import ScheduleProgress from '../../Common/ScheduleProgress';
 import CandidateInfo from '../../SchedulingView/CandidateDetails';
 import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
@@ -144,20 +144,20 @@ function SchedulingApplication() {
                 slotDarkPill={
                   <>
                     <DarkPill
-                      textPill={'Full Schedule'}
-                      isActive={tab === 'full_schedule'}
+                      textPill={'Interview Plan'}
+                      isActive={tab === 'interview_plan'}
                       onClickPill={{
                         onClick: () => {
-                          setTab('full_schedule');
+                          setTab('interview_plan');
                         },
                       }}
                     />
                     <DarkPill
-                      textPill={'Candidate Info'}
-                      isActive={tab === 'candidate_info'}
+                      textPill={'Candidate Detail'}
+                      isActive={tab === 'candidate_detail'}
                       onClickPill={{
                         onClick: () => {
-                          setTab('candidate_info');
+                          setTab('candidate_detail');
                         },
                       }}
                     />
@@ -258,45 +258,27 @@ function SchedulingApplication() {
                 }
                 isScheduleNowVisible={selectedSessionIds.length > 0}
                 slotCandidateCard={
-                  <>
-                    <CandidateCard
-                      slotProfileImage={
-                        <MuiAvatar
-                          level={getFullName(
-                            selectedApplication.candidates.first_name,
-                            selectedApplication.candidates.last_name,
-                          )}
-                          src={selectedApplication.candidates.avatar}
-                          variant={'rounded'}
-                          width={'74px'}
-                          height={'74px'}
-                          fontSize={'36px'}
-                        />
-                      }
-                      textName={getFullName(
-                        selectedApplication?.candidates.first_name,
-                        selectedApplication?.candidates.last_name,
-                      )}
-                      textMail={selectedApplication?.candidates.email}
-                      textRole={
-                        selectedApplication?.candidate_files?.resume_json
-                          ?.basics?.currentJobTitle || '--'
-                      }
-                    />
+                  <Stack
+                    onClick={() => {
+                      router.push(
+                        `${pageRoutes.JOBS}/${selectedApplication.job_id}`,
+                      );
+                    }}
+                  >
                     <JobCards
                       textLocation={selectedApplication.public_jobs.location}
                       textRole={selectedApplication.public_jobs.job_title}
                     />
-                  </>
+                  </Stack>
                 }
                 slotFullScheduleCard={
-                  tab === 'candidate_info' ? (
+                  tab === 'candidate_detail' ? (
                     <CandidateInfo
                       applications={selectedApplication}
                       candidate={selectedApplication.candidates}
                       file={selectedApplication.candidate_files}
                     />
-                  ) : tab === 'full_schedule' ? (
+                  ) : tab === 'interview_plan' ? (
                     <FullSchedule />
                   ) : tab === 'feedback' ? (
                     <FeedbackWindow
@@ -315,7 +297,29 @@ function SchedulingApplication() {
             )}
           </>
         }
-        slotTopbarRight={''}
+        slotTopbarRight={
+          <Stack
+            sx={{
+              pointerEvents: 'none',
+            }}
+          >
+            <ScheduleProgress
+              sessions={initialSessions.map((item) => ({
+                duration: item.session_duration,
+                name: item.name,
+                scheduleType: item.schedule_type,
+                sessionType: item.session_type,
+                status: item.interview_meeting?.status || 'not_scheduled',
+                date: item.interview_meeting?.start_time
+                  ? {
+                      startTime: item.interview_meeting?.start_time,
+                      endTime: item.interview_meeting?.end_time,
+                    }
+                  : null,
+              }))}
+            />
+          </Stack>
+        }
       />
     </>
   );

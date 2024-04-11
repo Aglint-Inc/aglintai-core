@@ -1,5 +1,6 @@
 .new-candidate-schedule-grid {
   display: flex;
+  width: 100%;
   grid-auto-columns: 1fr;
   grid-template-columns: 100% 454px;
   grid-template-rows: auto;
@@ -24,10 +25,9 @@
   position: relative;
 
   overflow: auto;
-  padding-top: 20px;
-  padding-right: 20px;
+  padding-right: 0px;
   padding-bottom: 60px;
-  padding-left: 20px;
+  padding-left: 0px;
   height: calc(100vh - 112px);
 }
 
@@ -42,12 +42,13 @@
 
 .div-block-1327.schedule-button-wrap {
   left: 0%;
-  top: auto;
+  top: 0%;
   right: 0%;
-  bottom: 0%;
+  bottom: auto;
   z-index: 6;
 
   display: flex;
+  height: 52px;
   padding: 16px;
   justify-content: space-between;
   align-items: center;
@@ -56,7 +57,7 @@
 
   border-top: 1px solid #e9ebed;
 
-  background-color: white;
+  background-color: #f8f9f9;
 }
 
 .div-block-1377 {
@@ -69,8 +70,8 @@
 
 .div-block-1376 {
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   flex-direction: column;
   justify-content: center;
   flex-wrap: nowrap;
@@ -79,7 +80,7 @@
   border: 1px solid #e9ebed;
   border-radius: 6px;
 
-  background-color: #f7f9fb;
+  background-color: white;
 }
 
 .div-block-1376.cursor-pointer {
@@ -107,9 +108,14 @@
   opacity: 0.8;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .candidate-schedule-right-wrap {
   display: flex;
-  width: 454px;
+  width: 280px;
   padding: 20px;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -118,6 +124,80 @@
   grid-row-gap: 20px;
 
   border-left: 1px solid #e9ebed;
+}
+
+.div-block-1403 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-1404 {
+  display: flex;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-sm.color-grey-600 {
+  color: #68737d;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-sm.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-sm.badge {
+  color: #228f67;
+}
+
+.text-sm.done {
+  color: #228f67;
+}
+
+.text-sm.in-progress {
+  color: #337fbd;
+}
+
+.text-sm.progress {
+  color: #68737d;
+}
+
+.text-sm.justnow-text {
+  color: rgba(28, 28, 28, 0.4);
 }
 
 #w-node-b4f8c833-3062-0810-c58b-254fa7da7af2-a7da7af1 {
