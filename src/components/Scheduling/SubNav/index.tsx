@@ -16,7 +16,7 @@ function SubNav() {
     text: string;
     roles?: Database['public']['Enums']['user_roles'][];
   }[] = [
-    { text: 'my Schedules' },
+    { text: 'my schedules' },
     { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },

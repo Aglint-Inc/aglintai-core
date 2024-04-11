@@ -33,7 +33,6 @@ function SchedulingMainComp() {
   const { searchText } = useModulesStore();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setSaving('saving');
-
     const { data: updatedRecruiter, error } = await supabase
       .from('recruiter')
       .update({ scheduling_settings: schedulingSettingObj })
@@ -50,11 +49,16 @@ function SchedulingMainComp() {
     }
     setSaving('saved');
   }
+
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
-      router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`, undefined, {
-        shallow: true,
-      });
+      router.push(
+        `${pageRoutes.SCHEDULING}?tab=${'myschedules' as SchedulingTab}`,
+        undefined,
+        {
+          shallow: true,
+        },
+      );
     }
   }, [router]);
 
@@ -66,7 +70,7 @@ function SchedulingMainComp() {
         slotSaving={<SyncStatus status={saving} />}
         slotTopbarRight={
           <>
-            {router.query.tab == 'interviewModules' && (
+            {tab == 'interviewtypes' && (
               <Stack direction={'row'} alignItems={'center'} spacing={2}>
                 <UITextField
                   InputProps={{
@@ -113,9 +117,9 @@ function SchedulingMainComp() {
                   'recruiter',
                   'scheduler',
                 ])
-              ) : tab == 'mySchedules' ? (
+              ) : tab == 'myschedules' ? (
                 <MySchedule />
-              ) : tab == 'interviewModules' ? (
+              ) : tab == 'interviewtypes' ? (
                 allowAction(<Modules />, ['admin', 'recruiter', 'scheduler'])
               ) : tab == 'interviewers' ? (
                 allowAction(<InterviewTab />, [
