@@ -517,7 +517,8 @@ function CandidateSearchHistory() {
                         ) : (
                           list.map((list) => (
                             <SavedList
-                              isCheckboxVisible={false}
+                              // isInlineEditVisible={editList?.id === list.id}
+
                               slotInputTextSavedList={
                                 <Stack
                                   onClick={(e) => {
@@ -566,10 +567,11 @@ function CandidateSearchHistory() {
                                   }, 100);
                                 },
                               }}
+                              isCardVisible={editList?.id !== list.id}
                               isEditVisible={editList?.id !== list.id}
                               key={list.id}
                               textRole={list.name}
-                              textCountCandidate={`(${list.candidates.length} candidates)`}
+                              textCountCandidate={`${list.candidates.length} candidates`}
                               onClickList={{
                                 onClick: () => {
                                   router.push(
@@ -811,9 +813,9 @@ function CandidateSearchHistory() {
       >
         <ClearHistory
           textDesc={`By clicking 'Delete,' you're confirming that you want to remove this search history, and it cannot be undone.`}
-          textHeader={`Delete ${history.filter(
-            (h) => h.id === deleteHistoryId,
-          )[0]?.search_query}`}
+          textHeader={`Delete ${
+            history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
+          }`}
           onClickCancel={{
             onClick: () => {
               setDeleteHistory(false);
