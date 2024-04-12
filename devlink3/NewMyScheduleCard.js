@@ -27,7 +27,10 @@ export function NewMyScheduleCard({
         )}
         tag="div"
       >
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1427")}
+          tag="div"
+        >
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1399")}
             tag="div"
@@ -41,7 +44,7 @@ export function NewMyScheduleCard({
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-sm", "text-grey_600")}
+                  className={_utils.cx(_styles, "month-text")}
                   tag="div"
                 >
                   {textMonth}
@@ -53,7 +56,11 @@ export function NewMyScheduleCard({
                   {textDate}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-xsm")}
+                  className={_utils.cx(
+                    _styles,
+                    "text-blue-500",
+                    "text-capital"
+                  )}
                   tag="div"
                 >
                   {textDay}

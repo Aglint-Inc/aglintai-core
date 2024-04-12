@@ -184,10 +184,12 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
               setSelectedUsers={setSelectedUsers}
               selectedUsers={selectedUsers}
               pillColor='#fff'
+              maxWidth='430px'
             />
           }
           slotInputNoOfReverse={
             <TextField
+              sx={{ width: '200px' }}
               select
               value={localModule.settings.noReverseShadow}
               onChange={(e) => {
@@ -209,6 +211,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           }
           slotInputNoOfShadow={
             <TextField
+              sx={{ width: '200px' }}
               select
               value={localModule.settings.noShadow}
               onChange={(e) => {

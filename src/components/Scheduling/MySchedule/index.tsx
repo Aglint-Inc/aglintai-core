@@ -53,7 +53,7 @@ function MySchedule() {
     return <Loader />;
   } else
     return (
-      <Stack p={'20px'}>
+      <Stack p={'20px'} paddingRight={'0px'}>
         <ShowCode>
           <ShowCode.When
             isTrue={
