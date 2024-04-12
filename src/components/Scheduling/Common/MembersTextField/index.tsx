@@ -58,37 +58,39 @@ function MembersAutoComplete({
   };
 
   return (
-    <Stack spacing={2} width={'100%'}>
+    <Stack width={'100%'}>
       <Stack gap={1} direction={'row'} sx={{ flexWrap: 'wrap' }}>
         {selectedUsers.map((user) => {
           return (
-            <PanelMemberPill
-              key={user.user_id}
-              propsBgColor={{
-                style: {
-                  background: pillColor ? pillColor : palette.grey[100],
-                  textTransform: 'capitalize',
-                },
-              }}
-              onClickClose={{
-                onClick: () => {
-                  setSelectedUsers(
-                    selectedUsers.filter((us) => us.user_id !== user.user_id),
-                  );
-                },
-              }}
-              slotImage={
-                <MuiAvatar
-                  src={user.profile_image}
-                  level={getFullName(user?.first_name, user?.last_name)}
-                  variant='circular'
-                  height='24px'
-                  width='24px'
-                  fontSize='12px'
-                />
-              }
-              textMemberName={user.first_name}
-            />
+            <Stack key={user.user_id} marginBottom={'10px'}>
+              <PanelMemberPill
+                key={user.user_id}
+                propsBgColor={{
+                  style: {
+                    background: pillColor ? pillColor : palette.grey[100],
+                    textTransform: 'capitalize',
+                  },
+                }}
+                onClickClose={{
+                  onClick: () => {
+                    setSelectedUsers(
+                      selectedUsers.filter((us) => us.user_id !== user.user_id),
+                    );
+                  },
+                }}
+                slotImage={
+                  <MuiAvatar
+                    src={user.profile_image}
+                    level={getFullName(user?.first_name, user?.last_name)}
+                    variant='circular'
+                    height='24px'
+                    width='24px'
+                    fontSize='12px'
+                  />
+                }
+                textMemberName={user.first_name}
+              />
+            </Stack>
           );
         })}
       </Stack>
