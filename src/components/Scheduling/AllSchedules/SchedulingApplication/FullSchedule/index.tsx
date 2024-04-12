@@ -5,10 +5,11 @@ import { Checkbox } from '@/devlink';
 import { StatusBadge } from '@/devlink2';
 import {
   EditOptionModule,
+  InterviewBreakCard,
   NewInterviewPlan,
   NewInterviewPlanCard,
 } from '@/devlink3';
-import toast from '@/src/utils/toast';
+import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
 import IconScheduleType from '../../ListCard/Icon';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
@@ -18,11 +19,13 @@ import RescheduleDialog from '../Common/RescheduleDialog';
 import GetScheduleOptionsDialog from '../GetScheduleOptions';
 import {
   setEditSession,
+  setIsEditBreakOpen,
   setIsEditOpen,
   setSelectedMeeting,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
+import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 
 function FullSchedule() {
@@ -45,6 +48,7 @@ function FullSchedule() {
   return (
     <>
       <SideDrawerEdit />
+      <BreakDrawerEdit />
       <CancelScheduleDialog />
       <RescheduleDialog />
       <GetScheduleOptionsDialog />
@@ -57,13 +61,17 @@ function FullSchedule() {
                 opacity:
                   isNormalSession && session.session_type === 'debrief'
                     ? 0.5
-                    : isDebrief && session.session_type !== 'debrief'
+                    : isDebrief &&
+                        (session.session_type !== 'debrief' ||
+                          !selectedSessionIds.includes(session.id))
                       ? 0.5
                       : 1,
                 pointerEvents:
                   isNormalSession && session.session_type === 'debrief'
                     ? 'none'
-                    : isDebrief && session.session_type !== 'debrief'
+                    : isDebrief &&
+                        (session.session_type !== 'debrief' ||
+                          !selectedSessionIds.includes(session.id))
                       ? 'none'
                       : 'auto',
               }}
@@ -122,28 +130,10 @@ function FullSchedule() {
                               ),
                             );
                           } else {
-                            if (session.session_type == 'debrief') {
-                              const isOtherThanDebrief = initialSessions
-                                .filter((ses) =>
-                                  selectedSessionIds.includes(ses.id),
-                                )
-                                .some((ses) => ses.session_type !== 'debrief');
-                              if (isOtherThanDebrief) {
-                                toast.warning(
-                                  'Schedule defbrief sesssion separately',
-                                );
-                              } else {
-                                setSelectedSessionIds([
-                                  ...selectedSessionIds,
-                                  session.id,
-                                ]);
-                              }
-                            } else {
-                              setSelectedSessionIds([
-                                ...selectedSessionIds,
-                                session.id,
-                              ]);
-                            }
+                            setSelectedSessionIds([
+                              ...selectedSessionIds,
+                              session.id,
+                            ]);
                           }
                         },
                       }}
@@ -216,6 +206,29 @@ function FullSchedule() {
                   />
                 }
               />
+              {session.break_duration > 0 && (
+                <Stack pl={'34px'} pt={'10px'}>
+                  <InterviewBreakCard
+                    textDuration={getBreakLabel(session.break_duration)}
+                    isThreeDotVisible={true}
+                    isEditDeleteVisible={false}
+                    slotEditOptionModule={
+                      <EditOptionModule
+                        isEditVisible={true}
+                        isViewScheduleVisible={false}
+                        isCancelScheduleVisible={false}
+                        isRescheduleVisible={false}
+                        onClickEdit={{
+                          onClick: () => {
+                            setEditSession(session);
+                            setIsEditBreakOpen(true);
+                          },
+                        }}
+                      />
+                    }
+                  />
+                </Stack>
+              )}
             </Stack>
 
             // <FullScheduleCard

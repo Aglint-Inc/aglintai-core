@@ -9,4 +9,6 @@ declare function InterviewBreakCard(props: {
   isEditDeleteVisible?: Types.Visibility.VisibilityConditions;
   isDurationRightCornerVisible?: Types.Visibility.VisibilityConditions;
   isDurationLeftVisible?: Types.Visibility.VisibilityConditions;
+  isThreeDotVisible?: Types.Visibility.VisibilityConditions;
+  slotEditOptionModule?: Types.Devlink.Slot;
 }): React.JSX.Element;

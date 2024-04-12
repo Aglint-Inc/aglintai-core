@@ -88,7 +88,7 @@ function SideDrawerEdit() {
               value: user.interview_module_relation.id,
               start_icon_url:
                 user.interview_module_relation.recruiter_user.profile_image,
-            })),
+            })) || [],
         );
 
         const trainingInterviewers = editSession?.users?.filter(
@@ -96,7 +96,7 @@ function SideDrawerEdit() {
         );
 
         setTrainingInterviewers(
-          trainingInterviewers.map((user) => ({
+          trainingInterviewers?.map((user) => ({
             name: getFullName(
               user.interview_module_relation.recruiter_user.first_name,
               user.interview_module_relation.recruiter_user.last_name,
@@ -107,7 +107,7 @@ function SideDrawerEdit() {
           })),
         );
 
-        if (trainingInterviewers.length > 0) {
+        if (trainingInterviewers?.length > 0) {
           setTrainingToggle(true);
         }
       } else {
@@ -494,8 +494,8 @@ function SideDrawerEdit() {
                         </>
                       }
                       isInterviewerDropVisible={
-                        optionsInterviewers?.length >
-                        selectedInterviewers?.length
+                        Number(optionsInterviewers?.length) >
+                        Number(selectedInterviewers?.length)
                       }
                       slotMemberCountDropdown={
                         selectedInterviewers?.length > 0 && (

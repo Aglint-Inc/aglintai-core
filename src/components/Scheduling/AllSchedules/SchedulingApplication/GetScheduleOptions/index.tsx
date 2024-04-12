@@ -2,13 +2,13 @@ import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ScheduleOptions } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
+import toast from '@/src/utils/toast';
 
 import SchedulingOptionComp from '../Common/ScheduleOption';
 import { useSendInviteForCandidate } from '../hooks';
@@ -23,32 +23,27 @@ import {
 } from '../store';
 
 function GetScheduleOptionsDialog() {
-  const { recruiter } = useAuthDetails();
   const currentDate = dayjs();
   const {
-    selCoordinator,
     dateRange,
     noOptions,
     selectedApplication,
     initialSessions,
     isScheduleNowOpen,
-    step,
     selectedSessionIds,
     schedulingOptions,
     totalSlots,
   } = useSchedulingApplicationStore((state) => ({
-    selCoordinator: state.selCoordinator,
     dateRange: state.dateRange,
     noOptions: state.noOptions,
     selectedApplication: state.selectedApplication,
-    fetchingPlan: state.fetchingPlan,
     initialSessions: state.initialSessions,
     isScheduleNowOpen: state.isScheduleNowOpen,
-    step: state.step,
     selectedSessionIds: state.selectedSessionIds,
     schedulingOptions: state.schedulingOptions,
     totalSlots: state.totalSlots,
   }));
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const { sendToCandidate } = useSendInviteForCandidate();
 
@@ -67,40 +62,37 @@ function GetScheduleOptionsDialog() {
     };
   }, []);
 
-  const onClickSendToCandidate = async () => {
-    const res = await sendToCandidate({
-      session_ids: selectedSessionIds,
-      is_get_more_option: false,
-      allSessions: initialSessions,
-      coordinator_id: selCoordinator,
-      recruiter_id: recruiter.id,
-      job_title: selectedApplication.public_jobs.job_title,
-      application_id: selectedApplication.id,
-      candidate_email: selectedApplication.candidates.email,
-      candidate_name: getFullName(
-        selectedApplication.candidates.first_name,
-        selectedApplication.candidates.last_name,
-      ),
-      dateRange: dateRange,
-      is_mail: true,
-    });
-    if (res) {
-      setinitialSessions(
-        initialSessions.map((session) => ({
-          ...session,
-          interview_meeting: selectedSessionIds.includes(session.id)
-            ? { status: 'waiting', interview_schedule_id: null }
-            : null,
-        })),
-      );
-    }
-    setSelectedSessionIds([]);
-    setIsScheduleNowOpen(false);
-  };
-
   const isDebrief = initialSessions
     .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type == 'debrief');
+    .some((ses) => ses.session_type === 'debrief');
+
+  const onClickSendToCandidate = async () => {
+    if (isDebrief && !selectedId) {
+      toast.warning('Please select a slot to schedule');
+    } else {
+      const res = await sendToCandidate({
+        is_mail: true,
+        is_debrief: isDebrief,
+        selected_comb_id: selectedId,
+      });
+      if (res) {
+        setinitialSessions(
+          initialSessions.map((session) => ({
+            ...session,
+            interview_meeting: selectedSessionIds.includes(session.id)
+              ? { status: 'waiting', interview_schedule_id: null }
+              : session.interview_meeting
+                ? {
+                    ...session.interview_meeting,
+                  }
+                : null,
+          })),
+        );
+      }
+      setSelectedSessionIds([]);
+      setIsScheduleNowOpen(false);
+    }
+  };
 
   const resetState = () => {
     setIsScheduleNowOpen(false);
@@ -150,6 +142,9 @@ function GetScheduleOptionsDialog() {
               isBadgeVisible={true}
               isInterviewVisible={true}
               total={totalSlots}
+              isDebrief={isDebrief}
+              selectedId={selectedId}
+              setSelectedId={setSelectedId}
             />
           }
           isNoOptionsFoundVisible={noOptions}
@@ -225,9 +220,7 @@ function GetScheduleOptionsDialog() {
             selectedApplication.candidates.first_name,
             selectedApplication.candidates.last_name,
           )}
-          textPopHeader={
-            step === 1 ? 'Enter Basic details' : 'Available Options'
-          }
+          textPopHeader={isDebrief ? 'Pick a slot' : 'Available Options'}
         />
       </Dialog>
       {/* <MuiPopup

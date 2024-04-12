@@ -76,7 +76,7 @@ function FilterJob() {
           id: FilterType.relatedJobs + 'click',
           onClick: handleClick,
         }}
-        textLabel={'Related Jobs'}
+        textLabel={'Job Title'}
         slotRightIcon={
           <Stack>
             <svg

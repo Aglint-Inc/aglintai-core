@@ -36,7 +36,9 @@ function FilterInterviewModule() {
 
   const handleFilterClick = (panel_id: string) => {
     if (filter.module_ids.includes(panel_id)) {
-      setFilter({ module_ids: filter.module_ids.filter((s) => s !== panel_id) });
+      setFilter({
+        module_ids: filter.module_ids.filter((s) => s !== panel_id),
+      });
     } else {
       setFilter({ module_ids: [...filter.module_ids, panel_id] });
     }
@@ -72,7 +74,7 @@ function FilterInterviewModule() {
           id: FilterType.interviewPanels + 'click',
           onClick: handleClick,
         }}
-        textLabel={'Interview Module'}
+        textLabel={'Interview Type'}
         slotRightIcon={
           <Stack>
             <svg

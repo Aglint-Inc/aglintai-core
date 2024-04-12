@@ -31,15 +31,15 @@ function ModuleSchedules({
   loading?: boolean;
 }) {
   const [filter, setFilter] = React.useState<
-    'all' | 'upcoming' | 'cancelled' | 'completed'
-  >('upcoming');
+    'all' | 'confirmed' | 'cancelled' | 'completed'
+  >('confirmed');
   const router = useRouter();
 
   const filterSchedules = () => {
     const filSch = schedules;
     if (filter === 'all') {
       return filSch;
-    } else if (filter === 'upcoming') {
+    } else if (filter === 'confirmed') {
       return filSch.filter(
         (sch) => sch.interview_meeting.status === 'confirmed',
       );
@@ -57,14 +57,14 @@ function ModuleSchedules({
   return (
     <InterviewMemberSide
       isAllActive={filter === 'all'}
-      isUpcomingActive={filter === 'upcoming'}
+      isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
       onClickAll={{
         onClick: () => setFilter('all'),
       }}
       onClickUpcoming={{
-        onClick: () => setFilter('upcoming'),
+        onClick: () => setFilter('confirmed'),
       }}
       onClickCancelled={{
         onClick: () => setFilter('cancelled'),

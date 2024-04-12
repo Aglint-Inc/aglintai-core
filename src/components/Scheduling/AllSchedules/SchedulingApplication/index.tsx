@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -13,8 +14,11 @@ import {
   ScheduleNowButton,
 } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
+import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 import toast from '@/src/utils/toast';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
@@ -25,16 +29,22 @@ import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import {
   scheduleWithAgent,
+  updateProgress,
   useGetScheduleApplication,
-  useGetScheduleOptions,
 } from './hooks';
 import {
   resetSchedulingApplicationState,
   setDateRange,
+  setFetchingPlan,
   setFetchingSchedule,
   setinitialSessions,
+  setIsScheduleNowOpen,
+  setNoOptions,
+  setSchedulingOptions,
   setSelectedSessionIds,
+  setStep,
   setTab,
+  setTotalSlots,
   useSchedulingApplicationStore,
 } from './store';
 
@@ -50,6 +60,7 @@ function SchedulingApplication() {
     scheduleName,
     tab,
     dateRange,
+    fetchingPlan,
   } = useSchedulingApplicationStore((state) => ({
     fetchingSchedule: state.fetchingSchedule,
     initialSessions: state.initialSessions,
@@ -58,6 +69,7 @@ function SchedulingApplication() {
     scheduleName: state.scheduleName,
     tab: state.tab,
     dateRange: state.dateRange,
+    fetchingPlan: state.fetchingPlan,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -66,13 +78,65 @@ function SchedulingApplication() {
     if (router.isReady && router.query.application_id) {
       setFetchingSchedule(true);
       fetchInterviewDataByApplication();
+      updateProgress({
+        interview_session_relation_ids: [
+          '3d660918-5e50-4793-a2d9-0fa4d2528513',
+          '84ab0414-fe20-4222-ae00-3ec4c55f4844',
+        ],
+      });
     }
     return () => {
       resetSchedulingApplicationState();
     };
   }, [router]);
 
-  const { findScheduleOptions } = useGetScheduleOptions();
+  const findScheduleOptions = async ({
+    session_ids,
+    rec_id,
+    dateRange,
+  }: {
+    session_ids: string[];
+    rec_id: string;
+    dateRange: {
+      start_date: string;
+      end_date: string;
+    };
+  }) => {
+    try {
+      setNoOptions(false);
+      setFetchingPlan(true);
+      const res = await axios.post('/api/scheduling/v1/find_availability', {
+        session_ids: session_ids,
+        recruiter_id: rec_id,
+        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        user_tz: dayjs.tz.guess(),
+      } as BodyParams);
+
+      if (res.status === 200) {
+        const respTyped = res.data as {
+          plan_combs: PlanCombinationRespType[];
+          total: number;
+        };
+        if (respTyped.plan_combs.length === 0) {
+          toast.error('No slots available');
+        } else {
+          setTotalSlots(respTyped.total);
+          setSchedulingOptions(respTyped.plan_combs);
+          setIsScheduleNowOpen(true);
+        }
+      } else {
+        setStep(1);
+        toast.error('Error fetching schedule options');
+      }
+    } catch (e) {
+      toast.error(e.message);
+      setStep(1);
+      //
+    } finally {
+      setFetchingPlan(false);
+    }
+  };
 
   const scheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
     const res = await scheduleWithAgent({
@@ -108,6 +172,10 @@ function SchedulingApplication() {
     }
     setSelectedSessionIds([]);
   };
+
+  const isDebrief = initialSessions
+    .filter((ses) => selectedSessionIds.includes(ses.id))
+    .some((ses) => ses.session_type === 'debrief');
 
   return (
     <>
@@ -232,6 +300,13 @@ function SchedulingApplication() {
                       />
                     </LocalizationProvider>
                     <ScheduleNowButton
+                      isHoverScheduleVisible={!isDebrief}
+                      isLoaderVisible={fetchingPlan}
+                      slotLoaderIcon={
+                        <Stack p={1.5}>
+                          <LoaderGrey />
+                        </Stack>
+                      }
                       onClickScheduleManually={{
                         onClick: async () => {
                           if (dateRange.start_date && dateRange.end_date) {
@@ -243,6 +318,7 @@ function SchedulingApplication() {
                           }
                         },
                       }}
+                      isScheduleManuallyVisible={true}
                       onClickEmailAgent={{
                         onClick: async () => {
                           scheduleAgent('email_agent');
@@ -259,6 +335,9 @@ function SchedulingApplication() {
                 isScheduleNowVisible={selectedSessionIds.length > 0}
                 slotCandidateCard={
                   <Stack
+                    sx={{
+                      cursor: 'pointer',
+                    }}
                     onClick={() => {
                       router.push(
                         `${pageRoutes.JOBS}/${selectedApplication.job_id}`,
