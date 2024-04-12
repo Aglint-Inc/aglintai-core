@@ -8,7 +8,7 @@
 
 .candidate-schedule-left-wrap {
   position: relative;
-  width: 100%;
+  width: calc(100vw - 470px);
 }
 
 .cd-schedule-header {
@@ -115,7 +115,7 @@
 
 .candidate-schedule-right-wrap {
   display: flex;
-  width: 280px;
+  width: 400px;
   padding: 20px;
   flex-direction: column;
   flex-wrap: nowrap;
