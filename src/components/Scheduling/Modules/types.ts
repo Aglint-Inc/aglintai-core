@@ -5,6 +5,7 @@ import {
   InterviewModuleRelationType,
   InterviewModuleType,
   InterviewScheduleTypeDB,
+  InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
   RecruiterUserType,
@@ -107,6 +108,7 @@ export type MemberType = {
 export type TransformSchedule = ScheduleType & {
   interview_meeting: InterviewMeetingTypeDb;
   interview_session: InterviewSessionTypeDB;
+  interview_module: InterviewModuleType;
   users: {
     id: string;
     first_name: string;
@@ -114,5 +116,15 @@ export type TransformSchedule = ScheduleType & {
     email: string;
     profile_image: string;
     position: string;
+    interviewer_type: InterviewSessionRelationTypeDB['interviewer_type'];
+    training_type: InterviewSessionRelationTypeDB['training_type'];
   }[];
+  coordinator: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_image: string;
+    position: string;
+  };
 };

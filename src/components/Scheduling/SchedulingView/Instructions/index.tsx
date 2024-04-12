@@ -1,8 +1,9 @@
 import { Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { marked } from 'marked';
 import { useState } from 'react';
 
-import AUIButton from '@/src/components/Common/AUIButton';
+import { ButtonPrimaryRegular } from '@/devlink';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -10,39 +11,50 @@ import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { useModuleDetails, useScheduleDetails } from '..';
+import { TransformSchedule } from '../../Modules/types';
 
-function Instructions() {
-  const { recruiter, recruiterUser } = useAuthDetails();
+function Instructions({ schedule }: { schedule: TransformSchedule }) {
+  const { recruiterUser } = useAuthDetails();
   const [textValue, setTextValue] = useState(null);
 
-  const { data: module } = useModuleDetails();
-  const { data: schedule, refetch } = useScheduleDetails();
+  const queryClient = useQueryClient();
+  const refetch = () => {
+    queryClient.invalidateQueries({
+      queryKey: ['schedule_details', schedule.interview_meeting.id],
+    });
+  };
+
   async function updateInstruction() {
-    if (textValue) {
-      const { data } = await supabase
-        .from('interview_meeting')
-        .update({ instructions: textValue })
-        .eq('id', schedule.interview_meeting.id)
-        .select();
-      if (data) {
-        toast.success('Instruction updated!');
+    try {
+      if (textValue) {
+        const { error } = await supabase
+          .from('interview_meeting')
+          .update({ instructions: textValue })
+          .eq('id', schedule.interview_meeting.id);
+        if (error) throw Error(error.message);
         refetch();
+        toast.success('Instruction updated!');
+      } else {
+        toast.warning('Please give instructions!');
       }
-    } else {
-      toast.warning('Please give instructions!');
+    } catch (error) {
+      toast.error(error.message);
     }
   }
 
   return (
-    <div>
+    <>
       <ShowCode>
-        <ShowCode.When isTrue={recruiter?.email === recruiterUser?.email}>
+        <ShowCode.When
+          isTrue={
+            recruiterUser.role === 'admin' || recruiterUser.role === 'recruiter'
+          }
+        >
           <>
             <Stack
               sx={{
                 margin: '20px',
-                maxWidth: '600px',
+                maxWidth: '800px',
                 border: '1px solid',
                 borderColor: palette.grey[300],
                 borderRadius: '4px',
@@ -54,19 +66,18 @@ function Instructions() {
                 handleChange={(html) => {
                   setTextValue(html);
                 }}
-                initialValue={
-                  schedule.interview_meeting.instructions ||
-                  module?.instructions
-                }
+                initialValue={schedule.interview_meeting.instructions}
               />
             </Stack>
-            <Stack
-              mt={'10px'}
-              direction={'row'}
-              justifyContent={'end'}
-              maxWidth='600px'
-            >
-              <AUIButton onClick={updateInstruction}>Update</AUIButton>
+            <Stack direction={'row'} justifyContent={'end'} maxWidth='820px'>
+              <ButtonPrimaryRegular
+                textLabel={'Save'}
+                onClickButton={{
+                  onClick: () => {
+                    updateInstruction();
+                  },
+                }}
+              />
             </Stack>
           </>
         </ShowCode.When>
@@ -75,14 +86,13 @@ function Instructions() {
             dangerouslySetInnerHTML={{
               __html: marked(
                 schedule.interview_meeting.instructions ||
-                  module?.instructions ||
                   'Instructions not given',
               ),
             }}
           ></div>
         </ShowCode.Else>
       </ShowCode>
-    </div>
+    </>
   );
 }
 

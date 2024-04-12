@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -15,9 +16,12 @@ export function CandidatesCard({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "candidate_card_wrap")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "candidatecard")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "candidatecard", "candi")}
+        tag="div"
+      >
         <_Builtin.Block
-          className={_utils.cx(_styles, "slot_candidate_image")}
+          className={_utils.cx(_styles, "slot_candidate_image", "candi")}
           tag="div"
         >
           {slotImage}
@@ -26,19 +30,7 @@ export function CandidatesCard({
           className={_utils.cx(_styles, "schedule_details-copy")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {textName}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
-            tag="div"
-          >
-            {textMail}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{textName}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
       {isLinks ? (
@@ -52,7 +44,9 @@ export function CandidatesCard({
               className={_utils.cx(_styles, "embed_flex")}
               value="%3Csvg%20width%3D%2212%22%20height%3D%2213%22%20viewBox%3D%220%200%2012%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.5%203.60156C1.26562%203.61719%201.14062%203.74219%201.125%203.97656V4.49219L5.17969%207.82031C5.42969%208.00781%205.70312%208.10156%206%208.10156C6.3125%208.10156%206.59375%208.00781%206.84375%207.82031L10.875%204.49219V3.97656C10.8594%203.74219%2010.7344%203.61719%2010.5%203.60156H1.5ZM1.125%205.94531V9.97656C1.14062%2010.2109%201.26562%2010.3359%201.5%2010.3516H10.5C10.7344%2010.3359%2010.8594%2010.2109%2010.875%209.97656V5.94531L7.54688%208.6875C7.07812%209.04688%206.5625%209.22656%206%209.22656C5.4375%209.22656%204.92188%209.04688%204.45312%208.6875L1.125%205.94531ZM0%203.97656C0.015625%203.55469%200.164062%203.20312%200.445312%202.92188C0.726562%202.64062%201.07812%202.49219%201.5%202.47656H10.5C10.9219%202.49219%2011.2734%202.64062%2011.5547%202.92188C11.8359%203.20312%2011.9844%203.55469%2012%203.97656V9.97656C11.9844%2010.3984%2011.8359%2010.75%2011.5547%2011.0312C11.2734%2011.3125%2010.9219%2011.4609%2010.5%2011.4766H1.5C1.07812%2011.4609%200.726562%2011.3125%200.445312%2011.0312C0.164062%2010.75%200.015625%2010.3984%200%209.97656V3.97656Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
             />
-            <_Builtin.Block tag="div">{"Resend Invite"}</_Builtin.Block>
+            <_Builtin.Block tag="div">
+              {"Resend Invite to candidate"}
+            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "link-copy")}
