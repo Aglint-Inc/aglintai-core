@@ -17,8 +17,8 @@ export type schedulingSettingType = {
     SoftConflicts: any[];
   };
   break_hour: {
-    break_at: string;
-    break_time: string;
+    start_time: string;
+    end_time: string;
   };
 };
 export type holidayType = {

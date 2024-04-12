@@ -133,3 +133,28 @@
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
+
+.three-dot-wrap {
+  position: relative;
+  z-index: 2;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.sloteditoptions {
+  display: none;
+}

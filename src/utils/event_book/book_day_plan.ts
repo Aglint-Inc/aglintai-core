@@ -14,6 +14,7 @@ import { SessionInterviewerType } from '../scheduling_v1/types';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { findInterviewersEvents } from '../scheduling_v2/findEachInterviewerFreeTimes';
 import { findMultiDaySlots } from '../scheduling_v2/findMultiDaySlots';
+import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession } from './book_session';
 
@@ -109,6 +110,7 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
         ...session.revShadowIntervs,
       ];
       const organizer = session.selectedIntervs[0];
+      const training_ints = session.shadowIntervs;
       const booked_sessions = await bookSession({
         candidate_email,
         company_cred,
@@ -127,6 +129,17 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
         schedule_name: session.session_name,
         session_id: session.session_id,
       });
+
+      // assisgn training status shadow or rShadow to ints
+      if (training_ints.length > 0) {
+        updateTrainingStatus({
+          training_ints: training_ints.map((i) => ({
+            interviewer_module_relation_id: i.interview_module_relation_id,
+            session_id: i.session_id,
+          })),
+        });
+      }
+
       await confirmInterviewers([organizer, ...all_inters]);
       return booked_sessions;
     });

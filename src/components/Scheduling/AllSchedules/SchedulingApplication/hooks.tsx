@@ -8,136 +8,78 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
 } from '@/src/types/data.types';
-import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
+import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { mailHandler } from '../utils';
 import {
   SchedulingApplication,
-  setFetchingPlan,
   setFetchingSchedule,
   setinitialSessions,
-  setIsScheduleNowOpen,
-  setNoOptions,
   setScheduleName,
-  setSchedulingOptions,
   setSelCoordinator,
   setSelectedApplication,
   setSelectedSchedule,
-  setStep,
-  setTotalSlots,
+  useSchedulingApplicationStore,
 } from './store';
 import {
   ApplicationDataResponseType,
   InterviewDataResponseType,
 } from './types';
 
-export const useGetScheduleOptions = () => {
-  const findScheduleOptions = async ({
-    session_ids,
-    rec_id,
-    dateRange,
-  }: {
-    session_ids: string[];
-    rec_id: string;
-    dateRange: {
-      start_date: string;
-      end_date: string;
-    };
-  }) => {
-    try {
-      setNoOptions(false);
-      setFetchingPlan(true);
-      const res = await axios.post('/api/scheduling/v1/find_availability', {
-        session_ids: session_ids,
-        recruiter_id: rec_id,
-        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-        user_tz: dayjs.tz.guess(),
-      } as BodyParams);
-
-      if (res.status === 200) {
-        const respTyped = res.data as {
-          plan_combs: PlanCombinationRespType[];
-          total: number;
-        };
-        if (respTyped.plan_combs.length === 0) {
-          toast.error('No slots available');
-        } else {
-          setTotalSlots(respTyped.total);
-          setSchedulingOptions(respTyped.plan_combs);
-          setIsScheduleNowOpen(true);
-        }
-      } else {
-        setStep(1);
-        toast.error('Error fetching schedule options');
-      }
-    } catch (e) {
-      toast.error(e.message);
-      setStep(1);
-      //
-    } finally {
-      setFetchingPlan(false);
-    }
-  };
-
-  return { findScheduleOptions };
-};
-
 export const useSendInviteForCandidate = () => {
-  const sendToCandidate = async ({
-    session_ids,
-    is_get_more_option,
-    application_id,
-    allSessions,
-    coordinator_id,
-    job_title,
-    candidate_name,
+  const { recruiter } = useAuthDetails();
+  const {
+    selCoordinator,
     dateRange,
-    recruiter_id,
-    candidate_email,
+    selectedApplication,
+    initialSessions,
+    selectedSessionIds,
+    schedulingOptions,
+  } = useSchedulingApplicationStore((state) => ({
+    selCoordinator: state.selCoordinator,
+    dateRange: state.dateRange,
+    selectedApplication: state.selectedApplication,
+    initialSessions: state.initialSessions,
+    selectedSessionIds: state.selectedSessionIds,
+    schedulingOptions: state.schedulingOptions,
+  }));
+
+  const sendToCandidate = async ({
     is_mail,
+    is_debrief = false,
+    selected_comb_id,
   }: {
-    session_ids: string[];
-    is_get_more_option: boolean;
-    application_id: string;
-    allSessions: SchedulingApplication['initialSessions'];
-    coordinator_id: string;
-    job_title: string;
-    candidate_name: string;
-    dateRange?: {
-      start_date: string;
-      end_date: string;
-    };
-    recruiter_id: string;
-    candidate_email: string;
     is_mail: boolean;
+    is_debrief?: boolean;
+    selected_comb_id: string;
   }) => {
     try {
-      const scheduleName = `Interview for ${job_title} - ${candidate_name}`;
+      const scheduleName = `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`;
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
         .select('id')
-        .eq('application_id', application_id);
+        .eq('application_id', selectedApplication.id);
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
       if (checkSch.length === 0) {
         const createCloneRes = await createCloneSession({
-          is_get_more_option,
-          application_id,
-          allSessions,
-          session_ids,
-          scheduleName,
-          coordinator_id,
+          is_get_more_option: false,
+          application_id: selectedApplication.id,
+          allSessions: initialSessions,
+          session_ids: selectedSessionIds,
+          scheduleName: scheduleName,
+          coordinator_id: selCoordinator,
         });
 
         const { data: filterJson, error: errorFilterJson } = await supabase
@@ -145,7 +87,7 @@ export const useSendInviteForCandidate = () => {
           .insert({
             filter_json: {
               session_ids: createCloneRes.session_ids,
-              recruiter_id: recruiter_id,
+              recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
@@ -157,22 +99,58 @@ export const useSendInviteForCandidate = () => {
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        is_mail &&
+        if (!is_debrief && is_mail) {
           mailHandler({
             filter_id: filterJson[0].id,
-            rec_id: recruiter_id,
-            candidate_name: candidate_name,
-            mail: candidate_email,
-            position: job_title,
+            rec_id: recruiter.id,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            mail: selectedApplication.candidates.email,
+            position: selectedApplication.public_jobs.job_title,
             schedule_name: scheduleName,
             schedule_id: createCloneRes.schedule.id,
           });
+        }
+
+        if (is_debrief && selected_comb_id) {
+          const selectedSchedule = schedulingOptions.filter(
+            (ses) => ses.plan_comb_id === selected_comb_id,
+          );
+          const bodyParams = {
+            candidate_plan: [
+              {
+                sessions: selectedSchedule[0].sessions.map((ses) => {
+                  return {
+                    session_id: createCloneRes.refSessions.find(
+                      (sesRef) => sesRef.id === ses.session_id,
+                    ).newId,
+                    start_time: ses.start_time,
+                    end_time: ses.end_time,
+                  };
+                }),
+              },
+            ],
+            recruiter_id: recruiter.id,
+            user_tz: dayjs.tz.guess(),
+            candidate_email: selectedApplication.candidates.email,
+            schedule_id: createCloneRes.schedule.id,
+          } as ConfirmApiBodyParams;
+          const res = await axios.post(
+            '/api/scheduling/v1/confirm_interview_slot',
+            bodyParams,
+          );
+          if (res.status === 200) {
+            toast.success('Slot confirmed successfully');
+          }
+        }
       } else {
         const { error: errorUpdatedMeetings } = await supabase
           .from('interview_meeting')
           .upsert(
-            allSessions
-              .filter((ses) => session_ids.includes(ses.id))
+            initialSessions
+              .filter((ses) => selectedSessionIds.includes(ses.id))
               .map((ses) => ({
                 status: 'waiting',
                 id: ses.interview_meeting.id,
@@ -188,29 +166,63 @@ export const useSendInviteForCandidate = () => {
           .from('interview_filter_json')
           .insert({
             filter_json: {
-              session_ids: session_ids,
-              recruiter_id: recruiter_id,
+              session_ids: selectedSessionIds,
+              recruiter_id: recruiter.id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
             },
-            session_ids: session_ids,
+            session_ids: selectedSessionIds,
             schedule_id: checkSch[0].id,
           })
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        is_mail &&
+        if (!is_debrief && is_mail) {
           mailHandler({
             filter_id: filterJson[0].id,
-            rec_id: recruiter_id,
-            candidate_name: candidate_name,
-            mail: candidate_email,
-            position: job_title,
+            rec_id: recruiter.id,
+            candidate_name: getFullName(
+              selectedApplication.candidates.first_name,
+              selectedApplication.candidates.last_name,
+            ),
+            mail: selectedApplication.candidates.email,
+            position: selectedApplication.public_jobs.job_title,
             schedule_name: scheduleName,
             schedule_id: checkSch[0].id,
           });
+        }
+
+        if (is_debrief && selected_comb_id) {
+          const selectedSchedule = schedulingOptions.filter(
+            (ses) => ses.plan_comb_id === selected_comb_id,
+          );
+          const bodyParams = {
+            candidate_plan: [
+              {
+                sessions: selectedSchedule[0].sessions.map((ses) => {
+                  return {
+                    session_id: ses.session_id,
+                    start_time: ses.start_time,
+                    end_time: ses.end_time,
+                  };
+                }),
+              },
+            ],
+            recruiter_id: recruiter.id,
+            user_tz: dayjs.tz.guess(),
+            candidate_email: selectedApplication.candidates.email,
+            schedule_id: checkSch[0].id,
+          } as ConfirmApiBodyParams;
+          const res = await axios.post(
+            '/api/scheduling/v1/confirm_interview_slot',
+            bodyParams,
+          );
+          if (res.status === 200) {
+            toast.success('Slot confirmed successfully');
+          }
+        }
       }
       return true;
     } catch (e) {
@@ -335,6 +347,7 @@ export const useGetScheduleApplication = () => {
           const sessionsWithPlan = await fetchInterviewDataJob(
             router.query.application_id as string,
           );
+
           setSelectedApplication(sessionsWithPlan.application);
           setScheduleName(
             `Interview for ${sessionsWithPlan.application?.public_jobs?.job_title} - ${sessionsWithPlan.application?.candidates?.first_name}`,
@@ -403,7 +416,7 @@ export const fetchInterviewDataJob = async (application_id: string) => {
       ...item.interview_session,
       interview_meeting: null as InterviewMeetingTypeDb,
       interview_module: item.interview_module,
-      users: item.interview_session_relations.interview_module_relation.map(
+      users: item.interview_session_relations?.interview_module_relation?.map(
         (sesitem) => ({
           ...sesitem.interview_session_relation,
           interview_module_relation: {
@@ -774,4 +787,48 @@ export const fetchInterviewMeetingProgresstask = async ({
   } catch (e) {
     toast.error(e.message);
   }
+};
+
+export const updateProgress = async ({
+  interview_session_relation_ids,
+}: {
+  interview_session_relation_ids: string[]; // interview_module_relation_id
+}) => {
+  const { data: intSesRel, error: errSelRel } = await supabase
+    .from('interview_session_relation')
+    .select(
+      '*,interview_session!inner(*,interview_plan(*),interview_module(*))',
+    )
+    .in('id', interview_session_relation_ids)
+    .eq('is_confirmed', true);
+
+  if (errSelRel) throw new Error(errSelRel.message);
+
+  const filteredIntSesRel = intSesRel.filter(
+    (ses) => !ses.interview_session?.interview_plan?.id,
+  );
+
+  const uniqueSessionIds = [
+    ...new Set(
+      filteredIntSesRel.map((sesrel) => sesrel.interview_module_relation_id),
+    ),
+  ];
+
+  const { data, error } = await supabase
+    .from('interview_meeting')
+    .select('*,interview_session!inner(*)')
+    .in('interview_session.id', uniqueSessionIds);
+  // .eq('status', 'completed');
+
+  const resRel = filteredIntSesRel
+    .map((sesRel) => ({
+      ...sesRel,
+      interview_meeting: data.find(
+        (meet) => meet.interview_session.id === sesRel.interview_session.id,
+      ),
+    }))
+    .filter((sesRel) => sesRel?.interview_meeting?.id);
+
+  if (error) throw new Error(error.message);
+  return resRel;
 };

@@ -1,11 +1,9 @@
-
 import { FilterType, useInterviewSchedulingStore } from '../store';
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
 import FilterScheduleType from './FilterScheduleType';
 import FilterSearchField from './FilterSearchField';
-import FilterStatus from './FilterStatus';
 
 function AllFilters() {
   const filterVisible = useInterviewSchedulingStore(
@@ -22,8 +20,6 @@ function AllFilters() {
             return <FilterInterviewModule key={filterType} />;
           case FilterType.scheduleType:
             return <FilterScheduleType key={filterType} />;
-          case FilterType.status:
-            return <FilterStatus key={filterType} />;
           case FilterType.coordinator:
             return <FilterCordinator key={filterType} />;
           default:

@@ -80,7 +80,7 @@ function MembersAutoComplete({
               slotImage={
                 <MuiAvatar
                   src={user.profile_image}
-                  level={getFullName(user?.first_name, user?.last_name || '')}
+                  level={getFullName(user?.first_name, user?.last_name)}
                   variant='circular'
                   height='24px'
                   width='24px'
@@ -157,7 +157,7 @@ function MembersAutoComplete({
                     >
                       <MuiAvatar
                         src={option.profile_image}
-                        level={option.first_name}
+                        level={getFullName(option.first_name, option.last_name)}
                         variant='circular'
                         height='24px'
                         width='24px'

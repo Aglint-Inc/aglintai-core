@@ -36,6 +36,7 @@ export interface SchedulingApplication {
   noOptions: boolean;
   isSendToCandidateOpen: boolean;
   isEditOpen: boolean;
+  isEditBreakOpen: boolean;
   editSession: SessionsType[0];
 }
 
@@ -65,6 +66,7 @@ const initialState: SchedulingApplication = {
   noOptions: false,
   isSendToCandidateOpen: false,
   isEditOpen: false,
+  isEditBreakOpen: false,
   editSession: null,
 };
 
@@ -79,6 +81,9 @@ export const setInitalLoading = (initialLoading: boolean) =>
 
 export const setIsEditOpen = (isEditOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditOpen });
+
+export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
+  useSchedulingApplicationStore.setState({ isEditBreakOpen });
 
 export const setSelectedMeeting = (selectedMeeting: InterviewMeetingTypeDb) =>
   useSchedulingApplicationStore.setState({ selectedMeeting });

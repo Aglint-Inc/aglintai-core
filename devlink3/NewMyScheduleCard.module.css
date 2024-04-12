@@ -3,7 +3,7 @@
 }
 
 .div-block-1400.my-schedule {
-  padding: 16px;
+  padding: 16px 16px 16px 0px;
 }
 
 .div-block-1394 {
@@ -64,66 +64,8 @@
   grid-row-gap: 1px;
 }
 
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.text-sm.color-grey-600 {
-  color: #68737d;
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-sm.text-capitalize {
-  text-transform: uppercase;
-}
-
-.text-grey_400 {
-  color: #c2c8cc;
-}
-
-.text-grey_600 {
-  color: #68737d;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.text-blue-500 {
-  color: #337fbd;
-}
-
-.text-sm.badge {
-  color: #228f67;
-}
-
-.text-sm.done {
-  color: #228f67;
-}
-
-.text-sm.in-progress {
-  color: #337fbd;
-}
-
-.text-sm.progress {
-  color: #68737d;
-}
-
-.text-sm.justnow-text {
-  color: rgba(28, 28, 28, 0.4);
+.month-text {
+  opacity: 0.3;
 }
 
 .text-20 {
@@ -131,9 +73,34 @@
   line-height: 28px;
 }
 
-.text-xsm {
-  font-size: 10px;
-  line-height: 12px;
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-blue-500.text-underline {
+  text-decoration: underline;
+}
+
+.text-blue-500.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .icons {

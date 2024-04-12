@@ -700,6 +700,7 @@ const InterviewModulesField = ({
       onChange={onChange}
       options={options}
       value={value?.id}
+      showIcons={false}
     />
   );
 };
