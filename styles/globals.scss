@@ -281,3 +281,18 @@ textarea::placeholder {
 [data-layout='jobs'] {
   height: calc(100vh - 100px) !important;
 }
+
+//
+.MuiClock-pmButton {
+  height: 36px;
+}
+.MuiClock-pmButton > span {
+  color: #000 !important;
+}
+
+.MuiClock-amButton {
+  height: 36px;
+}
+.MuiClock-amButton > span {
+  color: #000 !important;
+}

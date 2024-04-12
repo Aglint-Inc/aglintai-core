@@ -7,10 +7,12 @@ function SelectTime({
   i,
   value,
   onSelect,
+  disable,
 }: {
   i?: number;
   value: any;
   onSelect: any;
+  disable?: boolean;
 }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -20,6 +22,7 @@ function SelectTime({
         onChange={(value) => {
           onSelect(value, i);
         }}
+        disable={disable}
       />
     </LocalizationProvider>
   );
