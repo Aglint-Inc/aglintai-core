@@ -1,6 +1,8 @@
 .feedback_layout {
   width: 100%;
+  min-width: 1164px;
   background-color: white;
+  max-width: calc(100vw - 470px);
 }
 
 .all-interview-table-copy {
@@ -24,7 +26,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 20% max-content 250px auto;
   grid-template-rows: auto;
 
   border-top: 1px none #e9ebed;
@@ -33,7 +35,7 @@
   background-color: #f8f9f9;
 }
 
-.allinterview_header_cell {
+.header_interviewer {
   display: flex;
   padding: 10px 20px;
   align-items: center;
@@ -41,7 +43,7 @@
   grid-row-gap: 4px;
 }
 
-.allinterview_header_cell.hide {
+.header_interviewer.hide {
   display: none;
 }
 
@@ -49,20 +51,20 @@
   display: none;
 }
 
-.allinterview_header_cell.width-324 {
-  min-width: 324px;
+.header_interviewer.width-324 {
+  width: 25%;
 }
 
-.allinterview_header_cell.width-25 {
-  width: 300px;
+.header_interviewer.width-25 {
+  width: 25%;
 }
 
-.allinterview_header_cell.widthh-324px {
-  width: 324px;
+.header_interviewer.widthh-324px {
+  width: 25%;
 }
 
-.div-block-958 {
-  margin-right: 4px;
+.header_interviewer.width-25-copy {
+  width: 25%;
 }
 
 .fw-semibold {
@@ -119,6 +121,100 @@
 .fw-semibold.plr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.header_session {
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.header_session.hide {
+  display: none;
+}
+
+.header_session.width-25 {
+  width: 25%;
+}
+
+.header_session.widthh-324px {
+  width: 25%;
+}
+
+.header_session.width-25-copy {
+  width: 25%;
+}
+
+.header_session.width-324-copy {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.session_colum_fixed_width {
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.header_recommendation {
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.header_recommendation.hide {
+  display: none;
+}
+
+.header_recommendation.width-324 {
+  width: 25%;
+}
+
+.header_recommendation.width-25 {
+  width: 25%;
+}
+
+.header_recommendation.widthh-324px {
+  width: 25%;
+}
+
+.header_recommendation.width-25-copy {
+  width: 25%;
+}
+
+.header_feedback {
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.header_feedback.hide {
+  display: none;
+}
+
+.header_feedback.width-324 {
+  width: 25%;
+}
+
+.header_feedback.width-25 {
+  width: 25%;
+}
+
+.header_feedback.widthh-324px {
+  width: 25%;
+}
+
+.header_feedback.width-25-copy {
+  width: 25%;
 }
 
 .slot_candidaterow {

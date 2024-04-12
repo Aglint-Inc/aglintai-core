@@ -188,6 +188,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -288,6 +292,7 @@
 
 .div-block-1188 {
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;

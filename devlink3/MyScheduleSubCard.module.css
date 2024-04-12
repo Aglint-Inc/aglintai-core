@@ -6,7 +6,8 @@
 .div-block-1385 {
   display: flex;
   width: 100%;
-  border: 1px solid #e9ebed;
+  justify-content: flex-start;
+  align-items: flex-start;
   border-radius: 10px;
 }
 

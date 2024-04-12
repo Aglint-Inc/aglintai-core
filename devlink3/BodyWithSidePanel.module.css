@@ -4,7 +4,7 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 1fr 450px;
+  grid-template-columns: 1fr 400px;
   grid-template-rows: auto;
 
   background-color: white;

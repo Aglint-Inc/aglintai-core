@@ -20,8 +20,14 @@
 }
 
 .div-block-1394.gap-20.all-schedule {
+  position: relative;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+.div-block-1427 {
+  position: sticky;
+  top: 0px;
 }
 
 .div-block-1399 {
@@ -103,6 +109,10 @@
   opacity: 0.8;
 }
 
+.text-blue-500.text-capital {
+  text-transform: uppercase;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -131,4 +141,7 @@
   flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
 }
