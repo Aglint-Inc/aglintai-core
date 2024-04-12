@@ -1,6 +1,8 @@
 import { Stack } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
+import { useEffect } from 'react';
 
 import {
   NavAssessment,
@@ -18,9 +20,11 @@ import { AssistantLogo } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 function SideNavbar() {
   const router = useRouter();
+  const pathName = usePathname();
   const { loading, isAllowed } = useAuthDetails();
 
   const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
@@ -31,8 +35,9 @@ function SideNavbar() {
   const isPhoneScreeningEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningEnabled',
   );
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
   let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
+
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const navList = [
     {
@@ -158,6 +163,17 @@ function SideNavbar() {
       roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
   ];
+
+  useEffect(() => {
+    const tempR = navList.find((item) => {
+      return pathName.includes(item.route);
+    })?.roles;
+    if (tempR && !isAllowed(tempR)) {
+      toast.error("You don't have Access to this Module.");
+      router.replace(pageRoutes.LOADING);
+    }
+  }, [pathName]);
+
   return (
     <>
       {!loading &&

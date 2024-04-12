@@ -12,6 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import Icon from '../Common/Icons/Icon';
 import UITextField from '../Common/UITextField';
 import InterviewTab from '../CompanyDetailComp/Interviewers';
+import InterviewerLevelSettings from '../CompanyDetailComp/Interviewers/Interviewer/InterviewerLevelSettings';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import AllSchedules from './AllSchedules';
 import { Modules } from './Modules/Modules';
@@ -28,7 +29,7 @@ import { SchedulingTab } from './types';
 
 function SchedulingMainComp() {
   const router = useRouter();
-  const { recruiter, setRecruiter, allowAction } = useAuthDetails();
+  const { recruiter, setRecruiter, allowAction, isAllowed } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
   const { searchText } = useModulesStore();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
@@ -127,12 +128,16 @@ function SchedulingMainComp() {
                   'scheduler',
                 ])
               ) : tab == 'settings' ? (
-                allowAction(
-                  <SchedulingSettings
-                    updateSettings={updateSettings}
-                    initialData={recruiter?.scheduling_settings}
-                  />,
-                  ['admin', 'recruiter', 'scheduler'],
+                isAllowed(['interviewer']) ? (
+                  <InterviewerSetting />
+                ) : (
+                  allowAction(
+                    <SchedulingSettings
+                      updateSettings={updateSettings}
+                      initialData={recruiter?.scheduling_settings}
+                    />,
+                    ['admin', 'recruiter', 'scheduler'],
+                  )
                 )
               ) : (
                 ''
@@ -147,3 +152,20 @@ function SchedulingMainComp() {
 }
 
 export default SchedulingMainComp;
+
+const InterviewerSetting = () => {
+  const { handelMemberUpdate, userDetails, recruiterUser } = useAuthDetails();
+  return (
+    <InterviewerLevelSettings
+      setOpenDrawer={() => {}}
+      initialData={recruiterUser.scheduling_settings}
+      updateSettings={(x) => {
+        return handelMemberUpdate({
+          user_id: userDetails.user.id,
+          data: { scheduling_settings: x },
+        });
+      }}
+      isOverflow={true}
+    />
+  );
+};
