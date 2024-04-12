@@ -78,9 +78,9 @@ const contextInitialState: TasksAgentContextType = {
   handelAddTask: (x) => Promise.resolve(null),
   handelUpdateTask: (x) => Promise.resolve(null),
   handelDeleteTask: (x) => Promise.resolve(false),
-//   handelSearch: (x) => {},
-//   handelFilter: (x) => {},
-//   handelSort: (x) => {},
+  //   handelSearch: (x) => {},
+  //   handelFilter: (x) => {},
+  //   handelSort: (x) => {},
 };
 
 const TaskContext = createContext<TasksAgentContextType>(contextInitialState);
@@ -167,7 +167,7 @@ const reducer = (
   }
 };
 
-export const TaskProvider = ({ children }: { children: ReactNode }) => {
+export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
   const { recruiter_id, members, recruiterUser } = useAuthDetails();
   const init = (data: TasksReducerType) => {
@@ -385,7 +385,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useTasksAgentContext = () => {
+export const useTasksContext = () => {
   const context = useContext(TaskContext);
   if (context === undefined) {
     throw new Error('useTasksAgentContext must be used within a Task page');
