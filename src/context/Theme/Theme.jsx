@@ -22,12 +22,12 @@ function Theme({ children }) {
     },
     palette: {
       ...palette,
-      primary: {
-        main: palette.grey[800], // Zendesk Garden black 600
-        light: palette.grey[200], // Zendesk Garden grey 200
-        dark: palette.grey[800], // Zendesk Garden grey 800
-        contrastText: palette.white[700], // white
-      },
+      // primary: {
+      //   main: palette.grey[800], // Zendesk Garden black 600
+      //   light: palette.grey[200], // Zendesk Garden grey 200
+      //   dark: palette.grey[800], // Zendesk Garden grey 800
+      //   contrastText: palette.white[700], // white
+      // },
       secondary: {
         main: palette.green[600], // Zendesk Garden green 600
         light: palette.green[200], // Zendesk Garden green 200

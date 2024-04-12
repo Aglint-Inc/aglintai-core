@@ -78,9 +78,9 @@ function SchedulingSettings({
   const [isTimeZone, setIsTimeZone] = useState(true);
 
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
-    break_at: string;
-    break_time: string;
-  } | null>({ break_at: '', break_time: '' });
+    start_time: string;
+    end_time: string;
+  } | null>({ start_time: '', end_time: '' });
 
   const handleSelectWeeklyType = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
@@ -172,8 +172,8 @@ function SchedulingSettings({
         schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
       );
       setSelectedHourBreak({
-        break_at: schedulingSettingData.break_hour?.break_at,
-        break_time: schedulingSettingData.break_hour?.break_time,
+        start_time: schedulingSettingData.break_hour?.start_time,
+        end_time: schedulingSettingData.break_hour?.end_time,
       });
     }
   }
@@ -194,8 +194,8 @@ function SchedulingSettings({
         },
         isAutomaticTimezone: isTimeZone,
         break_hour: {
-          break_at: selectedHourBreak.break_at,
-          break_time: selectedHourBreak.break_time,
+          start_time: selectedHourBreak.start_time,
+          end_time: selectedHourBreak.end_time,
         },
       } as schedulingSettingType;
 
@@ -309,6 +309,7 @@ function SchedulingSettings({
                             <TimeRangeInput
                               slotStartTimeInput={
                                 <SelectTime
+                                  disable={!day.isWorkDay}
                                   value={dayjs()
                                     .set(
                                       'hour',
@@ -328,6 +329,7 @@ function SchedulingSettings({
                               }
                               slotEndTimeInput={
                                 <SelectTime
+                                  disable={!day.isWorkDay}
                                   value={dayjs()
                                     .set(
                                       'hour',
@@ -362,45 +364,55 @@ function SchedulingSettings({
                     </Typography>
                   </Stack>
                   <Stack spacing={1} direction={'column'}>
-                    <Stack direction={'row'} alignItems={'center'} gap={1}>
-                      <Typography fontSize={'14px'}>Break Time</Typography>
-                      <MuiSelect
-                        dataset={['30', '45', '60', '120']}
-                        handleSelect={(event) => {
-                          const value = event.target.value as unknown as string;
-                          setSelectedHourBreak((pre) => {
-                            pre.break_time = value;
-                            return { ...pre };
-                          });
-                        }}
-                        value={selectedHourBreak?.break_time}
-                      />
-                      <Typography fontSize={'14px'}>Minutes</Typography>
-                    </Stack>
-                    <Stack
-                      spacing={3.5}
-                      direction={'row'}
-                      alignItems={'center'}
-                    >
-                      <Typography fontSize={'14px'}>Break at</Typography>
-                      {selectedHourBreak.break_at && (
+                    <Stack direction={'row'} alignItems={'center'} spacing={1}>
+                      <Typography width={120} fontSize={'14px'}>
+                        Break Start Time
+                      </Typography>
+                      {selectedHourBreak.start_time && (
                         <SelectTime
                           value={dayjs()
                             .set(
                               'hour',
                               parseInt(
-                                selectedHourBreak?.break_at?.split(':')[0],
+                                selectedHourBreak?.start_time?.split(':')[0],
                               ),
                             )
                             .set(
                               'minute',
                               parseInt(
-                                selectedHourBreak?.break_at?.split(':')[1],
+                                selectedHourBreak?.start_time?.split(':')[1],
                               ),
                             )}
                           onSelect={(e) => {
                             setSelectedHourBreak((pre) => {
-                              pre.break_at = `${dayjs(e).format('HH:mm')}`;
+                              pre.start_time = `${dayjs(e).format('HH:mm')}`;
+                              return { ...pre };
+                            });
+                          }}
+                          key={0}
+                        />
+                      )}
+                    </Stack>
+                    <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                      <Typography width={120} fontSize={'14px'}>Break End Time</Typography>
+                      {selectedHourBreak.end_time && (
+                        <SelectTime
+                          value={dayjs()
+                            .set(
+                              'hour',
+                              parseInt(
+                                selectedHourBreak?.end_time?.split(':')[0],
+                              ),
+                            )
+                            .set(
+                              'minute',
+                              parseInt(
+                                selectedHourBreak?.end_time?.split(':')[1],
+                              ),
+                            )}
+                          onSelect={(e) => {
+                            setSelectedHourBreak((pre) => {
+                              pre.end_time = `${dayjs(e).format('HH:mm')}`;
                               return { ...pre };
                             });
                           }}

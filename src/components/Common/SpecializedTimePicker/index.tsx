@@ -15,6 +15,7 @@ const SpecializedTimePicker = ({
   minutesStep = 5,
   maxTime = undefined,
   minTime = undefined,
+  disable,
 }: {
   label?: string;
   defaultValue?: Dayjs;
@@ -24,6 +25,7 @@ const SpecializedTimePicker = ({
   minutesStep?: number;
   maxTime?: Dayjs;
   minTime?: Dayjs;
+  disable?: boolean;
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -46,6 +48,7 @@ const SpecializedTimePicker = ({
         }}
         maxTime={maxTime}
         minTime={minTime}
+        disabled={disable}
       />
     </LocalizationProvider>
   );

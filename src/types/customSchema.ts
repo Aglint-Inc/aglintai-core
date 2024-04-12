@@ -89,6 +89,8 @@ export type DatabaseTableUpdate = {
   [Table in keyof CustomDatabase['public']['Tables']]: CustomDatabase['public']['Tables'][Table]['Update'];
 };
 
+export type DatabaseEnums = CustomDatabase['public']['Enums'];
+
 type interview_meeting_user_feedback = {
   recommendation: number;
   objective: string;

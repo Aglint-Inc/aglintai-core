@@ -7,7 +7,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import { settingsItems } from './utils';
+// import { settingsItems } from './utils';
 
 function SubNav() {
   const router = useRouter();
@@ -20,7 +20,10 @@ function SubNav() {
     { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'settings', roles: ['admin', 'recruiter', 'scheduler'] },
+    {
+      text: 'settings',
+      roles: ['admin', 'recruiter', 'interviewer', 'scheduler'],
+    },
   ];
   return (
     <>
@@ -36,10 +39,10 @@ function SubNav() {
                 if (item === 'settings') {
                   if (!router.query.subtab) {
                     router.push(
-                      `${pageRoutes.SCHEDULING}?tab=${item.replace(
-                        ' ',
-                        '',
-                      )}&subtab=${settingsItems[0].value}`,
+                      `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}` +
+                        (isAllowed(['interviewer'])
+                          ? ''
+                          : `${settingsItems[0].value}`),
                     );
                   }
                 } else {
@@ -49,15 +52,27 @@ function SubNav() {
                 }
               },
             }}
-            isSubMenuVisible={item === 'settings' && router.query.tab === item}
+            isSubMenuVisible={
+              !isAllowed(['interviewer']) &&
+              item === 'settings' &&
+              router.query.tab === item
+            }
             slotSubLinkSubMenu={<SettingsSubNabItem tab={item} />}
           />
         ))}
     </>
   );
 }
-
 export default SubNav;
+
+const settingsItems = [
+  { label: 'Interview Load', value: 'interviewLoad' },
+  { label: 'Working Hours', value: 'workingHours' },
+  { label: 'Company Day Off', value: 'dayOff' },
+  { label: 'Keywords', value: 'keywords' },
+  { label: 'Email Template', value: 'emailTemplate' },
+];
+
 function SettingsSubNabItem({ tab }: { tab: string }) {
   const router = useRouter();
   return (

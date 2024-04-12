@@ -166,6 +166,11 @@ const AuthProvider = ({ children }) => {
           Email: userDetails.user.email,
           CompanyId: recruiterRel[0].recruiter.id,
         });
+        // posthog.setPersonPropertiesForFlags({
+        //   CompanyId: recruiterRel[0].recruiter.id,
+        // });
+        // console.log({ cId: recruiterRel[0].recruiter.id });
+
         setRecruiter({
           ...recruiterRel[0].recruiter,
           socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,

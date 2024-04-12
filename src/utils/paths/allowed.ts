@@ -61,5 +61,6 @@ export const allowedPaths = new Set([
   '/api/scheduling/v1/find_interview_slots',
   '/api/scheduling/v1/cancel_calender_event',
   '/api/scheduling/v1/cancel_interview_scheduling',
+  '/api/scheduling/v1/assign-interviewer-training-type',
   ...cronPaths,
 ]);
