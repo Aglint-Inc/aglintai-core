@@ -2,7 +2,7 @@ import React from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import CompanyDetailComp from '@/src/components/CompanyDetailComp';
-import withRoleProtection from '@/src/HOC/RoleProtection';
+// import withRoleProtection from '@/src/HOC/RoleProtection';
 
 function CompanyPage() {
   return (
@@ -13,4 +13,4 @@ function CompanyPage() {
   );
 }
 
-export default withRoleProtection(CompanyPage, ['admin', 'recruiter']);
+export default CompanyPage;
