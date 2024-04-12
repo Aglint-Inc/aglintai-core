@@ -11,6 +11,7 @@
 
 .div-block-1069 {
   display: flex;
+  width: 250px;
   max-width: 600px;
   align-items: center;
   flex: 0 0 auto;
@@ -209,6 +210,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 .text-grey-600.relative-1 {
