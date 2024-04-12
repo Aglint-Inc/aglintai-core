@@ -110,7 +110,7 @@ function ModuleSchedules({
                                 key={sch.interview_session.id}
                                 onClick={() => {
                                   router.push(
-                                    `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_session.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
+                                    `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_session.module_id}&meeting_id=${sch.interview_meeting.id}&tab=candidate_details`,
                                   );
                                 }}
                               >
@@ -242,7 +242,7 @@ function ScheduleCard({
       onClickCard={{
         onClick: () => {
           router.push(
-            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_session.module_id}&meeting_id=${sch.interview_meeting.id}&tab=overview`,
+            `/scheduling/view?schedule_id=${sch.schedule.id}&module_id=${sch.interview_session.module_id}&meeting_id=${sch.interview_meeting.id}&tab=candidate_details`,
           );
         },
       }}

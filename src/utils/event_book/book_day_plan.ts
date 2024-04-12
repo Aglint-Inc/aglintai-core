@@ -193,6 +193,7 @@ export const update_meetings_info = async ({
           meeting_json: cal_event,
           meeting_link: meeting_link,
           status: 'confirmed',
+          confirmed_date: dayjs().toISOString(),
         })
         .eq('session_id', session_id)
         .select(),

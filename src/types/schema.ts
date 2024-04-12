@@ -1032,6 +1032,7 @@ export type Database = {
       }
       interview_meeting: {
         Row: {
+          confirmed_date: string | null
           created_at: string
           end_time: string | null
           id: string
@@ -1044,6 +1045,7 @@ export type Database = {
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Insert: {
+          confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
           id?: string
@@ -1056,6 +1058,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Update: {
+          confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
           id?: string
@@ -1529,144 +1532,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      jobs: {
-        Row: {
-          active_status: Json | null
-          assessment: boolean | null
-          company: string | null
-          company_details: string | null
-          created_at: string | null
-          department: string | null
-          description: string | null
-          draft: Json | null
-          email_template: Json | null
-          end_video: Json | null
-          experience_in_months: number | null
-          id: string | null
-          interview_instructions: string | null
-          interview_plan: Json | null
-          interview_success: string | null
-          intro_videos: Json | null
-          is_ats_sync: boolean | null
-          jd_changed: boolean | null
-          jd_json: Json | null
-          job_criteria: Json | null
-          job_details_embedding: string | null
-          job_title: string | null
-          job_type: string | null
-          location: string | null
-          location_json: Json | null
-          logo: string | null
-          new_screening_setting: Json | null
-          overview: string | null
-          parameter_weights: Json | null
-          phone_screen_enabled: boolean | null
-          phone_screening: Json | null
-          posted_by: string | null
-          recruiter_id: string | null
-          screening_questions: Json[] | null
-          screening_setting: Json | null
-          screening_template: string | null
-          skills: string[] | null
-          slug: string | null
-          start_video: Json | null
-          status: string | null
-          updated_at: string | null
-          video_assessment: boolean | null
-          workplace_type: string | null
-        }
-        Insert: {
-          active_status?: Json | null
-          assessment?: boolean | null
-          company?: string | null
-          company_details?: string | null
-          created_at?: string | null
-          department?: string | null
-          description?: string | null
-          draft?: Json | null
-          email_template?: Json | null
-          end_video?: Json | null
-          experience_in_months?: number | null
-          id?: string | null
-          interview_instructions?: string | null
-          interview_plan?: Json | null
-          interview_success?: string | null
-          intro_videos?: Json | null
-          is_ats_sync?: boolean | null
-          jd_changed?: boolean | null
-          jd_json?: Json | null
-          job_criteria?: Json | null
-          job_details_embedding?: string | null
-          job_title?: string | null
-          job_type?: string | null
-          location?: string | null
-          location_json?: Json | null
-          logo?: string | null
-          new_screening_setting?: Json | null
-          overview?: string | null
-          parameter_weights?: Json | null
-          phone_screen_enabled?: boolean | null
-          phone_screening?: Json | null
-          posted_by?: string | null
-          recruiter_id?: string | null
-          screening_questions?: Json[] | null
-          screening_setting?: Json | null
-          screening_template?: string | null
-          skills?: string[] | null
-          slug?: string | null
-          start_video?: Json | null
-          status?: string | null
-          updated_at?: string | null
-          video_assessment?: boolean | null
-          workplace_type?: string | null
-        }
-        Update: {
-          active_status?: Json | null
-          assessment?: boolean | null
-          company?: string | null
-          company_details?: string | null
-          created_at?: string | null
-          department?: string | null
-          description?: string | null
-          draft?: Json | null
-          email_template?: Json | null
-          end_video?: Json | null
-          experience_in_months?: number | null
-          id?: string | null
-          interview_instructions?: string | null
-          interview_plan?: Json | null
-          interview_success?: string | null
-          intro_videos?: Json | null
-          is_ats_sync?: boolean | null
-          jd_changed?: boolean | null
-          jd_json?: Json | null
-          job_criteria?: Json | null
-          job_details_embedding?: string | null
-          job_title?: string | null
-          job_type?: string | null
-          location?: string | null
-          location_json?: Json | null
-          logo?: string | null
-          new_screening_setting?: Json | null
-          overview?: string | null
-          parameter_weights?: Json | null
-          phone_screen_enabled?: boolean | null
-          phone_screening?: Json | null
-          posted_by?: string | null
-          recruiter_id?: string | null
-          screening_questions?: Json[] | null
-          screening_setting?: Json | null
-          screening_template?: string | null
-          skills?: string[] | null
-          slug?: string | null
-          start_video?: Json | null
-          status?: string | null
-          updated_at?: string | null
-          video_assessment?: boolean | null
-          workplace_type?: string | null
-        }
-        Relationships: []
       }
       json_resume: {
         Row: {
@@ -2528,7 +2393,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_screening_answers_id_fkey"
+            foreignKeyName: "public_screening_answers_screening_id_fkey"
             columns: ["screening_id"]
             isOneToOne: true
             referencedRelation: "applications"
@@ -3154,6 +3019,7 @@ export type Database = {
           file: Json
           public_jobs: Json
           schedule: Json
+          interview_session_meetings: Json
         }[]
       }
       fetch_interview_data_by_application_id: {
@@ -3310,9 +3176,11 @@ export type Database = {
           schedule: Json
           applications: Json
           candidates: Json
+          interview_module: Json
           file: Json
           job: Json
           users: Json
+          coordinator: Json
         }[]
       }
       get_interview_schedule_by_module_id: {
@@ -3930,10 +3798,6 @@ export type Database = {
           name: string
           members: Json
         }
-        Returns: undefined
-      }
-      update_interview_schedule_status: {
-        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       update_interview_session: {

@@ -20,8 +20,8 @@ import toast from '@/src/utils/toast';
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../AllSchedules/utils';
 import { TransformSchedule } from '../../Modules/types';
-import DeleteScheduleDialog from './DeleteDialog';
-import RescheduleDialog from './RescheduleDialog';
+import DeleteScheduleDialog from '../Overview/DeleteDialog';
+import RescheduleDialog from '../Overview/RescheduleDialog';
 
 // import { setIsViewProfileOpen, useSchedulingApplicationStore } from '../store';
 // import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';

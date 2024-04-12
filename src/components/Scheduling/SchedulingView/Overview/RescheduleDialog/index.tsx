@@ -2,26 +2,27 @@
 import { Dialog } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import React from 'react';
 
-import { DeletePopup } from '@/devlink3';
+import { ConfirmationPopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { TransformSchedule } from '../../../Modules/types';
-import { useScheduleDetails } from '../..';
 
-function DeleteScheduleDialog({
-  isCancelOpen,
-  setIsCancelOpen,
+function RescheduleDialog({
+  isRescheduleOpen,
+  setIsRescheduleOpen,
   schedule,
 }: {
-  isCancelOpen: boolean;
-  setIsCancelOpen: (x: boolean) => void;
+  isRescheduleOpen: boolean;
+  setIsRescheduleOpen: (x: boolean) => void;
   schedule: TransformSchedule;
 }) {
   const router = useRouter();
-  const { refetch } = useScheduleDetails();
-  const meeting_id = router.query.meeting_id;
-  const onClickCancel = async () => {
+  const meeting_id = schedule.interview_meeting.id;
+
+  const onClickReschedule = async () => {
     try {
       if (meeting_id) {
         const { data: checkFilterJson, error: errMeetFilterJson } =
@@ -47,25 +48,22 @@ function DeleteScheduleDialog({
           if (errFilterJson) throw new Error(errFilterJson.message);
         }
 
-        const { data, error: errMeet } = await supabase
+        const { data, error } = await supabase
           .from('interview_meeting')
-          .update({
-            status: 'cancelled',
-          })
+          .update({ status: 'cancelled' })
           .eq('id', meeting_id)
           .select();
-        if (errMeet) {
-          throw new Error(errMeet.message);
+        if (error) {
+          throw new Error(error.message);
         }
-        refetch();
-        setIsCancelOpen(false);
+        setIsRescheduleOpen(false);
         if (data[0].meeting_json)
           axios.post('/api/scheduling/v2/cancel_calender_event', {
             calender_event: data[0].meeting_json,
           });
       }
-    } catch {
-      //
+    } catch (e) {
+      toast.error(e.message);
     }
   };
 
@@ -78,31 +76,29 @@ function DeleteScheduleDialog({
           borderRadius: '10px',
         },
       }}
-      open={isCancelOpen}
+      open={isRescheduleOpen}
       onClose={() => {
-        setIsCancelOpen(false);
+        setIsRescheduleOpen(false);
       }}
     >
-      <DeletePopup
-        textTitle={'Cancel Schedule'}
-        textDescription={
-          'Are you sure you want to delete this schedule? This action cannot be undone.'
+      <ConfirmationPopup
+        textPopupTitle={'Confirm Reschedule'}
+        textPopupDescription={
+          'Old schedule will be deleted and new schedule will be created. Are you sure you want to reschedule?'
         }
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setIsCancelOpen(false);
+            setIsRescheduleOpen(false);
           },
         }}
-        onClickDelete={{
-          onClick: () => {
-            onClickCancel();
-          },
+        onClickAction={{
+          onClick: onClickReschedule,
         }}
-        buttonText={'Cancel Schedule'}
+        textPopupButton={'Confirm'}
       />
     </Dialog>
   );
 }
 
-export default DeleteScheduleDialog;
+export default RescheduleDialog;
