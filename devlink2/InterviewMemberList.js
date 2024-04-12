@@ -1,9 +1,10 @@
 import React from "react";
+
 import * as _Builtin from "./_Builtin";
-import { MemberListCard } from "./MemberListCard";
-import { InterviewMemberSide } from "./InterviewMemberSide";
-import * as _utils from "./utils";
 import _styles from "./InterviewMemberList.module.css";
+import { InterviewMemberSide } from "./InterviewMemberSide";
+import { MemberListCard } from "./MemberListCard";
+import * as _utils from "./utils";
 
 export function InterviewMemberList({
   as: _Component = _Builtin.Block,
