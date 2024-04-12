@@ -21,6 +21,7 @@ export type BodyParams = {
   start_date: string;
   end_date: string;
   user_tz: string;
+  is_debreif: boolean;
 };
 
 const required_fields = ['recruiter_id', 'start_date', 'end_date'];
@@ -33,6 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       start_date,
       end_date,
       user_tz = 'Asia/colombo',
+      is_debreif = false,
     } = req.body as BodyParams;
 
     required_fields.forEach((field) => {
@@ -71,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       comp_schedule_setting,
     );
     return res.status(200).json({
-      plan_combs: combs.slice(0, 20),
+      plan_combs: is_debreif ? combs : combs.slice(0, 20),
       total: combs.length,
     });
   } catch (error) {
