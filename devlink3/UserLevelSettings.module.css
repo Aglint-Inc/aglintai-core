@@ -11,6 +11,8 @@
   flex-wrap: nowrap;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+
+  background-color: white;
 }
 
 .sticky_block {
@@ -30,6 +32,7 @@
 
 .module_title_button {
   display: flex;
+  padding-right: 5px;
   justify-content: space-between;
   align-items: center;
 }
@@ -61,6 +64,10 @@
   text-transform: capitalize;
 }
 
+.text-red-600 {
+  color: #cc3340;
+}
+
 .fw-semibold.text-purple {
   color: #a81897;
 }
@@ -79,6 +86,11 @@
 
 .fw-semibold.text-red {
   color: #d93f4c;
+}
+
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
 }
 
 .more_button_block {

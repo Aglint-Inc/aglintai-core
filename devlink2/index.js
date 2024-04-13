@@ -132,6 +132,7 @@ export * from "./InterviewCordinator";
 export * from "./InterviewLoad";
 export * from "./InterviewMemberList";
 export * from "./InterviewMemberSide";
+export * from "./InterviewMembersCard";
 export * from "./InterviewMode";
 export * from "./InterviewModePill";
 export * from "./InterviewModuleCard";

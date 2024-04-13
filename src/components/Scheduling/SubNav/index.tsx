@@ -20,6 +20,7 @@ function SubNav() {
     { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
     { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
+    { text: 'interview modules', roles: ['interviewer'] },
     {
       text: 'settings',
       roles: ['admin', 'recruiter', 'interviewer', 'scheduler'],
@@ -42,7 +43,7 @@ function SubNav() {
                       `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}` +
                         (isAllowed(['interviewer'])
                           ? ''
-                          : `${settingsItems[0].value}`),
+                          : `&subtab=${settingsItems[0].value}`),
                     );
                   }
                 } else {

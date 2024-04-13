@@ -93,6 +93,7 @@ export * from "./InterviewPlan";
 export * from "./InterviewPlanCard";
 export * from "./InterviewerDetail";
 export * from "./InterviewerDetailTopRight";
+export * from "./InterviewerPage";
 export * from "./JobCardSkeleton";
 export * from "./JobCards";
 export * from "./JobDashboard";
