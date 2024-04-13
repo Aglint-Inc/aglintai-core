@@ -6,4 +6,5 @@ declare function UserLevelSettings(props: {
   slotTabContent?: Types.Devlink.Slot;
   slotDarkPill?: Types.Devlink.Slot;
   onClickClose?: Types.Devlink.RuntimeProps;
+  isCloseBtnVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

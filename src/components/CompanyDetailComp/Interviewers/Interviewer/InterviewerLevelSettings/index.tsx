@@ -47,13 +47,17 @@ function InterviewerLevelSettings({
   setOpenDrawer,
   updateSettings,
   initialData,
+  closeBtnVisible = true,
   isOverflow = false,
 }) {
+  
   const dateRef = useRef<HTMLInputElement>(null);
+
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
     type: 'Interviews',
     value: 2,
   });
+
   const [selectedWeeklyLimit, setSelectedWeeklyLimit] =
     useState<DailyLimitType>({
       type: 'Hours',
@@ -211,6 +215,7 @@ function InterviewerLevelSettings({
   return (
     <Stack overflow={isOverflow ? 'auto' : 'visible'}>
       <UserLevelSettings
+        isCloseBtnVisible={closeBtnVisible}
         onClickClose={{
           onClick: () => {
             setOpenDrawer(false);

@@ -7,4 +7,5 @@ declare function ShadowSession(props: {
   textName?: React.ReactNode;
   onClickClose?: Types.Devlink.RuntimeProps;
   slotShadowSessionCard?: Types.Devlink.Slot;
+  isHeadingCloseVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

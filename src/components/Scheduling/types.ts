@@ -3,4 +3,5 @@ export type SchedulingTab =
   | 'myschedules'
   | 'interviewtypes'
   | 'interviewers'
+  | 'interviewmodules'
   | 'settings';
