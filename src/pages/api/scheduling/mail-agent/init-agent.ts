@@ -104,10 +104,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         sub_task_id: sub_task_id ?? undefined,
       }),
     );
+    let headers;
     await sendEmailFromAgent({
       candidate_email: cand_email,
       from_name: cand_details.company_name,
       mail_body: initMailBody,
+      headers,
       candidate_name: cand_details.candidate_name,
       job_role: cand_details.job_role,
     });
@@ -176,6 +178,7 @@ export const sendEmailFromAgent = async ({
   candidate_email,
   from_name,
   mail_body,
+  headers,
   job_role,
   candidate_name,
 }) => {
@@ -189,6 +192,7 @@ export const sendEmailFromAgent = async ({
     fromName: from_name,
     subject: `Interview for ${job_role} - ${candidate_name}`,
     text: mail_body,
+    headers,
   });
 };
 

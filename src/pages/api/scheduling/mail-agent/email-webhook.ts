@@ -80,6 +80,7 @@ export default async function handler(
       candidate_email,
       cleaned_email_body,
     );
+    const header = getNewMailHeader(fields.headers[0]);
 
     if (!agent_payload) {
       return res.status(204).send('');
@@ -131,6 +132,7 @@ export default async function handler(
       mail_body: data.new_history[data.new_history.length - 1].value,
       candidate_name: agent_payload.payload.candidate_name,
       job_role: agent_payload.payload.job_role,
+      headers: header ?? undefined,
     });
     return res.status(204).send('');
   } catch (err) {
@@ -240,4 +242,21 @@ type CandidateScheduleDetails = ScheduleAgentChatHistoryTypeDB & {
       };
     };
   };
+};
+
+const getNewMailHeader = (headers: string) => {
+  let newHeader = {};
+  let record = {};
+  headers.split('\n').forEach((field) => {
+    const [key, val] = field.split(':');
+    record[String(key)] = val;
+  });
+
+  newHeader = {
+    'Message-ID': ``,
+    'In-Reply-To': ``,
+    References: record['References'],
+  };
+
+  return newHeader;
 };
