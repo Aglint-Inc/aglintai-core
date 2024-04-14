@@ -3,6 +3,7 @@
 
 import axios from 'axios';
 import formidable from 'formidable';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // import { InterviewModuleDbType } from '@/src/components/JobInterviewPlan/types';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
@@ -56,7 +57,10 @@ type AgentPayloadType = {
   };
 };
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const form = formidable({});
   try {
     const [fields] = await form.parse(req);
@@ -76,6 +80,10 @@ export default async function handler(req, res) {
       candidate_email,
       cleaned_email_body,
     );
+
+    if (!agent_payload) {
+      return res.status(204).send('');
+    }
 
     await log_task_progress({
       log_msg: 'Candidate Agent chat',
@@ -121,7 +129,8 @@ export default async function handler(req, res) {
       candidate_email,
       from_name: agent_payload.payload.company_name,
       mail_body: data.new_history[data.new_history.length - 1].value,
-      subject: `Interview for ${agent_payload.payload.job_role} - ${agent_payload.payload.candidate_name}`,
+      candidate_name: agent_payload.payload.candidate_name,
+      job_role: agent_payload.payload.job_role,
     });
     return res.status(204).send('');
   } catch (err) {
