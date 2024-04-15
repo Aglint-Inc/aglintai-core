@@ -9,6 +9,7 @@ export type BodyParmsSendgrid = {
   subject: string;
   text: string;
   email: string;
+  headers: Record<string, any>;
 };
 
 export default async function handler(req, res) {
@@ -23,11 +24,12 @@ export default async function handler(req, res) {
       }, // Change to your verified sender
       subject: details.subject,
       html: details.text,
+      headers: details.headers,
     };
 
     msg.to = getOutboundEmail(msg.to, true);
 
-    await sgMail.send({
+    const res = await sgMail.send({
       ...msg,
     });
     return res.status(200).json({ data: 'Email sent' });

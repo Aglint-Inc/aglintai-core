@@ -86,34 +86,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .delete()
         .eq('candidate_email', cand_email),
     );
-    if (sub_task_id) {
-      supabaseWrap(
-        await supabaseAdmin.from('scheduling-agent-chat-history').insert({
-          application_id: cand_details.application_id,
-          job_id: cand_details.job_id,
-          candidate_email: cand_email,
-          scheduling_progress: status,
-          chat_history: [
-            {
-              type: 'assistant',
-              value: initMailBody,
-            },
-          ],
-          company_id: cand_details.company_id,
-          filter_json_id: filter_json_id,
-          time_zone: cand_details.time_zone,
-          sub_task_id: sub_task_id,
-        }),
-      );
-    }
-
+    supabaseWrap(
+      await supabaseAdmin.from('scheduling-agent-chat-history').insert({
+        application_id: cand_details.application_id,
+        job_id: cand_details.job_id,
+        candidate_email: cand_email,
+        scheduling_progress: status,
+        chat_history: [
+          {
+            type: 'assistant',
+            value: initMailBody,
+          },
+        ],
+        company_id: cand_details.company_id,
+        filter_json_id: filter_json_id,
+        time_zone: cand_details.time_zone,
+        sub_task_id: sub_task_id ?? undefined,
+      }),
+    );
+    let headers;
     await sendEmailFromAgent({
       candidate_email: cand_email,
       from_name: cand_details.company_name,
       mail_body: initMailBody,
-      subject: `Interview for ${cand_details.job_role} - ${
-        cand_details.candidate_name.split(' ')[0]
-      }`,
+      headers,
+      candidate_name: cand_details.candidate_name,
+      job_role: cand_details.job_role,
     });
 
     if (sub_task_id) {
@@ -180,17 +178,21 @@ export const sendEmailFromAgent = async ({
   candidate_email,
   from_name,
   mail_body,
-  subject,
+  headers,
+  job_role,
+  candidate_name,
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
-    fromEmail: 'agent@ai.aglinthq.com',
-    // process.env.NODE_ENV === 'development'
-    //   ? 'agent@parse.aglinthq.com'
-    //   : 'agent@ai.aglinthq.com',
+    fromEmail:
+      //  'agent@ai.aglinthq.com',
+      process.env.NODE_ENV === 'development'
+        ? 'agent@parse.aglinthq.com'
+        : 'agent@ai.aglinthq.com',
     fromName: from_name,
-    subject,
+    subject: `Interview for ${job_role} - ${candidate_name}`,
     text: mail_body,
+    headers,
   });
 };
 
