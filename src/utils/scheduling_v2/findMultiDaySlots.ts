@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { cloneDeep } from 'lodash';
 
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
@@ -23,8 +23,6 @@ import {
 export const findMultiDaySlots = (
   interview_sessions: InterviewSessionApiType[],
   intervs_details_with_events: InterDetailsType[],
-  dayjs_start_date: Dayjs,
-  dayjs_end_date: Dayjs,
   user_tz: string,
   comp_schedule_setting: schedulingSettingType,
 ) => {
@@ -47,9 +45,9 @@ export const findMultiDaySlots = (
       return final_combs;
     }
 
-    if (dayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
-      return [];
-    }
+    // if (dayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
+    //   return [];
+    // }
 
     const curr_day_start_time = convertDayjsToUserTimeZoneDate(
       curr_date,
@@ -93,13 +91,22 @@ export const findMultiDaySlots = (
     return findMultiDaySlotsUtil(final_combs, next_day, ++curr_day_idx);
   };
 
-  let curr_date = dayjs_start_date;
-  let all_combs: SessionsCombType[][][] = [];
-  while (curr_date.isSameOrBefore(dayjs_end_date)) {
-    const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
-    const session_combs = combineSlots(plan_combs);
-    all_combs = [...all_combs, session_combs];
-    curr_date = getNextWorkingDay(comp_schedule_setting, curr_date);
-  }
-  return all_combs;
+  const findCurrentDayPlan = (current_day: Dayjs) => {
+    const plan_combs = findMultiDaySlotsUtil([], current_day, 0);
+    return plan_combs;
+  };
+
+  const findAllDayPlans = (dayjs_start_date: Dayjs, dayjs_end_date: Dayjs) => {
+    let curr_date = dayjs_start_date;
+    let all_combs: SessionsCombType[][][] = [];
+    while (curr_date.isSameOrBefore(dayjs_end_date)) {
+      const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
+      const session_combs = combineSlots(plan_combs);
+      all_combs = [...all_combs, session_combs];
+      curr_date = getNextWorkingDay(comp_schedule_setting, curr_date);
+    }
+    return all_combs;
+  };
+
+  return { findCurrentDayPlan, findAllDayPlans };
 };

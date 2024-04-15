@@ -93,14 +93,14 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
       day_plan.sessions.find((_s) => _s.session_id === si.session_id),
     );
 
-    const plan_combs = findMultiDaySlots(
+    const { findCurrentDayPlan } = findMultiDaySlots(
       int_sessions,
       intervs_details_with_events,
-      curr_date,
-      curr_date,
       user_tz,
       comp_schedule_setting,
     );
+
+    const plan_combs = findCurrentDayPlan(curr_date);
     const assisgned_slot = assignCandidateSlot(plan_combs[0], curr_date);
 
     const meet_promises = assisgned_slot.sessions.map(async (session) => {
