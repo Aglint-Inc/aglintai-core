@@ -93,9 +93,8 @@ export const findMultiDaySlots = (
 
   const findCurrentDayPlan = (current_day: Dayjs) => {
     const plan_combs = findMultiDaySlotsUtil([], current_day, 0);
-    const session_combs = combineSlots(plan_combs);
 
-    return session_combs;
+    return plan_combs;
   };
 
   const findAllDayPlans = (dayjs_start_date: Dayjs, dayjs_end_date: Dayjs) => {

@@ -6,7 +6,10 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { find_api_details } from '@/src/utils/scheduling_v1/find_details';
 import { findInterviewersEvents } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
 import { findMultiDaySlots } from '@/src/utils/scheduling_v2/findMultiDaySlots';
-import { convertDateFormatToDayjs } from '@/src/utils/scheduling_v2/utils';
+import {
+  combineSlots,
+  convertDateFormatToDayjs,
+} from '@/src/utils/scheduling_v2/utils';
 
 export type BodyParams = {
   session_ids: string[];
@@ -58,9 +61,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       user_tz,
       comp_schedule_setting,
     );
-    const curr_day_plans = findCurrentDayPlan(dayjs_curr_date_date);
+    const plan_combs = findCurrentDayPlan(dayjs_curr_date_date);
 
-    return res.status(200).json(curr_day_plans);
+    const session_combs = combineSlots(plan_combs);
+    return res.status(200).json(session_combs);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);
