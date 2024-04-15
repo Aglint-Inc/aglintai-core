@@ -1628,6 +1628,66 @@ export type Database = {
           },
         ]
       }
+      new_tasks: {
+        Row: {
+          application_id: string | null
+          assignee: string[]
+          created_at: string
+          created_by: string | null
+          end_date: string | null
+          id: string
+          name: string
+          recruiter_id: string | null
+          schedule_date_range: Json | null
+          session_ids: Json[] | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["sub_task_status"]
+        }
+        Insert: {
+          application_id?: string | null
+          assignee: string[]
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          name: string
+          recruiter_id?: string | null
+          schedule_date_range?: Json | null
+          session_ids?: Json[] | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["sub_task_status"]
+        }
+        Update: {
+          application_id?: string | null
+          assignee?: string[]
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          name?: string
+          recruiter_id?: string | null
+          schedule_date_range?: Json | null
+          session_ids?: Json[] | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["sub_task_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_new_tasks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notify_me: {
         Row: {
           created_at: string | null
