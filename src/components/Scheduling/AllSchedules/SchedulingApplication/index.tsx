@@ -27,11 +27,7 @@ import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import {
-  scheduleWithAgent,
-  updateProgress,
-  useGetScheduleApplication,
-} from './hooks';
+import { scheduleWithAgent, useGetScheduleApplication } from './hooks';
 import {
   resetSchedulingApplicationState,
   setDateRange,
@@ -78,12 +74,6 @@ function SchedulingApplication() {
     if (router.isReady && router.query.application_id) {
       setFetchingSchedule(true);
       fetchInterviewDataByApplication();
-      updateProgress({
-        interview_session_relation_ids: [
-          '3d660918-5e50-4793-a2d9-0fa4d2528513',
-          '84ab0414-fe20-4222-ae00-3ec4c55f4844',
-        ],
-      });
     }
     return () => {
       resetSchedulingApplicationState();
@@ -164,7 +154,11 @@ function SchedulingApplication() {
           ...session,
           interview_meeting: selectedSessionIds.includes(session.id)
             ? { status: 'waiting', interview_schedule_id: null }
-            : null,
+            : session.interview_meeting
+              ? {
+                  ...session.interview_meeting,
+                }
+              : null,
         })),
       );
     } else {
