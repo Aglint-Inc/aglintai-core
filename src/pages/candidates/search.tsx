@@ -1,13 +1,15 @@
 import CandidatesSearch from '@/src/components/CandidateDatabase/Search/Search';
 import Seo from '@/src/components/Common/Seo';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import CandidateSearchProvider from '@/src/context/CandidateSearchProvider/CandidateSearchProvider';
 
 function CandidatesPage() {
+  const { recruiter } = useAuthDetails();
   return (
     <>
       <Seo
-        title='Aglint | Candidate Search'
-        description='Find Your Ideal Candidate with AI-Powered Matching!'
+        title={`${recruiter.name} | Candidate Search`}
+        description='AI for People Products'
       />
       <CandidateSearchProvider>
         <CandidatesSearch />

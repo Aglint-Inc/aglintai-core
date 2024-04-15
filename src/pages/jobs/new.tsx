@@ -6,17 +6,19 @@ import Seo from '@/src/components/Common/Seo';
 import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
 import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
 import JobPostFormProvider, {
-  useJobForm
+  useJobForm,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function Hoc() {
+  const { recruiter } = useAuthDetails();
+
   return (
     <>
       <Seo
-        title='Aglint | Create Job'
+        title={`${recruiter.name} | Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>
@@ -41,7 +43,7 @@ function New() {
           type: 'new',
           currSlide: 'details',
           recruiter,
-          recruiterUser
+          recruiterUser,
         });
       }
     }

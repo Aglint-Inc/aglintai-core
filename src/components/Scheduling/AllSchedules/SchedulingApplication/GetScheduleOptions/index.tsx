@@ -80,11 +80,14 @@ function GetScheduleOptionsDialog() {
           initialSessions.map((session) => ({
             ...session,
             interview_meeting: selectedSessionIds.includes(session.id)
-              ? { status: 'waiting', interview_schedule_id: null }
-              : session.interview_meeting
+              ? session.interview_meeting
                 ? {
                     ...session.interview_meeting,
+                    status: 'waiting',
                   }
+                : { status: 'waiting', interview_schedule_id: null }
+              : session.interview_meeting
+                ? { ...session.interview_meeting }
                 : null,
           })),
         );

@@ -3,20 +3,29 @@ import { useRouter } from 'next/router';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
 import JobAgent from '@/src/components/Agent/JobAgent';
+import Seo from '@/src/components/Common/Seo';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider, {
-  useJobDetails
+  useJobDetails,
 } from '@/src/context/JobDashboard';
 
 const JobAgentPage = () => {
+  const { recruiter } = useAuthDetails();
   return (
-    <JobPostFormProvider>
-      <JobAssistantProvider>
-        <AgentPage />
-      </JobAssistantProvider>
-    </JobPostFormProvider>
+    <>
+      <Seo
+        title={`${recruiter.name} | Jobs`}
+        description='AI for People Products'
+      />
+      <JobPostFormProvider>
+        <JobAssistantProvider>
+          <AgentPage />
+        </JobAssistantProvider>
+      </JobPostFormProvider>
+    </>
   );
 };
 
@@ -48,7 +57,7 @@ const BreadCrumbs = () => {
           onClick: () => {
             router.push(`/jobs?status=${job?.status ?? 'all'}`);
           },
-          style: { cursor: 'pointer' }
+          style: { cursor: 'pointer' },
         }}
       />
       <Breadcrum
@@ -58,7 +67,7 @@ const BreadCrumbs = () => {
           onClick: () => {
             router.push(`/jobs/${job?.id}`);
           },
-          style: { cursor: 'pointer' }
+          style: { cursor: 'pointer' },
         }}
         showArrow
       />
@@ -68,7 +77,7 @@ const BreadCrumbs = () => {
           onClick: () => {
             router.push(`/jobs/${job?.id}`);
           },
-          style: { cursor: 'pointer' }
+          style: { cursor: 'pointer' },
         }}
         showArrow
       />

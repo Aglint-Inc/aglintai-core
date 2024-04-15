@@ -11,10 +11,12 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 function Hoc() {
+  const { recruiter } = useAuthDetails();
+
   return (
     <>
       <Seo
-        title='Aglint | Edit Job'
+        title={`${recruiter.name} | Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>

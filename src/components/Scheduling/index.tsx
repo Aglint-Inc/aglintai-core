@@ -108,7 +108,7 @@ function SchedulingMainComp() {
                       color='#fff'
                     />
                   }
-                  buttonText={'New Module'}
+                  buttonText={'New Interview Type'}
                   buttonProps={{
                     onClick: () => {
                       setIsCreateDialogOpen(true);

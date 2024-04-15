@@ -20,7 +20,7 @@ export function InterviewModuleTable({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Module"}
+            {"Interview Type"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "header-col")} tag="div">

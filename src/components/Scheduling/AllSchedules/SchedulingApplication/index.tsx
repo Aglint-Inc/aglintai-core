@@ -27,11 +27,7 @@ import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import {
-  scheduleWithAgent,
-  updateProgress,
-  useGetScheduleApplication,
-} from './hooks';
+import { scheduleWithAgent, useGetScheduleApplication } from './hooks';
 import {
   resetSchedulingApplicationState,
   setDateRange,
@@ -78,12 +74,6 @@ function SchedulingApplication() {
     if (router.isReady && router.query.application_id) {
       setFetchingSchedule(true);
       fetchInterviewDataByApplication();
-      updateProgress({
-        interview_session_relation_ids: [
-          '3d660918-5e50-4793-a2d9-0fa4d2528513',
-          '84ab0414-fe20-4222-ae00-3ec4c55f4844',
-        ],
-      });
     }
     return () => {
       resetSchedulingApplicationState();
@@ -111,6 +101,7 @@ function SchedulingApplication() {
         start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
+        is_debreif: isDebrief,
       } as BodyParams);
 
       if (res.status === 200) {
@@ -139,38 +130,71 @@ function SchedulingApplication() {
   };
 
   const scheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
-    const res = await scheduleWithAgent({
-      application_id: selectedApplication.id,
-      dateRange: dateRange,
-      recruiter_id: recruiter.id,
-      recruiter_user_name: recruiterUser.first_name,
-      session_ids: selectedSessionIds,
-      sub_task_id: null,
-      type: type,
-      candidate_name: selectedApplication.candidates.first_name,
-      company_name: recruiter.name,
-    });
+    try {
+      setFetchingPlan(true);
+      const resAllOptions = await axios.post(
+        '/api/scheduling/v1/find_availability',
+        {
+          session_ids: selectedSessionIds,
+          recruiter_id: recruiter.id,
+          start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+          end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+          user_tz: dayjs.tz.guess(),
+          is_debreif: isDebrief,
+        } as BodyParams,
+      );
 
-    if (res) {
-      toast.success(
-        type === 'email_agent'
-          ? 'Email Agent Initiated'
-          : 'Phone Call scheduled',
-      );
-      setinitialSessions(
-        initialSessions.map((session) => ({
-          ...session,
-          interview_meeting: selectedSessionIds.includes(session.id)
-            ? { status: 'waiting', interview_schedule_id: null }
-            : null,
-        })),
-      );
-    } else {
-      toast.error(
-        'Failed to schedule with agent. Please try again later or contact support.',
-      );
+      if (resAllOptions.data.length === 0) {
+        toast.warning('No Slots Found');
+        return;
+      }
+
+      const res = await scheduleWithAgent({
+        application_id: selectedApplication.id,
+        dateRange: dateRange,
+        recruiter_id: recruiter.id,
+        recruiter_user_name: recruiterUser.first_name,
+        session_ids: selectedSessionIds,
+        sub_task_id: null,
+        type: type,
+        candidate_name: selectedApplication.candidates.first_name,
+        company_name: recruiter.name,
+        rec_user_email: recruiterUser.email,
+        rec_user_phone: recruiterUser.phone,
+      });
+
+      if (res) {
+        toast.success(
+          type === 'email_agent'
+            ? 'Email Agent Initiated'
+            : 'Phone Call scheduled',
+        );
+        setinitialSessions(
+          initialSessions.map((session) => ({
+            ...session,
+            interview_meeting: selectedSessionIds.includes(session.id)
+              ? session.interview_meeting
+                ? {
+                    ...session.interview_meeting,
+                    status: 'waiting',
+                  }
+                : { status: 'waiting', interview_schedule_id: null }
+              : session.interview_meeting
+                ? { ...session.interview_meeting }
+                : null,
+          })),
+        );
+      } else {
+        toast.error(
+          'Failed to schedule with agent. Please try again later or contact support.',
+        );
+      }
+      setSelectedSessionIds([]);
+    } catch (e) {
+      //
+    } finally {
+      setFetchingPlan(false);
     }
-    setSelectedSessionIds([]);
   };
 
   const isDebrief = initialSessions

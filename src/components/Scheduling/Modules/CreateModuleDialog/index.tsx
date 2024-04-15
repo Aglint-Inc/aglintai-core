@@ -63,7 +63,7 @@ function CreateModuleDialog() {
     >
       <ConfirmationPopup
         isDescriptionVisible={false}
-        textPopupTitle={'Create Interview Module'}
+        textPopupTitle={'Create Interview Type'}
         isIcon={false}
         slotWidget={
           <Stack spacing={2} width={'100%'}>

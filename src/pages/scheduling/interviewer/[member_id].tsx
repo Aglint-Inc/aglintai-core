@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
 import { InterviewerDetailTopRight } from '@/devlink3';
+import Seo from '@/src/components/Common/Seo';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/CompanyDetailComp/Interviewers/DynamicLoader';
 import Interviewer from '@/src/components/CompanyDetailComp/Interviewers/Interviewer';
@@ -42,65 +43,71 @@ function InterviewerPage() {
     return <DynamicLoader />;
   } else
     return (
-      <PageLayout
-        onClickBack={{
-          onClick: () => {
-            router.back();
-          },
-        }}
-        isBackButton={true}
-        slotTopbarLeft={
-          <>
-            <Breadcrum
-              textName={`${data.interviewer?.first_name} ${data.interviewer?.last_name || ''}`}
-            />
-          </>
-        }
-        slotTopbarRight={
-          <ShowCode>
-            <ShowCode.When isTrue={isLoading}>
-              <DynamicLoader />
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={
-                (recruiterUser.role === 'recruiter' ||
-                  recruiterUser.role === 'scheduler') &&
-                data.interviewer.email === recruiter.email
-              }
-            >
-              {null}
-            </ShowCode.When>
-            <ShowCode.Else>
-              <InterviewerDetailTopRight
-                onClickSettings={{
-                  onClick: () => {
-                    toggleDrawer();
-                  },
-                }}
+      <>
+        <Seo
+          title={`${recruiter.name} | Interviewer`}
+          description='AI for People Products'
+        />
+        <PageLayout
+          onClickBack={{
+            onClick: () => {
+              router.back();
+            },
+          }}
+          isBackButton={true}
+          slotTopbarLeft={
+            <>
+              <Breadcrum
+                textName={`${data.interviewer?.first_name} ${data.interviewer?.last_name || ''}`}
               />
-            </ShowCode.Else>
-          </ShowCode>
-        }
-        slotBody={
-          <>
+            </>
+          }
+          slotTopbarRight={
             <ShowCode>
               <ShowCode.When isTrue={isLoading}>
                 <DynamicLoader />
               </ShowCode.When>
-              <ShowCode.When isTrue={isError}>
-                <>Error...</>
+              <ShowCode.When
+                isTrue={
+                  (recruiterUser.role === 'recruiter' ||
+                    recruiterUser.role === 'scheduler') &&
+                  data.interviewer.email === recruiter.email
+                }
+              >
+                {null}
               </ShowCode.When>
-              <ShowCode.When isTrue={isFetched}>
-                <Interviewer
-                  interviewerDetails={data as interviewerDetailsType}
-                  openDrawer={openDrawer}
-                  setOpenDrawer={setOpenDrawer}
+              <ShowCode.Else>
+                <InterviewerDetailTopRight
+                  onClickSettings={{
+                    onClick: () => {
+                      toggleDrawer();
+                    },
+                  }}
                 />
-              </ShowCode.When>
+              </ShowCode.Else>
             </ShowCode>
-          </>
-        }
-      />
+          }
+          slotBody={
+            <>
+              <ShowCode>
+                <ShowCode.When isTrue={isLoading}>
+                  <DynamicLoader />
+                </ShowCode.When>
+                <ShowCode.When isTrue={isError}>
+                  <>Error...</>
+                </ShowCode.When>
+                <ShowCode.When isTrue={isFetched}>
+                  <Interviewer
+                    interviewerDetails={data as interviewerDetailsType}
+                    openDrawer={openDrawer}
+                    setOpenDrawer={setOpenDrawer}
+                  />
+                </ShowCode.When>
+              </ShowCode>
+            </>
+          }
+        />
+      </>
     );
 }
 

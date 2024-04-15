@@ -2,14 +2,16 @@ import Seo from '@components/Common/Seo';
 import React from 'react';
 
 import ScreeningDashboardComp from '@/src/components/NewScreening/JobDashboard';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 
 const ScreeningPage = () => {
+  const { recruiter } = useAuthDetails();
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
-        description='AI Powered Talent Development Platform.'
+        title={`${recruiter.name} | Jobs`}
+        description='AI for People Products'
       />
       <ScreeningDashboardComp />
     </>
