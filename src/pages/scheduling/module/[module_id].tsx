@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   Breadcrum,
@@ -28,9 +28,12 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import SchedulingProvider, {
   useSchedulingContext,
 } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { DatabaseTableUpdate } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import toast from '@/src/utils/toast';
 
+import { supabase } from '../../api/invite_user';
 import IProgressDrawer from './IProgressDrawer';
 
 const ModuleMembers = () => {
@@ -54,7 +57,7 @@ const subTabs: ('training history' | 'instructions' | 'members')[] = [
 
 function ModuleMembersComp() {
   const {
-    data: editModule,
+    data: selectedModule,
     isLoading: fetchingModule,
     isFetching,
   } = useModuleAndUsers();
@@ -67,14 +70,36 @@ function ModuleMembersComp() {
   //   schedulesLoading: false,
   //   user_ids: editModule?.relations?.map((user) => user.user_id) || [],
   // });
-  const { data: progress } = useProgressModuleUsers({
-    // trainer_ids: [
-    //   editModule?.relations.find(
-    //     (user) => user.user_id === recruiterUser.user_id,
-    //   ).id,
-    // ],
-    trainer_ids: editModule?.relations.map((user) => user.id) || [],
+  let { data: progress } = useProgressModuleUsers({
+    trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
   });
+  const [module, setModule] = useState<typeof selectedModule>(null);
+  useMemo(() => {
+    if (selectedModule) {
+      setModule(selectedModule);
+    }
+  }, [selectedModule]);
+
+  const updateMemberProgress = ({
+    user_id,
+    data,
+  }: {
+    user_id: string;
+    data: DatabaseTableUpdate['interview_module_relation'];
+  }) => {
+    updateMemberRelation({ module_id: module.id, user_id, data }).then(
+      (data) => {
+        const relations = module.relations.map((item) => {
+          if (item.user_id === data.user_id) {
+            return data as typeof item;
+          }
+          return item;
+        });
+        setModule({ ...module, relations });
+        toast.success('Candidate Qualified as Interviewer for this module');
+      },
+    );
+  };
 
   return (
     <>
@@ -91,13 +116,13 @@ function ModuleMembersComp() {
         isBackButton={true}
         slotTopbarLeft={
           <>
-            <Breadcrum textName={editModule?.name} />
+            <Breadcrum textName={module?.name} />
           </>
         }
         slotTopbarRight={
           <Stack direction={'row'} justifyItems={'center'} gap={'10px'}>
             {/* <Instructions editModule={editModule} /> */}
-            <TopRightButtons editModule={editModule} />
+            <TopRightButtons editModule={module} />
           </Stack>
         }
         slotBody={
@@ -108,7 +133,7 @@ function ModuleMembersComp() {
               </Stack>
             ) : (
               <InterviewerPage
-                textInterviewDetail={editModule?.description}
+                textInterviewDetail={module?.description}
                 slotDarkPill={subTabs.map((tab) => (
                   <DarkPill
                     isActive={subTab === tab}
@@ -124,11 +149,11 @@ function ModuleMembersComp() {
                 slotInterviewerDetail={
                   subTab === 'training history' ? (
                     <>
-                      {editModule && (
+                      {module && (
                         <TrainingDetails
                           id={recruiterUser.user_id}
                           members={members}
-                          module={editModule}
+                          module={module}
                           progress={
                             progress.filter(
                               (item) => item.user_id === recruiterUser.user_id,
@@ -142,13 +167,17 @@ function ModuleMembersComp() {
                       <Stack p={'20px'}>
                         <Typography
                           dangerouslySetInnerHTML={{
-                            __html: editModule?.instructions,
+                            __html: module?.instructions,
                           }}
                         />
                       </Stack>
                     </>
                   ) : (
-                    <ModuleMembersX module={editModule} progress={progress} />
+                    <ModuleMembersX
+                      module={module}
+                      progress={progress}
+                      updateMemberRelation={updateMemberProgress}
+                    />
                   )
                 }
               />
@@ -271,14 +300,24 @@ const TrainingDetails = ({
 const ModuleMembersX = ({
   module,
   progress,
+  updateMemberRelation,
 }: {
   module: ModuleType;
   progress: any;
+  // eslint-disable-next-line no-unused-vars
+  updateMemberRelation: (x: {
+    user_id: string;
+    data: DatabaseTableUpdate['interview_module_relation'];
+  }) => void;
 }) => {
   return (
     <>
       <Stack gap={1} p={'20px'} maxWidth={'800px'}>
-        <SlotQualifiedMembers editModule={module} progress={progress} />
+        <SlotQualifiedMembers
+          editModule={module}
+          progress={progress}
+          updateMember={updateMemberRelation}
+        />
         {/* <SlotTrainingMembers editModule={module} meetingData={meetingData} /> */}
       </Stack>
     </>
@@ -289,10 +328,17 @@ function SlotQualifiedMembers({
   editModule,
   // meetingData,
   progress,
+  updateMember,
 }: {
   editModule: ModuleType;
   // meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
   progress: any;
+  // eslint-disable-next-line no-unused-vars
+  updateMember: (x: {
+    user_id: string;
+    module_id: string;
+    data: DatabaseTableUpdate['interview_module_relation'];
+  }) => void;
 }) {
   const { members } = useSchedulingContext();
 
@@ -302,9 +348,21 @@ function SlotQualifiedMembers({
     user: null,
     progress: [],
   });
-
   return (
     <>
+      {progressUser && (
+        <IProgressDrawer
+          progressUser={progressUser}
+          open={Boolean(progressUser.user)}
+          onClose={() => {
+            setProgressUser({
+              user: null,
+              progress: [],
+            });
+          }}
+          module={editModule}
+        />
+      )}
       {allQualified.length === 0 && (
         <EmptyGeneral textEmpt={'No Members Added Yet'} />
       )}
@@ -315,50 +373,41 @@ function SlotQualifiedMembers({
 
         if (!member) return null; //this line added temporarily becasue of data inconsistency
 
+        const tempUserProgress = {
+          progress: progress.filter(
+            (prog) => prog.interview_module_relation_id === user.id,
+          ),
+          user: members.filter((member) => member.user_id === user.user_id)[0],
+        };
+        const isTrainingDone = isTrainingComplete(tempUserProgress);
+
         return (
           <>
-            {progressUser && (
-              <IProgressDrawer
-                progressUser={progressUser}
-                open={Boolean(progressUser.user)}
-                onClose={() => {
-                  setProgressUser({
-                    user: null,
-                    progress: [],
-                  });
-                }}
-                module={editModule}
-              />
-            )}
             <InterviewMembersCard
               isTrainingVisible={user.training_status === 'training'}
-              isTrainingProgressVisible={true}
-              isTrainingCompletedVisible={false}
+              isTrainingProgressVisible={
+                !isTrainingDone && user.training_status === 'training'
+              }
+              isTrainingCompletedVisible={isTrainingDone}
               onClickViewHistory={{
                 onClick: () => {
-                  setProgressUser({
-                    progress: progress.filter(
-                      (prog) => prog.interview_module_relation_id === user.id,
-                    ),
-                    user: members.filter(
-                      (member) => member.user_id === user.user_id,
-                    )[0],
-                  });
+                  setProgressUser(tempUserProgress);
                 },
               }}
               onClickViewProgress={{
                 onClick: () => {
-                  setProgressUser({
-                    progress: progress.filter(
-                      (prog) => prog.interview_module_relation_id === user.id,
-                    ),
-                    user: members.filter(
-                      (member) => member.user_id === user.user_id,
-                    )[0],
+                  setProgressUser(tempUserProgress);
+                },
+              }}
+              onClickApproveCandidate={{
+                onClick: () => {
+                  updateMember({
+                    module_id: user.module_id,
+                    user_id: user.user_id,
+                    data: { training_status: 'qualified' },
                   });
                 },
               }}
-              onClickApproveCandidate={{ onClick: () => {} }}
               key={user.user_id}
               slotMemberImage={
                 <MuiAvatar
@@ -379,3 +428,44 @@ function SlotQualifiedMembers({
     </>
   );
 }
+
+const isTrainingComplete = (pro: ProgressUser) => {
+  let isComplete = false;
+  for (let item of pro.progress
+    .map((item) => {
+      return item;
+    })
+    .filter(
+      (item) =>
+        item.training_type !== 'qualified' &&
+        item.interview_meeting.status !== 'cancelled',
+    )) {
+    if (item.interview_meeting.status !== 'completed') {
+      return false;
+    }
+    isComplete = true;
+  }
+  return isComplete;
+};
+
+const updateMemberRelation = ({
+  user_id,
+  module_id,
+  data,
+}: {
+  user_id: string;
+  module_id: string;
+  data: DatabaseTableUpdate['interview_module_relation'];
+}) => {
+  return supabase
+    .from('interview_module_relation')
+    .update(data)
+    .eq('module_id', module_id)
+    .eq('user_id', user_id)
+    .select()
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data;
+    });
+};
