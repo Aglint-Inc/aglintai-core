@@ -12,10 +12,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { find_api_details } from '@/src/utils/scheduling_v1/find_details';
 import { findInterviewersEvents } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
 import { findMultiDaySlots } from '@/src/utils/scheduling_v2/findMultiDaySlots';
-import {
-  combineSlots,
-  convertDateFormatToDayjs,
-} from '@/src/utils/scheduling_v2/utils';
+import { convertDateFormatToDayjs } from '@/src/utils/scheduling_v2/utils';
 
 export type BodyParams = {
   session_ids: string[];
@@ -64,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       user_tz,
     );
 
-    const plan_combs = findMultiDaySlots(
+    const all_combs = findMultiDaySlots(
       ses_with_ints,
       intervs_details_with_events,
       dayjs_start_date,
@@ -73,9 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       comp_schedule_setting,
     );
 
-    const interview_slots = combineSlots(plan_combs);
-
-    return res.status(200).json(interview_slots);
+    return res.status(200).json(all_combs);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);

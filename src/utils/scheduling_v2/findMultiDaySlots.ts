@@ -8,11 +8,16 @@ import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
   InterviewSessionApiType,
   PlanCombinationType,
+  SessionsCombType,
 } from '../scheduling_v1/types';
 import { findEachInterviewerFreeTimes } from './findEachInterviewerFreeTimes';
 import { findFixedTimeCombs } from './findPlanCombinations';
 import { InterDetailsType } from './types';
-import { convertDayjsToUserTimeZoneDate, getNextWorkingDay } from './utils';
+import {
+  combineSlots,
+  convertDayjsToUserTimeZoneDate,
+  getNextWorkingDay,
+} from './utils';
 
 // candidate side slots fetch api
 export const findMultiDaySlots = (
@@ -89,10 +94,11 @@ export const findMultiDaySlots = (
   };
 
   let curr_date = dayjs_start_date;
-  let all_combs: PlanCombinationType[][] = [];
+  let all_combs: SessionsCombType[][][] = [];
   while (curr_date.isSameOrBefore(dayjs_end_date)) {
     const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
-    all_combs = [...all_combs, ...plan_combs];
+    const session_combs = combineSlots(plan_combs);
+    all_combs = [...all_combs, session_combs];
     curr_date = getNextWorkingDay(comp_schedule_setting, curr_date);
   }
   return all_combs;
