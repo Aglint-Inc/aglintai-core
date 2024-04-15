@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
+        title={`${recruiter.name} | Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <IntegrationProvider>
@@ -34,5 +34,5 @@ const Dashboard = () => {
 export default withRoleProtection(Dashboard, [
   'admin',
   'recruiter',
-  'scheduler'
+  'scheduler',
 ]);

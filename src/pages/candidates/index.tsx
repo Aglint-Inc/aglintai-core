@@ -3,13 +3,15 @@ import React from 'react';
 import CandDbProvider from '@/src/components/CandidateDatabase/Database/CandDbProvider';
 import CandDatabase from '@/src/components/CandidateDatabase/Database/Database';
 import Seo from '@/src/components/Common/Seo';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-const candidates = () => {
+const Candidates = () => {
+  const { recruiter } = useAuthDetails();
   return (
     <>
       <Seo
-        title='Aglint | Candidate Search'
-        description='Find Your Ideal Candidate with AI-Powered Matching!'
+        title={`${recruiter.name} | Candidate Search`}
+        description='AI for People Products'
       />
       <CandDbProvider>
         <CandDatabase />
@@ -18,4 +20,4 @@ const candidates = () => {
   );
 };
 
-export default candidates;
+export default Candidates;

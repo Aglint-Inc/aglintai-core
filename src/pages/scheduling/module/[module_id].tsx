@@ -14,6 +14,7 @@ import {
 import { DarkPill, InterviewerPage } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import Seo from '@/src/components/Common/Seo';
 import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
 import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import TopRightButtons from '@/src/components/Scheduling/Modules/ModuleMembers/TopRightButtons';
@@ -57,7 +58,7 @@ function ModuleMembersComp() {
     isLoading: fetchingModule,
     isFetching,
   } = useModuleAndUsers();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, recruiter } = useAuthDetails();
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
@@ -77,6 +78,10 @@ function ModuleMembersComp() {
 
   return (
     <>
+      <Seo
+        title={`${recruiter.name} | Scheduling`}
+        description='AI Powered Talent Development Platform.'
+      />
       <PageLayout
         onClickBack={{
           onClick: () => {

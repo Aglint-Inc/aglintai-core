@@ -101,6 +101,7 @@ function SchedulingApplication() {
         start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
+        is_debreif: isDebrief,
       } as BodyParams);
 
       if (res.status === 200) {
@@ -157,6 +158,7 @@ function SchedulingApplication() {
             : session.interview_meeting
               ? {
                   ...session.interview_meeting,
+                  status: 'waiting',
                 }
               : null,
         })),

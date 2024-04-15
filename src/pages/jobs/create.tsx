@@ -1,14 +1,16 @@
 import Seo from '@components/Common/Seo';
 
 import JobCreate from '@/src/components/JobCreate';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import JobsProvider from '@/src/context/JobsContext';
 
 const CreateJobPage = () => {
+  const { recruiter } = useAuthDetails();
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
-        description='AI Powered Talent Development Platform.'
+        title={`${recruiter.name} | Jobs`}
+        description='AI for People Products'
       />
       <JobCreate />
     </>

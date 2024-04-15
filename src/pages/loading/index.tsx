@@ -192,7 +192,7 @@ export default function Loading() {
       }}
     >
       <Seo
-        title='Aglint | Loading'
+        title='Loading'
         description='AI Powered Talent Development Platform.'
       />
       <LoaderSvg />

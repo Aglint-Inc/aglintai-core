@@ -739,13 +739,14 @@ const agentTrigger = async ({
       } as InitAgentBodyParams);
     } else if (type === 'phone_agent') {
       await axios.post(
-        'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+        'https://rested-logically-lynx.ngrok-free.app/api/create-phone-call',
         {
           begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
           interviewer_name: recruiter_user_name,
           from_phone_no: '+12512066348',
-          to_phone_no: rec_user_phone,
-          retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
+          to_phone_no: rec_user_phone.replace(' ', '').replace('-', ''),
+          // retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
+          retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
           filter_json_id: filterJsonId,
           cand_email: rec_user_email,
           // cand_email: sessionsWithPlan.application.candidates.email,
