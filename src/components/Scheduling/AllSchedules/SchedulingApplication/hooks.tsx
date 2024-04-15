@@ -412,21 +412,22 @@ export const fetchInterviewDataJob = async (application_id: string) => {
 
     if (error) throw new Error(error.message);
 
-    const sessions = data.interview_data.map((item) => ({
-      ...item.interview_session,
-      interview_meeting: null as InterviewMeetingTypeDb,
-      interview_module: item.interview_module,
-      users: item.interview_session_relations?.interview_module_relation?.map(
-        (sesitem) => ({
-          ...sesitem.interview_session_relation,
-          interview_module_relation: {
-            ...sesitem.interview_module_relation,
-            recruiter_user: sesitem.recruiter_user,
-          },
-          recruiter_user: sesitem.debrief_user,
-        }),
-      ),
-    }));
+    const sessions =
+      data.interview_data?.map((item) => ({
+        ...item.interview_session,
+        interview_meeting: null as InterviewMeetingTypeDb,
+        interview_module: item.interview_module,
+        users: item.interview_session_relations?.interview_module_relation?.map(
+          (sesitem) => ({
+            ...sesitem.interview_session_relation,
+            interview_module_relation: {
+              ...sesitem.interview_module_relation,
+              recruiter_user: sesitem.recruiter_user,
+            },
+            recruiter_user: sesitem.debrief_user,
+          }),
+        ),
+      })) || [];
 
     return {
       sessions: sessions,
@@ -569,6 +570,8 @@ export const scheduleWithAgent = async ({
   recruiter_user_name,
   candidate_name = 'chinmai',
   company_name = 'aglint',
+  rec_user_email,
+  rec_user_phone,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -582,6 +585,8 @@ export const scheduleWithAgent = async ({
   recruiter_user_name: string;
   candidate_name?: string;
   company_name?: string;
+  rec_user_email: string;
+  rec_user_phone: string;
 }) => {
   try {
     if (type) {
@@ -642,6 +647,8 @@ export const scheduleWithAgent = async ({
           candidate_name,
           company_name,
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
+          rec_user_email,
+          rec_user_phone,
         });
       } else {
         const sessionsWithPlan = await fetchInterviewDataSchedule(
@@ -695,6 +702,8 @@ export const scheduleWithAgent = async ({
           candidate_name,
           company_name,
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
+          rec_user_email,
+          rec_user_phone,
         });
       }
       return true;
@@ -706,6 +715,7 @@ export const scheduleWithAgent = async ({
 
 const agentTrigger = async ({
   type,
+  // eslint-disable-next-line no-unused-vars
   sessionsWithPlan,
   filterJsonId,
   sub_task_id,
@@ -713,12 +723,14 @@ const agentTrigger = async ({
   candidate_name,
   company_name,
   jobRole,
+  rec_user_email,
+  rec_user_phone,
 }) => {
   try {
     if (type === 'email_agent') {
       await axios.post('/api/scheduling/mail-agent/init-agent', {
-        cand_email:
-          'raj@aglinthq.com' || sessionsWithPlan.application.candidates.email,
+        cand_email: rec_user_email,
+        // cand_email: sessionsWithPlan.application.candidates.email,
         cand_time_zone: dayjs.tz.guess(),
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
@@ -732,11 +744,11 @@ const agentTrigger = async ({
           begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
           interviewer_name: recruiter_user_name,
           from_phone_no: '+12512066348',
-          to_phone_no: '+14088873921',
+          to_phone_no: rec_user_phone,
           retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           filter_json_id: filterJsonId,
-          cand_email:
-            'raj@aglinthq.com' || sessionsWithPlan.application.candidates.email,
+          cand_email: rec_user_email,
+          // cand_email: sessionsWithPlan.application.candidates.email,
           sub_task_id: sub_task_id,
         },
       );

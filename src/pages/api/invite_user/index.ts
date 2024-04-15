@@ -32,7 +32,7 @@ export default async function handler(
         for (let user of users) {
           const { data, error } = await supabase.auth.admin.createUser({
             email: user.email,
-            password: 'password',
+            password: 'Welcome@123',
             user_metadata: {
               name: `${user.first_name} ${user.last_name || ''}`?.trim(),
               role: companyType.COMPANY,

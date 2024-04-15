@@ -149,6 +149,8 @@ function SchedulingApplication() {
       type: type,
       candidate_name: selectedApplication.candidates.first_name,
       company_name: recruiter.name,
+      rec_user_email: recruiterUser.email,
+      rec_user_phone: recruiterUser.phone,
     });
 
     if (res) {
