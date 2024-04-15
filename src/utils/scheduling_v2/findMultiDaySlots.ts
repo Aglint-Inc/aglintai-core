@@ -87,6 +87,13 @@ export const findMultiDaySlots = (
     );
     return findMultiDaySlotsUtil(final_combs, next_day, ++curr_day_idx);
   };
-  const plan_combs = findMultiDaySlotsUtil([], dayjs_start_date, 0);
-  return plan_combs;
+
+  let curr_date = dayjs_start_date;
+  let all_combs: PlanCombinationType[][] = [];
+  while (curr_date.isSameOrBefore(dayjs_end_date)) {
+    const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
+    all_combs = [...all_combs, ...plan_combs];
+    curr_date = getNextWorkingDay(comp_schedule_setting, curr_date);
+  }
+  return all_combs;
 };
