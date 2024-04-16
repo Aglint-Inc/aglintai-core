@@ -1090,6 +1090,7 @@ export type Database = {
       interview_module: {
         Row: {
           created_at: string
+          department: string | null
           description: string | null
           duration_available: Json | null
           id: string
@@ -1100,6 +1101,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          department?: string | null
           description?: string | null
           duration_available?: Json | null
           id?: string
@@ -1110,6 +1112,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          department?: string | null
           description?: string | null
           duration_available?: Json | null
           id?: string
@@ -1633,7 +1636,7 @@ export type Database = {
           application_id: string | null
           assignee: string[]
           created_at: string
-          created_by: string | null
+          created_by: string
           end_date: string | null
           id: string
           name: string
@@ -1642,12 +1645,13 @@ export type Database = {
           session_ids: Json[] | null
           start_date: string | null
           status: Database["public"]["Enums"]["sub_task_status"]
+          type: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Insert: {
           application_id?: string | null
           assignee: string[]
           created_at?: string
-          created_by?: string | null
+          created_by: string
           end_date?: string | null
           id?: string
           name: string
@@ -1656,12 +1660,13 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["sub_task_status"]
+          type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Update: {
           application_id?: string | null
           assignee?: string[]
           created_at?: string
-          created_by?: string | null
+          created_by?: string
           end_date?: string | null
           id?: string
           name?: string
@@ -1670,6 +1675,7 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["sub_task_status"]
+          type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [
           {
@@ -1680,10 +1686,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_new_tasks_recruiter_id_fkey"
-            columns: ["recruiter_id"]
+            foreignKeyName: "public_new_tasks_cretaed_by_fkey"
+            columns: ["created_by"]
             isOneToOne: false
-            referencedRelation: "recruiter"
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      new_tasks_progress: {
+        Row: {
+          created_at: string
+          created_by: Json
+          id: string
+          jsonb_data: Json | null
+          progress_type: Database["public"]["Enums"]["progress_type"]
+          task_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: Json
+          id?: string
+          jsonb_data?: Json | null
+          progress_type?: Database["public"]["Enums"]["progress_type"]
+          task_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: Json
+          id?: string
+          jsonb_data?: Json | null
+          progress_type?: Database["public"]["Enums"]["progress_type"]
+          task_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_new_tasks_progress_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "new_tasks"
             referencedColumns: ["id"]
           },
         ]
@@ -3982,6 +4026,7 @@ export type Database = {
         | "closed"
       task_agent_type: "call" | "email" | "job"
       task_status: "pending" | "in_progress" | "completed" | "closed"
+      task_type_enum: "schedule" | "training"
       template_type:
         | "cognitive"
         | "language"

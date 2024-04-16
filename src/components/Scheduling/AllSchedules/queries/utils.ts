@@ -1,14 +1,14 @@
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { InterviewSlice } from '../store';
+import { FilterCandidateState } from '../filter-store';
 
 export const getPaginationDB = async ({
   recruiter,
   filter,
 }: {
   recruiter: { id: string };
-  filter: InterviewSlice['filter'];
+  filter: FilterCandidateState['filter'];
 }) => {
   try {
     const { data, error } = await supabase.rpc('get_interview_data_count', {

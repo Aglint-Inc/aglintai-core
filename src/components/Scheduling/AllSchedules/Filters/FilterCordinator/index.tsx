@@ -17,11 +17,11 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
-  FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore,
-} from '../../store';
+  useFilterCandidateStore,
+} from '../../filter-store';
+import { FilterType } from '../../store';
 
 type UserType = {
   user_id: string;
@@ -42,10 +42,8 @@ function FilterCordinator() {
   const [members, setMembers] = useState<UserType[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(false);
-  const filter = useInterviewSchedulingStore((state) => state.filter);
-  const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible,
-  );
+  const filter = useFilterCandidateStore((state) => state.filter);
+  const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
 
   useEffect(() => {
     handleSearch();

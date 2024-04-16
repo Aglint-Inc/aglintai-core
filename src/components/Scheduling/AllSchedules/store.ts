@@ -10,23 +10,7 @@ import {
 } from '@/src/types/data.types';
 
 export interface InterviewSlice {
-  filter: {
-    status?: ('not_scheduled' | 'ongoing' | 'completed')[];
-    job_ids?: string[];
-    module_ids?: string[];
-    dateRange?: string;
-    duration?: number;
-    textSearch?: string;
-    sortBy?: 'asc' | 'desc';
-    coordinator_ids?: string[];
-    scheduleType?: InterviewSession['schedule_type'][];
-  };
-  pagination: {
-    page: number;
-    total: number;
-  };
   fetching: boolean;
-  filterVisible: FilterType[];
   isRescheduleOpen: boolean;
   isCancelOpen: boolean;
 }
@@ -45,22 +29,7 @@ export enum FilterType {
 }
 
 const initialState: InterviewSlice = {
-  filter: {
-    textSearch: '',
-    status: [],
-    sortBy: 'asc',
-    job_ids: [],
-    module_ids: [],
-    dateRange: null,
-    coordinator_ids: [],
-    scheduleType: [],
-  },
-  pagination: {
-    page: 1,
-    total: 0,
-  },
   fetching: false,
-  filterVisible: [FilterType.status, FilterType.relatedJobs],
   isRescheduleOpen: false,
   isCancelOpen: false,
 };
@@ -69,29 +38,11 @@ export const useInterviewSchedulingStore = create<InterviewSlice>()(() => ({
   ...initialState,
 }));
 
-export const setFilter = (filter: InterviewSlice['filter']) => {
-  useInterviewSchedulingStore.setState((state) => ({
-    pagination: { ...state.pagination, page: 1 },
-    filter: { ...state.filter, ...filter },
-  }));
-};
-
 export const setIsRescheduleOpen = (isRescheduleOpen: boolean) =>
   useInterviewSchedulingStore.setState({ isRescheduleOpen });
 
 export const setIsCancelOpen = (isCancelOpen: boolean) =>
   useInterviewSchedulingStore.setState({ isCancelOpen });
-
-export const setFilterVisible = (
-  filterVisible: InterviewSlice['filterVisible'],
-) => useInterviewSchedulingStore.setState({ filterVisible });
-
-export const setPagination = (
-  pagination: Partial<InterviewSlice['pagination']>,
-) =>
-  useInterviewSchedulingStore.setState((state) => ({
-    pagination: { ...state.pagination, ...pagination },
-  }));
 
 export const setFetching = (fetching: boolean) =>
   useInterviewSchedulingStore.setState({ fetching });

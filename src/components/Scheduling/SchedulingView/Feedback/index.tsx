@@ -12,12 +12,12 @@ import {
 import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
-import DynamicLoader from '@/src/components/CompanyDetailComp/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { DatabaseTable } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import DynamicLoader from '../../Interviewers/DynamicLoader';
 import {
   re_mapper,
   saveInterviewerFeedback,

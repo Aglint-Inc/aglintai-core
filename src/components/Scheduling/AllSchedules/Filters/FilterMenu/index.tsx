@@ -3,11 +3,8 @@ import React from 'react';
 
 import { AddFilter, AllInterviewFilter } from '@/devlink2';
 
-import {
-  FilterType,
-  setFilterVisible,
-  useInterviewSchedulingStore,
-} from '../../store';
+import { setFilterVisible, useFilterCandidateStore } from '../../filter-store';
+import { FilterType } from '../../store';
 
 const FILTERS_LENGTH = Object.keys(FilterType).length;
 
@@ -15,9 +12,7 @@ function AddFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible,
-  );
+  const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
 
   const handleClose = () => {
     setAnchorEl(null);

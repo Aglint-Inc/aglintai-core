@@ -3,25 +3,21 @@ import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import {
-  InterviewSession
-} from '@/src/types/data.types';
+import { InterviewSession } from '@/src/types/data.types';
 
 import {
-  FilterType,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore,
-} from '../../store';
+  useFilterCandidateStore,
+} from '../../filter-store';
+import { FilterType } from '../../store';
 
 function FilterScheduleType() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const filter = useInterviewSchedulingStore((state) => state.filter);
-  const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible,
-  );
+  const filter = useFilterCandidateStore((state) => state.filter);
+  const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

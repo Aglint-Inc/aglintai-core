@@ -4,7 +4,7 @@ import React from 'react';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 
-import { setFilter } from '../../store';
+import { setFilter } from '../../filter-store';
 
 function FilterSearchField() {
   return (
@@ -15,7 +15,7 @@ function FilterSearchField() {
             <InputAdornment position='end'>
               <Icon variant='JobSearch' height='14' />
             </InputAdornment>
-          )
+          ),
         }}
         placeholder='Search by name'
         onChange={(e) => {

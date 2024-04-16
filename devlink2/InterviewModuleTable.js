@@ -8,9 +8,16 @@ import _styles from "./InterviewModuleTable.module.css";
 export function InterviewModuleTable({
   as: _Component = _Builtin.Block,
   slotInterviewModuleCard,
+  slotFilter,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1064")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1317")}
+        tag="div"
+      >
+        {slotFilter}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "header-body-sublink")}
         tag="div"

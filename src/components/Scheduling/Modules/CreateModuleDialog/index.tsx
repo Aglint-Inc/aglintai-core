@@ -1,10 +1,18 @@
-import { Dialog, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  capitalize,
+  Dialog,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
+import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
@@ -23,6 +31,7 @@ function CreateModuleDialog() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
+  const [department, setDepartment] = useState('');
   const [isTraining, setIsTraining] = useState(false);
 
   const createModuleHandler = async () => {
@@ -34,6 +43,7 @@ function CreateModuleDialog() {
           description: objective,
           isTraining: isTraining,
           recruiter_id: recruiter.id,
+          department: department,
         });
         await router.push(`${pageRoutes.INTERVIEWMODULE}/members/${res.id}`);
         setIsCreateDialogOpen(null);
@@ -81,6 +91,30 @@ function CreateModuleDialog() {
                 }
               }}
             />
+            <Stack gap={'5px'}>
+              <UITypography type={'small'} fontBold={'default'}>
+                Department
+              </UITypography>
+              <Autocomplete
+                fullWidth
+                value={department}
+                onChange={(event: any, newValue: string | null) => {
+                  setDepartment(newValue);
+                }}
+                options={recruiter?.departments?.map((departments) =>
+                  capitalize(departments),
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    margin='none'
+                    {...params}
+                    name='department'
+                    placeholder='Department'
+                  />
+                )}
+              />
+            </Stack>
+
             <UITextField
               label='Objective'
               multiline

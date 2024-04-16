@@ -2,11 +2,8 @@ import { Stack } from '@mui/material';
 
 import { CandidatesListPagination } from '@/devlink2';
 
-import {
-  ApplicationList,
-  setPagination,
-  useInterviewSchedulingStore,
-} from '../store';
+import { setPagination, useFilterCandidateStore } from '../filter-store';
+import { ApplicationList } from '../store';
 
 interface SlotPaginationProps {
   isPending: boolean;
@@ -19,7 +16,7 @@ function SlotPagination({
   fetching,
   applicationList,
 }: SlotPaginationProps) {
-  const pagination = useInterviewSchedulingStore((state) => state.pagination);
+  const pagination = useFilterCandidateStore((state) => state.pagination);
 
   const ITEM_PAGE_LIMIT = 50;
   return (

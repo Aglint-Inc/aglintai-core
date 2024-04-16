@@ -53,7 +53,7 @@ const InterviewDrawers = ({
       ) : (
         <InterviewPlanEmpty
           onClickCreateInterviewPlan={{
-            onClick: () => push('/scheduling?tab=interviewModules'),
+            onClick: () => push('/scheduling?tab=interviewtypes'),
           }}
         />
       )}

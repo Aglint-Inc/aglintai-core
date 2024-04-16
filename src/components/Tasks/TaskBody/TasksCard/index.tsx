@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { TaskCard } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useInterviewerList } from '@/src/components/CompanyDetailComp/Interviewers';
+import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import { TasksAgentContextType } from '@/src/context/TaskContext/TaskContextProvider';
 
 import SubTaskCardSkeleton from '../../Components/SubTaskCardSkeleton';

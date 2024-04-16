@@ -27,7 +27,6 @@ export type SchedulingSlice = {
   selectedUsers: MemberType[];
   selUser: InterviewModuleRelationType | null;
   pause_json: PauseJson | null;
-  searchText: string;
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;
 };

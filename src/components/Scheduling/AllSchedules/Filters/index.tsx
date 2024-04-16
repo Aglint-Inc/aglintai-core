@@ -1,4 +1,5 @@
-import { FilterType, useInterviewSchedulingStore } from '../store';
+import { useFilterCandidateStore } from '../filter-store';
+import { FilterType } from '../store';
 import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
@@ -6,9 +7,7 @@ import FilterScheduleType from './FilterScheduleType';
 import FilterSearchField from './FilterSearchField';
 
 function AllFilters() {
-  const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible,
-  );
+  const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
   return (
     <>
       <FilterSearchField />

@@ -6,12 +6,18 @@ import { Breadcrum, PageLayout } from '@/devlink2';
 import { InterviewerDetailTopRight } from '@/devlink3';
 import Seo from '@/src/components/Common/Seo';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import DynamicLoader from '@/src/components/CompanyDetailComp/Interviewers/DynamicLoader';
-import Interviewer from '@/src/components/CompanyDetailComp/Interviewers/Interviewer';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import Interviewer from '@/src/components/Scheduling/Interviewers/Interviewer';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
 import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { InterviewModuleType, RecruiterUserType } from '@/src/types/data.types';
+import {
+  InterviewMeetingTypeDb,
+  InterviewModuleType,
+  InterviewScheduleTypeDB,
+  InterviewSessionTypeDB,
+  RecruiterUserType,
+} from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 export interface interviewerDetailsType {
@@ -187,5 +193,17 @@ async function getSchedules(user_id: string) {
     },
   );
   if (error) throw Error(error.message);
-  return data;
+  return data as unknown as {
+    interview_session: InterviewSessionTypeDB;
+    interview_meeting: InterviewMeetingTypeDb;
+    schedule: InterviewScheduleTypeDB;
+    users: {
+      id: string;
+      training_type: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      profile_image: string;
+    }[];
+  }[];
 }

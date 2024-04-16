@@ -462,7 +462,7 @@ export const fetchInterviewDataSchedule = async (
 
     if (error) throw new Error(error.message);
 
-    const sessions = data.interview_data.map((item) => ({
+    const sessions = data.interview_data?.map((item) => ({
       ...item.interview_session,
       interview_meeting: item.interview_meeting,
       interview_module: item.interview_module,
@@ -482,10 +482,10 @@ export const fetchInterviewDataSchedule = async (
     return {
       sessions: sessions,
       application: {
-        ...data.application_data.application,
-        candidate_files: data.application_data.candidate_files,
-        candidates: data.application_data.candidate,
-        public_jobs: data.application_data.public_jobs,
+        ...data.application_data?.application,
+        candidate_files: data.application_data?.candidate_files,
+        candidates: data.application_data?.candidate,
+        public_jobs: data.application_data?.public_jobs,
       } as SchedulingApplication['selectedApplication'],
     };
   } catch (e) {

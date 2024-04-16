@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { QualifiedIcons } from '@/devlink2';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
+import FilterDropDown from '@/src/components/CompanyDetailComp/TeamManagement/FilterDropDown';
 
-import FilterDropDown from '../../TeamManagement/FilterDropDown';
 import { useInterviewerList } from '..';
 
 function Filters({ setFilteredInterviewer }) {

@@ -26,8 +26,8 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
         setLoading(true);
         const { data } = await supabase
           .from('interview_meeting')
-          .select('*,interview_schedule!inner(*)')
-          .eq('module_id', editModule.id);
+          .select('*,interview_session!inner(*)')
+          .eq('interview_session.module_id', editModule.id);
 
         const isActiveMeeting = data.some(
           (meet) => meet.start_time > new Date().toISOString(),
@@ -36,7 +36,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
         if (!isActiveMeeting) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
-            router.push(`${pageRoutes.SCHEDULING}?tab=interviewModules`);
+            router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`);
             toast.success('Module deleted successfully');
           } else {
             throw new Error();

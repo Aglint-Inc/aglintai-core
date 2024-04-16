@@ -2,7 +2,6 @@ import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-
 export const fetchInterviewModule = async (recruiter_id: string) => {
   try {
     const { data: dataModule, error: errorModule } = await supabase
@@ -61,18 +60,20 @@ export const createModule = async ({
   recruiter_id,
   description,
   isTraining,
+  department,
 }: {
   name: string;
   description: string;
   isTraining: boolean;
   recruiter_id: string;
+  department: string;
 }) => {
   const { data: interMod, error: errorModule } = await supabase
     .from('interview_module')
     .insert({
-      name: name,
-      recruiter_id: recruiter_id,
-      description: description,
+      name,
+      recruiter_id,
+      description,
       settings: {
         require_training: isTraining ? true : false,
         noShadow: 2,
@@ -80,6 +81,7 @@ export const createModule = async ({
         reqruire_approval: false,
         approve_users: [],
       },
+      department,
     })
     .select();
 

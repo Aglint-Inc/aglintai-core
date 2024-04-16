@@ -1,10 +1,19 @@
-import { Drawer, MenuItem, Stack, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  capitalize,
+  Drawer,
+  MenuItem,
+  Stack,
+  TextField,
+} from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { ModuleSetting } from '@/devlink2';
 import UITextField from '@/src/components/Common/UITextField';
+import UITypography from '@/src/components/Common/UITypography';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -17,6 +26,7 @@ import { setIsModuleSettingsDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
 
 function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
+  const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
   const isModuleSettingsDialogOpen = useModulesStore(
     (state) => state.isModuleSettingsDialogOpen,
@@ -92,6 +102,32 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
                   }))
                 }
               />
+              <Stack gap={'5px'}>
+                <UITypography type={'small'} fontBold={'default'}>
+                  Department
+                </UITypography>
+                <Autocomplete
+                  fullWidth
+                  value={localModule.department}
+                  onChange={(event: any, newValue: string | null) => {
+                    setEditLocalModule((prev) => ({
+                      ...prev,
+                      department: newValue,
+                    }));
+                  }}
+                  options={recruiter?.departments?.map((departments) =>
+                    capitalize(departments),
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      margin='none'
+                      {...params}
+                      name='department'
+                      placeholder='Department'
+                    />
+                  )}
+                />
+              </Stack>
               <UITextField
                 label='Objective'
                 multiline

@@ -2,6 +2,7 @@ import { AllInterview } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import AllList from './AllList';
+import { useFilterCandidateStore } from './filter-store';
 import AllFilters from './Filters';
 import AddFilterComp from './Filters/FilterMenu';
 import { useAllInterviewSchedules } from './queries/hooks';
@@ -10,8 +11,8 @@ import { useInterviewSchedulingStore } from './store';
 
 function AllSchedules() {
   const { recruiter } = useAuthDetails();
-  const filter = useInterviewSchedulingStore((state) => state.filter);
-  const pagination = useInterviewSchedulingStore((state) => state.pagination);
+  const filter = useFilterCandidateStore((state) => state.filter);
+  const pagination = useFilterCandidateStore((state) => state.pagination);
   const fetching = useInterviewSchedulingStore((state) => state.fetching);
 
   const {

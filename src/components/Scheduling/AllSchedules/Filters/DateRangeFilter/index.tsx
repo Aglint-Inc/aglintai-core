@@ -9,18 +9,16 @@ import { DateRangePicker } from 'react-date-range';
 import { ButtonPrimarySmall, ButtonTextSmall } from '@/devlink';
 import { ButtonFilter } from '@/devlink2';
 
-import {
-  // FilterType,
-  setFilter,
-  // setFilterVisible,
-  useInterviewSchedulingStore,
-} from '../../store';
+import { setFilter, useFilterCandidateStore } from '../../filter-store';
+import {} from // FilterType,
+// setFilterVisible,
+'../../store';
 
 function DateRangeFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const filter = useInterviewSchedulingStore((state) => state.filter);
+  const filter = useFilterCandidateStore((state) => state.filter);
   // const filterVisible = useInterviewSchedulingStore(
   //   (state) => state.filterVisible,
   // );
@@ -36,11 +34,11 @@ function DateRangeFilterComp() {
   const open = Boolean(anchorEl);
   const id = open ? 'date-range' : undefined;
 
-  useEffect(() => {
-    return () => {
-      setFilter({ job_ids: [] });
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     setFilter({ job_ids: [] });
+  //   };
+  // }, []);
 
   const [state, setState] = useState([
     {

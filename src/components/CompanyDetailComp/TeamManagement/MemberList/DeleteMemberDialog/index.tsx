@@ -5,8 +5,6 @@ import React from 'react';
 import { DeletePopup, ResumePop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
-import { useInterviewerList } from '../../../Interviewers';
-
 function DeleteMemberDialog({
   name,
   openForDelete,

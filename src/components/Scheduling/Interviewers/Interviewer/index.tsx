@@ -62,31 +62,43 @@ function Interviewer({
   const { refetch } = useImrQuery();
   const today = dayjs().startOf('day');
   const thisWeekStart = dayjs().endOf('week');
-  let totalInterviewsThisWeek = [];
-  let totalInterviewsToday = [];
+  let totalInterviewsThisWeek: ReturnType<
+    typeof useInterviewerSchedulesQuery
+  >['data'] = [];
+  let totalInterviewsToday: ReturnType<
+    typeof useInterviewerSchedulesQuery
+  >['data'] = [];
   let totalHoursThisWeek = 0;
   let totalHoursToday = 0;
 
   const interviewerSchedules = useInterviewerSchedulesQuery();
   if (interviewerSchedules.isFetched) {
-    const interviews = interviewerSchedules.data.map(
-      (item) => item.interview_meeting,
-    ) as InterviewMeetingTypeDb[];
-
-    const completedInterviews = interviews.filter(
-      (item) => item.status == 'completed',
+    const completedInterviews = interviewerSchedules.data.filter(
+      (item) => item.interview_meeting.status == 'completed',
     );
     totalInterviewsToday = completedInterviews.filter((interview) =>
-      dayjs(interview.end_time).isSame(today, 'day'),
+      dayjs(interview.interview_meeting.end_time).isSame(today, 'day'),
     );
     totalInterviewsThisWeek = completedInterviews.filter((interview) =>
-      dayjs(interview.end_time).isBefore(thisWeekStart),
+      dayjs(interview.interview_meeting.end_time).isBefore(thisWeekStart),
     );
+
     totalHoursToday =
-      Number(totalInterviewsToday.reduce((a, b) => a + b.duration, 0)) / 60;
+      Number(
+        totalInterviewsToday.reduce(
+          (a, b) => a + b.interview_session.session_duration,
+          0,
+        ),
+      ) / 60;
     totalHoursThisWeek =
-      Number(totalInterviewsThisWeek.reduce((a, b) => a + b.duration, 0)) / 60;
+      Number(
+        totalInterviewsThisWeek.reduce(
+          (a, b) => a + b.interview_session.session_duration,
+          0,
+        ),
+      ) / 60;
   }
+
   return (
     <>
       <Drawer
@@ -194,14 +206,14 @@ function Interviewer({
             </ShowCode.When>
           </ShowCode>
         }
-        // textInterviewToday={
-        //   interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
-        //     ?.dailyLimit.type + ' today'
-        // }
-        // textInterviewWeek={
-        //   interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
-        //     ?.weeklyLimit.type + ' this week'
-        // }
+        textInterviewToday={
+          interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
+            ?.dailyLimit.type + ' today'
+        }
+        textInterviewWeek={
+          interviewerDetails.interviewer?.scheduling_settings?.interviewLoad
+            ?.weeklyLimit.type + ' this week'
+        }
         slotQualifiedModules={
           interviewerDetails.modules.filter(
             (item) => item.training_status === 'qualified',

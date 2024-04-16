@@ -17,6 +17,7 @@ export const initialEditModule: ModuleType = {
   duration_available: { activeDuration: 0, availabletimeSlots: [] },
   created_at: '',
   recruiter_id: '',
+  department: '',
   settings: {
     require_training: false,
     noShadow: 2,
@@ -41,7 +42,6 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   selectedUsers: [],
   selUser: null,
   pause_json: { isManual: true, start_date: '', end_date: '' },
-  searchText: '',
   trainingStatus: 'qualified',
 };
 
@@ -72,9 +72,6 @@ export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
 export const setIsModuleSettingsDialogOpen = (
   isModuleSettingsDialogOpen: boolean,
 ) => useModulesStore.setState({ isModuleSettingsDialogOpen });
-
-export const setSearchText = (searchText: string) =>
-  useModulesStore.setState({ searchText });
 
 export const setIsResumeDialogOpen = (isResumeDialogOpen: boolean) =>
   useModulesStore.setState({ isResumeDialogOpen });

@@ -333,7 +333,11 @@ function SchedulingApplication() {
                       }
                       onClickScheduleManually={{
                         onClick: async () => {
-                          if (dateRange.start_date && dateRange.end_date) {
+                          if (
+                            dateRange.start_date &&
+                            dateRange.end_date &&
+                            !fetchingPlan
+                          ) {
                             await findScheduleOptions({
                               dateRange: dateRange,
                               session_ids: selectedSessionIds,
@@ -345,12 +349,12 @@ function SchedulingApplication() {
                       isScheduleManuallyVisible={true}
                       onClickEmailAgent={{
                         onClick: async () => {
-                          scheduleAgent('email_agent');
+                          if (!fetchingPlan) scheduleAgent('email_agent');
                         },
                       }}
                       onClickPhoneAgent={{
                         onClick: async () => {
-                          scheduleAgent('phone_agent');
+                          if (!fetchingPlan) scheduleAgent('phone_agent');
                         },
                       }}
                     />

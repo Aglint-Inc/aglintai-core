@@ -11,6 +11,7 @@ import {
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
@@ -19,7 +20,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
-import DynamicLoader from '../../Interviewers/DynamicLoader';
 import { inviteUserApi, reinviteUser } from '../utils';
 export type interviewLocationType = {
   city: string;

@@ -6,7 +6,7 @@ import { AgentPill } from '@/devlink3';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
-import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
+import { useInterviewerList } from '../../Scheduling/Interviewers';
 import { EmailAgentId, PhoneAgentId } from '../utils';
 
 function AssigneeChip({ assigneeId }: { assigneeId: string }) {

@@ -6,12 +6,12 @@ import { useMemo, useState } from 'react';
 
 import { TeamListItem } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { useInterviewerList } from '../../Interviewers';
 import DeleteMemberDialog from './DeleteMemberDialog';
 dayjs.extend(relativeTime);
 

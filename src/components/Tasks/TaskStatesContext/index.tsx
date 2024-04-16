@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { RecruiterUserType } from '@/src/types/data.types';
 
-import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
+import { useInterviewerList } from '../../Scheduling/Interviewers';
 import { EmailAgentId, PhoneAgentId } from '../utils';
 
 // let setTime;

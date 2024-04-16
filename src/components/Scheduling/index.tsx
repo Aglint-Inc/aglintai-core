@@ -1,4 +1,4 @@
-import { AvatarGroup, InputAdornment, Stack } from '@mui/material';
+import { AvatarGroup, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -19,18 +19,13 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import Icon from '../Common/Icons/Icon';
 import MuiAvatar from '../Common/MuiAvatar';
-import UITextField from '../Common/UITextField';
-import InterviewTab from '../CompanyDetailComp/Interviewers';
-import InterviewerLevelSettings from '../CompanyDetailComp/Interviewers/Interviewer/InterviewerLevelSettings';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import AllSchedules from './AllSchedules';
+import InterviewTab from './Interviewers';
+import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
 import { Modules } from './Modules/Modules';
 import { fetchInterviewModules } from './Modules/queries/utils';
-import {
-  setIsCreateDialogOpen,
-  setSearchText,
-  useModulesStore,
-} from './Modules/store';
+import { setIsCreateDialogOpen } from './Modules/store';
 import MySchedule from './MySchedule';
 import SchedulingSettings from './Settings';
 import { schedulingSettingType } from './Settings/types';
@@ -42,7 +37,6 @@ function SchedulingMainComp() {
   const { recruiter, setRecruiter, allowAction, isAllowed, recruiterUser } =
     useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
-  const { searchText } = useModulesStore();
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setSaving('saving');
     const { data: updatedRecruiter, error } = await supabase
@@ -83,22 +77,6 @@ function SchedulingMainComp() {
           <>
             {tab === 'interviewtypes' && (
               <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                <UITextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <Icon variant='JobSearch' height='14' />
-                      </InputAdornment>
-                    ),
-                  }}
-                  placeholder='Search by name'
-                  onChange={(e) => {
-                    setSearchText(e.target.value);
-                  }}
-                  value={searchText}
-                  borderRadius={10}
-                />
-
                 <ButtonPrimaryDefaultRegular
                   startIconSlot={
                     <Icon

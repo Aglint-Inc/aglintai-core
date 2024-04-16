@@ -5,21 +5,19 @@ import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
 
 import {
-  FilterType,
-  InterviewSlice,
+  FilterCandidateState,
   setFilter,
   setFilterVisible,
-  useInterviewSchedulingStore,
-} from '../../store';
+  useFilterCandidateStore,
+} from '../../filter-store';
+import { FilterType } from '../../store';
 
 function FilterStatus() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const filter = useInterviewSchedulingStore((state) => state.filter);
-  const filterVisible = useInterviewSchedulingStore(
-    (state) => state.filterVisible,
-  );
+  const filter = useFilterCandidateStore((state) => state.filter);
+  const filterVisible = useFilterCandidateStore((state) => state.filterVisible);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,7 +30,9 @@ function FilterStatus() {
   const open = Boolean(anchorEl);
   const id = open ? 'filter-status' : undefined;
 
-  const handleFilterClick = (status: InterviewSlice['filter']['status'][0]) => {
+  const handleFilterClick = (
+    status: FilterCandidateState['filter']['status'][0],
+  ) => {
     if (filter.status.includes(status)) {
       setFilter({ status: filter.status.filter((s) => s !== status) });
     } else {
@@ -41,7 +41,7 @@ function FilterStatus() {
   };
 
   const renderStatus = (
-    status: InterviewSlice['filter']['status'][0],
+    status: FilterCandidateState['filter']['status'][0],
     label: string,
   ) => {
     return (
