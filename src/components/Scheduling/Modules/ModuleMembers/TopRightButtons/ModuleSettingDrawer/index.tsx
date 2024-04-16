@@ -55,6 +55,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
         name: localModule.name,
         description: localModule.description,
         settings: localModule.settings,
+        department: editModule.department,
       })
       .eq('id', editModule.id)
       .select();
