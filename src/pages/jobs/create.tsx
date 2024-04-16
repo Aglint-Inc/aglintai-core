@@ -6,16 +6,13 @@ import JobsProvider from '@/src/context/JobsContext';
 const CreateJobPage = () => {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <JobCreate />
     </>
   );
 };
 
-CreateJobPage.getProvider = function getProvider(page) {
+CreateJobPage.privateProvider = function privateProvider(page) {
   return <JobsProvider>{page}</JobsProvider>;
 };
 

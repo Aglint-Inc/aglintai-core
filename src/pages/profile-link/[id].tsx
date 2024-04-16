@@ -355,6 +355,6 @@ function InterviewFeedbackPage() {
 
 export default InterviewFeedbackPage;
 
-InterviewFeedbackPage.getLayout = (page) => {
+InterviewFeedbackPage.publicProvider = (page) => {
   return <>{page}</>;
 };

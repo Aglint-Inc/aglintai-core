@@ -14,6 +14,6 @@ export default function NotFoundPage() {
   );
 }
 
-// NotFoundPage.getLayout = (page) => {
+// NotFoundPage.publicProvider = (page) => {
 //   return <>{page}</>;
 // };

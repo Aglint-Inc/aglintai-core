@@ -12,6 +12,6 @@ function SignInPage() {
 
 export default SignInPage;
 
-SignInPage.getLayout = (page) => {
+SignInPage.publicProvider = (page) => {
   return <>{page}</>;
 };

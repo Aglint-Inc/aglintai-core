@@ -260,7 +260,9 @@ const TrainingDetails = ({
               }
               isReverseShadowIconVisible={false}
               isShadowIconVisible={true}
-              textSessionHeader={`${numberToOrdinalText(index + 1 + shadowProgress.length)} Shadow Session`}
+              textSessionHeader={`${numberToOrdinalText(
+                index + 1 + shadowProgress.length,
+              )} Shadow Session`}
               key={index}
               isLineVisible={index != mutatedShadowProgress.length - 1}
             />
@@ -286,7 +288,9 @@ const TrainingDetails = ({
               }
               isReverseShadowIconVisible={true}
               isShadowIconVisible={false}
-              textSessionHeader={`${numberToOrdinalText(index + 1 + reverseShadowProgress.length)} Reverse Shadow Session`}
+              textSessionHeader={`${numberToOrdinalText(
+                index + 1 + reverseShadowProgress.length,
+              )} Reverse Shadow Session`}
               key={index}
               isLineVisible={index != mutatedReverseShadowProgress.length - 1}
             />

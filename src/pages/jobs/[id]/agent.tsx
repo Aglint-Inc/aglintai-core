@@ -14,10 +14,7 @@ import JobDashboardProvider, {
 const JobAgentPage = () => {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <JobPostFormProvider>
         <JobAssistantProvider>
           <AgentPage />
@@ -29,7 +26,7 @@ const JobAgentPage = () => {
 
 export default JobAgentPage;
 
-JobAgentPage.getProvider = function getProvider(page) {
+JobAgentPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>{page}</JobApplicationProvider>

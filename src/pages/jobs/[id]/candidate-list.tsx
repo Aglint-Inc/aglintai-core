@@ -16,7 +16,7 @@ const JobPage = () => {
   );
 };
 
-JobPage.getProvider = function getProvider(page) {
+JobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>{page}</JobApplicationProvider>

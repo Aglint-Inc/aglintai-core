@@ -25,7 +25,7 @@ function SupportTicket() {
 }
 
 export default SupportTicket;
-SupportTicket.getLayout = (page) => {
+SupportTicket.publicProvider = (page) => {
   return <>{page}</>;
 };
 

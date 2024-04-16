@@ -1,4 +1,3 @@
-
 import Seo from '@/src/components/Common/Seo';
 import JobNewInterviewPlanDashboard from '@/src/components/JobNewInterviewPlan';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
@@ -8,15 +7,12 @@ import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 const InterviewPlanJobPage = () => {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <JobNewInterviewPlanDashboard />
     </>
   );
 };
-InterviewPlanJobPage.getProvider = function getProvider(page) {
+InterviewPlanJobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>

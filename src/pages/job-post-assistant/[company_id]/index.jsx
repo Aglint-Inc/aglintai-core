@@ -11,4 +11,4 @@ function JobAssistant() {
 
 export default JobAssistant;
 
-JobAssistant.getLayout = (page) => page;
+JobAssistant.publicProvider = (page) => page;

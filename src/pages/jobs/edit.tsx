@@ -11,7 +11,6 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 function Hoc() {
-
   return (
     <>
       <Seo

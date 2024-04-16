@@ -92,7 +92,7 @@ const Google = () => {
   );
 };
 
-AuthHoc.getLayout = (page) => {
+AuthHoc.publicProvider = (page) => {
   return <>{page}</>;
 };
 

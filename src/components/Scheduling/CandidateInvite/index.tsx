@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { Page404 } from '@/devlink';
+import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 
 import Loader from '../../Common/Loader';
 import CheckAvailibility from './CheckAvailibility';
@@ -34,10 +35,11 @@ function CandidateInvite() {
   const initialFetch = async () => {
     try {
       const res = await axios.post('/api/scheduling/invite', {
-        id: router.query.schedule_id,
-        filter_id: router.query.filter_id,
+        schedule_id: router.query.schedule_id as string,
+        filter_id: router.query.filter_id as string,
         user_tz: dayjs.tz.guess(),
-      });
+      } as BodyParamsCandidateInvite);
+
       if (res.status === 200 && res.data) {
         setSchedule(res.data);
       }

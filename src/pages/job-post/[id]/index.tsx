@@ -126,6 +126,6 @@ function JobPost() {
 
 export default JobPost;
 
-JobPost.getLayout = (page) => {
+JobPost.publicProvider = (page) => {
   return <>{page}</>;
 };

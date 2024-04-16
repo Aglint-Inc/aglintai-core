@@ -10,91 +10,114 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
+import axios from 'axios';
+
 import { Database } from '@/src/types/schema';
-import { getCompWorkingDaysRange } from '@/src/utils/scheduling_v2/utils';
+import { SessionsCombType } from '@/src/utils/scheduling_v1/types';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+type FilterJsonDateRangeCandidateInvite = {
+  user_tz: string;
+  start_date: string;
+  end_date: string;
+  session_ids: string[];
+  recruiter_id: string;
+};
+
+export type BodyParamsCandidateInvite = {
+  schedule_id: string;
+  filter_id: string;
+  user_tz: string;
+};
+
+export type ApiResponseCandidateInvite = {
+  job: Awaited<ReturnType<typeof getApplicationDetails>>['public_jobs'];
+  schedule: Awaited<ReturnType<typeof getScheduleDetails>>;
+  candidate: Awaited<ReturnType<typeof getApplicationDetails>>['candidates'];
+  filter_json: Awaited<ReturnType<typeof getFilterJson>>['filter_json'];
+  recruiter: Awaited<ReturnType<typeof getRecruiterDetails>>;
+  meetings: Awaited<
+    ReturnType<typeof getInterviewSessionsMeetings>
+  >['resMeetings'];
+  allSlots: SessionsCombType[][][];
+  numberOfDays: number;
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { data: sch, error: errSch } = await supabase
-      .from('interview_schedule')
-      .select('*')
-      .eq('id', req.body.id as string);
+    const { filter_id, schedule_id, user_tz } =
+      req.body as BodyParamsCandidateInvite;
 
-    if (errSch) throw new Error(errSch.message);
+    if (!filter_id || !schedule_id || !user_tz) {
+      throw new Error('Invalid request');
+    }
 
-    const { data: filterJson, error: errFilterJson } = await supabase
-      .from('interview_filter_json')
-      .select('*')
-      .eq('id', req.body.filter_id as string);
+    const schedule = await getScheduleDetails(schedule_id);
 
-    if (errFilterJson) throw new Error(errFilterJson.message);
+    const filterJson = await getFilterJson(filter_id);
 
-    const { data: app } = await supabase
-      .from('applications')
-      .select(
-        '*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)',
-      )
-      .eq('id', sch[0].application_id);
+    const application = await getApplicationDetails(schedule.application_id);
 
-    const application = app[0];
-
-    const { data: rec } = await supabase
-      .from('recruiter')
-      .select('id,logo,name,scheduling_settings')
-      .eq('id', application.public_jobs.recruiter_id);
-
-    const filterJsonTyped = filterJson[0]
-      .filter_json as unknown as FilterJsonDateRangeCandidateInvite;
-
-    const { data: intSes, error: errSes } = await supabase
-      .from('interview_session')
-      .select('*')
-      .in('id', filterJson[0].session_ids);
-
-    if (errSes) throw new Error(errSes.message);
-
-    const maxBreakDuration = Math.max(
-      intSes.reduce((acc, curr) => Math.max(acc, curr.break_duration), 0),
+    const recruiter = await getRecruiterDetails(
+      application.public_jobs.recruiter_id,
     );
 
-    const maxDurationInDays = Math.floor((maxBreakDuration + 1440) / 1440);
+    const { resMeetings, maxDurationInDays } =
+      await getInterviewSessionsMeetings(filterJson.session_ids);
 
-    const possibleDateRange = getDateRange(
-      { ...filterJsonTyped, user_tz: req.body.user_tz },
-      maxBreakDuration,
-      rec[0].scheduling_settings as any,
-      maxDurationInDays,
-      intSes,
+    // console.log({
+    //   session_ids: filterJson.session_ids,
+    //   recruiter_id: recruiter.id,
+    //   date_range_start:
+    //     filterJson.filter_json.start_date > dayjs().format('DD/MM/YYYY')
+    //       ? filterJson.filter_json.start_date
+    //       : dayjs().format('DD/MM/YYYY'),
+    //   date_range_end: filterJson.filter_json.end_date,
+    //   user_tz: user_tz,
+    // });
+
+    const resSchOpt = await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find_slots_date_range`,
+      {
+        session_ids: filterJson.session_ids,
+        recruiter_id: recruiter.id,
+        date_range_start:
+          filterJson.filter_json.start_date > dayjs().format('DD/MM/YYYY')
+            ? filterJson.filter_json.start_date
+            : dayjs().format('DD/MM/YYYY'),
+        date_range_end: filterJson.filter_json.end_date,
+        user_tz: user_tz,
+      },
     );
 
-    const { data: intMeet, error: errMeet } = await supabase
-      .from('interview_meeting')
-      .select('*')
-      .in('session_id', filterJsonTyped.session_ids);
+    // console.log(resSchOpt.data);
 
-    const resMeetings = intSes.map((session) => ({
-      interview_session: session,
-      interview_meeting: intMeet.filter(
-        (meeting) => meeting.session_id === session.id,
-      )[0],
-    }));
+    if (resSchOpt.status !== 200) {
+      throw new Error('Failed to fetch slots');
+    }
 
-    if (errMeet) throw new Error(errMeet.message);
+    const allSlots = resSchOpt.data.filter(
+      (subArr) => subArr.length > 0,
+    ) as SessionsCombType[][];
+
+    // console.log(dateRanges);
 
     return res.status(200).json({
       job: application.public_jobs,
-      schedule: sch[0],
-      dateRange: possibleDateRange,
+      schedule: schedule,
       candidate: application.candidates,
-      recruiter: rec[0],
+      filter_json: {
+        ...filterJson.filter_json,
+        session_ids: filterJson.session_ids,
+      },
+      recruiter: recruiter,
       meetings: resMeetings,
-      numberOfDays: Math.floor((maxBreakDuration + 1440) / 1440),
+      allSlots: allSlots,
+      numberOfDays: maxDurationInDays,
     });
   } catch (error) {
     res.status(400).send(error.message);
@@ -104,52 +127,107 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 export interface DateRangeCandidateInvite {
-  start_date: string;
-  end_date: string | null;
+  start_date: dayjs.Dayjs;
+  end_date: dayjs.Dayjs | null;
 }
 
-interface FilterJsonDateRangeCandidateInvite {
-  user_tz: string;
-  start_date: string;
-  end_date: string;
-  session_ids: string[];
-  recruiter_id: string;
-}
+const getScheduleDetails = async (schedule_id: string) => {
+  const { data: sch, error: errSch } = await supabase
+    .from('interview_schedule')
+    .select('*')
+    .eq('id', schedule_id);
 
-function getDateRange(
-  input: FilterJsonDateRangeCandidateInvite,
-  durationInMinutes: number,
-  schedule_settings: schedulingSettingType,
-  maxDurationInDays,
-  intSes,
-): DateRangeCandidateInvite[] {
-  const { start_date, end_date, user_tz } = input;
+  if (errSch) throw new Error(errSch.message);
 
-  // Parse start and end dates using Day.js
-  const startDate = dayjs(start_date, 'DD/MM/YYYY').tz(user_tz);
-
-  // Calculate the number of days between the start and end dates
-  const numberOfDays = dayjs(end_date, 'DD/MM/YYYY').diff(startDate, 'day') + 1;
-
-  // Create an array to store date ranges
-  const dateRanges: DateRangeCandidateInvite[] = [];
-
-  // If duration is less than or equal to 1 day
-  if (durationInMinutes < 1440) {
-    for (let i = 0; i < numberOfDays; i++) {
-      const currentDate = startDate.add(i, 'day').format('DD/MM/YYYY');
-      dateRanges.push({ start_date: currentDate, end_date: null });
-    }
-  } else {
-    const range = getCompWorkingDaysRange(
-      dayjs(start_date, 'DD/MM/YYYY').tz(user_tz).format(),
-      dayjs(end_date, 'DD/MM/YYYY').tz(user_tz).format(),
-      schedule_settings,
-      intSes,
-    );
-
-    dateRanges.push(...range);
+  if (sch.length === 0) {
+    throw new Error('Schedule not found');
   }
 
-  return dateRanges;
-}
+  return sch[0];
+};
+
+const getInterviewSessionsMeetings = async (session_ids: string[]) => {
+  const { data: intSes, error: errSes } = await supabase
+    .from('interview_session')
+    .select('*')
+    .in('id', session_ids);
+
+  if (errSes) throw new Error(errSes.message);
+
+  const maxBreakDuration = Math.max(
+    intSes.reduce((acc, curr) => Math.max(acc, curr.break_duration), 0),
+  );
+
+  const maxDurationInDays = Math.floor((maxBreakDuration + 1440) / 1440);
+
+  const { data: intMeet, error: errMeet } = await supabase
+    .from('interview_meeting')
+    .select('*')
+    .in('session_id', session_ids);
+
+  if (errMeet) throw new Error(errMeet.message);
+
+  const resMeetings = intSes.map((session) => ({
+    interview_session: session,
+    interview_meeting: intMeet.filter(
+      (meeting) => meeting.session_id === session.id,
+    )[0],
+  }));
+
+  return { resMeetings, maxDurationInDays };
+};
+
+const getApplicationDetails = async (application_id: string) => {
+  const { data: app, error } = await supabase
+    .from('applications')
+    .select(
+      '*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)',
+    )
+    .eq('id', application_id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (app.length === 0) {
+    throw new Error('Application not found');
+  }
+
+  return app[0];
+};
+
+const getFilterJson = async (filter_id: string) => {
+  const { data: filterJson, error: errFilterJson } = await supabase
+    .from('interview_filter_json')
+    .select('*')
+    .eq('id', filter_id);
+
+  if (errFilterJson) throw new Error(errFilterJson.message);
+
+  if (filterJson.length === 0) {
+    throw new Error('Filter not found');
+  }
+
+  return filterJson[0] as {
+    created_at: string;
+    filter_json: FilterJsonDateRangeCandidateInvite;
+    id: string;
+    schedule_id: string;
+    session_ids: string[];
+  };
+};
+
+const getRecruiterDetails = async (recruiter_id: string) => {
+  const { data: rec, error: errRec } = await supabase
+    .from('recruiter')
+    .select('*')
+    .eq('id', recruiter_id);
+
+  if (errRec) throw new Error(errRec.message);
+
+  if (rec.length === 0) {
+    throw new Error('Recruiter not found');
+  }
+
+  return rec[0];
+};

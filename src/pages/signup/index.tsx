@@ -21,6 +21,6 @@ const SignUpPage = () => {
 
 export default SignUpPage;
 
-SignUpPage.getLayout = (page) => {
+SignUpPage.publicProvider = (page) => {
   return <>{page}</>;
 };
