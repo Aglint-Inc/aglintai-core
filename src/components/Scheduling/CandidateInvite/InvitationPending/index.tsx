@@ -62,10 +62,6 @@ function InvitationPending({
     }
   }, [selectedDate]);
 
-  useEffect(() => {
-    if (schedule.dateRange) setSelectedDate(schedule.dateRange[0]);
-  }, [schedule.dateRange]);
-
   const fetchSlots = async () => {
     try {
       setLoading(true);
@@ -116,7 +112,15 @@ function InvitationPending({
               return (
                 <DatePill
                   key={ind + 'date'}
-                  textDate={`${dayjs(date.start_date, 'DD/MM/YYYY').format('DD')}${date.end_date ? ' - ' + dayjs(date.end_date, 'DD/MM/YYYY').format('DD') : ''} ${dayjs(date.start_date, 'DD/MM/YYYY').format('MMMM YYYY')}`}
+                  textDate={`${dayjs(date.start_date, 'DD/MM/YYYY').format(
+                    'DD',
+                  )}${
+                    date.end_date
+                      ? ' - ' + dayjs(date.end_date, 'DD/MM/YYYY').format('DD')
+                      : ''
+                  } ${dayjs(date.start_date, 'DD/MM/YYYY').format(
+                    'MMMM YYYY',
+                  )}`}
                   onClickDate={{
                     onClick: () => {
                       if (!loading) {
@@ -226,7 +230,9 @@ function InvitationPending({
                                   <OptionAvailable
                                     textTime={`${dayjs(ses.start_time).format(
                                       'hh:mm A',
-                                    )} - ${dayjs(ses.end_time).format('hh:mm A')}`}
+                                    )} - ${dayjs(ses.end_time).format(
+                                      'hh:mm A',
+                                    )}`}
                                     textTitle={ses.module_name}
                                     key={ind}
                                     isTitleVisible={true}

@@ -23,6 +23,7 @@ const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
   pageRoutes.JOBINTERVIEWPLAN,
   pageRoutes.SCHEDULING,
   pageRoutes.SCHEDULING_APPLICATION,
+  pageRoutes.SCHEDULING_CANDIDATE_INVITE,
 ];
 
 export const appKey = 'app';

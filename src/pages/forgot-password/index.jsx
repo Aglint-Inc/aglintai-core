@@ -14,6 +14,6 @@ export default function ForgotPasswordPage() {
   );
 }
 
-ForgotPasswordPage.getLayout = (page) => {
+ForgotPasswordPage.publicProvider = (page) => {
   return <>{page}</>;
 };

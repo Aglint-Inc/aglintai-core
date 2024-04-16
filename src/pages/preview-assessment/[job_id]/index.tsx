@@ -14,6 +14,6 @@ function CandidateAssessmentPage() {
 }
 
 export default CandidateAssessmentPage;
-CandidateAssessmentPage.getLayout = (page) => {
+CandidateAssessmentPage.publicProvider = (page) => {
   return <>{page}</>;
 };

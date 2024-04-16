@@ -57,7 +57,7 @@ const Page = () => {
   );
 };
 
-PageHoc.getLayout = (page) => {
+PageHoc.publicProvider = (page) => {
   return <>{page}</>;
 };
 

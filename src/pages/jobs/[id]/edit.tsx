@@ -7,16 +7,13 @@ import JobDashboardProvider from '@/src/context/JobDashboard';
 const EditJobPage = () => {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <JobEditDashboard />
     </>
   );
 };
 
-EditJobPage.getProvider = function getProvider(page) {
+EditJobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>{page}</JobApplicationProvider>

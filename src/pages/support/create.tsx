@@ -7,6 +7,6 @@ function SupportPage() {
 }
 
 export default SupportPage;
-SupportPage.getLayout = (page) => {
+SupportPage.publicProvider = (page) => {
   return <>{page}</>;
 };

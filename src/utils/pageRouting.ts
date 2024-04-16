@@ -32,6 +32,7 @@ export const pageRoutes = Object.freeze({
   LOADING: '/loading',
   SCHEDULING: '/scheduling',
   SCHEDULING_APPLICATION: '/scheduling/application/[application_id]',
+  SCHEDULING_CANDIDATE_INVITE: '/scheduling/invite/[id]',
   SCHEDULINGINTERVIEWER: '/scheduling/interviewer',
   INTERVIEWMODULE: '/scheduling/module',
   CONFIRM_SCHEDULE: '/confirm-availability',

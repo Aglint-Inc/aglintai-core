@@ -15,7 +15,7 @@ const AssessmentDashboardPage = () => {
   );
 };
 
-AssessmentDashboardPage.getProvider = function getProvider(page) {
+AssessmentDashboardPage.privateProvider = function privateProvider(page) {
   return <JobsProvider>{page}</JobsProvider>;
 };
 

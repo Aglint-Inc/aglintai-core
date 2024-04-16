@@ -14,6 +14,6 @@ export default function ResetPasswordPage() {
   );
 }
 
-ResetPasswordPage.getLayout = (page) => {
+ResetPasswordPage.publicProvider = (page) => {
   return <>{page}</>;
 };

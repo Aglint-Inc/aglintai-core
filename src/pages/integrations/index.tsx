@@ -16,10 +16,7 @@ function IntegrationsPage() {
   }
   return (
     <>
-      <Seo
-        title={`Integrations`}
-        description='AI for People Products'
-      />
+      <Seo title={`Integrations`} description='AI for People Products' />
       <PageLayout
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={

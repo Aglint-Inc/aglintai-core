@@ -200,11 +200,11 @@ export default function Loading() {
   );
 }
 
-Loading.getProvider = function getProvider(page) {
+Loading.privateProvider = function privateProvider(page) {
   return <AuthProvider>{page}</AuthProvider>;
 };
 
-Loading.getLayout = (page) => {
+Loading.publicProvider = (page) => {
   return <>{page}</>;
 };
 

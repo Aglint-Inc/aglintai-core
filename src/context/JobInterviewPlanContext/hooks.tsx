@@ -50,6 +50,15 @@ const useJobInterviewPlanActions = () => {
     select: (mutation) => mutation.state.variables as any,
   });
 
+  const initialLoad = !!(
+    job &&
+    interviewModules.status !== 'pending' &&
+    interviewCoordinator.status !== 'pending' &&
+    interviewPlans.status !== 'pending'
+  );
+
+  if (!initialLoad) return undefined;
+
   const getLoadingState = (sessionId: string) => {
     return !![...updateQueue, ...deleteQueue].find(
       ({ session_id }) => session_id === sessionId,
@@ -80,13 +89,6 @@ const useJobInterviewPlanActions = () => {
     }
   };
 
-  const initialLoad = !!(
-    job &&
-    interviewModules.status !== 'pending' &&
-    interviewCoordinator.status !== 'pending' &&
-    interviewPlans.status !== 'pending'
-  );
-  if (!initialLoad) return undefined;
   const plan_id = interviewPlans?.data?.id;
   const coordinator = interviewPlans?.data?.recruiter_user;
 

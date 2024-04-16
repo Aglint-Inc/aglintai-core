@@ -82,7 +82,7 @@ const Comp = () => {
   );
 };
 
-// Page.getLayout = ({ page }) => {
+// Page.publicProvider = ({ page }) => {
 //   return <>{page}</>;
 // };
 

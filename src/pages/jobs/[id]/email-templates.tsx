@@ -13,7 +13,7 @@ const JobEmailTemplatesPage = () => {
   );
 };
 
-JobEmailTemplatesPage.getProvider = function getProvider(page) {
+JobEmailTemplatesPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>{page}</JobApplicationProvider>

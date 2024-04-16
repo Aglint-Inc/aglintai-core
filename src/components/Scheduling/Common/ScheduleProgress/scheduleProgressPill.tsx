@@ -81,7 +81,7 @@ const ScheduleStatus = memo(
 );
 ScheduleStatus.displayName = 'ScheduleStatus';
 
-const ProgressIcon = ({
+export const ProgressIcon = ({
   status,
 }: Pick<ScheduleProgressPillProps, 'status'>) => {
   switch (status) {
@@ -99,7 +99,7 @@ const ProgressIcon = ({
 };
 ProgressIcon.displayName = 'ProgressIcon';
 
-const SessionIcon = ({
+export const SessionIcon = ({
   sessionType,
 }: Pick<ScheduleProgressPillProps, 'sessionType'>) => {
   switch (sessionType) {
