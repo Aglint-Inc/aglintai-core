@@ -27,12 +27,13 @@ import {
 } from '../scheduling_v1/types';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
-export const convertDateFormatToDayjs = (user_date) => {
+export const convertDateFormatToDayjs = (user_date, user_tz: string) => {
   const [day, month, year] = user_date.split('/');
   if (!day || !month || !year) {
     throw new Error(`Date should in the format DD/MM/YYYY`);
   }
-  return dayjs(`${year}-${month}-${day}`, 'YYYY-MM-DD');
+  let user_dayjs = dayjs.tz(`${year}-${month}-${day} 12:00`, user_tz);
+  return user_dayjs;
 };
 
 export const convertDayjsToUserTimeZoneDate = (

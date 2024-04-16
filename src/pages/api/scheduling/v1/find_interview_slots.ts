@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
 
-    const dayjs_curr_date_date = convertDateFormatToDayjs(start_date);
+    const dayjs_curr_date_date = convertDateFormatToDayjs(start_date, user_tz);
 
     const { company_cred, all_inters, ses_with_ints, comp_schedule_setting } =
       await find_api_details(session_ids, recruiter_id);

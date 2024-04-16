@@ -40,8 +40,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
 
-    const dayjs_start_date = convertDateFormatToDayjs(date_range_start);
-    const dayjs_end_date = convertDateFormatToDayjs(date_range_end);
+    const dayjs_start_date = convertDateFormatToDayjs(
+      date_range_start,
+      user_tz,
+    );
+    const dayjs_end_date = convertDateFormatToDayjs(date_range_end, user_tz);
     const { company_cred, all_inters, ses_with_ints, comp_schedule_setting } =
       await find_api_details(session_ids, recruiter_id);
 
