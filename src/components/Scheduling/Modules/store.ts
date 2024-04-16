@@ -27,6 +27,7 @@ export const initialEditModule: ModuleType = {
   },
   description: '',
   instructions: '',
+  created_by: '',
 };
 
 export const initialStateSchedulingStore: SchedulingSlice = {

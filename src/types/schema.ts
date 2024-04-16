@@ -1090,6 +1090,7 @@ export type Database = {
       interview_module: {
         Row: {
           created_at: string
+          created_by: string | null
           department: string | null
           description: string | null
           duration_available: Json | null
@@ -1101,6 +1102,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           department?: string | null
           description?: string | null
           duration_available?: Json | null
@@ -1112,6 +1114,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           department?: string | null
           description?: string | null
           duration_available?: Json | null
@@ -1128,6 +1131,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
         ]
       }

@@ -16,6 +16,7 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import CreateModuleDialog from './CreateModuleDialog';
 import { setTextSearch, useFilterModuleStore } from './filter-store';
+import FilterCreatedBy from './Filters/FilterCreatedBy';
 import FilterDepartment from './Filters/FilterDepartment';
 import { useAllInterviewModules } from './queries/hooks';
 import { resetModulesStore } from './store';
@@ -24,21 +25,19 @@ export function Modules() {
   const router = useRouter();
   const textSearch = useFilterModuleStore((state) => state.textSearch);
   const department = useFilterModuleStore((state) => state.department);
+  const createdBy = useFilterModuleStore((state) => state.created_by);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
 
   const filterModules = allModules.filter((mod) => {
-    if (department) {
-      return (
+    return (
+      (!department || mod.interview_modules.department === department) &&
+      (createdBy.length == 0 ||
+        createdBy.includes(mod.interview_modules.created_by)) &&
+      (!textSearch ||
         mod.interview_modules.name
           .toLowerCase()
-          .includes(textSearch.toLowerCase()) &&
-        mod.interview_modules.department === department
-      );
-    } else {
-      return mod.interview_modules.name
-        .toLowerCase()
-        .includes(textSearch.toLowerCase());
-    }
+          .includes(textSearch.toLowerCase()))
+    );
   });
 
   useEffect(() => {
@@ -75,6 +74,7 @@ export function Modules() {
                   borderRadius={10}
                 />
                 <FilterDepartment />
+                <FilterCreatedBy />
               </Stack>
             }
             slotInterviewModuleCard={

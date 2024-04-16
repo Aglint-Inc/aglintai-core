@@ -54,7 +54,7 @@ function FilterDepartment() {
   return (
     <>
       <ButtonFilter
-        isActive={false}
+        isActive={Boolean(department)}
         isDotVisible={Boolean(department)}
         onClickStatus={{
           id: 'department' + 'click',
