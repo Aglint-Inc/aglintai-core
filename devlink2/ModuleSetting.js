@@ -32,6 +32,9 @@ export function ModuleSetting({
           {...onClickClose}
         />
       </_Builtin.Block>
+      <_Builtin.Block className={_utils.cx(_styles, "mt-10")} tag="div">
+        {"Define the interview's name and its primary goal here."}
+      </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "mt-20", "gap-6")}
         tag="div"
@@ -44,13 +47,23 @@ export function ModuleSetting({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1183")}
+          className={_utils.cx(_styles, "div-block-1318")}
           tag="div"
         >
-          <_Builtin.Block tag="div">
-            {slotRequiresTrainingToggle}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1183")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div">
+              {slotRequiresTrainingToggle}
+            </_Builtin.Block>
+            <_Builtin.Block tag="div">{"Requires training"}</_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{"Requires training"}</_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {
+              "Check if the interviewer needs prior training to conduct this interview."
+            }
+          </_Builtin.Block>
         </_Builtin.Block>
         {isRequireTrainingVisible ? (
           <_Builtin.Block
@@ -105,7 +118,7 @@ export function ModuleSetting({
                 className={_utils.cx(_styles, "div-block-1188")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Approval done by"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Approvers:"}</_Builtin.Block>
                 <_Builtin.Block tag="div">
                   {slotApprovalDoneInput}
                 </_Builtin.Block>

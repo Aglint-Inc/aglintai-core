@@ -67,6 +67,10 @@
   text-transform: capitalize;
 }
 
+.text-red-600 {
+  color: #cc3340;
+}
+
 .fw-semibold.text-purple {
   color: #a81897;
 }
@@ -85,6 +89,16 @@
 
 .fw-semibold.text-red {
   color: #d93f4c;
+}
+
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
 }
 
 .po-up_close {
@@ -223,6 +237,10 @@
   border: 1px solid #1f73b7;
   background-color: white;
   color: #1f73b7;
+}
+
+.button_primary.is_outline.width-100 {
+  width: 100%;
 }
 
 .button_primary.greay_btn-copy {

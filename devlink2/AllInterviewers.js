@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AllInterviewersCard } from "./AllInterviewersCard";
@@ -23,7 +24,7 @@ export function AllInterviewers({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1142")}
+          className={_utils.cx(_styles, "div-block-1142", "gap-5")}
           id={_utils.cx(
             _styles,
             "w-node-_51c09859-0c9a-df83-83a4-a6e076826a5d-76826a5b"
@@ -71,7 +72,7 @@ export function AllInterviewers({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Interview Modules"}
+            {"Qualified"}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -82,7 +83,7 @@ export function AllInterviewers({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Modules In Training"}
+            {"Training"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

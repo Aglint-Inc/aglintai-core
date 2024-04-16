@@ -72,8 +72,8 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   return (
     <Dialog open={isDeleteModuleDialogOpen} onClose={onClose}>
       <CloseJobModal
-        textPopupTitle={`Remove Module`}
-        textWarning={`By clicking remove the module will be permanently removed`}
+        textPopupTitle={`Delete`}
+        textWarning={`By clicking delete the module will be permanently deleted`}
         textButton={'Delete'}
         textJobTitle={moduleName}
         onClickCancel={{

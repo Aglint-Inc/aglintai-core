@@ -125,6 +125,11 @@
   padding-left: 16px;
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -292,6 +297,10 @@
 
 .text-blue-500.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
 }
 
 .slot-models-morement {

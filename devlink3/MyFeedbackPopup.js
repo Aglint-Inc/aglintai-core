@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { RoundedNumber } from "./RoundedNumber";
@@ -135,7 +136,7 @@ export function MyFeedbackPopup({
           className={_utils.cx(_styles, "input_filed_wrap")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Objective"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Feedback"}</_Builtin.Block>
           <_Builtin.Block tag="div">{slotObjective}</_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

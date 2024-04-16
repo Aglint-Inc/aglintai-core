@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AvatarWithName } from "./AvatarWithName";
@@ -14,6 +15,8 @@ export function FeedbackViewPopup({
   onClickPrev = {},
   onClickEditFeedback = {},
   isEditFeedbackVisible = true,
+  textEditFeedback = "Edit Feedback",
+  isNextPrevVisible = true,
 }) {
   return (
     <_Component
@@ -64,7 +67,7 @@ export function FeedbackViewPopup({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Objective"}
+            {"Feedback"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-600")}
@@ -88,48 +91,50 @@ export function FeedbackViewPopup({
               tag="div"
               {...onClickEditFeedback}
             >
-              {"Edit Feedback"}
+              {textEditFeedback}
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "wide_button-copy", "right-corner")}
-        tag="div"
-      >
+      {isNextPrevVisible ? (
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "button_primary",
-            "greay_btn",
-            "width-auto"
-          )}
+          className={_utils.cx(_styles, "wide_button-copy", "right-corner")}
           tag="div"
-          {...onClickPrev}
         >
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M2.60156%206.39844C2.38281%206.13281%202.38281%205.86719%202.60156%205.60156L7.10156%201.10156C7.36719%200.882812%207.63281%200.882812%207.89844%201.10156C8.11719%201.36719%208.11719%201.63281%207.89844%201.89844L3.79688%206L7.89844%2010.1016C8.11719%2010.3672%208.11719%2010.6328%207.89844%2010.8984C7.63281%2011.1172%207.36719%2011.1172%207.10156%2010.8984L2.60156%206.39844Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-          <_Builtin.Block tag="div">{"Previous"}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "button_primary",
+              "greay_btn",
+              "width-auto"
+            )}
+            tag="div"
+            {...onClickPrev}
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M2.60156%206.39844C2.38281%206.13281%202.38281%205.86719%202.60156%205.60156L7.10156%201.10156C7.36719%200.882812%207.63281%200.882812%207.89844%201.10156C8.11719%201.36719%208.11719%201.63281%207.89844%201.89844L3.79688%206L7.89844%2010.1016C8.11719%2010.3672%208.11719%2010.6328%207.89844%2010.8984C7.63281%2011.1172%207.36719%2011.1172%207.10156%2010.8984L2.60156%206.39844Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+            <_Builtin.Block tag="div">{"Previous"}</_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "button_primary",
+              "greay_btn",
+              "width-auto"
+            )}
+            tag="div"
+            {...onClickNext}
+          >
+            <_Builtin.Block tag="div">{"Next"}</_Builtin.Block>
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.39844%205.60156C9.61719%205.86719%209.61719%206.13281%209.39844%206.39844L4.89844%2010.8984C4.63281%2011.1172%204.36719%2011.1172%204.10156%2010.8984C3.88281%2010.6328%203.88281%2010.3672%204.10156%2010.1016L8.20312%206L4.10156%201.89844C3.88281%201.63281%203.88281%201.36719%204.10156%201.10156C4.36719%200.882813%204.63281%200.882813%204.89844%201.10156L9.39844%205.60156Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+          </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "button_primary",
-            "greay_btn",
-            "width-auto"
-          )}
-          tag="div"
-          {...onClickNext}
-        >
-          <_Builtin.Block tag="div">{"Next"}</_Builtin.Block>
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "embed_flex")}
-            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.39844%205.60156C9.61719%205.86719%209.61719%206.13281%209.39844%206.39844L4.89844%2010.8984C4.63281%2011.1172%204.36719%2011.1172%204.10156%2010.8984C3.88281%2010.6328%203.88281%2010.3672%204.10156%2010.1016L8.20312%206L4.10156%201.89844C3.88281%201.63281%203.88281%201.36719%204.10156%201.10156C4.36719%200.882813%204.63281%200.882813%204.89844%201.10156L9.39844%205.60156Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-          />
-        </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css_block")}
         value="%3Cstyle%3E%0A%2F*%20Hide%20scrollbar%20for%20Chrome%2C%20Safari%20and%20Opera%20*%2F%0A.hide-scrollbar%3A%3A-webkit-scrollbar%20%7B%0A%20%20display%3A%20none%3B%0A%7D%0A%0A%2F*%20Hide%20scrollbar%20for%20IE%2C%20Edge%20and%20Firefox%20*%2F%0A.hide-scrollbar%7B%0A%20%20-ms-overflow-style%3A%20none%3B%20%20%2F*%20IE%20and%20Edge%20*%2F%0A%20%20scrollbar-width%3A%20none%3B%20%20%2F*%20Firefox%20*%2F%0A%7D%0A%3C%2Fstyle%3E"

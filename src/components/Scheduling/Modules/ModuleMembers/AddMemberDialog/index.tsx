@@ -67,9 +67,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
             ? 'Add Qualified Members'
             : 'Add Trainee Members'
         }
-        textPopupDescription={
-          'Select interview panel members from your team list.'
-        }
+        textPopupDescription={'Choose members from your team.'}
         isIcon={false}
         slotWidget={
           <MembersAutoComplete

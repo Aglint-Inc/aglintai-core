@@ -115,7 +115,7 @@ function Filters({ setFilteredInterviewer }) {
           height={42}
         />
         <FilterDropDown
-          title={'Qualified Module'}
+          title={'Qualified'}
           itemList={uniqueQualifiedModules}
           selectedItems={selectedQualifiedModule}
           setSelectedItems={setSelectedQualifiedModule}
@@ -127,7 +127,7 @@ function Filters({ setFilteredInterviewer }) {
           }
         />
         <FilterDropDown
-          title={'Training Module'}
+          title={'Training'}
           itemList={uniqueTrainingModules}
           selectedItems={selectedTrainingModule}
           setSelectedItems={setSelectedTrainingModule}

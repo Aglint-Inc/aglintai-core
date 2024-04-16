@@ -11,7 +11,7 @@ export function Instructions({
   onClickGotit = {},
   onClickClose = {},
   slotButton,
-  isHowWorkVisible = true,
+  isHowWorkVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1274")} tag="div">
@@ -35,13 +35,20 @@ export function Instructions({
             {...onClickClose}
           />
         </_Builtin.Block>
+        <_Builtin.Block tag="div">
+          <_Builtin.Block tag="div">
+            {
+              "Enter instructions that will assist interviewers in navigating the interview process efficiently and fairly."
+            }
+          </_Builtin.Block>
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1278")}
           tag="div"
         >
           {isHowWorkVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1276")}
+              className={_utils.cx(_styles, "div-block-1276", "hide")}
               tag="div"
             >
               <_Builtin.Block

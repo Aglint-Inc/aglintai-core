@@ -83,6 +83,11 @@
   padding-left: 16px;
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -122,6 +127,14 @@
   background-color: #edf7ff;
 }
 
+.div-block-1276.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
 .div-block-1277 {
   display: flex;
   justify-content: flex-start;
@@ -135,10 +148,6 @@
 }
 
 .text-grey_600.hide {
-  display: none;
-}
-
-.hide {
   display: none;
 }
 
@@ -170,6 +179,10 @@
 
 .text-blue-500.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
 }
 
 .div-block-1279 {

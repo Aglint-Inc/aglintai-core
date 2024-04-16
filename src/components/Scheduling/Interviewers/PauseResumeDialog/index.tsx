@@ -332,12 +332,10 @@ function PauseResumeDialog({
                 <ConfirmationPopup
                   textPopupTitle={
                     pauseResumeDialog.type === 'addQualifiedModule'
-                      ? 'Add to Qualified Module.'
-                      : 'Add to Training Module.'
+                      ? 'Add to Qualified'
+                      : 'Add to Training'
                   }
-                  textPopupDescription={
-                    'Pick a module from the list to add interviewer to the module.'
-                  }
+                  textPopupDescription={'Pick a module from the list to add.'}
                   isIcon={false}
                   slotWidget={
                     <Autocomplete

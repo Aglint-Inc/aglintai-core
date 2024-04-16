@@ -132,7 +132,7 @@ export function InterviewerDetail({
             className={_utils.cx(_styles, "module_title_button")}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Interview Modules"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Qualified"}</_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-760")}
               tag="div"
@@ -197,7 +197,7 @@ export function InterviewerDetail({
               className={_utils.cx(_styles, "module_title_button")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Modules in training"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Training"}</_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-760")}
                 tag="div"
