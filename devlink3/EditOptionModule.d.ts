@@ -11,4 +11,6 @@ declare function EditOptionModule(props: {
   isEditVisible?: Types.Visibility.VisibilityConditions;
   isRescheduleVisible?: Types.Visibility.VisibilityConditions;
   isCancelScheduleVisible?: Types.Visibility.VisibilityConditions;
+  onClickResendInvite?: Types.Devlink.RuntimeProps;
+  isResendInviteVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

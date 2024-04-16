@@ -74,6 +74,11 @@
   opacity: 0.8;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .text-red-600 {
   color: #cc3340;
 }
