@@ -4,9 +4,12 @@ import React from 'react';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 
-import { setFilter } from '../../filter-store';
+import { setFilter, useFilterCandidateStore } from '../../filter-store';
 
 function FilterSearchField() {
+  const textSearch = useFilterCandidateStore(
+    (state) => state.filter.textSearch,
+  );
   return (
     <>
       <UITextField
@@ -18,6 +21,7 @@ function FilterSearchField() {
           ),
         }}
         placeholder='Search by name'
+        value={textSearch}
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
