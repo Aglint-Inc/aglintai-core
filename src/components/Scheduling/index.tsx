@@ -27,6 +27,7 @@ import { Modules } from './Modules/Modules';
 import { fetchInterviewModules } from './Modules/queries/utils';
 import { setIsCreateDialogOpen } from './Modules/store';
 import MySchedule from './MySchedule';
+import SchedulingDashboard from './ScheduledDashobard';
 import SchedulingSettings from './Settings';
 import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
@@ -136,6 +137,8 @@ function SchedulingMainComp() {
                     ['admin', 'recruiter', 'scheduler'],
                   )
                 )
+              ) : tab === 'dashboard' ? (
+                <SchedulingDashboard />
               ) : (
                 ''
               )
