@@ -108,10 +108,8 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
               key={i}
               isRoleVisible={false}
               textName={
-                getFullName(
-                  schedule.coordinator.first_name,
-                  schedule.coordinator.last_name,
-                ) + `${item.email === recruiterUser.email ? ' ( You )' : ''}`
+                getFullName(item.first_name, item.last_name) +
+                `${item.email === recruiterUser.email ? ' ( You )' : ''}`
               }
               slotAvatar={
                 <MuiAvatar
