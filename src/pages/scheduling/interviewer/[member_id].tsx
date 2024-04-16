@@ -50,10 +50,7 @@ function InterviewerPage() {
   } else
     return (
       <>
-        <Seo
-          title={`${recruiter.name} | Interviewer`}
-          description='AI for People Products'
-        />
+        <Seo title={`Interviewer`} description='AI for People Products' />
         <PageLayout
           onClickBack={{
             onClick: () => {

@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <>
       <Seo
-        title={`${recruiter.name} | Jobs`}
+        title={`Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <IntegrationProvider>

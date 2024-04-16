@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
@@ -13,12 +13,11 @@ import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationPr
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function Hoc() {
-  const { recruiter } = useAuthDetails();
 
   return (
     <>
       <Seo
-        title={`${recruiter.name} | Jobs`}
+        title={`Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>

@@ -7,11 +7,9 @@ import { PageLayout } from '@/devlink2';
 import Seo from '@/src/components/Common/Seo';
 import Integrations from '@/src/components/Integrations';
 import RequestNew from '@/src/components/Integrations/RequestNewPopUp';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 function IntegrationsPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const { recruiter } = useAuthDetails();
 
   function close() {
     setIsOpen(false);
@@ -19,7 +17,7 @@ function IntegrationsPage() {
   return (
     <>
       <Seo
-        title={`${recruiter.name} | Integrations`}
+        title={`Integrations`}
         description='AI for People Products'
       />
       <PageLayout

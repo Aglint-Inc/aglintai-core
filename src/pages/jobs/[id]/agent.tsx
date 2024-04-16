@@ -5,7 +5,6 @@ import { Breadcrum, PageLayout } from '@/devlink2';
 import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider, {
@@ -13,11 +12,10 @@ import JobDashboardProvider, {
 } from '@/src/context/JobDashboard';
 
 const JobAgentPage = () => {
-  const { recruiter } = useAuthDetails();
   return (
     <>
       <Seo
-        title={`${recruiter.name} | Jobs`}
+        title={`Jobs`}
         description='AI for People Products'
       />
       <JobPostFormProvider>

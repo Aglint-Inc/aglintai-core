@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
@@ -11,12 +11,11 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
 function Hoc() {
-  const { recruiter } = useAuthDetails();
 
   return (
     <>
       <Seo
-        title={`${recruiter.name} | Jobs`}
+        title={`Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>

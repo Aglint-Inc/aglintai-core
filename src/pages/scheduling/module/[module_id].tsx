@@ -61,7 +61,7 @@ function ModuleMembersComp() {
     isLoading: fetchingModule,
     isFetching,
   } = useModuleAndUsers();
-  const { recruiterUser, recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
@@ -104,7 +104,7 @@ function ModuleMembersComp() {
   return (
     <>
       <Seo
-        title={`${recruiter.name} | Scheduling`}
+        title={`Scheduling`}
         description='AI Powered Talent Development Platform.'
       />
       <PageLayout
