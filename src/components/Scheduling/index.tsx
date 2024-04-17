@@ -226,7 +226,7 @@ const InterviewerModule = ({
             <Stack>
               <EmptyState
                 slotIcons={<Icon height='60' width='80' variant='EmptyState' />}
-                textDescription={'No Interview Modules'}
+                textDescription={'No interview types found.'}
               />
             </Stack>
           )}

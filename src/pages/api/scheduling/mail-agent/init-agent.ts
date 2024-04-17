@@ -29,7 +29,6 @@ import {
 } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
-import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 import {
   convertDateFormatToDayjs,
   log_task_progress,
@@ -39,7 +38,7 @@ import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const {
+    let {
       cand_email,
       filter_json_id,
       interviewer_name,
@@ -58,6 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('missing fields');
     }
 
+    cand_email = 'dileepwert@gmail.com';
     const cand_details = await fetchCandDetails({
       filter_json_id,
       candidate_email: cand_email,
@@ -80,7 +80,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_time_zone,
       candidate_time_zone: cand_details.filter_json.user_tz,
     });
-    const status: SchedulingProgressStatusType = 'not scheduled';
 
     // delete previous chat hitory of that candidate email email
     // testing purpose only
@@ -95,7 +94,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         application_id: cand_details.application_id,
         job_id: cand_details.job_id,
         candidate_email: cand_email,
-        scheduling_progress: status,
         chat_history: [
           {
             type: 'assistant',
@@ -152,7 +150,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
 const getInitialEmailTemplate = ({
   candidate_name,
   company_name,
@@ -163,18 +160,18 @@ const getInitialEmailTemplate = ({
   candidate_time_zone,
 }) => {
   return (
-    `Congratulations, ${candidate_name}! Your resume has passed our initial screening for the ${job_role} position at ${company_name}.` +
-    `Impressive qualifications! Let's schedule your interview.\n` +
-    `Please let me know your availability from the following date range (${organizer_time_zone}) :` +
-    `${start_date}` +
-    `- ${end_date}.\n` +
-    `Reply to this email with your preferred date and time.\n` +
+    `<p>Hi ${candidate_name},</p>` +
+    `<p>Congratulations! Your resume has passed our initial screening for the ${job_role} position at ${company_name}. Impressive qualifications! Let's schedule your interview.</p>` +
+    `<p>Please let me know your availability from the following date range :</p>` +
+    `<p>${start_date} - ${end_date} (${organizer_time_zone}).</p>` +
+    `<p>Reply to this email with your preferred date and time (${candidate_time_zone}).</p>` +
     `${
       candidate_time_zone
         ? ''
-        : `Also to make sure we find an interview time that works well for you, could you tell us your general location (city, state)?\n`
+        : `<p>Also, to make sure we find an interview time that works well for you, could you tell us your general location (city, state)?</p>`
     }` +
-    `I'll confirm the interview details promptly. Excited to discuss your potential role at ${company_name}. Any questions? Feel free to reach out.`
+    `<p>I'll confirm the interview details promptly. Excited to discuss your potential role at ${company_name}. Any questions? Feel free to reach out.</p>` +
+    `<p>Best regards,<br>Your Name</p>`
   );
 };
 

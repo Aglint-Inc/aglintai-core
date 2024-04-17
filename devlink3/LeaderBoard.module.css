@@ -101,6 +101,10 @@
   line-height: 24px;
 }
 
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
 .div-block-1473 {
   display: flex;
   justify-content: flex-start;
