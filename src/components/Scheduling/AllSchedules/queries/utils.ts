@@ -32,3 +32,17 @@ export const getPaginationDB = async ({
     toast.error('Error fetching interview data');
   }
 };
+
+export const addScheduleActivity = async ({
+  schedule_id,
+  title,
+  filter_id,
+}: {
+  schedule_id: string;
+  title: string;
+  filter_id?: string;
+}) => {
+  await supabase
+    .from('interview_schedule_activity')
+    .insert({ schedule_id, title, filter_id });
+};
