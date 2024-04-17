@@ -104,6 +104,7 @@ export * from "./JobCards";
 export * from "./JobDashboard";
 export * from "./JobDashboardTopRight";
 export * from "./JobDetailBlock";
+export * from "./JobsBanner";
 export * from "./LeaderBoard";
 export * from "./LeaderBoardCard";
 export * from "./LearnHowAshby";

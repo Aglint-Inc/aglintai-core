@@ -23,6 +23,7 @@
 
 .candidate_cell {
   position: relative;
+  z-index: 2;
 
   display: flex;
   width: 100%;

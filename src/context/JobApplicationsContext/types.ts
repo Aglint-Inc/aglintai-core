@@ -44,7 +44,7 @@ export type JobApplication = Applications & {
     id: AssessmentResult['id'];
   })[];
   schedule: Partial<InterviewScheduleTypeDB>;
-  panel: Partial<ModuleType>;
+  interview_session_meetings: Partial<InterviewScheduleTypeDB>;
   emailValidity?: {
     isFetching: boolean;
     isValidEmail: boolean;
