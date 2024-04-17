@@ -289,6 +289,21 @@
   margin-top: 20px;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .im-close-btn {
   padding: 4px;
   border-radius: 3px;
@@ -379,4 +394,8 @@
   align-items: center;
 
   background-color: white;
+}
+
+.fixed-btn-wrap.hide {
+  display: none;
 }
