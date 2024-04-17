@@ -283,8 +283,12 @@ const FormBody = ({
           className='JobApplicationAddManuallyPhoneInput'
           sx={{
             '& .react-tel-input .form-control': {
-              height: '50px !important',
+              height: '39px !important',
               font: 'inherit',
+              '&::placeholder': {
+                opacity: 0.6,
+                fontSize: '14px',
+              },
             },
           }}
         >

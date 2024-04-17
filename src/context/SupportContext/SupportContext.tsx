@@ -2,6 +2,7 @@
 // import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -337,8 +338,10 @@ const SupportProvider = ({ children }) => {
       }
     });
   };
+
+  const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
   useEffect(() => {
-    if (recruiter?.id) {
+    if (recruiter?.id && isSupportEnabled) {
       getAllAssignee(
         recruiter.name === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_NAME,
       ).then((data) => {

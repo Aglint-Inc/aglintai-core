@@ -256,3 +256,6 @@ export type InterviewerSessionRelation =
 
 export type SubTaskProgress =
   Database['public']['Tables']['sub_task_progress']['Row'];
+
+export type InterviewScheduleActivityTypeDb =
+  Database['public']['Tables']['interview_schedule_activity']['Row'];

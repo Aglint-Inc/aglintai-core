@@ -32,4 +32,9 @@ declare function JobDashboard(props: {
   textScoreCount?: React.ReactNode;
   isScoring?: Types.Visibility.VisibilityConditions;
   slotScoringLoader?: Types.Devlink.Slot;
+  onClickTopMatch?: Types.Devlink.RuntimeProps;
+  onClickGoodMatch?: Types.Devlink.RuntimeProps;
+  onClickAverageMatch?: Types.Devlink.RuntimeProps;
+  onClickBelowAverage?: Types.Devlink.RuntimeProps;
+  onClickNotaMatch?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

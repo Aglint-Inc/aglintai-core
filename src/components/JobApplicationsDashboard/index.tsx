@@ -146,7 +146,7 @@ const JobApplicationComponent = () => {
   }, [upShift, downShift, rightShift, leftShift]);
   return (
     <>
-      <DndProvider backend={HTML5Backend}>
+      <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
           isWarningVisible={
             job.status == 'published' && (!job.jd_json || !job.description)
@@ -218,16 +218,46 @@ const JobApplicationComponent = () => {
             />
           }
         />
-        <CustomDragLayer
-          {...useMousePosition()}
-          applicationLimit={applicationLimit}
-        />
-      </DndProvider>
+      </DNDLayerSwitcher>
       <AddCandidates
         openImportCandidates={openImportCandidates}
         setOpenImportCandidates={setOpenImportCandidates}
       />
     </>
+  );
+};
+
+const DNDLayerSwitcher = ({
+  applicationLimit,
+  children,
+}: {
+  applicationLimit: CountJobs;
+  children: React.JSX.Element;
+}) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+  } = useJobApplications();
+  if (list.size === 0) return <>{children}</>;
+  return <DNDLayer applicationLimit={applicationLimit}>{children}</DNDLayer>;
+};
+
+const DNDLayer = ({
+  applicationLimit,
+  children,
+}: {
+  applicationLimit: CountJobs;
+  children: React.JSX.Element;
+}) => {
+  return (
+    <DndProvider backend={HTML5Backend}>
+      {children}
+      <CustomDragLayer
+        {...useMousePosition()}
+        applicationLimit={applicationLimit}
+      />
+    </DndProvider>
   );
 };
 
@@ -365,6 +395,7 @@ const ApplicationTable = ({
             gridTemplateColumns: '25% 15% 15% 20% 25%',
           },
         }}
+        isResumeScoreVisible={true}
         slotAllInterviewCard={applicantsList}
         isSchedulerTable={false}
         isCheckboxVisible={true}
@@ -692,7 +723,7 @@ const NewJobDetailsTabs = () => {
   );
 };
 
-const JobTab = ({ section }: { section: JobApplicationSections }) => {
+const DroppableJobTabs = ({ section }: { section: JobApplicationSections }) => {
   const { setActionProps, actionVisibilities } = useJobApplications();
   const handleOpen = useCallback(() => {
     setActionProps({
@@ -718,6 +749,24 @@ const JobTab = ({ section }: { section: JobApplicationSections }) => {
   ) : (
     <SectionCard ref={null} section={section} isOver={false} canDrop={false} />
   );
+};
+
+const JobTab = ({ section }: { section: JobApplicationSections }) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+  } = useJobApplications();
+  if (list.size === 0)
+    return (
+      <SectionCard
+        ref={null}
+        section={section}
+        isOver={false}
+        canDrop={false}
+      />
+    );
+  return <DroppableJobTabs section={section} />;
 };
 
 const SectionCard = forwardRef(

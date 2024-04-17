@@ -1277,6 +1277,45 @@ export type Database = {
           },
         ]
       }
+      interview_schedule_activity: {
+        Row: {
+          created_at: string
+          filter_id: string | null
+          id: string
+          schedule_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          filter_id?: string | null
+          id?: string
+          schedule_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          filter_id?: string | null
+          id?: string
+          schedule_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_interview_schedule_activity_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_schedule_activity_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_session: {
         Row: {
           break_duration: number | null
@@ -1650,7 +1689,7 @@ export type Database = {
           assignee: string[]
           created_at: string
           created_by: string
-          end_date: string | null
+          due_date: string | null
           id: string
           name: string
           recruiter_id: string | null
@@ -1665,7 +1704,7 @@ export type Database = {
           assignee: string[]
           created_at?: string
           created_by: string
-          end_date?: string | null
+          due_date?: string | null
           id?: string
           name: string
           recruiter_id?: string | null
@@ -1680,7 +1719,7 @@ export type Database = {
           assignee?: string[]
           created_at?: string
           created_by?: string
-          end_date?: string | null
+          due_date?: string | null
           id?: string
           name?: string
           recruiter_id?: string | null
@@ -2426,7 +2465,6 @@ export type Database = {
           created_at: string
           filter_json_id: string | null
           job_id: string
-          scheduling_progress: string | null
           sub_task_id: string | null
           time_zone: string | null
         }
@@ -2438,7 +2476,6 @@ export type Database = {
           created_at?: string
           filter_json_id?: string | null
           job_id: string
-          scheduling_progress?: string | null
           sub_task_id?: string | null
           time_zone?: string | null
         }
@@ -2450,7 +2487,6 @@ export type Database = {
           created_at?: string
           filter_json_id?: string | null
           job_id?: string
-          scheduling_progress?: string | null
           sub_task_id?: string | null
           time_zone?: string | null
         }
@@ -3726,6 +3762,7 @@ export type Database = {
           candfiles: Json
           assres: Json
           schedule: Json
+          interview_session_meetings: Json
           fil_res: number
         }[]
       }
@@ -4043,7 +4080,7 @@ export type Database = {
         | "in_progress"
         | "completed"
         | "closed"
-        | "not started"
+        | "not_started"
       task_type_enum: "schedule" | "training"
       template_type:
         | "cognitive"

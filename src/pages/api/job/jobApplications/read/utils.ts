@@ -274,8 +274,8 @@ const rpcDataFormatter = (
   unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {
-    // (curr.job_app as unknown as JobApplication).panel =
-    //   curr.panel as unknown as JobApplication['panel'];
+    (curr.job_app as unknown as JobApplication).interview_session_meetings =
+      curr.interview_session_meetings as unknown as JobApplication['interview_session_meetings'];
     (curr.job_app as unknown as JobApplication).schedule =
       curr.schedule as unknown as JobApplication['schedule'];
     (curr.job_app as unknown as JobApplication).candidates =
