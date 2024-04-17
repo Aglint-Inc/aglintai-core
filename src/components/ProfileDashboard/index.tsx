@@ -7,7 +7,7 @@ import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   ButtonPrimaryRegular,
@@ -21,6 +21,7 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
+import { DatabaseEnums } from '@/src/types/customSchema';
 import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -61,9 +62,35 @@ type PasswordFormFields = {
   password: FormValues;
   confirmPassword: FormValues;
 };
+
+const navTabs: {
+  label: string;
+  route: string;
+  roles?: DatabaseEnums['user_roles'][];
+}[] = [
+  {
+    label: 'Your Details',
+    route: 'user_detail',
+  },
+  {
+    label: 'Change Email',
+    route: 'change_email',
+    roles: ['admin'],
+  },
+  {
+    label: 'Password Update',
+    route: 'password_update',
+  },
+];
+
 const ProfileDashboard = () => {
-  const { userDetails, handleUpdateProfile, recruiterUser, handleUpdateEmail } =
-    useAuthDetails();
+  const {
+    userDetails,
+    handleUpdateProfile,
+    recruiterUser,
+    handleUpdateEmail,
+    isAllowed,
+  } = useAuthDetails();
   const userMail = userDetails.user.email;
   const router = useRouter();
   const initialFormValues: FormValues = {
@@ -81,7 +108,7 @@ const ProfileDashboard = () => {
     options: null,
     modal: false,
   };
-  const initalProfileFormFields: FormFields = {
+  const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
       value: recruiterUser.first_name,
@@ -151,19 +178,26 @@ const ProfileDashboard = () => {
   });
 
   const [profile, setProfile] = React.useState<FormFields>(
-    initalProfileFormFields,
+    initialProfileFormFields,
   );
   const [email, setEmail] = React.useState(initialEmail);
   const [password, setPassword] = React.useState(initialPassword);
   const [passwordChange, setPasswordChange] = React.useState(false);
+  const [currTab, setCurrTab] = useState<
+    'user_detail' | 'change_email' | 'password_update'
+  >('user_detail');
+  // let currTab: 'user_detail' | 'change_email' | 'password_update' =
+  //   'user_detail';
+  // if (router.query?.tab === 'Change Email') {
+  //   currTab = 'Change Email';
+  // } else if (router.query?.tab === 'Change password') {
+  //   currTab = 'Change password';
+  // }
 
-  let currTab: 'User Detail' | 'Change Email' | 'Change password' =
-    'User Detail';
-  if (router.query?.update === 'Change Email') {
-    currTab = 'Change Email';
-  } else if (router.query?.update === 'Change password') {
-    currTab = 'Change password';
-  }
+  useEffect(() => {
+    if (router.query?.tab)
+      setCurrTab(router.query?.tab as unknown as typeof currTab);
+  }, [router.query?.tab]);
 
   const handleValidatePassword = () => {
     if (
@@ -264,7 +298,7 @@ const ProfileDashboard = () => {
       <UserProfile
         slotInfo={
           <>
-            {currTab === 'User Detail' && (
+            {currTab === 'user_detail' && (
               <UserDetails
                 isWarningVisible={isError}
                 slotWarning={
@@ -337,7 +371,7 @@ const ProfileDashboard = () => {
                 }}
               />
             )}
-            {currTab === 'Change Email' && (
+            {currTab === 'change_email' && (
               <>
                 <Dialog
                   open={email.email.modal}
@@ -390,7 +424,7 @@ const ProfileDashboard = () => {
               </>
             )}
             <>
-              {currTab === 'Change password' && (
+              {currTab === 'password_update' && (
                 <>
                   <Dialog
                     open={password.password.modal}
@@ -450,36 +484,21 @@ const ProfileDashboard = () => {
         // slotPreferenceForm={<>fjerknferjkn</>}
         slotNavSublink={
           <>
-            <NavSublink
-              isActive={currTab === 'User Detail'}
-              onClickNav={{
-                onClick: () => {
-                  router.query.update = 'User Detail';
-                  router.push(router);
-                },
-              }}
-              textLink='Your Details'
-            />
-            <NavSublink
-              isActive={currTab === 'Change Email'}
-              onClickNav={{
-                onClick: () => {
-                  router.query.update = 'Change Email';
-                  router.push(router);
-                },
-              }}
-              textLink='Change Email'
-            />
-            <NavSublink
-              isActive={currTab === 'Change password'}
-              onClickNav={{
-                onClick: () => {
-                  router.query.update = 'Change password';
-                  router.push(router);
-                },
-              }}
-              textLink='Password Update'
-            />
+            {navTabs
+              .filter((item) => (item.roles ? isAllowed(item.roles) : true))
+              .map((item) => (
+                <NavSublink
+                  key={item.route}
+                  isActive={currTab === item.route}
+                  onClickNav={{
+                    onClick: () => {
+                      router.query.tab = item.route;
+                      router.push(router);
+                    },
+                  }}
+                  textLink={item.label}
+                />
+              ))}
           </>
         }
       />
