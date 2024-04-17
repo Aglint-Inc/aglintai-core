@@ -23,6 +23,7 @@ import {
   SocialsType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+import { featureFlag } from '@/src/utils/Constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -50,7 +51,10 @@ export interface ContextValue {
     user_id: string;
     data: Database['public']['Tables']['recruiter_user']['Update'];
   }) => Promise<boolean>;
-  isAllowed: (role: Database['public']['Enums']['user_roles'][]) => boolean;
+  isAllowed: (
+    roles: Database['public']['Enums']['user_roles'][],
+    flags?: featureFlag[],
+  ) => boolean;
   allowAction: <T extends Function | ReactNode>(
     func: T,
     role: Database['public']['Enums']['user_roles'][],
@@ -273,9 +277,13 @@ const AuthProvider = ({ children }) => {
   };
 
   // role based access
-  const isAllowed: ContextValue['isAllowed'] = (role) => {
+  const isAllowed: ContextValue['isAllowed'] = (roles, flags) => {
     if (recruiterUser) {
-      return role.includes(recruiterUser.role);
+      if (flags?.length)
+        for (let item of flags) {
+          if (!posthog.isFeatureEnabled(item)) return false;
+        }
+      return roles.includes(recruiterUser.role);
     }
     return false;
   };

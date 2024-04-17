@@ -5,32 +5,41 @@ import React from 'react';
 import { SubLinkSubMenu, SublinkTab } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
+import { featureFlag } from '@/src/utils/Constants';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 // import { settingsItems } from './utils';
-
+const tabs: {
+  text: string;
+  roles?: Database['public']['Enums']['user_roles'][];
+  flag?: featureFlag[];
+}[] = [
+  {
+    text: 'dashboard',
+    roles: ['admin'],
+    flag: [featureFlag.isSchedulingDashboardEnabled],
+  },
+  { text: 'my schedules' },
+  { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
+  { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
+  { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
+  { text: 'interview modules', roles: ['interviewer'] },
+  {
+    text: 'settings',
+  },
+];
 function SubNav() {
   const router = useRouter();
   const { isAllowed } = useAuthDetails();
-  const tabs: {
-    text: string;
-    roles?: Database['public']['Enums']['user_roles'][];
-  }[] = [
-    // { text: 'dashboard', roles: ['admin'] },
-    { text: 'my schedules' },
-    { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
-    { text: 'interview modules', roles: ['interviewer'] },
-    {
-      text: 'settings',
-      roles: ['admin', 'recruiter', 'interviewer', 'scheduler'],
-    },
-  ];
+
   return (
     <>
       {tabs
-        .filter((item) => (item.roles ? isAllowed(item.roles) : true))
+        .filter((item) => {
+          return item.roles || item.flag
+            ? isAllowed(item.roles, item.flag || [])
+            : true;
+        })
         .map(({ text: item }) => (
           <SublinkTab
             key={item}
