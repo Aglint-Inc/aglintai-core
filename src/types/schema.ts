@@ -1650,7 +1650,7 @@ export type Database = {
           assignee: string[]
           created_at: string
           created_by: string
-          end_date: string | null
+          due_date: string | null
           id: string
           name: string
           recruiter_id: string | null
@@ -1665,7 +1665,7 @@ export type Database = {
           assignee: string[]
           created_at?: string
           created_by: string
-          end_date?: string | null
+          due_date?: string | null
           id?: string
           name: string
           recruiter_id?: string | null
@@ -1680,7 +1680,7 @@ export type Database = {
           assignee?: string[]
           created_at?: string
           created_by?: string
-          end_date?: string | null
+          due_date?: string | null
           id?: string
           name?: string
           recruiter_id?: string | null
@@ -2426,7 +2426,6 @@ export type Database = {
           created_at: string
           filter_json_id: string | null
           job_id: string
-          scheduling_progress: string | null
           sub_task_id: string | null
           time_zone: string | null
         }
@@ -2438,7 +2437,6 @@ export type Database = {
           created_at?: string
           filter_json_id?: string | null
           job_id: string
-          scheduling_progress?: string | null
           sub_task_id?: string | null
           time_zone?: string | null
         }
@@ -2450,7 +2448,6 @@ export type Database = {
           created_at?: string
           filter_json_id?: string | null
           job_id?: string
-          scheduling_progress?: string | null
           sub_task_id?: string | null
           time_zone?: string | null
         }
@@ -3726,6 +3723,7 @@ export type Database = {
           candfiles: Json
           assres: Json
           schedule: Json
+          interview_session_meetings: Json
           fil_res: number
         }[]
       }
@@ -4043,7 +4041,7 @@ export type Database = {
         | "in_progress"
         | "completed"
         | "closed"
-        | "not started"
+        | "not_started"
       task_type_enum: "schedule" | "training"
       template_type:
         | "cognitive"

@@ -2,6 +2,7 @@
 // pages/api/sendgridWebhook.js
 
 import axios from 'axios';
+import dayjs from 'dayjs';
 import formidable from 'formidable';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -11,6 +12,7 @@ import { EmailAgentId } from '@/src/components/Tasks/utils';
 import {
   CandidateType,
   InterviewFilterJsonType,
+  InterviewMeetingTypeDb,
   InterviewScheduleTypeDB,
   InterviewSession,
   JobApplcationDB,
@@ -54,6 +56,9 @@ type AgentPayloadType = {
     interview_sessions: InterviewSession[];
     sub_task_id: string;
     candidate_id: string;
+    organizer_name: string;
+    interview_meetings: InterviewMeetingTypeDb[];
+    meeting_summary: string;
   };
 };
 
@@ -176,6 +181,7 @@ export const fetchCandidateDetails = async (
     start_date: string;
     session_ids: string[];
     recruiter_id: string;
+    organizer_name: string;
   };
 
   const sessions = supabaseWrap(
@@ -184,15 +190,47 @@ export const fetchCandidateDetails = async (
       .select()
       .in('id', filter_json.session_ids),
   );
+
+  const meetings = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_meeting')
+      .select()
+      .in('session_id', filter_json.session_ids),
+  );
+  const meet_status = meetings[0].status;
+
+  if (meet_status === 'completed') {
+    // meeting completed
+    return null;
+  }
+
   let plan_summary = '';
-  sessions.forEach((sess, idx) => {
-    if (sess.session_type === 'debrief') return;
-    plan_summary +=
-      `Session ${idx + 1}. ${sess.name}\n` +
-      `- Duration ${sess.session_duration} ` +
-      `- meeting place ${sess.schedule_type} ` +
-      `- meeting break ${sess.break_duration} \n\n`;
-  });
+  let meeting_summary = '';
+
+  if (meet_status === 'waiting' || meet_status === 'cancelled') {
+    sessions.forEach((sess, idx) => {
+      if (sess.session_type === 'debrief') return;
+      plan_summary +=
+        `Session ${idx + 1}. ${sess.name}\n` +
+        `- Duration ${sess.session_duration} ` +
+        `- meeting place ${sess.schedule_type} ` +
+        `- meeting break ${sess.break_duration} \n\n`;
+    });
+  } else if (meet_status === 'confirmed') {
+    meetings.forEach((m, idx) => {
+      let sess = sessions.find((s) => s.id === m.session_id);
+      meeting_summary +=
+        `Meeting ${idx + 1}. ${sess.name}\n` +
+        `Meeting Date and time ${dayjs(m.start_time)
+          .tz(filter_json.user_tz)
+          .format('h a dddd DD MMMM')}` +
+        `- Duration ${sess.session_duration} ` +
+        `- meeting place ${sess.schedule_type} ` +
+        `- meeting link ${m.meeting_link} ` +
+        `- meeting break ${sess.break_duration} \n\n`;
+    });
+  }
+
   const agent_payload: AgentPayloadType = {
     history: cand_rec.chat_history,
     payload: {
@@ -206,7 +244,7 @@ export const fetchCandidateDetails = async (
       company_id: job.recruiter_id,
       job_id: job.id,
       schedule_id: cand_rec.interview_filter_json.schedule_id,
-      cand_application_status: cand_rec.scheduling_progress,
+      cand_application_status: meetings[0].status,
       candidate_time_zone: filter_json.user_tz,
       interv_plan_summary: plan_summary,
       application_id: cand_rec.application_id,
@@ -216,6 +254,9 @@ export const fetchCandidateDetails = async (
       candidate_id:
         cand_rec.interview_filter_json.interview_schedule.applications
           .candidates.id,
+      organizer_name: filter_json.organizer_name ?? job.company,
+      interview_meetings: meetings,
+      meeting_summary,
     },
   };
 

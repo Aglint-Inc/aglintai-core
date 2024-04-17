@@ -9,9 +9,8 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-// import { InterviewMeetingTypeDb } from '@/src/types/data.types';
-import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 
+// import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 export type BookingApiParams = {
@@ -20,7 +19,7 @@ export type BookingApiParams = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { session_ids, cand_email } = req.body as BookingApiParams;
+  let { session_ids } = req.body as BookingApiParams;
   if (!session_ids) return res.status(400).send('missing fields');
   try {
     const meetings = supabaseWrap(
@@ -42,15 +41,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     await Promise.all(promises);
 
-    let status: SchedulingProgressStatusType = 'cancelled';
-    supabaseWrap(
-      await supabaseAdmin
-        .from('scheduling-agent-chat-history')
-        .update({
-          scheduling_progress: status,
-        })
-        .eq('candidate_email', cand_email),
-    );
     return res.status(200).send('ok');
   } catch (error) {
     console.log(error);
