@@ -201,7 +201,7 @@ const dummyMeeting: {
   };
 }[] = [
   {
-    meetingName: 'phase 1: AI Engineer',
+    meetingName: 'Phase 1: AI Engineer',
     candidate: {
       name: 'bilal saeed',
       image:
@@ -218,7 +218,7 @@ const dummyMeeting: {
     },
   },
   {
-    meetingName: 'phase 3: UI/UX',
+    meetingName: 'Phase 3: UI/UX',
     candidate: {
       name: 'yashal shahid',
       image:
@@ -234,7 +234,7 @@ const dummyMeeting: {
     },
   },
   {
-    meetingName: 'debriefing: Project STK',
+    meetingName: 'Debriefing: Project STK',
     candidate: {
       name: 'Arijit Singh',
       image:
@@ -271,7 +271,7 @@ const InterviewAnalytics = [
     interviews: 7,
   },
   {
-    id: 'sadasd',
+    id: 'sadasdasd',
     name: 'Mawra Hocane',
     photo:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGjcvb7tQ1G0aNagksojF8ZwF1gUOpMUPez2q_7YJASw&s',
