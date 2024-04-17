@@ -282,7 +282,7 @@ function SchedulingSettings({
             }
             // slotTimeZoneToggle={}
             slotWorkingHourDay={
-              <Stack>
+              <Stack direction={'column'} spacing={3} paddingBottom={'50px'}>
                 {!!workingHours.length &&
                   workingHours.map((day, i) => {
                     return (
@@ -354,7 +354,7 @@ function SchedulingSettings({
                     );
                   })}
 
-                <Stack direction={'column'} spacing={1}>
+                <Stack direction={'column'} spacing={1.8}>
                   <Stack direction={'column'} spacing={0.5}>
                     <Typography variant='body1' fontSize={'15px'}>
                       Break Hour
@@ -394,7 +394,9 @@ function SchedulingSettings({
                       )}
                     </Stack>
                     <Stack spacing={1} direction={'row'} alignItems={'center'}>
-                      <Typography width={120} fontSize={'14px'}>Break End Time</Typography>
+                      <Typography width={120} fontSize={'14px'}>
+                        Break End Time
+                      </Typography>
                       {selectedHourBreak.end_time && (
                         <SelectTime
                           value={dayjs()

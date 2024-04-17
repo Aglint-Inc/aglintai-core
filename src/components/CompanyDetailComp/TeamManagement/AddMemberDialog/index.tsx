@@ -1,4 +1,4 @@
-import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import { Autocomplete, Drawer, Stack } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -11,6 +11,7 @@ import {
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -241,7 +242,8 @@ const AddMember = ({
               })}
               slotForm={
                 <Stack spacing={2} component={'form'} autoComplete='on'>
-                  <TextField
+                  <UITextField
+                    label='First Name'
                     value={form.first_name ? form.first_name : ''}
                     name='first_name'
                     placeholder='First Name'
@@ -253,7 +255,21 @@ const AddMember = ({
                       setForm({ ...form, first_name: e.target.value });
                     }}
                   />
-                  <TextField
+                  {/* <TextField
+                    label='First Name'
+                    value={form.first_name ? form.first_name : ''}
+                    name='first_name'
+                    placeholder='First Name'
+                    error={formError.first_name}
+                    onFocus={() => {
+                      setFormError({ ...formError, first_name: false });
+                    }}
+                    onChange={(e) => {
+                      setForm({ ...form, first_name: e.target.value });
+                    }}
+                  /> */}
+                  <UITextField
+                    label='Last Name'
                     value={form.last_name ? form.last_name : ''}
                     name='last_name'
                     placeholder='Last Name'
@@ -261,7 +277,8 @@ const AddMember = ({
                       setForm({ ...form, last_name: e.target.value });
                     }}
                   />
-                  <TextField
+                  <UITextField
+                    label='Email'
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
@@ -273,7 +290,8 @@ const AddMember = ({
                       setForm({ ...form, email: e.target.value });
                     }}
                   />
-                  <TextField
+                  <UITextField
+                    label='Designation'
                     value={form.designation ? form.designation : ''}
                     name='designation'
                     placeholder='Designation'
@@ -286,6 +304,7 @@ const AddMember = ({
                     }}
                   />
                   <Autocomplete
+                    style={{ marginTop: '20px' }}
                     fullWidth
                     value={form.employment || ''}
                     onChange={(
@@ -306,7 +325,7 @@ const AddMember = ({
                     }
                     getOptionLabel={(option) => capitalize(option)}
                     renderInput={(params) => (
-                      <TextField
+                      <UITextField
                         {...params}
                         error={formError.employment}
                         onFocus={() => {
@@ -316,11 +335,13 @@ const AddMember = ({
                           });
                         }}
                         name='employment'
+                        label='Employment'
                         placeholder='Employment'
                       />
                     )}
                   />
                   <Autocomplete
+                    style={{ marginTop: '20px' }}
                     fullWidth
                     value={form.interview_location || ''}
                     onChange={(event: any, newValue: string | null) => {
@@ -335,7 +356,7 @@ const AddMember = ({
                       },
                     )}
                     renderInput={(params) => (
-                      <TextField
+                      <UITextField
                         {...params}
                         error={formError.interview_location}
                         onFocus={() => {
@@ -345,11 +366,13 @@ const AddMember = ({
                           });
                         }}
                         name='location'
+                        label='Location'
                         placeholder='Location'
                       />
                     )}
                   />
                   <Autocomplete
+                    style={{ marginTop: '20px' }}
                     fullWidth
                     value={form.department}
                     onChange={(event: any, newValue: string | null) => {
@@ -362,18 +385,20 @@ const AddMember = ({
                       capitalize(departments),
                     )}
                     renderInput={(params) => (
-                      <TextField
+                      <UITextField
                         {...params}
                         error={formError.department}
                         onFocus={() => {
                           setFormError({ ...formError, department: false });
                         }}
                         name='department'
+                        label='Department'
                         placeholder='Department'
                       />
                     )}
                   />
                   <Autocomplete
+                    style={{ marginTop: '20px' }}
                     fullWidth
                     value={form.role}
                     onChange={(event: any, newValue: string | null) => {
@@ -394,9 +419,10 @@ const AddMember = ({
                       ] as Database['public']['Enums']['agent_type'][]
                     ).map((role) => capitalize(role))}
                     renderInput={(params) => (
-                      <TextField
+                      <UITextField
                         {...params}
                         name='Role'
+                        label='Role'
                         placeholder='Role'
                         error={formError.role}
                         onFocus={() => {
@@ -408,7 +434,12 @@ const AddMember = ({
                 </Stack>
               }
               slotButtons={
-                <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
+                <Stack
+                  direction={'row'}
+                  justifyContent={'end'}
+                  width={'100%'}
+                  marginTop={'20px'}
+                >
                   <AUIButton
                     variant='outlined'
                     disabled={isDisable}

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { InviteTeamCard } from "./InviteTeamCard";
@@ -72,7 +73,7 @@ export function TeamInvite({
       </_Builtin.Block>
       {isFixedButtonVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "fixed-btn-wrap")}
+          className={_utils.cx(_styles, "fixed-btn-wrap", "hide")}
           tag="div"
         >
           <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>

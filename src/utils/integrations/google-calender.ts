@@ -44,6 +44,10 @@ export class GoogleCalender {
           decrypt_string(rec_relns.recruiter.service_json),
         );
       }
+      this.user_auth = await getUserCalAuth({
+        recruiter: this.auth_details.recruiter,
+        company_cred: this.auth_details.company_cred,
+      });
     } else {
       this.user_auth = await getUserCalAuth({
         recruiter: this.auth_details.recruiter,
