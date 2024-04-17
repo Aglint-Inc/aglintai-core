@@ -6,6 +6,7 @@ import { InterviewRatio } from "./InterviewRatio";
 import { NewInterviewDetail } from "./NewInterviewDetail";
 import { LeaderBoard } from "./LeaderBoard";
 import { InterviewModuleStats } from "./InterviewModuleStats";
+import { TrainingProgress } from "./TrainingProgress";
 import { InterviewStatic } from "./InterviewStatic";
 import * as _utils from "./utils";
 import _styles from "./SchedulingDashboard.module.css";
@@ -21,6 +22,7 @@ export function SchedulingDashboard({
   slotGridInterviewDetail,
   slotInterviewStatic,
   slotInterviewModuleStats,
+  slotTrainingProgress,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1459")} tag="div">
@@ -165,6 +167,9 @@ export function SchedulingDashboard({
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             {slotInterviewModuleStats ?? <InterviewModuleStats />}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotTrainingProgress ?? <TrainingProgress />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

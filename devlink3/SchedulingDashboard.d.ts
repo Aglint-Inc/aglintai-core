@@ -12,4 +12,5 @@ declare function SchedulingDashboard(props: {
   slotGridInterviewDetail?: Types.Devlink.Slot;
   slotInterviewStatic?: Types.Devlink.Slot;
   slotInterviewModuleStats?: Types.Devlink.Slot;
+  slotTrainingProgress?: Types.Devlink.Slot;
 }): React.JSX.Element;

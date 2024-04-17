@@ -3,7 +3,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   JobApplication,
-  ScoreJson
+  ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { EmailTemplateType } from '@/src/types/data.types';
@@ -29,7 +29,7 @@ export const formatTimeStamp = (timeStamp: string) => {
   if (timeStamp) {
     const date = new Date(timeStamp);
     const creationDate = `${date.getDate()} ${date.toLocaleString('default', {
-      month: 'short'
+      month: 'short',
     })} ${date.getFullYear()}`;
     const creationHour = date.getHours();
     const finalHour =
@@ -52,14 +52,17 @@ export type FilterParameter = {
   overall_score?: {
     min: number;
     max: number;
+    active: boolean;
   };
   interview_score?: {
     min: number;
     max: number;
+    active: boolean;
   };
   location?: {
     name: string;
     value: number;
+    active: boolean;
   };
 };
 
@@ -67,7 +70,7 @@ export const CANDIDATE_SORT: SortParameter['parameter'][] = [
   'overall_score',
   'interview_score',
   'full_name',
-  'applied_at'
+  'applied_at',
 ];
 
 export type SortParameter = {
@@ -82,7 +85,7 @@ export enum ApiLogState {
   // eslint-disable-next-line no-unused-vars
   SUCCESS = 'success',
   // eslint-disable-next-line no-unused-vars
-  PROCESSING = 'processing'
+  PROCESSING = 'processing',
 }
 
 export type ApplicantionProcessState =
@@ -104,7 +107,7 @@ export const processingFilter = (application: JobApplication) => {
 };
 
 export const getApplicationProcessState = (
-  application: JobApplication
+  application: JobApplication,
 ): ApplicantionProcessState => {
   if (
     application?.candidate_files?.resume_json ||
@@ -124,13 +127,13 @@ export const getApplicationProcessState = (
 
 export const candidateEmailValidity = (
   email: JobApplication['candidates']['email'],
-  candidate_id: JobApplication['candidate_id']
+  candidate_id: JobApplication['candidate_id'],
 ) => {
   const isFetching = email ? email === candidate_id : false;
   if (isFetching) {
     return {
       isFetching,
-      isValidEmail: false
+      isValidEmail: false,
     };
   }
   return {
@@ -138,8 +141,8 @@ export const candidateEmailValidity = (
     isValidEmail:
       email.trim() !== '' &&
       /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g.test(
-        email.trim()
-      )
+        email.trim(),
+      ),
   };
 };
 
@@ -184,7 +187,7 @@ export const getUpdateParameterName = (str: string) => {
 
 export const getScreeningStatus = (
   status_emails_sent: JobApplication['status_emails_sent'],
-  phone_screening: JobApplication['phone_screening']
+  phone_screening: JobApplication['phone_screening'],
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
@@ -223,7 +226,7 @@ export const getScreeningStatus = (
     isPending,
     isSubmitted,
     timeInfo,
-    screeningStatus
+    screeningStatus,
   };
 };
 
@@ -243,7 +246,7 @@ export const getAssessmentStatus = (
   assessment_results: {
     result: JobApplication['assessment_results'][number]['result'];
     created_at: JobApplication['assessment_results'][number]['created_at'];
-  }
+  },
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
@@ -278,12 +281,12 @@ export const getAssessmentStatus = (
     isPending,
     isSubmitted,
     timeInfo,
-    assessmentStatus
+    assessmentStatus,
   };
 };
 
 export const getDisqualificationStatus = (
-  status_emails_sent: JobApplication['status_emails_sent']
+  status_emails_sent: JobApplication['status_emails_sent'],
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
@@ -302,7 +305,7 @@ export const getDisqualificationStatus = (
     isPending,
     isSubmitted,
     timeInfo,
-    disqualificationStatus
+    disqualificationStatus,
   };
 };
 
@@ -319,15 +322,15 @@ const getTimeInfo = (timeStamp: string) => {
 export const getAllApplicationStatus = (
   status_emails_sent: JobApplication['status_emails_sent'],
   phone_screening: Parameters<typeof getScreeningStatus>[1],
-  assessment_results: Parameters<typeof getAssessmentStatus>[1]
+  assessment_results: Parameters<typeof getAssessmentStatus>[1],
 ) => {
   const screeningStatus = getScreeningStatus(
     status_emails_sent,
-    phone_screening
+    phone_screening,
   );
   const assessmentStatus = getAssessmentStatus(
     status_emails_sent,
-    assessment_results
+    assessment_results,
   );
   const disqualificationStatus = getDisqualificationStatus(status_emails_sent);
   return { screeningStatus, assessmentStatus, disqualificationStatus };
@@ -337,7 +340,7 @@ export const getReasonings = (reasoning: ScoreJson['reasoning']) => {
   const order: Array<keyof ScoreJson['reasoning']> = [
     'positions',
     'skills',
-    'schools'
+    'schools',
   ];
   return reasoning
     ? order.reduce((acc, curr) => {
@@ -355,7 +358,7 @@ export const getCandidateDetails = (
     | 'linkedin'
     | 'phone'
     | 'overview'
-    | 'duration'
+    | 'duration',
 ) => {
   const fallback = '---';
   let value = fallback;
@@ -366,7 +369,7 @@ export const getCandidateDetails = (
           ?.currentJobTitle
           ? capitalize(
               (application.candidate_files?.resume_json as any).basics
-                .currentJobTitle
+                .currentJobTitle,
             )
           : fallback;
       }
@@ -377,7 +380,7 @@ export const getCandidateDetails = (
           ?.location?.city
           ? capitalize(
               (application.candidate_files?.resume_json as any).basics.location
-                .city
+                .city,
             )
           : fallback;
       }
@@ -425,12 +428,12 @@ export const getCandidateDetails = (
   }
   return {
     valid: value !== fallback,
-    value
+    value,
   };
 };
 
 export const mapScoreToAnalysis = (
-  key: keyof ScoreJson['scores']
+  key: keyof ScoreJson['scores'],
 ): keyof ScoreJson['reasoning'] => {
   switch (key) {
     case 'skills':
@@ -449,7 +452,7 @@ export const analysisRatings = (score: number) => {
       color: '#228F67',
       high: true,
       medium: false,
-      low: false
+      low: false,
     };
   else if (score > 33)
     return {
@@ -457,7 +460,7 @@ export const analysisRatings = (score: number) => {
       color: '#ED8F1C',
       high: false,
       medium: true,
-      low: false
+      low: false,
     };
   else
     return {
@@ -465,6 +468,6 @@ export const analysisRatings = (score: number) => {
       color: '#D93F4C',
       high: false,
       medium: false,
-      low: true
+      low: true,
     };
 };

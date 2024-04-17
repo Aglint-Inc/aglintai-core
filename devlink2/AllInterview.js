@@ -20,6 +20,7 @@ export function AllInterview({
   slotCheckbox,
   isCheckboxVisible = false,
   propsGrid = {},
+  isResumeScoreVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
@@ -90,12 +91,7 @@ export function AllInterview({
                     {slotCheckbox}
                   </_Builtin.Block>
                 ) : null}
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Candidate"}
-                </_Builtin.Block>
+                <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
@@ -105,12 +101,7 @@ export function AllInterview({
                 )}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
-                  {"Status"}
-                </_Builtin.Block>
+                <_Builtin.Block tag="div">{"Status"}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(
@@ -122,14 +113,23 @@ export function AllInterview({
               >
                 <_Builtin.Block tag="div">{"Duration"}</_Builtin.Block>
               </_Builtin.Block>
+              {isResumeScoreVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "allinterview_header_cell")}
+                  id={_utils.cx(
+                    _styles,
+                    "w-node-_1206b53c-3245-8e51-7784-7c98c4fc8df1-c14c1a99"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{"Resume Score"}</_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
               <_Builtin.Block
                 className={_utils.cx(_styles, "allinterview_header_cell")}
                 tag="div"
               >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "fw-semibold")}
-                  tag="div"
-                >
+                <_Builtin.Block tag="div">
                   {"Interview Progress"}
                 </_Builtin.Block>
               </_Builtin.Block>
@@ -138,12 +138,7 @@ export function AllInterview({
                   className={_utils.cx(_styles, "allinterview_header_cell")}
                   tag="div"
                 >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {"Job"}
-                  </_Builtin.Block>
+                  <_Builtin.Block tag="div">{"Job"}</_Builtin.Block>
                 </_Builtin.Block>
               ) : null}
             </_Builtin.Block>

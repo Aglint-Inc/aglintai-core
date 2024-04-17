@@ -1,0 +1,45 @@
+.div-block-1524 {
+  position: relative;
+}
+
+.div-block-1523 {
+  display: flex;
+  width: 60px;
+  height: 28px;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #f7f9fb;
+}
+
+.div-block-1523.active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  background-color: #467b7c;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}

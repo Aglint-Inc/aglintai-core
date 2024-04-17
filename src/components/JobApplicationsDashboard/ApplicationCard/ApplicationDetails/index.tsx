@@ -221,6 +221,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
+  const { activeSections } = useJobApplications();
   const { interviewPlanEnabled } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
@@ -258,10 +259,15 @@ const NewJobApplicationSideDrawer = ({
   const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningPhoneCallEnabled',
   );
+  const isPhoneScreeningEnabled = activeSections.includes(
+    JobApplicationSections.SCREENING,
+  );
   return (
     <>
       <CandidateSideDrawer
-        isPhoneScreeningVisible={isPhoneScreeningPhoneCallEnabled}
+        isPhoneScreeningVisible={
+          isPhoneScreeningEnabled && isPhoneScreeningPhoneCallEnabled
+        }
         onClickPhoneScreening={{
           onClick: () => {
             setPhonePopUp(true);

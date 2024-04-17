@@ -12,6 +12,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 import InterviewMeetingAnalytic from './InterviewMeetingAnalytic';
 import LeaderBoardWidget from './LeaderBoardWidget';
+import MembersTrainingStatus from './MembersTrainingStatus';
 import YourScheduleMeetings from './YourScheduleMeetings';
 
 const SchedulingDashboardComp = () => {
@@ -96,6 +97,14 @@ const SchedulingDashboardComp = () => {
                   />
                 ))}
               </>
+            }
+          />
+        }
+        slotTrainingProgress={
+          <MembersTrainingStatus
+            members={dummyMembersTriningData}
+            onClickInterviewers={() =>
+              router.push(`${pageRoutes.SCHEDULING}?tab=interviewers`)
             }
           />
         }
@@ -326,5 +335,77 @@ const modulesAnalytics = [
       shadow: 1,
       reverseShadow: 2,
     },
+  },
+];
+
+const dummyMembersTriningData = [
+  {
+    name: 'Rahul',
+    photo: '',
+    moduleName: 'UI/UX',
+    role: 'UI/UX designer',
+    trainingStates: [
+      {
+        text: 'shadow',
+        state: true,
+      },
+      {
+        text: 'shadow',
+        state: true,
+      },
+      {
+        text: 'reverseShadow',
+        state: true,
+      },
+      {
+        text: 'reverseShadow',
+        state: false,
+      },
+    ] as { text: 'shadow' | 'reverseShadow'; state: boolean }[],
+  },
+  {
+    name: 'Rahul',
+    photo: '',
+    moduleName: 'AIML',
+    role: 'Junior Developer',
+    trainingStates: [
+      {
+        text: 'shadow',
+        state: true,
+      },
+      {
+        text: 'reverseShadow',
+        state: true,
+      },
+      {
+        text: 'reverseShadow',
+        state: false,
+      },
+    ] as { text: 'shadow' | 'reverseShadow'; state: boolean }[],
+  },
+  {
+    name: 'Harshvardhan Rane',
+    photo:
+      'https://bangaloremirror.indiatimes.com/thumb/msid-66697397,width-1200,height-900,resizemode-4/.jpg',
+    moduleName: 'STK',
+    role: 'Digital Marketing',
+    trainingStates: [
+      {
+        text: 'shadow',
+        state: true,
+      },
+      {
+        text: 'shadow',
+        state: false,
+      },
+      {
+        text: 'reverseShadow',
+        state: false,
+      },
+      {
+        text: 'reverseShadow',
+        state: false,
+      },
+    ] as { text: 'shadow' | 'reverseShadow'; state: boolean }[],
   },
 ];
