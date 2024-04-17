@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -5,72 +6,76 @@ import { PageLayout } from '@/devlink2';
 import { InterviewStatic, SchedulingDashboard } from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
-import InterviewDetailsByMonths from './InterviewDetailsByMonths';
+import InterviewMeetingAnalytic from './InterviewMeetingAnalytic';
 import LeaderBoardWidget from './LeaderBoardWidget';
 import YourScheduleMeetings from './YourScheduleMeetings';
 
 const SchedulingDashboardComp = () => {
   const router = useRouter();
-  
+
   return (
-    <PageLayout
-      slotBody={
-        <SchedulingDashboard
-          onClickCandidates={{
-            onClick: () =>
-              router.push(`${pageRoutes.SCHEDULING}?tab=candidates`),
-          }}
-          onClickInterviewTypes={{
-            onClick: () =>
-              router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`),
-          }}
-          onClickInterviewers={{
-            onClick: () =>
-              router.push(`${pageRoutes.SCHEDULING}?tab=interviewers`),
-          }}
-          onClickMySchedule={{
-            onClick: () =>
-              router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`),
-          }}
-          onClickScheduleSetting={{
-            onClick: () =>
-              router.push(
-                `${pageRoutes.SCHEDULING}?tab=settings&subtab=interviewLoad`,
-              ),
-          }}
-          slotFirstGrid={<YourScheduleMeetings meetings={dummyMeeting} />}
-          slotGridInterviewDetail={
-            <>
-              <InterviewDetailsByMonths
-                meetingData={dummyMeetingAnalyticsDetails}
-              />
-              <LeaderBoardWidget
-                interviewers={[
-                  {
-                    id: 'sadasd',
-                    name: 'tester',
-                    photo: '',
-                    title: 'tester',
-                    hours: 12,
-                    interviews: 5,
-                  },
-                ]}
-                filter='week'
-                setFilter={(x) => {
-                  x;
-                }}
-              />
-            </>
-          }
-          slotInterviewStatic={
-            <>
-              <InterviewStatic />
-              <InterviewStatic />
-            </>
-          }
-        />
-      }
-    />
+    <Stack>
+      <SchedulingDashboard
+        onClickCandidates={{
+          onClick: () => router.push(`${pageRoutes.SCHEDULING}?tab=candidates`),
+        }}
+        onClickInterviewTypes={{
+          onClick: () =>
+            router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`),
+        }}
+        onClickInterviewers={{
+          onClick: () =>
+            router.push(`${pageRoutes.SCHEDULING}?tab=interviewers`),
+        }}
+        onClickMySchedule={{
+          onClick: () =>
+            router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`),
+        }}
+        onClickScheduleSetting={{
+          onClick: () =>
+            router.push(
+              `${pageRoutes.SCHEDULING}?tab=settings&subtab=interviewLoad`,
+            ),
+        }}
+        slotFirstGrid={
+          <YourScheduleMeetings
+            meetings={dummyMeeting}
+            onClickViewSchedules={() =>
+              router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`)
+            }
+          />
+        }
+        slotGridInterviewDetail={
+          <>
+            <InterviewMeetingAnalytic
+              meetingData={dummyMeetingAnalyticsDetails}
+            />
+            <LeaderBoardWidget
+              interviewers={[
+                {
+                  id: 'sadasd',
+                  name: 'tester',
+                  photo: '',
+                  title: 'tester',
+                  hours: 12,
+                  interviews: 5,
+                },
+              ]}
+              filter='week'
+              setFilter={(x) => {
+                x;
+              }}
+            />
+          </>
+        }
+        slotInterviewStatic={
+          <>
+            <InterviewStatic />
+            <InterviewStatic />
+          </>
+        }
+      />
+    </Stack>
   );
 };
 
