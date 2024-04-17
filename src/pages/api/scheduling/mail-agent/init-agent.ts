@@ -56,6 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ) {
       return res.status(400).send('missing fields');
     }
+    cand_email = 'dileepwert@gmail.com';
 
     const cand_details = await fetchCandDetails({
       filter_json_id,
@@ -79,6 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_time_zone,
       candidate_time_zone: cand_details.filter_json.user_tz,
       organizer_name: cand_details.filter_json.organizer_name,
+      self_schedule_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}'>link</a>`,
     });
 
     // delete previous chat hitory of that candidate email email
@@ -159,13 +161,15 @@ const getInitialEmailTemplate = ({
   organizer_time_zone,
   candidate_time_zone,
   organizer_name,
+  self_schedule_link,
 }) => {
   return (
     `<p>Hi ${candidate_name},</p>` +
     `<p>Congratulations! Your resume has passed our initial screening for the ${job_role} position at ${company_name}. Impressive qualifications! Let's schedule your interview.</p>` +
     `<p>Please let me know your availability from the following date range :</p>` +
     `<p>${start_date} - ${end_date} (${organizer_time_zone}).</p>` +
-    `<p>Reply to this email with your preferred date and time (${candidate_time_zone}).</p>` +
+    `<p>reply to this email with your preferred date and time (${candidate_time_zone}).</p>` +
+    `<p>If you prefer to self schedule here's the ${self_schedule_link}.</p>` +
     `${
       candidate_time_zone
         ? ''
