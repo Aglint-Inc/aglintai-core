@@ -243,7 +243,6 @@ const AddMember = ({
               slotForm={
                 <Stack spacing={2} component={'form'} autoComplete='on'>
                   <UITextField
-                    label='First Name'
                     value={form.first_name ? form.first_name : ''}
                     name='first_name'
                     placeholder='First Name'
@@ -269,7 +268,6 @@ const AddMember = ({
                     }}
                   /> */}
                   <UITextField
-                    label='Last Name'
                     value={form.last_name ? form.last_name : ''}
                     name='last_name'
                     placeholder='Last Name'
@@ -278,7 +276,6 @@ const AddMember = ({
                     }}
                   />
                   <UITextField
-                    label='Email'
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
@@ -291,7 +288,6 @@ const AddMember = ({
                     }}
                   />
                   <UITextField
-                    label='Designation'
                     value={form.designation ? form.designation : ''}
                     name='designation'
                     placeholder='Designation'
