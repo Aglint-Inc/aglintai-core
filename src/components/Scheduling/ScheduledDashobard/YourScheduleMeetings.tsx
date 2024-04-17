@@ -72,7 +72,7 @@ const YourScheduleMeetings = ({
                   }
                   textCandidateName={capitalizeAll(item.candidate.name)}
                   textPlatformName={capitalizeAll(item.meetingClient.name)}
-                  textTitle={capitalizeAll(item.meetingName)}
+                  textTitle={item.meetingName}
                 />
               );
             })}
