@@ -57,7 +57,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('missing fields');
     }
 
-    cand_email = 'dileepwert@gmail.com';
     const cand_details = await fetchCandDetails({
       filter_json_id,
       candidate_email: cand_email,
@@ -185,11 +184,10 @@ export const sendEmailFromAgent = async ({
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
-    fromEmail:
-      //  'agent@ai.aglinthq.com',
-      process.env.NODE_ENV === 'development'
-        ? 'agent@parse.aglinthq.com'
-        : 'agent@ai.aglinthq.com',
+    fromEmail: 'agent@ai.aglinthq.com',
+    // process.env.NODE_ENV === 'development'
+    //   ? 'agent@parse.aglinthq.com'
+    //   : 'agent@ai.aglinthq.com',
     fromName: from_name,
     subject: `Interview for ${job_role} - ${candidate_name}`,
     text: mail_body,
