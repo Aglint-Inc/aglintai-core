@@ -15,7 +15,7 @@ function SchedulingMainPage() {
   );
 }
 
-SchedulingMainPage.getProvider = function getProvider(page) {
+SchedulingMainPage.privateProvider = function privateProvider(page) {
   return (
     <SchedulingProvider>
       <InterviewerContextProvider>{page}</InterviewerContextProvider>

@@ -19,13 +19,19 @@ import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
 
 const MyApp = ({ Component, pageProps }) => {
-  const getProvider = Component.getProvider ?? ((page) => page);
-  if (Component.getLayout) {
-    return Component.getLayout(
+  const provider =
+    Component.privateProvider ?? Component.publicProvider ?? ((page) => page);
+
+  if (Component.publicProvider) {
+    return (
       <>
         <PHProvider>
           <DevlinkMainProvider>
-            <Theme>{getProvider(<Component {...pageProps} />)}</Theme>
+            <Theme>
+              <QueryProvider>
+                {provider(<Component {...pageProps} />)}
+              </QueryProvider>
+            </Theme>
           </DevlinkMainProvider>
         </PHProvider>
       </>
@@ -45,7 +51,7 @@ const MyApp = ({ Component, pageProps }) => {
                       <JobsProvider>
                         <SupportProvider>
                           <AppLayout>
-                            {getProvider(<Component {...pageProps} />)}
+                            {provider(<Component {...pageProps} />)}
                           </AppLayout>
                         </SupportProvider>
                       </JobsProvider>
@@ -62,7 +68,7 @@ const MyApp = ({ Component, pageProps }) => {
 };
 
 MyApp.propTypes = {
-  window: PropTypes.func
+  window: PropTypes.func,
 };
 
 export default MyApp;

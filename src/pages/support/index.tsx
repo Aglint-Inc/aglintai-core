@@ -17,6 +17,6 @@ function SupportPage() {
 }
 
 export default SupportPage;
-// SupportPage.getProvider = (page) => {
+// SupportPage.privateProvider = (page) => {
 //   return <SupportProvider>{page}</SupportProvider>;
 // };

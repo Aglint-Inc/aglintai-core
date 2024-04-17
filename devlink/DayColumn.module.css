@@ -1,0 +1,156 @@
+.day_column {
+  background-color: white;
+}
+
+.day_title {
+  display: flex;
+  height: 58px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.text-xl {
+  font-size: 22px;
+  line-height: 1.27;
+}
+
+@media screen and (max-width: 767px) {
+  .text-xl {
+    font-size: 18px;
+  }
+}
+
+.fw-medium {
+  font-weight: 500;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-grey-800 {
+  color: var(--grey800-e42b2e06);
+}
+
+.text-xl.fw-semibold.text-grey-800.top-margin--8 {
+  margin-top: -8px;
+}
+
+.text-xl.fw-semibold.profile-titler {
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-xl.fw-semibold.profile-titler {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.fw-semibold.profile-titler {
+    margin-bottom: 20px;
+  }
+}
+
+.text-xl.fw-semibold.margin-bottom-16 {
+  margin-bottom: 6px;
+}
+
+.text-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
+.text-white {
+  color: white;
+}
+
+.text-xl.fw-semibold.inline-start {
+  display: inline;
+  margin-left: 5px;
+}
+
+.text-xl.fw-semibold.inline-end {
+  display: inline;
+}
+
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.text-xl.fw-semibold.text-grey-600.inline-start {
+  display: inline;
+  margin-left: 5px;
+}
+
+.color-black {
+  color: var(--black-0fdbd865);
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.text-xl.color-orange {
+  color: var(--yellow500-c095f0f1);
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+.text-grey-200 {
+  color: var(--grey200-9ba653f1);
+}
+
+@media screen and (max-width: 479px) {
+  .text-xl.text-grey-200.mobile-regular {
+    font-size: 14px;
+  }
+}
+
+.fw-light {
+  font-weight: 300;
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-capitalize {
+  text-transform: uppercase;
+}
+
+.slotavailabletmerage {
+  display: flex;
+  overflow: auto;
+  height: 464px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
+}
+
+#w-node-_2213d094-701d-dc61-2c7d-d4175817e7cc-5817e7cc {
+}

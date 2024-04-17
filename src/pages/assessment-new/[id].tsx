@@ -15,7 +15,7 @@ const AssessmentComponentPage = () => {
   );
 };
 
-AssessmentComponentPage.getProvider = function getProvider(page) {
+AssessmentComponentPage.privateProvider = function privateProvider(page) {
   return <JobsProvider>{page}</JobsProvider>;
 };
 

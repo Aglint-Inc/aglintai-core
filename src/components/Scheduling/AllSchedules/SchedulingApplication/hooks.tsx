@@ -739,18 +739,22 @@ const agentTrigger = async ({
       } as InitAgentBodyParams);
     } else if (type === 'phone_agent') {
       await axios.post(
+        // 'https://rested-logically-lynx.ngrok-free.app/api/create-phone-call',
         'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
         {
           begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
           interviewer_name: recruiter_user_name,
           from_phone_no: '+12512066348',
+          // to_phone_no: '+919482306657',
           to_phone_no: rec_user_phone.replace(' ', '').replace('-', ''),
-          retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
+          retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           filter_json_id: filterJsonId,
           cand_email: rec_user_email,
           // cand_email: sessionsWithPlan.application.candidates.email,
           sub_task_id: sub_task_id,
+          // cand_time_zone: 'America/Los_Angeles',
+          cand_time_zone: dayjs.tz.guess(),
         },
       );
     }

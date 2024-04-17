@@ -176,8 +176,8 @@ export const getCompWorkingDaysRange = (
   };
 
   const date_ranges: {
-    start_date: string;
-    end_date: string;
+    start_date: dayjs.Dayjs;
+    end_date: dayjs.Dayjs;
   }[] = [];
   let curr_day = dayjs(start_date);
   const end_day = dayjs(end_date);
@@ -190,8 +190,8 @@ export const getCompWorkingDaysRange = (
       );
       if (next_day.isSameOrBefore(end_day, 'day')) {
         date_ranges.push({
-          start_date: curr_day.format('DD/MM/YYYY'),
-          end_date: next_day.format('DD/MM/YYYY'),
+          start_date: curr_day,
+          end_date: next_day,
         });
       }
     }

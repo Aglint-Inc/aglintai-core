@@ -28,6 +28,7 @@ export interface interviewerDetailsType {
       start_date: string;
       end_date: string;
       isManual: boolean;
+      z;
     };
     training_status: 'qualified' | 'training';
     user_id: string;
@@ -61,7 +62,9 @@ function InterviewerPage() {
           slotTopbarLeft={
             <>
               <Breadcrum
-                textName={`${data.interviewer?.first_name} ${data.interviewer?.last_name || ''}`}
+                textName={`${data.interviewer?.first_name} ${
+                  data.interviewer?.last_name || ''
+                }`}
               />
             </>
           }
@@ -114,7 +117,7 @@ function InterviewerPage() {
     );
 }
 
-InterviewerPage.getProvider = function getProvider(page) {
+InterviewerPage.privateProvider = function privateProvider(page) {
   return (
     <InterviewerContextProvider>
       <SchedulingProvider>{page}</SchedulingProvider>

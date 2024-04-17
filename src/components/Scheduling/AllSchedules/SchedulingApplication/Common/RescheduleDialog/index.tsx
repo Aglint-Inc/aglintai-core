@@ -1,5 +1,4 @@
 import { Dialog } from '@mui/material';
-import axios from 'axios';
 
 import { ConfirmationPopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
@@ -12,7 +11,6 @@ import {
 } from '../../../store';
 import {
   setinitialSessions,
-  setIsScheduleNowOpen,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
@@ -54,13 +52,12 @@ function RescheduleDialog() {
           if (errFilterJson) throw new Error(errFilterJson.message);
         }
 
-        const { data, error: errMeet } = await supabase
+        const { error: errMeet } = await supabase
           .from('interview_meeting')
           .update({
             status: 'cancelled',
           })
-          .eq('id', selectedMeeting.id)
-          .select();
+          .eq('id', selectedMeeting.id);
         if (errMeet) {
           throw new Error(errMeet.message);
         }
@@ -83,12 +80,6 @@ function RescheduleDialog() {
         setIsCancelOpen(false);
         setIsRescheduleOpen(false);
         setSelectedSessionIds([selectedMeeting.session_id]);
-        setIsScheduleNowOpen(true);
-
-        if (data[0]?.meeting_json)
-          axios.post('/api/scheduling/v1/cancel_calender_event', {
-            calender_event: data[0]?.meeting_json,
-          });
       }
     } catch (e) {
       toast.error(e.message);

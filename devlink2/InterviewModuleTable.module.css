@@ -12,6 +12,8 @@
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+
+  border-top: 1px solid #e9ebed;
 }
 
 .header-body-sublink {

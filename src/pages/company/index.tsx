@@ -1,4 +1,3 @@
-
 import Seo from '@/src/components/Common/Seo';
 import CompanyDetailComp from '@/src/components/CompanyDetailComp';
 // import withRoleProtection from '@/src/HOC/RoleProtection';
@@ -6,10 +5,7 @@ import CompanyDetailComp from '@/src/components/CompanyDetailComp';
 function CompanyPage() {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <CompanyDetailComp />
     </>
   );

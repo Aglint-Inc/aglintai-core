@@ -48,14 +48,14 @@ function ConfirmDialog({
   const handleConfirmSlot = async () => {
     try {
       setSaving(true);
-      const selectedSessions = allScheduleOptions?.map((option) => {
+      const selectedSlot = allScheduleOptions?.map((option) => {
         return option.filter((opt) =>
           selectedSlots.includes(opt.slot_comb_id),
         )[0];
       });
 
       const bodyParams = {
-        candidate_plan: selectedSessions,
+        candidate_plan: selectedSlot,
         recruiter_id: schedule.recruiter.id,
         user_tz: dayjs.tz.guess(),
         candidate_email: schedule.candidate.email,
@@ -74,10 +74,10 @@ function ConfirmDialog({
           interview_meeting: {
             ...meeting.interview_meeting,
             status: 'confirmed',
-            start_time: selectedSessions[Number(ind)]?.sessions?.find(
+            start_time: selectedSlot[Number(ind)]?.sessions?.find(
               (ses) => ses.session_id === meeting.interview_meeting.session_id,
             )?.start_time,
-            end_time: selectedSessions[Number(ind)]?.sessions?.find(
+            end_time: selectedSlot[Number(ind)]?.sessions?.find(
               (ses) => ses.session_id === meeting.interview_meeting.session_id,
             )?.end_time,
           },
@@ -137,7 +137,9 @@ function ConfirmDialog({
                                 <OptionAvailable
                                   textTime={`${dayjs(ses.start_time).format(
                                     'hh:mm A',
-                                  )} - ${dayjs(ses.end_time).format('hh:mm A')}`}
+                                  )} - ${dayjs(ses.end_time).format(
+                                    'hh:mm A',
+                                  )}`}
                                   textTitle={ses.module_name}
                                   key={ind}
                                   isTitleVisible={true}

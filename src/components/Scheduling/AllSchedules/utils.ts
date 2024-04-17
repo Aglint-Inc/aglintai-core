@@ -7,7 +7,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
-
 export interface TimeSlot {
   startTime: string;
   endTime: string;
@@ -41,39 +40,40 @@ export const mailHandler = async ({
       .eq('id', rec_id);
     if (error) throw new Error(error.message);
 
-    if (data[0].email_template)
-      await axios
-        .post('/api/sendgrid', {
-          fromEmail: `messenger@aglinthq.com`,
-          fromName: 'Aglint',
-          email: 'admin@aglinthq.com' ?? mail,
-          subject: fillEmailTemplate(
-            data[0].email_template['candidate_availability_request'].subject,
-            {
-              company_name: data[0].name,
-              schedule_name: schedule_name,
-              first_name: candidate_name,
-              last_name: '',
-              job_title: position,
-            },
-          ),
-          text: fillEmailTemplate(
-            data[0].email_template['candidate_availability_request'].body,
-            {
-              company_name: data[0].name,
-              schedule_name: schedule_name,
-              first_name: candidate_name,
-              last_name: '',
-              job_title: position,
-              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
-            },
-          ),
-        })
-        .then((res) =>
-          res.status === 200 && res.data.data === 'Email sent'
-            ? true
-            : toast.error('Unable to send mail. Please try again later.'),
-        );
+    if (data[0].email_template) {
+      const res = await axios.post('/api/sendgrid', {
+        fromEmail: `messenger@aglinthq.com`,
+        fromName: 'Aglint',
+        email: 'admin@aglinthq.com' ?? mail,
+        subject: fillEmailTemplate(
+          data[0].email_template['candidate_availability_request'].subject,
+          {
+            company_name: data[0].name,
+            schedule_name: schedule_name,
+            first_name: candidate_name,
+            last_name: '',
+            job_title: position,
+          },
+        ),
+        text: fillEmailTemplate(
+          data[0].email_template['candidate_availability_request'].body,
+          {
+            company_name: data[0].name,
+            schedule_name: schedule_name,
+            first_name: candidate_name,
+            last_name: '',
+            job_title: position,
+            pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+          },
+        ),
+      });
+
+      if (res.status === 200 && res.data.data === 'Email sent') {
+        return true;
+      } else {
+        toast.error('Unable to send mail. Please try again later.');
+      }
+    }
   } catch (e) {
     toast.error('Unable to send mail. Please try again later.');
   }

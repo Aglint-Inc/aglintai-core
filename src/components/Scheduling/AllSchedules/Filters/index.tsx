@@ -1,6 +1,6 @@
-import FilterCordinator from '../../Modules/Filters/FilterCreatedBy';
 import { useFilterCandidateStore } from '../filter-store';
 import { FilterType } from '../store';
+import FilterCordinator from './FilterCordinator';
 import FilterInterviewModule from './FilterInterviewModule';
 import FilterJob from './FilterJob';
 import FilterScheduleType from './FilterScheduleType';

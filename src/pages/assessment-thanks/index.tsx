@@ -12,7 +12,6 @@ function AssessmentThanksPage() {
 
 export default AssessmentThanksPage;
 
-AssessmentThanksPage.getLayout = (page) => {
+AssessmentThanksPage.publicProvider = (page) => {
   return <>{page}</>;
 };
-

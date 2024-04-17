@@ -7,16 +7,13 @@ import JobDashboardProvider from '@/src/context/JobDashboard';
 const ProfileScoreJobPage = () => {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <JobProfileScoreDashboard />
     </>
   );
 };
 
-ProfileScoreJobPage.getProvider = function getProvider(page) {
+ProfileScoreJobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>{page}</JobApplicationProvider>

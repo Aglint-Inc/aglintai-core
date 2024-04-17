@@ -6,10 +6,7 @@ import JobDashboardProvider from '@/src/context/JobDashboard';
 const ScreeningPage = () => {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <ScreeningDashboardComp />
     </>
   );
@@ -17,6 +14,6 @@ const ScreeningPage = () => {
 
 export default ScreeningPage;
 
-ScreeningPage.getProvider = function getProvider(page) {
+ScreeningPage.privateProvider = function privateProvider(page) {
   return <JobDashboardProvider>{page}</JobDashboardProvider>;
 };

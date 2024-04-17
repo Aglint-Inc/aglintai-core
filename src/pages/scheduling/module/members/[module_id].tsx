@@ -14,7 +14,7 @@ const ModuleMembers = () => {
   );
 };
 
-ModuleMembers.getProvider = function getProvider(page) {
+ModuleMembers.privateProvider = function privateProvider(page) {
   return <SchedulingProvider>{page}</SchedulingProvider>;
 };
 export default ModuleMembers;

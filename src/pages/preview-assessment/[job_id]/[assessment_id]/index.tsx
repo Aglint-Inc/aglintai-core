@@ -11,6 +11,6 @@ function AssessmentPage() {
   );
 }
 export default AssessmentPage;
-AssessmentPage.getLayout = (page) => {
+AssessmentPage.publicProvider = (page) => {
   return <>{page}</>;
 };

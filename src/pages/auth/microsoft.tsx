@@ -10,7 +10,7 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => {
+Page.publicProvider = (page) => {
   return <>{page}</>;
 };
 

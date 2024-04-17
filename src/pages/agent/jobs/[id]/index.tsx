@@ -23,7 +23,7 @@ function AgentPage() {
 
 export default AgentPage;
 
-AgentPage.getProvider = function getProvider(page) {
+AgentPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobApplicationProvider>{page}</JobApplicationProvider>

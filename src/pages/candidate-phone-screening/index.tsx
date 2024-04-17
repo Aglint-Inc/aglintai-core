@@ -18,7 +18,7 @@ const Screening = () => {
   );
 };
 
-Screening.getLayout = (page) => {
+Screening.publicProvider = (page) => {
   return <>{page}</>;
 };
 

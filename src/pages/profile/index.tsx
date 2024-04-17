@@ -14,7 +14,7 @@ const ProfilePage = () => {
   );
 };
 
-// JobPage.getProvider = function getProvider(page) {
+// JobPage.privateProvider = function privateProvider(page) {
 //   return <JobApplicationProvider>{page}</JobApplicationProvider>;
 // };
 

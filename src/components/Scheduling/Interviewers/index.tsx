@@ -110,7 +110,11 @@ const InterviewTab = () => {
                                     (ele) => ele,
                                   )?.length > 2 && (
                                     <TextWithBg
-                                      text={`+${member.qualified_module_names.filter((ele) => ele).length - 2}`}
+                                      text={`+${
+                                        member.qualified_module_names.filter(
+                                          (ele) => ele,
+                                        ).length - 2
+                                      }`}
                                     />
                                   )}
                                 </>
@@ -142,7 +146,11 @@ const InterviewTab = () => {
                                   (ele) => ele,
                                 )?.length > 2 && (
                                   <TextWithBg
-                                    text={`+${member.training_module_names.filter((ele) => ele).length - 2}`}
+                                    text={`+${
+                                      member.training_module_names.filter(
+                                        (ele) => ele,
+                                      ).length - 2
+                                    }`}
                                   />
                                 )}
                               </ShowCode.When>
@@ -150,7 +158,9 @@ const InterviewTab = () => {
                             </ShowCode>
                           </>
                         }
-                        textName={`${member.rec_user.first_name} ${member.rec_user.last_name || ''}`}
+                        textName={`${member.rec_user.first_name} ${
+                          member.rec_user.last_name || ''
+                        }`}
                         textRole={member.rec_user?.position}
                       />
                     </Stack>
@@ -163,7 +173,7 @@ const InterviewTab = () => {
     </ShowCode>
   );
 };
-// InterviewTab.getProvider = function getProvider(page) {
+// InterviewTab.privateProvider = function privateProvider(page) {
 //   return <InterviewerContextProvider>{page}</InterviewerContextProvider>;
 // };
 export default InterviewTab;

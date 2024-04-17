@@ -13,7 +13,6 @@ import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationPr
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 function Hoc() {
-
   return (
     <>
       <Seo
