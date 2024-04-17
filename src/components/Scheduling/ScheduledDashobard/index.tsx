@@ -1,8 +1,13 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { InterviewStatic, SchedulingDashboard } from '@/devlink3';
+import {
+  InterviewModuleStats,
+  InterviewModuleStatsCard,
+  InterviewStatic,
+  SchedulingDashboard,
+} from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import InterviewMeetingAnalytic from './InterviewMeetingAnalytic';
@@ -11,7 +16,9 @@ import YourScheduleMeetings from './YourScheduleMeetings';
 
 const SchedulingDashboardComp = () => {
   const router = useRouter();
-
+  const [leaderBoardFilter, setLeaderBoardFilter] = useState<
+    'week' | 'month' | 'year'
+  >('week');
   return (
     <Stack>
       <SchedulingDashboard
@@ -50,28 +57,47 @@ const SchedulingDashboardComp = () => {
               meetingData={dummyMeetingAnalyticsDetails}
             />
             <LeaderBoardWidget
-              interviewers={[
-                {
-                  id: 'sadasd',
-                  name: 'tester',
-                  photo: '',
-                  title: 'tester',
-                  hours: 12,
-                  interviews: 5,
-                },
-              ]}
-              filter='week'
+              interviewers={InterviewAnalytics}
+              filter={leaderBoardFilter}
               setFilter={(x) => {
-                x;
+                setLeaderBoardFilter(x);
               }}
             />
           </>
         }
         slotInterviewStatic={
           <>
-            <InterviewStatic />
-            <InterviewStatic />
+            {analyticsData.map((item, index) => (
+              <InterviewStatic
+                key={index}
+                textDesc={item.description}
+                textHeader={item.header}
+                textNumber={item.ratio}
+                textSmallNumber={item.ratioOutOf}
+              />
+            ))}
           </>
+        }
+        slotInterviewModuleStats={
+          <InterviewModuleStats
+            onClickViewAllModules={{
+              onClick: () =>
+                router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`),
+            }}
+            slotInterviewModuleStatsCard={
+              <>
+                {modulesAnalytics.map((item, index) => (
+                  <InterviewModuleStatsCard
+                    key={index}
+                    textInterviewModule={item.name}
+                    textQualifiedMember={item.qualified}
+                    textTraineeShadow={item.trainee.shadow}
+                    textTraineeReverse={item.trainee.reverseShadow}
+                  />
+                ))}
+              </>
+            }
+          />
         }
       />
     </Stack>
@@ -175,12 +201,16 @@ const dummyMeeting: {
   };
 }[] = [
   {
-    candidate: { name: 'tester', image: '' },
+    meetingName: 'phase 1: AI Engineer',
+    candidate: {
+      name: 'bilal saeed',
+      image:
+        'https://static.toiimg.com/thumb/msid-94814723,width-400,resizemode-4/94814723.jpg',
+    },
     meetingClient: {
       name: 'google',
-      icon: '',
+      icon: 'https://www.brandeis.edu/its/_files/google-meet-logo.png',
     },
-    meetingName: 'test Meesad',
 
     time: {
       start: '2024-04-16T10:00:00+05:30',
@@ -188,29 +218,113 @@ const dummyMeeting: {
     },
   },
   {
-    candidate: { name: 'tester', image: '' },
+    meetingName: 'phase 3: UI/UX',
+    candidate: {
+      name: 'yashal shahid',
+      image:
+        'https://img.wynk.in/unsafe/200x200/filters:no_upscale():strip_exif():format(jpg)/http://s3.ap-south-1.amazonaws.com/discovery-prod-zion/zion/1670397991178-yashal_shahid.jpg',
+    },
     meetingClient: {
       name: 'google',
-      icon: '',
+      icon: 'https://www.brandeis.edu/its/_files/google-meet-logo.png',
     },
-    meetingName: 'test Meesad',
-
     time: {
-      start: '2024-04-16T10:00:00+05:30',
-      end: '2024-04-16T10:30:00+05:30',
+      start: '2024-04-18T12:00:00+05:30',
+      end: '2024-04-18T13:30:00+05:30',
     },
   },
   {
-    candidate: { name: 'tester', image: '' },
-    meetingClient: {
-      name: 'google',
-      icon: '',
+    meetingName: 'debriefing: Project STK',
+    candidate: {
+      name: 'Arijit Singh',
+      image:
+        'https://img.wynk.in/unsafe/200x200/filters:no_upscale():strip_exif():format(jpg)/http://s3.ap-south-1.amazonaws.com/discovery-prod-zion/zion/1696452544852-Arijit_Singh.png',
     },
-    meetingName: 'test Meesad',
-
+    meetingClient: {
+      name: 'zoom',
+      icon: 'https://dashboard.snapcraft.io/site_media/appmedia/2020/03/icon.png',
+    },
     time: {
-      start: '2024-04-16T10:00:00+05:30',
-      end: '2024-04-16T10:30:00+05:30',
+      start: '2024-04-20T18:00:00+05:30',
+      end: '2024-04-16T19:00:00+05:30',
+    },
+  },
+];
+
+const InterviewAnalytics = [
+  {
+    id: 'sadasdsad',
+    name: 'Dhanush',
+    photo:
+      'https://www.indiancinemagallery.net/wp-content/uploads/2017/12/Dhanush.jpg',
+    title: 'Team Lead (AIML)',
+    hours: 15.5,
+    interviews: 20,
+  },
+  {
+    id: 'sadasdsad',
+    name: 'Hamza Abbasi',
+    photo:
+      'https://i.tribune.com.pk/media/images/hamza-2-01593509071-0/hamza-2-01593509071-0.jpg',
+    title: 'Full Stack Developer',
+    hours: 8.5,
+    interviews: 7,
+  },
+  {
+    id: 'sadasd',
+    name: 'Mawra Hocane',
+    photo:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGjcvb7tQ1G0aNagksojF8ZwF1gUOpMUPez2q_7YJASw&s',
+    title: 'STK (FL)',
+    hours: 7,
+    interviews: 5,
+  },
+];
+
+const analyticsData = [
+  {
+    header: 'Something',
+    description: 'this is some description.',
+    ratio: 4.5,
+    ratioOutOf: 'out of 5',
+  },
+  {
+    header: 'Something',
+    description: 'this is some description.',
+    ratio: 4.5,
+    ratioOutOf: 'out of 5',
+  },
+  {
+    header: 'Something',
+    description: 'this is some description.',
+    ratio: 4.5,
+    ratioOutOf: 'out of 5',
+  },
+];
+
+const modulesAnalytics = [
+  {
+    name: ' AI ML',
+    qualified: 5,
+    trainee: {
+      shadow: 2,
+      reverseShadow: 1,
+    },
+  },
+  {
+    name: 'UI/UX',
+    qualified: 10,
+    trainee: {
+      shadow: 5,
+      reverseShadow: 3,
+    },
+  },
+  {
+    name: 'STK',
+    qualified: 4,
+    trainee: {
+      shadow: 1,
+      reverseShadow: 2,
     },
   },
 ];

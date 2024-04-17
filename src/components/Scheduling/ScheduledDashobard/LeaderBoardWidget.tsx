@@ -46,11 +46,14 @@ const LeaderBoardWidget = ({
       }}
       slotLeaderboardCard={
         <>
-          {interviewers.map((item) => (
+          {interviewers.map((item, index) => (
             <LeaderBoardCard
               key={item.id}
+              textCountNo={index + 1}
+              // textHour={}
+              // textInterview={}
               textName={capitalizeAll(item.name)}
-              textRole={capitalizeAll(item.title)}
+              textRole={item.title}
               slotImage={
                 <Avatar
                   src={item.photo}

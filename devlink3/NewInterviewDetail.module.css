@@ -74,6 +74,10 @@
   line-height: 24px;
 }
 
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
 .div-block-1499 {
   display: flex;
   overflow: auto;

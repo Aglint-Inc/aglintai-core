@@ -12,7 +12,10 @@ export function InterviewDetailPill({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1500")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "text-grey_600")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "text-grey_600", "width-80px")}
+        tag="div"
+      >
         {textMonth}
       </_Builtin.Block>
       <_Builtin.Block

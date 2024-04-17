@@ -90,6 +90,8 @@ export * from "./InterviewBreakCard";
 export * from "./InterviewDetailPill";
 export * from "./InterviewModuleCard";
 export * from "./InterviewModuleEmpty";
+export * from "./InterviewModuleStats";
+export * from "./InterviewModuleStatsCard";
 export * from "./InterviewPlan";
 export * from "./InterviewPlanCard";
 export * from "./InterviewRatio";

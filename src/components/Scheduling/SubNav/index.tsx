@@ -17,7 +17,9 @@ const tabs: {
   {
     text: 'dashboard',
     roles: ['admin'],
-    flag: [featureFlag.isSchedulingDashboardEnabled],
+    flag: [
+      // featureFlag.isSchedulingDashboardEnabled
+    ],
   },
   { text: 'my schedules' },
   { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
