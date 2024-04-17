@@ -1,26 +1,25 @@
 import { Dialog } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 
 import { CloseJobModal } from '@/devlink';
 import UITextField from '@/src/components/Common/UITextField';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { setIsDeleteModuleDialogOpen, useModulesStore } from '../../../store';
+import { QueryKeysInteviewModules } from '../../../queries/type';
+import { setIsArchiveDialogOpen, useModulesStore } from '../../../store';
 import { ModuleType } from '../../../types';
-import { deleteModuleById } from '../../../utils';
 
-function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
-  const router = useRouter();
-  const isDeleteModuleDialogOpen = useModulesStore(
-    (state) => state.isDeleteModuleDialogOpen,
+function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
+  const isArchiveDialogOpen = useModulesStore(
+    (state) => state.isArchiveDialogOpen,
   );
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const deleteModule = async () => {
+  const archiveModule = async () => {
     if (!loading) {
       try {
         setLoading(true);
@@ -29,24 +28,44 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
           .select('*,interview_session!inner(*)')
           .eq('interview_session.module_id', editModule.id);
 
-        if (data.length === 0) {
-          const isdeleted = await deleteModuleById(editModule.id);
-          if (isdeleted) {
-            router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`);
-            toast.success('Module deleted successfully');
+        const isActiveMeeting = data.some(
+          (meet) => meet.start_time > new Date().toISOString(),
+        );
+
+        if (!isActiveMeeting) {
+          const { error } = await supabase
+            .from('interview_module')
+            .update({
+              is_archived: true,
+            })
+            .eq('id', editModule.id);
+          if (!error) {
+            const updatedEditModule = {
+              ...editModule,
+              is_archived: true,
+            } as ModuleType;
+            queryClient.setQueryData<ModuleType>(
+              QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+                moduleId: editModule.id,
+              }),
+              {
+                ...updatedEditModule,
+              },
+            );
+            toast.success('Module archived');
           } else {
             throw new Error();
           }
         } else {
           toast.warning(
-            'Cannot delete module, this module is tagged in some interview plan',
+            'Cannot archiving module, active schedules are present for this module',
           );
         }
       } catch {
-        toast.error('Error deleting user');
+        toast.error('Error archiving module');
       } finally {
         setLoading(false);
-        setIsDeleteModuleDialogOpen(false);
+        setIsArchiveDialogOpen(false);
       }
     } else {
       toast.warning('Please wait, till the ongoing process is complete');
@@ -58,7 +77,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
 
   const onClose = useCallback(() => {
     if (!loading) {
-      setIsDeleteModuleDialogOpen(false);
+      setIsArchiveDialogOpen(false);
       setTimeout(() => setValue(''), 400);
     } else {
       toast.warning('Please wait, till the ongoing process is complete');
@@ -66,18 +85,18 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   }, [loading]);
 
   return (
-    <Dialog open={isDeleteModuleDialogOpen} onClose={onClose}>
+    <Dialog open={isArchiveDialogOpen} onClose={onClose}>
       <CloseJobModal
-        textPopupTitle={`Delete`}
-        textWarning={`By clicking delete the module will be permanently deleted`}
-        textButton={'Delete'}
+        textPopupTitle={`Archive`}
+        textWarning={`By clicking archive the module will not be able to select in interview plan while scheduling`}
+        textButton={'Archive'}
         textJobTitle={moduleName}
         onClickCancel={{
           onClick: () => onClose(),
         }}
         onClickCloseJob={{
           onClick: () => {
-            if (editModule.id) deleteModule();
+            if (editModule.id) archiveModule();
           },
         }}
         textLocation={moduleDescription}
@@ -95,4 +114,4 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
   );
 }
 
-export default DeleteModuleDialog;
+export default ArchiveModuleDialog;

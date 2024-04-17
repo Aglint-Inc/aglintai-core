@@ -1096,6 +1096,7 @@ export type Database = {
           duration_available: Json | null
           id: string
           instructions: string | null
+          is_archived: boolean
           name: string
           recruiter_id: string
           settings: Json | null
@@ -1108,6 +1109,7 @@ export type Database = {
           duration_available?: Json | null
           id?: string
           instructions?: string | null
+          is_archived?: boolean
           name: string
           recruiter_id: string
           settings?: Json | null
@@ -1120,6 +1122,7 @@ export type Database = {
           duration_available?: Json | null
           id?: string
           instructions?: string | null
+          is_archived?: boolean
           name?: string
           recruiter_id?: string
           settings?: Json | null
@@ -4035,7 +4038,12 @@ export type Database = {
         | "failed"
         | "closed"
       task_agent_type: "call" | "email" | "job"
-      task_status: "pending" | "in_progress" | "completed" | "closed"
+      task_status:
+        | "pending"
+        | "in_progress"
+        | "completed"
+        | "closed"
+        | "not started"
       task_type_enum: "schedule" | "training"
       template_type:
         | "cognitive"

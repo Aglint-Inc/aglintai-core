@@ -2,12 +2,27 @@
   position: relative;
 }
 
+.div-block-1400.my-schedule {
+  padding: 16px 16px 16px 0px;
+}
+
 .div-block-1394 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+}
+
+.div-block-1394.gap-20 {
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.div-block-1394.gap-20.all-schedule {
+  position: relative;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .div-block-1402 {
@@ -18,6 +33,9 @@
 .div-block-1385 {
   display: flex;
   width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+
   border: 1px solid #e9ebed;
   border-radius: 10px;
 }
@@ -46,6 +64,10 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
+}
+
+.div-block-1393.radius-10 {
+  border-radius: 10px;
 }
 
 .div-block-1395 {
@@ -240,6 +262,11 @@
 .fw-semibold.plr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
 }
 
 .div-block-1391 {

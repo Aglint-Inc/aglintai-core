@@ -66,8 +66,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       application.public_jobs.recruiter_id,
     );
 
-    const { resMeetings, maxDurationInDays } =
-      await getInterviewSessionsMeetings(filterJson.session_ids);
+    const { resMeetings } = await getInterviewSessionsMeetings(
+      filterJson.session_ids,
+    );
 
     // console.log({
     //   session_ids: filterJson.session_ids,
@@ -117,7 +118,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter: recruiter,
       meetings: resMeetings,
       allSlots: allSlots,
-      numberOfDays: maxDurationInDays,
+      numberOfDays: allSlots[0].length,
     });
   } catch (error) {
     res.status(400).send(error.message);

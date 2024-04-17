@@ -96,6 +96,21 @@ export const deleteModuleById = async (id: string) => {
   const { error } = await supabase
     .from('interview_module')
     .delete()
+    .eq('id', id)
+    .limit(1);
+  if (error) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const unArchiveModuleById = async (id: string) => {
+  const { error } = await supabase
+    .from('interview_module')
+    .update({
+      is_archived: false,
+    })
     .eq('id', id);
   if (error) {
     return false;
@@ -103,6 +118,16 @@ export const deleteModuleById = async (id: string) => {
     return true;
   }
 };
+
+export function customSortModules(a, b) {
+  if (a.interview_modules.is_archived === b.interview_modules.is_archived) {
+    return 0;
+  } else if (a.is_archived) {
+    return 1;
+  } else {
+    return -1;
+  }
+}
 
 export const deleteRelationByUserId = async ({
   user_id,
