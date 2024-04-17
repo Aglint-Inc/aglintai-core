@@ -7,4 +7,5 @@ declare function CandidateSuccessPage(props: {
   textEmail?: React.ReactNode;
   onClickSupport?: Types.Devlink.RuntimeProps;
   slotCompanyLogo?: Types.Devlink.Slot;
+  textDesc?: React.ReactNode;
 }): React.JSX.Element;

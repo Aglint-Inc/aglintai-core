@@ -2,6 +2,7 @@
   position: relative;
 
   display: grid;
+  overflow: auto;
   width: 100%;
   min-height: 100vh;
   padding-top: 60px;
@@ -409,16 +410,6 @@
   grid-row-gap: 6px;
 }
 
-.information_blok {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
-
-  text-align: center;
-}
-
 .info_text_block {
   display: flex;
   flex-direction: row;
@@ -535,6 +526,4 @@
 }
 
 #w-node-_9e78fbea-a692-2915-95e1-0bbe38110f54-38110f47 {
-}
-#w-node-_9e78fbea-a692-2915-95e1-0bbe38110f55-38110f47 {
 }

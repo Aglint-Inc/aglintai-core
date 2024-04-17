@@ -7,6 +7,5 @@ declare function CandidateConfirmationPage(props: {
   onClickView?: Types.Devlink.RuntimeProps;
   textTitle?: React.ReactNode;
   slotCompanyLogo?: Types.Devlink.Slot;
-  isProceedButton?: Types.Visibility.VisibilityConditions;
-  onClickProceed?: Types.Devlink.RuntimeProps;
+  slotProceedButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

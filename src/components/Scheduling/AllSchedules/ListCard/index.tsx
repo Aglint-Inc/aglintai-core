@@ -27,6 +27,18 @@ function ListCardInterviewSchedule({
   isSelected?: boolean;
   isChecked?: boolean;
 }) {
+  const avatarStyles = isJobDasboard
+    ? {
+        width: '18px',
+        height: '18px',
+        fontSize: '12px',
+      }
+    : {
+        width: '100%',
+        height: '100%',
+        fontSize: '24px',
+      };
+
   return (
     <>
       <Stack
@@ -74,9 +86,9 @@ function ListCardInterviewSchedule({
                 )}
                 src={app.candidates.avatar}
                 variant={'circular'}
-                width={'18px'}
-                height={'18px'}
-                fontSize={'12px'}
+                width={avatarStyles.width}
+                height={avatarStyles.height}
+                fontSize={avatarStyles.fontSize}
               />
             </Stack>
           }

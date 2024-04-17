@@ -9,10 +9,9 @@ export function CandidateConfirmationPage({
   as: _Component = _Builtin.Block,
   slotCandidateCalender,
   onClickView = {},
-  textTitle = "Pick a date and time that suits you best for each day",
+  textTitle = "Select a date and time that works best for you.",
   slotCompanyLogo,
-  isProceedButton = false,
-  onClickProceed = {},
+  slotProceedButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "candidate_page")} tag="div">
@@ -41,7 +40,7 @@ export function CandidateConfirmationPage({
           tag="div"
         >
           {
-            'Please select a suitable date and time slot for each day. Once you\'ve made your selections, click "Proceed" to confirm your schedule.'
+            "Available slots are organized by day. Each slot includes the total time required for your interview, including breaks."
           }
         </_Builtin.Block>
         <_Builtin.Block
@@ -59,24 +58,6 @@ export function CandidateConfirmationPage({
         >
           {slotCandidateCalender ?? <CandidateCalender />}
         </_Builtin.Block>
-        {isProceedButton ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "button_block")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "div-block-906",
-                "cursor-pointer-copy"
-              )}
-              tag="div"
-              {...onClickProceed}
-            >
-              <_Builtin.Block tag="div">{"Proceed"}</_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "copyright_block")}
