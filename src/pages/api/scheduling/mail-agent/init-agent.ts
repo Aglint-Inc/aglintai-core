@@ -79,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .format('DD MMMM'),
       organizer_time_zone,
       candidate_time_zone: cand_details.filter_json.user_tz,
+      organizer_name: cand_details.filter_json.organizer_name,
     });
 
     // delete previous chat hitory of that candidate email email
@@ -158,6 +159,7 @@ const getInitialEmailTemplate = ({
   end_date,
   organizer_time_zone,
   candidate_time_zone,
+  organizer_name,
 }) => {
   return (
     `<p>Hi ${candidate_name},</p>` +
@@ -171,7 +173,7 @@ const getInitialEmailTemplate = ({
         : `<p>Also, to make sure we find an interview time that works well for you, could you tell us your general location (city, state)?</p>`
     }` +
     `<p>I'll confirm the interview details promptly. Excited to discuss your potential role at ${company_name}. Any questions? Feel free to reach out.</p>` +
-    `<p>Best regards,<br>Your Name</p>`
+    `<p>Best regards,<br>${organizer_name}</p>`
   );
 };
 
@@ -219,6 +221,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     start_date: string;
     session_ids: string[];
     recruiter_id: string;
+    organizer_name: string;
   };
 
   const geo = cand_basic_info.geolocation as GeoPoint | null;
