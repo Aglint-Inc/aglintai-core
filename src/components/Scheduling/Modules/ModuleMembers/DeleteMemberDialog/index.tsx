@@ -30,7 +30,7 @@ function DeleteMemberDialog() {
       <DeletePopup
         textTitle={'Remove Member'}
         textDescription={
-          'By clicking remove the member will be permanently removed from this interview module'
+          'By clicking remove the member will be permanently removed from this interview'
         }
         isIcon={false}
         onClickCancel={{
