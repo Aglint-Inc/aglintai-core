@@ -160,66 +160,76 @@ const InterviewerModule = ({
   recruiter_id: string;
   user_id: string;
 }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const { data } = useInterviewModules({ recruiter_id, user_id });
   return (
     <InterviewModuleTable
+      isFilterVisible={false}
       slotInterviewModuleCard={
         <Stack width={'100%'} height={'calc(100vh - 112px)'}>
           {data.length > 0 ? (
             data.map((mod) => {
               return (
-                <InterviewModuleCard
+                <Stack
                   key={mod.interview_modules.id}
-                  isObjectiveVisible={Boolean(
-                    mod.interview_modules.description,
-                  )}
-                  onClickCard={{
-                    onClick: () => {
-                      router.push(
-                        pageRoutes.INTERVIEWMODULE +
-                          `/${mod.interview_modules.id}`,
-                      );
-                    },
-                  }}
-                  textObjective={mod.interview_modules.description}
-                  textModuleName={mod.interview_modules.name}
-                  slotMemberPic={
-                    <AvatarGroup
-                      total={mod.users.length}
-                      sx={{
-                        '& .MuiAvatar-root': {
-                          width: '26px',
-                          height: '26px',
-                          fontSize: '12px',
-                        },
-                      }}
-                    >
-                      {mod.users.slice(0, 5).map((user) => {
-                        return (
-                          <MuiAvatar
-                            key={user.user_id}
-                            src={user.profile_image}
-                            level={getFullName(user.first_name, user.last_name)}
-                            variant='circular'
-                            height='26px'
-                            width='26px'
-                            fontSize='12px'
-                          />
-                        );
-                      })}
-                    </AvatarGroup>
-                  }
-                  textMembersCount={
-                    mod.users.length !== 0 ? `${mod.users.length} Members` : ''
-                  }
-                  textCompletedSchedules={mod.completed_meeting_count}
-                  textUpcomingSchedules={mod.upcoming_meeting_count}
-                  isCompletedScheduleEmpty={mod.completed_meeting_count === 0}
-                  isCompletedScheduleVisible={mod.completed_meeting_count > 0}
-                  isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
-                  isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
-                />
+                  sx={{ pointerEvents: 'none' }}
+                >
+                  <InterviewModuleCard
+                    isObjectiveVisible={Boolean(
+                      mod.interview_modules.description,
+                    )}
+                    // onClickCard={{
+                    //   onClick: () => {
+                    //     router.push(
+                    //       pageRoutes.INTERVIEWMODULE +
+                    //         `/${mod.interview_modules.id}`,
+                    //     );
+                    //   },
+                    // }}
+                    textObjective={mod.interview_modules.description}
+                    textModuleName={mod.interview_modules.name}
+                    slotMemberPic={
+                      <AvatarGroup
+                        total={mod.users.length}
+                        sx={{
+                          '& .MuiAvatar-root': {
+                            width: '26px',
+                            height: '26px',
+                            fontSize: '12px',
+                          },
+                        }}
+                      >
+                        {mod.users.slice(0, 5).map((user) => {
+                          return (
+                            <MuiAvatar
+                              key={user.user_id}
+                              src={user.profile_image}
+                              level={getFullName(
+                                user.first_name,
+                                user.last_name,
+                              )}
+                              variant='circular'
+                              height='26px'
+                              width='26px'
+                              fontSize='12px'
+                            />
+                          );
+                        })}
+                      </AvatarGroup>
+                    }
+                    textMembersCount={
+                      mod.users.length !== 0
+                        ? `${mod.users.length} Members`
+                        : ''
+                    }
+                    textCompletedSchedules={mod.completed_meeting_count}
+                    textUpcomingSchedules={mod.upcoming_meeting_count}
+                    isCompletedScheduleEmpty={mod.completed_meeting_count === 0}
+                    isCompletedScheduleVisible={mod.completed_meeting_count > 0}
+                    isUpcomingScheduleEmpty={mod.upcoming_meeting_count === 0}
+                    isUpcomingScheduleVisible={mod.upcoming_meeting_count > 0}
+                  />
+                </Stack>
               );
             })
           ) : (

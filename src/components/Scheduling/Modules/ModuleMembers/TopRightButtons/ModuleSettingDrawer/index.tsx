@@ -179,7 +179,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
                       },
                     }));
                   } else {
-                    toast.error(
+                    toast.warning(
                       'Cannot disable training when there are members in training',
                     );
                   }
@@ -207,7 +207,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           slotButtonPrimary={
             <Stack width={'100%'}>
               <ButtonPrimaryRegular
-                textLabel={'Save Changes'}
+                textLabel={'Update'}
                 onClickButton={{
                   onClick: updateModule,
                 }}
