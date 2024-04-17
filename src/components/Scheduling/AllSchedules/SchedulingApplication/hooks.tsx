@@ -16,6 +16,7 @@ import {
   InterviewScheduleActivityTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
+  JobApplcationDB,
 } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
@@ -793,7 +794,11 @@ const agentTrigger = async ({
           interviewer_name: recruiter_user_name,
           from_phone_no: '+12512066348',
           // to_phone_no: '+919482306657',
-          to_phone_no: rec_user_phone.replace(' ', '').replace('-', ''),
+          to_phone_no: rec_user_phone
+            .replace(' ', '')
+            .replace('-', '')
+            .replace('(', '')
+            .replace(')', ''),
           // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
           retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           filter_json_id: filterJsonId,
@@ -895,4 +900,25 @@ export const updateProgress = async ({
 
   if (error) throw new Error(error.message);
   return resRel;
+};
+
+export const updateApplicationStatus = async ({
+  status,
+  application_id,
+}: {
+  status: JobApplcationDB['status'];
+  application_id: string;
+}) => {
+  const { error } = await supabase
+    .from('applications')
+    .update({
+      status: status,
+    })
+    .eq('id', application_id);
+
+  if (error) {
+    return false;
+  } else {
+    return true;
+  }
 };
