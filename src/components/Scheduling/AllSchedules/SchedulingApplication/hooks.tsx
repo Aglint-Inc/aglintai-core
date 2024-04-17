@@ -110,6 +110,7 @@ export const useSendInviteForCandidate = () => {
             .map((ses) => ses.name)
             .join(' , ')}`,
           filter_id: filterJson[0].id,
+          user_id: recruiterUser.user_id,
         });
 
         if (!is_debrief && is_mail) {
@@ -200,6 +201,7 @@ export const useSendInviteForCandidate = () => {
             .map((ses) => ses.name)
             .join(' , ')}`,
           filter_id: filterJson[0].id,
+          user_id: recruiterUser.user_id,
         });
 
         if (!is_debrief && is_mail) {
@@ -596,6 +598,7 @@ export const scheduleWithAgent = async ({
   company_name = 'aglint',
   rec_user_email,
   rec_user_phone,
+  rec_user_id,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -611,6 +614,7 @@ export const scheduleWithAgent = async ({
   company_name?: string;
   rec_user_email: string;
   rec_user_phone: string;
+  rec_user_id: string;
 }) => {
   try {
     if (type) {
@@ -660,6 +664,7 @@ export const scheduleWithAgent = async ({
               ' , ',
             )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
           filter_id: filterJson[0].id,
+          user_id: rec_user_id,
         });
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
@@ -737,6 +742,7 @@ export const scheduleWithAgent = async ({
               ' , ',
             )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
           filter_id: filterJson[0].id,
+          user_id: rec_user_id,
         });
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);

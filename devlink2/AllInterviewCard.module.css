@@ -68,6 +68,10 @@
   grid-row-gap: 20px;
 }
 
+.candidate_cell.z-index-none {
+  z-index: auto;
+}
+
 .div-block-1312 {
   width: 14px;
   height: 16px;
@@ -363,7 +367,7 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-  z-index: 1;
+  z-index: 0;
 
   background-color: #edf7ff;
 }

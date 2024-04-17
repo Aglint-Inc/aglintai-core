@@ -1,4 +1,4 @@
-import { capitalize, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
@@ -7,18 +7,11 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { Breadcrum, InterviewPlanEmpty, PageLayout } from '@/devlink2';
-import {
-  CandidateSchedule,
-  CurrentStage,
-  DarkPill,
-  JobCards,
-  ScheduleNowButton,
-} from '@/devlink3';
+import { CandidateSchedule, DarkPill, ScheduleNowButton } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 import toast from '@/src/utils/toast';
 
@@ -28,11 +21,8 @@ import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import {
-  scheduleWithAgent,
-  updateApplicationStatus,
-  useGetScheduleApplication,
-} from './hooks';
+import { scheduleWithAgent, useGetScheduleApplication } from './hooks';
+import RightPanel from './RightPanel';
 import {
   resetSchedulingApplicationState,
   setDateRange,
@@ -166,6 +156,7 @@ function SchedulingApplication() {
         company_name: recruiter.name,
         rec_user_email: recruiterUser.email,
         rec_user_phone: recruiterUser.phone,
+        rec_user_id: recruiterUser.user_id,
       });
 
       if (res) {
@@ -366,47 +357,7 @@ function SchedulingApplication() {
                   </>
                 }
                 isScheduleNowVisible={selectedSessionIds.length > 0}
-                slotCandidateCard={
-                  <>
-                    <Stack
-                      sx={{
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        router.push(
-                          `${pageRoutes.JOBS}/${selectedApplication.job_id}`,
-                        );
-                      }}
-                    >
-                      <JobCards
-                        textLocation={selectedApplication.public_jobs.location}
-                        textRole={selectedApplication.public_jobs.job_title}
-                      />
-                    </Stack>
-                    <CurrentStage
-                      textStage={capitalize(selectedApplication.status)}
-                      isQualifiedVisible={
-                        selectedApplication.status === 'interview'
-                      }
-                      isDisqualifiedVisible={
-                        selectedApplication.status !== 'disqualified'
-                      }
-                      onClickMoveToQualified={{
-                        onClick: async () => {
-                          const res = await updateApplicationStatus({
-                            application_id: selectedApplication.id,
-                            status: 'qualified',
-                          });
-                          if (res) {
-                            fetchInterviewDataByApplication();
-                          } else {
-                            toast.error('Error updating status');
-                          }
-                        },
-                      }}
-                    />
-                  </>
-                }
+                slotCandidateCard={<RightPanel />}
                 slotFullScheduleCard={
                   tab === 'candidate_detail' ? (
                     <CandidateInfo

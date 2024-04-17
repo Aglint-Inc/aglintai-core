@@ -1279,33 +1279,53 @@ export type Database = {
       }
       interview_schedule_activity: {
         Row: {
+          application_id: string | null
           created_at: string
           filter_id: string | null
           id: string
           schedule_id: string
           title: string
+          user_id: string | null
         }
         Insert: {
+          application_id?: string | null
           created_at?: string
           filter_id?: string | null
           id?: string
           schedule_id: string
           title: string
+          user_id?: string | null
         }
         Update: {
+          application_id?: string | null
           created_at?: string
           filter_id?: string | null
           id?: string
           schedule_id?: string
           title?: string
+          user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "public_interview_schedule_activity_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_interview_schedule_activity_filter_id_fkey"
             columns: ["filter_id"]
             isOneToOne: false
             referencedRelation: "interview_filter_json"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_activity_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "public_schedule_activity_schedule_id_fkey"
@@ -1696,7 +1716,7 @@ export type Database = {
           schedule_date_range: Json | null
           session_ids: Json[] | null
           start_date: string | null
-          status: Database["public"]["Enums"]["sub_task_status"]
+          status: Database["public"]["Enums"]["task_status"]
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Insert: {
@@ -1711,7 +1731,7 @@ export type Database = {
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
           start_date?: string | null
-          status?: Database["public"]["Enums"]["sub_task_status"]
+          status?: Database["public"]["Enums"]["task_status"]
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Update: {
@@ -1726,7 +1746,7 @@ export type Database = {
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
           start_date?: string | null
-          status?: Database["public"]["Enums"]["sub_task_status"]
+          status?: Database["public"]["Enums"]["task_status"]
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [

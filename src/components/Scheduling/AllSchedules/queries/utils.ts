@@ -37,12 +37,16 @@ export const addScheduleActivity = async ({
   schedule_id,
   title,
   filter_id,
+  application_id,
+  user_id,
 }: {
   schedule_id: string;
   title: string;
   filter_id?: string;
+  application_id?: string;
+  user_id?: string;
 }) => {
   await supabase
     .from('interview_schedule_activity')
-    .insert({ schedule_id, title, filter_id });
+    .insert({ schedule_id, title, filter_id, application_id, user_id });
 };

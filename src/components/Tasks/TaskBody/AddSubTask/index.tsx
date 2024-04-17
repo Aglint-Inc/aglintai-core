@@ -138,6 +138,7 @@ function AddSubTask({ taskId }: { taskId: string }) {
           company_name: recruiter?.name,
           rec_user_email: recruiterUser.email,
           rec_user_phone: recruiterUser.phone,
+          rec_user_id: recruiterUser.user_id,
         });
       }
       //end

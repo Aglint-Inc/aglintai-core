@@ -121,7 +121,7 @@ export function AllInterviewCard({
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block
-        className={_utils.cx(_styles, "candidate_cell")}
+        className={_utils.cx(_styles, "candidate_cell", "z-index-none")}
         tag="div"
       >
         {slotInterviewProgress ?? (
