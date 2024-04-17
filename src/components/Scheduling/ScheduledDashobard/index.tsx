@@ -2,7 +2,6 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { PageLayout } from '@/devlink2';
 import { InterviewStatic, SchedulingDashboard } from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
