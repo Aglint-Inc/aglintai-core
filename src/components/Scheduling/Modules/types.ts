@@ -23,6 +23,7 @@ export type SchedulingSlice = {
   isAddMemberDialogOpen: boolean;
   isResumeDialogOpen: boolean;
   isModuleSettingsDialogOpen: boolean;
+  isArchiveDialogOpen: boolean;
   isProgressDialaogOpen: boolean;
   selectedUsers: MemberType[];
   selUser: InterviewModuleRelationType | null;

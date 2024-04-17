@@ -1,10 +1,10 @@
+"use client";
 import React from "react";
-
 import * as _Builtin from "./_Builtin";
-import _styles from "./InterviewMemberList.module.css";
-import { InterviewMemberSide } from "./InterviewMemberSide";
 import { MemberListCard } from "./MemberListCard";
+import { InterviewMemberSide } from "./InterviewMemberSide";
 import * as _utils from "./utils";
+import _styles from "./InterviewMemberList.module.css";
 
 export function InterviewMemberList({
   as: _Component = _Builtin.Block,
@@ -111,7 +111,7 @@ export function InterviewMemberList({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "interview-sub-table-right", "pb-0")}
+        className={_utils.cx(_styles, "interview-sub-table-right", "p-0")}
         tag="div"
       >
         {slotInterviewCard ?? <InterviewMemberSide />}

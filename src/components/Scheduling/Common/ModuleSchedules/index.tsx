@@ -99,7 +99,7 @@ function ModuleSchedules({
                       <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
                         <NewMyScheduleCard
                           textDate={dayjs(date).format('DD')}
-                          textDay={dayjs(date).format('dddd')}
+                          textDay={dayjs(date).format('ddd')}
                           textMonth={dayjs(date).format('MMM')}
                           slotMyScheduleSubCard={schedules.map((sch) => {
                             return (

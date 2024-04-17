@@ -26,4 +26,5 @@ declare function NewInterviewPlanCard(props: {
   isPanelIconVisible?: Types.Visibility.VisibilityConditions;
   isDebriefIconVisible?: Types.Visibility.VisibilityConditions;
   onClickDots?: Types.Devlink.RuntimeProps;
+  isThreeDotVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

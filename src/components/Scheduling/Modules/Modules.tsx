@@ -20,6 +20,7 @@ import FilterCreatedBy from './Filters/FilterCreatedBy';
 import FilterDepartment from './Filters/FilterDepartment';
 import { useAllInterviewModules } from './queries/hooks';
 import { resetModulesStore } from './store';
+import { customSortModules } from './utils';
 
 export function Modules() {
   const router = useRouter();
@@ -28,17 +29,19 @@ export function Modules() {
   const createdBy = useFilterModuleStore((state) => state.created_by);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
 
-  const filterModules = allModules.filter((mod) => {
-    return (
-      (!department || mod.interview_modules.department === department) &&
-      (createdBy.length == 0 ||
-        createdBy.includes(mod.interview_modules.created_by)) &&
-      (!textSearch ||
-        mod.interview_modules.name
-          .toLowerCase()
-          .includes(textSearch.toLowerCase()))
-    );
-  });
+  const filterModules = allModules
+    .filter((mod) => {
+      return (
+        (!department || mod.interview_modules.department === department) &&
+        (createdBy.length == 0 ||
+          createdBy.includes(mod.interview_modules.created_by)) &&
+        (!textSearch ||
+          mod.interview_modules.name
+            .toLowerCase()
+            .includes(textSearch.toLowerCase()))
+      );
+    })
+    .sort(customSortModules);
 
   useEffect(() => {
     return () => {

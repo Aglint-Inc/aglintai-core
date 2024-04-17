@@ -16,6 +16,7 @@
 }
 
 .interview-sub-table-left.plr-0 {
+  padding-top: 16px;
   padding-right: 0px;
   padding-left: 0px;
 }
@@ -246,6 +247,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .div-block-1171 {
   display: flex;
   justify-content: flex-start;
@@ -333,4 +338,8 @@
 
 .interview-sub-table-right.pb-0 {
   padding-bottom: 0px;
+}
+
+.interview-sub-table-right.p-0 {
+  padding: 0px;
 }

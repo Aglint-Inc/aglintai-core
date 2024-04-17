@@ -1,7 +1,8 @@
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink';
 import { StatusBadge } from '@/devlink2';
@@ -14,6 +15,7 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { BodyParams } from '@/src/pages/api/scheduling/v1/event_attendee_status';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
@@ -27,6 +29,37 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
   const { recruiterUser } = useAuthDetails();
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+  const [allCalendarStatus, setAllCalendarStatus] = useState<
+    {
+      email: string;
+      organizer: boolean;
+      self: boolean;
+      responseStatus: 'needsAction' | 'accepted' | 'declined' | 'tentative';
+    }[]
+  >([]);
+
+  useEffect(() => {
+    if (schedule?.interview_meeting) {
+      fetchCalendarStatus();
+    }
+  }, [schedule?.interview_meeting]);
+
+  const fetchCalendarStatus = async () => {
+    try {
+      const eventId = (schedule.interview_meeting?.meeting_json as any)?.id;
+      const user_id = schedule.users[0].id;
+
+      const res = await axios.post('/api/scheduling/v1/event_attendee_status', {
+        attendee_interv_id: user_id,
+        event_id: eventId,
+      } as BodyParams);
+
+      if (res?.data?.event_attendees_status)
+        setAllCalendarStatus(res.data.event_attendees_status);
+    } catch (e) {
+      //
+    }
+  };
 
   if (!schedule) {
     return null;
@@ -40,6 +73,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
   const trainingMembers = users.filter(
     (item) => item.interviewer_type === 'training',
   );
+
   return (
     <>
       <DeleteScheduleDialog
@@ -103,6 +137,12 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
         isTraineesVisible={trainingMembers.length > 0}
         isCoordinatorVisible={Boolean(schedule?.coordinator?.first_name)}
         slotInterviewers={qualifiedMembers.map((item, i) => {
+          const isTickVisible =
+            allCalendarStatus.find((event) => event.email === item.email)
+              ?.responseStatus === 'accepted' ||
+            allCalendarStatus.find((event) => event.email === item.email)
+              ?.responseStatus === 'tentative';
+
           return (
             <AvatarWithName
               key={i}
@@ -111,6 +151,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
                 getFullName(item.first_name, item.last_name) +
                 `${item.email === recruiterUser.email ? ' ( You )' : ''}`
               }
+              isTickVisible={isTickVisible}
               slotAvatar={
                 <MuiAvatar
                   level={getFullName(item.first_name, item.last_name)}
@@ -126,6 +167,11 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
         })}
         textInterviewModuleLink={schedule.interview_session.name}
         slotTrainees={trainingMembers.map((item, i) => {
+          const isTickVisible =
+            allCalendarStatus.find((event) => event.email === item.email)
+              ?.responseStatus === 'accepted' ||
+            allCalendarStatus.find((event) => event.email === item.email)
+              ?.responseStatus === 'tentative';
           return (
             <AvatarWithName
               key={i}
@@ -136,6 +182,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
                   schedule.coordinator.last_name,
                 ) + `${item.email === recruiterUser.email ? ' ( You )' : ''}`
               }
+              isTickVisible={isTickVisible}
               slotAvatar={
                 <MuiAvatar
                   level={getFullName(item.first_name, item.last_name)}
@@ -200,7 +247,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
             textTitle={scheduleDetails.schedule_name}
             textStatus={capitalize(schedule.interview_meeting.status)}
             textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
-            textDay={dayjs(schedule.interview_meeting.end_time).format('dddd')}
+            textDay={dayjs(schedule.interview_meeting.end_time).format('ddd')}
             textMonth={dayjs(schedule.interview_meeting.end_time).format('MMM')}
             textPlatformName={getScheduleType(
               schedule.interview_session.schedule_type,

@@ -696,7 +696,7 @@ const InterviewModulesField = ({
 
   return (
     <DropDown
-      placeholder='Select Interview Modules'
+      placeholder='Select interview type'
       onChange={onChange}
       options={options}
       value={value?.id}

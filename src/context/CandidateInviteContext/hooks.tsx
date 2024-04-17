@@ -9,6 +9,7 @@ import { useConfirmSlots, useInvites } from '@/src/queries/candidate-invite';
 import toast from '@/src/utils/toast';
 
 const useInviteActions = () => {
+  const router = useRouter();
   const invites = useInvites();
   const { mutateAsync, isPending } = useConfirmSlots();
   const [selectedSlots, setSelectedSlots] = useState<
@@ -35,6 +36,7 @@ const useInviteActions = () => {
       user_tz: dayjs.tz.guess(),
       candidate_email: invites.data.candidate.email,
       schedule_id: invites.data.schedule.id,
+      filter_id: router.query.filter_id,
     } as ConfirmApiBodyParams;
     try {
       if (!isPending) {

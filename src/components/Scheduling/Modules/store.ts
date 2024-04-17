@@ -28,6 +28,7 @@ export const initialEditModule: ModuleType = {
   description: '',
   instructions: '',
   created_by: '',
+  is_archived: false,
 };
 
 export const initialStateSchedulingStore: SchedulingSlice = {
@@ -38,6 +39,7 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   isMovedToQualifiedDialogOpen: false,
   isAddMemberDialogOpen: false,
   isProgressDialaogOpen: false,
+  isArchiveDialogOpen: false,
   isResumeDialogOpen: false,
   isModuleSettingsDialogOpen: false,
   selectedUsers: [],
@@ -52,6 +54,9 @@ export const useModulesStore = create<SchedulingSlice>()(
 
 export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
   useModulesStore.setState({ isCreateDialogOpen });
+
+export const setIsArchiveDialogOpen = (isArchiveDialogOpen: boolean) =>
+  useModulesStore.setState({ isArchiveDialogOpen });
 
 export const setIsMovedToQualifiedDialogOpen = (
   isMovedToQualifiedDialogOpen: boolean,

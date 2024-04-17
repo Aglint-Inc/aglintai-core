@@ -121,6 +121,9 @@ function FullSchedule() {
               }}
             >
               <NewInterviewPlanCard
+                isThreeDotVisible={
+                  session.interview_meeting?.status !== 'completed'
+                }
                 slotStatus={
                   session.interview_meeting?.status ? (
                     <StatusBadge

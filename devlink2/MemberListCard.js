@@ -353,7 +353,7 @@ export function MemberListCard({
                 className={_utils.cx(_styles, "text-red-500")}
                 tag="div"
               >
-                {"Remove from module"}
+                {"Remove"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
