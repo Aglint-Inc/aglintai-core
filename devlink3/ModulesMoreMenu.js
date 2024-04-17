@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -14,8 +15,8 @@ export function ModulesMoreMenu({
   isTrainingModules = false,
   onClickPause = {},
   onClickRemove = {},
-  textAllmodules = "Pause from all modules",
-  textPauseTraining = "Pause from all training modules",
+  textAllmodules = "Pause all",
+  textPauseTraining = "Pause all",
   slotResumeIcon,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
@@ -107,7 +108,7 @@ export function ModulesMoreMenu({
                 className={_utils.cx(_styles, "text-2")}
                 tag="div"
               >
-                {"Remove from all modules"}
+                {"Remove all"}
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}
@@ -130,7 +131,7 @@ export function ModulesMoreMenu({
                 className={_utils.cx(_styles, "text-2")}
                 tag="div"
               >
-                {"Remove from all training modules"}
+                {"Remove all"}
               </_Builtin.Block>
             </_Builtin.Block>
           ) : null}

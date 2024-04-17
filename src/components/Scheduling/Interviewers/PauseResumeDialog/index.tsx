@@ -300,10 +300,10 @@ function PauseResumeDialog({
                 <ResumePop
                   textResumeWarning={
                     !pauseResumeDialog.isAll
-                      ? `This member is paused from scheduling with this module ${pauseResumeDialog.end_time ? 'until ' + end_date : ''} `
-                      : `This member is paused from scheduling with all ${pauseResumeDialog.training_status} module`
+                      ? `This member is paused from scheduling with this interview ${pauseResumeDialog.end_time ? 'until ' + end_date : ''} `
+                      : `This member is paused from scheduling with all ${pauseResumeDialog.training_status} interviews`
                   }
-                  textDescription={`By Clicking resume this member will be included in new interviews scheduled for this module.`}
+                  textDescription={`By clicking resume this member will be included in new interviews scheduled.`}
                   onClickResume={{
                     onClick: resume,
                   }}
@@ -312,8 +312,8 @@ function PauseResumeDialog({
               </ShowCode.When>
               <ShowCode.When isTrue={pauseResumeDialog.type === 'remove'}>
                 <DeletePopup
-                  textTitle={`Remove form${pauseResumeDialog.isAll ? ' all ' + pauseResumeDialog.training_status : ' this'} Modules`}
-                  textDescription={`By Clicking remove the member will be permanently removed from ${pauseResumeDialog.isAll ? 'all qualified interview Modules' : 'this interview Module'} .`}
+                  textTitle={`Remove form${pauseResumeDialog.isAll ? ' all ' + pauseResumeDialog.training_status : ' this'} interview`}
+                  textDescription={`By clicking remove the member will be permanently removed from ${pauseResumeDialog.isAll ? 'all qualified interview' : 'this interview'}.`}
                   isIcon={false}
                   isWidget={true}
                   onClickCancel={{ onClick: close }}

@@ -381,8 +381,8 @@ function Interviewer({
                   interviewerDetails.modules
                     .filter((ele) => ele.training_status === 'qualified')
                     .every((item) => item.pause_json)
-                    ? 'Resume from all modules'
-                    : 'Pause from all modules'
+                    ? 'Resume all'
+                    : 'Pause all'
                 }
                 isQualifiedModules={true}
                 onClickRemove={{
@@ -450,8 +450,8 @@ function Interviewer({
                   interviewerDetails.modules
                     .filter((ele) => ele.training_status === 'training')
                     .every((item) => item.pause_json)
-                    ? 'Resume from all modules'
-                    : 'Pause from all modules'
+                    ? 'Resume all'
+                    : 'Pause all'
                 }
                 onClickRemove={{
                   onClick: () => {
