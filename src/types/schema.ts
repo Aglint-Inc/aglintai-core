@@ -1277,6 +1277,45 @@ export type Database = {
           },
         ]
       }
+      interview_schedule_activity: {
+        Row: {
+          created_at: string
+          filter_id: string | null
+          id: string
+          schedule_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          filter_id?: string | null
+          id?: string
+          schedule_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          filter_id?: string | null
+          id?: string
+          schedule_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_interview_schedule_activity_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_schedule_activity_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "interview_schedule"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_session: {
         Row: {
           break_duration: number | null

@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 
 import { Checkbox } from '@/devlink';
 import { StatusBadge } from '@/devlink2';
@@ -33,6 +34,7 @@ import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 
 function FullSchedule() {
+  const router = useRouter();
   const { recruiter } = useAuthDetails();
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
@@ -120,147 +122,166 @@ function FullSchedule() {
                       : 'auto',
               }}
             >
-              <NewInterviewPlanCard
-                isThreeDotVisible={
-                  session.interview_meeting?.status !== 'completed'
-                }
-                slotStatus={
-                  session.interview_meeting?.status ? (
-                    <StatusBadge
-                      isCancelledVisible={
-                        session.interview_meeting.status === 'cancelled'
-                      }
-                      isConfirmedVisible={
-                        session.interview_meeting.status === 'confirmed'
-                      }
-                      isWaitingVisible={
-                        session.interview_meeting.status === 'waiting'
-                      }
-                      isCompletedVisible={
-                        session.interview_meeting.status === 'completed'
-                      }
-                      isNotScheduledVisible={
-                        session.interview_meeting.status === 'not_scheduled'
-                      }
-                    />
-                  ) : (
-                    <StatusBadge
-                      isNotScheduledVisible={true}
-                      isCancelledVisible={false}
-                      isConfirmedVisible={false}
-                      isWaitingVisible={false}
-                      isCompletedVisible={false}
-                    />
+              <Stack
+                sx={{
+                  cursor:
+                    session.interview_meeting?.status === 'completed' ||
+                    session.interview_meeting?.status === 'confirmed'
+                      ? 'pointer'
+                      : 'auto',
+                }}
+                onClick={() => {
+                  if (
+                    session.interview_meeting?.status === 'completed' ||
+                    session.interview_meeting?.status === 'confirmed'
                   )
-                }
-                isDebriefIconVisible={session.session_type === 'debrief'}
-                isPanelIconVisible={session.session_type === 'panel'}
-                isOnetoOneIconVisible={session.session_type === 'individual'}
-                isDurationVisible={true}
-                isLocationVisible={Boolean(session.location)}
-                isNotScheduledIconVisible={
-                  !session.interview_meeting?.start_time
-                }
-                slotCheckbox={
-                  !session.interview_meeting ||
-                  session.interview_meeting.status === 'not_scheduled' ||
-                  session.interview_meeting.status === 'cancelled' ||
-                  session.interview_meeting.status === 'reschedule' ? (
-                    <Checkbox
-                      isChecked={selectedSessionIds.includes(session.id)}
-                      onClickCheck={{
+                    router.push(
+                      `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
+                    );
+                }}
+              >
+                <NewInterviewPlanCard
+                  isThreeDotVisible={
+                    session.interview_meeting?.status !== 'completed'
+                  }
+                  slotStatus={
+                    session.interview_meeting?.status ? (
+                      <StatusBadge
+                        isCancelledVisible={
+                          session.interview_meeting.status === 'cancelled'
+                        }
+                        isConfirmedVisible={
+                          session.interview_meeting.status === 'confirmed'
+                        }
+                        isWaitingVisible={
+                          session.interview_meeting.status === 'waiting'
+                        }
+                        isCompletedVisible={
+                          session.interview_meeting.status === 'completed'
+                        }
+                        isNotScheduledVisible={
+                          session.interview_meeting.status === 'not_scheduled'
+                        }
+                      />
+                    ) : (
+                      <StatusBadge
+                        isNotScheduledVisible={true}
+                        isCancelledVisible={false}
+                        isConfirmedVisible={false}
+                        isWaitingVisible={false}
+                        isCompletedVisible={false}
+                      />
+                    )
+                  }
+                  isDebriefIconVisible={session.session_type === 'debrief'}
+                  isPanelIconVisible={session.session_type === 'panel'}
+                  isOnetoOneIconVisible={session.session_type === 'individual'}
+                  isDurationVisible={true}
+                  isLocationVisible={Boolean(session.location)}
+                  isNotScheduledIconVisible={
+                    !session.interview_meeting?.start_time
+                  }
+                  slotCheckbox={
+                    !session.interview_meeting ||
+                    session.interview_meeting.status === 'not_scheduled' ||
+                    session.interview_meeting.status === 'cancelled' ||
+                    session.interview_meeting.status === 'reschedule' ? (
+                      <Checkbox
+                        isChecked={selectedSessionIds.includes(session.id)}
+                        onClickCheck={{
+                          onClick: () => {
+                            if (selectedSessionIds.includes(session.id)) {
+                              setSelectedSessionIds(
+                                selectedSessionIds.filter(
+                                  (id) => id !== session.id,
+                                ),
+                              );
+                            } else {
+                              setSelectedSessionIds([
+                                ...selectedSessionIds,
+                                session.id,
+                              ]);
+                            }
+                          },
+                        }}
+                      />
+                    ) : (
+                      <Stack width={'18px'}></Stack>
+                    )
+                  }
+                  isSelected={selectedSessionIds.includes(session.id)}
+                  isTimeVisible={Boolean(session.interview_meeting?.start_time)}
+                  slotPlatformIcon={
+                    <IconScheduleType type={session.schedule_type} />
+                  }
+                  textDuration={`${session.session_duration} Minutes`}
+                  textLocation={session.location || '--'}
+                  textMeetingPlatform={getScheduleType(session.schedule_type)}
+                  textMeetingTitle={session.name || '--'}
+                  textDate={dayjs(session.interview_meeting?.start_time).format(
+                    'DD',
+                  )}
+                  textDay={dayjs(session.interview_meeting?.start_time).format(
+                    'dddd',
+                  )}
+                  textMonth={dayjs(
+                    session.interview_meeting?.start_time,
+                  ).format('MMM')}
+                  textTime={
+                    session.interview_meeting?.start_time
+                      ? `${dayjs(session.interview_meeting?.start_time).format(
+                          'hh:mm A',
+                        )} - ${dayjs(
+                          session.interview_meeting?.end_time,
+                        ).format('hh:mm A')}`
+                      : '--'
+                  }
+                  slotEditOptionModule={
+                    <EditOptionModule
+                      isResendInviteVisible={
+                        session.interview_meeting?.status === 'waiting'
+                      }
+                      onClickResendInvite={{
                         onClick: () => {
-                          if (selectedSessionIds.includes(session.id)) {
-                            setSelectedSessionIds(
-                              selectedSessionIds.filter(
-                                (id) => id !== session.id,
-                              ),
-                            );
-                          } else {
-                            setSelectedSessionIds([
-                              ...selectedSessionIds,
-                              session.id,
-                            ]);
-                          }
+                          onClickResendInvite(session.id);
+                        },
+                      }}
+                      isEditVisible={
+                        !session.interview_meeting ||
+                        session.interview_meeting?.status === 'not_scheduled'
+                      }
+                      isViewScheduleVisible={false}
+                      isCancelScheduleVisible={
+                        session.interview_meeting?.status === 'confirmed' ||
+                        session.interview_meeting?.status === 'waiting'
+                      }
+                      isRescheduleVisible={
+                        session.interview_meeting?.status === 'confirmed' ||
+                        session.interview_meeting?.status === 'waiting' ||
+                        session.interview_meeting?.status === 'cancelled'
+                      }
+                      onClickCancelSchedule={{
+                        onClick: () => {
+                          setSelectedMeeting(session.interview_meeting);
+                          setIsCancelOpen(true);
+                        },
+                      }}
+                      onClickReschedule={{
+                        onClick: () => {
+                          setSelectedMeeting(session.interview_meeting);
+                          setIsRescheduleOpen(true);
+                        },
+                      }}
+                      onClickEdit={{
+                        onClick: () => {
+                          setEditSession(session);
+                          setIsEditOpen(true);
                         },
                       }}
                     />
-                  ) : (
-                    <Stack width={'18px'}></Stack>
-                  )
-                }
-                isSelected={selectedSessionIds.includes(session.id)}
-                isTimeVisible={Boolean(session.interview_meeting?.start_time)}
-                slotPlatformIcon={
-                  <IconScheduleType type={session.schedule_type} />
-                }
-                textDuration={`${session.session_duration} Minutes`}
-                textLocation={session.location || '--'}
-                textMeetingPlatform={getScheduleType(session.schedule_type)}
-                textMeetingTitle={session.name || '--'}
-                textDate={dayjs(session.interview_meeting?.start_time).format(
-                  'DD',
-                )}
-                textDay={dayjs(session.interview_meeting?.start_time).format(
-                  'dddd',
-                )}
-                textMonth={dayjs(session.interview_meeting?.start_time).format(
-                  'MMM',
-                )}
-                textTime={
-                  session.interview_meeting?.start_time
-                    ? `${dayjs(session.interview_meeting?.start_time).format(
-                        'hh:mm A',
-                      )} - ${dayjs(session.interview_meeting?.end_time).format(
-                        'hh:mm A',
-                      )}`
-                    : '--'
-                }
-                slotEditOptionModule={
-                  <EditOptionModule
-                    isResendInviteVisible={
-                      session.interview_meeting?.status === 'waiting'
-                    }
-                    onClickResendInvite={{
-                      onClick: () => {
-                        onClickResendInvite(session.id);
-                      },
-                    }}
-                    isEditVisible={
-                      !session.interview_meeting ||
-                      session.interview_meeting?.status === 'not_scheduled'
-                    }
-                    isViewScheduleVisible={false}
-                    isCancelScheduleVisible={
-                      session.interview_meeting?.status === 'confirmed' ||
-                      session.interview_meeting?.status === 'waiting'
-                    }
-                    isRescheduleVisible={
-                      session.interview_meeting?.status === 'confirmed' ||
-                      session.interview_meeting?.status === 'waiting' ||
-                      session.interview_meeting?.status === 'cancelled'
-                    }
-                    onClickCancelSchedule={{
-                      onClick: () => {
-                        setSelectedMeeting(session.interview_meeting);
-                        setIsCancelOpen(true);
-                      },
-                    }}
-                    onClickReschedule={{
-                      onClick: () => {
-                        setSelectedMeeting(session.interview_meeting);
-                        setIsRescheduleOpen(true);
-                      },
-                    }}
-                    onClickEdit={{
-                      onClick: () => {
-                        setEditSession(session);
-                        setIsEditOpen(true);
-                      },
-                    }}
-                  />
-                }
-              />
+                  }
+                />
+              </Stack>
               {session.break_duration > 0 && (
                 <Stack pl={'34px'} pt={'10px'}>
                   <InterviewBreakCard

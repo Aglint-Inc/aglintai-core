@@ -13,6 +13,7 @@ import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_inte
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
+  InterviewScheduleActivityTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
 } from '@/src/types/data.types';
@@ -20,6 +21,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { addScheduleActivity } from '../queries/utils';
 import { mailHandler } from '../utils';
 import {
   SchedulingApplication,
@@ -37,7 +39,7 @@ import {
 } from './types';
 
 export const useSendInviteForCandidate = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const {
     selCoordinator,
     dateRange,
@@ -91,6 +93,7 @@ export const useSendInviteForCandidate = () => {
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiterUser.first_name,
             },
             session_ids: createCloneRes.session_ids,
             schedule_id: createCloneRes.schedule.id,
@@ -98,6 +101,15 @@ export const useSendInviteForCandidate = () => {
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        addScheduleActivity({
+          schedule_id: createCloneRes.schedule.id,
+          title: `Candidate invited for session ${createCloneRes.refSessions
+            .filter((ses) => ses.isSelected)
+            .map((ses) => ses.name)
+            .join(' , ')}`,
+          filter_id: filterJson[0].id,
+        });
 
         if (!is_debrief && is_mail) {
           mailHandler({
@@ -171,6 +183,7 @@ export const useSendInviteForCandidate = () => {
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiterUser.first_name,
             },
             session_ids: selectedSessionIds,
             schedule_id: checkSch[0].id,
@@ -178,6 +191,15 @@ export const useSendInviteForCandidate = () => {
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        addScheduleActivity({
+          schedule_id: checkSch[0].id,
+          title: `Candidate invited for session ${initialSessions
+            .filter((ses) => selectedSessionIds.includes(ses.id))
+            .map((ses) => ses.name)
+            .join(' , ')}`,
+          filter_id: filterJson[0].id,
+        });
 
         if (!is_debrief && is_mail) {
           mailHandler({
@@ -288,7 +310,7 @@ export const createCloneSession = async ({
 
   let insertableUserRelation = [];
   refSessions.map((session) => {
-    session.users.map((user) => {
+    session.users?.map((user) => {
       insertableUserRelation.push({
         interview_module_relation_id: user.interview_module_relation?.id,
         interviewer_type: user.interviewer_type,
@@ -456,6 +478,7 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
+        schedule_activity_data: InterviewScheduleActivityTypeDb[];
       };
       error: any;
     };
@@ -620,11 +643,23 @@ export const scheduleWithAgent = async ({
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiter_user_name,
             },
             session_ids: createCloneRes.session_ids,
             schedule_id: createCloneRes.schedule.id,
           })
           .select();
+
+        addScheduleActivity({
+          schedule_id: createCloneRes.schedule.id,
+          title: `Candidate invited for session ${createCloneRes.refSessions
+            .filter((ses) => ses.isSelected)
+            .map((ses) => ses.name)
+            .join(
+              ' , ',
+            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+          filter_id: filterJson[0].id,
+        });
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
@@ -685,11 +720,23 @@ export const scheduleWithAgent = async ({
                 dateRange.end_date &&
                 dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiter_user_name,
             },
             session_ids: session_ids,
             schedule_id: checkSch[0].id,
           })
           .select();
+
+        addScheduleActivity({
+          schedule_id: checkSch[0].id,
+          title: `Candidate invited for session ${sessionsWithPlan.sessions
+            .filter((ses) => session_ids.includes(ses.id))
+            .map((ses) => ses.name)
+            .join(
+              ' , ',
+            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+          filter_id: filterJson[0].id,
+        });
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
