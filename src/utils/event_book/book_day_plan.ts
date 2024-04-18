@@ -31,7 +31,7 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     session_ids: all_sess_ids,
     user_tz,
   });
-
+  await cand_scheduling.fetchDetails();
   const { company_cred } = cand_scheduling.db_details;
 
   const bookDayPlan = async ({

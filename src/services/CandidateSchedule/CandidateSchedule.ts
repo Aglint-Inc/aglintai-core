@@ -87,8 +87,10 @@ export class CandidatesScheduling {
 
   // getters and setters
   public setSchedulingDates(_start_date_js: Dayjs, _end_date_js: Dayjs) {
-    this.schedule_dates.user_end_date_js = _end_date_js;
-    this.schedule_dates.user_start_date_js = _start_date_js;
+    this.schedule_dates = {
+      user_start_date_js: _start_date_js,
+      user_end_date_js: _end_date_js,
+    };
   }
 
   // fetches required details from DB
