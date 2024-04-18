@@ -152,7 +152,6 @@ export class CandidatesScheduling {
     });
 
     let intervs_details_with_events = await Promise.all(promiseArr);
-
     this.intervs_details_with_events = intervs_details_with_events;
   }
 
@@ -288,14 +287,14 @@ export class CandidatesScheduling {
       this.schedule_dates.user_start_date_js.format(),
       this.schedule_dates.user_end_date_js.format(),
     );
-    const common_time = this.findCommonTimeRange(
-      s.map((i) => ({
-        inter_id: i.interviewer_id,
-        interviewer_pause: null,
-        time_ranges: i.freeTimes,
-      })),
-    );
-    return common_time;
+    // const common_time = this.findCommonTimeRange(
+    //   s.map((i) => ({
+    //     inter_id: i.interviewer_id,
+    //     interviewer_pause: null,
+    //     time_ranges: i.freeTimes,
+    //   })),
+    // );
+    return s[0].freeTimes;
   }
   //   end of api funcs
 
@@ -414,6 +413,14 @@ export class CandidatesScheduling {
           : int_avail.endTime.format(),
       };
     };
+    const stepToMinute = (curr_time: Dayjs) => {
+      let minutes = curr_time.get('minutes');
+      if (minutes % 5 !== 0) {
+        minutes += 5 - (minutes % 5);
+      }
+      curr_time = curr_time.set('minutes', minutes);
+      return curr_time;
+    };
 
     const findFreeTimeForTheDay = (
       interviewer: InterDetailsType,
@@ -471,7 +478,11 @@ export class CandidatesScheduling {
         });
       }
 
-      if (day2_work_hours) {
+      // if candidate and interviewr are in same time zone
+      if (
+        day1_interviewer_time.day !== day2_interviewer_time.day &&
+        day2_work_hours
+      ) {
         work_time_duration.push({
           ...getWorkHourFromIntAvil(
             {
@@ -500,12 +511,15 @@ export class CandidatesScheduling {
               },
             );
 
+            if (is_event_free_time) return false;
+
             return (
-              day1_interviewer_time.startTime.isBefore(
+              day1_interviewer_time.startTime.isSameOrBefore(
                 cal_event.start.dateTime,
               ) &&
-              day2_interviewer_time.endTime.isAfter(cal_event.end.dateTime) &&
-              !is_event_free_time
+              day2_interviewer_time.endTime.isSameOrAfter(
+                cal_event.start.dateTime,
+              )
             );
           })
           .map((ev) => {
@@ -522,16 +536,15 @@ export class CandidatesScheduling {
       let curr_user_time = userTzDayjs().tz(
         interviewer.shedule_settings.timeZone.tzCode,
       );
-
-      if (current_day.isSame(curr_user_time, 'day')) {
+      const stepped_time = stepToMinute(curr_user_time);
+      if (current_day.isSame(stepped_time, 'day')) {
         current_day_blocked_times.push({
           startTime: userTzDayjs(current_day),
-          endTime: userTzDayjs(curr_user_time),
+          endTime: userTzDayjs(stepped_time),
         });
       }
 
       let day_free_times: TimeDurationType[] = [];
-
       day_free_times = minusEventsTimeInWorkHours(
         work_time_duration,
         current_day_blocked_times,
@@ -1115,7 +1128,6 @@ export class CandidatesScheduling {
 
       curr_intersection = [...new_intersection];
     }
-
     return curr_intersection.map((t) => ({
       startTime: userTzDayjs(t.startTime).tz(this.api_payload.user_tz).format(),
       endTime: userTzDayjs(t.endTime).tz(this.api_payload.user_tz).format(),

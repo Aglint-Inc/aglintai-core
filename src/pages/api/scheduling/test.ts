@@ -45,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         end_date_js: CandidatesScheduling.convertDateFormatToDayjs(
           end_date,
           user_tz,
+          false,
         ),
       },
     );
