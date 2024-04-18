@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
   AssistStatus,
@@ -23,6 +23,7 @@ import {
   GraphBlock,
   JobDashboard as JobDashboardDev,
   JobDashboardTopRight,
+  JobsBanner,
   ModuleCard,
   NoData,
   PipeLine,
@@ -55,7 +56,6 @@ import { getScheduleType } from '../../Scheduling/AllSchedules/utils';
 import DashboardBarChart from './BarChart';
 import DashboardDoughnutChart from './Doughnut';
 import DashboardLineChart from './LineChart';
-import ScoringCandidatesLottie from './Lotties/scoringCandidatesLottie';
 import TenureAndExpSummary from './TenureAndExpSummary';
 
 const JobDashboard = () => {
@@ -106,7 +106,11 @@ const Dashboard = () => {
   } = useJobDetails();
   const { push } = useRouter();
   const { handleJobAsyncUpdate, handleJobDelete, handleJobPublish } = useJobs();
-  const { handleJobApplicationRescore } = useJobApplications();
+  const {
+    handleJobApplicationRescore,
+    searchParameters,
+    handleJobApplicationFilter,
+  } = useJobApplications();
 
   const score_matches = getMatches(counts);
 
@@ -158,12 +162,32 @@ const Dashboard = () => {
 
   const scoringLoader = useMemo(
     () => (
-      <Stack sx={{ width: '16px', aspectRatio: 1 }}>
-        <ScoringCandidatesLottie />
+      <Stack sx={{ width: '12px', aspectRatio: 1 }}>
+        <CircularProgress
+          color='inherit'
+          size={'100%'}
+          sx={{ color: 'white' }}
+        />
       </Stack>
     ),
     [],
   );
+
+  const handleFilter = (
+    overall_score: Omit<
+      (typeof searchParameters)['filter']['overall_score'],
+      'active'
+    >,
+  ) => {
+    handleJobApplicationFilter({
+      ...searchParameters,
+      filter: {
+        ...searchParameters.filter,
+        overall_score: { ...overall_score, active: true },
+      },
+    });
+    push(`/jobs/${job.id}/candidate-list`);
+  };
 
   return (
     <>
@@ -179,18 +203,40 @@ const Dashboard = () => {
               counts?.total ?? '---'
             }`}
             slotScoringLoader={scoringLoader}
-            isBanner={!publishable || description_changed}
+            isBanner={
+              !publishable || description_changed || job.status === 'draft'
+            }
             isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
+            onClickTopMatch={{
+              style: { cursor: 'pointer' },
+              onClick: () => handleFilter({ max: 100, min: 80 }),
+            }}
             textTopMatchPercentage={score_matches.topMatch.percentage}
             textTopMatchCount={score_matches.topMatch.count}
+            onClickGoodMatch={{
+              style: { cursor: 'pointer' },
+              onClick: () => handleFilter({ max: 79, min: 60 }),
+            }}
             textGoodMatchPercentage={score_matches.goodMatch.percentage}
             textGoodMatchCount={score_matches.goodMatch.count}
+            onClickAverageMatch={{
+              style: { cursor: 'pointer' },
+              onClick: () => handleFilter({ max: 59, min: 40 }),
+            }}
             textAverageMatchPercentage={score_matches.averageMatch.percentage}
             textAveageMatchCount={score_matches.averageMatch.count}
+            onClickBelowAverage={{
+              style: { cursor: 'pointer' },
+              onClick: () => handleFilter({ max: 39, min: 20 }),
+            }}
             textBelowAveragePercentage={score_matches.poorMatch.percentage}
             textBelowAverageCount={score_matches.poorMatch.count}
+            onClickNotaMatch={{
+              style: { cursor: 'pointer' },
+              onClick: () => handleFilter({ max: 19, min: 0 }),
+            }}
             textNotAMatchPercentage={score_matches.noMatch.percentage}
             textNotAMatchCount={score_matches.noMatch.count}
             slotLocationGraphBlock={<Doughnut />}
@@ -303,7 +349,7 @@ const Preview = () => {
 
 const Pipeline = () => {
   const { job } = useJobDetails();
-  const { setSection } = useJobApplications();
+  const { setSection, activeSections } = useJobApplications();
   const { push } = useRouter();
 
   const newSections = Object.entries(job.count).reduce(
@@ -328,7 +374,7 @@ const Pipeline = () => {
           onClick: () => handlClick(JobApplicationSections.NEW),
         }}
       />
-      {job.phone_screen_enabled && (
+      {activeSections.includes(JobApplicationSections.SCREENING) && (
         <PipeLine
           textCandidateCount={newSections.screening.label}
           textName={capitalize(JobApplicationSections.SCREENING)}
@@ -337,7 +383,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {job.assessment && (
+      {activeSections.includes(JobApplicationSections.ASSESSMENT) && (
         <PipeLine
           textCandidateCount={newSections.assessment.label}
           textName={capitalize(JobApplicationSections.ASSESSMENT)}
@@ -439,18 +485,20 @@ const Schedules = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { publishStatus, status, setDismiss, job } = useJobDetails();
+  const banners: React.JSX.Element[] = [];
+  if (job.status === 'draft') banners.push(<JobsBanner />);
   if (!publishStatus.settingsValidity)
-    return (
+    banners.push(
       <DashboardAlert
         textTitile={'Job details are incomplete'}
         textShortDescription={
           'Scoring criterias cannot be generated without valid job details. Please ensure that valid job details are provided.'
         }
         onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
-      />
+      />,
     );
-  if (publishStatus.loading)
-    return (
+  else if (publishStatus.loading)
+    banners.push(
       <BannerLoading
         slotLoader={
           <CircularProgress
@@ -459,33 +507,33 @@ const Banners = () => {
             sx={{ color: palette.grey[400] }}
           />
         }
-      />
+      />,
     );
-  if (!publishStatus.jdValidity)
-    return (
+  else if (!publishStatus.jdValidity)
+    banners.push(
       <DashboardAlert
         textTitile={'Profile score is empty'}
         textShortDescription={
           'Candidate cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
         }
         onClickBanner={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
-      />
+      />,
     );
-  if (status.description_changed)
-    return (
+  else if (status.description_changed)
+    banners.push(
       <DashboardWarning
         onClickDismiss={{ onClick: () => setDismiss(true) }}
         onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
-      />
+      />,
     );
   // if (status.scoring_criteria_changed)
-  //   return (
+  //   banners.push(
   //     <DashboardWarning
   //       onClickDismiss={{ onClick: () => setDismiss(true) }}
   //       onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
   //     />
   //   );
-  return <></>;
+  return <Stack gap={1}>{banners}</Stack>;
 };
 
 const JobClose = ({

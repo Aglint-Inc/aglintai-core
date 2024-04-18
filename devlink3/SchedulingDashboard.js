@@ -5,6 +5,8 @@ import { YourSchedules } from "./YourSchedules";
 import { InterviewRatio } from "./InterviewRatio";
 import { NewInterviewDetail } from "./NewInterviewDetail";
 import { LeaderBoard } from "./LeaderBoard";
+import { InterviewModuleStats } from "./InterviewModuleStats";
+import { TrainingProgress } from "./TrainingProgress";
 import { InterviewStatic } from "./InterviewStatic";
 import * as _utils from "./utils";
 import _styles from "./SchedulingDashboard.module.css";
@@ -18,8 +20,9 @@ export function SchedulingDashboard({
   onClickScheduleSetting = {},
   slotFirstGrid,
   slotGridInterviewDetail,
-  slotInterviewDetail,
   slotInterviewStatic,
+  slotInterviewModuleStats,
+  slotTrainingProgress,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1459")} tag="div">
@@ -162,98 +165,11 @@ export function SchedulingDashboard({
               </>
             )}
           </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1487")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1488")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
-                tag="div"
-              >
-                {"Interview module stats"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-blue-500",
-                  "text-underline",
-                  "cursor-pointer"
-                )}
-                tag="div"
-              >
-                {"View all modules"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1507")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1508")}
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_3fbc9fcf-171d-41a8-e353-b8b39c380feb-aa8c5b1c"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-500")}
-                  tag="div"
-                >
-                  {"Interview Module"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1508")}
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_8169ec2c-cb2f-1aaf-a5e8-95c327415c6a-aa8c5b1c"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-500")}
-                  tag="div"
-                >
-                  {"Qualified members"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1508")}
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_68990c67-b8d1-6dfb-32d4-c744ec2ff771-aa8c5b1c"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-500")}
-                  tag="div"
-                >
-                  {"Trainees in shadow"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1508")}
-                id={_utils.cx(
-                  _styles,
-                  "w-node-_60ada3ee-dbc4-cecd-d346-ba6306bf858a-aa8c5b1c"
-                )}
-                tag="div"
-              >
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "text-grey-500")}
-                  tag="div"
-                >
-                  {"Trainees in reverse shadow"}
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block tag="div" />
+          <_Builtin.Block tag="div">
+            {slotInterviewModuleStats ?? <InterviewModuleStats />}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">
+            {slotTrainingProgress ?? <TrainingProgress />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

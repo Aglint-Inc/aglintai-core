@@ -5,4 +5,5 @@ declare function InterviewModuleTable(props: {
   as?: React.ElementType;
   slotInterviewModuleCard?: Types.Devlink.Slot;
   slotFilter?: Types.Devlink.Slot;
+  isFilterVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -24,7 +24,7 @@ export function YourSchedules({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Your schedules"}
+          {"My schedules"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1489")}

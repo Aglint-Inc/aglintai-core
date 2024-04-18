@@ -29,11 +29,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
           .select('*,interview_session!inner(*)')
           .eq('interview_session.module_id', editModule.id);
 
-        const isActiveMeeting = data.some(
-          (meet) => meet.start_time > new Date().toISOString(),
-        );
-
-        if (!isActiveMeeting) {
+        if (data.length === 0) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
             router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`);
@@ -42,8 +38,8 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
             throw new Error();
           }
         } else {
-          toast.error(
-            'Cannot delete module, active schedules are present for this module',
+          toast.warning(
+            'Cannot delete module, this module is tagged in some interview plan',
           );
         }
       } catch {

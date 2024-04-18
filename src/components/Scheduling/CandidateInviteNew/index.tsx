@@ -102,9 +102,17 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
 
   return (
     <CandidateSuccessPage
+      textDesc={
+        <>
+          <p>
+            Your interview is scheduled, and we look forward to speaking with
+            you.
+          </p>
+          <p>Please check {candidate.email} for the calendar invite.</p>
+        </>
+      }
       slotScheduleCard={<ConfirmedScheduleCards rounds={props.rounds} />}
       slotCompanyLogo={<Logo />}
-      textEmail={candidate.email}
       onClickSupport={{
         onClick: () => {
           window.open(
@@ -358,10 +366,10 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
     <Dialog open={props.open} onClose={() => handleClose()}>
       <ConfirmationPopup
         isIcon={false}
-        textPopupTitle={'Confirm your interview'}
+        textPopupTitle={'Confirm Your Interview'}
         isDescriptionVisible={true}
         textPopupDescription={
-          'Before we finalize your schedule, please take a moment to confirm the chosen option. Your interview is crucial, and we want to ensure it aligns perfectly with your availability.'
+          'Please review and confirm your selected time slot before we finalize your schedule. It’s important that your interview time aligns with your availability.'
         }
         isWidget={false}
         textPopupButton={'Confirm'}

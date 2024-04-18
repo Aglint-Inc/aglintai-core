@@ -9,4 +9,5 @@ declare function AvatarWithName(props: {
   textName?: React.ReactNode;
   textRole?: React.ReactNode;
   isRoleVisible?: Types.Visibility.VisibilityConditions;
+  isTickVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

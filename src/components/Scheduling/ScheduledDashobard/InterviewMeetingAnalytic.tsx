@@ -3,9 +3,9 @@ import React from 'react';
 import { InterviewDetailPill, NewInterviewDetail } from '@/devlink3';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-const InterviewDetailsMeetingAnalytic = ({
+const InterviewMeetingAnalytic = ({
   meetingData,
-}: InterviewDetailsMeetingAnalyticType) => {
+}: InterviewMeetingAnalyticType) => {
   const meetData = initialData.map((item) => {
     const temp = meetingData.find((md) => md.month === item.month);
     return temp
@@ -45,7 +45,7 @@ const InterviewDetailsMeetingAnalytic = ({
   );
 };
 
-export default InterviewDetailsMeetingAnalytic;
+export default InterviewMeetingAnalytic;
 
 type MonthName =
   | 'jan'
@@ -61,11 +61,11 @@ type MonthName =
   | 'nov'
   | 'dec';
 
-type InterviewDetailsMeetingAnalyticType = {
+type InterviewMeetingAnalyticType = {
   meetingData: { month: MonthName; completed: number; canceled: number }[];
 };
 
-const initialData: InterviewDetailsMeetingAnalyticType['meetingData'] = [
+const initialData: InterviewMeetingAnalyticType['meetingData'] = [
   {
     month: 'jan',
     completed: 0,

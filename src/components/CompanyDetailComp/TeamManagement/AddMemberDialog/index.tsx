@@ -1,4 +1,4 @@
-import { Autocomplete, Drawer, Stack } from '@mui/material';
+import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -243,7 +243,6 @@ const AddMember = ({
               slotForm={
                 <Stack spacing={2} component={'form'} autoComplete='on'>
                   <UITextField
-                    label='First Name'
                     value={form.first_name ? form.first_name : ''}
                     name='first_name'
                     placeholder='First Name'
@@ -269,7 +268,6 @@ const AddMember = ({
                     }}
                   /> */}
                   <UITextField
-                    label='Last Name'
                     value={form.last_name ? form.last_name : ''}
                     name='last_name'
                     placeholder='Last Name'
@@ -278,7 +276,6 @@ const AddMember = ({
                     }}
                   />
                   <UITextField
-                    label='Email'
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
@@ -291,7 +288,6 @@ const AddMember = ({
                     }}
                   />
                   <UITextField
-                    label='Designation'
                     value={form.designation ? form.designation : ''}
                     name='designation'
                     placeholder='Designation'
@@ -307,10 +303,7 @@ const AddMember = ({
                     style={{ marginTop: '20px' }}
                     fullWidth
                     value={form.employment || ''}
-                    onChange={(
-                      event: any,
-                      newValue: employmentTypeEnum | null,
-                    ) => {
+                    onChange={(_, newValue: employmentTypeEnum | null) => {
                       setForm({
                         ...form,
                         employment: newValue,
@@ -325,7 +318,7 @@ const AddMember = ({
                     }
                     getOptionLabel={(option) => capitalize(option)}
                     renderInput={(params) => (
-                      <UITextField
+                      <TextField
                         {...params}
                         error={formError.employment}
                         onFocus={() => {
@@ -334,8 +327,7 @@ const AddMember = ({
                             employment: false,
                           });
                         }}
-                        name='employment'
-                        label='Employment'
+                        name='Employment'
                         placeholder='Employment'
                       />
                     )}
@@ -356,7 +348,7 @@ const AddMember = ({
                       },
                     )}
                     renderInput={(params) => (
-                      <UITextField
+                      <TextField
                         {...params}
                         error={formError.interview_location}
                         onFocus={() => {
@@ -365,8 +357,7 @@ const AddMember = ({
                             interview_location: false,
                           });
                         }}
-                        name='location'
-                        label='Location'
+                        name='Location'
                         placeholder='Location'
                       />
                     )}
@@ -385,14 +376,13 @@ const AddMember = ({
                       capitalize(departments),
                     )}
                     renderInput={(params) => (
-                      <UITextField
+                      <TextField
                         {...params}
                         error={formError.department}
                         onFocus={() => {
                           setFormError({ ...formError, department: false });
                         }}
-                        name='department'
-                        label='Department'
+                        name='Department'
                         placeholder='Department'
                       />
                     )}
@@ -419,10 +409,9 @@ const AddMember = ({
                       ] as Database['public']['Enums']['agent_type'][]
                     ).map((role) => capitalize(role))}
                     renderInput={(params) => (
-                      <UITextField
+                      <TextField
                         {...params}
                         name='Role'
-                        label='Role'
                         placeholder='Role'
                         error={formError.role}
                         onFocus={() => {

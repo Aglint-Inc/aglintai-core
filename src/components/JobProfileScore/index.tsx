@@ -152,7 +152,7 @@ const ProfileScoreControls = () => {
           <>
             <Stack
               direction={'row'}
-              width={'40%'}
+              width={'80%'}
               justifyContent={'center'}
               alignItems={'center'}
               gap={'40px'}

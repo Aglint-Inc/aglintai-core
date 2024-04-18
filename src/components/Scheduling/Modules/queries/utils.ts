@@ -204,6 +204,7 @@ export const getMeetingsByModuleId = async (module_id: string) => {
   const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
     .select('*,interview_session!inner(*,interview_plan(*))')
+    .eq('is_confirmed', true)
     .eq('interview_session.module_id', module_id as string)
     .is('interview_session.interview_plan', null);
 

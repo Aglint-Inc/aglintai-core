@@ -13,6 +13,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { mailThankYouHandler } from '@/src/components/Scheduling/utils';
+
 export type ConfirmApiBodyParams = {
   candidate_plan: {
     sessions: {
@@ -25,6 +27,7 @@ export type ConfirmApiBodyParams = {
   user_tz: string;
   candidate_email: string;
   schedule_id: string;
+  filter_id: string;
 };
 
 const required_fields = [
@@ -38,7 +41,6 @@ const required_fields = [
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const req_body = req.body as ConfirmApiBodyParams;
   try {
-    console.log(req_body);
     required_fields.forEach((field) => {
       if (!has(req_body, field)) {
         throw new Error(`missing Field ${field}`);
@@ -46,10 +48,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     await bookCandidatePlan(req_body);
+    if (req_body.filter_id) {
+      mailThankYouHandler({
+        filter_id: req_body.filter_id,
+      });
+    }
     await saveEventsStatusInSchedule({
       api_status: 'sucess',
       schedule_id: req_body.schedule_id,
     });
+
     return res.status(200).json('sucess');
   } catch (error) {
     console.log(error);

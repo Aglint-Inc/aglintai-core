@@ -15,4 +15,5 @@ declare function AllInterview(props: {
   slotCheckbox?: Types.Devlink.Slot;
   isCheckboxVisible?: Types.Visibility.VisibilityConditions;
   propsGrid?: Types.Devlink.RuntimeProps;
+  isResumeScoreVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

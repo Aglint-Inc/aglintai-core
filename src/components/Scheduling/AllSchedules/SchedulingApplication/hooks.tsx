@@ -13,13 +13,16 @@ import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_inte
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
+  InterviewScheduleActivityTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
+  JobApplcationDB,
 } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { addScheduleActivity } from '../queries/utils';
 import { mailHandler } from '../utils';
 import {
   SchedulingApplication,
@@ -37,7 +40,7 @@ import {
 } from './types';
 
 export const useSendInviteForCandidate = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const {
     selCoordinator,
     dateRange,
@@ -91,6 +94,7 @@ export const useSendInviteForCandidate = () => {
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiterUser.first_name,
             },
             session_ids: createCloneRes.session_ids,
             schedule_id: createCloneRes.schedule.id,
@@ -98,6 +102,16 @@ export const useSendInviteForCandidate = () => {
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        addScheduleActivity({
+          schedule_id: createCloneRes.schedule.id,
+          title: `Candidate invited for session ${createCloneRes.refSessions
+            .filter((ses) => ses.isSelected)
+            .map((ses) => ses.name)
+            .join(' , ')}`,
+          filter_id: filterJson[0].id,
+          user_id: recruiterUser.user_id,
+        });
 
         if (!is_debrief && is_mail) {
           mailHandler({
@@ -171,6 +185,7 @@ export const useSendInviteForCandidate = () => {
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiterUser.first_name,
             },
             session_ids: selectedSessionIds,
             schedule_id: checkSch[0].id,
@@ -178,6 +193,16 @@ export const useSendInviteForCandidate = () => {
           .select();
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
+
+        addScheduleActivity({
+          schedule_id: checkSch[0].id,
+          title: `Candidate invited for session ${initialSessions
+            .filter((ses) => selectedSessionIds.includes(ses.id))
+            .map((ses) => ses.name)
+            .join(' , ')}`,
+          filter_id: filterJson[0].id,
+          user_id: recruiterUser.user_id,
+        });
 
         if (!is_debrief && is_mail) {
           mailHandler({
@@ -288,7 +313,7 @@ export const createCloneSession = async ({
 
   let insertableUserRelation = [];
   refSessions.map((session) => {
-    session.users.map((user) => {
+    session.users?.map((user) => {
       insertableUserRelation.push({
         interview_module_relation_id: user.interview_module_relation?.id,
         interviewer_type: user.interviewer_type,
@@ -456,6 +481,7 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
+        schedule_activity_data: InterviewScheduleActivityTypeDb[];
       };
       error: any;
     };
@@ -572,6 +598,7 @@ export const scheduleWithAgent = async ({
   company_name = 'aglint',
   rec_user_email,
   rec_user_phone,
+  rec_user_id,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -587,6 +614,7 @@ export const scheduleWithAgent = async ({
   company_name?: string;
   rec_user_email: string;
   rec_user_phone: string;
+  rec_user_id: string;
 }) => {
   try {
     if (type) {
@@ -620,11 +648,24 @@ export const scheduleWithAgent = async ({
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiter_user_name,
             },
             session_ids: createCloneRes.session_ids,
             schedule_id: createCloneRes.schedule.id,
           })
           .select();
+
+        addScheduleActivity({
+          schedule_id: createCloneRes.schedule.id,
+          title: `Candidate invited for session ${createCloneRes.refSessions
+            .filter((ses) => ses.isSelected)
+            .map((ses) => ses.name)
+            .join(
+              ' , ',
+            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+          filter_id: filterJson[0].id,
+          user_id: rec_user_id,
+        });
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
@@ -685,11 +726,24 @@ export const scheduleWithAgent = async ({
                 dateRange.end_date &&
                 dayjs(dateRange.end_date).format('DD/MM/YYYY'),
               user_tz: dayjs.tz.guess(),
+              organizer_name: recruiter_user_name,
             },
             session_ids: session_ids,
             schedule_id: checkSch[0].id,
           })
           .select();
+
+        addScheduleActivity({
+          schedule_id: checkSch[0].id,
+          title: `Candidate invited for session ${sessionsWithPlan.sessions
+            .filter((ses) => session_ids.includes(ses.id))
+            .map((ses) => ses.name)
+            .join(
+              ' , ',
+            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+          filter_id: filterJson[0].id,
+          user_id: rec_user_id,
+        });
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
@@ -746,7 +800,11 @@ const agentTrigger = async ({
           interviewer_name: recruiter_user_name,
           from_phone_no: '+12512066348',
           // to_phone_no: '+919482306657',
-          to_phone_no: rec_user_phone.replace(' ', '').replace('-', ''),
+          to_phone_no: rec_user_phone
+            .replace(' ', '')
+            .replace('-', '')
+            .replace('(', '')
+            .replace(')', ''),
           // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
           retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
           filter_json_id: filterJsonId,
@@ -848,4 +906,25 @@ export const updateProgress = async ({
 
   if (error) throw new Error(error.message);
   return resRel;
+};
+
+export const updateApplicationStatus = async ({
+  status,
+  application_id,
+}: {
+  status: JobApplcationDB['status'];
+  application_id: string;
+}) => {
+  const { error } = await supabase
+    .from('applications')
+    .update({
+      status: status,
+    })
+    .eq('id', application_id);
+
+  if (error) {
+    return false;
+  } else {
+    return true;
+  }
 };

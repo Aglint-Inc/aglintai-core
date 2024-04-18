@@ -16,6 +16,7 @@ import Overview from './Overview';
 function SchedulingViewComp() {
   const router = useRouter();
   const { data: schedule, isLoading } = useScheduleDetails();
+ 
 
   const viewScheduleTabs = [
     { name: 'Candidate Details', tab: 'candidate_details', hide: false },

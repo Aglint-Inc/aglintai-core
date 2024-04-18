@@ -117,6 +117,7 @@ const ApplicationCard = ({
           />
         }
         isChecked={isChecked}
+        slotResumeScore={<ResumeScore application={application} />}
       />
     ) : (
       <CandidateListItem
@@ -470,23 +471,26 @@ export const InavlidEmail = () => {
   );
 };
 
-const DraggableApplicationCard = (props: {
+type DNDApplicationCardProps = {
   detailedView: boolean;
   application: JobApplication;
   index: number;
   // eslint-disable-next-line no-unused-vars
   handleSelect: (index: number) => void;
-  // eslint-disable-next-line no-unused-vars
   handleOpenDetails: () => void;
   isSelected: boolean;
-}) => {
-  // eslint-disable-next-line no-unused-vars
+};
+const DNDApplicationCard = (props: DNDApplicationCardProps) => {
   const {
     cardStates: {
       checkList: { list },
     },
   } = useJobApplications();
-  const isChecked = list.has(props.application.id);
+  if (list.size === 0) return <ApplicationCard {...props} />;
+  return <DraggableApplicationCard {...props} />;
+};
+
+const DraggableApplicationCard = (props: DNDApplicationCardProps) => {
   const [, dragRef, preview] = useDrag({
     type: 'application-card',
     collect: (monitor) => ({
@@ -496,12 +500,10 @@ const DraggableApplicationCard = (props: {
   useEffect(() => {
     preview(getEmptyImage(), { captureDraggingState: true });
   }, []);
-  return isChecked ? (
+  return (
     <Stack ref={dragRef as any}>
       <ApplicationCard {...props} />
     </Stack>
-  ) : (
-    <ApplicationCard {...props} />
   );
 };
 
@@ -597,4 +599,4 @@ export const CustomDragLayer = ({
   );
 };
 
-export default DraggableApplicationCard;
+export default DNDApplicationCard;

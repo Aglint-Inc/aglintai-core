@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
-import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
@@ -130,6 +130,10 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const { recruiter, recruiterUser } = useAuthDetails();
 
   const router = useRouter();
+
+  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
+
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
   const { handleJobRefresh, jobPolling } = useJobDetails();
   const jobId = job_id ?? (router.query?.id as string);
@@ -173,9 +177,9 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           case JobApplicationSections.NEW:
             return true;
           case JobApplicationSections.SCREENING:
-            return job?.phone_screen_enabled ?? false;
+            return (job?.phone_screen_enabled ?? false) && isScreeningEnabled;
           case JobApplicationSections.ASSESSMENT:
-            return job?.assessment ?? false;
+            return (job?.assessment ?? false) && isAssessmentEnabled;
           case JobApplicationSections.INTERVIEW:
             return true;
           case JobApplicationSections.QUALIFIED:
@@ -199,7 +203,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         setCardStateManager((prev) => {
           return {
             ...prev,
-            [section]: cloneDeep(newValue),
+            [section]: structuredClone(newValue),
           };
         });
       }
@@ -220,14 +224,17 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     interview_score: {
       max: 100,
       min: 0,
+      active: false,
     },
     overall_score: {
       max: 100,
       min: 0,
+      active: false,
     },
     location: {
       name: null,
       value: 10,
+      active: false,
     },
   };
 
@@ -549,7 +556,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     parameters: Parameters,
     signal?: AbortSignal,
   ) => {
-    setSearchParameters({ ...parameters });
+    setSearchParameters(structuredClone(parameters));
     setAllApplicationsDisabled(true);
     const { confirmation, filteredCount } = await handleJobApplicationRead(
       {
@@ -564,7 +571,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     if (confirmation) {
       return { confirmation: true, filteredCount };
     }
-    setSearchParameters({ ...cloneDeep(searchParameters) });
+    setSearchParameters(structuredClone(searchParameters));
     return {
       confirmation: false,
       // eslint-disable-next-line no-unused-vars

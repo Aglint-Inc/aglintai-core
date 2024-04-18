@@ -21,12 +21,17 @@ type YourScheduleMeetingsType = {
       end: string;
     };
   }[];
+  onClickViewSchedules: () => void;
 };
 
-const YourScheduleMeetings = ({ meetings }: YourScheduleMeetingsType) => {
+const YourScheduleMeetings = ({
+  meetings,
+  onClickViewSchedules,
+}: YourScheduleMeetingsType) => {
   return (
     <>
       <YourSchedules
+        onClickViewSchedules={{ onClick: () => onClickViewSchedules() }}
         slotScheduleCard={
           <Stack gap={1}>
             {meetings.map((item, index) => {
@@ -67,7 +72,7 @@ const YourScheduleMeetings = ({ meetings }: YourScheduleMeetingsType) => {
                   }
                   textCandidateName={capitalizeAll(item.candidate.name)}
                   textPlatformName={capitalizeAll(item.meetingClient.name)}
-                  textTitle={capitalizeAll(item.meetingName)}
+                  textTitle={item.meetingName}
                 />
               );
             })}

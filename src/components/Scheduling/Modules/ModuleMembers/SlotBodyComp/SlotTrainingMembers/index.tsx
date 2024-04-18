@@ -209,7 +209,7 @@ function SlotTrainingMembers({
                 fontSize='24px'
               />
             }
-            textName={member.first_name}
+            textName={getFullName(member.first_name, member.last_name) || ''}
             textRole={member.position || '--'}
           />
         );

@@ -409,39 +409,6 @@
   align-items: flex-end;
 }
 
-.div-block-906 {
-  display: flex;
-  width: 382px;
-  padding: 14px 20px;
-  flex-direction: column;
-  align-items: center;
-
-  border-radius: 4px;
-
-  background-color: #337fbd;
-
-  color: white;
-
-  cursor: pointer;
-}
-
-.div-block-906.disable {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: #e9ebed;
-
-  color: #c2c8cc;
-}
-
-.div-block-906.cursor-pointer-copy {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .copyright_block {
   display: flex;
   height: 100%;
