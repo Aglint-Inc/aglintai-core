@@ -19,7 +19,7 @@
 
 @media screen and (max-width: 767px) {
   .candidateschedulecard {
-    width: auto;
+    width: 100%;
   }
 }
 
