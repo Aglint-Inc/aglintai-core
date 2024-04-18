@@ -26,6 +26,21 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .candidate_page {
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .candidate_page {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
+
 .title_block {
   display: flex;
   flex-direction: column;
@@ -416,6 +431,29 @@
   padding-bottom: 20px;
   justify-content: center;
   align-items: flex-end;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+@media screen and (max-width: 767px) {
+  .copyright_block {
+    padding-top: 40px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .copyright_block {
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+}
+
+.div-block-944 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 }

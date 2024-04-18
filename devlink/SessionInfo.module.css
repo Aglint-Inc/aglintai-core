@@ -6,6 +6,13 @@
   grid-row-gap: 16px;
 }
 
+@media screen and (max-width: 479px) {
+  .session_info {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+}
+
 .session_flex {
   display: flex;
   justify-content: flex-start;

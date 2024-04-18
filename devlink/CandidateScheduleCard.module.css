@@ -17,6 +17,12 @@
   background-color: white;
 }
 
+@media screen and (max-width: 767px) {
+  .candidateschedulecard {
+    width: auto;
+  }
+}
+
 .day_row {
   position: relative;
   z-index: 5;
@@ -286,6 +292,10 @@
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
 
+@media screen and (max-width: 479px) {
+
+}
+
 .text-blue-600 {
   color: var(--blue600-aad8d97e);
 }
@@ -467,4 +477,11 @@
   flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+@media screen and (max-width: 479px) {
+  .slot_selected {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
 }

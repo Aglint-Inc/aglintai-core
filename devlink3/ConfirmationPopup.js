@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -70,7 +71,7 @@ export function ConfirmationPopup({
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "button-pop-wrap")}
+        className={_utils.cx(_styles, "button-pop-wrap", "stretch-vertical")}
         tag="div"
       >
         {isGreyButtonVisible ? (
