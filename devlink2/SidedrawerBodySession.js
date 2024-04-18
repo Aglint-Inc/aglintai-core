@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { InterviewMode } from "./InterviewMode";
@@ -19,7 +20,7 @@ export function SidedrawerBodySession({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Session Name"}
+          {"Stage Name"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}
@@ -82,7 +83,7 @@ export function SidedrawerBodySession({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview Module"}
+          {"Interview Type"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_input_field")}

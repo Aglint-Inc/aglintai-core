@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -64,7 +65,7 @@ export function AddScheduleCard({
                       className={_utils.cx(_styles, "text-blue-500")}
                       tag="div"
                     >
-                      {"Add Session"}
+                      {"Add Stage"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
@@ -84,7 +85,7 @@ export function AddScheduleCard({
                       className={_utils.cx(_styles, "text-blue-500")}
                       tag="div"
                     >
-                      {"Add debrief Session"}
+                      {"Add debrief Stage"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   {isBreakVisibe ? (

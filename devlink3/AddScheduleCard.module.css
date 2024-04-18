@@ -46,6 +46,11 @@
   opacity: 0.8;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .slot-add-icon-options {
   position: absolute;
   left: auto;
@@ -132,4 +137,17 @@
 
 .text-blue-500.text-underline.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-blue-500.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-blue-500.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
 }

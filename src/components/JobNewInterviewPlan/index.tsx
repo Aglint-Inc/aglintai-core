@@ -468,11 +468,11 @@ const InterviewSession = ({
 const getSessionType = (session_type: InterviewSessionType['session_type']) => {
   switch (session_type) {
     case 'panel':
-      return 'Group session';
+      return 'Group stage';
     case 'individual':
-      return 'Individual session';
+      return 'Individual stage';
     case 'debrief':
-      return 'Debrief session';
+      return 'Debrief stage';
   }
 };
 

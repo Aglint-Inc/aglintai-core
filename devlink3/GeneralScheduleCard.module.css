@@ -64,6 +64,11 @@
   opacity: 0.8;
 }
 
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -74,11 +79,6 @@
 }
 
 .fw-semibold.relative_2 {
-  position: relative;
-  z-index: 2;
-}
-
-.relative_2 {
   position: relative;
   z-index: 2;
 }
@@ -120,6 +120,20 @@
   padding-left: 16px;
 }
 
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .div-block-1310 {
   display: flex;
   justify-content: flex-start;
@@ -135,6 +149,7 @@
 
 .three-dot-wrap {
   position: relative;
+  z-index: 2;
 }
 
 .sloteditoptions {
@@ -253,6 +268,10 @@
 
 .text-blue-500.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
 }
 
 .div-block-1322 {

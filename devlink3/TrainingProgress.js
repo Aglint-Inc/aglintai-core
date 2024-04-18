@@ -29,7 +29,7 @@ export function TrainingProgress({
           tag="div"
           {...onClickViewAllInterviewers}
         >
-          {"View all interviewers"}
+          {"View all"}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -67,7 +67,7 @@ export function TrainingProgress({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Interview module"}
+              {"Interview type"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

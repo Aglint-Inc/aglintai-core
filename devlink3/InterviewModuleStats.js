@@ -17,7 +17,7 @@ export function InterviewModuleStats({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview module stats"}
+          {"Interview stats"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(
@@ -29,7 +29,7 @@ export function InterviewModuleStats({
           tag="div"
           {...onClickViewAllModules}
         >
-          {"View all modules"}
+          {"View all"}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
@@ -52,7 +52,7 @@ export function InterviewModuleStats({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Interview Module"}
+              {"Interview type"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -67,7 +67,7 @@ export function InterviewModuleStats({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Qualified members"}
+              {"Qualified"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -82,7 +82,7 @@ export function InterviewModuleStats({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Trainees in shadow"}
+              {"Shadow"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -97,7 +97,7 @@ export function InterviewModuleStats({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Trainees in reverse shadow"}
+              {"Reverse shadow"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

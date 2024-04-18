@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { InterviewPlanCard } from "./InterviewPlanCard";
@@ -33,7 +34,7 @@ export function InterviewPlan({
           tag="div"
         >
           {
-            "Add your interview modules to form an interview plan. You can find your interview modules in "
+            "Add your interview type to form an interview plan. You can find your interview type in "
           }
           <_Builtin.Span
             className={_utils.cx(_styles, "link")}
