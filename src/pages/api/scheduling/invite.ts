@@ -12,7 +12,7 @@ dayjs.extend(customParseFormat);
 
 import axios from 'axios';
 
-import { SessionsCombType } from '@/src/types/schedulingTypes/types';
+import { SessionsCombType } from '@/src/types/scheduleTypes/types';
 import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(

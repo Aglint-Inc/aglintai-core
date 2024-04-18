@@ -13,7 +13,7 @@ import { SubTaskProgress } from '@/src/types/data.types';
 import {
   holidayType,
   schedulingSettingType,
-} from '@/src/types/schedulingTypes/scheduleSetting';
+} from '@/src/types/scheduleTypes/scheduleSetting';
 
 import {
   PlanCombinationType,
@@ -22,7 +22,7 @@ import {
   SessionInterviewerType,
   SessionsCombType,
   SessionSlotType,
-} from '../../types/schedulingTypes/types';
+} from '../../types/scheduleTypes/types';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 export const combineSlots = (plan_combs: PlanCombinationType[][]) => {

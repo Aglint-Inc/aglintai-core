@@ -10,8 +10,8 @@ import {
   JobApplcationDB,
   RecruiterUserType,
 } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
-import { PauseJson } from '@/src/types/schedulingTypes/types';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
+import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { Database } from '@/src/types/schema';
 
 import { ApplicationList } from '../AllSchedules/store';

@@ -2,7 +2,7 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import {
   CalendarEvent,
   NewCalenderEvent,
-} from '@/src/types/schedulingTypes/calEvent.types';
+} from '@/src/types/scheduleTypes/calEvent.types';
 
 import {
   GetAuthParams,

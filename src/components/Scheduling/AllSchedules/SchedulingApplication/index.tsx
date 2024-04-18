@@ -12,7 +12,7 @@ import Loader from '@/src/components/Common/Loader';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
-import { PlanCombinationRespType } from '@/src/types/schedulingTypes/types';
+import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';

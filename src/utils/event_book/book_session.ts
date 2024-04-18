@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 
 import { InterviewSession, RecruiterUserType } from '@/src/types/data.types';
-import { NewCalenderEvent } from '@/src/types/schedulingTypes/calEvent.types';
+import { NewCalenderEvent } from '@/src/types/scheduleTypes/calEvent.types';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';

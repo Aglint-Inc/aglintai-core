@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { InterviewModuleRelationType } from '@/src/types/data.types';
-import { PauseJson } from '@/src/types/schedulingTypes/types';
+import { PauseJson } from '@/src/types/scheduleTypes/types';
 
 import {
   MemberType,

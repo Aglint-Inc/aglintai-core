@@ -6,7 +6,7 @@ import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
 } from '@/src/types/data.types';
-import { PlanCombinationRespType } from '@/src/types/schedulingTypes/types';
+import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
 

@@ -1,6 +1,6 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { InterviewModuleType, InterviewSession } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { CompServiceKeyCred } from '@/src/utils/scheduling_v2/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
@@ -8,7 +8,7 @@ import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 import {
   InterviewSessionApiType,
   SessionInterviewerType,
-} from '../../../types/schedulingTypes/types';
+} from '../../../types/scheduleTypes/types';
 
 export const fetch_details_from_db = async (
   session_ids: string[],

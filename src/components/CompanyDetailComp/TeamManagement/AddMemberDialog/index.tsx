@@ -15,7 +15,7 @@ import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalize } from '@/src/utils/text/textUtils';

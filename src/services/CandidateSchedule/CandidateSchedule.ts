@@ -9,7 +9,7 @@ import { InterviewModuleRelationType } from '@/src/types/data.types';
 import {
   holidayType,
   schedulingSettingType,
-} from '@/src/types/schedulingTypes/scheduleSetting';
+} from '@/src/types/scheduleTypes/scheduleSetting';
 import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
@@ -31,7 +31,7 @@ import {
   SessionInterviewerType,
   SessionsCombType,
   SessionSlotType,
-} from '../../types/schedulingTypes/types';
+} from '../../types/scheduleTypes/types';
 import { GoogleCalender } from '../GoogleCalender/google-calender';
 import { fetch_details_from_db } from './utils/fetch_details_from_db';
 import { userTzDayjs } from './utils/userTzDayjs';

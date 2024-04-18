@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
 import { ApiResponseCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
-import { SessionsCombType } from '@/src/types/schedulingTypes/types';
+import { SessionsCombType } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
 
 import { candidateInviteKeys } from './keys';

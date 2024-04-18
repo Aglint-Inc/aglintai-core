@@ -7,9 +7,9 @@ dayjs.extend(timezone);
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
-import { CalendarEvent } from '@/src/types/schedulingTypes/calEvent.types';
+import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
 
-import { SessionInterviewerType } from '../../types/schedulingTypes/types';
+import { SessionInterviewerType } from '../../types/scheduleTypes/types';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';

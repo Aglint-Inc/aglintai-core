@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { PauseJson } from '@/src/types/schedulingTypes/types';
+import { PauseJson } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
 
 import { PauseType } from '../ModuleMembers/type';

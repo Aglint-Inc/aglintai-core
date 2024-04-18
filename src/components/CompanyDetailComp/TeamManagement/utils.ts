@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { supabase } from '@/src/utils/supabase/client';
 
 export const setMemberInDb = async (

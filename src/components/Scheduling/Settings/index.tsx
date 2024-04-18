@@ -34,7 +34,7 @@ import {
   holidayType,
   schedulingSettingType,
   WeeklyLimitType,
-} from '@/src/types/schedulingTypes/scheduleSetting';
+} from '@/src/types/scheduleTypes/scheduleSetting';
 import toast from '@/src/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
