@@ -1,7 +1,7 @@
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { CandidatesScheduling } from '@/src/utils/CandidateSchedule/CandidateSchedule';
+import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 
 export type BodyParams = {
   session_ids: string[];
