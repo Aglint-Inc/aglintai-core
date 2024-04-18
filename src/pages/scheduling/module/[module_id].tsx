@@ -17,7 +17,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
 import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
 import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
-import TopRightButtons from '@/src/components/Scheduling/Modules/ModuleMembers/TopRightButtons';
 import {
   // useGetMeetingsByModuleId,
   useModuleAndUsers,
@@ -118,12 +117,6 @@ function ModuleMembersComp() {
           <>
             <Breadcrum textName={module?.name} />
           </>
-        }
-        slotTopbarRight={
-          <Stack direction={'row'} justifyItems={'center'} gap={'10px'}>
-            {/* <Instructions editModule={editModule} /> */}
-            <TopRightButtons editModule={module} />
-          </Stack>
         }
         slotBody={
           <>
