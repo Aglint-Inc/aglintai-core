@@ -166,7 +166,7 @@ function SideNavbar() {
 
   useEffect(() => {
     const tempR = navList.find((item) => {
-      return pathName.includes(item.route);
+      return pathName?.includes(item.route);
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
       toast.error("You don't have Access to this Module.");

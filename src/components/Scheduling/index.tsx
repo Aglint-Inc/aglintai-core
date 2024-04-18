@@ -160,7 +160,7 @@ const InterviewerModule = ({
   recruiter_id: string;
   user_id: string;
 }) => {
-  // const router = useRouter();
+  const router = useRouter();
   const { data } = useInterviewModules({ recruiter_id, user_id });
   return (
     <InterviewModuleTable
@@ -172,20 +172,20 @@ const InterviewerModule = ({
               return (
                 <Stack
                   key={mod.interview_modules.id}
-                  sx={{ pointerEvents: 'none' }}
+                  sx={{ pointerEvents: 'fill' }}
                 >
                   <InterviewModuleCard
                     isObjectiveVisible={Boolean(
                       mod.interview_modules.description,
                     )}
-                    // onClickCard={{
-                    //   onClick: () => {
-                    //     router.push(
-                    //       pageRoutes.INTERVIEWMODULE +
-                    //         `/${mod.interview_modules.id}`,
-                    //     );
-                    //   },
-                    // }}
+                    onClickCard={{
+                      onClick: () => {
+                        router.push(
+                          pageRoutes.INTERVIEWMODULE +
+                            `/${mod.interview_modules.id}`,
+                        );
+                      },
+                    }}
                     textObjective={mod.interview_modules.description}
                     textModuleName={mod.interview_modules.name}
                     slotMemberPic={

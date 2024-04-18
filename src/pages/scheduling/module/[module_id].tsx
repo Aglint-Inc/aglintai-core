@@ -1,4 +1,6 @@
 import { Stack, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
@@ -22,11 +24,14 @@ import {
   useModuleAndUsers,
   useProgressModuleUsers,
 } from '@/src/components/Scheduling/Modules/queries/hooks';
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
+import {
+  MemberType,
+  ModuleType,
+} from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import SchedulingProvider, {
-  useSchedulingContext,
-} from '@/src/context/SchedulingMain/SchedulingMainProvider';
+// import SchedulingProvider, {
+//   useSchedulingContext,
+// } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { DatabaseTableUpdate } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
@@ -43,9 +48,9 @@ const ModuleMembers = () => {
   );
 };
 
-ModuleMembers.getProvider = function getProvider(page) {
-  return <SchedulingProvider>{page}</SchedulingProvider>;
-};
+// ModuleMembers.getProvider = function getProvider(page) {
+//   return <SchedulingProvider>{page}</SchedulingProvider>;
+// };
 export default ModuleMembers;
 
 const subTabs: ('training history' | 'instructions' | 'members')[] = [
@@ -64,14 +69,12 @@ function ModuleMembersComp() {
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
-  const { members, loading } = useSchedulingContext();
-  // const { data: meetingData } = useGetMeetingsByModuleId({
-  //   schedulesLoading: false,
-  //   user_ids: editModule?.relations?.map((user) => user.user_id) || [],
-  // });
+  const { data: members, isFetching: loading } = useInterviewModules();
+
   let { data: progress } = useProgressModuleUsers({
     trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
   });
+
   const [module, setModule] = useState<typeof selectedModule>(null);
   useMemo(() => {
     if (selectedModule) {
@@ -149,7 +152,12 @@ function ModuleMembersComp() {
                           module={module}
                           progress={
                             progress.filter(
-                              (item) => item.user_id === recruiterUser.user_id,
+                              (item) =>
+                                item.interview_module_relation_id ===
+                                selectedModule.relations.find(
+                                  (item) =>
+                                    item.user_id === recruiterUser.user_id,
+                                ).id,
                             ) || []
                           }
                         />
@@ -169,6 +177,7 @@ function ModuleMembersComp() {
                     <ModuleMembersX
                       module={module}
                       progress={progress}
+                      members={members}
                       updateMemberRelation={updateMemberProgress}
                     />
                   )
@@ -197,6 +206,7 @@ const TrainingDetails = ({
     progress: progress,
     user: members.find((item) => item.user_id === id),
   };
+
   const shadowProgress = progressUser?.progress.filter(
     (prog) => prog.training_type == 'shadow',
   );
@@ -297,10 +307,12 @@ const TrainingDetails = ({
 const ModuleMembersX = ({
   module,
   progress,
+  members,
   updateMemberRelation,
 }: {
   module: ModuleType;
   progress: any;
+  members: MemberType[];
   // eslint-disable-next-line no-unused-vars
   updateMemberRelation: (x: {
     user_id: string;
@@ -311,6 +323,7 @@ const ModuleMembersX = ({
     <>
       <Stack gap={1} p={'20px'} maxWidth={'800px'}>
         <SlotQualifiedMembers
+          members={members}
           editModule={module}
           progress={progress}
           updateMember={updateMemberRelation}
@@ -325,11 +338,13 @@ function SlotQualifiedMembers({
   editModule,
   // meetingData,
   progress,
+  members,
   updateMember,
 }: {
   editModule: ModuleType;
   // meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
   progress: any;
+  members: MemberType[];
   // eslint-disable-next-line no-unused-vars
   updateMember: (x: {
     user_id: string;
@@ -337,14 +352,14 @@ function SlotQualifiedMembers({
     data: DatabaseTableUpdate['interview_module_relation'];
   }) => void;
 }) {
-  const { members } = useSchedulingContext();
-
+  // const { members } = useSchedulingContext();
   const allQualified = editModule.relations;
 
   const [progressUser, setProgressUser] = useState<ProgressUser>({
     user: null,
     progress: [],
   });
+
   return (
     <>
       {progressUser && (
@@ -465,4 +480,25 @@ const updateMemberRelation = ({
       if (error) throw new Error(error.message);
       return data;
     });
+};
+
+const useInterviewModules = () => {
+  const { recruiter_id } = useAuthDetails();
+  const query = useQuery({
+    queryKey: [`InterviewModulesDetails_${recruiter_id}`],
+    queryFn: () => {
+      return axios
+        .post('/api/scheduling/fetchUserDetails', {
+          recruiter_id,
+        })
+        .then((data) => {
+          const temp = data.data as unknown as MemberType[];
+          return temp;
+        });
+    },
+    enabled: Boolean(recruiter_id),
+    initialData: () => [] as unknown as MemberType[],
+    refetchOnWindowFocus: false,
+  });
+  return query;
 };
