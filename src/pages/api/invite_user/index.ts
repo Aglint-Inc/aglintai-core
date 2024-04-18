@@ -7,8 +7,10 @@ import { Database } from '@/src/types/schema';
 import { companyType } from '@/src/utils/userRoles';
 
 export const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  'https://plionpfmgvenmdwwjzac.supabase.co',
+  '0ZoJH/GsSYBKTFBcnNV2ZW9a4Z4Woa1687QO5oPhMds2ePwue99cbSQxi5tshc2ioryv2ZDmuJz8HuSqs9uhbw==',
+  // process.env.NEXT_PUBLIC_SUPABASE_URL,
+  // process.env.SUPABASE_SERVICE_KEY,
 );
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
