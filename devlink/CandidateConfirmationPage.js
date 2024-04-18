@@ -25,18 +25,13 @@ export function CandidateConfirmationPage({
           )}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
           tag="div"
         >
           {textTitle}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "text-grey-600",
-            "max_width-500"
-          )}
+          className={_utils.cx(_styles, "text-grey-600", "max-width-500")}
           tag="div"
         >
           {
@@ -44,7 +39,7 @@ export function CandidateConfirmationPage({
           }
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-lg", "text-link")}
+          className={_utils.cx(_styles, "text-link")}
           tag="div"
           {...onClickView}
         >

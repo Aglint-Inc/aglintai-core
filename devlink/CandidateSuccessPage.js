@@ -36,19 +36,14 @@ export function CandidateSuccessPage({
           )}
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
           tag="div"
         >
           {"Interview Confirmed !"}
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-lg",
-              "text-grey-600",
-              "max_width-500-copy"
-            )}
+            className={_utils.cx(_styles, "text-grey-600", "max-width-600")}
             tag="div"
           >
             {textDesc}

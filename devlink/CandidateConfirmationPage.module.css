@@ -96,129 +96,6 @@
   z-index: 2;
 }
 
-.text-xl {
-  font-size: 22px;
-  line-height: 1.27;
-}
-
-@media screen and (max-width: 767px) {
-  .text-xl {
-    font-size: 18px;
-  }
-}
-
-.fw-medium {
-  font-weight: 500;
-}
-
-.fw-semibold {
-  font-weight: 600;
-}
-
-.text-align-center {
-  text-align: center;
-}
-
-.text-grey-800 {
-  color: var(--grey800-e42b2e06);
-}
-
-.text-xl.fw-semibold.text-grey-800.top-margin--8 {
-  margin-top: -8px;
-}
-
-.text-xl.fw-semibold.profile-titler {
-  margin-bottom: 40px;
-}
-
-@media screen and (max-width: 767px) {
-  .text-xl.fw-semibold.profile-titler {
-    margin-bottom: 20px;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .text-xl.fw-semibold.profile-titler {
-    margin-bottom: 20px;
-  }
-}
-
-.text-xl.fw-semibold.margin-bottom-16 {
-  margin-bottom: 6px;
-}
-
-.text-grey-700 {
-  color: var(--grey700-7fbe857b);
-}
-
-.text-white {
-  color: white;
-}
-
-.text-xl.fw-semibold.inline-start {
-  display: inline;
-  margin-left: 5px;
-}
-
-.text-xl.fw-semibold.inline-end {
-  display: inline;
-}
-
-.text-grey-600 {
-  color: var(--grey600-d5bebe21);
-}
-
-.text-xl.fw-semibold.text-grey-600.inline-start {
-  display: inline;
-  margin-left: 5px;
-}
-
-.color-black {
-  color: var(--black-0fdbd865);
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-.text-xl.color-orange {
-  color: var(--yellow500-c095f0f1);
-}
-
-.color-grey-600 {
-  color: #68737d;
-}
-
-.fw-bold {
-  font-weight: 700;
-}
-
-.text-grey-200 {
-  color: var(--grey200-9ba653f1);
-}
-
-@media screen and (max-width: 479px) {
-  .text-xl.text-grey-200.mobile-regular {
-    font-size: 14px;
-  }
-}
-
-.fw-light {
-  font-weight: 300;
-}
-
-.text-green-600 {
-  color: var(--green600-40a2ee5f);
-}
-
-.text-gray-600 {
-  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
-}
-
-.text-capitalize {
-  text-transform: uppercase;
-}
-
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -236,6 +113,14 @@
   }
 }
 
+.text-grey-600 {
+  color: var(--grey600-d5bebe21);
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
 .text-lg.text-grey-600.max_width-500 {
   max-width: 600px;
 }
@@ -246,6 +131,10 @@
 
 .text-lg.text-grey-600.max_width-500-copy {
   max-width: 700px;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .text-lg.fw-semibold.no-wrap-company {
@@ -268,12 +157,20 @@
   }
 }
 
+.text-grey-800 {
+  color: var(--grey800-e42b2e06);
+}
+
 .text-capitalize-word {
   text-transform: capitalize;
 }
 
 .text-yellow-800 {
   color: var(--yellow800-b1e3bc9b);
+}
+
+.color-black {
+  color: var(--black-0fdbd865);
 }
 
 .text-green-800 {
@@ -312,6 +209,14 @@
 
 .text-lg.fw-semibold.inline-text.ml-6 {
   margin-left: 6px;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.text-green-600 {
+  color: var(--green600-40a2ee5f);
 }
 
 .text-red-500 {
@@ -366,6 +271,10 @@
   margin-bottom: 10px;
 }
 
+.text-grey-700 {
+  color: var(--grey700-7fbe857b);
+}
+
 .text-lg.text-grey-700.letter-spacing-small {
   letter-spacing: -0.45px;
 }
@@ -403,59 +312,17 @@
   cursor: pointer;
 }
 
-.candidate_calender_slot {
-  display: flex;
-  width: 100%;
-  max-width: 900px;
-  margin-right: auto;
-  margin-left: auto;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  align-items: center;
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+.text-link {
+  color: #337fbd;
+  text-decoration: underline;
 }
 
-.button_block {
-  display: flex;
-  padding-top: 20px;
-  justify-content: center;
-  align-items: flex-end;
+.fw-light {
+  font-weight: 300;
 }
 
-.copyright_block {
-  display: flex;
-  height: 100%;
-  padding-top: 60px;
-  padding-bottom: 20px;
-  justify-content: center;
-  align-items: flex-end;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-}
-
-@media screen and (max-width: 767px) {
-  .copyright_block {
-    padding-top: 40px;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .copyright_block {
-    flex-direction: column;
-    justify-content: center;
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-}
-
-.div-block-944 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
+.text-capitalize {
+  text-transform: uppercase;
 }
 
 .max-width-500 {
@@ -539,4 +406,65 @@
 
 .text-grey-600.mt-8 {
   margin-top: 8px;
+}
+
+.candidate_calender_slot {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+@media screen and (max-width: 767px) {
+  .candidate_calender_slot {
+    max-width: none;
+  }
+}
+
+.button_block {
+  display: flex;
+  padding-top: 20px;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.copyright_block {
+  display: flex;
+  height: 100%;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  justify-content: center;
+  align-items: flex-end;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+@media screen and (max-width: 767px) {
+  .copyright_block {
+    padding-top: 40px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .copyright_block {
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+}
+
+.div-block-944 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }

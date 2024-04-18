@@ -24,7 +24,7 @@ export function DayColumn({
     >
       <_Builtin.Block className={_utils.cx(_styles, "day_title")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
           tag="div"
         >
           {textDate}
@@ -32,9 +32,9 @@ export function DayColumn({
         <_Builtin.Block
           className={_utils.cx(
             _styles,
-            "text-xl",
+            "text-lg",
             "fw-light",
-            "text-gray-600",
+            "text-grey-600",
             "text-capitalize"
           )}
           tag="div"
