@@ -115,6 +115,11 @@
   color: #ad5918;
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .div-block-1462 {
   display: grid;
   grid-auto-columns: 1fr;

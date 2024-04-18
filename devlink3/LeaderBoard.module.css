@@ -105,6 +105,11 @@
   color: #ad5918;
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .div-block-1473 {
   display: flex;
   justify-content: flex-start;
@@ -115,6 +120,7 @@
 
 .div-block-1504 {
   position: relative;
+  cursor: pointer;
 }
 
 .div-block-1474 {

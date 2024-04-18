@@ -18,7 +18,10 @@ export function NewInterviewDetail({
       )}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "fw-semibold", "p-lr-16")}
+        tag="div"
+      >
         {"Interviews detail"}
       </_Builtin.Block>
       <_Builtin.Block

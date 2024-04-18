@@ -123,7 +123,7 @@ export function SchedulingDashboard({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Schedule Settings"}
+            {"Settings"}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -1,7 +1,8 @@
 .div-block-1469 {
   display: flex;
   height: 420px;
-  padding: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   flex-direction: column;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -78,11 +79,18 @@
   color: #ad5918;
 }
 
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .div-block-1499 {
   display: flex;
   overflow: auto;
   width: 100%;
   height: 100%;
+  padding-right: 16px;
+  padding-left: 16px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 20px;
