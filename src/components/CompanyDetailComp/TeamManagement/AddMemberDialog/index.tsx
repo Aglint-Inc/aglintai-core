@@ -1,4 +1,11 @@
-import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Drawer,
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@mui/material';
 import converter from 'number-to-words';
 import { useState } from 'react';
 
@@ -11,7 +18,6 @@ import {
 } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import UITextField from '@/src/components/Common/UITextField';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
@@ -242,10 +248,11 @@ const AddMember = ({
               })}
               slotForm={
                 <Stack spacing={2} component={'form'} autoComplete='on'>
-                  <UITextField
+                  <CustomTextField
                     value={form.first_name ? form.first_name : ''}
                     name='first_name'
                     placeholder='First Name'
+                    label='First Name'
                     error={formError.first_name}
                     onFocus={() => {
                       setFormError({ ...formError, first_name: false });
@@ -267,18 +274,20 @@ const AddMember = ({
                       setForm({ ...form, first_name: e.target.value });
                     }}
                   /> */}
-                  <UITextField
+                  <CustomTextField
                     value={form.last_name ? form.last_name : ''}
                     name='last_name'
                     placeholder='Last Name'
+                    label='Last Name'
                     onChange={(e) => {
                       setForm({ ...form, last_name: e.target.value });
                     }}
                   />
-                  <UITextField
+                  <CustomTextField
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
+                    label='Email'
                     error={formError.email}
                     onFocus={() => {
                       setFormError({ ...formError, email: false });
@@ -287,10 +296,11 @@ const AddMember = ({
                       setForm({ ...form, email: e.target.value });
                     }}
                   />
-                  <UITextField
+                  <CustomTextField
                     value={form.designation ? form.designation : ''}
                     name='designation'
                     placeholder='Designation'
+                    label='Designation'
                     error={formError.designation}
                     onFocus={() => {
                       setFormError({ ...formError, designation: false });
@@ -318,7 +328,7 @@ const AddMember = ({
                     }
                     getOptionLabel={(option) => capitalize(option)}
                     renderInput={(params) => (
-                      <TextField
+                      <CustomTextField
                         {...params}
                         error={formError.employment}
                         onFocus={() => {
@@ -329,6 +339,7 @@ const AddMember = ({
                         }}
                         name='Employment'
                         placeholder='Employment'
+                        label='Employment'
                       />
                     )}
                   />
@@ -348,7 +359,7 @@ const AddMember = ({
                       },
                     )}
                     renderInput={(params) => (
-                      <TextField
+                      <CustomTextField
                         {...params}
                         error={formError.interview_location}
                         onFocus={() => {
@@ -359,6 +370,7 @@ const AddMember = ({
                         }}
                         name='Location'
                         placeholder='Location'
+                        label='Location'
                       />
                     )}
                   />
@@ -376,7 +388,7 @@ const AddMember = ({
                       capitalize(departments),
                     )}
                     renderInput={(params) => (
-                      <TextField
+                      <CustomTextField
                         {...params}
                         error={formError.department}
                         onFocus={() => {
@@ -384,6 +396,7 @@ const AddMember = ({
                         }}
                         name='Department'
                         placeholder='Department'
+                        label='Department'
                       />
                     )}
                   />
@@ -409,10 +422,11 @@ const AddMember = ({
                       ] as Database['public']['Enums']['agent_type'][]
                     ).map((role) => capitalize(role))}
                     renderInput={(params) => (
-                      <TextField
+                      <CustomTextField
                         {...params}
                         name='Role'
                         placeholder='Role'
+                        label='Role'
                         error={formError.role}
                         onFocus={() => {
                           setFormError({ ...formError, role: false });
@@ -516,3 +530,17 @@ const AddMember = ({
 };
 
 export default AddMember;
+
+const CustomTextField = (props: TextFieldProps) => {
+  const label = props.label;
+  return (
+    <Stack>
+      {Boolean(label) && (
+        <Typography fontSize={'14px'} marginBottom={'3px'}>
+          {label}
+        </Typography>
+      )}
+      <TextField {...{ ...props, label: undefined }} />
+    </Stack>
+  );
+};

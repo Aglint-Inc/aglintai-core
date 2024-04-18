@@ -282,7 +282,7 @@ function SchedulingSettings({
             }
             // slotTimeZoneToggle={}
             slotWorkingHourDay={
-              <Stack direction={'column'} spacing={3} paddingBottom={'50px'}>
+              <Stack direction={'column'} paddingBottom={'50px'}>
                 {!!workingHours.length &&
                   workingHours.map((day, i) => {
                     return (
@@ -354,7 +354,7 @@ function SchedulingSettings({
                     );
                   })}
 
-                <Stack direction={'column'} spacing={1.8}>
+                <Stack direction={'column'} spacing={1} marginTop={'20px'}>
                   <Stack direction={'column'} spacing={0.5}>
                     <Typography variant='body1' fontSize={'15px'}>
                       Break Hour
