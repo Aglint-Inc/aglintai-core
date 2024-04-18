@@ -528,6 +528,8 @@
 }
 
 .tu-list-wrapper.mlr-20.radius-10 {
+  overflow: visible;
+  border-top-style: none;
   border-radius: 10px;
 }
 
@@ -546,6 +548,7 @@
   padding-top: 0px;
   padding-bottom: 0px;
   grid-template-columns: 30% 15% 15% 17% 13% 10%;
+  border-radius: 10px 10px 0px 0px;
   background-color: #e9ebed;
 }
 
@@ -601,6 +604,18 @@
   .text-lg {
     font-size: 16px;
   }
+}
+
+.text-lg.text-grey-600.max_width-500 {
+  max-width: 600px;
+}
+
+.text-lg.text-grey-600.max_width-500-copy {
+  max-width: 641px;
+}
+
+.text-lg.text-grey-600.max_width-500-copy {
+  max-width: 700px;
 }
 
 .text-lg.fw-semibold.no-wrap-company {
@@ -701,6 +716,12 @@
 
 .text-lg.text-gray-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.text-lg.text-link {
+  color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .tu-roles-wrapper {

@@ -1,4 +1,11 @@
-import { Autocomplete, Drawer, Stack, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Drawer,
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@mui/material';
 import { capitalize } from 'lodash';
 import { useState } from 'react';
 
@@ -107,9 +114,10 @@ const EditMember = ({
           })}
           slotForm={
             <Stack spacing={2}>
-              <TextField
+              <CustomTextField
                 value={form.first_name ? form.first_name : ''}
                 placeholder='First Name'
+                label='First Name'
                 error={formError.first_name}
                 onFocus={() => {
                   setFormError({ ...formError, first_name: false });
@@ -118,16 +126,18 @@ const EditMember = ({
                   setForm({ ...form, first_name: e.target.value });
                 }}
               />
-              <TextField
+              <CustomTextField
                 value={form.last_name ? form.last_name : ''}
                 placeholder='Last Name'
+                label='Last Name'
                 onChange={(e) => {
                   setForm({ ...form, last_name: e.target.value });
                 }}
               />
-              <TextField
+              <CustomTextField
                 value={form.designation ? form.designation : ''}
                 placeholder='Designation'
+                label='Designation'
                 error={formError.designation}
                 onFocus={() => {
                   setFormError({ ...formError, designation: false });
@@ -150,7 +160,7 @@ const EditMember = ({
                 }
                 getOptionLabel={(option) => capitalize(option)}
                 renderInput={(params) => (
-                  <TextField
+                  <CustomTextField
                     {...params}
                     error={formError.employment}
                     onFocus={() => {
@@ -161,6 +171,7 @@ const EditMember = ({
                     }}
                     name='Employment'
                     placeholder='Employment'
+                    label='Employment'
                   />
                 )}
               />
@@ -179,7 +190,7 @@ const EditMember = ({
                   },
                 )}
                 renderInput={(params) => (
-                  <TextField
+                  <CustomTextField
                     {...params}
                     error={formError.interview_location}
                     onFocus={() => {
@@ -190,6 +201,7 @@ const EditMember = ({
                     }}
                     name='Location'
                     placeholder='Location'
+                    label='Location'
                   />
                 )}
               />
@@ -206,7 +218,7 @@ const EditMember = ({
                   capitalize(departments),
                 )}
                 renderInput={(params) => (
-                  <TextField
+                  <CustomTextField
                     {...params}
                     error={formError.department}
                     onFocus={() => {
@@ -214,6 +226,7 @@ const EditMember = ({
                     }}
                     name='Department'
                     placeholder='Department'
+                    label='Department'
                   />
                 )}
               />
@@ -239,10 +252,11 @@ const EditMember = ({
                     ] as Database['public']['Enums']['agent_type'][]
                   ).map((role) => capitalize(role))}
                   renderInput={(params) => (
-                    <TextField
+                    <CustomTextField
                       {...params}
                       name='Role'
                       placeholder='Role'
+                      label='Role'
                       error={formError.role}
                       onFocus={() => {
                         setFormError({ ...formError, role: false });
@@ -254,7 +268,12 @@ const EditMember = ({
             </Stack>
           }
           slotButtons={
-            <Stack direction={'row'} justifyContent={'end'} width={'100%'}>
+            <Stack
+              direction={'row'}
+              justifyContent={'end'}
+              width={'100%'}
+              marginTop={'10px'}
+            >
               <AUIButton
                 variant='outlined'
                 disabled={isDisable}
@@ -312,3 +331,17 @@ const EditMember = ({
 };
 
 export default EditMember;
+
+const CustomTextField = (props: TextFieldProps) => {
+  const label = props.label;
+  return (
+    <Stack>
+      {Boolean(label) && (
+        <Typography fontSize={'14px'} marginBottom={'3px'}>
+          {label}
+        </Typography>
+      )}
+      <TextField {...{ ...props, label: undefined }} />
+    </Stack>
+  );
+};

@@ -1,5 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack, TextField } from '@mui/material';
+import {
+  Dialog,
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 
 import { AddLocationPop } from '@/devlink';
@@ -18,7 +24,7 @@ interface LocationProps {
 const AddLocationDialog: React.FC<LocationProps> = ({
   handleClose,
   open,
-  edit
+  edit,
 }) => {
   // const isClicked = useRef(false);
   // const { recruiter } = useAuthDetails();
@@ -30,44 +36,44 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       value: initialValue?.line1 ?? '',
       error: false,
       validation: 'string',
-      required: false
+      required: false,
     },
     line2: {
       value: initialValue?.line2 ?? '',
       error: false,
       validation: 'string',
-      required: false
+      required: false,
     },
     city: {
       value: initialValue?.city ?? '',
       error: false,
       validation: 'string',
-      required: true
+      required: true,
     },
     region: {
       value: initialValue?.region ?? '',
       error: false,
       validation: 'string',
-      required: true
+      required: true,
     },
     country: {
       value: initialValue?.country ?? '',
       error: false,
       validation: 'string',
-      required: true
+      required: true,
     },
     zipcode: {
       value: initialValue?.zipcode ?? '',
       error: false,
       validation: 'string',
-      required: false
+      required: false,
     },
     is_headquarter: {
       value: initialValue?.is_headquarter ?? false,
       error: false,
       validation: 'boolean',
-      required: true
-    }
+      required: true,
+    },
   };
 
   const [location, setLocation] = useState(initialFormFields);
@@ -84,7 +90,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           ...Object.entries(location).reduce((acc, [key, val]) => {
             acc.push({ [key]: val.value });
             return acc;
-          }, [])
+          }, []),
         );
         const newRecruiter = {
           ...recruiter,
@@ -95,7 +101,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   else acc.push(curr);
                   return acc;
                 }, []) as any)
-              : ([...recruiter.office_locations, newLocation] as any)
+              : ([...recruiter.office_locations, newLocation] as any),
         };
         debouncedSave(newRecruiter, newRecruiter.id);
         setLocation(initialFormFields);
@@ -130,12 +136,12 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         return {
           newLocation: {
             ...acc.newLocation,
-            [key]: { ...acc.newLocation[key], value, error }
+            [key]: { ...acc.newLocation[key], value, error },
           },
-          error: error && !acc.error ? true : acc.error
+          error: error && !acc.error ? true : acc.error,
         };
       },
-      { newLocation: location, error: false }
+      { newLocation: location, error: false },
     );
   };
 
@@ -146,8 +152,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         [key]: {
           ...prev[key],
           value: e.target.value,
-          error: false
-        }
+          error: false,
+        },
       };
     });
   };
@@ -158,8 +164,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           slotForm={
             <Stack spacing={2}>
-              <TextField
+              <CustomTextField
                 placeholder='Line 1'
+                label='Line 1'
                 defaultValue={location.line1.value}
                 required={location.line1.required}
                 onChange={(e) => handleChange(e, 'line1')}
@@ -168,8 +175,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.line1.error && 'Please enter a valid address line'
                 }
               />
-              <TextField
+              <CustomTextField
                 placeholder='Line 2'
+                label='Line 2'
                 defaultValue={location.line2.value}
                 required={location.line2.required}
                 onChange={(e) => handleChange(e, 'line2')}
@@ -178,16 +186,18 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.line2.error && 'Please enter a valid address line'
                 }
               />
-              <TextField
+              <CustomTextField
                 placeholder='City'
+                label='City'
                 defaultValue={location.city.value}
                 required={location.city.required}
                 onChange={(e) => handleChange(e, 'city')}
                 error={location.city.error}
                 helperText={location.city.error && 'Please enter a valid city'}
               />
-              <TextField
+              <CustomTextField
                 placeholder='Region'
+                label='Region'
                 defaultValue={location.region.value}
                 required={location.region.required}
                 onChange={(e) => handleChange(e, 'region')}
@@ -196,8 +206,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.region.error && 'Please enter a valid region'
                 }
               />
-              <TextField
+              <CustomTextField
                 placeholder='Country'
+                label='Country'
                 defaultValue={location.country.value}
                 required={location.country.required}
                 onChange={(e) => handleChange(e, 'country')}
@@ -206,8 +217,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.country.error && 'Please enter a valid country'
                 }
               />
-              <TextField
+              <CustomTextField
                 placeholder='Zip Code'
+                label='Zip Code'
                 defaultValue={location.zipcode.value}
                 onChange={(e) => handleChange(e, 'zipcode')}
               />
@@ -216,12 +228,12 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           onClickCancel={{
             onClick: () => {
               handleClose();
-            }
+            },
           }}
           onClickAdd={{
             onClick: () => {
               handleAddLocation();
-            }
+            },
           }}
           isChecked={location.is_headquarter.value}
           onClickCheck={{
@@ -231,11 +243,11 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   ...prev,
                   is_headquarter: {
                     ...prev.is_headquarter,
-                    value: !prev.is_headquarter.value
-                  }
+                    value: !prev.is_headquarter.value,
+                  },
                 };
               });
-            }
+            },
           }}
         />
       </Stack>
@@ -244,3 +256,17 @@ const AddLocationDialog: React.FC<LocationProps> = ({
 };
 
 export default AddLocationDialog;
+
+const CustomTextField = (props: TextFieldProps) => {
+  const label = props.label;
+  return (
+    <Stack>
+      {Boolean(label) && (
+        <Typography fontSize={'14px'} marginBottom={'3px'}>
+          {label}
+        </Typography>
+      )}
+      <TextField {...{ ...props, label: undefined }} />
+    </Stack>
+  );
+};
