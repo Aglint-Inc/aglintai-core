@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, useMediaQuery } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -19,8 +19,13 @@ export type CandidateInviteCalendarProps = {
   ) => void;
 };
 const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
+  const xl = useMediaQuery('(min-width:1920px)');
+  const l = useMediaQuery('(min-width:1440px)');
+  const m = useMediaQuery('(min-width:1024px)');
+  const s = useMediaQuery('(min-width:768px)');
+  const columns = xl ? 5 : l ? 4 : m ? 3 : s ? 2 : 1;
   const [offset, setOffest] = useState(0);
-  const sessions = props.sessions.slice(offset, offset + 4);
+  const sessions = props.sessions.slice(offset, offset + columns);
   const startMonth = dayjs(sessions[0].date).format('MMMM YYYY');
   const endMonth = dayjs(sessions[sessions.length - 1].date).format(
     'MMMM YYYY',
@@ -37,7 +42,7 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
         />
       }
       isLeftArrow={offset !== 0}
-      isRightArrow={props.sessions.length - 4 > offset}
+      isRightArrow={props.sessions.length - columns > offset}
       textMonth={displayMonth}
       slotTimeZone={<></>}
       onClickLeft={{ onClick: () => setOffest((prev) => prev - 1) }}
