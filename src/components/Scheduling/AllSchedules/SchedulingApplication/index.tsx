@@ -373,6 +373,7 @@ function SchedulingApplication() {
                         id: item.id,
                         title: item.name,
                         created_at: item.created_at,
+                        status: item.interview_meeting.status,
                       }))}
                       multiSession={true}
                     />

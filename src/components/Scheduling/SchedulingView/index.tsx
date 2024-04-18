@@ -16,7 +16,6 @@ import Overview from './Overview';
 function SchedulingViewComp() {
   const router = useRouter();
   const { data: schedule, isLoading } = useScheduleDetails();
- 
 
   const viewScheduleTabs = [
     { name: 'Candidate Details', tab: 'candidate_details', hide: false },
@@ -90,6 +89,7 @@ function SchedulingViewComp() {
                           id: schedule?.interview_session.id,
                           title: schedule?.interview_session.name,
                           created_at: schedule?.interview_session.created_at,
+                          status: schedule?.interview_meeting.status,
                         },
                       ]}
                     />

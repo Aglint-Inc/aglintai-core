@@ -13,6 +13,7 @@ import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { DatabaseTable } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -31,7 +32,18 @@ type FeedbackWindowInterviewersType = {
       objective: string;
     };
     user_id: string;
-    session: { id: string; title: string; created_at: string };
+    session: {
+      id: string;
+      title: string;
+      created_at: string;
+      status:
+        | 'waiting'
+        | 'confirmed'
+        | 'completed'
+        | 'cancelled'
+        | 'reschedule'
+        | 'not_scheduled';
+    };
     relation_id: string;
     first_name: string;
     last_name: string;
@@ -45,7 +57,7 @@ const FeedbackWindow = ({
   interview_sessions,
   multiSession,
 }: {
-  interview_sessions: { id: string; title: string; created_at: string }[];
+  interview_sessions: FeedbackWindowInterviewersType[string][number]['session'][];
   multiSession: boolean;
 }) => {
   const {
@@ -239,6 +251,7 @@ const AdminFeedback = ({
         slotFeedbackTableRow={
           <>
             {interviewers.map((int, index) => {
+              const isFeedBackEnabled = int.session.status === 'completed';
               return (
                 <FeedbackTableRow
                   key={int.user_id}
@@ -249,17 +262,23 @@ const AdminFeedback = ({
                       : ''
                   }
                   textSessionTitle={multiSession ? int.session.title : ''}
-                  isAddFeedback={!int.feedback && int.user_id === user_id}
-                  isNoFeedback={!int.feedback && int.user_id !== user_id}
+                  isAddFeedback={
+                    isFeedBackEnabled &&
+                    !int.feedback &&
+                    int.user_id === user_id
+                  }
+                  isNoFeedback={false}
                   onClickFeedback={{
                     onClick: () => {
-                      setSelectedInterviewer({
-                        index,
-                        interviewer: interviewers[Number(index)],
-                      });
-                      !interviewers[Number(index)].feedback &&
-                        int.user_id === user_id &&
-                        setEdit(true);
+                      if (isFeedBackEnabled) {
+                        setSelectedInterviewer({
+                          index,
+                          interviewer: int,
+                        });
+                        !interviewers[Number(index)].feedback &&
+                          int.user_id === user_id &&
+                          setEdit(true);
+                      }
                     },
                   }}
                   slotAvatar={
@@ -274,14 +293,23 @@ const AdminFeedback = ({
                   textFeedback={
                     <Typography
                       dangerouslySetInnerHTML={{
-                        __html:
-                          int.feedback?.objective || 'Feedback not Submitted',
+                        __html: int.feedback?.objective,
                       }}
                     />
                   }
                   // @ts-ignore
                   textRecommendation={
-                    re_mapper[int.feedback?.recommendation] || ''
+                    <Typography
+                      dangerouslySetInnerHTML={{
+                        __html: !isFeedBackEnabled
+                          ? 'Interview session is not completed.'
+                          : re_mapper[int.feedback?.recommendation] ||
+                            'Feedback not Submitted.',
+                      }}
+                      {...(!isFeedBackEnabled || !int.feedback?.objective
+                        ? { color: palette.grey[400] }
+                        : {})}
+                    />
                   }
                   textjobTitle={int.position}
                 />
@@ -384,17 +412,28 @@ const AdminFeedback = ({
                             selectedInterviewer.interviewer.feedback
                               ?.objective || 'Feedback not Submitted',
                         }}
+                        {...(!selectedInterviewer.interviewer.feedback
+                          ? { color: palette.grey[400] }
+                          : {})}
                       />
                     }
                     textRecomendation={
-                      selectedInterviewer.interviewer.feedback
-                        ? re_mapper[
-                            Number(
-                              selectedInterviewer.interviewer.feedback
-                                .recommendation,
-                            )
-                          ]
-                        : '-'
+                      <Typography
+                        dangerouslySetInnerHTML={{
+                          __html: selectedInterviewer.interviewer.feedback
+                            ? re_mapper[
+                                Number(
+                                  selectedInterviewer.interviewer.feedback
+                                    .recommendation,
+                                )
+                              ]
+                            : 'Recommendation not submitted.',
+                        }}
+                        {...(!selectedInterviewer.interviewer.feedback
+                          ?.recommendation
+                          ? { color: palette.grey[400] }
+                          : {})}
+                      />
                     }
                   />
                 </ShowCode.Else>
@@ -443,6 +482,7 @@ const InterviewerFeedback = ({
         slotFeedbackTableRow={
           <>
             {interviewers.map((int, index) => {
+              const isFeedBackEnabled = int.session.status === 'completed';
               return (
                 <FeedbackTableRow
                   key={int.user_id}
@@ -457,11 +497,13 @@ const InterviewerFeedback = ({
                   isNoFeedback={false}
                   onClickFeedback={{
                     onClick: () => {
-                      setSelectedInterviewer({
-                        index,
-                        interviewer: interviewers[Number(index)],
-                      });
-                      !interviewers[Number(index)].feedback && setEdit(true);
+                      if (isFeedBackEnabled) {
+                        setSelectedInterviewer({
+                          index,
+                          interviewer: interviewers[Number(index)],
+                        });
+                        !interviewers[Number(index)].feedback && setEdit(true);
+                      }
                     },
                   }}
                   slotAvatar={
@@ -476,13 +518,24 @@ const InterviewerFeedback = ({
                   textFeedback={
                     <Typography
                       dangerouslySetInnerHTML={{
-                        __html:
-                          int.feedback?.objective || 'Feedback not Submitted',
+                        __html: int.feedback?.objective,
                       }}
                     />
                   }
                   // @ts-ignore
-                  textRecommendation={re_mapper[int.feedback?.recommendation]}
+                  textRecommendation={
+                    <Typography
+                      dangerouslySetInnerHTML={{
+                        __html: !isFeedBackEnabled
+                          ? 'Interview session is not completed.'
+                          : re_mapper[int.feedback?.recommendation] ||
+                            'Feedback not Submitted.',
+                      }}
+                      {...(!isFeedBackEnabled || !int.feedback?.objective
+                        ? { color: palette.grey[400] }
+                        : {})}
+                    />
+                  }
                   textjobTitle={int.position}
                 />
               );
@@ -582,17 +635,28 @@ const InterviewerFeedback = ({
                             selectedInterviewer.interviewer.feedback
                               ?.objective || 'Feedback not Submitted',
                         }}
+                        {...(!selectedInterviewer.interviewer.feedback
+                          ? { color: palette.grey[400] }
+                          : {})}
                       />
                     }
                     textRecomendation={
-                      selectedInterviewer.interviewer.feedback
-                        ? re_mapper[
-                            Number(
-                              selectedInterviewer.interviewer.feedback
-                                .recommendation,
-                            )
-                          ]
-                        : '-'
+                      <Typography
+                        dangerouslySetInnerHTML={{
+                          __html: selectedInterviewer.interviewer.feedback
+                            ? re_mapper[
+                                Number(
+                                  selectedInterviewer.interviewer.feedback
+                                    .recommendation,
+                                )
+                              ]
+                            : 'Recommendation not submitted.',
+                        }}
+                        {...(!selectedInterviewer.interviewer.feedback
+                          ?.recommendation
+                          ? { color: palette.grey[400] }
+                          : {})}
+                      />
                     }
                   />
                 </ShowCode.Else>
