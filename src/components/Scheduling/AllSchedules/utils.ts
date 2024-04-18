@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
 import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -22,6 +22,7 @@ export type MailHandlerparam = {
   position: string;
   schedule_id: string;
   filter_id: string;
+  supabase: ReturnType<typeof createServerClient<Database>>;
 };
 
 export const mailHandler = async ({
@@ -32,6 +33,7 @@ export const mailHandler = async ({
   mail,
   position,
   filter_id,
+  supabase,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
@@ -41,32 +43,35 @@ export const mailHandler = async ({
     if (error) throw new Error(error.message);
 
     if (data[0].email_template) {
-      const res = await axios.post('/api/sendgrid', {
-        fromEmail: `messenger@aglinthq.com`,
-        fromName: 'Aglint',
-        email: 'admin@aglinthq.com' ?? mail,
-        subject: fillEmailTemplate(
-          data[0].email_template['candidate_availability_request'].subject,
-          {
-            company_name: data[0].name,
-            schedule_name: schedule_name,
-            first_name: candidate_name,
-            last_name: '',
-            job_title: position,
-          },
-        ),
-        text: fillEmailTemplate(
-          data[0].email_template['candidate_availability_request'].body,
-          {
-            company_name: data[0].name,
-            schedule_name: schedule_name,
-            first_name: candidate_name,
-            last_name: '',
-            job_title: position,
-            pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
-          },
-        ),
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
+        {
+          fromEmail: `messenger@aglinthq.com`,
+          fromName: 'Aglint',
+          email: 'admin@aglinthq.com' ?? mail,
+          subject: fillEmailTemplate(
+            data[0].email_template['candidate_availability_request'].subject,
+            {
+              company_name: data[0].name,
+              schedule_name: schedule_name,
+              first_name: candidate_name,
+              last_name: '',
+              job_title: position,
+            },
+          ),
+          text: fillEmailTemplate(
+            data[0].email_template['candidate_availability_request'].body,
+            {
+              company_name: data[0].name,
+              schedule_name: schedule_name,
+              first_name: candidate_name,
+              last_name: '',
+              job_title: position,
+              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+            },
+          ),
+        },
+      );
 
       if (res.status === 200 && res.data.data === 'Email sent') {
         return true;

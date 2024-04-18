@@ -223,7 +223,8 @@ export const getMeetingsByModuleId = async (module_id: string) => {
     .select('*,interview_session!inner(*)')
     .in('interview_session.id', uniqueSessionIds)
     .gte('start_time', firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00')
-    .lte('end_time', lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59');
+    .lte('end_time', lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59')
+    .or('status.eq.confirmed,status.eq.completed');
 
   const resRel = intSesRel
     .map((sesRel) => ({
@@ -240,11 +241,11 @@ export const getMeetingsByModuleId = async (module_id: string) => {
 
 export const getHours = ({
   meetingData,
-  user,
+  user, //module_relation_id
   type,
 }: {
   meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
-  user: { id: string };
+  user: { id: string }; //module_relation_id
   type: 'daily' | 'weekly';
 }) => {
   let currentDay = dayjs();
@@ -264,16 +265,17 @@ export const getHours = ({
           )
         );
       }, 0);
+  } else {
+    return meetingData
+      .filter((meet) => meet?.interview_module_relation_id === user.id)
+      .reduce((acc, curr) => {
+        return (
+          acc +
+          calculateHourDifference(
+            curr.interview_meeting.start_time,
+            curr.interview_meeting.end_time,
+          )
+        );
+      }, 0);
   }
-  return meetingData
-    .filter((meet) => meet?.interview_module_relation_id === user.id)
-    .reduce((acc, curr) => {
-      return (
-        acc +
-        calculateHourDifference(
-          curr.interview_meeting.start_time,
-          curr.interview_meeting.end_time,
-        )
-      );
-    }, 0);
 };

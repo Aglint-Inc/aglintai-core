@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { Dispatch, useState } from 'react';
 
 import { PanelMemberPill } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -29,6 +29,9 @@ type MembersAutoCompleteProps = {
   setSelectedUsers: (val: MemberTypeAutoComplete[]) => void;
   pillColor?: string;
   maxWidth?: string;
+  error?: boolean;
+  helperText?: string;
+  setError?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function MembersAutoComplete({
@@ -38,6 +41,9 @@ function MembersAutoComplete({
   setSelectedUsers,
   pillColor = 'transparent',
   maxWidth = '400px',
+  error,
+  helperText,
+  setError,
 }: MembersAutoCompleteProps) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -96,6 +102,8 @@ function MembersAutoComplete({
       </Stack>
       <Stack onClick={handleClick} width={'100%'}>
         <UITextField
+          helperText={helperText}
+          error={error}
           rest={{ id: 'list' }}
           placeholder='Choose from the list'
           disabled={disabled}
@@ -148,6 +156,7 @@ function MembersAutoComplete({
                         cursor: 'pointer',
                       }}
                       onClick={() => {
+                        setError(false);
                         if (
                           !selectedUsers.find(
                             (user) => user.user_id === option.user_id,

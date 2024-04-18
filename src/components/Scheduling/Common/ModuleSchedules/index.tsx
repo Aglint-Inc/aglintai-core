@@ -76,16 +76,18 @@ function ModuleSchedules({
         <ShowCode>
           <ShowCode.When isTrue={!loading && Boolean(filterSchedules().length)}>
             {router.query.member_id || router.query.module_id ? (
-              <Grid container spacing={2}>
-                {!loading &&
-                  filterSchedules().map((sch, ind) => {
-                    return (
-                      <Grid item sm={12} md={12} lg={12} xl={12} key={ind}>
-                        <ScheduleCard sch={sch} />
-                      </Grid>
-                    );
-                  })}
-              </Grid>
+              <Stack pr={'16px'}>
+                <Grid container gap={2}>
+                  {!loading &&
+                    filterSchedules().map((sch, ind) => {
+                      return (
+                        <Grid item sm={12} md={12} lg={12} xl={12} key={ind}>
+                          <ScheduleCard sch={sch} />
+                        </Grid>
+                      );
+                    })}
+                </Grid>
+              </Stack>
             ) : (
               <Stack height={'calc(100vh - 154px)'}>
                 {!loading &&

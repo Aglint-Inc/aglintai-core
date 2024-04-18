@@ -47,7 +47,9 @@ function Instructions({ schedule }: { schedule: TransformSchedule }) {
       <ShowCode>
         <ShowCode.When
           isTrue={
-            recruiterUser.role === 'admin' || recruiterUser.role === 'recruiter'
+            recruiterUser.role === 'admin' ||
+            recruiterUser.role === 'recruiter' ||
+            schedule.schedule.coordinator_id === recruiterUser.user_id
           }
         >
           <>
@@ -83,6 +85,9 @@ function Instructions({ schedule }: { schedule: TransformSchedule }) {
         </ShowCode.When>
         <ShowCode.Else>
           <div
+            style={{
+              padding: '20px',
+            }}
             dangerouslySetInnerHTML={{
               __html: marked(
                 schedule.interview_meeting.instructions ||

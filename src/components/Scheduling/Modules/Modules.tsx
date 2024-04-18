@@ -1,12 +1,13 @@
 import { AvatarGroup, InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   EmptyState,
   InterviewModuleCard,
   InterviewModuleTable,
 } from '@/devlink2';
+import { ArchivedButton } from '@/devlink3';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -28,6 +29,7 @@ export function Modules() {
   const department = useFilterModuleStore((state) => state.department);
   const createdBy = useFilterModuleStore((state) => state.created_by);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
+  const [showArchive, setShowArchive] = useState(false);
 
   const filterModules = allModules
     .filter((mod) => {
@@ -38,7 +40,8 @@ export function Modules() {
         (!textSearch ||
           mod.interview_modules.name
             .toLowerCase()
-            .includes(textSearch.toLowerCase()))
+            .includes(textSearch.toLowerCase())) &&
+        (showArchive || !mod.interview_modules.is_archived)
       );
     })
     .sort(customSortModules);
@@ -83,75 +86,95 @@ export function Modules() {
             slotInterviewModuleCard={
               <Stack width={'100%'} height={'calc(100vh - 112px)'}>
                 {filterModules.length > 0 ? (
-                  filterModules.map((mod) => {
-                    return (
-                      <InterviewModuleCard
-                        key={mod.interview_modules.id}
-                        isObjectiveVisible={Boolean(
-                          mod.interview_modules.description,
-                        )}
-                        onClickCard={{
-                          onClick: () => {
-                            router.push(
-                              pageRoutes.INTERVIEWMODULE +
-                                '/members' +
-                                `/${mod.interview_modules.id}`,
-                            );
-                          },
-                        }}
-                        textObjective={mod.interview_modules.description}
-                        textModuleName={mod.interview_modules.name}
-                        slotMemberPic={
-                          <AvatarGroup
-                            total={mod.users.length}
-                            sx={{
-                              '& .MuiAvatar-root': {
-                                width: '26px',
-                                height: '26px',
-                                fontSize: '12px',
-                              },
-                            }}
-                          >
-                            {mod.users.slice(0, 5).map((user) => {
-                              return (
-                                <MuiAvatar
-                                  key={user.user_id}
-                                  src={user.profile_image}
-                                  level={getFullName(
-                                    user.first_name,
-                                    user.last_name,
-                                  )}
-                                  variant='circular'
-                                  height='26px'
-                                  width='26px'
-                                  fontSize='12px'
-                                />
+                  <>
+                    {filterModules.map((mod) => {
+                      return (
+                        <InterviewModuleCard
+                          isArchivedIconVisible={
+                            mod.interview_modules.is_archived
+                          }
+                          key={mod.interview_modules.id}
+                          isObjectiveVisible={Boolean(
+                            mod.interview_modules.description,
+                          )}
+                          onClickCard={{
+                            onClick: () => {
+                              router.push(
+                                pageRoutes.INTERVIEWMODULE +
+                                  '/members' +
+                                  `/${mod.interview_modules.id}`,
                               );
-                            })}
-                          </AvatarGroup>
-                        }
-                        textMembersCount={
-                          mod.users.length !== 0
-                            ? `${mod.users.length} Members`
-                            : ''
-                        }
-                        textCompletedSchedules={mod.completed_meeting_count}
-                        textUpcomingSchedules={mod.upcoming_meeting_count}
-                        isCompletedScheduleEmpty={
-                          mod.completed_meeting_count === 0
-                        }
-                        isCompletedScheduleVisible={
-                          mod.completed_meeting_count > 0
-                        }
-                        isUpcomingScheduleEmpty={
-                          mod.upcoming_meeting_count === 0
-                        }
-                        isUpcomingScheduleVisible={
-                          mod.upcoming_meeting_count > 0
-                        }
-                      />
-                    );
-                  })
+                            },
+                          }}
+                          textObjective={mod.interview_modules.description}
+                          textModuleName={mod.interview_modules.name}
+                          slotMemberPic={
+                            <AvatarGroup
+                              total={mod.users.length}
+                              sx={{
+                                '& .MuiAvatar-root': {
+                                  width: '26px',
+                                  height: '26px',
+                                  fontSize: '12px',
+                                },
+                              }}
+                            >
+                              {mod.users.slice(0, 5).map((user) => {
+                                return (
+                                  <MuiAvatar
+                                    key={user.user_id}
+                                    src={user.profile_image}
+                                    level={getFullName(
+                                      user.first_name,
+                                      user.last_name,
+                                    )}
+                                    variant='circular'
+                                    height='26px'
+                                    width='26px'
+                                    fontSize='12px'
+                                  />
+                                );
+                              })}
+                            </AvatarGroup>
+                          }
+                          textMembersCount={
+                            mod.users.length !== 0
+                              ? `${mod.users.length} Members`
+                              : ''
+                          }
+                          textCompletedSchedules={mod.completed_meeting_count}
+                          textUpcomingSchedules={mod.upcoming_meeting_count}
+                          isCompletedScheduleEmpty={
+                            mod.completed_meeting_count === 0
+                          }
+                          isCompletedScheduleVisible={
+                            mod.completed_meeting_count > 0
+                          }
+                          isUpcomingScheduleEmpty={
+                            mod.upcoming_meeting_count === 0
+                          }
+                          isUpcomingScheduleVisible={
+                            mod.upcoming_meeting_count > 0
+                          }
+                        />
+                      );
+                    })}
+
+                    <ArchivedButton
+                      isHideVisible={showArchive}
+                      isShowVisible={!showArchive}
+                      onClickHide={{
+                        onClick: () => {
+                          setShowArchive((prev) => !prev);
+                        },
+                      }}
+                      onClickShow={{
+                        onClick: () => {
+                          setShowArchive((prev) => !prev);
+                        },
+                      }}
+                    />
+                  </>
                 ) : (
                   <Stack>
                     <EmptyState

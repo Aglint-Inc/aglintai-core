@@ -7,8 +7,9 @@ import { CurrentStage, JobCards } from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import { updateApplicationStatus, useGetScheduleApplication } from '../hooks';
+import { useGetScheduleApplication } from '../hooks';
 import { useSchedulingApplicationStore } from '../store';
+import { updateApplicationStatus } from '../utils';
 
 function RightPanel() {
   const router = useRouter();

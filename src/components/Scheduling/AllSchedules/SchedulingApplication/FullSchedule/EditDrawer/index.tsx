@@ -1,4 +1,5 @@
 import { Drawer, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
@@ -18,6 +19,7 @@ import {
 } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
+import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import {
   EditInterviewSession,
@@ -27,9 +29,10 @@ import {
 } from '@/src/queries/interview-plans';
 import { InterviewSession } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
+import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../../ListCard/Icon';
-import { createCloneSession, useGetScheduleApplication } from '../../hooks';
+import { useGetScheduleApplication } from '../../hooks';
 import {
   setEditSession,
   setIsEditOpen,
@@ -225,63 +228,76 @@ function SideDrawerEdit() {
 
   const handleSave = async () => {
     if (!selectedSchedule && !saving) {
-      const createCloneRes = await createCloneSession({
-        allSessions: allSessions,
-        application_id: selectedApplication.id,
-        coordinator_id: selCoordinator,
-        is_get_more_option: false,
-        scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-        session_ids: [],
-      });
+      const res = await axios.post(
+        '/api/scheduling/application/candidatesessioncache',
+        {
+          allSessions,
+          application_id: selectedApplication.id,
+          coordinator_id: selCoordinator,
+          is_get_more_option: false,
+          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
+          session_ids: [],
+        } as ApiBodyParamsSessionCache,
+      );
 
-      if (editSession.session_type !== 'debrief') {
-        const newSession = createCloneRes.refSessions.find(
-          (session) => session.id === editSession.id,
-        );
+      let createCloneRes;
 
-        const interview_module_relation_entries: EditInterviewSession['interview_module_relation_entries'] =
-          [];
+      if (res.status === 200 && res.data) {
+        createCloneRes = res.data;
+      }
+      if (createCloneRes) {
+        if (editSession.session_type !== 'debrief') {
+          const newSession = createCloneRes.refSessions.find(
+            (session) => session.id === editSession.id,
+          );
 
-        selectedInterviewers.forEach((interviewer) => {
-          interview_module_relation_entries.push({
-            interviewer_type: 'qualified',
-            id: interviewer.value as string,
-            training_type: 'qualified',
+          const interview_module_relation_entries: EditInterviewSession['interview_module_relation_entries'] =
+            [];
+
+          selectedInterviewers.forEach((interviewer) => {
+            interview_module_relation_entries.push({
+              interviewer_type: 'qualified',
+              id: interviewer.value as string,
+              training_type: 'qualified',
+            });
           });
-        });
 
-        trainingInterviewers.forEach((interviewer) => {
-          interview_module_relation_entries.push({
-            interviewer_type: 'training',
-            id: interviewer.value as string,
-            training_type: null,
+          trainingInterviewers.forEach((interviewer) => {
+            interview_module_relation_entries.push({
+              interviewer_type: 'training',
+              id: interviewer.value as string,
+              training_type: null,
+            });
           });
-        });
 
-        editInterviewSession({
-          break_duration: editSession.break_duration,
-          interviewer_cnt: editSession.interviewer_cnt,
-          location: editSession.location,
-          module_id: editSession.module_id,
-          name: editSession.name,
-          schedule_type: editSession.schedule_type,
-          session_duration: editSession.session_duration,
-          session_id: newSession.newId,
-          session_type: editSession.session_type,
-          interview_module_relation_entries: interview_module_relation_entries,
-        } as EditInterviewSession);
+          editInterviewSession({
+            break_duration: editSession.break_duration,
+            interviewer_cnt: editSession.interviewer_cnt,
+            location: editSession.location,
+            module_id: editSession.module_id,
+            name: editSession.name,
+            schedule_type: editSession.schedule_type,
+            session_duration: editSession.session_duration,
+            session_id: newSession.newId,
+            session_type: editSession.session_type,
+            interview_module_relation_entries:
+              interview_module_relation_entries,
+          } as EditInterviewSession);
+        } else {
+          updateDebriefSession({
+            break_duration: editSession.break_duration,
+            location: editSession.location,
+            name: editSession.name,
+            schedule_type: editSession.schedule_type,
+            session_duration: editSession.session_duration,
+            session_id: createCloneRes.refSessions[0].newId,
+            members: debriefMembers.map((member) => ({
+              id: member.value as string,
+            })),
+          } as UpdateDebriefSession);
+        }
       } else {
-        updateDebriefSession({
-          break_duration: editSession.break_duration,
-          location: editSession.location,
-          name: editSession.name,
-          schedule_type: editSession.schedule_type,
-          session_duration: editSession.session_duration,
-          session_id: createCloneRes.refSessions[0].newId,
-          members: debriefMembers.map((member) => ({
-            id: member.value as string,
-          })),
-        } as UpdateDebriefSession);
+        toast.error('Error caching session');
       }
       await fetchInterviewDataByApplication();
       handleClose();

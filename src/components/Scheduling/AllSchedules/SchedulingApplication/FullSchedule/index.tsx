@@ -23,6 +23,7 @@ import CancelScheduleDialog from '../Common/CancelScheduleDialog';
 import RescheduleDialog from '../Common/RescheduleDialog';
 import GetScheduleOptionsDialog from '../GetScheduleOptions';
 import {
+  SchedulingApplication,
   setEditSession,
   setIsEditBreakOpen,
   setIsEditOpen,
@@ -80,6 +81,7 @@ function FullSchedule() {
           rec_id: recruiter.id,
           schedule_id: selectedSchedule.id,
           schedule_name: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
+          supabase,
         });
 
         if (res) {
@@ -88,6 +90,20 @@ function FullSchedule() {
       }
     } catch (e) {
       toast.error(e.message);
+    }
+  };
+
+  const selectSession = ({
+    session,
+  }: {
+    session: SchedulingApplication['initialSessions'][0];
+  }) => {
+    if (selectedSessionIds.includes(session.id)) {
+      setSelectedSessionIds(
+        selectedSessionIds.filter((id) => id !== session.id),
+      );
+    } else {
+      setSelectedSessionIds([...selectedSessionIds, session.id]);
     }
   };
 
@@ -134,10 +150,16 @@ function FullSchedule() {
                   if (
                     session.interview_meeting?.status === 'completed' ||
                     session.interview_meeting?.status === 'confirmed'
-                  )
+                  ) {
                     router.push(
                       `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
                     );
+                  } else if (
+                    session.interview_meeting?.status === 'not_scheduled' ||
+                    !session.interview_meeting
+                  ) {
+                    selectSession({ session });
+                  }
                 }}
               >
                 <NewInterviewPlanCard
@@ -190,18 +212,7 @@ function FullSchedule() {
                         isChecked={selectedSessionIds.includes(session.id)}
                         onClickCheck={{
                           onClick: () => {
-                            if (selectedSessionIds.includes(session.id)) {
-                              setSelectedSessionIds(
-                                selectedSessionIds.filter(
-                                  (id) => id !== session.id,
-                                ),
-                              );
-                            } else {
-                              setSelectedSessionIds([
-                                ...selectedSessionIds,
-                                session.id,
-                              ]);
-                            }
+                            selectSession({ session });
                           },
                         }}
                       />

@@ -1,12 +1,15 @@
 import { Drawer, Stack } from '@mui/material';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { SideDrawerBlock } from '@/devlink2';
 import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
-import { createCloneSession, useGetScheduleApplication } from '../../hooks';
+import { useGetScheduleApplication } from '../../hooks';
 import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
 
 function BreakDrawerEdit() {
@@ -42,24 +45,38 @@ function BreakDrawerEdit() {
 
   const handleSave = async () => {
     if (!selectedSchedule && !saving) {
-      const createCloneRes = await createCloneSession({
-        allSessions: allSessions,
-        application_id: selectedApplication.id,
-        coordinator_id: selCoordinator,
-        is_get_more_option: false,
-        scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-        session_ids: [],
-      });
+      const res = await axios.post(
+        '/api/scheduling/application/candidatesessioncache',
+        {
+          allSessions: allSessions,
+          application_id: selectedApplication.id,
+          coordinator_id: selCoordinator,
+          is_get_more_option: false,
+          scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
+          session_ids: [],
+        } as ApiBodyParamsSessionCache,
+      );
 
-      await supabase
-        .from('interview_session')
-        .update({
-          break_duration: value,
-        })
-        .eq(
-          'id',
-          createCloneRes.refSessions.find((s) => s.id === editSession.id).newId,
-        );
+      let createCloneRes;
+
+      if (res.status === 200 && res.data) {
+        createCloneRes = res.data;
+      }
+
+      if (createCloneRes) {
+        await supabase
+          .from('interview_session')
+          .update({
+            break_duration: value,
+          })
+          .eq(
+            'id',
+            createCloneRes.refSessions.find((s) => s.id === editSession.id)
+              .newId,
+          );
+      } else {
+        toast.error('Error caching session');
+      }
 
       await fetchInterviewDataByApplication();
       handleClose();

@@ -15,4 +15,5 @@ declare function InterviewModuleCard(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   textObjective?: React.ReactNode;
   isObjectiveVisible?: Types.Visibility.VisibilityConditions;
+  isArchivedIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

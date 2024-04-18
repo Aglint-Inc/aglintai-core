@@ -12,6 +12,7 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvider';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../utils';
@@ -139,6 +140,7 @@ function AddSubTask({ taskId }: { taskId: string }) {
           rec_user_email: recruiterUser.email,
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
+          supabase,
         });
       }
       //end

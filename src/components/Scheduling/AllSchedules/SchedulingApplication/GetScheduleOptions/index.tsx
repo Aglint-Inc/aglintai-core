@@ -1,17 +1,19 @@
 import { Dialog, Stack, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { ScheduleOptions } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import SchedulingOptionComp from '../Common/ScheduleOption';
-import { useSendInviteForCandidate } from '../hooks';
 import {
   setDateRange,
   setinitialSessions,
@@ -24,6 +26,7 @@ import {
 
 function GetScheduleOptionsDialog() {
   const currentDate = dayjs();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const {
     dateRange,
     noOptions,
@@ -33,6 +36,7 @@ function GetScheduleOptionsDialog() {
     selectedSessionIds,
     schedulingOptions,
     totalSlots,
+    selCoordinator,
   } = useSchedulingApplicationStore((state) => ({
     dateRange: state.dateRange,
     noOptions: state.noOptions,
@@ -42,10 +46,9 @@ function GetScheduleOptionsDialog() {
     selectedSessionIds: state.selectedSessionIds,
     schedulingOptions: state.schedulingOptions,
     totalSlots: state.totalSlots,
+    selCoordinator: state.selCoordinator,
   }));
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  const { sendToCandidate } = useSendInviteForCandidate();
 
   const initialEndDate = currentDate.add(15, 'day');
 
@@ -70,12 +73,24 @@ function GetScheduleOptionsDialog() {
     if (isDebrief && !selectedId) {
       toast.warning('Please select a slot to schedule');
     } else {
-      const res = await sendToCandidate({
-        is_mail: true,
-        is_debrief: isDebrief,
-        selected_comb_id: selectedId,
-      });
-      if (res) {
+      const res = await axios.post(
+        '/api/scheduling/application/sendtocandidate',
+        {
+          dateRange,
+          initialSessions,
+          is_mail: true,
+          is_debrief: isDebrief,
+          recruiter_id: recruiter.id,
+          recruiterUser,
+          schedulingOptions,
+          selCoordinator,
+          selected_comb_id: selectedId,
+          selectedApplication,
+          selectedSessionIds,
+        } as ApiBodyParamsSendToCandidate,
+      );
+
+      if (res.status === 200 && res.data) {
         setinitialSessions(
           initialSessions.map((session) => ({
             ...session,

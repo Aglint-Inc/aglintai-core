@@ -11,6 +11,7 @@ import { CandidateSchedule, DarkPill, ScheduleNowButton } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
@@ -21,7 +22,7 @@ import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { scheduleWithAgent, useGetScheduleApplication } from './hooks';
+import { useGetScheduleApplication } from './hooks';
 import RightPanel from './RightPanel';
 import {
   resetSchedulingApplicationState,
@@ -124,7 +125,7 @@ function SchedulingApplication() {
     }
   };
 
-  const scheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
+  const onClickScheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
     try {
       setFetchingPlan(true);
       const resAllOptions = await axios.post(
@@ -144,20 +145,23 @@ function SchedulingApplication() {
         return;
       }
 
-      const res = await scheduleWithAgent({
-        application_id: selectedApplication.id,
-        dateRange: dateRange,
-        recruiter_id: recruiter.id,
-        recruiter_user_name: recruiterUser.first_name,
-        session_ids: selectedSessionIds,
-        sub_task_id: null,
-        type: type,
-        candidate_name: selectedApplication.candidates.first_name,
-        company_name: recruiter.name,
-        rec_user_email: recruiterUser.email,
-        rec_user_phone: recruiterUser.phone,
-        rec_user_id: recruiterUser.user_id,
-      });
+      const res = await axios.post(
+        '/api/scheduling/application/schedulewithagent',
+        {
+          application_id: selectedApplication.id,
+          dateRange: dateRange,
+          recruiter_id: recruiter.id,
+          recruiter_user_name: recruiterUser.first_name,
+          session_ids: selectedSessionIds,
+          sub_task_id: null,
+          type: type,
+          candidate_name: selectedApplication.candidates.first_name,
+          company_name: recruiter.name,
+          rec_user_email: recruiterUser.email,
+          rec_user_phone: recruiterUser.phone,
+          rec_user_id: recruiterUser.user_id,
+        } as ApiBodyParamsScheduleAgent,
+      );
 
       if (res) {
         toast.success(
@@ -176,8 +180,8 @@ function SchedulingApplication() {
                   }
                 : { status: 'waiting', interview_schedule_id: null }
               : session.interview_meeting
-              ? { ...session.interview_meeting }
-              : null,
+                ? { ...session.interview_meeting }
+                : null,
           })),
         );
       } else {
@@ -345,12 +349,14 @@ function SchedulingApplication() {
                       isScheduleManuallyVisible={true}
                       onClickEmailAgent={{
                         onClick: async () => {
-                          if (!fetchingPlan) scheduleAgent('email_agent');
+                          if (!fetchingPlan)
+                            onClickScheduleAgent('email_agent');
                         },
                       }}
                       onClickPhoneAgent={{
                         onClick: async () => {
-                          if (!fetchingPlan) scheduleAgent('phone_agent');
+                          if (!fetchingPlan)
+                            onClickScheduleAgent('phone_agent');
                         },
                       }}
                     />

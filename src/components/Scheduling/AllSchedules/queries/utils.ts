@@ -1,3 +1,6 @@
+import { createServerClient } from '@supabase/ssr';
+
+import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -39,12 +42,14 @@ export const addScheduleActivity = async ({
   filter_id,
   application_id,
   user_id,
+  supabase,
 }: {
   schedule_id: string;
   title: string;
   filter_id?: string;
   application_id?: string;
   user_id?: string;
+  supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   await supabase
     .from('interview_schedule_activity')

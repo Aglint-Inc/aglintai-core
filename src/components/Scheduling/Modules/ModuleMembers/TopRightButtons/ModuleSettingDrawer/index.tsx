@@ -33,6 +33,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
   );
   const { members } = useSchedulingContext();
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
+  const [errorApproval, setErrorApproval] = useState(false);
   const [selectedUsers, setSelectedUsers] = React.useState<
     MemberTypeAutoComplete[]
   >([]);
@@ -49,6 +50,10 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
   }, [editModule]);
 
   const updateModule = async () => {
+    if (localModule.settings.reqruire_approval && selectedUsers.length === 0) {
+      setErrorApproval(true);
+      return;
+    }
     const { data, error } = await supabase
       .from('interview_module')
       .update({
@@ -76,6 +81,15 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
       setIsModuleSettingsDialogOpen(false);
     }
   };
+
+  const qualifiedUserIds =
+    editModule?.relations
+      .filter((s) => s.training_status === 'qualified')
+      .map((s) => s.user_id) || [];
+
+  const dropDownMembers = members.filter((mem) =>
+    qualifiedUserIds.includes(mem.user_id),
+  );
 
   return (
     <Drawer
@@ -216,12 +230,15 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           }
           slotApprovalDoneInput={
             <MembersAutoComplete
+              error={errorApproval}
+              helperText='Please select users to approve or uncheck require approval'
               disabled={false}
-              renderUsers={members}
+              renderUsers={dropDownMembers}
               setSelectedUsers={setSelectedUsers}
               selectedUsers={selectedUsers}
               pillColor='#fff'
               maxWidth='430px'
+              setError={setErrorApproval}
             />
           }
           slotInputNoOfReverse={
