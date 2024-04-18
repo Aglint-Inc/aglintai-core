@@ -111,7 +111,7 @@ export function CandidateSuccessPage({
           />
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "text-grey-600", "mob")}
           tag="div"
         >
           {"© 2024 Aglint Inc. All Rights Reserved"}

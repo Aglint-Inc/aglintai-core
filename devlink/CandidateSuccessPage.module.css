@@ -38,6 +38,8 @@
   .candidate_page_success {
     padding-right: 16px;
     padding-left: 16px;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
   }
 }
 
@@ -406,6 +408,12 @@
 
 .text-grey-600.mt-8 {
   margin-top: 8px;
+}
+
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
 }
 
 .candidate_calender_slot {

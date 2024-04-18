@@ -104,7 +104,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
     <CandidateSuccessPage
       textDesc={
         <>
-          <p>
+          <p style={{ marginBottom: '0px' }}>
             Your interview is scheduled, and we look forward to speaking with
             you.
           </p>
