@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
 import { supabase } from '@/src/utils/supabase/client';
-
-import { schedulingSettingType } from '../../Scheduling/Settings/types';
 
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,
@@ -86,7 +85,3 @@ export type InviteUserAPIType = {
     user: RecruiterUserType;
   };
 };
-
-
-
-

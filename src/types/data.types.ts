@@ -1,4 +1,4 @@
-import { schedulingSettingType } from '../components/Scheduling/Settings/types';
+import { schedulingSettingType } from './schedulingTypes/scheduleSetting';
 import { Database } from './schema';
 
 export type AddressType = {

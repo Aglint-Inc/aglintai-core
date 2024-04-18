@@ -29,6 +29,12 @@ import {
   WorkingHours,
 } from '@/devlink2';
 import { ConfirmationPopup } from '@/devlink3';
+import {
+  DailyLimitType,
+  holidayType,
+  schedulingSettingType,
+  WeeklyLimitType,
+} from '@/src/types/schedulingTypes/scheduleSetting';
 import toast from '@/src/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
@@ -41,12 +47,6 @@ import DateSelect from './Components/DateSelector';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
-import {
-  DailyLimitType,
-  holidayType,
-  schedulingSettingType,
-  WeeklyLimitType,
-} from './types';
 import { hoursList } from './utils';
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -515,7 +515,11 @@ function SchedulingSettings({
                           );
                           handleClose();
                           toast.success(
-                            `Holiday added on ${dayjs(dateRef.current.value).format('DD-MMM-YYYY')} ${eventRef.current.value ? 'for' : ''} ${eventRef.current.value}`,
+                            `Holiday added on ${dayjs(
+                              dateRef.current.value,
+                            ).format('DD-MMM-YYYY')} ${
+                              eventRef.current.value ? 'for' : ''
+                            } ${eventRef.current.value}`,
                           );
                         } else {
                           toast.message('Please select a date');

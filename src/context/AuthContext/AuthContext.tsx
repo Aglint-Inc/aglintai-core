@@ -15,7 +15,6 @@ import {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink';
-import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import {
   RecruiterRelationsType,
   RecruiterType,

@@ -1,9 +1,15 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  CalendarEvent,
+  NewCalenderEvent,
+} from '@/src/types/schedulingTypes/calEvent.types';
 
-import { GetAuthParams, getUserCalAuth } from '../event_book/book_session';
-import { CalendarEvent, NewCalenderEvent } from '../schedule-utils/types';
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
-import { decrypt_string } from './crypt-funcs';
+import {
+  GetAuthParams,
+  getUserCalAuth,
+} from '../../utils/event_book/book_session';
+import { decrypt_string } from '../../utils/integrations/crypt-funcs';
+import { supabaseAdmin } from '../../utils/supabase/supabaseAdmin';
 
 const { google } = require('googleapis');
 

@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
+import { CalendarEvent } from '@/src/types/schedulingTypes/calEvent.types';
 import { Interviewer } from '@/src/utils/event_book/book_session';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
-import { GoogleCalender } from '@/src/utils/integrations/google-calender';
-import { CalendarEvent } from '@/src/utils/schedule-utils/types';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 

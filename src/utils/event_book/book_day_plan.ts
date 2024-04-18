@@ -6,14 +6,11 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
+import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { CalendarEvent } from '@/src/types/schedulingTypes/calEvent.types';
 
-import { getFullName } from '../jsonResume';
-import { CalendarEvent } from '../schedule-utils/types';
-import { find_api_details } from '../scheduling_v1/find_details';
-import { SessionInterviewerType } from '../scheduling_v1/types';
+import { SessionInterviewerType } from '../../types/schedulingTypes/types';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
-import { findInterviewersEvents } from '../scheduling_v2/findEachInterviewerFreeTimes';
-import { findMultiDaySlots } from '../scheduling_v2/findMultiDaySlots';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession } from './book_session';
@@ -29,8 +26,13 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
 
-  const { company_cred, all_inters, ses_with_ints, comp_schedule_setting } =
-    await find_api_details(all_sess_ids, recruiter_id);
+  const cand_scheduling = new CandidatesScheduling({
+    company_id: recruiter_id,
+    session_ids: all_sess_ids,
+    user_tz,
+  });
+
+  const { company_cred } = cand_scheduling.db_details;
 
   const bookDayPlan = async ({
     day_plan,
@@ -75,34 +77,10 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     };
 
     const curr_date = dayjs(day_plan.sessions[0].start_time).tz(user_tz);
-    const intervs_details_with_events = await findInterviewersEvents(
-      company_cred,
-      all_inters.map((i) => ({
-        email: i.email,
-        interviewer_id: i.user_id,
-        name: getFullName(i.first_name, i.last_name),
-        profile_img: i.profile_image,
-        shedule_settings: i.scheduling_settings,
-        tokens: i.schedule_auth as any,
-      })),
-      curr_date,
-      curr_date,
-      user_tz,
-    );
-    const int_sessions = ses_with_ints.filter((si) =>
-      day_plan.sessions.find((_s) => _s.session_id === si.session_id),
-    );
-
-    const { findCurrentDayPlan } = findMultiDaySlots(
-      int_sessions,
-      intervs_details_with_events,
-      user_tz,
-      comp_schedule_setting,
-    );
-
-    const plan_combs = findCurrentDayPlan(curr_date);
+    cand_scheduling.setSchedulingDates(curr_date, curr_date);
+    await cand_scheduling.fetchInterviewrsCalEvents();
+    const plan_combs = cand_scheduling.findCandSlotForTheDay();
     const assisgned_slot = assignCandidateSlot(plan_combs[0], curr_date);
-
     const meet_promises = assisgned_slot.sessions.map(async (session) => {
       const all_inters = [
         ...session.selectedIntervs.slice(1),
@@ -143,7 +121,6 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
       await confirmInterviewers([organizer, ...all_inters]);
       return booked_sessions;
     });
-
     const meeting_events = await Promise.all(meet_promises);
     await update_meetings_info({
       meeting_events: meeting_events,

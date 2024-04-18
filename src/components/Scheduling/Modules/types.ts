@@ -10,10 +10,11 @@ import {
   JobApplcationDB,
   RecruiterUserType,
 } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
+import { PauseJson } from '@/src/types/schedulingTypes/types';
 import { Database } from '@/src/types/schema';
 
 import { ApplicationList } from '../AllSchedules/store';
-import { schedulingSettingType } from '../Settings/types';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
@@ -50,12 +51,6 @@ export type ModuleType = Omit<InterviewModuleType, 'settings'> & {
     reqruire_approval: boolean;
     approve_users: string[];
   };
-};
-
-export type PauseJson = {
-  start_date: string;
-  end_date: string;
-  isManual: boolean;
 };
 
 export interface TimeSlotsData {

@@ -13,6 +13,7 @@ import {
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { SocialsType } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
@@ -29,7 +30,6 @@ import { setIsCreateDialogOpen } from './Modules/store';
 import MySchedule from './MySchedule';
 import SchedulingDashboard from './ScheduledDashobard';
 import SchedulingSettings from './Settings';
-import { schedulingSettingType } from './Settings/types';
 import SubNav from './SubNav';
 import { SchedulingTab } from './types';
 

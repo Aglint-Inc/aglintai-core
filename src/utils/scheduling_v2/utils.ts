@@ -9,47 +9,21 @@ dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { SubTaskProgress } from '@/src/types/data.types';
 import {
   holidayType,
   schedulingSettingType,
-} from '@/src/components/Scheduling/Settings/types';
-import { SubTaskProgress } from '@/src/types/data.types';
+} from '@/src/types/schedulingTypes/scheduleSetting';
 
-import { SINGLE_DAY_TIME } from '../integrations/constants';
 import {
-  InterviewSessionApiRespType,
   PlanCombinationType,
   SessionCombinationType,
   SessionInterviewerApiRespType,
   SessionInterviewerType,
   SessionsCombType,
   SessionSlotType,
-} from '../scheduling_v1/types';
+} from '../../types/schedulingTypes/types';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
-
-export const convertDateFormatToDayjs = (user_date, user_tz: string) => {
-  const [day, month, year] = user_date.split('/');
-  if (!day || !month || !year) {
-    throw new Error(`Date should in the format DD/MM/YYYY`);
-  }
-  let user_dayjs = dayjs.tz(`${year}-${month}-${day} 12:00`, user_tz);
-  return user_dayjs;
-};
-
-export const convertDayjsToUserTimeZoneDate = (
-  user_date: Dayjs,
-  userTimeZone,
-  isStartTime = true,
-) => {
-  let d: Dayjs;
-  d = user_date.tz(userTimeZone);
-  if (isStartTime) {
-    d = d.startOf('day');
-  } else {
-    d = d.endOf('day');
-  }
-  return d.format();
-};
 
 export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
   const convertCombsToTimeSlot = (all_plan_combs: PlanCombinationType[]) => {
@@ -142,63 +116,6 @@ export const getNextWorkingDay = (
     break;
   }
   return nxt_day;
-};
-
-export const getCompWorkingDaysRange = (
-  start_date: string,
-  end_date: string,
-  comp_schedule_setting: schedulingSettingType,
-  int_sessions: InterviewSessionApiRespType[],
-) => {
-  let day_break_cnt = 0;
-  int_sessions.slice(0, -1).forEach((s) => {
-    const day_break = Math.floor(s.break_duration / SINGLE_DAY_TIME);
-    if (day_break > 0) {
-      day_break_cnt += day_break;
-    }
-  });
-  const isCurrDayHoliday = (curr_day: Dayjs) => {
-    // is curr day holiday
-    if (
-      comp_schedule_setting.totalDaysOff.find((holiday: holidayType) =>
-        curr_day.isSame(dayjs(holiday.date, 'DD MMM YYYY'), 'date'),
-      )
-    ) {
-      return true;
-    }
-    const work_day = comp_schedule_setting.workingHours.find(
-      (day) => curr_day.format('dddd').toLowerCase() === day.day,
-    );
-    // is day week off
-    if (!work_day.isWorkDay) {
-      return true;
-    }
-  };
-
-  const date_ranges: {
-    start_date: dayjs.Dayjs;
-    end_date: dayjs.Dayjs;
-  }[] = [];
-  let curr_day = dayjs(start_date);
-  const end_day = dayjs(end_date);
-  while (curr_day.isSameOrBefore(end_day, 'day')) {
-    if (!isCurrDayHoliday(curr_day)) {
-      const next_day = getNextWorkingDay(
-        comp_schedule_setting,
-        curr_day,
-        day_break_cnt,
-      );
-      if (next_day.isSameOrBefore(end_day, 'day')) {
-        date_ranges.push({
-          start_date: curr_day,
-          end_date: next_day,
-        });
-      }
-    }
-    curr_day = getNextWorkingDay(comp_schedule_setting, curr_day, 1);
-  }
-
-  return date_ranges;
 };
 
 // email agent

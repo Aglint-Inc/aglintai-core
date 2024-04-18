@@ -1,10 +1,15 @@
-import { PauseJson } from '@/src/components/Scheduling/Modules/types';
 import {
   InterviewerSessionRelation,
   InterviewModuleType,
   InterviewSession,
   RecruiterUserType,
 } from '@/src/types/data.types';
+
+export type PauseJson = {
+  start_date: string;
+  end_date: string;
+  isManual: boolean;
+};
 
 export type SessionInterviewerType = Pick<
   RecruiterUserType,

@@ -7,7 +7,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { GoogleCalender } from '@/src/utils/integrations/google-calender';
+import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 
 export type BodyParams = {
   event_id: string;

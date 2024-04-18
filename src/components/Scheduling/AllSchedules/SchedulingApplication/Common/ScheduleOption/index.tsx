@@ -11,8 +11,8 @@ import { AvatarWithName } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { PlanCombinationRespType } from '@/src/types/schedulingTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
 
 interface SchedulingOptionCompProps {
   isBadgeVisible?: boolean;

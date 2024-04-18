@@ -1,6 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
+import { PauseJson } from '@/src/types/schedulingTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { initialEditModule } from '../store';
@@ -8,7 +9,6 @@ import {
   MemberType,
   ModuleDashboard,
   ModuleType,
-  PauseJson,
   StatusTraining,
   TransformSchedule,
 } from '../types';

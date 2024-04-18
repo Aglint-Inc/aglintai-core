@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 
-import { PlanCombinationType } from '../scheduling_v1/types';
+import { PlanCombinationType } from '../../types/schedulingTypes/types';
 
 export const assignCandidateSlot = (
   curr_day_slots: PlanCombinationType[],

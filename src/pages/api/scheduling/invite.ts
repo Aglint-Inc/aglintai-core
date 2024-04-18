@@ -12,8 +12,8 @@ dayjs.extend(customParseFormat);
 
 import axios from 'axios';
 
+import { SessionsCombType } from '@/src/types/schedulingTypes/types';
 import { Database } from '@/src/types/schema';
-import { SessionsCombType } from '@/src/utils/scheduling_v1/types';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -69,17 +69,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { resMeetings } = await getInterviewSessionsMeetings(
       filterJson.session_ids,
     );
-
-    // console.log({
-    //   session_ids: filterJson.session_ids,
-    //   recruiter_id: recruiter.id,
-    //   date_range_start:
-    //     filterJson.filter_json.start_date > dayjs().format('DD/MM/YYYY')
-    //       ? filterJson.filter_json.start_date
-    //       : dayjs().format('DD/MM/YYYY'),
-    //   date_range_end: filterJson.filter_json.end_date,
-    //   user_tz: user_tz,
-    // });
 
     const resSchOpt = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find_slots_date_range`,

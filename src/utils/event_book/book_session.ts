@@ -1,11 +1,11 @@
 const { v4: uuidv4 } = require('uuid');
 
 import { InterviewSession, RecruiterUserType } from '@/src/types/data.types';
+import { NewCalenderEvent } from '@/src/types/schedulingTypes/calEvent.types';
 
-import { GoogleCalender } from '../integrations/google-calender';
+import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
 import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
-import { NewCalenderEvent } from '../schedule-utils/types';
 import { CompServiceKeyCred } from '../scheduling_v2/types';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');

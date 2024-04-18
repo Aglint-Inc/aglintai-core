@@ -12,7 +12,7 @@ import Loader from '@/src/components/Common/Loader';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
-import { PlanCombinationRespType } from '@/src/utils/scheduling_v1/types';
+import { PlanCombinationRespType } from '@/src/types/schedulingTypes/types';
 import toast from '@/src/utils/toast';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
@@ -176,8 +176,8 @@ function SchedulingApplication() {
                   }
                 : { status: 'waiting', interview_schedule_id: null }
               : session.interview_meeting
-                ? { ...session.interview_meeting }
-                : null,
+              ? { ...session.interview_meeting }
+              : null,
           })),
         );
       } else {

@@ -1,16 +1,29 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { schedulingSettingType } from '@/src/components/Scheduling/Settings/types';
 import { InterviewModuleType, InterviewSession } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
+import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
+import { CompServiceKeyCred } from '@/src/utils/scheduling_v2/types';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { decrypt_string } from '../integrations/crypt-funcs';
-import { CompServiceKeyCred } from '../scheduling_v2/types';
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
-import { InterviewSessionApiType, SessionInterviewerType } from './types';
+import {
+  InterviewSessionApiType,
+  SessionInterviewerType,
+} from '../../../types/schedulingTypes/types';
 
-export const find_api_details = async (
+export const fetch_details_from_db = async (
   session_ids: string[],
   company_id: string,
 ) => {
+  const getUniqueInts = (ints: SessionInterviewerType[]) => {
+    let mp = new Map();
+
+    for (let int of ints) {
+      if (!mp.get(int.user_id)) mp.set(int.user_id, int);
+    }
+
+    return [...mp.values()] as SessionInterviewerType[];
+  };
+
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
       session_ids: session_ids,
@@ -73,14 +86,4 @@ export const find_api_details = async (
     all_inters: getUniqueInts(interviewers),
     comp_schedule_setting,
   };
-};
-
-const getUniqueInts = (ints: SessionInterviewerType[]) => {
-  let mp = new Map();
-
-  for (let int of ints) {
-    if (!mp.get(int.user_id)) mp.set(int.user_id, int);
-  }
-
-  return [...mp.values()] as SessionInterviewerType[];
 };

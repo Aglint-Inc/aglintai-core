@@ -2,10 +2,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { PauseJson } from '@/src/types/schedulingTypes/types';
 import toast from '@/src/utils/toast';
 
 import { PauseType } from '../ModuleMembers/type';
-import { MemberType, ModuleType, PauseJson } from '../types';
+import { MemberType, ModuleType } from '../types';
 import { QueryKeysInteviewModules } from './type';
 import {
   addMemberbyUserIds,
@@ -16,7 +17,7 @@ import {
   fetchProgress,
   getMeetingsByModuleId,
   resumePauseDbUpdate,
-  updatePauseJsonByUserId
+  updatePauseJsonByUserId,
 } from './utils';
 
 export const useAllInterviewModules = () => {
@@ -26,7 +27,7 @@ export const useAllInterviewModules = () => {
     queryFn: () => fetchInterviewModules(recruiter.id),
     enabled: !!recruiter.id,
     initialData: [],
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
   });
   return query;
 };
@@ -35,19 +36,19 @@ export const useAllSchedulesByModuleId = () => {
   const router = useRouter();
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.SCHEDULES_BY_MODULE_ID({
-      moduleId: router.query.module_id as string
+      moduleId: router.query.module_id as string,
     }),
     queryFn: () => fetchModules(router.query.module_id as string),
     enabled: !!router.query.module_id,
     initialData: [],
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
   });
   return query;
 };
 
 export const useGetMeetingsByModuleId = ({
   schedulesLoading,
-  user_ids
+  user_ids,
 }: {
   schedulesLoading: boolean;
   user_ids: string[];
@@ -56,18 +57,18 @@ export const useGetMeetingsByModuleId = ({
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.MEETINGS_BY_MODULE_ID({
       moduleId: router.query.module_id as string,
-      user_ids: user_ids
+      user_ids: user_ids,
     }),
     queryFn: () => getMeetingsByModuleId(router.query.module_id as string),
     enabled: !schedulesLoading && user_ids.length > 0,
     initialData: [],
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
   });
   return query;
 };
 
 export const useProgressModuleUsers = ({
-  trainer_ids
+  trainer_ids,
 }: {
   trainer_ids: string[]; // interview_module_relation_id
 }) => {
@@ -75,16 +76,16 @@ export const useProgressModuleUsers = ({
 
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.PROGRESS_BY_MODULE_ID({
-      moduleId: router.query.module_id as string
+      moduleId: router.query.module_id as string,
     }),
     queryFn: () =>
       fetchProgress({
         module_id: router.query.module_id as string,
-        trainer_ids: trainer_ids
+        trainer_ids: trainer_ids,
       }),
     enabled: router.query.module_id && trainer_ids.length > 0,
     initialData: [],
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
   });
   return query;
 };
@@ -94,12 +95,12 @@ export const useModuleAndUsers = () => {
 
   const query = useQuery({
     queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-      moduleId: router.query.module_id as string
+      moduleId: router.query.module_id as string,
     }),
     queryFn: () => fetchInterviewModuleById(router.query.module_id as string),
     initialData: null,
     enabled: !!router.query.module_id,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
   });
   return query;
 };
@@ -109,13 +110,13 @@ export const usePauseHandler = () => {
 
   const resumeHandler = async ({
     module_id,
-    user_id
+    user_id,
   }: {
     module_id: string;
     user_id: string;
   }): Promise<boolean> => {
     const editModule = queryClient.getQueryData<ModuleType>(
-      QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id })
+      QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
     );
     if (user_id && editModule) {
       const isUpdated = await resumePauseDbUpdate({ module_id, user_id });
@@ -124,16 +125,16 @@ export const usePauseHandler = () => {
         const updatedEditModule = {
           ...editModule,
           relations: editModule.relations.map((rel) =>
-            rel.user_id === user_id ? { ...rel, pause_json: null } : rel
-          )
+            rel.user_id === user_id ? { ...rel, pause_json: null } : rel,
+          ),
         };
         queryClient.setQueryData(
           QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-            moduleId: editModule.id
+            moduleId: editModule.id,
           }),
           {
-            ...updatedEditModule
-          }
+            ...updatedEditModule,
+          },
         );
         return true;
       } else {
@@ -148,7 +149,7 @@ export const usePauseHandler = () => {
     module_id,
     user_id,
     selectedType,
-    pause_json
+    pause_json,
   }: {
     module_id: string;
     user_id: string;
@@ -158,7 +159,7 @@ export const usePauseHandler = () => {
     try {
       if (user_id) {
         const editModule = queryClient.getQueryData<ModuleType>(
-          QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id })
+          QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
         );
         if (selectedType === 'custom' && !pause_json?.end_date) {
           return toast.error('Please select end date');
@@ -166,23 +167,25 @@ export const usePauseHandler = () => {
         const isUpdated = await updatePauseJsonByUserId({
           user_id: user_id,
           pause_json: pause_json,
-          module_id: module_id
+          module_id: module_id,
         });
         if (isUpdated) {
           const updatedEditModule = {
             ...editModule,
             relations: editModule.relations.map((rel) =>
-              rel.user_id === user_id ? { ...rel, pause_json: pause_json } : rel
-            )
+              rel.user_id === user_id
+                ? { ...rel, pause_json: pause_json }
+                : rel,
+            ),
           } as ModuleType;
 
           queryClient.setQueryData<ModuleType>(
             QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-              moduleId: editModule.id
+              moduleId: editModule.id,
             }),
             {
-              ...updatedEditModule
-            }
+              ...updatedEditModule,
+            },
           );
         }
       } else {
@@ -201,34 +204,36 @@ export const useDeleteRelationHandler = () => {
 
   const deleteRelationByUserId = async ({
     module_id,
-    user_id
+    user_id,
   }: {
     module_id: string;
     user_id: string;
   }) => {
     try {
       const editModule = queryClient.getQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id })
+        QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
       if (!editModule) throw new Error('Module not found');
       const isDeleted = await deleteRelationByUserDbDelete({
         module_id: module_id,
-        user_id: user_id
+        user_id: user_id,
       });
       if (!isDeleted) {
         throw new Error('Error deleting user');
       }
       const updatedEditModule = {
         ...editModule,
-        relations: editModule.relations.filter((rel) => rel.user_id !== user_id)
+        relations: editModule.relations.filter(
+          (rel) => rel.user_id !== user_id,
+        ),
       } as ModuleType;
       queryClient.setQueryData<ModuleType>(
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id
+          moduleId: editModule.id,
         }),
         {
-          ...updatedEditModule
-        }
+          ...updatedEditModule,
+        },
       );
 
       return true;
@@ -245,7 +250,7 @@ export const useAddMemberHandler = () => {
   const addMemberHandler = async ({
     module_id,
     selectedUsers,
-    trainingStatus
+    trainingStatus,
   }: {
     module_id: string;
     selectedUsers: MemberType[];
@@ -253,7 +258,7 @@ export const useAddMemberHandler = () => {
   }) => {
     try {
       const editModule = queryClient.getQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id })
+        QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
 
       if (!editModule) throw new Error('Module not found');
@@ -261,7 +266,7 @@ export const useAddMemberHandler = () => {
       const { error } = await addMemberbyUserIds({
         module_id: editModule.id,
         user_ids: selectedUsers.map((user) => user.user_id),
-        training_status: trainingStatus
+        training_status: trainingStatus,
       });
       if (error) {
         throw new Error(error.message);
@@ -269,8 +274,8 @@ export const useAddMemberHandler = () => {
 
       await queryClient.invalidateQueries({
         queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id
-        })
+          moduleId: editModule.id,
+        }),
       });
     } catch (e) {
       toast.error(e.message);

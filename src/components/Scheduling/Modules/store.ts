@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 import { InterviewModuleRelationType } from '@/src/types/data.types';
+import { PauseJson } from '@/src/types/schedulingTypes/types';
 
 import {
   MemberType,
   ModuleType,
-  PauseJson,
   SchedulingSlice,
   StatusTraining,
 } from './types';

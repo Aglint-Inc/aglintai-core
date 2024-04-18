@@ -1,10 +1,7 @@
 import { Dayjs } from 'dayjs';
 
-import {
-  CalendarEvent,
-  ScheduleAuthType,
-} from '@/src/types/schedulingTypes/calEvent.types';
-import { schedulingSettingType } from '@/src/types/schedulingTypes/scheduleSetting';
+import { CalendarEvent, ScheduleAuthType } from './calEvent.types';
+import { schedulingSettingType } from './scheduleSetting';
 
 export type InterDetailsType = {
   tokens: ScheduleAuthType | null;

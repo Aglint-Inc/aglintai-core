@@ -2,14 +2,8 @@
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { getFullName } from '@/src/utils/jsonResume';
-import { find_api_details } from '@/src/utils/scheduling_v1/find_details';
-import { findInterviewersEvents } from '@/src/utils/scheduling_v2/findEachInterviewerFreeTimes';
-import { findMultiDaySlots } from '@/src/utils/scheduling_v2/findMultiDaySlots';
-import {
-  combineSlots,
-  convertDateFormatToDayjs,
-} from '@/src/utils/scheduling_v2/utils';
+import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { combineSlots } from '@/src/utils/scheduling_v2/utils';
 
 export type BodyParams = {
   session_ids: string[];
@@ -18,16 +12,12 @@ export type BodyParams = {
   user_tz: string;
 };
 
-const required_fields = ['recruiter_id', 'start_date'];
+const required_fields = ['recruiter_id', 'start_date', 'user_tz'];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let {
-      session_ids,
-      recruiter_id,
-      start_date,
-      user_tz = 'Asia/colombo',
-    } = req.body as BodyParams;
+    let { session_ids, recruiter_id, start_date, user_tz } =
+      req.body as BodyParams;
 
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
@@ -35,33 +25,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
 
-    const dayjs_curr_date_date = convertDateFormatToDayjs(start_date, user_tz);
-
-    const { company_cred, all_inters, ses_with_ints, comp_schedule_setting } =
-      await find_api_details(session_ids, recruiter_id);
-
-    const intervs_details_with_events = await findInterviewersEvents(
-      company_cred,
-      all_inters.map((i) => ({
-        email: i.email,
-        interviewer_id: i.user_id,
-        name: getFullName(i.first_name, i.last_name),
-        profile_img: i.profile_image,
-        shedule_settings: i.scheduling_settings,
-        tokens: i.schedule_auth as any,
-      })),
-      dayjs_curr_date_date,
-      dayjs_curr_date_date,
+    const start_date_js = CandidatesScheduling.convertDateFormatToDayjs(
+      start_date,
       user_tz,
+      true,
+    );
+    const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
+      start_date,
+      user_tz,
+      false,
     );
 
-    const { findCurrentDayPlan } = findMultiDaySlots(
-      ses_with_ints,
-      intervs_details_with_events,
-      user_tz,
-      comp_schedule_setting,
+    const cand_schedule = new CandidatesScheduling(
+      {
+        company_id: recruiter_id,
+        session_ids,
+        user_tz,
+      },
+      {
+        end_date_js: end_date_js,
+        start_date_js: start_date_js,
+      },
     );
-    const plan_combs = findCurrentDayPlan(dayjs_curr_date_date);
+
+    await cand_schedule.fetchDetails();
+    await cand_schedule.fetchInterviewrsCalEvents();
+    const plan_combs = cand_schedule.findCandSlotForTheDay();
 
     const session_combs = combineSlots(plan_combs);
     return res.status(200).json(session_combs);
@@ -72,6 +61,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
-// given n persons with there availability time_ranges in the format {startTime:string, endTime:string}[] for each person find the commn  time range which all n person are available on that
-//

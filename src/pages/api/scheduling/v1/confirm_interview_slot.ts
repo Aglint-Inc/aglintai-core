@@ -27,7 +27,7 @@ export type ConfirmApiBodyParams = {
   user_tz: string;
   candidate_email: string;
   schedule_id: string;
-  filter_id: string;
+  filter_id?: string;
 };
 
 const required_fields = [

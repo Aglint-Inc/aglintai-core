@@ -31,14 +31,14 @@ import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSele
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
 import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
+import { hoursList } from '@/src/components/Scheduling/Settings/utils';
+import { useImrQuery } from '@/src/pages/scheduling/interviewer/[member_id]';
 import {
   DailyLimitType,
   holidayType,
   schedulingSettingType,
   WeeklyLimitType,
-} from '@/src/components/Scheduling/Settings/types';
-import { hoursList } from '@/src/components/Scheduling/Settings/utils';
-import { useImrQuery } from '@/src/pages/scheduling/interviewer/[member_id]';
+} from '@/src/types/schedulingTypes/scheduleSetting';
 import toast from '@/src/utils/toast';
 
 let schedulingSettingObj = {};
@@ -50,7 +50,6 @@ function InterviewerLevelSettings({
   closeBtnVisible = true,
   isOverflow = false,
 }) {
-  
   const dateRef = useRef<HTMLInputElement>(null);
 
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
