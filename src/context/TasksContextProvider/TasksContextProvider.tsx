@@ -11,7 +11,8 @@ import {
   useReducer,
 } from 'react';
 
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
+import { EmailAgentId } from '@/src/components/Tasks/utils';
+import { PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
   DatabaseTable,
   DatabaseTableInsert,
@@ -23,17 +24,18 @@ import { useAuthDetails } from '../AuthContext/AuthContext';
 
 type TasksReducerType = {
   tasks: Awaited<ReturnType<typeof getAllTasks>>;
-  progress_logs: DatabaseTable['sub_task_progress'][];
+  taskProgress: DatabaseTable['new_tasks_progress'][];
   search: string;
   filter: {
     status: { options: { id: string; label: string }[]; values: string[] };
     assignee: { options: { id: string; label: string }[]; values: string[] };
     jobTitle: { options: { id: string; label: string }[]; values: string[] };
   };
-  // filterOptions: {
-  //   status: DatabaseTable['tasks']['status'][];
-  //   assignee: string[];
-  // };
+  pagination: {
+    rows: number;
+    page: number;
+    totalRows: number;
+  };
   sort: 'date' | 'status';
 };
 
@@ -47,21 +49,30 @@ export type TasksAgentContextType = TasksReducerType & {
     data: DatabaseTableUpdate['new_tasks'];
   }) => Promise<DatabaseTable['new_tasks']>;
   handelDeleteTask: (id: string) => Promise<boolean>;
-  //   handelSearch: (x: string) => void;
-  //   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
-  //   handelSort: (x: TasksReducerType['sort']) => void;
+  handelGetTaskProgress: (task_id: string) => Promise<boolean>;
+  handelAddTaskProgress: (
+    x: DatabaseTableInsert['new_tasks_progress'],
+  ) => Promise<boolean>;
+  handelSearch: (x: string) => void;
+  handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
+  handelSort: (x: TasksReducerType['sort']) => void;
 };
 
 const reducerInitialState: TasksReducerType = {
   tasks: [],
-  progress_logs: [],
+  taskProgress: [],
   search: '',
+  pagination: {
+    rows: 100,
+    page: 0,
+    totalRows: 0,
+  },
   filter: {
     status: {
       options: [
+        { id: 'not_started', label: 'Not Started' },
         { id: 'completed', label: 'Completed' },
         { id: 'in_progress', label: 'In Progress' },
-        { id: 'pending', label: 'Pending' },
         { id: 'closed', label: 'Closed' },
       ],
       values: [],
@@ -78,9 +89,11 @@ const contextInitialState: TasksAgentContextType = {
   handelAddTask: (x) => Promise.resolve(null),
   handelUpdateTask: (x) => Promise.resolve(null),
   handelDeleteTask: (x) => Promise.resolve(false),
-  //   handelSearch: (x) => {},
-  //   handelFilter: (x) => {},
-  //   handelSort: (x) => {},
+  handelGetTaskProgress: (x) => Promise.resolve(false),
+  handelAddTaskProgress: (x) => Promise.resolve(false),
+  handelSearch: (x) => {},
+  handelFilter: (x) => {},
+  handelSort: (x) => {},
 };
 
 const TaskContext = createContext<TasksAgentContextType>(contextInitialState);
@@ -92,7 +105,8 @@ enum TasksReducerAction {
   FILTER,
   SORT,
   SET_ASSIGNEE_OPTIONS,
-  SET_TASK_PROGRESS_LOGS,
+  SET_TASK_PROGRESS,
+  SET_PAGINATION,
 }
 
 type TasksReducerActionType =
@@ -105,11 +119,12 @@ type TasksReducerActionType =
       payload: {
         tasks: TasksAgentContextType['tasks'];
         filterOption: TasksReducerType['filter'];
+        totalRows: number;
       };
     }
   | {
-      type: TasksReducerAction.SET_TASK_PROGRESS_LOGS;
-      payload: TasksAgentContextType['progress_logs'];
+      type: TasksReducerAction.SET_TASK_PROGRESS;
+      payload: TasksAgentContextType['taskProgress'];
     }
   | {
       type: TasksReducerAction.SEARCH;
@@ -126,6 +141,10 @@ type TasksReducerActionType =
   | {
       type: TasksReducerAction.SET_ASSIGNEE_OPTIONS;
       payload: TasksAgentContextType['filter']['assignee']['options'];
+    }
+  | {
+      type: TasksReducerAction.SET_PAGINATION;
+      payload: TasksAgentContextType['pagination'];
     };
 
 const reducer = (
@@ -140,11 +159,12 @@ const reducer = (
       const temp = cloneDeep(reducerInitialState);
       temp.tasks = action.payload.tasks;
       temp.filter = action.payload.filterOption;
+      temp.pagination.totalRows = action.payload.totalRows;
       return temp;
     }
-    case TasksReducerAction.SET_TASK_PROGRESS_LOGS: {
+    case TasksReducerAction.SET_TASK_PROGRESS: {
       const temp = cloneDeep(reducerInitialState);
-      temp.progress_logs = action.payload;
+      temp.taskProgress = action.payload;
       return temp;
     }
     case TasksReducerAction.SEARCH: {
@@ -161,6 +181,11 @@ const reducer = (
       temp.filter.assignee.options = action.payload;
       return temp;
     }
+    case TasksReducerAction.SET_PAGINATION: {
+      const temp = cloneDeep(state);
+      temp.pagination = action.payload;
+      return temp;
+    }
     default: {
       return state;
     }
@@ -171,80 +196,92 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
   const { recruiter_id, members, recruiterUser } = useAuthDetails();
   const init = (data: TasksReducerType) => {
-    // data.filter.assignee.options = [
-    //   ...new Set(
-    //     data.tasks
-    //       .map((task) => task.sub_tasks.map((subTask) => subTask.assignee))
-    //       .flat(2),
-    //   ),
-    // ]
-    //   .map((item) => {
-    //     const temp = members.find((mem) => mem.user_id === item);
-    //     return temp;
-    //   })
-    //   .filter((item) => Boolean(item))
-    //   .map((temp) => {
-    //     return {
-    //       id: temp.user_id,
-    //       label: `${temp.first_name} ${temp.last_name}`.trim(),
-    //     };
-    //   });
+    data.filter.assignee.options = [
+      ...new Set(data.tasks.map((task) => task.assignee).flat(2)),
+    ]
+      .map((item) => {
+        const temp = members.find((mem) => mem.user_id === item);
+        return temp;
+      })
+      .filter((item) => Boolean(item))
+      .map((temp) => {
+        return {
+          id: temp.user_id,
+          label: `${temp.first_name} ${temp.last_name}`.trim(),
+        };
+      });
 
-    // data.filter.jobTitle.options = [
-    //   ...new Set(
-    //     data.tasks
-    //       .filter((task) => Boolean(task.application_id))
-    //       .map((task) => ({
-    //         id: task.applications.public_jobs.id,
-    //         label: task.applications.public_jobs.job_title,
-    //       }))
-    //       .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
-    //   ),
-    // ];
+    data.filter.jobTitle.options = [
+      ...new Set(
+        data.tasks
+          .filter((task) => Boolean(task.application_id))
+          .map((task) => ({
+            id: task.applications.public_jobs.id,
+            label: task.applications.public_jobs.job_title,
+          }))
+          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
+      ),
+    ];
     dispatch({ type: TasksReducerAction.INIT, payload: data });
   };
-  const handelTaskChanges = (tasks: TasksAgentContextType['tasks']) => {
+  const handelTaskChanges = (
+    tasks: TasksAgentContextType['tasks'],
+    type?: 'add' | 'update' | 'delete' | 'set',
+  ) => {
     const filterOption = cloneDeep(tasksReducer.filter);
-    // filterOption.assignee.options = [
-    //   ...new Set(
-    //     tasks
-    //       .map((task) => task.sub_tasks.map((subTask) => subTask.assignee))
-    //       .flat(2),
-    //   ),
-    // ]
-    //   .map((item) => {
-    //     const temp = members.find((mem) => mem.user_id === item);
-    //     return temp;
-    //   })
-    //   .filter((item) => Boolean(item))
-    //   .map((temp) => {
-    //     return {
-    //       id: temp.user_id,
-    //       label: `${temp.first_name} ${temp.last_name}`.trim(),
-    //     };
-    //   });
-    // filterOption.jobTitle.options = tasks
-    //   .filter((task) => Boolean(task.application_id))
-    //   .map((task) => ({
-    //     id: task.applications.public_jobs.id,
-    //     label: task.applications.public_jobs.job_title,
-    //   }))
-    //   .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
+    filterOption.assignee.options = [
+      ...new Set(tasks.map((task) => task.assignee).flat(2)),
+    ]
+      .map((item) => {
+        const temp = members.find((mem) => mem.user_id === item);
+        return temp;
+      })
+      .filter((item) => Boolean(item))
+      .map((temp) => {
+        return {
+          id: temp.user_id,
+          label: `${temp.first_name} ${temp.last_name}`.trim(),
+        };
+      });
+    filterOption.jobTitle.options = tasks
+      .filter((task) => Boolean(task.application_id))
+      .map((task) => ({
+        id: task.applications.public_jobs.id,
+        label: task.applications.public_jobs.job_title,
+      }))
+      .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
+    let totalRows = tasksReducer.pagination.totalRows;
+    if (type === 'add') totalRows = totalRows + 1;
+    else if (type === 'delete') totalRows = totalRows - 1;
     dispatch({
       type: TasksReducerAction.ADD_TASK,
-      payload: { tasks, filterOption },
+      payload: { tasks, filterOption, totalRows },
     });
   };
 
   const handelAddTask: TasksAgentContextType['handelAddTask'] = async (
     task,
   ) => {
-    return updateTask({ type: 'new', task }).then((taskData) => {
-      const tempTask = [
-        { ...taskData, sub_tasks: [] },
-        ...cloneDeep(tasksReducer.tasks),
-      ];
-      handelTaskChanges(tempTask);
+    return updateTask({ type: 'new', task }).then(async (taskData) => {
+      const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
+      const assigner = [
+        ...agentsDetails,
+        ...members.map((item) => {
+          return { ...item, assignee: 'Interviewers' };
+        }),
+      ].find((item) => item.user_id === taskData.assignee[0]);
+      if (assigner) {
+        await handelAddTaskProgress({
+          task_id: taskData.id,
+          title: `Task created and assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
+          created_by: {
+            name: recruiterUser.first_name,
+            id: recruiterUser.user_id,
+          },
+          progress_type: 'standard',
+        });
+      }
+      handelTaskChanges(tempTask, 'add');
       return taskData;
     });
   };
@@ -270,93 +307,111 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     return deleteTask(id).then(() => {
       const tempTask = tasksReducer.tasks.filter((item) => item.id !== id);
-      handelTaskChanges(tempTask);
+      handelTaskChanges(tempTask, 'delete');
       return true;
     });
   };
 
-  //   const handelSearch: TasksAgentContextType['handelSearch'] = (str) => {
-  //     dispatch({
-  //       type: TasksReducerAction.SEARCH,
-  //       payload: str,
-  //     });
-  //   };
+  const handelGetTaskProgress: TasksAgentContextType['handelGetTaskProgress'] =
+    async (id) => {
+      return getTaskProgress(id).then((data) => {
+        dispatch({ type: TasksReducerAction.SET_TASK_PROGRESS, payload: data });
+        return true;
+      });
+    };
 
-  //   const handelFilter: TasksAgentContextType['handelFilter'] = (filter) => {
-  //     dispatch({
-  //       type: TasksReducerAction.FILTER,
-  //       payload: { ...tasksReducer.filter, ...filter },
-  //     });
-  //   };
+  const handelAddTaskProgress: TasksAgentContextType['handelAddTaskProgress'] =
+    async (data) => {
+      return createTaskProgress({ ...data }).then((data) => {
+        dispatch({
+          type: TasksReducerAction.SET_TASK_PROGRESS,
+          payload: [...tasksReducer.taskProgress, data],
+        });
+        return true;
+      });
+    };
 
-  //   const handelSort: TasksAgentContextType['handelSort'] = (sort) => {
-  //     dispatch({
-  //       type: TasksReducerAction.SORT,
-  //       payload: sort,
-  //     });
-  //   };
+  const handelSearch: TasksAgentContextType['handelSearch'] = (str) => {
+    dispatch({
+      type: TasksReducerAction.SEARCH,
+      payload: str,
+    });
+  };
 
-  //   const sortedTask: TasksAgentContextType['tasks'] = useMemo(() => {
-  //     return tasksReducer.tasks;
-  //   }, [tasksReducer.sort, tasksReducer.tasks]);
+  const handelFilter: TasksAgentContextType['handelFilter'] = (filter) => {
+    dispatch({
+      type: TasksReducerAction.FILTER,
+      payload: { ...tasksReducer.filter, ...filter },
+    });
+  };
 
-  //   const filterTask: TasksAgentContextType['tasks'] = useMemo(() => {
-  //     const status = tasksReducer.filter.status;
-  //     const assignee = tasksReducer.filter.assignee;
-  //     const jobTitle = tasksReducer.filter.jobTitle;
-  //     let temp = [...sortedTask];
+  const handelSort: TasksAgentContextType['handelSort'] = (sort) => {
+    dispatch({
+      type: TasksReducerAction.SORT,
+      payload: sort,
+    });
+  };
 
-  //     if (status.values.length) {
-  //       temp = temp.reduce((prev, curr) => {
-  //         const tempTask = cloneDeep(curr);
-  //         tempTask.sub_tasks = tempTask.sub_tasks.filter((sub) => {
-  //           return status.values.includes(sub.status.toLowerCase());
-  //         });
-  //         tempTask.sub_tasks.length && prev.push(tempTask);
-  //         return prev;
-  //       }, []);
-  //     }
+  const sortedTask: TasksAgentContextType['tasks'] = useMemo(() => {
+    return tasksReducer.tasks;
+  }, [tasksReducer.sort, tasksReducer.tasks]);
 
-  //     if (assignee.values.length) {
-  //       temp = temp.reduce((prev, curr) => {
-  //         const tempTask = cloneDeep(curr);
-  //         tempTask.sub_tasks = tempTask.sub_tasks.filter((sub) => {
-  //           return assignee.values.some((curr) => {
-  //             return sub.assignee.includes(curr);
-  //           });
-  //         });
-  //         tempTask.sub_tasks.length && prev.push(tempTask);
-  //         return prev;
-  //       }, []);
-  //     }
+  const filterTask: TasksAgentContextType['tasks'] = useMemo(() => {
+    const status = tasksReducer.filter.status;
+    const assignee = tasksReducer.filter.assignee;
+    const jobTitle = tasksReducer.filter.jobTitle;
+    let temp = [...sortedTask];
 
-  //     if (jobTitle.values.length) {
-  //       temp = temp.filter((task) =>
-  //         jobTitle.values.includes(task?.applications?.public_jobs?.id),
-  //       );
-  //     }
-  //     return temp;
-  //   }, [tasksReducer.filter, sortedTask]);
+    if (status.values.length) {
+      temp = temp.filter((sub) => {
+        return status.values.includes(sub.status.toLowerCase());
+      });
+    }
 
-  //   const searchedTask: TasksAgentContextType['tasks'] = useMemo(() => {
-  //     const search = tasksReducer.search;
-  //     return search?.length
-  //       ? filterTask.filter(
-  //           (task) =>
-  //             task.name.toLowerCase().includes(search.toLowerCase()) ||
-  //             `${task.applications.candidates.first_name} ${task.applications.candidates.last_name}`
-  //               .trim()
-  //               .toLowerCase()
-  //               .includes(search.toLowerCase()),
-  //         )
-  //       : filterTask;
-  //   }, [tasksReducer.search, filterTask]);
+    if (assignee.values.length) {
+      temp = temp.filter((sub) => {
+        return assignee.values.some((curr) => {
+          return sub.assignee.includes(curr);
+        });
+      });
+    }
+
+    if (jobTitle.values.length) {
+      temp = temp.filter((task) =>
+        jobTitle.values.includes(task?.applications?.public_jobs?.id),
+      );
+    }
+    return temp;
+  }, [tasksReducer.filter, sortedTask]);
+
+  const searchedTask: TasksAgentContextType['tasks'] = useMemo(() => {
+    const search = tasksReducer.search;
+    return search?.length
+      ? filterTask.filter(
+          (task) =>
+            task.name.toLowerCase().includes(search.toLowerCase()) ||
+            `${task.applications.candidates.first_name} ${task.applications.candidates.last_name}`
+              .trim()
+              .toLowerCase()
+              .includes(search.toLowerCase()),
+        )
+      : filterTask;
+  }, [tasksReducer.search, filterTask]);
 
   useEffect(() => {
     if (recruiter_id) {
-      getAllTasks(recruiter_id).then((data) => {
+      getTasks(
+        recruiter_id,
+        {
+          page: tasksReducer.pagination.page,
+          rows: tasksReducer.pagination.rows,
+        },
+        true,
+      ).then((data) => {
         const temp = cloneDeep(reducerInitialState);
-        init({ ...temp, tasks: data });
+        temp.tasks = data.data;
+        temp.pagination.totalRows = data.count;
+        init({ ...temp, tasks: data.data });
       });
     }
   }, [recruiter_id]);
@@ -365,18 +420,20 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     <>
       <TaskContext.Provider
         value={{
-          //   tasks: searchedTask,
-          tasks: tasksReducer.tasks,
-          progress_logs: tasksReducer.progress_logs,
+          tasks: searchedTask,
+          pagination: tasksReducer.pagination,
+          taskProgress: tasksReducer.taskProgress,
           search: tasksReducer.search,
           filter: tasksReducer.filter,
           sort: tasksReducer.sort,
           handelAddTask,
           handelUpdateTask,
           handelDeleteTask,
-          //   handelSearch,
-          //   handelFilter,
-          //   handelSort,
+          handelGetTaskProgress,
+          handelAddTaskProgress,
+          handelSearch,
+          handelFilter,
+          handelSort,
         }}
       >
         {children}
@@ -413,6 +470,38 @@ const getAllTasks = (id: string) => {
       })[];
       if (error) throw new Error(error.message);
       return temp;
+    });
+};
+
+const getTasks = (
+  id: string,
+  pagination: { page: number; rows: number },
+  getCount: boolean,
+) => {
+  return supabase
+    .from('new_tasks')
+    .select(
+      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
+      getCount ? { count: 'exact' } : {},
+    )
+    .range(
+      pagination.page * pagination.rows,
+      pagination.page * pagination.rows + pagination.rows - 1,
+    )
+    .eq('recruiter_id', id)
+    .order('created_at', {
+      ascending: false,
+    })
+    .then(({ data, count, error }) => {
+      // const temp = data as unknown as (Omit<
+      //   (typeof data)[number],
+      //   'applications, recruiter_user'
+      // > & {
+      //   applications: (typeof data)[number]['applications'];
+      //   recruiter_user: (typeof data)[number]['recruiter_user'];
+      // })[];
+      if (error) throw new Error(error.message);
+      return { data, count };
     });
 };
 
@@ -457,9 +546,53 @@ const deleteTask = (id: string) => {
     });
 };
 
+const getTaskProgress = (id: string) => {
+  return supabase
+    .from('new_tasks_progress')
+    .select()
+    .eq('task_id', id)
+    .order('created_at', {
+      ascending: true,
+    })
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data;
+    });
+};
+
+const createTaskProgress = (
+  data: DatabaseTableInsert['new_tasks_progress'],
+) => {
+  return supabase
+    .from('new_tasks_progress')
+    .insert({ ...data })
+    .select()
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data;
+    });
+};
+
 type AtLeastOneRequired<T> = {
   [K in keyof T]-?: {
     [P in keyof T]: P extends K ? T[P] : never;
   }[keyof T];
 };
 
+export const agentsDetails = [
+  {
+    user_id: EmailAgentId,
+    first_name: 'email',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+  {
+    user_id: PhoneAgentId,
+    first_name: 'phone',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+];

@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { RecruiterUserType } from '@/src/types/data.types';
 
-import { useInterviewerList } from '../../Scheduling/Interviewers';
+// import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
+import { fetchInterviewSessionTask } from '../../Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { useInterviewerList } from '../Components/AssigneeChip';
 import { EmailAgentId, PhoneAgentId } from '../utils';
 
 // let setTime;
@@ -14,24 +17,28 @@ export type AssignerType = RecruiterUserType & {
 interface ContextValue {
   taskId: string | null;
   setTaskId: (x: string | null) => void;
-
   openViewTask: boolean;
   setOpenViewTask: (x: boolean) => void;
-  addTaskPopUp: boolean;
-  setAddTaskPopUp: (x: boolean) => void;
-  selectedSubTaskId: string | null;
-  setSelectedSubTaskId: (x: string | null) => void;
-
   assignerList: AssignerType[] | null;
   setAssignerList: (x: AssignerType[] | null) => void;
 
-  addingSubTask: boolean;
-  setAddingSubTask: (x: boolean) => void;
   // for textInput while creating subtask
   isPopUpOpen: boolean;
   setIsPopUpOpen: (x: boolean) => void;
   selectedMemberId: null | string;
   setSelectedMemberId: (x: null | string) => void;
+  showAddNew: boolean;
+  setShowAddNew: (x: boolean) => void;
+
+  selectedApplication:
+    | TasksAgentContextType['tasks'][number]['applications']
+    | null;
+  setSelectedApplication: (
+    x: TasksAgentContextType['tasks'][number]['applications'] | null,
+  ) => void;
+
+  isImmediate: boolean;
+  setIsImmediate: (x: boolean) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -39,14 +46,6 @@ const defaultProvider: ContextValue = {
   setTaskId: () => {},
   openViewTask: false,
   setOpenViewTask: () => {},
-
-  addTaskPopUp: false,
-  setAddTaskPopUp: () => {},
-  selectedSubTaskId: null,
-  setSelectedSubTaskId: () => {},
-  addingSubTask: false,
-  setAddingSubTask: () => {},
-
   assignerList: null,
   setAssignerList: () => {},
 
@@ -55,26 +54,31 @@ const defaultProvider: ContextValue = {
   setIsPopUpOpen: () => {},
   selectedMemberId: null,
   setSelectedMemberId: () => {},
+  showAddNew: false,
+  setShowAddNew: () => {},
+  selectedApplication: null,
+  setSelectedApplication: () => {},
+  isImmediate: false,
+  setIsImmediate: () => {},
 };
 const TaskStatesContext = createContext<ContextValue>(defaultProvider);
 const useTaskStatesContext = () => useContext(TaskStatesContext);
 function TaskStatesProvider({ children }) {
   const [taskId, setTaskId] = useState<string | null>(null);
   const [openViewTask, setOpenViewTask] = useState(false);
-  const [addTaskPopUp, setAddTaskPopUp] = useState(false);
-  const [selectedSubTaskId, setSelectedSubTaskId] = useState<string | null>(
-    null,
-  );
 
   const { data: interviewers } = useInterviewerList();
 
   const [assignerList, setAssignerList] = useState<AssignerType[] | null>(null);
-
-  const [addingSubTask, setAddingSubTask] = useState(false);
-
+  const [showAddNew, setShowAddNew] = useState(false);
   // for textInput while creating subTask
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<null | string>(null);
+  const [selectedApplication, setSelectedApplication] = useState<
+    TasksAgentContextType['tasks'][number]['applications'] | null
+  >(null);
+
+  const [isImmediate, setIsImmediate] = useState(false);
 
   useEffect(() => {
     if (interviewers) {
@@ -87,6 +91,7 @@ function TaskStatesProvider({ children }) {
       ] as AssignerType[]);
     }
   }, [interviewers]);
+
   return (
     <TaskStatesContext.Provider
       value={{
@@ -94,18 +99,18 @@ function TaskStatesProvider({ children }) {
         setTaskId,
         openViewTask,
         setOpenViewTask,
-        addTaskPopUp,
-        setAddTaskPopUp,
-        selectedSubTaskId,
-        setSelectedSubTaskId,
         isPopUpOpen,
         setIsPopUpOpen,
         selectedMemberId,
         setSelectedMemberId,
-        addingSubTask,
-        setAddingSubTask,
         assignerList,
         setAssignerList,
+        showAddNew,
+        setShowAddNew,
+        selectedApplication,
+        setSelectedApplication,
+        isImmediate,
+        setIsImmediate,
       }}
     >
       {children}

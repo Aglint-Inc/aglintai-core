@@ -1,20 +1,24 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { capitalize } from 'lodash';
-import React from 'react';
 
-import { PanelMemberPill } from '@/devlink2';
-import { AgentPill } from '@/devlink3';
+import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { RecruiterUserType } from '@/src/types/data.types';
+import { supabase } from '@/src/utils/supabase/client';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
-import { useInterviewerList } from '../../Scheduling/Interviewers';
+// import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { EmailAgentId, PhoneAgentId } from '../utils';
 
 function AssigneeChip({ assigneeId }: { assigneeId: string }) {
   const { data: members } = useInterviewerList();
 
-  const assigneeDetails = members
-    .map((item) => item.rec_user)
-    .find((item) => item.user_id === assigneeId);
+  const assigneeDetails =
+    members &&
+    members
+      .map((item) => item.rec_user)
+      .find((item) => item.user_id === assigneeId);
   return (
     <ShowCode>
       <ShowCode.When isTrue={assigneeId === EmailAgentId}>
@@ -31,24 +35,33 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
       </ShowCode.When>
       <ShowCode.Else>
         <ShowCode.When isTrue={!!assigneeDetails?.first_name}>
-          <PanelMemberPill
-            isCloseVisible={false}
-            slotImage={
-              <MuiAvatar
-                height={'25px'}
-                width={'25px'}
-                src={assigneeDetails?.profile_image}
-                variant='circular'
-                fontSize='14px'
-                level={capitalize(
-                  assigneeDetails?.first_name +
-                    ' ' +
-                    assigneeDetails?.last_name,
-                )}
-              />
-            }
-            textMemberName={
-              assigneeDetails?.first_name + ' ' + assigneeDetails?.last_name
+          <ListCard
+            isAvatarWithNameVisible={true}
+            isListVisible={false}
+            slotAvatarWithName={
+              assigneeDetails && (
+                <AvatarWithName
+                  slotAvatar={
+                    <MuiAvatar
+                      height={'25px'}
+                      width={'25px'}
+                      src={assigneeDetails.profile_image}
+                      variant='circular'
+                      fontSize='14px'
+                      level={capitalize(
+                        assigneeDetails?.first_name +
+                          ' ' +
+                          assigneeDetails?.last_name,
+                      )}
+                    />
+                  }
+                  textName={capitalize(
+                    assigneeDetails?.first_name +
+                      ' ' +
+                      assigneeDetails?.last_name,
+                  )}
+                />
+              )
             }
           />
         </ShowCode.When>
@@ -58,3 +71,29 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
 }
 
 export default AssigneeChip;
+
+export const useInterviewerList = () => {
+  const { recruiter } = useAuthDetails();
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['interviewer_list'],
+    queryFn: () => getInterviewerList(recruiter.id),
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({ queryKey: ['interviewer_list'] });
+  return { ...query, refetch };
+};
+async function getInterviewerList(recruiter_id: string) {
+  const { data, error } = await supabase.rpc('get_interviewers', {
+    rec_id: recruiter_id,
+  });
+  if (error) throw Error(error.message);
+  else
+    return data as unknown as {
+      rec_user: RecruiterUserType;
+      qualified_module_names: string[];
+      training_module_names: string[];
+      upcoming_meeting_count: number;
+      completed_meeting_count: number;
+    }[];
+}

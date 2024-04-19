@@ -2,7 +2,6 @@ import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
-import { useEffect, useState } from 'react';
 
 import { PanelMemberPill } from '@/devlink2';
 import { AgentPill, TaskProgress, TranscriptCard } from '@/devlink3';
@@ -10,10 +9,11 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+// import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
 import {
   TasksAgentContextType,
-  useTasksAgentContext,
-} from '@/src/context/TaskContext/TaskContextProvider';
+  useTasksContext,
+} from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useTaskStatesContext } from '../../../TaskStatesContext';
@@ -21,62 +21,12 @@ import { EmailAgentId, PhoneAgentId } from '../../../utils';
 import SessionCard from './SessionCard';
 
 function SubTaskProgress() {
-  const { handelGetTaskLog, tasks } = useTasksAgentContext();
-  const { selectedSubTaskId, assignerList, taskId } = useTaskStatesContext();
-  const [progressList, setProgressList] = useState<
-    TasksAgentContextType['progress_logs'] | null
-  >(null);
-  async function getProgress() {
-    const data = await handelGetTaskLog(selectedSubTaskId);
+  const { tasks } = useTasksContext();
+  const { assignerList } = useTaskStatesContext();
 
-    let seenIds = new Set();
-
-    let filteredData = data.filter((item) => {
-      if (seenIds.has(item.title)) {
-        return false; // Skip duplicate ID
-      }
-      seenIds.add(item.title);
-      return true; // Include unique ID
-    });
-
-    const selectedSubTask = tasks
-      .find((ele) => ele.id === taskId)
-      .sub_tasks.find((ele) => ele.id === selectedSubTaskId);
-    if (selectedSubTask.assignee[0] === PhoneAgentId) {
-      setProgressList(filteredData);
-    } else {
-      setProgressList(data);
-    }
-    // if (
-    //   filteredData.some((ele) => ele.progress_type === 'interview_schedule')
-    // ) {
-    //   let lastElement = filteredData.pop(); // Remove the last element and store it
-    //   filteredData.splice(filteredData.length - 2, 0, lastElement); // Insert the last element at index 2
-    //   setProgressList(filteredData);
-    // } else {
-    //   setProgressList(filteredData);
-    // }
-  }
-
-  //   const { data: emailLog, isLoading: emailLogLoading } = useEmailAgentLog();
-  //   if (emailLogLoading) {
-  //     console.log('isLoading', emailLogLoading);
-  //   } else {
-  //     console.log(emailLog);
-  //   }
-
-  //   const { data: phoneLog, isLoading: phoneLogLoading } = usePhoneAgentLog();
-  //   if (phoneLogLoading) {
-  //     console.log('isLoading', phoneLogLoading);
-  //   } else {
-  //     console.log(phoneLog);
-  //   }
+  const { data: progressList } = useProgress();
   const { data: sessionList } = useScheduleSession();
-  useEffect(() => {
-    if (selectedSubTaskId) {
-      getProgress();
-    }
-  }, [selectedSubTaskId]);
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={progressList === null}>
@@ -87,10 +37,10 @@ function SubTaskProgress() {
           ? progressList.map((item, i) => {
               const CandidateCreator = tasks
                 .map((ele) => ele.applications.candidates)
-                .find((ele) => ele.id === item.created_by.id);
+                .find((ele) => ele.id === (item.created_by as any).id);
 
               const InterviewerCreator = assignerList.find(
-                (ele) => ele.user_id === item.created_by.id,
+                (ele) => ele.user_id === (item.created_by as any).id,
               );
               return (
                 <TaskProgress
@@ -106,7 +56,7 @@ function SubTaskProgress() {
                   slotImage={
                     <ShowCode>
                       <ShowCode.When
-                        isTrue={item.created_by.id === EmailAgentId}
+                        isTrue={(item.created_by as any).id === EmailAgentId}
                       >
                         <Stack
                           border={'1px solid'}
@@ -122,7 +72,7 @@ function SubTaskProgress() {
                         </Stack>
                       </ShowCode.When>
                       <ShowCode.When
-                        isTrue={item.created_by.id === PhoneAgentId}
+                        isTrue={(item.created_by as any).id === PhoneAgentId}
                       >
                         <Stack
                           border={'1px solid'}
@@ -161,11 +111,7 @@ function SubTaskProgress() {
                   }
                   isTaskCompletedVisible={false}
                   textTimeCompleted={'sd'}
-                  textTime={
-                    dayjs(item.created_at).fromNow() +
-                    ' | ' +
-                    dayjs(item.created_at).format('hh:mm:ss')
-                  }
+                  textTime={dayjs(item.created_at).fromNow()}
                   isMailContentVisible={
                     item.progress_type === 'call_completed' ||
                     (item.progress_type === 'email_messages' &&
@@ -298,71 +244,20 @@ function SubTaskProgress() {
 }
 
 export default SubTaskProgress;
-
-export const useEmailAgentLog = () => {
-  const { selectedSubTaskId } = useTaskStatesContext();
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['email_Agent_Logs'],
-    queryFn: () => getEmailAgentLogs(selectedSubTaskId),
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({
-      queryKey: ['email_Agent_Logs'],
-    });
-  return { ...query, refetch };
-};
-
-async function getEmailAgentLogs(selectedSubTaskId: string) {
-  const { data, error } = await supabase
-    .from('scheduling-agent-chat-history')
-    .select()
-    .eq('sub_task_id', selectedSubTaskId);
-  if (error) throw Error(error.message);
-  else return data;
-}
-
-// phone log
-
-export const usePhoneAgentLog = () => {
-  const { selectedSubTaskId } = useTaskStatesContext();
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['phone_agent_logs'],
-    queryFn: () => getPhoneAgentLogs(selectedSubTaskId),
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({
-      queryKey: ['phone_agent_logs'],
-    });
-  return { ...query, refetch };
-};
-
-async function getPhoneAgentLogs(selectedSubTaskId: string) {
-  const { data, error } = await supabase
-    .from('scheduling-agent-chat-history')
-    .select()
-    .eq('sub_task_id', selectedSubTaskId);
-  if (error) throw Error(error.message);
-  else return data;
-}
-
-// phone log
-
+// schedule session list
 export const useScheduleSession = () => {
-  const { selectedSubTaskId } = useTaskStatesContext();
-  const { tasks } = useTasksAgentContext();
+  const { taskId } = useTaskStatesContext();
+  const { tasks } = useTasksContext();
 
-  const subTasks = tasks
-    .map((task) => task.sub_tasks.map((subTask) => subTask))
-    .flat(1);
-  let selectedSubTask = subTasks.find((item) => item.id === selectedSubTaskId);
-  // const selectedTask = tasks.find((item) => item.id === taskId);
+  const selectedTask = tasks.find((item) => item.id === taskId);
 
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['schedule_sessions'],
-    queryFn: () => getScheduleSessions(selectedSubTask.session_ids as string[]),
+    queryFn: () =>
+      getScheduleSessions(
+        selectedTask.session_ids.map((ele: any) => ele.id) as string[],
+      ),
   });
   const refetch = () =>
     queryClient.invalidateQueries({
@@ -377,6 +272,31 @@ async function getScheduleSessions(session_ids: string[]) {
   });
 
   return data;
+}
+
+// progress list
+export const useProgress = () => {
+  const { taskId } = useTaskStatesContext();
+
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_new_tasks_progress'],
+    queryFn: () => getTaskProgress(taskId),
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({
+      queryKey: ['get_new_tasks_progress'],
+    });
+  return { ...query, refetch };
+};
+
+async function getTaskProgress(taskId: string) {
+  const { data } = await supabase
+    .from('new_tasks_progress')
+    .select()
+    .eq('task_id', taskId);
+
+  return data as TasksAgentContextType['taskProgress'];
 }
 
 export function PhoneAgentIcon() {

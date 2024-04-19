@@ -1,119 +1,125 @@
-import { Task } from '@/devlink3';
-import { useTasksAgentContext } from '@/src/context/TaskContext/TaskContextProvider';
-import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
+/* eslint-disable security/detect-object-injection */
+import { capitalize } from 'lodash';
 
+import {
+  AvatarWithName,
+  ListCard,
+  TaskTable,
+  TaskTableJobCand,
+  TaskTableJobCard,
+} from '@/devlink3';
+import {
+  TasksAgentContextType,
+  useTasksContext,
+} from '@/src/context/TasksContextProvider/TasksContextProvider';
+
+import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
-import { EmailAgentId, PhoneAgentId } from '../utils';
-import AddTask from './AddTask';
-import TaskCardBox from './TasksCard';
+import { useTaskStatesContext } from '../TaskStatesContext';
+import AddNewTask from './AddNewTask';
+import FilterTasks from './FilterTasks';
+import GroupTaskCard from './GroupTaskCard';
+import TaskRow from './TaskRow';
 import ViewTaskDrawer from './ViewTask';
 
-export type TaskType = {
-  id: string;
-  name: string;
-  status: 'in_progress' | 'completed' | 'closed' | 'pending';
-  applications: {
-    id: string;
-    candidates: {
-      first_name: string;
-      last_name: string;
-    };
-  };
-  sub_tasks: {
-    name: string;
-    completion_date: string;
-    task_id: string;
-    agent: 'call' | 'email' | 'job' | null;
-    status: 'in_progress' | 'completed' | 'cancelled' | 'pending';
-    assignee: string;
-  }[];
-};
+function TaskBody({ byGroup }) {
+  const { tasks } = useTasksContext();
 
-function TaskBody() {
-  const { tasks, search, filter, handelSearch, handelFilter } =
-    useTasksAgentContext();
+  const { setShowAddNew, setSelectedApplication } = useTaskStatesContext();
+
+  const groupedTasks = tasks
+    .filter((ele) => ele.application_id)
+    .reduce((acc, task) => {
+      const { application_id, ...taskDetails } = task;
+      if (!acc[application_id]) {
+        acc[application_id] = { applications: {}, tasklist: [] };
+      }
+      acc[application_id].applications = task.applications;
+      acc[application_id].tasklist.push(taskDetails);
+      return acc;
+    }, {});
+
+  const formattedTasks = Object.values(groupedTasks) as {
+    applications: TasksAgentContextType['tasks'][number]['applications'];
+    tasklist: TasksAgentContextType['tasks'];
+  }[];
 
   return (
     <>
-      <AddTask />
       <ViewTaskDrawer />
-      <Task
-        slotSearchFilter={
-          <FilterHeader
-            search={{
-              value: search,
-              setValue: (e) => {
-                handelSearch(e);
+      <AddNewTask />
+      <ShowCode>
+        <ShowCode.When isTrue={!byGroup}>
+          <TaskTable
+            slotFilter={<FilterTasks />}
+            onClickNewTask={{
+              onClick: () => {
+                setShowAddNew(true);
               },
-              placeholder: 'Search by candidate\'s name or job title',
             }}
-            filters={[
-              {
-                type: 'filter',
-                name: 'State',
-                options: filter.status.options,
-                setValue: (val) => {
-                  handelFilter({
-                    ...filter,
-                    status: { ...filter.status, values: val },
-                  });
-                },
-                value: filter.status.values,
-              },
-              {
-                type: 'filter',
-                name: 'Assignee',
-                options: [
-                  { header: 'Agents', options: agentsDetails },
-                  { header: 'Members', options: filter.assignee.options },
-                ],
-                setValue: (val) => {
-                  handelFilter({
-                    ...filter,
-                    assignee: { ...filter.assignee, values: val },
-                  });
-                },
-                value: filter.assignee.values,
-              },
-              {
-                type: 'filter',
-                name: 'Job Title',
-                options: filter.jobTitle.options,
-                setValue: (val) => {
-                  handelFilter({
-                    ...filter,
-                    jobTitle: { ...filter.jobTitle, values: val },
-                  });
-                },
-                value: filter.jobTitle.values,
-              },
-            ]}
+            slotTaskTableCard={tasks.map((ele, i) => {
+              return <TaskRow task={ele} key={i} />;
+            })}
           />
-        }
-        slotTaskCard={
-          <ShowCode>
-            <ShowCode.When isTrue={!!tasks}>
-              {tasks &&
-                tasks.map((item, index) => {
-                  return <TaskCardBox task={item} index={index} key={index} />;
-                })}
-            </ShowCode.When>
-          </ShowCode>
-        }
-      />
+        </ShowCode.When>
+        <ShowCode.When isTrue={byGroup}>
+          <TaskTableJobCand
+            slotFilter={<FilterTasks />}
+            slotTaskJobCard={formattedTasks.map((item, i) => {
+              return (
+                <TaskTableJobCard
+                  textRole={item.applications.public_jobs.job_title}
+                  slotAvatarWithName={
+                    <>
+                      <ListCard
+                        isAvatarWithNameVisible={true}
+                        isListVisible={false}
+                        slotAvatarWithName={
+                          item?.applications && (
+                            <AvatarWithName
+                              slotAvatar={
+                                <MuiAvatar
+                                  height={'25px'}
+                                  width={'25px'}
+                                  src={item?.applications?.candidates.avatar}
+                                  variant='circular'
+                                  fontSize='14px'
+                                  level={capitalize(
+                                    item?.applications.candidates?.first_name +
+                                      ' ' +
+                                      item?.applications.candidates?.last_name,
+                                  )}
+                                />
+                              }
+                              textName={capitalize(
+                                item?.applications.candidates?.first_name +
+                                  ' ' +
+                                  item?.applications.candidates?.last_name,
+                              )}
+                            />
+                          )
+                        }
+                      />
+                    </>
+                  }
+                  key={i}
+                  slotTaskTableJobCard={item.tasklist.map((ele, i) => {
+                    return <GroupTaskCard key={i} task={ele} />;
+                  })}
+                  onClickNewTask={{
+                    onClick: () => {
+                      setShowAddNew(true);
+                      setSelectedApplication(item.applications);
+                    },
+                  }}
+                />
+              );
+            })}
+          />
+        </ShowCode.When>
+      </ShowCode>
     </>
   );
 }
 
 export default TaskBody;
-
-const agentsDetails = [
-  {
-    id: EmailAgentId,
-    label: 'Email',
-  },
-  {
-    id: PhoneAgentId,
-    label: 'Phone',
-  },
-];

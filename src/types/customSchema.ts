@@ -26,49 +26,46 @@ export type CustomDatabase = {
                 };
                 Relationships: Database['public']['Tables'][Table]['Relationships'];
               }
-            : Table extends 'tasks'
+            : Table extends 'new_tasks'
               ? {
                   Row: Omit<
                     Database['public']['Tables'][Table]['Row'],
-                    'created_by'
+                    'schedule_date_range'
                   > & {
-                    created_by: task_created_by;
+                    schedule_date_range: new_task_schedule_date_range;
                   };
                   Insert: Omit<
                     Database['public']['Tables'][Table]['Insert'],
-                    'created_by'
+                    'schedule_date_range'
                   > & {
-                    created_by?: task_created_by;
+                    schedule_date_range?: new_task_schedule_date_range;
                   };
                   Update: Omit<
                     Database['public']['Tables'][Table]['Update'],
-                    'created_by'
+                    'schedule_date_range'
                   > & {
-                    created_by?: task_created_by;
+                    schedule_date_range?: new_task_schedule_date_range;
                   };
                   Relationships: Database['public']['Tables'][Table]['Relationships'];
                 }
-              : Table extends 'sub_task_progress'
+              : Table extends 'new_tasks_progress'
                 ? {
                     Row: Omit<
                       Database['public']['Tables'][Table]['Row'],
-                      'created_by' | 'jsonb_data'
+                      'jsonb_data'
                     > & {
-                      created_by: task_created_by;
                       jsonb_data: sub_task_log_jsonb_data;
                     };
                     Insert: Omit<
                       Database['public']['Tables'][Table]['Insert'],
-                      'created_by' | 'jsonb_data'
+                      'jsonb_data'
                     > & {
-                      created_by?: task_created_by;
                       jsonb_data?: sub_task_log_jsonb_data;
                     };
                     Update: Omit<
                       Database['public']['Tables'][Table]['Update'],
-                      'created_by' | 'jsonb_data'
+                      'jsonb_data'
                     > & {
-                      created_by?: task_created_by;
                       jsonb_data?: sub_task_log_jsonb_data;
                     };
                     Relationships: Database['public']['Tables'][Table]['Relationships'];
@@ -96,9 +93,9 @@ type interview_meeting_user_feedback = {
   objective: string;
 };
 
-type task_created_by = {
-  id?: string;
-  name: 'system' | string;
+type new_task_schedule_date_range = {
+  start_date: string;
+  end_date: string;
 };
 type sub_task_log_jsonb_data = {
   [key: string]: any;

@@ -1,6 +1,8 @@
 .div-block-1338 {
+  position: relative;
+
   display: flex;
-  width: 500px;
+  width: 600px;
   height: 100vh;
   padding: 16px;
   flex-direction: column;
@@ -32,6 +34,20 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .div-block-1344 {
@@ -69,4 +85,12 @@
 
 .text-grey_600.text-underline {
   text-decoration: underline;
+}
+
+.text-grey_600.width-80px {
+  width: 80px;
+}
+
+@media screen and (min-width: 1440px) {
+
 }

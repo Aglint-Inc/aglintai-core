@@ -1,0 +1,11 @@
+import * as React from "react";
+import * as Types from "./types";
+
+declare function TaskTable(props: {
+  as?: React.ElementType;
+  slotTaskTableCard?: Types.Devlink.Slot;
+  onClickNewTask?: Types.Devlink.RuntimeProps;
+  slotNewTaskCard?: Types.Devlink.Slot;
+  isNewTaskCardVisible?: Types.Visibility.VisibilityConditions;
+  slotFilter?: Types.Devlink.Slot;
+}): React.JSX.Element;

@@ -134,7 +134,7 @@ export const agentTrigger = async ({
   // eslint-disable-next-line no-unused-vars
   sessionsWithPlan,
   filterJsonId,
-  sub_task_id,
+  task_id,
   recruiter_user_name,
   candidate_name,
   company_name,
@@ -153,7 +153,7 @@ export const agentTrigger = async ({
           filter_json_id: filterJsonId,
           interviewer_name: recruiter_user_name,
           organizer_time_zone: dayjs.tz.guess(),
-          task_id: sub_task_id,
+          task_id: task_id,
         } as InitAgentBodyParams,
       );
     } else if (type === 'phone_agent') {
@@ -175,7 +175,7 @@ export const agentTrigger = async ({
           filter_json_id: filterJsonId,
           cand_email: rec_user_email,
           // cand_email: sessionsWithPlan.application.candidates.email,
-          sub_task_id: sub_task_id,
+          task_id: task_id,
           // cand_time_zone: 'America/Los_Angeles',
           cand_time_zone: dayjs.tz.guess(),
         },

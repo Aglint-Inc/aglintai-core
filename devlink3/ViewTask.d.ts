@@ -6,4 +6,5 @@ declare function ViewTask(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   slotTaskCard?: Types.Devlink.Slot;
   slotTaskProgress?: Types.Devlink.Slot;
+  textTaskDetail?: React.ReactNode;
 }): React.JSX.Element;

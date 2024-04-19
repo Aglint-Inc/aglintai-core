@@ -271,7 +271,7 @@ export const scheduleWithAgent = async ({
   application_id,
   dateRange,
   recruiter_id,
-  sub_task_id,
+  task_id,
   recruiter_user_name,
   candidate_name = 'chinmai',
   company_name = 'aglint',
@@ -288,7 +288,7 @@ export const scheduleWithAgent = async ({
     end_date: string | null;
   };
   recruiter_id: string;
-  sub_task_id: string;
+  task_id: string;
   recruiter_user_name: string;
   candidate_name?: string;
   company_name?: string;
@@ -352,13 +352,13 @@ export const scheduleWithAgent = async ({
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        if (sub_task_id) {
+        if (task_id) {
           const { error: eroorSubTasks } = await supabase
             .from('sub_tasks')
             .update({
               session_ids: createCloneRes.session_ids,
             })
-            .eq('id', sub_task_id);
+            .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
         }
 
@@ -366,7 +366,7 @@ export const scheduleWithAgent = async ({
           type,
           sessionsWithPlan,
           filterJsonId: filterJson[0].id,
-          sub_task_id,
+          task_id,
           recruiter_user_name,
           candidate_name,
           company_name,
@@ -435,7 +435,7 @@ export const scheduleWithAgent = async ({
           type,
           sessionsWithPlan,
           filterJsonId: filterJson[0].id,
-          sub_task_id,
+          task_id,
           recruiter_user_name,
           candidate_name,
           company_name,

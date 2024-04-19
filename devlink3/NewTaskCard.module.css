@@ -1,0 +1,37 @@
+.div-block-1450 {
+  position: relative;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 3% 15% 82%;
+  grid-template-rows: auto;
+}
+
+.checkbox-wrap-task {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-block-1435 {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  padding: 16px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.div-block-1449 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: rgba(243, 244, 246, 0.5);
+}
+
+#w-node-_3f7256b9-b895-e8d9-d637-f04a2f0b39b0-2f0b39ac {
+}
