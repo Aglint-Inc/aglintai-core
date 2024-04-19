@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       interviewer_name,
       cand_time_zone = 'Asia/colombo',
       organizer_time_zone = 'Asia/colombo',
-      sub_task_id,
+      task_id,
     } = req.body as InitAgentBodyParams;
 
     if (
@@ -103,7 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         company_id: cand_details.company_id,
         filter_json_id: filter_json_id,
         time_zone: cand_details.time_zone,
-        sub_task_id: sub_task_id ?? undefined,
+        task_id: task_id ?? undefined,
       }),
     );
     let headers;
@@ -116,21 +116,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       job_role: cand_details.job_role,
     });
 
-    if (sub_task_id) {
+    if (task_id) {
       supabaseWrap(
         await supabaseAdmin
-          .from('sub_tasks')
+          .from('new_tasks')
           .update({
             status: 'in_progress',
           })
-          .eq('id', sub_task_id),
+          .eq('id', task_id),
       );
     }
 
     await log_task_progress({
       agent_type: 'email_agent',
       log_msg: 'Sent interview schedule email to {candidate}',
-      sub_task_id: sub_task_id,
+      task_id: task_id,
       candidate_name: cand_details.candidate_name,
       transcript: {
         message: initMailBody,

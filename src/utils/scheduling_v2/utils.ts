@@ -120,14 +120,14 @@ export const getNextWorkingDay = (
 
 // email agent
 export const log_task_progress = async ({
-  sub_task_id,
+  task_id,
   log_msg,
   transcript,
   candidate_name,
   created_by,
   progress_type = 'standard',
 }: {
-  sub_task_id: string | null;
+  task_id: string | null;
   log_msg: string;
   transcript?: { message: string };
   agent_type?: 'email_agent' | 'phone_agent';
@@ -138,7 +138,7 @@ export const log_task_progress = async ({
   };
   progress_type: SubTaskProgress['progress_type'];
 }) => {
-  if (!sub_task_id) return;
+  if (!task_id) return;
   if (candidate_name) {
     log_msg = log_msg.replace(
       '{candidate}',
@@ -148,13 +148,13 @@ export const log_task_progress = async ({
   try {
     supabaseWrap(
       await supabaseAdmin
-        .from('sub_task_progress')
+        .from('new_tasks_progress')
         .insert({
           created_by: created_by,
           title: log_msg,
           jsonb_data: transcript ?? null,
-          sub_task_id: sub_task_id,
           progress_type: progress_type,
+          task_id: task_id,
         })
         .select(),
     );

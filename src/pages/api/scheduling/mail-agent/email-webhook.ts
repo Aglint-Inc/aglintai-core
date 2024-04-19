@@ -54,11 +54,12 @@ type AgentPayloadType = {
     candidate_time_zone: string | null;
     interv_plan_summary: string;
     interview_sessions: InterviewSession[];
-    sub_task_id: string;
+    task_id: string;
     candidate_id: string;
     organizer_name: string;
     interview_meetings: InterviewMeetingTypeDb[];
     meeting_summary: string;
+    job_description: string;
   };
 };
 
@@ -93,7 +94,7 @@ export default async function handler(
 
     await log_task_progress({
       log_msg: 'Candidate Agent chat',
-      sub_task_id: agent_payload.payload.sub_task_id,
+      task_id: agent_payload.payload.task_id,
       transcript: { message: cleaned_email_body },
       created_by: {
         id: agent_payload.payload.candidate_id,
@@ -120,7 +121,7 @@ export default async function handler(
 
     await log_task_progress({
       log_msg: 'Candidate Agent chat',
-      sub_task_id: agent_payload.payload.sub_task_id,
+      task_id: agent_payload.payload.task_id,
       transcript: {
         message: data.new_history[data.new_history.length - 1]?.value,
       },
@@ -159,7 +160,7 @@ export const fetchCandidateDetails = async (
     await supabaseAdmin
       .from('scheduling-agent-chat-history')
       .select(
-        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,recruiter(scheduling_settings)), candidates(*))))',
+        '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter(scheduling_settings)), candidates(*))))',
       )
       .eq('candidate_email', cand_email),
   ) as CandidateScheduleDetails[];
@@ -250,13 +251,14 @@ export const fetchCandidateDetails = async (
       application_id: cand_rec.application_id,
       new_cand_msg: cand_email_body,
       interview_sessions: sessions.filter((s) => s.session_type !== 'debrief'),
-      sub_task_id: cand_rec.sub_task_id,
+      task_id: cand_rec.task_id,
       candidate_id:
         cand_rec.interview_filter_json.interview_schedule.applications
           .candidates.id,
       organizer_name: filter_json.organizer_name ?? job.company,
       interview_meetings: meetings,
       meeting_summary,
+      job_description: job.description,
     },
   };
 
@@ -276,7 +278,12 @@ type CandidateScheduleDetails = ScheduleAgentChatHistoryTypeDB & {
         >;
         public_jobs: Pick<
           PublicJobsType,
-          'recruiter_id' | 'company' | 'id' | 'logo' | 'job_title'
+          | 'recruiter_id'
+          | 'company'
+          | 'id'
+          | 'logo'
+          | 'job_title'
+          | 'description'
         > & {
           recruiter: Pick<RecruiterType, 'scheduling_settings'>;
         };

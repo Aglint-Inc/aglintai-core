@@ -353,6 +353,7 @@ export type Database = {
           assessment_id: string | null
           candidate_file_id: string | null
           candidate_id: string | null
+          converted_at: string | null
           created_at: string
           id: string
           is_resume_fetching: boolean
@@ -371,6 +372,7 @@ export type Database = {
           assessment_id?: string | null
           candidate_file_id?: string | null
           candidate_id?: string | null
+          converted_at?: string | null
           created_at?: string
           id?: string
           is_resume_fetching?: boolean
@@ -389,6 +391,7 @@ export type Database = {
           assessment_id?: string | null
           candidate_file_id?: string | null
           candidate_id?: string | null
+          converted_at?: string | null
           created_at?: string
           id?: string
           is_resume_fetching?: boolean
@@ -1705,6 +1708,7 @@ export type Database = {
       }
       new_tasks: {
         Row: {
+          agent: Database["public"]["Enums"]["task_agent_type"] | null
           application_id: string | null
           assignee: string[]
           created_at: string
@@ -1717,9 +1721,11 @@ export type Database = {
           session_ids: Json[] | null
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
+          task_ended: boolean
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Insert: {
+          agent?: Database["public"]["Enums"]["task_agent_type"] | null
           application_id?: string | null
           assignee: string[]
           created_at?: string
@@ -1732,9 +1738,11 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
+          task_ended?: boolean
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Update: {
+          agent?: Database["public"]["Enums"]["task_agent_type"] | null
           application_id?: string | null
           assignee?: string[]
           created_at?: string
@@ -1747,6 +1755,7 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
+          task_ended?: boolean
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [
@@ -2485,7 +2494,7 @@ export type Database = {
           created_at: string
           filter_json_id: string | null
           job_id: string
-          sub_task_id: string | null
+          task_id: string | null
           time_zone: string | null
         }
         Insert: {
@@ -2496,7 +2505,7 @@ export type Database = {
           created_at?: string
           filter_json_id?: string | null
           job_id: string
-          sub_task_id?: string | null
+          task_id?: string | null
           time_zone?: string | null
         }
         Update: {
@@ -2507,7 +2516,7 @@ export type Database = {
           created_at?: string
           filter_json_id?: string | null
           job_id?: string
-          sub_task_id?: string | null
+          task_id?: string | null
           time_zone?: string | null
         }
         Relationships: [
@@ -2540,10 +2549,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_scheduling-agent-chat-history_sub_task_id_fkey"
-            columns: ["sub_task_id"]
+            foreignKeyName: "public_scheduling-agent-chat-history_task_id_fkey"
+            columns: ["task_id"]
             isOneToOne: false
-            referencedRelation: "sub_tasks"
+            referencedRelation: "new_tasks"
             referencedColumns: ["id"]
           },
         ]
@@ -3316,6 +3325,27 @@ export type Database = {
         }
         Returns: Json
       }
+      get_interview_leaderboard: {
+        Args: {
+          recruiter_id: string
+          day_count: number
+        }
+        Returns: {
+          user_id: string
+          first_name: string
+          last_name: string
+          profile_image: string
+          user_position: string
+          duration: number
+          interviews: number
+        }[]
+      }
+      get_interview_meeting_status_count: {
+        Args: {
+          recruiter_id: string
+        }
+        Returns: Json[]
+      }
       get_interview_modules: {
         Args: {
           rec_id: string
@@ -3461,6 +3491,15 @@ export type Database = {
           result_created_at: string
           assessment_result: Json[]
           phonescreening_templateid: string
+        }[]
+      }
+      get_test_interview: {
+        Args: {
+          user_test_id: string
+        }
+        Returns: {
+          rec_user: Json
+          interview_session_meetings: Json
         }[]
       }
       getallresumematches: {
@@ -4094,7 +4133,7 @@ export type Database = {
         | "in_progress"
         | "failed"
         | "closed"
-      task_agent_type: "call" | "email" | "job"
+      task_agent_type: "phone" | "email" | "job"
       task_status:
         | "pending"
         | "in_progress"

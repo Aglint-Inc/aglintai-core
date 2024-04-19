@@ -153,7 +153,7 @@ export const agentTrigger = async ({
           filter_json_id: filterJsonId,
           interviewer_name: recruiter_user_name,
           organizer_time_zone: dayjs.tz.guess(),
-          sub_task_id: sub_task_id,
+          task_id: sub_task_id,
         } as InitAgentBodyParams,
       );
     } else if (type === 'phone_agent') {

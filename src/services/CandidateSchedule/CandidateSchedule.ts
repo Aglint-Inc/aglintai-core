@@ -10,8 +10,6 @@ import {
   holidayType,
   schedulingSettingType,
 } from '@/src/types/scheduleTypes/scheduleSetting';
-import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
-import { getFullName } from '@/src/utils/jsonResume';
 import {
   CompServiceKeyCred,
   InterDetailsType,
@@ -19,7 +17,9 @@ import {
   IntervMeta,
   TimeDurationDayjsType,
   TimeDurationType,
-} from '@/src/utils/scheduling_v2/types';
+} from '@/src/types/scheduleTypes/types2';
+import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
+import { getFullName } from '@/src/utils/jsonResume';
 
 import {
   InterviewSessionApiType,
