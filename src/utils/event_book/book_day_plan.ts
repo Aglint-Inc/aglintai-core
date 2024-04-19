@@ -160,7 +160,12 @@ export const update_meetings_info = async ({
     } else {
       meeting_link = cal_event.hangoutLink;
     }
-    // console.log(meeting_link);
+    const [meeting] = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session')
+        .select('meeting_id')
+        .eq('id', session_id),
+    );
     return supabaseWrap(
       await supabaseAdmin
         .from('interview_meeting')
@@ -172,7 +177,7 @@ export const update_meetings_info = async ({
           status: 'confirmed',
           confirmed_date: dayjs().toISOString(),
         })
-        .eq('session_id', session_id)
+        .eq('id', meeting.meeting_id)
         .select(),
     );
   };
