@@ -18,7 +18,7 @@
 }
 
 .div-block-1434.height-40.job-cand {
-  grid-template-columns: 3% 15% 67% 15%;
+  grid-template-columns: 3% 15% 59% 8% 15%;
 }
 
 .div-block-1434.height-53 {
@@ -28,7 +28,7 @@
 }
 
 .div-block-1434.height-53.job-cand {
-  grid-template-columns: 3% 15% 67% 15%;
+  grid-template-columns: 3% 15% 59% 8% 15%;
   cursor: pointer;
 }
 
@@ -59,6 +59,11 @@
   align-items: center;
 }
 
+.div-block-1435.gap-8 {
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
 .div-block-1449 {
   position: absolute;
   left: 0%;
@@ -76,6 +81,8 @@
 #w-node-f9fb816c-f256-bc7d-a704-0fc71d499d70-1d499d6e {
 }
 #w-node-f9fb816c-f256-bc7d-a704-0fc71d499d71-1d499d6e {
+}
+#w-node-_9125883b-4bc5-805a-822c-4bac0484cce7-1d499d6e {
 }
 #w-node-f9fb816c-f256-bc7d-a704-0fc71d499d74-1d499d6e {
 }

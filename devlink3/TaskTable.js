@@ -77,7 +77,7 @@ export function TaskTable({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
+              className={_utils.cx(_styles, "text-grey-500", "hide")}
               tag="div"
             >
               {"Priority"}
@@ -99,7 +99,7 @@ export function TaskTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
+            className={_utils.cx(_styles, "div-block-1435", "gap-8")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ed1-401c4ec4"

@@ -3,9 +3,11 @@ import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
+import { EmptyState } from '@/devlink2';
 import { ListCard, ListPop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useJobs } from '@/src/context/JobsContext';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 function JobList({
   selectedJob,
@@ -41,7 +43,7 @@ function JobList({
       >
         <ShowCode>
           <ShowCode.When isTrue={!!selectedJob?.id}>
-            <ListCard textList={capitalize(selectedJob?.name)} />
+            <ListCard textList={capitalizeAll(selectedJob?.name)} />
           </ShowCode.When>
           <ShowCode.Else>
             <Typography variant='caption' fontSize={'14px'}>
@@ -70,27 +72,36 @@ function JobList({
         }}
       >
         <ListPop
-          slotListCard={jobs.map((ele, i) => {
-            return (
-              <Stack
-                key={i}
-                p={'4px'}
-                width={'100%'}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    bgcolor: 'grey.100',
-                  },
-                }}
-                onClick={() => {
-                  setSelectedJob({ name: ele.job_title, id: ele.id });
-                  handleClose();
-                }}
-              >
-                <ListCard textList={capitalize(ele.job_title)} />
-              </Stack>
-            );
-          })}
+          slotListCard={
+            <ShowCode>
+              <ShowCode.When isTrue={!!jobs.length}>
+                {jobs.map((ele, i) => {
+                  return (
+                    <Stack
+                      key={i}
+                      p={'4px'}
+                      width={'100%'}
+                      sx={{
+                        cursor: 'pointer',
+                        '&:hover': {
+                          bgcolor: 'grey.100',
+                        },
+                      }}
+                      onClick={() => {
+                        setSelectedJob({ name: ele.job_title, id: ele.id });
+                        handleClose();
+                      }}
+                    >
+                      <ListCard textList={capitalizeAll(ele.job_title)} />
+                    </Stack>
+                  );
+                })}
+              </ShowCode.When>
+              <ShowCode.Else>
+                <EmptyState textDescription='Jobs are not empty!' />
+              </ShowCode.Else>
+            </ShowCode>
+          }
         />
       </Popover>
     </>

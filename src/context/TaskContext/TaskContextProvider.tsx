@@ -300,7 +300,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       if (assigner) {
         handelAddTaskLog({
           sub_task_id: taskData.id,
-          title: `Task created and assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
+          title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
           created_by: {
             name: recruiterUser.first_name,
             id: recruiterUser.user_id,

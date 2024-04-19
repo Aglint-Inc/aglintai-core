@@ -9,4 +9,5 @@ declare function TaskTableJobSubCard(props: {
   slotAssignedTo?: Types.Devlink.Slot;
   isCardActive?: Types.Visibility.VisibilityConditions;
   onClickCard?: Types.Devlink.RuntimeProps;
+  slotPriorityPill?: Types.Devlink.Slot;
 }): React.JSX.Element;

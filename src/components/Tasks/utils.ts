@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
@@ -31,33 +32,32 @@ export async function extractDataFromText(
   recruiterUserId: string,
 ) {
   const { data } = await axios.post('/api/ai/queryToJson', {
+    // As an AI, your task is to translate recruiters' scheduling requests into the JSON format shown below. When generating schedule times, ensure all appointments are set on business days (Monday through Friday). Here is an example request: "Schedule a first-round interview for John Doe on the next available Friday afternoon." Use this information to create a JSON object that organizes the interview details appropriately, including whether the scheduling should be coordinated via email or phone call.
     prompts: [
       {
         role: 'system',
         content: `
-          ${text}
+        query is >>> ${text} <<<
+        
           set this data to json object
           {
             "name":"extract task name",
             "type":'enum("schedule")',
-            "start_date":"if(start_date) extract the date and time ( MM-DD-YYYY HH:mm:ss ) else current date",
-            "due_date":"if(due_date) extract the date and time ( MM-DD-YYYY HH:mm:ss ) else current date",
-            "schedule_date_range":{
-                "start_date":"if(schedule_start_date) extract the date and time ( MM-DD-YYYY HH:mm:ss ) else  current date",
-                "end_date":"if(schedule_end_date) extract the date and time ( MM-DD-YYYY HH:mm:ss ) else  current date"
-            },
-            "agent":"enum('call'|'email'|'phone'|'job'|null)",
+            "start_date":"'extract the date and time ( MM-DD-YYYY HH:mm:ss )' || 'current date'
+            ",
+            "end_date":" 'extract the date and time ( MM-DD-YYYY HH:mm:ss )' || 'current date'
+            ",
             "assignee":"
-            if(agent==='phone' || agent==='call')
+            if(query.includes('phone') || query.includes('call'))
             return ${PhoneAgentId}
-            else if(agent==='email') 
+            else if(query.includes('email')) 
             return ${EmailAgentId}
             else ${recruiterUserId}
             ",
           } 
   
           Reference details:
-           today date is ${new Date()}
+           today date is ${dayjs().toString()}
           `,
       },
     ],

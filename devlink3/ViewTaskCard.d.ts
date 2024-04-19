@@ -33,4 +33,7 @@ declare function ViewTaskCard(props: {
   isStatusVisible?: Types.Visibility.VisibilityConditions;
   textWhenToCall?: React.ReactNode;
   slotWhentoCallIcon?: Types.Devlink.Slot;
+  slotPriorityPill?: Types.Devlink.Slot;
+  onClickPriority?: Types.Devlink.RuntimeProps;
+  isPriorityVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

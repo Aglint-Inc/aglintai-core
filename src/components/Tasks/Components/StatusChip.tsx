@@ -1,9 +1,7 @@
+import { Stack } from '@mui/material';
 
 import { TaskStatus } from '@/devlink3';
 import { CustomDatabase } from '@/src/types/customSchema';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
-
-import { ShowCode } from '../../Common/ShowCode';
 
 function StatusChip({
   status,
@@ -11,56 +9,64 @@ function StatusChip({
   status: CustomDatabase['public']['Enums']['task_status'];
 }) {
   return (
-    <ShowCode>
-      <ShowCode.When isTrue={status === 'not_started'}>
-        <TaskStatus
-          bgColorProps={{
-            style: {
-              backgroundColor: '#FFF7ED',
-              color: '#000000',
-              fontWeight: 400,
-            },
-          }}
-          textStatus={capitalizeAll(status.split('_').join(' '))}
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={status === 'completed'}>
-        <TaskStatus
-          bgColorProps={{
-            style: {
-              backgroundColor: '#D1E8DF',
-              color: '#000000',
-              fontWeight: 400,
-            },
-          }}
-          textStatus={capitalizeAll(status)}
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={status === 'in_progress'}>
-        <TaskStatus
-          bgColorProps={{
-            style: {
-              backgroundColor: '#CEE2F2',
-              color: '#000000',
-              fontWeight: 400,
-            },
-          }}
-          textStatus={capitalizeAll(status.split('_').join(' '))}
-        />
-      </ShowCode.When>
-      <ShowCode.When isTrue={status === 'closed'}>
-        <TaskStatus
-          bgColorProps={{
-            style: {
-              backgroundColor: '#E9EBED',
-              color: '#000000',
-              fontWeight: 400,
-            },
-          }}
-          textStatus={capitalizeAll(status)}
-        />
-      </ShowCode.When>
-    </ShowCode>
+    <Stack direction={'column'}>
+      {[
+        {
+          id: 'not_started',
+          backgroundColor: '#e9ebed',
+          label: 'Not Started',
+          color: '#49545c',
+        },
+        {
+          id: 'in_progress',
+          backgroundColor: '#CEE2F2',
+          label: 'In Progress',
+          color: '#337FBD',
+        },
+        {
+          id: 'completed',
+          backgroundColor: '#D1E8DF',
+          label: 'Completed',
+          color: '#228F67',
+        },
+        {
+          id: 'closed',
+          backgroundColor: '#f5d5d8',
+          label: 'Closed',
+          color: '#CC3340',
+        },
+      ].map(
+        (
+          {
+            backgroundColor,
+            id,
+            label,
+            color,
+          }: {
+            backgroundColor: string;
+            id: CustomDatabase['public']['Enums']['task_status'];
+            label: string;
+            color: string;
+          },
+          i,
+        ) => {
+          if (id === status)
+            return (
+              <TaskStatus
+                bgColorProps={{
+                  style: {
+                    backgroundColor,
+                    color,
+                    fontWeight: 400,
+                  },
+                }}
+                key={i}
+                textStatus={label}
+              />
+            );
+        },
+      )}
+    </Stack>
   );
 }
 

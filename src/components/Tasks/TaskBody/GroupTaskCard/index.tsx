@@ -1,4 +1,5 @@
 import { Checkbox, Stack } from '@mui/material';
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -58,7 +59,7 @@ function GroupTaskCard({
             setSelectedStatus={setSelectedStatus}
           />
         }
-        textTask={task.name}
+        textTask={capitalize(task.name)}
         slotCheckbox={
           <Stack
             className='checkboxClass'

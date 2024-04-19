@@ -59,30 +59,40 @@ function SelectStatus({
           {[
             {
               status: 'not_started',
-              backgroundColor: '#FFF7ED',
+              backgroundColor: '#e9ebed',
               label: 'Not Started',
+              color: '#49545c',
             },
             {
               status: 'in_progress',
               backgroundColor: '#CEE2F2',
-              label: 'in progress',
+              label: 'In Progress',
+              color: '#337FBD',
             },
             {
               status: 'completed',
               backgroundColor: '#D1E8DF',
               label: 'completed',
+              color: '#228F67',
             },
-            { status: 'closed', backgroundColor: '#E9EBED', label: 'closed' },
+            {
+              status: 'closed',
+              backgroundColor: '#f5d5d8',
+              label: 'closed',
+              color: '#CC3340',
+            },
           ].map(
             (
               {
                 backgroundColor,
                 status,
                 label,
+                color,
               }: {
                 backgroundColor: string;
                 status: CustomDatabase['public']['Enums']['task_status'];
                 label: string;
+                color: string;
               },
               i,
             ) => {
@@ -100,7 +110,7 @@ function SelectStatus({
                       bgColorProps={{
                         style: {
                           backgroundColor,
-                          color: '#000000',
+                          color,
                           fontWeight: 400,
                         },
                       }}

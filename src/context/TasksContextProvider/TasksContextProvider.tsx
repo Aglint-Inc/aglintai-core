@@ -273,7 +273,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
       if (assigner) {
         await handelAddTaskProgress({
           task_id: taskData.id,
-          title: `Task created and assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
+          title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
           created_by: {
             name: recruiterUser.first_name,
             id: recruiterUser.user_id,
@@ -567,7 +567,11 @@ const createTaskProgress = (
     .from('new_tasks_progress')
     .insert({ ...data })
     .select()
+    .order('created_at', {
+      ascending: true,
+    })
     .single()
+
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
       return data;

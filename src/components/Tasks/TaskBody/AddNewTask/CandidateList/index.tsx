@@ -3,11 +3,11 @@ import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
-import { PanelMemberPill } from '@/devlink2';
+import { EmptyState } from '@/devlink2';
 import { AvatarWithName, ListCard, ListPop } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { useJobs } from '@/src/context/JobsContext';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { JobCandidatesType } from '../../../utils';
 
@@ -58,14 +58,14 @@ function CandidateList({
                         src={selectedCandidate?.candidates.avatar}
                         variant='circular'
                         fontSize='14px'
-                        level={capitalize(
+                        level={capitalizeAll(
                           selectedCandidate.candidates?.first_name +
                             ' ' +
                             selectedCandidate.candidates?.last_name,
                         )}
                       />
                     }
-                    textName={capitalize(
+                    textName={capitalizeAll(
                       selectedCandidate.candidates?.first_name +
                         ' ' +
                         selectedCandidate.candidates?.last_name,
@@ -135,14 +135,14 @@ function CandidateList({
                                   src={ele?.candidates.avatar}
                                   variant='circular'
                                   fontSize='14px'
-                                  level={capitalize(
+                                  level={capitalizeAll(
                                     ele.candidates?.first_name +
                                       ' ' +
                                       ele.candidates?.last_name,
                                   )}
                                 />
                               }
-                              textName={capitalize(
+                              textName={capitalizeAll(
                                 ele.candidates?.first_name +
                                   ' ' +
                                   ele.candidates?.last_name,
@@ -154,7 +154,9 @@ function CandidateList({
                     );
                   })}
               </ShowCode.When>
-              <ShowCode.Else>Candidate are not available!</ShowCode.Else>
+              <ShowCode.Else>
+                <EmptyState textDescription='Candidate are not available!' />
+              </ShowCode.Else>
             </ShowCode>
           }
         />

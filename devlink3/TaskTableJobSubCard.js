@@ -13,6 +13,7 @@ export function TaskTableJobSubCard({
   slotAssignedTo,
   isCardActive = false,
   onClickCard = {},
+  slotPriorityPill,
 }) {
   return (
     <_Component
@@ -63,6 +64,16 @@ export function TaskTableJobSubCard({
         >
           {textTask}
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1435")}
+        id={_utils.cx(
+          _styles,
+          "w-node-_9125883b-4bc5-805a-822c-4bac0484cce7-1d499d6e"
+        )}
+        tag="div"
+      >
+        {slotPriorityPill}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1435")}

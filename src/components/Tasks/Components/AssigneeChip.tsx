@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { capitalize } from 'lodash';
 
 import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
@@ -48,14 +48,14 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
                       src={assigneeDetails.profile_image}
                       variant='circular'
                       fontSize='14px'
-                      level={capitalize(
+                      level={capitalizeAll(
                         assigneeDetails?.first_name +
                           ' ' +
                           assigneeDetails?.last_name,
                       )}
                     />
                   }
-                  textName={capitalize(
+                  textName={capitalizeAll(
                     assigneeDetails?.first_name +
                       ' ' +
                       assigneeDetails?.last_name,

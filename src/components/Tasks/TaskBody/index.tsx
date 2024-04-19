@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-object-injection */
-import { capitalize } from 'lodash';
 
 import {
   AvatarWithName,
@@ -12,6 +11,7 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
@@ -68,7 +68,9 @@ function TaskBody({ byGroup }) {
             slotTaskJobCard={formattedTasks.map((item, i) => {
               return (
                 <TaskTableJobCard
-                  textRole={item.applications.public_jobs.job_title}
+                  textRole={capitalizeAll(
+                    item.applications.public_jobs.job_title,
+                  )}
                   slotAvatarWithName={
                     <>
                       <ListCard
@@ -84,14 +86,14 @@ function TaskBody({ byGroup }) {
                                   src={item?.applications?.candidates.avatar}
                                   variant='circular'
                                   fontSize='14px'
-                                  level={capitalize(
+                                  level={capitalizeAll(
                                     item?.applications.candidates?.first_name +
                                       ' ' +
                                       item?.applications.candidates?.last_name,
                                   )}
                                 />
                               }
-                              textName={capitalize(
+                              textName={capitalizeAll(
                                 item?.applications.candidates?.first_name +
                                   ' ' +
                                   item?.applications.candidates?.last_name,

@@ -11,6 +11,7 @@ import {
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
 import SelectStatus from '../../Components/SelectStatus';
@@ -49,7 +50,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             setTaskId(task.id);
           },
         }}
-        textTask={task.name}
+        textTask={capitalize(task.name)}
         //   slotAvatarWithName={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotAssignedToCard={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotCandidate={
@@ -68,14 +69,14 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                           src={task?.applications?.candidates.avatar}
                           variant='circular'
                           fontSize='14px'
-                          level={capitalize(
+                          level={capitalizeAll(
                             task?.applications.candidates?.first_name +
                               ' ' +
                               task?.applications.candidates?.last_name,
                           )}
                         />
                       }
-                      textName={capitalize(
+                      textName={capitalizeAll(
                         task?.applications.candidates?.first_name +
                           ' ' +
                           task?.applications.candidates?.last_name,

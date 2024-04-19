@@ -3,11 +3,11 @@ import React from 'react';
 
 import Loader from '@/src/components/Common/Loader';
 
-function DynamicLoader() {
+function DynamicLoader({ height = '100%' }: { height?: string }) {
   return (
     <Stack
       width={'100%'}
-      height={'100%'}
+      height={height}
       justifyContent={'center'}
       alignItems={'center'}
       position={'absolute'}

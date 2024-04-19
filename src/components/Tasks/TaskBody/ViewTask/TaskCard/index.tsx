@@ -14,6 +14,7 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../../Components/AssigneeChip';
 import StatusChip from '../../../Components/StatusChip';
@@ -81,7 +82,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotType={
           <InterviewTaskPill textInterviewName={capitalize(task.type)} />
         }
-        slotJob={task?.applications?.public_jobs?.job_title}
+        slotJob={capitalizeAll(task?.applications?.public_jobs?.job_title)}
         slotCandidate={
           task.application_id && (
             <ListCard
@@ -97,14 +98,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         src={task.applications?.candidates.avatar}
                         variant='circular'
                         fontSize='14px'
-                        level={capitalize(
+                        level={capitalizeAll(
                           task.applications.candidates?.first_name +
                             ' ' +
                             task.applications.candidates?.last_name,
                         )}
                       />
                     }
-                    textName={capitalize(
+                    textName={capitalizeAll(
                       task.applications.candidates?.first_name +
                         ' ' +
                         task.applications.candidates?.last_name,
@@ -146,14 +147,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         src={task.recruiter_user.profile_image}
                         variant='circular'
                         fontSize='14px'
-                        level={capitalize(
+                        level={capitalizeAll(
                           task.recruiter_user.first_name +
                             ' ' +
                             task.recruiter_user.last_name,
                         )}
                       />
                     }
-                    textName={capitalize(
+                    textName={capitalizeAll(
                       task.recruiter_user.first_name +
                         ' ' +
                         task.recruiter_user.last_name,
@@ -189,6 +190,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotWhentoCallIcon={
           task?.assignee[0] === EmailAgentId ? <EmailIcon /> : <CallIcon />
         }
+        isPriorityVisible={false}
       />
     </>
   );

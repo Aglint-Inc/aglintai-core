@@ -18,28 +18,12 @@
 }
 
 .div-block-1451 {
-  margin-right: 16px;
-}
-
-.text-grey-600 {
-  color: #68737d;
-}
-
-.div-block-1442 {
   display: flex;
+  margin-right: 16px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
-}
-
-.div-block-1442.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.div-block-1442.cursor-pointer:hover {
-  opacity: 0.8;
 }
 
 .icons {
@@ -61,6 +45,27 @@
 .relative_2 {
   position: relative;
   z-index: 2;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.div-block-1442 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.div-block-1442.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.div-block-1442.cursor-pointer:hover {
+  opacity: 0.8;
 }
 
 .text-blue-500 {

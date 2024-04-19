@@ -19,7 +19,7 @@ function SelectScheduleDate({
   setScheduleDate: (x: { start_date: string; end_date: string }) => void;
   isOptionList?: boolean;
 }) {
-  const [rangeActive, setRangeActive] = useState(false);
+  const [rangeActive, setRangeActive] = useState(true);
 
   const [anchorEl, setAnchorEl] = useState(null);
 

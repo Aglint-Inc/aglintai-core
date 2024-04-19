@@ -94,3 +94,8 @@
 @media screen and (min-width: 1440px) {
 
 }
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}

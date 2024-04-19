@@ -297,6 +297,9 @@ async function getTaskProgress(taskId: string) {
   const { data } = await supabase
     .from('new_tasks_progress')
     .select()
+    .order('created_at', {
+      ascending: true,
+    })
     .eq('task_id', taskId);
 
   return data as TasksAgentContextType['taskProgress'];

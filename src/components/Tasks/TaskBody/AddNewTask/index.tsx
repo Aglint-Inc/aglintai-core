@@ -10,6 +10,7 @@ import {
   fetchInterviewSessionTask,
   scheduleWithAgent,
 } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
@@ -85,6 +86,8 @@ function AddNewTask() {
     start_date: new Date().toString(),
     end_date: new Date().toString(),
   });
+
+  const [aiload, setAiLoad] = useState(false);
 
   async function handleCreate() {
     if (!inputRef.current.value) {
@@ -251,6 +254,7 @@ function AddNewTask() {
             //   }}
             onBlur={async () => {
               if (inputRef.current.value) {
+                setAiLoad(true);
                 await extractDataFromText(
                   inputRef.current.value,
                   recruiterUser.user_id,
@@ -258,20 +262,17 @@ function AddNewTask() {
                   setSelectedAssignee(
                     assignerList.find((ele) => ele.user_id === data.assignee),
                   );
-                  setSelectedDueDate(String(new Date(data.due_date)));
-                  setSelectTriggerTime(String(new Date(data.start_date)));
+                  setSelectedDueDate(String(new Date(data.end_date)));
+                  // setSelectTriggerTime(String(new Date(data.start_date)));
                   setScheduleDate({
-                    start_date: String(
-                      new Date(data.schedule_date_range?.start_date),
-                    ),
-                    end_date: String(
-                      new Date(data.schedule_date_range?.end_date),
-                    ),
+                    start_date: String(new Date(data.start_date)),
+                    end_date: String(new Date(data.end_date)),
                   });
                   //   setSelectedType(
                   //     data.type as CustomDatabase['public']['Enums']['task_type_enum'],
                   //   );
                 });
+                setAiLoad(false);
               }
             }}
             inputRef={inputRef}
@@ -284,115 +285,123 @@ function AddNewTask() {
           />
         }
         slotViewTaskCard={
-          <ViewTaskCard
-            slotType={
-              <TypeList
-                selectedType={selectedType}
-                setSelectedType={setSelectedType}
-              />
-            }
-            slotJob={
-              <JobList
-                selectedJob={selectedJob}
-                setSelectedJob={setSelectedJob}
-                isOptionList={!selectedApplication?.id}
-              />
-            }
-            slotCandidate={
-              <CandidateList
-                selectedCandidate={selectedCandidate}
-                setSelectedCandidate={setSelectedCandidate}
-                candidates={candidates}
-                isOptionList={!selectedApplication?.id}
-              />
-            }
-            slotInterviewTaskPill={
-              <SessionList
-                selectedSession={selectedSession}
-                setSelectedSession={setSelectedSession}
-                sessionList={sessionList}
-              />
-            }
-            slotInterviewDate={
-              <SelectScheduleDate
-                setScheduleDate={setScheduleDate}
-                scheduleDate={scheduleDate}
-              />
-            }
-            slotCreatedBy={
-              <>
-                <ListCard
-                  isAvatarWithNameVisible={true}
-                  isListVisible={false}
-                  slotAvatarWithName={
-                    recruiterUser && (
-                      <AvatarWithName
-                        slotAvatar={
-                          <MuiAvatar
-                            height={'25px'}
-                            width={'25px'}
-                            src={recruiterUser.profile_image}
-                            variant='circular'
-                            fontSize='14px'
-                            level={capitalize(
-                              recruiterUser?.first_name +
-                                ' ' +
-                                recruiterUser?.last_name,
-                            )}
-                          />
-                        }
-                        textName={capitalize(
-                          recruiterUser?.first_name +
-                            ' ' +
-                            recruiterUser?.last_name,
-                        )}
-                      />
-                    )
-                  }
+          <>
+            <ShowCode>
+              <ShowCode.When isTrue={aiload}>
+                <DynamicLoader height='400px' />
+              </ShowCode.When>
+            </ShowCode>
+            <ViewTaskCard
+              slotType={
+                <TypeList
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
                 />
-              </>
-            }
-            slotDueDate={
-              <SelectDueDate
-                selectedDueDate={selectedDueDate}
-                setSelectedDueDate={setSelectedDueDate}
-              />
-            }
-            slotAssignedTo={
-              <AssigneeList
-                selectedAssignee={selectedAssignee}
-                setSelectedAssignee={setSelectedAssignee}
-              />
-            }
-            slotWhenToCall={
-              <TriggerTime
-                selectTriggerTime={selectTriggerTime}
-                setSelectTriggerTime={setSelectTriggerTime}
-              />
-            }
-            slotStatus={
-              <SelectStatus
-                setSelectedStatus={setSelectedStatus}
-                status={selectedStatus}
-              />
-            }
-            isWhenToCallVisible={
-              selectedAssignee?.user_id === EmailAgentId ||
-              selectedAssignee?.user_id === PhoneAgentId
-            }
-            textWhenToCall={
-              selectedAssignee?.user_id === EmailAgentId
-                ? 'When to mail'
-                : 'When to call'
-            }
-            slotWhentoCallIcon={
-              selectedAssignee?.user_id === EmailAgentId ? (
-                <EmailIcon />
-              ) : (
-                <CallIcon />
-              )
-            }
-          />
+              }
+              slotJob={
+                <JobList
+                  selectedJob={selectedJob}
+                  setSelectedJob={setSelectedJob}
+                  isOptionList={!selectedApplication?.id}
+                />
+              }
+              slotCandidate={
+                <CandidateList
+                  selectedCandidate={selectedCandidate}
+                  setSelectedCandidate={setSelectedCandidate}
+                  candidates={candidates}
+                  isOptionList={!selectedApplication?.id}
+                />
+              }
+              slotInterviewTaskPill={
+                <SessionList
+                  selectedSession={selectedSession}
+                  setSelectedSession={setSelectedSession}
+                  sessionList={sessionList}
+                />
+              }
+              slotInterviewDate={
+                <SelectScheduleDate
+                  setScheduleDate={setScheduleDate}
+                  scheduleDate={scheduleDate}
+                />
+              }
+              slotCreatedBy={
+                <>
+                  <ListCard
+                    isAvatarWithNameVisible={true}
+                    isListVisible={false}
+                    slotAvatarWithName={
+                      recruiterUser && (
+                        <AvatarWithName
+                          slotAvatar={
+                            <MuiAvatar
+                              height={'25px'}
+                              width={'25px'}
+                              src={recruiterUser.profile_image}
+                              variant='circular'
+                              fontSize='14px'
+                              level={capitalize(
+                                recruiterUser?.first_name +
+                                  ' ' +
+                                  recruiterUser?.last_name,
+                              )}
+                            />
+                          }
+                          textName={capitalize(
+                            recruiterUser?.first_name +
+                              ' ' +
+                              recruiterUser?.last_name,
+                          )}
+                        />
+                      )
+                    }
+                  />
+                </>
+              }
+              slotDueDate={
+                <SelectDueDate
+                  selectedDueDate={selectedDueDate}
+                  setSelectedDueDate={setSelectedDueDate}
+                />
+              }
+              slotAssignedTo={
+                <AssigneeList
+                  selectedAssignee={selectedAssignee}
+                  setSelectedAssignee={setSelectedAssignee}
+                />
+              }
+              slotWhenToCall={
+                <TriggerTime
+                  selectTriggerTime={selectTriggerTime}
+                  setSelectTriggerTime={setSelectTriggerTime}
+                />
+              }
+              slotStatus={
+                <SelectStatus
+                  setSelectedStatus={setSelectedStatus}
+                  status={selectedStatus}
+                />
+              }
+              isWhenToCallVisible={
+                selectedAssignee?.user_id === EmailAgentId ||
+                selectedAssignee?.user_id === PhoneAgentId
+              }
+              textWhenToCall={
+                selectedAssignee?.user_id === EmailAgentId
+                  ? 'When to mail'
+                  : 'When to call'
+              }
+              slotWhentoCallIcon={
+                selectedAssignee?.user_id === EmailAgentId ? (
+                  <EmailIcon />
+                ) : (
+                  <CallIcon />
+                )
+              }
+              isPriorityVisible={false}
+            />
+          </>
         }
       />
     </Drawer>

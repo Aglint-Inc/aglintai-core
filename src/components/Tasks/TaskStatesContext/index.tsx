@@ -82,7 +82,7 @@ function TaskStatesProvider({ children }) {
     TasksAgentContextType['tasks'][number]['applications'] | null
   >(null);
 
-  const [isImmediate, setIsImmediate] = useState(false);
+  const [isImmediate, setIsImmediate] = useState(true);
   const [selectedTasksIds, setSelectedTasksIds] = useState([]);
 
   useEffect(() => {

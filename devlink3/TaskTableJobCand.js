@@ -73,6 +73,21 @@ export function TaskTableJobCand({
             className={_utils.cx(_styles, "div-block-1435")}
             id={_utils.cx(
               _styles,
+              "w-node-_99d975b3-40a3-c9c4-b0fc-07003f0a3884-79bd2c91"
+            )}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-500", "hide")}
+              tag="div"
+            >
+              {"Priority"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1435")}
+            id={_utils.cx(
+              _styles,
               "w-node-_4236db5e-3938-26b8-a04e-ed6679bd2c9c-79bd2c91"
             )}
             tag="div"
