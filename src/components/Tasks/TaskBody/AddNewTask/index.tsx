@@ -239,6 +239,8 @@ function AddNewTask() {
         }}
         textTaskDetail={
           <TextField
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus={true}
             multiline
             minRows={1}
             maxRows={3}
