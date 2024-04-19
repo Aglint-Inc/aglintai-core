@@ -9,6 +9,10 @@
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
+.assessment-type-wrap.no-border {
+  border-style: none;
+}
+
 .assessment-type-sub-wrap {
   padding-top: 10px;
   padding-right: 16px;

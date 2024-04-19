@@ -39,7 +39,7 @@ export default function IProgressDrawer({
     <Drawer anchor={'right'} open={open} onClose={onClose}>
       <ShadowSession
         onClickClose={{
-          onClick: onclose,
+          onClick: onClose,
         }}
         textName={progressUser.user?.first_name}
         slotProfileImage={

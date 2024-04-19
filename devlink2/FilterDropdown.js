@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -12,7 +13,7 @@ export function FilterDropdown({
 }) {
   return (
     <_Component
-      className={_utils.cx(_styles, "assessment-type-wrap")}
+      className={_utils.cx(_styles, "assessment-type-wrap", "no-border")}
       tag="div"
     >
       <_Builtin.Block
