@@ -5,7 +5,8 @@ OR REPLACE FUNCTION get_interview_session_data (session_ids uuid[], company_id u
   interview_sessions jsonb[],
   interviewers jsonb[],
   service_cred text,
-  interview_modules jsonb[]
+  interview_modules jsonb[],
+  comp_schedule_setting jsonb
 ) AS $$
 DECLARE
   session_record interview_session;
@@ -23,22 +24,23 @@ BEGIN
  IF session_record.session_type = 'debrief' THEN
      interviewers := interviewers || (
       SELECT jsonb_agg(jsonb_build_object(
-    'user_id', recruiter_user.user_id,
-    'first_name', recruiter_user.first_name,
-    'last_name', recruiter_user.last_name,
-    'scheduling_settings', recruiter_user.scheduling_settings,
-    'schedule_auth', recruiter_user.schedule_auth,
-    'profile_image', recruiter_user.profile_image,       
-    'email', recruiter_user.email,
-    'session_id', sess_reln.id,
-    'training_type', sess_reln.training_type,
-    'pause_json', null,
-    'interview_module_relation_id', null
-    )) 
-      FROM recruiter_user
-      LEFT JOIN interview_session_relation sess_reln ON sess_reln.user_id = recruiter_user.user_id
-      WHERE sess_reln.session_id = session_record.id
-    );
+      'user_id', rec_user.user_id,
+      'first_name', rec_user.first_name,
+      'last_name', rec_user.last_name,
+      'scheduling_settings', rec_user.scheduling_settings,
+      'schedule_auth', rec_user.schedule_auth,
+      'profile_image', rec_user.profile_image,       
+      'email', rec_user.email,
+      'session_id', sess_reln.session_id,
+      'training_type', sess_reln.training_type,
+      'interviewer_type', sess_reln.interviewer_type,
+      'pause_json', null,
+      'interview_module_relation_id', null
+      )) 
+        FROM recruiter_user rec_user
+        LEFT JOIN interview_session_relation sess_reln ON sess_reln.user_id = rec_user.user_id
+        WHERE sess_reln.session_id = session_record.id
+      );
     ELSE
       interviewers := interviewers || (
         SELECT jsonb_agg(jsonb_build_object(
@@ -51,6 +53,7 @@ BEGIN
         'email',recruiter_user.email,
         'session_id',session_record.id,
         'training_type',sess_reln.training_type,
+        'interviewer_type', sess_reln.interviewer_type,
         'pause_json',interview_module_relation.pause_json,
         'interview_module_relation_id',sess_reln.interview_module_relation_id
         ))
@@ -68,16 +71,25 @@ BEGIN
   SELECT INTO service_cred r.service_json
       FROM recruiter r
       WHERE r.id = company_id; 
+  
+  SELECT scheduling_settings INTO comp_schedule_setting
+  FROM recruiter
+  WHERE id = company_id;
+
 
   -- Return the interview_sessions and interviewers arrays
-  RETURN QUERY SELECT interview_sessions, interviewers, service_cred,interview_modules;
+  RETURN QUERY SELECT interview_sessions, interviewers, service_cred, interview_modules, comp_schedule_setting;
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT
-  *
-FROM
-  get_interview_session_data (
-    '{8e017bad-4b5e-45b1-b91d-44fee879776c,ab8fea09-c638-4403-a3ca-8cfae659fbb1,22d04237-a2d6-4486-877a-22c22e4bf7c7}',
-    'd353b3a0-3e19-45d0-8623-4bd35577f548'
-  );
+
+
+
+  SELECT
+    *
+  FROM
+    get_interview_session_data (
+      '{ce8cada6-fb80-432f-a5c0-4642e35d2158}',
+      'd353b3a0-3e19-45d0-8623-4bd35577f548'
+    );
+
