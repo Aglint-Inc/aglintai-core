@@ -369,7 +369,7 @@ export const sendToCandidate = async ({
           schedule_id: createCloneRes.schedule.id,
         } as ConfirmApiBodyParams;
         const res = await axios.post(
-          '/api/scheduling/v1/confirm_interview_slot',
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
           bodyParams,
         );
         if (res.status === 200) {
@@ -459,7 +459,7 @@ export const sendToCandidate = async ({
           schedule_id: checkSch[0].id,
         } as ConfirmApiBodyParams;
         const res = await axios.post(
-          '/api/scheduling/v1/confirm_interview_slot',
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
           bodyParams,
         );
         if (res.status === 200) {

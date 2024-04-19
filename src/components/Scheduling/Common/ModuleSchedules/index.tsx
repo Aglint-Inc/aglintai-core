@@ -302,7 +302,7 @@ function transformData(
   const transformedData = {};
 
   inputData?.forEach((item) => {
-    const date = item.interview_meeting.start_time.split('T')[0]; // Extracting date from start_time
+    const date = item.interview_meeting.start_time?.split('T')[0]; // Extracting date from start_time
     if (!transformedData[String(date)]) {
       transformedData[String(date)] = [];
     }

@@ -54,6 +54,7 @@ function SlotTrainingMembers({
     .filter((user) => user.training_status === 'training')
     .map((user) => {
       const userSettings = user?.recruiter_user?.scheduling_settings;
+
       let weekly = 0;
       let daily = 0;
       if (userSettings) {
