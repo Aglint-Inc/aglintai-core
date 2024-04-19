@@ -15,4 +15,5 @@ declare function TaskTableCard(props: {
   isActiveCard?: Types.Visibility.VisibilityConditions;
   slotAssignedToCard?: Types.Devlink.Slot;
   onClickCard?: Types.Devlink.RuntimeProps;
+  slotPriority?: Types.Devlink.Slot;
 }): React.JSX.Element;

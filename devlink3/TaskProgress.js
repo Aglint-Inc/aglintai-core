@@ -16,6 +16,7 @@ export function TaskProgress({
   textTimeCompleted = "5 Hours ago",
   slotMailContent,
   isMailContentVisible = true,
+  isLineVisible = true,
 }) {
   return (
     <_Component tag="div">
@@ -35,10 +36,12 @@ export function TaskProgress({
               >
                 {slotImage}
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1348")}
-                tag="div"
-              />
+              {isLineVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-1348")}
+                  tag="div"
+                />
+              ) : null}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1350")}

@@ -12,4 +12,5 @@ declare function TaskProgress(props: {
   textTimeCompleted?: React.ReactNode;
   slotMailContent?: Types.Devlink.Slot;
   isMailContentVisible?: Types.Visibility.VisibilityConditions;
+  isLineVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

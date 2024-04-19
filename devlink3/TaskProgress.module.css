@@ -105,6 +105,10 @@
   color: #68737d;
 }
 
+.text-sm.justnow-text {
+  color: rgba(28, 28, 28, 0.4);
+}
+
 .div-block-1366 {
   display: flex;
   width: 100%;
@@ -132,4 +136,9 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
 }

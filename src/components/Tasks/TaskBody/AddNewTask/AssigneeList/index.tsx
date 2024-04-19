@@ -1,16 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Popover, Stack, Typography } from '@mui/material';
-import { capitalize } from 'lodash';
 import React from 'react';
 
-import { PanelMemberPill } from '@/devlink2';
-import { ListCard, ListPop } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useJobs } from '@/src/context/JobsContext';
+import { ListPop } from '@/devlink3';
 
 import AssigneeChip from '../../../Components/AssigneeChip';
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { assigneeType, JobCandidatesType } from '../../../utils';
+import { assigneeType } from '../../../utils';
 
 function AssigneeList({
   selectedAssignee,

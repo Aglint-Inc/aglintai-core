@@ -323,6 +323,54 @@ export type Database = {
         }
         Relationships: []
       }
+      application_logs: {
+        Row: {
+          application_id: string
+          created_at: string
+          description: string | null
+          id: string
+          logger: string
+          task_id: string | null
+          title: string | null
+          type: Database["public"]["Enums"]["application_logs_type"]
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          logger: string
+          task_id?: string | null
+          title?: string | null
+          type?: Database["public"]["Enums"]["application_logs_type"]
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          logger?: string
+          task_id?: string | null
+          title?: string | null
+          type?: Database["public"]["Enums"]["application_logs_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_application_logs_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_application_logs_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "new_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       application_reference: {
         Row: {
           ats_json: Json
@@ -3310,6 +3358,16 @@ export type Database = {
         }
         Returns: number
       }
+      get_conversion_count: {
+        Args: {
+          recruiter_id: string
+          day_count: number
+        }
+        Returns: {
+          timeline: string
+          count: number
+        }[]
+      }
       get_interview_data_count: {
         Args: {
           rec_id: string
@@ -4060,6 +4118,7 @@ export type Database = {
       activity_type: "aglint" | "user" | "candidate"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
       agent_types: "scheduler" | "screening" | "job_assistant" | "sourcing"
+      application_logs_type: "standard" | "schedule" | "interview"
       application_processing_status:
         | "not started"
         | "processing"

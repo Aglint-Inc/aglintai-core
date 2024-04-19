@@ -68,7 +68,9 @@ function AddNewTask() {
   );
 
   const [sessionList, setSessionList] = useState(null);
-  const [selectedSession, setSelectedSession] = useState([]);
+  const [selectedSession, setSelectedSession] = useState<
+    Awaited<ReturnType<typeof fetchInterviewSessionTask>>
+  >([]);
   const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
     null,
   );
@@ -116,8 +118,8 @@ function AddNewTask() {
         .single();
       const assignee = selectedTask.assignee[0];
       if (
-        (isImmediate && assignee === EmailAgentId) ||
-        assignee === PhoneAgentId
+        isImmediate &&
+        (assignee === EmailAgentId || assignee === PhoneAgentId)
       ) {
         scheduleWithAgent({
           application_id: selectedTask.application_id,
@@ -142,6 +144,14 @@ function AddNewTask() {
         });
       }
       // end
+      await supabase.from('application_logs').insert({
+        application_id: selectedTask.application_id,
+        logger: assignee,
+        title: `${selectedSession.map((ele) => ele.name).join(',')}`,
+        task_id: selectedTask.id,
+        type: 'schedule',
+        description: 'Schedule invite send to candidate',
+      });
     });
     handleClose();
   }

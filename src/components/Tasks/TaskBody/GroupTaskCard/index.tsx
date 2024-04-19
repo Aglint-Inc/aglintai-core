@@ -1,5 +1,6 @@
-import { Checkbox } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Checkbox, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import { TaskTableJobSubCard } from '@/devlink3';
 import {
@@ -7,13 +8,20 @@ import {
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { CustomDatabase } from '@/src/types/customSchema';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import AssigneeChip from '../../Components/AssigneeChip';
 import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 
-function GroupTaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
-  const { setTaskId, setOpenViewTask } = useTaskStatesContext();
+function GroupTaskCard({
+  task,
+}: {
+  task: TasksAgentContextType['tasks'][number];
+}) {
+  const route = useRouter();
+  const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
+    useTaskStatesContext();
   const { handelUpdateTask } = useTasksContext();
   const [selectedStatus, setSelectedStatus] = useState<
     CustomDatabase['public']['Enums']['task_status'] | null
@@ -25,31 +33,67 @@ function GroupTaskCard({ task }: { task: TasksAgentContextType['tasks'][number] 
     }
   }, [selectedStatus]);
   return (
-    <TaskTableJobSubCard
-      onClickCard={{
-        onClick: () => {
-          setOpenViewTask(true);
-          setTaskId(task.id);
+    <Stack
+      sx={{
+        bgcolor: selectedTasksIds.includes(task.id) && 'grey.100',
+        '&:hover': {
+          bgcolor: 'grey.100',
+          '& div:first-child div .checkboxClass': {
+            opacity: 1,
+          },
         },
       }}
-      slotAssignedTo={<AssigneeChip assigneeId={task.assignee[0]} />}
-      slotStatus={
-        <SelectStatus
-          status={task.status}
-          setSelectedStatus={setSelectedStatus}
-        />
-      }
-      textTask={task.name}
-      slotCheckbox={
-        <Checkbox
-          // onChange={(e) => {
-          //   console.log(e.target.checked);
-          // }}
-          size='small'
-          color='info'
-        />
-      }
-    />
+    >
+      <TaskTableJobSubCard
+        onClickCard={{
+          onClick: () => {
+            route.push(pageRoutes.TASKS + '?task_id=' + task.id);
+            setTaskId(task.id);
+          },
+        }}
+        slotAssignedTo={<AssigneeChip assigneeId={task.assignee[0]} />}
+        slotStatus={
+          <SelectStatus
+            status={task.status}
+            setSelectedStatus={setSelectedStatus}
+          />
+        }
+        textTask={task.name}
+        slotCheckbox={
+          <Stack
+            className='checkboxClass'
+            sx={{
+              opacity: selectedTasksIds.includes(task.id) ? 1 : 0,
+              '&:hover': {
+                opacity: 1,
+              },
+              transition: 'ease-in-out 0.4s opacity',
+              cursor: 'pointer',
+            }}
+          >
+            <Checkbox
+              checked={selectedTasksIds.includes(task.id)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  //@ts-ignore
+                  setSelectedTasksIds((pre: any[]) => [task.id, ...pre]);
+                } else {
+                  //@ts-ignore
+                  setSelectedTasksIds((pre: any[]) => {
+                    const filteredIds = pre.filter(
+                      (ele: string) => ele !== task.id,
+                    );
+                    return [...filteredIds] as string[];
+                  });
+                }
+              }}
+              size='small'
+              color='info'
+            />
+          </Stack>
+        }
+      />
+    </Stack>
   );
 }
 

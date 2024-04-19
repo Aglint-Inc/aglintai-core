@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { Drawer, Stack, TextField } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { ViewTask } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import { taskUpdateDebounce, UpdateFunction } from '../../utils';
@@ -12,12 +15,13 @@ import SubTaskProgress from './Progress';
 import TaskCard from './TaskCard';
 
 function ViewTaskDrawer() {
-  const { openViewTask, setOpenViewTask, taskId } = useTaskStatesContext();
+  const route = useRouter();
+  const { openViewTask, setOpenViewTask } = useTaskStatesContext();
   const { tasks, handelUpdateTask } = useTasksContext();
+  let taskId = route.query.task_id ? (route.query.task_id as string) : null;
 
-  const selectedTask = tasks.find((item) => item.id === taskId);
+  let selectedTask = tasks.find((item) => item.id === taskId);
 
-  // Assuming handelUpdateTask is your update function and taskId is the task ID
   const debouncedUpdateTask: UpdateFunction = taskUpdateDebounce(
     (taskId: string, changeValue: string) => {
       handelUpdateTask({
@@ -27,14 +31,19 @@ function ViewTaskDrawer() {
         },
       });
     },
-    1000, // Delay of 1000ms (1 second)
+    1000,
   );
+
+  useEffect(() => {
+    if (taskId) setOpenViewTask(true);
+    else setOpenViewTask(false);
+  }, [route.query.task_id]);
   return (
     <Drawer
       anchor={'right'}
       open={openViewTask}
       onClose={() => {
-        setOpenViewTask(false);
+        route.push(pageRoutes.TASKS);
       }}
     >
       <Stack>
@@ -66,7 +75,7 @@ function ViewTaskDrawer() {
               slotTaskProgress={<SubTaskProgress />}
               onClickClose={{
                 onClick: () => {
-                  setOpenViewTask(false);
+                  route.push(pageRoutes.TASKS);
                 },
               }}
             />

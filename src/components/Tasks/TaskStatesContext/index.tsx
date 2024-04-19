@@ -39,6 +39,8 @@ interface ContextValue {
 
   isImmediate: boolean;
   setIsImmediate: (x: boolean) => void;
+  selectedTasksIds: string[];
+  setSelectedTasksIds: (x: string[]) => any;
 }
 
 const defaultProvider: ContextValue = {
@@ -60,6 +62,8 @@ const defaultProvider: ContextValue = {
   setSelectedApplication: () => {},
   isImmediate: false,
   setIsImmediate: () => {},
+  selectedTasksIds: [],
+  setSelectedTasksIds: (x: string[]) => {},
 };
 const TaskStatesContext = createContext<ContextValue>(defaultProvider);
 const useTaskStatesContext = () => useContext(TaskStatesContext);
@@ -79,17 +83,19 @@ function TaskStatesProvider({ children }) {
   >(null);
 
   const [isImmediate, setIsImmediate] = useState(false);
+  const [selectedTasksIds, setSelectedTasksIds] = useState([]);
 
   useEffect(() => {
-    if (interviewers) {
-      const members = interviewers?.map((item) => item.rec_user);
-      setAssignerList([
-        ...agentsDetails,
-        ...members.map((item) => {
-          return { ...item, assignee: 'Interviewers' };
-        }),
-      ] as AssignerType[]);
-    }
+    const members = interviewers
+      ? interviewers?.map((item) => item.rec_user)
+      : [];
+
+    setAssignerList([
+      ...agentsDetails,
+      ...members.map((item) => {
+        return { ...item, assignee: 'Interviewers' };
+      }),
+    ] as AssignerType[]);
   }, [interviewers]);
 
   return (
@@ -111,6 +117,8 @@ function TaskStatesProvider({ children }) {
         setSelectedApplication,
         isImmediate,
         setIsImmediate,
+        selectedTasksIds,
+        setSelectedTasksIds,
       }}
     >
       {children}

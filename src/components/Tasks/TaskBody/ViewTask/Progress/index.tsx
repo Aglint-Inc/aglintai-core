@@ -2,6 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
+import { useRouter } from 'next/router';
 
 import { PanelMemberPill } from '@/devlink2';
 import { AgentPill, TaskProgress, TranscriptCard } from '@/devlink3';
@@ -44,6 +45,7 @@ function SubTaskProgress() {
               );
               return (
                 <TaskProgress
+                  isLineVisible={progressList.length !== i + 1}
                   key={i}
                   isTaskProgressVisible={true}
                   textTask={
@@ -246,10 +248,11 @@ function SubTaskProgress() {
 export default SubTaskProgress;
 // schedule session list
 export const useScheduleSession = () => {
-  const { taskId } = useTaskStatesContext();
+  const route = useRouter();
   const { tasks } = useTasksContext();
+  let taskId = route.query.task_id ? (route.query.task_id as string) : null;
 
-  const selectedTask = tasks.find((item) => item.id === taskId);
+  let selectedTask = tasks.find((item) => item.id === taskId);
 
   const queryClient = useQueryClient();
   const query = useQuery({
@@ -276,8 +279,8 @@ async function getScheduleSessions(session_ids: string[]) {
 
 // progress list
 export const useProgress = () => {
-  const { taskId } = useTaskStatesContext();
-
+  const route = useRouter();
+  let taskId = route.query.task_id ? (route.query.task_id as string) : null;
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_new_tasks_progress'],

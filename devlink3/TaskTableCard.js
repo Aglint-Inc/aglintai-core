@@ -19,6 +19,7 @@ export function TaskTableCard({
   isActiveCard = false,
   slotAssignedToCard,
   onClickCard = {},
+  slotPriority,
 }) {
   return (
     <_Component
@@ -78,7 +79,7 @@ export function TaskTableCard({
         )}
         tag="div"
       >
-        <PriorityPill />
+        {slotPriority ?? <PriorityPill />}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1435")}
