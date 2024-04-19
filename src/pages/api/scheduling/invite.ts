@@ -201,7 +201,7 @@ const getFilterJson = async (filter_id: string) => {
 const getRecruiterDetails = async (recruiter_id: string) => {
   const { data: rec, error: errRec } = await supabase
     .from('recruiter')
-    .select('*')
+    .select('id,logo,name')
     .eq('id', recruiter_id);
 
   if (errRec) throw new Error(errRec.message);

@@ -75,6 +75,7 @@ export const useGetScheduleApplication = () => {
           const sessionsWithPlan = await fetchInterviewDataSchedule(
             schedule[0].id,
             router.query.application_id as string,
+            supabase,
           );
           setSelectedApplication(sessionsWithPlan.application);
 
@@ -158,6 +159,7 @@ export const fetchInterviewDataJob = async ({
 export const fetchInterviewDataSchedule = async (
   schedule_id: string,
   application_id: string,
+  supabase: ReturnType<typeof createServerClient<Database>>,
 ) => {
   try {
     const { data, error } = (await supabase.rpc('get_interview_data_schedule', {
@@ -387,6 +389,7 @@ export const scheduleWithAgent = async ({
         const sessionsWithPlan = await fetchInterviewDataSchedule(
           checkSch[0].id,
           application_id,
+          supabase,
         );
 
         const { error: errorUpdatedMeetings } = await supabase
