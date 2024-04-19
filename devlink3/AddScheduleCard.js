@@ -85,7 +85,7 @@ export function AddScheduleCard({
                       className={_utils.cx(_styles, "text-blue-500")}
                       tag="div"
                     >
-                      {"Add debrief Stage"}
+                      {"Add Debrief Session"}
                     </_Builtin.Block>
                   </_Builtin.Block>
                   {isBreakVisibe ? (
