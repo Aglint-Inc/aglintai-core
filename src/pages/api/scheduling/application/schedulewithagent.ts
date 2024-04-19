@@ -65,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       recruiter_user_name,
       session_ids,
-      sub_task_id: sub_task_id,
+      task_id: sub_task_id,
       type: type,
       candidate_name: candidate_name,
       company_name: company_name,
