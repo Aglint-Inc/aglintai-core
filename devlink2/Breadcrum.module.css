@@ -1,9 +1,12 @@
 .breadcrum_element {
   position: relative;
   z-index: 1;
+
   display: flex;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+
+  text-transform: capitalize;
 }
 
 .arrow_svg {
@@ -215,6 +218,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 .is_active_link {

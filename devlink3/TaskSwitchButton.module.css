@@ -64,6 +64,11 @@
 
 }
 
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
 .div-block-1446 {
   position: relative;
   padding: 10px;

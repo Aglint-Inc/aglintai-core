@@ -491,7 +491,7 @@ export const AnalysisBlockSection: React.FC<{
         style: {
           cursor: 'pointer',
           transform: `rotate(${collapse ? '180deg' : '0deg'})`,
-          display: noCollapse ? 'none' : 'block',
+          display: noCollapse ? 'none' : 'flex',
         },
       }}
       slotBody={
@@ -1334,7 +1334,7 @@ export const NewEducationDetails = ({
           style: {
             cursor: 'pointer',
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-            display: noCollapse ? 'none' : 'block',
+            display: noCollapse ? 'none' : 'flex',
           },
         }}
         slotEducationCard={
@@ -1403,7 +1403,7 @@ export const NewExperienceDetails = ({
           style: {
             cursor: 'pointer',
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-            display: noCollapse ? 'none' : 'block',
+            display: noCollapse ? 'none' : 'flex',
           },
         }}
         slotCandidateExperienceCard={
@@ -1499,7 +1499,7 @@ export const NewSkillDetails = ({
             style: {
               cursor: 'pointer',
               transform: `rotate(${collapse ? '0deg' : '180deg'})`,
-              display: noCollapse ? 'none' : 'block',
+              display: noCollapse ? 'none' : 'flex',
             },
           }}
           slotCandidateSkill={
@@ -1547,7 +1547,7 @@ export const NewSkillDetails = ({
           style: {
             border: noCollapse ? 'none' : '1px solid #E9EBED',
             padding: noCollapse ? '0px' : '16px',
-            display: noCollapse ? 'none' : 'block',
+            display: noCollapse ? 'none' : 'flex',
           },
         }}
         onClickIcons={{

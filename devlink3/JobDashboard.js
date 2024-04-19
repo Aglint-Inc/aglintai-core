@@ -245,7 +245,7 @@ export function JobDashboard({
               className={_utils.cx(_styles, "fw-semibold", "text-orange")}
               tag="div"
             >
-              {"Below average"}
+              {"Below Average"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-xl", "fw-semibold")}
@@ -274,7 +274,7 @@ export function JobDashboard({
               className={_utils.cx(_styles, "fw-semibold", "text-red")}
               tag="div"
             >
-              {"Not a match"}
+              {"Not A Match"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-xl", "fw-semibold")}

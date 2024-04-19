@@ -392,7 +392,7 @@ const ApplicationTable = ({
       <AllInterview
         propsGrid={{
           style: {
-            gridTemplateColumns: '25% 15% 15% 20% 25%',
+            gridTemplateColumns: '25% 25% 15% 20% 25%',
           },
         }}
         isResumeScoreVisible={true}
