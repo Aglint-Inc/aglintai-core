@@ -43,6 +43,7 @@ export function MemberListCard({
   textInterviewWeek = "3/8 Interviews this week",
   isTextObjectiveVisible = false,
   textObjective = "Design Engineer",
+  isViewProgressVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -154,7 +155,7 @@ export function MemberListCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1173")}
+              className={_utils.cx(_styles, "div-block-1173", "hide")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -168,20 +169,27 @@ export function MemberListCard({
                 {"Training"}
               </_Builtin.Block>
             </_Builtin.Block>
-            <_Builtin.Block tag="div">{slotProgressBar}</_Builtin.Block>
-            <_Builtin.Block className={_utils.cx(_styles, "mt-8")} tag="div">
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "text-blue-500",
-                  "text-underline"
-                )}
-                tag="div"
-                {...onClickViewProgress}
-              >
-                {"View Progress"}
-              </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1320")}
+              tag="div"
+            >
+              {slotProgressBar}
             </_Builtin.Block>
+            {isViewProgressVisible ? (
+              <_Builtin.Block className={_utils.cx(_styles, "mt-8")} tag="div">
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "text-blue-500",
+                    "text-underline"
+                  )}
+                  tag="div"
+                  {...onClickViewProgress}
+                >
+                  {"View Progress"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         ) : null}
         {isTrainingCompletedVisible ? (

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { MemberListCard } from '@/devlink2';
-import { InterviewerDetail, ModulesMoreMenu } from '@/devlink3';
+import { HistoryPill, InterviewerDetail, ModulesMoreMenu } from '@/devlink3';
 import PauseIcon from '@/src/components/Common/Icons/PauseIcon';
 import PlayIcon from '@/src/components/Common/Icons/PlayIcon';
 import Loader from '@/src/components/Common/Loader';
@@ -294,10 +294,65 @@ function Interviewer({
                 .filter((item) => item.training_status === 'training')
                 .map((module, i) => {
                   const { interview_module, module_id, pause_json } = module;
+                  const tempMeetingData: { [key: string]: number } = {};
+                  // working here
+                  interviewerSchedules.data
+                    ?.filter(
+                      (item) => item.interview_meeting.status == 'completed',
+                    )
+                    .forEach((item) => {
+                      const temp = item.users.find(
+                        (user) =>
+                          user.id === interviewerDetails.interviewer.user_id,
+                      );
+                      if (temp)
+                        tempMeetingData[temp.training_type] =
+                          (tempMeetingData[temp.training_type] || 0) + 1;
+                    });
+                  // console.log({ tempMeetingData });
+
+                  const trainingStatusArray: {
+                    text: 'shadow' | 'reverse shadow';
+                    state: boolean;
+                  }[] = [
+                    ...new Array(
+                      // @ts-ignore
+                      interview_module.settings?.noShadow || 0,
+                    ).fill({
+                      text: 'shadow',
+                      state: false,
+                    }),
+                    ...new Array(
+                      // @ts-ignore
+                      interview_module.settings?.noReverseShadow || 0,
+                    ).fill({
+                      text: 'reverse shadow',
+                      state: false,
+                    }),
+                  ];
+                  trainingStatusArray.map((item) => {
+                    if ((tempMeetingData[item.text] || 0) > 0) {
+                      item.state = true;
+                      tempMeetingData[item.text] -= 1;
+                    }
+                  });
                   return (
                     <MemberListCard
                       isMoveToQualifierVisible={false}
-                      isTrainingProgessVisible={false}
+                      isTrainingProgessVisible={true}
+                      isViewProgressVisible={false}
+                      slotProgressBar={
+                        <>
+                          {trainingStatusArray.map((item, index) => (
+                            <HistoryPill
+                              key={index}
+                              isActive={item.state}
+                              isShadow={item.text === 'shadow'}
+                              isReverseShadow={item.text === 'reverse shadow'}
+                            />
+                          ))}
+                        </>
+                      }
                       key={module_id}
                       textName={interview_module.name}
                       isTextObjectiveVisible={true}

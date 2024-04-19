@@ -35,4 +35,5 @@ declare function MemberListCard(props: {
   textInterviewWeek?: React.ReactNode;
   isTextObjectiveVisible?: Types.Visibility.VisibilityConditions;
   textObjective?: React.ReactNode;
+  isViewProgressVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
