@@ -7,13 +7,13 @@ import { useMemo, useState } from 'react';
 import {
   Breadcrum,
   EmptyGeneral,
-  InterviewMembersCard,
+  MemberListCard,
   MutedShadowSession,
   PageLayout,
   ShadowSession,
   StatusBadge,
 } from '@/devlink2';
-import { DarkPill, InterviewerPage } from '@/devlink3';
+import { DarkPill, HistoryPill, InterviewerPage } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
@@ -343,7 +343,7 @@ function SlotQualifiedMembers({
 }: {
   editModule: ModuleType;
   // meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
-  progress: any;
+  progress: ReturnType<typeof useProgressModuleUsers>['data'];
   members: MemberType[];
   // eslint-disable-next-line no-unused-vars
   updateMember: (x: {
@@ -393,19 +393,75 @@ function SlotQualifiedMembers({
         };
         const isTrainingDone = isTrainingComplete(tempUserProgress);
 
+        const progressDataUser = progress.filter(
+          (prog) =>
+            prog.interview_module_relation_id === user.id &&
+            prog.interview_meeting?.status == 'completed',
+        );
+        const revShadowCount = progressDataUser.filter(
+          (prog) => prog.training_type === 'reverse_shadow',
+        ).length;
+
+        const shadowCount = progressDataUser.filter(
+          (prog) => prog.training_type == 'shadow',
+        ).length;
+
+        const tempMeetingData: { [key: string]: number } = {
+          shadow: shadowCount,
+          'reverse shadow': revShadowCount,
+        };
+
+        const trainingStatusArray: {
+          text: 'shadow' | 'reverse shadow';
+          state: boolean;
+        }[] = [
+          ...new Array(
+            // @ts-ignore
+            editModule.settings?.noShadow || 0,
+          ).fill({
+            text: 'shadow',
+            state: false,
+          }),
+          ...new Array(
+            // @ts-ignore
+            editModule.settings?.noReverseShadow || 0,
+          ).fill({
+            text: 'reverse shadow',
+            state: false,
+          }),
+        ];
+        trainingStatusArray.map((item) => {
+          if ((tempMeetingData[item.text] || 0) > 0) {
+            item.state = true;
+            tempMeetingData[item.text] -= 1;
+          }
+        });
+
         return (
           <>
-            <InterviewMembersCard
-              isTrainingVisible={user.training_status === 'training'}
-              isTrainingProgressVisible={
+            <MemberListCard
+              // isTrainingVisible={user.training_status === 'training'}
+              isTrainingProgessVisible={
                 !isTrainingDone && user.training_status === 'training'
               }
+              slotProgressBar={
+                <>
+                  {trainingStatusArray.map((item, index) => (
+                    <HistoryPill
+                      key={index}
+                      isActive={item.state}
+                      isShadow={item.text === 'shadow'}
+                      isReverseShadow={item.text === 'reverse shadow'}
+                    />
+                  ))}
+                </>
+              }
               isTrainingCompletedVisible={isTrainingDone}
-              onClickViewHistory={{
-                onClick: () => {
-                  setProgressUser(tempUserProgress);
-                },
-              }}
+              // onClickViewHistory={{
+              //   onClick: () => {
+              //     setProgressUser(tempUserProgress);
+              //   },
+              // }}
               onClickViewProgress={{
                 onClick: () => {
                   setProgressUser(tempUserProgress);
@@ -421,7 +477,7 @@ function SlotQualifiedMembers({
                 },
               }}
               key={user.user_id}
-              slotMemberImage={
+              slotProfileImage={
                 <MuiAvatar
                   src={member.profile_image}
                   level={getFullName(member.first_name, member.last_name) || ''}
@@ -433,6 +489,9 @@ function SlotQualifiedMembers({
               }
               textName={member.first_name}
               textRole={member.position || '--'}
+              isPauseResumeVisible={Boolean(user.pause_json)}
+              isPauseVisible={!user.pause_json}
+              isResumeVisible={Boolean(user.pause_json)}
             />
           </>
         );

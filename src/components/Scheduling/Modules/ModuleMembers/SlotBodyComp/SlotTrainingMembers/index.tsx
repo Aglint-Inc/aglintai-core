@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { EmptyGeneral, MemberListCard } from '@/devlink2';
+import { HistoryPill } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -122,6 +123,37 @@ function SlotTrainingMembers({
 
         const userSettings = user.recruiter_user.scheduling_settings;
 
+        const tempMeetingData: { [key: string]: number } = {
+          shadow: shadowCount,
+          'reverse shadow': revShadowCount,
+        };
+
+        const trainingStatusArray: {
+          text: 'shadow' | 'reverse shadow';
+          state: boolean;
+        }[] = [
+          ...new Array(
+            // @ts-ignore
+            editModule.settings?.noShadow || 0,
+          ).fill({
+            text: 'shadow',
+            state: false,
+          }),
+          ...new Array(
+            // @ts-ignore
+            editModule.settings?.noReverseShadow || 0,
+          ).fill({
+            text: 'reverse shadow',
+            state: false,
+          }),
+        ];
+        trainingStatusArray.map((item) => {
+          if ((tempMeetingData[item.text] || 0) > 0) {
+            item.state = true;
+            tempMeetingData[item.text] -= 1;
+          }
+        });
+
         return (
           <MemberListCard
             isInterviewCountVisible={!user.pause_json}
@@ -168,6 +200,19 @@ function SlotTrainingMembers({
             isTrainingCompletedVisible={
               editModule.settings.noReverseShadow <= revShadowCount &&
               editModule.settings.noShadow <= shadowCount
+            }
+            isViewProgressVisible={true}
+            slotProgressBar={
+              <>
+                {trainingStatusArray.map((item, index) => (
+                  <HistoryPill
+                    key={index}
+                    isActive={item.state}
+                    isShadow={item.text === 'shadow'}
+                    isReverseShadow={item.text === 'reverse shadow'}
+                  />
+                ))}
+              </>
             }
             textPauseResumeDate={
               !user.pause_json?.isManual
