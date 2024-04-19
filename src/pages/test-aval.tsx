@@ -12,7 +12,7 @@ import ToggleBtn from '../components/Scheduling/Settings/Components/ToggleBtn';
 import {
   InterDetailsType,
   TimeDurationType,
-} from '../utils/scheduling_v2/types';
+} from '../types/scheduleTypes/types2';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');

@@ -51,17 +51,17 @@ export const fetchProgress = async ({
   ];
 
   const { data, error } = await supabase
-    .from('interview_meeting')
-    .select('*,interview_session!inner(*)')
-    .in('interview_session.id', uniqueSessionIds);
+    .from('interview_session')
+    .select('*,interview_meeting!inner(*)')
+    .in('id', uniqueSessionIds);
   // .eq('status', 'completed');
 
   const resRel = filteredIntSesRel
     .map((sesRel) => ({
       ...sesRel,
       interview_meeting: data.find(
-        (meet) => meet.interview_session.id === sesRel.interview_session.id,
-      ),
+        (ses) => ses.id === sesRel.interview_session.id,
+      ).interview_meeting,
     }))
     .filter((sesRel) => sesRel?.interview_meeting?.id);
 
@@ -219,19 +219,26 @@ export const getMeetingsByModuleId = async (module_id: string) => {
   ];
 
   const { data, error } = await supabase
-    .from('interview_meeting')
-    .select('*,interview_session!inner(*)')
-    .in('interview_session.id', uniqueSessionIds)
-    .gte('start_time', firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00')
-    .lte('end_time', lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59')
-    .or('status.eq.confirmed,status.eq.completed');
+    .from('interview_session')
+    .select('*,interview_meeting!inner(*)')
+    .in('id', uniqueSessionIds)
+    .gte(
+      'interview_meeting.start_time',
+      firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00',
+    )
+    .lte(
+      'interview_meeting.end_time',
+      lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59',
+    );
+  // .or(
+  //   'interview_meeting.status.eq.confirmed,interview_meeting.status.eq.completed',
+  // );
 
   const resRel = intSesRel
     .map((sesRel) => ({
       ...sesRel,
-      interview_meeting: data.find(
-        (meet) => meet.interview_session.id === sesRel?.session_id,
-      ),
+      interview_meeting: data.find((ses) => ses.id === sesRel?.session_id)
+        .interview_meeting,
     }))
     .filter((sesRel) => sesRel?.interview_meeting?.id);
 

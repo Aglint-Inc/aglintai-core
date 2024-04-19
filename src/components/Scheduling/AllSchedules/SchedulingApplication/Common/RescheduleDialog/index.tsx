@@ -19,8 +19,8 @@ function RescheduleDialog() {
   const isRescheduleOpen = useInterviewSchedulingStore(
     (state) => state.isRescheduleOpen,
   );
-  const selectedMeeting = useSchedulingApplicationStore(
-    (state) => state.selectedMeeting,
+  const selectedSession = useSchedulingApplicationStore(
+    (state) => state.selectedSession,
   );
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
@@ -28,12 +28,12 @@ function RescheduleDialog() {
 
   const onClickReschedule = async () => {
     try {
-      if (selectedMeeting.id) {
+      if (selectedSession.id) {
         const { data: checkFilterJson, error: errMeetFilterJson } =
           await supabase
             .from('interview_filter_json')
             .select('*')
-            .contains('session_ids', [selectedMeeting.session_id]);
+            .contains('session_ids', [selectedSession.id]);
 
         if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
@@ -41,7 +41,7 @@ function RescheduleDialog() {
           const updateDbArray = checkFilterJson.map((filterJson) => ({
             ...filterJson,
             session_ids: filterJson.session_ids.filter(
-              (id) => id !== selectedMeeting.session_id,
+              (id) => id !== selectedSession.id,
             ),
           }));
 
@@ -57,14 +57,14 @@ function RescheduleDialog() {
           .update({
             status: 'cancelled',
           })
-          .eq('id', selectedMeeting.id);
+          .eq('id', selectedSession.meeting_id);
         if (errMeet) {
           throw new Error(errMeet.message);
         }
 
         setinitialSessions(
           initialSessions.map((session) => {
-            if (session.interview_meeting.id === selectedMeeting.id) {
+            if (session.id === selectedSession.id) {
               return {
                 ...session,
                 interview_meeting: {
@@ -79,7 +79,7 @@ function RescheduleDialog() {
         );
         setIsCancelOpen(false);
         setIsRescheduleOpen(false);
-        setSelectedSessionIds([selectedMeeting.session_id]);
+        setSelectedSessionIds([selectedSession.id]);
       }
     } catch (e) {
       toast.error(e.message);

@@ -27,7 +27,7 @@ import {
   setEditSession,
   setIsEditBreakOpen,
   setIsEditOpen,
-  setSelectedMeeting,
+  setSelectedSession,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
@@ -273,13 +273,13 @@ function FullSchedule() {
                       }
                       onClickCancelSchedule={{
                         onClick: () => {
-                          setSelectedMeeting(session.interview_meeting);
+                          setSelectedSession(session);
                           setIsCancelOpen(true);
                         },
                       }}
                       onClickReschedule={{
                         onClick: () => {
-                          setSelectedMeeting(session.interview_meeting);
+                          setSelectedSession(session);
                           setIsRescheduleOpen(true);
                         },
                       }}

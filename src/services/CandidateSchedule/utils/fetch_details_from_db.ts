@@ -1,8 +1,8 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { InterviewModuleType, InterviewSession } from '@/src/types/data.types';
 import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
+import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
-import { CompServiceKeyCred } from '@/src/utils/scheduling_v2/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import {

@@ -1043,7 +1043,6 @@ export type Database = {
           interview_schedule_id: string
           meeting_json: Json | null
           meeting_link: string | null
-          session_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1056,7 +1055,6 @@ export type Database = {
           interview_schedule_id: string
           meeting_json?: Json | null
           meeting_link?: string | null
-          session_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1069,7 +1067,6 @@ export type Database = {
           interview_schedule_id?: string
           meeting_json?: Json | null
           meeting_link?: string | null
-          session_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1079,13 +1076,6 @@ export type Database = {
             columns: ["interview_schedule_id"]
             isOneToOne: false
             referencedRelation: "interview_schedule"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_interview_meeting_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "interview_session"
             referencedColumns: ["id"]
           },
         ]
@@ -1232,6 +1222,7 @@ export type Database = {
           id: string
           is_completed: boolean
           is_get_more_option: boolean
+          recruiter_id: string
           schedule_name: string
         }
         Insert: {
@@ -1243,6 +1234,7 @@ export type Database = {
           id?: string
           is_completed?: boolean
           is_get_more_option?: boolean
+          recruiter_id: string
           schedule_name: string
         }
         Update: {
@@ -1254,6 +1246,7 @@ export type Database = {
           id?: string
           is_completed?: boolean
           is_get_more_option?: boolean
+          recruiter_id?: string
           schedule_name?: string
         }
         Relationships: [
@@ -1277,6 +1270,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1347,6 +1347,7 @@ export type Database = {
           interview_plan_id: string | null
           interviewer_cnt: number | null
           location: string | null
+          meeting_id: string | null
           module_id: string | null
           name: string | null
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1361,6 +1362,7 @@ export type Database = {
           interview_plan_id?: string | null
           interviewer_cnt?: number | null
           location?: string | null
+          meeting_id?: string | null
           module_id?: string | null
           name?: string | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1375,6 +1377,7 @@ export type Database = {
           interview_plan_id?: string | null
           interviewer_cnt?: number | null
           location?: string | null
+          meeting_id?: string | null
           module_id?: string | null
           name?: string | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1388,6 +1391,13 @@ export type Database = {
             columns: ["interview_plan_id"]
             isOneToOne: false
             referencedRelation: "interview_plan"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "interview_meeting"
             referencedColumns: ["id"]
           },
           {
@@ -1721,7 +1731,7 @@ export type Database = {
           session_ids: Json[] | null
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
-          task_ended: boolean
+          task_triggered: boolean | null
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Insert: {
@@ -1738,7 +1748,7 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
-          task_ended?: boolean
+          task_triggered?: boolean | null
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Update: {
@@ -1755,7 +1765,7 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
-          task_ended?: boolean
+          task_triggered?: boolean | null
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [

@@ -2,9 +2,8 @@ import { create } from 'zustand';
 
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import {
-  InterviewMeetingTypeDb,
   InterviewModuleType,
-  InterviewScheduleTypeDB,
+  InterviewScheduleTypeDB
 } from '@/src/types/data.types';
 import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 
@@ -16,7 +15,7 @@ export interface SchedulingApplication {
   initialSessions: SessionsType;
   selectedSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
-  selectedMeeting: InterviewMeetingTypeDb | null;
+  selectedSession: SessionsType[0] | null;
   selectedSchedule: InterviewScheduleTypeDB;
   interviewModules: InterviewModuleType[];
   scheduleName: string;
@@ -45,7 +44,7 @@ const initialState: SchedulingApplication = {
   selectedApplication: null,
   selectedSessionIds: [],
   tab: 'interview_plan',
-  selectedMeeting: null,
+  selectedSession: null,
   initialSessions: [],
   selectedSchedule: null,
   totalSlots: 0,
@@ -85,8 +84,8 @@ export const setIsEditOpen = (isEditOpen: boolean) =>
 export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditBreakOpen });
 
-export const setSelectedMeeting = (selectedMeeting: InterviewMeetingTypeDb) =>
-  useSchedulingApplicationStore.setState({ selectedMeeting });
+export const setSelectedSession = (selectedSession: SessionsType[0]) =>
+  useSchedulingApplicationStore.setState({ selectedSession });
 
 export const setEditSession = (editSession: Partial<SessionsType[0]>) =>
   useSchedulingApplicationStore.setState((state) => ({

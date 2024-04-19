@@ -11,8 +11,8 @@ function CancelScheduleDialog() {
   const isCancelOpen = useInterviewSchedulingStore(
     (state) => state.isCancelOpen,
   );
-  const selectedMeeting = useSchedulingApplicationStore(
-    (state) => state.selectedMeeting,
+  const selectedSession = useSchedulingApplicationStore(
+    (state) => state.selectedSession,
   );
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
@@ -20,12 +20,12 @@ function CancelScheduleDialog() {
 
   const onClickCancel = async () => {
     try {
-      if (selectedMeeting.id) {
+      if (selectedSession.id) {
         const { data: checkFilterJson, error: errMeetFilterJson } =
           await supabase
             .from('interview_filter_json')
             .select('*')
-            .contains('session_ids', [selectedMeeting.session_id]);
+            .contains('session_ids', [selectedSession.id]);
 
         if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
@@ -33,7 +33,7 @@ function CancelScheduleDialog() {
           const updateDbArray = checkFilterJson.map((filterJson) => ({
             ...filterJson,
             session_ids: filterJson.session_ids.filter(
-              (id) => id !== selectedMeeting.session_id,
+              (id) => id !== selectedSession.id,
             ),
           }));
 
@@ -49,7 +49,7 @@ function CancelScheduleDialog() {
           .update({
             status: 'cancelled',
           })
-          .eq('id', selectedMeeting.id)
+          .eq('id', selectedSession.meeting_id)
           .select();
         if (errMeet) {
           throw new Error(errMeet.message);
@@ -58,7 +58,7 @@ function CancelScheduleDialog() {
 
         setinitialSessions(
           initialSessions.map((session) => {
-            if (session.interview_meeting.id === selectedMeeting.id) {
+            if (session.id === selectedSession.id) {
               return {
                 ...session,
                 interview_meeting: {

@@ -139,7 +139,7 @@ const getScheduleDetails = async (schedule_id: string) => {
 const getInterviewSessionsMeetings = async (session_ids: string[]) => {
   const { data: intSes, error: errSes } = await supabase
     .from('interview_session')
-    .select('*')
+    .select('*,interview_meeting(*)')
     .in('id', session_ids);
 
   if (errSes) throw new Error(errSes.message);
@@ -150,18 +150,9 @@ const getInterviewSessionsMeetings = async (session_ids: string[]) => {
 
   const maxDurationInDays = Math.floor((maxBreakDuration + 1440) / 1440);
 
-  const { data: intMeet, error: errMeet } = await supabase
-    .from('interview_meeting')
-    .select('*')
-    .in('session_id', session_ids);
-
-  if (errMeet) throw new Error(errMeet.message);
-
   const resMeetings = intSes.map((session) => ({
     interview_session: session,
-    interview_meeting: intMeet.filter(
-      (meeting) => meeting.session_id === session.id,
-    )[0],
+    interview_meeting: session.interview_meeting,
   }));
 
   return { resMeetings, maxDurationInDays };

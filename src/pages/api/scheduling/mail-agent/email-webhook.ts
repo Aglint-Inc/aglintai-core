@@ -188,17 +188,11 @@ export const fetchCandidateDetails = async (
   const sessions = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
-      .select()
+      .select('*,interview_meeting(*)')
       .in('id', filter_json.session_ids),
   );
 
-  const meetings = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_meeting')
-      .select()
-      .in('session_id', filter_json.session_ids),
-  );
-  const meet_status = meetings[0].status;
+  const meet_status = sessions[0].interview_meeting.status;
 
   if (meet_status === 'completed') {
     // meeting completed
@@ -218,16 +212,16 @@ export const fetchCandidateDetails = async (
         `- meeting break ${sess.break_duration} \n\n`;
     });
   } else if (meet_status === 'confirmed') {
-    meetings.forEach((m, idx) => {
-      let sess = sessions.find((s) => s.id === m.session_id);
+    sessions.forEach((sess, idx) => {
+      // let sess = sessions.find((s) => s.id === m.session_id);
       meeting_summary +=
         `Meeting ${idx + 1}. ${sess.name}\n` +
-        `Meeting Date and time ${dayjs(m.start_time)
+        `Meeting Date and time ${dayjs(sess.interview_meeting.start_time)
           .tz(filter_json.user_tz)
           .format('h a dddd DD MMMM')}` +
         `- Duration ${sess.session_duration} ` +
         `- meeting place ${sess.schedule_type} ` +
-        `- meeting link ${m.meeting_link} ` +
+        `- meeting link ${sess.interview_meeting.meeting_link} ` +
         `- meeting break ${sess.break_duration} \n\n`;
     });
   }
@@ -245,7 +239,7 @@ export const fetchCandidateDetails = async (
       company_id: job.recruiter_id,
       job_id: job.id,
       schedule_id: cand_rec.interview_filter_json.schedule_id,
-      cand_application_status: meetings[0].status,
+      cand_application_status: sessions[0].interview_meeting.status,
       candidate_time_zone: filter_json.user_tz,
       interv_plan_summary: plan_summary,
       application_id: cand_rec.application_id,
@@ -256,7 +250,7 @@ export const fetchCandidateDetails = async (
         cand_rec.interview_filter_json.interview_schedule.applications
           .candidates.id,
       organizer_name: filter_json.organizer_name ?? job.company,
-      interview_meetings: meetings,
+      interview_meetings: sessions.map((ses) => ses.interview_meeting),
       meeting_summary,
       job_description: job.description,
     },

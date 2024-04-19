@@ -244,19 +244,17 @@ export const fetchInterviewSessionTask = async ({
         (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
       ) as InterviewSessionTypeDB[];
     } else {
-      const { data: interviewMeetings, error: interviewSessionError } =
+      const { data: interviewSessions, error: interviewSessionError } =
         await supabase
-          .from('interview_meeting')
-          .select('*,interview_session!inner(*)')
+          .from('interview_session')
+          .select('*,interview_meeting!inner(*)')
           .eq('interview_schedule_id', schedule[0].id)
           .neq('interview_session.session_type', 'debrief')
           .or('status.eq.not_scheduled,status.eq.cancelled');
 
       if (interviewSessionError) throw new Error(interviewSessionError.message);
 
-      const sessions = interviewMeetings.map((meet) => meet.interview_session);
-
-      return sessions.sort(
+      return interviewSessions.sort(
         (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
       ) as InterviewSessionTypeDB[];
     }
@@ -319,6 +317,7 @@ export const scheduleWithAgent = async ({
           scheduleName,
           coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
           supabase: supabase,
+          recruiter_id: recruiter_id,
         });
 
         const { data: filterJson, error: errorFilterJson } = await supabase
@@ -390,7 +389,6 @@ export const scheduleWithAgent = async ({
                 id: ses.interview_meeting.id,
                 interview_schedule_id:
                   ses.interview_meeting.interview_schedule_id,
-                session_id: ses.interview_meeting.session_id,
               })) as InterviewMeetingTypeDb[],
           );
 

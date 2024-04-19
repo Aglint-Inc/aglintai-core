@@ -19,6 +19,7 @@ import {
 } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import {
@@ -47,6 +48,7 @@ type Interviewer = {
 };
 
 function SideDrawerEdit() {
+  const { recruiter } = useAuthDetails();
   const {
     editSession,
     allSessions,
@@ -237,6 +239,7 @@ function SideDrawerEdit() {
           is_get_more_option: false,
           scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           session_ids: [],
+          recruiter_id: recruiter.id,
         } as ApiBodyParamsSessionCache,
       );
 

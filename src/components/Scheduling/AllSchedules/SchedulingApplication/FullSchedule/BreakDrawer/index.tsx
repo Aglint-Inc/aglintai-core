@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { SideDrawerBlock } from '@/devlink2';
 import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSessionCache } from '@/src/pages/api/scheduling/application/candidatesessioncache';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -13,6 +14,7 @@ import { useGetScheduleApplication } from '../../hooks';
 import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
 
 function BreakDrawerEdit() {
+  const { recruiter } = useAuthDetails();
   const {
     editSession,
     allSessions,
@@ -54,6 +56,7 @@ function BreakDrawerEdit() {
           is_get_more_option: false,
           scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           session_ids: [],
+          recruiter_id: recruiter.id,
         } as ApiBodyParamsSessionCache,
       );
 

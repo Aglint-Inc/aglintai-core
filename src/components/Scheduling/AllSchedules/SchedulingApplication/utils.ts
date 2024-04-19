@@ -29,7 +29,7 @@ export const fetchInterviewMeetingProgresstask = async ({
   try {
     const { data: intSes, error: errSes } = await supabase
       .from('interview_session')
-      .select('*')
+      .select('*,interview_meeting(*)')
       .in('id', session_ids);
 
     if (errSes) throw new Error(errSes.message);
@@ -41,18 +41,9 @@ export const fetchInterviewMeetingProgresstask = async ({
 
     if (errSesRel) throw new Error(errSesRel.message);
 
-    const { data: intMeet, error: errMeet } = await supabase
-      .from('interview_meeting')
-      .select('*')
-      .in('session_id', session_ids);
-
-    if (errMeet) throw new Error(errMeet.message);
-
     const resMeetings = intSes.map((session) => ({
       interview_session: session,
-      interview_meeting: intMeet.filter(
-        (meeting) => meeting.session_id === session.id,
-      )[0],
+      interview_meeting: session.interview_meeting,
       interview_session_relation: intSesRel.filter(
         (rel) => rel.session_id === session.id,
       ),
@@ -62,50 +53,6 @@ export const fetchInterviewMeetingProgresstask = async ({
   } catch (e) {
     toast.error(e.message);
   }
-};
-
-export const updateProgress = async ({
-  interview_session_relation_ids,
-}: {
-  interview_session_relation_ids: string[]; // interview_module_relation_id
-}) => {
-  const { data: intSesRel, error: errSelRel } = await supabase
-    .from('interview_session_relation')
-    .select(
-      '*,interview_session!inner(*,interview_plan(*),interview_module(*))',
-    )
-    .in('id', interview_session_relation_ids)
-    .eq('is_confirmed', true);
-
-  if (errSelRel) throw new Error(errSelRel.message);
-
-  const filteredIntSesRel = intSesRel.filter(
-    (ses) => !ses.interview_session?.interview_plan?.id,
-  );
-
-  const uniqueSessionIds = [
-    ...new Set(
-      filteredIntSesRel.map((sesrel) => sesrel.interview_module_relation_id),
-    ),
-  ];
-
-  const { data, error } = await supabase
-    .from('interview_meeting')
-    .select('*,interview_session!inner(*)')
-    .in('interview_session.id', uniqueSessionIds);
-  // .eq('status', 'completed');
-
-  const resRel = filteredIntSesRel
-    .map((sesRel) => ({
-      ...sesRel,
-      interview_meeting: data.find(
-        (meet) => meet.interview_session.id === sesRel.interview_session.id,
-      ),
-    }))
-    .filter((sesRel) => sesRel?.interview_meeting?.id);
-
-  if (error) throw new Error(error.message);
-  return resRel;
 };
 
 export const updateApplicationStatus = async ({
@@ -194,6 +141,7 @@ export const createCloneSession = async ({
   scheduleName,
   coordinator_id,
   supabase,
+  recruiter_id,
 }: {
   is_get_more_option: boolean;
   application_id: string;
@@ -201,6 +149,7 @@ export const createCloneSession = async ({
   session_ids: string[];
   scheduleName: string;
   coordinator_id: string;
+  recruiter_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   let new_schedule_id = uuidv4();
@@ -213,6 +162,7 @@ export const createCloneSession = async ({
         schedule_name: scheduleName,
         coordinator_id: coordinator_id,
         id: new_schedule_id,
+        recruiter_id: recruiter_id,
       })
       .select();
 
@@ -222,7 +172,25 @@ export const createCloneSession = async ({
       ...session,
       newId: uuidv4(),
       isSelected: session_ids.includes(session.id),
+      new_meeting_id: uuidv4(),
+      new_schedule_id: new_schedule_id,
     }));
+
+    const { error: errorInsertedMeetings } = await supabase
+      .from('interview_meeting')
+      .insert(
+        refSessions.map((ses) => {
+          return {
+            interview_schedule_id: ses.new_schedule_id,
+            status: ses.isSelected ? 'waiting' : 'not_scheduled',
+            instructions: refSessions.find((s) => s.id === ses.id)
+              ?.interview_module?.instructions,
+            id: ses.new_meeting_id,
+          } as InterviewMeetingTypeDb;
+        }),
+      );
+
+    if (errorInsertedMeetings) throw new Error(errorInsertedMeetings.message);
 
     const { error: errorInsertedSessions } = await supabase
       .from('interview_session')
@@ -239,6 +207,8 @@ export const createCloneSession = async ({
           session_duration: session.session_duration,
           session_order: session.session_order,
           session_type: session.session_type,
+          meeting_id: refSessions.find((ref) => ref.id === session.id)
+            .new_meeting_id,
         })) as InterviewSessionTypeDB[],
       );
 
@@ -263,20 +233,6 @@ export const createCloneSession = async ({
 
     if (errorInsertedUserRelation)
       throw new Error(errorInsertedUserRelation.message);
-
-    const insertableMeetings = refSessions.map((session) => ({
-      status: session.isSelected ? 'waiting' : 'not_scheduled',
-      session_id: session.newId,
-      instructions: refSessions.find((s) => s.id === session.id)
-        ?.interview_module?.instructions,
-      interview_schedule_id: data[0].id,
-    })) as InterviewMeetingTypeDb[];
-
-    const { error: errorInsertedMeetings } = await supabase
-      .from('interview_meeting')
-      .insert(insertableMeetings);
-
-    if (errorInsertedMeetings) throw new Error(errorInsertedMeetings.message);
 
     const newSessionIds = refSessions
       .filter((ses) => ses.isSelected)
@@ -344,6 +300,7 @@ export const sendToCandidate = async ({
         session_ids: selectedSessionIds,
         scheduleName: scheduleName,
         coordinator_id: selCoordinator,
+        recruiter_id: recruiter_id,
         supabase: supabase,
       });
 
@@ -434,7 +391,6 @@ export const sendToCandidate = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
-              session_id: ses.interview_meeting.session_id,
             })) as InterviewMeetingTypeDb[],
         );
 
