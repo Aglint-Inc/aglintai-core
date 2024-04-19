@@ -48,9 +48,10 @@ export const useGetScheduleApplication = () => {
         setSelectedSchedule(schedule[0]);
 
         if (schedule.length == 0) {
-          const sessionsWithPlan = await fetchInterviewDataJob(
-            router.query.application_id as string,
-          );
+          const sessionsWithPlan = await fetchInterviewDataJob({
+            application_id: router.query.application_id as string,
+            supabase,
+          });
 
           setSelectedApplication(sessionsWithPlan.application);
           setScheduleName(
@@ -101,7 +102,13 @@ export const useGetScheduleApplication = () => {
   return { fetchInterviewDataByApplication };
 };
 
-export const fetchInterviewDataJob = async (application_id: string) => {
+export const fetchInterviewDataJob = async ({
+  application_id,
+  supabase,
+}: {
+  application_id: string;
+  supabase: ReturnType<typeof createServerClient<Database>>;
+}) => {
   try {
     const { data, error } = (await supabase.rpc('get_interview_data_job', {
       application_id_param: application_id,
@@ -305,7 +312,10 @@ export const scheduleWithAgent = async ({
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
       if (checkSch.length === 0) {
-        const sessionsWithPlan = await fetchInterviewDataJob(application_id);
+        const sessionsWithPlan = await fetchInterviewDataJob({
+          application_id,
+          supabase,
+        });
 
         const scheduleName = `Interview for ${sessionsWithPlan.application.public_jobs.job_title} - ${sessionsWithPlan.application.candidates.first_name}`;
 
