@@ -6,11 +6,12 @@ import { capitalize } from 'lodash';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import { AgentPill } from '@/devlink3';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
-import MuiAvatar from '../../../../../Common/MuiAvatar';
-import { useTaskStatesContext } from '../../../../TaskStatesContext';
-import { assigneeType } from '../../../UpdateSubTask';
+import { useTaskStatesContext } from '../../../TaskStatesContext';
+import { assigneeType } from '../../../utils';
+
 // import {assigneeType} from '../../../UpdateSubTask'
 
 export default forwardRef((props: any, ref) => {
