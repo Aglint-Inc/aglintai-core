@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -90,21 +91,36 @@ export const agentTrigger = async ({
   rec_user_phone,
   user_tz,
 }) => {
+  console.log({
+    type,
+    filterJsonId,
+    task_id,
+    recruiter_user_name,
+    candidate_name,
+    company_name,
+    jobRole,
+    rec_user_email,
+    rec_user_phone,
+    user_tz,
+  });
+
   if (type === 'email_agent') {
-    await axios.post(
+    const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
       {
         cand_email: rec_user_email,
         // cand_email: sessionsWithPlan.application.candidates.email,
-        cand_time_zone: dayjs.tz.guess(),
+        cand_time_zone: user_tz,
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
         organizer_time_zone: user_tz,
         task_id: task_id,
       } as InitAgentBodyParams,
     );
+
+    console.log(res?.data);
   } else if (type === 'phone_agent') {
-    await axios.post(
+    const res = await axios.post(
       // 'https://rested-logically-lynx.ngrok-free.app/api/create-phone-call',
       'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
       {
@@ -127,6 +143,7 @@ export const agentTrigger = async ({
         cand_time_zone: user_tz,
       },
     );
+    console.log(res?.data);
   }
 };
 
