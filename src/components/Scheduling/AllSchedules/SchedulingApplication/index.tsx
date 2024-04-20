@@ -160,6 +160,7 @@ function SchedulingApplication() {
           rec_user_email: recruiterUser.email,
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
+          user_tz: dayjs.tz.guess(),
         } as ApiBodyParamsScheduleAgent,
       );
 

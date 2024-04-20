@@ -23,6 +23,7 @@ export interface ApiBodyParamsSendToCandidate {
   };
   schedulingOptions: SchedulingApplication['schedulingOptions'];
   recruiterUser: RecruiterUserType;
+  user_tz: string;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

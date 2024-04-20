@@ -87,6 +87,7 @@ function GetScheduleOptionsDialog() {
           selected_comb_id: selectedId,
           selectedApplication,
           selectedSessionIds,
+          user_tz: dayjs.tz.guess(),
         } as ApiBodyParamsSendToCandidate,
       );
 

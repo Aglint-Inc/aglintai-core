@@ -144,6 +144,7 @@ function AddNewTask() {
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
           supabase: supabase,
+          user_tz: dayjs.tz.guess(),
         });
       }
       // end
