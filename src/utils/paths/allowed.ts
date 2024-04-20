@@ -64,5 +64,6 @@ export const allowedPaths = new Set([
   '/api/scheduling/v1/cancel_interview_scheduling',
   '/api/scheduling/v1/assign-interviewer-training-type',
   '/api/scheduling/mail-agent/init-agent',
+  'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
   ...cronPaths,
 ]);
