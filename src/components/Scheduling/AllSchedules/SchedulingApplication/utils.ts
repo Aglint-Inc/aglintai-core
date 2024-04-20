@@ -88,6 +88,7 @@ export const agentTrigger = async ({
   jobRole,
   rec_user_email,
   rec_user_phone,
+  user_tz,
 }) => {
   if (type === 'email_agent') {
     await axios.post(
@@ -98,7 +99,7 @@ export const agentTrigger = async ({
         cand_time_zone: dayjs.tz.guess(),
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
-        organizer_time_zone: dayjs.tz.guess(),
+        organizer_time_zone: user_tz,
         task_id: task_id,
       } as InitAgentBodyParams,
     );
@@ -123,7 +124,7 @@ export const agentTrigger = async ({
         // cand_email: sessionsWithPlan.application.candidates.email,
         task_id: task_id,
         // cand_time_zone: 'America/Los_Angeles',
-        cand_time_zone: dayjs.tz.guess(),
+        cand_time_zone: user_tz,
       },
     );
   }
@@ -262,6 +263,7 @@ export const sendToCandidate = async ({
   schedulingOptions,
   recruiterUser,
   supabase,
+  user_tz,
 }: {
   is_mail: boolean;
   is_debrief?: boolean;
@@ -278,6 +280,7 @@ export const sendToCandidate = async ({
   schedulingOptions: SchedulingApplication['schedulingOptions'];
   recruiterUser: RecruiterUserType;
   supabase: ReturnType<typeof createServerClient<Database>>;
+  user_tz: string;
 }) => {
   try {
     const scheduleName = `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`;
@@ -308,7 +311,7 @@ export const sendToCandidate = async ({
             recruiter_id: recruiter_id,
             start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-            user_tz: dayjs.tz.guess(),
+            user_tz: user_tz,
             organizer_name: recruiterUser.first_name,
           },
           session_ids: createCloneRes.session_ids,
@@ -364,7 +367,7 @@ export const sendToCandidate = async ({
             },
           ],
           recruiter_id: recruiter_id,
-          user_tz: dayjs.tz.guess(),
+          user_tz: user_tz,
           candidate_email: selectedApplication.candidates.email,
           schedule_id: createCloneRes.schedule.id,
         } as ConfirmApiBodyParams;
@@ -400,7 +403,7 @@ export const sendToCandidate = async ({
             recruiter_id: recruiter_id,
             start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
             end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-            user_tz: dayjs.tz.guess(),
+            user_tz: user_tz,
             organizer_name: recruiterUser.first_name,
           },
           session_ids: selectedSessionIds,
@@ -454,7 +457,7 @@ export const sendToCandidate = async ({
             },
           ],
           recruiter_id: recruiter_id,
-          user_tz: dayjs.tz.guess(),
+          user_tz: user_tz,
           candidate_email: selectedApplication.candidates.email,
           schedule_id: checkSch[0].id,
         } as ConfirmApiBodyParams;

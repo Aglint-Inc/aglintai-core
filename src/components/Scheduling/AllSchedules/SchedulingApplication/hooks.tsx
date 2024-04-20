@@ -286,6 +286,7 @@ export const scheduleWithAgent = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
+  user_tz,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -303,6 +304,7 @@ export const scheduleWithAgent = async ({
   rec_user_phone: string;
   rec_user_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
+  user_tz: string;
 }) => {
   try {
     if (type) {
@@ -384,6 +386,7 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
+          user_tz,
         });
       } else {
         const sessionsWithPlan = await fetchInterviewDataSchedule(
@@ -453,6 +456,7 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
+          user_tz,
         });
       }
       return true;
