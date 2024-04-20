@@ -4,12 +4,12 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
-import { PanelMemberPill } from '@/devlink2';
+import { EmptyState, PanelMemberPill } from '@/devlink2';
 import { AgentPill, TaskProgress, TranscriptCard } from '@/devlink3';
-import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 // import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
 import {
   TasksAgentContextType,
@@ -25,13 +25,15 @@ function SubTaskProgress() {
   const { tasks } = useTasksContext();
   const { assignerList } = useTaskStatesContext();
 
-  const { data: progressList } = useProgress();
+  const { data: progressList, isFetchedAfterMount } = useProgress();
   const { data: sessionList } = useScheduleSession();
 
   return (
     <ShowCode>
-      <ShowCode.When isTrue={progressList === null}>
-        <Loader />
+      <ShowCode.When isTrue={!isFetchedAfterMount}>
+        <Stack minWidth={600}>
+          <DynamicLoader height='300px' />
+        </Stack>
       </ShowCode.When>
       <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
         {progressList
@@ -240,7 +242,9 @@ function SubTaskProgress() {
             })
           : null}
       </ShowCode.When>
-      <ShowCode.Else>Progress not found!</ShowCode.Else>
+      <ShowCode.Else>
+        <EmptyState textDescription={'Progress not found!'} />
+      </ShowCode.Else>
     </ShowCode>
   );
 }
@@ -285,6 +289,8 @@ export const useProgress = () => {
   const query = useQuery({
     queryKey: ['get_new_tasks_progress'],
     queryFn: () => getTaskProgress(taskId),
+    refetchInterval: 3000,
+    enabled: true,
   });
   const refetch = () =>
     queryClient.invalidateQueries({

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Popover, Stack, Typography } from '@mui/material';
+import { Popover, Stack, TextField, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { EmptyState } from '@/devlink2';
 import { AvatarWithName, ListCard, ListPop } from '@/devlink3';
@@ -23,7 +23,7 @@ function CandidateList({
   isOptionList?: boolean;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const [searchText, setSearchText] = useState('');
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -105,54 +105,80 @@ function CandidateList({
           slotListCard={
             <ShowCode>
               <ShowCode.When isTrue={!!candidates?.length}>
+                <TextField
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus={true}
+                  fullWidth
+                  sx={{
+                    p: '4px',
+                  }}
+                  placeholder='Search candidate'
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
+                />
                 {candidates &&
-                  candidates.map((ele, i) => {
-                    return (
-                      <Stack
-                        key={i}
-                        width={'100%'}
-                        p={'4px'}
-                        sx={{
-                          cursor: 'pointer',
-                          '&:hover': {
-                            bgcolor: 'grey.100',
-                          },
-                        }}
-                        onClick={() => {
-                          setSelectedCandidate(ele);
-                          handleClose();
-                        }}
-                      >
-                        <ListCard
-                          isAvatarWithNameVisible={true}
-                          isListVisible={false}
-                          slotAvatarWithName={
-                            <AvatarWithName
-                              slotAvatar={
-                                <MuiAvatar
-                                  height={'25px'}
-                                  width={'25px'}
-                                  src={ele?.candidates.avatar}
-                                  variant='circular'
-                                  fontSize='14px'
-                                  level={capitalizeAll(
-                                    ele.candidates?.first_name +
-                                      ' ' +
-                                      ele.candidates?.last_name,
-                                  )}
-                                />
-                              }
-                              textName={capitalizeAll(
-                                ele.candidates?.first_name +
-                                  ' ' +
-                                  ele.candidates?.last_name,
-                              )}
-                            />
-                          }
-                        />
-                      </Stack>
-                    );
-                  })}
+                  candidates
+                    .filter((ele) =>
+                      ele.candidates.first_name.includes(searchText),
+                    )
+                    .map((ele, i) => {
+                      return (
+                        <Stack
+                          key={i}
+                          width={'100%'}
+                          p={'4px'}
+                          sx={{
+                            cursor: 'pointer',
+                            '&:hover': {
+                              bgcolor: 'grey.100',
+                            },
+                          }}
+                          onClick={() => {
+                            setSelectedCandidate(ele);
+                            handleClose();
+                          }}
+                        >
+                          <ListCard
+                            isAvatarWithNameVisible={true}
+                            isListVisible={false}
+                            slotAvatarWithName={
+                              <AvatarWithName
+                                slotAvatar={
+                                  <MuiAvatar
+                                    height={'25px'}
+                                    width={'25px'}
+                                    src={ele?.candidates.avatar}
+                                    variant='circular'
+                                    fontSize='14px'
+                                    level={capitalizeAll(
+                                      ele.candidates?.first_name +
+                                        ' ' +
+                                        ele.candidates?.last_name,
+                                    )}
+                                  />
+                                }
+                                textName={capitalizeAll(
+                                  ele.candidates?.first_name +
+                                    ' ' +
+                                    ele.candidates?.last_name,
+                                )}
+                              />
+                            }
+                          />
+                        </Stack>
+                      );
+                    })}
+                <ShowCode.When
+                  isTrue={
+                    candidates &&
+                    !candidates.filter((ele) =>
+                      ele.candidates.first_name.includes(searchText),
+                    ).length
+                  }
+                >
+                  <EmptyState textDescription={'Candidate not found!'} />
+                </ShowCode.When>
               </ShowCode.When>
               <ShowCode.Else>
                 <EmptyState textDescription='Candidate are not available!' />
