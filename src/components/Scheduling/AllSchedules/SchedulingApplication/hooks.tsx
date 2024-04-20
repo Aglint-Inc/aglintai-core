@@ -342,7 +342,7 @@ export const scheduleWithAgent = async ({
               recruiter_id: recruiter_id,
               start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
               end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-              user_tz: dayjs.tz.guess(),
+              user_tz: user_tz,
               organizer_name: recruiter_user_name,
             },
             session_ids: createCloneRes.session_ids,
@@ -422,7 +422,7 @@ export const scheduleWithAgent = async ({
               end_date:
                 dateRange.end_date &&
                 dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-              user_tz: dayjs.tz.guess(),
+              user_tz: user_tz,
               organizer_name: recruiter_user_name,
             },
             session_ids: session_ids,
