@@ -375,7 +375,7 @@ export const scheduleWithAgent = async ({
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
         }
 
-        agentTrigger({
+        await agentTrigger({
           type,
           sessionsWithPlan,
           filterJsonId: filterJson[0].id,
@@ -445,7 +445,7 @@ export const scheduleWithAgent = async ({
 
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        agentTrigger({
+        await agentTrigger({
           type,
           sessionsWithPlan,
           filterJsonId: filterJson[0].id,

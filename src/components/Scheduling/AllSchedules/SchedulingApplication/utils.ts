@@ -104,6 +104,15 @@ export const agentTrigger = async ({
     user_tz,
   });
 
+  console.log(
+    rec_user_phone
+      .replace(' ', '')
+      .replace('-', '')
+      .replace('(', '')
+      .replace(')', ''),
+    'formatted number',
+  );
+
   if (type === 'email_agent') {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
