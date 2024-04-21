@@ -1772,8 +1772,10 @@ export type Database = {
           created_at: string
           created_by: string
           due_date: string | null
+          filter_id: string | null
           id: string
           name: string
+          priority: Database["public"]["Enums"]["task_priority"]
           recruiter_id: string | null
           schedule_date_range: Json | null
           session_ids: Json[] | null
@@ -1789,8 +1791,10 @@ export type Database = {
           created_at?: string
           created_by: string
           due_date?: string | null
+          filter_id?: string | null
           id?: string
           name: string
+          priority?: Database["public"]["Enums"]["task_priority"]
           recruiter_id?: string | null
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
@@ -1806,8 +1810,10 @@ export type Database = {
           created_at?: string
           created_by?: string
           due_date?: string | null
+          filter_id?: string | null
           id?: string
           name?: string
+          priority?: Database["public"]["Enums"]["task_priority"]
           recruiter_id?: string | null
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
@@ -1830,6 +1836,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4069,6 +4082,22 @@ export type Database = {
           total_results: number
         }[]
       }
+      upd_get_interview_session_data: {
+        Args: {
+          session_ids: string[]
+          company_id: string
+          meet_start_date: string
+          meet_end_date: string
+        }
+        Returns: {
+          interview_sessions: Json[]
+          interviewers: Json[]
+          service_cred: string
+          interview_modules: Json[]
+          comp_schedule_setting: Json
+          int_meetings: Json[]
+        }[]
+      }
       update_debrief_session: {
         Args: {
           session_id: string
@@ -4203,13 +4232,14 @@ export type Database = {
         | "failed"
         | "closed"
       task_agent_type: "phone" | "email" | "job"
+      task_priority: "high" | "low" | "mediam"
       task_status:
         | "pending"
         | "in_progress"
         | "completed"
         | "closed"
         | "not_started"
-      task_type_enum: "schedule" | "training"
+      task_type_enum: "schedule" | "training" | "empty"
       template_type:
         | "cognitive"
         | "language"

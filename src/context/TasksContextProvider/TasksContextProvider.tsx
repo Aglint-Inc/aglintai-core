@@ -9,6 +9,7 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from 'react';
 
 import { EmailAgentId } from '@/src/components/Tasks/utils';
@@ -37,6 +38,7 @@ type TasksReducerType = {
     totalRows: number;
   };
   sort: 'date' | 'status';
+  loadingTasks: boolean;
 };
 
 export type TasksAgentContextType = TasksReducerType & {
@@ -56,6 +58,7 @@ export type TasksAgentContextType = TasksReducerType & {
   handelSearch: (x: string) => void;
   handelFilter: (x: AtLeastOneRequired<TasksReducerType['filter']>) => void;
   handelSort: (x: TasksReducerType['sort']) => void;
+  loadingTasks: boolean;
 };
 
 const reducerInitialState: TasksReducerType = {
@@ -81,6 +84,7 @@ const reducerInitialState: TasksReducerType = {
     jobTitle: { options: [], values: [] },
   },
   sort: 'date',
+  loadingTasks: true,
 };
 
 const contextInitialState: TasksAgentContextType = {
@@ -397,6 +401,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         )
       : filterTask;
   }, [tasksReducer.search, filterTask]);
+  const [loadingTasks, setLoading] = useState(true);
 
   useEffect(() => {
     if (recruiter_id) {
@@ -412,6 +417,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         temp.tasks = data.data;
         temp.pagination.totalRows = data.count;
         init({ ...temp, tasks: data.data });
+        setLoading(false);
       });
     }
   }, [recruiter_id]);
@@ -434,6 +440,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           handelSearch,
           handelFilter,
           handelSort,
+          loadingTasks,
         }}
       >
         {children}

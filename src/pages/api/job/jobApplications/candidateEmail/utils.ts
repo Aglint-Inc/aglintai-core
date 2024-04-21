@@ -13,6 +13,7 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
+import { CustomDatabase } from '@/src/types/customSchema';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -143,9 +144,11 @@ export const createTasks = async (
     )})`,
     recruiter_id: job.recruiter_id,
     application_id: candidate.application_id,
-    created_by: job.recruiterUser,
+    created_by: job.recruiterUser.id as string,
+    assignee: [] as string[],
+    type: 'empty' as CustomDatabase['public']['Enums']['task_type_enum'],
   }));
-  const { error } = await supabase.from('tasks').insert(safeData);
+  const { error } = await supabase.from('new_tasks').insert(safeData);
   if (error) throw new Error(error.message);
 };
 
