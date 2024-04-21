@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { scheduleWithAgent } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
-import { Database } from '@/src/types/schema';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsScheduleAgent {
   type: 'phone_agent' | 'email_agent';
@@ -23,28 +22,11 @@ export interface ApiBodyParamsScheduleAgent {
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
+  filter_id: string;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createServerClient<Database>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return req.cookies[name];
-          },
-          set(name: string, value: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, value, options));
-          },
-          remove(name: string, options: CookieOptions) {
-            res.setHeader('Set-Cookie', serialize(name, '', options));
-          },
-        },
-      },
-    );
-
     const {
       application_id,
       dateRange,
@@ -74,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rec_user_email,
       rec_user_phone,
       rec_user_id,
-      supabase,
+      supabase: supabaseAdmin,
       user_tz,
     });
 

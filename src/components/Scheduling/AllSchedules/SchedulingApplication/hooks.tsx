@@ -363,6 +363,7 @@ export const scheduleWithAgent = async ({
               session_ids: createCloneRes.refSessions.filter(
                 (ses) => ses.isSelected,
               ),
+              task_triggered: true,
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
@@ -410,6 +411,7 @@ export const scheduleWithAgent = async ({
               assignee,
               filter_id: filterJson[0].id,
               session_ids: createCloneRes.refSessions,
+              task_triggered: true,
             } as any)
             .select();
 
@@ -495,6 +497,7 @@ export const scheduleWithAgent = async ({
             .update({
               filter_id: filterJson[0].id,
               session_ids: sessionsWithPlan.sessions,
+              task_triggered: true,
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
@@ -541,6 +544,7 @@ export const scheduleWithAgent = async ({
               assignee,
               filter_id: filterJson[0].id,
               session_ids: selectedSessions,
+              task_triggered: true,
             } as any)
             .select();
 
