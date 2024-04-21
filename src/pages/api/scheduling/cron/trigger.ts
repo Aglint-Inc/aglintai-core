@@ -25,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
       .eq('task_triggered', false)
+      .lt('start_date', new Date().toISOString())
       .not('filter_id', 'is', null);
     if (error) {
       throw new Error(error.message);
