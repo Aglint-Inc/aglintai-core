@@ -1772,6 +1772,7 @@ export type Database = {
           created_at: string
           created_by: string
           due_date: string | null
+          filter_id: string | null
           id: string
           name: string
           recruiter_id: string | null
@@ -1789,6 +1790,7 @@ export type Database = {
           created_at?: string
           created_by: string
           due_date?: string | null
+          filter_id?: string | null
           id?: string
           name: string
           recruiter_id?: string | null
@@ -1806,6 +1808,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           due_date?: string | null
+          filter_id?: string | null
           id?: string
           name?: string
           recruiter_id?: string | null
@@ -1830,6 +1833,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4067,6 +4077,22 @@ export type Database = {
           job_id: string
           candfile_id: string
           total_results: number
+        }[]
+      }
+      upd_get_interview_session_data: {
+        Args: {
+          session_ids: string[]
+          company_id: string
+          meet_start_date: string
+          meet_end_date: string
+        }
+        Returns: {
+          interview_sessions: Json[]
+          interviewers: Json[]
+          service_cred: string
+          interview_modules: Json[]
+          comp_schedule_setting: Json
+          int_meetings: Json[]
         }[]
       }
       update_debrief_session: {

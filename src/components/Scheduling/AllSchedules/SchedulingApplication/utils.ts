@@ -348,13 +348,13 @@ export const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       addScheduleActivity({
-        schedule_id: createCloneRes.schedule.id,
         title: `Candidate invited for session ${createCloneRes.refSessions
           .filter((ses) => ses.isSelected)
           .map((ses) => ses.name)
           .join(' , ')}`,
-        filter_id: filterJson[0].id,
-        user_id: recruiterUser.user_id,
+        application_id: selectedApplication.id,
+        logger: recruiterUser.user_id,
+        type: 'schedule',
         supabase,
       });
 
@@ -440,13 +440,13 @@ export const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       addScheduleActivity({
-        schedule_id: checkSch[0].id,
         title: `Candidate invited for session ${initialSessions
           .filter((ses) => selectedSessionIds.includes(ses.id))
           .map((ses) => ses.name)
           .join(' , ')}`,
-        filter_id: filterJson[0].id,
-        user_id: recruiterUser.user_id,
+        logger: recruiterUser.user_id,
+        application_id: selectedApplication.id,
+        type: 'schedule',
         supabase,
       });
 

@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 
+import { ApplicationLogsTypeDb } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -37,21 +38,28 @@ export const getPaginationDB = async ({
 };
 
 export const addScheduleActivity = async ({
-  schedule_id,
   title,
-  filter_id,
   application_id,
-  user_id,
+  description,
+  task_id,
+  type,
+  logger,
   supabase,
 }: {
-  schedule_id: string;
   title: string;
-  filter_id?: string;
-  application_id?: string;
-  user_id?: string;
+  application_id: string;
+  description?: string;
+  task_id?: string;
+  type: ApplicationLogsTypeDb['type'];
+  logger: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
-  await supabase
-    .from('interview_schedule_activity')
-    .insert({ schedule_id, title, filter_id, application_id, user_id });
+  await supabase.from('application_logs').insert({
+    application_id,
+    title,
+    description,
+    task_id,
+    type,
+    logger,
+  });
 };

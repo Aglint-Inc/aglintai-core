@@ -259,3 +259,6 @@ export type SubTaskProgress =
 
 export type InterviewScheduleActivityTypeDb =
   Database['public']['Tables']['interview_schedule_activity']['Row'];
+
+export type ApplicationLogsTypeDb =
+  Database['public']['Tables']['application_logs']['Row'];

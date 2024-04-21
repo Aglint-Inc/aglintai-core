@@ -7,6 +7,7 @@ dayjs.extend(timezone);
 
 import { createServerClient } from '@supabase/ssr';
 
+import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
@@ -308,6 +309,8 @@ export const scheduleWithAgent = async ({
 }) => {
   try {
     if (type) {
+      const assignee = type == 'email_agent' ? [EmailAgentId] : [PhoneAgentId];
+
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
         .select('id')
@@ -350,44 +353,96 @@ export const scheduleWithAgent = async ({
           })
           .select();
 
-        addScheduleActivity({
-          schedule_id: createCloneRes.schedule.id,
-          title: `Candidate invited for session ${createCloneRes.refSessions
-            .filter((ses) => ses.isSelected)
-            .map((ses) => ses.name)
-            .join(
-              ' , ',
-            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
-          filter_id: filterJson[0].id,
-          user_id: rec_user_id,
-          supabase,
-        });
-
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
         if (task_id) {
           const { error: eroorSubTasks } = await supabase
-            .from('sub_tasks')
+            .from('new_tasks')
             .update({
-              session_ids: createCloneRes.session_ids,
+              filter_id: filterJson[0].id,
+              session_ids: createCloneRes.refSessions.filter(
+                (ses) => ses.isSelected,
+              ),
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
-        }
 
-        await agentTrigger({
-          type,
-          sessionsWithPlan,
-          filterJsonId: filterJson[0].id,
-          task_id,
-          recruiter_user_name,
-          candidate_name,
-          company_name,
-          jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          rec_user_email,
-          rec_user_phone,
-          user_tz,
-        });
+          addScheduleActivity({
+            title: `Candidate invited for session ${createCloneRes.refSessions
+              .filter((ses) => ses.isSelected)
+              .map((ses) => ses.name)
+              .join(
+                ' , ',
+              )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+            logger: rec_user_id,
+            type: 'schedule',
+            application_id,
+            task_id,
+            supabase,
+          });
+
+          agentTrigger({
+            type,
+            sessionsWithPlan,
+            filterJsonId: filterJson[0].id,
+            task_id,
+            recruiter_user_name,
+            candidate_name,
+            company_name,
+            jobRole: sessionsWithPlan.application.public_jobs.job_title,
+            rec_user_email,
+            rec_user_phone,
+            user_tz,
+          });
+        } else {
+          const { data: task, error: errorTasks } = await supabase
+            .from('new_tasks')
+            .insert({
+              name: `Schedule an interview for ${createCloneRes.refSessions.map((ses) => ses.name).join(' , ')} via phone`,
+              application_id,
+              created_by: rec_user_id,
+              type: 'schedule',
+              status: 'in_progress',
+              recruiter_id,
+              due_date: dateRange.end_date,
+              schedule_date_range: dateRange,
+              start_date: new Date(),
+              assignee,
+              filter_id: filterJson[0].id,
+              session_ids: createCloneRes.refSessions,
+            } as any)
+            .select();
+
+          if (errorTasks) throw new Error(errorTasks.message);
+
+          addScheduleActivity({
+            title: `Candidate invited for session ${createCloneRes.refSessions
+              .filter((ses) => ses.isSelected)
+              .map((ses) => ses.name)
+              .join(
+                ' , ',
+              )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+            logger: rec_user_id,
+            type: 'schedule',
+            application_id,
+            task_id: task[0].id,
+            supabase,
+          });
+
+          agentTrigger({
+            type,
+            sessionsWithPlan,
+            filterJsonId: filterJson[0].id,
+            task_id: task[0].id,
+            recruiter_user_name,
+            candidate_name,
+            company_name,
+            jobRole: sessionsWithPlan.application.public_jobs.job_title,
+            rec_user_email,
+            rec_user_phone,
+            user_tz,
+          });
+        }
       } else {
         const sessionsWithPlan = await fetchInterviewDataSchedule(
           checkSch[0].id,
@@ -395,17 +450,19 @@ export const scheduleWithAgent = async ({
           supabase,
         );
 
+        const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
+          session_ids.includes(ses.id),
+        );
+
         const { error: errorUpdatedMeetings } = await supabase
           .from('interview_meeting')
           .upsert(
-            sessionsWithPlan.sessions
-              .filter((ses) => session_ids.includes(ses.id))
-              .map((ses) => ({
-                status: 'waiting',
-                id: ses.interview_meeting.id,
-                interview_schedule_id:
-                  ses.interview_meeting.interview_schedule_id,
-              })) as InterviewMeetingTypeDb[],
+            selectedSessions.map((ses) => ({
+              status: 'waiting',
+              id: ses.interview_meeting.id,
+              interview_schedule_id:
+                ses.interview_meeting.interview_schedule_id,
+            })) as InterviewMeetingTypeDb[],
           );
 
         if (errorUpdatedMeetings) throw new Error(errorUpdatedMeetings.message);
@@ -430,34 +487,92 @@ export const scheduleWithAgent = async ({
           })
           .select();
 
-        addScheduleActivity({
-          schedule_id: checkSch[0].id,
-          title: `Candidate invited for session ${sessionsWithPlan.sessions
-            .filter((ses) => session_ids.includes(ses.id))
-            .map((ses) => ses.name)
-            .join(
-              ' , ',
-            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
-          filter_id: filterJson[0].id,
-          user_id: rec_user_id,
-          supabase,
-        });
-
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-        await agentTrigger({
-          type,
-          sessionsWithPlan,
-          filterJsonId: filterJson[0].id,
-          task_id,
-          recruiter_user_name,
-          candidate_name,
-          company_name,
-          jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          rec_user_email,
-          rec_user_phone,
-          user_tz,
-        });
+        if (task_id) {
+          const { error: eroorSubTasks } = await supabase
+            .from('new_tasks')
+            .update({
+              filter_id: filterJson[0].id,
+              session_ids: sessionsWithPlan.sessions,
+            })
+            .eq('id', task_id);
+          if (eroorSubTasks) throw new Error(eroorSubTasks.message);
+
+          addScheduleActivity({
+            title: `Candidate invited for session ${selectedSessions
+              .map((ses) => ses.name)
+              .join(
+                ' , ',
+              )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+            logger: rec_user_id,
+            type: 'schedule',
+            application_id,
+            task_id,
+            supabase,
+          });
+
+          agentTrigger({
+            type,
+            sessionsWithPlan,
+            filterJsonId: filterJson[0].id,
+            task_id,
+            recruiter_user_name,
+            candidate_name,
+            company_name,
+            jobRole: sessionsWithPlan.application.public_jobs.job_title,
+            rec_user_email,
+            rec_user_phone,
+            user_tz,
+          });
+        } else {
+          const { data: task, error: errorTasks } = await supabase
+            .from('new_tasks')
+            .insert({
+              name: `Schedule an interview for ${selectedSessions.map((ses) => ses.name).join(' , ')} via phone`,
+              application_id,
+              created_by: rec_user_id,
+              type: 'schedule',
+              status: 'in_progress',
+              recruiter_id,
+              due_date: dateRange.end_date,
+              schedule_date_range: dateRange,
+              start_date: new Date(),
+              assignee,
+              filter_id: filterJson[0].id,
+              session_ids: selectedSessions,
+            } as any)
+            .select();
+
+          if (errorTasks) throw new Error(errorTasks.message);
+
+          addScheduleActivity({
+            title: `Candidate invited for session ${selectedSessions
+              .map((ses) => ses.name)
+              .join(
+                ' , ',
+              )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+            logger: rec_user_id,
+            type: 'schedule',
+            application_id,
+            task_id: task[0].id,
+            supabase,
+          });
+
+          agentTrigger({
+            type,
+            sessionsWithPlan,
+            filterJsonId: filterJson[0].id,
+            task_id: task[0].id,
+            recruiter_user_name,
+            candidate_name,
+            company_name,
+            jobRole: sessionsWithPlan.application.public_jobs.job_title,
+            rec_user_email,
+            rec_user_phone,
+            user_tz,
+          });
+        }
       }
       return true;
     }
