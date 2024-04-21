@@ -165,6 +165,7 @@ export const createCloneSession = async ({
   coordinator_id,
   supabase,
   recruiter_id,
+  rec_user_id,
 }: {
   is_get_more_option: boolean;
   application_id: string;
@@ -174,6 +175,7 @@ export const createCloneSession = async ({
   coordinator_id: string;
   recruiter_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
+  rec_user_id: string;
 }) => {
   let new_schedule_id = uuidv4();
   try {
@@ -186,6 +188,7 @@ export const createCloneSession = async ({
         coordinator_id: coordinator_id,
         id: new_schedule_id,
         recruiter_id: recruiter_id,
+        created_by: rec_user_id,
       })
       .select();
 
@@ -327,6 +330,7 @@ export const sendToCandidate = async ({
         coordinator_id: selCoordinator,
         recruiter_id: recruiter_id,
         supabase: supabase,
+        rec_user_id: recruiterUser.user_id,
       });
 
       const { data: filterJson, error: errorFilterJson } = await supabase

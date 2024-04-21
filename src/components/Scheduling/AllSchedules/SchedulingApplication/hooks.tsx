@@ -333,8 +333,9 @@ export const scheduleWithAgent = async ({
           session_ids,
           scheduleName,
           coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
-          supabase: supabase,
+          supabase,
           recruiter_id: recruiter_id,
+          rec_user_id,
         });
 
         const { data: filterJson, error: errorFilterJson } = await supabase
