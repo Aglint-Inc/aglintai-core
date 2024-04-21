@@ -36,4 +36,5 @@ declare function MemberListCard(props: {
   isTextObjectiveVisible?: Types.Visibility.VisibilityConditions;
   textObjective?: React.ReactNode;
   isViewProgressVisible?: Types.Visibility.VisibilityConditions;
+  isThreeDotVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
