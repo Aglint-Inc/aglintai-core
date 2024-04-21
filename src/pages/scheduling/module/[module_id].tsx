@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack, Tooltip, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -321,7 +321,7 @@ const ModuleMembersX = ({
 }) => {
   return (
     <>
-      <Stack gap={1} p={'20px'} maxWidth={'800px'}>
+      <Stack gap={1} p={'20px'} maxWidth={'1000px'}>
         <SlotQualifiedMembers
           members={members}
           editModule={module}
@@ -406,12 +406,12 @@ function SlotQualifiedMembers({
           (prog) => prog.training_type == 'shadow',
         ).length;
 
-        const tempMeetingData: { [key: string]: number } = {
+        let tempMeetingData: { [key: string]: number } = {
           shadow: shadowCount,
           'reverse shadow': revShadowCount,
         };
 
-        const trainingStatusArray: {
+        let trainingStatusArray: {
           text: 'shadow' | 'reverse shadow';
           state: boolean;
         }[] = [
@@ -430,11 +430,12 @@ function SlotQualifiedMembers({
             state: false,
           }),
         ];
-        trainingStatusArray.map((item) => {
+        trainingStatusArray = trainingStatusArray.map((item) => {
           if ((tempMeetingData[item.text] || 0) > 0) {
-            item.state = true;
             tempMeetingData[item.text] -= 1;
+            return { ...item, state: true };
           }
+          return item;
         });
 
         return (
@@ -447,12 +448,13 @@ function SlotQualifiedMembers({
               slotProgressBar={
                 <>
                   {trainingStatusArray.map((item, index) => (
-                    <HistoryPill
-                      key={index}
-                      isActive={item.state}
-                      isShadow={item.text === 'shadow'}
-                      isReverseShadow={item.text === 'reverse shadow'}
-                    />
+                    <Tooltip key={index} title={'hi'}>
+                      <HistoryPill
+                        isActive={item.state}
+                        isShadow={item.text === 'shadow'}
+                        isReverseShadow={item.text === 'reverse shadow'}
+                      />
+                    </Tooltip>
                   ))}
                 </>
               }
@@ -489,9 +491,10 @@ function SlotQualifiedMembers({
               }
               textName={member.first_name}
               textRole={member.position || '--'}
-              isPauseResumeVisible={Boolean(user.pause_json)}
-              isPauseVisible={!user.pause_json}
-              isResumeVisible={Boolean(user.pause_json)}
+              isThreeDotVisible={false}
+              isPauseResumeVisible={false}
+              // isPauseVisible={!user.pause_json}
+              // isResumeVisible={Boolean(user.pause_json)}
             />
           </>
         );

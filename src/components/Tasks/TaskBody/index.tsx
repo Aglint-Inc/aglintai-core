@@ -1,5 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 
+import { Stack } from '@mui/material';
+
+import { EmptyState } from '@/devlink2';
 import {
   AvatarWithName,
   ListCard,
@@ -15,6 +18,7 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
+import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import { useTaskStatesContext } from '../TaskStatesContext';
 import AddNewTask from './AddNewTask';
 import FilterTasks from './FilterTasks';
@@ -23,7 +27,7 @@ import TaskRow from './TaskRow';
 import ViewTaskDrawer from './ViewTask';
 
 function TaskBody({ byGroup }) {
-  const { tasks } = useTasksContext();
+  const { tasks, loadingTasks } = useTasksContext();
 
   const { setShowAddNew, setSelectedApplication } = useTaskStatesContext();
 
@@ -57,66 +61,123 @@ function TaskBody({ byGroup }) {
                 setShowAddNew(true);
               },
             }}
-            slotTaskTableCard={tasks.map((ele, i) => {
-              return <TaskRow task={ele} key={i} />;
-            })}
+            slotTaskTableCard={
+              <>
+                {tasks
+                  .filter((ele) => ele.type !== 'empty')
+                  .map((ele, i) => {
+                    return (
+                      <>
+                        <TaskRow task={ele} key={i} />
+                      </>
+                    );
+                  })}
+                <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
+                  <EmptyState textDescription={'No tasks available!'} />
+                </ShowCode.When>
+                <ShowCode.When isTrue={loadingTasks}>
+                  <DynamicLoader height='80%' />
+                </ShowCode.When>
+              </>
+            }
           />
         </ShowCode.When>
         <ShowCode.When isTrue={byGroup}>
           <TaskTableJobCand
             slotFilter={<FilterTasks />}
-            slotTaskJobCard={formattedTasks.map((item, i) => {
-              return (
-                <TaskTableJobCard
-                  textRole={capitalizeAll(
-                    item.applications.public_jobs.job_title,
-                  )}
-                  slotAvatarWithName={
-                    <>
-                      <ListCard
-                        isAvatarWithNameVisible={true}
-                        isListVisible={false}
+            slotTaskJobCard={
+              <>
+                {formattedTasks
+                  // .sort((a, b) =>
+                  //   a.applications.candidates.first_name.localeCompare(
+                  //     b.applications.candidates.first_name,
+                  //   ),
+                  // )
+                  .map((item, i) => {
+                    return (
+                      <TaskTableJobCard
+                        textRole={capitalizeAll(
+                          item.applications.public_jobs.job_title,
+                        )}
                         slotAvatarWithName={
-                          item?.applications && (
-                            <AvatarWithName
-                              slotAvatar={
-                                <MuiAvatar
-                                  height={'25px'}
-                                  width={'25px'}
-                                  src={item?.applications?.candidates.avatar}
-                                  variant='circular'
-                                  fontSize='14px'
-                                  level={capitalizeAll(
-                                    item?.applications.candidates?.first_name +
-                                      ' ' +
-                                      item?.applications.candidates?.last_name,
-                                  )}
-                                />
+                          <>
+                            <ListCard
+                              isAvatarWithNameVisible={true}
+                              isListVisible={false}
+                              slotAvatarWithName={
+                                item?.applications && (
+                                  <AvatarWithName
+                                    slotAvatar={
+                                      <MuiAvatar
+                                        height={'25px'}
+                                        width={'25px'}
+                                        src={
+                                          item?.applications?.candidates.avatar
+                                        }
+                                        variant='circular'
+                                        fontSize='14px'
+                                        level={capitalizeAll(
+                                          item?.applications.candidates
+                                            ?.first_name +
+                                            ' ' +
+                                            item?.applications.candidates
+                                              ?.last_name,
+                                        )}
+                                      />
+                                    }
+                                    textName={capitalizeAll(
+                                      item?.applications.candidates
+                                        ?.first_name +
+                                        ' ' +
+                                        item?.applications.candidates
+                                          ?.last_name,
+                                    )}
+                                  />
+                                )
                               }
-                              textName={capitalizeAll(
-                                item?.applications.candidates?.first_name +
-                                  ' ' +
-                                  item?.applications.candidates?.last_name,
-                              )}
                             />
-                          )
+                          </>
                         }
+                        key={i}
+                        slotTaskTableJobCard={
+                          <>
+                            {item.tasklist
+                              .filter((ele) => ele.type !== 'empty')
+                              .map((ele, i) => {
+                                return <GroupTaskCard key={i} task={ele} />;
+                              })}
+                            <ShowCode.When
+                              isTrue={
+                                item.tasklist.filter(
+                                  (ele) => ele.type !== 'empty',
+                                ).length === 0
+                              }
+                            >
+                              <Stack pb={'10px'} height={53}>
+                                <EmptyState
+                                  textDescription={'No tasks available!'}
+                                />
+                              </Stack>
+                            </ShowCode.When>
+                          </>
+                        }
+                        onClickNewTask={{
+                          onClick: () => {
+                            setShowAddNew(true);
+                            setSelectedApplication(item.applications);
+                          },
+                        }}
                       />
-                    </>
-                  }
-                  key={i}
-                  slotTaskTableJobCard={item.tasklist.map((ele, i) => {
-                    return <GroupTaskCard key={i} task={ele} />;
+                    );
                   })}
-                  onClickNewTask={{
-                    onClick: () => {
-                      setShowAddNew(true);
-                      setSelectedApplication(item.applications);
-                    },
-                  }}
-                />
-              );
-            })}
+                <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
+                  <EmptyState textDescription={'No tasks available!'} />
+                </ShowCode.When>
+                <ShowCode.When isTrue={loadingTasks}>
+                  <DynamicLoader height='80%' />
+                </ShowCode.When>
+              </>
+            }
           />
         </ShowCode.When>
       </ShowCode>

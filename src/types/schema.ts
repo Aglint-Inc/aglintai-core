@@ -1775,6 +1775,7 @@ export type Database = {
           filter_id: string | null
           id: string
           name: string
+          priority: Database["public"]["Enums"]["task_priority"]
           recruiter_id: string | null
           schedule_date_range: Json | null
           session_ids: Json[] | null
@@ -1793,6 +1794,7 @@ export type Database = {
           filter_id?: string | null
           id?: string
           name: string
+          priority?: Database["public"]["Enums"]["task_priority"]
           recruiter_id?: string | null
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
@@ -1811,6 +1813,7 @@ export type Database = {
           filter_id?: string | null
           id?: string
           name?: string
+          priority?: Database["public"]["Enums"]["task_priority"]
           recruiter_id?: string | null
           schedule_date_range?: Json | null
           session_ids?: Json[] | null
@@ -4229,13 +4232,14 @@ export type Database = {
         | "failed"
         | "closed"
       task_agent_type: "phone" | "email" | "job"
+      task_priority: "high" | "low" | "mediam"
       task_status:
         | "pending"
         | "in_progress"
         | "completed"
         | "closed"
         | "not_started"
-      task_type_enum: "schedule" | "training"
+      task_type_enum: "schedule" | "training" | "empty"
       template_type:
         | "cognitive"
         | "language"

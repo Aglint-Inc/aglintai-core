@@ -103,7 +103,6 @@ function SlotTrainingMembers({
         );
 
         if (!member) return null; //this line added temporarily becasue of data inconsistency
-
         const progressDataUser = progress.filter(
           (prog) =>
             prog.interview_module_relation_id === user.id &&
@@ -129,7 +128,7 @@ function SlotTrainingMembers({
           'reverse shadow': revShadowCount,
         };
 
-        const trainingStatusArray: {
+        let trainingStatusArray: {
           text: 'shadow' | 'reverse shadow';
           state: boolean;
         }[] = [
@@ -148,11 +147,12 @@ function SlotTrainingMembers({
             state: false,
           }),
         ];
-        trainingStatusArray.map((item) => {
+        trainingStatusArray = trainingStatusArray.map((item) => {
           if ((tempMeetingData[item.text] || 0) > 0) {
-            item.state = true;
             tempMeetingData[item.text] -= 1;
+            return { ...item, state: true };
           }
+          return item;
         });
 
         return (

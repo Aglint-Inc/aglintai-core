@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Drawer } from '@mui/material';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MemberListCard } from '@/devlink2';
 import { HistoryPill, InterviewerDetail, ModulesMoreMenu } from '@/devlink3';
@@ -17,13 +17,14 @@ import {
   useImrQuery,
   useInterviewerSchedulesQuery,
 } from '@/src/pages/scheduling/interviewer/[member_id]';
-import { InterviewMeetingTypeDb } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Interviews from '../Interviews';
 import PauseResumeDialog from '../PauseResumeDialog';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
+import MeetingProgressDrawer from './meetingProgressDrawer';
 
 function Interviewer({
   openDrawer,
@@ -98,6 +99,30 @@ function Interviewer({
         ),
       ) / 60;
   }
+  // const [selectedModule, setSelectedModule] = useState<{module:string}>({
+  //   user: null,
+  //   progress: [],
+  // });
+  const [meetingsDetails, setMeetingDetails] = useState<{
+    meetings: Awaited<ReturnType<typeof getMeetingsByUserIdModuleId>>[string];
+    settings: { noShadow: number; noReverseShadow: number };
+  }>({
+    meetings: [],
+    settings: null,
+  });
+  const [userMeetings, setUserMeetings] = useState<
+    Awaited<ReturnType<typeof getMeetingsByUserIdModuleId>>
+  >({});
+  useEffect(() => {
+    if (interviewerDetails.interviewer.user_id) {
+      getMeetingsByUserIdModuleId({
+        user_id: interviewerDetails.interviewer.user_id,
+        module_ids: interviewerDetails.modules.map((item) => item.module_id),
+      }).then((data) => {
+        setUserMeetings(data);
+      });
+    }
+  }, [interviewerDetails]);
 
   return (
     <>
@@ -128,7 +153,7 @@ function Interviewer({
             setOpenDrawer(true);
           },
         }}
-        textEmail={interviewerDetails.interviewer.email}
+        textEmail={interviewerDetails.interviewer?.email}
         textDepartment={interviewerDetails.interviewer.position}
         textInterviewerName={
           interviewerDetails.interviewer.first_name +
@@ -296,22 +321,13 @@ function Interviewer({
                   const { interview_module, module_id, pause_json } = module;
                   const tempMeetingData: { [key: string]: number } = {};
                   // working here
-                  interviewerSchedules.data
-                    ?.filter(
-                      (item) => item.interview_meeting.status == 'completed',
-                    )
+                  (userMeetings[module.module_id] || [])
+                    .filter((item) => item.status == 'completed')
                     .forEach((item) => {
-                      const temp = item.users.find(
-                        (user) =>
-                          user.id === interviewerDetails.interviewer.user_id,
-                      );
-                      if (temp)
-                        tempMeetingData[temp.training_type] =
-                          (tempMeetingData[temp.training_type] || 0) + 1;
+                      tempMeetingData[item.training_type] =
+                        (tempMeetingData[item.training_type] || 0) + 1;
                     });
-                  // console.log({ tempMeetingData });
-
-                  const trainingStatusArray: {
+                  let trainingStatusArray: {
                     text: 'shadow' | 'reverse shadow';
                     state: boolean;
                   }[] = [
@@ -330,17 +346,19 @@ function Interviewer({
                       state: false,
                     }),
                   ];
-                  trainingStatusArray.map((item) => {
+                  trainingStatusArray = trainingStatusArray.map((item) => {
                     if ((tempMeetingData[item.text] || 0) > 0) {
-                      item.state = true;
                       tempMeetingData[item.text] -= 1;
+                      return { ...item, state: true };
                     }
+                    return item;
                   });
+
                   return (
                     <MemberListCard
                       isMoveToQualifierVisible={false}
                       isTrainingProgessVisible={true}
-                      isViewProgressVisible={false}
+                      // isViewProgressVisible={false}
                       slotProgressBar={
                         <>
                           {trainingStatusArray.map((item, index) => (
@@ -406,6 +424,22 @@ function Interviewer({
                             panel_id: module_id,
                             isLoading: false,
                           }));
+                        },
+                      }}
+                      onClickViewProgress={{
+                        onClick: () => {
+                          setMeetingDetails({
+                            meetings: userMeetings[module.module_id] || [],
+                            settings: {
+                              noShadow:
+                                // @ts-ignore
+                                module.interview_module.settings?.noShadow || 0,
+                              noReverseShadow:
+                              module.interview_module.settings
+                              // @ts-ignore
+                                  ?.noReverseShadow || 0,
+                            },
+                          });
                         },
                       }}
                     />
@@ -580,7 +614,19 @@ function Interviewer({
           },
         }}
       />
-
+      {/* hi */}
+      {meetingsDetails.settings && (
+        <MeetingProgressDrawer
+          moduleSettings={meetingsDetails.settings}
+          open={Boolean(meetingsDetails.settings)}
+          meetings={meetingsDetails.meetings}
+          user={interviewerDetails.interviewer}
+          onClose={() => {
+            setMeetingDetails({ meetings: [], settings: null });
+          }}
+        />
+      )}
+      {/* <ProgressDrawer progressUser={progressUser} module={editModule} /> */}
       <PauseResumeDialog
         pauseResumeDialog={pauseResumeDialog}
         close={() => {
@@ -656,3 +702,57 @@ function Interviewer({
 }
 
 export default Interviewer;
+
+export const getMeetingsByUserIdModuleId = ({
+  user_id,
+  module_ids,
+}: {
+  user_id: string;
+  module_ids: string[];
+}) => {
+  return supabase
+    .from('interview_module_relation')
+    .select(
+      'module_id,interview_session_relation(training_type,interview_session(interview_meeting(*), name, schedule_type) )',
+    )
+    .match({ user_id, training_status: 'training' })
+    .eq('interview_session_relation.is_confirmed', true)
+    .in('module_id', module_ids)
+    .then(({ data, error }) => {
+      if (error) new Error(error.message);
+      const tempData: {
+        [
+          key: string
+        ]: ((typeof data)[number]['interview_session_relation'][number]['interview_session']['interview_meeting'] & {
+          training_type: (typeof data)[number]['interview_session_relation'][number]['training_type'];
+          module_id: string;
+          name: string;
+          schedule_type: (typeof data)[number]['interview_session_relation'][number]['interview_session']['schedule_type'];
+        })[];
+      } = {};
+      data
+        .filter((item) => Boolean(item.interview_session_relation.length))
+        .map(
+          (item) =>
+            item.interview_session_relation.map((itemX) => ({
+              ...itemX,
+              module_id: item.module_id,
+            })) || [],
+        )
+        .flat()
+        .forEach((item) => {
+          const temp = tempData[item.module_id] || [];
+          tempData[item.module_id] = [
+            ...temp,
+            {
+              ...item.interview_session.interview_meeting,
+              training_type: item.training_type,
+              module_id: item.module_id,
+              name: item.interview_session.name,
+              schedule_type: item.interview_session.schedule_type,
+            },
+          ];
+        });
+      return tempData;
+    });
+};

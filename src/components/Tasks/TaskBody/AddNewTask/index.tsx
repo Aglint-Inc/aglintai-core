@@ -146,6 +146,13 @@ function AddNewTask() {
           supabase: supabase,
           user_tz: dayjs.tz.guess(),
         });
+        // update task
+        await supabase
+          .from('new_tasks')
+          .update({
+            task_triggered: true,
+          })
+          .eq('id', selectedTask.id);
       }
       // end
       await supabase.from('application_logs').insert({

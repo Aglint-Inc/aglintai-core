@@ -8,7 +8,7 @@ import { companyType } from '@/src/utils/userRoles';
 
 export const supabase = createClient<Database>(
   'https://plionpfmgvenmdwwjzac.supabase.co',
-  '0ZoJH/GsSYBKTFBcnNV2ZW9a4Z4Woa1687QO5oPhMds2ePwue99cbSQxi5tshc2ioryv2ZDmuJz8HuSqs9uhbw==',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsaW9ucGZtZ3Zlbm1kd3dqemFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5ODY1ODE4MywiZXhwIjoyMDE0MjM0MTgzfQ.mSmvcr8K9STsaMCuMwbtdA9uwa7RIrRVs1KPzD2Inws',
   // process.env.NEXT_PUBLIC_SUPABASE_URL,
   // process.env.SUPABASE_SERVICE_KEY,
 );
