@@ -2,9 +2,10 @@
   position: relative;
 
   display: flex;
+  overflow: auto;
   width: 600px;
   height: 100vh;
-  padding: 16px;
+  padding: 16px 0px 0px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 20px;
@@ -15,6 +16,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.div-block-1339.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
 }
 
 .text-grey-600 {
@@ -134,6 +145,7 @@
 
 .div-block-1345 {
   display: flex;
+  padding-bottom: 20px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 10px;
@@ -175,12 +187,12 @@
 }
 
 .div-block-1545 {
-  position: absolute;
+  position: sticky;
   left: 0%;
   top: auto;
   right: 0%;
   bottom: 0%;
-  z-index: 1;
+  z-index: 2;
 
   display: flex;
   padding: 13px 20px;

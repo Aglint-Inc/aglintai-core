@@ -106,7 +106,6 @@ const AuthProvider = ({ children }) => {
       .from('recruiter_relation')
       .select()
       .eq('recruiter_id', recruiter_id)
-      .or(`user_id.eq.${user_id},created_by.eq.${user_id}`);
     if (!error && data.length) {
       const userIds = data.map((item) => item.user_id);
       const { data: users, error: userError } = await supabase

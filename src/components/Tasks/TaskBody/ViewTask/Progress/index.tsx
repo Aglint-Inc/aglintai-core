@@ -1,8 +1,10 @@
-import { Stack, Typography } from '@mui/material';
+import { Collapse, Stack, Typography } from '@mui/material';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import { EmptyState } from '@/devlink2';
 import {
@@ -36,12 +38,12 @@ function SubTaskProgress() {
 
   const { data: progressList, isFetchedAfterMount } = useProgress();
   const { data: sessionList } = useScheduleSession();
-
+  const [openTranscript, setOpenTranscript] = useState(false);
   return (
     <ShowCode>
       <ShowCode.When isTrue={!isFetchedAfterMount}>
-        <Stack minWidth={600}>
-          <DynamicLoader height='300px' />
+        <Stack height='100vh' minWidth={600}>
+          <DynamicLoader height='200px' />
         </Stack>
       </ShowCode.When>
       <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
@@ -159,87 +161,108 @@ function SubTaskProgress() {
                         }
                       >
                         <Stack
-                          maxHeight={400}
-                          overflow={'auto'}
+                          width={'100%'}
                           direction={'column'}
-                          gap={2}
-                          p={1}
+                          px={1}
+                          position={'relative'}
                         >
-                          <Typography variant='body1'>Transcript</Typography>
-                          {item.jsonb_data &&
-                            item.jsonb_data.length &&
-                            (
-                              item.jsonb_data as unknown as {
-                                id: string;
-                                message: string;
-                              }[]
-                            ).map((ele, i) => {
-                              const receiver = tasks
-                                .map((item) => item.applications.candidates)
-                                .find((item) => item.id === ele.id);
-                              if (ele.message && ele.message.trim())
-                                return (
-                                  <Stack gap={1} key={i}>
-                                    <TranscriptCard
-                                      isBackgroundActive={
-                                        ele.id !== PhoneAgentId
-                                      }
-                                      slotAgent={
-                                        <Stack width={150}>
-                                          <ShowCode>
-                                            <ShowCode.When
-                                              isTrue={ele.id === PhoneAgentId}
-                                            >
-                                              <AgentPill
-                                                isPhoneAgentVisible={true}
-                                                isEmailAgentVisible={false}
-                                              />
-                                            </ShowCode.When>
-                                            <ShowCode.Else>
-                                              <ListCard
-                                                isAvatarWithNameVisible={true}
-                                                isListVisible={false}
-                                                slotAvatarWithName={
-                                                  receiver && (
-                                                    <AvatarWithName
-                                                      slotAvatar={
-                                                        <MuiAvatar
-                                                          height={'24px'}
-                                                          width={'24px'}
-                                                          src={receiver.avatar}
-                                                          variant='circular'
-                                                          fontSize='14px'
-                                                          level={capitalizeAll(
-                                                            receiver?.first_name +
-                                                              ' ' +
-                                                              receiver?.last_name,
-                                                          )}
-                                                        />
-                                                      }
-                                                      textName={capitalizeAll(
-                                                        receiver?.first_name +
-                                                          ' ' +
-                                                          receiver?.last_name,
-                                                      )}
-                                                    />
-                                                  )
-                                                }
-                                              />
-                                            </ShowCode.Else>
-                                          </ShowCode>
-                                        </Stack>
-                                      }
-                                      textScript={ele.message}
-                                    />
-                                  </Stack>
-                                );
-                            })}
+                          <Stack
+                            onClick={() => {
+                              setOpenTranscript((pre) => !pre);
+                            }}
+                            direction={'row'}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                            sx={{
+                              cursor: 'pointer',
+                            }}
+                            py={1}
+                          >
+                            <Typography variant='body1'>Transcript</Typography>
+                            {openTranscript ? (
+                              <IconChevronUp />
+                            ) : (
+                              <IconChevronDown />
+                            )}
+                          </Stack>
+                          <Collapse in={openTranscript} collapsedSize={0}>
+                            {item.jsonb_data &&
+                              item.jsonb_data.length &&
+                              (
+                                item.jsonb_data as unknown as {
+                                  id: string;
+                                  message: string;
+                                }[]
+                              ).map((ele, i) => {
+                                const receiver = tasks
+                                  .map((item) => item.applications.candidates)
+                                  .find((item) => item.id === ele.id);
+                                if (ele.message && ele.message.trim())
+                                  return (
+                                    <Stack gap={1} key={i}>
+                                      <TranscriptCard
+                                        isBackgroundActive={
+                                          ele.id !== PhoneAgentId
+                                        }
+                                        slotAgent={
+                                          <Stack width={150}>
+                                            <ShowCode>
+                                              <ShowCode.When
+                                                isTrue={ele.id === PhoneAgentId}
+                                              >
+                                                <AgentPill
+                                                  isPhoneAgentVisible={true}
+                                                  isEmailAgentVisible={false}
+                                                />
+                                              </ShowCode.When>
+                                              <ShowCode.Else>
+                                                <ListCard
+                                                  isAvatarWithNameVisible={true}
+                                                  isListVisible={false}
+                                                  slotAvatarWithName={
+                                                    receiver && (
+                                                      <AvatarWithName
+                                                        slotAvatar={
+                                                          <MuiAvatar
+                                                            height={'24px'}
+                                                            width={'24px'}
+                                                            src={
+                                                              receiver.avatar
+                                                            }
+                                                            variant='circular'
+                                                            fontSize='14px'
+                                                            level={capitalizeAll(
+                                                              receiver?.first_name +
+                                                                ' ' +
+                                                                receiver?.last_name,
+                                                            )}
+                                                          />
+                                                        }
+                                                        textName={capitalizeAll(
+                                                          receiver?.first_name +
+                                                            ' ' +
+                                                            receiver?.last_name,
+                                                        )}
+                                                      />
+                                                    )
+                                                  }
+                                                />
+                                              </ShowCode.Else>
+                                            </ShowCode>
+                                          </Stack>
+                                        }
+                                        textScript={ele.message}
+                                      />
+                                    </Stack>
+                                  );
+                              })}
+                          </Collapse>
                         </Stack>
                       </ShowCode.When>
                       <ShowCode.When
                         isTrue={item.progress_type === 'interview_schedule'}
                       >
-                        <Stack direction={'column'} spacing={2} width={400}>
+                        <Stack direction={'column'} spacing={3} width={'100%'}>
                           {sessionList?.map((ses, indOpt) => {
                             return (
                               <SessionCard

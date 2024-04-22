@@ -63,111 +63,126 @@ function ViewTaskDrawer() {
         setDisablePrev(false);
       }}
     >
-      <Stack>
-        <ShowCode>
-          <ShowCode.When isTrue={!selectedTask}>
-            <Stack height={'100vh'} width={600}>
-              <Loader />
-            </Stack>
-          </ShowCode.When>
-          <ShowCode.Else>
-            <ViewTask
-              isDisableNext={disableNext}
-              isDisablePrev={disablePrev}
-              onClickNext={{
-                onClick: () => {
-                  const nextIndex =
-                    tasks.findIndex((ele) => ele.id === taskId) + 1;
-                  if (nextIndex < tasks.length) {
-                    {
-                      setDisableNext(false);
-                      setDisablePrev(false);
+      <ShowCode>
+        <ShowCode.When isTrue={!selectedTask}>
+          <Stack height={'100vh'} width={600}>
+            <Loader />
+          </Stack>
+        </ShowCode.When>
+        <ShowCode.Else>
+          <ViewTask
+            isCancelTaskVisible={
+              selectedTask?.status !== 'cancelled' &&
+              selectedTask?.status !== 'completed'
+            }
+            onClickCancelTask={{
+              onClick: () => {
+                handelUpdateTask({
+                  data: {
+                    status: 'cancelled',
+                  },
+                  id: taskId,
+                });
+                route.push(pageRoutes.TASKS);
+                setDisableNext(false);
+                setDisablePrev(false);
+              },
+            }}
+            isDisableNext={disableNext}
+            isDisablePrev={disablePrev}
+            onClickNext={{
+              onClick: () => {
+                const nextIndex =
+                  tasks.findIndex((ele) => ele.id === taskId) + 1;
+                if (nextIndex < tasks.length) {
+                  {
+                    setDisableNext(false);
+                    setDisablePrev(false);
 
-                      const nextTask = tasks.find(
-                        (ele) => ele.id === tasks[Number(nextIndex)].id,
-                      );
-                      route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
-                    }
-                  } else {
-                    setDisableNext(true);
+                    const nextTask = tasks.find(
+                      (ele) => ele.id === tasks[Number(nextIndex)].id,
+                    );
+                    route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
                   }
-                },
-              }}
-              onClickPrev={{
-                onClick: () => {
-                  const prevIndex =
-                    tasks.findIndex((ele) => ele.id === taskId) - 1;
-                  if (prevIndex >= 0) {
-                    {
-                      setDisablePrev(false);
-                      setDisableNext(false);
-                      const nextTask = tasks.find(
-                        (ele) => ele.id === tasks[Number(prevIndex)].id,
-                      );
-                      route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
-                    }
-                  } else {
-                    setDisablePrev(true);
+                } else {
+                  setDisableNext(true);
+                }
+              },
+            }}
+            onClickPrev={{
+              onClick: () => {
+                const prevIndex =
+                  tasks.findIndex((ele) => ele.id === taskId) - 1;
+                if (prevIndex >= 0) {
+                  {
+                    setDisablePrev(false);
+                    setDisableNext(false);
+                    const nextTask = tasks.find(
+                      (ele) => ele.id === tasks[Number(prevIndex)].id,
+                    );
+                    route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
                   }
-                },
-              }}
-              textTaskDetail={
-                <ShowCode>
-                  <ShowCode.When isTrue={!editMode}>
-                    <Typography
-                      onClick={() => {
-                        setEditMode(true);
-                      }}
-                      bgcolor={'#F7F9FB'}
-                      padding={'10px'}
-                      borderRadius={'10px'}
-                      fontSize={'18px'}
-                      lineHeight={'24px'}
-                      fontWeight={600}
-                    >
-                      {selectedTask?.name || 'Untitled'}
-                    </Typography>
-                  </ShowCode.When>
-                  <ShowCode.Else>
-                    <TextField
-                      placeholder='Untitled'
-                      // eslint-disable-next-line jsx-a11y/no-autofocus
-                      autoFocus={true}
-                      onChange={({ currentTarget: { value: changeValue } }) => {
-                        debouncedUpdateTask(taskId, changeValue);
-                      }}
-                      multiline
-                      minRows={1}
-                      maxRows={3}
-                      fullWidth
-                      defaultValue={selectedTask?.name}
-                      sx={{
-                        '& .MuiInputBase-root': {
-                          border: 'none',
-                          fontSize: '18px',
-                          lineHeight: '24px',
-                          fontWeight: 600,
-                          padding: '10px',
-                        },
-                      }}
-                      onBlur={() => {
-                        setEditMode(false);
-                      }}
-                    />
-                  </ShowCode.Else>
-                </ShowCode>
-              }
-              slotTaskCard={<TaskCard task={selectedTask} />}
-              slotTaskProgress={<SubTaskProgress />}
-              onClickClose={{
-                onClick: () => {
-                  route.push(pageRoutes.TASKS);
-                },
-              }}
-            />
-          </ShowCode.Else>
-        </ShowCode>
-      </Stack>
+                } else {
+                  setDisablePrev(true);
+                }
+              },
+            }}
+            textTaskDetail={
+              <ShowCode>
+                <ShowCode.When isTrue={!editMode}>
+                  <Typography
+                    onClick={() => {
+                      setEditMode(true);
+                    }}
+                    bgcolor={'#F7F9FB'}
+                    padding={'10px'}
+                    borderRadius={'10px'}
+                    fontSize={'18px'}
+                    lineHeight={'24px'}
+                    fontWeight={600}
+                  >
+                    {selectedTask?.name || 'Untitled'}
+                  </Typography>
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <TextField
+                    placeholder='Untitled'
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                    autoFocus={true}
+                    onChange={({ currentTarget: { value: changeValue } }) => {
+                      debouncedUpdateTask(taskId, changeValue);
+                    }}
+                    multiline
+                    minRows={1}
+                    maxRows={3}
+                    fullWidth
+                    defaultValue={selectedTask?.name}
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        border: 'none',
+                        fontSize: '18px',
+                        lineHeight: '24px',
+                        fontWeight: 600,
+                        padding: '10px',
+                      },
+                    }}
+                    onBlur={() => {
+                      setEditMode(false);
+                    }}
+                  />
+                </ShowCode.Else>
+              </ShowCode>
+            }
+            slotTaskCard={<TaskCard task={selectedTask} />}
+            slotTaskProgress={<SubTaskProgress />}
+            onClickClose={{
+              onClick: () => {
+                route.push(pageRoutes.TASKS);
+              },
+            }}
+          />
+        </ShowCode.Else>
+      </ShowCode>
     </Drawer>
   );
 }
