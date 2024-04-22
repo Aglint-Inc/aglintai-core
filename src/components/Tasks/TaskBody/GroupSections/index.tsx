@@ -94,6 +94,7 @@ function GroupSections({
           onClick: () => {
             setShowAddNew(true);
             setSelectedApplication(item.applications);
+            setSectionIndex(true);
           },
         }}
       />
