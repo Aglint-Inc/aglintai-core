@@ -98,7 +98,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await supabaseAdmin
           .from('new_tasks')
           .update({
-            status: 'scheduled',
+            status: 'completed',
           })
           .eq('id', req_body.task_id)
           .select(),
