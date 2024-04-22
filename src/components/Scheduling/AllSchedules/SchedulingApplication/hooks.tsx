@@ -545,7 +545,7 @@ export const scheduleWithAgent = async ({
             .from('new_tasks')
             .update({
               filter_id: filterJson[0].id,
-              session_ids: sessionsWithPlan.sessions,
+              session_ids: selectedSessions,
               task_triggered: true,
             })
             .eq('id', task_id);

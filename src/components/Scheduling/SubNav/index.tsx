@@ -16,7 +16,7 @@ const tabs: {
 }[] = [
   {
     text: 'dashboard',
-    roles: ['admin'],
+    roles: ['admin', 'recruiter'],
     flag: [
       // featureFlag.isSchedulingDashboardEnabled
     ],
