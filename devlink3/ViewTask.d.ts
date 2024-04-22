@@ -7,4 +7,10 @@ declare function ViewTask(props: {
   slotTaskCard?: Types.Devlink.Slot;
   slotTaskProgress?: Types.Devlink.Slot;
   textTaskDetail?: React.ReactNode;
+  isCancelTaskVisible?: Types.Visibility.VisibilityConditions;
+  onClickCancelTask?: Types.Devlink.RuntimeProps;
+  onClickPrev?: Types.Devlink.RuntimeProps;
+  onClickNext?: Types.Devlink.RuntimeProps;
+  isDisablePrev?: Types.Visibility.VisibilityConditions;
+  isDisableNext?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

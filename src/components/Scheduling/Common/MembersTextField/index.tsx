@@ -156,7 +156,7 @@ function MembersAutoComplete({
                         cursor: 'pointer',
                       }}
                       onClick={() => {
-                        setError(false);
+                        error && setError(false);
                         if (
                           !selectedUsers.find(
                             (user) => user.user_id === option.user_id,

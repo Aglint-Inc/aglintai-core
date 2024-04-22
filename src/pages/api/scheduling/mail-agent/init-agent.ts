@@ -54,9 +54,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ) {
       return res.status(400).send('missing fields');
     }
-    // cand_email = 'dileepwert@gmail.com';
     // if (process.env.NODE_ENV === 'development') {
-    //   cand_email = 'dheeraj@gmail.com';
+    //   cand_email = 'dileepwert@gmail.com';
     // }
 
     const cand_details = await fetchCandDetails({
@@ -81,7 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_time_zone,
       candidate_time_zone: cand_details.filter_json.user_tz,
       organizer_name: cand_details.filter_json.organizer_name,
-      self_schedule_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}'>link</a>`,
+      self_schedule_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}&task_id=${task_id}'>link</a>`,
     });
 
     // delete previous chat hitory of that candidate email email

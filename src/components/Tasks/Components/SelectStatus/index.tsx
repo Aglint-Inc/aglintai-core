@@ -2,10 +2,11 @@
 import { Button, Popover, Stack } from '@mui/material';
 import React from 'react';
 
-import { TaskStatus } from '@/devlink3';
+import { ListPop, TaskStatus } from '@/devlink3';
+import { palette } from '@/src/context/Theme/Theme';
 import { CustomDatabase } from '@/src/types/customSchema';
 
-import StatusChip from '../StatusChip';
+import StatusChip, { colorsData } from '../StatusChip';
 
 function SelectStatus({
   status,
@@ -55,71 +56,38 @@ function SelectStatus({
           },
         }}
       >
-        <Stack direction={'column'}>
-          {[
-            {
-              status: 'not_started',
-              backgroundColor: '#e9ebed',
-              label: 'Not Started',
-              color: '#49545c',
-            },
-            {
-              status: 'in_progress',
-              backgroundColor: '#CEE2F2',
-              label: 'In Progress',
-              color: '#337FBD',
-            },
-            {
-              status: 'completed',
-              backgroundColor: '#D1E8DF',
-              label: 'completed',
-              color: '#228F67',
-            },
-            {
-              status: 'closed',
-              backgroundColor: '#f5d5d8',
-              label: 'closed',
-              color: '#CC3340',
-            },
-          ].map(
+        <Stack spacing={'10px'} p={'10px'} direction={'column'}>
+          {colorsData.map(
             (
               {
                 backgroundColor,
-                status,
+                id,
                 label,
                 color,
               }: {
                 backgroundColor: string;
-                status: CustomDatabase['public']['Enums']['task_status'];
+                id: CustomDatabase['public']['Enums']['task_status'];
                 label: string;
                 color: string;
               },
               i,
             ) => {
               return (
-                <Button
-                  onClick={() => {
-                    setAnchorEl(null);
-                    setSelectedStatus(status);
+                <TaskStatus
+                  bgColorProps={{
+                    style: {
+                      backgroundColor,
+                      color,
+                      fontWeight: 400,
+                    },
+                    onClick: () => {
+                      setAnchorEl(null);
+                      setSelectedStatus(id);
+                    },
                   }}
-                  sx={{
-                    justifyContent: 'start',
-                  }}
-                  startIcon={
-                    <TaskStatus
-                      bgColorProps={{
-                        style: {
-                          backgroundColor,
-                          color,
-                          fontWeight: 400,
-                        },
-                      }}
-                      key={i}
-                      textStatus={label}
-                    />
-                  }
                   key={i}
-                ></Button>
+                  textStatus={label}
+                />
               );
             },
           )}

@@ -48,12 +48,6 @@ export function TaskProgress({
               tag="div"
             >
               <_Builtin.Block tag="div">{textTask}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "text-grey_600")}
-                tag="div"
-              >
-                {textTime}
-              </_Builtin.Block>
               {isMailContentVisible ? (
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-1366")}
@@ -67,6 +61,12 @@ export function TaskProgress({
                   )}
                 </_Builtin.Block>
               ) : null}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-sm", "text-grey_600")}
+                tag="div"
+              >
+                {textTime}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         ) : null}

@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { createServerClient } from '@supabase/ssr';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
@@ -34,7 +35,32 @@ import {
 } from './types';
 import { agentTrigger, createCloneSession } from './utils';
 
-//
+export const useAllActivities = ({ application_id }) => {
+  const queryClient = useQueryClient();
+  const queryKey = ['activitiesCandidate', { application_id }];
+  const query = useQuery({
+    queryKey: queryKey,
+    queryFn: () => fetchAllActivities({ application_id }),
+    enabled: !!application_id,
+  });
+  const refetch = async () => {
+    await queryClient.invalidateQueries({ queryKey });
+  };
+  return { ...query, refetch };
+};
+
+const fetchAllActivities = async ({ application_id }) => {
+  const { data, error } = await supabase
+    .from('application_logs')
+    .select(
+      '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*)',
+    )
+    .eq('application_id', application_id);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
 
 export const useGetScheduleApplication = () => {
   const router = useRouter();
@@ -344,8 +370,12 @@ export const scheduleWithAgent = async ({
             filter_json: {
               session_ids: createCloneRes.session_ids,
               recruiter_id: recruiter_id,
-              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              start_date: dayjs
+                .tz(dateRange.start_date, user_tz)
+                .format('DD/MM/YYYY'),
+              end_date: dayjs
+                .tz(dateRange.end_date, user_tz)
+                .format('DD/MM/YYYY'),
               user_tz: user_tz,
               organizer_name: recruiter_user_name,
             },
@@ -381,6 +411,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({
@@ -397,10 +428,13 @@ export const scheduleWithAgent = async ({
             user_tz,
           });
         } else {
+          const selSes = createCloneRes.refSessions.filter(
+            (ses) => ses.isSelected,
+          );
           const { data: task, error: errorTasks } = await supabase
             .from('new_tasks')
             .insert({
-              name: `Schedule an interview for ${createCloneRes.refSessions.map((ses) => ses.name).join(' , ')} via phone`,
+              name: `Schedule an interview for ${selSes.map((ses) => ses.name).join(' , ')} via ${type == 'email_agent' ? 'email' : 'phone'}`,
               application_id,
               created_by: rec_user_id,
               type: 'schedule',
@@ -411,16 +445,29 @@ export const scheduleWithAgent = async ({
               start_date: new Date(),
               assignee,
               filter_id: filterJson[0].id,
-              session_ids: createCloneRes.refSessions,
+              session_ids: selSes,
               task_triggered: true,
             } as any)
             .select();
 
           if (errorTasks) throw new Error(errorTasks.message);
 
+          const { error: errorTaskProgress } = await supabase
+            .from('new_tasks_progress')
+            .insert({
+              created_by: {
+                id: rec_user_id,
+                name: recruiter_user_name,
+              },
+              task_id: task[0].id,
+              title: `Task assigned to <span class="agent_mention">@${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}</span> by <span class="mention">@${recruiter_user_name}</span>`,
+              progress_type: 'standard',
+            });
+
+          if (errorTaskProgress) throw new Error(errorTaskProgress.message);
+
           addScheduleActivity({
-            title: `Candidate invited for session ${createCloneRes.refSessions
-              .filter((ses) => ses.isSelected)
+            title: `Candidate invited for session ${selSes
               .map((ses) => ses.name)
               .join(
                 ' , ',
@@ -430,6 +477,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id: task[0].id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({
@@ -478,10 +526,10 @@ export const scheduleWithAgent = async ({
               recruiter_id: recruiter_id,
               start_date:
                 dateRange.start_date &&
-                dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+                dayjs.tz(dateRange.start_date, user_tz).format('DD/MM/YYYY'),
               end_date:
                 dateRange.end_date &&
-                dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+                dayjs.tz(dateRange.end_date, user_tz).format('DD/MM/YYYY'),
               user_tz: user_tz,
               organizer_name: recruiter_user_name,
             },
@@ -514,6 +562,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({
@@ -551,6 +600,17 @@ export const scheduleWithAgent = async ({
 
           if (errorTasks) throw new Error(errorTasks.message);
 
+          const { error: errorTaskProgress } = await supabase
+            .from('new_tasks_progress')
+            .insert({
+              created_by: rec_user_id,
+              task_id: task[0].id,
+              title: `Task assigned to <span class="agent_mention">@${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}</span> by <span class="mention">@${recruiter_user_name}</span>`,
+              progress_type: 'standard',
+            });
+
+          if (errorTaskProgress) throw new Error(errorTaskProgress.message);
+
           addScheduleActivity({
             title: `Candidate invited for session ${selectedSessions
               .map((ses) => ses.name)
@@ -562,6 +622,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id: task[0].id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({

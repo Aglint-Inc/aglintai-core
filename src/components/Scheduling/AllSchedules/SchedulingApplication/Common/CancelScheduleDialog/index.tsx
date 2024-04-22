@@ -2,12 +2,16 @@ import { Dialog } from '@mui/material';
 import axios from 'axios';
 
 import { DeletePopup } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
+import { addScheduleActivity } from '../../../queries/utils';
 import { setIsCancelOpen, useInterviewSchedulingStore } from '../../../store';
+import { useAllActivities } from '../../hooks';
 import { setinitialSessions, useSchedulingApplicationStore } from '../../store';
 
 function CancelScheduleDialog() {
+  const { recruiterUser } = useAuthDetails();
   const isCancelOpen = useInterviewSchedulingStore(
     (state) => state.isCancelOpen,
   );
@@ -17,6 +21,12 @@ function CancelScheduleDialog() {
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
   );
+  const selectedApplication = useSchedulingApplicationStore(
+    (state) => state.selectedApplication,
+  );
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
 
   const onClickCancel = async () => {
     try {
@@ -54,6 +64,16 @@ function CancelScheduleDialog() {
         if (errMeet) {
           throw new Error(errMeet.message);
         }
+
+        await addScheduleActivity({
+          title: `Cancelled session ${selectedSession.name}`,
+          application_id: selectedApplication.id,
+          logger: recruiterUser.user_id,
+          type: 'schedule',
+          supabase,
+          created_by: recruiterUser.user_id,
+        });
+
         setIsCancelOpen(false);
 
         setinitialSessions(
@@ -72,13 +92,16 @@ function CancelScheduleDialog() {
           }),
         );
 
-        if (data[0].meeting_json)
+        if (data[0].meeting_json) {
           axios.post('/api/scheduling/v1/cancel_calender_event', {
             calender_event: data[0].meeting_json,
           });
+        }
       }
     } catch {
       //
+    } finally {
+      refetch();
     }
   };
 

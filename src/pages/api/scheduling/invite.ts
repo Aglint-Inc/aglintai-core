@@ -189,7 +189,7 @@ const getFilterJson = async (filter_id: string) => {
     throw new Error('Filter not found');
   }
 
-  return filterJson[0] as {
+  return filterJson[0] as unknown as {
     created_at: string;
     filter_json: FilterJsonDateRangeCandidateInvite;
     id: string;

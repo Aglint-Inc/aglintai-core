@@ -141,6 +141,14 @@
   z-index: 2;
 }
 
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
 .text-blue-500 {
   color: #337fbd;
 }

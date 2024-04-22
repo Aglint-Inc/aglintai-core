@@ -143,7 +143,11 @@ const DetailsPopup = () => {
   }, 0);
 
   return (
-    <Dialog open={detailsPop} onClose={() => setDetailsPop(false)}>
+    <Dialog
+      open={detailsPop}
+      onClose={() => setDetailsPop(false)}
+      maxWidth='md'
+    >
       <CandidateScheduleCard
         isPopup={true}
         isSelected={false}

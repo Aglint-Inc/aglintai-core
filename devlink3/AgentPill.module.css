@@ -28,6 +28,14 @@
   z-index: 2;
 }
 
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
 .text-yellow-800 {
   color: #703815;
 }

@@ -3,7 +3,7 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { TaskTableJobSubCard } from '@/devlink3';
+import { PriorityPill, TaskTableJobSubCard } from '@/devlink3';
 import {
   TasksAgentContextType,
   useTasksContext,
@@ -59,7 +59,7 @@ function GroupTaskCard({
             setSelectedStatus={setSelectedStatus}
           />
         }
-        textTask={capitalize(task.name)}
+        textTask={capitalize(task.name) || 'Untitled'}
         slotCheckbox={
           <Stack
             className='checkboxClass'
@@ -92,6 +92,13 @@ function GroupTaskCard({
               color='info'
             />
           </Stack>
+        }
+        slotPriorityPill={
+          <PriorityPill
+            isHighVisible={task.priority === 'high'}
+            isLowVisible={task.priority === 'low'}
+            isMediumVisible={task.priority === 'medium'}
+          />
         }
       />
     </Stack>

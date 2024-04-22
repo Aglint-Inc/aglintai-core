@@ -14,6 +14,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
@@ -22,7 +23,7 @@ import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { useGetScheduleApplication } from './hooks';
+import { useAllActivities, useGetScheduleApplication } from './hooks';
 import RightPanel from './RightPanel';
 import {
   resetSchedulingApplicationState,
@@ -65,6 +66,9 @@ function SchedulingApplication() {
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
@@ -151,7 +155,10 @@ function SchedulingApplication() {
           application_id: selectedApplication.id,
           dateRange: dateRange,
           recruiter_id: recruiter.id,
-          recruiter_user_name: recruiterUser.first_name,
+          recruiter_user_name: getFullName(
+            recruiterUser.first_name,
+            recruiterUser.last_name,
+          ),
           session_ids: selectedSessionIds,
           sub_task_id: null,
           type: type,
@@ -194,6 +201,7 @@ function SchedulingApplication() {
     } catch (e) {
       //
     } finally {
+      refetch();
       setFetchingPlan(false);
     }
   };

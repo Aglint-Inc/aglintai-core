@@ -4,6 +4,8 @@ import * as _Builtin from "./_Builtin";
 import { FullScheduleCard } from "./FullScheduleCard";
 import { ScheduleNowButton } from "./ScheduleNowButton";
 import { JobCards } from "./JobCards";
+import { Activities } from "./Activities";
+import { CurrentStage } from "./CurrentStage";
 import * as _utils from "./utils";
 import _styles from "./CandidateSchedule.module.css";
 
@@ -83,31 +85,8 @@ export function CandidateSchedule({
         {slotCandidateCard ?? (
           <>
             <JobCards />
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1403")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Activities"}</_Builtin.Block>
-              <_Builtin.Block tag="div">
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1404")}
-                  tag="div"
-                >
-                  <_Builtin.Block tag="div" />
-                  <_Builtin.Block tag="div">
-                    <_Builtin.Block tag="div">
-                      {"Interview completed"}
-                    </_Builtin.Block>
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "text-sm", "justnow-text")}
-                      tag="div"
-                    >
-                      {"Just now"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                </_Builtin.Block>
-              </_Builtin.Block>
-            </_Builtin.Block>
+            <Activities />
+            <CurrentStage />
           </>
         )}
       </_Builtin.Block>

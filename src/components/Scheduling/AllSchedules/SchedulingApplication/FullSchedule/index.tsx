@@ -17,6 +17,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../ListCard/Icon';
+import { addScheduleActivity } from '../../queries/utils';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
 import { getScheduleType, mailHandler } from '../../utils';
 import CancelScheduleDialog from '../Common/CancelScheduleDialog';
@@ -36,7 +37,7 @@ import SideDrawerEdit from './EditDrawer';
 
 function FullSchedule() {
   const router = useRouter();
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
   );
@@ -82,9 +83,18 @@ function FullSchedule() {
           schedule_id: selectedSchedule.id,
           schedule_name: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           supabase,
+          rec_mail: recruiterUser.email,
         });
 
         if (res) {
+          addScheduleActivity({
+            title: `Interview link resent`,
+            application_id: selectedApplication.id,
+            logger: recruiterUser.user_id,
+            type: 'schedule',
+            supabase,
+            created_by: recruiterUser.user_id,
+          });
           toast.success('Invite Resent');
         }
       }
@@ -146,23 +156,25 @@ function FullSchedule() {
                       ? 'pointer'
                       : 'auto',
                 }}
-                onClick={() => {
-                  if (
-                    session.interview_meeting?.status === 'completed' ||
-                    session.interview_meeting?.status === 'confirmed'
-                  ) {
-                    router.push(
-                      `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
-                    );
-                  } else if (
-                    session.interview_meeting?.status === 'not_scheduled' ||
-                    !session.interview_meeting
-                  ) {
-                    selectSession({ session });
-                  }
-                }}
               >
                 <NewInterviewPlanCard
+                  onClickCard={{
+                    onClick: () => {
+                      if (
+                        session.interview_meeting?.status === 'completed' ||
+                        session.interview_meeting?.status === 'confirmed'
+                      ) {
+                        router.push(
+                          `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
+                        );
+                      } else if (
+                        session.interview_meeting?.status === 'not_scheduled' ||
+                        !session.interview_meeting
+                      ) {
+                        selectSession({ session });
+                      }
+                    },
+                  }}
                   isThreeDotVisible={
                     session.interview_meeting?.status !== 'completed'
                   }
@@ -259,7 +271,8 @@ function FullSchedule() {
                       }}
                       isEditVisible={
                         !session.interview_meeting ||
-                        session.interview_meeting?.status === 'not_scheduled'
+                        session.interview_meeting?.status === 'not_scheduled' ||
+                        session.interview_meeting?.status === 'cancelled'
                       }
                       isViewScheduleVisible={false}
                       isCancelScheduleVisible={

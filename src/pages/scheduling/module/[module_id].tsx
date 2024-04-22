@@ -1,6 +1,7 @@
-import { Stack, Tooltip, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
@@ -13,10 +14,16 @@ import {
   ShadowSession,
   StatusBadge,
 } from '@/devlink2';
-import { DarkPill, HistoryPill, InterviewerPage } from '@/devlink3';
+import {
+  DarkPill,
+  HistoryPill,
+  HistoryTrainingCard,
+  InterviewerPage,
+} from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
+import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
 import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
 import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import {
@@ -394,26 +401,31 @@ function SlotQualifiedMembers({
         const isTrainingDone = isTrainingComplete(tempUserProgress);
 
         const progressDataUser = progress.filter(
-          (prog) =>
-            prog.interview_module_relation_id === user.id &&
-            prog.interview_meeting?.status == 'completed',
+          (prog) => prog.interview_module_relation_id === user.id,
         );
-        const revShadowCount = progressDataUser.filter(
-          (prog) => prog.training_type === 'reverse_shadow',
-        ).length;
 
-        const shadowCount = progressDataUser.filter(
-          (prog) => prog.training_type == 'shadow',
-        ).length;
+        const tempMeetingData: {
+          [key: string]: typeof progressDataUser;
+        } = {};
 
-        let tempMeetingData: { [key: string]: number } = {
-          shadow: shadowCount,
-          'reverse shadow': revShadowCount,
-        };
+        progressDataUser.forEach((prog) => {
+          if (prog.training_type === 'shadow') {
+            tempMeetingData['shadow'] = [
+              ...(tempMeetingData['shadow'] || []),
+              prog,
+            ];
+          } else if (prog.training_type === 'reverse_shadow') {
+            tempMeetingData['reverse shadow'] = [
+              ...(tempMeetingData['reverse shadow'] || []),
+              prog,
+            ];
+          }
+        });
 
         let trainingStatusArray: {
           text: 'shadow' | 'reverse shadow';
           state: boolean;
+          meeting: (typeof progressDataUser)[number];
         }[] = [
           ...new Array(
             // @ts-ignore
@@ -421,6 +433,7 @@ function SlotQualifiedMembers({
           ).fill({
             text: 'shadow',
             state: false,
+            meeting: null,
           }),
           ...new Array(
             // @ts-ignore
@@ -428,12 +441,14 @@ function SlotQualifiedMembers({
           ).fill({
             text: 'reverse shadow',
             state: false,
+            meeting: null,
           }),
         ];
+
         trainingStatusArray = trainingStatusArray.map((item) => {
-          if ((tempMeetingData[item.text] || 0) > 0) {
-            tempMeetingData[item.text] -= 1;
-            return { ...item, state: true };
+          if (tempMeetingData[item.text]?.length) {
+            const temp = tempMeetingData[item.text].reverse().pop();
+            return { ...item, state: Boolean(temp), meeting: temp };
           }
           return item;
         });
@@ -448,13 +463,95 @@ function SlotQualifiedMembers({
               slotProgressBar={
                 <>
                   {trainingStatusArray.map((item, index) => (
-                    <Tooltip key={index} title={'hi'}>
-                      <HistoryPill
-                        isActive={item.state}
-                        isShadow={item.text === 'shadow'}
-                        isReverseShadow={item.text === 'reverse shadow'}
-                      />
-                    </Tooltip>
+                    <HistoryPill
+                      key={index}
+                      isStart={index === 0}
+                      isStartActive={index === 0 && item.state}
+                      isEnd={trainingStatusArray.length - 1 === index}
+                      isEndActive={
+                        trainingStatusArray.length - 1 === index && item.state
+                      }
+                      isMiddle={index > 0 && index < trainingStatusArray.length}
+                      isMiddleActive={
+                        index > 0 &&
+                        index < trainingStatusArray.length &&
+                        item.state
+                      }
+                      slotHistoryTrainingCard={
+                        <HistoryTrainingCard
+                          textInterviewType={
+                            item.meeting?.interview_session.name
+                          }
+                          isNotScheduleVisible={!item.meeting}
+                          isReverseShadow={item.text === 'reverse shadow'}
+                          isShadow={item.text === 'shadow'}
+                          slotStatus={
+                            <StatusBadge
+                              isCancelledVisible={
+                                item.meeting?.interview_meeting?.status ===
+                                'cancelled'
+                              }
+                              isConfirmedVisible={
+                                item.meeting?.interview_meeting?.status ===
+                                'confirmed'
+                              }
+                              isWaitingVisible={
+                                item.meeting?.interview_meeting?.status ===
+                                'waiting'
+                              }
+                              isCompletedVisible={
+                                item.meeting?.interview_meeting?.status ===
+                                'completed'
+                              }
+                              isNotScheduledVisible={
+                                item.meeting?.interview_meeting?.status ===
+                                'not_scheduled'
+                              }
+                            />
+                          }
+                          slotMeetingIcon={
+                            <IconScheduleType
+                              type={
+                                item.meeting?.interview_session?.schedule_type
+                              }
+                            />
+                          }
+                          textDate={dayjs(
+                            item.meeting?.interview_meeting?.start_time,
+                          ).format('ddd DD MMM YYYY')}
+                          textTime={`${dayjs(
+                            item.meeting?.interview_meeting?.start_time,
+                          ).format(
+                            'HH:mm',
+                          )} to ${dayjs(item.meeting?.interview_meeting?.end_time).format('HH:mm')}`}
+                          isSchedule={Boolean(
+                            item.meeting?.interview_meeting?.status,
+                          )}
+                          textDuration={
+                            <>
+                              {`${
+                                // @ts-ignore
+                                (new Date(
+                                  item.meeting?.interview_meeting?.end_time,
+                                ) -
+                                  // @ts-ignore
+                                  new Date(
+                                    item.meeting?.interview_meeting?.start_time,
+                                  )) /
+                                (1000 * 60)
+                              } Minutes`}
+                            </>
+                          }
+                          textPlatformName={
+                            item.meeting?.interview_meeting?.meeting_json
+                            // @ts-ignore
+                              ?.conferenceData?.conferenceSolution?.name
+                          }
+                        />
+                      }
+                      isShadow={item.text === 'shadow'}
+                      isReverseShadow={item.text === 'reverse shadow'}
+                    />
                   ))}
                 </>
               }

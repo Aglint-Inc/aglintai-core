@@ -9,7 +9,16 @@
 }
 
 .div-block-1440.job-cand {
+  justify-content: space-between;
+  align-items: center;
   background-color: #f3f4f6;
+}
+
+.div-block-1568 {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .div-block-1441 {
@@ -42,9 +51,22 @@
   opacity: 0.8;
 }
 
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
 .relative_2 {
   position: relative;
   z-index: 2;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
 }
 
 .text-grey-600 {

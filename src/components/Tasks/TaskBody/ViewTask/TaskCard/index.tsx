@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import {
@@ -14,18 +15,21 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { CustomDatabase } from '@/src/types/customSchema';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../../Components/AssigneeChip';
 import StatusChip from '../../../Components/StatusChip';
 import { EmailAgentId, PhoneAgentId } from '../../../utils';
 import { CallIcon, EmailIcon } from '../../AddNewTask';
+import PriorityList from '../../AddNewTask/PriorityList';
 import SelectDueDate from '../../AddNewTask/SelecteDueDate';
 import SelectScheduleDate from '../../AddNewTask/SelectScheduleDate';
 import SessionList from '../../AddNewTask/SessionList';
 import TriggerTime from '../../AddNewTask/TriggerTime';
 
 function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
+  const router = useRouter();
   const { handelUpdateTask } = useTasksContext();
   const [sessionList, setSessionList] = useState<Awaited<
     ReturnType<typeof fetchInterviewSessionTask>
@@ -39,6 +43,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
 
   const [selectedDueDate, setSelectedDueDate] = useState<string>(null);
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(null);
+  const [selectedPriority, setSelectedPriority] =
+    useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
   async function getSessionList() {
     const data = await fetchInterviewSessionTask({
       application_id: task?.application_id,
@@ -53,9 +59,10 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       setSelectedSession([...task.session_ids]);
       setSelectedDueDate(task.due_date);
       setSelectTriggerTime(task.start_date);
+      setSelectedPriority(task.priority);
       getSessionList();
     }
-  }, []);
+  }, [router.query?.task_id]);
 
   useEffect(() => {
     if (
@@ -71,10 +78,17 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           session_ids: selectedSession,
           start_date: dayjs(selectTriggerTime).toString(),
           schedule_date_range: { ...scheduleDate },
+          priority: selectedPriority,
         },
       });
     }
-  }, [selectedSession, scheduleDate, selectedDueDate, selectTriggerTime]);
+  }, [
+    selectedSession,
+    scheduleDate,
+    selectedDueDate,
+    selectTriggerTime,
+    selectedPriority,
+  ]);
 
   return (
     <>
@@ -93,8 +107,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                   <AvatarWithName
                     slotAvatar={
                       <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
+                        height={'24px'}
+                        width={'24px'}
                         src={task.applications?.candidates.avatar}
                         variant='circular'
                         fontSize='14px'
@@ -190,7 +204,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotWhentoCallIcon={
           task?.assignee[0] === EmailAgentId ? <EmailIcon /> : <CallIcon />
         }
-        isPriorityVisible={false}
+        isPriorityVisible={true}
+        slotPriorityPill={
+          <PriorityList
+            selectedPriority={selectedPriority}
+            setSelectedPriority={setSelectedPriority}
+            isOptionList={task.status === 'not_started'}
+          />
+        }
       />
     </>
   );

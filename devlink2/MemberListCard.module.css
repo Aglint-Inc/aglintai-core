@@ -324,7 +324,6 @@
 
 .div-block-1320 {
   display: flex;
-  overflow: hidden;
   grid-column-gap: 2px;
   grid-row-gap: 2px;
   border-radius: 10px;
@@ -332,6 +331,14 @@
 
 .mt-8 {
   margin-top: 8px;
+}
+
+.mt-8.button-progress {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .text-underline {
