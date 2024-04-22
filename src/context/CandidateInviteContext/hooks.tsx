@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react';
 import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import { useConfirmSlots, useInvites } from '@/src/queries/candidate-invite';
+import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 const useInviteActions = () => {
@@ -37,6 +38,13 @@ const useInviteActions = () => {
       candidate_email: invites.data.candidate.email,
       schedule_id: invites.data.schedule.id,
       filter_id: router.query.filter_id,
+      task_id: router.query?.task_id,
+      agent_type: 'self',
+      candidate_id: invites.data.candidate.id,
+      candidate_name: getFullName(
+        invites.data.candidate.first_name,
+        invites.data.candidate.last_name,
+      ),
     } as ConfirmApiBodyParams;
     try {
       if (!isPending) {

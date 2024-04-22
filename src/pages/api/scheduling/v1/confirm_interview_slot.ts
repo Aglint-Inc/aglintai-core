@@ -32,6 +32,7 @@ export type ConfirmApiBodyParams = {
   candidate_email: string;
   schedule_id: string;
   filter_id?: string;
+  //  if tasks id is present
   task_id: string | null;
   agent_type: 'email' | 'phone' | 'self';
   candidate_name: string;
@@ -49,6 +50,7 @@ const required_fields = [
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const req_body = req.body as ConfirmApiBodyParams;
   try {
+    console.log(req_body);
     required_fields.forEach((field) => {
       if (!has(req_body, field)) {
         throw new Error(`missing Field ${field}`);
@@ -63,9 +65,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (req_body.filter_id) {
-      axios.post('/api/scheduling/application/mailthankyou', {
-        filter_id: req_body.filter_id,
-      });
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+        {
+          filter_id: req_body.filter_id,
+        },
+      );
     }
 
     if (
@@ -93,9 +98,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await supabaseAdmin
           .from('new_tasks')
           .update({
-            status: 'completed',
+            status: 'scheduled',
           })
-          .eq('id', req_body.task_id),
+          .eq('id', req_body.task_id)
+          .select(),
       );
     }
 

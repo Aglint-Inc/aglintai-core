@@ -3534,6 +3534,16 @@ export type Database = {
           comp_schedule_setting: Json
         }[]
       }
+      get_interview_training_status_count: {
+        Args: {
+          recruiter_id: string
+        }
+        Returns: {
+          id: string
+          name: string
+          training_status_count: Json
+        }[]
+      }
       get_interviewers: {
         Args: {
           rec_id: string
@@ -4275,6 +4285,8 @@ export type Database = {
         | "completed"
         | "closed"
         | "not_started"
+        | "scheduled"
+        | "cancelled"
       task_type_enum: "schedule" | "training" | "empty"
       template_type:
         | "cognitive"
