@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 import { ScheduleOptions } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
@@ -49,7 +50,7 @@ function GetScheduleOptionsDialog() {
     selCoordinator: state.selCoordinator,
   }));
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
+  const [saving, setSaving] = useState(false);
   const initialEndDate = currentDate.add(15, 'day');
 
   useEffect(() => {
@@ -70,47 +71,53 @@ function GetScheduleOptionsDialog() {
     .some((ses) => ses.session_type === 'debrief');
 
   const onClickSendToCandidate = async () => {
-    if (isDebrief && !selectedId) {
-      toast.warning('Please select a slot to schedule');
-    } else {
-      const res = await axios.post(
-        '/api/scheduling/application/sendtocandidate',
-        {
-          dateRange,
-          initialSessions,
-          is_mail: true,
-          is_debrief: isDebrief,
-          recruiter_id: recruiter.id,
-          recruiterUser,
-          schedulingOptions,
-          selCoordinator,
-          selected_comb_id: selectedId,
-          selectedApplication,
-          selectedSessionIds,
-          user_tz: dayjs.tz.guess(),
-        } as ApiBodyParamsSendToCandidate,
-      );
-
-      if (res.status === 200 && res.data) {
-        setinitialSessions(
-          initialSessions.map((session) => ({
-            ...session,
-            interview_meeting: selectedSessionIds.includes(session.id)
-              ? session.interview_meeting
-                ? {
-                    ...session.interview_meeting,
-                    status: 'waiting',
-                  }
-                : { status: 'waiting', interview_schedule_id: null }
-              : session.interview_meeting
-                ? { ...session.interview_meeting }
-                : null,
-          })),
+    try {
+      setSaving(true);
+      if (isDebrief && !selectedId) {
+        toast.warning('Please select a slot to schedule');
+      } else {
+        const res = await axios.post(
+          '/api/scheduling/application/sendtocandidate',
+          {
+            dateRange,
+            initialSessions,
+            is_mail: true,
+            is_debrief: isDebrief,
+            recruiter_id: recruiter.id,
+            recruiterUser,
+            schedulingOptions,
+            selCoordinator,
+            selected_comb_id: selectedId,
+            selectedApplication,
+            selectedSessionIds,
+            user_tz: dayjs.tz.guess(),
+          } as ApiBodyParamsSendToCandidate,
         );
-        
+
+        if (res.status === 200 && res.data) {
+          setinitialSessions(
+            initialSessions.map((session) => ({
+              ...session,
+              interview_meeting: selectedSessionIds.includes(session.id)
+                ? session.interview_meeting
+                  ? {
+                      ...session.interview_meeting,
+                      status: 'waiting',
+                    }
+                  : { status: 'waiting', interview_schedule_id: null }
+                : session.interview_meeting
+                  ? { ...session.interview_meeting }
+                  : null,
+            })),
+          );
+        }
+        setSelectedSessionIds([]);
+        setIsScheduleNowOpen(false);
       }
-      setSelectedSessionIds([]);
-      setIsScheduleNowOpen(false);
+    } catch (e) {
+      //
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -148,9 +155,16 @@ function GetScheduleOptionsDialog() {
                 buttonText={isDebrief ? 'Schedule Now' : 'Send to Candidate'}
                 buttonProps={{
                   onClick: () => {
-                    onClickSendToCandidate();
+                    if (!saving) onClickSendToCandidate();
                   },
                 }}
+                endIconSlot={
+                  saving && (
+                    <Stack height={'16px'} width={'16px'}>
+                      <LoaderGrey />
+                    </Stack>
+                  )
+                }
               />
             </>
           }

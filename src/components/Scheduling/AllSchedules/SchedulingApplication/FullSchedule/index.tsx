@@ -156,23 +156,25 @@ function FullSchedule() {
                       ? 'pointer'
                       : 'auto',
                 }}
-                onClick={() => {
-                  if (
-                    session.interview_meeting?.status === 'completed' ||
-                    session.interview_meeting?.status === 'confirmed'
-                  ) {
-                    router.push(
-                      `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
-                    );
-                  } else if (
-                    session.interview_meeting?.status === 'not_scheduled' ||
-                    !session.interview_meeting
-                  ) {
-                    selectSession({ session });
-                  }
-                }}
               >
                 <NewInterviewPlanCard
+                  onClickCard={{
+                    onClick: () => {
+                      if (
+                        session.interview_meeting?.status === 'completed' ||
+                        session.interview_meeting?.status === 'confirmed'
+                      ) {
+                        router.push(
+                          `/scheduling/view?meeting_id=${session.interview_meeting.id}&tab=candidate_details`,
+                        );
+                      } else if (
+                        session.interview_meeting?.status === 'not_scheduled' ||
+                        !session.interview_meeting
+                      ) {
+                        selectSession({ session });
+                      }
+                    },
+                  }}
                   isThreeDotVisible={
                     session.interview_meeting?.status !== 'completed'
                   }

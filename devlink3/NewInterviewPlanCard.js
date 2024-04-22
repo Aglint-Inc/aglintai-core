@@ -36,6 +36,7 @@ export function NewInterviewPlanCard({
   isDebriefIconVisible = false,
   onClickDots = {},
   isThreeDotVisible = true,
+  onClickCard = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -57,6 +58,7 @@ export function NewInterviewPlanCard({
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1399")}
               tag="div"
+              {...onClickCard}
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1393")}
@@ -110,6 +112,7 @@ export function NewInterviewPlanCard({
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1388")}
               tag="div"
+              {...onClickCard}
             >
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1387")}
@@ -213,39 +216,40 @@ export function NewInterviewPlanCard({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1389")}
-                  tag="div"
-                >
-                  {isScheduleNowButtonVisible ? (
-                    <_Builtin.Block tag="div">
-                      {slotScheduleNowButton}
-                    </_Builtin.Block>
-                  ) : null}
-                  {isThreeDotVisible ? (
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1575")}
+              tag="div"
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1389")}
+                tag="div"
+              >
+                {isScheduleNowButtonVisible ? (
+                  <_Builtin.Block tag="div">
+                    {slotScheduleNowButton}
+                  </_Builtin.Block>
+                ) : null}
+                {isThreeDotVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "three-dot-wrap")}
+                    data-w-id="1203848f-846a-68b4-5b32-d1ae8200d234"
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icons", "cursor-pointer")}
+                      value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12%2015.5C12.5625%2015.5208%2013%2015.7708%2013.3125%2016.25C13.5625%2016.75%2013.5625%2017.25%2013.3125%2017.75C13%2018.2292%2012.5625%2018.4792%2012%2018.5C11.4375%2018.4792%2011%2018.2292%2010.6875%2017.75C10.4375%2017.25%2010.4375%2016.75%2010.6875%2016.25C11%2015.7708%2011.4375%2015.5208%2012%2015.5ZM12%2010.5C12.5625%2010.5208%2013%2010.7708%2013.3125%2011.25C13.5625%2011.75%2013.5625%2012.25%2013.3125%2012.75C13%2013.2292%2012.5625%2013.4792%2012%2013.5C11.4375%2013.4792%2011%2013.2292%2010.6875%2012.75C10.4375%2012.25%2010.4375%2011.75%2010.6875%2011.25C11%2010.7708%2011.4375%2010.5208%2012%2010.5ZM13.5%207C13.4792%207.5625%2013.2292%208%2012.75%208.3125C12.25%208.5625%2011.75%208.5625%2011.25%208.3125C10.7708%208%2010.5208%207.5625%2010.5%207C10.5208%206.4375%2010.7708%206%2011.25%205.6875C11.75%205.4375%2012.25%205.4375%2012.75%205.6875C13.2292%206%2013.4792%206.4375%2013.5%207Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                      {...onClickDots}
+                    />
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "three-dot-wrap")}
-                      data-w-id="1203848f-846a-68b4-5b32-d1ae8200d234"
+                      className={_utils.cx(_styles, "sloteditoptions")}
                       tag="div"
                     >
-                      <_Builtin.HtmlEmbed
-                        className={_utils.cx(
-                          _styles,
-                          "icons",
-                          "cursor-pointer"
-                        )}
-                        value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M12%2015.5C12.5625%2015.5208%2013%2015.7708%2013.3125%2016.25C13.5625%2016.75%2013.5625%2017.25%2013.3125%2017.75C13%2018.2292%2012.5625%2018.4792%2012%2018.5C11.4375%2018.4792%2011%2018.2292%2010.6875%2017.75C10.4375%2017.25%2010.4375%2016.75%2010.6875%2016.25C11%2015.7708%2011.4375%2015.5208%2012%2015.5ZM12%2010.5C12.5625%2010.5208%2013%2010.7708%2013.3125%2011.25C13.5625%2011.75%2013.5625%2012.25%2013.3125%2012.75C13%2013.2292%2012.5625%2013.4792%2012%2013.5C11.4375%2013.4792%2011%2013.2292%2010.6875%2012.75C10.4375%2012.25%2010.4375%2011.75%2010.6875%2011.25C11%2010.7708%2011.4375%2010.5208%2012%2010.5ZM13.5%207C13.4792%207.5625%2013.2292%208%2012.75%208.3125C12.25%208.5625%2011.75%208.5625%2011.25%208.3125C10.7708%208%2010.5208%207.5625%2010.5%207C10.5208%206.4375%2010.7708%206%2011.25%205.6875C11.75%205.4375%2012.25%205.4375%2012.75%205.6875C13.2292%206%2013.4792%206.4375%2013.5%207Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        {...onClickDots}
-                      />
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "sloteditoptions")}
-                        tag="div"
-                      >
-                        {slotEditOptionModule ?? <EditOptionModule />}
-                      </_Builtin.Block>
+                      {slotEditOptionModule ?? <EditOptionModule />}
                     </_Builtin.Block>
-                  ) : null}
-                </_Builtin.Block>
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

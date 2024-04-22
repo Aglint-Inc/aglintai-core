@@ -115,7 +115,7 @@ export const agentTrigger = async ({
 
   if (type === 'email_agent') {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_AGENT_API}/api/scheduling/mail-agent/init-agent`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
       {
         cand_email: rec_user_email,
         // cand_email: sessionsWithPlan.application.candidates.email,
