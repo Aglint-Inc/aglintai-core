@@ -106,7 +106,7 @@ export default async function handler(
     });
 
     const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/email-agent/compose-email`,
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/email-agent/compose-email`,
       {
         ...agent_payload,
       },
