@@ -168,9 +168,9 @@ function SessionCard({
               color: getScheduleTextcolor(prog.status),
             },
           }}
-          textDate={dayjs(prog.end_time).format('DD')}
-          textDay={dayjs(prog.end_time).format('dddd')}
-          textMonth={dayjs(prog.end_time).format('MMM')}
+          textDate={dayjs(prog.start_time).format('DD')}
+          textDay={dayjs(prog.start_time).format('dddd')}
+          textMonth={dayjs(prog.start_time).format('MMM')}
           isStatusVisible={false}
           textTime={`${dayjs(prog.start_time).format('hh:mm A')} - ${dayjs(prog.end_time).format('hh:mm A')}`}
           textMeetingPlatform={getScheduleType(prog.schedule_type)}
