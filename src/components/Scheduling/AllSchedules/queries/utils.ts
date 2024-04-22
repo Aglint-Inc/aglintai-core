@@ -56,7 +56,7 @@ export const addScheduleActivity = async ({
   supabase: ReturnType<typeof createServerClient<Database>>;
   created_by: string;
 }) => {
-  await supabase.from('application_logs').insert({
+  const { error } = await supabase.from('application_logs').insert({
     application_id,
     title,
     description,
@@ -65,4 +65,7 @@ export const addScheduleActivity = async ({
     logger,
     created_by,
   });
+
+  // eslint-disable-next-line no-console
+  console.log(error);
 };

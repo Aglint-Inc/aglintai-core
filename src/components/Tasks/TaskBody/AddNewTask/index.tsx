@@ -1,7 +1,7 @@
 import { Drawer, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AvatarWithName, CreateTask, ListCard, ViewTaskCard } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
@@ -51,7 +51,7 @@ function AddNewTask() {
   const {
     jobs: { data: jobs },
   } = useJobs();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [inputData, setInputData] = useState(null);
   const [selectedStatus, setSelectedStatus] =
     useState<CustomDatabase['public']['Enums']['task_status']>('not_started');
 
@@ -91,7 +91,7 @@ function AddNewTask() {
     useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
 
   const [aiload, setAiLoad] = useState(false);
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   async function handleCreate() {
     if (!selectedSession.length) {
@@ -102,7 +102,7 @@ function AddNewTask() {
       assignee: [selectedAssignee?.user_id],
       created_by: recruiterUser?.user_id || null,
       application_id: selectedCandidate?.id || null,
-      name: inputRef.current?.value || 'Untitled',
+      name: inputData || 'Untitled',
       due_date: dayjs(selectedDueDate).toString(),
       start_date: dayjs(selectTriggerTime).toString(),
       recruiter_id: recruiter.id,
@@ -255,7 +255,7 @@ function AddNewTask() {
                 lineHeight={'24px'}
                 fontWeight={600}
               >
-                {inputRef?.current?.value || 'Untitled'}
+                {inputData || 'Untitled'}
               </Typography>
             </ShowCode.When>
             <ShowCode.Else>
@@ -267,14 +267,14 @@ function AddNewTask() {
                 maxRows={3}
                 fullWidth
                 placeholder='Untitled'
-                //   onChange={(e) => {
-                //     console.log('object', e);
-                //   }}
+                onChange={(e) => {
+                  setInputData(e.target.value);
+                }}
                 onBlur={async () => {
-                  if (inputRef.current?.value) {
+                  if (inputData) {
                     setAiLoad(true);
                     await extractDataFromText(
-                      inputRef.current.value,
+                      inputData,
                       recruiterUser.user_id,
                     ).then((data: any) => {
                       setSelectedAssignee(
@@ -296,7 +296,6 @@ function AddNewTask() {
                   }
                   setEditMode(false);
                 }}
-                inputRef={inputRef}
                 sx={{
                   '& .MuiInputBase-root': {
                     border: 'none',
