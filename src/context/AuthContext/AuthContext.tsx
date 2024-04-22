@@ -9,6 +9,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  use,
   useContext,
   useEffect,
   useState,
@@ -112,6 +113,7 @@ const AuthProvider = ({ children }) => {
         .from('recruiter_user')
         .select()
         .in('user_id', userIds);
+
       if (!userError && users.length) {
         setMembers(users as RecruiterUserType[]);
       }
