@@ -14,7 +14,7 @@ import { useGetScheduleApplication } from '../../hooks';
 import { setIsEditBreakOpen, useSchedulingApplicationStore } from '../../store';
 
 function BreakDrawerEdit() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const {
     editSession,
     allSessions,
@@ -57,6 +57,7 @@ function BreakDrawerEdit() {
           scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           session_ids: [],
           recruiter_id: recruiter.id,
+          rec_user_id: recruiterUser.user_id,
         } as ApiBodyParamsSessionCache,
       );
 

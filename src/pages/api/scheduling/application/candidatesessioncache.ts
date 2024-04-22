@@ -15,6 +15,7 @@ export interface ApiBodyParamsSessionCache {
   scheduleName: string;
   coordinator_id: string;
   recruiter_id: string;
+  rec_user_id: string;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -45,6 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       scheduleName,
       session_ids,
       recruiter_id,
+      rec_user_id,
     } = req.body as ApiBodyParamsSessionCache;
 
     const resClone = await createCloneSession({
@@ -56,6 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_ids,
       supabase,
       recruiter_id,
+      rec_user_id,
     });
 
     return res.status(200).send(resClone);

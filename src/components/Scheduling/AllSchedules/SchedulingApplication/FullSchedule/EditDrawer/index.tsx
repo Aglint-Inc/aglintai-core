@@ -48,7 +48,7 @@ type Interviewer = {
 };
 
 function SideDrawerEdit() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const {
     editSession,
     allSessions,
@@ -240,6 +240,7 @@ function SideDrawerEdit() {
           scheduleName: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
           session_ids: [],
           recruiter_id: recruiter.id,
+          rec_user_id: recruiterUser.user_id,
         } as ApiBodyParamsSessionCache,
       );
 
