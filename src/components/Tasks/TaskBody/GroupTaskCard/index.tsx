@@ -59,7 +59,7 @@ function GroupTaskCard({
             setSelectedStatus={setSelectedStatus}
           />
         }
-        textTask={capitalize(task.name)}
+        textTask={capitalize(task.name) || 'Untitled'}
         slotCheckbox={
           <Stack
             className='checkboxClass'

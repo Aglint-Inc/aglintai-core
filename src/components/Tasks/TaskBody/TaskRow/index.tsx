@@ -55,7 +55,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             setTaskId(task.id);
           },
         }}
-        textTask={capitalize(task.name)}
+        textTask={capitalize(task.name) || 'Untitled'}
         //   slotAvatarWithName={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotAssignedToCard={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotCandidate={

@@ -1,10 +1,15 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { NewTaskCard } from "./NewTaskCard";
 import { TaskTableJobSubCard } from "./TaskTableJobSubCard";
 import * as _utils from "./utils";
 import _styles from "./TaskTableJobCard.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-51":{"id":"e-51","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-52"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713779599870},"e-52":{"id":"e-52","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-30","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-51"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713779599870}},"actionLists":{"a-29":{"id":"a-29","title":"Task Drop 1","actionItemGroups":[{"actionItems":[{"id":"a-29-n","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]},{"actionItems":[{"id":"a-29-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":-180,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"createdOn":1713779606035,"useFirstGroupAsInitialState":true},"a-30":{"id":"a-30","title":"Task Drop 2","actionItemGroups":[{"actionItems":[{"id":"a-30-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"createdOn":1713779606035,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function TaskTableJobCard({
   as: _Component = _Builtin.Block,
@@ -16,6 +21,8 @@ export function TaskTableJobCard({
   slotTaskTableJobCard,
   onClickDropIcon = {},
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component tag="div">
       <_Builtin.Block tag="div">
@@ -71,6 +78,7 @@ export function TaskTableJobCard({
           </_Builtin.Block>
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons", "cursor-pointer", "mr-20")}
+            data-w-id="3e3d1427-88f1-9fc7-7c74-98c39f17a683"
             value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%2223.75%22%20y%3D%2223.75%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20transform%3D%22rotate(-180%2023.75%2023.75)%22%20fill%3D%22white%22%2F%3E%0A%3Crect%20x%3D%2223.75%22%20y%3D%2223.75%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20transform%3D%22rotate(-180%2023.75%2023.75)%22%20stroke%3D%22%23D8DCDE%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M11.7422%208.74219C11.9141%208.58594%2012.0859%208.58594%2012.2578%208.74219L16.7578%2013.2422C16.9141%2013.4141%2016.9141%2013.5859%2016.7578%2013.7578C16.5859%2013.9141%2016.4141%2013.9141%2016.2422%2013.7578L12%209.53906L7.75781%2013.7578C7.58594%2013.9141%207.41406%2013.9141%207.24219%2013.7578C7.08594%2013.5859%207.08594%2013.4141%207.24219%2013.2422L11.7422%208.74219Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
             {...onClickDropIcon}
           />

@@ -128,11 +128,12 @@ function ViewTaskDrawer() {
                       lineHeight={'24px'}
                       fontWeight={600}
                     >
-                      {selectedTask?.name}
+                      {selectedTask?.name || 'Untitled'}
                     </Typography>
                   </ShowCode.When>
                   <ShowCode.Else>
                     <TextField
+                      placeholder='Untitled'
                       // eslint-disable-next-line jsx-a11y/no-autofocus
                       autoFocus={true}
                       onChange={({ currentTarget: { value: changeValue } }) => {
