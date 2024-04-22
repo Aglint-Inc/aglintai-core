@@ -13,4 +13,9 @@ declare function FeedbackViewPopup(props: {
   isEditFeedbackVisible?: Types.Visibility.VisibilityConditions;
   textEditFeedback?: React.ReactNode;
   isNextPrevVisible?: Types.Visibility.VisibilityConditions;
+  isNotSubmittedVisible?: Types.Visibility.VisibilityConditions;
+  onClickRequestFeedback?: Types.Devlink.RuntimeProps;
+  isEmpty?: Types.Visibility.VisibilityConditions;
+  onClickResendRequest?: Types.Devlink.RuntimeProps;
+  isFeedbackReqVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
