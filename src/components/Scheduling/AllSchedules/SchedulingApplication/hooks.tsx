@@ -428,10 +428,13 @@ export const scheduleWithAgent = async ({
             user_tz,
           });
         } else {
+          const selSes = createCloneRes.refSessions.filter(
+            (ses) => ses.isSelected,
+          );
           const { data: task, error: errorTasks } = await supabase
             .from('new_tasks')
             .insert({
-              name: `Schedule an interview for ${createCloneRes.refSessions.map((ses) => ses.name).join(' , ')} via phone`,
+              name: `Schedule an interview for ${selSes.map((ses) => ses.name).join(' , ')} via phone`,
               application_id,
               created_by: rec_user_id,
               type: 'schedule',
@@ -442,7 +445,7 @@ export const scheduleWithAgent = async ({
               start_date: new Date(),
               assignee,
               filter_id: filterJson[0].id,
-              session_ids: createCloneRes.refSessions,
+              session_ids: selSes,
               task_triggered: true,
             } as any)
             .select();
@@ -450,8 +453,7 @@ export const scheduleWithAgent = async ({
           if (errorTasks) throw new Error(errorTasks.message);
 
           addScheduleActivity({
-            title: `Candidate invited for session ${createCloneRes.refSessions
-              .filter((ses) => ses.isSelected)
+            title: `Candidate invited for session ${selSes
               .map((ses) => ses.name)
               .join(
                 ' , ',
