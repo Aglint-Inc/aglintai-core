@@ -45,6 +45,8 @@ export function MemberListCard({
   textObjective = "Design Engineer",
   isViewProgressVisible = true,
   isThreeDotVisible = true,
+  onClickQualify = {},
+  isQualifyButtonVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -177,7 +179,10 @@ export function MemberListCard({
               {slotProgressBar}
             </_Builtin.Block>
             {isViewProgressVisible ? (
-              <_Builtin.Block className={_utils.cx(_styles, "mt-8")} tag="div">
+              <_Builtin.Block
+                className={_utils.cx(_styles, "mt-8", "button-progress")}
+                tag="div"
+              >
                 <_Builtin.Block
                   className={_utils.cx(
                     _styles,
@@ -189,6 +194,19 @@ export function MemberListCard({
                 >
                   {"View Detail"}
                 </_Builtin.Block>
+                {isQualifyButtonVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "text-blue-500",
+                      "text-underline"
+                    )}
+                    tag="div"
+                    {...onClickQualify}
+                  >
+                    {"Qualify"}
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
