@@ -54,10 +54,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ) {
       return res.status(400).send('missing fields');
     }
-    // cand_email = 'dileepwert@gmail.com';
-    // if (process.env.NODE_ENV === 'development') {
-    //   cand_email = 'dheeraj@gmail.com';
-    // }
+    if (process.env.NODE_ENV === 'development') {
+      cand_email = 'dileepwert@gmail.com';
+    }
 
     const cand_details = await fetchCandDetails({
       filter_json_id,
@@ -81,7 +80,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       organizer_time_zone,
       candidate_time_zone: cand_details.filter_json.user_tz,
       organizer_name: cand_details.filter_json.organizer_name,
-      self_schedule_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}'>link</a>`,
+      self_schedule_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}&task_id=${task_id}'>link</a>`,
     });
 
     // delete previous chat hitory of that candidate email email
@@ -191,10 +190,11 @@ export const sendEmailFromAgent = async ({
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
-    fromEmail: 'agent@ai.aglinthq.com',
-    // process.env.NODE_ENV === 'development'
-    //   ? 'agent@parse.aglinthq.com'
-    //   : 'agent@ai.aglinthq.com',
+    fromEmail:
+      // 'agent@ai.aglinthq.com',
+      process.env.NODE_ENV === 'development'
+        ? 'agent@parse.aglinthq.com'
+        : 'agent@ai.aglinthq.com',
     fromName: from_name,
     subject: `Interview for ${job_role} - ${candidate_name}`,
     text: mail_body,

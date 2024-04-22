@@ -22,6 +22,7 @@ import {
   // PublicJobsType,
   ScheduleAgentChatHistoryTypeDB,
 } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { getFullName } from '@/src/utils/jsonResume';
 import { log_task_progress } from '@/src/utils/scheduling_v2/utils';
 
@@ -60,6 +61,7 @@ type AgentPayloadType = {
     interview_meetings: InterviewMeetingTypeDb[];
     meeting_summary: string;
     job_description: string;
+    comp_scheduling_setting: schedulingSettingType;
   };
 };
 
@@ -104,7 +106,7 @@ export default async function handler(
     });
 
     const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_AI_HOST}/api/email-agent`,
+      `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/email-agent/compose-email`,
       {
         ...agent_payload,
       },
@@ -253,6 +255,7 @@ export const fetchCandidateDetails = async (
       interview_meetings: sessions.map((ses) => ses.interview_meeting),
       meeting_summary,
       job_description: job.description,
+      comp_scheduling_setting: job.recruiter.scheduling_settings as any,
     },
   };
 

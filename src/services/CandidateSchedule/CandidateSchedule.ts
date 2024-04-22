@@ -773,6 +773,11 @@ export class CandidatesScheduling {
     return updated_intervs_details;
   };
 
+  /**
+  @returns combination of slots in a paricular day
+  @param interview_sessions - interview sessions of a particaulr day with fixed time break ( like 30, 45, 60 minutes)
+  @param interv_free_time - free time of interviewers of given session in a particalar day
+**/
   private findFixedTimeCombs = (
     interview_sessions: InterviewSessionApiType[],
     interv_free_time: InterDetailsType[],
@@ -781,7 +786,7 @@ export class CandidatesScheduling {
     let all_schedule_combs: PlanCombinationType[] = [];
 
     const module_combs = this.calcIntervCombsForModule(interview_sessions);
-    const explore_module_combs = (
+    const exploreSessionCombs = (
       current_comb: InterviewSessionApiType[],
       module_idx,
     ) => {
@@ -793,12 +798,15 @@ export class CandidatesScheduling {
 
       for (let module_comb of module_combs[Number(module_idx)]) {
         current_comb.push(module_comb);
-        explore_module_combs(current_comb, module_idx + 1);
+        exploreSessionCombs(current_comb, module_idx + 1);
         current_comb.pop();
       }
     };
 
-    // given one combination of plan find all possible times for that plan
+    /**
+     * @param plan_comb single interview plan
+     * @returns given one combination of plan find all possible times for that plan
+     */
     const calcMeetingCombinsForPlan = (
       plan_comb: InterviewSessionApiType[],
     ) => {
@@ -971,7 +979,16 @@ export class CandidatesScheduling {
       }
       return schedule_combs;
     };
-    explore_module_combs([], 0);
+
+    exploreSessionCombs([], 0);
+
+    // sorting slots
+    all_schedule_combs = all_schedule_combs.sort((slot1, slot2) => {
+      return (
+        userTzDayjs(slot1.sessions[0].start_time).unix() -
+        userTzDayjs(slot2.sessions[0].start_time).unix()
+      );
+    });
     return all_schedule_combs;
   };
 
@@ -1134,6 +1151,12 @@ export class CandidatesScheduling {
     }));
   };
 
+  /**
+   *
+   * @param sessions interview session full details
+   * @returns all combination of interviewers for the sessions
+   */
+
   private calcIntervCombsForModule = (sessions: InterviewSessionApiType[]) => {
     const findCombinationOfStrings = (str_arr: string[], comb: number) => {
       let total_combs: string[][] = [];
@@ -1161,7 +1184,14 @@ export class CandidatesScheduling {
 
       return total_combs;
     };
-    const calcSingleModuleCombinations = (
+
+    /**
+     *
+     * @param session session details
+     * @param comb - number of interviewer needed  in the session
+     * @returns combination of sessions with possible interviewers
+     */
+    const calcSingleSessionCombinations = (
       session: InterviewSessionApiType,
       comb: number,
     ) => {
@@ -1187,7 +1217,7 @@ export class CandidatesScheduling {
     let total_combs: InterviewSessionApiType[][] = [];
 
     for (const session of sessions) {
-      const combs = calcSingleModuleCombinations(
+      const combs = calcSingleSessionCombinations(
         session,
         session.interviewer_cnt,
       );

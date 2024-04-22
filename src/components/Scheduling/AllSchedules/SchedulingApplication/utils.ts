@@ -88,7 +88,7 @@ export const agentTrigger = async ({
   company_name,
   jobRole,
   rec_user_email,
-  rec_user_phone,
+  rec_user_phone = '',
   user_tz,
 }) => {
   console.log({
@@ -104,14 +104,14 @@ export const agentTrigger = async ({
     user_tz,
   });
 
-  console.log(
-    rec_user_phone
-      .replace(' ', '')
-      .replace('-', '')
-      .replace('(', '')
-      .replace(')', ''),
-    'formatted number',
-  );
+  // console.log(
+  //   rec_user_phone
+  //     .replace(' ', '')
+  //     .replace('-', '')
+  //     .replace('(', '')
+  //     .replace(')', ''),
+  //   'formatted number',
+  // );
 
   if (type === 'email_agent') {
     const res = await axios.post(
