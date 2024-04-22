@@ -434,7 +434,7 @@ export const scheduleWithAgent = async ({
           const { data: task, error: errorTasks } = await supabase
             .from('new_tasks')
             .insert({
-              name: `Schedule an interview for ${selSes.map((ses) => ses.name).join(' , ')} via phone`,
+              name: `Schedule an interview for ${selSes.map((ses) => ses.name).join(' , ')} via ${type == 'email_agent' ? 'email' : 'phone'}`,
               application_id,
               created_by: rec_user_id,
               type: 'schedule',
@@ -451,6 +451,20 @@ export const scheduleWithAgent = async ({
             .select();
 
           if (errorTasks) throw new Error(errorTasks.message);
+
+          const { error: errorTaskProgress } = await supabase
+            .from('new_tasks_progress')
+            .insert({
+              created_by: {
+                id: rec_user_id,
+                name: recruiter_user_name,
+              },
+              task_id: task[0].id,
+              title: `Task assigned to <span class="agent_mention">@${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}</span> by <span class="mention">@${recruiter_user_name}</span>`,
+              progress_type: 'standard',
+            });
+
+          if (errorTaskProgress) throw new Error(errorTaskProgress.message);
 
           addScheduleActivity({
             title: `Candidate invited for session ${selSes
@@ -585,6 +599,17 @@ export const scheduleWithAgent = async ({
             .select();
 
           if (errorTasks) throw new Error(errorTasks.message);
+
+          const { error: errorTaskProgress } = await supabase
+            .from('new_tasks_progress')
+            .insert({
+              created_by: rec_user_id,
+              task_id: task[0].id,
+              title: `Task assigned to <span class="agent_mention">@${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}</span> by <span class="mention">@${recruiter_user_name}</span>`,
+              progress_type: 'standard',
+            });
+
+          if (errorTaskProgress) throw new Error(errorTaskProgress.message);
 
           addScheduleActivity({
             title: `Candidate invited for session ${selectedSessions
