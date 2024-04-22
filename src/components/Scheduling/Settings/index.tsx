@@ -368,59 +368,55 @@ function SchedulingSettings({
                       <Typography width={120} fontSize={'14px'}>
                         Break Start Time
                       </Typography>
-                      {selectedHourBreak.start_time && (
-                        <SelectTime
-                          value={dayjs()
-                            .set(
-                              'hour',
-                              parseInt(
-                                selectedHourBreak?.start_time?.split(':')[0],
-                              ),
-                            )
-                            .set(
-                              'minute',
-                              parseInt(
-                                selectedHourBreak?.start_time?.split(':')[1],
-                              ),
-                            )}
-                          onSelect={(e) => {
-                            setSelectedHourBreak((pre) => {
-                              pre.start_time = `${dayjs(e).format('HH:mm')}`;
-                              return { ...pre };
-                            });
-                          }}
-                          key={0}
-                        />
-                      )}
+                      <SelectTime
+                        value={dayjs()
+                          .set(
+                            'hour',
+                            parseInt(
+                              selectedHourBreak?.start_time?.split(':')[0],
+                            ),
+                          )
+                          .set(
+                            'minute',
+                            parseInt(
+                              selectedHourBreak?.start_time?.split(':')[1],
+                            ),
+                          )}
+                        onSelect={(e) => {
+                          setSelectedHourBreak((pre) => {
+                            pre.start_time = `${dayjs(e).format('HH:mm')}`;
+                            return { ...pre };
+                          });
+                        }}
+                        key={0}
+                      />
                     </Stack>
                     <Stack spacing={1} direction={'row'} alignItems={'center'}>
                       <Typography width={120} fontSize={'14px'}>
                         Break End Time
                       </Typography>
-                      {selectedHourBreak.end_time && (
-                        <SelectTime
-                          value={dayjs()
-                            .set(
-                              'hour',
-                              parseInt(
-                                selectedHourBreak?.end_time?.split(':')[0],
-                              ),
-                            )
-                            .set(
-                              'minute',
-                              parseInt(
-                                selectedHourBreak?.end_time?.split(':')[1],
-                              ),
-                            )}
-                          onSelect={(e) => {
-                            setSelectedHourBreak((pre) => {
-                              pre.end_time = `${dayjs(e).format('HH:mm')}`;
-                              return { ...pre };
-                            });
-                          }}
-                          key={0}
-                        />
-                      )}
+                      <SelectTime
+                        value={dayjs()
+                          .set(
+                            'hour',
+                            parseInt(
+                              selectedHourBreak?.end_time?.split(':')[0],
+                            ),
+                          )
+                          .set(
+                            'minute',
+                            parseInt(
+                              selectedHourBreak?.end_time?.split(':')[1],
+                            ),
+                          )}
+                        onSelect={(e) => {
+                          setSelectedHourBreak((pre) => {
+                            pre.end_time = `${dayjs(e).format('HH:mm')}`;
+                            return { ...pre };
+                          });
+                        }}
+                        key={0}
+                      />
                     </Stack>
                   </Stack>
                 </Stack>
