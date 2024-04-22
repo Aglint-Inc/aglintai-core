@@ -117,6 +117,10 @@
   color: #c2c8cc;
 }
 
+.text-grey_600 {
+  color: #68737d;
+}
+
 .text-grey-600 {
   color: #68737d;
 }
@@ -144,10 +148,6 @@
 
 .text-sm.text-capitalize {
   text-transform: uppercase;
-}
-
-.text-grey_600 {
-  color: #68737d;
 }
 
 .text-sm.text-grey_600.text-underline.cursor-pointer {

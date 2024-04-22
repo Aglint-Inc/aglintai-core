@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     addScheduleActivity({
       title: `Candidate confirmed ${sessions.map((ses) => ses.name).join(' , ')}`,
       application_id: filterJson[0].interview_schedule.application_id,
-      logger: null,
+      logger: filterJson[0].interview_schedule.application_id,
       type: 'schedule',
       supabase: supabaseAdmin,
       created_by: null,

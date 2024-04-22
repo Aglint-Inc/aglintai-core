@@ -126,8 +126,8 @@ function RightPanel() {
                       ) : (
                         <MuiAvatar
                           level={getFullName(
-                            act.recruiter_user.first_name,
-                            act.recruiter_user.last_name,
+                            act.recruiter_user?.first_name,
+                            act.recruiter_user?.last_name,
                           )}
                           src={act.recruiter_user.profile_image}
                           variant={'circular'}

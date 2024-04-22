@@ -269,7 +269,8 @@ function FullSchedule() {
                       }}
                       isEditVisible={
                         !session.interview_meeting ||
-                        session.interview_meeting?.status === 'not_scheduled'
+                        session.interview_meeting?.status === 'not_scheduled' ||
+                        session.interview_meeting?.status === 'cancelled'
                       }
                       isViewScheduleVisible={false}
                       isCancelScheduleVisible={
