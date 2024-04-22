@@ -51,11 +51,6 @@ function ViewTaskDrawer() {
         setDisableNext(true);
       }
     } else setOpenViewTask(false);
-
-    return () => {
-      setDisableNext(false);
-      setDisablePrev(false);
-    };
   }, [route.query.task_id]);
 
   return (
@@ -64,6 +59,8 @@ function ViewTaskDrawer() {
       open={openViewTask}
       onClose={() => {
         route.push(pageRoutes.TASKS);
+        setDisableNext(false);
+        setDisablePrev(false);
       }}
     >
       <Stack>

@@ -61,7 +61,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
 
       getSessionList();
     }
-  }, [task]);
+  }, []);
 
   useEffect(() => {
     if (
