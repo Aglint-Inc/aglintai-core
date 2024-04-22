@@ -49,6 +49,14 @@
   z-index: 2;
 }
 
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
 .text-grey_600 {
   color: #68737d;
 }

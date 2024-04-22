@@ -3,7 +3,12 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { AvatarWithName, ListCard, TaskTableCard } from '@/devlink3';
+import {
+  AvatarWithName,
+  ListCard,
+  PriorityPill,
+  TaskTableCard,
+} from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import {
   TasksAgentContextType,
@@ -97,7 +102,13 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           />
         }
         textJob={task?.applications?.public_jobs?.job_title || '--'}
-        slotPriority={<></>}
+        slotPriority={
+          <PriorityPill
+            isHighVisible={task.priority === 'high'}
+            isLowVisible={task.priority === 'low'}
+            isMediumVisible={task.priority === 'medium'}
+          />
+        }
         slotCheckbox={
           <Stack
             className='checkboxClass'

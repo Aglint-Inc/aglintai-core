@@ -1,4 +1,4 @@
-import { Drawer, TextField } from '@mui/material';
+import { Drawer, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
@@ -30,6 +30,7 @@ import {
 import AssigneeList from './AssigneeList';
 import CandidateList from './CandidateList';
 import JobList from './JobList';
+import PriorityList from './PriorityList';
 import SelectDueDate from './SelecteDueDate';
 import SelectScheduleDate from './SelectScheduleDate';
 import SessionList from './SessionList';
@@ -86,14 +87,13 @@ function AddNewTask() {
     start_date: new Date().toString(),
     end_date: new Date().toString(),
   });
+  const [selectedPriority, setSelectedPriority] =
+    useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
 
   const [aiload, setAiLoad] = useState(false);
+  const [editMode, setEditMode] = useState(true);
 
   async function handleCreate() {
-    if (!inputRef.current.value) {
-      toast.warning('Please enter task title!');
-      return;
-    }
     if (!selectedSession.length) {
       toast.warning('Please select interview session!');
       return;
@@ -102,7 +102,7 @@ function AddNewTask() {
       assignee: [selectedAssignee?.user_id],
       created_by: recruiterUser?.user_id || null,
       application_id: selectedCandidate?.id || null,
-      name: inputRef.current.value,
+      name: inputRef.current.value || 'Untitled',
       due_date: dayjs(selectedDueDate).toString(),
       start_date: dayjs(selectTriggerTime).toString(),
       recruiter_id: recruiter.id,
@@ -110,6 +110,7 @@ function AddNewTask() {
       session_ids: selectedSession,
       type: selectedType || 'schedule',
       status: 'not_started',
+      priority: selectedPriority,
     }).then(async (data) => {
       // chinmai code for cron job
       const { data: selectedTask } = await supabase
@@ -155,14 +156,6 @@ function AddNewTask() {
           .eq('id', selectedTask.id);
       }
       // end
-      await supabase.from('application_logs').insert({
-        application_id: selectedTask.application_id,
-        logger: assignee,
-        title: `${selectedSession.map((ele) => ele.name).join(',')}`,
-        task_id: selectedTask.id,
-        type: 'schedule',
-        description: 'Schedule invite send to candidate',
-      });
     });
     handleClose();
   }
@@ -249,48 +242,73 @@ function AddNewTask() {
           onClick: handleCreate,
         }}
         textTaskDetail={
-          <TextField
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus={true}
-            multiline
-            minRows={1}
-            maxRows={3}
-            fullWidth
-            placeholder='Untitled'
-            //   onChange={(e) => {
-            //     console.log('object', e);
-            //   }}
-            onBlur={async () => {
-              if (inputRef.current.value) {
-                setAiLoad(true);
-                await extractDataFromText(
-                  inputRef.current.value,
-                  recruiterUser.user_id,
-                ).then((data: any) => {
-                  setSelectedAssignee(
-                    assignerList.find((ele) => ele.user_id === data.assignee),
-                  );
-                  setSelectedDueDate(String(new Date(data.end_date)));
-                  // setSelectTriggerTime(String(new Date(data.start_date)));
-                  setScheduleDate({
-                    start_date: String(new Date(data.start_date)),
-                    end_date: String(new Date(data.end_date)),
-                  });
-                  //   setSelectedType(
-                  //     data.type as CustomDatabase['public']['Enums']['task_type_enum'],
-                  //   );
-                });
-                setAiLoad(false);
-              }
-            }}
-            inputRef={inputRef}
-            sx={{
-              '& .MuiInputBase-root': {
-                border: 'none',
-                fontSize: '1.2rem',
-              },
-            }}
-          />
+          <ShowCode>
+            <ShowCode.When isTrue={!editMode}>
+              <Typography
+                onClick={() => {
+                  setEditMode(true);
+                }}
+                bgcolor={'#F7F9FB'}
+                padding={'10px'}
+                borderRadius={'10px'}
+                fontSize={'18px'}
+                lineHeight={'24px'}
+                fontWeight={600}
+              >
+                {inputRef?.current?.value || 'Untitled'}
+              </Typography>
+            </ShowCode.When>
+            <ShowCode.Else>
+              <TextField
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus={true}
+                multiline
+                minRows={1}
+                maxRows={3}
+                fullWidth
+                placeholder='Untitled'
+                //   onChange={(e) => {
+                //     console.log('object', e);
+                //   }}
+                onBlur={async () => {
+                  if (inputRef.current?.value) {
+                    setAiLoad(true);
+                    await extractDataFromText(
+                      inputRef.current.value,
+                      recruiterUser.user_id,
+                    ).then((data: any) => {
+                      setSelectedAssignee(
+                        assignerList.find(
+                          (ele) => ele.user_id === data.assignee,
+                        ),
+                      );
+                      setSelectedDueDate(String(new Date(data.end_date)));
+                      // setSelectTriggerTime(String(new Date(data.start_date)));
+                      setScheduleDate({
+                        start_date: String(new Date(data.start_date)),
+                        end_date: String(new Date(data.end_date)),
+                      });
+                      //   setSelectedType(
+                      //     data.type as CustomDatabase['public']['Enums']['task_type_enum'],
+                      //   );
+                    });
+                    setAiLoad(false);
+                  }
+                  setEditMode(false);
+                }}
+                inputRef={inputRef}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    border: 'none',
+                    fontSize: '18px',
+                    lineHeight: '24px',
+                    fontWeight: 600,
+                    padding: '10px',
+                  },
+                }}
+              />
+            </ShowCode.Else>
+          </ShowCode>
         }
         slotViewTaskCard={
           <>
@@ -300,6 +318,13 @@ function AddNewTask() {
               </ShowCode.When>
             </ShowCode>
             <ViewTaskCard
+              isPriorityVisible={true}
+              slotPriorityPill={
+                <PriorityList
+                  selectedPriority={selectedPriority}
+                  setSelectedPriority={setSelectedPriority}
+                />
+              }
               slotType={
                 <TypeList
                   selectedType={selectedType}
@@ -407,7 +432,6 @@ function AddNewTask() {
                   <CallIcon />
                 )
               }
-              isPriorityVisible={false}
             />
           </>
         }
