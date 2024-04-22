@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import React from 'react';
 
 import { CurrentStage, JobCards } from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -18,6 +17,10 @@ function RightPanel() {
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+
+  // const { data: activities } = useAllActivities({
+  //   application_id: selectedApplication.id,
+  // });
 
   return (
     <>
@@ -65,6 +68,38 @@ function RightPanel() {
           },
         }}
       />
+      {/* <Activities
+        slotActivitiesCard={
+          <>
+            {activities?.map((act) => {
+              return (
+                <ActivitiesCard
+                  key={act.id}
+                  slotImage={
+                    act.logger === EmailAgentId ? (
+                      <EmailAgentIcon />
+                    ) : act.logger === PhoneAgentId ? (
+                      <PhoneAgentIcon />
+                    ) : (
+                      <MuiAvatar
+                        level={getFullName(
+                          act.recruiter_user.first_name,
+                          act.recruiter_user.last_name,
+                        )}
+                        src={act.recruiter_user.profile_image}
+                        variant={'circular'}
+                        height={'24px'}
+                        width={'24px'}
+                        fontSize={'10px'}
+                      />
+                    )
+                  }
+                />
+              );
+            })}
+          </>
+        }
+      /> */}
     </>
   );
 }

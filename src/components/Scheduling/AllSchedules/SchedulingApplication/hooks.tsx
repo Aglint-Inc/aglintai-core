@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { createServerClient } from '@supabase/ssr';
+import { useQuery } from '@tanstack/react-query';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
@@ -34,7 +35,27 @@ import {
 } from './types';
 import { agentTrigger, createCloneSession } from './utils';
 
-//
+export const useAllActivities = ({ application_id }) => {
+  const query = useQuery({
+    queryKey: ['activitiesCandidate', { application_id }],
+    queryFn: () => fetchAllActivities({ application_id }),
+    enabled: !!application_id,
+  });
+  return query;
+};
+
+const fetchAllActivities = async ({ application_id }) => {
+  const { data, error } = await supabase
+    .from('application_logs')
+    .select(
+      '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*)',
+    )
+    .eq('application_id', application_id);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};
 
 export const useGetScheduleApplication = () => {
   const router = useRouter();
@@ -381,6 +402,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({
@@ -430,6 +452,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id: task[0].id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({
@@ -514,6 +537,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({
@@ -562,6 +586,7 @@ export const scheduleWithAgent = async ({
             application_id,
             task_id: task[0].id,
             supabase,
+            created_by: rec_user_id,
           });
 
           agentTrigger({

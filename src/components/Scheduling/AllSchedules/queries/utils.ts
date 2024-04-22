@@ -45,6 +45,7 @@ export const addScheduleActivity = async ({
   type,
   logger,
   supabase,
+  created_by,
 }: {
   title: string;
   application_id: string;
@@ -53,6 +54,7 @@ export const addScheduleActivity = async ({
   type: ApplicationLogsTypeDb['type'];
   logger: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
+  created_by: string;
 }) => {
   await supabase.from('application_logs').insert({
     application_id,
@@ -61,5 +63,6 @@ export const addScheduleActivity = async ({
     task_id,
     type,
     logger,
+    created_by,
   });
 };

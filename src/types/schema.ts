@@ -327,6 +327,7 @@ export type Database = {
         Row: {
           application_id: string
           created_at: string
+          created_by: string | null
           description: string | null
           id: string
           logger: string
@@ -337,6 +338,7 @@ export type Database = {
         Insert: {
           application_id: string
           created_at?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           logger: string
@@ -347,6 +349,7 @@ export type Database = {
         Update: {
           application_id?: string
           created_at?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           logger?: string
@@ -361,6 +364,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "applications"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_application_logs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "public_application_logs_task_id_fkey"
@@ -1013,6 +1023,18 @@ export type Database = {
         }
         Update: {
           jsonb_object_agg?: Json | null
+        }
+        Relationships: []
+      }
+      function_url: {
+        Row: {
+          value: string | null
+        }
+        Insert: {
+          value?: string | null
+        }
+        Update: {
+          value?: string | null
         }
         Relationships: []
       }
@@ -4022,6 +4044,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json[]
       }
+      schedulercron: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       search_candidates: {
         Args: {
           recruiter_id_param: string
@@ -4232,7 +4258,7 @@ export type Database = {
         | "failed"
         | "closed"
       task_agent_type: "phone" | "email" | "job"
-      task_priority: "high" | "low" | "mediam"
+      task_priority: "high" | "low" | "medium"
       task_status:
         | "pending"
         | "in_progress"

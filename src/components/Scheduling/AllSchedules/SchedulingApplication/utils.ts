@@ -360,6 +360,7 @@ export const sendToCandidate = async ({
         logger: recruiterUser.user_id,
         type: 'schedule',
         supabase,
+        created_by: recruiterUser.user_id,
       });
 
       if (!is_debrief && is_mail) {
@@ -452,6 +453,7 @@ export const sendToCandidate = async ({
         application_id: selectedApplication.id,
         type: 'schedule',
         supabase,
+        created_by: recruiterUser.user_id,
       });
 
       if (!is_debrief && is_mail) {
