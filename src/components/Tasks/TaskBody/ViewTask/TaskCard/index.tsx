@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import {
@@ -28,6 +29,7 @@ import SessionList from '../../AddNewTask/SessionList';
 import TriggerTime from '../../AddNewTask/TriggerTime';
 
 function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
+  const router = useRouter();
   const { handelUpdateTask } = useTasksContext();
   const [sessionList, setSessionList] = useState<Awaited<
     ReturnType<typeof fetchInterviewSessionTask>
@@ -58,10 +60,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       setSelectedDueDate(task.due_date);
       setSelectTriggerTime(task.start_date);
       setSelectedPriority(task.priority);
-
       getSessionList();
     }
-  }, []);
+  }, [router.query?.task_id]);
 
   useEffect(() => {
     if (
