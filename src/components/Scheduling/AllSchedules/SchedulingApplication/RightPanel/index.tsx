@@ -5,10 +5,8 @@ import { useRouter } from 'next/router';
 
 import { Activities, ActivitiesCard, CurrentStage, JobCards } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import {
-  EmailAgentIcon,
-  PhoneAgentIcon,
-} from '@/src/components/Tasks/TaskBody/ViewTask/Progress';
+import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
+import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
