@@ -2,34 +2,25 @@
 
 import { Stack } from '@mui/material';
 
-import { EmptyState } from '@/devlink2';
-import {
-  AvatarWithName,
-  ListCard,
-  TaskTable,
-  TaskTableJobCand,
-  TaskTableJobCard,
-} from '@/devlink3';
+import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
 import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import { useTaskStatesContext } from '../TaskStatesContext';
 import AddNewTask from './AddNewTask';
 import FilterTasks from './FilterTasks';
-import GroupTaskCard from './GroupTaskCard';
+import GroupSections from './GroupSections';
 import TaskRow from './TaskRow';
 import ViewTaskDrawer from './ViewTask';
 
 function TaskBody({ byGroup }) {
   const { tasks, loadingTasks } = useTasksContext();
 
-  const { setShowAddNew, setSelectedApplication } = useTaskStatesContext();
+  const { setShowAddNew } = useTaskStatesContext();
 
   const groupedTasks = tasks
     .filter((ele) => ele.application_id)
@@ -73,7 +64,9 @@ function TaskBody({ byGroup }) {
                     );
                   })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                  <EmptyState textDescription={'No tasks available!'} />
+                  <Stack height={'40vh'}>
+                    <TaskEmpty />
+                  </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={loadingTasks}>
                   <DynamicLoader height='80%' />
@@ -94,84 +87,12 @@ function TaskBody({ byGroup }) {
                   //   ),
                   // )
                   .map((item, i) => {
-                    return (
-                      <TaskTableJobCard
-                        textRole={capitalizeAll(
-                          item.applications.public_jobs.job_title,
-                        )}
-                        slotAvatarWithName={
-                          <>
-                            <ListCard
-                              isAvatarWithNameVisible={true}
-                              isListVisible={false}
-                              slotAvatarWithName={
-                                item?.applications && (
-                                  <AvatarWithName
-                                    slotAvatar={
-                                      <MuiAvatar
-                                        height={'25px'}
-                                        width={'25px'}
-                                        src={
-                                          item?.applications?.candidates.avatar
-                                        }
-                                        variant='circular'
-                                        fontSize='14px'
-                                        level={capitalizeAll(
-                                          item?.applications.candidates
-                                            ?.first_name +
-                                            ' ' +
-                                            item?.applications.candidates
-                                              ?.last_name,
-                                        )}
-                                      />
-                                    }
-                                    textName={capitalizeAll(
-                                      item?.applications.candidates
-                                        ?.first_name +
-                                        ' ' +
-                                        item?.applications.candidates
-                                          ?.last_name,
-                                    )}
-                                  />
-                                )
-                              }
-                            />
-                          </>
-                        }
-                        key={i}
-                        slotTaskTableJobCard={
-                          <>
-                            {item.tasklist
-                              .filter((ele) => ele.type !== 'empty')
-                              .map((ele, i) => {
-                                return <GroupTaskCard key={i} task={ele} />;
-                              })}
-                            <ShowCode.When
-                              isTrue={
-                                item.tasklist.filter(
-                                  (ele) => ele.type !== 'empty',
-                                ).length === 0
-                              }
-                            >
-                              <Stack pb={'10px'} height={53}>
-                                <EmptyState
-                                  textDescription={'No tasks available!'}
-                                />
-                              </Stack>
-                            </ShowCode.When>
-                          </>
-                        }
-                        onClickNewTask={{
-                          onClick: () => {
-                            setShowAddNew(true);
-                            setSelectedApplication(item.applications);
-                          },
-                        }}
-                      />
-                    );
+                    return <GroupSections key={i} item={item} index={i} />;
                   })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
-                  <EmptyState textDescription={'No tasks available!'} />
+                  <Stack height={'40vh'}>
+                    <TaskEmpty />
+                  </Stack>
                 </ShowCode.When>
                 <ShowCode.When isTrue={loadingTasks}>
                   <DynamicLoader height='80%' />

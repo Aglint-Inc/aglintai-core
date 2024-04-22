@@ -91,7 +91,7 @@ export type DatabaseEnums = CustomDatabase['public']['Enums'];
 type interview_meeting_user_feedback = {
   recommendation: number;
   objective: string;
-};
+} | null;
 
 type new_task_schedule_date_range = {
   start_date: string;

@@ -1,5 +1,5 @@
 import { Dialog, Typography } from '@mui/material';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   AvatarWithName,
@@ -16,6 +16,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { DatabaseTable } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
@@ -67,9 +68,11 @@ const FeedbackWindow = ({
   } = useInterviewerRelations({
     session_ids: interview_sessions.map((item) => item.id),
   });
-  const { isAllowed, userDetails } = useAuthDetails();
-  const { members } = useAuthDetails();
+  const { isAllowed, userDetails, recruiter } = useAuthDetails();
   const user_id = userDetails?.user.id;
+  const [members, setMembers] = useState<
+    Awaited<ReturnType<typeof getMembers>>
+  >([]);
 
   const tempRelations = useMemo(() => {
     const tempData = (
@@ -110,6 +113,8 @@ const FeedbackWindow = ({
           const tempMem = members.find(
             (item) => item.user_id === memRelation.user_id,
           );
+
+          if (!tempMem) return;
           const tempInterviews = interviewers[String(session.id)] || [];
           tempInterviews.push({
             user_id: tempMem.user_id,
@@ -167,6 +172,13 @@ const FeedbackWindow = ({
       }))
     );
   };
+
+  useEffect(() => {
+    if (recruiter.id) {
+      getMembers(recruiter.id).then((data) => setMembers(data));
+    }
+  }, [recruiter]);
+
   return (
     <>
       <ShowCode>
@@ -201,7 +213,8 @@ const FeedbackWindow = ({
             multiSession={multiSession}
             interviewers={Object.keys(interviewers)
               .map((key) => interviewers[String(key)])
-              .flat()}
+              .flat()
+              .filter((item) => item.user_id === user_id)}
             handelSubmit={handelSubmit}
           />
         </ShowCode.Else>
@@ -241,6 +254,26 @@ const AdminFeedback = ({
 
   const [edit, setEdit] = useState(false);
 
+  const handelFeedbackRequest = ({
+    e,
+    session_id,
+    relation_id,
+  }: {
+    e: MouseEvent;
+    session_id: string;
+    relation_id: string;
+  }) => {
+    e.stopPropagation();
+    return handelSubmit({
+      session_id: session_id,
+      relation_id: relation_id,
+      feedback: { recommendation: null, objective: null },
+    }).then(() => {
+      toast.success('Mail Request for Feedback Sent.');
+      return true;
+    });
+  };
+
   return (
     <>
       <ScheduleTabFeedback
@@ -256,6 +289,29 @@ const AdminFeedback = ({
                 <FeedbackTableRow
                   key={int.user_id}
                   isSessionVisible={multiSession}
+                  isNoFeedback={!int.feedback}
+                  isFeedbackReqSubmitted={Boolean(
+                    isFeedBackEnabled &&
+                      int.feedback &&
+                      !int.feedback.objective &&
+                      int.user_id !== user_id,
+                  )}
+                  onClickRequestFeedback={{
+                    onClick: (e) =>
+                      handelFeedbackRequest({
+                        e,
+                        session_id: int.session.id,
+                        relation_id: int.relation_id,
+                      }),
+                  }}
+                  onClickResendRequest={{
+                    onClick: (e) =>
+                      handelFeedbackRequest({
+                        e,
+                        session_id: int.session.id,
+                        relation_id: int.relation_id,
+                      }),
+                  }}
                   textSessionTime={
                     multiSession
                       ? new Date(int.session.created_at).toLocaleDateString()
@@ -267,7 +323,6 @@ const AdminFeedback = ({
                     !int.feedback &&
                     int.user_id === user_id
                   }
-                  isNoFeedback={false}
                   onClickFeedback={{
                     onClick: () => {
                       if (isFeedBackEnabled) {
@@ -303,8 +358,8 @@ const AdminFeedback = ({
                       dangerouslySetInnerHTML={{
                         __html: !isFeedBackEnabled
                           ? 'Interview session is not completed.'
-                          : re_mapper[int.feedback?.recommendation] ||
-                            'Feedback not Submitted.',
+                          : re_mapper[int.feedback?.recommendation],
+                        // || 'Feedback not Submitted.',
                       }}
                       {...(!isFeedBackEnabled || !int.feedback?.objective
                         ? { color: palette.grey[400] }
@@ -356,6 +411,49 @@ const AdminFeedback = ({
                     isEditFeedbackVisible={
                       selectedInterviewer.interviewer.user_id === user_id
                     }
+                    isFeedbackReqVisible={
+                      !selectedInterviewer.interviewer.feedback?.objective
+                    }
+                    isNotSubmittedVisible={
+                      !selectedInterviewer.interviewer.feedback
+                    }
+                    isEmpty={Boolean(
+                      selectedInterviewer.interviewer.feedback?.objective,
+                    )}
+                    onClickRequestFeedback={{
+                      onClick: (e) =>
+                        handelFeedbackRequest({
+                          e,
+                          session_id:
+                            selectedInterviewer.interviewer.session.id,
+                          relation_id:
+                            selectedInterviewer.interviewer.relation_id,
+                        }).then(() => {
+                          const temp = selectedInterviewer;
+                          temp.interviewer.feedback = {
+                            recommendation: null,
+                            objective: null,
+                          };
+                          setSelectedInterviewer(temp);
+                        }),
+                    }}
+                    onClickResendRequest={{
+                      onClick: (e) =>
+                        handelFeedbackRequest({
+                          e,
+                          session_id:
+                            selectedInterviewer.interviewer.session.id,
+                          relation_id:
+                            selectedInterviewer.interviewer.relation_id,
+                        }).then(() => {
+                          const temp = selectedInterviewer;
+                          temp.interviewer.feedback = {
+                            recommendation: null,
+                            objective: null,
+                          };
+                          setSelectedInterviewer(temp);
+                        }),
+                    }}
                     onClickEditFeedback={{
                       onClick: () => {
                         setEdit(true);
@@ -493,7 +591,9 @@ const InterviewerFeedback = ({
                       : ''
                   }
                   textSessionTitle={multiSession ? int.session.title : ''}
-                  isAddFeedback={!int.feedback}
+                  isAddFeedback={
+                    !(int.feedback?.objective || int.feedback?.recommendation)
+                  }
                   isNoFeedback={false}
                   onClickFeedback={{
                     onClick: () => {
@@ -579,6 +679,7 @@ const InterviewerFeedback = ({
                 <ShowCode.Else>
                   <FeedbackViewPopup
                     isEditFeedbackVisible={true}
+                    isNextPrevVisible={Boolean(interviewers.length)}
                     onClickEditFeedback={{
                       onClick: () => {
                         setEdit(true);
@@ -749,4 +850,17 @@ const FeedbackForm = ({
       }
     />
   );
+};
+
+const getMembers = async (id: string) => {
+  return supabase
+    .from('recruiter_relation')
+    .select(
+      'recruiter_user(user_id,first_name,last_name, email, profile_image, position)',
+    )
+    .eq('recruiter_id', id)
+    .then(({ data, error }) => {
+      if (error) new Error(error.message);
+      return data.map((item) => item.recruiter_user);
+    });
 };

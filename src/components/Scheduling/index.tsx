@@ -272,17 +272,19 @@ export const useInterviewModules = ({
 const InterviewerSetting = () => {
   const { handelMemberUpdate, userDetails, recruiterUser } = useAuthDetails();
   return (
-    <InterviewerLevelSettings
-      setOpenDrawer={() => {}}
-      closeBtnVisible={false}
-      initialData={recruiterUser.scheduling_settings}
-      updateSettings={(x) => {
-        return handelMemberUpdate({
-          user_id: userDetails.user.id,
-          data: { scheduling_settings: x },
-        });
-      }}
-      isOverflow={true}
-    />
+    <Stack height={'calc( 100vh - 60px)'}>
+      <InterviewerLevelSettings
+        setOpenDrawer={() => {}}
+        closeBtnVisible={false}
+        initialData={recruiterUser.scheduling_settings}
+        updateSettings={(x) => {
+          return handelMemberUpdate({
+            user_id: userDetails.user.id,
+            data: { scheduling_settings: x },
+          });
+        }}
+        isOverflow={true}
+      />
+    </Stack>
   );
 };

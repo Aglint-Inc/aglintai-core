@@ -14,4 +14,7 @@ declare function FeedbackTableRow(props: {
   isAddFeedback?: Types.Visibility.VisibilityConditions;
   isNoFeedback?: Types.Visibility.VisibilityConditions;
   isSessionVisible?: Types.Visibility.VisibilityConditions;
+  onClickRequestFeedback?: Types.Devlink.RuntimeProps;
+  onClickResendRequest?: Types.Devlink.RuntimeProps;
+  isFeedbackReqSubmitted?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import dayjs from 'dayjs';
 
 var utc = require('dayjs/plugin/utc');
@@ -22,13 +21,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { session_ids } = req.body as BookingApiParams;
   if (!session_ids) return res.status(400).send('missing fields');
   try {
+    const meeting_ids = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session')
+        .select('meeting_id')
+        .in('id', session_ids),
+    );
     const meetings = supabaseWrap(
       await supabaseAdmin
         .from('interview_meeting')
         .update({
           status: 'cancelled',
         })
-        .in('session_id', session_ids)
+        .in(
+          'id',
+          meeting_ids.map((i) => i.meeting_id),
+        )
         .select(),
     );
     if (meetings.length === 0) return res.status(200).send('no meetings found');
@@ -43,7 +51,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('ok');
   } catch (error) {
-    console.log(error);
     return res.status(500).send(error.message);
   }
 };

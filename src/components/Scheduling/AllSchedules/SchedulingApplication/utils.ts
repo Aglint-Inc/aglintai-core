@@ -88,7 +88,7 @@ export const agentTrigger = async ({
   company_name,
   jobRole,
   rec_user_email,
-  rec_user_phone,
+  rec_user_phone = '',
   user_tz,
 }) => {
   console.log({
@@ -104,18 +104,18 @@ export const agentTrigger = async ({
     user_tz,
   });
 
-  console.log(
-    rec_user_phone
-      .replace(' ', '')
-      .replace('-', '')
-      .replace('(', '')
-      .replace(')', ''),
-    'formatted number',
-  );
+  // console.log(
+  //   rec_user_phone
+  //     .replace(' ', '')
+  //     .replace('-', '')
+  //     .replace('(', '')
+  //     .replace(')', ''),
+  //   'formatted number',
+  // );
 
   if (type === 'email_agent') {
     const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/scheduling/mail-agent/init-agent`,
       {
         cand_email: rec_user_email,
         // cand_email: sessionsWithPlan.application.candidates.email,
@@ -131,7 +131,7 @@ export const agentTrigger = async ({
   } else if (type === 'phone_agent') {
     const res = await axios.post(
       // 'https://rested-logically-lynx.ngrok-free.app/api/create-phone-call',
-      'https://aglint-phone-ngrok-app.ngrok.io/api/create-phone-call',
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
       {
         begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
         interviewer_name: recruiter_user_name,

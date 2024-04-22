@@ -15,6 +15,8 @@ import {
 import { EmailAgentId } from '@/src/components/Tasks/utils';
 import { PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
+  CustomDatabase,
+  DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
   DatabaseTableUpdate,
@@ -31,6 +33,7 @@ type TasksReducerType = {
     status: { options: { id: string; label: string }[]; values: string[] };
     assignee: { options: { id: string; label: string }[]; values: string[] };
     jobTitle: { options: { id: string; label: string }[]; values: string[] };
+    priority: { options: DatabaseEnums['task_priority'][]; values: string[] };
   };
   pagination: {
     rows: number;
@@ -82,6 +85,7 @@ const reducerInitialState: TasksReducerType = {
     },
     assignee: { options: [], values: [] },
     jobTitle: { options: [], values: [] },
+    priority: { options: ['high', 'low', 'medium'], values: [] },
   },
   sort: 'date',
   loadingTasks: true,
@@ -364,6 +368,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     const status = tasksReducer.filter.status;
     const assignee = tasksReducer.filter.assignee;
     const jobTitle = tasksReducer.filter.jobTitle;
+    const priority = tasksReducer.filter.priority;
     let temp = [...sortedTask];
 
     if (status.values.length) {
@@ -385,6 +390,10 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         jobTitle.values.includes(task?.applications?.public_jobs?.id),
       );
     }
+    if (priority.values.length) {
+      temp = temp.filter((task) => priority.values.includes(task?.priority));
+    }
+
     return temp;
   }, [tasksReducer.filter, sortedTask]);
 

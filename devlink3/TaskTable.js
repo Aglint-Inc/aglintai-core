@@ -77,7 +77,7 @@ export function TaskTable({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500", "hide")}
+              className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
               {"Priority"}

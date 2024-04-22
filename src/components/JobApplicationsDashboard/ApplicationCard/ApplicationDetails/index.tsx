@@ -244,7 +244,7 @@ const NewJobApplicationSideDrawer = ({
   const processState = getApplicationProcessState(application);
   const makePhoneCll = async () => {
     await axios.post(
-      `${process.env.NEXT_PUBLIC_PHONE_CALL_SERVER}/api/create-screening-phone-call`,
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/create-screening-phone-call`,
       {
         from: '+12512066348',
         to: phoneInput,
