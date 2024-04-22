@@ -4,10 +4,15 @@ import dayjs from 'dayjs';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,
 } from '@/src/utils/event_book/book_day_plan';
+import { BookingTimeFormat } from '@/src/utils/integrations/constants';
+
+import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { getCandidateLogger } from './getCandidateLogger';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -27,6 +32,11 @@ export type ConfirmApiBodyParams = {
   candidate_email: string;
   schedule_id: string;
   filter_id?: string;
+  //  if tasks id is present
+  task_id: string | null;
+  agent_type: 'email' | 'phone' | 'self';
+  candidate_name: string;
+  candidate_id: string;
 };
 
 const required_fields = [
@@ -40,6 +50,7 @@ const required_fields = [
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const req_body = req.body as ConfirmApiBodyParams;
   try {
+    console.log(req_body);
     required_fields.forEach((field) => {
       if (!has(req_body, field)) {
         throw new Error(`missing Field ${field}`);
@@ -54,10 +65,46 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (req_body.filter_id) {
-      axios.post('/api/scheduling/application/mailthankyou', {
-        filter_id: req_body.filter_id,
-      });
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+        {
+          filter_id: req_body.filter_id,
+        },
+      );
     }
+
+    if (
+      req_body.task_id &&
+      req_body.candidate_id &&
+      req_body.candidate_email &&
+      req_body.candidate_name &&
+      req_body.agent_type
+    ) {
+      const candLogger = getCandidateLogger(
+        req_body.task_id,
+        req_body.candidate_name,
+        req_body.agent_type,
+        req_body.candidate_id,
+      );
+      await candLogger(
+        `Scheduled interview sucessfully on ${dayjs(
+          req_body.candidate_plan[0].sessions[0].start_time,
+        )
+          .tz(req_body.user_tz)
+          .format(BookingTimeFormat)}`,
+        'interview_schedule',
+      );
+      supabaseWrap(
+        await supabaseAdmin
+          .from('new_tasks')
+          .update({
+            status: 'scheduled',
+          })
+          .eq('id', req_body.task_id)
+          .select(),
+      );
+    }
+
     return res.status(200).json('sucess');
   } catch (error) {
     console.log(error);
