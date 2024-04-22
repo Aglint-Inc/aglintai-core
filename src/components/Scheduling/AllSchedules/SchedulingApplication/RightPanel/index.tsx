@@ -1,16 +1,28 @@
 import { Stack } from '@mui/material';
+import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
-import { CurrentStage, JobCards } from '@/devlink3';
+import { Activities, ActivitiesCard, CurrentStage, JobCards } from '@/devlink3';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import {
+  EmailAgentIcon,
+  PhoneAgentIcon,
+} from '@/src/components/Tasks/TaskBody/ViewTask/Progress';
+import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { useGetScheduleApplication } from '../hooks';
+import { addScheduleActivity } from '../../queries/utils';
+import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import { useSchedulingApplicationStore } from '../store';
 import { updateApplicationStatus } from '../utils';
 
 function RightPanel() {
+  const { recruiterUser } = useAuthDetails();
   const router = useRouter();
   const { selectedApplication } = useSchedulingApplicationStore((state) => ({
     selectedApplication: state.selectedApplication,
@@ -18,9 +30,39 @@ function RightPanel() {
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
-  // const { data: activities } = useAllActivities({
-  //   application_id: selectedApplication.id,
-  // });
+  const { data: activities, refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
+
+  const onClickUpdateStatus = async ({
+    status,
+  }: {
+    status: 'qualified' | 'disqualified';
+  }) => {
+    try {
+      const res = await updateApplicationStatus({
+        application_id: selectedApplication.id,
+        status: status,
+      });
+      if (res) {
+        await addScheduleActivity({
+          title: `Moved to ${status}`,
+          application_id: selectedApplication.id,
+          logger: recruiterUser.user_id,
+          type: 'schedule',
+          supabase,
+          created_by: recruiterUser.user_id,
+        });
+        fetchInterviewDataByApplication();
+      } else {
+        throw new Error();
+      }
+    } catch {
+      toast.error('Error updating status');
+    } finally {
+      refetch();
+    }
+  };
 
   return (
     <>
@@ -42,64 +84,68 @@ function RightPanel() {
         isQualifiedVisible={selectedApplication.status === 'interview'}
         isDisqualifiedVisible={selectedApplication.status !== 'disqualified'}
         onClickMoveToQualified={{
-          onClick: async () => {
-            const res = await updateApplicationStatus({
-              application_id: selectedApplication.id,
-              status: 'qualified',
-            });
-            if (res) {
-              fetchInterviewDataByApplication();
-            } else {
-              toast.error('Error updating status');
-            }
-          },
+          onClick: () => onClickUpdateStatus({ status: 'qualified' }),
         }}
         onClickMoveToDisqualified={{
-          onClick: async () => {
-            const res = await updateApplicationStatus({
-              application_id: selectedApplication.id,
-              status: 'disqualified',
-            });
-            if (res) {
-              fetchInterviewDataByApplication();
-            } else {
-              toast.error('Error updating status');
-            }
-          },
+          onClick: () => onClickUpdateStatus({ status: 'disqualified' }),
         }}
       />
-      {/* <Activities
-        slotActivitiesCard={
-          <>
-            {activities?.map((act) => {
-              return (
-                <ActivitiesCard
-                  key={act.id}
-                  slotImage={
-                    act.logger === EmailAgentId ? (
-                      <EmailAgentIcon />
-                    ) : act.logger === PhoneAgentId ? (
-                      <PhoneAgentIcon />
-                    ) : (
-                      <MuiAvatar
-                        level={getFullName(
-                          act.recruiter_user.first_name,
-                          act.recruiter_user.last_name,
-                        )}
-                        src={act.recruiter_user.profile_image}
-                        variant={'circular'}
-                        height={'24px'}
-                        width={'24px'}
-                        fontSize={'10px'}
-                      />
-                    )
-                  }
-                />
-              );
-            })}
-          </>
-        }
-      /> */}
+      {activities?.length > 0 && (
+        <Activities
+          slotActivitiesCard={
+            <>
+              {activities?.map((act, ind) => {
+                return (
+                  <ActivitiesCard
+                    key={act.id}
+                    textTitle={act.title || ''}
+                    textTime={dayjs(act.created_at).fromNow()}
+                    isLineVisible={!(ind == activities.length - 1)}
+                    isViewTaskVisible={Boolean(act.task_id)}
+                    textDesc={act.description}
+                    onClickViewTask={{
+                      onClick: () => {
+                        router.push(`/tasks?task_id=${act.task_id}`);
+                      },
+                    }}
+                    slotImage={
+                      act.logger === EmailAgentId ? (
+                        <EmailAgentIcon />
+                      ) : act.logger === PhoneAgentId ? (
+                        <PhoneAgentIcon />
+                      ) : act.logger == act.application_id ? (
+                        <MuiAvatar
+                          level={getFullName(
+                            act.applications.candidates.first_name,
+                            act.applications.candidates.last_name,
+                          )}
+                          src={act.applications.candidates.avatar}
+                          variant={'circular'}
+                          height={'24px'}
+                          width={'24px'}
+                          fontSize={'10px'}
+                        />
+                      ) : (
+                        <MuiAvatar
+                          level={getFullName(
+                            act.recruiter_user.first_name,
+                            act.recruiter_user.last_name,
+                          )}
+                          src={act.recruiter_user.profile_image}
+                          variant={'circular'}
+                          height={'24px'}
+                          width={'24px'}
+                          fontSize={'10px'}
+                        />
+                      )
+                    }
+                  />
+                );
+              })}
+            </>
+          }
+        />
+      )}
     </>
   );
 }

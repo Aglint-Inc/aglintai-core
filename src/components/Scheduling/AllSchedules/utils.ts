@@ -23,6 +23,7 @@ export type MailHandlerparam = {
   schedule_id: string;
   filter_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
+  rec_mail: string;
 };
 
 export const mailHandler = async ({
@@ -34,6 +35,7 @@ export const mailHandler = async ({
   position,
   filter_id,
   supabase,
+  rec_mail,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
@@ -48,7 +50,7 @@ export const mailHandler = async ({
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: 'admin@aglinthq.com' ?? mail,
+          email: rec_mail ?? mail,
           subject: fillEmailTemplate(
             data[0].email_template['candidate_availability_request'].subject,
             {

@@ -107,6 +107,7 @@ function GetScheduleOptionsDialog() {
                 : null,
           })),
         );
+        
       }
       setSelectedSessionIds([]);
       setIsScheduleNowOpen(false);

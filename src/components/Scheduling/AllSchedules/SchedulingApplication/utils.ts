@@ -376,6 +376,7 @@ export const sendToCandidate = async ({
           schedule_name: scheduleName,
           schedule_id: createCloneRes.schedule.id,
           supabase,
+          rec_mail: recruiterUser.email,
         });
       }
 
@@ -469,6 +470,7 @@ export const sendToCandidate = async ({
           schedule_name: scheduleName,
           schedule_id: checkSch[0].id,
           supabase,
+          rec_mail: recruiterUser.email,
         });
       }
 

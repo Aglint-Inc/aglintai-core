@@ -1,14 +1,17 @@
 import { Dialog } from '@mui/material';
 
 import { ConfirmationPopup } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { addScheduleActivity } from '../../../queries/utils';
 import {
   setIsCancelOpen,
   setIsRescheduleOpen,
   useInterviewSchedulingStore,
 } from '../../../store';
+import { useAllActivities } from '../../hooks';
 import {
   setinitialSessions,
   setSelectedSessionIds,
@@ -16,6 +19,7 @@ import {
 } from '../../store';
 
 function RescheduleDialog() {
+  const { recruiterUser } = useAuthDetails();
   const isRescheduleOpen = useInterviewSchedulingStore(
     (state) => state.isRescheduleOpen,
   );
@@ -25,6 +29,12 @@ function RescheduleDialog() {
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
   );
+  const selectedApplication = useSchedulingApplicationStore(
+    (state) => state.selectedApplication,
+  );
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
 
   const onClickReschedule = async () => {
     try {
@@ -62,6 +72,15 @@ function RescheduleDialog() {
           throw new Error(errMeet.message);
         }
 
+        await addScheduleActivity({
+          title: `Cancelled session ${selectedSession.name}`,
+          application_id: selectedApplication.id,
+          logger: recruiterUser.user_id,
+          type: 'schedule',
+          supabase,
+          created_by: recruiterUser.user_id,
+        });
+
         setinitialSessions(
           initialSessions.map((session) => {
             if (session.id === selectedSession.id) {
@@ -83,6 +102,8 @@ function RescheduleDialog() {
       }
     } catch (e) {
       toast.error(e.message);
+    } finally {
+      refetch();
     }
   };
 

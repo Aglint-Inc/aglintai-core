@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { has } from 'lodash';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 import {
   bookCandidatePlan,
@@ -11,9 +13,6 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import { NextApiRequest, NextApiResponse } from 'next';
-
-import { mailThankYouHandler } from '@/src/components/Scheduling/utils';
 
 export type ConfirmApiBodyParams = {
   candidate_plan: {
@@ -48,16 +47,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     await bookCandidatePlan(req_body);
-    if (req_body.filter_id) {
-      mailThankYouHandler({
-        filter_id: req_body.filter_id,
-      });
-    }
+
     await saveEventsStatusInSchedule({
       api_status: 'sucess',
       schedule_id: req_body.schedule_id,
     });
 
+    if (req_body.filter_id) {
+      axios.post('/api/scheduling/application/mailthankyou', {
+        filter_id: req_body.filter_id,
+      });
+    }
     return res.status(200).json('sucess');
   } catch (error) {
     console.log(error);

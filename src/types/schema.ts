@@ -1074,6 +1074,7 @@ export type Database = {
       interview_filter_json: {
         Row: {
           created_at: string
+          created_by: string | null
           filter_json: Json
           id: string
           schedule_id: string | null
@@ -1081,6 +1082,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           filter_json: Json
           id?: string
           schedule_id?: string | null
@@ -1088,12 +1090,20 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           filter_json?: Json
           id?: string
           schedule_id?: string | null
           session_ids?: string[]
         }
         Relationships: [
+          {
+            foreignKeyName: "public_interview_filter_json_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "public_interview_filter_json_schedule_id_fkey"
             columns: ["schedule_id"]

@@ -22,7 +22,7 @@ import FeedbackWindow from '../../SchedulingView/Feedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { useGetScheduleApplication } from './hooks';
+import { useAllActivities, useGetScheduleApplication } from './hooks';
 import RightPanel from './RightPanel';
 import {
   resetSchedulingApplicationState,
@@ -65,6 +65,9 @@ function SchedulingApplication() {
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
 
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
@@ -194,6 +197,7 @@ function SchedulingApplication() {
     } catch (e) {
       //
     } finally {
+      refetch();
       setFetchingPlan(false);
     }
   };

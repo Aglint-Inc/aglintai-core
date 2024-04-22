@@ -6,7 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { createServerClient } from '@supabase/ssr';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
@@ -36,12 +36,17 @@ import {
 import { agentTrigger, createCloneSession } from './utils';
 
 export const useAllActivities = ({ application_id }) => {
+  const queryClient = useQueryClient();
+  const queryKey = ['activitiesCandidate', { application_id }];
   const query = useQuery({
-    queryKey: ['activitiesCandidate', { application_id }],
+    queryKey: queryKey,
     queryFn: () => fetchAllActivities({ application_id }),
     enabled: !!application_id,
   });
-  return query;
+  const refetch = async () => {
+    await queryClient.invalidateQueries({ queryKey });
+  };
+  return { ...query, refetch };
 };
 
 const fetchAllActivities = async ({ application_id }) => {
@@ -365,8 +370,12 @@ export const scheduleWithAgent = async ({
             filter_json: {
               session_ids: createCloneRes.session_ids,
               recruiter_id: recruiter_id,
-              start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-              end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+              start_date: dayjs
+                .tz(dateRange.start_date, user_tz)
+                .format('DD/MM/YYYY'),
+              end_date: dayjs
+                .tz(dateRange.end_date, user_tz)
+                .format('DD/MM/YYYY'),
               user_tz: user_tz,
               organizer_name: recruiter_user_name,
             },
@@ -501,10 +510,10 @@ export const scheduleWithAgent = async ({
               recruiter_id: recruiter_id,
               start_date:
                 dateRange.start_date &&
-                dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+                dayjs.tz(dateRange.start_date, user_tz).format('DD/MM/YYYY'),
               end_date:
                 dateRange.end_date &&
-                dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+                dayjs.tz(dateRange.end_date, user_tz).format('DD/MM/YYYY'),
               user_tz: user_tz,
               organizer_name: recruiter_user_name,
             },
