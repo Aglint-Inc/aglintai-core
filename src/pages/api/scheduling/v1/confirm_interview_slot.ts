@@ -4,10 +4,15 @@ import dayjs from 'dayjs';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,
 } from '@/src/utils/event_book/book_day_plan';
+import { BookingTimeFormat } from '@/src/utils/integrations/constants';
+
+import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { getCandidateLogger } from './getCandidateLogger';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -27,6 +32,10 @@ export type ConfirmApiBodyParams = {
   candidate_email: string;
   schedule_id: string;
   filter_id?: string;
+  task_id: string | null;
+  agent_type: 'email' | 'phone' | 'self';
+  candidate_name: string;
+  candidate_id: string;
 };
 
 const required_fields = [
@@ -58,6 +67,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         filter_id: req_body.filter_id,
       });
     }
+
+    if (
+      req_body.task_id &&
+      req_body.candidate_id &&
+      req_body.candidate_email &&
+      req_body.candidate_name &&
+      req_body.agent_type
+    ) {
+      const candLogger = getCandidateLogger(
+        req_body.task_id,
+        req_body.candidate_name,
+        req_body.agent_type,
+        req_body.candidate_id,
+      );
+      await candLogger(
+        `Scheduled interview sucessfully on ${dayjs(
+          req_body.candidate_plan[0].sessions[0].start_time,
+        )
+          .tz(req_body.user_tz)
+          .format(BookingTimeFormat)}`,
+        'interview_schedule',
+      );
+      supabaseWrap(
+        await supabaseAdmin
+          .from('new_tasks')
+          .update({
+            status: 'completed',
+          })
+          .eq('id', req_body.task_id),
+      );
+    }
+
     return res.status(200).json('sucess');
   } catch (error) {
     console.log(error);

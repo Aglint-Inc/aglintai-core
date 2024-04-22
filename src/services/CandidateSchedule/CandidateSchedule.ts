@@ -1266,6 +1266,12 @@ export class CandidatesScheduling {
         return final_combs;
       }
 
+      const curr_time = userTzDayjs()
+        .tz(this.api_payload.user_tz)
+        .startOf('day');
+      if (curr_time.format('DD/MM/YYYY') === curr_date.format('DD/MM/YYYY')) {
+        return [];
+      }
       // if (dayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
       //   return [];
       // }
