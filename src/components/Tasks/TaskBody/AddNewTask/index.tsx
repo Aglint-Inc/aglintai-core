@@ -102,7 +102,7 @@ function AddNewTask() {
       assignee: [selectedAssignee?.user_id],
       created_by: recruiterUser?.user_id || null,
       application_id: selectedCandidate?.id || null,
-      name: inputRef.current.value || 'Untitled',
+      name: inputRef.current?.value || 'Untitled',
       due_date: dayjs(selectedDueDate).toString(),
       start_date: dayjs(selectTriggerTime).toString(),
       recruiter_id: recruiter.id,
