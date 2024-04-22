@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 
 import { TaskStatus } from '@/devlink3';
+import { palette } from '@/src/context/Theme/Theme';
 import { CustomDatabase } from '@/src/types/customSchema';
 
 function StatusChip({
@@ -10,32 +11,7 @@ function StatusChip({
 }) {
   return (
     <Stack direction={'column'}>
-      {[
-        {
-          id: 'not_started',
-          backgroundColor: '#e9ebed',
-          label: 'Not Started',
-          color: '#49545c',
-        },
-        {
-          id: 'in_progress',
-          backgroundColor: '#CEE2F2',
-          label: 'In Progress',
-          color: '#337FBD',
-        },
-        {
-          id: 'completed',
-          backgroundColor: '#D1E8DF',
-          label: 'Completed',
-          color: '#228F67',
-        },
-        {
-          id: 'closed',
-          backgroundColor: '#f5d5d8',
-          label: 'Closed',
-          color: '#CC3340',
-        },
-      ].map(
+      {colorsData.map(
         (
           {
             backgroundColor,
@@ -71,3 +47,42 @@ function StatusChip({
 }
 
 export default StatusChip;
+
+export const colorsData = [
+  {
+    id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: palette.yellow[400] + '55',
+    label: 'Scheduled',
+    color: palette.yellow[700],
+  },
+  {
+    id: 'not_started' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: '#e9ebed',
+    label: 'Not Started',
+    color: '#49545c',
+  },
+  {
+    id: 'in_progress' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: '#CEE2F2',
+    label: 'In Progress',
+    color: '#337FBD',
+  },
+  {
+    id: 'completed' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: '#D1E8DF',
+    label: 'completed',
+    color: '#228F67',
+  },
+  {
+    id: 'cancelled' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: '#f5d5d8',
+    label: 'Cancelled',
+    color: '#CC3340',
+  },
+  {
+    id: 'closed' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: palette.grey[500] + 'aa',
+    label: 'Closed',
+    color: '#000',
+  },
+];

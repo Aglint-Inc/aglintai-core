@@ -80,6 +80,8 @@ const reducerInitialState: TasksReducerType = {
         { id: 'completed', label: 'Completed' },
         { id: 'in_progress', label: 'In Progress' },
         { id: 'closed', label: 'Closed' },
+        { id: 'cancelled', label: 'Cancelled' },
+        { id: 'scheduled', label: 'Scheduled' },
       ],
       values: [],
     },
