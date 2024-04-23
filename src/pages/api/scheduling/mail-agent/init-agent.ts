@@ -190,10 +190,7 @@ export const sendEmailFromAgent = async ({
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
-    fromEmail: 'agent@ai.aglinthq.com',
-    // process.env.NODE_ENV === 'development'
-    //   ? 'agent@parse.aglinthq.com'
-    //   : 'agent@ai.aglinthq.com',
+    fromEmail: process.env.NEXT_PUBLIC_AGENT_EMAIL,
     fromName: from_name,
     subject: `Interview for ${job_role} - ${candidate_name}`,
     text: mail_body,
