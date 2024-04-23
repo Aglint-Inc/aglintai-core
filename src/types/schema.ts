@@ -3406,7 +3406,7 @@ export type Database = {
       get_conversion_count: {
         Args: {
           recruiter_id: string
-          day_count: number
+          type: string
         }
         Returns: {
           timeline: string
@@ -3441,7 +3441,7 @@ export type Database = {
       get_interview_leaderboard: {
         Args: {
           recruiter_id: string
-          day_count: number
+          type: string
         }
         Returns: {
           user_id: string
@@ -3456,8 +3456,17 @@ export type Database = {
       get_interview_meeting_status_count: {
         Args: {
           recruiter_id: string
+          type: string
         }
-        Returns: Json[]
+        Returns: {
+          timeline: string
+          completed: number
+          cancelled: number
+          not_scheduled: number
+          waiting: number
+          confirmed: number
+          reschedule: number
+        }[]
       }
       get_interview_modules: {
         Args: {
