@@ -182,12 +182,14 @@ export const getScheduleBgcolor = (
   status: InterviewMeetingTypeDb['status'],
 ) => {
   return status === 'completed'
-    ? '#D1E8DF80'
+    ? '#186146'
     : status === 'confirmed'
-      ? '#CEE2F2'
-      : status === 'waiting'
-        ? '#FFEDC2'
-        : '#FFF0F1';
+      ? '#144a75'
+      : status === 'cancelled'
+        ? '#8c232c'
+        : status === 'waiting'
+          ? '#ad5918'
+          : '#49545c';
 };
 
 export const getScheduleTextcolor = (
