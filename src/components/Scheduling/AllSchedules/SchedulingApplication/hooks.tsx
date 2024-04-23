@@ -391,10 +391,16 @@ export const scheduleWithAgent = async ({
             .from('new_tasks')
             .update({
               filter_id: filterJson[0].id,
-              session_ids: createCloneRes.refSessions.filter(
-                (ses) => ses.isSelected,
-              ),
+              session_ids: createCloneRes.refSessions
+                .filter((ses) => ses.isSelected)
+                .map((ses) => {
+                  return {
+                    ...ses,
+                    id: ses.newId,
+                  };
+                }),
               task_triggered: true,
+              status: 'in_progress',
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
@@ -547,6 +553,7 @@ export const scheduleWithAgent = async ({
               filter_id: filterJson[0].id,
               session_ids: selectedSessions,
               task_triggered: true,
+              status: 'in_progress',
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
