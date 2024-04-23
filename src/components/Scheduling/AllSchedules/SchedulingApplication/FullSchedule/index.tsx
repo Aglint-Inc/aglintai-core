@@ -178,6 +178,20 @@ function FullSchedule() {
                   isThreeDotVisible={
                     session.interview_meeting?.status !== 'completed'
                   }
+                  propsBgColorStatus={{
+                    style: {
+                      background:
+                        session.interview_meeting.status === 'completed'
+                          ? '#186146'
+                          : session.interview_meeting.status === 'confirmed'
+                            ? '#144a75'
+                            : session.interview_meeting.status === 'cancelled'
+                              ? '#8c232c'
+                              : session.interview_meeting.status === 'waiting'
+                                ? '#ad5918'
+                                : '#49545c',
+                    },
+                  }}
                   slotStatus={
                     session.interview_meeting?.status ? (
                       <StatusBadge
@@ -194,7 +208,8 @@ function FullSchedule() {
                           session.interview_meeting.status === 'completed'
                         }
                         isNotScheduledVisible={
-                          session.interview_meeting.status === 'not_scheduled'
+                          session.interview_meeting.status ===
+                            'not_scheduled' || false
                         }
                       />
                     ) : (

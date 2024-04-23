@@ -28,4 +28,6 @@ declare function NewInterviewPlanCard(props: {
   onClickDots?: Types.Devlink.RuntimeProps;
   isThreeDotVisible?: Types.Visibility.VisibilityConditions;
   onClickCard?: Types.Devlink.RuntimeProps;
+  propsBgColorStatus?: Types.Devlink.RuntimeProps;
+  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
