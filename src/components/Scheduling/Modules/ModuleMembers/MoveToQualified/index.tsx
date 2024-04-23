@@ -23,10 +23,17 @@ function MoveToQualifiedDialog({ editModule }: { editModule: ModuleType }) {
       const { error } = await supabase
         .from('interview_module_relation')
         .update({ training_status: 'qualified' })
-        .match({ user_id: selUser.user_id, module_id: editModule.id });
-      if (error) {
-        throw new Error(error.message);
-      }
+        .eq('id', selUser.id);
+      if (error) throw new Error(error.message);
+
+      const { error: errorSelRel } = await supabase
+        .from('interview_session_relation')
+        .update({ interviewer_type: 'qualified' })
+        .eq('interview_module_relation_id', selUser.id)
+        .eq('is_confirmed', false)
+        .select();
+      if (errorSelRel) throw new Error(error.message);
+
       const updatedEditModule = {
         ...editModule,
         relations: editModule.relations.map((rel) => {

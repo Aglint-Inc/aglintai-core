@@ -15,11 +15,11 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { CustomDatabase } from '@/src/types/customSchema';
+import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../../Components/AssigneeChip';
-import StatusChip from '../../../Components/StatusChip';
+import SelectStatus from '../../../Components/SelectStatus';
 import { EmailAgentId, PhoneAgentId } from '../../../utils';
 import { CallIcon, EmailIcon } from '../../AddNewTask';
 import PriorityList from '../../AddNewTask/PriorityList';
@@ -45,6 +45,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(null);
   const [selectedPriority, setSelectedPriority] =
     useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
+  const [selectedStatus, setSelectedStatus] =
+    useState<DatabaseEnums['task_status']>('not_started');
   async function getSessionList() {
     const data = await fetchInterviewSessionTask({
       application_id: task?.application_id,
@@ -60,6 +62,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       setSelectedDueDate(task.due_date);
       setSelectTriggerTime(task.start_date);
       setSelectedPriority(task.priority);
+      setSelectedStatus(task.status);
       getSessionList();
     }
   }, [router.query?.task_id]);
@@ -79,6 +82,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           start_date: dayjs(selectTriggerTime).toString(),
           schedule_date_range: { ...scheduleDate },
           priority: selectedPriority,
+          status: selectedStatus,
         },
       });
     }
@@ -88,6 +92,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     selectedDueDate,
     selectTriggerTime,
     selectedPriority,
+    selectedStatus,
   ]);
 
   return (
@@ -193,7 +198,13 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             isOptionList={task.status === 'not_started'}
           />
         }
-        slotStatus={<StatusChip status={task.status} />}
+        slotStatus={
+          <SelectStatus
+            setSelectedStatus={setSelectedStatus}
+            status={selectedStatus}
+            isOptionList={task.status === 'not_started'}
+          />
+        }
         isWhenToCallVisible={
           task?.assignee[0] === EmailAgentId ||
           task?.assignee[0] === PhoneAgentId

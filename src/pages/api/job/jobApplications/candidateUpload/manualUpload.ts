@@ -11,14 +11,14 @@ import { Database } from '@/src/types/schema';
 
 import { ManualUploadApi, Supabase } from './types';
 import {
-  createAndUploadCandidate,
   createApplication,
   createFile,
   deleteCandidate,
   deleteFile,
   deleteResume,
   getFiles,
-  verifyCandidate,
+  uploadResume,
+  verifyAndCreateCandidate,
 } from './utils';
 
 export const config = {
@@ -64,26 +64,21 @@ const handler = async (
       },
     },
   );
-  const { confirmation, error } = await verifyCandidate(
+  const { confirmation, error } = await verifyAndCreateCandidate(
     supabase,
-    email,
-    recruiter_id,
+    {
+      email,
+      recruiter_id,
+      first_name,
+      last_name,
+      linkedin,
+      phone,
+    },
+    job_id,
   )
-    .then(() =>
-      createAndUploadCandidate(
-        supabase,
-        {
-          email,
-          recruiter_id,
-          first_name,
-          last_name,
-          linkedin,
-          phone,
-        },
-        readStream,
-        contentType,
-      )
-        .then(({ candidate_id, file_url, candidate_file_id }) =>
+    .then(({ candidate: { id: candidate_id }, duplicate }) =>
+      uploadResume(supabase, readStream, contentType)
+        .then(({ file_url, candidate_file_id }) =>
           createFile(
             supabase,
             candidate_id,
@@ -125,10 +120,13 @@ const handler = async (
               };
             }),
         )
-        .catch((e: PostgrestError): ManualUploadApi['response'] => ({
-          confirmation: false,
-          error: e.message,
-        })),
+        .catch((e: PostgrestError): ManualUploadApi['response'] => {
+          if (duplicate) deleteCandidate(supabase, candidate_id);
+          return {
+            confirmation: false,
+            error: e.message,
+          };
+        }),
     )
     .catch((e: PostgrestError): ManualUploadApi['response'] => ({
       confirmation: false,

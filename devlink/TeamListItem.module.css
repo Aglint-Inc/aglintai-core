@@ -478,6 +478,12 @@
   margin-top: 8px;
 }
 
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
 .actions-team-card {
   position: relative;
   left: 0%;

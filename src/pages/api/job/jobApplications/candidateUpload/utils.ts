@@ -32,18 +32,19 @@ export const verifyCandidate = async (
   supabase: Supabase,
   email: CandidateDuplicationCheckAction['request']['inputData']['email'],
   recruiter_id: CandidateDuplicationCheckAction['request']['inputData']['recruiter_id'],
+  jobId: string,
   tries: number = 0,
   prev_error?: PostgrestError,
   signal?: CandidateDuplicationCheckAction['request']['signal'],
-): Promise<void> => {
+): Promise<{ duplicate: boolean; candidate: Candidate }> => {
   if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
-    .from('applications')
-    .select('*,candidates!inner(*)')
-    .eq('candidates.recruiter_id', recruiter_id)
-    .eq('candidates.email', email)
+    .from('candidates')
+    .select()
+    .eq('recruiter_id', recruiter_id)
+    .eq('email', email)
     .abortSignal(signal)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
@@ -53,13 +54,18 @@ export const verifyCandidate = async (
         supabase,
         email,
         recruiter_id,
+        jobId,
         tries,
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Candidate verification: ${error.message}`);
   }
-  if (data.length !== 0) throw new Error('Candidate already exits');
+  if (data.length !== 0) {
+    await verifyCandidateInJob(supabase, data[0].id, jobId);
+    return { duplicate: true, candidate: data[0] };
+  }
+  return { duplicate: false, candidate: null };
   // console.log('NEW CANDIDATE VERIFIED');
 };
 
@@ -74,6 +80,7 @@ export const createCandidate = async (
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const avatar = await emailHash(candidate.email);
+  if (!candidate?.id) candidate['id'] = uuidv4();
   const { data, error } = await supabase
     .from('candidates')
     .insert({ ...candidate, avatar })
@@ -84,7 +91,7 @@ export const createCandidate = async (
   if (error) {
     if (tries < MAX_TRIES)
       return await createCandidate(supabase, candidate, tries, error, signal);
-    throw new Error(error.message);
+    throw new Error(`Candidate creation: ${error.message}`);
   }
   // console.log('NEW CANDIDATE CREATED');
   return data[0];
@@ -116,7 +123,7 @@ export const bulkCreateCandidate = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Candidate bulk creation: ${error.message}`);
   }
   // console.log('NEW CANDIDATE CREATED');
   return data;
@@ -150,7 +157,7 @@ export const bulkCreateFiles = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Candidate file bulk creation: ${error.message}`);
   }
   // console.log('NEW CANDIDATE CREATED');
   return data;
@@ -182,7 +189,7 @@ export const bulkCreateApplications = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Application bulk creation: ${error.message}`);
   }
   // console.log('NEW CANDIDATE CREATED');
   return data;
@@ -208,7 +215,7 @@ export const deleteCandidate = async (
   if (error) {
     if (tries < MAX_TRIES)
       return await deleteCandidate(supabase, id, tries, error, signal);
-    throw new Error(error.message);
+    throw new Error(`$Candidate deletion: ${error.message}`);
   }
   // console.log('NEW CANDIDATE DELETED');
 };
@@ -245,7 +252,7 @@ export const createFile = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Candidate file creation: ${error.message}`);
   }
   // console.log('NEW CANDIDATE FILE CREATED');
   return data[0];
@@ -320,7 +327,7 @@ export const deleteFile = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Candidate file deletion: ${error.message}`);
   }
   // console.log('NEW CANDIDATE FILE DELETED');
 };
@@ -355,7 +362,7 @@ export const createApplication = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Application creation: ${error.message}`);
   }
   // console.log('NEW CANDIDATE APPLICATION CREATED');
   return data[0];
@@ -422,7 +429,7 @@ export const deleteApplication = async (
         error,
         signal,
       );
-    throw new Error(error.message);
+    throw new Error(`Application deletion: ${error.message}`);
   }
   // console.log('NEW CANDIDATE APPLICATION DELETED');
 };
@@ -431,15 +438,17 @@ export const uploadResume = async (
   supabase: Supabase,
   file: fs.ReadStream,
   contentType: keyof typeof supportedTypes,
-  candidate_file_id: string,
   tries: number = 0,
   prev_error?: string,
 ): Promise<{
   file_url: string;
   candidate_file_id: string;
 }> => {
+  if (!Object.keys(supportedTypes).includes(contentType)) {
+    throw new Error('Unsupported file');
+  }
   if (tries++ === MAX_TRIES) throw new Error(prev_error);
-
+  const candidate_file_id = uuidv4();
   const ext = supportedTypes[contentType];
   const { data, error } = await supabase.storage
     .from('candidate-files')
@@ -454,11 +463,10 @@ export const uploadResume = async (
         supabase,
         file,
         contentType,
-        candidate_file_id,
         tries,
         error.message,
       );
-    else throw new Error(error.message);
+    else throw new Error(`Resume upload: ${error.message}`);
   }
   // console.log('NEW CANDIDATE RESUME UPLOADED');
   return {
@@ -478,7 +486,7 @@ export const deleteResume = async (
   const ext = supportedTypes[contentType];
   const { error } = await supabase.storage
     .from('candidate-files')
-    .remove([`resumes/${candidate_file_id}.${ext}`]);
+    .remove([`resumes/${candidate_file_id}${ext}`]);
   if (error) {
     if (tries < MAX_TRIES)
       return await deleteResume(
@@ -488,40 +496,25 @@ export const deleteResume = async (
         tries,
         error.message,
       );
-    throw new Error(error.message);
+    throw new Error(`Resume deletion: ${error.message}`);
   }
   // console.log('NEW CANDIDATE RESUME DELETED');
 };
 
-export const createAndUploadCandidate = async (
+export const verifyAndCreateCandidate = async (
   supabase: Supabase,
   candidate: CandidateCreateAction['request']['inputData'],
-  file: fs.ReadStream,
-  contentType: keyof typeof supportedTypes,
+  jobId: string,
 ) => {
-  if (!Object.keys(supportedTypes).includes(contentType)) {
-    throw new Error('Unsupported file');
-  }
-  const candidate_file_id = uuidv4();
-  const responses = await Promise.allSettled([
-    createCandidate(supabase, candidate),
-    uploadResume(supabase, file, contentType, candidate_file_id),
-  ]);
-  if (responses[0].status === 'rejected') {
-    if (responses[1].status === 'fulfilled')
-      await deleteResume(supabase, candidate_file_id, contentType);
-    throw new Error(responses[0].reason);
-  } else if (responses[1].status === 'rejected') {
-    if (responses[0].status === 'fulfilled')
-      await deleteCandidate(supabase, responses[0].value.id);
-    throw new Error(responses[1].reason);
-  } else {
-    return {
-      candidate_id: responses[0].value.id,
-      file_url: responses[1].value.file_url,
-      candidate_file_id,
-    };
-  }
+  const { duplicate, candidate: candidate_data } = await verifyCandidate(
+    supabase,
+    candidate.email,
+    candidate.recruiter_id,
+    jobId,
+  );
+  if (duplicate) return { duplicate: true, candidate: candidate_data };
+  const new_candidate_data = await createCandidate(supabase, candidate);
+  return { duplicate: false, candidate: new_candidate_data };
 };
 
 const sha256 = async (message) => {
@@ -532,6 +525,20 @@ const sha256 = async (message) => {
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('');
   return hashHex;
+};
+
+export const verifyCandidateInJob = async (
+  supabase: Supabase,
+  candidateId: CandidateCreateAction['request']['inputData']['id'],
+  jobId: string,
+) => {
+  const { data, error } = await supabase
+    .from('applications')
+    .select()
+    .eq('candidate_id', candidateId)
+    .eq('job_id', jobId);
+  if (error) throw new Error(error.message);
+  if (data.length !== 0) throw new Error('Candidate already exists');
 };
 
 const emailHash = async (email) => {
@@ -565,4 +572,35 @@ export const getFiles = async (req: NextApiRequest) => {
     fileName: string;
     readStream: fs.ReadStream;
   }[];
+};
+
+export const createAndUploadCandidate = async (
+  supabase: Supabase,
+  candidate: CandidateCreateAction['request']['inputData'],
+  file: fs.ReadStream,
+  contentType: keyof typeof supportedTypes,
+) => {
+  if (!Object.keys(supportedTypes).includes(contentType)) {
+    throw new Error('Unsupported file');
+  }
+  const candidate_file_id = uuidv4();
+  const responses = await Promise.allSettled([
+    createCandidate(supabase, candidate),
+    uploadResume(supabase, file, contentType),
+  ]);
+  if (responses[0].status === 'rejected') {
+    if (responses[1].status === 'fulfilled')
+      await deleteResume(supabase, candidate_file_id, contentType);
+    throw new Error(responses[0].reason);
+  } else if (responses[1].status === 'rejected') {
+    if (responses[0].status === 'fulfilled')
+      await deleteCandidate(supabase, responses[0].value.id);
+    throw new Error(responses[1].reason);
+  } else {
+    return {
+      candidate_id: responses[0].value.id,
+      file_url: responses[1].value.file_url,
+      candidate_file_id,
+    };
+  }
 };

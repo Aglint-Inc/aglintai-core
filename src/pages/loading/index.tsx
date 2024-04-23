@@ -166,9 +166,19 @@ export default function Loading() {
                     `${pageRoutes.SCHEDULING}?tab=mySchedules`,
                 );
                 localStorage.removeItem('redirectURL');
+              } else if (data[0].role === 'recruiter') {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+                );
+                localStorage.removeItem('redirectURL');
+              } else if (data[0].role === 'scheduler') {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
+                );
+                localStorage.removeItem('redirectURL');
               } else {
                 router.push(
-                  localStorage.getItem('redirectURL') || pageRoutes.DASHBOARD,
+                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
                 );
                 localStorage.removeItem('redirectURL');
               }

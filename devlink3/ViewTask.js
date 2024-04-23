@@ -22,7 +22,7 @@ export function ViewTask({
   return (
     <_Component className={_utils.cx(_styles, "div-block-1338")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1339")}
+        className={_utils.cx(_styles, "div-block-1339", "plr-16")}
         tag="div"
       >
         <_Builtin.Block
@@ -114,7 +114,7 @@ export function ViewTask({
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "plr-16")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "text-lg", "fw-semibold")}
           tag="div"
@@ -123,14 +123,14 @@ export function ViewTask({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1344")}
+        className={_utils.cx(_styles, "div-block-1344", "plr-16")}
         tag="div"
       >
         {slotTaskCard ?? <ViewTaskCard />}
       </_Builtin.Block>
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1345")}
+          className={_utils.cx(_styles, "div-block-1345", "plr-16")}
           tag="div"
         >
           <_Builtin.Block

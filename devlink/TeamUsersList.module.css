@@ -433,8 +433,8 @@
 .tu-list {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .tu-pending-invites-block {
@@ -569,6 +569,8 @@
   padding-top: 0px;
   padding-bottom: 0px;
   flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .cs-team-users-roles {

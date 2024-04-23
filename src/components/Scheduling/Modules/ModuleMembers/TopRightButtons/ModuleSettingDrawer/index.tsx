@@ -47,7 +47,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
         ),
       );
     }
-  }, [editModule]);
+  }, [editModule, members]);
 
   const updateModule = async () => {
     if (localModule.settings.reqruire_approval && selectedUsers.length === 0) {
@@ -59,7 +59,10 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
       .update({
         name: localModule.name,
         description: localModule.description,
-        settings: localModule.settings,
+        settings: {
+          ...localModule.settings,
+          approve_users: selectedUsers.map((sel) => sel.user_id),
+        },
         department: localModule.department,
       })
       .eq('id', editModule.id)

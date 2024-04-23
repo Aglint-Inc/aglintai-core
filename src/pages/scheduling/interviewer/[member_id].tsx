@@ -8,6 +8,7 @@ import Seo from '@/src/components/Common/Seo';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import Interviewer from '@/src/components/Scheduling/Interviewers/Interviewer';
+import { ModuleType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
 import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -32,7 +33,9 @@ export interface interviewerDetailsType {
     };
     training_status: 'qualified' | 'training';
     user_id: string;
-    interview_module: InterviewModuleType;
+    interview_module: InterviewModuleType & {
+      settings: ModuleType['settings'];
+    };
   }[];
   interviewer: RecruiterUserType;
 }

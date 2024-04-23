@@ -68,7 +68,6 @@ function Interviewer({
   });
   const { refetch } = useImrQuery();
   const today = dayjs().startOf('day');
-  const thisWeekStart = dayjs().endOf('week');
   let totalInterviewsThisWeek: ReturnType<
     typeof useInterviewerSchedulesQuery
   >['data'] = [];
@@ -78,16 +77,24 @@ function Interviewer({
   let totalHoursThisWeek = 0;
   let totalHoursToday = 0;
 
+  const firstDayOfWeek = dayjs().startOf('week').startOf('day').format();
+  const lastDayOfWeek = dayjs().endOf('week').endOf('day').format();
+
   const interviewerSchedules = useInterviewerSchedulesQuery();
   if (interviewerSchedules.isFetched) {
     const completedInterviews = interviewerSchedules.data.filter(
-      (item) => item.interview_meeting.status == 'completed',
+      (item) =>
+        item.interview_meeting.status == 'completed' ||
+        item.interview_meeting.status == 'confirmed',
     );
     totalInterviewsToday = completedInterviews.filter((interview) =>
       dayjs(interview.interview_meeting.end_time).isSame(today, 'day'),
     );
-    totalInterviewsThisWeek = completedInterviews.filter((interview) =>
-      dayjs(interview.interview_meeting.end_time).isBefore(thisWeekStart),
+
+    totalInterviewsThisWeek = completedInterviews.filter(
+      (interview) =>
+        interview.interview_meeting.start_time >= firstDayOfWeek &&
+        interview.interview_meeting.end_time <= lastDayOfWeek,
     );
 
     totalHoursToday =
@@ -97,6 +104,7 @@ function Interviewer({
           0,
         ),
       ) / 60;
+
     totalHoursThisWeek =
       Number(
         totalInterviewsThisWeek.reduce(
@@ -528,8 +536,8 @@ function Interviewer({
                                 // @ts-ignore
                                 module.interview_module.settings?.noShadow || 0,
                               noReverseShadow:
-                              module.interview_module.settings
-                              // @ts-ignore
+                                // @ts-ignore
+                                module.interview_module.settings
                                   ?.noReverseShadow || 0,
                             },
                           });

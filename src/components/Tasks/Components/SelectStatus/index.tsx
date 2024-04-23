@@ -11,11 +11,13 @@ import StatusChip, { colorsData } from '../StatusChip';
 function SelectStatus({
   status,
   setSelectedStatus,
+  isOptionList = true,
 }: {
   status: CustomDatabase['public']['Enums']['task_status'];
   setSelectedStatus: (
     x: CustomDatabase['public']['Enums']['task_status'],
   ) => void;
+  isOptionList?: boolean;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -38,7 +40,7 @@ function SelectStatus({
 
       <Popover
         id={id}
-        open={open}
+        open={open && isOptionList}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{

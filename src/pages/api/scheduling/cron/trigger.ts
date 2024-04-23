@@ -26,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       )
       .eq('task_triggered', false)
       .lt('start_date', new Date().toISOString())
+      .eq('status', 'not_started')
       .not('filter_id', 'is', null);
     if (error) {
       throw new Error(error.message);

@@ -391,10 +391,16 @@ export const scheduleWithAgent = async ({
             .from('new_tasks')
             .update({
               filter_id: filterJson[0].id,
-              session_ids: createCloneRes.refSessions.filter(
-                (ses) => ses.isSelected,
-              ),
+              session_ids: createCloneRes.refSessions
+                .filter((ses) => ses.isSelected)
+                .map((ses) => {
+                  return {
+                    ...ses,
+                    id: ses.newId,
+                  };
+                }),
               task_triggered: true,
+              status: 'in_progress',
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
@@ -545,8 +551,9 @@ export const scheduleWithAgent = async ({
             .from('new_tasks')
             .update({
               filter_id: filterJson[0].id,
-              session_ids: sessionsWithPlan.sessions,
+              session_ids: selectedSessions,
               task_triggered: true,
+              status: 'in_progress',
             })
             .eq('id', task_id);
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
@@ -582,7 +589,7 @@ export const scheduleWithAgent = async ({
           const { data: task, error: errorTasks } = await supabase
             .from('new_tasks')
             .insert({
-              name: `Schedule an interview for ${selectedSessions.map((ses) => ses.name).join(' , ')} via phone`,
+              name: `Schedule an interview for ${selectedSessions.map((ses) => ses.name).join(' , ')} via ${type == 'email_agent' ? 'email' : 'phone'}`,
               application_id,
               created_by: rec_user_id,
               type: 'schedule',
