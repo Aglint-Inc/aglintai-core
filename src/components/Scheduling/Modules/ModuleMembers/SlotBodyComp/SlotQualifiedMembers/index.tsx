@@ -90,10 +90,9 @@ function SlotQualifiedMembers({
             textPauseResumeDate={
               !user.pause_json?.isManual
                 ? user.pause_json?.end_date
-                  ? 'Till ' +
-                    dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
+                  ? dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
                   : '--'
-                : 'Till you resume'
+                : 'you resume'
             }
             onClickRemoveModule={{
               onClick: () => {

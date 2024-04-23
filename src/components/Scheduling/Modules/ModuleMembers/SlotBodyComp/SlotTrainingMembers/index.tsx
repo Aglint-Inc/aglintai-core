@@ -6,6 +6,7 @@ import { EmptyGeneral, MemberListCard, StatusBadge } from '@/devlink2';
 import { HistoryPill, HistoryTrainingCard } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -279,31 +280,20 @@ function SlotTrainingMembers({
                         textTime={`${dayjs(
                           item.meeting?.interview_meeting?.start_time,
                         ).format(
-                          'HH:mm',
-                        )} to ${dayjs(item.meeting?.interview_meeting?.end_time).format('HH:mm')}`}
+                          'hh:mm A',
+                        )} to ${dayjs(item.meeting?.interview_meeting?.end_time).format('hh:mm A')}`}
                         isSchedule={Boolean(
                           item.meeting?.interview_meeting?.status,
                         )}
                         textDuration={
                           <>
-                            {`${
-                              // @ts-ignore
-                              (new Date(
-                                item.meeting?.interview_meeting?.end_time,
-                              ) -
-                                // @ts-ignore
-                                new Date(
-                                  item.meeting?.interview_meeting?.start_time,
-                                )) /
-                              (1000 * 60)
-                            } Minutes`}
+                            {`${item.meeting?.interview_session?.session_duration}
+                             Minutes`}
                           </>
                         }
-                        textPlatformName={
-                          item.meeting?.interview_meeting?.meeting_json
-                          // @ts-ignore
-                            ?.conferenceData?.conferenceSolution?.name
-                        }
+                        textPlatformName={getScheduleType(
+                          item.meeting?.interview_session?.schedule_type,
+                        )}
                       />
                     }
                     isShadow={item.text === 'shadow'}
@@ -315,10 +305,9 @@ function SlotTrainingMembers({
             textPauseResumeDate={
               !user.pause_json?.isManual
                 ? user.pause_json?.end_date
-                  ? 'Till ' +
-                    dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
+                  ? dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
                   : '--'
-                : 'Till you resume'
+                : 'you resume'
             }
             onClickRemoveModule={{
               onClick: () => {
