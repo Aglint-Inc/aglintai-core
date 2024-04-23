@@ -17,7 +17,7 @@ function SelectStatus({
   setSelectedStatus: (
     x: CustomDatabase['public']['Enums']['task_status'],
   ) => void;
-  isOptionList: boolean;
+  isOptionList?: boolean;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
