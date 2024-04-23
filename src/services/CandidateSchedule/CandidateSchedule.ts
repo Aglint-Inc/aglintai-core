@@ -103,11 +103,19 @@ export class CandidatesScheduling {
   //   start of api funcs
 
   async fetchDetails() {
-    const meet_start_date = this.schedule_dates.user_start_date_js.subtract(
-      7,
-      'day',
-    );
-    const meet_end_date = this.schedule_dates.user_end_date_js.add(7, 'day');
+    const meeting_date = {
+      start: null,
+      end: null,
+    };
+    if (this.schedule_dates) {
+      const meet_start_date = this.schedule_dates.user_start_date_js.subtract(
+        7,
+        'day',
+      );
+      meeting_date.start = meet_start_date.format();
+      const meet_end_date = this.schedule_dates.user_end_date_js.add(7, 'day');
+      meeting_date.end = meet_end_date.format();
+    }
     const {
       all_inters,
       comp_schedule_setting,
@@ -119,8 +127,8 @@ export class CandidatesScheduling {
       this.api_payload.session_ids,
       this.api_payload.company_id,
       {
-        start: meet_start_date.format(),
-        end: meet_end_date.format(),
+        start: meeting_date.start,
+        end: meeting_date.end,
       },
     );
     this.db_details = {

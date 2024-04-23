@@ -37,6 +37,8 @@ export function NewInterviewPlanCard({
   onClickDots = {},
   isThreeDotVisible = true,
   onClickCard = {},
+  propsBgColorStatus = {},
+  isCheckboxVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -46,7 +48,6 @@ export function NewInterviewPlanCard({
         className={_utils.cx(_styles, "div-block-1394")}
         tag="div"
       >
-        <_Builtin.Block tag="div">{slotCheckbox}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1402")}
           tag="div"
@@ -56,7 +57,12 @@ export function NewInterviewPlanCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1399")}
+              className={_utils.cx(_styles, "div-block-1589")}
+              tag="div"
+              {...propsBgColorStatus}
+            />
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1399", "hide")}
               tag="div"
               {...onClickCard}
             >
@@ -118,6 +124,9 @@ export function NewInterviewPlanCard({
                 className={_utils.cx(_styles, "div-block-1387")}
                 tag="div"
               >
+                {isCheckboxVisible ? (
+                  <_Builtin.Block tag="div">{slotCheckbox}</_Builtin.Block>
+                ) : null}
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-1386")}
                   tag="div"
@@ -127,6 +136,12 @@ export function NewInterviewPlanCard({
                     tag="div"
                   >
                     <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "fw-semibold")}
+                      tag="div"
+                    >
+                      {"Fri, May 12, 2024"}
+                    </_Builtin.Block>
                     {isTimeVisible ? (
                       <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
                     ) : null}
@@ -199,7 +214,11 @@ export function NewInterviewPlanCard({
                       ) : null}
                       {isLocationVisible ? (
                         <_Builtin.Block
-                          className={_utils.cx(_styles, "div-block-1390")}
+                          className={_utils.cx(
+                            _styles,
+                            "div-block-1390",
+                            "hide"
+                          )}
                           tag="div"
                         >
                           <_Builtin.Block tag="div">
