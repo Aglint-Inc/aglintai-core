@@ -314,7 +314,7 @@ function FullSchedule() {
                 />
               </Stack>
               {session.break_duration > 0 && (
-                <Stack pl={'34px'} pt={'10px'}>
+                <Stack pt={'10px'}>
                   <InterviewBreakCard
                     textDuration={getBreakLabel(session.break_duration)}
                     isThreeDotVisible={true}
