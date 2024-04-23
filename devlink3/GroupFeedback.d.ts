@@ -7,4 +7,5 @@ declare function GroupFeedback(props: {
   textInterviewType?: React.ReactNode;
   textDate?: React.ReactNode;
   textTime?: React.ReactNode;
+  slotStatusPill?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -83,7 +83,6 @@ function SchedulingViewComp() {
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'feedback'}>
                     <FeedbackWindow
-                      multiSession={false}
                       interview_sessions={[
                         {
                           id: schedule?.interview_session.id,

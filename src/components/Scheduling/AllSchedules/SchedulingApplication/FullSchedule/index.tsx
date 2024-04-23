@@ -209,8 +209,7 @@ function FullSchedule() {
                           session.interview_meeting.status === 'completed'
                         }
                         isNotScheduledVisible={
-                          session.interview_meeting.status ===
-                            'not_scheduled' || false
+                          session.interview_meeting.status === 'not_scheduled'
                         }
                       />
                     ) : (

@@ -394,7 +394,6 @@ function SchedulingApplication() {
                           end: item.interview_meeting.end_time,
                         },
                       }))}
-                      multiSession={true}
                     />
                   ) : (
                     ''
