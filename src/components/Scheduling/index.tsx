@@ -28,7 +28,7 @@ import { Modules } from './Modules/Modules';
 import { fetchInterviewModules } from './Modules/queries/utils';
 import { setIsCreateDialogOpen } from './Modules/store';
 import MySchedule from './MySchedule';
-import SchedulingDashboard from './ScheduledDashobard';
+import SchedulingDashboard from './SchedulingDashboard';
 import SchedulingSettings from './Settings';
 import SubNav from './SubNav';
 import { SchedulingTab } from './types';

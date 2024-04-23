@@ -130,6 +130,7 @@ export function NewInterviewPlanCard({
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-1386")}
                   tag="div"
+                  {...onClickCard}
                 >
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-1398")}
@@ -140,7 +141,7 @@ export function NewInterviewPlanCard({
                       className={_utils.cx(_styles, "fw-semibold")}
                       tag="div"
                     >
-                      {"Fri, May 12, 2024"}
+                      {textDate}
                     </_Builtin.Block>
                     {isTimeVisible ? (
                       <_Builtin.Block tag="div">{textTime}</_Builtin.Block>

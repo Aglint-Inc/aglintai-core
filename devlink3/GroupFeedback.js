@@ -10,6 +10,7 @@ export function GroupFeedback({
   textInterviewType = "Company Indroduction",
   textDate = "12 Feb 2024",
   textTime = "09:00 AM to 09:30 PM",
+  slotStatusPill,
 }) {
   return (
     <_Component tag="div">
@@ -33,7 +34,7 @@ export function GroupFeedback({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1574")}
+          className={_utils.cx(_styles, "div-block-1574", "hide")}
           tag="div"
         >
           <_Builtin.Block
@@ -49,6 +50,7 @@ export function GroupFeedback({
             {textTime}
           </_Builtin.Block>
         </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotStatusPill}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">{slotFeedbackTableRow}</_Builtin.Block>
     </_Component>
