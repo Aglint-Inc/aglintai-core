@@ -158,6 +158,7 @@ function FullSchedule() {
                 }}
               >
                 <NewInterviewPlanCard
+                  isCheckboxVisible={true}
                   onClickCard={{
                     onClick: () => {
                       if (

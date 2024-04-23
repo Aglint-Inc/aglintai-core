@@ -130,6 +130,7 @@ export function NewInterviewPlanCard({
                 <_Builtin.Block
                   className={_utils.cx(_styles, "div-block-1386")}
                   tag="div"
+                  {...onClickCard}
                 >
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-1398")}

@@ -233,6 +233,9 @@
 }
 
 .div-block-1387 {
+  position: relative;
+  z-index: 1;
+
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
