@@ -19,7 +19,7 @@ import toast from '@/src/utils/toast';
 import IconScheduleType from '../../ListCard/Icon';
 import { addScheduleActivity } from '../../queries/utils';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
-import { getScheduleType, mailHandler } from '../../utils';
+import { getScheduleBgcolor, getScheduleType, mailHandler } from '../../utils';
 import CancelScheduleDialog from '../Common/CancelScheduleDialog';
 import RescheduleDialog from '../Common/RescheduleDialog';
 import GetScheduleOptionsDialog from '../GetScheduleOptions';
@@ -181,16 +181,9 @@ function FullSchedule() {
                   }
                   propsBgColorStatus={{
                     style: {
-                      background:
-                        session.interview_meeting.status === 'completed'
-                          ? '#186146'
-                          : session.interview_meeting.status === 'confirmed'
-                            ? '#144a75'
-                            : session.interview_meeting.status === 'cancelled'
-                              ? '#8c232c'
-                              : session.interview_meeting.status === 'waiting'
-                                ? '#ad5918'
-                                : '#49545c',
+                      background: getScheduleBgcolor(
+                        session.interview_meeting?.status,
+                      ),
                     },
                   }}
                   slotStatus={
@@ -258,8 +251,11 @@ function FullSchedule() {
                   textMeetingPlatform={getScheduleType(session.schedule_type)}
                   textMeetingTitle={session.name || '--'}
                   textDate={
-                    session.interview_meeting?.start_time &&
-                    dayjs(session.interview_meeting?.start_time).format('ddd, MMM DD, YYYY')
+                    session.interview_meeting?.start_time
+                      ? dayjs(session.interview_meeting?.start_time).format(
+                          'ddd, MMM DD, YYYY',
+                        )
+                      : ''
                   }
                   textTime={
                     session.interview_meeting?.start_time
