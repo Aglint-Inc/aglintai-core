@@ -26,12 +26,12 @@ export type holidayType = {
   event_name: string;
 };
 export type DailyLimitType = {
-  value: number | null;
-  type: string | null;
+  value: number;
+  type: 'Hours' | 'Interviews';
 };
 export type WeeklyLimitType = {
-  value: number | null;
-  type: string | null;
+  value: number;
+  type: 'Hours' | 'Interviews';
 };
 export type WorkingDaysType = {
   day: string;

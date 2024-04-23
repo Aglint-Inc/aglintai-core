@@ -1,5 +1,6 @@
 import {
   InterviewerSessionRelation,
+  InterviewMeetingTypeDb,
   InterviewModuleType,
   InterviewSession,
   RecruiterUserType,
@@ -39,9 +40,8 @@ export type InterviewSessionApiType = {
   location: InterviewSession['location'];
   schedule_type: InterviewSession['schedule_type'];
   session_type: InterviewSession['session_type'];
-  selectedIntervs: SessionInterviewerType[];
-  shadowIntervs: SessionInterviewerType[];
-  revShadowIntervs: SessionInterviewerType[];
+  qualifiedIntervs: SessionInterviewerType[];
+  trainingIntervs: SessionInterviewerType[];
   break_duration: InterviewSession['break_duration'];
   session_order: InterviewSession['session_order'];
   interviewer_cnt: InterviewSession['interviewer_cnt'];
@@ -85,9 +85,8 @@ export type InterviewSessionApiRespType = {
   duration: InterviewSession['session_duration'];
   schedule_type: InterviewSession['schedule_type'];
   session_type: InterviewSession['session_type'];
-  selectedIntervs: SessionInterviewerApiRespType[];
-  shadowIntervs: SessionInterviewerApiRespType[];
-  revShadowIntervs: SessionInterviewerApiRespType[];
+  qualifiedIntervs: SessionInterviewerApiRespType[];
+  trainingIntervs: SessionInterviewerApiRespType[];
   break_duration: InterviewSession['break_duration'];
   session_order: InterviewSession['session_order'];
   interviewer_cnt: InterviewSession['interviewer_cnt'];
@@ -116,4 +115,12 @@ export type SessionSlotApiRespType = {
   interviewer_cnt: InterviewSession['interviewer_cnt'];
   location: InterviewSession['location'];
   module_name: InterviewModuleType['name'];
+};
+
+export type InterviewerMeetingScheduled = {
+  meeting_start_time: InterviewMeetingTypeDb['start_time'];
+  meeting_id: InterviewMeetingTypeDb['id'];
+  int_session_id: InterviewSession['id'];
+  meeting_duration: InterviewSession['session_duration'];
+  interv_user_id: string;
 };
