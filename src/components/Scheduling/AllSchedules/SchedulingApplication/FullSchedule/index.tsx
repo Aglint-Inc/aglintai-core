@@ -256,15 +256,10 @@ function FullSchedule() {
                   textLocation={session.location || '--'}
                   textMeetingPlatform={getScheduleType(session.schedule_type)}
                   textMeetingTitle={session.name || '--'}
-                  textDate={dayjs(session.interview_meeting?.start_time).format(
-                    'DD',
-                  )}
-                  textDay={dayjs(session.interview_meeting?.start_time).format(
-                    'dddd',
-                  )}
-                  textMonth={dayjs(
-                    session.interview_meeting?.start_time,
-                  ).format('MMM')}
+                  textDate={
+                    session.interview_meeting?.start_time &&
+                    dayjs(session.interview_meeting?.start_time).format('ddd, MMM DD, YYYY')
+                  }
                   textTime={
                     session.interview_meeting?.start_time
                       ? `${dayjs(session.interview_meeting?.start_time).format(

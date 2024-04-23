@@ -406,12 +406,12 @@ export const scheduleWithAgent = async ({
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
 
           addScheduleActivity({
-            title: `Candidate invited for session ${createCloneRes.refSessions
+            title: `Candidate invited for ${createCloneRes.refSessions
               .filter((ses) => ses.isSelected)
               .map((ses) => ses.name)
               .join(
                 ' , ',
-              )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+              )} via ${type === 'email_agent' ? 'email agent' : 'phone agent'}`,
             logger: rec_user_id,
             type: 'schedule',
             application_id,
@@ -559,11 +559,11 @@ export const scheduleWithAgent = async ({
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
 
           addScheduleActivity({
-            title: `Candidate invited for session ${selectedSessions
+            title: `Candidate invited for ${selectedSessions
               .map((ses) => ses.name)
               .join(
                 ' , ',
-              )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+              )} via ${type === 'email_agent' ? 'email agent' : 'phone agent'}`,
             logger: rec_user_id,
             type: 'schedule',
             application_id,
