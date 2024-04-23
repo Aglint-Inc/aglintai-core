@@ -62,6 +62,7 @@ type AgentPayloadType = {
     meeting_summary: string;
     job_description: string;
     comp_scheduling_setting: schedulingSettingType;
+    filter_id: string;
   };
 };
 
@@ -256,6 +257,7 @@ export const fetchCandidateDetails = async (
       meeting_summary,
       job_description: job.description,
       comp_scheduling_setting: job.recruiter.scheduling_settings as any,
+      filter_id: cand_rec.interview_filter_json.id,
     },
   };
 
