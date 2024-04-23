@@ -87,6 +87,7 @@ export * from "./FeedbackViewPopup";
 export * from "./FullScheduleCard";
 export * from "./GeneralScheduleCard";
 export * from "./GraphBlock";
+export * from "./GroupFeedback";
 export * from "./HistoryPill";
 export * from "./HistoryTrainingCard";
 export * from "./IconRegular";
