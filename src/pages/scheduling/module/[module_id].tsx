@@ -1,6 +1,4 @@
 import { Stack, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
@@ -35,6 +33,7 @@ import {
   MemberType,
   ModuleType,
 } from '@/src/components/Scheduling/Modules/types';
+import { useAllInterviewersDetails } from '@/src/components/Scheduling/SchedulingView/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import SchedulingProvider, {
 //   useSchedulingContext,
@@ -76,7 +75,7 @@ function ModuleMembersComp() {
   const [subTab, setSubTab] =
     useState<(typeof subTabs)[number]>('training history');
 
-  const { data: members, isFetching: loading } = useInterviewModules();
+  const { data: members, isFetching: loading } = useAllInterviewersDetails();
 
   let { data: progress } = useProgressModuleUsers({
     trainer_ids: selectedModule?.relations.map((user) => user.id) || [],
@@ -211,7 +210,7 @@ const TrainingDetails = ({
 }) => {
   const progressUser = {
     progress: progress,
-    user: members.find((item) => item.user_id === id),
+    user: members?.find((item) => item.user_id === id),
   };
 
   const shadowProgress = progressUser?.progress.filter(
@@ -639,25 +638,4 @@ const updateMemberRelation = ({
       if (error) throw new Error(error.message);
       return data;
     });
-};
-
-const useInterviewModules = () => {
-  const { recruiter_id } = useAuthDetails();
-  const query = useQuery({
-    queryKey: [`InterviewModulesDetails_${recruiter_id}`],
-    queryFn: () => {
-      return axios
-        .post('/api/scheduling/fetchUserDetails', {
-          recruiter_id,
-        })
-        .then((data) => {
-          const temp = data.data as unknown as MemberType[];
-          return temp;
-        });
-    },
-    enabled: Boolean(recruiter_id),
-    initialData: () => [] as unknown as MemberType[],
-    refetchOnWindowFocus: false,
-  });
-  return query;
 };
