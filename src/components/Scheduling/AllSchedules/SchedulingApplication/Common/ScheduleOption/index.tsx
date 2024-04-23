@@ -94,7 +94,7 @@ function SchedulingOptionComp({
                                   gap: 2.5,
                                 }}
                               >
-                                {ses.selectedIntervs?.map((int) => {
+                                {ses.qualifiedIntervs?.map((int) => {
                                   return (
                                     <AvatarWithName
                                       key={int.email}
@@ -115,30 +115,7 @@ function SchedulingOptionComp({
                                     />
                                   );
                                 })}
-                                {ses.shadowIntervs?.map((int) => {
-                                  return (
-                                    <AvatarWithName
-                                      key={int.email}
-                                      isShadowVisible={false}
-                                      isReverseShadowVisible={false}
-                                      textName={int.first_name}
-                                      slotAvatar={
-                                        <MuiAvatar
-                                          level={getFullName(
-                                            int.first_name,
-                                            int.last_name,
-                                          )}
-                                          src={int?.profile_image}
-                                          variant={'circular'}
-                                          width={'24px'}
-                                          height={'24px'}
-                                          fontSize={'12px'}
-                                        />
-                                      }
-                                    />
-                                  );
-                                })}
-                                {ses.revShadowIntervs?.map((int) => {
+                                {ses.trainingIntervs?.map((int) => {
                                   return (
                                     <AvatarWithName
                                       key={int.email}

@@ -84,7 +84,7 @@ function SchedulingSettings({
 
   const handleSelectWeeklyType = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
-      pre.type = value.target.value as string;
+      pre.type = value.target.value as any;
       return { ...pre } as WeeklyLimitType;
     });
   };
@@ -96,7 +96,7 @@ function SchedulingSettings({
   };
   const handleSelectDailyType = (value: any) => {
     setSelectedDailyLimit((pre) => {
-      pre.type = value.target.value as string;
+      pre.type = value.target.value as any;
       return { ...pre } as DailyLimitType;
     });
   };

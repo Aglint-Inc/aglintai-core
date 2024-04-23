@@ -83,12 +83,11 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     const assisgned_slot = assignCandidateSlot(plan_combs[0], curr_date);
     const meet_promises = assisgned_slot.sessions.map(async (session) => {
       const all_inters = [
-        ...session.selectedIntervs.slice(1),
-        ...session.shadowIntervs,
-        ...session.revShadowIntervs,
+        ...session.qualifiedIntervs.slice(1),
+        ...session.trainingIntervs,
       ];
-      const organizer = session.selectedIntervs[0];
-      const training_ints = session.shadowIntervs;
+      const organizer = session.qualifiedIntervs[0];
+      const training_ints = session.trainingIntervs;
       const booked_sessions = await bookSession({
         candidate_email,
         company_cred,
