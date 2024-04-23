@@ -2,24 +2,25 @@
   position: relative;
 
   display: flex;
-  overflow: auto;
   width: 600px;
   height: 100vh;
-  padding: 16px 0px 0px;
+  padding: 0px;
   flex-direction: column;
+  justify-content: flex-start;
   flex-wrap: nowrap;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
 }
 
 .div-block-1339 {
   display: flex;
+  height: 62px;
+  padding-top: 16px;
   justify-content: space-between;
   align-items: center;
 }
 
 .div-block-1339.plr-16 {
   padding-right: 16px;
+  padding-bottom: 16px;
   padding-left: 16px;
 }
 
@@ -30,6 +31,10 @@
 
 .text-grey-600 {
   color: #68737d;
+}
+
+.hide {
+  display: none;
 }
 
 .div-block-1570 {
@@ -45,9 +50,13 @@
 }
 
 .div-block-1569 {
+  position: relative;
+
   display: flex;
+  width: 30px;
+  height: 30px;
   padding: 8px 16px;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -61,13 +70,9 @@
   cursor: pointer;
 }
 
-.div-block-1569:hover {
-  opacity: 0.8;
-}
-
 .div-block-1569.width-30 {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   justify-content: center;
   align-items: center;
   background-color: #e9ebed;
@@ -122,8 +127,54 @@
   bottom: auto;
 }
 
-.text-grey_400 {
-  color: #c2c8cc;
+.arrow-tooltips-drawer {
+  position: absolute;
+  left: -70%;
+  top: auto;
+  right: 0%;
+  bottom: -105%;
+
+  display: flex;
+  min-width: 60px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  border-radius: 4px;
+
+  background-color: #2f3941;
+
+  opacity: 1;
+
+  color: white;
+  font-size: 10px;
+}
+
+.arrow-tooltips-drawer.grey-600 {
+  background-color: var(--grey-600);
+}
+
+.arrow-tooltips-drawer.grey-600.task {
+  left: -64%;
+  bottom: -97%;
+  display: none;
+}
+
+.arrow-tooltips-drawer.grey-600.task-next {
+  left: -23%;
+  bottom: -97%;
+  display: none;
+}
+
+.div-block-1588 {
+  display: flex;
+  overflow: auto;
+  height: 100%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 
 .text-lg {
@@ -160,10 +211,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-}
-
 .relative-1 {
   position: relative;
   z-index: 1;
@@ -177,24 +224,16 @@
   width: 80px;
 }
 
-@media screen and (min-width: 1440px) {
-
-}
-
 .text-sm {
   font-size: 12px;
   line-height: 16px;
 }
 
 .div-block-1545 {
-  position: sticky;
-  left: 0%;
-  top: auto;
-  right: 0%;
-  bottom: 0%;
   z-index: 2;
 
   display: flex;
+  height: 59px;
   padding: 13px 20px;
   justify-content: flex-start;
   align-items: center;

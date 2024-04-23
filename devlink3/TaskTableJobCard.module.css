@@ -11,7 +11,10 @@
 .div-block-1440.job-cand {
   justify-content: space-between;
   align-items: center;
-  background-color: #f3f4f6;
+}
+
+.div-block-1440.job-cand.height-40 {
+  height: 40px;
 }
 
 .div-block-1568 {
@@ -24,15 +27,6 @@
 .div-block-1441 {
   width: 3%;
   height: 100%;
-}
-
-.div-block-1451 {
-  display: flex;
-  margin-right: 16px;
-  justify-content: flex-start;
-  align-items: center;
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
 }
 
 .icons {
@@ -67,6 +61,23 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.div-block-1451 {
+  display: flex;
+  margin-right: 16px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.div-block-1451.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
 }
 
 .text-grey-600 {

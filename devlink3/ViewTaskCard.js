@@ -286,7 +286,7 @@ export function ViewTaskCard({
               className={_utils.cx(_styles, "text-grey_600")}
               tag="div"
             >
-              {"Assgined to"}
+              {"Assigned to"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
