@@ -7,13 +7,13 @@ export default function ResetPasswordPage() {
     <div>
       <Seo
         title='Aglint for Employers | Reset Password'
-        description='We help companies hire the perfect candidates quickly. Our trained models understand company culture and values, finding the right fit. Our automated screening saves time and money.'
+        description='AI for People Products'
       />
       <ResetPasswordComponent />
     </div>
   );
 }
 
-ResetPasswordPage.getLayout = (page) => {
+ResetPasswordPage.publicProvider = (page) => {
   return <>{page}</>;
 };

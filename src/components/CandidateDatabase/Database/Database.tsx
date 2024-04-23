@@ -13,6 +13,12 @@ import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import Loader from '../../Common/Loader';
+import MuiAvatar from '../../Common/MuiAvatar';
+import UITypography from '../../Common/UITypography';
+import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import InCompleteLottie from '../IncompleteLottie';
+import { newCandJob } from '../Search/Search';
 import AddToJobOptions from './CandAddToJobMenu';
 import { useCandFilter } from './CandDbProvider';
 import EmailOutReach from './EmailOutReach/EmailOutReach';
@@ -21,12 +27,6 @@ import FilterComp from './FilterComp';
 import SelectedCandidate from './SelectedCandidate';
 import SortComp from './SortComp';
 import { getFilteredCands } from './utils';
-import InCompleteLottie from '../IncompleteLottie';
-import { newCandJob } from '../Search/Search';
-import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
-import UITypography from '../../Common/UITypography';
-import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 
 const CandDatabase = () => {
   const { jobsData } = useJobs();

@@ -1,13 +1,13 @@
 .cs-team-users-wrapper {
-  max-width: 1064px;
   padding-top: 20px;
+  padding-bottom: 60px;
 }
 
 .cs-team-users-list {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .tu-header-block {
@@ -15,6 +15,11 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
+}
+
+.tu-header-block.plr-20 {
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .tu-header-content {
@@ -307,6 +312,25 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .text-grey-600.width-90 {
   width: 90%;
 }
@@ -345,6 +369,10 @@
 }
 
 .text-grey-600.mt-9 {
+  margin-top: 9px;
+}
+
+.mt-9 {
   margin-top: 9px;
 }
 
@@ -420,6 +448,11 @@
   background-color: #fff7ed;
 }
 
+.tu-pending-invites-block.mlr-20 {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
 .div-block-462 {
   display: flex;
   align-items: center;
@@ -457,12 +490,30 @@
   opacity: 0.7;
 }
 
-.tu-list-wrapper {
+.slot_search-filter {
   display: flex;
-  overflow: hidden;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.slot_search-filter.mlr-20 {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.tu-list-wrapper {
+  display: grid;
+  overflow: auto;
   flex-direction: column;
+  grid-auto-columns: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+
   border: 1px solid #e9ebed;
-  border-radius: 10px;
 }
 
 @media screen and (max-width: 991px) {
@@ -471,32 +522,52 @@
   }
 }
 
+.tu-list-wrapper.mlr-20 {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.tu-list-wrapper.mlr-20.radius-10 {
+  overflow: visible;
+  border-top-style: none;
+  border-radius: 10px;
+}
+
 .tu-list-block {
   display: grid;
+  padding-top: 10px;
+  padding-bottom: 10px;
   justify-content: space-between;
-  grid-auto-columns: 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-  grid-template-columns: 260px 140px 166px 160px 114px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 30% 15% 15% 17% 13% 10%;
   grid-template-rows: auto;
 }
 
 .tu-list-block.header-block {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  grid-template-columns: 30% 15% 15% 17% 13% 10%;
+  border-radius: 10px 10px 0px 0px;
   background-color: #e9ebed;
 }
 
 .tu-list-header {
   display: flex;
-  padding: 16px 20px;
+  padding: 16px 20px 16px 16px;
   align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 
+.tu-list-header.color-add {
+  background-color: #e9ebed;
+}
+
 .div-block-464 {
   display: flex;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -535,6 +606,18 @@
   .text-lg {
     font-size: 16px;
   }
+}
+
+.text-lg.text-grey-600.max_width-500 {
+  max-width: 600px;
+}
+
+.text-lg.text-grey-600.max_width-500-copy {
+  max-width: 641px;
+}
+
+.text-lg.text-grey-600.max_width-500-copy {
+  max-width: 700px;
 }
 
 .text-lg.fw-semibold.no-wrap-company {
@@ -579,6 +662,12 @@
   color: var(--green600-40a2ee5f);
 }
 
+@media screen and (max-width: 767px) {
+  .text-lg.fw-semibold.responsive-text {
+    font-size: 14px;
+  }
+}
+
 .text-lg.text-align-center.no-wrap-company {
   flex: 0 0 auto;
 }
@@ -621,8 +710,20 @@
   letter-spacing: -0.45px;
 }
 
+@media screen and (max-width: 767px) {
+  .text-lg.text-grey-700.responsive-text {
+    font-size: 14px;
+  }
+}
+
 .text-lg.text-gray-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.text-lg.text-link {
+  color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .tu-roles-wrapper {
@@ -631,4 +732,13 @@
   grid-row-gap: 24px;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto;
+}
+
+#w-node-_5da55308-9bad-28f7-b285-9c4a01bb6d99-01bb6d7a {
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+}
+#w-node-d87be396-79ed-efb9-84aa-e68a22a48a7a-01bb6d7a {
 }

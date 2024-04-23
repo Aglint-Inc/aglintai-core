@@ -7,4 +7,6 @@ declare function UserDetails(props: {
   onClickProfilePhotoChange?: Types.Devlink.RuntimeProps;
   slotUserForm?: Types.Devlink.Slot;
   slotUserInfoBtn?: Types.Devlink.Slot;
+  slotWarning?: Types.Devlink.Slot;
+  isWarningVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

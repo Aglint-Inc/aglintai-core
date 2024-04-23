@@ -282,6 +282,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .skills-wrap-details {
   display: flex;
   width: 100%;
@@ -289,10 +293,6 @@
   flex-wrap: wrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.add-skill-required {
-  margin-top: 6px;
 }
 
 .div-block-701 {

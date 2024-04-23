@@ -79,3 +79,5 @@ export const phoneScreenEmail = async ({
     ...mailPayload,
   });
 };
+
+export const defaultLogo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUwKYomN4oPGiFAOaVd4Q-r_OqpKN2HV4wJ7R2I4KSoEl8C-NCzFBXgnSetnV8jYaRCfA&usqp=CAU"

@@ -8,6 +8,7 @@ export function TeamPendingInvites({
   as: _Component = _Builtin.Block,
   slotList,
   onClickClose = {},
+  textTitleDescription = "You currently have two pending invites awaiting your response.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-pending-invites")} tag="div">
@@ -25,22 +26,14 @@ export function TeamPendingInvites({
         className={_utils.cx(_styles, "pi-header-block")}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-lg",
-            "fw-semibold",
-            "text-color-black"
-          )}
-          tag="div"
-        >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Pending Invites"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "text-grey-600")}
           tag="div"
         >
-          {"You currently have two pending invites awaiting your response."}
+          {textTitleDescription}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

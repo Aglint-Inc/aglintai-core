@@ -1,0 +1,165 @@
+.div-block-1470 {
+  height: 420px;
+  padding: 0px;
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.div-block-1471 {
+  display: flex;
+  padding: 16px 16px 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
+.div-block-1472 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.div-block-1473 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+}
+
+.div-block-1504 {
+  position: relative;
+  cursor: pointer;
+}
+
+.div-block-1474 {
+  padding: 4px 16px;
+  border: 1px solid #e9ebed;
+  border-radius: 6px;
+}
+
+.div-block-1474.active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-style: none;
+
+  background-color: #49545c;
+
+  color: white;
+}
+
+.div-block-1475 {
+  display: flex;
+  overflow: auto;
+  padding-top: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  height: calc(100% - 56px);
+}
+
+@media screen and (min-width: 1440px) {
+
+}
+
+#w-node-_618668d0-cfa3-fa00-f68c-034c63a8d0ae-63a8d0ae {
+}

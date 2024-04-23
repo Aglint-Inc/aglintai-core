@@ -282,7 +282,7 @@ const SocialComp = ({ setIsSaving }) => {
                   alt=''
                 />
               </Stack>
-              <Stack width={'330px'}>
+              <Stack width={'370px'}>
                 <UITextField
                   labelSize='small'
                   fullWidth
@@ -490,9 +490,9 @@ const AddSocialLinkButton = ({
     }, 100);
   };
   const forms = (
-    <>
+    <Stack pt={2} spacing={2}>
       <TextField
-        label='Platform name'
+        placeholder='Platform name'
         value={social.name.value}
         required
         error={social.name.error}
@@ -502,14 +502,14 @@ const AddSocialLinkButton = ({
         onChange={(e) => handleChange(e, 'name')}
       />
       <TextField
-        label='Platform url'
+        placeholder='Platform url'
         value={social.url.value}
         required
         error={social.url.error}
         helperText={social.url.error && 'Please enter valid a social media url'}
         onChange={(e) => handleChange(e, 'url')}
       />
-    </>
+    </Stack>
   );
   return (
     <Stack alignItems={'flex-start'}>

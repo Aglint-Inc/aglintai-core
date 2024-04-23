@@ -10,18 +10,14 @@ import { palette } from '@/src/context/Theme/Theme';
 import { SocialsType } from '@/src/types/data.types';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
+import { stepObj } from '../SlideSignup/utils';
 
 interface Details {
   website: string;
-}
-
-interface Error {
-  website: ErrorField;
 }
 
 interface ErrorField {
@@ -68,12 +64,6 @@ export function FetchCompanyDetails() {
   const { recruiter, setRecruiter, userDetails } = useAuthDetails();
   const [details, setDetails] = useState<Details | null>(null);
 
-  const [error, setError] = useState<Error>({
-    website: {
-      error: false,
-      msg: '',
-    },
-  });
   const [loading, setLoading] = useState(false);
 
   async function getRecruiter() {
@@ -89,7 +79,7 @@ export function FetchCompanyDetails() {
       if (!error && recruiter.length > 0) {
         setRecruiter({
           ...recruiter[0],
-          socials: recruiter[0]?.socials as unknown as SocialsType,
+          socials: recruiter[0]?.socials as unknown as SocialsType
         });
       }
     } else {
@@ -109,56 +99,15 @@ export function FetchCompanyDetails() {
       setDetails({
         website:
           recruiter?.company_website ||
-          extractDomainAndAddCom(recruiter.email || ''),
+          extractDomainAndAddCom(recruiter.email || '')
       });
     }
   }, [recruiter]);
 
-  const formValidation = async (): Promise<boolean> => {
-    let isValid = true;
-    if (!details?.website) {
-      isValid = false;
-      error.website = {
-        error: true,
-        msg: 'Website is required field',
-      };
-      setError({
-        ...error,
-      });
-    } else {
-      await axios
-        .post('/api/dns/lookup', {
-          url: details?.website,
-        })
-        .then((res) => {
-          if (res.status == 200 && res.data) {
-            error.website = {
-              error: false,
-              msg: '',
-            };
-            setError({
-              ...error,
-            });
-          } else {
-            isValid = false;
-            error.website = {
-              error: true,
-              msg: 'Website is not valid url',
-            };
-            setError({
-              ...error,
-            });
-          }
-        });
-    }
-
-    return isValid;
-  };
-
   async function saveRecruiterDetails() {
     try {
       setLoading(true);
-      if ((await formValidation()) && recruiter?.id) {
+      if (recruiter?.id) {
         const url = details.website.replace(/^https?:\/\//i, '');
         let companyDetails = (await fetchCompanyDetail(url)) as null | any;
         const company_size =
@@ -166,20 +115,20 @@ export function FetchCompanyDetails() {
           companyDetails?.estimated_num_employees < 5
             ? sizes[0]
             : companyDetails?.estimated_num_employees > 5 &&
-              companyDetails?.estimated_num_employees < 50
-            ? sizes[1]
-            : companyDetails?.estimated_num_employees > 50 &&
-              companyDetails?.estimated_num_employees < 100
-            ? sizes[2]
-            : companyDetails?.estimated_num_employees > 100 &&
-              companyDetails?.estimated_num_employees < 1000
-            ? sizes[3]
-            : companyDetails?.estimated_num_employees > 1000 &&
-              companyDetails?.estimated_num_employees < 5000
-            ? sizes[4]
-            : companyDetails?.estimated_num_employees > 5000
-            ? sizes[5]
-            : '';
+                companyDetails?.estimated_num_employees < 50
+              ? sizes[1]
+              : companyDetails?.estimated_num_employees > 50 &&
+                  companyDetails?.estimated_num_employees < 100
+                ? sizes[2]
+                : companyDetails?.estimated_num_employees > 100 &&
+                    companyDetails?.estimated_num_employees < 1000
+                  ? sizes[3]
+                  : companyDetails?.estimated_num_employees > 1000 &&
+                      companyDetails?.estimated_num_employees < 5000
+                    ? sizes[4]
+                    : companyDetails?.estimated_num_employees > 5000
+                      ? sizes[5]
+                      : '';
         const { data, error } = await supabase
           .from('recruiter')
           .update({
@@ -202,26 +151,26 @@ export function FetchCompanyDetails() {
                   country: companyDetails?.country || '',
                   zipcode: companyDetails?.postal_code,
                   full_address: companyDetails?.raw_address,
-                  is_headquarter: true,
-                },
+                  is_headquarter: true
+                }
               ] || [],
             company_overview: companyDetails?.short_description || '',
             // technology_score: companyDetails.technologies || [],
             socials: {
               custom: {
                 crunchbase: companyDetails?.crunchbase_url || '',
-                angellist: companyDetails?.angellist_url || '',
+                angellist: companyDetails?.angellist_url || ''
               },
               twitter: companyDetails?.twitter_url || '',
               youtube: companyDetails?.youtube_url || '',
               facebook: companyDetails?.facebook_url || '',
               linkedin: companyDetails?.linkedin_url || '',
-              instagram: companyDetails?.instagram_url || '',
+              instagram: companyDetails?.instagram_url || ''
             },
             technology_score: companyDetails?.keywords.map(capitalize) || [],
             departments: Object.keys(
-              companyDetails?.departmental_head_count || {},
-            ).map((dep) => capitalize(dep.split('_').join(' '))),
+              companyDetails?.departmental_head_count || {}
+            ).map((dep) => capitalize(dep.split('_').join(' ')))
           })
           .eq('id', recruiter.id)
           .select();
@@ -229,23 +178,23 @@ export function FetchCompanyDetails() {
           setRecruiter({
             ...data[0],
             socials: data[0].socials as SocialsType,
-            phone_number: data[0].phone_number as any,
+            phone_number: data[0].phone_number as any
           });
           if (companyDetails?.name) {
             router.push(
               `?step=${stepObj.detailsTwo}&api_fetch=true`,
               undefined,
               {
-                shallow: true,
-              },
+                shallow: true
+              }
             );
           } else {
             router.push(
               `?step=${stepObj.detailsTwo}&api_fetch=false`,
               undefined,
               {
-                shallow: true,
-              },
+                shallow: true
+              }
             );
           }
         }
@@ -253,15 +202,17 @@ export function FetchCompanyDetails() {
       }
     } catch (err) {
       router.push(`?step=${stepObj.detailsTwo}&api_fetch=false`, undefined, {
-        shallow: true,
+        shallow: true
       });
     } finally {
       setLoading(false);
     }
   }
+  const Agency = localStorage.getItem('flow');
 
   return (
     <RcInfoStep1
+      textheader={`Let's create your ${Agency} profile.`}
       slotInput={
         <Stack width={'100%'} spacing={'10px'}>
           <TextField
@@ -269,7 +220,6 @@ export function FetchCompanyDetails() {
             required
             fullWidth
             id='name'
-            label='Company Website'
             placeholder='companydomain.com'
             onChange={(e) => {
               setDetails({ ...details, website: e.target.value });
@@ -277,13 +227,11 @@ export function FetchCompanyDetails() {
             value={details?.website}
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={true}
-            error={error.website.error}
-            helperText={error.website.error ? error.website.msg : ''}
             inputProps={{
               autoCapitalize: 'true',
               style: {
-                fontSize: '14px',
-              },
+                fontSize: '14px'
+              }
             }}
           />
           <Stack direction={'row'} justifyContent={'end'}>
@@ -315,8 +263,8 @@ const fetchCompanyDetail = async (url) => {
     const { data: companyDetails } = await axios.post(
       `/api/fetchCompanyDetails`,
       {
-        domain_name: url,
-      },
+        domain_name: url
+      }
     );
     return companyDetails;
   } catch (err) {

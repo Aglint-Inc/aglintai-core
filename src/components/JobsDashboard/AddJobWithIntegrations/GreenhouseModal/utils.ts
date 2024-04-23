@@ -1,23 +1,24 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { JobInsert } from '@/src/queries/job/types';
 import {
   CandidateType,
   GreenhouseRefDbType,
   GreenhouseType,
   NewCandidateType,
-  PublicJobsType,
   RecruiterDB,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { POSTED_BY } from '../utils';
 import {
   ExtendedJobGreenhouse,
   GreenhouseApplication,
   JobGreenhouse,
 } from './types';
-import { POSTED_BY } from '../utils';
 
 export const createJobApplications = async (
   selectedLeverPostings: ExtendedJobGreenhouse[],
@@ -232,36 +233,46 @@ export const fetchAllJobs = async (
 export const createJobObject = async (
   selectedPostings: ExtendedJobGreenhouse[],
   recruiter: RecruiterDB,
-): Promise<Partial<PublicJobsType> & { recruiter_id: string }[]> => {
+): Promise<JobInsert[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
       draft: {
-        id: post.public_job_id,
         location: post.location.name,
         job_title: post.title,
         description: post.content,
-        email_template: recruiter.email_template,
-        recruiter_id: recruiter.id,
-        posted_by: POSTED_BY.GREENHOUSE,
-        job_type: 'fulltime',
-        workplace_type: 'onsite',
+        job_type: 'full time',
+        workplace_type: 'on site',
         company: recruiter.name,
-        skills: [],
-        status: 'draft',
-        parameter_weights: {
-          skills: 0,
-          education: 0,
-          experience: 0,
+        jd_json: {
+          educations: [],
+          level: 'Mid-level',
+          rolesResponsibilities: [],
+          skills: [],
+          title: post.title,
         },
-        video_assessment: false,
+        department: 'support',
       },
+      description_hash: hashCode(post?.content ?? ''),
       location: post.location.name,
       job_title: post.title,
       status: 'draft',
+      scoring_criteria_loading: true,
       posted_by: POSTED_BY.GREENHOUSE,
       id: post.public_job_id,
       recruiter_id: recruiter.id,
-    };
+      description: post.content,
+      email_template: recruiter.email_template,
+      job_type: 'full time',
+      workplace_type: 'on site',
+      company: recruiter.name,
+      skills: [],
+      parameter_weights: {
+        skills: 0,
+        education: 0,
+        experience: 0,
+      },
+      video_assessment: false,
+    } as JobInsert;
   });
   return dbJobs;
 };

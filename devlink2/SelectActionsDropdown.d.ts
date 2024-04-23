@@ -3,8 +3,8 @@ import * as Types from "./types";
 
 declare function SelectActionsDropdown(props: {
   as?: React.ElementType;
-  isInterview?: Types.Visibility.VisibilityConditions;
-  onClickInterview?: Types.Devlink.RuntimeProps;
+  isAssessment?: Types.Visibility.VisibilityConditions;
+  onClickAssessment?: Types.Devlink.RuntimeProps;
   isQualified?: Types.Visibility.VisibilityConditions;
   onClickQualified?: Types.Devlink.RuntimeProps;
   isDisqualified?: Types.Visibility.VisibilityConditions;
@@ -13,4 +13,6 @@ declare function SelectActionsDropdown(props: {
   onClickMoveNew?: Types.Devlink.RuntimeProps;
   isScreening?: Types.Visibility.VisibilityConditions;
   onClickScreening?: Types.Devlink.RuntimeProps;
+  isInterview?: Types.Visibility.VisibilityConditions;
+  onClickInterview?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -1,14 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
-import { selectJobApplicationQuery } from '@/src/pages/api/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '@/src/pages/api/job/jobApplications/read/utils';
+import { Job } from '@/src/queries/job/types';
 import {
   Applications,
   ApplicationsInsert,
   ApplicationsUpdate,
 } from '@/src/types/applications.types';
 import { Database } from '@/src/types/schema';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import {
   JobApplicationContext,
@@ -149,6 +150,38 @@ export const bulkUpdateJobApplicationDbAction = async (
   const { error } = await supabase
     .from('applications')
     .update(inputData[0])
+    .abortSignal(signal);
+  clearTimeout(timeout);
+  return { data: error ? false : true, error };
+};
+
+export const rescoreDbAction = async (
+  job_id: Job['id'],
+  signal?: AbortSignal,
+) => {
+  const timerSignal = new AbortController();
+  const timeout = setTimeout(() => timerSignal.abort(), 60000);
+  const { error } = await supabase
+    .from('applications')
+    .update({
+      processing_status: 'not started',
+      overall_score: -1,
+      score_json: null,
+    })
+    .eq('job_id', job_id)
+    .abortSignal(signal);
+  clearTimeout(timeout);
+  return { data: error ? false : true, error };
+};
+
+export const recalculateDbAction = async (
+  job_id: Job['id'],
+  signal?: AbortSignal,
+) => {
+  const timerSignal = new AbortController();
+  const timeout = setTimeout(() => timerSignal.abort(), 60000);
+  const { error } = await supabase
+    .rpc('update_resume_score', { job_id })
     .abortSignal(signal);
   clearTimeout(timeout);
   return { data: error ? false : true, error };

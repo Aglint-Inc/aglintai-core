@@ -22,12 +22,12 @@ function Theme({ children }) {
     },
     palette: {
       ...palette,
-      primary: {
-        main: palette.grey[800], // Zendesk Garden black 600
-        light: palette.grey[200], // Zendesk Garden grey 200
-        dark: palette.grey[800], // Zendesk Garden grey 800
-        contrastText: palette.white[700], // white
-      },
+      // primary: {
+      //   main: palette.grey[800], // Zendesk Garden black 600
+      //   light: palette.grey[200], // Zendesk Garden grey 200
+      //   dark: palette.grey[800], // Zendesk Garden grey 800
+      //   contrastText: palette.white[700], // white
+      // },
       secondary: {
         main: palette.green[600], // Zendesk Garden green 600
         light: palette.green[200], // Zendesk Garden green 200
@@ -43,7 +43,9 @@ function Theme({ children }) {
         contrastText: palette.white[700], // white
       },
       info: {
-        main: palette.blue[400],
+        light: palette.blue[300],
+        main: palette.blue[500],
+        dark: palette.blue[700],
         contrastText: palette.white[700], // white
       },
       success: {
@@ -68,26 +70,6 @@ function Theme({ children }) {
       },
       bordercolor: {
         main: palette.blue[500],
-      },
-      iconhovercolor: {
-        main: palette.grey[300],
-      },
-      nav: {
-        activetext: palette.white[700],
-        text: palette.white[100],
-        background: palette.black[100],
-      },
-      card: {
-        main: {
-          border: palette.grey[300],
-          background: palette.white[700],
-          hover: {
-            background: palette.main[200],
-            border: palette.main[300],
-            buttonbackground: palette.main[600],
-            buttontext: palette.white[700],
-          },
-        },
       },
     },
     typography: {
@@ -173,6 +155,7 @@ function Theme({ children }) {
         letterSpacing: '0.00735em',
         color: palette.grey[600], // Zendesk Garden grey 600
       },
+
       body3: {
         fontWeight: 400,
         fontSize: '0.75rem',
@@ -259,43 +242,7 @@ function Theme({ children }) {
           },
         },
       },
-      MuiButton: {
-        variants: [
-          {
-            props: { variant: 'contained' },
-            style: {
-              fontSize: '14px',
-              fontWeight: 400,
-              background: palette.grey[800],
-              color: palette.grey[100],
-              textTransform: 'none',
-              '&:hover': {
-                background: palette.grey[700],
-                color: palette.grey[300],
-              },
-            },
-          },
-          {
-            props: { variant: 'outlined' },
-            style: {
-              py: 2,
-              color: palette.black[700],
-              fontSize: '14px',
-              fontWeight: 400,
-              background: palette.white[700],
-              textTransform: 'none',
-              borderColor: palette.grey[300],
-              '&:hover': {
-                color: palette.black[700],
-                background: palette.white[700],
-              },
-            },
-          },
-        ],
-        defaultProps: {
-          size: 'small',
-        },
-      },
+
       MuiBox: {
         styleOverrides: {
           root: {},
@@ -374,14 +321,7 @@ function Theme({ children }) {
           },
         },
       },
-      MuiOutlinedInput: {
-        defaultProps: {
-          margin: 'dense',
-        },
-        styleOverrides: {
-          root: {},
-        },
-      },
+
       MuiFab: {
         defaultProps: {
           size: 'small',
@@ -390,9 +330,9 @@ function Theme({ children }) {
 
       MuiTextField: {
         defaultProps: {
-          margin: 'dense',
+          margin: 'none',
           size: 'small',
-          variant: 'filled',
+          variant: 'outlined',
           InputProps: {
             disableUnderline: true,
           },
@@ -400,18 +340,49 @@ function Theme({ children }) {
         styleOverrides: {
           root: {
             '& .MuiFilledInput-root': {
+              fontSize: '14px',
               borderRadius: '4px',
-              background: palette.white[700],
+              background: '#ffffff',
               border: '1px solid',
               borderColor: palette.grey[300],
             },
             '& .MuiFilledInput-root.Mui-focused': {
               borderColor: palette.blue[600], // Change this to your desired highlight color
-              background: 'none',
+              background: '#ffffff',
               outline: `3px solid ${palette.blue[300]}`,
             },
             '& .MuiInputLabel-root': {
               color: palette.grey[500], // Change this to your desired label color
+            },
+            '& .MuiOutlinedInput-root': {
+              fontSize: '14px',
+              borderRadius: '4px',
+              background: '#ffffff',
+              border: '1px solid',
+              borderColor: palette.grey[300],
+              fieldset: {
+                border: 'none',
+                borderRadius: `4px`,
+              },
+            },
+            '& .MuiOutlinedInput-root.Mui-focused': {
+              borderColor: palette.blue[600],
+              background: '#ffffff',
+              outline: `3px solid ${palette.blue[300]}`,
+            },
+            '& .MuiFilledInput-root.Mui-focused.Mui-error': {
+              borderColor: palette.red[600] + ' !important',
+              outline: `3px solid ${palette.red[300]} !important`,
+            },
+            '& .MuiOutlinedInput-root.Mui-focused.Mui-error': {
+              borderColor: palette.red[600] + ' !important',
+              outline: `3px solid ${palette.red[300]} !important`,
+            },
+            '& .MuiFilledInput-root.Mui-error': {
+              borderColor: palette.red[600],
+            },
+            '& .MuiOutlinedInput-root.Mui-error': {
+              borderColor: palette.red[600],
             },
           },
         },
@@ -419,6 +390,16 @@ function Theme({ children }) {
 
       MuiButtonBase: {
         disableRipple: true,
+        // variants: [
+        //   {
+        //     props: { variant: 'primary' },
+        //     style: {
+        //       background: palette.blue[200],
+        //       border: '1px solid',
+        //       borderColor: palette.blue[300],
+        //     },
+        //   },
+        // ],
       },
       MuiSelect: {
         defaultProps: {

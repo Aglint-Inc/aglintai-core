@@ -11,7 +11,7 @@ import {
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { useOutReachCtx } from './OutReachCtx';
@@ -56,7 +56,8 @@ const EmailTemplateModalComp = ({
           .from('recruiter_user')
           .select('email_outreach_templates')
           .eq('user_id', recruiterUser.user_id),
-      ) as { email_outreach_templates: null | TemplateType[] }[];
+      ) as unknown as { email_outreach_templates: null | TemplateType[] }[];
+      //TODO: supabaseWrap type fix needed
 
       const newOutReachTemp: TemplateType = {
         id: selectedTemplate,

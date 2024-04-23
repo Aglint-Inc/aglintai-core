@@ -31,7 +31,7 @@ export default function handler(req, res) {
         res.status(200).send(response.data);
       })
       .catch((error) => {
-        res.status(400).send(error);
+        res.status(200).send(error);
       });
   } catch (error) {
     res.status(400).send(error);

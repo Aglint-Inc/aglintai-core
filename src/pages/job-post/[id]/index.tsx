@@ -61,24 +61,13 @@ function JobPost() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
-    baseSalary: {
-      '@type': 'MonetaryAmount',
-      currency: 'INR',
-      value: {
-        '@type': 'QuantitativeValue',
-        minValue: 450000,
-        maxValue: 1200000,
-        unitText: 'YEAR',
-      },
-    },
-
     datePosted: post?.created_at,
     validThrough: validThrough,
     description: description,
     employmentType: 'Full-time',
     experienceRequirements: {
       '@type': 'OccupationalExperienceRequirements',
-      monthsOfExperience: '6',
+      monthsOfExperience: post?.experience_in_months || 0,
     },
     incentiveCompensation:
       'Performance-based annual bonus plan, project-completion bonuses',
@@ -88,14 +77,15 @@ function JobPost() {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: post?.location?.split(', ')[0],
-        addressCountry: post?.location?.split(', ')[2] == 'India' ? 'IN' : 'US',
+
+        addressLocality: (post?.location_json as any)?.state || '',
+        addressCountry: (post?.location_json as any)?.country || '',
       },
     },
     hiringOrganization: {
       '@type': 'Organization',
       name: post?.company || '',
-      logo: post?.logo,
+      logo: recruiter?.logo,
     },
     occupationalCategory: '15-1132.00 Software Developers, Application',
     salaryCurrency: post?.location?.split(', ')[2] == 'India' ? 'INR' : 'USD',
@@ -113,6 +103,7 @@ function JobPost() {
             ? `${post?.job_title} | ${post?.company}`
             : 'Job posting'
         }
+        url={`${process.env.NEXT_PUBLIC_WEBSITE}${router.asPath}`}
         description='AI Powered Talent Development Platform.'
       />
       {loading ? (
@@ -135,6 +126,6 @@ function JobPost() {
 
 export default JobPost;
 
-JobPost.getLayout = (page) => {
+JobPost.publicProvider = (page) => {
   return <>{page}</>;
 };

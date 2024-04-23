@@ -1,0 +1,10 @@
+.table_header_cell {
+  display: flex;
+  padding-right: 10px;
+  padding-left: 10px;
+  align-items: center;
+  background-color: hsla(210, 0.00%, 100.00%, 1.00);
+}
+
+#w-node-b2a6fc15-2f0f-1530-3708-b163b06c70a0-b06c70a0 {
+}

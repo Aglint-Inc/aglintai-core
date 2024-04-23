@@ -6,7 +6,6 @@ declare function SavedList(props: {
   textRole?: React.ReactNode;
   textCountCandidate?: React.ReactNode;
   onClickList?: Types.Devlink.RuntimeProps;
-  slotCheckbox?: Types.Devlink.Slot;
   onClickEdit?: Types.Devlink.RuntimeProps;
   onClickDelete?: Types.Devlink.RuntimeProps;
   isEditVisible?: Types.Visibility.VisibilityConditions;
@@ -15,5 +14,5 @@ declare function SavedList(props: {
   isSavedListTextVisible?: Types.Visibility.VisibilityConditions;
   onClickSubmit?: Types.Devlink.RuntimeProps;
   onClickClose?: Types.Devlink.RuntimeProps;
-  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
+  isCardVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

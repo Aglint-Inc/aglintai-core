@@ -7,7 +7,7 @@ const defaultMeta = {
   site_name: 'Aglint Inc',
   description:
     'Explore Aglint’s AI-driven Career Transition Platform, offering personalized outplacement services, professional career coaching, interview preparation, and salary negotiation tools designed to support businesses in empowering their employees and fostering growth.',
-  url: 'https://app.aglinthq.com',
+  url: process.env.NEXT_PUBLIC_HOST_NAME,
   icon: '/images/favicon.ico',
   image:
     'https://ftyioiysswsjxamofooi.supabase.co/storage/v1/object/public/images/aglinthq.jpg',

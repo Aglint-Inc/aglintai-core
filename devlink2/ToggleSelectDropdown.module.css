@@ -81,6 +81,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 1.33;
@@ -116,6 +120,10 @@
   margin-left: 2px;
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -126,6 +134,10 @@
 
 .text-gray-400 {
   color: var(--gray-400);
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .tsd-status-block {

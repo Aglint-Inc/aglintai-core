@@ -1,0 +1,17 @@
+.dropdown_list {
+  display: flex;
+  padding: 6px 16px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  box-shadow: 0 0 5px 2px hsla(0, 0.00%, 0.00%, 0.05);
+}
+
+.slot_avatar_with_name {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}

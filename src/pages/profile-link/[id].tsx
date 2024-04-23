@@ -1,5 +1,5 @@
 import { Avatar, Dialog, Stack } from '@mui/material';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -7,9 +7,9 @@ import {
   CandidateEducationCard,
   CandidateExperienceCard,
   CandidateSkillPills,
-  InterviewAiTranscriptCard,
-  InterviewCandidateCard,
-  ProfileInterviewScore,
+  // InterviewAiTranscriptCard,
+  // InterviewCandidateCard,
+  // ProfileInterviewScore,
   ProfileShare,
 } from '@/devlink';
 import Icon from '@/src/components/Common/Icons/Icon';
@@ -20,16 +20,15 @@ import ScoreWheel, {
 } from '@/src/components/Common/ScoreWheel';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import {
-  DetailedInterviewFeedbackParams,
+  // DetailedInterviewResultParams,
   giveColorForInterviewScore,
-  giveRateInWordForInterview,
-  InterviewFeedbackParams,
+  // giveRateInWordForInterview,
+  // InterviewResultParams,
   NewResumeScoreDetails,
-  Transcript,
+  // Transcript,
 } from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails';
 import ResumePreviewer from '@/src/components/JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
-import { getInterviewScore } from '@/src/components/JobApplicationsDashboard/utils';
 import {
   JobApplication,
   ScoreJson,
@@ -37,10 +36,10 @@ import {
 import { palette } from '@/src/context/Theme/Theme';
 import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { selectJobApplicationQuery } from '../api/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '../api/job/jobApplications/read/utils';
 
 function InterviewFeedbackPage() {
   const router = useRouter();
@@ -61,22 +60,12 @@ function InterviewFeedbackPage() {
 
   async function getApplicationDetails(id) {
     const { data: jobApp, error: errorJob } = await supabase
-      .from('job_applications')
+      .from('applications')
       .select(`${selectJobApplicationQuery}`)
-      .eq('application_id', id);
-
+      .eq('id', id);
     if (!errorJob) {
-      const { data, error } = await supabase
-        .from('candidates')
-        .select()
-        .eq('id', jobApp[0]?.candidate_id);
-      if (!error) {
-        setApplicationDetails({
-          ...jobApp[0],
-          candidates: data[0],
-        } as JobApplication);
-        getJobDetails(jobApp[0]?.job_id);
-      }
+      setApplicationDetails(jobApp[0] as any as JobApplication);
+      getJobDetails(jobApp[0]?.job_id);
     }
   }
 
@@ -99,10 +88,9 @@ function InterviewFeedbackPage() {
   }
 
   let resumeScoreWheel = <></>;
-  let interviewScore = 0;
+  const interviewScore = application?.overall_interview_score ?? null;
 
   if (application && job) {
-    interviewScore = getInterviewScore(application.assessment_results.feedback);
     if (application.score_json) {
       resumeScoreWheel = (
         <ScoreWheel
@@ -150,11 +138,11 @@ function InterviewFeedbackPage() {
           setOpenPanelDrawer={setOpenTranscript}
         >
           <Stack width={500}>
-            <Transcript
+            {/* <Transcript
               application={application}
-              setOpenDetailedFeedback={setOpenTranscript}
-              hideFeedback={true}
-            />
+              setOpenDetailedResult={setOpenTranscript}
+              hideResult={true}
+            /> */}
           </Stack>
         </SidePanelDrawer>
 
@@ -163,79 +151,80 @@ function InterviewFeedbackPage() {
           textInterviewScore={interviewScore ? `${interviewScore} / 100` : '--'}
           slotResumeScore={resumeScoreWheel}
           slotInterview={
-            application.assessment_results.feedback && (
-              <>
-                <ProfileInterviewScore
-                  textInterviewScore={
-                    interviewScore ? `${interviewScore} / 100` : '--'
-                  }
-                  propsTextColor={{
-                    style: {
-                      color: giveColorForInterviewScore(interviewScore),
-                    },
-                  }}
-                  propsTextColorInterviewScore={{
-                    style: {
-                      color: giveColorForInterviewScore(interviewScore),
-                    },
-                  }}
-                  textInterviewScoreState={giveRateInWordForInterview(
-                    interviewScore,
-                  )}
-                  slotFeedbackScore={
-                    <InterviewFeedbackParams
-                      feedbackParamsObj={
-                        application.assessment_results.feedback
-                      }
-                    />
-                  }
-                  slotDetailedFeedback={
-                    <DetailedInterviewFeedbackParams
-                      feedbackParamsObj={
-                        application.assessment_results.feedback
-                      }
-                    />
-                  }
-                />
-              </>
-            )
+            <></>
+            // application.assessment_results.result && (
+            //   <>
+            //     <ProfileInterviewScore
+            //       textInterviewScore={
+            //         interviewScore ? `${interviewScore} / 100` : '--'
+            //       }
+            //       propsTextColor={{
+            //         style: {
+            //           color: giveColorForInterviewScore(interviewScore),
+            //         },
+            //       }}
+            //       propsTextColorInterviewScore={{
+            //         style: {
+            //           color: giveColorForInterviewScore(interviewScore),
+            //         },
+            //       }}
+            //       textInterviewScoreState={giveRateInWordForInterview(
+            //         interviewScore,
+            //       )}
+            //       slotFeedbackScore={
+            //         <InterviewResultParams
+            //           resultParamsObj={application.assessment_results.result}
+            //         />
+            //       }
+            //       slotDetailedFeedback={
+            //         <DetailedInterviewResultParams
+            //           resultParamsObj={application.assessment_results.result}
+            //         />
+            //       }
+            //     />
+            //   </>
+            // )
           }
-          isInterviewVisible={application.assessment_results.feedback !== null}
-          slotInterviewTranscript={application.assessment_results.conversation.map(
-            (con: any, i) => {
-              return (
-                <>
-                  <InterviewAiTranscriptCard
-                    key={i}
-                    textAiScript={con.content}
-                    slotAiImage={
-                      <Image
-                        src={'/images/logo/aglint.svg'}
-                        width={20}
-                        height={20}
-                        alt=''
-                      />
-                    }
-                    textAiName={'Interviewer'}
-                  />
-                  <InterviewCandidateCard
-                    key={i}
-                    textCandidateScript={con.userContent}
-                    slotCandidateImage={
-                      <MuiAvatar
-                        level={application.candidates.first_name}
-                        src={application?.candidates.avatar}
-                        variant={'rounded'}
-                        width={'auto'}
-                        height={'auto'}
-                        fontSize={'28px'}
-                      />
-                    }
-                  />
-                </>
-              );
-            },
-          )}
+          isInterviewVisible={false} //application.assessment_results.result !== null}
+          slotInterviewTranscript={
+            <></>
+            // application.assessment_results.responses && (
+            //   // eslint-disable-next-line no-unused-vars
+            //   //(con: any, i) => {
+            //   //return
+            //   <>
+            //     <>RESPONSES HERE</>
+            //     {/* <InterviewAiTranscriptCard
+            //         key={i}
+            //         textAiScript={con.content}
+            //         slotAiImage={
+            //           <Image
+            //             src={'/images/logo/aglint.svg'}
+            //             width={20}
+            //             height={20}
+            //             alt=''
+            //           />
+            //         }
+            //         textAiName={'Interviewer'}
+            //       />
+            //       <InterviewCandidateCard
+            //         key={i}
+            //         textCandidateScript={con.userContent}
+            //         slotCandidateImage={
+            //           <MuiAvatar
+            //             level={application.candidates.first_name}
+            //             src={application?.candidates.avatar}
+            //             variant={'rounded'}
+            //             width={'auto'}
+            //             height={'auto'}
+            //             fontSize={'28px'}
+            //           />
+            //         }
+            //       /> */}
+            //   </>
+            //   // },
+            // )
+          }
           isEducationVisible={
             (application?.score_json as any)?.schools.length > 0
           }
@@ -298,7 +287,7 @@ function InterviewFeedbackPage() {
                 background: palette.grey[100],
               }}
             >
-              <Icon variant='CompanyOutlinedBig' />
+              <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
             </Avatar>
           }
           slotResume={
@@ -332,7 +321,7 @@ function InterviewFeedbackPage() {
                 <NewResumeScoreDetails
                   application={application}
                   job={job as any}
-                  feedback={true}
+                  result={true}
                   setOpenResume={setOpenResume}
                 />
               )}
@@ -366,6 +355,6 @@ function InterviewFeedbackPage() {
 
 export default InterviewFeedbackPage;
 
-InterviewFeedbackPage.getLayout = (page) => {
+InterviewFeedbackPage.publicProvider = (page) => {
   return <>{page}</>;
 };

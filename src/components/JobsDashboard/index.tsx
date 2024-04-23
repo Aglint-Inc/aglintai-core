@@ -6,22 +6,24 @@ import { JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
-import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
-import JobsList from './JobsList';
-import { searchJobs, sortJobs } from './utils';
 import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
 import Loader from '../Common/Loader';
 import UITextField from '../Common/UITextField';
 import { stepObj } from '../SignUpComp/SlideSignup/utils';
+import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import JobsList from './JobsList';
+import { searchJobs, sortJobs } from './utils';
 
 const DashboardComp = () => {
   const router = useRouter();
-  const { jobsData, initialLoad } = useJobs();
-  const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(
-    jobsData.jobs,
-  );
+  const {
+    jobs: { data },
+    initialLoad,
+  } = useJobs();
+  const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(data);
   const { recruiter } = useAuthDetails();
 
   useEffect(() => {
@@ -36,43 +38,41 @@ const DashboardComp = () => {
             shallow: true,
           });
         }
-        if (jobsData?.jobs) {
+        if (data) {
           initialFilterJobs();
         }
       }
     }
-  }, [recruiter, router, jobsData]);
-
-
+  }, [recruiter, router, data]);
 
   const initialFilterJobs = () => {
     if (router.query.status == 'all') {
-      setFilteredJobs(sortJobs(jobsData.jobs));
+      setFilteredJobs(sortJobs(data));
     } else if (router.query.status == 'published') {
-      const filter = jobsData.jobs.filter((job) => job.status == 'published');
+      const filter = data.filter((job) => job.status == 'published');
       setFilteredJobs(filter);
     } else if (router.query.status == 'closed') {
-      const filter = jobsData.jobs.filter((job) => job.status == 'closed');
+      const filter = data.filter((job) => job.status == 'closed');
       setFilteredJobs(filter);
     } else if (router.query.status == 'draft') {
-      const filter = jobsData.jobs.filter((job) => job.status == 'draft');
+      const filter = data.filter((job) => job.status == 'draft');
       setFilteredJobs(filter);
     } else {
-      setFilteredJobs(jobsData.jobs);
+      setFilteredJobs(data);
     }
   };
 
   const handlerFilter = (e) => {
     if (router.query.status == 'all') {
-      setFilteredJobs([...searchJobs(jobsData.jobs, e.target.value)]);
+      setFilteredJobs([...searchJobs(data, e.target.value)]);
     } else if (router.query.status == 'published') {
-      const filter = jobsData.jobs.filter((job) => job.status == 'published');
+      const filter = data.filter((job) => job.status == 'published');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'closed') {
-      const filter = jobsData.jobs.filter((job) => job.status == 'closed');
+      const filter = data.filter((job) => job.status == 'closed');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     } else if (router.query.status == 'draft') {
-      const filter = jobsData.jobs.filter((job) => job.status == 'draft');
+      const filter = data.filter((job) => job.status == 'draft');
       setFilteredJobs([...searchJobs(filter, e.target.value)]);
     }
   };
@@ -83,10 +83,10 @@ const DashboardComp = () => {
         <Loader />
       ) : (
         <>
-          {jobsData?.jobs?.length == 0 ? (
+          {data?.length == 0 ? (
             <EmptyJobDashboard
               handleClickAddJob={() => {
-                router.push('/jobs/new?flow=manual');
+                router.push(pageRoutes.CREATEJOB);
               }}
               heading={'Jobs'}
             />
@@ -98,7 +98,7 @@ const DashboardComp = () => {
                 slotSearchInputJob={
                   <Stack maxWidth={'260px'} width={'312px'}>
                     <UITextField
-                      height='42px'
+                      height={42}
                       fullWidth
                       placeholder='Search'
                       onChange={(e) => {
@@ -114,8 +114,8 @@ const DashboardComp = () => {
                     />
                   </Stack>
                 }
-                isJobCountTagVisible={filteredJobs?.length > 0}
-                jobCount={filteredJobs?.length}
+                // isJobCountTagVisible={filteredJobs?.length > 0}
+                // jobCount={filteredJobs?.length}
                 textJobsHeader={
                   router.query.status == 'published'
                     ? 'Published Jobs'

@@ -6,4 +6,5 @@ declare function CandidateSkill(props: {
   slotCandidateSkill?: Types.Devlink.Slot;
   onClickIcons?: Types.Devlink.RuntimeProps;
   slotSkillsScore?: Types.Devlink.Slot;
+  propsStyle?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

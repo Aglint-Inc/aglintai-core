@@ -14,33 +14,29 @@ import { useEffect, useState } from 'react';
 import { CdEditQuerry, JobPills } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { palette } from '@/src/context/Theme/Theme';
-import { useBoundStore } from '@/src/store';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import FilterInput from '../../Search/FilterInput';
+import {
+  setCandidateHistory,
+  setCandidates,
+  setFilters,
+  setIsFilterLoading,
+  setIsFilterOpen,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { employeeRange, initialQuery, updateCredits } from '../utils';
-import FilterInput from '../../Search/FilterInput';
 
 function EditFilter() {
   const router = useRouter();
-  const isfilterOpen = useBoundStore((state) => state.isfilterOpen);
-  const filters = useBoundStore((state) => state.filters);
-  const setFilters = useBoundStore((state) => state.setFilters);
-  const isFilterLoading = useBoundStore((state) => state.isFilterLoading);
-  const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
-  const setIsFilterLoading = useBoundStore((state) => state.setIsFilterLoading);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
-  );
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
-  );
-  const setCandidates = useBoundStore((state) => state.setCandidates);
+  const isfilterOpen = useCandidateStore((state) => state.isfilterOpen);
+  const filters = useCandidateStore((state) => state.filters);
+  const isFilterLoading = useCandidateStore((state) => state.isFilterLoading);
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
   const [value, setValue] = useState([]);
 
   const handleDelete = (index) => {
@@ -325,25 +321,25 @@ function EditFilter() {
                   !isFilterLoading && handleApplyFilters();
                 }}
                 endIcon={
-                  isFilterLoading && (
+                  isFilterLoading ? (
                     <CircularProgress
                       color='inherit'
                       size={'15px'}
                       sx={{ color: palette.grey[400] }}
                     />
+                  ) : (
+                    <Stack alignItems={'center'} justifyContent={'center'}>
+                      <Image
+                        width={12}
+                        height={12}
+                        alt=''
+                        src={'/images/svg/graphUp.svg'}
+                      />
+                    </Stack>
                   )
                 }
               >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Image
-                    width={12}
-                    height={12}
-                    alt=''
-                    src={'/images/svg/graphUp.svg'}
-                    style={{ marginRight: '10px' }}
-                  />
-                  <p> Apply </p>
-                </div>
+                Apply
               </AUIButton>
             </>
           }

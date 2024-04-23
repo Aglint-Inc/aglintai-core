@@ -5,14 +5,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
 import { InterviewWelcome } from '@/devlink';
+import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
-import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import Loader from '../../SignUpComp/Loader/Index';
 function InterviewInstructions() {
-  const { initialLoading, jobDetails, candidateDetails } =
-    useInterviewDetailsContext();
+  const { assessmentDetails, fetching } = useCandidateAssessment();
   const { startInterview, video_Urls, startVideoInterview, videoAssessment } =
     useInterviewContext();
 
@@ -77,7 +76,9 @@ function InterviewInstructions() {
     }
     setPlaying((pre) => !pre);
   }
-  let intro = jobDetails?.intro_videos ? jobDetails : jobDetails.draft;
+  let intro = assessmentDetails.public_jobs?.intro_videos
+    ? assessmentDetails.public_jobs
+    : assessmentDetails.public_jobs.draft;
   useEffect(() => {
     setLoading(false);
     if (
@@ -91,7 +92,7 @@ function InterviewInstructions() {
     )
       getIntroVideo(intro?.intro_videos?.aiGeneratedVideoInfo?.videoId);
     setLoading(false);
-  }, [jobDetails]);
+  }, [assessmentDetails]);
 
   async function getIntroVideo(id: any) {
     if (id) {
@@ -116,7 +117,7 @@ function InterviewInstructions() {
   const router = useRouter();
   return (
     <>
-      {initialLoading ? (
+      {fetching ? (
         <Stack
           direction={'row'}
           alignItems={'center'}
@@ -201,14 +202,14 @@ function InterviewInstructions() {
             onClickSupport={{
               onClick: () => {
                 window.open(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidateDetails.id}`,
+                  `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${router.query?.application_id}`,
                 );
               },
             }}
             onClickAboutCompany={{
               onClick: () => {
                 window.open(
-                  `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${jobDetails?.id}`,
+                  `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${assessmentDetails?.job_id}`,
                 );
               },
             }}

@@ -42,4 +42,7 @@ declare function CandidateDialog(props: {
   slotEmailOutReach?: Types.Devlink.Slot;
   slotAddtoList?: Types.Devlink.Slot;
   isAddListVisible?: Types.Visibility.VisibilityConditions;
+  onClickPhoneScreening?: Types.Devlink.RuntimeProps;
+  isPhoneScreeningVisible?: Types.Visibility.VisibilityConditions;
+  textPhoneScreening?: React.ReactNode;
 }): React.JSX.Element;

@@ -1,0 +1,67 @@
+.discard-btn-score {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0px;
+  padding: 10px 20px;
+  justify-content: space-between;
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border: 1px solid #ffeedb;
+  border-radius: 10px;
+
+  background-color: #fff7ed;
+}
+
+.discard-btn-score.red {
+  background-color: #fff0f1;
+}
+
+.discard-btn-score.grey {
+  border-color: #f7f9fb;
+  background-color: #f7f9fb;
+}
+
+.discard-btn-score.grey-copy {
+  height: 54px;
+  border-color: #f7f9fb;
+  background-color: #f7f9fb;
+}
+
+.discard-btn-score.red-copy {
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  background-color: #fff0f1;
+}
+
+.div-block-699 {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-yellow-800 {
+  color: #703815;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { InviteTeamCard } from "./InviteTeamCard";
@@ -10,7 +11,11 @@ export function TeamInvite({
   slotButtons,
   onClickClose = {},
   slotInviteTeamCard,
-  isInviteTeamCardVisible = false,
+  isInviteTeamCardVisible = true,
+  isInviteSentVisible = false,
+  textTitle = "Invite Member",
+  isFixedButtonVisible = false,
+  slotPrimaryButton,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "cs-invite-members")} tag="div">
@@ -19,7 +24,7 @@ export function TeamInvite({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Invite Member"}
+          {textTitle}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "im-close-btn", "clickable")}
@@ -32,14 +37,6 @@ export function TeamInvite({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      {isInviteTeamCardVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-826")}
-          tag="div"
-        >
-          {slotInviteTeamCard ?? <InviteTeamCard />}
-        </_Builtin.Block>
-      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "im-form-wrapper")}
         tag="div"
@@ -57,6 +54,31 @@ export function TeamInvite({
           {slotButtons}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {isInviteSentVisible ? (
+          <_Builtin.Block tag="div">
+            <_Builtin.Block className={_utils.cx(_styles, "mb-20")} tag="div">
+              {"Invite Sent"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
+        {isInviteTeamCardVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-826")}
+            tag="div"
+          >
+            {slotInviteTeamCard ?? <InviteTeamCard />}
+          </_Builtin.Block>
+        ) : null}
+      </_Builtin.Block>
+      {isFixedButtonVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fixed-btn-wrap", "hide")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div">{slotPrimaryButton}</_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

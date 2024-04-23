@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScorePercentage } from "./ScorePercentage";
@@ -12,29 +13,40 @@ export function ScoreWeightage({
   onClickEqualize = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "right-score-card")} tag="div">
+    <_Component className={_utils.cx(_styles, "div-block-936")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold", "text-align-center")}
+        className={_utils.cx(_styles, "right-score-card")}
         tag="div"
       >
-        {"Score Weightage"}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "slot-score-wrap")}
-        tag="div"
-      >
-        {slotScoreWheel}
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-664")} tag="div">
-        {slotScorePercent ?? <ScorePercentage />}
-      </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-665")} tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-666")}
+          className={_utils.cx(_styles, "fw-semibold", "text-align-center")}
           tag="div"
         >
-          <_Builtin.Block tag="div" {...onClickEqualize}>
-            <ButtonOutlinedRegular textLabel="Reset" />
+          {"Score Weightage"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot-score-wrap")}
+          tag="div"
+        >
+          {slotScoreWheel}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-664")}
+          tag="div"
+        >
+          {slotScorePercent ?? <ScorePercentage />}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-665")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-666")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div" {...onClickEqualize}>
+              <ButtonOutlinedRegular textLabel="Reset" />
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

@@ -28,6 +28,32 @@
   max-width: 500px;
 }
 
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
+}
+
 .csv-imp-body {
   padding-top: 6px;
   padding-bottom: 6px;
@@ -186,6 +212,10 @@
   z-index: 5;
 }
 
+.relative {
+  position: relative;
+}
+
 .icon-block.contain {
   object-fit: contain;
 }
@@ -240,6 +270,10 @@
 
 .text-fuschia-600 {
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
+}
+
+.text-gray-700 {
+  color: var(--gray-700);
 }
 
 .csv-list-wrapper {

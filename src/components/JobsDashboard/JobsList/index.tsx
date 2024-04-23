@@ -94,6 +94,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                           : StatusColor['closed'],
                   },
                 }}
+                interviewCount={job?.count?.interview}
                 textJobsStatus={job.status}
                 slotStatusIcon={
                   <Image
@@ -120,11 +121,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 }
                 onClickCard={{
                   onClick: () => {
-                    if (job.status === 'draft') {
-                      router.push(`${pageRoutes.EDITJOBS}?job_id=${job.id}`);
-                    } else {
-                      router.push(`${pageRoutes.JOBS}/${job.id}`);
-                    }
+                    router.push(`${pageRoutes.JOBS}/${job.id}`);
                     posthog.capture('Job Card Clicked');
                   },
                 }}

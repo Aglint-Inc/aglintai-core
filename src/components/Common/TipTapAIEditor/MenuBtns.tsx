@@ -32,20 +32,33 @@ import {
 } from '@/src/utils/prompts/addNewJob/generateJobDescription';
 import toast from '@/src/utils/toast';
 
-import { useTipTap } from './context';
+import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import Icon from '../Icons/Icon';
 import DescGenerating from '../Lotties/DescGenerating';
 import UITypography from '../UITypography';
-import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { useTipTap } from './context';
 
-function MenuBtns() {
+function MenuBtns({
+  borderRadius,
+}: {
+  borderRadius?: React.CSSProperties['borderRadius'];
+}) {
   return (
     <Stack
       direction={'row'}
       justifyContent={'space-between'}
       borderBottom={'1px solid #D8DCDE'}
       pr={'10px'}
-      style={{ position: 'sticky', top: 0, backgroundColor: '#fff', zIndex: 2 }}
+      style={{
+        position: 'sticky',
+        top: 0,
+        backgroundColor: '#fff',
+        zIndex: 2,
+        ...(borderRadius && {
+          borderTopLeftRadius: borderRadius,
+          borderTopRightRadius: borderRadius,
+        }),
+      }}
     >
       <TipTapMenus />
       <TipTapUndoRedo />

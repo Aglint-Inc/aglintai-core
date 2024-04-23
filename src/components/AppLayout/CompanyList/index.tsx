@@ -7,17 +7,17 @@ import { CompanyProfileHeader, SwitchComp } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 // import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 import { companyType } from '@/src/utils/userRoles';
 
-import AddNewCompany from './AddNewCompany';
 import Icon from '../../Common/Icons/Icon';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import AddNewCompany from './AddNewCompany';
 
 type CompanyTYpe = {
   recName: string;
@@ -52,6 +52,7 @@ function CompanyList() {
       setAllrecruterRelation(() =>
         relations.map((reln) => ({
           created_at: reln.created_at,
+          created_by: reln.created_by,
           id: reln.id,
           is_active: reln.is_active,
           recruiter_id: reln.recruiter_id,
@@ -129,8 +130,8 @@ function CompanyList() {
       >
         <Icon
           variant='CompanyOutlined'
-          height='24'
-          width='24'
+          height='100%'
+          width='100%'
           color='#87929D'
         />
       </Avatar>

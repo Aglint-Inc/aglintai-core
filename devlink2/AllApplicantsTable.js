@@ -1,6 +1,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { AllCandidateListItem } from "./AllCandidateListItem";
 import * as _utils from "./utils";
 import _styles from "./AllApplicantsTable.module.css";
 
@@ -28,83 +29,54 @@ export function AllApplicantsTable({
   return (
     <_Component className={_utils.cx(_styles, "cv-list")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "cv-list-row", "top")}
+        className={_utils.cx(_styles, "div-block-1278")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "cv-list-column-wrapper",
-            "header",
-            "width-auto",
-            "no_border-copy"
-          )}
+          className={_utils.cx(_styles, "cv-list-row", "top")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column")}
-            tag="div"
-            {...onclickSelectAll}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-checkbox")}
-              tag="div"
-            >
-              {isAllChecked ? (
-                <_Builtin.Image
-                  className={_utils.cx(_styles, "cli-check-image")}
-                  loading="lazy"
-                  width="auto"
-                  height="auto"
-                  alt=""
-                  src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
-                />
-              ) : null}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-checkbox-ghost", "hide")}
-              tag="div"
-            />
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-list-row-main")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
+            className={_utils.cx(
+              _styles,
+              "cv-list-column-wrapper",
+              "header",
+              "width-auto",
+              "no_border-copy"
+            )}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cv-list-column",
-                "name",
-                "overflow-visible"
-              )}
+              className={_utils.cx(_styles, "cv-list-column")}
               tag="div"
+              {...onclickSelectAll}
             >
-              <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cv-list-checkbox")}
+                tag="div"
+              >
+                {isAllChecked ? (
+                  <_Builtin.Image
+                    className={_utils.cx(_styles, "cli-check-image")}
+                    loading="lazy"
+                    width="auto"
+                    height="auto"
+                    alt=""
+                    src="https://uploads-ssl.webflow.com/651419e73ebbb12148f96ccc/6530fd234c567296fc1dc71f_Frame%201%20(2).png"
+                  />
+                ) : null}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cv-list-checkbox-ghost", "hide")}
+                tag="div"
+              />
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
+            className={_utils.cx(_styles, "cv-list-row-main")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cv-list-column",
-                "resume",
-                "overflow-visible"
-              )}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"Resume Match"}</_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          {isScreeningVisible ? (
-            <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
@@ -112,16 +84,14 @@ export function AllApplicantsTable({
                 className={_utils.cx(
                   _styles,
                   "cv-list-column",
-                  "screening",
+                  "name",
                   "overflow-visible"
                 )}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Screening Status"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
-          {isInterviewVisible ? (
             <_Builtin.Block
               className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
@@ -130,87 +100,147 @@ export function AllApplicantsTable({
                 className={_utils.cx(
                   _styles,
                   "cv-list-column",
-                  "assessment",
+                  "resume",
                   "overflow-visible"
                 )}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Assessment Score"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Resume Match"}</_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
-          ) : null}
-          {isDisqualifiedVisible ? (
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
-              tag="div"
-            >
+            {isScreeningVisible ? (
               <_Builtin.Block
                 className={_utils.cx(
                   _styles,
-                  "cv-list-column",
-                  "disqualified",
-                  "overflow-visible"
+                  "cv-list-column-wrapper",
+                  "header"
                 )}
                 tag="div"
               >
-                <_Builtin.Block tag="div">
-                  {"Disqualified Email"}
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "cv-list-column",
+                    "screening",
+                    "overflow-visible"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {"Screening Status"}
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
-            </_Builtin.Block>
-          ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
-            tag="div"
-          >
+            ) : null}
+            {isInterviewVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column-wrapper",
+                  "header"
+                )}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "cv-list-column",
+                    "assessment",
+                    "overflow-visible"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {"Assessment Score"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+            {isDisqualifiedVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column-wrapper",
+                  "header"
+                )}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(
+                    _styles,
+                    "cv-list-column",
+                    "disqualified",
+                    "overflow-visible"
+                  )}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">
+                    {"Disqualified Email"}
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cv-list-column",
-                "job",
-                "overflow-visible"
-              )}
+              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Current Job Title"}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column",
+                  "job",
+                  "overflow-visible"
+                )}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Current Job Title"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
-            tag="div"
-          >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cv-list-column",
-                "location",
-                "overflow-visible"
-              )}
+              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Location"}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column",
+                  "location",
+                  "overflow-visible"
+                )}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Location"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
-            tag="div"
-          >
             <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "cv-list-column",
-                "date",
-                "overflow-visible"
-              )}
+              className={_utils.cx(_styles, "cv-list-column-wrapper", "header")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Applied Date"}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(
+                  _styles,
+                  "cv-list-column",
+                  "date",
+                  "overflow-visible"
+                )}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Applied Date"}</_Builtin.Block>
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "cv-list-body")} tag="div">
-        {slotCandidatesList}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1277")}
+        tag="div"
+      >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cv-list-body")}
+          tag="div"
+        >
+          {slotCandidatesList ?? <AllCandidateListItem />}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

@@ -11,4 +11,5 @@ declare function EditEmail(props: {
   slotBottom?: Types.Devlink.Slot;
   isSaveChangesButtonVisible?: Types.Visibility.VisibilityConditions;
   isRequestTestMailVisible?: Types.Visibility.VisibilityConditions;
+  textTipsMessage?: React.ReactNode;
 }): React.JSX.Element;

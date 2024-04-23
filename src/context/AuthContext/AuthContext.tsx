@@ -1,11 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
+import { datacatalog_v1beta1 } from 'googleapis';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import {
   createContext,
   Dispatch,
+  ReactNode,
   SetStateAction,
+  use,
   useContext,
   useEffect,
   useState,
@@ -13,49 +17,48 @@ import {
 
 import { LoaderSvg } from '@/devlink';
 import {
-  RecruiterDB,
   RecruiterRelationsType,
   RecruiterType,
   RecruiterUserType,
-  RoleType,
   SocialsType,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { Database } from '@/src/types/schema';
+import { featureFlag } from '@/src/utils/Constants';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { Session } from './types';
 
-interface ContextValue {
+export interface ContextValue {
   userDetails: Session | null;
   userCountry: string | null;
-  // eslint-disable-next-line no-unused-vars
   setUserDetails: (details: Session | null) => void;
   recruiter: RecruiterType | null;
-  // eslint-disable-next-line no-unused-vars
+  recruiter_id: string | null;
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
   allrecruterRelation: RecruiterRelationsType[];
   setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
-  // eslint-disable-next-line no-unused-vars
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
-  handleUpdatePassword: (
-    // eslint-disable-next-line no-unused-vars
-    password: string,
-    // eslint-disable-next-line no-unused-vars
-    showToast?: boolean,
-  ) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
   setLoading: (loading: boolean) => void;
-  // eslint-disable-next-line no-unused-vars
   handleLogout: () => Promise<void>;
-  // eslint-disable-next-line no-unused-vars
-  updateRecruiter: (updateData: Partial<RecruiterDB>) => Promise<boolean>;
   recruiterUser: RecruiterUserType | null;
   setRecruiterUser: Dispatch<SetStateAction<RecruiterUserType>>;
-  role: RoleType;
+  members: RecruiterUserType[];
+  setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
+  handelMemberUpdate: (x: {
+    user_id: string;
+    data: Database['public']['Tables']['recruiter_user']['Update'];
+  }) => Promise<boolean>;
+  isAllowed: (
+    roles: Database['public']['Enums']['user_roles'][],
+    flags?: featureFlag[],
+  ) => boolean;
+  allowAction: <T extends Function | ReactNode>(
+    func: T,
+    role: Database['public']['Enums']['user_roles'][],
+  ) => T;
 }
 
 const defaultProvider = {
@@ -66,37 +69,21 @@ const defaultProvider = {
   handleUpdateEmail: undefined,
   handleUpdatePassword: undefined,
   recruiter: null,
+  recruiter_id: null,
   setRecruiter: () => {},
   allrecruterRelation: null,
   setAllrecruterRelation: () => {},
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
-  updateRecruiter: async (updateData: Partial<RecruiterDB>) => {
-    updateData;
-    return true;
-  },
   recruiterUser: null,
-  role: null,
   setRecruiterUser: () => {},
+  members: [],
+  setMembers: () => {},
+  handelMemberUpdate: (x) => Promise.resolve(true),
+  isAllowed: (role) => true,
+  allowAction: (func, role) => func,
 };
-
-// supabase.auth.onAuthStateChange((event, session) => {
-//   // console.log('session event: ', {
-//   //   event,
-//   //   time: new Date().toLocaleString(),
-//   //   session: session.access_token,
-//   //   cookie: Cookie.get('access_token'),
-//   // });
-//   if (event === 'SIGNED_OUT') {
-//     // delete cookies on sign out
-//     const expires = new Date(0).toUTCString();
-//     document.cookie = `access_token=; path=/; expires=${expires}; SameSite=Lax; secure`;
-//   } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-//     const maxAge = 6 * 24 * 60 * 60; // 6 days, never expires
-//     document.cookie = `access_token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
-//   }
-// });
 
 export const useAuthDetails = () => useContext(AuthContext);
 const AuthContext = createContext<ContextValue>(defaultProvider);
@@ -107,84 +94,107 @@ const AuthProvider = ({ children }) => {
   const [recruiterUser, setRecruiterUser] = useState<RecruiterUserType | null>(
     null,
   );
+  const recruiter_id = recruiter?.id ?? null;
   const [allrecruterRelation, setAllrecruterRelation] =
     useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
-
   const [loading, setLoading] = useState<boolean>(true);
-  const [role, setRole] = useState<RoleType>(null);
+  const [members, setMembers] = useState<RecruiterUserType[]>([]);
+
+  const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
+    const { data, error } = await supabase
+      .from('recruiter_relation')
+      .select()
+      .eq('recruiter_id', recruiter_id)
+    if (!error && data.length) {
+      const userIds = data.map((item) => item.user_id);
+      const { data: users, error: userError } = await supabase
+        .from('recruiter_user')
+        .select()
+        .in('user_id', userIds);
+
+      if (!userError && users.length) {
+        setMembers(users as RecruiterUserType[]);
+      }
+    }
+    return [];
+  };
+
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        // if (!isRoutePublic(router.route)) {
-        //   router.push(pageRoutes.LOGIN);
-        // }
         loading && setLoading(false);
-        return;
       }
-      if (data.session.user.new_email) {
+      if (data?.session?.user?.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
         if (!error) {
           setUserDetails(newData.session);
         }
-      }
-
-      if (!error) {
+      } else {
         setUserDetails(data.session);
-        const { data: recruiterUser, error: errorUser } = await supabase
-          .from('recruiter_user')
-          .select('*')
-          .eq('user_id', data.session.user.id);
-        if (!errorUser && recruiterUser.length > 0) {
-          if (recruiterUser[0].is_deactivated) {
-            // route something don't login
-          }
-          (recruiterUser[0].join_status || '').toLocaleLowerCase() ===
-            'invited' &&
-            handleUpdateProfile(
-              { join_status: 'joined' },
-              data.session.user.id,
-            );
-          setRecruiterUser(recruiterUser[0]);
-
-          const { data: recruiterRel, error: errorRel } = await supabase
-            .from('recruiter_relation')
-            .select('*')
-            .match({ user_id: data.session.user.id, is_active: true });
-
-          if (!errorRel) {
-            if (recruiterRel.length > 0) {
-              const { data: recruiter, error } = await supabase
-                .from('recruiter')
-                .select('*')
-                .eq('id', recruiterRel[0].recruiter_id);
-              if (!error && recruiter.length > 0) {
-                setRecruiter({
-                  ...recruiter[0],
-                  socials: recruiter[0]?.socials as unknown as SocialsType,
-                });
-                const temp =
-                  recruiter[0]?.roles[String(recruiterUser[0]?.role)];
-                temp && setRole(temp as RoleType);
-              }
-            } else {
-              toast.error(
-                'Something went wrong! Please contact aglint support.',
-              );
-            }
-          } else {
-            toast.error('Something went wrong! Please contact aglint support.');
-          }
-        }
+      }
+      if (router.route !== pageRoutes.LOADING && data?.session?.user?.id) {
+        await getRecruiterDetails(data.session);
       }
     } catch (err) {
       router.push(pageRoutes.LOGIN);
-      //
+      handleLogout();
     } finally {
       setLoading(false);
     }
   }
+
+  const getRecruiterDetails = async (userDetails: Session) => {
+    const { data: recruiterUser, error: errorUser } = await supabase
+      .from('recruiter_user')
+      .select('*')
+      .eq('user_id', userDetails.user.id);
+    if (!errorUser && recruiterUser.length > 0) {
+      if (recruiterUser[0].is_suspended) {
+        toast.error('Your account is Suspended.');
+        return setTimeout(() => {
+          handleLogout();
+        }, 300);
+      }
+      setRecruiterUser(recruiterUser[0] as RecruiterUserType);
+      (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
+        handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
+      const { data: recruiterRel, error: errorRel } = await supabase
+        .from('recruiter_relation')
+        .select('* , recruiter(*)')
+        .match({ user_id: userDetails.user.id, is_active: true });
+
+      if (!errorRel && recruiterRel.length > 0) {
+        posthog.identify(userDetails.user.email, {
+          Email: userDetails.user.email,
+          CompanyId: recruiterRel[0].recruiter.id,
+        });
+        // posthog.setPersonPropertiesForFlags({
+        //   CompanyId: recruiterRel[0].recruiter.id,
+        // });
+        // console.log({ cId: recruiterRel[0].recruiter.id });
+
+        setRecruiter({
+          ...recruiterRel[0].recruiter,
+          socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
+        });
+        if (
+          recruiterUser[0].role === 'admin' ||
+          recruiterUser[0].role === 'recruiter'
+        ) {
+          await getMembersFromDB(
+            recruiterRel[0].recruiter.id,
+            userDetails.user.id,
+          );
+        }
+      } else {
+        toast.error('Something went wrong! Please try logging in again.');
+      }
+    } else {
+      toast.error('Something went wrong! Please try logging in again.');
+    }
+  };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -202,7 +212,6 @@ const AuthProvider = ({ children }) => {
         },
       });
       const data = await response.json();
-
       const country = data.country; // Extract the country code from the response
       setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {
@@ -220,7 +229,7 @@ const AuthProvider = ({ children }) => {
       .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {
-      setRecruiterUser(data[0]);
+      setRecruiterUser(data[0] as RecruiterUserType);
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);
@@ -247,30 +256,54 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleUpdatePassword = async (
-    password: string,
-    showToast: boolean = false,
-  ): Promise<boolean> => {
-    const { error } = await supabase.auth.updateUser({
-      password: password,
-    });
-    if (error) {
-      toast.error(`Oops! Something went wrong. (${error.message})`);
-      return false;
-    } else {
-      showToast && toast.success(`Password reset successfully`);
-      return true;
-    }
-  };
-
-  const updateRecruiter = (updateData: Partial<RecruiterDB>) => {
-    return updateRecruiterInDb(updateData, recruiter.id).then((data) => {
+  const handelMemberUpdate: ContextValue['handelMemberUpdate'] = async ({
+    user_id,
+    data,
+  }) => {
+    if (!user_id && data) return Promise.resolve(false);
+    return updateMember({ user_id, data }).then((data) => {
       if (data) {
-        setRecruiter({ ...recruiter, ...data });
+        setMembers((prev) =>
+          prev.map((item) => {
+            return data.user_id !== item.user_id
+              ? item
+              : (data as RecruiterUserType);
+          }),
+        );
         return true;
       }
       return false;
     });
+  };
+
+  // role based access
+  const isAllowed: ContextValue['isAllowed'] = (roles, flags) => {
+    if (recruiterUser) {
+      if (flags?.length)
+        for (let item of flags) {
+          if (!posthog.isFeatureEnabled(item)) return false;
+        }
+      return roles.includes(recruiterUser.role);
+    }
+    return false;
+  };
+
+  const allowAction: ContextValue['allowAction'] = <
+    T extends Function | ReactNode,
+  >(
+    func: T,
+    role,
+  ) => {
+    if (recruiterUser && role.includes(recruiterUser.role)) {
+      return func;
+    }
+
+    // Return an empty function if func is a function
+    if (typeof func === 'function') {
+      return (() => {}) as unknown as T;
+    }
+    // Return an empty fragment if func is a React node
+    return (<></>) as T;
   };
 
   useEffect(() => {
@@ -286,6 +319,17 @@ const AuthProvider = ({ children }) => {
     }
   }, [router.isReady, loading]);
 
+  useEffect(() => {
+    if (router.isReady && userDetails?.user) {
+      const feature = pageFeatureMapper[`/${router.pathname.split('/')[1]}`];
+      if (feature && !posthog.isFeatureEnabled(feature)) {
+        // eslint-disable-next-line no-console
+        console.log('Feature not enabled');
+        router.push(pageRoutes.JOBS);
+      }
+    }
+  }, [router.pathname, userDetails]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -293,19 +337,22 @@ const AuthProvider = ({ children }) => {
         userCountry,
         setUserDetails,
         recruiter,
+        recruiter_id,
         handleUpdateProfile,
         handleUpdateEmail,
-        handleUpdatePassword,
         setRecruiter,
         loading,
         setLoading,
         handleLogout,
-        updateRecruiter,
         recruiterUser,
-        role,
         allrecruterRelation,
         setAllrecruterRelation,
         setRecruiterUser,
+        members,
+        setMembers,
+        handelMemberUpdate,
+        isAllowed,
+        allowAction,
       }}
     >
       {loading ? <AuthLoader /> : children}
@@ -329,6 +376,7 @@ const isRoutePublic = (path = '') => {
     pageRoutes.SIGNUP,
     pageRoutes.MOCKTEST,
     pageRoutes.PHONESCREEN,
+    pageRoutes.CONFIRM_SCHEDULE,
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {
@@ -337,18 +385,32 @@ const isRoutePublic = (path = '') => {
   }
 };
 
-const updateRecruiterInDb = async (
-  updateData: Partial<RecruiterDB>,
-  id: string,
-) => {
-  const { data, error } = await supabase
-    .from('recruiter')
-    .update(updateData)
-    .eq('id', id)
-    .select();
-  if (!error && data.length) {
-    delete data[0].socials;
-    return data[0] as Omit<RecruiterDB, 'address' | 'socials'>;
-  }
-  return null;
+const pageFeatureMapper = {
+  [pageRoutes.ASSISTANT]: 'isAssistantEnabled',
+  [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
+  [pageRoutes.AGENT]: 'isAgentEnabled',
+  [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
+  [pageRoutes.SUPPORT]: 'isSupportEnabled',
+  [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
+};
+
+const updateMember = ({
+  user_id,
+  data,
+}: {
+  user_id: string;
+  data: Database['public']['Tables']['recruiter_user']['Update'];
+}) => {
+  return supabase
+    .from('recruiter_user')
+    .update(data)
+    .eq('user_id', user_id)
+    .select()
+    .single()
+    .then(({ data, error }) => {
+      if (error) {
+        throw new Error(error.message);
+      }
+      return data;
+    });
 };

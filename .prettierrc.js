@@ -8,8 +8,8 @@ module.exports = {
     {
       files: ['*.sql'],
       options: {
-        parser: 'none',
-      },
-    },
-  ],
+        parser: 'none'
+      }
+    }
+  ]
 };

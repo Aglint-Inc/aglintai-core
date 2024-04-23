@@ -55,7 +55,12 @@ export function CompanyListing({
             {slotCompanyImage}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-xxxl", "fw-semibold")}
+            className={_utils.cx(
+              _styles,
+              "text-xxxl",
+              "fw-semibold",
+              "res-text-xxxl"
+            )}
             tag="div"
           >
             {textCompanyName}
@@ -100,7 +105,14 @@ export function CompanyListing({
             className={_utils.cx(_styles, "company-list-link-wrappers")}
             tag="div"
           >
-            {slotCompanyLinks ?? <CompanyListingLinks />}
+            {slotCompanyLinks ?? (
+              <>
+                <CompanyListingLinks />
+                <CompanyListingLinks />
+                <CompanyListingLinks />
+                <CompanyListingLinks />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
@@ -314,18 +326,23 @@ export function CompanyListing({
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+                className={_utils.cx(_styles, "div-block-933")}
                 tag="div"
               >
-                {"Powered By"}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+                  tag="div"
+                >
+                  {"Powered By"}
+                </_Builtin.Block>
+                <_Builtin.Image
+                  loading="lazy"
+                  width="auto"
+                  height="auto"
+                  alt=""
+                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
+                />
               </_Builtin.Block>
-              <_Builtin.Image
-                loading="lazy"
-                width="auto"
-                height="auto"
-                alt=""
-                src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6515c71a265110c954626cb3_Frame%202%20(1).svg"
-              />
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-sm", "text-grey-600")}
                 tag="div"

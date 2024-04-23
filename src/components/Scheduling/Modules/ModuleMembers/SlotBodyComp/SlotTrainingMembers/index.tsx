@@ -1,0 +1,364 @@
+import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { EmptyGeneral, MemberListCard, StatusBadge } from '@/devlink2';
+import { HistoryPill, HistoryTrainingCard } from '@/devlink3';
+import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
+
+import {
+  useGetMeetingsByModuleId,
+  useProgressModuleUsers,
+} from '../../../queries/hooks';
+import { getHours } from '../../../queries/utils';
+import {
+  setIsDeleteMemberDialogOpen,
+  setIsMovedToQualifiedDialogOpen,
+  setIsPauseDialogOpen,
+  setIsProgressDialaogOpen,
+  setIsResumeDialogOpen,
+  setSelUser,
+  useModulesStore,
+} from '../../../store';
+import { MemberType, ModuleType } from '../../../types';
+import MoveToQualifiedDialog from '../../MoveToQualified';
+import ProgressDrawer from '../../ProgressDrawer';
+
+export type ProgressUser = {
+  user: MemberType;
+  progress: ReturnType<typeof useProgressModuleUsers>['data'];
+};
+
+function SlotTrainingMembers({
+  editModule,
+  meetingData,
+}: {
+  editModule: ModuleType;
+  meetingData: ReturnType<typeof useGetMeetingsByModuleId>['data'];
+}) {
+  const router = useRouter();
+  const { recruiterUser } = useAuthDetails();
+  const { members } = useSchedulingContext();
+  const [progressUser, setProgressUser] = useState<ProgressUser>({
+    user: null,
+    progress: [],
+  });
+  const allUsers = editModule.relations;
+  const currentDay = dayjs();
+
+  const allTrainees = allUsers
+    .filter((user) => user.training_status === 'training')
+    .map((user) => {
+      const userSettings = user?.recruiter_user?.scheduling_settings;
+
+      let weekly = 0;
+      let daily = 0;
+      if (userSettings) {
+        weekly =
+          userSettings.interviewLoad.dailyLimit.type == 'Hours'
+            ? getHours({ user, type: 'weekly', meetingData })
+            : meetingData.filter(
+                (meet) => meet?.interview_module_relation_id === user.id,
+              ).length;
+        daily =
+          userSettings.interviewLoad.dailyLimit.type == 'Hours'
+            ? getHours({ user, type: 'daily', meetingData })
+            : meetingData.filter(
+                (meet) =>
+                  meet?.interview_module_relation_id === user.id &&
+                  dayjs(meet?.interview_meeting?.end_time).isSame(
+                    currentDay,
+                    'day',
+                  ),
+              ).length;
+      }
+      return { ...user, weekly, daily };
+    });
+
+  const trainer_ids = allUsers
+    .filter((user) => user.training_status === 'training')
+    .map((user) => {
+      return user.id;
+    });
+
+  const { data: progress } = useProgressModuleUsers({ trainer_ids });
+  const selUser = useModulesStore((state) => state.selUser);
+
+  return (
+    <>
+      {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
+      {editModule.settings && (
+        <ProgressDrawer progressUser={progressUser} module={editModule} />
+      )}
+      {allTrainees.length === 0 && (
+        <EmptyGeneral textEmpt={'No Members Added Yet'} />
+      )}
+      {allTrainees.map((user) => {
+        const member = members.find(
+          (member) => member.user_id === user.user_id,
+        );
+
+        if (!member) return null; //this line added temporarily becasue of data inconsistency
+        const progressDataUser = progress.filter(
+          (prog) => prog.interview_module_relation_id === user.id,
+        );
+
+        const tempMeetingData: {
+          [key: string]: typeof progressDataUser;
+        } = {};
+
+        const revShadowCount = progressDataUser.filter((prog) => {
+          if (prog.training_type === 'reverse_shadow') {
+            tempMeetingData['reverse shadow'] = [
+              ...(tempMeetingData['reverse shadow'] || []),
+              prog,
+            ];
+            return true;
+          }
+          return false;
+        }).length;
+
+        const shadowCount = progressDataUser.filter((prog) => {
+          if (prog.training_type === 'shadow') {
+            tempMeetingData['shadow'] = [
+              ...(tempMeetingData['shadow'] || []),
+              prog,
+            ];
+            return true;
+          }
+          return false;
+        }).length;
+
+        const isMoveToQualifierVisible =
+          recruiterUser.role === 'admin' ||
+          (editModule.settings.reqruire_approval &&
+            editModule.settings.approve_users.includes(user.user_id));
+
+        const userSettings = user.recruiter_user.scheduling_settings;
+
+        let trainingStatusArray: {
+          text: 'shadow' | 'reverse shadow';
+          state: boolean;
+          meeting: (typeof progressDataUser)[number];
+        }[] = [
+          ...new Array(
+            // @ts-ignore
+            editModule.settings?.noShadow || 0,
+          ).fill({
+            text: 'shadow',
+            state: false,
+            meeting: null,
+          }),
+          ...new Array(
+            // @ts-ignore
+            editModule.settings?.noReverseShadow || 0,
+          ).fill({
+            text: 'reverse shadow',
+            state: false,
+            meeting: null,
+          }),
+        ];
+
+        trainingStatusArray = trainingStatusArray.map((item) => {
+          if (tempMeetingData[item.text]?.length) {
+            const temp = tempMeetingData[item.text].reverse().pop();
+            return { ...item, state: Boolean(temp), meeting: temp };
+          }
+          return item;
+        });
+        return (
+          <MemberListCard
+            isInterviewCountVisible={!user.pause_json}
+            textInterviewWeek={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per week`}
+            textInterviewToday={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
+            onClickCard={{
+              onClick: () => {
+                router.push(
+                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`,
+                );
+              },
+            }}
+            onClickViewProgress={{
+              onClick: () => {
+                setProgressUser({
+                  progress: progress.filter(
+                    (prog) => prog.interview_module_relation_id === user.id,
+                  ),
+                  user: members.filter(
+                    (member) => member.user_id === user.user_id,
+                  )[0],
+                });
+                setIsProgressDialaogOpen(true);
+              },
+            }}
+            onClickMoveToQualifier={{
+              onClick: () => {
+                setSelUser(user);
+                setIsMovedToQualifiedDialogOpen(true);
+              },
+            }}
+            key={user.user_id}
+            isMoveToQualifierVisible={isMoveToQualifierVisible}
+            isTrainingProgessVisible={
+              editModule.settings.noReverseShadow > revShadowCount ||
+              editModule.settings.noShadow > shadowCount
+            }
+            isPendingApprovalVisible={
+              !(
+                editModule.settings.noReverseShadow > revShadowCount ||
+                editModule.settings.noShadow > shadowCount
+              ) && editModule.settings.reqruire_approval
+            }
+            isTrainingCompletedVisible={
+              editModule.settings.noReverseShadow <= revShadowCount &&
+              editModule.settings.noShadow <= shadowCount
+            }
+            isViewProgressVisible={true}
+            slotProgressBar={
+              <>
+                {trainingStatusArray.map((item, index) => (
+                  <HistoryPill
+                    key={index}
+                    isStart={index === 0}
+                    isStartActive={index === 0 && item.state}
+                    isEnd={trainingStatusArray.length - 1 === index}
+                    isEndActive={
+                      trainingStatusArray.length - 1 === index && item.state
+                    }
+                    isMiddle={index > 0 && index < trainingStatusArray.length}
+                    isMiddleActive={
+                      index > 0 &&
+                      index < trainingStatusArray.length &&
+                      item.state
+                    }
+                    slotHistoryTrainingCard={
+                      <HistoryTrainingCard
+                        textInterviewType={item.meeting?.interview_session.name}
+                        isNotScheduleVisible={!item.meeting}
+                        isReverseShadow={item.text === 'reverse shadow'}
+                        isShadow={item.text === 'shadow'}
+                        slotStatus={
+                          <StatusBadge
+                            isCancelledVisible={
+                              item.meeting?.interview_meeting?.status ===
+                              'cancelled'
+                            }
+                            isConfirmedVisible={
+                              item.meeting?.interview_meeting?.status ===
+                              'confirmed'
+                            }
+                            isWaitingVisible={
+                              item.meeting?.interview_meeting?.status ===
+                              'waiting'
+                            }
+                            isCompletedVisible={
+                              item.meeting?.interview_meeting?.status ===
+                              'completed'
+                            }
+                            isNotScheduledVisible={
+                              item.meeting?.interview_meeting?.status ===
+                              'not_scheduled'
+                            }
+                          />
+                        }
+                        slotMeetingIcon={
+                          <IconScheduleType
+                            type={
+                              item.meeting?.interview_session?.schedule_type
+                            }
+                          />
+                        }
+                        textDate={dayjs(
+                          item.meeting?.interview_meeting?.start_time,
+                        ).format('ddd DD MMM YYYY')}
+                        textTime={`${dayjs(
+                          item.meeting?.interview_meeting?.start_time,
+                        ).format(
+                          'HH:mm',
+                        )} to ${dayjs(item.meeting?.interview_meeting?.end_time).format('HH:mm')}`}
+                        isSchedule={Boolean(
+                          item.meeting?.interview_meeting?.status,
+                        )}
+                        textDuration={
+                          <>
+                            {`${
+                              // @ts-ignore
+                              (new Date(
+                                item.meeting?.interview_meeting?.end_time,
+                              ) -
+                                // @ts-ignore
+                                new Date(
+                                  item.meeting?.interview_meeting?.start_time,
+                                )) /
+                              (1000 * 60)
+                            } Minutes`}
+                          </>
+                        }
+                        textPlatformName={
+                          item.meeting?.interview_meeting?.meeting_json
+                          // @ts-ignore
+                            ?.conferenceData?.conferenceSolution?.name
+                        }
+                      />
+                    }
+                    isShadow={item.text === 'shadow'}
+                    isReverseShadow={item.text === 'reverse shadow'}
+                  />
+                ))}
+              </>
+            }
+            textPauseResumeDate={
+              !user.pause_json?.isManual
+                ? user.pause_json?.end_date
+                  ? 'Till ' +
+                    dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
+                  : '--'
+                : 'Till you resume'
+            }
+            onClickRemoveModule={{
+              onClick: () => {
+                setSelUser(user);
+                setIsDeleteMemberDialogOpen(true);
+              },
+            }}
+            onClickPauseInterview={{
+              onClick: () => {
+                setSelUser(user);
+                setIsPauseDialogOpen(true);
+              },
+            }}
+            onClickResumeInterview={{
+              onClick: () => {
+                setSelUser(user);
+                setIsResumeDialogOpen(true);
+              },
+            }}
+            onHoverDot={false}
+            isPauseResumeVisible={Boolean(user.pause_json)}
+            isPauseVisible={!user.pause_json}
+            isResumeVisible={Boolean(user.pause_json)}
+            slotProfileImage={
+              <MuiAvatar
+                src={member.profile_image}
+                level={getFullName(member.first_name, member.last_name) || ''}
+                variant='circular'
+                height='60px'
+                width='60px'
+                fontSize='24px'
+              />
+            }
+            textName={getFullName(member.first_name, member.last_name) || ''}
+            textRole={member.position || '--'}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+export default SlotTrainingMembers;

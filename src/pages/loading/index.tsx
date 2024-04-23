@@ -1,10 +1,8 @@
 import { Box } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@utils/supabaseClient';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { LoaderSvg } from '@/devlink';
@@ -17,6 +15,7 @@ import {
   AuthProvider,
   useAuthDetails,
 } from '@/src/context/AuthContext/AuthContext';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 export default function Loading() {
@@ -46,10 +45,12 @@ export default function Loading() {
       } else {
         toast.error('Unable to login. Please try again later');
         router.push(pageRoutes.LOGIN);
+        await handleLogout();
       }
     } catch (error) {
       toast.error('Unable to login. Please try again later');
       router.push(pageRoutes.LOGIN);
+      await handleLogout();
     }
   };
 
@@ -76,84 +77,111 @@ export default function Loading() {
       .eq('user_id', userDetails?.user?.id)
       .then(async ({ data, error }) => {
         if (!error) {
-          //post hog logging
-          posthog.identify(userDetails.user.email, {
-            Email: userDetails.user.email,
-          });
           if (data.length == 0) {
-            (async () => {
-              await refershAccessToken();
+            const { error: erroruser } = await supabase
+              .from('recruiter_user')
+              .insert({
+                user_id: userDetails.user.id,
+                email: userDetails.user.user_metadata.email,
+                first_name: splitFullName(
+                  userDetails.user.user_metadata.full_name,
+                ).firstName,
+                last_name: !userDetails.user.user_metadata.first_name
+                  ? splitFullName(userDetails.user.user_metadata.full_name)
+                      .lastName
+                  : userDetails.user.user_metadata.last_name,
+                role: 'admin',
+                profile_image: !userDetails.user.user_metadata.image_url
+                  ? null
+                  : userDetails.user.user_metadata.image_url,
+                phone: !userDetails.user.user_metadata.phone
+                  ? ''
+                  : userDetails.user.user_metadata.phone,
+              })
+              .select();
 
-              const { error: erroruser } = await supabase
-                .from('recruiter_user')
-                .insert({
-                  user_id: userDetails.user.id,
-                  email: userDetails.user.user_metadata.email,
-                  first_name: splitFullName(
-                    userDetails.user.user_metadata.full_name,
-                  ).firstName,
-                  last_name: !userDetails.user.user_metadata.first_name
-                    ? splitFullName(userDetails.user.user_metadata.full_name)
-                        .lastName
-                    : userDetails.user.user_metadata.last_name,
-                  role: 'admin',
-                  profile_image: !userDetails.user.user_metadata.image_url
-                    ? null
-                    : userDetails.user.user_metadata.image_url,
-                  phone: !userDetails.user.user_metadata.phone
-                    ? ''
-                    : userDetails.user.user_metadata.phone,
-                })
-                .select();
+            if (!erroruser) {
+              const rec_id = uuidv4();
 
-              if (!erroruser) {
-                const rec_id = uuidv4();
+              await supabase.from('recruiter').insert({
+                email: userDetails.user.email,
+                name:
+                  userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                    '.com',
+                    '',
+                  ) || '',
+                id: rec_id,
+              });
 
-                await supabase.from('recruiter').insert({
-                  email: userDetails.user.email,
-                  name:
-                    userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                      '.com',
-                      '',
-                    ) || '',
-                  id: rec_id,
-                });
+              const { error } = await supabase.rpc('createrecuriterrelation', {
+                in_recruiter_id: rec_id,
+                in_user_id: userDetails.user.id,
+                in_is_active: true,
+              });
 
-                const { error } = await supabase.rpc(
-                  'createrecuriterrelation',
-                  {
-                    in_recruiter_id: rec_id,
-                    in_user_id: userDetails.user.id,
-                    in_is_active: true,
-                  },
-                );
-
-                if (error) {
-                  throw new Error(error.message);
-                }
-
-                await supabase
-                  .from('recruiter_user')
-                  .update({ recruiter_id: rec_id })
-                  .eq('user_id', userDetails.user.id);
-
-                router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+              if (error) {
+                throw new Error(error.message);
               }
-            })();
+
+              await supabase
+                .from('recruiter_user')
+                .update({ recruiter_id: rec_id })
+                .eq('user_id', userDetails.user.id);
+
+              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+            }
           } else {
             if (!userDetails?.user.user_metadata?.role) {
               router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
               return;
+            }
+            if (userDetails?.user.user_metadata?.is_invite === 'true') {
+              await supabase.auth.updateUser({
+                data: { is_invite: 'false' }, // for invite user flow this is needed
+              });
             }
             const { data: recruiter, error: recruiter_error } = await supabase
               .from('recruiter')
               .select()
               .eq('id', data[0].recruiter_id);
             if (!recruiter_error && recruiter[0].industry) {
-              router.push(
-                localStorage.getItem('redirectURL') || pageRoutes.JOBS,
-              );
-              localStorage.removeItem('redirectURL');
+              const { data, error } = await supabase
+                .from('recruiter_user')
+                .select('*')
+                .eq('user_id', userDetails?.user?.id);
+              if (error) {
+                throw error;
+              }
+              // // last login time stamp Update
+              // const temp_time = new Date().toISOString();
+              // supabase
+              //   .from('recruiter_user')
+              //   .update({ last_login: temp_time })
+              //   .eq('user_id', userDetails.user.id)
+              //   .then(() => {});
+              // //last login END
+              if (data[0].role === 'interviewer') {
+                router.push(
+                  localStorage.getItem('redirectURL') ||
+                    `${pageRoutes.SCHEDULING}?tab=mySchedules`,
+                );
+                localStorage.removeItem('redirectURL');
+              } else if (data[0].role === 'recruiter') {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+                );
+                localStorage.removeItem('redirectURL');
+              } else if (data[0].role === 'scheduler') {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
+                );
+                localStorage.removeItem('redirectURL');
+              } else {
+                router.push(
+                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+                );
+                localStorage.removeItem('redirectURL');
+              }
             } else {
               router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
             }
@@ -162,12 +190,6 @@ export default function Loading() {
           router.push(pageRoutes.LOGIN);
         }
       });
-  };
-
-  const refershAccessToken = async () => {
-    await supabase.auth.refreshSession({
-      refresh_token: userDetails?.refresh_token,
-    });
   };
 
   return (
@@ -180,7 +202,7 @@ export default function Loading() {
       }}
     >
       <Seo
-        title='Aglint | Loading'
+        title='Loading'
         description='AI Powered Talent Development Platform.'
       />
       <LoaderSvg />
@@ -188,11 +210,11 @@ export default function Loading() {
   );
 }
 
-Loading.getProvider = function getProvider(page) {
+Loading.privateProvider = function privateProvider(page) {
   return <AuthProvider>{page}</AuthProvider>;
 };
 
-Loading.getLayout = (page) => {
+Loading.publicProvider = (page) => {
   return <>{page}</>;
 };
 

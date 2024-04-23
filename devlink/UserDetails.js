@@ -9,6 +9,8 @@ export function UserDetails({
   onClickProfilePhotoChange = {},
   slotUserForm,
   slotUserInfoBtn,
+  slotWarning,
+  isWarningVisible = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-678")} tag="div">
@@ -20,40 +22,52 @@ export function UserDetails({
           {"Your Details"}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "profile-image-block", "top-align")}
-        tag="div"
-      >
+      <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-460")}
+          className={_utils.cx(_styles, "profile-image-block", "top-align")}
           tag="div"
         >
-          {slotUserImage}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-458")}
-          tag="div"
-        >
-          <_Builtin.Block tag="div" {...onClickProfilePhotoChange}>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cursor-pointer")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-blue-500")}
-                tag="div"
-              >
-                {"Update Profile Picture"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+            className={_utils.cx(_styles, "div-block-460")}
             tag="div"
           >
-            {"Upload a square profile image (PNG or JPEG). Maximum size: 5 MB."}
+            {slotUserImage}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-458")}
+            tag="div"
+          >
+            <_Builtin.Block tag="div" {...onClickProfilePhotoChange}>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cursor-pointer")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-blue-500")}
+                  tag="div"
+                >
+                  {"Update Profile Picture"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-sm", "color-grey-600")}
+              tag="div"
+            >
+              {
+                "Upload a square profile image (PNG or JPEG). Maximum size: 5 MB."
+              }
+            </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
+        {isWarningVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-921")}
+            tag="div"
+          >
+            {slotWarning}
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">
         <_Builtin.Block

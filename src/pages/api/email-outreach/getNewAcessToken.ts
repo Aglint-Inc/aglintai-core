@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+const { OAuth2Client } = require('google-auth-library');
 
 type BodyParams = {
   refresh_token: string;
@@ -20,29 +21,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-async function refreshAccessToken(refreshToken, clientId, clientSecret) {
-  const tokenEndpoint = 'https://oauth2.googleapis.com/token';
+export async function refreshAccessToken(refreshToken, clientId, clientSecret) {
+  // Set up OAuth2 client
+  const oAuth2Client = new OAuth2Client(clientId, clientSecret);
+  oAuth2Client.setCredentials({ refresh_token: refreshToken });
 
-  const requestBody = new URLSearchParams();
-  requestBody.append('refresh_token', refreshToken);
-  requestBody.append('client_id', clientId);
-  requestBody.append('client_secret', clientSecret);
-  requestBody.append('grant_type', 'refresh_token');
-
-  const response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: requestBody,
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to refresh access token');
-  }
-
-  const responseBody = await response.json();
-  const newAccessToken = responseBody.access_token;
-
+  const { credentials } = await oAuth2Client.refreshAccessToken();
+  const newAccessToken = credentials.access_token;
   return newAccessToken;
 }

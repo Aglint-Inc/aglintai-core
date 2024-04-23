@@ -51,8 +51,8 @@ const ResumeUpload = ({
     }
   };
 
-  const DeleteSelectFile = (name) => {
-    const result = selectedfile.filter((data) => data.name !== name);
+  const DeleteSelectFile = (index) => {
+    const result = selectedfile.filter((data, i) => i !== index);
     setSelectedFile(result);
   };
 
@@ -70,9 +70,15 @@ const ResumeUpload = ({
 
   return (
     <>
-      <Stack spacing={2} height={'100%'} overflow={'auto'} p={'1px'}>
+      <Stack spacing={2} height={'100%'} p={'1px'}>
         {selectedfile.length == 0 && (
           <FileUploader
+            maxSize={5}
+            onSizeError={(file: any) =>
+              file.size > 5
+                ? null
+                : toast.error('Please upload resume less than 5 MB.')
+            }
             handleChange={InputChange}
             multiple={true}
             name='file'
@@ -84,7 +90,7 @@ const ResumeUpload = ({
           </FileUploader>
         )}
         {selectedfile.length !== 0 && (
-          <Stack spacing={2} overflow={'scroll'} position={'relative'}>
+          <Stack spacing={2} position={'relative'}>
             {loading && (
               <Stack
                 sx={{
@@ -125,7 +131,7 @@ const ResumeUpload = ({
                         key={index}
                         textName={name}
                         onClickDelete={{
-                          onClick: () => DeleteSelectFile(name),
+                          onClick: () => DeleteSelectFile(index),
                         }}
                       />
                     );
@@ -137,6 +143,12 @@ const ResumeUpload = ({
                       multiple={true}
                       name='file'
                       types={fileTypes}
+                      maxSize={5}
+                      onSizeError={(file: any) =>
+                        file.size > 5
+                          ? null
+                          : toast.error('Please upload resume less than 5 MB.')
+                      }
                     >
                       <Stack style={{ fontWeight: '400' }}>
                         <AddMoreResumeButton />

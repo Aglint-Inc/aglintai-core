@@ -1,4 +1,4 @@
-import { Collapse, Popover, Stack } from '@mui/material';
+import { Popover, Stack } from '@mui/material';
 import { get } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import posthog from 'posthog-js';
@@ -15,8 +15,6 @@ import {
   NavSublink,
   ScorePercentage,
   ScoreWeightage,
-  SublinkSubMenu,
-  SubMenu,
 } from '@/devlink';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
 import Loader from '@/src/components/Common/Loader';
@@ -24,17 +22,12 @@ import ScoreWheel from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import CloseJobPopup from './CloseJobPopup';
-import JobPublishButton from './PublishButton';
+import MuiPopup from '../../../Common/MuiPopup';
 import { copyJobForm } from '../copies/copyJobForm';
-import {
-  AssesMenusType,
-  JobFormState,
-  useJobForm,
-} from '../JobPostFormProvider';
+import { JobFormState, useJobForm } from '../JobPostFormProvider';
 import ScreeningSettings from '../JobPostFormSlides/Assessment';
 import BasicStepOne from '../JobPostFormSlides/BasicStepOne';
 import BasicStepTwo from '../JobPostFormSlides/BasicStepTwo';
@@ -44,7 +37,6 @@ import PublishDesclaimer from '../JobPostFormSlides/PublishDesclaimer';
 import ScoreSettings, {
   getBalancedScore,
 } from '../JobPostFormSlides/ScoreSettings';
-import ScreeningQns from '../JobPostFormSlides/ScreeningQnsWithVids';
 import SyncStatus from '../JobPostFormSlides/SyncStatus';
 import {
   API_FAIL_MSG,
@@ -53,7 +45,8 @@ import {
   slidePathToNum,
   supabaseWrap,
 } from '../utils';
-import MuiPopup from '../../../Common/MuiPopup';
+import CloseJobPopup from './CloseJobPopup';
+import JobPublishButton from './PublishButton';
 
 export type JobFormErrorParams = {
   jobTitle: string;
@@ -72,7 +65,7 @@ export type slideName =
   | 'phoneScreening';
 
 export type FormErrorParams = Record<
-  slideName | AssesMenusType,
+  slideName,
   {
     title: string;
     err: string[];
@@ -103,7 +96,7 @@ function JobForm() {
               .from('applications')
               .select()
               .eq('job_id', jobForm.jobPostId),
-          ) as any[];
+          );
           if (applications.length === 0) {
             setIsJobHasAppls(false);
           }
@@ -137,8 +130,6 @@ function JobForm() {
     formSlide = <ScoreSettings />;
   } else if (currSlide === 'templates') {
     formSlide = <Emails />;
-  } else if (currSlide == 'screening') {
-    formSlide = <ScreeningQns />;
   } else if (currSlide == 'workflow') {
     formSlide = <ScreeningSettings />;
   } else if (currSlide === 'phoneScreening') {
@@ -170,8 +161,7 @@ function JobForm() {
 
   const handleDeleteDraft = async () => {
     try {
-      const isDeleted = await handleJobDelete(jobForm.jobPostId);
-      if (!isDeleted) throw new Error('Job delete fail');
+      await handleJobDelete(jobForm.jobPostId);
       router.replace('/jobs?status=draft');
       toast.error('Deleted draft job ');
       posthog.capture('Deleted Draft job');
@@ -182,8 +172,7 @@ function JobForm() {
 
   const handleDeleteJob = async () => {
     try {
-      const isDeleted = await handleJobDelete(jobForm.jobPostId);
-      if (!isDeleted) throw new Error('Job delete failed');
+      await handleJobDelete(jobForm.jobPostId);
       router.replace('/jobs');
       toast.error('Deleted job');
       posthog.capture('Deleted job');
@@ -241,7 +230,7 @@ function JobForm() {
   );
 
   let allSlides = jobSlides.filter((slide) => {
-    if (slide.path === 'workflow' || slide.path === 'screening') {
+    if (slide.path === 'workflow') {
       return isAssesEnabled;
     }
     if (slide.path === 'phoneScreening') {
@@ -271,7 +260,7 @@ function JobForm() {
         slotCreateJob={<>{formSlide}</>}
         isDetailsActive={currSlide === 'details'}
         isEmailTemplateActive={currSlide === 'templates'}
-        isScreeningQuestionsActive={currSlide === 'screening'}
+        isScreeningQuestionsActive={false}
         isScoreSettingActive={currSlide === 'resumeScore'}
         isWorkflowsActive={currSlide === 'workflow'}
         textJobName={formTitle}
@@ -304,8 +293,7 @@ function JobForm() {
         isAssessmentPreviewVisible={
           currSlide === 'resumeScore' ||
           (currSlide === 'phoneScreening' &&
-            jobForm.formFields.isPhoneScreenEnabled) ||
-          (currSlide === 'screening' && jobForm.formFields.assessment)
+            jobForm.formFields.isPhoneScreenEnabled)
         }
         slotSideSection={
           <>
@@ -350,12 +338,6 @@ function JobForm() {
           onClick: () => {
             changeSlide('resumeScore');
             posthog.capture('Profile Score Flow Button clicked');
-          },
-        }}
-        onClickScreeningQuestions={{
-          onClick: () => {
-            changeSlide('screening');
-            posthog.capture('Screening Questions Flow Button clicked');
           },
         }}
         onClickWorkflows={{
@@ -515,18 +497,8 @@ function JobForm() {
 export default JobForm;
 
 const SideNavs = ({ changeSlide }) => {
-  const { jobForm, dispatch, formWarnings } = useJobForm();
+  const { jobForm, formWarnings } = useJobForm();
   const currSlide = jobForm.currSlide;
-
-  const handleChangeSubMenus = (s: JobFormState['currentAssmSlides']) => {
-    dispatch({
-      type: 'updateAssmTab',
-      payload: {
-        tab: s,
-      },
-    });
-  };
-  const currentAssTab = jobForm.currentAssmSlides;
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
   const isPhoneScreeningEnabled = posthog.isFeatureEnabled(
@@ -534,7 +506,7 @@ const SideNavs = ({ changeSlide }) => {
   );
 
   let allSlides = jobSlides.filter((slide) => {
-    if (slide.path === 'workflow' || slide.path === 'screening') {
+    if (slide.path === 'workflow') {
       return isAssesEnabled;
     }
     if (slide.path === 'phoneScreening') {
@@ -580,113 +552,28 @@ const SideNavs = ({ changeSlide }) => {
           );
         }
 
-        if (sl.path === 'screening') {
-          let isWarnShow = isShoWWarn(
-            jobForm.formType,
-            formWarnings,
-            sl.path,
-            slidePathToNum[sl.path],
-            jobForm.jobPostId,
-            true,
-          );
-          return (
-            <SublinkSubMenu
-              key={sl.path}
-              isWarningVisible={currSlide !== 'screening' && isWarnShow}
-              isActive={currSlide === sl.path}
-              textLink={allSlides.find((s) => s.path === 'screening').title}
-              onClickLink={{
-                onClick: () => {
-                  changeSlide(sl.path);
-                  handleChangeSubMenus('settings');
-                  posthog.capture(`${sl.title} Flow Button clicked`);
-                },
-              }}
-              isSubMenuVisible
-              isBetaVisible={true}
-              slotSubMenu={
-                <>
-                  {
-                    <Collapse
-                      in={
-                        currSlide === 'screening' &&
-                        jobForm.formFields.assessment
-                      }
-                      translate='yes'
-                      unmountOnExit
-                    >
-                      {assmSubmenus.map((assM) => {
-                        return (
-                          <SubMenu
-                            key={assM.path}
-                            textSubMenu={assM.label}
-                            onClickMenu={{
-                              onClick: () => {
-                                handleChangeSubMenus(assM.path);
-                              },
-                            }}
-                            isActive={currentAssTab === assM.path}
-                            isWarningVisible={
-                              formWarnings[assM.path].err.length > 0
-                            }
-                          />
-                        );
-                      })}
-                    </Collapse>
-                  }
-                </>
-              }
-            />
-          );
-        } else
-          return (
-            <NavSublink
-              key={sl.path}
-              // isWarningVisible={isWarn}
-              isWarningVisible={isWarn}
-              isActive={currSlide === sl.path}
-              onClickNav={{
-                onClick: () => {
-                  // if (isMute) return;
-                  // isTabMuted(jobForm.formType, warning, sl.path);
-                  changeSlide(sl.path);
-                  posthog.capture(`${sl.title} Flow Button clicked`);
-                },
-              }}
-              textLink={sl.title}
-              isMute={false}
-            />
-          );
+        return (
+          <NavSublink
+            key={sl.path}
+            // isWarningVisible={isWarn}
+            isWarningVisible={isWarn}
+            isActive={currSlide === sl.path}
+            onClickNav={{
+              onClick: () => {
+                // if (isMute) return;
+                // isTabMuted(jobForm.formType, warning, sl.path);
+                changeSlide(sl.path);
+                posthog.capture(`${sl.title} Flow Button clicked`);
+              },
+            }}
+            textLink={sl.title}
+            isMute={false}
+          />
+        );
       })}
     </>
   );
 };
-
-const assmSubmenus: {
-  label: string;
-  path: JobFormState['currentAssmSlides'];
-}[] = [
-  {
-    label: 'Settings',
-    path: 'settings',
-  },
-  {
-    label: 'Instructions',
-    path: 'instructions',
-  },
-  {
-    label: 'Welcome',
-    path: 'welcome',
-  },
-  {
-    label: 'Questions',
-    path: 'assesqns',
-  },
-  {
-    label: 'Epilogue',
-    path: 'epilogue',
-  },
-];
 
 const PublishButton = () => {
   const [showBtn, setShowBtn] = useState(false);
@@ -710,7 +597,6 @@ const SideSection = () => {
 
   const currSlide = jobForm.currSlide;
   const { recruiterUser } = useAuthDetails();
-  const router = useRouter();
   const onChangeScore = (e, paramKey: string) => {
     if (Number(e.target.value) < 0 || Number(e.target.value) > 100) return;
     handleUpdateFormFields({
@@ -727,7 +613,10 @@ const SideSection = () => {
       <AssessmentSide
         isPhoneScreeningImageVisible={true}
         isAssessmentImageVisible={false}
-        isDisableAssessmentVisible
+        isDisableAssessmentVisible={true}
+        isPreviewFormVisible={
+          jobForm.formFields.phoneScreeningTemplateId !== ''
+        }
         textDisableButton={'Disable'}
         textPreviewButton={'Preview'}
         textPreview='See How Candidates Will Experience the Screening Questions'
@@ -754,48 +643,6 @@ const SideSection = () => {
                 recruiterUser.last_name,
               ].join(' ')}`,
               '_blank',
-            );
-          },
-        }}
-      />
-    );
-  } else if (currSlide === 'screening') {
-    return (
-      <AssessmentSide
-        textPreview={
-          'See How Candidates Will Experience the Assessment Questions'
-        }
-        textDescDisable={'Disable Assessment Questions for this job.'}
-        isPhoneScreeningImageVisible={false}
-        isAssessmentImageVisible={true}
-        textDisableButton={'Disable'}
-        onClickDisableAssessment={{
-          onClick: async () => {
-            const { count } = await supabase
-              .from('applications')
-              .select('id')
-              .eq('job_id', jobForm.jobPostId)
-              .eq('status', 'assessment');
-            if (jobForm.formType === 'new' || !count) {
-              handleUpdateFormFields({
-                path: 'assessment',
-                value: false,
-              });
-            } else {
-              toast.warning(
-                `cadidate${
-                  count === 1 ? '' : 's'
-                } under assessment. Disabling forbidden!`,
-              );
-            }
-          },
-        }}
-        textPreviewButton={'Preview'}
-        onClickAssessmentPreview={{
-          onClick: () => {
-            window.open(
-              `/assessment?job_id=${router.query.job_id}&mode=preview`,
-              'blank',
             );
           },
         }}

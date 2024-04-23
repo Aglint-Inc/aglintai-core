@@ -25,13 +25,10 @@ import { CandidateListTypeDB, SearchHistoryType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { Candidate } from './AppoloSearch/types';
-import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
-import EmptyState from './Search/EmptyState';
-import { getRelevantCndidates } from './utils';
+import { CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
 import Loader from '../Common/Loader';
 import MuiPopup from '../Common/MuiPopup';
 import UITextField from '../Common/UITextField';
@@ -39,7 +36,10 @@ import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../JobsDashboard/JobPostCreateUpdate/utils';
-import { CandidateSearchState } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { Candidate } from './AppoloSearch/types';
+import { JDSearchModal } from './JobDescriprionModal/JDSearchModal';
+import EmptyState from './Search/EmptyState';
+import { getRelevantCndidates } from './utils';
 
 function CandidateSearchHistory() {
   const router = useRouter();
@@ -92,7 +92,7 @@ function CandidateSearchHistory() {
           .from('candidates')
           .select()
           .eq('recruiter_id', recruiter.id),
-      ) as SearchHistoryType[];
+      );
 
       if (history.length === 0) {
         setIsCandidates(false);
@@ -111,7 +111,7 @@ function CandidateSearchHistory() {
           .from('candidate_search_history')
           .delete()
           .eq('id', deleteHistoryId),
-      ) as SearchHistoryType[];
+      );
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
     } catch (err) {
       setHistory((p) => p.filter((p) => p.id !== deleteHistoryId));
@@ -324,7 +324,7 @@ function CandidateSearchHistory() {
     try {
       supabaseWrap(
         await supabase.from('candidate_list').delete().eq('id', deleteList.id),
-      ) as CandidateListTypeDB[];
+      );
       setList((p) => p.filter((p) => p.id !== deleteList.id));
     } catch (err) {
       toast.error(API_FAIL_MSG);
@@ -517,7 +517,8 @@ function CandidateSearchHistory() {
                         ) : (
                           list.map((list) => (
                             <SavedList
-                              isCheckboxVisible={false}
+                              // isInlineEditVisible={editList?.id === list.id}
+
                               slotInputTextSavedList={
                                 <Stack
                                   onClick={(e) => {
@@ -566,10 +567,11 @@ function CandidateSearchHistory() {
                                   }, 100);
                                 },
                               }}
+                              isCardVisible={editList?.id !== list.id}
                               isEditVisible={editList?.id !== list.id}
                               key={list.id}
                               textRole={list.name}
-                              textCountCandidate={`(${list.candidates.length} candidates)`}
+                              textCountCandidate={`${list.candidates.length} candidates`}
                               onClickList={{
                                 onClick: () => {
                                   router.push(
@@ -782,7 +784,9 @@ function CandidateSearchHistory() {
           textDesc={
             'Are you sure you want to delete this list? Once deleted, it cannot be recovered.'
           }
-          textHeader={`Delete ${list.filter((l) => l.id === deleteList?.id)[0]?.name || ''}`}
+          textHeader={`Delete ${
+            list.filter((l) => l.id === deleteList?.id)[0]?.name || ''
+          }`}
           onClickCancel={{
             onClick: () => {
               setDeleteList(null);

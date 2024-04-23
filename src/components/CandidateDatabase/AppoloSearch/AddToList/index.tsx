@@ -7,18 +7,24 @@ import {
   AddToList,
   ButtonPrimarySmall,
   CdSavedList,
-  Checkbox,
   SavedList,
-  SavedListMenu,
+  SavedListMenu
 } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useBoundStore } from '@/src/store';
 import { CandidateListTypeDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
+import {
+  setIsSelectAll,
+  setLists,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 
 function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const router = useRouter();
@@ -31,18 +37,16 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
   const handleClosePop = () => {
     setAnchorEl(null);
   };
-  const candidateLists = useBoundStore((state) => state.lists);
-  const setCandidateLists = useBoundStore((state) => state.setLists);
-  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
+  const candidateLists = useCandidateStore((state) => state.lists);
+  const selectedCandidate = useCandidateStore(
+    (state) => state.selectedCandidate,
   );
-  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
+
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
   );
-  const isSelectAll = useBoundStore((state) => state.isSelectAll);
-  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
+
+  const isSelectAll = useCandidateStore((state) => state.isSelectAll);
   const [text, setText] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [selectedList, setSelectedList] = useState<CandidateListTypeDB[]>([]);
@@ -55,7 +59,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       .select();
     if (!error) {
       setText('');
-      setCandidateLists([...candidateLists, data[0]]);
+      setLists([...candidateLists, data[0]]);
       setIsInputVisible(false);
     } else {
       toast.error('Something went wrong! Please try again later.');
@@ -78,7 +82,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       const oldList = candidateLists.filter((list) => {
         return !selectedList.find((l) => l.id === list.id);
       });
-      setCandidateLists([...oldList, ...data]);
+      setLists([...oldList, ...data]);
       setSelectedList([]);
     } else {
       toast.error('Something went wrong! Please try again later.');
@@ -104,7 +108,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
         const oldList = candidateLists.filter((list) => {
           return !selectedList.find((l) => l.id === list.id);
         });
-        setCandidateLists([...oldList, ...data]);
+        setLists([...oldList, ...data]);
         setSelectedCandidates([]);
         setSelectedList([]);
         if (isSelectAll) {
@@ -266,19 +270,19 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
               )}
               {candidateLists.map((list) => (
                 <SavedList
-                  slotCheckbox={
-                    <Checkbox
-                      isChecked={Boolean(
-                        selectedList.find((l) => l.id === list.id),
-                      )}
-                      onClickCheck={{
-                        onClick: async (e) => {
-                          e.stopPropagation();
-                          checkboxHandler(list);
-                        },
-                      }}
-                    />
-                  }
+                  // slotCheckbox={
+                  //   <Checkbox
+                  //     isChecked={Boolean(
+                  //       selectedList.find((l) => l.id === list.id),
+                  //     )}
+                  //     onClickCheck={{
+                  //       onClick: async (e) => {
+                  //         e.stopPropagation();
+                  //         checkboxHandler(list);
+                  //       },
+                  //     }}
+                  //   />
+                  // }
                   key={list.id}
                   textRole={list.name}
                   textCountCandidate={`(${list.candidates.length} candidates)`}

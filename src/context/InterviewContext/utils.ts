@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 export async function updateFeedbackOnJobApplications(
   application_id: any,
   jobDetails: any,

@@ -23,8 +23,6 @@
   flex-direction: column;
   align-items: center;
   flex: 1;
-
-  border: 1px solid #e9ebed;
 }
 
 .dash-chat-box-header {
@@ -384,6 +382,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .svg-icon {
   display: flex;
   width: 100%;
@@ -502,6 +504,12 @@
   color: var(--green600-40a2ee5f);
 }
 
+@media screen and (max-width: 767px) {
+  .text-lg.fw-semibold.responsive-text {
+    font-size: 14px;
+  }
+}
+
 .text-lg.text-align-center.no-wrap-company {
   flex: 0 0 auto;
 }
@@ -544,8 +552,18 @@
   letter-spacing: -0.45px;
 }
 
+@media screen and (max-width: 767px) {
+  .text-lg.text-grey-700.responsive-text {
+    font-size: 14px;
+  }
+}
+
 .text-lg.text-gray-400 {
   color: hsla(204.00000000000003, 8.93%, 78.04%, 1.00);
+}
+
+.text-blue-500 {
+  color: var(--blue500-72579298);
 }
 
 .initial-prompts-wrapper {

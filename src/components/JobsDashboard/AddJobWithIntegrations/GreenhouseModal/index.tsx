@@ -25,9 +25,11 @@ import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import LoaderLever from '../Loader';
+import { POSTED_BY } from '../utils';
 import FetchingJobsLever from './Loader';
 import { ExtendedJobGreenhouse, JobGreenhouse } from './types';
 import {
@@ -37,14 +39,12 @@ import {
   filterJobs,
   getGreenhouseStatusColor,
 } from './utils';
-import LoaderLever from '../Loader';
-import { POSTED_BY } from '../utils';
 
 export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead } = useJobs();
+  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
@@ -132,6 +132,7 @@ export function GreenhouseModal() {
         });
 
         await supabase.from('job_reference').insert(astJobsObj).select();
+        await experimental_handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
         await createJobApplications(jobsObj, recruiter.greenhouse_key);
         //updating jobsData
@@ -141,7 +142,7 @@ export function GreenhouseModal() {
           ...prev,
           greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}&ats=true`);
+        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       } else {
         toast.error(
           'Sorry unable to import. Please try again later or contact support.',

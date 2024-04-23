@@ -1,7 +1,24 @@
 import { createContext, ReactNode, useContext } from 'react';
 
 import useJobActions from './hooks';
-import { initialJobContext } from './utils';
+import { JobContext } from './types';
+
+export const initialJobContext = {
+  jobs: undefined,
+  jobsData: { jobs: undefined },
+  handleJobRead: undefined,
+  handleJobCreate: undefined,
+  handleJobAsyncUpdate: undefined,
+  handleJobUpdate: undefined,
+  handleUIJobUpdate: undefined,
+  handleJobPublish: undefined,
+  handleJobDelete: undefined,
+  handleGetJob: undefined,
+  experimental_handleGenerateJd: undefined,
+  handleJobRefresh: undefined,
+  experimental_handleRegenerateJd: undefined,
+  initialLoad: false,
+};
 
 const JobsContext = createContext(initialJobContext);
 
@@ -12,7 +29,7 @@ const JobsProvider = ({ children }: { children: ReactNode }) => {
 
 export default JobsProvider;
 
-export const useJobs = () => {
+export const useJobs = (): JobContext => {
   const value = useContext(JobsContext);
   return { ...value };
 };

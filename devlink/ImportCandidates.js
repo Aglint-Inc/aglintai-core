@@ -109,6 +109,10 @@ export function ImportCandidates({
           </_Builtin.TabsPane>
         </_Builtin.TabsContent>
       </_Builtin.TabsWrapper>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22ImportCandidates_ic-tab-link-block__%22%5D%7B%0Abackground-color%3A%23f8f9f9%20!important%3B%0A%7D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

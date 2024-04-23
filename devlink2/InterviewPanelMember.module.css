@@ -1,0 +1,49 @@
+.panelmember {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.panel_image {
+  position: relative;
+  z-index: 1;
+
+  overflow: visible;
+  width: 24px;
+  height: 24px;
+
+  border-radius: 100px;
+
+  background-color: hsla(0, 0.00%, 78.67%, 1.00);
+}
+
+.slot-panel_member-avatar {
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+}
+
+.is_selected_check {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+  border-radius: 100px;
+
+  box-shadow: 0 0 0 1px hsla(157.9816513761468, 61.58%, 34.71%, 1.00);
+}
+
+.embed_check {
+  position: relative;
+  left: 4px;
+  bottom: -4px;
+  display: flex;
+  justify-content: center;
+}

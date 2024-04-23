@@ -11,7 +11,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import {
   STATE_ASHBY_DIALOG,
   STATE_GREENHOUSE_DIALOG,
-  STATE_LEVER_DIALOG,
+  STATE_LEVER_DIALOG
 } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -32,16 +32,16 @@ function JobSubNavbar() {
       <AddJob />
       <NavJobSubLink
         onClickJobAll={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=all`),
+          onClick: () => router.push(`${pageRoutes.JOBS}?status=all`)
         }}
         onClickJobActive={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=published`),
+          onClick: () => router.push(`${pageRoutes.JOBS}?status=published`)
         }}
         onClickJobInactive={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=draft`),
+          onClick: () => router.push(`${pageRoutes.JOBS}?status=draft`)
         }}
         onClickJobClosed={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=closed`),
+          onClick: () => router.push(`${pageRoutes.JOBS}?status=closed`)
         }}
         isJobAll={router.query.status === 'all'}
         activeCount={
@@ -88,7 +88,7 @@ function AddJob() {
         onClose={handleClosePop}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         transformOrigin={{ vertical: -14, horizontal: 0 }}
         slotProps={{
@@ -96,9 +96,9 @@ function AddJob() {
             style: {
               border: 'none',
               borderRadius: 'none',
-              overflow: 'visible !important',
-            },
-          },
+              overflow: 'visible !important'
+            }
+          }
         }}
       >
         <CreateJob
@@ -139,19 +139,19 @@ function AddJob() {
                   ...prev,
                   ashby: {
                     open: true,
-                    step: STATE_ASHBY_DIALOG.API,
-                  },
+                    step: STATE_ASHBY_DIALOG.API
+                  }
                 }));
               } else {
                 setIntegration((prev) => ({
                   ...prev,
                   ashby: {
                     open: true,
-                    step: STATE_ASHBY_DIALOG.LISTJOBS,
-                  },
+                    step: STATE_ASHBY_DIALOG.LISTJOBS
+                  }
                 }));
               }
-            },
+            }
           }}
           onClickGreenhouse={{
             onClick: () => {
@@ -160,39 +160,39 @@ function AddJob() {
                   ...prev,
                   greenhouse: {
                     open: true,
-                    step: STATE_GREENHOUSE_DIALOG.API,
-                  },
+                    step: STATE_GREENHOUSE_DIALOG.API
+                  }
                 }));
               } else {
                 setIntegration((prev) => ({
                   ...prev,
                   greenhouse: {
                     open: true,
-                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS,
-                  },
+                    step: STATE_GREENHOUSE_DIALOG.LISTJOBS
+                  }
                 }));
               }
-            },
+            }
           }}
           onClickCreateNewJob={{
             onClick: () => {
-              router.push('/jobs/new?flow=manual');
-            },
+              router.push(pageRoutes.CREATEJOB);
+            }
           }}
           onClickLeverImport={{
             onClick: () => {
               if (!recruiter.lever_key) {
                 setIntegration((prev) => ({
                   ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.API },
+                  lever: { open: true, step: STATE_LEVER_DIALOG.API }
                 }));
               } else {
                 setIntegration((prev) => ({
                   ...prev,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS }
                 }));
               }
-            },
+            }
           }}
         />
       </Popover>
@@ -220,7 +220,7 @@ function AddJob() {
       </Dialog>
       <AddNewJob
         onClickAdd={{
-          onClick: handleClick,
+          onClick: handleClick
         }}
       />
     </>

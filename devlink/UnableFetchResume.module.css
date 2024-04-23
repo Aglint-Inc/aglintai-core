@@ -369,6 +369,25 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .color-grey-600.max-width-350 {
   max-width: 350px;
 }
@@ -412,7 +431,6 @@
 
 .button-wrappers-unable-fetch {
   display: flex;
-  margin-top: 10px;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 }

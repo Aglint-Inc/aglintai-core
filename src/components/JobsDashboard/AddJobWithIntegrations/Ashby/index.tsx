@@ -25,20 +25,20 @@ import { STATE_ASHBY_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import LoaderLever from '../Loader';
+import { POSTED_BY } from '../utils';
 import FetchingJobsLever from './Loader';
 import { JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
-import LoaderLever from '../Loader';
-import { POSTED_BY } from '../utils';
 
 export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead } = useJobs();
+  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedAshbyPostings, setSelectedAshbyPostings] = useState<
@@ -112,6 +112,7 @@ export function AshbyModalComp() {
           };
         });
         await supabase.from('job_reference').insert(astJobsObj).select();
+        await experimental_handleGenerateJd(newJobs[0].id);
         // await axios.post('/api/ashby/batchsave', {
         //   recruiter_id: recruiter.id,
         // });
@@ -123,7 +124,7 @@ export function AshbyModalComp() {
           ...prev,
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.EDITJOBS}?job_id=${newJobs[0].id}&ats=true`);
+        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       }
     } catch (error) {
       toast.error(

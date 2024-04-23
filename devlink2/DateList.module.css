@@ -1,0 +1,10 @@
+.div-block-1089 {
+  display: flex;
+  margin-top: 16px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.width-210 {
+  width: 210px;
+}

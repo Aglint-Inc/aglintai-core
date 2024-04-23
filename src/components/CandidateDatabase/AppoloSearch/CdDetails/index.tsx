@@ -11,26 +11,28 @@ import {
 } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
-import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import AddToListComp from '../AddToList';
-import { Candidate } from '../types';
-import { updateCredits } from '../utils';
 import MuiAvatar from '../../../Common/MuiAvatar';
 import CompanyLogo from '../../../JobApplicationsDashboard/Common/CompanyLogo';
+import AddToListComp from '../AddToList';
+import {
+  setCandidates,
+  setEmailOutReach,
+  setSelectedCandidate,
+  useCandidateStore,
+} from '../store';
+import { Candidate } from '../types';
+import { updateCredits } from '../utils';
 
 function CandidateDetail() {
-  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
+  const selectedCandidate = useCandidateStore(
+    (state) => state.selectedCandidate,
   );
-  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
-  const candidates = useBoundStore((state) => state.candidates);
-  const setCandidates = useBoundStore((state) => state.setCandidates);
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
+  const candidates = useCandidateStore((state) => state.candidates);
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
   const [emailFetch, setEmailFetch] = useState(false);
   const [emailError, setEmailError] = useState(false);
 

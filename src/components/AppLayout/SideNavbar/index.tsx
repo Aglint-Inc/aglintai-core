@@ -1,28 +1,67 @@
 import { Stack } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
-import posthog from 'posthog-js';
-import { useMemo } from 'react';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
+import { useEffect } from 'react';
 
 import {
+  NavAssessment,
   NavAssistant,
   NavCd,
   NavCompanySetting,
+  NavIntegration,
   NavJobs,
+  NavPhoneScreening,
+  NavScheduler,
+  NavTask,
   NavTickets,
 } from '@/devlink';
+import { AssistantLogo } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import { useSupportContext } from '@/src/context/SupportContext/SupportContext';
+import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 function SideNavbar() {
-  let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
-  let isSupportEnabled = posthog.isFeatureEnabled('isSupportEnabled');
-  let isSourcingEnabled = posthog.isFeatureEnabled('isSourcingEnabled');
-
   const router = useRouter();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const pathName = usePathname();
+  const { loading, isAllowed } = useAuthDetails();
+
+  const isAssistantEnabled = useFeatureFlagEnabled('isAssistantEnabled');
+  const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
+  const isAgentEnabled = useFeatureFlagEnabled('isAgentEnabled');
+  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
+  const isPhoneScreeningEnabled = useFeatureFlagEnabled(
+    'isPhoneScreeningEnabled',
+  );
+  let isTasksEnabled = useFeatureFlagEnabled('isTasksEnabled');
+
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const navList = [
+    {
+      icon: <AssistantLogo />,
+      text: 'Agent',
+      SubComponents: null,
+      route: pageRoutes.AGENT,
+      comingsoon: false,
+      isvisible: isAgentEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavTask isActive={false} />,
+      text: 'Tasks',
+      SubComponents: null,
+      route: pageRoutes.TASKS + '?myTasks',
+      comingsoon: false,
+      isvisible: isTasksEnabled,
+      roles: [
+        'admin',
+        'interviewer',
+        'recruiter',
+      ] as Database['public']['Enums']['user_roles'][],
+    },
     {
       icon: <NavJobs isActive={false} />,
       text: 'Jobs',
@@ -30,6 +69,10 @@ function SideNavbar() {
       route: pageRoutes.JOBS,
       comingsoon: false,
       isvisible: true,
+      roles: [
+        'admin',
+        'recruiter',
+      ] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavCd isActive={false} />,
@@ -38,6 +81,10 @@ function SideNavbar() {
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
       isvisible: isSourcingEnabled,
+      roles: [
+        'admin',
+        'recruiter',
+      ] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavTickets isActive={false} />,
@@ -46,6 +93,7 @@ function SideNavbar() {
       route: pageRoutes.SUPPORT,
       comingsoon: false,
       isvisible: isSupportEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavAssistant isActive={false} />,
@@ -54,6 +102,56 @@ function SideNavbar() {
       route: pageRoutes.ASSISTANT,
       comingsoon: false,
       isvisible: isAssistantEnabled,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavPhoneScreening isActive={false} />,
+      text: 'Phone Screening',
+      SubComponents: null,
+      route: pageRoutes.SCREENING,
+      comingsoon: false,
+      isvisible: isPhoneScreeningEnabled,
+      roles: [
+        'admin',
+        'recruiter',
+        'scheduler',
+        'interviewer',
+      ] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavScheduler isActive={false} />,
+      text: 'Scheduler',
+      SubComponents: null,
+      route: pageRoutes.SCHEDULING,
+      comingsoon: false,
+      isvisible: isSchedulingEnabled,
+      roles: [
+        'admin',
+        'recruiter',
+        'scheduler',
+        'interviewer',
+      ] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavAssessment isActive={false} />,
+      text: 'Assessment',
+      SubComponents: null,
+      route: pageRoutes.ASSESSMENTS,
+      comingsoon: false,
+      isvisible: isAssessmentEnabled,
+      roles: [
+        'admin',
+        'recruiter',
+      ] as Database['public']['Enums']['user_roles'][],
+    },
+    {
+      icon: <NavIntegration isActive={false} />,
+      text: 'Integrations',
+      SubComponents: null,
+      route: '/integrations',
+      comingsoon: false,
+      isvisible: true,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
     {
       icon: <NavCompanySetting isActive={false} />,
@@ -62,131 +160,58 @@ function SideNavbar() {
       route: pageRoutes.COMPANY,
       comingsoon: false,
       isvisible: true,
+      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
   ];
 
-  const newNaveList = useMemo(() => {
-    let tempList = navList;
-    // if (recruiter?.id === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_ID) {
-    //   tempList = tempList.filter((x) => x.route === pageRoutes.SUPPORT);
-    // }
-    if (recruiterUser?.role.toLowerCase() !== 'admin')
-      tempList = tempList.filter((x) => x.text !== 'Company Settings');
-    return tempList;
-  }, [recruiter, recruiterUser]);
+  useEffect(() => {
+    const tempR = navList.find((item) => {
+      return pathName?.includes(item.route);
+    })?.roles;
+    if (tempR && !isAllowed(tempR)) {
+      toast.error("You don't have Access to this Module.");
+      router.replace(pageRoutes.LOADING);
+    }
+  }, [pathName]);
+
   return (
     <>
-      {newNaveList.map((item, i) => {
-        if (item.isvisible)
-          return (
-            <Stack
-              key={i}
-              onClick={() => {
-                if (router.pathname !== item.route) {
-                  router.push(item.route);
+      {!loading &&
+        navList
+          .filter((item) => (item.roles ? isAllowed(item.roles) : true))
+          .filter((item) => item.isvisible)
+          .map((item, i) => {
+            return (
+              <Stack
+                key={i}
+                onClick={() => {
+                  if (router.pathname !== item.route) {
+                    router.push(item.route);
+                  }
+                }}
+                direction={'row'}
+                alignItems={'center'}
+                color={'white.700'}
+                borderRadius={'10px'}
+                bgcolor={
+                  router.pathname.includes(
+                    item.route
+                      ?.replace('/history', '')
+                      .replaceAll('?myTasks', ''),
+                  ) && 'rgba(233, 235, 237, 0.5)'
                 }
-              }}
-              direction={'row'}
-              alignItems={'center'}
-              color={'white.700'}
-              borderRadius={'10px'}
-              bgcolor={
-                router.pathname.includes(item.route?.replace('/history', '')) &&
-                'rgba(233, 235, 237, 0.5)'
-              }
-              sx={{
-                '&:hover': {
-                  bgcolor: 'rgba(233, 235, 237, 0.5)',
-                },
-              }}
-            >
-              {item.icon}
-            </Stack>
-          );
-      })}
+                sx={{
+                  '&:hover': {
+                    bgcolor: 'rgba(233, 235, 237, 0.5)',
+                  },
+                }}
+              >
+                {item.icon}
+              </Stack>
+            );
+          })}
     </>
   );
 }
 
 export default SideNavbar;
-
-// function SupportSubNavbar() {
-//   const router = useRouter();
-//   const { allFilter } = useSupportContext();
-//   return (
-//     <>
-//       <TicketSublink
-//         allCount={allFilter.all}
-//         isAllActive={router.query.status === 'all'}
-//         onClickAll={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'all'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=all`);
-//           },
-//         }}
-//         inProgressCount={allFilter['in progress']}
-//         isInProgressActive={router.query.status === 'in progress'}
-//         onClickInProgress={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'in progress'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=in progress`);
-//           },
-//         }}
-//         resolvedCount={allFilter.Resolved}
-//         isResolvedActive={router.query.status === 'resolved'}
-//         onClickResolve={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'resolved'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=resolved`);
-//           },
-//         }}
-//         openCount={allFilter.open}
-//         isOpenActive={router.query.status === 'open'}
-//         onClickOpen={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'open'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=open`);
-//           },
-//         }}
-//         onHoldCount={allFilter['on hold']}
-//         isOnHoldActive={router.query.status === 'on hold'}
-//         onClickOnHold={{
-//           style: {
-//             borderRadius: '8px',
-//             backgroundColor:
-//               router.query.status === 'on hold'
-//                 ? 'rgba(255,255,255,0.1)'
-//                 : 'transparent',
-//           },
-//           onClick: () => {
-//             router.push(`${pageRoutes.SUPPORT}?status=on hold`);
-//           },
-//         }}
-//       />
-//     </>
-//   );
-// }

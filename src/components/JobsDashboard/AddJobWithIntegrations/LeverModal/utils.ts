@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { JobInsert } from '@/src/queries/job/types';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { processEmailsInBatches } from '../GreenhouseModal/utils';
@@ -204,48 +206,71 @@ export const fetchAllJobs = async (apiKey) => {
   return allJobs;
 };
 
-export const createJobObject = async (selectedLeverPostings, recruiter) => {
+export const createJobObject = async (
+  selectedLeverPostings,
+  recruiter,
+): Promise<JobInsert[]> => {
   const dbJobs = selectedLeverPostings.map((post) => {
     const id = uuidv4();
     return {
       draft: {
-        id: id,
         location: post.categories.location,
         job_title: post.text,
         description: post.content.descriptionHtml,
-        email_template: recruiter.email_template,
-        department: post.categories.department || '',
-        recruiter_id: recruiter.id,
-        posted_by: POSTED_BY.LEVER,
+        department: 'support',
         job_type:
           post.categories.commitment === 'Part Time'
-            ? 'parttime'
+            ? 'part time'
             : post.categories.commitment === 'Internship'
               ? 'internship'
-              : 'fulltime',
+              : 'full time',
         workplace_type:
           post.workplaceType === 'hybrid'
             ? 'hybrid'
             : post.workplaceType === 'onsite'
-              ? 'onsite'
-              : 'offsite',
+              ? 'on site'
+              : 'off site',
         company: recruiter.name,
-        skills: [],
-        status: 'draft',
-        parameter_weights: {
-          skills: 0,
-          education: 0,
-          experience: 0,
+        jd_json: {
+          educations: [],
+          level: 'Mid-level',
+          rolesResponsibilities: [],
+          skills: [],
+          title: post.text,
         },
-        video_assessment: false,
       },
+      description_hash: hashCode(post?.descriptionHtml ?? ''),
       location: post.categories.location,
       job_title: post.text,
       status: 'draft',
+      scoring_criteria_loading: true,
       posted_by: POSTED_BY.LEVER,
       recruiter_id: recruiter.id,
       id: id,
-    };
+      description: post.content.descriptionHtml,
+      email_template: recruiter.email_template,
+      department: 'support',
+      job_type:
+        post.categories.commitment === 'Part Time'
+          ? 'parttime'
+          : post.categories.commitment === 'Internship'
+            ? 'internship'
+            : 'fulltime',
+      workplace_type:
+        post.workplaceType === 'hybrid'
+          ? 'hybrid'
+          : post.workplaceType === 'onsite'
+            ? 'onsite'
+            : 'offsite',
+      company: recruiter.name,
+      skills: [],
+      parameter_weights: {
+        skills: 0,
+        education: 0,
+        experience: 0,
+      },
+      video_assessment: false,
+    } as JobInsert;
   });
   return dbJobs;
 };

@@ -1,9 +1,18 @@
 /* eslint-disable security/detect-object-injection */
-import { Collapse, Dialog, Stack } from '@mui/material';
+import { Collapse, Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
+// import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import React from 'react';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
+import { FileUploader } from 'react-drag-drop-files';
 
 import {
   AssessmentInvite,
@@ -17,59 +26,69 @@ import {
   CandidateSideDrawer,
   CandidateSkill,
   CandidateSkillPills,
-  DetailedFeedback,
-  DetailedFeedbackButton,
-  DetailedFeedbackCard,
   DetailedFeedbackCardSmall,
   FeedbackScore,
-  InterviewAiTranscriptCard,
-  InterviewCandidateCard,
-  InterviewDetailedFeedback,
   InterviewResultStatus,
   ResumeFeedbackScore,
   UnableFetchResume,
 } from '@/devlink';
 import {
   AnalysisBlock,
+  ButtonWide,
+  JobCardSchedule,
   ResAbsentError,
   ResumeErrorBlock,
+  ScreeningLandingPop,
   ScrQuestionListItem,
   SidebarAnalysisBlock,
+  SidebarBlockNotScheduled,
   SidebarScreening,
+  StatusBadge,
   SummaryBlock,
+  UploadCandidateResume,
 } from '@/devlink2';
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
-import CustomProgress from '@/src/components/Common/CustomProgress';
+import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
+import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
+import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {
   scoreWheelDependencies,
   ScoreWheelParams,
 } from '@/src/components/Common/ScoreWheel';
 import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore';
+import UITextField from '@/src/components/Common/UITextField';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
-import interviewerList from '@/src/utils/interviewer_list';
+import { palette } from '@/src/context/Theme/Theme';
+import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
+// import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
-import ConversationCard from './ConversationCard';
-import ResumePreviewer from './ResumePreviewer';
-import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
 import CandidateAvatar from '../../Common/CandidateAvatar';
 import CompanyLogo from '../../Common/CompanyLogo';
 import EmailIcon from '../../Common/Icons/emailIcon';
 import LinkedInIcon from '../../Common/Icons/linkedinIcon';
 import PhoneIcon from '../../Common/Icons/phoneIcon';
-import InterviewScore from '../../Common/InterviewScore';
+import InterviewScore, {
+  getInterviewScores,
+} from '../../Common/InterviewScore';
+// import InterviewScore, {
+//   getInterviewScores,
+// } from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
 import CopyWrapper from '../../Common/Wrappers/copyWrapper';
 import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
+import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
+import useUploadCandidate from '../../ImportManualCandidates/hooks';
 import {
   capitalize,
   formatTimeStamp,
@@ -80,6 +99,9 @@ import {
   handleOngoingWarning,
   mapScoreToAnalysis,
 } from '../../utils';
+// import ConversationCard from './ConversationCard';
+import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
+import ResumePreviewer from './ResumePreviewer';
 
 const ApplicationDetails = ({
   open,
@@ -87,15 +109,16 @@ const ApplicationDetails = ({
   application,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+  hideNextPrev,
 }: {
   open: boolean;
   onClose: () => void;
   application: JobApplication;
   handleSelectNextApplication?: () => void;
   handleSelectPrevApplication?: () => void;
+  hideNextPrev: boolean;
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(open);
-  const [openFeedback, setOpenFeedback] = useState(false);
 
   const candidateImage = application ? (
     <RedirectWrapper
@@ -121,10 +144,6 @@ const ApplicationDetails = ({
     }
   }, [application === undefined]);
 
-  useEffect(() => {
-    setOpenFeedback(false);
-  }, [application?.id ?? null]);
-
   const handleClose = () => {
     setDrawerOpen(false);
     setTimeout(() => {
@@ -144,29 +163,14 @@ const ApplicationDetails = ({
       }}
     >
       {application ? (
-        !openFeedback ? (
-          <NewJobApplicationSideDrawer
-            application={application}
-            onClose={() => handleClose()}
-            setOpenFeedback={setOpenFeedback}
-            candidateImage={candidateImage}
-            handleSelectNextApplication={handleSelectNextApplication}
-            handleSelectPrevApplication={handleSelectPrevApplication}
-          />
-        ) : (
-          application?.assessment_results?.feedback && (
-            <NewDetailedFeedback
-              application={application}
-              candidateImage={candidateImage}
-              onNext={handleSelectNextApplication}
-              onPrev={handleSelectPrevApplication}
-              onBack={() => {
-                setOpenFeedback(false);
-              }}
-              onClose={() => handleClose()}
-            />
-          )
-        )
+        <NewJobApplicationSideDrawer
+          application={application}
+          onClose={() => handleClose()}
+          candidateImage={candidateImage}
+          handleSelectNextApplication={handleSelectNextApplication}
+          handleSelectPrevApplication={handleSelectPrevApplication}
+          hideNextPrev={hideNextPrev}
+        />
       ) : (
         <></>
       )}
@@ -176,98 +180,12 @@ const ApplicationDetails = ({
 
 export default ApplicationDetails;
 
-const NewDetailedFeedback = ({
-  application,
-  candidateImage,
-  onNext,
-  onPrev,
-  onBack,
-  onClose,
+export const DetailedInterviewResultParams = ({
+  resultParamsObj,
 }: {
-  application: JobApplication;
-  candidateImage: React.JSX.Element;
-  onNext: () => void;
-  onPrev: () => void;
-  onBack: () => void;
-  onClose: () => void;
+  resultParamsObj: any;
 }) => {
-  const name = getCandidateDetails(application, 'name');
-  return (
-    <InterviewDetailedFeedback
-      onClickBack={{
-        onClick: () => onBack(),
-      }}
-      onClickNext={{
-        onClick: () => onNext(),
-      }}
-      onClickPrev={{
-        onClick: () => onPrev(),
-      }}
-      onClickClose={{
-        onClick: () => onClose(),
-      }}
-      slotCandidateImage={candidateImage}
-      textName={name.value}
-      slotDetailedFeedback={
-        <DetailedInterviewFeedbackParams
-          feedbackParamsObj={application.assessment_results.feedback}
-        />
-      }
-      slotTranscript={
-        <TranscriptParams
-          feedbackParams={application.assessment_results.conversation}
-          candidateImage={candidateImage}
-        />
-      }
-    />
-  );
-};
-
-const TranscriptParams = ({
-  feedbackParams,
-  candidateImage,
-}: {
-  feedbackParams: any;
-  candidateImage: React.JSX.Element;
-}) => {
-  return feedbackParams.map((con, i) => {
-    return (
-      <>
-        <InterviewAiTranscriptCard
-          key={i}
-          textAiScript={con.content}
-          slotAiImage={
-            <svg
-              width='24'
-              height='24'
-              viewBox='0 0 36 36'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M27.4875 16.8075C24.255 15.9975 22.635 15.6 21.5175 14.4825C20.4 13.3575 20.0025 11.745 19.1925 8.5125L18 3.75L16.8075 8.5125C15.9975 11.745 15.6 13.365 14.4825 14.4825C13.3575 15.6 11.745 15.9975 8.5125 16.8075L3.75 18L8.5125 19.1925C11.745 20.0025 13.365 20.4 14.4825 21.5175C15.6 22.6425 15.9975 24.255 16.8075 27.4875L18 32.25L19.1925 27.4875C20.0025 24.255 20.4 22.635 21.5175 21.5175C22.6425 20.4 24.255 20.0025 27.4875 19.1925L32.25 18L27.4875 16.8075Z'
-                fill='#FF6224'
-              ></path>
-            </svg>
-          }
-          textAiName={'Interviewer'}
-        />
-        <InterviewCandidateCard
-          key={i}
-          textCandidateScript={con.userContent}
-          slotCandidateImage={candidateImage}
-        />
-      </>
-    );
-  });
-};
-
-export const DetailedInterviewFeedbackParams = ({
-  feedbackParamsObj,
-}: {
-  feedbackParamsObj: any;
-}) => {
-  return feedbackParamsObj.map((f, i) => {
+  return resultParamsObj.map((f, i) => {
     const color =
       f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
     const circularScore = (
@@ -279,7 +197,7 @@ export const DetailedInterviewFeedbackParams = ({
       <DetailedFeedbackCardSmall
         key={i}
         textHeader={capitalize(f.topic)}
-        textDescription={f.feedback}
+        textDescription={f.result}
         textColorScore={{ style: { color: color } }}
         slotScore={circularScore}
         textScorePercentage={`${f.rating}%`}
@@ -291,18 +209,20 @@ export const DetailedInterviewFeedbackParams = ({
 const NewJobApplicationSideDrawer = ({
   application,
   onClose,
-  setOpenFeedback,
   candidateImage,
   handleSelectNextApplication,
   handleSelectPrevApplication,
+  hideNextPrev,
 }: {
   application: JobApplication;
   onClose: () => void;
-  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
   candidateImage: React.JSX.Element;
   handleSelectNextApplication: () => void;
   handleSelectPrevApplication: () => void;
+  hideNextPrev: boolean;
 }) => {
+  const { activeSections } = useJobApplications();
+  const { interviewPlanEnabled } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -313,50 +233,144 @@ const NewJobApplicationSideDrawer = ({
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
   const overview = getCandidateDetails(application, 'overview');
+  const firstName = getCandidateDetails(application, 'name');
 
   const [openResume, setOpenResume] = useState(false);
+  const [isPhonePopUp, setPhonePopUp] = useState(false);
+  const [phoneInput, setPhoneInput] = useState('');
+  const [parametersInput, setParameter] = useState(undefined);
+  const { recruiterUser } = useAuthDetails();
 
   const processState = getApplicationProcessState(application);
-
+  const makePhoneCll = async () => {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/create-screening-phone-call`,
+      {
+        from: '+12512066348',
+        to: phoneInput,
+        agent: 'd874c616f28ef76fe4eefe45af69cda7',
+        candidate_id: application.candidate_id,
+        begin_message: `Hi ${firstName.value}, this is ${recruiterUser.first_name} calling from Aglint, California. We have your resume and we wanted few details from you to proceed to next step. If u are free could you share few details with us??`,
+        questions: parametersInput,
+      },
+    );
+    toast.success('Call Initiated');
+  };
+  const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
+    'isPhoneScreeningPhoneCallEnabled',
+  );
+  const isPhoneScreeningEnabled = activeSections.includes(
+    JobApplicationSections.SCREENING,
+  );
   return (
-    <CandidateSideDrawer
-      slotCandidateImage={candidateImage}
-      textName={name}
-      onClickPrev={{ onClick: () => handleSelectPrevApplication() }}
-      onClickNext={{ onClick: () => handleSelectNextApplication() }}
-      onClickClose={{
-        onClick: () => onClose(),
-      }}
-      slotSocialLink={<SocialsBlock application={application} />}
-      isOverviewVisible={overview.valid}
-      isLocationRoleVisible={jobTitle.valid || location.valid}
-      isRoleVisible={jobTitle.valid}
-      textRole={jobTitle.value}
-      isLocationVisible={location.valid}
-      textLocation={location.value}
-      isResumeVisible={
-        processState !== 'unavailable' && processState !== 'fetching'
-      }
-      onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
-      slotMoveTo={<></>}
-      slotOverview={
-        overview.valid && (
-          <OverviewBlock title={'Overview'} description={overview.value} />
-        )
-      }
-      slotCandidateDetails={
-        <>
-          <NewCandidateDetails
-            application={application}
-            setOpenFeedback={setOpenFeedback}
-            openResume={openResume}
-            setOpenResume={setOpenResume}
-          />
-        </>
-      }
-      isAppliedOnVisible={true}
-      textAppliedOn={creationDate}
-    />
+    <>
+      <CandidateSideDrawer
+        isPhoneScreeningVisible={
+          isPhoneScreeningEnabled && isPhoneScreeningPhoneCallEnabled
+        }
+        onClickPhoneScreening={{
+          onClick: () => {
+            setPhonePopUp(true);
+          },
+        }}
+        slotCandidateImage={candidateImage}
+        textName={name}
+        onClickPrev={{
+          onClick: () => handleSelectPrevApplication(),
+          style: {
+            display: hideNextPrev ? 'none' : 'block',
+          },
+        }}
+        onClickNext={{
+          onClick: () => handleSelectNextApplication(),
+          style: {
+            display: hideNextPrev ? 'none' : 'block',
+          },
+        }}
+        onClickClose={{
+          onClick: () => onClose(),
+        }}
+        slotSocialLink={<SocialsBlock application={application} />}
+        isOverviewVisible={overview.valid}
+        isLocationRoleVisible={jobTitle.valid || location.valid}
+        isRoleVisible={jobTitle.valid}
+        textRole={jobTitle.value}
+        isLocationVisible={location.valid}
+        textLocation={location.value}
+        isResumeVisible={
+          processState !== 'unavailable' && processState !== 'fetching'
+        }
+        onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
+        slotMoveTo={<></>}
+        slotOverview={
+          <>
+            {(interviewPlanEnabled?.data ?? false) && (
+              <InterviewStatusBlock application={application} />
+            )}
+            {overview.valid && (
+              <OverviewBlock title={'Overview'} description={overview.value} />
+            )}
+          </>
+        }
+        slotCandidateDetails={
+          <>
+            <NewCandidateDetails
+              application={application}
+              openResume={openResume}
+              setOpenResume={setOpenResume}
+            />
+          </>
+        }
+        isAppliedOnVisible={true}
+        textAppliedOn={creationDate}
+      />
+      <MuiPopup
+        props={{
+          open: isPhonePopUp,
+          onClose: () => {
+            ('');
+          },
+        }}
+      >
+        <ScreeningLandingPop
+          isDropdownVisible={true}
+          textHeading={'Make Phone Call'}
+          textLabel={''}
+          slotDropdown={
+            <UITextField
+              placeholder='Enter Call Fields'
+              value={parametersInput}
+              onChange={(e) => setParameter(e.target.value)}
+            />
+          }
+          slotScreeningNameInput={
+            <UITextField
+              placeholder='Enter Phone Number'
+              value={phoneInput}
+              onChange={(e) => setPhoneInput(e.target.value)}
+            />
+          }
+          slotButtonPrimaryRegular={
+            <ButtonWide
+              isEnabled={phoneInput !== ''}
+              textButton={'Submit'}
+              onClickButton={{
+                onClick: () => {
+                  makePhoneCll();
+                  setPhonePopUp(false);
+                },
+              }}
+            />
+          }
+          onClickClose={{
+            onClick: () => {
+              setPhonePopUp(false);
+              setParameter('');
+            },
+          }}
+        />
+      </MuiPopup>
+    </>
   );
 };
 
@@ -388,12 +402,11 @@ const SocialsBlock: React.FC<{ application: JobApplication }> = ({
   );
 };
 
-const NewCandidateDetails: React.FC<{
+export const NewCandidateDetails: React.FC<{
   application: JobApplication;
-  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, setOpenFeedback, openResume, setOpenResume }) => {
+}> = ({ application, openResume, setOpenResume }) => {
   const resume = application.candidate_files?.resume_json as any;
   const validity = getApplicationProcessState(application);
   const validApplication = validity === 'processed';
@@ -406,10 +419,7 @@ const NewCandidateDetails: React.FC<{
             openResume={openResume}
             setOpenResume={setOpenResume}
           />
-          <AssessmentSection
-            application={application}
-            setOpenFeedback={setOpenFeedback}
-          />
+          <AssessmentSection application={application} />
           <PhoneScreening application={application} />
           {validApplication && (
             <>
@@ -439,9 +449,10 @@ const NewCandidateDetails: React.FC<{
   );
 };
 
-const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
-  application,
-}) => {
+export const AnalysisBlockSection: React.FC<{
+  application: JobApplication;
+  noCollapse?: boolean;
+}> = ({ application, noCollapse = false }) => {
   const score_json = application.score_json as ScoreJson;
   const [collapse, setCollapse] = useState(true);
   const reasoning = score_json?.reasoning ?? null;
@@ -468,20 +479,33 @@ const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
   });
   return (
     <SidebarAnalysisBlock
+      propsStyle={{
+        style: {
+          border: noCollapse ? 'none' : '1px solid #E9EBED',
+          padding: noCollapse ? '0px' : '16px',
+        },
+      }}
       slotPill={<ResumeScore application={application} />}
       onclickArrow={{
         onClick: () => setCollapse((prev) => !prev),
         style: {
           cursor: 'pointer',
           transform: `rotate(${collapse ? '180deg' : '0deg'})`,
+          display: noCollapse ? 'none' : 'flex',
         },
       }}
       slotBody={
-        <Collapse in={collapse}>
+        noCollapse ? (
           <Stack gap={'20px'} marginTop={'20px'}>
             {analyses}
           </Stack>
-        </Collapse>
+        ) : (
+          <Collapse in={collapse}>
+            <Stack gap={'20px'} marginTop={'20px'}>
+              {analyses}
+            </Stack>
+          </Collapse>
+        )
       }
     />
   );
@@ -489,27 +513,17 @@ const AnalysisBlockSection: React.FC<{ application: JobApplication }> = ({
 
 const AssessmentSection: React.FC<{
   application: JobApplication;
-  setOpenFeedback: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ application, setOpenFeedback }) => {
+}> = ({ application }) => {
   const { section } = useJobApplications();
   const { isNotInvited, isPending, isSubmitted } = getAssessmentStatus(
     application.status_emails_sent,
-    {
-      feedback: application.assessment_results?.feedback ?? null,
-      created_at: application.assessment_results?.created_at ?? null,
-    },
+    getSafeAssessmentResult(application?.assessment_results),
   );
   if (isNotInvited && section === JobApplicationSections.ASSESSMENT)
     return <NewInterviewStatus application={application} pending={false} />;
   if (isPending && section === JobApplicationSections.ASSESSMENT)
     return <NewInterviewStatus application={application} pending={true} />;
-  if (isSubmitted)
-    return (
-      <NewInterviewScoreDetails
-        application={application}
-        setOpenFeedback={setOpenFeedback}
-      />
-    );
+  if (isSubmitted) return <InterviewScoreDetails application={application} />;
 };
 
 const NewInterviewStatus = ({
@@ -550,6 +564,7 @@ const NewInterviewStatus = ({
           source: section,
           destination: null,
         },
+        false,
         [purpose],
         new Set([application.id]),
       );
@@ -587,7 +602,7 @@ const NewInterviewStatus = ({
                   onClick: () => {
                     navigator.clipboard
                       .writeText(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.MOCKTEST}?id=${application.id}`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`,
                       )
                       .then(() => {
                         toast.success('Interview link copied');
@@ -616,10 +631,15 @@ const NewInterviewStatus = ({
   );
 };
 
-const NewInterviewScoreDetails: React.FC<{
-  application: JobApplication;
-  setOpenFeedback: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, setOpenFeedback }) => {
+const InterviewScoreDetails: React.FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const {
+    assessments: {
+      data: { jobAssessments },
+    },
+  } = useJobDetails();
+  const result = getInterviewScores(application, jobAssessments);
   const [collapse, setCollapse] = useState(false);
   const interviewScore = <InterviewScore application={application} />;
   return (
@@ -633,18 +653,10 @@ const NewInterviewScoreDetails: React.FC<{
         },
       }}
       slotInterviewFeedbackScore={
-        application.assessment_results.feedback && (
+        result && (
           <Collapse in={collapse}>
             <Stack gap={'12px'} marginTop={'12px'}>
-              <InterviewFeedbackParams
-                feedbackParamsObj={application.assessment_results.feedback}
-              />
-              <DetailedFeedbackButton
-                onClickDetailedFeedback={{
-                  onClick: () => setOpenFeedback(true),
-                  style: { paddingTop: '16px' },
-                }}
-              />
+              <InterviewResultParams resultParamsObj={result} />
             </Stack>
           </Collapse>
         )
@@ -653,7 +665,73 @@ const NewInterviewScoreDetails: React.FC<{
   );
 };
 
-const OverviewBlock = ({
+const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const router = useRouter();
+  const { section } = useJobApplications();
+  if (section !== JobApplicationSections.INTERVIEW) return <></>;
+  if (!application.schedule)
+    return (
+      <Stack
+        style={{
+          backgroundColor: '#f7f9fb',
+          padding: '16px',
+          borderRadius: '8px',
+        }}
+      >
+        <SidebarBlockNotScheduled
+          onClickSchedule={{
+            onClick: () => {
+              router.push(
+                `${pageRoutes.SCHEDULING}/application/${application.id}`,
+                undefined,
+                {
+                  shallow: true,
+                },
+              );
+            },
+          }}
+        />
+      </Stack>
+    );
+  return <InterviewScheduled application={application} />;
+};
+
+const InterviewScheduled: FC<{ application: JobApplication }> = ({
+  application,
+}) => {
+  const { push } = useRouter();
+  const schedule = application.schedule;
+  return (
+    <JobCardSchedule
+      onClickViewScheduler={{
+        onClick: () => {
+          push(
+            `${pageRoutes.SCHEDULING}/application/${application.id}`,
+            undefined,
+            {
+              shallow: true,
+            },
+          );
+        },
+      }}
+      slotStatusBadge={
+        <StatusBadge
+          isCancelledVisible={false}
+          isCompletedVisible={schedule?.is_completed}
+          isWaitingVisible={false}
+          isNotScheduledVisible={!schedule}
+          isInProgressVisible={!schedule?.is_completed}
+          isConfirmedVisible={false}
+        />
+      }
+      textHeader={schedule.schedule_name}
+    />
+  );
+};
+
+export const OverviewBlock = ({
   title,
   description,
   bgColor = '#f5fcfc',
@@ -696,14 +774,7 @@ const NewResumeSection: React.FC<{
   setOpenResume: Dispatch<SetStateAction<boolean>>;
 }> = ({ application, openResume, setOpenResume }) => {
   const { job } = useJobApplications();
-  const [downloading, setDownloading] = useState(false);
-  const handleDownload = async () => {
-    if (!downloading) {
-      setDownloading(true);
-      await fetchFile(application);
-      setDownloading(false);
-    }
-  };
+  const [upload, setUpload] = useState(false);
   return (
     <>
       <ResumeViewer
@@ -713,11 +784,96 @@ const NewResumeSection: React.FC<{
       />
       <ResumeBlock
         application={application}
-        setOpenResume={setOpenResume}
-        handleDownload={handleDownload}
         job={job}
+        handleUpload={() => setUpload((prev) => !prev)}
+      />
+      <ResumeUpload
+        application={application}
+        upload={upload}
+        setUpload={setUpload}
       />
     </>
+  );
+};
+
+const ResumeUpload: React.FC<{
+  application: JobApplication;
+  upload: boolean;
+  setUpload: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, setUpload, upload }) => {
+  const fileTypes = ['PDF', 'DOCX', 'TXT'];
+  const { handleJobApplicationRefresh } = useJobApplications();
+  const { handleResumeReupload } = useUploadCandidate();
+  const [resume, setResume] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const handleClose = () => {
+    setUpload(false);
+    setTimeout(() => setResume(null), 400);
+  };
+  const handleSubmit = async () => {
+    if (resume) {
+      if (!loading) {
+        setLoading(true);
+        const { confirmation } = await handleResumeReupload(resume, {
+          candidate_id: application.candidate_id,
+          id: application.id,
+        });
+        if (confirmation) {
+          handleClose();
+          await handleJobApplicationRefresh();
+        }
+        setLoading(false);
+      } else {
+        toast.warning('Uploading candidate resume. Please wait');
+      }
+    } else {
+      toast.error('Upload a valid file');
+    }
+  };
+  return (
+    <Dialog open={upload} onClose={() => setUpload(false)}>
+      <UploadCandidateResume
+        slotUploadButton={
+          <Stack>
+            <AUIButton onClick={async () => await handleSubmit()}>
+              Upload
+            </AUIButton>
+          </Stack>
+        }
+        slotDrag={
+          <FileUploader handleChange={(e) => setResume(e)} types={fileTypes}>
+            <Stack
+              sx={{
+                border: '1px dashed',
+                borderColor: palette.blue[300],
+                borderRadius: 1,
+                py: '34px',
+                px: '20px',
+                cursor: 'pointer',
+                background: 'hsla(206.66666666666666, 100.00%, 96.47%, 0.50);',
+              }}
+              direction='row'
+              spacing={'8px'}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              {resume ? <FileIcon /> : <UploadIcon />}
+              <Typography
+                variant='body2'
+                sx={{ textAlgin: 'center', fontSize: '14px' }}
+                style={{
+                  fontWeight: resume ? 600 : 400,
+                }}
+              >
+                {resume ? resume.name : 'Upload candidate resume [PDF/DOCX]'}
+              </Typography>
+              {resume && <CheckIcon />}
+            </Stack>
+          </FileUploader>
+        }
+        onClickClose={{ onClick: () => handleClose() }}
+      />
+    </Dialog>
   );
 };
 
@@ -751,13 +907,17 @@ const ResumeViewer: React.FC<{
 
 const ResumeBlock: React.FC<{
   application: JobApplication;
-  setOpenResume: Dispatch<SetStateAction<boolean>>;
-  handleDownload: () => Promise<void>;
   job: JobTypeDashboard;
-}> = ({ application, setOpenResume, handleDownload }) => {
+  handleUpload: () => void;
+}> = ({ application, job, handleUpload }) => {
+  if (job.status === 'draft') return <DangerMessage />;
   switch (getApplicationProcessState(application)) {
     case 'unavailable':
-      return <ResAbsentError />;
+      return (
+        <ResAbsentError
+          onClickUploadResume={{ onClick: () => handleUpload() }}
+        />
+      );
     case 'fetching':
       return <ResumeErrorBlock slotLottie={<ResumeWait />} />;
     case 'processing':
@@ -765,15 +925,7 @@ const ResumeBlock: React.FC<{
     case 'unparsable':
       return (
         <UnableFetchResume
-          propsLink={{ href: application.candidate_files.file_url }}
-          onClickViewResume={{
-            onClick: () => {
-              setOpenResume(true);
-            },
-          }}
-          onClickDownloadResume={{
-            onClick: async () => await handleDownload(),
-          }}
+          onClickReuploadResume={{ onClick: () => handleUpload() }}
         />
       );
     case 'processed':
@@ -781,36 +933,54 @@ const ResumeBlock: React.FC<{
   }
 };
 
-export const InterviewFeedbackParams = ({ feedbackParamsObj }) => {
-  return feedbackParamsObj.map((f, i) => {
-    const circularScore = (
-      <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
-        <SmallCircularScore2 score={f.rating} />
-      </Stack>
-    );
-    const color =
-      f.rating > 33 ? (f.rating > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
-    return (
-      <FeedbackScore
-        key={i}
-        textFeedback={capitalize(f.topic)}
-        textScorePercentage={`${f.rating}%`}
-        slotFeedbackScoreGraphs={circularScore}
-        propsTextScore={{ style: { color: color } }}
-      />
-    );
-  });
+export const InterviewResultParams = ({
+  resultParamsObj,
+}: {
+  resultParamsObj: ReturnType<typeof getInterviewScores>;
+}) => {
+  return (
+    <>
+      {resultParamsObj.map((f, i) => {
+        const score = f.score.percentage;
+        if (score === null) {
+          return (
+            <FeedbackScore
+              key={i}
+              textFeedback={capitalize(f.name)}
+              textScorePercentage={`Yet to take`}
+            />
+          );
+        }
+        const circularScore = (
+          <Stack style={{ transform: 'scale(0.4) translate(-10px,-25px)' }}>
+            <SmallCircularScore2 score={score} />
+          </Stack>
+        );
+        const color =
+          score > 33 ? (score > 66 ? '#228F67' : '#F79A3E') : '#D93F4C';
+        return (
+          <FeedbackScore
+            key={i}
+            textFeedback={capitalize(f.name)}
+            textScorePercentage={`${score}%`}
+            slotFeedbackScoreGraphs={circularScore}
+            propsTextScore={{ style: { color: color } }}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export const NewResumeScoreDetails = ({
   application,
   job,
-  feedback,
+  result,
   setOpenResume,
 }: {
   application: JobApplication;
   job: JobTypeDashboard;
-  feedback: JobApplication['assessment_results']['feedback'];
+  result: boolean;
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const jdScoreObj = (application.score_json as ScoreJson)?.scores;
@@ -831,17 +1001,17 @@ export const NewResumeScoreDetails = ({
       fontSize={7}
     />
   );
-  const feedbackObj = giveRateInWordToResume(score);
+  const resultObj = giveRateInWordToResume(score);
   return (
     <CandidateResumeScore
       textStyleProps={{
         style: {
-          fontSize: feedback ? '18px' : '14px',
+          fontSize: result ? '18px' : '14px',
         },
       }}
       slotScoreGraph={resumeScoreWheel}
-      textScoreState={feedbackObj.text}
-      propsTextColor={{ style: { color: feedbackObj.color } }}
+      textScoreState={resultObj.text}
+      propsTextColor={{ style: { color: resultObj.color } }}
       onClickViewResume={{
         onClick: () => {
           setOpenResume(true);
@@ -852,17 +1022,15 @@ export const NewResumeScoreDetails = ({
         onClick: async () => await handleDownload(),
       }}
       propsLink={{ href: application.candidate_files.file_url }}
-      slotFeedbackScore={
-        <ResumeFeedbackParams feedbackParamsObj={jdScoreObj} />
-      }
+      slotFeedbackScore={<ResumeResultParams resultParamsObj={jdScoreObj} />}
     />
   );
 };
 
-export const ResumeFeedbackParams = ({
-  feedbackParamsObj,
+export const ResumeResultParams = ({
+  resultParamsObj,
 }: {
-  feedbackParamsObj: ScoreWheelParams;
+  resultParamsObj: ScoreWheelParams;
 }) => {
   const getCustomText = (e: number) => {
     return e === 100
@@ -884,7 +1052,7 @@ export const ResumeFeedbackParams = ({
             textFeedback={capitalize(key)}
             textScoreState={
               // eslint-disable-next-line security/detect-object-injection
-              getCustomText(feedbackParamsObj[key]) ?? '--'
+              getCustomText(resultParamsObj[key]) ?? '--'
             }
           />
         );
@@ -946,6 +1114,7 @@ const PhoneScreeningSection = ({
           source: section,
           destination: null,
         },
+        false,
         [purpose],
         new Set([application.id]),
       );
@@ -1115,12 +1284,14 @@ const fetchFile = async (application: JobApplication) => {
   });
 };
 
-const NewEducationDetails = ({
+export const NewEducationDetails = ({
   schools,
   relevance,
+  noCollapse = false,
 }: {
   schools;
   relevance: ScoreJson['relevance']['schools'];
+  noCollapse?: boolean;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (schools && schools instanceof Array && schools.length !== 0) {
@@ -1152,19 +1323,32 @@ const NewEducationDetails = ({
       });
     return (
       <CandidateEducation
+        onClickCard={{
+          style: {
+            border: noCollapse ? 'none' : '1px solid #E9EBED',
+            padding: noCollapse ? '0px' : '16px',
+          },
+        }}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+            display: noCollapse ? 'none' : 'flex',
           },
         }}
         slotEducationCard={
-          <Collapse in={collapse}>
+          noCollapse ? (
             <Stack gap={'20px'} marginTop={'20px'}>
               {educationList}
             </Stack>
-          </Collapse>
+          ) : (
+            <Collapse in={collapse}>
+              <Stack gap={'20px'} marginTop={'20px'}>
+                {educationList}
+              </Stack>
+            </Collapse>
+          )
         }
       />
     );
@@ -1172,12 +1356,14 @@ const NewEducationDetails = ({
   return <></>;
 };
 
-const NewExperienceDetails = ({
+export const NewExperienceDetails = ({
   positions,
   relevance,
+  noCollapse = false,
 }: {
   positions;
   relevance: ScoreJson['relevance']['positions'];
+  noCollapse?: boolean;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (positions && positions instanceof Array && positions.length !== 0) {
@@ -1206,19 +1392,32 @@ const NewExperienceDetails = ({
     }, []);
     return (
       <CandidateExperience
+        onClickCards={{
+          style: {
+            border: noCollapse ? 'none' : '1px solid #E9EBED',
+            padding: noCollapse ? '0px' : '16px',
+          },
+        }}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
             cursor: 'pointer',
             transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+            display: noCollapse ? 'none' : 'flex',
           },
         }}
         slotCandidateExperienceCard={
-          <Collapse in={collapse} style={{ gap: '2px' }}>
+          noCollapse ? (
             <Stack gap={'20px'} marginTop={'20px'}>
               {workList}
             </Stack>
-          </Collapse>
+          ) : (
+            <Collapse in={collapse} style={{ gap: '2px' }}>
+              <Stack gap={'20px'} marginTop={'20px'}>
+                {workList}
+              </Stack>
+            </Collapse>
+          )
         }
       />
     );
@@ -1249,12 +1448,14 @@ const timeRange = (startDate: string, endDate: string) => {
   }`;
 };
 
-const NewSkillDetails = ({
+export const NewSkillDetails = ({
   skills,
   relevance,
+  noCollapse = false,
 }: {
   skills;
   relevance: ScoreJson['relevance']['skills'];
+  noCollapse?: boolean;
 }) => {
   const [collapse, setCollapse] = useState(false);
   if (skills && skills instanceof Array && skills.length !== 0) {
@@ -1287,15 +1488,22 @@ const NewSkillDetails = ({
       );
       return (
         <CandidateSkill
+          propsStyle={{
+            style: {
+              border: noCollapse ? 'none' : '1px solid #E9EBED',
+              padding: noCollapse ? '0px' : '16px',
+            },
+          }}
           onClickIcons={{
             onClick: () => setCollapse((prev) => !prev),
             style: {
               cursor: 'pointer',
               transform: `rotate(${collapse ? '0deg' : '180deg'})`,
+              display: noCollapse ? 'none' : 'flex',
             },
           }}
           slotCandidateSkill={
-            <Collapse in={collapse}>
+            noCollapse ? (
               <Stack
                 display={'flex'}
                 flexDirection={'row'}
@@ -1306,7 +1514,20 @@ const NewSkillDetails = ({
                 {relevant}
                 {others}
               </Stack>
-            </Collapse>
+            ) : (
+              <Collapse in={collapse}>
+                <Stack
+                  display={'flex'}
+                  flexDirection={'row'}
+                  flexWrap={'wrap'}
+                  gap={'6px'}
+                  marginTop={'20px'}
+                >
+                  {relevant}
+                  {others}
+                </Stack>
+              </Collapse>
+            )
           }
         />
       );
@@ -1322,6 +1543,13 @@ const NewSkillDetails = ({
     ));
     return (
       <CandidateSkill
+        propsStyle={{
+          style: {
+            border: noCollapse ? 'none' : '1px solid #E9EBED',
+            padding: noCollapse ? '0px' : '16px',
+            display: noCollapse ? 'none' : 'flex',
+          },
+        }}
         onClickIcons={{
           onClick: () => setCollapse((prev) => !prev),
           style: {
@@ -1330,7 +1558,7 @@ const NewSkillDetails = ({
           },
         }}
         slotCandidateSkill={
-          <Collapse in={collapse}>
+          noCollapse ? (
             <Stack
               display={'flex'}
               flexDirection={'row'}
@@ -1340,119 +1568,25 @@ const NewSkillDetails = ({
             >
               {others}
             </Stack>
-          </Collapse>
+          ) : (
+            <Collapse in={collapse}>
+              <Stack
+                display={'flex'}
+                flexDirection={'row'}
+                flexWrap={'wrap'}
+                gap={'6px'}
+                marginTop={'20px'}
+              >
+                {others}
+              </Stack>
+            </Collapse>
+          )
         }
       />
     );
   }
   return <></>;
 };
-
-export function Transcript({
-  application,
-  setOpenDetailedFeedback,
-  hideFeedback,
-}: {
-  application: JobApplication;
-  setOpenDetailedFeedback: React.Dispatch<React.SetStateAction<boolean>>;
-  hideFeedback: boolean;
-}) {
-  const feedback = application.assessment_results.feedback as any[];
-  return (
-    <DetailedFeedback
-      slotTranscript={
-        <>
-          {application.assessment_results.conversation?.map((ele: any, i) => {
-            return (
-              <>
-                <ConversationCard
-                  roleImage={interviewerList[Number(0)].image}
-                  roleName={interviewerList[Number(0)].name}
-                  textForSpeech={ele.content}
-                  src={ele.aiVoice}
-                  index={i}
-                  cardFor='ai'
-                />
-                {ele.userContent && (
-                  <ConversationCard
-                    cardFor={undefined}
-                    roleImage={application.candidates.avatar}
-                    roleName={application.candidates.first_name}
-                    textForSpeech={ele.userContent}
-                    src={ele.userVoice}
-                    index={i}
-                  />
-                )}
-              </>
-            );
-          })}
-        </>
-      }
-      slotDetailedFeedback={
-        <>
-          {!hideFeedback &&
-            feedback.map((ele, i) => {
-              let rating = Number(
-                String(ele.rating).includes('/')
-                  ? ele.rating.split('/')[0]
-                  : ele.rating,
-              );
-              return (
-                <DetailedFeedbackCard
-                  textColorScore={{
-                    style: {
-                      color:
-                        rating >= 90
-                          ? '#228F67'
-                          : rating >= 70
-                          ? '#f79a3e'
-                          : rating >= 50
-                          ? '#de701d'
-                          : '#d93f4c',
-                    },
-                  }}
-                  textHeader={capitalize(ele.topic.replaceAll('_', ' '))}
-                  textDescription={ele.feedback}
-                  textScorePercentage={rating + '%'}
-                  slotScore={
-                    <CustomProgress
-                      rotation={270}
-                      fillColor={
-                        rating >= 90
-                          ? '#228F67'
-                          : rating >= 70
-                          ? '#f79a3e'
-                          : rating >= 50
-                          ? '#de701d'
-                          : '#d93f4c'
-                      }
-                      bgFill={
-                        rating >= 90
-                          ? '#edf8f4'
-                          : rating >= 70
-                          ? '#fff7ed'
-                          : rating >= 50
-                          ? '#ffeedb'
-                          : '#fff0f1'
-                      }
-                      size={5}
-                      progress={rating}
-                    />
-                  }
-                  key={i}
-                />
-              );
-            })}
-        </>
-      }
-      onClickBack={{
-        onClick: () => {
-          setOpenDetailedFeedback(false);
-        },
-      }}
-    />
-  );
-}
 
 export function giveRateInWordToResume(score: number) {
   if (score <= 25) {

@@ -13,8 +13,8 @@ import {
 } from '@/devlink';
 import { useJobPostAssistantContext } from '@/src/context/JobPostAssistant';
 
-import ChatMessageLoader from './ChatMessageLoader';
 import MuiAvatar from '../Common/MuiAvatar';
+import ChatMessageLoader from './ChatMessageLoader';
 const totalCharacter = 250;
 function ChatMessages() {
   const {
@@ -53,8 +53,9 @@ function ChatMessages() {
             transform: !openChat ? 'translateY(50px)' : 'none',
             height: openChat ? '100%' : 0,
             opacity: openChat ? 1 : 0,
-            transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${openChat ? '0.4s' : '0.2s'
-              }, opacity ${openChat ? '0.4s' : '0.2s'} `,
+            transition: `transform ${openChat ? '0.4s' : '0.2s'},  height ${
+              openChat ? '0.4s' : '0.2s'
+            }, opacity ${openChat ? '0.4s' : '0.2s'} `,
           }}
           pr={'30px'}
         >
@@ -98,7 +99,6 @@ function ChatMessages() {
                       <Stack>
                         <Stack alignItems={'center'} direction={'row'}>
                           <TextField
-                            variant='standard'
                             onKeyDownCapture={(e) => {
                               if (e.ctrlKey && e.key === 'Enter') {
                                 createNewMessage();

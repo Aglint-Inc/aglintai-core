@@ -1,16 +1,16 @@
 import CandidateSearchHistory from '@/src/components/CandidateDatabase';
 import Seo from '@/src/components/Common/Seo';
 
-const history = () => {
+const History = () => {
   return (
     <>
       <Seo
-        title='Aglint | Candidate Search History'
-        description='Find Your Ideal Candidate with AI-Powered Matching!'
+        title={`Candidate Search History`}
+        description='AI for People Products'
       />
-      {<CandidateSearchHistory />}
+      <CandidateSearchHistory />
     </>
   );
 };
 
-export default history;
+export default History;

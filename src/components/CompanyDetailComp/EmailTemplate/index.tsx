@@ -13,14 +13,15 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { Job } from '@/src/queries/job/types';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
-import { debouncedSave } from '../utils';
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
 import { emailTempKeys } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/EmailTemplates';
+import { debouncedSave } from '../utils';
 
 const EmailTemplate = ({ setIsSaving }) => {
   const { recruiter, setRecruiter } = useAuthDetails();
@@ -38,7 +39,7 @@ const EmailTemplate = ({ setIsSaving }) => {
     } else if (path === 'interview' || path === 'interview_resend') {
       return isAssesEnabled;
     }
-    if (path == 'application_recieved') {
+    if (path == 'application_received') {
       return isJobMarketingEnabled;
     } else {
       return true;
@@ -207,16 +208,11 @@ const EmailTemplate = ({ setIsSaving }) => {
 
 export default EmailTemplate;
 
-export type EmailTempPath =
-  | 'interview'
-  | 'interview_resend'
-  | 'rejection'
-  | 'phone_screening'
-  | 'phone_screening_resend'
-  | 'application_recieved';
-
-export const templateObj: Record<EmailTempPath, EmailTemplatInfoType> = {
-  application_recieved: {
+export const templateObj: Record<
+  keyof Job['email_template'],
+  EmailTemplatInfoType
+> = {
+  application_received: {
     listing: 'Application Recieved',
     heading: 'Application Received Email Template',
     dynamicContent: `For dynamic content, utilize placeholders like

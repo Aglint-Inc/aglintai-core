@@ -1,5 +1,11 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack, TextField } from '@mui/material';
+import {
+  Dialog,
+  Stack,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 
 import { AddLocationPop } from '@/devlink';
@@ -157,8 +163,9 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         <AddLocationPop
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           slotForm={
-            <Stack>
-              <TextField
+            <Stack spacing={2}>
+              <CustomTextField
+                placeholder='Line 1'
                 label='Line 1'
                 defaultValue={location.line1.value}
                 required={location.line1.required}
@@ -168,7 +175,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.line1.error && 'Please enter a valid address line'
                 }
               />
-              <TextField
+              <CustomTextField
+                placeholder='Line 2'
                 label='Line 2'
                 defaultValue={location.line2.value}
                 required={location.line2.required}
@@ -178,7 +186,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.line2.error && 'Please enter a valid address line'
                 }
               />
-              <TextField
+              <CustomTextField
+                placeholder='City'
                 label='City'
                 defaultValue={location.city.value}
                 required={location.city.required}
@@ -186,7 +195,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                 error={location.city.error}
                 helperText={location.city.error && 'Please enter a valid city'}
               />
-              <TextField
+              <CustomTextField
+                placeholder='Region'
                 label='Region'
                 defaultValue={location.region.value}
                 required={location.region.required}
@@ -196,7 +206,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.region.error && 'Please enter a valid region'
                 }
               />
-              <TextField
+              <CustomTextField
+                placeholder='Country'
                 label='Country'
                 defaultValue={location.country.value}
                 required={location.country.required}
@@ -206,7 +217,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   location.country.error && 'Please enter a valid country'
                 }
               />
-              <TextField
+              <CustomTextField
+                placeholder='Zip Code'
                 label='Zip Code'
                 defaultValue={location.zipcode.value}
                 onChange={(e) => handleChange(e, 'zipcode')}
@@ -244,3 +256,17 @@ const AddLocationDialog: React.FC<LocationProps> = ({
 };
 
 export default AddLocationDialog;
+
+const CustomTextField = (props: TextFieldProps) => {
+  const label = props.label;
+  return (
+    <Stack>
+      {Boolean(label) && (
+        <Typography fontSize={'14px'} marginBottom={'3px'}>
+          {label}
+        </Typography>
+      )}
+      <TextField {...{ ...props, label: undefined }} />
+    </Stack>
+  );
+};

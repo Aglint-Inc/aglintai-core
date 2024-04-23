@@ -1,19 +1,20 @@
 import { get, isEmpty } from 'lodash';
 
 import { JobTypeDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-import { FormErrorParams } from './JobForm/JobForm';
-import {
-  AssesMenusType,
-  FormJobType,
-  InterviewParam,
-  JobFormState,
-} from './JobPostFormProvider';
 import { templateObj } from '../../CompanyDetailComp/EmailTemplate';
+import { FormErrorParams } from './JobForm/JobForm';
+import { FormJobType, JobFormState } from './JobPostFormProvider';
 
-export const supabaseWrap = ({ data, error }: { data: any; error: any }) => {
-  if (error) throw new Error(error.message);
+export const supabaseWrap = <T extends unknown, U extends unknown>({
+  data,
+  error,
+}: {
+  data: T;
+  error: U;
+}) => {
+  if (error) throw error;
   return data;
 };
 
@@ -38,37 +39,11 @@ export async function saveJobPostToDb(jobForm: JobFormState) {
         recruiter_id: updateJobData.recruiter_id,
         draft: updateJobData,
       })
-      .select(),
+      .select('*'),
   );
 
   return updatedJob as JobTypeDB;
 }
-
-const getjobPostSlug = (
-  jobId: string,
-  jobTitle: string,
-  company: string,
-  location: string,
-) => {
-  if (!jobId || !jobTitle || !company || !location) return '';
-
-  const convertedJobTitle = jobTitle
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '')
-    .replace(/\//g, '-')
-    .replace(/[()]/g, '');
-  const convertedCompany = company
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
-  const convertedJobLocation = location
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/,/g, '');
-  let slug = `${convertedJobTitle}-at-${convertedCompany}-${convertedJobLocation}-${jobId}`;
-  return slug;
-};
 
 export const getjobformToDbcolumns = (jobForm: JobFormState) => {
   const updateJobData = {
@@ -80,33 +55,28 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
     job_type: jobForm.formFields.jobType,
     workplace_type: jobForm.formFields.workPlaceType,
     department: jobForm.formFields.department,
-    slug: jobForm.createdAt
-      ? undefined
-      : getjobPostSlug(
-          jobForm.jobPostId,
-          jobForm.formFields.jobTitle,
-          jobForm.formFields.company,
-          jobForm.formFields.jobLocation,
-        ),
+    // slug: jobForm.createdAt
+    //   ? undefined
+    //   : getjobPostSlug(
+    //       jobForm.jobPostId,
+    //       jobForm.formFields.jobTitle,
+    //       jobForm.formFields.company,
+    //       jobForm.formFields.jobLocation,
+    //     ),
     recruiter_id: jobForm.formFields.recruiterId,
     location: jobForm.formFields.jobLocation,
     email_template: jobForm.formFields.screeningEmail.emailTemplates,
-    screening_questions: jobForm.formFields.interviewConfig,
     new_screening_setting: {
       ...jobForm.formFields.newScreeningConfig,
     },
     parameter_weights: jobForm.formFields.resumeScoreSettings,
-    video_assessment: jobForm.formFields.videoAssessment,
-    intro_videos: jobForm.formFields.interviewSetting,
-    start_video: jobForm.formFields.startVideo,
-    end_video: jobForm.formFields.endVideo,
     status: jobForm.jobPostStatus,
-    interview_instructions: jobForm.formFields.interviewInstrctions,
-    assessment: jobForm.formFields.assessment,
     jd_json: jobForm.formFields.jdJson,
-    phone_screening: jobForm.formFields.phoneScreening,
     jd_changed: jobForm.formFields.isjdChanged,
     phone_screen_enabled: jobForm.formFields.isPhoneScreenEnabled,
+    screening_template: jobForm.formFields.phoneScreeningTemplateId
+      ? jobForm.formFields.phoneScreeningTemplateId
+      : undefined,
   };
 
   return updateJobData;
@@ -147,31 +117,6 @@ export const findDisclaimers = (jobForm: FormJobType) => {
       title: '',
       rightErr: [],
     },
-    assesqns: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    epilogue: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    instructions: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    settings: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
-    welcome: {
-      err: [],
-      title: '',
-      rightErr: [],
-    },
   };
 
   if (isEmpty(jobForm.jobTitle.trim())) {
@@ -195,42 +140,8 @@ export const findDisclaimers = (jobForm: FormJobType) => {
     warnings.resumeScore.err.push('Job description altered');
   }
 
-  if (jobForm.assessment && isEmpty(jobForm.interviewInstrctions)) {
-    warnings.instructions.err.push('Please Provide Assessment Instructions');
-  }
-
-  if (
-    jobForm.assessment &&
-    jobForm.interviewSetting.showInstructionVideo &&
-    isEmpty(jobForm.interviewSetting.aiGeneratedVideoInfo.videoUrl) &&
-    isEmpty(jobForm.interviewSetting.uploadedVideoInfo.videoUrl)
-  ) {
-    warnings.instructions.err.push('Please add instruction video');
-  }
-
   if (jobForm.isPhoneScreenEnabled) {
-    if (jobForm.phoneScreening.questions.length === 0) {
-      warnings.phoneScreening.err.push(
-        'Please provide atleast 1 screening questions',
-      );
-    }
-  }
-  // screening qns
-  const totalQns = Object.keys(jobForm.interviewConfig)
-    .map((key: InterviewParam) => {
-      return jobForm.interviewConfig[String(key)].questions;
-    })
-    .reduce((prev, curr) => {
-      return prev + curr.length;
-    }, 0);
-
-  if (jobForm.assessment && totalQns < 1) {
-    warnings.assesqns.err.push('Please provide atleast 1 assessment questions');
-  }
-  if (jobForm.assessment && totalQns > 20) {
-    warnings.assesqns.err.push(
-      'Please provide maximum 20 assessment questions',
-    );
+    //
   }
 
   Object.keys(get(jobForm, 'screeningEmail.emailTemplates', {})).map(
@@ -295,16 +206,14 @@ export const slidePathToNum: Record<JobFormState['currSlide'], number> = {
   details: 1,
   resumeScore: 2,
   phoneScreening: 3,
-  screening: 4,
-  workflow: 5,
-  templates: 6,
+  workflow: 4,
+  templates: 5,
 };
 
 export const jobSlides: { path: JobFormState['currSlide']; title: string }[] = [
   { title: 'Details', path: 'details' },
   { title: 'Profile Score', path: 'resumeScore' },
   { title: 'Screening', path: 'phoneScreening' },
-  { title: 'Assessment', path: 'screening' },
   { title: 'Workflows', path: 'workflow' },
   { title: 'Email Templates', path: 'templates' },
 ];
@@ -331,22 +240,5 @@ export const isShoWWarn = (
           formWarnings[String(path)].rightErr.length > 0));
 
     return isShowWarn;
-  } else {
-    if (formType === 'edit') {
-      let slides: AssesMenusType[] = [
-        'assesqns',
-        'epilogue',
-        'instructions',
-        'settings',
-        'welcome',
-      ];
-      let isErr = false;
-      slides.forEach((slide) => {
-        if (formWarnings[String(slide)].err.length > 0) {
-          isErr = true;
-        }
-      });
-      return isErr;
-    }
   }
 };

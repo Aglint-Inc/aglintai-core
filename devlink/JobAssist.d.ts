@@ -9,7 +9,6 @@ declare function JobAssist(props: {
   isViewMoreVisible?: Types.Visibility.VisibilityConditions;
   isMinimizeIconVisible?: Types.Visibility.VisibilityConditions;
   onClickMinimize?: Types.Devlink.RuntimeProps;
-  isMaximizeIconVisible?: Types.Visibility.VisibilityConditions;
   onClickMaximize?: Types.Devlink.RuntimeProps;
   slotLogo?: Types.Devlink.Slot;
   isStartingScreenVisible?: Types.Visibility.VisibilityConditions;
@@ -17,4 +16,5 @@ declare function JobAssist(props: {
   slotChat?: Types.Devlink.Slot;
   isSuggestionVisible?: Types.Visibility.VisibilityConditions;
   slotSuggestion?: Types.Devlink.Slot;
+  isMaxIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

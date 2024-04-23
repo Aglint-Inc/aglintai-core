@@ -6,4 +6,9 @@ declare function CloseDeleteJob(props: {
   isCloseJobVisible?: Types.Visibility.VisibilityConditions;
   isDeleteJobVisible?: Types.Visibility.VisibilityConditions;
   onClickClose?: Types.Devlink.RuntimeProps;
+  textDesc?: React.ReactNode;
+  isDynamicDescVisible?: Types.Visibility.VisibilityConditions;
+  textHeader?: React.ReactNode;
+  slotIcon?: Types.Devlink.Slot;
+  textButtonLabel?: React.ReactNode;
 }): React.JSX.Element;

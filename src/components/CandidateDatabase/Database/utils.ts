@@ -1,8 +1,8 @@
 import { JsonResume } from '@/src/types/resume_json.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-import { Candidate } from './candFilter.type';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { Candidate } from './candFilter.type';
 
 type CandidateSearchType = {
   candidate_id: string;
@@ -51,6 +51,7 @@ export const getFilteredCands = async ({
       job_title_filter: filterSqlQryfromString(job_role),
     }),
   ) as CandidateSearchType[];
+  //TODO: supabaseWrap type fix needed
 
   //NOTE: filter cands old json
   const filteredCands = candidates

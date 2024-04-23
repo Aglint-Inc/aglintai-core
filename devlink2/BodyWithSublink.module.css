@@ -1,0 +1,41 @@
+.layoutbody {
+  display: grid;
+  overflow: hidden;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 216px 1fr;
+  grid-template-rows: auto;
+  height: calc(100vh - 60px);
+}
+
+.slot_sidemenu_tabs {
+  display: flex;
+  padding: 20px 10px;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-right: 1px solid #e9ebed;
+}
+
+.slot_tabcontent {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+#w-node-c3ee8b68-e4f4-2b0d-c4c8-e3cf4daf9a46-4daf9a45 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}
+#w-node-c3ee8b68-e4f4-2b0d-c4c8-e3cf4daf9a4c-4daf9a45 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}

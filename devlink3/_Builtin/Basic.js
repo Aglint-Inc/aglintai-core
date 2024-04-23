@@ -1,179 +1,234 @@
-import * as React from 'react';
-import { DevLinkContext } from '../devlinkContext';
-import * as utils from '../utils';
-export function Block({ tag = 'div', ...props }) {
-  return React.createElement(tag, props);
-}
-export function Span(props) {
-  return <span {...props} />;
-}
-export function Blockquote(props) {
-  return <blockquote {...props} />;
-}
-export const Link = function Link({
-  options = { href: '#' },
-  className = '',
-  button = false,
-  ...props
-}) {
+"use client";
+import * as React from "react";
+import { DevLinkContext } from "../devlinkContext";
+import * as utils from "../utils";
+export const Block = React.forwardRef(function Block(
+  { tag = "div", ...props },
+  ref
+) {
+  return React.createElement(tag, {
+    ...props,
+    ref,
+  });
+});
+export const Span = React.forwardRef(function Span(props, ref) {
+  return <span {...props} ref={ref} />;
+});
+export const Blockquote = React.forwardRef(function Blockquote(props, ref) {
+  return <blockquote {...props} ref={ref} />;
+});
+export const Link = React.forwardRef(function Link(
+  {
+    options = { href: "#" },
+    className = "",
+    button = false,
+    children,
+    block = "",
+    ...props
+  },
+  ref
+) {
   const { renderLink: UserLink } = React.useContext(DevLinkContext);
-  if (button) className += ' w-button';
+  if (button) className += " w-button";
+  if (block === "inline") className += " w-inline-block";
   if (UserLink) {
     return (
-      <UserLink className={className} {...options} {...props}>
-        {props.children}
+      <UserLink className={className} {...options} {...props} ref={ref}>
+        {children}
       </UserLink>
     );
   }
-  const { href, target, preload = 'none' } = options;
+  const { href, target, preload = "none" } = options;
   const shouldRenderResource =
-    preload !== 'none' && typeof href === 'string' && !href.startsWith('#');
+    preload !== "none" && typeof href === "string" && !href.startsWith("#");
   return (
     <>
-      <a href={href} target={target} className={className} {...props} />
+      <a href={href} target={target} className={className} {...props} ref={ref}>
+        {children}
+      </a>
       {shouldRenderResource && <link rel={preload} href={href} />}
     </>
   );
-};
-export function List({
-  tag = 'ul',
-  unstyled = true,
-  className = '',
-  ...props
-}) {
-  return React.createElement(tag, {
-    role: 'list',
-    className: className + (unstyled ? ' w-list-unstyled' : ''),
-    ...props,
-  });
-}
-export function ListItem(props) {
-  return React.createElement('li', props);
-}
-export function Image(props) {
-  const { renderImage: UserImage } = React.useContext(DevLinkContext);
-  return UserImage ? <UserImage {...props} /> : <img {...props} />;
-}
-export function Section({ tag = 'section', ...props }) {
-  return React.createElement(tag, props);
-}
-export const Container = React.forwardRef(function Container(
-  { tag = 'div', className = '', ...props },
-  ref,
+});
+export const List = React.forwardRef(function List(
+  { tag = "ul", unstyled = true, className = "", ...props },
+  ref
 ) {
   return React.createElement(tag, {
-    className: className + ' w-container',
+    role: "list",
+    className: className + (unstyled ? " w-list-unstyled" : ""),
+    ...props,
+    ref,
+  });
+});
+export const ListItem = React.forwardRef(function ListItem(props, ref) {
+  return React.createElement("li", {
+    ...props,
+    ref,
+  });
+});
+export const Image = React.forwardRef(function Image({ alt, ...props }, ref) {
+  const { renderImage: UserImage } = React.useContext(DevLinkContext);
+  return UserImage ? (
+    <UserImage alt={alt || ""} {...props} ref={ref} />
+  ) : (
+    <img alt={alt || ""} {...props} ref={ref} />
+  );
+});
+export const Section = React.forwardRef(function Section(
+  { tag = "section", ...props },
+  ref
+) {
+  return React.createElement(tag, {
+    ...props,
+    ref,
+  });
+});
+export const Container = React.forwardRef(function Container(
+  { tag = "div", className = "", ...props },
+  ref
+) {
+  return React.createElement(tag, {
+    className: className + " w-container",
     ref,
     ...props,
   });
 });
-export function BlockContainer({ tag = 'div', className = '', ...props }) {
+export const BlockContainer = React.forwardRef(function BlockContainer(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-layout-blockcontainer',
+    className: className + " w-layout-blockcontainer",
     ...props,
+    ref,
   });
-}
-export function HFlex({ tag = 'div', className = '', ...props }) {
+});
+export const HFlex = React.forwardRef(function HFlex(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-layout-hflex',
+    className: className + " w-layout-hflex",
     ...props,
+    ref,
   });
-}
-export function VFlex({ tag = 'div', className = '', ...props }) {
+});
+export const VFlex = React.forwardRef(function VFlex(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-layout-vflex',
+    className: className + " w-layout-vflex",
     ...props,
+    ref,
   });
-}
-export function Layout({ tag = 'div', className = '', ...props }) {
+});
+export const Layout = React.forwardRef(function Layout(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-layout-layout wf-layout-layout',
+    className: className + " w-layout-layout wf-layout-layout",
     ...props,
+    ref,
   });
-}
-export function Cell({ tag = 'div', className = '', ...props }) {
+});
+export const Cell = React.forwardRef(function Cell(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-layout-cell',
+    className: className + " w-layout-cell",
     ...props,
+    ref,
   });
-}
-export function HtmlEmbed({
-  tag = 'div',
-  className = '',
-  value = '',
-  ...props
-}) {
+});
+export const HtmlEmbed = React.forwardRef(function HtmlEmbed(
+  { tag = "div", className = "", value = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-embed',
+    className: className + " w-embed",
     dangerouslySetInnerHTML: { __html: utils.removeUnescaped(value) },
     ...props,
+    ref,
   });
-}
-export function Grid({ tag = 'div', className = '', ...props }) {
+});
+export const Grid = React.forwardRef(function Grid(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-layout-grid',
+    className: className + " w-layout-grid",
     ...props,
+    ref,
   });
-}
-export function Icon({ widget, className = '', ...props }) {
-  return React.createElement('div', {
+});
+export const Icon = React.forwardRef(function Icon(
+  { widget, className = "", ...props },
+  ref
+) {
+  return React.createElement("div", {
     className: className + ` w-icon-${widget.icon}`,
     ...props,
+    ref,
   });
-}
-export function Column({
-  tag = 'div',
-  className = '',
-  columnClasses = '',
-  ...props
-}) {
+});
+export const Column = React.forwardRef(function Column(
+  { tag = "div", className = "", columnClasses = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
-    className: className + ' w-col ' + columnClasses,
+    className: className + " w-col " + columnClasses,
     ...props,
+    ref,
   });
-}
+});
 const transformWidths = (width, index) => {
-  const widths = width?.split('|') ?? [];
+  const widths = width?.split("|") ?? [];
   return widths.length > 1 ? widths[index] : width;
 };
 const columnClass = (width, key) => {
-  if (/stack$/.test(width)) return 'w-col-stack';
+  if (/stack$/.test(width)) return "w-col-stack";
   if (/main$/.test(key)) return `w-col-${width}`;
   return `w-col-${key}-${width}`;
 };
-export function Row({
-  tag = 'div',
-  className = '',
-  columns,
-  children,
-  ...props
-}) {
+export const Row = React.forwardRef(function Row(
+  { tag = "div", className = "", columns, children, ...props },
+  ref
+) {
   return React.createElement(
     tag,
-    { className: className + ' w-row', ...props },
+    { className: className + " w-row", ...props, ref },
     columns
       ? React.Children.map(children, (child, index) => {
-          if (child && typeof child === 'object' && child.type !== Column)
+          if (child && typeof child === "object" && child.type !== Column)
             return child;
           const columnClasses = Object.entries(columns ?? {}).reduce(
             (acc, [key, value]) => {
               const width = transformWidths(
-                value === 'custom' ? '6|6' : value,
-                index,
+                value === "custom" ? "6|6" : value,
+                index
               );
-              acc.add(width ? columnClass(width, key) : '');
+              acc.add(width ? columnClass(width, key) : "");
               return acc;
             },
-            new Set(),
+            new Set()
           );
           return React.cloneElement(child, {
-            columnClasses: [...columnClasses].join(' '),
+            columnClasses: [...columnClasses].join(" "),
             ...child.props,
           });
         })
-      : children,
+      : children
   );
-}
-export function NotSupported({ _atom = '' }) {
-  return <div>{`This builtin is not currently supported: ${_atom}`}</div>;
-}
+});
+export const NotSupported = React.forwardRef(function NotSupported(
+  { _atom = "" },
+  ref
+) {
+  return (
+    <div ref={ref}>{`This builtin is not currently supported: ${_atom}`}</div>
+  );
+});

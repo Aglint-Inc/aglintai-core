@@ -12,7 +12,7 @@ import {
   WelcomeMatAssistant,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import ChatMessageLoader from '../AssistantChat/ChatMessageLoader';
 import UITypography from '../Common/UITypography';

@@ -6,21 +6,13 @@ declare function JobsListingCard(props: {
   textJobRole?: React.ReactNode;
   textCompanyLocation?: React.ReactNode;
   textPostedDate?: React.ReactNode;
-  rejectedCount?: React.ReactNode;
   assessmentCount?: React.ReactNode;
   qualifiedCount?: React.ReactNode;
   bgColorProps?: Types.Devlink.RuntimeProps;
   textJobsStatus?: React.ReactNode;
   onClickCard?: Types.Devlink.RuntimeProps;
-  textColorActivePropsSourcing?: Types.Devlink.RuntimeProps;
-  textColorActiveInterviewingProps?: Types.Devlink.RuntimeProps;
   slotStatusIcon?: Types.Devlink.Slot;
   newCount?: React.ReactNode;
-  textSourcing?: React.ReactNode;
-  slotSourcingIcon?: Types.Devlink.Slot;
-  textInterview?: React.ReactNode;
-  slotInterviewIcon?: Types.Devlink.Slot;
-  isSourcingInterviewVisible?: Types.Visibility.VisibilityConditions;
   slotAtsBadge?: Types.Devlink.Slot;
   isStatusVisible?: Types.Visibility.VisibilityConditions;
   textStatus?: React.ReactNode;
@@ -29,4 +21,5 @@ declare function JobsListingCard(props: {
   disqualifiedCount?: React.ReactNode;
   isScreeningPillsVisible?: Types.Visibility.VisibilityConditions;
   isAssessmentPillVisible?: Types.Visibility.VisibilityConditions;
+  interviewCount?: React.ReactNode;
 }): React.JSX.Element;

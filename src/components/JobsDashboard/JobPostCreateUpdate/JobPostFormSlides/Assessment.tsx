@@ -7,14 +7,13 @@ import {
   JobEditWarning,
   JobWarningList,
   NewJobStep4,
-  WorkflowRadioItem,
+  WorkflowRadioItem
 } from '@/devlink';
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
 
 import { useJobForm } from '../JobPostFormProvider';
 function Assessment() {
   const { jobForm } = useJobForm();
-
   return (
     <NewJobStep4
       slotWarning={
@@ -36,10 +35,10 @@ function Assessment() {
       slotInterviewWorkflow={<WorkFlow flow='interview' />}
       slotInterviewEmail={<EmailSchedule flow='interviewMail' />}
       slotDisqualifyEmail={<EmailSchedule flow='disqualifiedMail' />}
-      isAssessmentScoringVisible={jobForm.formFields.assessment}
-      isEmailScheduleVisible={jobForm.formFields.assessment}
-      isWarningVisible={!jobForm.formFields.assessment}
-      showDetails={jobForm.formFields.assessment}
+      isWorkflowContentVisible={jobForm.formFields.isAssesmentEnabled}
+      isAssessmentScoringVisible={jobForm.formFields.isAssesmentEnabled}
+      isEmailScheduleVisible={jobForm.formFields.isAssesmentEnabled}
+      // isWorkflowInfoVisible={jobForm.formFields.isAssesmentEnabled}
     />
   );
 }
@@ -54,11 +53,11 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
     max: workflowObj.qualificationRange
       ? workflowObj.qualificationRange.max
       : 80,
-    active: false,
+    active: false
   });
   const handleUpdate = (
     isManual,
-    qualificationRange: { min: number; max: number } | null,
+    qualificationRange: { min: number; max: number } | null
   ) => {
     handleUpdateFormFields({
       path: `newScreeningConfig.${flow}`,
@@ -66,8 +65,8 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
         isManual,
         qualificationRange: qualificationRange
           ? { min: qualificationRange.min, max: qualificationRange.max }
-          : null,
-      },
+          : null
+      }
     });
   };
   const handleChoice = (choice: 'manual' | 'automate' | 'range') => {
@@ -97,7 +96,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
   const handleRangeChange = (
     event: Event,
     newValue: number | number[],
-    activeThumb: number,
+    activeThumb: number
   ) => {
     if (!Array.isArray(newValue)) {
       return;
@@ -108,21 +107,21 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
         setRange({
           active: true,
           min: clamped,
-          max: clamped + 1,
+          max: clamped + 1
         });
       } else {
         const clamped = Math.max(newValue[1], 1);
         setRange({
           active: true,
           min: clamped - 1,
-          max: clamped,
+          max: clamped
         });
       }
     } else {
       setRange({
         active: true,
         min: newValue[0],
-        max: newValue[1],
+        max: newValue[1]
       });
     }
   };
@@ -160,17 +159,17 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
           disableSwap
           sx={{
             '& .MuiSlider-rail': {
-              backgroundImage: `linear-gradient(to right, #f2bcc0 ${range.min}%, #eff0f0 ${range.min}%, #eff0f0 ${range.max}%, #b4e1cc ${range.max}%)`,
+              backgroundImage: `linear-gradient(to right, #f2bcc0 ${range.min}%, #eff0f0 ${range.min}%, #eff0f0 ${range.max}%, #b4e1cc ${range.max}%)`
             },
             '& .MuiSlider-track': {
-              display: 'none',
+              display: 'none'
             },
             '& > .MuiSlider-thumb': {
-              background: '#d3212c',
+              background: '#d3212c'
             },
             '& > .MuiSlider-thumb ~ .MuiSlider-thumb': {
-              background: '#069c56',
-            },
+              background: '#069c56'
+            }
           }}
         />
       </Stack>
@@ -189,7 +188,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
           onClick={{
             onClick: () => {
               handleChoice('automate');
-            },
+            }
           }}
           radioText={`Move all new applicants to the assessment state.`}
         />
@@ -198,7 +197,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
         onClick={{
           onClick: () => {
             handleChoice('manual');
-          },
+          }
         }}
         isChecked={workflowObj.isManual}
         radioText={`Manage the process manually, without automation.`}
@@ -209,7 +208,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
             setRange((prev) => {
               return { ...prev, active: true };
             });
-          },
+          }
         }}
         isChecked={workflowObj.qualificationRange !== null}
         radioText={`Use ${
@@ -226,7 +225,7 @@ const WorkFlow = ({ flow }: { flow: 'screening' | 'interview' }) => {
 };
 
 const EmailSchedule = ({
-  flow,
+  flow
 }: {
   flow: 'interviewMail' | 'disqualifiedMail';
 }) => {
@@ -234,15 +233,15 @@ const EmailSchedule = ({
   const emailScheduleObj = jobForm.formFields.newScreeningConfig[`${flow}`];
   const [time, setTime] = useState({
     timestamp: emailScheduleObj.timestamp ?? '1999-12-31T18:30:00.000Z',
-    active: false,
+    active: false
   });
   const handleUpdate = (isManual: boolean, time: string) => {
     handleUpdateFormFields({
       path: `newScreeningConfig.${flow}`,
       value: {
         isManual,
-        timestamp: time ?? null,
-      },
+        timestamp: time ?? null
+      }
     });
   };
   const handleChoice = (choice: 'manual' | 'automate' | 'date') => {
@@ -317,7 +316,7 @@ const EmailSchedule = ({
           onClick: () =>
             setTime((prev) => {
               return { ...prev, active: true };
-            }),
+            })
         }}
         radioText={`Choose your preferred time.`}
         slotScore={

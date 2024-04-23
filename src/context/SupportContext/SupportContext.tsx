@@ -2,6 +2,7 @@
 // import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -12,7 +13,7 @@ import {
   Support_ticketType,
   // SupportGroupType,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { priorityOrder, statusOrder } from '@/src/utils/support/supportUtils';
 import { getRandomColor } from '@/src/utils/text/textUtils';
 
@@ -337,8 +338,10 @@ const SupportProvider = ({ children }) => {
       }
     });
   };
+
+  const isSupportEnabled = useFeatureFlagEnabled('isSupportEnabled');
   useEffect(() => {
-    if (recruiter?.id) {
+    if (recruiter?.id && isSupportEnabled) {
       getAllAssignee(
         recruiter.name === process.env.NEXT_PUBLIC_DEFAULT_SUPPORT_COMPANY_NAME,
       ).then((data) => {
@@ -488,8 +491,7 @@ const getAllAdmins = async (recruiter_ids: string[]) => {
     .from('recruiter_user')
     .select('user_id,first_name,last_name,profile_image, recruiter_id')
     .in('recruiter_id', recruiter_ids)
-    .neq('join_status', 'invited')
-    .eq('is_deactivated', false);
+    .neq('join_status', 'invited');
   if (!error) {
     const temp: {
       [key: string]: [
@@ -542,8 +544,7 @@ const getAllEmployee = async (recruiter_id: string) => {
     .from('recruiter_user')
     .select('user_id,first_name,last_name,profile_image')
     .eq('recruiter_id', recruiter_id)
-    .neq('join_status', 'invited')
-    .eq('is_deactivated', false);
+    .neq('join_status', 'invited');
   if (!error) {
     return data;
   }

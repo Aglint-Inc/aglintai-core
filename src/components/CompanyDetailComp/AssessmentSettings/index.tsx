@@ -14,7 +14,7 @@ import { updateRecruiter } from '@/src/context/InterviewContext/utils';
 import { RecruiterType } from '@/src/types/data.types';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import MuiPopup from '../../Common/MuiPopup';
 import { copyCompanySetting } from '../../JobsDashboard/JobPostCreateUpdate/copies/copyCompanySetting';

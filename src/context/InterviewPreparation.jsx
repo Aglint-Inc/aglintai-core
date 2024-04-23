@@ -10,7 +10,6 @@ import { improveAnswerPrompt } from '@utils/ai-prompts/improve_answer';
 import { prePrompts } from '@utils/ai-prompts/interview_prompts';
 import interviewerList from '@utils/interviewer_list';
 import { pageRoutes } from '@utils/pageRouting';
-import { supabase } from '@utils/supabaseClient';
 import { updateProgressStatusInDb } from '@utils/temp/authUtils';
 //import { toast } from 'react-toastify';
 import toast from '@utils/toast';
@@ -21,14 +20,14 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 
+import { supabase } from '@/src/utils/supabase/client';
+
+import { selectJobApplicationQuery } from '../pages/api/job/jobApplications/read/utils';
+import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
+import { interviewCompleted } from '../utils/email_templates/innterview_completed';
 import { useInterviewSignUp } from './InterviewSignup';
 import { useLogActivities } from './LogActivities';
 import { useResumeList } from './ResumeListContext';
-import { selectJobApplicationQuery } from '../pages/api/jobApplications/read/utils';
-import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
-import { interviewCompleted } from '../utils/email_templates/innterview_completed';
-import { mixPanel } from '../utils/mix-panel';
-import mixpanel from '../utils/mixpanelInstance';
 
 const InterviewPrepContext = createContext();
 const useInterviewPrep = () => useContext(InterviewPrepContext);
@@ -846,7 +845,6 @@ const InterviewPrepProvider = ({ children }) => {
           (getSecound < 10 ? '0' : '') +
           getSecound,
       );
-      mixpanel.track(mixPanel.interviewSignUp.InterviewCompletedForSignUp);
       sendEmailAfterCompleteTheInterview();
       return;
     }

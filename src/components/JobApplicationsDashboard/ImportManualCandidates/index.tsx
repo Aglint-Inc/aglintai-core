@@ -11,10 +11,10 @@ import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 
-import useUploadCandidate from './hooks';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import UIPhoneInput from '../../Common/UIPhoneInput';
+import useUploadCandidate from './hooks';
 
 type FormEntries = {
   first_name: FormField;
@@ -240,11 +240,11 @@ const FormBody = ({
     });
   };
   return (
-    <Stack gap={3}>
+    <Stack gap={3} p={'4px'}>
       <Stack flexDirection={'row'} gap={3}>
         <TextField
           margin='none'
-          label={'First Name'}
+          placeholder={'First Name'}
           fullWidth
           required
           id={'first_name'}
@@ -255,7 +255,7 @@ const FormBody = ({
         />
         <TextField
           margin='none'
-          label={'Last Name'}
+          placeholder={'Last Name'}
           fullWidth
           required
           id={'last_name'}
@@ -265,10 +265,10 @@ const FormBody = ({
           onChange={(e) => handleChange(e, 'last_name')}
         />
       </Stack>
-      <Stack flexDirection={'row'} gap={2}>
+      <Stack flexDirection={'row'} gap={3}>
         <TextField
           margin='none'
-          label={'Email'}
+          placeholder={'Email'}
           fullWidth
           required
           id={'email'}
@@ -283,8 +283,12 @@ const FormBody = ({
           className='JobApplicationAddManuallyPhoneInput'
           sx={{
             '& .react-tel-input .form-control': {
-              height: '50px !important',
+              height: '39px !important',
               font: 'inherit',
+              '&::placeholder': {
+                opacity: 0.6,
+                fontSize: '14px',
+              },
             },
           }}
         >
@@ -304,7 +308,7 @@ const FormBody = ({
       </Stack>
       <TextField
         margin='none'
-        label={'LinkedIn URL'}
+        placeholder={'LinkedIn URL'}
         fullWidth
         id={'linkedin'}
         value={applicant.linkedin.value}
@@ -373,7 +377,7 @@ const getHelper = (title: string) => {
   return `Please provide a valid ${title}`;
 };
 
-const FileIcon = () => {
+export const FileIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -392,7 +396,7 @@ const FileIcon = () => {
   );
 };
 
-const UploadIcon = () => {
+export const UploadIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -409,7 +413,7 @@ const UploadIcon = () => {
   );
 };
 
-const CheckIcon = () => {
+export const CheckIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

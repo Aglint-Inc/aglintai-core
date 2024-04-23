@@ -6,18 +6,17 @@ import React, { useEffect, useState } from 'react';
 import { BackButton, RcInfoForm, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { AglintCandidatesTypeDB } from '@/src/types/data.types';
 import { industries } from '@/src/utils/industries';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import ImageUpload from '../../Common/ImageUpload';
 import UIPhoneInput from '../../Common/UIPhoneInput';
 import UITextField from '../../Common/UITextField';
 import { sizes } from '../../CompanyDetailComp/CompanyInfoComp';
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { stepObj } from '../SlideSignup/utils';
 type phone = {
   countryCode: string;
   dialCode: string;
@@ -239,7 +238,7 @@ export function CompanyDetails() {
     try {
       let [cand] = supabaseWrap(
         await supabase.from('aglint_candidates').select().eq('email', email),
-      ) as AglintCandidatesTypeDB[];
+      );
 
       let profile_img;
       let position;

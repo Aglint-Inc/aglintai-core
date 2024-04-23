@@ -1,9 +1,8 @@
 import React from 'react';
 
-import _styles from './IconReLoad.module.css';
-
 import { _Builtin } from '@/devlink';
 
+import _styles from './IconReLoad.module.css';
 import * as _utils from './utils';
 
 export function IconReLoad({ as: _Component = _Builtin.HtmlEmbed }) {

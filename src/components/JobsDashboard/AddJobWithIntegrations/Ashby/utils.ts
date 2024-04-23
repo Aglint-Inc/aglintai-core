@@ -1,16 +1,17 @@
 import axios from 'axios';
 
+import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { JobInsert } from '@/src/queries/job/types';
 import {
   GreenhouseRefDbType,
   GreenhouseType,
   RecruiterDB,
 } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
 import { POSTED_BY } from '../utils';
-import { JobType } from '../../types';
+import { AshbyApplication, ExtendedJobAshby, JobAshby } from './types';
 
 export const fetchAllCandidates = async (
   apiKey: string,
@@ -68,37 +69,47 @@ export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
 export const createJobObject = async (
   selectedPostings: ExtendedJobAshby[],
   recruiter: RecruiterDB,
-): Promise<Partial<JobType> & { recruiter_id: string }[]> => {
+): Promise<JobInsert[]> => {
   const dbJobs = selectedPostings.map((post) => {
     return {
       draft: {
-        id: post.public_job_id,
+        jd_json: {
+          educations: [],
+          level: 'Mid-level',
+          rolesResponsibilities: [],
+          skills: [],
+          title: post.title,
+        },
         location: post.location,
         job_title: post.title,
         description: post.description,
-        department: post.departmentName,
-        email_template: recruiter.email_template,
-        recruiter_id: recruiter.id,
-        posted_by: POSTED_BY.ASHBY,
-        job_type: post.employmentType == 'Contract' ? 'contract' : 'fulltime',
-        workplace_type: 'onsite',
+        department: 'support',
+        job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
+        workplace_type: 'on site',
         company: recruiter.name,
-        skills: [],
-        status: 'draft',
-        parameter_weights: {
-          skills: 0,
-          education: 0,
-          experience: 0,
-        },
-        video_assessment: false,
       },
+      description_hash: hashCode(post?.description ?? ''),
       location: post.location,
       job_title: post.title,
       recruiter_id: recruiter.id,
       posted_by: POSTED_BY.ASHBY,
       status: 'draft',
       id: post.public_job_id,
-    };
+      description: post.description,
+      department: 'support',
+      email_template: recruiter.email_template,
+      job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
+      workplace_type: 'on site',
+      company: recruiter.name,
+      scoring_criteria_loading: true,
+      skills: [],
+      parameter_weights: {
+        skills: 0,
+        education: 0,
+        experience: 0,
+      },
+      video_assessment: false,
+    } as JobInsert;
   });
   return dbJobs;
 };

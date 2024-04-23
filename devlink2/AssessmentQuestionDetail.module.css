@@ -1,0 +1,155 @@
+.question_detail_wrapper {
+  display: grid;
+  overflow: hidden;
+  height: 100%;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  grid-template-columns: 1fr;
+  grid-template-rows: max-content auto max-content;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.question_detail_wrapper.is_skeleton {
+  width: 100%;
+}
+
+.question_type {
+  display: flex;
+  padding: 10px 20px;
+  justify-content: space-between;
+  border-bottom: 1px solid #e9ebed;
+  background-color: #f8f9f9;
+}
+
+.slot_question_type_dropdown {
+  width: 100%;
+}
+
+.slot_question_type_dropdown.isflex {
+  display: flex;
+  align-items: center;
+}
+
+.question_number_wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-gray-600.mobile-12 {
+    font-size: 12px;
+  }
+}
+
+.text-no-wrap {
+  white-space: nowrap;
+}
+
+.text-gray-600.max-width-500 {
+  max-width: 500px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.margin_bottom_10 {
+  margin-bottom: 10px;
+}
+
+.text-gray-600.maxwidth-custom {
+  max-width: 292px;
+}
+
+.text-gray-600.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-xsm {
+  font-size: 10px;
+}
+
+.slot_question_detail {
+  overflow: auto;
+  height: 100%;
+  padding: 20px;
+}
+
+.delete_question {
+  display: flex;
+  height: 50px;
+  padding-right: 20px;
+  padding-left: 20px;
+  align-items: center;
+
+  border-top: 1px solid #e9ebed;
+}
+
+.deletequestionbutton {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  transition: all 300ms ease;
+
+  color: #d93f4c;
+
+  cursor: pointer;
+}
+
+.deletequestionbutton:hover {
+  color: #cc3340;
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+#w-node-_2f34ab5e-3b60-bfa9-d8a9-1d5e5a5f16c4-5a5f16c4 {
+}

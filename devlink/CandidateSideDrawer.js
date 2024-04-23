@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -34,6 +35,14 @@ export function CandidateSideDrawer({
   isOverviewVisible = true,
   isLocationRoleVisible = true,
   slotSocialLink,
+  isNavigationButtonVisible = true,
+  isLeftRightVisible = true,
+  isHeaderVisible = true,
+  isNameImageVisible = false,
+  isFullWidthVisible = false,
+  isSmallWidthVisible = true,
+  onClickPhoneScreening = {},
+  isPhoneScreeningVisible = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -43,207 +52,412 @@ export function CandidateSideDrawer({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-714")} tag="div">
-        <_Builtin.Block
-          className={_utils.cx(_styles, "cv-sidebar-header-block", "heading")}
-          tag="div"
-        >
+        {isHeaderVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-815")}
+            className={_utils.cx(_styles, "cv-sidebar-header-block", "heading")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-787")}
+              className={_utils.cx(_styles, "div-block-815")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-intro-profile-image")}
-                tag="div"
-              >
-                {slotCandidateImage}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold", "text-no-wrap")}
-                tag="div"
-              >
-                {textName}
-              </_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-644")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{slotMoveTo}</_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-header-nav-wrapper")}
+                className={_utils.cx(_styles, "div-block-787")}
                 tag="div"
               >
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "cvs-header-nav-icon",
-                    "clickable",
-                    "bg-white"
-                  )}
-                  data-w-id="6f48177e-f948-6cb4-f8f5-030771445e68"
+                  className={_utils.cx(_styles, "cvs-intro-profile-image")}
                   tag="div"
-                  {...onClickPrev}
                 >
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "icon-embed")}
-                    value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.242188%206.41406C0.169271%206.30469%200.169271%206.19531%200.242188%206.08594L6.14844%200.179688C6.25781%200.106771%206.36719%200.106771%206.47656%200.179688C6.54948%200.289062%206.54948%200.398438%206.47656%200.507812L0.707031%206.25L6.47656%2011.9922C6.54948%2012.1016%206.54948%2012.2109%206.47656%2012.3203C6.36719%2012.3932%206.25781%2012.3932%206.14844%2012.3203L0.242188%206.41406Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                  />
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "arrow-tooltips-drawer")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"Shift + ←"}</_Builtin.Block>
-                  </_Builtin.Block>
+                  {slotCandidateImage}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(
-                    _styles,
-                    "cvs-header-nav-icon",
-                    "clickable",
-                    "bg-white"
-                  )}
-                  data-w-id="6f48177e-f948-6cb4-f8f5-030771445e6a"
+                  className={_utils.cx(_styles, "fw-semibold", "text-no-wrap")}
                   tag="div"
-                  {...onClickNext}
                 >
-                  <_Builtin.HtmlEmbed
-                    className={_utils.cx(_styles, "icon-embed")}
-                    value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
-                  />
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "arrow-tooltips-drawer")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">{"Shift + →"}</_Builtin.Block>
-                  </_Builtin.Block>
+                  {textName}
                 </_Builtin.Block>
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "cvs-header-close-button",
-                  "cursor-pointer"
-                )}
-                tag="div"
-                {...onClickClose}
-              >
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "icon-embed")}
-                  value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.14082%209.76016L5.4002%206.04766L1.6877%209.76016C1.4627%209.92891%201.24707%209.92891%201.04082%209.76016C0.872071%209.55391%200.872071%209.34766%201.04082%209.14141L4.75332%205.40078L1.04082%201.68828C0.872071%201.46328%200.872071%201.24766%201.04082%201.04141C1.24707%200.872656%201.4627%200.872656%201.6877%201.04141L5.4002%204.75391L9.14082%201.04141C9.34707%200.872656%209.55332%200.872656%209.75957%201.04141C9.92832%201.24766%209.92832%201.46328%209.75957%201.68828L6.04707%205.40078L9.75957%209.14141C9.92832%209.34766%209.92832%209.55391%209.75957%209.76016C9.55332%209.92891%209.34707%209.92891%209.14082%209.76016Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              </_Builtin.Block>
+              {isNavigationButtonVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-644")}
+                  tag="div"
+                >
+                  <_Builtin.Block tag="div">{slotMoveTo}</_Builtin.Block>
+                  {isLeftRightVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "cvs-header-nav-wrapper")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "cvs-header-nav-icon",
+                          "clickable",
+                          "bg-white",
+                          "width-24"
+                        )}
+                        data-w-id="6f48177e-f948-6cb4-f8f5-030771445e68"
+                        tag="div"
+                        {...onClickPrev}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icon-embed")}
+                          value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0.242188%206.41406C0.169271%206.30469%200.169271%206.19531%200.242188%206.08594L6.14844%200.179688C6.25781%200.106771%206.36719%200.106771%206.47656%200.179688C6.54948%200.289062%206.54948%200.398438%206.47656%200.507812L0.707031%206.25L6.47656%2011.9922C6.54948%2012.1016%206.54948%2012.2109%206.47656%2012.3203C6.36719%2012.3932%206.25781%2012.3932%206.14844%2012.3203L0.242188%206.41406Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "arrow-tooltips-drawer"
+                          )}
+                          tag="div"
+                        >
+                          <_Builtin.Block tag="div">
+                            {"Shift + ←"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "cvs-header-nav-icon",
+                          "clickable",
+                          "bg-white",
+                          "width-24"
+                        )}
+                        data-w-id="6f48177e-f948-6cb4-f8f5-030771445e6a"
+                        tag="div"
+                        {...onClickNext}
+                      >
+                        <_Builtin.HtmlEmbed
+                          className={_utils.cx(_styles, "icon-embed")}
+                          value="%3Csvg%20width%3D%227%22%20height%3D%2213%22%20viewBox%3D%220%200%207%2013%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75781%206.58594C6.83073%206.69531%206.83073%206.80469%206.75781%206.91406L0.851562%2012.8203C0.742188%2012.8932%200.632812%2012.8932%200.523438%2012.8203C0.450521%2012.7109%200.450521%2012.6016%200.523438%2012.4922L6.29297%206.75L0.523438%201.00781C0.450521%200.898438%200.450521%200.789062%200.523438%200.679688C0.632812%200.606771%200.742188%200.606771%200.851562%200.679688L6.75781%206.58594Z%22%20fill%3D%22%232F3941%22%2F%3E%0A%3C%2Fsvg%3E"
+                        />
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "arrow-tooltips-drawer"
+                          )}
+                          tag="div"
+                        >
+                          <_Builtin.Block tag="div">
+                            {"Shift + →"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(
+                      _styles,
+                      "cvs-header-close-button",
+                      "cursor-pointer"
+                    )}
+                    tag="div"
+                    {...onClickClose}
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icon-embed")}
+                      value="%3Csvg%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M9.14082%209.76016L5.4002%206.04766L1.6877%209.76016C1.4627%209.92891%201.24707%209.92891%201.04082%209.76016C0.872071%209.55391%200.872071%209.34766%201.04082%209.14141L4.75332%205.40078L1.04082%201.68828C0.872071%201.46328%200.872071%201.24766%201.04082%201.04141C1.24707%200.872656%201.4627%200.872656%201.6877%201.04141L5.4002%204.75391L9.14082%201.04141C9.34707%200.872656%209.55332%200.872656%209.75957%201.04141C9.92832%201.24766%209.92832%201.46328%209.75957%201.68828L6.04707%205.40078L9.75957%209.14141C9.92832%209.34766%209.92832%209.55391%209.75957%209.76016C9.55332%209.92891%209.34707%209.92891%209.14082%209.76016Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                  </_Builtin.Block>
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
           </_Builtin.Block>
-        </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-candiate-profile")}
           tag="div"
         >
           <_Builtin.Block tag="div">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "cv-sidebar-intro-wrapper")}
-              tag="div"
-            >
+            {isSmallWidthVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "cvs-intro-profile-block")}
+                className={_utils.cx(_styles, "cv-sidebar-intro-wrapper")}
                 tag="div"
               >
-                {isLocationRoleVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-789")}
-                    tag="div"
-                  >
-                    {isRoleVisible ? (
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-788")}
-                        tag="div"
-                      >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20width%3D%2212%22%20height%3D%2216%22%20viewBox%3D%220%200%2012%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.9%203.25V4.3H8.1V3.25C8.08542%203.03125%207.96875%202.91458%207.75%202.9H4.25C4.03125%202.91458%203.91458%203.03125%203.9%203.25ZM3.2%204.3V3.25C3.21458%202.95833%203.31667%202.71042%203.50625%202.50625C3.71042%202.31667%203.95833%202.21458%204.25%202.2H7.75C8.04167%202.21458%208.28958%202.31667%208.49375%202.50625C8.68333%202.71042%208.78542%202.95833%208.8%203.25V4.3H10.2C10.5938%204.31458%2010.9219%204.45312%2011.1844%204.71562C11.4469%204.97812%2011.5854%205.30625%2011.6%205.7V11.3C11.5854%2011.6937%2011.4469%2012.0219%2011.1844%2012.2844C10.9219%2012.5469%2010.5938%2012.6854%2010.2%2012.7H1.8C1.40625%2012.6854%201.07812%2012.5469%200.815625%2012.2844C0.553125%2012.0219%200.414583%2011.6937%200.4%2011.3V5.7C0.414583%205.30625%200.553125%204.97812%200.815625%204.71562C1.07812%204.45312%201.40625%204.31458%201.8%204.3H3.2ZM8.45%205H3.55H1.8C1.59583%205%201.42812%205.06562%201.29687%205.19687C1.16562%205.32812%201.1%205.49583%201.1%205.7V7.8H4.25H4.95H7.05H7.75H10.9V5.7C10.9%205.49583%2010.8344%205.32812%2010.7031%205.19687C10.5719%205.06562%2010.4042%205%2010.2%205H8.45ZM10.9%208.5H7.75V9.55C7.75%209.75417%207.68438%209.92187%207.55313%2010.0531C7.42188%2010.1844%207.25417%2010.25%207.05%2010.25H4.95C4.74583%2010.25%204.57812%2010.1844%204.44687%2010.0531C4.31562%209.92187%204.25%209.75417%204.25%209.55V8.5H1.1V11.3C1.1%2011.5042%201.16562%2011.6719%201.29687%2011.8031C1.42812%2011.9344%201.59583%2012%201.8%2012H10.2C10.4042%2012%2010.5719%2011.9344%2010.7031%2011.8031C10.8344%2011.6719%2010.9%2011.5042%2010.9%2011.3V8.5ZM4.95%208.5V9.55H7.05V8.5H4.95Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
-                          tag="div"
-                        >
-                          {textRole}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                    ) : null}
-                    {isLocationVisible ? (
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-788")}
-                        tag="div"
-                      >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20width%3D%229%22%20height%3D%2216%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8%206.4C7.97083%205.40833%207.62813%204.58437%206.97188%203.92812C6.31563%203.27187%205.49167%202.92917%204.5%202.9C3.50833%202.92917%202.68437%203.27187%202.02812%203.92812C1.37187%204.58437%201.02917%205.40833%201%206.4C1%206.75%201.12396%207.20937%201.37187%207.77812C1.61979%208.36146%201.93333%208.96667%202.3125%209.59375C2.69167%2010.2062%203.07812%2010.775%203.47187%2011.3C3.86562%2011.8396%204.20833%2012.2917%204.5%2012.6563C4.79167%2012.2917%205.13438%2011.8396%205.52813%2011.3C5.92188%2010.775%206.30833%2010.2062%206.6875%209.59375C7.08125%208.96667%207.40208%208.36146%207.65%207.77812C7.88333%207.20937%208%206.75%208%206.4ZM8.7%206.4C8.67083%207.05625%208.4375%207.81458%208%208.675C7.54792%209.53542%207.0375%2010.3667%206.46875%2011.1687C5.9%2011.9854%205.41875%2012.6344%205.025%2013.1156C4.87917%2013.2906%204.70417%2013.3781%204.5%2013.3781C4.29583%2013.3781%204.12083%2013.2906%203.975%2013.1156C3.58125%2012.6344%203.1%2011.9854%202.53125%2011.1687C1.9625%2010.3667%201.45208%209.53542%201%208.675C0.5625%207.81458%200.329166%207.05625%200.3%206.4C0.329166%205.20417%200.7375%204.2125%201.525%203.425C2.3125%202.6375%203.30417%202.22917%204.5%202.2C5.69583%202.22917%206.6875%202.6375%207.475%203.425C8.2625%204.2125%208.67083%205.20417%208.7%206.4ZM3.45%206.4C3.46458%206.79375%203.63958%207.1%203.975%207.31875C4.325%207.49375%204.675%207.49375%205.025%207.31875C5.36042%207.1%205.53542%206.79375%205.55%206.4C5.53542%206.00625%205.36042%205.7%205.025%205.48125C4.675%205.30625%204.325%205.30625%203.975%205.48125C3.63958%205.7%203.46458%206.00625%203.45%206.4ZM4.5%208.15C3.84375%208.13542%203.34062%207.84375%202.99062%207.275C2.66979%206.69167%202.66979%206.10833%202.99062%205.525C3.34062%204.95625%203.84375%204.66458%204.5%204.65C5.15625%204.66458%205.65938%204.95625%206.00938%205.525C6.33021%206.10833%206.33021%206.69167%206.00938%207.275C5.65938%207.84375%205.15625%208.13542%204.5%208.15Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                        <_Builtin.Block
-                          className={_utils.cx(_styles, "text-grey-600")}
-                          tag="div"
-                        >
-                          {textLocation}
-                        </_Builtin.Block>
-                      </_Builtin.Block>
-                    ) : null}
-                  </_Builtin.Block>
-                ) : null}
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "cvs-intro-profile-info")}
+                  className={_utils.cx(_styles, "cvs-intro-profile-block")}
                   tag="div"
                 >
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-629")}
-                    tag="div"
-                  >
+                  {isNameImageVisible ? (
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-818")}
+                      className={_utils.cx(_styles, "div-block-787")}
                       tag="div"
                     >
-                      {slotSocialLink}
-                    </_Builtin.Block>
-                    {isResumeVisible ? (
                       <_Builtin.Block
                         className={_utils.cx(
                           _styles,
-                          "resume-candidate-details"
+                          "cvs-intro-profile-image"
                         )}
                         tag="div"
-                        {...onClickResume}
                       >
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.5%201.5C1.51562%201.07812%201.66406%200.726562%201.94531%200.445312C2.22656%200.164062%202.57812%200.015625%203%200H6.75V3C6.75%203.21875%206.82031%203.39844%206.96094%203.53906C7.10156%203.67969%207.28125%203.75%207.5%203.75H10.5V10.5C10.4844%2010.9219%2010.3359%2011.2734%2010.0547%2011.5547C9.77344%2011.8359%209.42188%2011.9844%209%2012H3C2.57812%2011.9844%202.22656%2011.8359%201.94531%2011.5547C1.66406%2011.2734%201.51562%2010.9219%201.5%2010.5V1.5ZM10.5%203H7.5V0L10.5%203Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
+                        {slotCandidateImage}
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "fw-semibold",
+                          "text-no-wrap"
+                        )}
+                        tag="div"
+                      >
+                        {textName}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                  {isLocationRoleVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-789")}
+                      tag="div"
+                    >
+                      {isRoleVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-788")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%2212%22%20height%3D%2216%22%20viewBox%3D%220%200%2012%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.9%203.25V4.3H8.1V3.25C8.08542%203.03125%207.96875%202.91458%207.75%202.9H4.25C4.03125%202.91458%203.91458%203.03125%203.9%203.25ZM3.2%204.3V3.25C3.21458%202.95833%203.31667%202.71042%203.50625%202.50625C3.71042%202.31667%203.95833%202.21458%204.25%202.2H7.75C8.04167%202.21458%208.28958%202.31667%208.49375%202.50625C8.68333%202.71042%208.78542%202.95833%208.8%203.25V4.3H10.2C10.5938%204.31458%2010.9219%204.45312%2011.1844%204.71562C11.4469%204.97812%2011.5854%205.30625%2011.6%205.7V11.3C11.5854%2011.6937%2011.4469%2012.0219%2011.1844%2012.2844C10.9219%2012.5469%2010.5938%2012.6854%2010.2%2012.7H1.8C1.40625%2012.6854%201.07812%2012.5469%200.815625%2012.2844C0.553125%2012.0219%200.414583%2011.6937%200.4%2011.3V5.7C0.414583%205.30625%200.553125%204.97812%200.815625%204.71562C1.07812%204.45312%201.40625%204.31458%201.8%204.3H3.2ZM8.45%205H3.55H1.8C1.59583%205%201.42812%205.06562%201.29687%205.19687C1.16562%205.32812%201.1%205.49583%201.1%205.7V7.8H4.25H4.95H7.05H7.75H10.9V5.7C10.9%205.49583%2010.8344%205.32812%2010.7031%205.19687C10.5719%205.06562%2010.4042%205%2010.2%205H8.45ZM10.9%208.5H7.75V9.55C7.75%209.75417%207.68438%209.92187%207.55313%2010.0531C7.42188%2010.1844%207.25417%2010.25%207.05%2010.25H4.95C4.74583%2010.25%204.57812%2010.1844%204.44687%2010.0531C4.31562%209.92187%204.25%209.75417%204.25%209.55V8.5H1.1V11.3C1.1%2011.5042%201.16562%2011.6719%201.29687%2011.8031C1.42812%2011.9344%201.59583%2012%201.8%2012H10.2C10.4042%2012%2010.5719%2011.9344%2010.7031%2011.8031C10.8344%2011.6719%2010.9%2011.5042%2010.9%2011.3V8.5ZM4.95%208.5V9.55H7.05V8.5H4.95Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {textRole}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                      {isLocationVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-788")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%229%22%20height%3D%2216%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8%206.4C7.97083%205.40833%207.62813%204.58437%206.97188%203.92812C6.31563%203.27187%205.49167%202.92917%204.5%202.9C3.50833%202.92917%202.68437%203.27187%202.02812%203.92812C1.37187%204.58437%201.02917%205.40833%201%206.4C1%206.75%201.12396%207.20937%201.37187%207.77812C1.61979%208.36146%201.93333%208.96667%202.3125%209.59375C2.69167%2010.2062%203.07812%2010.775%203.47187%2011.3C3.86562%2011.8396%204.20833%2012.2917%204.5%2012.6563C4.79167%2012.2917%205.13438%2011.8396%205.52813%2011.3C5.92188%2010.775%206.30833%2010.2062%206.6875%209.59375C7.08125%208.96667%207.40208%208.36146%207.65%207.77812C7.88333%207.20937%208%206.75%208%206.4ZM8.7%206.4C8.67083%207.05625%208.4375%207.81458%208%208.675C7.54792%209.53542%207.0375%2010.3667%206.46875%2011.1687C5.9%2011.9854%205.41875%2012.6344%205.025%2013.1156C4.87917%2013.2906%204.70417%2013.3781%204.5%2013.3781C4.29583%2013.3781%204.12083%2013.2906%203.975%2013.1156C3.58125%2012.6344%203.1%2011.9854%202.53125%2011.1687C1.9625%2010.3667%201.45208%209.53542%201%208.675C0.5625%207.81458%200.329166%207.05625%200.3%206.4C0.329166%205.20417%200.7375%204.2125%201.525%203.425C2.3125%202.6375%203.30417%202.22917%204.5%202.2C5.69583%202.22917%206.6875%202.6375%207.475%203.425C8.2625%204.2125%208.67083%205.20417%208.7%206.4ZM3.45%206.4C3.46458%206.79375%203.63958%207.1%203.975%207.31875C4.325%207.49375%204.675%207.49375%205.025%207.31875C5.36042%207.1%205.53542%206.79375%205.55%206.4C5.53542%206.00625%205.36042%205.7%205.025%205.48125C4.675%205.30625%204.325%205.30625%203.975%205.48125C3.63958%205.7%203.46458%206.00625%203.45%206.4ZM4.5%208.15C3.84375%208.13542%203.34062%207.84375%202.99062%207.275C2.66979%206.69167%202.66979%206.10833%202.99062%205.525C3.34062%204.95625%203.84375%204.66458%204.5%204.65C5.15625%204.66458%205.65938%204.95625%206.00938%205.525C6.33021%206.10833%206.33021%206.69167%206.00938%207.275C5.65938%207.84375%205.15625%208.13542%204.5%208.15Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {textLocation}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                    </_Builtin.Block>
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cvs-intro-profile-info")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-629")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "div-block-818")}
+                        tag="div"
+                      >
+                        {slotSocialLink}
+                      </_Builtin.Block>
+                      {isResumeVisible ? (
                         <_Builtin.Block
                           className={_utils.cx(
                             _styles,
-                            "text-sm",
-                            "text-blue-800"
+                            "resume-candidate-details"
                           )}
                           tag="div"
+                          {...onClickResume}
                         >
-                          {"Resume"}
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.5%201.5C1.51562%201.07812%201.66406%200.726562%201.94531%200.445312C2.22656%200.164062%202.57812%200.015625%203%200H6.75V3C6.75%203.21875%206.82031%203.39844%206.96094%203.53906C7.10156%203.67969%207.28125%203.75%207.5%203.75H10.5V10.5C10.4844%2010.9219%2010.3359%2011.2734%2010.0547%2011.5547C9.77344%2011.8359%209.42188%2011.9844%209%2012H3C2.57812%2011.9844%202.22656%2011.8359%201.94531%2011.5547C1.66406%2011.2734%201.51562%2010.9219%201.5%2010.5V1.5ZM10.5%203H7.5V0L10.5%203Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(
+                              _styles,
+                              "text-sm",
+                              "text-blue-800"
+                            )}
+                            tag="div"
+                          >
+                            {"Resume"}
+                          </_Builtin.Block>
                         </_Builtin.Block>
-                      </_Builtin.Block>
-                    ) : null}
+                      ) : null}
+                      {isPhoneScreeningVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "relative")}
+                          tag="div"
+                          {...onClickPhoneScreening}
+                        >
+                          <_Builtin.Block
+                            className={_utils.cx(
+                              _styles,
+                              "email-outreach-button",
+                              "p-4"
+                            )}
+                            tag="div"
+                          >
+                            <_Builtin.Block
+                              className={_utils.cx(_styles, "text-email-out")}
+                              tag="div"
+                            >
+                              {"Phone Screening"}
+                            </_Builtin.Block>
+                            <_Builtin.HtmlEmbed
+                              className={_utils.cx(_styles, "icons")}
+                              value="%3Csvg%20width%3D%226%22%20height%3D%226%22%20viewBox%3D%220%200%206%206%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.66328%200.225C5.82734%200.235937%205.91484%200.323437%205.92578%200.4875V4.1625C5.91484%204.32656%205.82734%204.41406%205.66328%204.425C5.49922%204.41406%205.41172%204.32656%205.40078%204.1625V1.12734L1.11875%205.39297C0.998437%205.50234%200.878125%205.50234%200.757812%205.39297C0.648437%205.27266%200.648437%205.15234%200.757812%205.03203L5.02344%200.75H1.98828C1.82422%200.739062%201.73672%200.651562%201.72578%200.4875C1.73672%200.323437%201.82422%200.235937%201.98828%200.225H5.66328Z%22%20fill%3D%22%23A81897%22%20style%3D%22fill%3A%23A81897%3Bfill%3Acolor(display-p3%200.6588%200.0941%200.5922)%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E"
+                            />
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                    </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
+                {isOverviewVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-673")}
+                    tag="div"
+                  >
+                    {slotOverview}
+                  </_Builtin.Block>
+                ) : null}
               </_Builtin.Block>
-              {isOverviewVisible ? (
+            ) : null}
+            {isFullWidthVisible ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "cv-sidebar-intro-wrapper")}
+                tag="div"
+              >
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-673")}
+                  className={_utils.cx(
+                    _styles,
+                    "cvs-intro-profile-block",
+                    "width-600"
+                  )}
                   tag="div"
                 >
-                  {slotOverview}
+                  {isNameImageVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-787")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "cvs-intro-profile-image"
+                        )}
+                        tag="div"
+                      >
+                        {slotCandidateImage}
+                      </_Builtin.Block>
+                      <_Builtin.Block
+                        className={_utils.cx(
+                          _styles,
+                          "fw-semibold",
+                          "text-no-wrap"
+                        )}
+                        tag="div"
+                      >
+                        {textName}
+                      </_Builtin.Block>
+                    </_Builtin.Block>
+                  ) : null}
+                  {isLocationRoleVisible ? (
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-789")}
+                      tag="div"
+                    >
+                      {isRoleVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-788")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%2212%22%20height%3D%2216%22%20viewBox%3D%220%200%2012%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M3.9%203.25V4.3H8.1V3.25C8.08542%203.03125%207.96875%202.91458%207.75%202.9H4.25C4.03125%202.91458%203.91458%203.03125%203.9%203.25ZM3.2%204.3V3.25C3.21458%202.95833%203.31667%202.71042%203.50625%202.50625C3.71042%202.31667%203.95833%202.21458%204.25%202.2H7.75C8.04167%202.21458%208.28958%202.31667%208.49375%202.50625C8.68333%202.71042%208.78542%202.95833%208.8%203.25V4.3H10.2C10.5938%204.31458%2010.9219%204.45312%2011.1844%204.71562C11.4469%204.97812%2011.5854%205.30625%2011.6%205.7V11.3C11.5854%2011.6937%2011.4469%2012.0219%2011.1844%2012.2844C10.9219%2012.5469%2010.5938%2012.6854%2010.2%2012.7H1.8C1.40625%2012.6854%201.07812%2012.5469%200.815625%2012.2844C0.553125%2012.0219%200.414583%2011.6937%200.4%2011.3V5.7C0.414583%205.30625%200.553125%204.97812%200.815625%204.71562C1.07812%204.45312%201.40625%204.31458%201.8%204.3H3.2ZM8.45%205H3.55H1.8C1.59583%205%201.42812%205.06562%201.29687%205.19687C1.16562%205.32812%201.1%205.49583%201.1%205.7V7.8H4.25H4.95H7.05H7.75H10.9V5.7C10.9%205.49583%2010.8344%205.32812%2010.7031%205.19687C10.5719%205.06562%2010.4042%205%2010.2%205H8.45ZM10.9%208.5H7.75V9.55C7.75%209.75417%207.68438%209.92187%207.55313%2010.0531C7.42188%2010.1844%207.25417%2010.25%207.05%2010.25H4.95C4.74583%2010.25%204.57812%2010.1844%204.44687%2010.0531C4.31562%209.92187%204.25%209.75417%204.25%209.55V8.5H1.1V11.3C1.1%2011.5042%201.16562%2011.6719%201.29687%2011.8031C1.42812%2011.9344%201.59583%2012%201.8%2012H10.2C10.4042%2012%2010.5719%2011.9344%2010.7031%2011.8031C10.8344%2011.6719%2010.9%2011.5042%2010.9%2011.3V8.5ZM4.95%208.5V9.55H7.05V8.5H4.95Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {textRole}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                      {isLocationVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(_styles, "div-block-788")}
+                          tag="div"
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%229%22%20height%3D%2216%22%20viewBox%3D%220%200%209%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8%206.4C7.97083%205.40833%207.62813%204.58437%206.97188%203.92812C6.31563%203.27187%205.49167%202.92917%204.5%202.9C3.50833%202.92917%202.68437%203.27187%202.02812%203.92812C1.37187%204.58437%201.02917%205.40833%201%206.4C1%206.75%201.12396%207.20937%201.37187%207.77812C1.61979%208.36146%201.93333%208.96667%202.3125%209.59375C2.69167%2010.2062%203.07812%2010.775%203.47187%2011.3C3.86562%2011.8396%204.20833%2012.2917%204.5%2012.6563C4.79167%2012.2917%205.13438%2011.8396%205.52813%2011.3C5.92188%2010.775%206.30833%2010.2062%206.6875%209.59375C7.08125%208.96667%207.40208%208.36146%207.65%207.77812C7.88333%207.20937%208%206.75%208%206.4ZM8.7%206.4C8.67083%207.05625%208.4375%207.81458%208%208.675C7.54792%209.53542%207.0375%2010.3667%206.46875%2011.1687C5.9%2011.9854%205.41875%2012.6344%205.025%2013.1156C4.87917%2013.2906%204.70417%2013.3781%204.5%2013.3781C4.29583%2013.3781%204.12083%2013.2906%203.975%2013.1156C3.58125%2012.6344%203.1%2011.9854%202.53125%2011.1687C1.9625%2010.3667%201.45208%209.53542%201%208.675C0.5625%207.81458%200.329166%207.05625%200.3%206.4C0.329166%205.20417%200.7375%204.2125%201.525%203.425C2.3125%202.6375%203.30417%202.22917%204.5%202.2C5.69583%202.22917%206.6875%202.6375%207.475%203.425C8.2625%204.2125%208.67083%205.20417%208.7%206.4ZM3.45%206.4C3.46458%206.79375%203.63958%207.1%203.975%207.31875C4.325%207.49375%204.675%207.49375%205.025%207.31875C5.36042%207.1%205.53542%206.79375%205.55%206.4C5.53542%206.00625%205.36042%205.7%205.025%205.48125C4.675%205.30625%204.325%205.30625%203.975%205.48125C3.63958%205.7%203.46458%206.00625%203.45%206.4ZM4.5%208.15C3.84375%208.13542%203.34062%207.84375%202.99062%207.275C2.66979%206.69167%202.66979%206.10833%202.99062%205.525C3.34062%204.95625%203.84375%204.66458%204.5%204.65C5.15625%204.66458%205.65938%204.95625%206.00938%205.525C6.33021%206.10833%206.33021%206.69167%206.00938%207.275C5.65938%207.84375%205.15625%208.13542%204.5%208.15Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(_styles, "text-grey-600")}
+                            tag="div"
+                          >
+                            {textLocation}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                    </_Builtin.Block>
+                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "cvs-intro-profile-info")}
+                    tag="div"
+                  >
+                    <_Builtin.Block
+                      className={_utils.cx(_styles, "div-block-629")}
+                      tag="div"
+                    >
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "div-block-818")}
+                        tag="div"
+                      >
+                        {slotSocialLink}
+                      </_Builtin.Block>
+                      {isResumeVisible ? (
+                        <_Builtin.Block
+                          className={_utils.cx(
+                            _styles,
+                            "resume-candidate-details"
+                          )}
+                          tag="div"
+                          {...onClickResume}
+                        >
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M1.5%201.5C1.51562%201.07812%201.66406%200.726562%201.94531%200.445312C2.22656%200.164062%202.57812%200.015625%203%200H6.75V3C6.75%203.21875%206.82031%203.39844%206.96094%203.53906C7.10156%203.67969%207.28125%203.75%207.5%203.75H10.5V10.5C10.4844%2010.9219%2010.3359%2011.2734%2010.0547%2011.5547C9.77344%2011.8359%209.42188%2011.9844%209%2012H3C2.57812%2011.9844%202.22656%2011.8359%201.94531%2011.5547C1.66406%2011.2734%201.51562%2010.9219%201.5%2010.5V1.5ZM10.5%203H7.5V0L10.5%203Z%22%20fill%3D%22%230F3554%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                          <_Builtin.Block
+                            className={_utils.cx(
+                              _styles,
+                              "text-sm",
+                              "text-blue-800"
+                            )}
+                            tag="div"
+                          >
+                            {"Resume"}
+                          </_Builtin.Block>
+                        </_Builtin.Block>
+                      ) : null}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
                 </_Builtin.Block>
-              ) : null}
-            </_Builtin.Block>
+                {isOverviewVisible ? (
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-673", "width-600")}
+                    tag="div"
+                  >
+                    {slotOverview}
+                  </_Builtin.Block>
+                ) : null}
+              </_Builtin.Block>
+            ) : null}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

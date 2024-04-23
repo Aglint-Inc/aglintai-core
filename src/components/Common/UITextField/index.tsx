@@ -5,7 +5,7 @@ import {
   InputProps,
   OutlinedInputProps,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 import MuiTextField from '@mui/material/TextField';
 import { errorMessages } from '@utils/errorMessages';
@@ -13,7 +13,6 @@ import React, { useState } from 'react';
 
 import UITypography from '../UITypography';
 type Props = {
-  contentLimit?: number;
   value?: string | number;
   type?: React.HTMLInputTypeAttribute;
   onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -28,20 +27,24 @@ type Props = {
   maxRows?: number;
   placeholder?: string;
   fullWidth?: boolean;
+  name?: string;
   rest?: any;
   onSelect?: () => void;
   // eslint-disable-next-line no-unused-vars
   onFocus?: (e: any) => void;
   onBlur?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onKeyDown?: (e: any) => void;
   InputProps?:
     | Partial<FilledInputProps>
     | Partial<OutlinedInputProps>
     | Partial<InputProps>;
   defaultValue?: string | number;
   children?: any;
-  height?: string;
+  height?: number;
   noBorder?: boolean;
   width?: string;
+  borderRadius?: number;
   select?: boolean;
   secondaryText?: string;
   labelBold?: 'default' | 'normal';
@@ -63,48 +66,31 @@ const UITextField = React.forwardRef(
       required,
       value,
       fullWidth = false,
+      name = null,
       multiline = false,
       minRows = 4.7,
       maxRows = 4.7,
       rest = undefined,
-      onFocus = () => {},
+      onKeyDown = () => {},
       onBlur = () => {},
-      contentLimit,
       InputProps,
       children,
       defaultValue,
-      noBorder,
+      borderRadius = 4,
       width,
       select,
       height,
       secondaryText,
-      labelBold = 'default',
+      labelBold = 'default'
     }: Props,
-    ref?: React.Ref<HTMLInputElement>,
+    ref?: React.Ref<HTMLInputElement>
   ) => {
-    const [focus, setfocus] = useState(false);
     const [contentExceeded, setContentExceeded] = useState(false);
-    let borderColor = `#b1cee6`;
-    let outlineColor = palette.grey[300];
     let labelColor = palette.grey[800];
-    if (focus) {
-      outlineColor = palette.blue[600];
-    }
-    if (error) {
-      outlineColor = palette.red[400];
-      borderColor = palette.red[200];
-    }
+
     if (disabled) {
       labelColor = palette.grey[600];
     }
-
-    const checkMaxLength = (content) => {
-      if (contentLimit && content.length >= contentLimit && focus) {
-        setContentExceeded(true);
-      } else {
-        setContentExceeded(false);
-      }
-    };
 
     return (
       <Stack
@@ -134,16 +120,14 @@ const UITextField = React.forwardRef(
           <Typography variant='body2'>{secondaryText}</Typography>
         )}
         <MuiTextField
+          name={name}
           margin='none'
           select={select}
           fullWidth={fullWidth}
           value={value}
           defaultValue={defaultValue}
-          inputProps={{ maxLength: contentLimit || undefined }}
           onChange={onChange}
-          onKeyDown={(e: ReturnType<typeof onkeydown>) => {
-            checkMaxLength(e.target.value);
-          }}
+          onKeyDown={onKeyDown}
           onSelect={onSelect}
           error={error || contentExceeded}
           disabled={disabled}
@@ -155,48 +139,25 @@ const UITextField = React.forwardRef(
           minRows={minRows}
           maxRows={maxRows}
           InputProps={{
-            ...InputProps,
-          }}
-          onFocus={(e) => {
-            setfocus(true);
-            if (onFocus) onFocus(e.currentTarget);
+            ...InputProps
           }}
           onBlur={() => {
-            setfocus(false);
             onBlur();
             setContentExceeded(false);
           }}
           type={type}
           sx={{
-            '&': {
-              margin: 0,
-            },
             '& .MuiOutlinedInput-root': {
-              height: multiline ? height : '40px',
-              bgcolor: disabled ? 'transparent' : 'white.700',
-              fontSize: '14px',
-              fieldset: {
-                pt: '8px',
-                border: noBorder
-                  ? 'transparent'
-                  : `1px solid ${outlineColor}!important`,
-              },
-              '&:hover fieldset': {
-                border: noBorder
-                  ? 'transparent'
-                  : `1px solid ${outlineColor}!important`,
-              },
-              '&': {
-                outline: `3px solid ${focus ? borderColor : 'transparent'}`,
-              },
+              height: height ? `${height}px !important` : '100%',
+              borderRadius: `${borderRadius}px`
             },
-            width: width,
+            width: width
           }}
           {...rest}
         >
           {children}
         </MuiTextField>
-        {(error || contentExceeded) && (
+        {(error || contentExceeded) && helperText && (
           <Stack
             direction={'row'}
             alignItems={'center'}
@@ -214,7 +175,7 @@ const UITextField = React.forwardRef(
         )}
       </Stack>
     );
-  },
+  }
 );
 
 export default UITextField;

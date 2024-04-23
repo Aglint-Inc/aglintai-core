@@ -1,29 +1,38 @@
-import React from 'react';
-import { loadScript } from '../utils';
+"use client";
+import React from "react";
+import { loadScript } from "../utils";
 function onKeyDownInputHandlers(e) {
   e.stopPropagation();
 }
-export function FormWrapper({
-  className = '',
-  state: initialState = 'normal',
-  onSubmit,
-  children,
-  ...props
-}) {
+export const FormWrapper = React.forwardRef(function FormWrapper(
+  {
+    className = "",
+    state: initialState = "normal",
+    onSubmit,
+    children,
+    ...props
+  },
+  ref
+) {
   const [state, setState] = React.useState(initialState);
+  const formName =
+    (children.find((c) => c.type === FormForm)?.props)["data-name"] ?? "Form";
   return React.createElement(
-    'div',
+    "div",
     {
-      className: className + ' w-form',
+      className: className + " w-form",
       ...props,
+      ref,
     },
     React.Children.map(children, (child) => {
       if (child.type === FormForm) {
+        const style = {};
+        if (state === "success") {
+          style.display = "none";
+        }
         return React.cloneElement(child, {
           ...child.props,
-          style: {
-            display: ['normal', 'error'].includes(state) ? 'block' : 'none',
-          },
+          style,
           onSubmit: (e) => {
             try {
               e.preventDefault();
@@ -36,84 +45,130 @@ export function FormWrapper({
               if (onSubmit) {
                 onSubmit(e);
               }
-              setState('success');
+              setState("success");
             } catch (err) {
-              setState('error');
+              setState("error");
               throw err;
             }
           },
+          "aria-label": formName,
         });
       }
       if (child.type === FormSuccessMessage) {
+        const style = {};
+        if (state === "success") {
+          style.display = "block";
+        }
+        if (state === "error") {
+          style.display = "none";
+        }
         return React.cloneElement(child, {
           ...child.props,
-          style: { display: state == 'success' ? 'block' : 'none' },
+          style,
+          tabIndex: -1,
+          role: "region",
+          "aria-label": `${formName} success`,
         });
       }
       if (child.type === FormErrorMessage) {
+        const style = {};
+        if (state === "success") {
+          style.display = "none";
+        }
+        if (state === "error") {
+          style.display = "block";
+        }
         return React.cloneElement(child, {
           ...child.props,
-          style: { display: state == 'error' ? 'block' : 'none' },
+          tabIndex: -1,
+          role: "region",
+          "aria-label": `${formName} failure`,
+          style,
         });
       }
       return child;
-    }),
+    })
   );
-}
-export function FormForm(props) {
-  return React.createElement('form', props);
-}
-export function FormBlockLabel(props) {
-  return React.createElement('label', props);
-}
-export function FormTextInput({ className = '', ...props }) {
-  return React.createElement('input', {
+});
+export const FormForm = React.forwardRef(function FormForm(props, ref) {
+  return React.createElement("form", { ...props, ref });
+});
+export const FormBlockLabel = React.forwardRef(function FormBlockLabel(
+  props,
+  ref
+) {
+  return React.createElement("label", { ...props, ref });
+});
+export const FormTextInput = React.forwardRef(function FormTextInput(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("input", {
     ...props,
-    type: 'text',
-    className: className + ' w-input',
+    className: className + " w-input",
     onKeyDown: onKeyDownInputHandlers,
+    ref,
   });
-}
-export function FormTextarea({ className = '', ...props }) {
-  return React.createElement('textarea', {
+});
+export const FormTextarea = React.forwardRef(function FormTextarea(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("textarea", {
     ...props,
-    className: className + ' w-input',
+    className: className + " w-input",
     onKeyDown: onKeyDownInputHandlers,
+    ref,
   });
-}
-export function FormInlineLabel({ className = '', ...props }) {
-  return React.createElement('span', {
-    className: className + ' w-form-label',
+});
+export const FormInlineLabel = React.forwardRef(function FormInlineLabel(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("span", {
+    className: className + " w-form-label",
     ...props,
+    ref,
   });
-}
-export function FormCheckboxWrapper({ className = '', ...props }) {
-  return React.createElement('label', {
-    className: className + ' w-checkbox',
+});
+export const FormCheckboxWrapper = React.forwardRef(
+  function FormCheckboxWrapper({ className = "", ...props }, ref) {
+    return React.createElement("label", {
+      className: className + " w-checkbox",
+      ...props,
+      ref,
+    });
+  }
+);
+export const FormRadioWrapper = React.forwardRef(function FormRadioWrapper(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("label", {
+    className: className + " w-radio",
     ...props,
+    ref,
   });
-}
-export function FormRadioWrapper({ className = '', ...props }) {
-  return React.createElement('label', {
-    className: className + ' w-radio',
-    ...props,
-  });
-}
+});
 const HIDE_DEFAULT_INPUT_STYLES = {
   opacity: 0,
-  position: 'absolute',
+  position: "absolute",
   zIndex: -1,
 };
-const CHECKED_CLASS = 'w--redirected-checked';
-const FOCUSED_CLASS = 'w--redirected-focus';
-const FOCUSED_VISIBLE_CLASS = 'w--redirected-focus-visible';
-export function FormBooleanInput({
-  className = '',
-  checked = false,
-  type = 'checkbox',
-  inputType,
-  ...props
-}) {
+const CHECKED_CLASS = "w--redirected-checked";
+const FOCUSED_CLASS = "w--redirected-focus";
+const FOCUSED_VISIBLE_CLASS = "w--redirected-focus-visible";
+export const FormBooleanInput = React.forwardRef(function FormBooleanInput(
+  {
+    className = "",
+    checked = false,
+    type = "checkbox",
+    inputType,
+    customClassName,
+    ...props
+  },
+  ref
+) {
   const [isChecked, setIsChecked] = React.useState(checked);
   const [isFocused, setIsFocused] = React.useState(false);
   const [isFocusedVisible, setIsFocusedVisible] = React.useState(false);
@@ -144,290 +199,378 @@ export function FormBooleanInput({
     },
     onKeyDown: onKeyDownInputHandlers,
   };
-  if (inputType === 'custom') {
-    const pseudoModeClasses = `${isChecked ? ` ${CHECKED_CLASS}` : ''}${
-      isFocused ? ` ${FOCUSED_CLASS}` : ''
-    }${isFocusedVisible ? ` ${FOCUSED_CLASS} ${FOCUSED_VISIBLE_CLASS}` : ''}`;
+  if (inputType === "custom") {
+    const pseudoModeClasses = `${isChecked ? ` ${CHECKED_CLASS}` : ""}${
+      isFocused ? ` ${FOCUSED_CLASS}` : ""
+    }${isFocusedVisible ? ` ${FOCUSED_CLASS} ${FOCUSED_VISIBLE_CLASS}` : ""} ${
+      customClassName ?? ""
+    }`;
     const currentClassName = `${className}${pseudoModeClasses}`;
     return (
       <>
         <div className={currentClassName} />
-        <input {...props} {...inputProps} style={HIDE_DEFAULT_INPUT_STYLES} />
+        <input
+          ref={ref}
+          {...props}
+          {...inputProps}
+          style={HIDE_DEFAULT_INPUT_STYLES}
+        />
       </>
     );
   }
-  return <input className={className} {...props} {...inputProps} />;
-}
-export function FormCheckboxInput({ className = '', ...props }) {
+  return <input ref={ref} className={className} {...props} {...inputProps} />;
+});
+export const FormCheckboxInput = React.forwardRef(function FormCheckboxInput(
+  { className = "", ...props },
+  ref
+) {
   return (
     <FormBooleanInput
       {...props}
-      type='checkbox'
-      className={className + ' w-checkbox'}
+      ref={ref}
+      type="checkbox"
+      className={className + " w-checkbox-input"}
     />
   );
-}
-export function FormRadioInput({ className = '', ...props }) {
+});
+export const FormRadioInput = React.forwardRef(function FormRadioInput(
+  { className = "", ...props },
+  ref
+) {
   return (
     <FormBooleanInput
       {...props}
-      type='radio'
-      className={className + ' w-radio-input'}
+      ref={ref}
+      type="radio"
+      className={className + " w-radio-input"}
     />
   );
-}
+});
 const MAX_FILE_SIZE_DEFAULT = 10485760;
 const FileUploadContext = React.createContext({
   files: null,
   error: null,
   maxSize: MAX_FILE_SIZE_DEFAULT,
-  setFiles: () => {},
-  setError: () => {},
+  setFiles: () => undefined,
+  setError: () => undefined,
 });
-export function FormFileUploadWrapper({
-  maxSize = MAX_FILE_SIZE_DEFAULT,
-  ...props
-}) {
-  const [files, setFiles] = React.useState(null);
-  const [error, setError] = React.useState(null);
-  return React.createElement(
-    FileUploadContext.Provider,
-    {
-      value: { files, setFiles, error, setError, maxSize },
-    },
-    React.createElement(_FormFileUploadWrapper, { ...props }),
-  );
-}
-export function _FormFileUploadWrapper({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-file-upload',
-    ...props,
-  });
-}
-export function FormFileUploadDefault({ className = '', ...props }) {
-  const { files, error } = React.useContext(FileUploadContext);
-  return React.createElement('div', {
-    className: className + ' w-file-upload-default',
-    ...props,
-    style: {
-      ...props.style,
-      display: !files || error ? 'block' : 'none',
-    },
-  });
-}
-export function FormFileUploadInput({ className = '', ...props }) {
-  const { setFiles, setError, maxSize } = React.useContext(FileUploadContext);
-  return React.createElement('input', {
-    ...props,
-    className: className + ' w-file-upload-input',
-    type: 'file',
-    onKeyDown: onKeyDownInputHandlers,
-    onChange: (e) => {
-      if (e.target.files) {
-        if (e.target.files[0].size <= maxSize) {
-          setError(null);
-          setFiles(e.target.files);
-        } else setError('SIZE_ERROR');
-      }
-    },
-  });
-}
-export function FormFileUploadLabel({ className = '', ...props }) {
-  return React.createElement('label', {
-    className: className + ' w-file-upload-label',
-    ...props,
-  });
-}
-export function FormFileUploadText({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-inline-block',
-    ...props,
-  });
-}
-export function FormFileUploadInfo({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-file-upload-info',
-    ...props,
-  });
-}
-export function FormFileUploadUploading({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-file-upload-uploading',
-    style: { ...props.style, display: 'none' },
-    ...props,
-  });
-}
-export function FormFileUploadUploadingBtn({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-file-upload-uploading-btn',
-    ...props,
-  });
-}
-export function FormFileUploadUploadingIcon({ className = '', ...props }) {
-  return React.createElement(
-    'svg',
-    {
-      className: className + ' icon w-icon-file-upload-uploading',
+export const FormFileUploadWrapper = React.forwardRef(
+  function FormFileUploadWrapper(
+    { maxSize = MAX_FILE_SIZE_DEFAULT, ...props },
+    ref
+  ) {
+    const [files, setFiles] = React.useState(null);
+    const [error, setError] = React.useState(null);
+    return React.createElement(
+      FileUploadContext.Provider,
+      {
+        value: { files, setFiles, error, setError, maxSize },
+      },
+      React.createElement(_FormFileUploadWrapper, { ...props, ref })
+    );
+  }
+);
+export const _FormFileUploadWrapper = React.forwardRef(
+  function _FormFileUploadWrapper({ className = "", ...props }, ref) {
+    return React.createElement("div", {
+      className: className + " w-file-upload",
       ...props,
-    },
-    <>
-      <path
-        fill='currentColor'
-        opacity='.2'
-        d='M15 30a15 15 0 1 1 0-30 15 15 0 0 1 0 30zm0-3a12 12 0 1 0 0-24 12 12 0 0 0 0 24z'
-      ></path>
-      <path
-        fill='currentColor'
-        opacity='.75'
-        d='M0 15A15 15 0 0 1 15 0v3A12 12 0 0 0 3 15H0z'
-      >
-        <animateTransform
-          attributeName='transform'
-          attributeType='XML'
-          dur='0.6s'
-          from='0 15 15'
-          repeatCount='indefinite'
-          to='360 15 15'
-          type='rotate'
-        ></animateTransform>
-      </path>
-    </>,
-  );
-}
-export function FormFileUploadSuccess({ className = '', ...props }) {
-  const { files, error } = React.useContext(FileUploadContext);
-  return React.createElement('div', {
-    className: className + ' w-file-upload-success',
-    ...props,
-    style: {
-      ...props.style,
-      display: !!files && !error ? 'block' : 'none',
-    },
-  });
-}
-export function FormFileUploadFile({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-file-upload-file',
-    ...props,
-  });
-}
-export function FormFileUploadFileName({ className = '', ...props }) {
-  const { files } = React.useContext(FileUploadContext);
-  return React.createElement(
-    'div',
-    {
-      className: className + ' w-file-upload-file-name',
+      ref,
+    });
+  }
+);
+export const FormFileUploadDefault = React.forwardRef(
+  function FormFileUploadDefault({ className = "", ...props }, ref) {
+    const { files, error } = React.useContext(FileUploadContext);
+    return React.createElement("div", {
+      className: className + " w-file-upload-default",
       ...props,
-    },
-    files && files[0].name,
-  );
-}
-export function FormFileUploadRemoveLink({ className = '', ...props }) {
-  const { setFiles } = React.useContext(FileUploadContext);
-  return React.createElement('div', {
-    className: className + ' w-file-remove-link',
-    ...props,
-    onClick: () => {
-      setFiles(null);
-    },
-  });
-}
-export function FormFileUploadError({ className = '', ...props }) {
-  const { error } = React.useContext(FileUploadContext);
-  return React.createElement('div', {
-    className: className + ' w-file-upload-error',
-    ...props,
-    style: {
-      ...props.style,
-      display: !!error ? 'block' : 'none',
-    },
-  });
-}
-export function FormFileUploadErrorMsg({ errors, className = '', ...props }) {
-  const { error } = React.useContext(FileUploadContext);
-  return React.createElement(
-    'div',
-    {
-      className: className + ' w-file-upload-error-msg',
+      ref,
+      style: {
+        ...props.style,
+        display: !files || error ? "block" : "none",
+      },
+    });
+  }
+);
+export const FormFileUploadInput = React.forwardRef(
+  function FormFileUploadInput({ className = "", ...props }, ref) {
+    const { setFiles, setError, maxSize } = React.useContext(FileUploadContext);
+    return React.createElement("input", {
       ...props,
-    },
-    errors[error ?? 'GENERIC_ERROR'],
-  );
-}
-export function FormButton({ className = '', value, ...props }) {
-  return React.createElement('input', {
+      className: className + " w-file-upload-input",
+      type: "file",
+      onKeyDown: onKeyDownInputHandlers,
+      onChange: (e) => {
+        if (e.target.files) {
+          if (e.target.files[0] && e.target.files[0].size <= maxSize) {
+            setError(null);
+            setFiles(e.target.files);
+          } else setError("SIZE_ERROR");
+        }
+      },
+      ref,
+    });
+  }
+);
+export const FormFileUploadLabel = React.forwardRef(
+  function FormFileUploadLabel({ className = "", ...props }, ref) {
+    return React.createElement("label", {
+      className: className + " w-file-upload-label",
+      ...props,
+      ref,
+    });
+  }
+);
+export const FormFileUploadText = React.forwardRef(function FormFileUploadText(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("div", {
+    className: className + " w-inline-block",
     ...props,
-    type: 'submit',
-    value: value ?? '',
-    className: className + ' w-button',
+    ref,
+  });
+});
+export const FormFileUploadInfo = React.forwardRef(function FormFileUploadInfo(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("div", {
+    className: className + " w-file-upload-info",
+    ...props,
+    ref,
+  });
+});
+export const FormFileUploadUploading = React.forwardRef(
+  function FormFileUploadUploading({ className = "", ...props }, ref) {
+    return React.createElement("div", {
+      className: className + " w-file-upload-uploading",
+      style: { ...props.style, display: "none" },
+      ...props,
+      ref,
+    });
+  }
+);
+export const FormFileUploadUploadingBtn = React.forwardRef(
+  function FormFileUploadUploadingBtn({ className = "", ...props }, ref) {
+    return React.createElement("div", {
+      className: className + " w-file-upload-uploading-btn",
+      ...props,
+      ref,
+    });
+  }
+);
+export const FormFileUploadUploadingIcon = React.forwardRef(
+  function FormFileUploadUploadingIcon({ className = "", ...props }, ref) {
+    return React.createElement(
+      "svg",
+      {
+        className: className + " icon w-icon-file-upload-uploading",
+        ...props,
+        ref,
+      },
+      <>
+        <path
+          fill="currentColor"
+          opacity=".2"
+          d="M15 30a15 15 0 1 1 0-30 15 15 0 0 1 0 30zm0-3a12 12 0 1 0 0-24 12 12 0 0 0 0 24z"
+        ></path>
+        <path
+          fill="currentColor"
+          opacity=".75"
+          d="M0 15A15 15 0 0 1 15 0v3A12 12 0 0 0 3 15H0z"
+        >
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            dur="0.6s"
+            from="0 15 15"
+            repeatCount="indefinite"
+            to="360 15 15"
+            type="rotate"
+          ></animateTransform>
+        </path>
+      </>
+    );
+  }
+);
+export const FormFileUploadSuccess = React.forwardRef(
+  function FormFileUploadSuccess({ className = "", ...props }, ref) {
+    const { files, error } = React.useContext(FileUploadContext);
+    return React.createElement("div", {
+      className: className + " w-file-upload-success",
+      ...props,
+      ref,
+      style: {
+        ...props.style,
+        display: Boolean(files) && !error ? "block" : "none",
+      },
+    });
+  }
+);
+export const FormFileUploadFile = React.forwardRef(function FormFileUploadFile(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("div", {
+    className: className + " w-file-upload-file",
+    ...props,
+    ref,
+  });
+});
+export const FormFileUploadFileName = React.forwardRef(
+  function FormFileUploadFileName({ className = "", ...props }, ref) {
+    const { files } = React.useContext(FileUploadContext);
+    return React.createElement(
+      "div",
+      {
+        className: className + " w-file-upload-file-name",
+        ...props,
+        ref,
+      },
+      files && files[0].name
+    );
+  }
+);
+export const FormFileUploadRemoveLink = React.forwardRef(
+  function FormFileUploadRemoveLink({ className = "", ...props }, ref) {
+    const { setFiles } = React.useContext(FileUploadContext);
+    return React.createElement("div", {
+      className: className + " w-file-remove-link",
+      ...props,
+      ref,
+      onClick: () => {
+        setFiles(null);
+      },
+    });
+  }
+);
+export const FormFileUploadError = React.forwardRef(
+  function FormFileUploadError({ className = "", ...props }, ref) {
+    const { error } = React.useContext(FileUploadContext);
+    return React.createElement("div", {
+      className: className + " w-file-upload-error",
+      ...props,
+      ref,
+      style: {
+        ...props.style,
+        display: error ? "block" : "none",
+      },
+    });
+  }
+);
+export const FormFileUploadErrorMsg = React.forwardRef(
+  function FormFileUploadErrorMsg({ errors, className = "", ...props }, ref) {
+    const { error } = React.useContext(FileUploadContext);
+    return React.createElement(
+      "div",
+      {
+        className: className + " w-file-upload-error-msg",
+        ...props,
+        ref,
+      },
+      errors[error ?? "GENERIC_ERROR"]
+    );
+  }
+);
+export const FormButton = React.forwardRef(function FormButton(
+  { className = "", value, ...props },
+  ref
+) {
+  return React.createElement("input", {
+    ...props,
+    ref,
+    type: "submit",
+    value: value ?? "",
+    className: className + " w-button",
     onKeyDown: onKeyDownInputHandlers,
   });
-}
-export function SearchForm(props) {
-  return React.createElement('form', props);
-}
-export function SearchInput({ className = '', ...props }) {
-  return React.createElement('input', {
+});
+export const SearchForm = React.forwardRef(function SearchForm(props, ref) {
+  return React.createElement("form", { ...props, ref });
+});
+export const SearchInput = React.forwardRef(function SearchInput(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("input", {
     ...props,
-    type: 'text',
-    className: className + ' w-input',
+    type: "text",
+    className: className + " w-input",
     onKeyDown: onKeyDownInputHandlers,
+    ref,
   });
-}
-export function SearchButton({ value = '', className = '', ...props }) {
-  return React.createElement('input', {
+});
+export const SearchButton = React.forwardRef(function SearchButton(
+  { value = "", className = "", ...props },
+  ref
+) {
+  return React.createElement("input", {
     ...props,
-    type: 'submit',
+    type: "submit",
     value,
-    className: className + ' w-button',
+    className: className + " w-button",
     onKeyDown: onKeyDownInputHandlers,
+    ref,
   });
-}
-export function FormSuccessMessage({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-form-done',
+});
+export const FormSuccessMessage = React.forwardRef(function FormSuccessMessage(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("div", {
+    className: className + " w-form-done",
     ...props,
+    ref,
   });
-}
-export function FormErrorMessage({ className = '', ...props }) {
-  return React.createElement('div', {
-    className: className + ' w-form-fail',
+});
+export const FormErrorMessage = React.forwardRef(function FormErrorMessage(
+  { className = "", ...props },
+  ref
+) {
+  return React.createElement("div", {
+    className: className + " w-form-fail",
     ...props,
+    ref,
   });
-}
+});
 function hasValue(str) {
-  if (typeof str !== 'string') return false;
-  return str.replace(/^[s ]+|[s ]+$/g, '').length > 0;
+  if (typeof str !== "string") return false;
+  return str.replace(/^[s ]+|[s ]+$/g, "").length > 0;
 }
-export function FormSelect({ options, className = '', ...props }) {
+export const FormSelect = React.forwardRef(function FormSelect(
+  { options, className = "", ...props },
+  ref
+) {
   return React.createElement(
-    'select',
-    { className: className + ' w-select', ...props },
+    "select",
+    { className: className + " w-select", ...props, ref },
     options.map(({ v, t }, index) =>
       React.createElement(
-        'option',
-        { key: index, value: hasValue(v) ? v : '' },
-        hasValue(t) ? t : '',
-      ),
-    ),
+        "option",
+        { key: index, value: hasValue(v) ? v : "" },
+        hasValue(t) ? t : ""
+      )
+    )
   );
-}
-export function FormReCaptcha({
-  siteKey = '',
-  theme = 'light',
-  size = 'normal',
-}) {
+});
+export const FormReCaptcha = React.forwardRef(function FormReCaptcha(
+  { siteKey = "", theme = "light", size = "normal" },
+  ref
+) {
   React.useEffect(() => {
-    loadScript('https://www.google.com/recaptcha/api.js', {
+    loadScript("https://www.google.com/recaptcha/api.js", {
       cacheRegex: /(http|https):\/\/(www)?.+\/recaptcha/,
     });
   }, []);
   return (
     <div
-      className='g-recaptcha'
+      ref={ref}
+      className="g-recaptcha"
       data-sitekey={siteKey}
       data-theme={theme}
       data-size={size}
     />
   );
-}
+});

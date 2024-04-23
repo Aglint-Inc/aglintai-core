@@ -84,12 +84,12 @@
   position: relative;
   padding: 6px 16px;
   border-radius: 10px;
-  background-color: hsla(0, 0.00%, 100.00%, 0.00);
+  background-color: #f8f9f9;
 }
 
 .ic-tab-link-block:global(.w--current) {
   border-radius: 10px;
-  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+  background-color: white;
   box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
 }
 
@@ -343,6 +343,10 @@
 .text-no-wrap {
   white-space: nowrap;
   overflow-wrap: anywhere;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .tabs-content-4 {

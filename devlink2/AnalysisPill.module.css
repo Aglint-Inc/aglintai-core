@@ -129,6 +129,10 @@
   z-index: 5;
 }
 
+.relative {
+  position: relative;
+}
+
 .icon-block.contain {
   object-fit: contain;
 }
@@ -185,6 +189,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -196,6 +204,10 @@
 
 .text-yellow-800 {
   color: hsla(23.07692307692308, 68.42%, 26.08%, 1.00);
+}
+
+.text-grey-600 {
+  color: #68737d;
 }
 
 .color-black {
@@ -210,6 +222,14 @@
   color: var(--gray-500);
 }
 
+.text-sm.fw-semibold.text_camel {
+  text-transform: capitalize;
+}
+
+.text-sm.text-grey-600.grow {
+  flex: 0 0 auto;
+}
+
 .text-kale-600 {
   color: var(--kale-600);
 }
@@ -222,6 +242,10 @@
   color: var(--kale-800);
 }
 
+.text-sm.text-blue-600 {
+  display: flex;
+}
+
 .text-blue-600 {
   color: hsla(206.8421052631579, 71.03%, 41.96%, 1.00);
 }
@@ -232,4 +256,35 @@
 
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.text-sm.jenfjker {
+  width: 136px;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.text-sm.copied {
+  display: none;
 }

@@ -22,6 +22,11 @@
   align-items: center;
 }
 
+.scr-option-innner.gap_10 {
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .scr-option-icon-wrapper {
   position: relative;
 

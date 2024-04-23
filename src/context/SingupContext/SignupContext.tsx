@@ -42,6 +42,7 @@ const SignupProvider = ({ children }) => {
       }
     }
   }, [router]);
+
   return (
     <SignupContext.Provider
       value={{ step, setStep, flow, setFlow, companyName, setCompanyName }}

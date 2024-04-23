@@ -8,16 +8,16 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { getRelevantCndidates } from '../utils';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import { getRelevantCndidates } from '../utils';
 
 export const JDSearchModal = ({ setJdPopup }) => {
   const defaultValue = '';

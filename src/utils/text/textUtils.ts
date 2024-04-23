@@ -1,13 +1,17 @@
+import { capitalize as cap } from 'lodash';
+
 import { palette } from '@/src/context/Theme/Theme';
 
 export const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.substring(1);
 };
 export const capitalizeAll = (str: string) => {
-  return str
-    .split(' ')
-    .map((item) => capitalize(item))
-    .join(' ');
+  if (str)
+    return str
+      .replaceAll('_', ' ')
+      .split(' ')
+      .map((item) => cap(item))
+      .join(' ');
 };
 export const getRandomColor = (): string => {
   const colors = [

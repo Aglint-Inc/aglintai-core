@@ -1,32 +1,8 @@
 import axios from 'axios';
 
-import { InviteUserAPIType, RecruiterUserType } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
-
-export const getMembersFromDB = async (
-  recruiter_id: string,
-  user_id: string,
-) => {
-  const { data, error } = await supabase
-    .from('recruiter_relation')
-    .select()
-    .eq('recruiter_id', recruiter_id)
-    .or(`user_id.eq.${user_id},created_by.eq.${user_id}`);
-  if (!error && data.length) {
-    const userIds = data.map((item) => item.user_id);
-    const { data: users, error: userError } = await supabase
-      .from('recruiter_user')
-      .select()
-      .eq('is_deactivated', false)
-      .in('user_id', userIds);
-    if (!userError && users.length) {
-      return users;
-    } else {
-      return [];
-    }
-  }
-  return [];
-};
+import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
+import { supabase } from '@/src/utils/supabase/client';
 
 export const setMemberInDb = async (
   details: Partial<RecruiterUserType>,
@@ -43,20 +19,30 @@ export const setMemberInDb = async (
   return null;
 };
 
-export const inviteUser = (
+export const inviteUserApi = (
   form: {
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
+    designation: string;
+    employment: employmentTypeEnum;
+    department: string;
     role: string;
+    scheduling_settings: schedulingSettingType;
   },
   id: string,
+  recruiter_user: {
+    name: string;
+    email: string;
+  },
 ) => {
-  return axios
-    .post<InviteUserAPIType['out']>('/api/invite_user', {
-      users: [form],
-      id: id,
-    })
-    .then(({ data }) => data);
+  const res = axios.post<InviteUserAPIType['out']>('/api/invite_user', {
+    users: [form],
+    id: id,
+    recruiter_user: recruiter_user,
+  });
+
+  return res;
 };
 
 export const reinviteUser = (email: string, id: string) => {
@@ -72,4 +58,30 @@ export const reinviteUser = (email: string, id: string) => {
           emailSend: boolean;
         },
     );
+};
+
+export type InviteUserAPIType = {
+  in: {
+    users: {
+      first_name: string;
+      last_name: string;
+      email: string;
+      designation: string;
+      interview_location: string;
+      employment: employmentTypeEnum;
+      department: string;
+      role: string;
+      scheduling_settings: schedulingSettingType;
+    }[];
+    id: string;
+    recruiter_user: {
+      name: string;
+      email: string;
+    };
+  };
+  out: {
+    created: boolean;
+    error: string;
+    user: RecruiterUserType;
+  };
 };

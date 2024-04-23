@@ -119,8 +119,12 @@ export default async function handler(req, res) {
               resume: fileLink,
             });
           } else {
+            await supabase
+              .from('applications')
+              .update({ processing_status: 'failed', retry: 2 })
+              .eq('application_id', payload.application_id);
             console.log('no resume url from lever');
-            res.status(400).send('no resume url from lever');
+            return res.status(400).json('Resume URL is missing');
           }
         })
         .catch((error) => {

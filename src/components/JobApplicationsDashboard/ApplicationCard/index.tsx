@@ -1,13 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { useDrag, useDragLayer, XYCoord } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { CandidateSkillPills } from '@/devlink';
 import {
-  AllCandidateListItem,
+  // AllCandidateListItem,
   AnalysisBlock,
   AnalysisPill,
+  CandidateListItem,
   InsightTagAmbitious,
   InsightTagEmpty,
   // InsightTagAmbitious,
@@ -17,19 +20,20 @@ import {
   InsightTagReliable,
   // InsightTagReliable,
   InsightTagSkilled,
+  RcCheckbox,
   ScreeningStatus,
 } from '@/devlink2';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
+import { DragPill } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
+import { CountJobs } from '@/src/context/JobsContext/types';
 
-import { InvitedIcon } from './Icons/invited';
-import { SubmittedIcon } from './Icons/submitted';
-import { UninvitedIcon } from './Icons/uninvited';
+import ListCardInterviewSchedule from '../../Scheduling/AllSchedules/ListCard';
 import CandidateAvatar from '../Common/CandidateAvatar';
 import InterviewScore from '../Common/InterviewScore';
 import ResumeScore from '../Common/ResumeScore';
@@ -42,6 +46,9 @@ import {
   getScreeningStatus,
   mapScoreToAnalysis,
 } from '../utils';
+import { InvitedIcon } from './Icons/invited';
+import { SubmittedIcon } from './Icons/submitted';
+import { UninvitedIcon } from './Icons/uninvited';
 
 const ApplicationCard = ({
   detailedView,
@@ -61,6 +68,7 @@ const ApplicationCard = ({
   isSelected: boolean;
 }) => {
   const {
+    job,
     cardStates: {
       checkList: { list },
     },
@@ -72,7 +80,8 @@ const ApplicationCard = ({
     handleSelect(index);
   };
   const profile = <CandidateAvatar application={application} fontSize={12} />;
-  const resumeScore = <ResumeScore application={application} />;
+  const resumeScore =
+    job.status === 'draft' ? '---' : <ResumeScore application={application} />;
   const interviewScore = <InterviewScore application={application} />;
   const isChecked = list.has(application.id);
   const overview =
@@ -86,37 +95,63 @@ const ApplicationCard = ({
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
   return !detailedView ? (
-    <AllCandidateListItem
-      key={key1}
-      onclickSelect={{ onClick: handleCheck }}
-      isChecked={isChecked}
-      slotProfileImage={profile}
-      name={name.value}
-      jobTitle={jobTitle.value}
-      location={location.value}
-      slotResumeScore={resumeScore}
-      isInterviewVisible={views.assessment}
-      slotAssessmentScore={interviewScore}
-      appliedDate={creationDate}
-      onclickCandidate={{
-        onClick: () => {
+    views.interview ? (
+      <ListCardInterviewSchedule
+        isSelected={isSelected}
+        app={
+          {
+            ...application,
+            public_jobs: { id: application.job_id, job_title: jobTitle.value },
+          } as any
+        }
+        isJobDasboard={true}
+        onClickCard={() => {
           posthog.capture('candidate card clicked');
           handleOpenDetails();
-        },
-      }}
-      isHighlighted={isSelected}
-      experience={getExperienceCount(
-        (application.candidate_files?.resume_json as any)?.basics
-          ?.totalExperience,
-      )}
-      isScreeningVisible={views.screening}
-      slotScreening={<ScreeningStatusComponent application={application} />}
-      isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
-      slotDisqualified={<DisqualificationComponent application={application} />}
-    />
+        }}
+        slotCheckbox={
+          <RcCheckbox
+            onclickCheck={{ onClick: handleCheck }}
+            isChecked={isChecked}
+            text={<></>}
+          />
+        }
+        isChecked={isChecked}
+        slotResumeScore={<ResumeScore application={application} />}
+      />
+    ) : (
+      <CandidateListItem
+        key={key1}
+        isDragVisible={isChecked}
+        onClickSelect={{ onClick: handleCheck }}
+        isChecked={isChecked}
+        slotProfileImage={profile}
+        name={name.value}
+        jobTitle={jobTitle.value}
+        location={location.value}
+        slotResumeScore={resumeScore}
+        isInterviewVisible={views.assessment}
+        slotAssessmentScore={interviewScore}
+        appliedDate={creationDate}
+        onClickCandidate={{
+          onClick: () => {
+            posthog.capture('candidate card clicked');
+            handleOpenDetails();
+          },
+        }}
+        isHighlighted={isSelected}
+        isScreeningVisible={views.screening}
+        slotScreening={<ScreeningStatusComponent application={application} />}
+        isDisqualifiedVisible={section === JobApplicationSections.DISQUALIFIED}
+        slotDisqualified={
+          <DisqualificationComponent application={application} />
+        }
+      />
+    )
   ) : (
     <TopCandidateListItem
       key={key2}
+      isDragVisible={isChecked}
       slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
       name={name.value}
@@ -253,10 +288,6 @@ export const ScreeningStatusComponent: React.FC<{
       textDuration={timeInfo}
     />
   );
-};
-
-const getExperienceCount = (months: number) => {
-  return months ? Math.trunc(months / 12) : '---';
 };
 
 const Insights = ({ application }: { application: JobApplication }) => {
@@ -440,4 +471,132 @@ export const InavlidEmail = () => {
   );
 };
 
-export default ApplicationCard;
+type DNDApplicationCardProps = {
+  detailedView: boolean;
+  application: JobApplication;
+  index: number;
+  // eslint-disable-next-line no-unused-vars
+  handleSelect: (index: number) => void;
+  handleOpenDetails: () => void;
+  isSelected: boolean;
+};
+const DNDApplicationCard = (props: DNDApplicationCardProps) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+  } = useJobApplications();
+  if (list.size === 0) return <ApplicationCard {...props} />;
+  return <DraggableApplicationCard {...props} />;
+};
+
+const DraggableApplicationCard = (props: DNDApplicationCardProps) => {
+  const [, dragRef, preview] = useDrag({
+    type: 'application-card',
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, []);
+  return (
+    <Stack ref={dragRef as any}>
+      <ApplicationCard {...props} />
+    </Stack>
+  );
+};
+
+const DragCard = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+    section,
+    selectAll,
+  } = useJobApplications();
+  const count = selectAll ? applicationLimit[section] : list.size;
+  return (
+    <Stack style={{ width: '200px' }}>
+      <DragPill
+        textLabel={`Move ${count} candidate${count === 1 ? '' : 's'}`}
+      />
+    </Stack>
+  );
+};
+
+function getItemStyles(
+  initialOffset: XYCoord | null,
+  currentOffset: XYCoord | null,
+) {
+  if (!initialOffset || !currentOffset) {
+    return {
+      display: 'none',
+    };
+  }
+
+  let { x, y } = currentOffset;
+
+  const transform = `translate(${x}px, ${y}px)`;
+  return {
+    transform,
+    WebkitTransform: transform,
+    cursor: 'grabbing',
+  };
+}
+
+export const CustomDragLayer = ({
+  x,
+  applicationLimit,
+}: {
+  x: number;
+  applicationLimit: CountJobs;
+}) => {
+  const { itemType, isDragging, initialOffset, currentOffset } = useDragLayer(
+    (monitor) => ({
+      item: monitor.getItem(),
+      itemType: monitor.getItemType(),
+      initialOffset: monitor.getInitialSourceClientOffset(),
+      currentOffset: monitor.getSourceClientOffset(),
+      isDragging: monitor.isDragging(),
+    }),
+  );
+
+  const renderItem = () => {
+    switch (itemType) {
+      case 'application-card':
+        return <DragCard applicationLimit={applicationLimit} />;
+      default:
+        return null;
+    }
+  };
+
+  if (!isDragging) {
+    return null;
+  }
+
+  return (
+    <Stack
+      style={{
+        position: 'fixed',
+        pointerEvents: 'none',
+        zIndex: 100,
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      <Stack
+        style={getItemStyles(initialOffset, {
+          x: x - 180 + (currentOffset?.x ?? 0),
+          y: currentOffset?.y ?? 0,
+        })}
+      >
+        {renderItem()}
+      </Stack>
+    </Stack>
+  );
+};
+
+export default DNDApplicationCard;

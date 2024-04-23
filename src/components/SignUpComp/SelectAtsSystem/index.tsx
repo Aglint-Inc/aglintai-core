@@ -14,12 +14,12 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { SocialsType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-import { stepObj } from '../SlideSignup/utils';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
+import { stepObj } from '../SlideSignup/utils';
 
 function SelectAtsSystem() {
   const { setStep } = useSignupDetails();
@@ -162,7 +162,7 @@ function SelectAtsSystem() {
                             Enter ATS Name.
                           </UITypography>
                           <UITextField
-                            InputProps={{autoFocus:true}}
+                            InputProps={{ autoFocus: true }}
                             ref={inputRef}
                             //   onChange={(ele) => {
                             //     console.log('error');
@@ -228,7 +228,7 @@ function SelectAtsSystem() {
                 }}
               />
 
-              <Stack direction={'row'}>
+              <Stack direction={'row'} alignItems={'center'} gap={'8px'}>
                 <AUIButton
                   onClick={() => {
                     router.push(`?step=${stepObj.allSet}`, undefined, {
@@ -280,9 +280,11 @@ const object = [
   },
 ];
 const objectData = [
-  'Sourcing new candidates',
+  'Applicant tracking system (ATS)',
   'Filtering candidates',
-  'AI-based candidate screening',
+  'Sourcing  candidates',
+  'Candidate screening',
+  'Scheduling',
   'All of it',
 ];
 

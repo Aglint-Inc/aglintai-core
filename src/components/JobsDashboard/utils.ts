@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 
-import { selectJobApplicationQuery } from '@/src/pages/api/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '@/src/pages/api/job/jobApplications/read/utils';
 import { JobApplcationDB } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 import { JobType, Status } from './types';
 
@@ -30,7 +30,7 @@ export function filterJobsByStatus(
 
 export const fetchApplications = (jobIds) => {
   return supabase
-    .from('job_applications')
+    .from('applications')
     .select(`${selectJobApplicationQuery}`)
     .in('job_id', jobIds)
     .then(({ data, error }) => {
@@ -80,19 +80,11 @@ export function calculateTimeDifference(postedDate) {
 
 export function searchJobs(jobs: any[], searchString: string) {
   const search = searchString.toLowerCase();
-
-  // Use the filter method to search for matching job titles or statuses
-
   if (search) {
     const filteredData = jobs.filter((item) => {
       const jobTitle = item.job_title.toLowerCase();
-      // const status = item.status.toLowerCase();
-
-      // Check if the job title or status contains the search string
       return jobTitle.includes(search);
-      // || status.includes(search);
     });
-
     return filteredData;
   } else {
     return jobs;

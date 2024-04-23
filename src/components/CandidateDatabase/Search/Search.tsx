@@ -14,26 +14,25 @@ import {
   ViewMoreSkills,
 } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
-import { SearchHistoryType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-// import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
-import SearchFilter from './SearchFilter';
-import SelectedCandidate from './SelectedCandidate';
-import AddToJobOptions from '../Database/CandAddToJobMenu';
-import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
-import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
-import InCompleteLottie from '../IncompleteLottie';
-import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
-import Loader from '../../Common/Loader';
-import MuiAvatar from '../../Common/MuiAvatar';
-import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
 import {
   CandidateSearchRes,
   initialState,
   useCandidateSearchCtx,
 } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
+import Loader from '../../Common/Loader';
+import MuiAvatar from '../../Common/MuiAvatar';
+import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import AddToJobOptions from '../Database/CandAddToJobMenu';
+import EmailOutReach from '../Database/EmailOutReach/EmailOutReach';
+import { OutReachCtxProvider } from '../Database/EmailOutReach/OutReachCtx';
+import InCompleteLottie from '../IncompleteLottie';
+import { joinSearchResultWithBookMarkAndJobApplied } from '../utils';
+// import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
+import SearchFilter from './SearchFilter';
+import SelectedCandidate from './SelectedCandidate';
 
 export type newCandJob = {
   title: string;
@@ -72,7 +71,7 @@ const CandidatesSearch = () => {
             .from('candidate_search_history')
             .select()
             .eq('id', searchQryId),
-        ) as SearchHistoryType[];
+        );
         const searchResults = searchRec.search_results as any;
         const bookmarked_cands = searchRec.bookmarked_candidates || [];
         const canididatesDto = await joinSearchResultWithBookMarkAndJobApplied(

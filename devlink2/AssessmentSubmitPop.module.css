@@ -1,0 +1,261 @@
+.submit-assessment-pop {
+  display: flex;
+  width: 463px;
+  padding: 24px;
+  flex-direction: column;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  border-radius: 10px;
+}
+
+.div-block-990 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 1.33;
+}
+
+@media screen and (max-width: 991px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-lg {
+    font-size: 16px;
+  }
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-color-black {
+  color: var(--black-9b0fc3fc);
+}
+
+.text-green-600 {
+  color: hsla(158.09523809523807, 95.45%, 25.88%, 1.00);
+}
+
+.inline-block {
+  display: inline;
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-lg.text-gray-400 {
+  color: var(--gray-400);
+}
+
+.text-gray-400 {
+  color: var(--gray-400);
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.ml--6 {
+  margin-left: -6px;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.div-block-991 {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+.wide_button {
+  position: relative;
+  z-index: 1;
+}
+
+.button_primary {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #1f73b7;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button_primary:hover {
+  background-color: #144a75;
+}
+
+.button_primary.is_disabled {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #c2c8cc;
+  cursor: auto;
+}
+
+.button_primary.is_enabled {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button_primary.is_enabled.main {
+  position: static;
+}
+
+.button_primary.is_enabled.main-green {
+  position: static;
+  background-color: #228f67;
+}
+
+.button_primary.is_enabled.main-green:hover {
+  background-color: hsla(157.9816513761468, 65.44%, 30.22%, 1.00);
+}
+
+.button_primary.is_loading {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  background-color: #e9ebed;
+
+  color: #c2c8cc;
+
+  cursor: progress;
+}
+
+.button_primary.confirm_availability {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
+}
+
+.button_primary.confirm_availability:hover {
+  background-color: #038153;
+}
+
+.button_primary.is_grey {
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.is_grey:hover {
+  background-color: hsla(210.00000000000023, 18.58%, 85.26%, 1.00);
+}
+
+.button_primary.is_primarruy {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button_primary.greay_btn {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button_primary.greay_btn:hover {
+  background-color: #d8dcde;
+}
+
+.button_primary.danger {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #d93f4c;
+}
+
+.button_primary.danger:hover {
+  background-color: #cc3340;
+}

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -8,9 +9,14 @@ export function CandidateSkill({
   slotCandidateSkill,
   onClickIcons = {},
   slotSkillsScore,
+  propsStyle = {},
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "jd-analysis-wrap")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "jd-analysis-wrap")}
+      tag="div"
+      {...propsStyle}
+    >
       <_Builtin.Block className={_utils.cx(_styles, "div-block-774")} tag="div">
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-781")}

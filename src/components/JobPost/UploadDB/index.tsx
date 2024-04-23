@@ -14,7 +14,7 @@ import {
   RecruiterType,
 } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
@@ -78,7 +78,7 @@ function UploadDB({
   setLoading: Dispatch<SetStateAction<boolean>>;
   setApplication: Dispatch<SetStateAction<JobApplcationDB>>;
   recruiter: RecruiterType;
-  setCandidate: Dispatch<SetStateAction<CandidateType>>;
+  setCandidate: Dispatch<SetStateAction<CandidateType[]>>;
 }) {
   const [profile, setProfile] = useState<any>({
     firstName: null,
@@ -390,7 +390,7 @@ function UploadDB({
               }}
             />
 
-            <Stack direction={'row'} spacing={'4px'}>
+            <Stack direction={'row'} spacing={'4px'} sx={{ flexWrap: 'wrap' }}>
               <Typography
                 variant='caption'
                 color={!checked && 'error.main'}

@@ -17,11 +17,14 @@ import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';
 import { similarSkills } from '@/src/utils/prompts/candidateDb/similarSkills';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import FilterInput from './FilterInput';
-import { dialogFormContent, getRelevantCndidates } from '../utils';
+import {
+  CandidateSearchState,
+  initialState,
+  useCandidateSearchCtx,
+} from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 import AUIButton from '../../Common/AUIButton';
 import UITextField from '../../Common/UITextField';
 import UITypography from '../../Common/UITypography';
@@ -29,11 +32,8 @@ import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
-import {
-  CandidateSearchState,
-  initialState,
-  useCandidateSearchCtx,
-} from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { dialogFormContent, getRelevantCndidates } from '../utils';
+import FilterInput from './FilterInput';
 
 type FilterType = {
   profileLimit: number;

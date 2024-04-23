@@ -12,5 +12,15 @@ declare function TeamListItem(props: {
   userEmail?: React.ReactNode;
   slotProfileImage?: Types.Devlink.Slot;
   isDeleteVisible?: Types.Visibility.VisibilityConditions;
-  isDeleteDisable?: Types.Visibility.VisibilityConditions;
+  onClickCancelInvite?: Types.Devlink.RuntimeProps;
+  isCancelInviteVisible?: Types.Visibility.VisibilityConditions;
+  onClickEditInvite?: Types.Devlink.RuntimeProps;
+  isEditInviteVisible?: Types.Visibility.VisibilityConditions;
+  textDepartment?: React.ReactNode;
+  textDesignation?: React.ReactNode;
+  textLocation?: React.ReactNode;
+  isActiveVisible?: Types.Visibility.VisibilityConditions;
+  onClickActive?: Types.Devlink.RuntimeProps;
+  isSuspendVisible?: Types.Visibility.VisibilityConditions;
+  onClickSuspend?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

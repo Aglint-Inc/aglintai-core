@@ -3,9 +3,11 @@ import { Avatar } from '@mui/material';
 const CompanyLogo = ({
   companyLogo,
   companyName,
+  borderRadius = 0,
 }: {
   companyLogo?: string;
   companyName: string;
+  borderRadius?: number;
 }) => {
   return companyName ? (
     <Avatar
@@ -16,6 +18,7 @@ const CompanyLogo = ({
         height: '100%',
         '& .MuiAvatar-img ': {
           objectFit: 'contain',
+          borderRadius: `${borderRadius}px`,
         },
       }}
       style={{ color: 'black' }}

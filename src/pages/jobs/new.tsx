@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import EmptyJobDashboard from '@/src/components/JobsDashboard/AddJobWithIntegrations/EmptyJobDashboard';
@@ -10,12 +10,13 @@ import JobPostFormProvider, {
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 function Hoc() {
   return (
     <>
       <Seo
-        title='Aglint | Create Job'
+        title={`Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>
@@ -52,7 +53,7 @@ function New() {
         <EmptyJobDashboard
           heading={'Create Job'}
           handleClickAddJob={() => {
-            router.push(`/jobs/new?flow=manual`);
+            router.push(pageRoutes.CREATEJOB);
           }}
           showMsg={false}
         />

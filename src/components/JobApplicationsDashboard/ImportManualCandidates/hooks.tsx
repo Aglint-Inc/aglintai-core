@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { createBatches } from '@/src/pages/api/jobApplications/candidateEmail/utils';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
+import { createBatches } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 import {
   CsvUploadApi,
   UploadApiFormData,
-} from '@/src/pages/api/jobApplications/candidateUpload/types';
-import { handleJobApplicationApi } from '@/src/pages/api/jobApplications/utils';
+} from '@/src/pages/api/job/jobApplications/candidateUpload/types';
+import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/utils';
 import { CandidateInsert } from '@/src/types/candidates.types';
 import toast from '@/src/utils/toast';
 
@@ -41,6 +42,28 @@ const useUploadCandidate = () => {
       await handleJobApplicationPaginate(pageNumber[section], section);
       toast.success('Candidates uploaded');
     } else if (response.error) toast.error(response.error);
+    return response;
+  };
+
+  const handleResumeReupload = async (
+    file: File,
+    application: Pick<JobApplication, 'id' | 'candidate_id'>,
+    signal?: AbortSignal,
+  ) => {
+    const formData = new FormData();
+    formData.append(UploadApiFormData.FILES, file);
+    const request = {
+      params: {
+        candidate_id: application.candidate_id,
+        application_id: application.id,
+      },
+      files: formData,
+    };
+    const response = await handleJobApplicationApi(
+      'candidateUpload/resumeReupload',
+      request,
+      signal,
+    );
     return response;
   };
 
@@ -114,7 +137,12 @@ const useUploadCandidate = () => {
     return response;
   };
 
-  return { handleUploadCandidate, handleBulkResumeUpload, handleBulkCsvUpload };
+  return {
+    handleUploadCandidate,
+    handleBulkResumeUpload,
+    handleBulkCsvUpload,
+    handleResumeReupload,
+  };
 };
 
 export default useUploadCandidate;

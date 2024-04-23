@@ -23,54 +23,16 @@ export const getSeedJobFormData = (
       company: '',
       jobLocation: '',
       jobTitle: '',
-      jobType: 'fullTime',
-      department: '',
+      jobType: 'full time',
+      department: 'entrepreneurship',
       logo: '',
       defaultJobType: [],
       defaultWorkPlaceTypes: [],
-      workPlaceType: 'onSite',
+      workPlaceType: 'off site',
       jobDescription: '',
       interviewType: 'questions-preset',
       defaultAddress: [],
       defaultDepartments: [],
-      interviewConfig: [
-        {
-          category: 'skill',
-          copy: 'Skill',
-          id: nanoid(),
-          questions: [],
-        },
-        {
-          category: 'behavior',
-          copy: 'Behavior',
-          id: nanoid(),
-          questions: [],
-        },
-        {
-          category: 'communication',
-          copy: 'communication',
-          id: nanoid(),
-          questions: [],
-        },
-        {
-          category: 'performance',
-          copy: 'Performance',
-          id: nanoid(),
-          questions: [],
-        },
-        {
-          category: 'education',
-          copy: 'Education',
-          id: nanoid(),
-          questions: [],
-        },
-        {
-          category: 'general',
-          copy: 'General',
-          id: nanoid(),
-          questions: [],
-        },
-      ],
       screeningEmail: {
         date: new Date().toISOString(),
         isImmediate: true,
@@ -102,55 +64,9 @@ export const getSeedJobFormData = (
       },
       isjdChanged: false,
       recruiterId: '',
-      videoAssessment: false,
-      introVideo: {
-        id: '',
-        question: '',
-        videoId: '',
-        videoQn: '',
-        videoUrl: '',
-      },
-      startVideo: {
-        id: '',
-        question:
-          "Thank you for taking the time to meet with us today. We're excited to have you here for this interview and learn more about your qualifications and experiences. Let's get started.",
-        videoId: '',
-        videoQn: '',
-        videoUrl: '',
-      },
-      endVideo: {
-        id: '',
-        question:
-          "Thank you,for your time and sharing your insights with us today. If you have any further questions or need more information from us, please don't hesitate to reach out. Wishing you a great day ahead",
-        videoId: '',
-        videoQn: '',
-        videoUrl: '',
-      },
+
       isDraftCleared: false,
-      interviewInstrctions: `<p><strong>Assessment Instructions</strong></p><ul><li><p><strong><span>Quiet Environment</span></strong><br><span>Choose a quiet place to take the assessment where you will not be interrupted.</span></p></li><li><p><strong><span>Interruptions</span></strong><br><span>If the assessment is stopped for any reason, you will need to start over from the beginning.</span></p></li><li><p><strong><span>Question Types</span></strong><br><span>You will be asked questions based on the job requirements. Prepare yourself accordingly.</span></p></li><li><p><strong><span>Answer Submission<br></span></strong><span>You have the option to submit your answers via voice or by typing them out.</span></p></li><li><p><strong><span>Timing<br></span></strong><span>Feel free to answer the questions right after they are asked. There's no need to wait for a prompt to proceed.</span></p></li></ul><p></p><p><strong> Please take a moment to go through the tour before starting your assessment. Once you're ready, click the "Start Assessment" button. Good luck!</strong></p>`,
-      interviewSetting: {
-        assessmentValidity: {
-          candidateRetry: 5,
-          expirationDuration: 7,
-        },
-        isVideoAiGenerated: false,
-        showInstructionVideo: true,
-        aiGeneratedVideoInfo: {
-          id: '',
-          question: '',
-          videoId: '',
-          videoQn: '',
-          videoUrl: '',
-        },
-        uploadedVideoInfo: {
-          id: '',
-          question: '',
-          videoId: '',
-          videoQn: '',
-          videoUrl: '',
-        },
-      },
-      assessment: false,
+
       jdJson: {
         title: '',
         level: 'Mid-level',
@@ -158,18 +74,13 @@ export const getSeedJobFormData = (
         rolesResponsibilities: [],
         skills: [],
       },
-      phoneScreening: {
-        startMessage:
-          'Welcome to the candidate application form. Please fill out the following information',
-        endMessage:
-          'Thank you for taking your time. We will get back to you shortly',
-        questions: [],
-      },
+
       isPhoneScreenEnabled: false,
+      phoneScreeningTemplateId: '',
+      isAssesmentEnabled: false,
     },
     isJobPostReverting: false,
     jobPostStatus: 'draft',
-    currentAssmSlides: 'instructions',
   };
   if (recruiter) {
     const defaultAddress = get(recruiter, 'office_locations', []).map((s) => ({
@@ -177,11 +88,10 @@ export const getSeedJobFormData = (
       value: [s.city, s.region, s.country].filter(Boolean).join(', '),
     }));
 
-    seedFormState.formFields.jobTitle = `${recruiter.name}'s First Job`;
+    seedFormState.formFields.jobTitle = `${recruiter?.name ?? ''}'s First Job`;
     seedFormState.formFields.recruiterId = recruiter.id;
     seedFormState.formFields.company = recruiter.name;
     seedFormState.formFields.logo = recruiter.logo;
-    seedFormState.formFields.videoAssessment = recruiter.video_assessment;
     seedFormState.formFields.defaultWorkPlaceTypes = Object.keys(
       recruiter.workplace_type,
     ).map((o) => {
@@ -237,10 +147,14 @@ export const getSeedJobFormData = (
         };
       }
     });
-    seedFormState.formFields.workPlaceType = 'onsite';
-    seedFormState.formFields.jobType = 'fulltime';
+    seedFormState.formFields.workPlaceType = 'hybrid';
+    seedFormState.formFields.jobType = 'full time';
     seedFormState.formFields.jobLocation = get(defaultAddress, '[0].value', '');
-    seedFormState.formFields.department = get(recruiter, 'departments[0]', '');
+    seedFormState.formFields.department = get(
+      recruiter,
+      'departments[0]',
+      '',
+    ) as any;
 
     seedFormState.formFields.defaultAddress = defaultAddress;
     seedFormState.formFields.screeningEmail = {
@@ -278,11 +192,6 @@ export const dbToClientjobPostForm = (
       company: jobPost.company || seedData.formFields.company,
       workPlaceType:
         jobPost.workplace_type || seedData.formFields.workPlaceType,
-      interviewConfig: get(
-        jobPost,
-        'screening_questions',
-        seedData.formFields.interviewConfig,
-      ) as any,
       interviewType: get(
         jobPost,
         'screening_setting.interviewType',
@@ -341,29 +250,20 @@ export const dbToClientjobPostForm = (
           education: 0,
         }) as JobFormState['formFields']['resumeScoreSettings']),
       },
-      videoAssessment: jobPost.video_assessment,
-      startVideo:
-        jobPost.start_video || (seedData.formFields.startVideo as any),
-      endVideo: jobPost.end_video || (seedData.formFields.endVideo as any),
-      interviewInstrctions:
-        jobPost.interview_instructions ||
-        seedData.formFields.interviewInstrctions,
       isDraftCleared: isUndefined(jobPost.draft)
         ? false
         : isEmpty(jobPost.draft),
-      interviewSetting:
-        jobPost.intro_videos || (seedData.formFields.interviewSetting as any),
-      assessment: jobPost.assessment || false,
+
       jdJson: jdJsonToItems(
         (jobPost.jd_json as any) || seedData.formFields.jdJson,
       ),
-      phoneScreening:
-        (jobPost.phone_screening as any) || seedData.formFields.phoneScreening,
       isjdChanged:
         (jobPost.jd_changed as any) || seedData.formFields.isjdChanged,
       isPhoneScreenEnabled:
         (jobPost.phone_screen_enabled as any) ||
         seedData.formFields.isPhoneScreenEnabled,
+      phoneScreeningTemplateId: jobPost.screening_template ?? '',
+      isAssesmentEnabled: jobPost.assessment,
     },
     jobPostStatus: jobPostStatus as any,
   };
@@ -399,7 +299,7 @@ let emailTemps = {
       'Reminder: Schedule Your Interview for [jobTitle] at [companyName]',
     fromName: 'aglint',
   },
-  application_recieved: {
+  application_received: {
     body: '<p>Hi [firstName],</p><p>You have successfully submitted your application for this position [jobTitle]:</p><p>We will review your application shortly. If your profile match our requirements, we will be in touch to schedule the next steps in the process.</p><p>Thank you for your interest in [companyName].</p><p>If you have any queries about this job</p><p>[supportLink]</p><p>Sincerely,</p><p>[companyName]</p>',
     default: true,
     subject:

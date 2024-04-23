@@ -7,7 +7,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { EmailTemplateType } from '@/src/types/data.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { PhoneScreeningResponseType } from '../KnockOffQns/ScreeningCtxProvider';
@@ -52,14 +52,17 @@ export type FilterParameter = {
   overall_score?: {
     min: number;
     max: number;
+    active: boolean;
   };
   interview_score?: {
     min: number;
     max: number;
+    active: boolean;
   };
   location?: {
     name: string;
     value: number;
+    active: boolean;
   };
 };
 
@@ -142,26 +145,6 @@ export const candidateEmailValidity = (
       ),
   };
 };
-
-export function getInterviewScore(feedback) {
-  const overAllScore = feedback
-    ? feedback?.length !== 0
-      ? Math.floor(
-          feedback.reduce(
-            (sum, entry) =>
-              sum +
-              Number(
-                String(entry.rating).includes('/')
-                  ? entry.rating.split('/')[0]
-                  : entry.rating,
-              ),
-            0,
-          ) / feedback.length,
-        )
-      : 0
-    : 0;
-  return overAllScore;
-}
 
 export const checkSyncCand = async (job: JobTypeDashboard) => {
   let is_sync = true;
@@ -261,21 +244,18 @@ const getTimeText = (hours: number) => {
 export const getAssessmentStatus = (
   status_emails_sent: JobApplication['status_emails_sent'],
   assessment_results: {
-    feedback: JobApplication['assessment_results']['feedback'];
-    created_at: JobApplication['assessment_results']['created_at'];
+    result: JobApplication['assessment_results'][number]['result'];
+    created_at: JobApplication['assessment_results'][number]['created_at'];
   },
 ) => {
   const emails = (status_emails_sent ?? null) as {
     // eslint-disable-next-line no-unused-vars
     [id in keyof EmailTemplateType]: string;
   };
-  const { feedback, created_at } = assessment_results;
+  const { result, created_at } = assessment_results;
 
-  const safeFeedback =
-    feedback && (feedback as any).length > 0 ? feedback : null;
-
-  const isNotInvited = (emails?.interview ?? null) === null && !safeFeedback;
-  const isPending = (emails?.interview ?? null) !== null && !safeFeedback;
+  const isNotInvited = (emails?.interview ?? null) === null && !result;
+  const isPending = (emails?.interview ?? null) !== null && !result;
   const isSubmitted = !isNotInvited && !isPending;
   const elapstimedTime = isPending
     ? emails?.interview_resend ?? null
@@ -296,7 +276,7 @@ export const getAssessmentStatus = (
         : '';
 
   return {
-    feedback: safeFeedback,
+    result,
     isNotInvited,
     isPending,
     isSubmitted,
@@ -371,7 +351,14 @@ export const getReasonings = (reasoning: ScoreJson['reasoning']) => {
 };
 export const getCandidateDetails = (
   application: JobApplication,
-  type: 'location' | 'job_title' | 'name' | 'linkedin' | 'phone' | 'overview',
+  type:
+    | 'location'
+    | 'job_title'
+    | 'name'
+    | 'linkedin'
+    | 'phone'
+    | 'overview'
+    | 'duration',
 ) => {
   const fallback = '---';
   let value = fallback;
@@ -426,10 +413,17 @@ export const getCandidateDetails = (
             : fallback;
       }
       break;
-    case 'overview': {
-      const overview =
-        (application?.candidate_files.resume_json as any)?.overview ?? null;
-      value = overview && overview.trim() !== '' ? overview : fallback;
+    case 'overview':
+      {
+        const overview =
+          (application?.candidate_files.resume_json as any)?.overview ?? null;
+        value = overview && overview.trim() !== '' ? overview : fallback;
+      }
+      break;
+    case 'duration': {
+      // const duration = application?.schedule?.duration ?? null;
+      const duration = null;
+      value = duration ? `${duration}` : fallback;
     }
   }
   return {

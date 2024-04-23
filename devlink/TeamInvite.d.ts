@@ -8,4 +8,8 @@ declare function TeamInvite(props: {
   onClickClose?: Types.Devlink.RuntimeProps;
   slotInviteTeamCard?: Types.Devlink.Slot;
   isInviteTeamCardVisible?: Types.Visibility.VisibilityConditions;
+  isInviteSentVisible?: Types.Visibility.VisibilityConditions;
+  textTitle?: React.ReactNode;
+  isFixedButtonVisible?: Types.Visibility.VisibilityConditions;
+  slotPrimaryButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

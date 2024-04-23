@@ -1,0 +1,98 @@
+.div-block-1485 {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 18px;
+  grid-row-gap: 18px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.div-block-1505 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.text-40 {
+  font-size: 40px;
+  line-height: 32px;
+}
+
+.text-40.fw-semibold.text-kale-600 {
+  color: #17494d;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}

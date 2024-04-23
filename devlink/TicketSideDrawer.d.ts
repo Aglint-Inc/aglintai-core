@@ -29,4 +29,7 @@ declare function TicketSideDrawer(props: {
   onClickNext?: Types.Devlink.RuntimeProps;
   slotStatusHeading?: Types.Devlink.Slot;
   isLinkVisible?: Types.Visibility.VisibilityConditions;
+  onClickPreview?: Types.Devlink.RuntimeProps;
+  isPreviewVisible?: Types.Visibility.VisibilityConditions;
+  isInterviewLinkVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

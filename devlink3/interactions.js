@@ -1,16 +1,16 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   debounce,
   dispatchCustomEvent,
   replaceSelector,
   useLayoutEffect,
-} from './utils';
+} from "./utils";
 const enhanceIXData = (data, styles) => {
   const newIXData = structuredClone(data);
   for (const id in newIXData.events) {
     const { target, targets } = newIXData.events[id];
     for (const t of [target, ...targets]) {
-      if (t.appliesTo !== 'CLASS') continue;
+      if (t.appliesTo !== "CLASS") continue;
       t.selector = replaceSelector(t.selector, styles);
     }
   }
@@ -40,7 +40,10 @@ const enhanceIXData = (data, styles) => {
   }
   return newIXData;
 };
-const IXContext = React.createContext(null);
+export const IXContext = React.createContext({
+  initEngine: null,
+  restartEngine: null,
+});
 export const InteractionsProvider = ({ children, createEngine }) => {
   const ixData = React.useRef({});
   const ixStyles = React.useRef();
@@ -50,8 +53,8 @@ export const InteractionsProvider = ({ children, createEngine }) => {
       if (!ixEngine.current) ixEngine.current = createEngine();
       const newData = styles ? enhanceIXData(data, styles) : data;
       ixEngine.current.init(newData);
-      dispatchCustomEvent(document, 'IX2_PAGE_UPDATE');
-    }),
+      dispatchCustomEvent(document, "IX2_PAGE_UPDATE");
+    })
   );
   const initEngine = React.useCallback((data, styles) => {
     if (!ixData.current.site) {
@@ -71,27 +74,38 @@ export const InteractionsProvider = ({ children, createEngine }) => {
         if (!ixStyles.current[s]?.includes(styles[s])) {
           const currentStyle = ixStyles.current[s];
           ixStyles.current[s] =
-            CSS.escape(styles[s]) + (currentStyle ? ` ${currentStyle}` : '');
+            CSS.escape(styles[s]) + (currentStyle ? ` ${currentStyle}` : "");
         }
       }
     }
     debouncedInit.current(ixData.current, ixStyles.current);
   }, []);
-  return <IXContext.Provider value={initEngine}>{children}</IXContext.Provider>;
+  return (
+    <IXContext.Provider
+      value={{
+        initEngine,
+        restartEngine: () =>
+          debouncedInit.current &&
+          debouncedInit.current(ixData.current, ixStyles.current),
+      }}
+    >
+      {children}
+    </IXContext.Provider>
+  );
 };
 export const useInteractions = (data, styles) => {
-  const initEngine = React.useContext(IXContext);
+  const { initEngine } = React.useContext(IXContext);
   React.useEffect(() => {
     if (initEngine) initEngine(data, styles);
   }, [initEngine, data, styles]);
   React.useEffect(() => {
-    if (document.querySelector('html')?.hasAttribute('data-wf-page')) return;
+    if (document.querySelector("html")?.hasAttribute("data-wf-page")) return;
     const hasPageInteractions = Object.values(data.events).some(
-      (event) => event.target.appliesTo === 'PAGE',
+      (event) => event.target.appliesTo === "PAGE"
     );
     if (hasPageInteractions) {
-      document.documentElement.setAttribute('data-wf-page', 'wf-page-id');
-      dispatchCustomEvent(document, 'IX2_PAGE_UPDATE');
+      document.documentElement.setAttribute("data-wf-page", "wf-page-id");
+      dispatchCustomEvent(document, "IX2_PAGE_UPDATE");
     }
   }, [data.events]);
 };
@@ -99,7 +113,7 @@ export function triggerIXEvent(element, active) {
   if (!element) return;
   dispatchCustomEvent(
     element,
-    active ? 'COMPONENT_ACTIVE' : 'COMPONENT_INACTIVE',
+    active ? "COMPONENT_ACTIVE" : "COMPONENT_INACTIVE"
   );
 }
 export function useIXEvent(element, active) {

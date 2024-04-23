@@ -1,237 +1,149 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
-import toast from '@utils/toast';
-import { get } from 'lodash';
-import { useEffect, useReducer } from 'react';
 
-import { Database } from '@/src/types/schema';
-
-import { JobsData, JobTypeDashboard } from './types';
+import { handleJobApi } from '@/src/pages/api/job/utils';
 import {
-  deleteJobDbAction,
-  initialJobContext,
-  readJobDbAction,
-  updateJobDbAction,
-} from './utils';
+  useJobCreate,
+  useJobDelete,
+  useJobRead,
+  useJobRefresh,
+  useJobUIUpdate,
+  useJobUpdate,
+} from '@/src/queries/job';
+import { JobInsert } from '@/src/queries/job/types';
 
-// eslint-disable-next-line no-unused-vars
-enum ActionType {
-  // eslint-disable-next-line no-unused-vars
-  CREATE,
-  // eslint-disable-next-line no-unused-vars
-  READ,
-  // eslint-disable-next-line no-unused-vars
-  UPDATE,
-  // eslint-disable-next-line no-unused-vars
-  UI_UPDATE,
-  // eslint-disable-next-line no-unused-vars
-  DELETE,
-}
-
-type Action =
-  | {
-      type: ActionType.CREATE;
-      payload: {
-        jobData: JobTypeDashboard;
-      };
-    }
-  | {
-      type: ActionType.READ;
-      payload: {
-        jobsData: JobTypeDashboard[];
-      };
-    }
-  | {
-      type: ActionType.UPDATE;
-      payload: {
-        jobData: Database['public']['Tables']['public_jobs']['Row'];
-      };
-    }
-  | {
-      type: ActionType.UI_UPDATE;
-      payload: {
-        newJob: JobTypeDashboard;
-      };
-    }
-  | {
-      type: ActionType.DELETE;
-      payload: { jobId: string };
-    };
-
-const reducer = (state: JobsData, action: Action) => {
-  switch (action.type) {
-    case ActionType.CREATE: {
-      const newState: JobsData = {
-        ...state,
-        jobs: [...state.jobs, action.payload.jobData],
-      };
-      return newState;
-    }
-
-    case ActionType.READ: {
-      const newState: JobsData = {
-        ...state,
-        jobs: [...action.payload.jobsData],
-      };
-      return newState;
-    }
-
-    case ActionType.UPDATE: {
-      const newJobs: JobTypeDashboard[] = state.jobs.reduce((jobs, job) => {
-        if (job.id === action.payload.jobData.id)
-          jobs.push({ ...job, ...action.payload.jobData });
-        else jobs.push(job);
-        return jobs;
-      }, []);
-      const newState: JobsData = {
-        ...state,
-        jobs: newJobs,
-      };
-      return newState;
-    }
-
-    case ActionType.UI_UPDATE: {
-      const { newJob } = action.payload;
-      const newState: JobsData = {
-        ...state,
-        jobs: [
-          newJob,
-          ...get(state, 'jobs', []).filter((j) => j.id !== newJob.id),
-        ],
-      };
-      return newState;
-    }
-
-    case ActionType.DELETE: {
-      const newJobs: JobTypeDashboard[] = state.jobs.filter(
-        (job) => job.id !== action.payload.jobId,
-      );
-      const newState: JobsData = {
-        ...state,
-        jobs: newJobs,
-      };
-      return newState;
-    }
-
-    default: {
-      return state;
-    }
-  }
-};
+import { hashCode } from '../JobDashboard/hooks';
+import { JobTypeDashboard } from './types';
 
 const useJobActions = () => {
   const { recruiter } = useAuthDetails();
 
-  const [jobsData, dispatch] = useReducer(reducer, initialJobContext.jobsData);
-  const initialLoad = recruiter?.id && jobsData.jobs ? true : false;
+  const jobs = useJobRead();
+  const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
+  const { mutateAsync: jobCreate } = useJobCreate();
+  const { mutate: jobUIUpdate } = useJobUIUpdate();
+  const { mutate: jobDelete } = useJobDelete();
+  const { mutate: jobRefresh } = useJobRefresh();
+  const { refetch: jobRead } = jobs;
+
+  const jobsData = { jobs: jobs.data };
+
+  const initialLoad = !!(jobs.status !== 'pending' && recruiter?.id);
 
   const handleJobRead = async () => {
     if (recruiter) {
-      const { data, error } = await readJobDbAction(recruiter.id);
+      await jobRead();
+    }
+  };
 
-      if (data) {
-        const fechedJobs = data.map((job) => {
-          return {
-            ...job,
-            jd_json: job.jd_json as JobTypeDashboard['jd_json'],
-            active_status:
-              job.active_status as JobTypeDashboard['active_status'],
-            count: job.count as JobTypeDashboard['count'],
-          };
-        });
-
-        const action: Action = {
-          type: ActionType.READ,
-          payload: { jobsData: fechedJobs },
-        };
-        dispatch(action);
-        return fechedJobs;
+  const handleJobCreate = async (newJob: Parameters<typeof jobCreate>[0]) => {
+    if (recruiter) {
+      try {
+        const data = await jobCreate(newJob);
+        await experimental_handleGenerateJd(data.id);
+        return data;
+      } catch {
+        //
       }
-      handleJobError(error);
-      return [];
+    }
+  };
+
+  const handleJobPublish = async (job: JobTypeDashboard) => {
+    if (recruiter) {
+      try {
+        // eslint-disable-next-line no-unused-vars
+        const { count, processing_count, ...newJob } = job;
+        const { error } = await jobAsyncUpdate({
+          ...newJob,
+          ...newJob.draft,
+          status: 'published',
+          description_hash: hashCode(newJob.draft.description),
+        });
+        if (error) return false;
+        return true;
+      } catch {
+        return false;
+      }
     }
   };
 
   const handleJobUpdate = async (
     jobId: string,
-    newJob: Partial<JobTypeDashboard>,
+    newJob: Omit<JobInsert, 'recruiter_id'>,
   ) => {
     if (recruiter) {
-      const { data, error } = await updateJobDbAction({
+      jobUpdate({
         id: jobId,
         ...newJob,
         recruiter_id: recruiter.id,
       });
-      if (data) {
-        const action: Action = {
-          type: ActionType.UPDATE,
-          payload: {
-            jobData: data[0],
-          },
-        };
-        dispatch(action);
-        return true;
+    }
+  };
+
+  const handleJobAsyncUpdate = async (
+    jobId: string,
+    newJob: Omit<JobInsert, 'recruiter_id'>,
+  ) => {
+    if (recruiter) {
+      try {
+        return await jobAsyncUpdate({
+          id: jobId,
+          ...newJob,
+          recruiter_id: recruiter.id,
+        });
+      } catch {
+        //
       }
-      handleJobError(error);
-      return false;
     }
   };
 
   const handleUIJobUpdate = (newJob: JobTypeDashboard) => {
     if (recruiter) {
-      if (newJob) {
-        const action: Action = {
-          type: ActionType.UI_UPDATE,
-          payload: {
-            newJob: newJob,
-          },
-        };
-        dispatch(action);
-        return true;
-      }
-      return false;
+      jobUIUpdate(newJob);
     }
   };
 
   const handleJobDelete = async (jobId: string) => {
     if (recruiter) {
-      const { data, error } = await deleteJobDbAction(jobId);
-      if (data) {
-        const action: Action = {
-          type: ActionType.DELETE,
-          payload: {
-            jobId,
-          },
-        };
-        dispatch(action);
-        return true;
-      }
-      handleJobError(error);
-      return false;
+      jobDelete(jobId);
     }
+  };
+
+  const handleJobRefresh = async (jobId: string) => {
+    if (recruiter) {
+      jobRefresh(jobId);
+    }
+  };
+
+  const experimental_handleGenerateJd = async (jobId: string) => {
+    handleGenerateJd(jobId);
+    handleJobRefresh(jobId);
+  };
+
+  const experimental_handleRegenerateJd = async (job: JobTypeDashboard) => {
+    handleUIJobUpdate({ ...job, scoring_criteria_loading: true });
+    await handleGenerateJd(job.id);
+    // handleJobRefresh(job.id);
   };
 
   const handleGetJob = (jobId: string) => {
     return jobsData.jobs.find((job) => job.id === jobId);
   };
 
-  const handleJobError = (error) => {
-    toast.error(`Oops! Something went wrong.\n (${error?.message})`);
-  };
-  useEffect(() => {
-    (async () => {
-      await handleJobRead();
-    })();
-  }, [recruiter?.id]);
-
   const value = {
+    jobs,
     jobsData,
     handleJobRead,
+    handleJobCreate,
+    handleJobAsyncUpdate,
     handleJobUpdate,
     handleUIJobUpdate,
     handleJobDelete,
-    handleJobError,
     handleGetJob,
+    handleJobRefresh,
+    handleJobPublish,
+    experimental_handleGenerateJd,
+    experimental_handleRegenerateJd,
     initialLoad,
   };
 
@@ -239,3 +151,7 @@ const useJobActions = () => {
 };
 
 export default useJobActions;
+
+const handleGenerateJd = async (job_id: string) => {
+  return await handleJobApi('profileScore', { job_id });
+};

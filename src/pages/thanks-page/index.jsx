@@ -15,6 +15,6 @@ function ThanksPage() {
 
 export default ThanksPage;
 
-ThanksPage.getLayout = (page) => {
+ThanksPage.publicProvider = (page) => {
   return <>{page}</>;
 };

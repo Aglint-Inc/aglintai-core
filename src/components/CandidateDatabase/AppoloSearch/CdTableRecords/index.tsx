@@ -14,32 +14,32 @@ import {
 } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
-import { useBoundStore } from '@/src/store';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { EmptyStateCandidateSearchAglint } from '../EmptyLottie';
+import {
+  setCandidateHistory,
+  setCandidates,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from '../store';
 import { Candidate, CandidateSearchHistoryType } from '../types';
 import { calculateTotalExperience } from '../utils';
 
 function CdTableRecords({ loading }) {
   const router = useRouter();
-  const filters = useBoundStore((state) => state.filters);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
+  const filters = useCandidateStore((state) => state.filters);
+  const selectedCandidate = useCandidateStore(
+    (state) => state.selectedCandidate,
   );
-  const selectedCandidate = useBoundStore((state) => state.selectedCandidate);
-  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
   );
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
-  );
-  const candidates = useBoundStore((state) => state.candidates);
-  const setCandidates = useBoundStore((state) => state.setCandidates);
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
+  const candidates = useCandidateStore((state) => state.candidates);
   const [fetchingNextPage, setFetchingNextPage] = useState(false);
 
   const handleNextPage = async () => {

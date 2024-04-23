@@ -1,14 +1,18 @@
 import { cloneDeep, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { ActionType, candDbContextType,CandidateStateType } from './candFilter.type';
 import {
   API_FAIL_MSG,
   supabaseWrap,
 } from '../../JobsDashboard/JobPostCreateUpdate/utils';
+import {
+  ActionType,
+  candDbContextType,
+  CandidateStateType,
+} from './candFilter.type';
 
 const initialState: CandidateStateType = {
   candidates: [],
@@ -65,8 +69,7 @@ const CandDbProvider = ({ children }) => {
           .from('applications')
           .select()
           .or(jobAppIds.map((j) => `id.eq.${j}`).join(',')),
-      ) as any[];
-
+      );
       let newJobApps: {
         candidate_id: string;
         job_id: string;

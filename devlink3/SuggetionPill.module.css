@@ -1,0 +1,44 @@
+.suggetion_card {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  height: 100%;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.suggetion_card:hover {
+  background-color: #fff7ed;
+  box-shadow: 3px 4px 5px 0 hsla(0, 0.00%, 0.00%, 0.08);
+  transform: translate(0px, -4px);
+  color: #703815;
+}
+
+.suggetion_card.isfixed {
+  width: 32.5%;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.suggetion_card.isfixed:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+#w-node-_0052dafe-d3a4-ba83-2f58-9655afd51276-afd51276 {
+  grid-column-start: span 1;
+  grid-column-end: span 1;
+  grid-row-start: span 1;
+  grid-row-end: span 1;
+}

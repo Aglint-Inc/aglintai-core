@@ -137,6 +137,10 @@
   color: hsla(307.0833333333333, 75.00%, 37.65%, 1.00);
 }
 
+.text-gray-700 {
+  color: var(--gray-700);
+}
+
 .rec-tooltip {
   position: absolute;
   left: 36px;
@@ -174,6 +178,27 @@
 
 .text-xsm {
   font-size: 10px;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-first-cap {
+  text-transform: capitalize;
+}
+
+.text-xsm.text-first-cap.p-16 {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+.text-xsm.text-first-cap.mt-5 {
+  margin-top: 5px;
 }
 
 .icon-block {
@@ -280,6 +305,10 @@
 .icon-block._50x50.contain.relative {
   position: relative;
   z-index: 5;
+}
+
+.relative {
+  position: relative;
 }
 
 .icon-block.contain {

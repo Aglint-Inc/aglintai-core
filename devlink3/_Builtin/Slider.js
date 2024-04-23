@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { triggerIXEvent } from '../interactions';
-import { EASING_FUNCTIONS, KEY_CODES, cj, debounce } from '../utils';
+"use client";
+import * as React from "react";
+import { IXContext, triggerIXEvent } from "../interactions";
+import { EASING_FUNCTIONS, KEY_CODES, cj, debounce } from "../utils";
 const DEFAULT_SLIDER_CONFIG = {
   navSpacing: 3,
   navShadow: false,
   autoplay: false,
   delay: 4000,
   iconArrows: true,
-  animation: 'slide',
+  animation: "slide",
   navNumbers: true,
-  easing: 'ease',
+  easing: "ease",
   navRound: true,
   hideArrows: false,
   disableSwipe: false,
@@ -21,13 +22,13 @@ const DEFAULT_SLIDER_CONFIG = {
 export const SliderContext = React.createContext({
   ...DEFAULT_SLIDER_CONFIG,
   slideAmount: 0,
-  setSlideAmount: () => {},
-  setCurrentSlide: () => {},
-  goToNextSlide: () => {},
-  goToPreviousSlide: () => {},
+  setSlideAmount: () => undefined,
+  setCurrentSlide: () => undefined,
+  goToNextSlide: () => undefined,
+  goToPreviousSlide: () => undefined,
   slide: { current: 0, previous: 0 },
   isAutoplayPaused: false,
-  setAutoplayPause: () => {},
+  setAutoplayPause: () => undefined,
 });
 function useSwipe({ onSwipeLeft, onSwipeRight, config }) {
   const SWIPE_DELTA = 150;
@@ -54,7 +55,10 @@ function useSwipe({ onSwipeLeft, onSwipeRight, config }) {
     onTouchEnd: handleTouchEnd,
   };
 }
-export function SliderWrapper({ className = '', ...props }) {
+export const SliderWrapper = React.forwardRef(function SlideWrapper(
+  { className = "", ...props },
+  ref
+) {
   const [slideAmount, setSlideAmount] = React.useState(0);
   const [selectedSlide, setSelectedSlide] = React.useState(0);
   const [prevSelectedSlide, setPrevSelectedSlide] = React.useState(0);
@@ -99,15 +103,16 @@ export function SliderWrapper({ className = '', ...props }) {
     >
       <div
         {...swipeHandlers}
-        className={cj(className, 'w-slider')}
-        role='region'
-        aria-label='carousel'
+        className={cj(className, "w-slider")}
+        role="region"
+        aria-label="carousel"
+        ref={ref}
       >
         {props.children}
       </div>
     </SliderContext.Provider>
   );
-}
+});
 function useAutoplay() {
   const {
     autoplay,
@@ -120,7 +125,7 @@ function useAutoplay() {
   const [autoMaxCount, setAutoMaxCount] = React.useState(0);
   const autoMaxReached = React.useMemo(
     () => autoMaxCount >= autoMax && autoMax > 0,
-    [autoMax, autoMaxCount],
+    [autoMax, autoMaxCount]
   );
   React.useEffect(() => {
     const shouldAutoplay = autoplay && !autoMaxReached && !isAutoplayPaused;
@@ -136,17 +141,36 @@ function useAutoplay() {
   const pauseAutoplay = () => setAutoplayPause(false);
   return { resumeAutoplay, pauseAutoplay };
 }
-export function SliderMask({ className = '', children, ...props }) {
+export const SliderMask = React.forwardRef(function SliderMask(
+  { className = "", children, ...props },
+  ref
+) {
   const { setSlideAmount } = React.useContext(SliderContext);
   const [isHovered, setHovered] = React.useState(false);
+  const [slides, setSlides] = React.useState([]);
   const { resumeAutoplay, pauseAutoplay } = useAutoplay();
   React.useEffect(() => {
-    setSlideAmount(React.Children.count(children));
-  }, [children, setSlideAmount]);
+    const extractNonFragmentChildren = (_children) => {
+      const childrenList = React.Children.toArray(_children).filter((child) =>
+        React.isValidElement(child)
+      );
+      if (
+        childrenList.length === 1 &&
+        childrenList[0]?.type === React.Fragment
+      ) {
+        return extractNonFragmentChildren(childrenList[0].props.children);
+      } else {
+        return childrenList;
+      }
+    };
+    const _slides = extractNonFragmentChildren(children);
+    setSlideAmount(_slides.length);
+    setSlides(_slides);
+  }, [children]);
   return (
     <div
       {...props}
-      className={cj(className, 'w-slider-mask')}
+      className={cj(className, "w-slider-mask")}
       onMouseEnter={() => {
         pauseAutoplay();
         setHovered(true);
@@ -157,29 +181,26 @@ export function SliderMask({ className = '', children, ...props }) {
       }}
       onFocus={() => pauseAutoplay()}
       onBlur={() => resumeAutoplay()}
+      ref={ref}
     >
-      {React.Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) return null;
+      {slides.map((child, index) => {
         return React.cloneElement(child, {
           ...child.props,
           index,
         });
       })}
       <div
-        aria-live={isHovered ? 'polite' : 'off'}
-        aria-atomic='true'
-        className='w-slider-aria-label'
+        aria-live={isHovered ? "polite" : "off"}
+        aria-atomic="true"
+        className="w-slider-aria-label"
       />
     </div>
   );
-}
-export function SliderSlide({
-  tag = 'div',
-  className = '',
-  style = {},
-  index,
-  ...props
-}) {
+});
+export const SliderSlide = React.forwardRef(function SliderSlide(
+  { tag = "div", className = "", style = {}, index, ...props },
+  ref
+) {
   const {
     animation,
     duration,
@@ -187,17 +208,21 @@ export function SliderSlide({
     slide: { current, previous },
     slideAmount,
   } = React.useContext(SliderContext);
+  const { restartEngine } = React.useContext(IXContext);
+  React.useEffect(() => {
+    restartEngine && restartEngine();
+  }, [restartEngine]);
   const isSlideActive = current === index;
   const isSlidePrevious = previous === index;
   const animationStyle = React.useMemo(() => {
-    let base = {
+    const base = {
       transform: `translateX(-${current * 100}%)`,
       transition: `transform ${duration}ms ${EASING_FUNCTIONS[easing]} 0s`,
     };
-    if (animation === 'slide') {
+    if (animation === "slide") {
       return base;
     }
-    if (animation === 'cross') {
+    if (animation === "cross") {
       return {
         ...base,
         opacity: isSlideActive ? 1 : 0,
@@ -206,7 +231,7 @@ export function SliderSlide({
         } 0s, transform 1ms linear ${isSlideActive ? 0 : duration}ms`,
       };
     }
-    if (animation === 'outin') {
+    if (animation === "outin") {
       return {
         ...base,
         opacity: isSlideActive ? 1 : 0,
@@ -215,7 +240,7 @@ export function SliderSlide({
         }ms, transform 1ms linear ${isSlidePrevious ? duration / 2 : 0}ms`,
       };
     }
-    if (animation === 'fade') {
+    if (animation === "fade") {
       return {
         ...base,
         opacity: isSlideActive ? 1 : 0,
@@ -224,7 +249,7 @@ export function SliderSlide({
         } 0s, transform 1ms linear ${isSlideActive ? 0 : duration}ms`,
       };
     }
-    if (animation === 'over') {
+    if (animation === "over") {
       return {
         ...base,
         transition: `transform ${duration}ms ${EASING_FUNCTIONS[easing]} ${
@@ -235,28 +260,33 @@ export function SliderSlide({
     }
     return base;
   }, [animation, duration, easing, current, isSlideActive, isSlidePrevious]);
-  const ref = React.useCallback(
+  const innerRef = React.useCallback(
     (node) => {
       triggerIXEvent(node, isSlideActive);
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(node);
+        } else {
+          ref.current = node;
+        }
+      }
     },
-    [isSlideActive],
+    [isSlideActive, ref]
   );
   return React.createElement(tag, {
     ...props,
-    className: cj(className, 'w-slide'),
+    className: cj(className, "w-slide"),
     style: { ...style, ...animationStyle },
-    'aria-label': `${index + 1} of ${slideAmount}`,
-    role: 'group',
-    ref,
-    'aria-hidden': !isSlideActive ? 'true' : 'false',
+    "aria-label": `${index + 1} of ${slideAmount}`,
+    role: "group",
+    ref: innerRef,
+    "aria-hidden": !isSlideActive ? "true" : "false",
   });
-}
-export function SliderArrow({
-  className = '',
-  dir = 'left',
-  children,
-  ...props
-}) {
+});
+export const SliderArrow = React.forwardRef(function SliderArrow(
+  { className = "", dir = "left", children, ...props },
+  ref
+) {
   const {
     goToNextSlide,
     goToPreviousSlide,
@@ -265,15 +295,15 @@ export function SliderArrow({
     slide: { current },
   } = React.useContext(SliderContext);
   const handleSlideChange = debounce(() => {
-    if (dir === 'left') {
+    if (dir === "left") {
       goToPreviousSlide();
     } else {
       goToNextSlide();
     }
   });
   const isHidden = React.useMemo(() => {
-    if (dir === 'left' && hideArrows && current === 0) return true;
-    if (dir === 'right' && hideArrows && current === slideAmount - 1)
+    if (dir === "left" && hideArrows && current === 0) return true;
+    if (dir === "right" && hideArrows && current === slideAmount - 1)
       return true;
     return false;
   }, [dir, hideArrows, current, slideAmount]);
@@ -288,17 +318,21 @@ export function SliderArrow({
           handleSlideChange();
         }
       }}
-      role='button'
+      role="button"
       tabIndex={0}
       className={cj(className, `w-slider-arrow-${dir}`)}
-      aria-label={`${dir === 'left' ? 'previous' : 'next'} slide`}
-      style={{ display: isHidden ? 'none' : 'block' }}
+      aria-label={`${dir === "left" ? "previous" : "next"} slide`}
+      style={{ display: isHidden ? "none" : "block" }}
+      ref={ref}
     >
       {children}
     </div>
   );
-}
-export function SliderNav({ className = '', ...props }) {
+});
+export const SliderNav = React.forwardRef(function SliderNav(
+  { className = "", ...props },
+  ref
+) {
   const {
     slideAmount,
     navInvert,
@@ -370,16 +404,20 @@ export function SliderNav({ className = '', ...props }) {
       onMouseLeave={(e) => e.stopPropagation()}
       className={cj(
         className,
-        `w-slider-nav ${navInvert ? 'w-slider-nav-invert' : ''} ${
-          navShadow ? 'w-shadow' : ''
-        } ${navRound ? 'w-round' : ''} ${navNumbers ? 'w-num' : ''}`,
+        `w-slider-nav ${navInvert ? "w-slider-nav-invert" : ""} ${
+          navShadow ? "w-shadow" : ""
+        } ${navRound ? "w-round" : ""} ${navNumbers ? "w-num" : ""}`
       )}
+      ref={ref}
     >
       {dots}
     </div>
   );
-}
-function SliderDot({ index, focusedDot, handleFocus, setFocusedDot }) {
+});
+const SliderDot = React.forwardRef(function SliderDot(
+  { index, focusedDot, handleFocus, setFocusedDot },
+  ref
+) {
   const {
     slideAmount,
     navSpacing,
@@ -387,20 +425,21 @@ function SliderDot({ index, focusedDot, handleFocus, setFocusedDot }) {
     slide: { current: selectedSlide },
     setCurrentSlide,
   } = React.useContext(SliderContext);
-  const ref = React.useRef(null);
+  const innerRef = React.useRef(null);
+  React.useImperativeHandle(ref, () => innerRef.current);
   React.useEffect(() => {
     if (focusedDot === index) {
-      ref.current?.focus();
+      innerRef.current?.focus();
     }
   }, [focusedDot, index]);
-  const isSlideActive = selectedSlide == index;
-  const label = navNumbers ? index + 1 : '';
+  const isSlideActive = selectedSlide === index;
+  const label = navNumbers ? index + 1 : "";
   return (
     <div
-      className={`w-slider-dot ${isSlideActive ? 'w-active' : ''}`}
+      className={`w-slider-dot ${isSlideActive ? "w-active" : ""}`}
       aria-label={`Show slide ${index + 1} of ${slideAmount}`}
       aria-pressed={isSlideActive}
-      role='button'
+      role="button"
       tabIndex={isSlideActive ? 0 : -1}
       style={{
         marginRight: `${navSpacing}px`,
@@ -411,10 +450,10 @@ function SliderDot({ index, focusedDot, handleFocus, setFocusedDot }) {
         setFocusedDot(index);
         setCurrentSlide(index);
       }}
-      ref={ref}
+      ref={innerRef}
       onKeyDown={handleFocus}
     >
       {label}
     </div>
   );
-}
+});

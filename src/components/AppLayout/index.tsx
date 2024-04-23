@@ -1,5 +1,6 @@
 //import ResizeWindowContext from '@context/resizeWindow/context';
 import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { pageRoutes } from '@utils/pageRouting';
 import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
@@ -14,15 +15,17 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 
+import Icon from '../Common/Icons/Icon';
+import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import CompanyList from './CompanyList';
 import MenuLottie from './MenuLottie';
 import SideNavbar from './SideNavbar';
-import Icon from '../Common/Icons/Icon';
 
 export default function AppLayout({ children }) {
   const lottieRef = useRef<LottieComponentProps>(null);
   const { handleLogout } = useAuthDetails();
   const { recruiter, recruiterUser, userDetails } = useAuthDetails();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { windowSize } = useContext(ResizeWindowContext);
   const [expand, setExpand] = useState(false);
@@ -31,6 +34,11 @@ export default function AppLayout({ children }) {
   const logo = recruiter?.logo;
   const profileName = `${recruiterUser?.first_name} ${recruiterUser?.last_name}`;
   const profileImage = recruiterUser?.profile_image;
+
+  const handleSignOut = () => {
+    queryClient.removeQueries();
+    handleLogout();
+  };
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
@@ -69,7 +77,7 @@ export default function AppLayout({ children }) {
       }, 1000);
     }
   }, [router]);
-  if (process.env.NODE_ENV === 'production' && windowSize?.innerWidth < 1000) {
+  if (isEnvProd() && windowSize?.innerWidth < 1000) {
     return <ResponsiveBanner />;
   }
   return (
@@ -116,8 +124,8 @@ export default function AppLayout({ children }) {
                   >
                     <Icon
                       variant='CompanyOutlined'
-                      height='24'
-                      width='24'
+                      height='100%'
+                      width='100%'
                       color='#87929D'
                     />
                   </Avatar>
@@ -135,7 +143,7 @@ export default function AppLayout({ children }) {
               }}
               onClickLogout={{
                 onClick: () => {
-                  handleLogout();
+                  handleSignOut();
                 },
               }}
               slotProfile={
@@ -276,7 +284,7 @@ export default function AppLayout({ children }) {
                 }}
                 onclickLogout={{
                   onClick: () => {
-                    handleLogout();
+                    handleSignOut();
                   },
                 }}
                 profileName={profileName}

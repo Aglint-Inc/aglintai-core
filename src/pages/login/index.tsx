@@ -1,20 +1,17 @@
 import React from 'react';
 
 import Login from '@/src/components/Login';
-import { SignupProvider } from '@/src/context/SingupContext/SignupContext';
 
 function SignInPage() {
   return (
     <>
-      <SignupProvider>
-        <Login />
-      </SignupProvider>
+      <Login />
     </>
   );
 }
 
 export default SignInPage;
 
-SignInPage.getLayout = (page) => {
+SignInPage.publicProvider = (page) => {
   return <>{page}</>;
 };

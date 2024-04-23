@@ -7,25 +7,31 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
-import {
+import React, {
   Dispatch,
+  forwardRef,
   SetStateAction,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
+import { DndProvider, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
 import {
-  AllApplicantsTable,
+  // AllApplicantsTable,
+  AllInterview,
   ApplicantsListEmpty,
+  ApplicantsTable,
+  Breadcrum,
   CandidatesListPagination,
   JobDetails,
   JobDetailsFilterBlock,
-  JobDetailsTabs,
+  RcCheckbox,
   SelectActionBar,
-  // SortArrows,
   TopApplicantsTable,
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -37,12 +43,16 @@ import {
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
 
-import ApplicationCard from './ApplicationCard';
+import Loader from '../Common/Loader';
+import RefreshButton from '../Common/RefreshButton';
+import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
+import ApplicationCard, { CustomDragLayer } from './ApplicationCard';
 import ApplicationDetails from './ApplicationCard/ApplicationDetails';
 import DeleteCandidate from './CandidateActions/deleteCandidates';
 import MailCandidate from './CandidateActions/mailCandidate';
 import MoveCandidate from './CandidateActions/moveCandidate';
 import FilterJobApplications from './Common/FilterJobApplications';
+import SectionIcons from './Common/SectionIcons';
 import SortJobApplications from './Common/SortJobApplications';
 import ResumeUpload from './FileUpload';
 import { getBoundingStatus, useKeyPress, useMouseClick } from './hooks';
@@ -51,9 +61,6 @@ import ImportManualCandidates from './ImportManualCandidates';
 import NoApplicants from './Lotties/NoApplicants';
 import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
-import Loader from '../Common/Loader';
-import RefreshButton from '../Common/RefreshButton';
-import { POSTED_BY } from '../JobsDashboard/AddJobWithIntegrations/utils';
 
 const JobApplicationsDashboard = () => {
   const { initialLoad, job } = useJobApplications();
@@ -80,7 +87,6 @@ const JobApplicationComponent = () => {
     handleSelectNextSection,
     handleSelectPrevSection,
   } = useJobApplications();
-  const router = useRouter();
 
   const sectionApplications = applications[section];
 
@@ -138,102 +144,167 @@ const JobApplicationComponent = () => {
       handleSelectPrevSection();
     }
   }, [upShift, downShift, rightShift, leftShift]);
-
   return (
     <>
-      <JobDetails
-        isWarningVisible={
-          job.status == 'published' && (!job.jd_json || !job.description)
-            ? true
-            : false
-        }
-        slotRefresh={
-          job?.status === 'published' && (
-            <RefreshButton
-              isDisabled={allApplicationsDisabled}
-              text={'Refresh'}
-              onClick={async () => await handleManualRefresh()}
+      <DNDLayerSwitcher applicationLimit={applicationLimit}>
+        <JobDetails
+          isWarningVisible={
+            job.status == 'published' && (!job.jd_json || !job.description)
+              ? true
+              : false
+          }
+          slotRefresh={
+            job?.status === 'published' && (
+              <RefreshButton
+                isDisabled={allApplicationsDisabled}
+                text={'Refresh'}
+                onClick={async () => await handleManualRefresh()}
+              />
+            )
+          }
+          isImportCandidates={job?.status === 'published'}
+          slotLoadingLottie={
+            <CircularProgress
+              style={{
+                color: '#17494D',
+                width: '12px',
+                height: '12px',
+              }}
             />
-          )
-        }
-        isImportCandidates={job?.status === 'published'}
-        slotLoadingLottie={
-          <CircularProgress
-            style={{
-              color: '#17494D',
-              width: '12px',
-              height: '12px',
-            }}
-          />
-        }
-        isFetchingPillVisible={atsSync}
-        textJobStatus={capitalize(job?.status ?? 'all')}
-        textRole={capitalize(job.job_title)}
-        textApplicantsNumber={``}
-        onclickHeaderJobs={{
+          }
+          isFetchingPillVisible={atsSync}
+          slotBreadcrumb={<BreadCrumbs />}
+          onclickAddCandidates={{
+            onClick: () => {
+              setOpenImportCandidates(true);
+              posthog.capture('Import Candidates Clicked');
+            },
+          }}
+          slotSidebar={
+            <ApplicationDetails
+              open={currentApplication !== -1}
+              onClose={() => handleSelectCurrentApplication(-1)}
+              handleSelectNextApplication={() => handleSelectNextApplication()}
+              handleSelectPrevApplication={() => handleSelectPrevApplication()}
+              application={
+                sectionApplications[
+                  currentApplication === -1 ? 0 : currentApplication
+                ]
+              }
+              hideNextPrev={false}
+            />
+          }
+          slotTabs={<NewJobDetailsTabs />}
+          slotFilters={
+            <NewJobFilterBlock
+              detailedView={detailedView}
+              setDetailedView={setDetailedView}
+              applicationLimit={applicationLimit}
+              setApplicationLimit={setApplicationLimit}
+            />
+          }
+          slotTable={
+            <ApplicationTable
+              detailedView={detailedView}
+              sectionApplications={sectionApplications}
+              handleSelectCurrentApplication={handleSelectCurrentApplication}
+              currentApplication={currentApplication}
+            />
+          }
+          slotPagination={
+            <ApplicationPagination
+              size={sectionApplications.length}
+              limits={applicationLimit}
+            />
+          }
+        />
+      </DNDLayerSwitcher>
+      <AddCandidates
+        openImportCandidates={openImportCandidates}
+        setOpenImportCandidates={setOpenImportCandidates}
+      />
+    </>
+  );
+};
+
+const DNDLayerSwitcher = ({
+  applicationLimit,
+  children,
+}: {
+  applicationLimit: CountJobs;
+  children: React.JSX.Element;
+}) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+  } = useJobApplications();
+  if (list.size === 0) return <>{children}</>;
+  return <DNDLayer applicationLimit={applicationLimit}>{children}</DNDLayer>;
+};
+
+const DNDLayer = ({
+  applicationLimit,
+  children,
+}: {
+  applicationLimit: CountJobs;
+  children: React.JSX.Element;
+}) => {
+  return (
+    <DndProvider backend={HTML5Backend}>
+      {children}
+      <CustomDragLayer
+        {...useMousePosition()}
+        applicationLimit={applicationLimit}
+      />
+    </DndProvider>
+  );
+};
+
+const useMousePosition = () => {
+  const [mousePosition, setMousePosition] = React.useState({
+    x: null,
+    y: null,
+  });
+  React.useEffect(() => {
+    const updateMousePosition = (ev) => {
+      setMousePosition({ x: ev.clientX, y: ev.clientY });
+    };
+    window.addEventListener('mousemove', updateMousePosition);
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+    };
+  }, []);
+  return mousePosition;
+};
+
+const BreadCrumbs = () => {
+  const router = useRouter();
+  const { job } = useJobApplications();
+  return (
+    <>
+      <Breadcrum
+        isLink
+        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        onClickLink={{
           onClick: () => {
             router.push(`/jobs?status=${job?.status ?? 'all'}`);
           },
           style: { cursor: 'pointer' },
         }}
-        onClickEditJobs={{
-          onClick: () => {
-            router.push(`/jobs/edit?job_id=${job.id}`);
-            posthog.capture('Edit Job Details clicked');
-          },
-        }}
-        isPreviewVisible={true}
-        jobLink={{
-          href: `${process.env.NEXT_PUBLIC_WEBSITE}/job-post/${job.id}`,
-          target: '_blank',
-        }}
-        slotSidebar={
-          <ApplicationDetails
-            open={currentApplication !== -1}
-            onClose={() => handleSelectCurrentApplication(-1)}
-            handleSelectNextApplication={() => handleSelectNextApplication()}
-            handleSelectPrevApplication={() => handleSelectPrevApplication()}
-            application={
-              sectionApplications[
-                currentApplication === -1 ? 0 : currentApplication
-              ]
-            }
-          />
-        }
-        slotTabs={<NewJobDetailsTabs />}
-        slotFilters={
-          <NewJobFilterBlock
-            detailedView={detailedView}
-            setDetailedView={setDetailedView}
-            applicationLimit={applicationLimit}
-            setApplicationLimit={setApplicationLimit}
-          />
-        }
-        onclickAddCandidates={{
-          onClick: () => {
-            setOpenImportCandidates(true);
-            posthog.capture('Import Candidates Clicked');
-          },
-        }}
-        slotTable={
-          <ApplicationTable
-            detailedView={detailedView}
-            sectionApplications={sectionApplications}
-            handleSelectCurrentApplication={handleSelectCurrentApplication}
-            currentApplication={currentApplication}
-          />
-        }
-        slotPagination={
-          <ApplicationPagination
-            size={sectionApplications.length}
-            limits={applicationLimit}
-          />
-        }
       />
-      <AddCandidates
-        openImportCandidates={openImportCandidates}
-        setOpenImportCandidates={setOpenImportCandidates}
+      <Breadcrum
+        isLink
+        textName={capitalize(job?.job_title ?? 'Job')}
+        onClickLink={{
+          onClick: () => {
+            router.push(`/jobs/${job?.id}`);
+          },
+          style: { cursor: 'pointer' },
+        }}
+        showArrow
       />
+      <Breadcrum textName={`Candidate list`} showArrow />
     </>
   );
 };
@@ -288,6 +359,7 @@ const ApplicationTable = ({
   };
   const applicantsList = (
     <ApplicantsList
+      key={section}
       detailedView={detailedView}
       applications={sectionApplications}
       handleSelectCurrentApplication={handleSelectCurrentApplication}
@@ -316,14 +388,35 @@ const ApplicationTable = ({
   return sectionApplications.length === 0 ? (
     emptyList
   ) : !detailedView ? (
-    <AllApplicantsTable
-      onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
-      isAllChecked={isAllChecked}
-      isInterviewVisible={views.assessment}
-      slotCandidatesList={applicantsList}
-      isDisqualifiedVisible={views.disqualified}
-      isScreeningVisible={views.screening}
-    />
+    section === JobApplicationSections.INTERVIEW ? (
+      <AllInterview
+        propsGrid={{
+          style: {
+            gridTemplateColumns: '25% 25% 15% 20% 25%',
+          },
+        }}
+        isResumeScoreVisible={true}
+        slotAllInterviewCard={applicantsList}
+        isSchedulerTable={false}
+        isCheckboxVisible={true}
+        slotCheckbox={
+          <RcCheckbox
+            isChecked={isAllChecked}
+            onclickCheck={{ onClick: () => handleSelectAllMin() }}
+            text={<></>}
+          />
+        }
+      />
+    ) : (
+      <ApplicantsTable
+        onClickSelectAll={{ onClick: () => handleSelectAllMin() }}
+        isAllChecked={isAllChecked}
+        isInterviewVisible={views.assessment}
+        slotCandidatesList={applicantsList}
+        isDisqualifiedVisible={views.disqualified}
+        isScreeningVisible={views.screening}
+      />
+    )
   ) : (
     <TopApplicantsTable
       onclickSelectAll={{ onClick: () => handleSelectAllMin() }}
@@ -396,7 +489,11 @@ const ApplicationPagination = ({
   );
 };
 
-const PageCountSlot = ({ totalPageCount }: { totalPageCount: number }) => {
+export const PageCountSlot = ({
+  totalPageCount,
+}: {
+  totalPageCount: number;
+}) => {
   const { section, handleJobApplicationPaginate, pageNumber } =
     useJobApplications();
   const [value, setValue] = useState(pageNumber[section]);
@@ -565,7 +662,7 @@ const NewJobFilterBlock = ({
   );
 };
 
-const AddCandidates = ({
+export const AddCandidates = ({
   openImportCandidates,
   setOpenImportCandidates,
 }: {
@@ -605,42 +702,145 @@ const AddCandidates = ({
 };
 
 const NewJobDetailsTabs = () => {
-  const { job, section, handleSelectSection } = useJobApplications();
-  const count = job.count;
+  const { activeSections } = useJobApplications();
   return (
-    <JobDetailsTabs
-      isNewSelected={section === JobApplicationSections.NEW}
-      countNew={count.new}
-      onClickNew={{
-        onClick: () => handleSelectSection(JobApplicationSections.NEW),
+    <Stack
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        height: '70px',
+        alignItems: 'stretch',
+        padding: '8px',
+        gap: '8px',
+        borderBottom:
+          '1px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00)',
       }}
-      isScreeningVisible={job.phone_screen_enabled}
-      isScreeningSelected={section === JobApplicationSections.SCREENING}
-      countScreening={count.screening}
-      onClickScreening={{
-        onClick: () =>
-          job.phone_screen_enabled &&
-          handleSelectSection(JobApplicationSections.SCREENING),
-      }}
-      isAssessmentSelected={section === JobApplicationSections.ASSESSMENT}
-      countAssessment={count.assessment}
-      isAssessmentVisible={job.assessment}
-      onClickAssessment={{
-        onClick: () => handleSelectSection(JobApplicationSections.ASSESSMENT),
-      }}
-      isDisqualifiedSelected={section === JobApplicationSections.DISQUALIFIED}
-      countDisqualified={count.disqualified}
-      onClickDisqualified={{
-        onClick: () => handleSelectSection(JobApplicationSections.DISQUALIFIED),
-      }}
-      isQualifiedSelected={section === JobApplicationSections.QUALIFIED}
-      countQualified={count.qualified}
-      onClickQualified={{
-        onClick: () => handleSelectSection(JobApplicationSections.QUALIFIED),
-      }}
-    />
+    >
+      {activeSections.map((section) => (
+        <JobTab key={section} section={section} />
+      ))}
+    </Stack>
   );
 };
+
+const DroppableJobTabs = ({ section }: { section: JobApplicationSections }) => {
+  const { setActionProps, actionVisibilities } = useJobApplications();
+  const handleOpen = useCallback(() => {
+    setActionProps({
+      open: true,
+      destination: section,
+    });
+  }, []);
+  const [{ isOver, canDrop }, dropRef] = useDrop({
+    accept: 'application-card',
+    drop: () => handleOpen(),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+  return actionVisibilities[section] ? (
+    <SectionCard
+      ref={dropRef as any}
+      section={section}
+      isOver={isOver}
+      canDrop={canDrop}
+    />
+  ) : (
+    <SectionCard ref={null} section={section} isOver={false} canDrop={false} />
+  );
+};
+
+const JobTab = ({ section }: { section: JobApplicationSections }) => {
+  const {
+    cardStates: {
+      checkList: { list },
+    },
+  } = useJobApplications();
+  if (list.size === 0)
+    return (
+      <SectionCard
+        ref={null}
+        section={section}
+        isOver={false}
+        canDrop={false}
+      />
+    );
+  return <DroppableJobTabs section={section} />;
+};
+
+const SectionCard = forwardRef(
+  (
+    {
+      section,
+      isOver,
+      canDrop,
+    }: { section: JobApplicationSections; isOver: boolean; canDrop: boolean },
+    dropRef: React.Ref<HTMLDivElement>,
+  ) => {
+    const {
+      job,
+      handleSelectSection,
+      section: currentSection,
+    } = useJobApplications();
+    const [normalize, setNormalize] = useState(false);
+    useEffect(() => {
+      if (canDrop) {
+        const interval = setInterval(() => setNormalize((prev) => !prev), 500);
+        return () => clearInterval(interval);
+      }
+    }, [canDrop]);
+    return (
+      <Stack
+        ref={dropRef}
+        onClick={() => handleSelectSection(section)}
+        style={{
+          cursor: 'pointer',
+          padding: '16px',
+          fontWeight: 600,
+          minWidth: '160px',
+          flexGrow: 1,
+          backgroundColor:
+            currentSection === section
+              ? 'hsla(205.71428571428586, 17.07%, 91.96%, 1.00)'
+              : normalize && !isOver
+                ? 'hsla(210, 33.33%, 97.65%, 1.00)'
+                : canDrop
+                  ? '#edf7ff'
+                  : 'hsla(210, 33.33%, 97.65%, 1.00)',
+          border:
+            currentSection === section
+              ? '1px solid hsla(208.23529411764707, 21.52%, 84.51%, 1.00)'
+              : isOver
+                ? '1px solid #1f73b7'
+                : '1px solid transparent',
+          flexDirection: 'row',
+          gap: 8,
+          alignItems: 'center',
+          borderRadius: '10px',
+          transition: '0.5s',
+        }}
+      >
+        <SectionIcons section={section} />
+        {capitalize(section)}
+        <Stack
+          style={{
+            backgroundColor: 'hsla(205.71428571428586, 17.07%, 91.96%, 1.00)',
+            borderRadius: '100px',
+            width: '24px',
+            height: '24px',
+            fontWeight: 400,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {job.count[section]}
+        </Stack>
+      </Stack>
+    );
+  },
+);
+SectionCard.displayName = 'SectionCard';
 
 const ApplicantsList = ({
   detailedView,
@@ -721,7 +921,7 @@ const ApplicantsList = ({
 
   const scrollToRef = useRef(undefined);
   useEffect(() => {
-    if (currentApplication > -1)
+    if (currentApplication > -1 && scrollToRef.current)
       scrollToRef.current.scrollIntoView({
         behavior: 'instant',
         block: 'center',
@@ -789,9 +989,9 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
     showDisqualificationEmailComponent,
     showAssessmentEmailComponent,
     showScreeningEmailComponent,
+    selectAll,
+    setSelectAll,
   } = useJobApplications();
-
-  const [selectAll, setSelectAll] = useState(false);
 
   const handleSelectAll = () => {
     if (!disabled) {
@@ -818,6 +1018,10 @@ const ActionBar = ({ applicationLimit }: { applicationLimit: CountJobs }) => {
   useEffect(() => {
     if (list.size !== applications[section].length) setSelectAll(false);
   }, [list.size]);
+
+  useEffect(() => {
+    return () => setSelectAll(false);
+  }, []);
 
   return (
     <>

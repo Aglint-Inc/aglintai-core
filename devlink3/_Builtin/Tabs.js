@@ -1,41 +1,45 @@
-import * as React from 'react';
-import { triggerIXEvent } from '../interactions';
-import { cj, debounce, EASING_FUNCTIONS, useLayoutEffect } from '../utils';
+"use client";
+import * as React from "react";
+import { triggerIXEvent } from "../interactions";
+import { cj, debounce, EASING_FUNCTIONS, useLayoutEffect } from "../utils";
 const tabsContext = React.createContext({
-  current: '',
-  onTabClick: () => {},
-  onLinkKeyDown: () => {},
+  current: "",
+  onTabClick: () => undefined,
+  onLinkKeyDown: () => undefined,
 });
-export function TabsWrapper({
-  className = '',
-  fadeIn,
-  fadeOut,
-  easing,
-  current: initialCurrent,
-  ...props
-}) {
-  const [current, setCurrent] = React.useState('');
+export const TabsWrapper = React.forwardRef(function TabsWrapper(
+  {
+    className = "",
+    fadeIn,
+    fadeOut,
+    easing,
+    current: initialCurrent,
+    ...props
+  },
+  ref
+) {
+  const [current, setCurrent] = React.useState("");
   const changeTab = React.useCallback(
     (next) => {
       function updateTab() {
         setCurrent(() => {
           const nextTabHeader = document.querySelector(
-            `.w-tab-link[data-w-tab="${next}"]`,
+            `.w-tab-link[data-w-tab="${next}"]`
           );
           nextTabHeader?.focus();
           return next;
         });
       }
       const currentTab = document.querySelector(
-        `.w-tab-pane[data-w-tab="${current}"]`,
+        `.w-tab-pane[data-w-tab="${current}"]`
       );
       const nextTab = document.querySelector(
-        `.w-tab-pane[data-w-tab="${next}"]`,
+        `.w-tab-pane[data-w-tab="${next}"]`
       );
-      const easingFn = EASING_FUNCTIONS[easing] ?? 'ease';
+      const easingFn = EASING_FUNCTIONS[easing] ?? "ease";
       const animation = currentTab?.animate([{ opacity: 1 }, { opacity: 0 }], {
         duration: fadeOut,
-        fill: 'forwards',
+        fill: "forwards",
         easing: easingFn,
       });
       if (animation) {
@@ -43,7 +47,7 @@ export function TabsWrapper({
           updateTab();
           nextTab?.animate([{ opacity: 0 }, { opacity: 1 }], {
             duration: fadeIn,
-            fill: 'forwards',
+            fill: "forwards",
             easing: easingFn,
           });
         };
@@ -51,7 +55,7 @@ export function TabsWrapper({
         updateTab();
       }
     },
-    [current, easing, fadeIn, fadeOut],
+    [current, easing, fadeIn, fadeOut]
   );
   const firstRender = React.useRef(true);
   useLayoutEffect(() => {
@@ -65,81 +69,105 @@ export function TabsWrapper({
   const onLinkKeyDown = debounce((event) => {
     event.preventDefault();
     const currentTab = document.querySelector(
-      `.w-tab-pane[data-w-tab="${current}"]`,
+      `.w-tab-pane[data-w-tab="${current}"]`
     );
-    const allTabs = document.querySelectorAll('.w-tab-pane');
+    const allTabs = document.querySelectorAll(".w-tab-pane");
     const firstTab = allTabs[0];
     const lastTab = allTabs[allTabs.length - 1];
     const nextTab = (() => {
       switch (event.key) {
-        case 'ArrowUp':
-        case 'ArrowLeft':
+        case "ArrowUp":
+        case "ArrowLeft":
           return currentTab.previousElementSibling ?? lastTab;
-        case 'ArrowDown':
-        case 'ArrowRight':
+        case "ArrowDown":
+        case "ArrowRight":
           return currentTab.nextElementSibling ?? firstTab;
-        case 'Home':
+        case "Home":
           return firstTab;
-        case 'End':
+        case "End":
           return lastTab;
       }
     })();
-    if (nextTab) changeTab(nextTab.getAttribute('data-w-tab'));
+    if (nextTab) changeTab(nextTab.getAttribute("data-w-tab"));
   });
   return (
     <tabsContext.Provider value={{ current, onTabClick, onLinkKeyDown }}>
-      <div {...props} className={cj(className, 'w-tabs')} />
+      <div {...props} className={cj(className, "w-tabs")} ref={ref} />
     </tabsContext.Provider>
   );
-}
-export function TabsMenu({ tag = 'div', className = '', ...props }) {
+});
+export const TabsMenu = React.forwardRef(function TabsMenu(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
     ...props,
-    className: cj(className, 'w-tab-menu'),
-    role: 'tablist',
+    className: cj(className, "w-tab-menu"),
+    role: "tablist",
+    ref,
   });
-}
-export function TabsLink({ className = '', ...props }) {
+});
+export const TabsLink = React.forwardRef(function TabsLink(
+  { className = "", children, ...props },
+  ref
+) {
   const { current, onTabClick, onLinkKeyDown } = React.useContext(tabsContext);
-  const isCurrent = current === props['data-w-tab'];
-  const ref = React.useCallback(
+  const isCurrent = current === props["data-w-tab"];
+  const innerRef = React.useCallback(
     (node) => {
       if (!node) return;
       triggerIXEvent(node, isCurrent);
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(node);
+        } else {
+          ref.current = node;
+        }
+      }
     },
-    [isCurrent],
+    [isCurrent, ref]
   );
   return (
     <a
       {...props}
-      ref={ref}
+      ref={innerRef}
       className={cj(
         className,
-        'w-inline-block w-tab-link',
-        isCurrent && 'w--current',
+        "w-inline-block w-tab-link",
+        isCurrent && "w--current"
       )}
-      onClick={() => onTabClick(props['data-w-tab'])}
+      onClick={() => onTabClick(props["data-w-tab"])}
       onKeyDown={onLinkKeyDown}
-      role='tab'
+      role="tab"
       tabIndex={isCurrent ? 0 : -1}
       aria-selected={isCurrent}
-      aria-controls={props['data-w-tab']}
-    />
+      aria-controls={props["data-w-tab"]}
+    >
+      {children}
+    </a>
   );
-}
-export function TabsContent({ tag = 'div', className = '', ...props }) {
+});
+export const TabsContent = React.forwardRef(function TabsContent(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   return React.createElement(tag, {
     ...props,
-    className: cj(className, 'w-tab-content'),
+    className: cj(className, "w-tab-content"),
+    ref,
   });
-}
-export function TabsPane({ tag = 'div', className = '', ...props }) {
+});
+export const TabsPane = React.forwardRef(function TabsPane(
+  { tag = "div", className = "", ...props },
+  ref
+) {
   const { current } = React.useContext(tabsContext);
-  const isCurrent = current === props['data-w-tab'];
+  const isCurrent = current === props["data-w-tab"];
   return React.createElement(tag, {
     ...props,
-    className: cj(className, 'w-tab-pane', isCurrent && 'w--tab-active'),
-    role: 'tabpanel',
-    'aria-labelledby': props['data-w-tab'],
+    className: cj(className, "w-tab-pane", isCurrent && "w--tab-active"),
+    role: "tabpanel",
+    "aria-labelledby": props["data-w-tab"],
+    ref,
   });
-}
+});

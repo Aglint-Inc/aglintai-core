@@ -1,25 +1,11 @@
-import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
-
 import Seo from '@/src/components/Common/Seo';
 import CompanyDetailComp from '@/src/components/CompanyDetailComp';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+// import withRoleProtection from '@/src/HOC/RoleProtection';
 
 function CompanyPage() {
-  const { recruiterUser } = useAuthDetails();
-  const router = useRouter();
-  useEffect(() => {
-    if (
-      router.isReady &&
-      recruiterUser &&
-      recruiterUser.role.toLowerCase() !== 'admin'
-    )
-      router.replace(pageRoutes.JOBS);
-  }, [router, recruiterUser]);
   return (
     <>
-      <Seo title='Aglint | Company Settings' description='Company Settings' />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <CompanyDetailComp />
     </>
   );

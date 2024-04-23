@@ -5,12 +5,15 @@ import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { ReadJobApplicationApi } from '@/src/pages/api/jobApplications/read';
+import { ModuleType } from '@/src/components/Scheduling/Modules/types';
+import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
+import { AssessmentResult } from '@/src/queries/assessment/types';
+import { Job } from '@/src/queries/job/types';
 import { Applications } from '@/src/types/applications.types';
-import { AssessmentResults } from '@/src/types/assessment_results.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
+import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 import useProviderJobApplicationActions from './hooks';
 
@@ -18,6 +21,7 @@ export enum JobApplicationSections {
   NEW = 'new',
   SCREENING = 'screening',
   ASSESSMENT = 'assessment',
+  INTERVIEW = 'interview',
   QUALIFIED = 'qualified',
   DISQUALIFIED = 'disqualified',
 }
@@ -36,13 +40,16 @@ export type JobApplicationsData = ReadJobApplicationApi['response']['data'];
 export type JobApplication = Applications & {
   candidates: Partial<Candidate> & { id: Candidate['id'] };
   candidate_files: Partial<CandidateFiles> & { id: CandidateFiles['id'] };
-  assessment_results: Partial<AssessmentResults> & {
-    id: AssessmentResults['id'];
-  };
+  assessment_results: (Partial<AssessmentResult> & {
+    id: AssessmentResult['id'];
+  })[];
+  schedule: Partial<InterviewScheduleTypeDB>;
+  interview_session_meetings: Partial<InterviewScheduleTypeDB>;
   emailValidity?: {
     isFetching: boolean;
     isValidEmail: boolean;
   };
+  status_emails_sent: Partial<{ [key in keyof Job['email_template']]: string }>;
 };
 
 export type Parameters = {

@@ -1,25 +1,28 @@
-import { Autocomplete, Stack } from '@mui/material';
+import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 import { BasicInfo, CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
+import { DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
+import ImageUpload from '../../Common/ImageUpload';
+import MuiPopup from '../../Common/MuiPopup';
+import { ShowCode } from '../../Common/ShowCode';
+import UITextField from '../../Common/UITextField';
+import AssessmentSettings from '../AssessmentSettings';
+import Assistant from '../Assistant';
+import CompanyJdComp from '../CompanyJdComp';
+import TeamManagement from '../TeamManagement';
+import { debouncedSave } from '../utils';
 import AddDepartmentsDialog from './AddDepartmentsDialog';
 import AddLocationDialog from './AddLocationDialog';
 import AddRolesDialog from './AddRolesDialog';
 import AddSpecialityDialog from './AddSpecialityDialog';
 import SocialComp from './SocialComp';
-import AssessmentSettings from '../AssessmentSettings';
-import Assistant from '../Assistant';
-import CompanyJdComp from '../CompanyJdComp';
-import EmailTemplate from '../EmailTemplate';
-import TeamManagement from '../TeamManagement';
-import { debouncedSave } from '../utils';
-import ImageUpload from '../../Common/ImageUpload';
-import UITextField from '../../Common/UITextField';
 
 const CompanyInfoComp = ({ setIsSaving }) => {
   const router = useRouter();
@@ -27,6 +30,8 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   const [logo, setLogo] = useState<string>();
   const [dialog, setDialog] = useState(initialDialog());
   const [isVideoAssessment, setIsVideoAssessment] = useState(false);
+  const [isDetele, setDeletPopup] = useState(false);
+  let isJobMarketingEnabled = posthog.isFeatureEnabled('isJobMarketingEnabled');
 
   useEffect(() => {
     setLogo(recruiter?.logo);
@@ -65,7 +70,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
   useEffect(() => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
   }, [recruiter]);
-
+  const [isError, setError] = useState(false);
   return (
     <Stack
       sx={{ overflowY: 'auto', height: 'calc(100vh - 60px)' }}
@@ -94,125 +99,169 @@ const CompanyInfoComp = ({ setIsSaving }) => {
           edit={dialog.location.edit}
         />
         {router.query?.tab === 'additional-info' && (
-          <CompanyInfo
-            slotLocation={
-              <Stack p={'4px'}>
-                {recruiter?.office_locations &&
-                  recruiter?.office_locations.map((loc: any, i) => {
-                    const location = [loc.city, loc.region, loc.country]
-                      .filter(Boolean)
-                      .join(', ');
+          <>
+            <CompanyInfo
+              slotLocation={
+                <Stack p={'4px'}>
+                  {recruiter?.office_locations &&
+                    recruiter?.office_locations.map((loc: any, i) => {
+                      const location = [loc.city, loc.region, loc.country]
+                        .filter(Boolean)
+                        .join(', ');
 
-                    return (
-                      <>
-                        <Stack p={'4px'}>
-                          <CompanyLocation
-                            onClickEdit={{
-                              onClick: () => {
-                                setDialog({
-                                  ...dialog,
-                                  location: { open: true, edit: i },
-                                });
+                      return (
+                        <>
+                          <Stack p={'4px'}>
+                            <CompanyLocation
+                              onClickEdit={{
+                                onClick: () => {
+                                  setDialog({
+                                    ...dialog,
+                                    location: { open: true, edit: i },
+                                  });
+                                },
+                              }}
+                              textLocation={location}
+                              // onClickDelete={{
+                              //   onClick: () => handleDeleteLocation(i),
+                              // }}
+                              onClickDelete={{
+                                onClick: () => {
+                                  setDeletPopup(true);
+                                },
+                              }}
+                            />
+                          </Stack>
+                          <MuiPopup
+                            props={{
+                              open: isDetele,
+                              onClose: () => {
+                                setDeletPopup(false);
                               },
                             }}
-                            textLocation={location}
-                            onClickDelete={{
-                              onClick: () => handleDeleteLocation(i),
-                            }}
-                          />
-                        </Stack>
-                      </>
-                    );
-                  })}
-              </Stack>
-            }
-            slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
-              return (
-                <RolesPill
-                  key={ind}
-                  textRoles={rol}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      let roles = recruiter.available_roles.filter(
-                        (role) => role != rol,
+                          >
+                            <DeletePopup
+                              textDescription={
+                                'Are u sure u want to delete this office location? This action cannot be undone.'
+                              }
+                              textTitle={'Delete Office Location'}
+                              isIcon={false}
+                              onClickCancel={{
+                                onClick: () => {
+                                  setDeletPopup(false);
+                                },
+                              }}
+                              onClickDelete={{
+                                onClick: () => {
+                                  handleDeleteLocation(i), setDeletPopup(false);
+                                },
+                              }}
+                            />
+                            ;
+                          </MuiPopup>
+                        </>
                       );
-                      handleChange({
-                        ...recruiter,
-                        available_roles: roles,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
-              return (
-                <RolesPill
-                  key={ind}
-                  textRoles={dep}
-                  onClickRemoveRoles={{
-                    onClick: () => {
-                      let departments = recruiter.departments.filter(
-                        (depart) => depart != dep,
-                      );
-                      handleChange({
-                        ...recruiter,
-                        departments: departments,
-                      });
-                    },
-                  }}
-                />
-              );
-            })}
-            slotTechStackPills={recruiter?.technology_score?.map(
-              (stack, ind) => {
+                    })}
+                </Stack>
+              }
+              slotRolesPills={recruiter?.available_roles?.map((rol, ind) => {
                 return (
                   <RolesPill
                     key={ind}
-                    textRoles={stack}
+                    textRoles={rol}
                     onClickRemoveRoles={{
                       onClick: () => {
-                        let technologies = recruiter.technology_score.filter(
-                          (tech) => tech != stack,
+                        let roles = recruiter.available_roles.filter(
+                          (role) => role != rol,
                         );
                         handleChange({
                           ...recruiter,
-                          technology_score: technologies,
+                          available_roles: roles,
                         });
                       },
                     }}
                   />
                 );
-              },
-            )}
-            onClickAddLocation={{
-              onClick: () => {
-                setDialog({ ...dialog, location: { open: true, edit: -1 } });
-              },
-            }}
-            onClickAddAvailableRoles={{
-              onClick: () => {
-                setDialog({ ...dialog, roles: true });
-              },
-            }}
-            onClickAddDepartments={{
-              onClick: () => {
-                setDialog((prev) => ({
-                  ...prev,
-                  departments: true,
-                }));
-              },
-            }}
-            onClickAddTechStacks={{
-              onClick: () => {
-                setDialog({ ...dialog, stacks: true });
-              },
-            }}
-          />
+              })}
+              slotDepartmentPills={recruiter?.departments?.map((dep, ind) => {
+                return (
+                  <RolesPill
+                    key={ind}
+                    textRoles={dep}
+                    onClickRemoveRoles={{
+                      onClick: () => {
+                        let departments = recruiter.departments.filter(
+                          (depart) => depart != dep,
+                        );
+                        handleChange({
+                          ...recruiter,
+                          departments: departments,
+                        });
+                      },
+                    }}
+                  />
+                );
+              })}
+              slotTechStackPills={recruiter?.technology_score?.map(
+                (stack, ind) => {
+                  return (
+                    <RolesPill
+                      key={ind}
+                      textRoles={stack}
+                      onClickRemoveRoles={{
+                        onClick: () => {
+                          let technologies = recruiter.technology_score.filter(
+                            (tech) => tech != stack,
+                          );
+                          handleChange({
+                            ...recruiter,
+                            technology_score: technologies,
+                          });
+                        },
+                      }}
+                    />
+                  );
+                },
+              )}
+              onClickAddLocation={{
+                onClick: () => {
+                  setDialog({ ...dialog, location: { open: true, edit: -1 } });
+                },
+              }}
+              onClickAddAvailableRoles={{
+                onClick: () => {
+                  setDialog({ ...dialog, roles: true });
+                },
+              }}
+              onClickAddDepartments={{
+                onClick: () => {
+                  setDialog((prev) => ({
+                    ...prev,
+                    departments: true,
+                  }));
+                },
+              }}
+              onClickAddTechStacks={{
+                onClick: () => {
+                  setDialog({ ...dialog, stacks: true });
+                },
+              }}
+              isAvailableRolesVisible={isJobMarketingEnabled}
+              isSpecialistVisible={isJobMarketingEnabled}
+              slotEmploymentType={<CompanyJdComp setIsSaving={setIsSaving} />}
+            />
+          </>
         )}
         {router.query?.tab === 'basic-info' && (
           <>
             <BasicInfo
+              isWarningVisible={isError}
+              slotWarning={
+                <Typography variant='caption' color='error'>
+                  The file you uploaded exceeds the maximum allowed size. Please
+                  ensure that the file size is less than 5 MB
+                </Typography>
+              }
               slotCompanyLogo={
                 <>
                   <ImageUpload
@@ -228,6 +277,13 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                     size={70}
                     table='company-logo'
+                    error={(e) => {
+                      if (e) {
+                        setError(true);
+                      } else {
+                        setError(false);
+                      }
+                    }}
                   />
                   {/* <ImageUpload
                     image={logo}
@@ -319,7 +375,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     }}
                   />
 
-                  <SocialComp setIsSaving={setIsSaving} />
+                  <ShowCode.When isTrue={isJobMarketingEnabled}>
+                    <SocialComp setIsSaving={setIsSaving} />
+                  </ShowCode.When>
                 </Stack>
               }
               textLogoUpdate={'Update Logo'}
@@ -336,15 +394,12 @@ const CompanyInfoComp = ({ setIsSaving }) => {
         {router.query?.tab === 'job-assistant' && (
           <Assistant setIsSaving={setIsSaving} />
         )}
-        {router.query?.tab === 'email' && (
+        {/* {router.query?.tab === 'email' && (
           <>
             <EmailTemplate setIsSaving={setIsSaving} />
           </>
-        )}
+        )} */}
         {router.query?.tab === 'team' && <TeamManagement />}
-        {router.query?.tab === 'about' && (
-          <CompanyJdComp setIsSaving={setIsSaving} />
-        )}
       </YTransform>
     </Stack>
   );

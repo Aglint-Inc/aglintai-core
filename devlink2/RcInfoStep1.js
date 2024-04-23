@@ -7,6 +7,7 @@ export function RcInfoStep1({
   as: _Component = _Builtin.Block,
   slotInput,
   slotDetails,
+  textheader = "Let's create your company profile.",
 }) {
   return (
     <_Component
@@ -25,7 +26,7 @@ export function RcInfoStep1({
             className={_utils.cx(_styles, "text-lg", "fw-semibold")}
             tag="div"
           >
-            {"Let's create your company profile."}
+            {textheader}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-600")}

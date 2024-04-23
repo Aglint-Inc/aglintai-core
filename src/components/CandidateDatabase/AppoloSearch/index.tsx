@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 
 import { CdAglintDb, Checkbox } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { useBoundStore } from '@/src/store';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import UITextField from '../../Common/UITextField';
+import UITypography from '../../Common/UITypography';
 import AddToListComp from './AddToList';
 import CandidateDetail from './CdDetails';
 import CdTableRecords from './CdTableRecords';
@@ -16,42 +17,38 @@ import EditFilter from './EditFilter';
 import EmailOutReachComp from './EmailOutReach';
 import ListDropdown from './ListDropdown';
 import {
+  resetCandidateStore,
+  setCandidateHistory,
+  setCandidates,
+  setEmailOutReach,
+  setFilters,
+  setIsFilterOpen,
+  setIsSelectAll,
+  setList,
+  setLists,
+  setSelectedCandidate,
+  setSelectedCandidates,
+  useCandidateStore,
+} from './store';
+import {
   Candidate,
   CandidateSearchHistoryType,
   FetchCandidatesParams,
 } from './types';
 import { processCandidatesInBatches } from './utils';
 import ViewSavedList from './ViewSavedList';
-import UITextField from '../../Common/UITextField';
-import UITypography from '../../Common/UITypography';
 
 function AppoloSearch() {
   const router = useRouter();
   const { recruiter } = useAuthDetails();
-  const setCandidateLists = useBoundStore((state) => state.setLists);
-  const list = useBoundStore((state) => state.list);
-  const setList = useBoundStore((state) => state.setList);
-  const lists = useBoundStore((state) => state.lists);
-  const setLists = useBoundStore((state) => state.setLists);
-  const setIsFilterOpen = useBoundStore((state) => state.setIsFilterOpen);
-  const setFilters = useBoundStore((state) => state.setFilters);
-  const setEmailOutReach = useBoundStore((state) => state.setEmailOutReach);
-  const setSelectedCandidate = useBoundStore(
-    (state) => state.setSelectedCandidate,
+  const list = useCandidateStore((state) => state.list);
+  const lists = useCandidateStore((state) => state.lists);
+  const selectedCandidates = useCandidateStore(
+    (state) => state.selectedCandidates,
   );
-  const selectedCandidates = useBoundStore((state) => state.selectedCandidates);
-  const setSelectedCandidates = useBoundStore(
-    (state) => state.setSelectedCandidates,
-  );
-  const isSelectAll = useBoundStore((state) => state.isSelectAll);
-  const setIsSelectAll = useBoundStore((state) => state.setIsSelectAll);
-  const candidateHistory = useBoundStore((state) => state.candidateHistory);
-  const setCandidateHistory = useBoundStore(
-    (state) => state.setCandidateHistory,
-  );
-  const candidates = useBoundStore((state) => state.candidates);
-  const setCandidates = useBoundStore((state) => state.setCandidates);
-
+  const isSelectAll = useCandidateStore((state) => state.isSelectAll);
+  const candidateHistory = useCandidateStore((state) => state.candidateHistory);
+  const candidates = useCandidateStore((state) => state.candidates);
   const [text, setText] = useState('');
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -64,12 +61,7 @@ function AppoloSearch() {
       initialFetch();
     }
     return () => {
-      setFilters(null);
-      setList(null);
-      setCandidateHistory(null);
-      setSelectedCandidates([]);
-      setIsSelectAll(false);
-      setSelectedCandidate(null);
+      resetCandidateStore();
     };
   }, [router, recruiter]);
 
@@ -104,12 +96,12 @@ function AppoloSearch() {
       const uniqueCand = [...new Set(cand)];
       const resCand = await processCandidatesInBatches(uniqueCand);
       setCandidates(resCand as unknown as Candidate[]);
-      const { data: cdList, error: cdError } = await supabase
+      const { data: cdLists, error: cdError } = await supabase
         .from('candidate_list')
         .select()
         .eq('recruiter_id', recruiter.id);
       if (!cdError) {
-        setCandidateLists(cdList);
+        setLists(cdLists);
       }
     }
     return true;
@@ -123,7 +115,7 @@ function AppoloSearch() {
       .select('*')
       .eq('recruiter_id', recruiter.id);
     if (!error) {
-      setCandidateLists(data.filter((l) => l.id !== id));
+      setLists(data.filter((l) => l.id !== id));
       const list = data.find((l) => l.id === id);
       setList(list);
       const uniqueCand = [...new Set(list.candidates)];
@@ -233,10 +225,10 @@ function AppoloSearch() {
           ) : (
             <Stack direction={'row'} spacing={1} pr={1}>
               <UITypography fontBold='normal' type='small'>
-                {list?.name}
+                {list?.name || '--'}
               </UITypography>
               <UITypography fontBold='normal' type='small' variant='caption'>
-                {`(${list?.candidates.length} candidates)`}
+                {`(${list?.candidates.length || 0} candidates)`}
               </UITypography>
             </Stack>
           )

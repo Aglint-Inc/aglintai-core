@@ -20,12 +20,10 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
-import {
-  EmailTempPath,
-  templateObj,
-} from '@/src/components/CompanyDetailComp/EmailTemplate';
+import { templateObj } from '@/src/components/CompanyDetailComp/EmailTemplate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { Job } from '@/src/queries/job/types';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -37,15 +35,10 @@ const Emails = () => {
   const isJobMarketingEnabled = useFeatureFlagEnabled('isJobMarketingEnabled');
   const emails: EmailTemplateParams[] = emailTempKeys
     .filter((path) => {
-      if (path === 'interview' || path === 'interview_resend') {
-        return jobForm.formFields.assessment;
-      } else if (
-        path === 'phone_screening' ||
-        path === 'phone_screening_resend'
-      ) {
+      if (path === 'phone_screening' || path === 'phone_screening_resend') {
         return jobForm.formFields.isPhoneScreenEnabled;
       }
-      if (path === 'application_recieved') {
+      if (path === 'application_received') {
         return isJobMarketingEnabled;
       } else {
         return true;
@@ -410,8 +403,8 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
   );
 };
 
-export const emailTempKeys: EmailTempPath[] = [
-  'application_recieved',
+export const emailTempKeys: (keyof Job['email_template'])[] = [
+  'application_received',
   'phone_screening',
   'phone_screening_resend',
   'interview',

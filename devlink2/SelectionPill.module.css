@@ -1,0 +1,46 @@
+.selction_pill {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 40px;
+  padding-right: 16px;
+  padding-left: 16px;
+  align-items: center;
+
+  border-radius: 4px;
+
+  background-color: white;
+
+  box-shadow: inset 0 0 0 1px #d8dcde;
+
+  transition: all 200ms ease-in-out;
+
+  cursor: pointer;
+}
+
+.selction_pill:hover {
+  background-color: #f8f9f9;
+}
+
+.slot_selection_option {
+  position: relative;
+  z-index: 2;
+}
+
+.selected_bg {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  border-radius: 4px;
+
+  background-color: #edf7ff;
+
+  box-shadow: inset 0 0 0 1px #adcce4;
+}

@@ -4,10 +4,7 @@ import Seo from '@/src/components/Common/Seo';
 function CandidatesPage() {
   return (
     <>
-      <Seo
-        title='Aglint | Candidate Search'
-        description='Find Your Ideal Candidate with AI-Powered Matching!'
-      />
+      <Seo title={`Candidate Search`} description='AI for People Products' />
       <AppoloSearch />
     </>
   );

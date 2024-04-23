@@ -9,14 +9,15 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
+import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
+import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 
+import AUIButton from '../../Common/AUIButton';
 import {
   getAssessmentStatus,
   getDisqualificationStatus,
   getScreeningStatus,
 } from '../utils';
-import AUIButton from '../../Common/AUIButton';
 
 const MailCandidateDialog: React.FC<{
   open: boolean;
@@ -76,6 +77,7 @@ const MailCandidateDialog: React.FC<{
           source: section,
           destination: null,
         },
+        false,
         purposes,
         list,
         selectAll,
@@ -213,10 +215,10 @@ const getStatus = (
         application.phone_screening,
       );
     case JobApplicationSections.ASSESSMENT:
-      return getAssessmentStatus(application.status_emails_sent, {
-        created_at: application.assessment_results?.created_at ?? null,
-        feedback: application.assessment_results?.feedback ?? null,
-      });
+      return getAssessmentStatus(
+        application.status_emails_sent,
+        getSafeAssessmentResult(application.assessment_results),
+      );
     case JobApplicationSections.DISQUALIFIED:
       return getDisqualificationStatus(application.status_emails_sent);
   }

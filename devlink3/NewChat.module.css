@@ -1,0 +1,52 @@
+.welcome_message {
+  display: flex;
+  width: 100%;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 100px;
+  flex-direction: column;
+  align-items: center;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+
+  background-color: white;
+}
+
+.title_top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.task_type_icon-copy {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  overflow: hidden;
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 10px;
+
+  background-color: #fff7ed;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 14px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.grid-2-copy {
+  max-width: 900px;
+  grid-template-columns: 1fr 1fr 1fr;
+}

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 import { cj, loadScript } from "../utils";
 function buildTitle(title, tooltip) {
@@ -11,19 +12,23 @@ function buildTitle(title, tooltip) {
   }
   return markerTitle;
 }
-export function MapWidget({
-  apiKey = "",
-  mapStyle = "roadmap",
-  zoom = 12,
-  latlng = "51.511214,-0.119824",
-  tooltip = "",
-  title = "",
-  enableScroll = true,
-  enableTouch = true,
-  className = "",
-  ...props
-}) {
+export const MapWidget = React.forwardRef(function MapWidget(
+  {
+    apiKey = "",
+    mapStyle = "roadmap",
+    zoom = 12,
+    latlng = "51.511214,-0.119824",
+    tooltip = "",
+    title = "",
+    enableScroll = true,
+    enableTouch = true,
+    className = "",
+    ...props
+  },
+  ref
+) {
   const mapRef = useRef(null);
+  React.useImperativeHandle(ref, () => mapRef.current);
   useEffect(() => {
     const loadMap = () => {
       if (!mapRef.current) return;
@@ -84,4 +89,4 @@ export function MapWidget({
       ref={mapRef}
     />
   );
-}
+});

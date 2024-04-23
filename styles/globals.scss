@@ -35,6 +35,11 @@ div#__next {
   overflow: hidden;
 }
 
+[class*='slot-body-global'] {
+  overflow: hidden;
+  height: calc(100vh - 60px) !important;
+}
+
 #job-application-stack {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -209,10 +214,30 @@ textarea::placeholder {
 // assistant chat text field
 
 .mention {
-  color: #ff6224;
-  background-color: #ff910043;
+  color: #337fbd;
+  background-color: #edf7ff;
+  text-transform: capitalize;
+  padding: 4px;
+  border-radius: 4px;
+  // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
+  margin: 1px;
+}
 
-  padding: 2px;
+.agent_mention {
+  color: #703815;
+  background-color: #fff7ed;
+  text-transform: capitalize;
+  padding: 4px;
+  border-radius: 4px;
+  // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
+  margin: 1px;
+}
+
+.module_session_name {
+  color: #bdab33;
+  background-color: #fffdd6;
+  text-transform: capitalize;
+  padding: 4px;
   border-radius: 4px;
   // box-shadow: 0px 0px 1px 1px rgb(0, 0, 0);
   margin: 1px;
@@ -242,4 +267,32 @@ textarea::placeholder {
 #list-popup .is-selected {
   // border-color: #000;
   background-color: #ff910043;
+}
+
+.slot-body-global {
+  height: calc(100vh - 60px);
+}
+
+[class*='DummyChatOne_link'] {
+  color: #337fbd;
+  cursor: pointer;
+}
+
+[data-layout='jobs'] {
+  height: calc(100vh - 100px) !important;
+}
+
+//
+.MuiClock-pmButton {
+  height: 36px;
+}
+.MuiClock-pmButton > span {
+  color: #000 !important;
+}
+
+.MuiClock-amButton {
+  height: 36px;
+}
+.MuiClock-amButton > span {
+  color: #000 !important;
 }

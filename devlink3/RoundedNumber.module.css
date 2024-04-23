@@ -1,0 +1,36 @@
+.round_pill {
+  position: relative;
+
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 100px;
+
+  background-color: white;
+
+  box-shadow: inset 0 0 0 1px #e9ebed;
+
+  transition: all 200ms ease;
+}
+
+.round_pill:hover {
+  background-color: #edf7ff;
+  box-shadow: inset 0 0 0 1px #cee2f2;
+}
+
+.round_pill.active-pill {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #337fbd;
+
+  box-shadow: inset 0 0 0 1px #337fbd;
+
+  color: white;
+}

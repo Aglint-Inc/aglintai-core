@@ -1,0 +1,712 @@
+.default-button-wrappers {
+  position: relative;
+  padding: 3px;
+}
+
+.default-button-sub-wrappers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.blue-button {
+  z-index: 5;
+
+  display: flex;
+  padding: 8px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  background-color: #1f73b7;
+
+  transition: all 300ms ease;
+
+  color: hsla(0, 0.00%, 100.00%, 1.00);
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.blue-button:hover {
+  background-color: #144a75;
+}
+
+.blue-button.large {
+  padding: 10px 16px;
+}
+
+.blue-button.primary {
+  color: var(--blue600-cb1b4518);
+}
+
+.blue-button.primary:hover {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
+  color: var(--blue700-4fdeafcf);
+}
+
+.blue-button.primary.outlined {
+  border-color: var(--blue600-cb1b4518);
+}
+
+.blue-button.primary.outlined:hover {
+  border-color: var(--blue700-4fdeafcf);
+}
+
+.blue-button.primary.default {
+  background-color: var(--blue600-cb1b4518);
+  color: var(--white-9747b35e);
+}
+
+.blue-button.primary.default:hover {
+  background-color: var(--blue700-4fdeafcf);
+}
+
+.blue-button.disabled {
+  z-index: 6;
+  margin: 3px;
+  background-color: var(--grey200-750b0c46);
+  color: var(--grey400-5470456b);
+  cursor: default;
+}
+
+.blue-button.danger {
+  color: var(--red600-937b9595);
+}
+
+.blue-button.danger:hover {
+  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.08);
+  color: var(--red700-eef2bc62);
+}
+
+.blue-button.danger.outlined {
+  border-color: var(--red600-937b9595);
+}
+
+.blue-button.danger.outlined:hover {
+  border-color: var(--red700-eef2bc62);
+}
+
+.blue-button.danger.default {
+  background-color: var(--red600-937b9595);
+  color: var(--white-9747b35e);
+}
+
+.blue-button.danger.default:hover {
+  background-color: var(--red700-eef2bc62);
+}
+
+.blue-button.ai {
+  color: var(--kale600-0961d49d);
+}
+
+.blue-button.ai:hover {
+  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.08);
+  color: var(--kale700-f9fc674d);
+}
+
+.blue-button.ai.outlined {
+  border-color: var(--kale600-0961d49d);
+}
+
+.blue-button.ai.outlined:hover {
+  border-color: var(--kale700-f9fc674d);
+}
+
+.blue-button.ai.default {
+  background-color: var(--kale300-6bb63e75);
+}
+
+.blue-button.ai.default:hover {
+  background-color: var(--kale400-d4602035);
+}
+
+.blue-button.dark {
+  color: var(--grey800-e8c7a768);
+}
+
+.blue-button.dark:hover {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
+}
+
+.blue-button.dark.outlined {
+  border-color: var(--grey800-e8c7a768);
+}
+
+.blue-button.dark.default {
+  background-color: var(--grey700-5753ca4f);
+  color: var(--white-9747b35e);
+}
+
+.blue-button.dark.default:hover {
+  background-color: var(--grey600-440e5aa6);
+}
+
+.ai-button {
+  z-index: 5;
+
+  display: flex;
+  padding: 8px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  background-color: var(--kale-300);
+
+  transition: all 300ms ease;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.ai-button:hover {
+  background-color: #90bbbb;
+}
+
+.ai-button.large {
+  padding: 10px 16px;
+}
+
+.ai-button.primary {
+  color: var(--blue600-cb1b4518);
+}
+
+.ai-button.primary:hover {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
+  color: var(--blue700-4fdeafcf);
+}
+
+.ai-button.primary.outlined {
+  border-color: var(--blue600-cb1b4518);
+}
+
+.ai-button.primary.outlined:hover {
+  border-color: var(--blue700-4fdeafcf);
+}
+
+.ai-button.primary.default {
+  background-color: var(--blue600-cb1b4518);
+  color: var(--white-9747b35e);
+}
+
+.ai-button.primary.default:hover {
+  background-color: var(--blue700-4fdeafcf);
+}
+
+.ai-button.disabled {
+  z-index: 6;
+  margin: 3px;
+  background-color: var(--grey200-750b0c46);
+  color: var(--grey400-5470456b);
+  cursor: default;
+}
+
+.ai-button.danger {
+  color: var(--red600-937b9595);
+}
+
+.ai-button.danger:hover {
+  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.08);
+  color: var(--red700-eef2bc62);
+}
+
+.ai-button.danger.outlined {
+  border-color: var(--red600-937b9595);
+}
+
+.ai-button.danger.outlined:hover {
+  border-color: var(--red700-eef2bc62);
+}
+
+.ai-button.danger.default {
+  background-color: var(--red600-937b9595);
+  color: var(--white-9747b35e);
+}
+
+.ai-button.danger.default:hover {
+  background-color: var(--red700-eef2bc62);
+}
+
+.ai-button.ai {
+  color: var(--kale600-0961d49d);
+}
+
+.ai-button.ai:hover {
+  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.08);
+  color: var(--kale700-f9fc674d);
+}
+
+.ai-button.ai.outlined {
+  border-color: var(--kale600-0961d49d);
+}
+
+.ai-button.ai.outlined:hover {
+  border-color: var(--kale700-f9fc674d);
+}
+
+.ai-button.ai.default {
+  background-color: var(--kale300-6bb63e75);
+}
+
+.ai-button.ai.default:hover {
+  background-color: var(--kale400-d4602035);
+}
+
+.ai-button.dark {
+  color: var(--grey800-e8c7a768);
+}
+
+.ai-button.dark:hover {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
+}
+
+.ai-button.dark.outlined {
+  border-color: var(--grey800-e8c7a768);
+}
+
+.ai-button.dark.default {
+  background-color: var(--grey700-5753ca4f);
+  color: var(--white-9747b35e);
+}
+
+.ai-button.dark.default:hover {
+  background-color: var(--grey600-440e5aa6);
+}
+
+.red-button {
+  z-index: 5;
+
+  display: flex;
+  padding: 8px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  background-color: #cc3340;
+
+  transition: all 300ms ease;
+
+  color: hsla(0, 0.00%, 100.00%, 1.00);
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.red-button:hover {
+  background-color: #8c232c;
+}
+
+.red-button.large {
+  padding: 10px 16px;
+}
+
+.red-button.primary {
+  color: var(--blue600-cb1b4518);
+}
+
+.red-button.primary:hover {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
+  color: var(--blue700-4fdeafcf);
+}
+
+.red-button.primary.outlined {
+  border-color: var(--blue600-cb1b4518);
+}
+
+.red-button.primary.outlined:hover {
+  border-color: var(--blue700-4fdeafcf);
+}
+
+.red-button.primary.default {
+  background-color: var(--blue600-cb1b4518);
+  color: var(--white-9747b35e);
+}
+
+.red-button.primary.default:hover {
+  background-color: var(--blue700-4fdeafcf);
+}
+
+.red-button.disabled {
+  z-index: 6;
+  margin: 3px;
+  background-color: var(--grey200-750b0c46);
+  color: var(--grey400-5470456b);
+  cursor: default;
+}
+
+.red-button.danger {
+  color: var(--red600-937b9595);
+}
+
+.red-button.danger:hover {
+  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.08);
+  color: var(--red700-eef2bc62);
+}
+
+.red-button.danger.outlined {
+  border-color: var(--red600-937b9595);
+}
+
+.red-button.danger.outlined:hover {
+  border-color: var(--red700-eef2bc62);
+}
+
+.red-button.danger.default {
+  background-color: var(--red600-937b9595);
+  color: var(--white-9747b35e);
+}
+
+.red-button.danger.default:hover {
+  background-color: var(--red700-eef2bc62);
+}
+
+.red-button.ai {
+  color: var(--kale600-0961d49d);
+}
+
+.red-button.ai:hover {
+  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.08);
+  color: var(--kale700-f9fc674d);
+}
+
+.red-button.ai.outlined {
+  border-color: var(--kale600-0961d49d);
+}
+
+.red-button.ai.outlined:hover {
+  border-color: var(--kale700-f9fc674d);
+}
+
+.red-button.ai.default {
+  background-color: var(--kale300-6bb63e75);
+}
+
+.red-button.ai.default:hover {
+  background-color: var(--kale400-d4602035);
+}
+
+.red-button.dark {
+  color: var(--grey800-e8c7a768);
+}
+
+.red-button.dark:hover {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
+}
+
+.red-button.dark.outlined {
+  border-color: var(--grey800-e8c7a768);
+}
+
+.red-button.dark.default {
+  background-color: var(--grey700-5753ca4f);
+  color: var(--white-9747b35e);
+}
+
+.red-button.dark.default:hover {
+  background-color: var(--grey600-440e5aa6);
+}
+
+.dark-button {
+  z-index: 5;
+
+  display: flex;
+  padding: 8px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  background-color: #49545c;
+
+  transition: all 300ms ease;
+
+  color: hsla(0, 0.00%, 100.00%, 1.00);
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.dark-button:hover {
+  background-color: #68737d;
+}
+
+.dark-button.large {
+  padding: 10px 16px;
+}
+
+.dark-button.primary {
+  color: var(--blue600-cb1b4518);
+}
+
+.dark-button.primary:hover {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
+  color: var(--blue700-4fdeafcf);
+}
+
+.dark-button.primary.outlined {
+  border-color: var(--blue600-cb1b4518);
+}
+
+.dark-button.primary.outlined:hover {
+  border-color: var(--blue700-4fdeafcf);
+}
+
+.dark-button.primary.default {
+  background-color: var(--blue600-cb1b4518);
+  color: var(--white-9747b35e);
+}
+
+.dark-button.primary.default:hover {
+  background-color: var(--blue700-4fdeafcf);
+}
+
+.dark-button.disabled {
+  z-index: 6;
+  margin: 3px;
+  background-color: var(--grey200-750b0c46);
+  color: var(--grey400-5470456b);
+  cursor: default;
+}
+
+.dark-button.danger {
+  color: var(--red600-937b9595);
+}
+
+.dark-button.danger:hover {
+  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.08);
+  color: var(--red700-eef2bc62);
+}
+
+.dark-button.danger.outlined {
+  border-color: var(--red600-937b9595);
+}
+
+.dark-button.danger.outlined:hover {
+  border-color: var(--red700-eef2bc62);
+}
+
+.dark-button.danger.default {
+  background-color: var(--red600-937b9595);
+  color: var(--white-9747b35e);
+}
+
+.dark-button.danger.default:hover {
+  background-color: var(--red700-eef2bc62);
+}
+
+.dark-button.ai {
+  color: var(--kale600-0961d49d);
+}
+
+.dark-button.ai:hover {
+  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.08);
+  color: var(--kale700-f9fc674d);
+}
+
+.dark-button.ai.outlined {
+  border-color: var(--kale600-0961d49d);
+}
+
+.dark-button.ai.outlined:hover {
+  border-color: var(--kale700-f9fc674d);
+}
+
+.dark-button.ai.default {
+  background-color: var(--kale300-6bb63e75);
+}
+
+.dark-button.ai.default:hover {
+  background-color: var(--kale400-d4602035);
+}
+
+.dark-button.dark {
+  color: var(--grey800-e8c7a768);
+}
+
+.dark-button.dark:hover {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
+}
+
+.dark-button.dark.outlined {
+  border-color: var(--grey800-e8c7a768);
+}
+
+.dark-button.dark.default {
+  background-color: var(--grey700-5753ca4f);
+  color: var(--white-9747b35e);
+}
+
+.dark-button.dark.default:hover {
+  background-color: var(--grey600-440e5aa6);
+}
+
+.disabeld-button {
+  position: static;
+  z-index: 5;
+
+  display: flex;
+  padding: 8px 12px;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  transition: all 300ms ease;
+
+  color: #c2c8cc;
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.disabeld-button.large {
+  padding: 10px 16px;
+}
+
+.disabeld-button.primary {
+  color: var(--blue600-cb1b4518);
+}
+
+.disabeld-button.primary:hover {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.08);
+  color: var(--blue700-4fdeafcf);
+}
+
+.disabeld-button.primary.outlined {
+  border-color: var(--blue600-cb1b4518);
+}
+
+.disabeld-button.primary.outlined:hover {
+  border-color: var(--blue700-4fdeafcf);
+}
+
+.disabeld-button.primary.default {
+  background-color: var(--blue600-cb1b4518);
+  color: var(--white-9747b35e);
+}
+
+.disabeld-button.primary.default:hover {
+  background-color: var(--blue700-4fdeafcf);
+}
+
+.disabeld-button.disabled {
+  position: static;
+  margin: 3px;
+  background-color: var(--grey200-750b0c46);
+  color: var(--grey400-5470456b);
+  cursor: default;
+}
+
+.disabeld-button.danger {
+  color: var(--red600-937b9595);
+}
+
+.disabeld-button.danger:hover {
+  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.08);
+  color: var(--red700-eef2bc62);
+}
+
+.disabeld-button.danger.outlined {
+  border-color: var(--red600-937b9595);
+}
+
+.disabeld-button.danger.outlined:hover {
+  border-color: var(--red700-eef2bc62);
+}
+
+.disabeld-button.danger.default {
+  background-color: var(--red600-937b9595);
+  color: var(--white-9747b35e);
+}
+
+.disabeld-button.danger.default:hover {
+  background-color: var(--red700-eef2bc62);
+}
+
+.disabeld-button.ai {
+  color: var(--kale600-0961d49d);
+}
+
+.disabeld-button.ai:hover {
+  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.08);
+  color: var(--kale700-f9fc674d);
+}
+
+.disabeld-button.ai.outlined {
+  border-color: var(--kale600-0961d49d);
+}
+
+.disabeld-button.ai.outlined:hover {
+  border-color: var(--kale700-f9fc674d);
+}
+
+.disabeld-button.ai.default {
+  background-color: var(--kale300-6bb63e75);
+}
+
+.disabeld-button.ai.default:hover {
+  background-color: var(--kale400-d4602035);
+}
+
+.disabeld-button.dark {
+  color: var(--grey800-e8c7a768);
+}
+
+.disabeld-button.dark:hover {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.08);
+}
+
+.disabeld-button.dark.outlined {
+  border-color: var(--grey800-e8c7a768);
+}
+
+.disabeld-button.dark.default {
+  background-color: var(--grey700-5753ca4f);
+  color: var(--white-9747b35e);
+}
+
+.disabeld-button.dark.default:hover {
+  background-color: var(--grey600-440e5aa6);
+}
+
+.button-focused {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: 4px;
+}
+
+.button-focused.primary {
+  background-color: hsla(206.8421052631579, 71.03%, 41.96%, 0.35);
+}
+
+.button-focused.danger {
+  background-color: hsla(354.90196078431376, 60.00%, 50.00%, 0.35);
+}
+
+.button-focused.ai {
+  background-color: hsla(184.44444444444443, 54.00%, 19.61%, 0.35);
+}
+
+.button-focused.dark {
+  background-color: hsla(208.57142857142856, 9.17%, 44.90%, 0.35);
+}

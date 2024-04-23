@@ -1,7 +1,9 @@
-import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
-import { JobTypeDB, StatusJobs } from '@/src/types/data.types';
+// import { InterviewPlanScheduleDbType } from '@/src/components/JobInterviewPlan/types';
+import { Job } from '@/src/queries/job/types';
 
 import { JobApplicationSections } from '../JobApplicationsContext/types';
+// import { Assessment } from '@/src/queries/assessment/types';
+import useJobActions from './hooks';
 
 export type JobsData = {
   jobs: JobTypeDashboard[] | undefined;
@@ -18,31 +20,9 @@ export type InputData = Partial<
   Omit<JobTypeDashboard, 'created_at' | 'recruiter_id'>
 >;
 
-export type JobContext = {
-  jobsData: JobsData;
-  handleJobRead: () => Promise<JobTypeDashboard[] | undefined>;
-  handleJobUpdate: (
-    // eslint-disable-next-line no-unused-vars
-    jobId: string,
-    // eslint-disable-next-line no-unused-vars
-    inputData: Partial<JobTypeDashboard>,
-  ) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
-  handleUIJobUpdate: (newJob: JobTypeDashboard) => boolean;
-  // eslint-disable-next-line no-unused-vars
-  handleJobDelete: (jobId: string) => Promise<boolean>;
-  // eslint-disable-next-line no-unused-vars
-  handleJobError: (error: any) => void;
-  // eslint-disable-next-line no-unused-vars
-  handleGetJob: (jobId: string) => JobTypeDashboard;
-  initialLoad: boolean;
-};
-
-export type JobTypeDashboard = Omit<JobTypeDB, 'active_status'> & {
-  jd_json: JdJsonType;
-  active_status: StatusJobs | null;
-  count: CountJobs;
-};
-
+export type JobContext = ReturnType<typeof useJobActions>;
+export type JobTypeDashboard = Job;
 // eslint-disable-next-line no-unused-vars
 export type CountJobs = { [key in JobApplicationSections]?: number };
+
+export type InterviewPlan = any; //update or delete this line once new interview plan is implemented

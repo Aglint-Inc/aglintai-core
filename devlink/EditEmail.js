@@ -14,6 +14,7 @@ export function EditEmail({
   slotBottom,
   isSaveChangesButtonVisible = true,
   isRequestTestMailVisible = true,
+  textTipsMessage = "For dynamic content, utilize placeholders like [firstName], [lastName], [companyName], and [jobTitle].",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-769")} tag="div">
@@ -80,9 +81,7 @@ export function EditEmail({
                 className={_utils.cx(_styles, "text-grey-600", "mt-4")}
                 tag="div"
               >
-                {
-                  "For dynamic content, utilize placeholders like [firstName], [lastName], [companyName], and [jobTitle]."
-                }
+                {textTipsMessage}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

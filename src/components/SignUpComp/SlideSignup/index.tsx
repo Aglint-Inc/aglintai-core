@@ -1,21 +1,24 @@
+// code has to rewritten not understandable and not maintainable
+
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { RecruiterType } from '@/src/types/data.types';
+import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
+import { RecruiterType, RecruiterUserType } from '@/src/types/data.types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Loader from '../../Common/Loader';
 import { Details, SignUpError } from './types';
 import { handleEmail, handlePassword, stepObj } from './utils';
-import Loader from '../../Common/Loader';
 
 const SlideTwoSignUp = () => {
   const router = useRouter();
@@ -26,28 +29,29 @@ const SlideTwoSignUp = () => {
     userDetails,
     recruiter,
     setRecruiterUser,
+    recruiterUser
   } = useAuthDetails();
   const [details, setDetails] = useState<Details>({
     first_name: '',
     last_name: '',
     email: '',
-    password: '',
+    password: ''
   });
 
   const [checked, setChecked] = useState<boolean>(true);
   const [signUpError, setSignUpError] = useState<SignUpError>({
     first_name: {
       error: false,
-      msg: '',
+      msg: ''
     },
     email: {
       error: false,
-      msg: '',
+      msg: ''
     },
     password: {
       error: false,
-      msg: '',
-    },
+      msg: ''
+    }
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -59,16 +63,16 @@ const SlideTwoSignUp = () => {
         ...prevError,
         first_name: {
           error: true,
-          msg: errorMessages.nameRequired,
-        },
+          msg: errorMessages.nameRequired
+        }
       }));
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
         first_name: {
           error: false,
-          msg: '',
-        },
+          msg: ''
+        }
       }));
     }
     const email = handleEmail(details.email);
@@ -77,12 +81,12 @@ const SlideTwoSignUp = () => {
       isValid = false;
       setSignUpError((prevError) => ({
         ...prevError,
-        email: email,
+        email: email
       }));
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
-        email: email,
+        email: email
       }));
     }
     const password = handlePassword(details.password);
@@ -91,12 +95,12 @@ const SlideTwoSignUp = () => {
       isValid = false;
       setSignUpError((prevError) => ({
         ...prevError,
-        password: password,
+        password: password
       }));
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
-        password: password,
+        password: password
       }));
     }
     return isValid;
@@ -115,68 +119,31 @@ const SlideTwoSignUp = () => {
       if (!(await formValidation())) return null;
       const authdata = await supabase.auth.signUp({
         email: details.email,
-        password: details.password,
+        password: details.password
       });
       if (!authdata.error) {
-        setUserDetails(authdata.data.session);
-        const {
-          error: erroruser,
-          data: [recruiter_user],
-        } = await supabase
-          .from('recruiter_user')
-          .insert({
-            user_id: authdata.data.user.id,
-            email: details.email,
-            first_name: details.first_name,
-            last_name: details.last_name || '',
-            role: 'admin',
-          })
-          .select();
+        const res = (await axios.post('/api/signup', {
+          email: details.email,
+          user_id: authdata.data.user.id,
+          first_name: details.first_name,
+          last_name: details.last_name,
+          role: 'admin',
+          flow: flow
+        } as ApiBodyParamsSignup)) as {
+          data: { recruiter_user: RecruiterUserType; recruiter: RecruiterType };
+          status: number;
+        };
 
-        if (!erroruser) {
-          setRecruiterUser(recruiter_user);
-
-          let rec_id = uuidv4();
-          const { error } = await supabase.from('recruiter').insert({
-            email: details.email,
-            recruiter_type: flow,
-            recruiter_active: true,
-            recruiter_user_id: authdata.data.user.id,
-            id: rec_id,
+        if (res.status === 200) {
+          router.push(`?step=${stepObj.type}`, undefined, {
+            shallow: true
           });
-
-          if (!error) {
-            const { error } = await supabase.rpc('createrecuriterrelation', {
-              in_recruiter_id: rec_id,
-              in_user_id: authdata.data.user.id,
-              in_is_active: true,
-            });
-
-            if (error) {
-              throw new Error(error.message);
-            }
-
-            const { data: rec, error: recError } = await supabase
-              .from('recruiter')
-              .select()
-              .eq('id', rec_id);
-            if (recError) {
-              throw new Error(recError.message);
-            }
-
-            setRecruiter(rec[0] as RecruiterType);
-
-            await supabase
-              .from('recruiter_user')
-              .update({ recruiter_id: rec[0].id })
-              .eq('user_id', authdata.data.user.id);
-
-            router.push(`?step=${stepObj.type}`, undefined, {
-              shallow: true,
-            });
-
-            setStep(stepObj.type);
-          }
+          setRecruiterUser(res.data.recruiter_user);
+          setUserDetails(authdata.data.session);
+          setRecruiter(res.data.recruiter);
+          setStep(stepObj.type);
+        } else {
+          toast.error('Something went wrong. Please try again later.');
         }
       } else {
         if (
@@ -187,16 +154,16 @@ const SlideTwoSignUp = () => {
             ...signUpError,
             password: {
               error: false,
-              msg: 'Signup requires a valid password',
-            },
+              msg: 'Signup requires a valid password'
+            }
           });
         } else if (authdata.error.message === errorMessages.userRegistered) {
           setSignUpError({
             ...signUpError,
             email: {
               error: true,
-              msg: authdata.error.message,
-            },
+              msg: authdata.error.message
+            }
           });
         }
       }
@@ -212,8 +179,8 @@ const SlideTwoSignUp = () => {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: provider,
           options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
-          },
+            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`
+          }
         });
         if (error) {
           toast.error(error.message);
@@ -227,21 +194,30 @@ const SlideTwoSignUp = () => {
 
   useEffect(() => {
     setRouteCheker(true);
-    if (router.isReady && router.asPath == `${pageRoutes.SIGNUP}`) {
-      if (userDetails?.user && recruiter?.industry) {
-        router.push(pageRoutes.JOBS);
+    if (
+      router.isReady &&
+      router.asPath == `${pageRoutes.SIGNUP}` &&
+      recruiterUser?.role
+    ) {
+      if (recruiterUser.role === 'interviewer') {
+        router.push(pageRoutes.INTERVIEWER);
         return;
-      }
-      if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
-        router.push(`?step=${stepObj.type}`, undefined, {
-          shallow: true,
-        });
-        return;
-      } else if (userDetails?.user && !recruiter?.industry) {
-        router.push(`?step=${stepObj.detailsOne}`, undefined, {
-          shallow: true,
-        });
-        return;
+      } else {
+        if (userDetails?.user && recruiter?.industry) {
+          router.push(pageRoutes.JOBS);
+          return;
+        }
+        if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
+          router.push(`?step=${stepObj.type}`, undefined, {
+            shallow: true
+          });
+          return;
+        } else if (userDetails?.user && !recruiter?.industry) {
+          router.push(`?step=${stepObj.detailsOne}`, undefined, {
+            shallow: true
+          });
+          return;
+        }
       }
     }
 
@@ -273,30 +249,30 @@ const SlideTwoSignUp = () => {
               onClickRegisterWithGoogle={{
                 onClick: () => {
                   oauthHandler('google');
-                },
+                }
               }}
               onClickBack={{
                 onClick: () => {
                   router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
                   setStep(stepObj.type);
-                },
+                }
               }}
               onClickCheck={{
                 onClick: () => {
                   setChecked(!checked);
-                },
+                }
               }}
               onClickSignUp={{
                 onClick: () => {
                   handelSignUp();
-                },
+                }
               }}
               isTermsChecked={checked}
               onClickSignIn={{
                 onClick: () => {
                   router.push(pageRoutes.LOGIN);
                   setStep(stepObj.signin);
-                },
+                }
               }}
               slotSignUpForm={
                 <Stack spacing={'20px'} p={'4px'}>
@@ -306,7 +282,7 @@ const SlideTwoSignUp = () => {
                       required
                       fullWidth
                       id='name'
-                      label='First Name'
+                      placeholder='First Name'
                       value={details.first_name}
                       onChange={(e) => {
                         setDetails({ ...details, first_name: e.target.value });
@@ -320,15 +296,15 @@ const SlideTwoSignUp = () => {
                       inputProps={{
                         autoCapitalize: 'true',
                         style: {
-                          fontSize: '14px',
-                        },
+                          fontSize: '14px'
+                        }
                       }}
                     />
                     <TextField
                       margin='none'
                       fullWidth
                       id='name'
-                      label='Last Name'
+                      placeholder='Last Name'
                       value={details.last_name}
                       onChange={(e) => {
                         setDetails({ ...details, last_name: e.target.value });
@@ -336,8 +312,8 @@ const SlideTwoSignUp = () => {
                       inputProps={{
                         autoCapitalize: 'true',
                         style: {
-                          fontSize: '14px',
-                        },
+                          fontSize: '14px'
+                        }
                       }}
                     />
                   </Stack>
@@ -346,7 +322,7 @@ const SlideTwoSignUp = () => {
                     required
                     fullWidth
                     id='email'
-                    label='Work Email'
+                    placeholder='Work Email'
                     name='email'
                     autoComplete='email'
                     value={details.email}
@@ -357,7 +333,7 @@ const SlideTwoSignUp = () => {
                       const email = handleEmail(details.email);
                       setSignUpError((prevError) => ({
                         ...prevError,
-                        email: email,
+                        email: email
                       }));
                     }}
                     error={signUpError.email.error}
@@ -367,8 +343,8 @@ const SlideTwoSignUp = () => {
                     inputProps={{
                       autoCapitalize: 'true',
                       style: {
-                        fontSize: '14px',
-                      },
+                        fontSize: '14px'
+                      }
                     }}
                   />
                   <TextField
@@ -377,7 +353,7 @@ const SlideTwoSignUp = () => {
                     fullWidth
                     name='password'
                     type={showPassword ? 'text' : 'password'}
-                    label={'Create Password'}
+                    placeholder={'Create Password'}
                     autoComplete='current-password'
                     id='password'
                     error={
@@ -419,7 +395,7 @@ const SlideTwoSignUp = () => {
                             </svg>
                           </IconButton>
                         </InputAdornment>
-                      ),
+                      )
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
@@ -430,7 +406,7 @@ const SlideTwoSignUp = () => {
                       const password = handlePassword(details.password);
                       setSignUpError((prevError) => ({
                         ...prevError,
-                        password: password,
+                        password: password
                       }));
                     }}
                     value={details.password}
@@ -440,8 +416,8 @@ const SlideTwoSignUp = () => {
                     inputProps={{
                       autoCapitalize: 'true',
                       style: {
-                        fontSize: '14px',
-                      },
+                        fontSize: '14px'
+                      }
                     }}
                   />
                 </Stack>

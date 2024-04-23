@@ -1,0 +1,107 @@
+.candidate_card_wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.candidatecard {
+  display: flex;
+  padding: 12px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.candidatecard.candi {
+  padding: 0px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  background-color: transparent;
+}
+
+.slot_candidate_image {
+  overflow: hidden;
+  width: 60px;
+  height: 65px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.slot_candidate_image.candi {
+  width: 24px;
+  height: 24px;
+}
+
+.schedule_details-copy {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.share_links {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}
+
+.link-copy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  color: #337fbd;
+
+  cursor: pointer;
+}
+
+.link-copy.red {
+  color: #d93f4c;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}

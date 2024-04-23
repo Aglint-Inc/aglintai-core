@@ -1,16 +1,11 @@
-import React from 'react';
-
 import CandDbProvider from '@/src/components/CandidateDatabase/Database/CandDbProvider';
 import CandDatabase from '@/src/components/CandidateDatabase/Database/Database';
 import Seo from '@/src/components/Common/Seo';
 
-const candidates = () => {
+const Candidates = () => {
   return (
     <>
-      <Seo
-        title='Aglint | Candidate Search'
-        description='Find Your Ideal Candidate with AI-Powered Matching!'
-      />
+      <Seo title={`Candidate Search`} description='AI for People Products' />
       <CandDbProvider>
         <CandDatabase />
       </CandDbProvider>
@@ -18,4 +13,4 @@ const candidates = () => {
   );
 };
 
-export default candidates;
+export default Candidates;

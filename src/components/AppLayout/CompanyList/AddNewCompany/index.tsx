@@ -2,14 +2,19 @@ import {
   Autocomplete,
   CircularProgress,
   Stack,
-  TextField,
+  TextField
 } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { AddCompany, AddCompanyDetails, AddCompanyWebsite } from '@/devlink2';
+import {
+  AddCompany,
+  AddCompanyDetails,
+  AddCompanyWebsite,
+  BackButton
+} from '@/devlink2';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ImageUpload from '@/src/components/Common/ImageUpload';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
@@ -23,7 +28,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { RecruiterType } from '@/src/types/data.types';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 interface Error {
@@ -46,13 +51,13 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
 
   const [details, setDetails] = useState({} as any);
   const [searchStatus, setSearchStatus] = useState<'' | 'success' | 'failed'>(
-    '',
+    ''
   );
   const [error, setError] = useState<Error>({
     website: {
       error: false,
-      msg: '',
-    },
+      msg: ''
+    }
   });
   const [loading, setLoading] = useState(false);
   const [logo, setLogo] = useState(null);
@@ -62,33 +67,33 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
       isValid = false;
       error.website = {
         error: true,
-        msg: 'Website is required field',
+        msg: 'Website is required field'
       };
       setError({
-        ...error,
+        ...error
       });
     } else {
       await axios
         .post('/api/dns/lookup', {
-          url: details?.company_website,
+          url: details?.company_website
         })
         .then((res) => {
           if (res.status == 200 && res.data) {
             error.website = {
               error: false,
-              msg: '',
+              msg: ''
             };
             setError({
-              ...error,
+              ...error
             });
           } else {
             isValid = false;
             error.website = {
               error: true,
-              msg: 'Website is not valid url',
+              msg: 'Website is not valid url'
             };
             setError({
-              ...error,
+              ...error
             });
           }
         });
@@ -105,8 +110,8 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
         const { data: companyDetails } = await axios.post(
           `/api/fetchCompanyDetails`,
           {
-            domain_name: url,
-          },
+            domain_name: url
+          }
         );
         setLogo(companyDetails.logo_url);
         const company_size =
@@ -147,8 +152,8 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                 country: companyDetails?.country || '',
                 zipcode: companyDetails?.postal_code,
                 full_address: companyDetails?.raw_address,
-                is_headquarter: true,
-              },
+                is_headquarter: true
+              }
             ] || [],
           company_overview: companyDetails?.short_description || '',
           // technology_score: companyDetails.technologies || [],
@@ -158,12 +163,12 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
             youtube: companyDetails?.youtube_url || '',
             facebook: companyDetails?.facebook_url || '',
             linkedin: companyDetails?.linkedin_url || '',
-            instagram: companyDetails?.instagram_url || '',
+            instagram: companyDetails?.instagram_url || ''
           },
           technology_score: companyDetails?.keywords.map(capitalize) || [],
           departments: Object.keys(
-            companyDetails?.departmental_head_count || {},
-          ).map((dep) => capitalize(dep.split('_').join(' '))),
+            companyDetails?.departmental_head_count || {}
+          ).map((dep) => capitalize(dep.split('_').join(' ')))
         }));
         setLoading(false);
         setSearchStatus('success');
@@ -297,13 +302,13 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                           required
                           fullWidth
                           id='name'
-                          label='Company Website'
+                          variant='standard'
                           placeholder='https://companydomain.com'
                           value={details?.company_website}
                           onChange={(e) => {
                             setDetails({
                               ...details,
-                              company_website: e.target.value,
+                              company_website: e.target.value
                             });
                           }}
                           error={error.website.error}
@@ -313,8 +318,8 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                           inputProps={{
                             autoCapitalize: 'true',
                             style: {
-                              fontSize: '14px',
-                            },
+                              fontSize: '14px'
+                            }
                           }}
                         />
                       </Stack>
@@ -379,6 +384,9 @@ function AddNewCompany({ setOpenSideBar, getCompanies }) {
                           logo={logo}
                           setOpenSideBar={setOpenSideBar}
                           getCompanies={getCompanies}
+                          onClickBack={() => {
+                            setSearchStatus('');
+                          }}
                         />
                       </>
                     )
@@ -402,6 +410,7 @@ function CompanyDetails({
   logo,
   setOpenSideBar,
   getCompanies,
+  onClickBack
 }) {
   const { setRecruiter, recruiterUser, userDetails, userCountry } =
     useAuthDetails();
@@ -411,16 +420,16 @@ function CompanyDetails({
   const [error, setError] = useState<Error1>({
     phone: {
       error: false,
-      msg: '',
+      msg: ''
     },
     logo: {
       error: false,
-      msg: '',
+      msg: ''
     },
     name: {
       error: false,
-      msg: '',
-    },
+      msg: ''
+    }
   });
 
   useEffect(() => {
@@ -431,12 +440,12 @@ function CompanyDetails({
     if (!phone?.trim() || countRept(phone, /\d/g) != countRept(format, /\./g)) {
       setError({
         ...error,
-        phone: { error: true, msg: '' },
+        phone: { error: true, msg: '' }
       });
     } else {
       setError({
         ...error,
-        phone: { ...error.phone, error: false },
+        phone: { ...error.phone, error: false }
       });
     }
   };
@@ -454,16 +463,16 @@ function CompanyDetails({
         ...error,
         name: {
           error: true,
-          msg: 'Company name is required',
-        },
+          msg: 'Company name is required'
+        }
       });
     } else {
       setError({
         ...error,
         name: {
           error: false,
-          msg: '',
-        },
+          msg: ''
+        }
       });
     }
     return isValid;
@@ -480,14 +489,14 @@ function CompanyDetails({
         name: details.name,
         industry: details.industry,
         recruiter_user_id: recruiterUser.user_id,
-        id: rec_id,
+        id: rec_id
       });
       if (!error) {
         // update_companies_status();
         await supabase.rpc('createrecuriterrelation', {
           in_recruiter_id: rec_id,
           in_user_id: userDetails.user.id,
-          in_is_active: true,
+          in_is_active: true
         });
         const { data: rec, error: recError } = await supabase
           .from('recruiter')
@@ -549,7 +558,7 @@ function CompanyDetails({
           if (value) {
             setDetails((pre) => ({
               ...pre,
-              employee_size: value,
+              employee_size: value
             }));
           }
         }}
@@ -560,7 +569,7 @@ function CompanyDetails({
             rest={{ ...params }}
             fullWidth
             InputProps={{
-              ...params.InputProps,
+              ...params.InputProps
             }}
             placeholder='Employee Size'
             label='Employee Size'
@@ -568,7 +577,7 @@ function CompanyDetails({
             onChange={(event) => {
               setDetails((pre: any) => ({
                 ...pre,
-                employee_size: event.target.value,
+                employee_size: event.target.value
               }));
             }}
           />
@@ -601,8 +610,15 @@ function CompanyDetails({
         mt={'50px !important'}
         direction={'row'}
         alignItems={'center'}
-        justifyContent={'right'}
+        justifyContent={'space-between'}
       >
+        <BackButton
+          onclickProps={{
+            onClick: () => {
+              onClickBack();
+            }
+          }}
+        />
         <AUIButton disabled={false} onClick={submitHandler}>
           Add Company
         </AUIButton>

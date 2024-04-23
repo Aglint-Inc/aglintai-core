@@ -9,6 +9,7 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +22,7 @@ import {
   SupportTicketType,
 } from '@/src/types/data.types';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -179,10 +180,10 @@ function Support() {
           variant='rounded'
           src={
             jobDetails?.companyDetails?.logo ||
-            getCompanyIcon(jobDetails?.companyDetails.name) ||
+            getCompanyIcon(jobDetails?.companyDetails?.name) ||
             ''
           }
-          alt={capitalize(jobDetails?.companyDetails.name || '')}
+          alt={capitalize(jobDetails?.companyDetails?.name || '')}
           sx={{
             width: '100%',
             height: '100%',
@@ -197,87 +198,13 @@ export default Support;
 
 const getApplicationDetails = async (id: string) => {
   try {
-    const applicationData = await supabase
-      .from('applications')
-      .select()
-      .eq('id', id)
-      .single()
-      .then(({ error, data }) => {
-        if (error) throw new Error(error.message);
-        return data;
-      })
-      // @ts-ignore
-      .catch(() => {
-        throw new Error('Application data not found');
-      });
-    const candidate = await supabase
-      .from('candidates')
-      .select()
-      .eq('id', applicationData.candidate_id)
-      .single()
-      .then(({ data, error }) => {
-        if (error) throw new Error(error.message);
-        if (data) throw new Error('Candidate data not found');
-        return data;
-      });
-
-    const tempData = !candidate
-      ? { ...applicationData, ...candidate }
-      : applicationData;
-    // @ts-ignore
-    tempData.jobDetails = await getJobTitle(tempData.job_id);
-    // @ts-ignore
-    if (tempData.jobDetails?.recruiter_id) {
-      // @ts-ignore
-      tempData.companyDetails = await getCompanyDetails(
-        // @ts-ignore
-        tempData.jobDetails.recruiter_id,
-      );
-    }
-    return tempData as unknown as JobApplicationType &
-      CandidateType & {
-        jobDetails: {
-          company: string;
-          job_title: string;
-          recruiter_id: string;
-        };
-        companyDetails: {
-          name: string;
-          logo: string;
-        };
-      };
-  } catch (e) {
-    throw new Error(e.message);
+    const { data } = await axios.post('/api/support/getApplicationData', {
+      application_id: id,
+    });
+    return data.data;
+  } catch (e: any) {
+    toast.error(e);
   }
-};
-
-const getCompanyDetails = async (id: string) => {
-  const { data, error } = await supabase
-    .from('recruiter')
-    .select('name,logo')
-    .eq('id', id);
-  if (!error && data.length) {
-    return data[0] as {
-      name: string;
-      logo: string;
-    };
-  }
-  return null;
-};
-
-const getJobTitle = async (jobId: string) => {
-  const { data, error } = await supabase
-    .from('public_jobs')
-    .select(' job_title, company, recruiter_id ')
-    .eq('id', jobId);
-  if (!error && data.length) {
-    return data[0] as {
-      company: string;
-      job_title: string;
-      recruiter_id: string;
-    };
-  }
-  return null;
 };
 
 const AddSupportTicket = ({

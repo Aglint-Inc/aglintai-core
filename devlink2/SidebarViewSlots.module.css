@@ -1,0 +1,135 @@
+.panel_slidebar {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar_contents {
+  position: relative;
+}
+
+.sidebar_contents.height_100 {
+  height: 100%;
+}
+
+.sidebar_top {
+  position: sticky;
+  top: 0px;
+
+  display: flex;
+  padding: 16px 20px;
+  justify-content: space-between;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-bottom: 1px solid #e9ebed;
+}
+
+.sidebar_close {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}
+
+.sidebar_body {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+}
+
+.sidebar_body.height_100 {
+  height: 100%;
+}
+
+.confirmed_slots_wrap {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.slot_message_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon_text_flex {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
+.text-blue-500 {
+  color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
+}
+
+.slot_list {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.slot_list.no_padding_border {
+  padding: 10px 0px 0px;
+  border-style: none;
+}
+
+.embed_css {
+  position: absolute;
+  z-index: -100;
+  pointer-events: none;
+}

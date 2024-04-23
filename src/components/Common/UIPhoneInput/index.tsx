@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
+import 'react-phone-input-2/lib/style.css';
+
 import Icon from '@components/Common/Icons/Icon';
 import { palette } from '@context/Theme/Theme';
 import { Stack } from '@mui/material';
 // import countries from '@utils/CountryUtils';
 import React from 'react';
 import PhoneInput, { CountryData } from 'react-phone-input-2';
-
-import 'react-phone-input-2/lib/style.css';
 
 import UITypography from '../UITypography';
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
     value: string,
     data: CountryData | {},
     event: React.ChangeEvent<HTMLInputElement>,
-    formattedValue: string,
+    formattedValue: string
   ): void;
   error?: boolean;
   label?: string;
@@ -29,7 +29,7 @@ type Props = {
   onFocus?: () => void;
   onBlur?: (
     event: React.FocusEvent<HTMLInputElement>,
-    data: CountryData | {},
+    data: CountryData | {}
   ) => void;
   defaultCountry?: string;
   setDefaultCountry?: () => void;
@@ -50,7 +50,7 @@ const UIPhoneInput = ({
   onFocus = () => {},
   onBlur = () => {},
   defaultCountry,
-  setDefaultCountry = () => {},
+  setDefaultCountry = () => {}
 }: Props) => {
   let labelColor = palette.grey[800];
   if (disabled) {
@@ -85,7 +85,7 @@ const UIPhoneInput = ({
               data,
               event,
               // @ts-ignore
-              formattedValue.substring(0, data.format.length),
+              formattedValue.substring(0, data.format.length)
             );
           }
         }}
@@ -102,10 +102,10 @@ const UIPhoneInput = ({
           sx: {
             width: '100%',
             '& .form-control': {
-              width: '100%',
-            },
+              width: '100%'
+            }
           },
-          value: value,
+          value: value
         }}
       />
       {error && (
@@ -131,28 +131,28 @@ const UIPhoneInput = ({
 
 export const customPhoneStyle = {
   '& .react-tel-input .flag-dropdown': {
-    borderColor: palette.grey[300],
+    borderColor: palette.grey[300]
   },
   '& .country-list': {
     width: 'fit-content !important',
-    minWidth: '200px',
+    minWidth: '200px'
     // position: 'fixed !important',
   },
   '& .react-tel-input .form-control.invalid-number , & .react-tel-input .flag-dropdown.invalid-number':
     {
       backgroundColor: '#ffffff',
-      borderColor: palette.red[400],
+      borderColor: palette.red[400]
     },
   '& .react-tel-input .form-control.invalid-number:focus': {
     backgroundColor: '#ffffff',
     borderColor: palette.red[400],
     outline: '3px solid',
-    outlineColor: palette.red[300],
+    outlineColor: palette.red[300]
   },
   '& .react-tel-input .form-control:focus , & .react-tel-input .flag-dropdown:focus':
     {
       outline: '3px solid',
-      outlineColor: palette.blue[300],
+      outlineColor: palette.blue[300]
       // borderColor: palette.blue[400],
     },
   '& .react-tel-input .form-control': {
@@ -160,11 +160,11 @@ export const customPhoneStyle = {
     height: 'unset',
     lineHeight: 0,
     fontSize: '14px',
-    borderColor: palette.grey[300],
+    borderColor: palette.grey[300]
   },
   '& input': {
-    padding: '10px 10px',
-  },
+    padding: '10px 10px'
+  }
 };
 
 export default UIPhoneInput;

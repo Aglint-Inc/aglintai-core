@@ -1,0 +1,29 @@
+.widget_time_group {
+  display: flex;
+  width: 100%;
+  margin-bottom: 16px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  background-color: white;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 14px;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.time_slot_layoyt {
+  display: grid;
+  width: 100%;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+}

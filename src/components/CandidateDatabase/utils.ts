@@ -2,13 +2,13 @@ import axios from 'axios';
 import { isArray } from 'lodash';
 
 import { JsonResume } from '@/src/types/resume_json.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
-import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 import {
   CandidateSearchRes,
   CandidateSearchState,
 } from '../../context/CandidateSearchProvider/CandidateSearchProvider';
+import { supabaseWrap } from '../JobsDashboard/JobPostCreateUpdate/utils';
 
 export const getRelevantCndidates = async (
   newQueryJson: CandidateSearchState['queryJson'],
@@ -105,7 +105,8 @@ export const getRelevantCndidates = async (
       ts_query: getFtsearchQry(modifyQryJson.jobTitles),
       filter_companies: getFilterSearchQry(modifyQryJson.excludedCompanies),
     }),
-  ) as Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[];
+  ) as unknown as Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[];
+  //TODO: supabaseWrap type fix needed
 
   const canididatesDto: CandidateSearchRes[] =
     await joinSearchResultWithBookMarkAndJobApplied(cands, bookmarked_cands);
@@ -138,11 +139,11 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   candidates: Omit<CandidateSearchRes, 'is_bookmarked' | 'is_checked'>[],
   bookmarkedCands: string[],
 ) => {
-  const candjobs = (await supabaseWrap(
+  const candjobs = await supabaseWrap(
     await supabase.rpc('getjobapplicationcountforcandidates2', {
       candidate_ids: candidates.map((c) => c.candidate_id),
     }),
-  )) as CandidateJobINfo[];
+  );
   let mp = new Map();
 
   candjobs.forEach((c) => {
@@ -193,12 +194,6 @@ export const joinSearchResultWithBookMarkAndJobApplied = async (
   return canididatesDto;
 };
 
-type CandidateJobINfo = {
-  candidate_id: string;
-  job_ids: string[];
-  job_titles: string[];
-};
-
 export const dialogFormContent = {
   jobTitles: {
     placeholder: 'Start typing the job title or choose from the list',
@@ -231,5 +226,13 @@ export const dialogFormContent = {
   prefferedCompanies: {
     placeholder: 'Start typing the skills or choose from the list',
     emptyMsg: 'No preferred companies',
+  },
+  freeKeywords: {
+    placeholder: 'Enter free keyword',
+    emptyMsg: 'No preferred keywords',
+  },
+  softConflictsKeywords: {
+    placeholder: 'Enter soft conflicts keyword',
+    emptyMsg: 'No preferred keywords',
   },
 };

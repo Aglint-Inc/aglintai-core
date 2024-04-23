@@ -2,7 +2,6 @@
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
@@ -32,12 +31,12 @@ import {
   RecruiterType,
 } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import Icon from '../Common/Icons/Icon';
 import ThankYou from './ThankYouLottie';
 import UploadDB from './UploadDB';
-import Icon from '../Common/Icons/Icon';
 
 interface JobsListProps {
   post: JobTypeDB;
@@ -60,7 +59,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
   const [thank, setThank] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [application, setApplication] = useState<JobApplcationDB>();
-  const [candidate, setCandidate] = useState<CandidateType>();
+  const [candidate, setCandidate] = useState<CandidateType[]>([]);
   const editor = useEditor({
     editable: false,
     content: post?.description,
@@ -123,7 +122,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
             }}
             slotLottie={<ThankYou />}
             textTitle={'Application submitted successfully.'}
-            textDescription={`Thank you ${candidate?.first_name} for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
+            textDescription={`Thank you ${candidate[0]?.first_name} for taking the time to apply for this role. We will be in touch with you soon. If you have any questions, please`}
             slotCompanyLogo={
               <Stack alignItems={'center'} spacing={1} width={'100%'}>
                 <Avatar
@@ -142,7 +141,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                     // background: palette.grey[100],
                   }}
                 >
-                  <Icon variant='CompanyOutlinedBig' />
+                  <Icon
+                    variant='CompanyOutlinedBig'
+                    height='100%'
+                    width='100%'
+                  />
                 </Avatar>
                 <Typography variant='h3'>
                   {(recruiter as { name: string })?.name}
@@ -226,7 +229,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 width: '78px',
               }}
             >
-              <Icon variant='CompanyOutlinedBig' />
+              <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
             </Avatar>
           }
           onClickApplyNow={{
@@ -277,10 +280,10 @@ const JobPostPublic: React.FC<JobsListProps> = ({
                 <CompanyListingLinks
                   key={ind}
                   slotIcon={
-                    <Image
+                    <Avatar
+                      variant='rounded'
+                      sx={{ width: '16px', height: '16px' }}
                       src={`${process.env.NEXT_PUBLIC_HOST_NAME}/images/logo/${soc[0]}.svg`}
-                      height={16}
-                      width={16}
                       alt=''
                     />
                   }

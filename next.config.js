@@ -1,7 +1,11 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME,
+  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME, //dont comment this
   eslint: {
     dirs: ['src'],
   },
@@ -13,12 +17,6 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
-      // {
-      //   source: '/login',
-      //   destination: '/signup?step=signin',
-      //   basePath: false,
-      //   permanent: true,
-      // },
     ];
   },
   images: {
@@ -33,4 +31,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

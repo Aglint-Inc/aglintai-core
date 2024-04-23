@@ -12,12 +12,22 @@
   background-color: white;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .res-profile-top-block {
   display: flex;
   padding: 16px;
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.div-block-916 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .rp-candidate-block {
@@ -298,6 +308,10 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .cp-location-block {
   display: flex;
   align-items: center;
@@ -365,7 +379,7 @@
 
 .cp-overview-block {
   display: flex;
-  padding: 10px 16px 16px;
+  padding: 10px 16px;
   flex-direction: column;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
@@ -377,9 +391,102 @@
   border-radius: 10px;
 }
 
+.div-block-917 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .cp-overview-header {
   display: flex;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
 }

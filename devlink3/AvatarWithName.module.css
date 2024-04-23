@@ -1,0 +1,64 @@
+.avatarwithname {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+
+.div-block-757 {
+  position: relative;
+}
+
+.slot_useravatr {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  justify-content: space-between;
+
+  border-radius: 100px;
+}
+
+.slot_useravatr.small {
+  width: 24px;
+  height: 24px;
+  background-color: #f8f9f9;
+}
+
+.div-block-758 {
+  position: absolute;
+  left: auto;
+  top: auto;
+  right: -5px;
+  bottom: -5px;
+  z-index: 2;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}

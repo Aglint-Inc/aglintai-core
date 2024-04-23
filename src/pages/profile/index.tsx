@@ -6,15 +6,15 @@ const ProfilePage = () => {
   return (
     <>
       <Seo
-        title='Aglint | Profile'
-        description='AI Powered Talent Development Platform.'
+        title={'Profile'}
+        description='Explore exciting career opportunities and find your perfect job match on our job listing page'
       />
       <ProfileDashboard />
     </>
   );
 };
 
-// JobPage.getProvider = function getProvider(page) {
+// JobPage.privateProvider = function privateProvider(page) {
 //   return <JobApplicationProvider>{page}</JobApplicationProvider>;
 // };
 

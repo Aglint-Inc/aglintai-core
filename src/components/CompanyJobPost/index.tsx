@@ -37,12 +37,12 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               '& .MuiAvatar-img ': {
                 objectFit: 'contain',
               },
-              height: '150px',
-              width: '150px',
+              height: '100%',
+              width: '100%',
               background: palette.grey[100],
             }}
           >
-            <Icon variant='CompanyOutlinedBig' />
+            <Icon variant='CompanyOutlinedBig' height='100%' width='100%' />
           </Avatar>
         }
         textCompanyName={recruiter.name}
@@ -80,6 +80,11 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 key={ind}
                 slotIcon={
                   <Image
+                    style={{
+                      background: soc[0] == 'twitter' ? '#fff' : '',
+                      borderRadius: '4px',
+                      padding: soc[0] == 'twitter' ? '2px ' : '',
+                    }}
                     src={`/images/logo/${soc[0]}.svg`}
                     height={16}
                     width={16}
@@ -106,10 +111,9 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 }
                 textCountry={loc.country}
                 textHeadquater={'asda'}
-                textJobPostCount={`${
-                  jobs?.filter((job) => job?.location?.includes(loc.city))
-                    .length
-                } Jobs`}
+                textJobPostCount={`${jobs?.filter(
+                  (job) => job?.location?.includes(loc.city),
+                ).length} Jobs`}
               />
             );
           },

@@ -1,0 +1,81 @@
+/* eslint-disable no-unused-vars */
+import { Popover, Stack } from '@mui/material';
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+
+import { ListPop } from '@/devlink3';
+
+function SelectDueDate({
+  selectedDueDate,
+  setSelectedDueDate,
+  isOptionList = true,
+}: {
+  selectedDueDate: string;
+  setSelectedDueDate: (x: string) => void;
+  isOptionList?: boolean;
+}) {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+    <>
+      <Stack onClick={handleClick}>
+        {selectedDueDate ? (
+          <>{`${dayjs(selectedDueDate).format('DD MMM YYYY')}`}</>
+        ) : (
+          <>Select Date</>
+        )}
+      </Stack>
+      <Popover
+        id={id}
+        open={open && isOptionList}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        // sx={{
+        //   '& .MuiPopover-paper': {
+        //     border: 'none',
+        //   },
+        // }}
+      >
+        <Stack height={350}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateCalendar
+              disablePast
+              value={dayjs(selectedDueDate)}
+              onChange={(e) => {
+                setSelectedDueDate(String(new Date(e)));
+              }}
+              shouldDisableDate={(date) => {
+                const formattedDate = dayjs(date).format('DD MMM YYYY');
+                const dayOfWeek = dayjs(date).day(); // 0 for Sunday, 6 for Saturday
+                return dayOfWeek === 0 || dayOfWeek === 6; // Disable if Sunday or Saturday
+              }}
+            />
+          </LocalizationProvider>
+        </Stack>
+      </Popover>
+    </>
+  );
+}
+
+export default SelectDueDate;

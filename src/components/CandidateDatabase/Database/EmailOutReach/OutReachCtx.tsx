@@ -7,9 +7,8 @@ import {
   supabaseWrap,
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { OutreachEmailDbType } from '@/src/types/data.types';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { outReachTemplates, TemplateType } from './seedTemplates';
@@ -219,7 +218,8 @@ const OutReachCtxProvider = ({
             .from('recruiter_user')
             .select('email_outreach_templates')
             .eq('user_id', recruiterUser.user_id),
-        ) as { email_outreach_templates: TemplateType[] }[];
+        ) as unknown as { email_outreach_templates: TemplateType[] }[];
+        //TODO: supabaseWrap type fix needed
         let temps = emailTemps?.email_outreach_templates
           ? emailTemps.email_outreach_templates
           : outReachTemplates;
@@ -269,7 +269,8 @@ const OutReachCtxProvider = ({
           .from('recruiter_user')
           .select('email_outreach_templates')
           .eq('user_id', recruiterUser.user_id),
-      ) as { email_outreach_templates: TemplateType[] }[];
+      ) as unknown as { email_outreach_templates: TemplateType[] }[];
+      //TODO: supabaseWrap type fix needed
 
       let temps = emailTemps?.email_outreach_templates
         ? emailTemps.email_outreach_templates
@@ -324,7 +325,7 @@ const OutReachCtxProvider = ({
             .select()
             .eq('candidate_id', selcandidate?.candidateId)
             .eq('recruiter_user_id', recruiterUser.user_id),
-        ) as OutreachEmailDbType[];
+        );
 
         let newEMails: OutreachedEmail[] = outreachedMails
           .map((e: any) => ({
@@ -429,7 +430,7 @@ const OutReachCtxProvider = ({
           email: email,
         })
         .select(),
-    ) as OutreachEmailDbType[];
+    );
 
     dispatch({
       type: 'UpdateMultiStates',

@@ -1,24 +1,25 @@
 /* eslint-disable no-console */
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { DisconnectInterviewModal, NewInterviewScreen } from '@/devlink';
+import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
-import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
+import MuiAvatar from '../../Common/MuiAvatar';
+import MuiPopup from '../../Common/MuiPopup';
+import SidePanelDrawer from '../../Common/SidePanelDrawer';
+import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
 import CandidatePanel from './CandidatePanel';
 import VideoCandidatePanel from './CandidatePanel/VideoCandidatePanel';
 import InterviewerPanel from './InterviewerPanel';
 import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
-import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
-import MuiAvatar from '../../Common/MuiAvatar';
-import MuiPopup from '../../Common/MuiPopup';
-import SidePanelDrawer from '../../Common/SidePanelDrawer';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
-
+  const router = useRouter()
   const {
     conversations,
     getFeedback,
@@ -31,7 +32,7 @@ function Interview_home() {
     disconnecting,
     videoAssessment,
   } = useInterviewContext();
-  const { candidateDetails, jobDetails } = useInterviewDetailsContext();
+  const { assessmentDetails } = useCandidateAssessment()
 
   return (
     <Stack>
@@ -43,8 +44,8 @@ function Interview_home() {
           <Transcript
             conversations={conversations}
             setOpenPanelDrawer={setOpenPanelDrawer}
-            interviewerImage={candidateDetails.profile_image}
-            candidateImage={candidateDetails.profile_image}
+            interviewerImage={'/'}
+            candidateImage={'/'}
           />
         </Stack>
       </SidePanelDrawer>
@@ -85,7 +86,7 @@ function Interview_home() {
           <MuiAvatar
             height={'40px'}
             width={'40px'}
-            src={jobDetails?.logo}
+            src={assessmentDetails?.public_jobs?.logo}
             fontSize={'20px'}
             variant={'rounded'}
           />
@@ -104,7 +105,7 @@ function Interview_home() {
         onClickSupport={{
           onClick: () => {
             window.open(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${candidateDetails.application_id}`,
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${router.query?.application_id}`,
             );
           },
         }}

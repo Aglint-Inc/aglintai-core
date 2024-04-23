@@ -1,0 +1,51 @@
+.button_red_text {
+  display: flex;
+  padding: 6px 16px;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: white;
+
+  box-shadow: 0 2px 6px 0 hsla(0, 0.00%, 0.00%, 0.17);
+
+  transition: all 200ms ease-in-out;
+
+  color: #d93f4c;
+
+  cursor: pointer;
+}
+
+.button_red_text:hover {
+  color: hsla(354.93506493506493, 55.17%, 49.84%, 1.00);
+}
+
+.embed_flex {
+  display: flex;
+}
+
+.embed_flex.rotate_180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.with_bg {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.with_bg.rotate-180 {
+  transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.embed_flex.relative_3 {
+  position: relative;
+  z-index: 3;
+}
+
+.embed_flex.is_cursor {
+  cursor: pointer;
+}

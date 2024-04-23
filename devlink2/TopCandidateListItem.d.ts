@@ -13,4 +13,6 @@ declare function TopCandidateListItem(props: {
   slotInsights?: Types.Devlink.Slot;
   slotProfileImage?: Types.Devlink.Slot;
   slotAnalysis?: Types.Devlink.Slot;
+  isDragVisible?: Types.Visibility.VisibilityConditions;
+  onClickDrag?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

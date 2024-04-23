@@ -1,0 +1,7 @@
+.inline_empty_state {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 4px;
+  background-color: #f7f9fb;
+  text-align: center;
+}

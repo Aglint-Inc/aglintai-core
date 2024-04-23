@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 import UITypography from '@/src/components/Common/UITypography';
 
-import { FormErrorParams } from './JobForm';
 import { JobFormState, useJobForm } from '../JobPostFormProvider';
+import { FormErrorParams } from './JobForm';
 
 const SectionWarning = ({
   warnings,

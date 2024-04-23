@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { Stack, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import { createClient } from '@supabase/supabase-js';
 import { errorMessages } from '@utils/errorMessages';
-import { supabase } from '@utils/supabaseClient';
+import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
 import { PwResetConfirm, PwResetForm } from '@/devlink2';
@@ -14,14 +15,19 @@ import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
 export default function ForgotPasswordComponent() {
   const [loading, setLoading] = useState(false);
   const [changetext, setchangetext] = useState('Send');
   const [error, setError] = useState({
     valid: {
       error: false,
-      msg: '',
-    },
+      msg: ''
+    }
   });
   let email = useRef(null);
   const handleEmail = () => {
@@ -33,23 +39,23 @@ export default function ForgotPasswordComponent() {
         ...error,
         valid: {
           error: true,
-          msg: errorMessages.emailRequired,
-        },
+          msg: errorMessages.emailRequired
+        }
       });
     } else if (!emailRegex.test(emailRef)) {
       setError({
         ...error,
         valid: {
           error: true,
-          msg: errorMessages.emailRequired,
-        },
+          msg: errorMessages.emailRequired
+        }
       });
     } else {
       setError({
         ...error,
         valid: {
-          error: false,
-        },
+          error: false
+        }
       });
     }
   };
@@ -63,18 +69,20 @@ export default function ForgotPasswordComponent() {
       const { error } = await supabase.auth.resetPasswordForEmail(
         currentEmail,
         {
-          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
-        },
+          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`
+        }
       );
       if (!error) {
         setLoading(false);
         tempEmail = email.current?.value;
         setchangetext('Sent');
+        posthog.identify(tempEmail, { Email: tempEmail });
+        posthog.capture('Send reset linked Clicked');
       } else {
         setLoading(false);
       }
     } else {
-      toast.error("Please Enter Email Address")
+      toast.error('Please Enter Email Address');
     }
   };
 
@@ -94,14 +102,14 @@ export default function ForgotPasswordComponent() {
                       setError({
                         ...error,
                         valid: {
-                          error: false,
-                        },
+                          error: false
+                        }
                       })
                     }
                     onBlur={handleEmail}
                     error={error.valid.error}
                     helperText={error.valid.error ? error.valid.msg : ''}
-                    label='Email'
+                    placeholder='Email'
                     id='Email'
                     required
                   />
@@ -111,13 +119,13 @@ export default function ForgotPasswordComponent() {
             onclickBack={{
               onClick: () => {
                 router.push(pageRoutes.LOGIN);
-              },
+              }
             }}
             onclickReset={{
-              onClick: handleSubmit,
+              onClick: handleSubmit
             }}
             contactLink={{
-              href: 'mailto:admin@aglinthq.com',
+              href: 'mailto:admin@aglinthq.com'
             }}
           />
         </YTransform>
@@ -128,15 +136,15 @@ export default function ForgotPasswordComponent() {
             onclickBack={{
               onClick: () => {
                 router.push(pageRoutes.LOGIN);
-              },
+              }
             }}
             contactLink={{
-              href: 'mailto:admin@aglinthq.com',
+              href: 'mailto:admin@aglinthq.com'
             }}
             onclickReset={{
               onClick: (e) => {
                 handleSubmit(e);
-              },
+              }
             }}
           />
         </YTransform>

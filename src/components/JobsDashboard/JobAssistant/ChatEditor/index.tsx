@@ -38,12 +38,11 @@ function ChatEditor({
           ...suggetion,
           items: ({ query }) => {
             return dataList.filter((item) =>
-              String(item.first_name)
+              String(item.candidates?.first_name + ' ' + item.candidates?.last_name)
                 .toLowerCase()
-                .startsWith(query.toLowerCase()),
+                .includes(query.toLowerCase()),
             );
           },
-          allowSpaces: true,
         },
         renderHTML({ node, options }) {
           const { HTMLAttributes } = options;
@@ -78,8 +77,8 @@ function ChatEditor({
         if (!editor.isEmpty) {
           const text = editor.getText();
           value = {
-            text,
-            html: editor.getHTML(),
+            text: text.trim(),
+            html: editor.getHTML().trim(),
             wordCount: text.length,
           };
         }
@@ -159,6 +158,13 @@ function ChatEditor({
               e.preventDefault();
             }
           }
+
+          if (e.key === 'Backspace') {
+            const pop_id = document.getElementById('list-popup');
+            if (pop_id) {
+              setIsPopUpOpen(false);
+            }
+          }
         }}
         onKeyUp={(e) => {
           if (e.key === 'Shift') {
@@ -172,7 +178,7 @@ function ChatEditor({
         type='button'
         sx={{ p: '10px' }}
         aria-label='search'
-        disabled={!value.trim()}
+        disabled={!value}
         onClick={onClick}
       >
         <SendIcon />

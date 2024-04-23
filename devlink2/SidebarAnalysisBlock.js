@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AnalysisBlock } from "./AnalysisBlock";
@@ -9,11 +10,13 @@ export function SidebarAnalysisBlock({
   onclickArrow = {},
   slotBody,
   slotPill,
+  propsStyle = {},
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "sidebar-analysis-wrapper")}
       tag="div"
+      {...propsStyle}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "sidebar-analysis-top")}

@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 let intervalId = null;
 // let setTime;

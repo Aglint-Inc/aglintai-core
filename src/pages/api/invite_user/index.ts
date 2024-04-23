@@ -1,13 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { InviteUserAPIType, RecruiterUserType } from '@/src/types/data.types';
+import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
+import { RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { companyType } from '@/src/utils/userRoles';
 
 export const supabase = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  'https://plionpfmgvenmdwwjzac.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsaW9ucGZtZ3Zlbm1kd3dqemFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5ODY1ODE4MywiZXhwIjoyMDE0MjM0MTgzfQ.mSmvcr8K9STsaMCuMwbtdA9uwa7RIrRVs1KPzD2Inws',
+  // process.env.NEXT_PUBLIC_SUPABASE_URL,
+  // process.env.SUPABASE_SERVICE_KEY,
 );
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
@@ -16,7 +19,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const { users, id } = req.body as unknown as InviteUserAPIType['in'];
+    const { users, id, recruiter_user } =
+      req.body as unknown as InviteUserAPIType['in'];
     if (!users && !id) {
       return res
         .status(400)
@@ -24,38 +28,47 @@ export default async function handler(
     }
     const { role, recruiter_id: companyId } = await getRecruiterUser(id);
 
-    if ('admin' === role) {
+    if (role === 'admin') {
       let user_id: string = null;
       try {
         for (let user of users) {
-          const { data, error } = await supabase.auth.signUp({
+          const { data, error } = await supabase.auth.admin.createUser({
             email: user.email,
-            password: 'Aglint@123',
-            options: {
-              data: {
-                role: companyType.COMPANY,
-              },
+            password: 'Welcome@123',
+            user_metadata: {
+              name: `${user.first_name} ${user.last_name || ''}`?.trim(),
+              role: companyType.COMPANY,
+              roles: companyType.COMPANY,
+              is_invite: 'true',
+              invite_user: recruiter_user,
             },
+            email_confirm: true,
           });
-          user_id = data.user.id;
-          await supabase.auth.signOut();
+
           if (error) throw new Error(error.message);
+          user_id = data.user.id;
           const email = data.user.email;
           const userId = data.user.id;
-          await supabase
+          const { data: recUser, error: errorRecUser } = await supabase
             .from('recruiter_user')
             .insert({
               user_id: userId,
-              first_name: user.name,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              position: user.designation,
+              employment: user.employment,
+              department: user.department,
               role: user.role.toLocaleLowerCase(),
               email: email,
               join_status: 'invited',
+              scheduling_settings: user.scheduling_settings,
+              interview_location: user.interview_location,
             } as RecruiterUserType)
-            .then(({ error }) => {
-              if (error) throw new Error(error.message);
-            });
+            .select();
 
-          await supabase
+          if (errorRecUser) throw new Error(error.message);
+
+          const { error: relationError } = await supabase
             .from('recruiter_relation')
             .insert({
               recruiter_id: companyId,
@@ -63,19 +76,31 @@ export default async function handler(
               is_active: true,
               created_by: id,
             })
-            .then(({ error }) => {
-              if (error) throw new Error(error.message);
+            .select('*');
+          if (relationError) {
+            return res.status(200).send({
+              created: null,
+              error: 'Inserting in user relation failed!',
             });
+          }
 
-          await supabase.auth
-            .resetPasswordForEmail(email, {
+          const { error: resetEmail } =
+            await supabase.auth.resetPasswordForEmail(email, {
               redirectTo,
-            })
-            .then(({ error }) => {
-              if (error) throw new Error(error.message);
             });
+          if (resetEmail) {
+            return res.status(200).send({
+              created: null,
+              error: 'Sending reset password failed!',
+            });
+          }
+
+          return res.status(200).send({
+            created: true,
+            error: null,
+            user: recUser[0],
+          });
         }
-        res.status(200).send({ created: true, error: null });
       } catch (error: any) {
         user_id && supabase.auth.admin.deleteUser(user_id);
         return res.status(200).send({ created: null, error: error.message });

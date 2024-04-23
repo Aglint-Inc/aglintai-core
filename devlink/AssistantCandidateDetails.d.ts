@@ -16,4 +16,8 @@ declare function AssistantCandidateDetails(props: {
   isRelevantSkillVisible?: Types.Visibility.VisibilityConditions;
   textExperience?: React.ReactNode;
   isTopMatchVisible?: Types.Visibility.VisibilityConditions;
+  onClickCard?: Types.Devlink.RuntimeProps;
+  slotCheckBox?: Types.Devlink.Slot;
+  isOverviewTextVisible?: Types.Visibility.VisibilityConditions;
+  onClickIconCollapse?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

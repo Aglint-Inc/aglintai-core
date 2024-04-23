@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import JobForm from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobForm/JobForm';
@@ -8,13 +8,13 @@ import JobPostFormProvider, {
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 
 function Hoc() {
   return (
     <>
       <Seo
-        title='Aglint | Edit Job'
+        title={`Jobs`}
         description='AI Powered Talent Development Platform.'
       />
       <JobPostFormProvider>

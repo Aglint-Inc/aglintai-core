@@ -1,6 +1,5 @@
 .button-wrapper {
   position: relative;
-  padding: 3px;
   border-radius: 4px;
   transition: all 300ms ease;
 }
@@ -109,6 +108,10 @@
   background-color: var(--grey600-440e5aa6);
 }
 
+.button-wrapper.dark.default.white-bg {
+  background-color: white;
+}
+
 .button-block {
   position: relative;
   z-index: 5;
@@ -146,6 +149,8 @@
 }
 
 .button-block.primary.outlined {
+  justify-content: center;
+  align-items: center;
   border-color: var(--blue600-cb1b4518);
 }
 
@@ -154,6 +159,8 @@
 }
 
 .button-block.primary.default {
+  justify-content: center;
+  align-items: center;
   background-color: var(--blue600-cb1b4518);
   color: var(--white-9747b35e);
 }
@@ -163,20 +170,25 @@
 }
 
 .button-block.disabled {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-  z-index: 6;
+  position: static;
 
   margin: 3px;
+  justify-content: center;
+  align-items: center;
 
   background-color: var(--grey200-750b0c46);
 
   color: var(--grey400-5470456b);
 
   cursor: default;
+}
+
+.button-block.disabled.absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
 }
 
 .button-block.danger {
@@ -249,10 +261,6 @@
 
 .button-block.dark.default:hover {
   background-color: var(--grey600-440e5aa6);
-}
-
-.button-text {
-  font-size: 1em;
 }
 
 .button-focused {

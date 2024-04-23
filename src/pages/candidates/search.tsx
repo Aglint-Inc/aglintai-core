@@ -5,10 +5,7 @@ import CandidateSearchProvider from '@/src/context/CandidateSearchProvider/Candi
 function CandidatesPage() {
   return (
     <>
-      <Seo
-        title='Aglint | Candidate Search'
-        description='Find Your Ideal Candidate with AI-Powered Matching!'
-      />
+      <Seo title={`Candidate Search`} description='AI for People Products' />
       <CandidateSearchProvider>
         <CandidatesSearch />
       </CandidateSearchProvider>

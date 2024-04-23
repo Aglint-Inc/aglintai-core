@@ -11,19 +11,18 @@ import {
   JobStatus,
   JobStatusSelectBlock,
   RecPrimaryBtn,
-  ToggleSelectDropdown,
+  ToggleSelectDropdown
 } from '@/devlink2';
 import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { StatusJobs } from '@/src/types/data.types';
-import toast from '@/src/utils/toast';
 
-import { capitalize } from '../utils';
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import SpecializedDatePicker from '../../Common/SpecializedDatePicker';
 import UITextField from '../../Common/UITextField';
+import { capitalize } from '../utils';
 
 const JobApplicationStatus = () => {
   const { job } = useJobApplications();
@@ -33,7 +32,7 @@ const JobApplicationStatus = () => {
   const sourcingStatusInfo = getStatusInfo(status.sourcing, 'sourcing');
   const interviewingStatusInfo = getStatusInfo(
     status.interviewing,
-    'interviewing',
+    'interviewing'
   );
   return status.closed.isActive ? (
     <></>
@@ -101,31 +100,28 @@ type StatusInfo = {
 
 const CloseJob = ({ status }: { status: Status }) => {
   const { job } = useJobApplications();
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const [close, setClose] = useState(false);
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState('');
   const handleJobClose = async () => {
     setLoading(true);
-    const confirmation = await handleJobUpdate(job.id, {
+    await handleJobAsyncUpdate(job.id, {
       active_status: {
         sourcing: {
           ...status.sourcing,
-          isActive: false,
+          isActive: false
         },
         interviewing: {
           ...status.interviewing,
-          isActive: false,
+          isActive: false
         },
         closed: {
           isActive: true,
-          timeStamp: new Date().toISOString(),
-        },
-      },
+          timeStamp: new Date().toISOString()
+        }
+      }
     });
-    if (confirmation) {
-      toast.success('Job closed successfully');
-    }
     setLoading(false);
     setClose(false);
   };
@@ -144,10 +140,10 @@ const CloseJob = ({ status }: { status: Status }) => {
           style={
             loading
               ? {
-                  pointerEvents: 'none',
+                  pointerEvents: 'none'
                 }
               : {
-                  pointerEvents: 'auto',
+                  pointerEvents: 'auto'
                 }
           }
         >
@@ -168,25 +164,25 @@ const CloseJob = ({ status }: { status: Status }) => {
 
 const SideDrawerContent = ({
   status,
-  statusInfo,
+  statusInfo
 }: {
   status: Status;
   statusInfo: StatusInfo;
 }) => {
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const { job } = useJobApplications();
   const jobId = job.id;
   const [loading, setLoading] = useState(false);
   const handleJobStatusInactive = async () => {
     setLoading(true);
-    await handleJobUpdate(jobId, {
+    await handleJobAsyncUpdate(jobId, {
       active_status: {
         ...status,
         [statusInfo.flow]: {
           isActive: false,
-          timeStamp: null,
-        },
-      },
+          timeStamp: null
+        }
+      }
     });
     setLoading(false);
   };
@@ -226,7 +222,7 @@ const SideDrawerContent = ({
                   <ButtonDangerOutlinedRegular
                     buttonText={'Stop'}
                     buttonProps={{
-                      onClick: async () => await handleJobStatusInactive(),
+                      onClick: async () => await handleJobStatusInactive()
                     }}
                   />
                 </Stack>
@@ -242,7 +238,7 @@ const SideDrawerContent = ({
 
 export const getStatusInfo = (
   status: { isActive: boolean; timeStamp: string },
-  flow: Flow,
+  flow: Flow
 ) => {
   const active = status.isActive;
   const scheduled = status.timeStamp !== null && !status.isActive;
@@ -253,7 +249,7 @@ export const getStatusInfo = (
         ? status.isActive
           ? 'green'
           : 'goldenrod'
-        : 'grey',
+        : 'grey'
   };
   const secondaryStatus =
     status.timeStamp !== null
@@ -266,7 +262,7 @@ export const getStatusInfo = (
       ? status.isActive
         ? 'Active'
         : `${dayjs(status.timeStamp).format(
-            'DD MMM, YYYY' /*'DD MMM, YYYY, hh:mm a'*/,
+            'DD MMM, YYYY' /*'DD MMM, YYYY, hh:mm a'*/
           )}`
       : 'Off';
   return {
@@ -276,7 +272,7 @@ export const getStatusInfo = (
     style,
     primaryStatus,
     secondaryStatus,
-    flow,
+    flow
   };
 };
 
@@ -286,7 +282,7 @@ const JobSchedules = ({
   statusInfo,
   setLoading,
   isSchedule,
-  handleJobStatusInactive,
+  handleJobStatusInactive
 }: {
   jobId: string;
   status: Status;
@@ -303,10 +299,10 @@ const JobSchedules = ({
   const [date, setDate] = useState(timeStamp.split('T')[0]);
   // const [time, setTime] = useState(timeStamp);
   const disabled = !(date /*&& time*/);
-  const { handleJobUpdate } = useJobs();
+  const { handleJobAsyncUpdate } = useJobs();
   const handleJobStatusUpdate = async () => {
     setLoading(true);
-    await handleJobUpdate(jobId, {
+    await handleJobAsyncUpdate(jobId, {
       active_status: {
         ...status,
         [flow]: {
@@ -314,13 +310,13 @@ const JobSchedules = ({
           timeStamp: start
             ? new Date().toISOString()
             : disabled
-            ? null
-            : new Date(date).toISOString(),
+              ? null
+              : new Date(date).toISOString()
           // : new Date(
           //     `${date.split('T')[0]}T${time.split('T')[1]}`,
           //   ).toISOString(),
-        },
-      },
+        }
+      }
     });
     setLoading(false);
   };
@@ -328,12 +324,12 @@ const JobSchedules = ({
     <JobStatusSelectBlock
       onClickStart={{
         onClick: () => setStart(true),
-        style: { cursor: 'pointer' },
+        style: { cursor: 'pointer' }
       }}
       isStartActive={start}
       onClickSchedule={{
         onClick: () => setStart(false),
-        style: { cursor: 'pointer' },
+        style: { cursor: 'pointer' }
       }}
       isScheduleActive={!start}
       slotBody={
@@ -353,7 +349,7 @@ const JobSchedules = ({
               isDisabled={start ? false : disabled}
               buttonText={getButtonText(isSchedule, start)}
               onClickButton={{
-                onClick: async () => await handleJobStatusUpdate(),
+                onClick: async () => await handleJobStatusUpdate()
               }}
             />
           )}
@@ -361,7 +357,7 @@ const JobSchedules = ({
             <ButtonDangerOutlinedRegular
               buttonText={'Stop'}
               buttonProps={{
-                onClick: async () => await handleJobStatusInactive(),
+                onClick: async () => await handleJobStatusInactive()
               }}
             />
           )}
@@ -380,7 +376,7 @@ const JobScheduleBody = ({
   isStart,
   flow,
   date,
-  setDate, // time,
+  setDate // time,
   // setTime,
 }: {
   isStart: boolean;

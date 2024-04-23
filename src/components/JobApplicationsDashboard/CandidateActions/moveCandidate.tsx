@@ -10,11 +10,11 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
-import { JobApplicationEmails } from '@/src/pages/api/jobApplications/candidateEmail';
+import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
+import AUIButton from '../../Common/AUIButton';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
-import AUIButton from '../../Common/AUIButton';
 
 const MoveCandidate: React.FC<{
   applicationLimit: CountJobs;
@@ -28,49 +28,31 @@ const MoveCandidate: React.FC<{
     },
     setCardStates,
     handleJobApplicationSectionUpdate,
-    activeSections,
+    actionVisibilities,
+    actionProps,
+    setActionProps,
   } = useJobApplications();
-  const [props, setProps] = useState({
-    open: false,
-    destination: null,
-  });
   const [purposes, setPurposes] = useState([]);
+  const [task, setTask] = useState(true);
   const isChecked = list.size !== 0;
-  const showNew =
-    isChecked &&
-    section === JobApplicationSections.DISQUALIFIED &&
-    activeSections.includes(JobApplicationSections.NEW);
-  const showScreening =
-    isChecked &&
-    section === JobApplicationSections.NEW &&
-    activeSections.includes(JobApplicationSections.SCREENING);
-  const showInterview =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING) &&
-    activeSections.includes(JobApplicationSections.ASSESSMENT);
-  const showQualified =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT) &&
-    activeSections.includes(JobApplicationSections.QUALIFIED);
-  const showDisqualified =
-    isChecked &&
-    (section === JobApplicationSections.NEW ||
-      section === JobApplicationSections.SCREENING ||
-      section === JobApplicationSections.ASSESSMENT ||
-      section === JobApplicationSections.QUALIFIED) &&
-    activeSections.includes(JobApplicationSections.DISQUALIFIED);
+
+  const showNew = isChecked && actionVisibilities.new;
+  const showScreening = isChecked && actionVisibilities.screening;
+  const showAssessment = isChecked && actionVisibilities.assessment;
+  const showInterview = isChecked && actionVisibilities.interview;
+  const showQualified = isChecked && actionVisibilities.qualified;
+  const showDisqualified = isChecked && actionVisibilities.disqualified;
 
   const handlePopUpCheck = () => {
-    setPurposes((prev) =>
-      prev.length !== 0 ? [] : getPurpose(props.destination),
-    );
+    actionProps.destination === 'interview'
+      ? setTask((prev) => !prev)
+      : setPurposes((prev) =>
+          prev.length !== 0 ? [] : getPurpose(actionProps.destination),
+        );
   };
   const handleMoveCandidate = async () => {
     if (!disabled) {
-      setProps((prev) => ({ ...prev, open: false }));
+      setActionProps((prev) => ({ ...prev, open: false }));
       setCardStates((prev) => ({
         ...prev,
         checkList: { ...prev.checkList, disabled: true },
@@ -78,8 +60,9 @@ const MoveCandidate: React.FC<{
       await handleJobApplicationSectionUpdate(
         {
           source: section,
-          destination: props.destination,
+          destination: actionProps.destination,
         },
+        task,
         purposes,
         list,
         selectAll,
@@ -95,10 +78,14 @@ const MoveCandidate: React.FC<{
     }
   };
   const handleOpen = (destination: JobApplicationSections) => {
-    setProps({ open: true, destination });
+    setActionProps({ open: true, destination });
   };
   const handleClose = () => {
-    setProps({ open: false, destination: null });
+    setActionProps((prev) => ({ ...prev, open: false }));
+    setTimeout(() => {
+      setActionProps({ open: false, destination: null });
+      setTask(true);
+    }, 200);
   };
 
   return (
@@ -106,6 +93,10 @@ const MoveCandidate: React.FC<{
       <SelectActionsDropdown
         isInterview={showInterview}
         onClickInterview={{
+          onClick: () => handleOpen(JobApplicationSections.INTERVIEW),
+        }}
+        isAssessment={showAssessment}
+        onClickAssessment={{
           onClick: () => handleOpen(JobApplicationSections.ASSESSMENT),
         }}
         isQualified={showQualified}
@@ -126,11 +117,13 @@ const MoveCandidate: React.FC<{
         isScreening={showScreening}
       />
       <MoveCandidateDialog
-        open={props.open}
+        open={actionProps.open}
         onClose={() => handleClose()}
-        destination={props.destination}
+        destination={actionProps.destination}
         onSubmit={async () => await handleMoveCandidate()}
-        checked={purposes.length !== 0}
+        checked={
+          actionProps.destination === 'interview' ? task : purposes.length !== 0
+        }
         checkAction={() => handlePopUpCheck()}
         count={selectAll ? applicationLimit[section] : list.size}
       />
@@ -185,7 +178,7 @@ const MoveCandidateDialog = ({
               Cancel
             </AUIButton>
             <AUIButton onClick={() => onSubmit()} variant={'primary'}>
-              {checked && showCheck ? 'Send Email & Move' : title}
+              {title}
             </AUIButton>
           </Stack>
         }
@@ -198,6 +191,7 @@ const checkVisibility = (destination: JobApplicationSections) => {
   return (
     destination === JobApplicationSections.SCREENING ||
     destination === JobApplicationSections.ASSESSMENT ||
+    destination === JobApplicationSections.INTERVIEW ||
     destination === JobApplicationSections.DISQUALIFIED
   );
 };
@@ -224,6 +218,8 @@ const getSubTitle = (
         return `Proceed to send a screening email to ${name}`;
       case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to ${name}`;
+      case JobApplicationSections.INTERVIEW:
+        return `Create a task on this action.`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to ${name}`;
       default:
@@ -240,6 +236,8 @@ const getSubTitle = (
         return `Proceed to send an assessment email to the candidate${
           count !== 1 ? 's' : ''
         }`;
+      case JobApplicationSections.INTERVIEW:
+        return `Create a task on this action.`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to the candidate${
           count !== 1 ? 's' : ''

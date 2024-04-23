@@ -48,6 +48,10 @@
   margin-left: 6px;
 }
 
+.text-grey-600 {
+  color: #68737d;
+}
+
 .fw-semibold {
   font-weight: 600;
 }

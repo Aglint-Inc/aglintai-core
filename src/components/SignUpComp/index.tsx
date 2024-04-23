@@ -1,22 +1,24 @@
 import { Stack } from '@mui/material';
-import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 
 import { OnboardingFinalState, SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
+import { RecruiterOnboardingEmailApi } from '@/src/pages/api/emails/recruiterOnboarding';
+import { handleEmailApi } from '@/src/pages/api/emails/utils';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import { companyType } from '@/src/utils/userRoles';
 
+import Loader from '../Common/Loader';
 import SelectAtsSystem from './SelectAtsSystem';
 import SlideDetailsOne from './SlideDetailsOne';
 import SlideDetailsTwo from './SlideDetailsTwo';
 import SlideTwoSignUp from './SlideSignup';
 import { stepObj } from './SlideSignup/utils';
-import Loader from '../Common/Loader';
 
 const SignUpComp = () => {
   const router = useRouter();
@@ -34,6 +36,19 @@ const SignUpComp = () => {
       })
       .eq('id', recruiter?.id);
   }
+
+  const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
+  // const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+
+  const emailPayload = {
+    email: recruiterUser?.email ?? null,
+    name: recruiterUser?.first_name ?? null,
+    flags:
+      {
+        sourcing: isSourcingEnabled,
+        scheduling: true, //isSchedulingEnabled,
+      } ?? null,
+  };
 
   return (
     <>
@@ -109,19 +124,20 @@ const SignUpComp = () => {
             onClickImportJob={{
               onClick: () => {
                 router.push(pageRoutes.JOBS);
-                sendOnboardingMail(
-                  recruiterUser.email,
-                  recruiterUser.first_name,
-                );
+                sendOnboardingMail(emailPayload);
               },
             }}
+            isSourcingVisible={isSourcingEnabled}
             onClickSourceCandidates={{
               onClick: () => {
                 router.push(pageRoutes.CANDIDATES);
-                sendOnboardingMail(
-                  recruiterUser.email,
-                  recruiterUser.first_name,
-                );
+                sendOnboardingMail(emailPayload);
+              },
+            }}
+            onClickScheduleInterview={{
+              onClick: () => {
+                router.push(pageRoutes.SCHEDULING);
+                sendOnboardingMail(emailPayload);
               },
             }}
           />
@@ -144,18 +160,11 @@ const SignUpComp = () => {
 
 export default SignUpComp;
 
-const sendOnboardingMail = async (email: string, name: string) => {
+const sendOnboardingMail = async (
+  props: RecruiterOnboardingEmailApi['request'],
+) => {
   try {
-    await axios.post(
-      'https://us-central1-aglint-cloud-381414.cloudfunctions.net/mails-sender',
-      {
-        mail_type: 'recruiter-onboarding',
-        recipient_email: email,
-        payload: {
-          name: name,
-        },
-      },
-    );
+    await handleEmailApi('recruiterOnboarding', props);
   } catch (err) {
     //
   }

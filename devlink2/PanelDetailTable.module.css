@@ -1,0 +1,9 @@
+.team_detail_table {
+  display: flex;
+  padding-bottom: 1px;
+  flex-direction: column;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+
+  background-color: #e9ebed;
+}

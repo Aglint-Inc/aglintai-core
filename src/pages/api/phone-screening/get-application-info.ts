@@ -2,8 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { Applications } from '@/src/types/applications.types';
-import { JobApplcationDB } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
 export const supabaseAdmin = createClient<Database>(
@@ -20,18 +18,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const [app] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
-        .select('phone_screening,candidate_id')
+        .select('candidate_id')
         .eq('id', application_id),
-    ) as Applications[];
+    );
     if (!app) throw new Error('invalid application');
     const [candidate] = supabaseWrap(
       await supabaseAdmin
         .from('candidates')
         .select()
         .eq('id', app.candidate_id),
-    ) as JobApplcationDB[];
+    );
 
-    return res.status(200).json({ ...app, ...candidate });
+    const [answer] = supabaseWrap(
+      await supabaseAdmin
+        .from('screening_answers')
+        .select()
+        .eq('screening_id', application_id),
+    );
+    return res.status(200).json({ ...app, ...candidate, answer });
   } catch (error) {
     res.status(500).send(error.message);
   }

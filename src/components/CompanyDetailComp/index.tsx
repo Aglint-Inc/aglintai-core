@@ -7,14 +7,13 @@ import { CompanySetting, NavSublink, SavedChanges } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 
+import LoaderGrey from '../Common/LoaderGrey';
 import CompanyInfoComp from './CompanyInfoComp';
-import { tabs } from './utils';
 import {
   generateDepartments,
   generateRoles,
-  generateSpecialities,
+  generateSpecialities, tabs
 } from './utils';
-import LoaderGrey from '../Common/LoaderGrey';
 
 const CompanyDetailComp = () => {
   const router = useRouter();
@@ -43,7 +42,6 @@ const CompanyDetailComp = () => {
   }, [router]);
 
   const isAssesEnabled = posthog.isFeatureEnabled('isAssesmentEnabled');
-  const isTeamEnabled = posthog.isFeatureEnabled('isTeamEnabled');
   let isAssistantEnabled = posthog.isFeatureEnabled('isAssistantEnabled');
 
   useEffect(() => {
@@ -73,15 +71,6 @@ const CompanyDetailComp = () => {
                 },
               }}
             />
-            <NavSublink
-              textLink={'About Company'}
-              isActive={router.query?.tab === 'about'}
-              onClickNav={{
-                onClick: () => {
-                  router.replace(`/company?tab=${tabs.about}`);
-                },
-              }}
-            />
             {isAssesEnabled && (
               <NavSublink
                 textLink={'Assessment'}
@@ -104,7 +93,7 @@ const CompanyDetailComp = () => {
                 }}
               />
             )}
-            <NavSublink
+            {/* <NavSublink
               textLink={'Email Templates'}
               isActive={router.query?.tab === 'email'}
               onClickNav={{
@@ -112,18 +101,16 @@ const CompanyDetailComp = () => {
                   router.replace(`/company?tab=${tabs.email}`);
                 },
               }}
+            /> */}
+            <NavSublink
+              textLink={'Team'}
+              isActive={router.query?.tab === 'team'}
+              onClickNav={{
+                onClick: () => {
+                  router.replace('/company?tab=team');
+                },
+              }}
             />
-            {isTeamEnabled && (
-              <NavSublink
-                textLink={'Team'}
-                isActive={router.query?.tab === 'team'}
-                onClickNav={{
-                  onClick: () => {
-                    router.replace('/company?tab=team');
-                  },
-                }}
-              />
-            )}
           </>
         }
         slotSavedChanges={

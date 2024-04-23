@@ -3,16 +3,9 @@ import * as Types from "./types";
 
 declare function JobDetails(props: {
   as?: React.ElementType;
-  textJobStatus?: React.ReactNode;
-  textRole?: React.ReactNode;
-  textApplicantsNumber?: React.ReactNode;
-  onClickEditJobs?: Types.Devlink.RuntimeProps;
-  isPreviewVisible?: Types.Visibility.VisibilityConditions;
-  jobLink?: Types.Basic.Link;
   slotSidebar?: Types.Devlink.Slot;
   slotTabs?: Types.Devlink.Slot;
   slotFilters?: Types.Devlink.Slot;
-  onclickHeaderJobs?: Types.Devlink.RuntimeProps;
   onclickAddCandidates?: Types.Devlink.RuntimeProps;
   slotTable?: Types.Devlink.Slot;
   slotRefresh?: Types.Devlink.Slot;
@@ -23,6 +16,6 @@ declare function JobDetails(props: {
   slotLoadingLottie?: Types.Devlink.Slot;
   isEmptyTextVisible?: Types.Visibility.VisibilityConditions;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
-  onClickJobs?: Types.Devlink.RuntimeProps;
   isImportCandidates?: Types.Visibility.VisibilityConditions;
+  slotBreadcrumb?: Types.Devlink.Slot;
 }): React.JSX.Element;

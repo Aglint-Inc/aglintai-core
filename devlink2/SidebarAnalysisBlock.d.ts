@@ -6,4 +6,5 @@ declare function SidebarAnalysisBlock(props: {
   onclickArrow?: Types.Devlink.RuntimeProps;
   slotBody?: Types.Devlink.Slot;
   slotPill?: Types.Devlink.Slot;
+  propsStyle?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

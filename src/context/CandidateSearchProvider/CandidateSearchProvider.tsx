@@ -5,7 +5,7 @@ import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { JsonResume } from '@/src/types/resume_json.types';
-import { supabase } from '@/src/utils/supabaseClient';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import {
