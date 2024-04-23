@@ -11,17 +11,20 @@ import {
 } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
+import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import AssigneeChip from '../../../Components/AssigneeChip';
 import SelectStatus from '../../../Components/SelectStatus';
-import { EmailAgentId, PhoneAgentId } from '../../../utils';
+import { useTaskStatesContext } from '../../../TaskStatesContext';
+import { assigneeType, EmailAgentId, PhoneAgentId } from '../../../utils';
 import { CallIcon, EmailIcon } from '../../AddNewTask';
+import AssigneeList from '../../AddNewTask/AssigneeList';
 import PriorityList from '../../AddNewTask/PriorityList';
 import SelectDueDate from '../../AddNewTask/SelecteDueDate';
 import SelectScheduleDate from '../../AddNewTask/SelectScheduleDate';
@@ -30,7 +33,9 @@ import TriggerTime from '../../AddNewTask/TriggerTime';
 
 function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const router = useRouter();
+  const { recruiterUser } = useAuthDetails();
   const { handelUpdateTask } = useTasksContext();
+  const { assignerList } = useTaskStatesContext();
   const [sessionList, setSessionList] = useState<Awaited<
     ReturnType<typeof fetchInterviewSessionTask>
   > | null>([]);
@@ -40,7 +45,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     start_date: null,
     end_date: null,
   });
-
+  const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
+    null,
+  );
   const [selectedDueDate, setSelectedDueDate] = useState<string>(null);
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(null);
   const [selectedPriority, setSelectedPriority] =
@@ -63,6 +70,10 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       setSelectTriggerTime(task.start_date);
       setSelectedPriority(task.priority);
       setSelectedStatus(task.status);
+      const assigner = assignerList.find(
+        (ele) => ele.user_id === task.assignee[0],
+      );
+      setSelectedAssignee(assigner);
       getSessionList();
     }
   }, [router.query?.task_id]);
@@ -83,6 +94,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           schedule_date_range: { ...scheduleDate },
           priority: selectedPriority,
           status: selectedStatus,
+          assignee: [selectedAssignee.user_id],
         },
       });
     }
@@ -93,8 +105,24 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     selectTriggerTime,
     selectedPriority,
     selectedStatus,
+    selectedAssignee,
   ]);
 
+  const createProgress = async (assigner) => {
+    if (selectedAssignee?.user_id) {
+      await supabase.from('new_tasks_progress').insert({
+        task_id: router.query.task_id as string,
+        title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
+        created_by: {
+          name: recruiterUser.first_name,
+          id: recruiterUser.user_id,
+        },
+        progress_type: 'standard',
+      });
+    }
+  };
+
+  const createdBy = assignerList.find((ele) => ele.user_id === task.created_by);
   return (
     <>
       <ViewTaskCard
@@ -135,7 +163,15 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             />
           )
         }
-        slotAssignedTo={<AssigneeChip assigneeId={task.assignee[0]} />}
+        slotAssignedTo={
+          <AssigneeList
+            selectedAssignee={selectedAssignee}
+            setSelectedAssignee={setSelectedAssignee}
+            onChange={(assigner: any) => {
+              createProgress(assigner);
+            }}
+          />
+        }
         slotInterviewTaskPill={
           <SessionList
             selectedSession={selectedSession}
@@ -152,31 +188,27 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           />
         }
         slotCreatedBy={
-          task.recruiter_user && (
+          createdBy && (
             <ListCard
               isAvatarWithNameVisible={true}
               isListVisible={false}
               slotAvatarWithName={
-                task.recruiter_user && (
+                createdBy && (
                   <AvatarWithName
                     slotAvatar={
                       <MuiAvatar
                         height={'25px'}
                         width={'25px'}
-                        src={task.recruiter_user.profile_image}
+                        src={createdBy.profile_image}
                         variant='circular'
                         fontSize='14px'
                         level={capitalizeAll(
-                          task.recruiter_user.first_name +
-                            ' ' +
-                            task.recruiter_user.last_name,
+                          createdBy.first_name + ' ' + createdBy.last_name,
                         )}
                       />
                     }
                     textName={capitalizeAll(
-                      task.recruiter_user.first_name +
-                        ' ' +
-                        task.recruiter_user.last_name,
+                      createdBy.first_name + ' ' + createdBy.last_name,
                     )}
                   />
                 )

@@ -25,7 +25,6 @@ function ViewTaskDrawer() {
 
   let selectedTask = tasks.find((item) => item.id === taskId);
 
-  const [editMode, setEditMode] = useState(false);
   const [disableNext, setDisableNext] = useState(false);
   const [disablePrev, setDisablePrev] = useState(false);
 
@@ -61,6 +60,11 @@ function ViewTaskDrawer() {
         route.push(pageRoutes.TASKS);
         setDisableNext(false);
         setDisablePrev(false);
+      }}
+      sx={{
+        '& .MuiPaper-root': {
+          overflowY: 'hidden',
+        },
       }}
     >
       <ShowCode>
@@ -128,50 +132,28 @@ function ViewTaskDrawer() {
               },
             }}
             textTaskDetail={
-              <ShowCode>
-                <ShowCode.When isTrue={!editMode}>
-                  <Typography
-                    onClick={() => {
-                      setEditMode(true);
-                    }}
-                    bgcolor={'#F7F9FB'}
-                    padding={'10px'}
-                    borderRadius={'10px'}
-                    fontSize={'18px'}
-                    lineHeight={'24px'}
-                    fontWeight={600}
-                  >
-                    {selectedTask?.name || 'Untitled'}
-                  </Typography>
-                </ShowCode.When>
-                <ShowCode.Else>
-                  <TextField
-                    placeholder='Untitled'
-                    // eslint-disable-next-line jsx-a11y/no-autofocus
-                    autoFocus={true}
-                    onChange={({ currentTarget: { value: changeValue } }) => {
-                      debouncedUpdateTask(taskId, changeValue);
-                    }}
-                    multiline
-                    minRows={1}
-                    maxRows={3}
-                    fullWidth
-                    defaultValue={selectedTask?.name}
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        border: 'none',
-                        fontSize: '18px',
-                        lineHeight: '24px',
-                        fontWeight: 600,
-                        padding: '10px',
-                      },
-                    }}
-                    onBlur={() => {
-                      setEditMode(false);
-                    }}
-                  />
-                </ShowCode.Else>
-              </ShowCode>
+              <TextField
+                placeholder='Untitled'
+                onChange={({ currentTarget: { value: changeValue } }) => {
+                  debouncedUpdateTask(taskId, changeValue);
+                }}
+                multiline
+                minRows={1}
+                maxRows={3}
+                fullWidth
+                defaultValue={selectedTask?.name}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    border: 'none',
+                    fontSize: '18px',
+                    lineHeight: '24px',
+                    fontWeight: 600,
+                    padding: '10px',
+                    bgcolor: '#F7F9FB',
+                    borderRadius: '10px',
+                  },
+                }}
+              />
             }
             slotTaskCard={<TaskCard task={selectedTask} />}
             slotTaskProgress={<SubTaskProgress />}

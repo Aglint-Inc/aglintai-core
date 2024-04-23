@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack } from '@mui/material';
+import { Collapse, Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 // import axios from 'axios';
@@ -13,8 +13,10 @@ import { CountJobs } from '@/src/context/JobsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
 import AUIButton from '../../Common/AUIButton';
+import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
+import CreateTask, { TaskType } from './CreateTask';
 
 const MoveCandidate: React.FC<{
   applicationLimit: CountJobs;
@@ -33,7 +35,8 @@ const MoveCandidate: React.FC<{
     setActionProps,
   } = useJobApplications();
   const [purposes, setPurposes] = useState([]);
-  const [task, setTask] = useState(true);
+  const [taskCheck, setTaskCheck] = useState(true);
+  const [task, setTask] = useState<TaskType>(null);
   const isChecked = list.size !== 0;
 
   const showNew = isChecked && actionVisibilities.new;
@@ -45,7 +48,7 @@ const MoveCandidate: React.FC<{
 
   const handlePopUpCheck = () => {
     actionProps.destination === 'interview'
-      ? setTask((prev) => !prev)
+      ? setTaskCheck((prev) => !prev)
       : setPurposes((prev) =>
           prev.length !== 0 ? [] : getPurpose(actionProps.destination),
         );
@@ -84,7 +87,8 @@ const MoveCandidate: React.FC<{
     setActionProps((prev) => ({ ...prev, open: false }));
     setTimeout(() => {
       setActionProps({ open: false, destination: null });
-      setTask(true);
+      setTaskCheck(true);
+      setTask(null);
     }, 200);
   };
 
@@ -122,10 +126,17 @@ const MoveCandidate: React.FC<{
         destination={actionProps.destination}
         onSubmit={async () => await handleMoveCandidate()}
         checked={
-          actionProps.destination === 'interview' ? task : purposes.length !== 0
+          actionProps.destination === 'interview'
+            ? taskCheck
+            : purposes.length !== 0
         }
         checkAction={() => handlePopUpCheck()}
         count={selectAll ? applicationLimit[section] : list.size}
+        slotMoveAssessment={
+          <Collapse in={actionProps.destination === 'interview' && taskCheck}>
+            <CreateTask setTask={setTask} />
+          </Collapse>
+        }
       />
     </>
   );
@@ -142,6 +153,7 @@ const MoveCandidateDialog = ({
   checkAction,
   count = 0,
   name = null,
+  slotMoveAssessment = <></>,
 }: {
   open: boolean;
   checked: boolean;
@@ -151,6 +163,7 @@ const MoveCandidateDialog = ({
   checkAction: () => void;
   count?: number;
   name?: string;
+  slotMoveAssessment?: React.JSX.Element;
 }) => {
   const title = capitalize(destination);
   const subTitle = getSubTitle(destination, count, name);
@@ -158,32 +171,35 @@ const MoveCandidateDialog = ({
   const showCheck = checkVisibility(destination);
 
   return (
-    <Dialog open={open} onClose={() => onClose()}>
-      <CandidateSelectionPopup
-        isCheckVisible={showCheck}
-        textHeader={title}
-        textDescription={description}
-        isChecked={checked}
-        textCheck={subTitle}
-        onclickCheck={{ onClick: () => checkAction() }}
-        onclickClose={{ onClick: () => onClose() }}
-        slotButtons={
-          <Stack
-            spacing={'10px'}
-            mt={'10px'}
-            direction={'row'}
-            alignItems={'center'}
-          >
-            <AUIButton onClick={() => onClose()} variant='text'>
-              Cancel
-            </AUIButton>
-            <AUIButton onClick={() => onSubmit()} variant={'primary'}>
-              {title}
-            </AUIButton>
-          </Stack>
-        }
-      />
-    </Dialog>
+    <TaskStatesProvider>
+      <Dialog open={open} onClose={() => onClose()}>
+        <CandidateSelectionPopup
+          isCheckVisible={showCheck}
+          textHeader={title}
+          textDescription={description}
+          isChecked={checked}
+          textCheck={subTitle}
+          onclickCheck={{ onClick: () => checkAction() }}
+          onclickClose={{ onClick: () => onClose() }}
+          slotButtons={
+            <Stack
+              spacing={'10px'}
+              mt={'10px'}
+              direction={'row'}
+              alignItems={'center'}
+            >
+              <AUIButton onClick={() => onClose()} variant='text'>
+                Cancel
+              </AUIButton>
+              <AUIButton onClick={() => onSubmit()} variant={'primary'}>
+                {title}
+              </AUIButton>
+            </Stack>
+          }
+          slotMoveAssessment={slotMoveAssessment}
+        />
+      </Dialog>
+    </TaskStatesProvider>
   );
 };
 

@@ -3,26 +3,31 @@ import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { ListPop } from '@/devlink3';
+import AssigneeChip, {
+  useInterviewerList,
+} from '@/src/components/Tasks/Components/AssigneeChip';
+import { assigneeType } from '@/src/components/Tasks/utils';
 
-import AssigneeChip from '../../../Components/AssigneeChip';
-import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { assigneeType } from '../../../utils';
-
-function AssigneeList({
+function TaskOwners({
   selectedAssignee,
   setSelectedAssignee,
-  onChange,
 }: {
   selectedAssignee: assigneeType;
   setSelectedAssignee: (x: assigneeType) => void;
-  onChange?: any;
 }) {
-  const { assignerList } = useTaskStatesContext();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { data: members } = useInterviewerList();
 
+  let assignerList = members
+    .map((ele) => ele.rec_user)
+    .filter((ele) => ele.first_name)
+    .map((item) => {
+      return { ...item, assignee: 'Interviewers' };
+    }) as assigneeType[];
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -80,7 +85,6 @@ function AssigneeList({
                 onClick={() => {
                   setSelectedAssignee(ele);
                   handleClose();
-                  onChange(ele);
                 }}
               >
                 <AssigneeChip assigneeId={ele.user_id} />
@@ -93,4 +97,4 @@ function AssigneeList({
   );
 }
 
-export default AssigneeList;
+export default TaskOwners;

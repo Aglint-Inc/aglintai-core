@@ -471,9 +471,7 @@ export const useTasksContext = () => {
 const getAllTasks = (id: string) => {
   return supabase
     .from('new_tasks')
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
-    )
+    .select('*, applications(* , candidates( * ), public_jobs( * ))')
     .eq('recruiter_id', id)
     .order('created_at', {
       ascending: false,
@@ -484,7 +482,6 @@ const getAllTasks = (id: string) => {
         'applications, recruiter_user'
       > & {
         applications: (typeof data)[number]['applications'];
-        recruiter_user: (typeof data)[number]['recruiter_user'];
       })[];
       if (error) throw new Error(error.message);
       return temp;
@@ -499,7 +496,7 @@ const getTasks = (
   return supabase
     .from('new_tasks')
     .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
+      '*, applications(* , candidates( * ), public_jobs( * ))',
       getCount ? { count: 'exact' } : {},
     )
     .range(
@@ -537,17 +534,11 @@ const updateTask = ({
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
       : supabase.from('new_tasks').insert(task)
   )
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
-    )
+    .select('*, applications(* , candidates( * ), public_jobs( * ))')
     .single()
     .then(({ data, error }) => {
-      const temp = data as unknown as Omit<
-        typeof data,
-        'applications, recruiter_user'
-      > & {
+      const temp = data as unknown as Omit<typeof data, 'applications'> & {
         applications: (typeof data)['applications'];
-        recruiter_user: (typeof data)['recruiter_user'];
       };
       if (error) throw new Error(error.message);
       return temp;

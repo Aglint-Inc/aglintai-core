@@ -168,6 +168,7 @@ export * from "./McqQuestion";
 export * from "./MemberListCard";
 export * from "./MemberSlotInfo";
 export * from "./ModuleSetting";
+export * from "./MoveAssessment";
 export * from "./MutedShadowSession";
 export * from "./NavProfileBlock";
 export * from "./NextAssessmentPop";

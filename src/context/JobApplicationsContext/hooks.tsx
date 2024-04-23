@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
+import { TaskType } from '@/src/components/JobApplicationsDashboard/CandidateActions/CreateTask';
 import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
   checkSyncCand,
@@ -403,7 +404,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
-    task: boolean,
+    task: TaskType,
     purposes?: JobApplicationEmails['request']['purposes'],
     applicationIdSet?: Set<string>,
     updateAll: boolean = false,

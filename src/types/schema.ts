@@ -1813,6 +1813,7 @@ export type Database = {
           session_ids: Json[] | null
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
+          task_owner: string | null
           task_triggered: boolean | null
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1832,6 +1833,7 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
+          task_owner?: string | null
           task_triggered?: boolean | null
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1851,6 +1853,7 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
+          task_owner?: string | null
           task_triggered?: boolean | null
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1875,6 +1878,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "interview_filter_json"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_task_owner_fkey"
+            columns: ["task_owner"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
         ]
       }

@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { MoveAssessment } from "./MoveAssessment";
 import * as _utils from "./utils";
 import _styles from "./CandidateSelectionPopup.module.css";
 
@@ -15,6 +17,7 @@ export function CandidateSelectionPopup({
   isCheckVisible = true,
   textWarning = "By clicking 'Delete,' candidate will be removed from this job, and it cannot be undone.",
   isWarningVisible = false,
+  slotMoveAssessment,
 }) {
   return (
     <_Component
@@ -80,6 +83,9 @@ export function CandidateSelectionPopup({
             <_Builtin.Block tag="div">{textCheck}</_Builtin.Block>
           </_Builtin.Block>
         ) : null}
+        <_Builtin.Block tag="div">
+          {slotMoveAssessment ?? <MoveAssessment />}
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "cansel-buttons-wrapper")}
           tag="div"
