@@ -1,9 +1,11 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { TransformSchedule } from '../Modules/types';
+import { MemberType, TransformSchedule } from '../Modules/types';
 
 export const useScheduleDetails = () => {
   const router = useRouter();
@@ -52,3 +54,25 @@ async function getModule(module_id: string) {
   }
   if (error) throw Error(error.message);
 }
+
+export const useAllInterviewersDetails = () => {
+  const { recruiter_id } = useAuthDetails();
+  const query = useQuery({
+    queryKey: [`InterviewModulesDetails_${recruiter_id}`],
+    queryFn: () => {
+      return axios
+        .post('/api/scheduling/fetchUserDetails', {
+          recruiter_id,
+        })
+        .then((data) => {
+          const temp = data.data as unknown as MemberType[];
+          return temp;
+        });
+    },
+    enabled: Boolean(recruiter_id),
+    initialData: () => [] as unknown as MemberType[],
+    refetchOnWindowFocus: false,
+    // refetchOnMount: false,
+  });
+  return query;
+};
