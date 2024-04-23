@@ -194,55 +194,29 @@ export const addMemberbyUserIds = async ({
 };
 
 export const getMeetingsByModuleId = async (module_id: string) => {
-  const today = new Date();
-  const firstDayOfWeek = new Date(
-    today.setDate(today.getDate() - today.getDay() + 1),
-  );
-  const lastDayOfWeek = new Date(firstDayOfWeek);
-  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+  const firstDayOfWeek = dayjs().startOf('week').startOf('day').format();
+  const lastDayOfWeek = dayjs().endOf('week').endOf('day').format();
 
   const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
-    .select('*,interview_session!inner(*,interview_plan(*))')
+    .select(
+      '*,interview_session!inner(*,interview_plan(*),interview_meeting(*))',
+    )
     .eq('is_confirmed', true)
     .eq('interview_session.module_id', module_id as string)
-    .is('interview_session.interview_plan', null);
+    .is('interview_session.interview_plan', null)
+    .gte('interview_session.interview_meeting.start_time', firstDayOfWeek)
+    .lte('interview_session.interview_meeting.end_time', lastDayOfWeek);
 
   if (errSelRel) throw new Error(errSelRel.message);
-
-  const uniqueSessionIds = [
-    ...new Set(
-      intSesRel
-        .map((sesrel) => sesrel?.interview_session?.id)
-        .filter((id) => id),
-    ),
-  ];
-
-  const { data, error } = await supabase
-    .from('interview_session')
-    .select('*,interview_meeting!inner(*)')
-    .in('id', uniqueSessionIds)
-    .gte(
-      'interview_meeting.start_time',
-      firstDayOfWeek.toISOString().split('T')[0] + 'T00:00:00',
-    )
-    .lte(
-      'interview_meeting.end_time',
-      lastDayOfWeek.toISOString().split('T')[0] + 'T23:59:59',
-    );
-  // .or(
-  //   'interview_meeting.status.eq.confirmed,interview_meeting.status.eq.completed',
-  // );
 
   const resRel = intSesRel
     .map((sesRel) => ({
       ...sesRel,
-      interview_meeting: data.find((ses) => ses.id === sesRel?.session_id)
-        .interview_meeting,
+      interview_meeting: sesRel.interview_session.interview_meeting,
     }))
-    .filter((sesRel) => sesRel?.interview_meeting?.id);
+    .filter((ses) => Boolean(ses.interview_meeting));
 
-  if (error) throw new Error(error.message);
   return resRel;
 };
 
