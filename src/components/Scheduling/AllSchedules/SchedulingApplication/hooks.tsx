@@ -589,7 +589,7 @@ export const scheduleWithAgent = async ({
           const { data: task, error: errorTasks } = await supabase
             .from('new_tasks')
             .insert({
-              name: `Schedule an interview for ${selectedSessions.map((ses) => ses.name).join(' , ')} via phone`,
+              name: `Schedule an interview for ${selectedSessions.map((ses) => ses.name).join(' , ')} via ${type == 'email_agent' ? 'email' : 'phone'}`,
               application_id,
               created_by: rec_user_id,
               type: 'schedule',
