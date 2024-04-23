@@ -143,7 +143,7 @@ export const agentTrigger = async ({
           .replace('(', '')
           .replace(')', ''),
         // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
-        retell_agent_id: 'd874c616f28ef76fe4eefe45af69cda7',
+        retell_agent_id: process.env.RETELL_AGENT_ID,
         filter_json_id: filterJsonId,
         cand_email: rec_user_email,
         // cand_email: sessionsWithPlan.application.candidates.email,
