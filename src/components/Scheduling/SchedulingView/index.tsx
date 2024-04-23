@@ -89,6 +89,10 @@ function SchedulingViewComp() {
                           id: schedule?.interview_session.id,
                           title: schedule?.interview_session.name,
                           created_at: schedule?.interview_session.created_at,
+                          time: {
+                            start: schedule?.interview_meeting.start_time,
+                            end: schedule?.interview_meeting.end_time,
+                          },
                           status: schedule?.interview_meeting.status,
                         },
                       ]}

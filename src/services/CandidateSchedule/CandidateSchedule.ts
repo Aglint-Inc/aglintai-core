@@ -103,7 +103,7 @@ export class CandidatesScheduling {
   //   start of api funcs
 
   async fetchDetails() {
-    const meet_start_date = this.schedule_dates.user_end_date_js.subtract(
+    const meet_start_date = this.schedule_dates.user_start_date_js.subtract(
       7,
       'day',
     );
@@ -457,7 +457,7 @@ export class CandidatesScheduling {
           const meet_date = userTzDayjs(meet.meeting_date).tz(
             shedule_settings.timeZone.tzCode,
           );
-          return meet_date.isSame(current_day, 'date');
+          return meet_date.isSame(current_day, 'day');
         });
         const day_load = {
           total_interview: curr_day_meetings.reduce((sum, curr) => {
@@ -473,7 +473,6 @@ export class CandidatesScheduling {
         weekly_load.total_duration += curr_slot_load.total_duration;
         day_load.total_interview += curr_slot_load.total_interview;
         day_load.total_duration += curr_slot_load.total_duration;
-
         const week_limit = shedule_settings.interviewLoad.weeklyLimit;
         const day_limit = shedule_settings.interviewLoad.dailyLimit;
         if (week_limit.type === 'Hours') {

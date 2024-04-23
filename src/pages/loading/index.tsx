@@ -160,6 +160,7 @@ export default function Loading() {
               //   .eq('user_id', userDetails.user.id)
               //   .then(() => {});
               // //last login END
+
               if (data[0].role === 'interviewer') {
                 router.push(
                   localStorage.getItem('redirectURL') ||
