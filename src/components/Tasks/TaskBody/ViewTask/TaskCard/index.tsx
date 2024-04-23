@@ -170,6 +170,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             onChange={(assigner: any) => {
               createProgress(assigner);
             }}
+            isOptionList={task.status === 'not_started'}
+
           />
         }
         slotInterviewTaskPill={

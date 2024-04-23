@@ -12,10 +12,12 @@ function AssigneeList({
   selectedAssignee,
   setSelectedAssignee,
   onChange,
+  isOptionList = true,
 }: {
   selectedAssignee: assigneeType;
   setSelectedAssignee: (x: assigneeType) => void;
   onChange?: any;
+  isOptionList?: boolean;
 }) {
   const { assignerList } = useTaskStatesContext();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -47,7 +49,7 @@ function AssigneeList({
       </Stack>
       <Popover
         id={id}
-        open={open}
+        open={open && isOptionList}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
