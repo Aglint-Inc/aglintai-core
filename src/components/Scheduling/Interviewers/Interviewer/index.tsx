@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Drawer } from '@mui/material';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { MemberListCard, StatusBadge } from '@/devlink2';
@@ -23,6 +24,7 @@ import {
   useInterviewerSchedulesQuery,
 } from '@/src/pages/scheduling/interviewer/[member_id]';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -41,6 +43,7 @@ function Interviewer({
   setOpenDrawer: (x: boolean) => void;
   interviewerDetails: interviewerDetailsType;
 }) {
+  const router = useRouter();
   const { handelUpdateSchedule, handelRemoveMemberFormPanel } =
     useInterviewerContext();
   const { handelMemberUpdate } = useAuthDetails();
@@ -320,6 +323,15 @@ function Interviewer({
                           }));
                         },
                       }}
+                      onClickCard={{
+                        onClick: () => {
+                          router.push(
+                            pageRoutes.INTERVIEWMODULE +
+                              '/members' +
+                              `/${module.module_id}`,
+                          );
+                        },
+                      }}
                     />
                   );
                 })
@@ -541,6 +553,15 @@ function Interviewer({
                                   ?.noReverseShadow || 0,
                             },
                           });
+                        },
+                      }}
+                      onClickCard={{
+                        onClick: () => {
+                          router.push(
+                            pageRoutes.INTERVIEWMODULE +
+                              '/members' +
+                              `/${module.module_id}`,
+                          );
                         },
                       }}
                     />
