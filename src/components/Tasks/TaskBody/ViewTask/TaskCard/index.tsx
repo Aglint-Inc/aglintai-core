@@ -202,6 +202,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           <SelectStatus
             setSelectedStatus={setSelectedStatus}
             status={selectedStatus}
+            isOptionList={task.status === 'not_started'}
           />
         }
         isWhenToCallVisible={
