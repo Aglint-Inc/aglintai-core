@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       )
       .eq('status', 'scheduled')
       .or(`assignee.eq.{"${EmailAgentId}"},assignee.eq.{"${PhoneAgentId}"}`)
-      .lte('trigger_count', 2)
+      .lt('trigger_count', 2)
       .lt('start_date', new Date().toISOString())
       .order('created_by', {
         ascending: true,
