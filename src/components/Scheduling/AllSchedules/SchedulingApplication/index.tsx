@@ -388,10 +388,10 @@ function SchedulingApplication() {
                         id: item.id,
                         title: item.name,
                         created_at: item.created_at,
-                        status: item.interview_meeting.status,
+                        status: item.interview_meeting?.status,
                         time: {
-                          start: item.interview_meeting.start_time,
-                          end: item.interview_meeting.end_time,
+                          start: item.interview_meeting?.start_time,
+                          end: item.interview_meeting?.end_time,
                         },
                       }))}
                     />

@@ -269,7 +269,7 @@ const AdminFeedback = ({
           <>
             {Object.keys(sessions)
               .map((key) => {
-                const session = sessions[key] || [];
+                const session = sessions[String(key)] || [];
                 if (!session.length) return null;
                 return (
                   <GroupFeedback
@@ -641,7 +641,7 @@ const InterviewerFeedback = ({
           <>
             {Object.keys(sessions)
               .map((key) => {
-                const session = sessions[key] || [];
+                const session = sessions[String(key)] || [];
                 if (!session.length) return null;
                 return (
                   <GroupFeedback

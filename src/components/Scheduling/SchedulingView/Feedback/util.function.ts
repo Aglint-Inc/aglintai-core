@@ -27,6 +27,7 @@ export const getInterviewersRelations = async ({
   return await supabase
     .from('interview_session_relation')
     .select(' session_id, feedback, interview_module_relation(id,user_id)')
+    .eq('is_confirmed', true)
     .in('session_id', session_ids)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
