@@ -24,7 +24,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select(
         '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
-      .or('status.eq.not_started,status.eq.in_progress')
+      .eq('status', 'scheduled')
+      .or(`assignee.eq.{"${EmailAgentId}"},assignee.eq.{"${PhoneAgentId}"}`)
       .lte('trigger_count', 2)
       .lt('start_date', new Date().toISOString())
       .order('created_by', {
