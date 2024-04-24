@@ -70,6 +70,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         // You might want to handle errors here
         console.log(`${filterTaskAgent.length} applications triggered`);
+        return res
+          .status(200)
+          .send(`${filterTaskAgent.length} applications triggered`);
       } else {
         console.log('no applications');
         return res.status(200).send('no applications');
