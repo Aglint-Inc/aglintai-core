@@ -50,6 +50,7 @@ type FormFields = {
   last_name: FormValues;
   position: FormValues;
   phone: FormValues;
+  role: FormValues;
 };
 type PreferenceFormFields = {
   language: FormValues;
@@ -137,6 +138,14 @@ const ProfileDashboard = () => {
       blocked: false,
       required: false,
       placeholder: 'Enter your job title.',
+    },
+    role: {
+      ...initialFormValues,
+      value: capitalize(recruiterUser.role),
+      label: 'Role',
+      blocked: true,
+      required: false,
+      placeholder: 'Enter your role.',
     },
   };
   const initialEmail: EmailFormFields = {
