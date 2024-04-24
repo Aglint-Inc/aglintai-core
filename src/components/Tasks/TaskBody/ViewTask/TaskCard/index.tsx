@@ -21,7 +21,7 @@ import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import SelectStatus from '../../../Components/SelectStatus';
-import { useTaskStatesContext } from '../../../TaskStatesContext';
+import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
 import {
   assigneeType,
   createTaskProgress,
@@ -216,18 +216,27 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             <AssigneeList
               selectedAssignee={selectedAssignee}
               setSelectedAssignee={setSelectedAssignee}
-              onChange={(assigner: any) => {
+              onChange={(assigner: AssignerType) => {
                 // createProgress(assigner);
                 if (task.assignee[0] !== assigner.user_id) {
                   createTaskProgress({
+                    type: 'create_task',
                     data: {
                       task_id: router.query.task_id as string,
-                      title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
                       created_by: {
                         name: recruiterUser.first_name,
                         id: recruiterUser.user_id,
                       },
                       progress_type: 'standard',
+                    },
+                    optionData: {
+                      assignerName:
+                        assigner.first_name + ' ' + assigner.last_name,
+                      assignerId: assigner.user_id,
+                      creatorName:
+                        recruiterUser.first_name +
+                        ' ' +
+                        recruiterUser.last_name,
                     },
                   });
 
@@ -265,14 +274,18 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
 
               if (task.status !== status) {
                 createTaskProgress({
+                  type: 'status_update',
                   data: {
                     task_id: router.query.task_id as string,
-                    title: `Task status moved from <span class="${task.status}">${capitalizeAll(task.status.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span> `,
                     created_by: {
-                      name: recruiterUser.first_name,
-                      id: recruiterUser.user_id,
+                      name: recruiterUser.first_name as string,
+                      id: recruiterUser.user_id as string,
                     },
                     progress_type: 'standard',
+                  },
+                  optionData: {
+                    currentStatus: task.status,
+                    status: status,
                   },
                 });
               }

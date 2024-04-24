@@ -520,7 +520,7 @@ const getTasks = (
     });
 };
 
-const updateTask = ({
+export const updateTask = ({
   type,
   task,
 }:
