@@ -100,7 +100,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           schedule_date_range: { ...scheduleDate },
           priority: selectedPriority,
           status: selectedStatus,
-          assignee: [selectedAssignee.user_id],
+          assignee: [selectedAssignee?.user_id],
         },
       });
     }
@@ -171,8 +171,60 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotInterviewDate={
           <SelectScheduleDate
             scheduleDate={scheduleDate}
-            setScheduleDate={setScheduleDate}
             isOptionList={task.status === 'not_started'}
+            onChange={(e) => {
+              if (Array.isArray(e)) {
+                if (e[0] && e[1]) {
+                  setScheduleDate({ end_date: e[1], start_date: e[0] });
+                  createTaskProgress({
+                    type: 'schedule_date_update',
+                    data: {
+                      task_id: router.query.task_id as string,
+                      created_by: {
+                        name: recruiterUser.first_name,
+                        id: recruiterUser.user_id,
+                      },
+                      progress_type: 'standard',
+                    },
+                    optionData: {
+                      scheduleDateRange: {
+                        start_date: dayjs(e[0]).toString(),
+                        end_date: dayjs(e[1]).toString(),
+                      },
+                      prevScheduleDateRange: {
+                        start_date: task.schedule_date_range.start_date,
+                        end_date: task.schedule_date_range.end_date,
+                      },
+                    },
+                  });
+                }
+              }
+              if (!Array.isArray(e)) {
+                setScheduleDate({ start_date: e, end_date: null });
+
+                createTaskProgress({
+                  type: 'schedule_date_update',
+                  data: {
+                    task_id: router.query.task_id as string,
+                    created_by: {
+                      name: recruiterUser.first_name,
+                      id: recruiterUser.user_id,
+                    },
+                    progress_type: 'standard',
+                  },
+                  optionData: {
+                    scheduleDateRange: {
+                      start_date: dayjs(e).toString(),
+                      end_date: null,
+                    },
+                    prevScheduleDateRange: {
+                      start_date: task.schedule_date_range.start_date,
+                      end_date: task.schedule_date_range.end_date,
+                    },
+                  },
+                });
+              }
+            }}
           />
         }
         slotCreatedBy={

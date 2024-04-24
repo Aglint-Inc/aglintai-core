@@ -87,10 +87,15 @@ function CreateTask({
         slotInterviewDate={
           <SelectScheduleDate
             scheduleDate={scheduleDate}
-            setScheduleDate={setScheduleDate}
-            onChange={(e) => {
-              if (Array.isArray(e)) setSelectCallDate(dayjs(e[0]).toString());
-              else setSelectCallDate(dayjs(e).toString());
+            onChange={(e: any) => {
+              if (Array.isArray(e) && e[0] && e[1]) {
+                setScheduleDate({ start_date: e[0], end_date: e[1] });
+                setSelectCallDate(dayjs(e[0]).toString());
+              }
+              if (!Array.isArray(e)) {
+                setScheduleDate({ start_date: e, end_date: null });
+                setSelectCallDate(dayjs(e).toString());
+              }
             }}
           />
         }
