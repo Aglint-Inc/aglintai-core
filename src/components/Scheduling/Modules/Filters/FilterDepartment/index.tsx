@@ -1,17 +1,18 @@
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
+import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-import { setDepartment, useFilterModuleStore } from '../../filter-store';
+import { setDepartments, useFilterModuleStore } from '../../filter-store';
 
 function FilterDepartment() {
   const { recruiter } = useAuthDetails();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
-  const department = useFilterModuleStore((state) => state.department);
+  const departments = useFilterModuleStore((state) => state.departments);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,37 +26,44 @@ function FilterDepartment() {
   const id = open ? 'filter-status' : undefined;
 
   const handleFilterClick = (label) => {
-    if (department !== label) {
-      setDepartment(label);
+    if (departments.includes(label)) {
+      setDepartments(departments.filter((l) => l != label));
     } else {
-      setDepartment('');
+      setDepartments([...departments, label]);
     }
   };
 
   const renderStatus = (label: string) => {
     return (
-      <Typography
-        key={label}
-        sx={{
-          fontSize: '14px',
-          fontWeight: 600,
-          cursor: 'pointer',
-          bgcolor: department === label ? 'grey.200' : '',
-          borderRadius: '4px',
-          p: 0.8,
-        }}
-        onClick={() => handleFilterClick(label)}
-      >
-        {label}
-      </Typography>
+      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+        <Checkbox
+          isChecked={departments.includes(label)}
+          onClickCheck={{
+            onClick: () => {
+              handleFilterClick(label);
+            },
+          }}
+        />
+        <Typography
+          key={label}
+          sx={{
+            fontSize: '14px',
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+          onClick={() => handleFilterClick(label)}
+        >
+          {label}
+        </Typography>
+      </Stack>
     );
   };
 
   return (
     <>
       <ButtonFilter
-        isActive={Boolean(department)}
-        isDotVisible={Boolean(department)}
+        isActive={departments.length > 0}
+        isDotVisible={departments.length > 0}
         onClickStatus={{
           id: 'department' + 'click',
           onClick: handleClick,
@@ -99,14 +107,14 @@ function FilterDepartment() {
       >
         <FilterDropdown
           slotOption={
-            <Stack maxHeight={'50vh'} overflow={'auto'}>
+            <Stack maxHeight={'50vh'} overflow={'auto'} spacing={1.5}>
               {recruiter.departments.map((item) => renderStatus(item))}
             </Stack>
           }
           isRemoveVisible={false}
           onClickReset={{
             onClick: () => {
-              setDepartment('');
+              setDepartments(['']);
             },
           }}
         />

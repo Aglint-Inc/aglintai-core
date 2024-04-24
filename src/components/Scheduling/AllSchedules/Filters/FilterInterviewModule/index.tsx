@@ -68,6 +68,7 @@ function FilterInterviewModule() {
           </Stack>
         }
         isDotVisible={filter.module_ids.length > 0}
+        isActive={filter.module_ids.length > 0}
         onClickStatus={{
           id: FilterType.interviewPanels + 'click',
           onClick: handleClick,
@@ -110,35 +111,40 @@ function FilterInterviewModule() {
         }}
       >
         <FilterDropdown
-          slotOption={allModules?.map((mod) => {
-            return (
-              <Stack
-                key={mod.id}
-                direction={'row'}
-                sx={{ alignItems: 'center' }}
-                spacing={1}
-              >
-                <Checkbox
-                  isChecked={filter.module_ids.includes(mod.id)}
-                  onClickCheck={{
-                    onClick: () => {
-                      handleFilterClick(mod.id);
-                    },
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => handleFilterClick(mod.id)}
-                >
-                  {mod.name}
-                </Typography>
-              </Stack>
-            );
-          })}
+          slotOption={
+            <>
+              {allModules?.map((mod) => {
+                return (
+                  <Stack
+                    key={mod.id}
+                    direction={'row'}
+                    sx={{ alignItems: 'center' }}
+                    spacing={1}
+                  >
+                    <Checkbox
+                      isChecked={filter.module_ids.includes(mod.id)}
+                      onClickCheck={{
+                        onClick: () => {
+                          handleFilterClick(mod.id);
+                        },
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleFilterClick(mod.id)}
+                    >
+                      {mod.name}
+                    </Typography>
+                  </Stack>
+                );
+              })}
+              {allModules.length === 0 && 'No Interview Types'}
+            </>
+          }
           onClickDelete={{
             onClick: () => {
               setFilter({ module_ids: [] });

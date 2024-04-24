@@ -120,6 +120,7 @@ function FilterCordinator() {
             </svg>
           </Stack>
         }
+        isActive={filter.coordinator_ids.length > 0}
         isDotVisible={filter.coordinator_ids.length > 0}
         onClickStatus={{
           id: FilterType.coordinator + 'click',

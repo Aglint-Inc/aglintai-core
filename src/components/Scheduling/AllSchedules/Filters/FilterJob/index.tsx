@@ -143,6 +143,7 @@ function FilterJob() {
                   </Stack>
                 );
               })}
+              {allJobs.length === 0 && 'No Jobs'}
             </Stack>
           }
           onClickDelete={{

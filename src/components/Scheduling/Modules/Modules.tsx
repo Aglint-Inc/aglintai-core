@@ -26,7 +26,7 @@ import { customSortModules } from './utils';
 export function Modules() {
   const router = useRouter();
   const textSearch = useFilterModuleStore((state) => state.textSearch);
-  const department = useFilterModuleStore((state) => state.department);
+  const departments = useFilterModuleStore((state) => state.departments);
   const createdBy = useFilterModuleStore((state) => state.created_by);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
   const [showArchive, setShowArchive] = useState(false);
@@ -34,7 +34,8 @@ export function Modules() {
   const filterModules = allModules
     .filter((mod) => {
       return (
-        (!department || mod.interview_modules.department === department) &&
+        (departments.length === 0 ||
+          departments.includes(mod.interview_modules.department)) &&
         (createdBy.length == 0 ||
           createdBy.includes(mod.interview_modules.created_by)) &&
         (!textSearch ||
