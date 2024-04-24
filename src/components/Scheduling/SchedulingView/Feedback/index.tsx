@@ -1,4 +1,5 @@
 import { Dialog, Stack, Typography } from '@mui/material';
+// import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 
@@ -234,16 +235,21 @@ const AdminFeedback = ({
 
   const [edit, setEdit] = useState(false);
 
-  const handelFeedbackRequest = ({
+  const handelFeedbackRequest = async ({
     e,
     session_id,
     relation_id,
+    email,
   }: {
     e: MouseEvent;
     session_id: string;
     relation_id: string;
+    email: string;
   }) => {
     e.stopPropagation();
+
+    await requestFeedback(email);
+
     return handelSubmit({
       session_id: session_id,
       relation_id: relation_id,
@@ -269,7 +275,7 @@ const AdminFeedback = ({
           <>
             {Object.keys(sessions)
               .map((key) => {
-                const session = sessions[String(key)] || [];
+                const session = sessions[key] || [];
                 if (!session.length) return null;
                 return (
                   <GroupFeedback
@@ -342,6 +348,7 @@ const AdminFeedback = ({
                                     e,
                                     session_id: int.session.id,
                                     relation_id: int.relation_id,
+                                    email: int.email,
                                   }),
                               }}
                               onClickResendRequest={{
@@ -350,6 +357,7 @@ const AdminFeedback = ({
                                     e,
                                     session_id: int.session.id,
                                     relation_id: int.relation_id,
+                                    email: int.email,
                                   }),
                               }}
                               textSessionTitle={
@@ -484,6 +492,7 @@ const AdminFeedback = ({
                             selectedInterviewer.interviewer.session.id,
                           relation_id:
                             selectedInterviewer.interviewer.relation_id,
+                          email: selectedInterviewer.interviewer.email,
                         }).then(() => {
                           const temp = selectedInterviewer;
                           temp.interviewer.feedback = {
@@ -501,6 +510,7 @@ const AdminFeedback = ({
                             selectedInterviewer.interviewer.session.id,
                           relation_id:
                             selectedInterviewer.interviewer.relation_id,
+                          email: selectedInterviewer.interviewer.email,
                         }).then(() => {
                           const temp = selectedInterviewer;
                           temp.interviewer.feedback = {
@@ -641,7 +651,7 @@ const InterviewerFeedback = ({
           <>
             {Object.keys(sessions)
               .map((key) => {
-                const session = sessions[String(key)] || [];
+                const session = sessions[key] || [];
                 if (!session.length) return null;
                 return (
                   <GroupFeedback
@@ -976,4 +986,10 @@ const FeedbackForm = ({
       }
     />
   );
+};
+
+const requestFeedback = (email: string) => {
+  email;
+  return true;
+  // return axios.post('', { email }).then(() => true);
 };
