@@ -82,7 +82,9 @@ function AssigneeList({
                 onClick={() => {
                   setSelectedAssignee(ele);
                   handleClose();
-                  onChange(ele);
+                  if (onChange) {
+                    onChange(ele);
+                  }
                 }}
               >
                 <AssigneeChip assigneeId={ele.user_id} />

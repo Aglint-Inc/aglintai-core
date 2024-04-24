@@ -1879,13 +1879,6 @@ export type Database = {
             referencedRelation: "interview_filter_json"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "public_new_tasks_task_owner_fkey"
-            columns: ["task_owner"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       new_tasks_progress: {

@@ -10,11 +10,11 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
 function SelectDateTime({
-  selectTriggerTime,
-  setSelectTriggerTime,
+  selectCallDate,
+  setSelectCallDate,
 }: {
-  selectTriggerTime: string;
-  setSelectTriggerTime: (x: string) => void;
+  selectCallDate: string;
+  setSelectCallDate: (x: string) => void;
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -31,7 +31,7 @@ function SelectDateTime({
   return (
     <>
       <Stack onClick={handleClick}>
-        {`${dayjs(selectTriggerTime).format('DD MMM YYYY, hh:mm')}`}
+        {`${dayjs(selectCallDate).format('DD MMM YYYY, hh:mm')}`}
       </Stack>
       <Popover
         id={id}
@@ -68,9 +68,9 @@ function SelectDateTime({
               },
             }}
             disablePast
-            value={dayjs(selectTriggerTime)}
+            value={dayjs(selectCallDate)}
             onAccept={(e: any) => {
-              setSelectTriggerTime(String(new Date(e)));
+              setSelectCallDate(String(new Date(e)));
               setAnchorEl(null);
             }}
             shouldDisableDate={(date) => {

@@ -29,7 +29,7 @@ function GroupSections({
   const [sectionIndex, setSectionIndex] = useState(true);
 
   return (
-    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={60}>
+    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={47}>
       <TaskTableJobCard
         onClickDropIcon={{
           onClick: () => {
