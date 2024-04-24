@@ -38,6 +38,12 @@ import {
   fetch_details_from_db,
   UserMeetingDetails,
 } from './utils/fetch_details_from_db';
+import {
+  dayjsMax,
+  isTimeChunksEnclosed,
+  isTimeChunksLeftOverlapped,
+  isTimeChunksOverLapps,
+} from './utils/time_range_utils';
 import { userTzDayjs } from './utils/userTzDayjs';
 userTzDayjs.extend(isSameOrAfter);
 userTzDayjs.extend(isSameOrBefore);
@@ -326,14 +332,7 @@ export class CandidatesScheduling {
       this.schedule_dates.user_end_date_js.format(),
       [],
     );
-    // const common_time = this.findCommonTimeRange(
-    //   s.map((i) => ({
-    //     inter_id: i.interviewer_id,
-    //     interviewer_pause: null,
-    //     time_ranges: i.freeTimes,
-    //   })),
-    // );
-    return s[0].freeTimes;
+    return { email: s[0].email, free_times: s[0].freeTimes };
   }
   //   end of api funcs
 
@@ -406,7 +405,7 @@ export class CandidatesScheduling {
     ): TimeDurationType => {
       const { shedule_settings, email } = interv;
       let curr_user_time = userTzDayjs().tz(shedule_settings.timeZone.tzCode);
-      //current day is before actual curr day
+      // current day is before actual curr day
       if (current_day.isBefore(curr_user_time, 'day')) {
         return null;
       }
@@ -544,7 +543,7 @@ export class CandidatesScheduling {
       if (minutes % 5 !== 0) {
         minutes += 5 - (minutes % 5);
       }
-      curr_time = curr_time.set('minutes', minutes);
+      curr_time = curr_time.set('minutes', minutes).set('seconds', 0);
       return curr_time;
     };
 
@@ -637,16 +636,7 @@ export class CandidatesScheduling {
               },
             );
 
-            if (is_event_free_time) return false;
-
-            return (
-              day1_interviewer_time.startTime.isSameOrBefore(
-                cal_event.start.dateTime,
-              ) &&
-              day2_interviewer_time.endTime.isSameOrAfter(
-                cal_event.start.dateTime,
-              )
-            );
+            return !is_event_free_time;
           })
           .map((ev) => {
             return {
@@ -681,10 +671,76 @@ export class CandidatesScheduling {
       work_hours_range: TimeDurationType[],
       curr_day_blocked_times: TimeDurationDayjsType[],
     ): TimeDurationType[] => {
-      const work_hours = cloneDeep(work_hours_range);
-      if (curr_day_blocked_times.length === 0) {
-        return work_hours;
-      }
+      const sorted_blocked_times: TimeDurationDayjsType[] =
+        curr_day_blocked_times.sort((e1, e2) => {
+          return e1.startTime.diff(e2.startTime);
+        });
+
+      const getFreeTimeChunkForWorkHrChunk = (
+        workhr_chunk: TimeDurationDayjsType,
+      ): TimeDurationDayjsType[] => {
+        const curr_blocked_times = sorted_blocked_times.filter(
+          (blocked_chunk) => {
+            return isTimeChunksOverLapps(blocked_chunk, workhr_chunk);
+          },
+        );
+
+        if (curr_blocked_times.length === 0) {
+          return [{ ...workhr_chunk }];
+        }
+
+        let prev_blocked_chunk: TimeDurationDayjsType = {
+          startTime: curr_blocked_times[0].startTime,
+          endTime: curr_blocked_times[0].endTime,
+        };
+
+        let free_time_chunks: TimeDurationDayjsType[] = [];
+
+        if (
+          prev_blocked_chunk.startTime.isAfter(
+            workhr_chunk.startTime,
+            'minutes',
+          )
+        ) {
+          free_time_chunks.push({
+            startTime: workhr_chunk.startTime,
+            endTime: prev_blocked_chunk.startTime,
+          });
+        }
+        for (let curr_blocked_chunk of curr_blocked_times.slice(1)) {
+          if (!isTimeChunksOverLapps(prev_blocked_chunk, curr_blocked_chunk)) {
+            free_time_chunks.push({
+              startTime: prev_blocked_chunk.endTime,
+              endTime: curr_blocked_chunk.startTime,
+            });
+
+            prev_blocked_chunk = {
+              ...curr_blocked_chunk,
+            };
+          } else if (
+            isTimeChunksLeftOverlapped(prev_blocked_chunk, curr_blocked_chunk)
+          ) {
+            prev_blocked_chunk.endTime = dayjsMax(
+              prev_blocked_chunk.endTime,
+              curr_blocked_chunk.endTime,
+            );
+          } else if (
+            isTimeChunksEnclosed(prev_blocked_chunk, curr_blocked_chunk)
+          ) {
+            // nothing to do
+          }
+        }
+        if (
+          prev_blocked_chunk.endTime.isBefore(workhr_chunk.endTime, 'minutes')
+        ) {
+          free_time_chunks.push({
+            startTime: prev_blocked_chunk.endTime,
+            endTime: workhr_chunk.endTime,
+          });
+        }
+
+        return free_time_chunks;
+      };
 
       const work_hr_chunks: TimeDurationDayjsType[] = work_hours_range
         .map((work) => {
@@ -697,190 +753,17 @@ export class CandidatesScheduling {
           return e1.startTime.diff(e2.startTime);
         });
 
-      const cal_events_times: TimeDurationDayjsType[] =
-        curr_day_blocked_times.sort((e1, e2) => {
-          return e1.startTime.diff(e2.startTime);
-        });
+      let free_times_dayjs: TimeDurationDayjsType[] = [];
 
-      const free_times: TimeDurationType[] = [];
-
-      let workhr_idx = 0;
-      let cal_evt_idx = 0;
-      let curr_freetime_chunk: TimeDurationDayjsType = {
-        startTime: work_hr_chunks[0].startTime,
-        endTime: work_hr_chunks[0].endTime,
-      };
-
-      while (
-        workhr_idx < work_hr_chunks.length &&
-        cal_evt_idx < cal_events_times.length
-      ) {
-        // case 1
-        if (
-          curr_freetime_chunk.startTime.isAfter(
-            cal_events_times[cal_evt_idx].endTime,
-            'minutes',
-          )
-        ) {
-          cal_evt_idx++;
-        }
-
-        // case 2
-        else if (
-          curr_freetime_chunk.endTime.isSameOrBefore(
-            cal_events_times[cal_evt_idx].startTime,
-            'minutes',
-          )
-        ) {
-          free_times.push({
-            startTime: curr_freetime_chunk.startTime.format(),
-            endTime: curr_freetime_chunk.endTime.format(),
-          });
-          workhr_idx++;
-          if (workhr_idx < work_hr_chunks.length) {
-            curr_freetime_chunk = {
-              startTime: work_hr_chunks[workhr_idx].startTime,
-              endTime: work_hr_chunks[workhr_idx].endTime,
-            };
-          }
-        }
-
-        // case 3
-        else if (
-          curr_freetime_chunk.startTime.isSameOrAfter(
-            cal_events_times[cal_evt_idx].startTime,
-          ) &&
-          curr_freetime_chunk.endTime.isSameOrAfter(
-            cal_events_times[cal_evt_idx].endTime,
-          )
-        ) {
-          curr_freetime_chunk.startTime = cal_events_times[cal_evt_idx].endTime;
-          cal_evt_idx++;
-        }
-
-        // case 4
-        else if (
-          curr_freetime_chunk.startTime.isSameOrBefore(
-            cal_events_times[cal_evt_idx].startTime,
-            'minutes',
-          ) &&
-          curr_freetime_chunk.endTime.isSameOrBefore(
-            cal_events_times[cal_evt_idx].endTime,
-            'minutes',
-          )
-        ) {
-          free_times.push({
-            startTime: curr_freetime_chunk.startTime.format(),
-            endTime: cal_events_times[cal_evt_idx].startTime.format(),
-          });
-          workhr_idx++;
-          if (workhr_idx < work_hr_chunks.length) {
-            curr_freetime_chunk = {
-              startTime: work_hr_chunks[workhr_idx].startTime,
-              endTime: work_hr_chunks[workhr_idx].endTime,
-            };
-          }
-          cal_evt_idx++;
-        }
-
-        // case 5
-        else if (
-          curr_freetime_chunk.startTime.isSameOrAfter(
-            cal_events_times[cal_evt_idx].startTime,
-            'minutes',
-          ) &&
-          curr_freetime_chunk.endTime.isSameOrBefore(
-            cal_events_times[cal_evt_idx].endTime,
-            'minutes',
-          )
-        ) {
-          workhr_idx++;
-          if (workhr_idx < work_hr_chunks.length) {
-            curr_freetime_chunk = {
-              startTime: work_hr_chunks[workhr_idx].startTime,
-              endTime: work_hr_chunks[workhr_idx].endTime,
-            };
-          }
-        }
-        // case 6
-        else if (
-          curr_freetime_chunk.startTime.isBefore(
-            cal_events_times[cal_evt_idx].startTime,
-            'minutes',
-          ) &&
-          curr_freetime_chunk.endTime.isAfter(
-            cal_events_times[cal_evt_idx].endTime,
-            'minutes',
-          )
-        ) {
-          free_times.push({
-            startTime: curr_freetime_chunk.startTime.format(),
-            endTime: cal_events_times[cal_evt_idx].startTime.format(),
-          });
-          curr_freetime_chunk.startTime = cal_events_times[cal_evt_idx].endTime;
-
-          cal_evt_idx++;
-        }
-
-        // case 7
-        else if (
-          curr_freetime_chunk.startTime.isSame(
-            cal_events_times[cal_evt_idx].startTime,
-            'minutes',
-          ) &&
-          curr_freetime_chunk.endTime.isSame(
-            cal_events_times[cal_evt_idx].endTime,
-            'minutes',
-          )
-        ) {
-          workhr_idx++;
-          if (workhr_idx < work_hr_chunks.length) {
-            curr_freetime_chunk = {
-              startTime: work_hr_chunks[workhr_idx].startTime,
-              endTime: work_hr_chunks[workhr_idx].endTime,
-            };
-          }
-          cal_evt_idx++;
-        }
-
-        // if (
-        //   cal_events_times[cal_evt_idx].startTime.isSameOrBefore(
-        //     curr_freetime_chunk.startTime,
-        //     'minutes',
-        //   ) &&
-        //   cal_events_times[cal_evt_idx].endTime.isSameOrBefore(
-        //     curr_freetime_chunk.endTime,
-        //     'minutes',
-        //   )
-        // ) {
-        //   cal_evt_idx++;
-        // }
-
-        // if (
-        //   cal_events_times[cal_evt_idx].startTime.isAfter(
-        //     work_hr_chunks[workhr_idx].startTime,
-        //     'minutes',
-        //   ) &&
-        //   cal_events_times[cal_evt_idx].endTime.isSameOrBefore(
-        //     work_hr_chunks[workhr_idx].endTime,
-        //     'minutes',
-        //   )
-        // ) {
-        //   //
-        // }
+      for (let workhr_chunk of work_hr_chunks) {
+        const curr_free_chunks = getFreeTimeChunkForWorkHrChunk(workhr_chunk);
+        free_times_dayjs = [...free_times_dayjs, ...curr_free_chunks];
       }
-      if (workhr_idx < work_hours_range.length) {
-        free_times.push({
-          startTime: curr_freetime_chunk.startTime.format(),
-          endTime: curr_freetime_chunk.endTime.format(),
-        });
-        for (let i = workhr_idx + 1; i < work_hr_chunks.length; ++i) {
-          free_times.push({
-            startTime: work_hr_chunks[i].startTime.format(),
-            endTime: work_hr_chunks[i].endTime.format(),
-          });
-        }
-      }
+
+      const free_times: TimeDurationType[] = free_times_dayjs.map((chunk) => ({
+        startTime: chunk.startTime.format(),
+        endTime: chunk.endTime.format(),
+      }));
 
       return free_times;
     };
@@ -1390,12 +1273,13 @@ export class CandidatesScheduling {
         return final_combs;
       }
 
-      const curr_time = userTzDayjs()
-        .tz(this.api_payload.user_tz)
-        .startOf('day');
-      if (curr_time.format('DD/MM/YYYY') === curr_date.format('DD/MM/YYYY')) {
-        return [];
-      }
+      // const curr_time = userTzDayjs()
+      //   .tz(this.api_payload.user_tz)
+      //   .startOf('day');
+
+      // if (curr_time.format('DD/MM/YYYY') === curr_date.format('DD/MM/YYYY')) {
+      //   return [];
+      // }
       // if (dayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
       //   return [];
       // }
