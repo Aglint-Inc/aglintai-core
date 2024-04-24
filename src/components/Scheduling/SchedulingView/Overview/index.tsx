@@ -64,7 +64,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
   if (!schedule) {
     return null;
   }
-  const { candidates, schedule: scheduleDetails, users } = schedule;
+  const { candidates, users } = schedule;
 
   const qualifiedMembers = users.filter(
     (item) => item.interviewer_type === 'qualified',
@@ -242,7 +242,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
             isPanelIconVisible={
               schedule.interview_session.session_type === 'panel'
             }
-            textTitle={scheduleDetails.schedule_name}
+            textTitle={schedule.interview_session.name}
             textStatus={capitalize(schedule.interview_meeting.status)}
             textDate={dayjs(schedule.interview_meeting.end_time).format('DD')}
             textDay={dayjs(schedule.interview_meeting.end_time).format('ddd')}
