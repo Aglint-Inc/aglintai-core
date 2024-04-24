@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
-import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import { TaskType } from '@/src/components/JobApplicationsDashboard/CandidateActions/CreateTask';
@@ -128,13 +127,15 @@ const reducer = (state: JobApplicationsData, action: Action) => {
 };
 
 const useProviderJobApplicationActions = (job_id: string = undefined) => {
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const {
+    recruiter,
+    recruiterUser,
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+  } = useAuthDetails();
 
   const router = useRouter();
-
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
   const { handleJobRefresh, jobPolling } = useJobDetails();
@@ -281,7 +282,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           return { confirmation: true, filteredCount };
         }
         if (initialLoad) handleJobApplicationError(error);
-      } else handleJobApplicationError('Something went wrong');
+      } else handleJobApplicationError('Unable to fetch applications');
       return {
         confirmation: false,
         filteredCount: null as CountJobs,

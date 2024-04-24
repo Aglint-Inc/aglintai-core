@@ -86,7 +86,7 @@ import InterviewScore, {
 // } from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
 import CopyWrapper from '../../Common/Wrappers/copyWrapper';
-import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
+// import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
 import {
@@ -121,12 +121,13 @@ const ApplicationDetails = ({
   const [drawerOpen, setDrawerOpen] = useState(open);
 
   const candidateImage = application ? (
-    <RedirectWrapper
-      toast='Open application in Supabase'
-      primaryUrl={`https://supabase.com/dashboard/project/plionpfmgvenmdwwjzac/editor/232210?filter=id:eq:${application.id}`}
-    >
-      <CandidateAvatar application={application} fontSize={12} />
-    </RedirectWrapper>
+    // <RedirectWrapper
+    //   toast='Open application in Supabase'
+    //   primaryUrl={`https://supabase.com/dashboard/project/plionpfmgvenmdwwjzac/editor/232210?filter=id:eq:${application.id}`}
+    // >
+    //   <CandidateAvatar application={application} fontSize={12} />
+    // </RedirectWrapper>
+    <CandidateAvatar application={application} fontSize={12} />
   ) : (
     <></>
   );
