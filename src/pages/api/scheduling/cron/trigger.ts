@@ -24,13 +24,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select(
         '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
+      .or('status.eq.not_started,status.eq.in_progress')
       .lte('trigger_count', 2)
       .lt('start_date', new Date().toISOString())
-      .eq('status', 'not_started')
       .order('created_by', {
         ascending: true,
       });
-      
+
     console.log(data);
 
     if (error) {
