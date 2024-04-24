@@ -91,7 +91,7 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
   };
 }
 // end
-type ProgressType = 'status_update' | 'create_task';
+type ProgressType = 'status_update' | 'create_task' | 'schedule_date_update';
 // assignerId,
 // assignerName,
 // creatorName,
@@ -104,6 +104,14 @@ type optionDataType = {
   currentStatus?: DatabaseEnums['task_status'];
   status?: DatabaseEnums['task_status'];
   supabse?: Supabase;
+  scheduleDateRange?: {
+    start_date: string | null;
+    end_date: string | null;
+  };
+  prevScheduleDateRange?: {
+    start_date: string | null;
+    end_date: string | null;
+  };
 };
 
 export async function createTaskProgress({
@@ -125,8 +133,15 @@ export async function createTaskProgress({
   };
   supabaseCaller?: ReturnType<typeof createServerClient<Database>>;
 }) {
-  var { assignerId, assignerName, creatorName, currentStatus, status } =
-    optionData;
+  var {
+    assignerId,
+    assignerName,
+    creatorName,
+    currentStatus,
+    status,
+    scheduleDateRange,
+    prevScheduleDateRange,
+  } = optionData;
 
   const progressTitle = (cusType) => {
     switch (cusType) {
@@ -134,8 +149,10 @@ export async function createTaskProgress({
         return `Task status moved from <span class="${currentStatus}">${capitalizeAll(currentStatus.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span>`;
       case 'create_task':
         return `Task assigned to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span> by <span class="mention">@${creatorName}</span>`;
+      case 'schedule_date_update':
+        return `Schedule time changed from <span class="progress_date_section"> ${dayjs(prevScheduleDateRange.start_date).format('DD MMM')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('DD MMM') : ''}</span> to <span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('DD MMM')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('DD MMM') : ''}</span>`;
       default:
-        return 'Invalid type';
+        return '';
     }
   };
 

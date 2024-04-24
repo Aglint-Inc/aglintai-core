@@ -437,8 +437,15 @@ function AddNewTask() {
               }
               slotInterviewDate={
                 <SelectScheduleDate
-                  setScheduleDate={setScheduleDate}
                   scheduleDate={scheduleDate}
+                  onChange={(e: any) => {
+                    if (Array.isArray(e) && e[0] && e[1]) {
+                      setScheduleDate({ start_date: e[0], end_date: e[1] });
+                    }
+                    if (!Array.isArray(e)) {
+                      setScheduleDate({ start_date: e, end_date: null });
+                    }
+                  }}
                 />
               }
               slotCreatedBy={

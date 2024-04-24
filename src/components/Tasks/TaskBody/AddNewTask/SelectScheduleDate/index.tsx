@@ -12,12 +12,10 @@ import DateRange from '../../../Components/DateRange';
 
 function SelectScheduleDate({
   scheduleDate,
-  setScheduleDate,
   isOptionList = true,
   onChange,
 }: {
   scheduleDate: { start_date: string; end_date: string };
-  setScheduleDate: (x: { start_date: string; end_date: string }) => void;
   isOptionList?: boolean;
   onChange?: any;
 }) {
@@ -85,10 +83,6 @@ function SelectScheduleDate({
           onClickSpecificDate={{
             onClick: () => {
               setRangeActive(false);
-              setScheduleDate({
-                start_date: String(new Date()),
-                end_date: null,
-              });
             },
           }}
           isInDateRangeActive={rangeActive}
@@ -99,7 +93,6 @@ function SelectScheduleDate({
                 <ShowCode.When isTrue={rangeActive}>
                   <DateRange
                     onChange={(e) => {
-                      setScheduleDate({ start_date: e[0], end_date: e[1] });
                       if (onChange) {
                         onChange(e);
                       }
@@ -115,8 +108,8 @@ function SelectScheduleDate({
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                       disablePast
+                      value={dayjs(scheduleDate.start_date)}
                       onChange={(e) => {
-                        setScheduleDate({ start_date: e, end_date: null });
                         if (onChange) {
                           onChange(e);
                         }
