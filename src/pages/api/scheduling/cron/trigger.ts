@@ -63,17 +63,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 rec_user_id: task.recruiter_user.user_id,
                 user_tz: 'Asia/Calcutta',
               } as ApiBodyParamsScheduleAgent);
-
-              console.log(`number of task triggered ${filterTaskAgent.length}`);
-
-              return res.status(200).send('success');
             } catch (error) {
               console.error('Error for application:', error.message);
-              return res.status(400).send(JSON.stringify(error.message));
-              // You might want to handle errors here
             }
           }),
         );
+        // You might want to handle errors here
+        console.log(`${filterTaskAgent.length} applications triggered`);
       } else {
         console.log('no applications');
         return res.status(200).send('no applications');
