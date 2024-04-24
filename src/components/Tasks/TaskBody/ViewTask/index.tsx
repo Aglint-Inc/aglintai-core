@@ -141,7 +141,7 @@ function ViewTaskDrawer() {
                 minRows={1}
                 maxRows={3}
                 fullWidth
-                defaultValue={selectedTask?.name}
+                value={selectedTask?.name}
                 sx={{
                   '& .MuiInputBase-root': {
                     border: 'none',
