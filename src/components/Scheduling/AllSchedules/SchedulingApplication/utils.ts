@@ -906,14 +906,13 @@ export const agentTrigger = async ({
     return res.status;
   } else if (type === 'phone_agent') {
     const res = await axios.post(
-      'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
-      // `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
+      // 'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
+      `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
       {
         begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
         interviewer_name: recruiter_user_name,
         // to_phone_no: '+919482306657',
         from_phone_no: '+12512066348',
-        // to_phone_no: '+919482306657',
         to_phone_no: rec_user_phone
           .replace(' ', '')
           .replace('-', '')
