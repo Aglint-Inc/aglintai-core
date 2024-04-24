@@ -36,8 +36,8 @@ function CreateTask({
   setTask: Dispatch<SetStateAction<TaskType>>;
 }) {
   const [scheduleDate, setScheduleDate] = useState({
-    start_date: new Date().toString(),
-    end_date: new Date().toString(),
+    start_date: dayjs().toString(),
+    end_date: dayjs().toString(),
   });
 
   const [selectedSession, setSelectedSession] = useState<
@@ -54,6 +54,9 @@ function CreateTask({
     },
   } = useJobInterviewPlan();
 
+  useEffect(() => {
+    setSelectedSession(interview_session.slice(0, 2));
+  }, [interview_session]);
   useEffect(() => {
     if (
       (selectedAssignee?.user_id ?? null) &&
@@ -89,11 +92,17 @@ function CreateTask({
             scheduleDate={scheduleDate}
             onChange={(e: any) => {
               if (Array.isArray(e) && e[0] && e[1]) {
-                setScheduleDate({ start_date: e[0], end_date: e[1] });
+                setScheduleDate({
+                  start_date: dayjs(e[0]).toString(),
+                  end_date: dayjs(e[1]).toString(),
+                });
                 setSelectCallDate(dayjs(e[0]).toString());
               }
               if (!Array.isArray(e)) {
-                setScheduleDate({ start_date: e, end_date: null });
+                setScheduleDate({
+                  start_date: dayjs(e).toString(),
+                  end_date: null,
+                });
                 setSelectCallDate(dayjs(e).toString());
               }
             }}

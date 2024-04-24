@@ -235,7 +235,7 @@ const getSubTitle = (
       case JobApplicationSections.ASSESSMENT:
         return `Proceed to send an assessment email to ${name}`;
       case JobApplicationSections.INTERVIEW:
-        return `Create a task on this action.`;
+        return `Create scheduling task.`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to ${name}`;
       default:
@@ -253,7 +253,7 @@ const getSubTitle = (
           count !== 1 ? 's' : ''
         }`;
       case JobApplicationSections.INTERVIEW:
-        return `Create a task on this action.`;
+        return `Create scheduling task.`;
       case JobApplicationSections.DISQUALIFIED:
         return `Proceed to send a rejection email to the candidate${
           count !== 1 ? 's' : ''
