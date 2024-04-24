@@ -2,7 +2,7 @@
   display: flex;
   overflow: auto;
   height: 100vh;
-  padding: 20px 20px 60px;
+  padding: 20px 20px 100px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 16px;

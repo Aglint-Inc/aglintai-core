@@ -13,7 +13,10 @@ export function TrainingProgress({
   isViewAllVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1487")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1487", "height-430")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1488")}
         tag="div"

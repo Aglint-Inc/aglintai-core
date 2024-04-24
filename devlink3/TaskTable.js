@@ -1,10 +1,15 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { NewTaskCard } from "./NewTaskCard";
 import { TaskTableCard } from "./TaskTableCard";
 import * as _utils from "./utils";
 import _styles from "./TaskTable.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-57":{"id":"e-57","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-35","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-58"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"9da4f4b4-a7a7-a6db-016f-1db257523c4b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713937608410},"e-58":{"id":"e-58","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-36","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-57"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"9da4f4b4-a7a7-a6db-016f-1db257523c4b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713937608410}},"actionLists":{"a-35":{"id":"a-35","title":"New Task Hover in","actionItemGroups":[{"actionItems":[{"id":"a-35-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]}}},{"id":"a-35-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-35-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]},"value":1,"unit":""}},{"id":"a-35-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]}}}]}],"createdOn":1713937614107,"useFirstGroupAsInitialState":true},"a-36":{"id":"a-36","title":"New Task Hover out","actionItemGroups":[{"actionItems":[{"id":"a-36-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]},"value":0,"unit":""}},{"id":"a-36-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]}}}]}],"createdOn":1713937614107,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function TaskTable({
   as: _Component = _Builtin.Block,
@@ -14,6 +19,8 @@ export function TaskTable({
   isNewTaskCardVisible = false,
   slotFilter,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component className={_utils.cx(_styles, "div-block-1433")} tag="div">
       <_Builtin.Block
@@ -42,21 +49,6 @@ export function TaskTable({
             className={_utils.cx(_styles, "div-block-1435")}
             id={_utils.cx(
               _styles,
-              "w-node-e2a009d4-d014-04d6-b837-039f401c4ec8-401c4ec4"
-            )}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Status"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
-            id={_utils.cx(
-              _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ecb-401c4ec4"
             )}
             tag="div"
@@ -66,6 +58,21 @@ export function TaskTable({
               tag="div"
             >
               {"Task"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1435")}
+            id={_utils.cx(
+              _styles,
+              "w-node-e2a009d4-d014-04d6-b837-039f401c4ec8-401c4ec4"
+            )}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-500")}
+              tag="div"
+            >
+              {"Status"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

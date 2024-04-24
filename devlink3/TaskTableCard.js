@@ -49,16 +49,6 @@ export function TaskTableCard({
         className={_utils.cx(_styles, "div-block-1435")}
         id={_utils.cx(
           _styles,
-          "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf0f-f9aebf0d"
-        )}
-        tag="div"
-      >
-        {slotStatus}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
-        id={_utils.cx(
-          _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf10-f9aebf0d"
         )}
         tag="div"
@@ -70,6 +60,16 @@ export function TaskTableCard({
         >
           {textTask}
         </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1435")}
+        id={_utils.cx(
+          _styles,
+          "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf0f-f9aebf0d"
+        )}
+        tag="div"
+      >
+        {slotStatus}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1435")}

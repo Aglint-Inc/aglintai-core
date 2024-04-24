@@ -43,21 +43,6 @@ export function TaskTableJobCand({
             className={_utils.cx(_styles, "div-block-1435")}
             id={_utils.cx(
               _styles,
-              "w-node-_4236db5e-3938-26b8-a04e-ed6679bd2c96-79bd2c91"
-            )}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Status"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
-            id={_utils.cx(
-              _styles,
               "w-node-_4236db5e-3938-26b8-a04e-ed6679bd2c99-79bd2c91"
             )}
             tag="div"
@@ -67,6 +52,21 @@ export function TaskTableJobCand({
               tag="div"
             >
               {"Task"}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1435")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_4236db5e-3938-26b8-a04e-ed6679bd2c96-79bd2c91"
+            )}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-500")}
+              tag="div"
+            >
+              {"Status"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
