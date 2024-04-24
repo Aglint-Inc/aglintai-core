@@ -1,7 +1,11 @@
 .div-block-1487 {
-  overflow: hidden;
+  height: 420px;
   border: 1px solid #e9ebed;
   border-radius: 10px;
+}
+
+.div-block-1487.over-hidden {
+  overflow: hidden;
 }
 
 .div-block-1488 {
@@ -15,6 +19,10 @@
   border-top-right-radius: 10px;
 
   background-color: #f7f9fb;
+}
+
+.div-block-1488.header {
+  height: 45px;
 }
 
 .fw-semibold {
@@ -73,6 +81,11 @@
   padding-left: 16px;
 }
 
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 24px;
@@ -85,6 +98,18 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
 }
 
 .text-blue-500 {
@@ -119,8 +144,6 @@
 
 .div-block-1514 {
   position: relative;
-  overflow: auto;
-  max-height: 310px;
 }
 
 .div-block-1507 {
@@ -131,7 +154,7 @@
   display: grid;
   grid-auto-flow: row dense;
   grid-auto-columns: 1fr;
-  grid-template-columns: 40% 20% 20% 20%;
+  grid-template-columns: 60% 20% 20%;
   grid-template-rows: auto;
 
   border-bottom: 1px solid #eaf1f3;
@@ -145,6 +168,10 @@
   z-index: 2;
   grid-template-columns: 25% 25% 50%;
   background-color: white;
+}
+
+.div-block-1507.height-56 {
+  height: 56px;
 }
 
 .div-block-1508 {
@@ -165,15 +192,17 @@
   grid-row-gap: 8px;
 }
 
-.text-grey-500 {
-  color: #87929d;
+.hide {
+  display: none;
+}
+
+.div-block-1566 {
+  height: 100%;
 }
 
 #w-node-d0086500-dc7e-dd71-8fe3-288597e9f589-97e9f57e {
 }
 #w-node-d0086500-dc7e-dd71-8fe3-288597e9f58c-97e9f57e {
-}
-#w-node-d0086500-dc7e-dd71-8fe3-288597e9f58f-97e9f57e {
 }
 @media screen and (min-width: 1440px) {
   #w-node-d0086500-dc7e-dd71-8fe3-288597e9f586-97e9f57e {
@@ -181,7 +210,5 @@
   #w-node-d0086500-dc7e-dd71-8fe3-288597e9f589-97e9f57e {
   }
   #w-node-d0086500-dc7e-dd71-8fe3-288597e9f58c-97e9f57e {
-  }
-  #w-node-d0086500-dc7e-dd71-8fe3-288597e9f58f-97e9f57e {
   }
 }

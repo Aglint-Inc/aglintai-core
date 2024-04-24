@@ -18,24 +18,29 @@ function TriggerTime({
   selectTriggerTime,
   setSelectTriggerTime,
   isOptionList = true,
+  openTriggerTime,
+  setOpenTriggerTime,
 }: {
   selectTriggerTime: string;
   setSelectTriggerTime: (x: string) => void;
   isOptionList?: boolean;
+  openTriggerTime: null;
+  setOpenTriggerTime: any;
 }) {
   const { isImmediate, setIsImmediate } = useTaskStatesContext();
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (event: any) => {
+    setOpenTriggerTime(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpenTriggerTime(null);
   };
 
-  const open = Boolean(anchorEl);
+  const open = Boolean(openTriggerTime);
   const id = open ? 'simple-popover' : undefined;
+
+  const timeZone = dayjs.tz.guess();
 
   return (
     <>
@@ -47,7 +52,7 @@ function TriggerTime({
                 {'Immediately'}
               </ShowCode.When>
               <ShowCode.When isTrue={!isImmediate}>
-                {`${dayjs(selectTriggerTime).format('DD MMM YYYY, hh:mm')}`}
+                {`${dayjs(selectTriggerTime).format('DD MMM YYYY, hh:mm A')} (${timeZone})`}
               </ShowCode.When>
             </ShowCode>
           </ShowCode.When>
@@ -57,7 +62,7 @@ function TriggerTime({
       <Popover
         id={id}
         open={open && isOptionList}
-        anchorEl={anchorEl}
+        anchorEl={openTriggerTime}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
@@ -112,7 +117,7 @@ function TriggerTime({
                       value={dayjs(selectTriggerTime)}
                       onAccept={(e: any) => {
                         setSelectTriggerTime(String(new Date(e)));
-                        setAnchorEl(null);
+                        setOpenTriggerTime(null);
                       }}
                       shouldDisableDate={(date) => {
                         const dayOfWeek = dayjs(date).day();

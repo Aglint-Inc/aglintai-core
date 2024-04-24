@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { LeaderBoardCard } from "./LeaderBoardCard";
+import { LeaderBoardLoader } from "./LeaderBoardLoader";
 import * as _utils from "./utils";
 import _styles from "./LeaderBoard.module.css";
 
@@ -14,6 +15,9 @@ export function LeaderBoard({
   onClickThisYear = {},
   isYearActive = true,
   slotLeaderboardCard,
+  isAllTimeActive = true,
+  onClickAllTime = {},
+  slotDropdownButton,
 }) {
   return (
     <_Component
@@ -47,73 +51,19 @@ export function LeaderBoard({
           className={_utils.cx(_styles, "div-block-1473")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1504")}
-            tag="div"
-            {...onClickThisWeek}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1474")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"This week"}</_Builtin.Block>
-            </_Builtin.Block>
-            {isWeekActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1474", "active")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"This week"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1504")}
-            tag="div"
-            {...onClickThisMonth}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1474")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"This month"}</_Builtin.Block>
-            </_Builtin.Block>
-            {isMonthActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1474", "active")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"This month"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1504")}
-            tag="div"
-            {...onClickThisYear}
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1474")}
-              tag="div"
-            >
-              <_Builtin.Block tag="div">{"This year"}</_Builtin.Block>
-            </_Builtin.Block>
-            {isYearActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1474", "active")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"This year"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
+          {slotDropdownButton}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1475")}
         tag="div"
       >
-        {slotLeaderboardCard ?? <LeaderBoardCard />}
+        {slotLeaderboardCard ?? (
+          <>
+            <LeaderBoardCard />
+            <LeaderBoardLoader />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

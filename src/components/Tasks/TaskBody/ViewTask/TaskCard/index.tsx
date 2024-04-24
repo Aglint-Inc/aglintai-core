@@ -1,7 +1,8 @@
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   AvatarWithName,
@@ -17,12 +18,16 @@ import {
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
-import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import SelectStatus from '../../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { assigneeType, EmailAgentId, PhoneAgentId } from '../../../utils';
+import {
+  assigneeType,
+  createTaskProgress,
+  EmailAgentId,
+  PhoneAgentId,
+} from '../../../utils';
 import { CallIcon, EmailIcon } from '../../AddNewTask';
 import AssigneeList from '../../AddNewTask/AssigneeList';
 import PriorityList from '../../AddNewTask/PriorityList';
@@ -109,21 +114,12 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     selectedAssignee,
   ]);
 
-  const createProgress = async (assigner) => {
-    if (selectedAssignee?.user_id) {
-      await supabase.from('new_tasks_progress').insert({
-        task_id: router.query.task_id as string,
-        title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
-        created_by: {
-          name: recruiterUser.first_name,
-          id: recruiterUser.user_id,
-        },
-        progress_type: 'standard',
-      });
-    }
-  };
-
   const createdBy = assignerList.find((ele) => ele.user_id === task.created_by);
+
+  // open trigger Time
+  const [openTriggerTime, setOpenTriggerTime] = useState(null);
+  const spanRef = useRef(null);
+
   return (
     <>
       <ViewTaskCard
@@ -163,16 +159,6 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               }
             />
           )
-        }
-        slotAssignedTo={
-          <AssigneeList
-            selectedAssignee={selectedAssignee}
-            setSelectedAssignee={setSelectedAssignee}
-            onChange={(assigner: any) => {
-              createProgress(assigner);
-            }}
-            isOptionList={task.status === 'not_started'}
-          />
         }
         slotInterviewTaskPill={
           <SessionList
@@ -225,18 +211,72 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             isOptionList={task.status === 'not_started'}
           />
         }
+        slotAssignedTo={
+          <Stack direction={'column'}>
+            <AssigneeList
+              selectedAssignee={selectedAssignee}
+              setSelectedAssignee={setSelectedAssignee}
+              onChange={(assigner: any) => {
+                // createProgress(assigner);
+                if (task.assignee[0] !== assigner.user_id) {
+                  createTaskProgress({
+                    data: {
+                      task_id: router.query.task_id as string,
+                      title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + assigner?.last_name)}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + recruiterUser.last_name}</span>`,
+                      created_by: {
+                        name: recruiterUser.first_name,
+                        id: recruiterUser.user_id,
+                      },
+                      progress_type: 'standard',
+                    },
+                  });
+
+                  if (
+                    assigner.user_id === EmailAgentId ||
+                    assigner.user_id === PhoneAgentId
+                  ) {
+                    setOpenTriggerTime(spanRef.current);
+                  }
+                }
+              }}
+              isOptionList={task.status === 'not_started'}
+            />
+            <span ref={spanRef}></span>
+          </Stack>
+        }
         slotWhenToCall={
-          <TriggerTime
-            selectTriggerTime={selectTriggerTime}
-            setSelectTriggerTime={setSelectTriggerTime}
-            isOptionList={task.status === 'not_started'}
-          />
+          <>
+            <TriggerTime
+              selectTriggerTime={selectTriggerTime}
+              setSelectTriggerTime={setSelectTriggerTime}
+              isOptionList={task.status === 'not_started'}
+              openTriggerTime={openTriggerTime}
+              setOpenTriggerTime={setOpenTriggerTime}
+            />
+          </>
         }
         slotStatus={
           <SelectStatus
             setSelectedStatus={setSelectedStatus}
             status={selectedStatus}
-            isOptionList={task.status === 'not_started'}
+            // isOptionList={task.status === 'not_started'}
+            onChange={(e: any) => {
+              const status = e as DatabaseEnums['task_status'];
+
+              if (task.status !== status) {
+                createTaskProgress({
+                  data: {
+                    task_id: router.query.task_id as string,
+                    title: `Task status moved from <span class="${task.status}">${capitalizeAll(task.status.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span> `,
+                    created_by: {
+                      name: recruiterUser.first_name,
+                      id: recruiterUser.user_id,
+                    },
+                    progress_type: 'standard',
+                  },
+                });
+              }
+            }}
           />
         }
         isWhenToCallVisible={

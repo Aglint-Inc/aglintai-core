@@ -60,7 +60,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
-        `${pageRoutes.SCHEDULING}?tab=${'myschedules' as SchedulingTab}`,
+        `${pageRoutes.SCHEDULING}?tab=${'dashboard' as SchedulingTab}`,
         undefined,
         {
           shallow: true,

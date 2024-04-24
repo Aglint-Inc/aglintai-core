@@ -31,7 +31,7 @@ function SelectDateTime({
   return (
     <>
       <Stack onClick={handleClick}>
-        {`${dayjs(selectCallDate).format('DD MMM YYYY, hh:mm')}`}
+        {`${dayjs(selectCallDate).format('DD MMM YYYY, hh:mm A')}`}
       </Stack>
       <Popover
         id={id}

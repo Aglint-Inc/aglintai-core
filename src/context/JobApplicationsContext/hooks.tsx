@@ -134,6 +134,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
   const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
   const { handleJobRefresh, jobPolling } = useJobDetails();
@@ -182,15 +183,16 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           case JobApplicationSections.ASSESSMENT:
             return (job?.assessment ?? false) && isAssessmentEnabled;
           case JobApplicationSections.INTERVIEW:
-            return true;
+            return isSchedulingEnabled;
           case JobApplicationSections.QUALIFIED:
             return true;
           case JobApplicationSections.DISQUALIFIED:
             return true;
         }
       }),
-    [job],
+    [job, isScreeningEnabled, isAssessmentEnabled, isSchedulingEnabled],
   );
+
   const [section, setSection] = useState<JobApplicationSections>(
     JobApplicationSections.NEW,
   );

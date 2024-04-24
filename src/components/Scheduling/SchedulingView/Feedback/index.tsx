@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { Dialog, Stack, Typography } from '@mui/material';
 // import axios from 'axios';
 import dayjs from 'dayjs';

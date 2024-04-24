@@ -49,6 +49,7 @@ function SubTaskProgress() {
       <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
         {progressList
           ? progressList.map((item, i) => {
+           
               const CandidateCreator = tasks
                 .map((ele) => ele.applications.candidates)
                 .find((ele) => ele.id === (item.created_by as any).id);
