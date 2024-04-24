@@ -60,7 +60,7 @@ function SelectStatus({
           },
         }}
       >
-        <Stack spacing={'10px'} p={'10px'} direction={'column'}>
+        <Stack spacing={'10px'} p={'10px'}>
           {colorsData.map(
             (
               {
@@ -77,22 +77,23 @@ function SelectStatus({
               i,
             ) => {
               return (
-                <TaskStatus
-                  bgColorProps={{
-                    style: {
-                      backgroundColor,
-                      color,
-                      fontWeight: 400,
-                    },
-                    onClick: () => {
-                      setAnchorEl(null);
-                      setSelectedStatus(id);
-                      onChange(id);
-                    },
-                  }}
-                  key={i}
-                  textStatus={label}
-                />
+                <Stack direction={'row'} key={i}>
+                  <TaskStatus
+                    bgColorProps={{
+                      style: {
+                        backgroundColor,
+                        color,
+                        fontWeight: 400,
+                      },
+                      onClick: () => {
+                        setAnchorEl(null);
+                        setSelectedStatus(id);
+                        if (onChange) onChange(id);
+                      },
+                    }}
+                    textStatus={label}
+                  />
+                </Stack>
               );
             },
           )}

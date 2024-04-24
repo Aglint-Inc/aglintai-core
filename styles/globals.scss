@@ -300,51 +300,51 @@ textarea::placeholder {
 // status colors
 .not_started {
   background-color: #e9ebed;
-  color: '#49545c';
+  color: #49545c !important;
   padding: 3px 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   text-transform: capitalize;
 }
 
 .in_progress {
   background-color: #cee2f2;
-  color: '#337FBD';
+  color: #337fbd !important;
   padding: 3px 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   text-transform: capitalize;
 }
 .completed {
   background-color: #d1e8df;
-  color: '#228F67';
+  color: #228f67 !important;
   padding: 3px 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   text-transform: capitalize;
 }
 .cancelled {
   background-color: #f5d5d8;
-  color: '#CC3340';
+  color: #cc3340 !important;
   padding: 3px 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   text-transform: capitalize;
 }
 .closed {
   background-color: #87929daa;
-  color: #000;
+  color: #000 !important;
   padding: 3px 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   text-transform: capitalize;
 }
 .scheduled {
   background-color: #ffb05755;
-  color: #ad5918;
+  color: #ad5918 !important;
   padding: 3px 10px;
-  border-radius: 15px;
+  border-radius: 5px;
   text-transform: capitalize;
 }
 //task progress
 .progress_date_section {
   color: #ad5918;
   padding: 3px;
-  border-radius: 15px;
-  text-transform: capitalize;
+  border-radius: 5px;
+  text-transform: uppercase;
 }

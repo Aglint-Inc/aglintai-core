@@ -91,12 +91,12 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
   };
 }
 // end
-type ProgressType = 'status_update' | 'create_task' | 'schedule_date_update';
-// assignerId,
-// assignerName,
-// creatorName,
-// currentStatus,
-// status,
+type ProgressType =
+  | 'status_update'
+  | 'create_task'
+  | 'schedule_date_update'
+  | 'trigger_time_update';
+
 type optionDataType = {
   assignerId?: string;
   assignerName?: string;
@@ -111,6 +111,10 @@ type optionDataType = {
   prevScheduleDateRange?: {
     start_date: string | null;
     end_date: string | null;
+  };
+  triggerTime?: {
+    prev: string;
+    current: string;
   };
 };
 
@@ -141,9 +145,10 @@ export async function createTaskProgress({
     status,
     scheduleDateRange,
     prevScheduleDateRange,
+    triggerTime,
   } = optionData;
 
-  const progressTitle = (cusType) => {
+  const progressTitle = (cusType: ProgressType) => {
     switch (cusType) {
       case 'status_update':
         return `Task status moved from <span class="${currentStatus}">${capitalizeAll(currentStatus.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span>`;
@@ -151,6 +156,8 @@ export async function createTaskProgress({
         return `Task assigned to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span> by <span class="mention">@${creatorName}</span>`;
       case 'schedule_date_update':
         return `Schedule time changed from <span class="progress_date_section"> ${dayjs(prevScheduleDateRange.start_date).format('DD MMM')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('DD MMM') : ''}</span> to <span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('DD MMM')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('DD MMM') : ''}</span>`;
+      case 'trigger_time_update':
+        return `Trigger time changed from <span class="progress_date_section"> ${dayjs(triggerTime.prev).format('DD MMM, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('DD MMM, hh:mm A')}</span>`;
       default:
         return '';
     }

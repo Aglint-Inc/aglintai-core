@@ -20,12 +20,14 @@ function TriggerTime({
   isOptionList = true,
   openTriggerTime,
   setOpenTriggerTime,
+  onChange,
 }: {
   selectTriggerTime: string;
   setSelectTriggerTime: (x: string) => void;
   isOptionList?: boolean;
   openTriggerTime: null;
   setOpenTriggerTime: any;
+  onChange?: any;
 }) {
   const { isImmediate, setIsImmediate } = useTaskStatesContext();
 
@@ -118,6 +120,9 @@ function TriggerTime({
                       onAccept={(e: any) => {
                         setSelectTriggerTime(String(new Date(e)));
                         setOpenTriggerTime(null);
+                        if (onChange) {
+                          onChange(e);
+                        }
                       }}
                       shouldDisableDate={(date) => {
                         const dayOfWeek = dayjs(date).day();

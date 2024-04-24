@@ -8,7 +8,7 @@ import TaskBody from './TaskBody';
 import { TaskStatesProvider } from './TaskStatesContext';
 
 function Tasks() {
-  const [byGroup, setByGroup] = useState(true);
+  const [byGroup, setByGroup] = useState(false);
   return (
     <TaskStatesProvider>
       <PageLayout

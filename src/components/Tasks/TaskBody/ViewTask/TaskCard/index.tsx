@@ -313,6 +313,22 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               isOptionList={task.status === 'not_started'}
               openTriggerTime={openTriggerTime}
               setOpenTriggerTime={setOpenTriggerTime}
+              onChange={(e) => {
+                createTaskProgress({
+                  type: 'trigger_time_update',
+                  data: {
+                    task_id: router.query.task_id as string,
+                    created_by: {
+                      name: recruiterUser.first_name,
+                      id: recruiterUser.user_id,
+                    },
+                    progress_type: 'standard',
+                  },
+                  optionData: {
+                    triggerTime: { prev: task.start_date, current: e },
+                  },
+                });
+              }}
             />
           </>
         }
