@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { MoveAssessment } from '@/devlink2';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import {
   CallIcon,
   EmailIcon,

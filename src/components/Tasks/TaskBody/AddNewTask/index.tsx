@@ -16,7 +16,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   fetchInterviewSessionTask,
   scheduleWithAgent,
-} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';

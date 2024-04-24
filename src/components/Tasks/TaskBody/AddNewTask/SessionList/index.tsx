@@ -5,7 +5,7 @@ import React from 'react';
 import { EmptyState } from '@/devlink2';
 import { InterviewTaskPill, ListCard, ListPop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 
 function SessionList({
   selectedSession,

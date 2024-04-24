@@ -10,7 +10,7 @@ import {
   ViewTaskCard,
 } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,

@@ -160,7 +160,7 @@ function SchedulingApplication() {
             recruiterUser.last_name,
           ),
           session_ids: selectedSessionIds,
-          sub_task_id: null,
+          task_id: null,
           type: type,
           candidate_name: selectedApplication.candidates.first_name,
           company_name: recruiter.name,

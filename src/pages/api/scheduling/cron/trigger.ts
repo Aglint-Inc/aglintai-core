@@ -27,7 +27,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .eq('task_triggered', false)
       .lt('start_date', new Date().toISOString())
       .eq('status', 'not_started')
-      .not('filter_id', 'is', null);
+      .order('created_by', {
+        ascending: true,
+      });
     if (error) {
       throw new Error(error.message);
     } else {
@@ -48,8 +50,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   task.recruiter_user.first_name,
                   task.recruiter_user.last_name,
                 ),
-                session_ids: task.interview_filter_json.session_ids,
-                sub_task_id: task.id,
+                session_ids: (task.session_ids as any).map((ses) => ses.id),
+                task_id: task.id,
                 type: task.assignee.includes(EmailAgentId)
                   ? 'email_agent'
                   : 'phone_agent',
@@ -58,10 +60,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 rec_user_email: task.recruiter_user.email,
                 rec_user_phone: task.recruiter_user.phone,
                 rec_user_id: task.recruiter_user.user_id,
-                user_tz: (task.interview_filter_json.filter_json as any)
-                  .user_tz,
-                filter_id: task.filter_id,
+                user_tz: 'Asia/Calcutta',
               } as ApiBodyParamsScheduleAgent);
+
               console.log(`number of task triggered ${filterTaskAgent.length}`);
 
               return res.status(200).send('success');

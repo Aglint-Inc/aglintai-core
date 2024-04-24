@@ -5,7 +5,6 @@ import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksC
 import { RecruiterUserType } from '@/src/types/data.types';
 
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
-import { fetchInterviewSessionTask } from '../../Scheduling/AllSchedules/SchedulingApplication/hooks';
 import { useInterviewerList } from '../Components/AssigneeChip';
 import { EmailAgentId, PhoneAgentId } from '../utils';
 
