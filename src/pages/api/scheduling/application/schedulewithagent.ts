@@ -22,6 +22,7 @@ export interface ApiBodyParamsScheduleAgent {
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
+  trigger_count: number;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -40,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_name,
       company_name,
       user_tz,
+      trigger_count,
     } = req.body as ApiBodyParamsScheduleAgent;
 
     const resAgent = await scheduleWithAgent({
@@ -57,6 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rec_user_id,
       supabase: supabaseAdmin,
       user_tz,
+      trigger_count,
     });
 
     return res.status(200).send(resAgent);

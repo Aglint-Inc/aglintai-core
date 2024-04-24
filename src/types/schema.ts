@@ -1814,7 +1814,7 @@ export type Database = {
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
           task_owner: string | null
-          task_triggered: boolean | null
+          trigger_count: number
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Insert: {
@@ -1834,7 +1834,7 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_owner?: string | null
-          task_triggered?: boolean | null
+          trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Update: {
@@ -1854,7 +1854,7 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_owner?: string | null
-          task_triggered?: boolean | null
+          trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [

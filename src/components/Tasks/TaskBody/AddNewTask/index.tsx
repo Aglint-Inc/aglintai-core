@@ -153,14 +153,8 @@ function AddNewTask() {
           rec_user_id: recruiterUser.user_id,
           supabase: supabase,
           user_tz: dayjs.tz.guess(),
+          trigger_count: 0,
         });
-        // update task
-        await supabase
-          .from('new_tasks')
-          .update({
-            task_triggered: true,
-          })
-          .eq('id', selectedTask.id);
       }
       // end
     });

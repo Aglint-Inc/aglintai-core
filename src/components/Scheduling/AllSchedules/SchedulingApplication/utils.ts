@@ -5,7 +5,11 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
+import {
+  createTaskProgress,
+  EmailAgentId,
+  PhoneAgentId,
+} from '@/src/components/Tasks/utils';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import {
   InterviewMeetingTypeDb,
@@ -455,6 +459,7 @@ export const scheduleWithAgent = async ({
   rec_user_id,
   supabase,
   user_tz,
+  trigger_count,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -473,11 +478,10 @@ export const scheduleWithAgent = async ({
   rec_user_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
   user_tz: string;
+  trigger_count: number;
 }) => {
   try {
     if (type) {
-      const assignee = type == 'email_agent' ? [EmailAgentId] : [PhoneAgentId];
-
       const { data: checkSch, error: errorCheckSch } = await supabase
         .from('interview_schedule')
         .select('id')
@@ -532,7 +536,7 @@ export const scheduleWithAgent = async ({
                     id: ses.newId,
                   };
                 }),
-              task_triggered: true,
+              trigger_count: trigger_count + 1,
               status: 'in_progress',
             })
             .eq('id', task_id)
@@ -576,7 +580,6 @@ export const scheduleWithAgent = async ({
 
           const task = await createTask({
             application_id,
-            assignee,
             dateRange,
             filter_id: filterJson.id,
             rec_user_id,
@@ -657,8 +660,8 @@ export const scheduleWithAgent = async ({
             .update({
               filter_id: filterJson.id,
               session_ids: selectedSessions,
-              task_triggered: true,
               status: 'in_progress',
+              trigger_count: trigger_count + 1,
             })
             .eq('id', task_id)
             .select();
@@ -696,7 +699,6 @@ export const scheduleWithAgent = async ({
         } else {
           const task = await createTask({
             application_id,
-            assignee,
             dateRange,
             filter_id: filterJson.id,
             rec_user_id,
@@ -904,8 +906,8 @@ export const agentTrigger = async ({
     return res.status;
   } else if (type === 'phone_agent') {
     const res = await axios.post(
-      // 'https://rested-logically-lynx.ngrok-free.app/api/create-phone-call',
-      `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
+      'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
+      // `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
       {
         begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
         interviewer_name: recruiter_user_name,
@@ -939,7 +941,6 @@ export const createTask = async ({
   rec_user_id,
   recruiter_id,
   dateRange,
-  assignee,
   filter_id,
   type,
   recruiter_user_name,
@@ -955,12 +956,12 @@ export const createTask = async ({
     start_date: string;
     end_date: string;
   };
-  assignee: string[];
   filter_id: string;
   type: 'phone_agent' | 'email_agent';
   recruiter_user_name: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
+  const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
   const { data: task, error: errorTasks } = await supabase
     .from('new_tasks')
     .insert({
@@ -973,26 +974,33 @@ export const createTask = async ({
       due_date: dateRange.end_date,
       schedule_date_range: dateRange,
       start_date: new Date(),
-      assignee,
+      assignee: [assignee],
       filter_id: filter_id,
       session_ids: selectedSessions,
-      task_triggered: true,
+      trigger_count: 1,
     } as any)
-    .select();
+    .select()
+    .single();
 
   if (errorTasks) throw new Error(errorTasks.message);
+  console.log(task);
 
-  const { error: errorTaskProgress } = await supabase
-    .from('new_tasks_progress')
-    .insert({
-      created_by: { id: rec_user_id, name: recruiter_user_name },
-      task_id: task[0].id,
-      title: `Task assigned to <span class="agent_mention">@${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}</span> by <span class="mention">@${recruiter_user_name}</span>`,
+  await createTaskProgress({
+    type: 'create_task',
+    data: {
       progress_type: 'standard',
-    });
+      created_by: { id: rec_user_id, name: recruiter_user_name },
+      task_id: task.id,
+    },
+    optionData: {
+      assignerId: assignee,
+      assignerName: type === 'email_agent' ? 'Email Agent' : 'Phone Agent',
+      creatorName: recruiter_user_name,
+    },
+    supabaseCaller: supabase,
+  });
 
-  if (errorTaskProgress) throw new Error(errorTaskProgress.message);
-  console.log(`Create task ${task[0].id}`);
+  console.log(`Create task ${task.id}`);
 
-  return task[0];
+  return task;
 };

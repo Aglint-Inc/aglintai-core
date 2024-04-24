@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
@@ -6,6 +7,7 @@ import { ApplicationType } from '@/src/context/CandidateAssessment/types';
 import { Supabase } from '@/src/pages/api/job/jobApplications/candidateUpload/types';
 import { DatabaseEnums } from '@/src/types/customSchema';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -108,6 +110,7 @@ export async function createTaskProgress({
   type,
   optionData,
   data,
+  supabaseCaller = supabase,
 }: {
   type: ProgressType;
   optionData?: optionDataType;
@@ -120,6 +123,7 @@ export async function createTaskProgress({
     progress_type: DatabaseEnums['progress_type'];
     jsonb_data?: null;
   };
+  supabaseCaller?: ReturnType<typeof createServerClient<Database>>;
 }) {
   var { assignerId, assignerName, creatorName, currentStatus, status } =
     optionData;
@@ -135,7 +139,7 @@ export async function createTaskProgress({
     }
   };
 
-  const { error, data: progress } = await supabase
+  const { error, data: progress } = await supabaseCaller
     .from('new_tasks_progress')
     .insert({ ...data, title: progressTitle(type) })
     .select();

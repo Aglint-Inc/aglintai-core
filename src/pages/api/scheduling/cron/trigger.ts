@@ -24,12 +24,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .select(
         '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
-      .eq('task_triggered', false)
+      .lte('trigger_count', 2)
       .lt('start_date', new Date().toISOString())
       .eq('status', 'not_started')
       .order('created_by', {
         ascending: true,
       });
+      
+    console.log(data);
+
     if (error) {
       throw new Error(error.message);
     } else {
@@ -62,6 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 rec_user_phone: task.recruiter_user.phone,
                 rec_user_id: task.recruiter_user.user_id,
                 user_tz: 'Asia/Calcutta',
+                trigger_count: task.trigger_count,
               } as ApiBodyParamsScheduleAgent);
             } catch (error) {
               console.error('Error for application:', error.message);
