@@ -219,6 +219,10 @@ function AddNewTask() {
     setSelectedApplication(null);
     setInputData('');
   };
+
+  // open trigger Time
+  const [openTriggerTime, setOpenTriggerTime] = useState(null);
+  const spanRef = useRef(null);
   return (
     <Drawer anchor={'right'} open={showAddNew} onClose={handleClose}>
       <CreateTask
@@ -483,15 +487,28 @@ function AddNewTask() {
                 />
               }
               slotAssignedTo={
-                <AssigneeList
-                  selectedAssignee={selectedAssignee}
-                  setSelectedAssignee={setSelectedAssignee}
-                />
+                <Stack direction={'column'}>
+                  <AssigneeList
+                    selectedAssignee={selectedAssignee}
+                    setSelectedAssignee={setSelectedAssignee}
+                    onChange={(assigner: any) => {
+                      if (
+                        assigner.user_id === EmailAgentId ||
+                        assigner.user_id === PhoneAgentId
+                      ) {
+                        setOpenTriggerTime(spanRef.current);
+                      }
+                    }}
+                  />
+                  <span ref={spanRef}></span>
+                </Stack>
               }
               slotWhenToCall={
                 <TriggerTime
                   selectTriggerTime={selectTriggerTime}
                   setSelectTriggerTime={setSelectTriggerTime}
+                  openTriggerTime={openTriggerTime}
+                  setOpenTriggerTime={setOpenTriggerTime}
                 />
               }
               slotStatus={

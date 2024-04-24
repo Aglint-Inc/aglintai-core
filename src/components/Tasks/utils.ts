@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
+import { supabase } from '@/src/utils/supabase/client';
 
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
 export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
@@ -84,5 +85,8 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
     }, delay) as any;
   };
 }
+// end
 
-
+export async function createTaskProgress({ data }) {
+  await supabase.from('new_tasks_progress').insert({ ...data });
+}

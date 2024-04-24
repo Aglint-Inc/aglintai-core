@@ -12,12 +12,14 @@ function SelectStatus({
   status,
   setSelectedStatus,
   isOptionList = true,
+  onChange,
 }: {
   status: CustomDatabase['public']['Enums']['task_status'];
   setSelectedStatus: (
     x: CustomDatabase['public']['Enums']['task_status'],
   ) => void;
   isOptionList?: boolean;
+  onChange?: any;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -85,6 +87,7 @@ function SelectStatus({
                     onClick: () => {
                       setAnchorEl(null);
                       setSelectedStatus(id);
+                      onChange(id);
                     },
                   }}
                   key={i}

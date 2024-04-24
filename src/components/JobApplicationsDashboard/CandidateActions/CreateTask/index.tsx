@@ -28,6 +28,7 @@ export type TaskType = {
   priority: CustomDatabase['public']['Enums']['task_priority'];
   type: CustomDatabase['public']['Enums']['task_type_enum'];
   due_date: string;
+  start_date: string;
 };
 function CreateTask({
   setTask,
@@ -58,7 +59,8 @@ function CreateTask({
       (selectedAssignee?.user_id ?? null) &&
       (selectedSession ?? null) &&
       (scheduleDate?.start_date ?? null) &&
-      (scheduleDate?.end_date ?? null)
+      (scheduleDate?.end_date ?? null) &&
+      (selectCallDate ?? null)
     ) {
       setTask({
         assignee: [selectedAssignee.user_id],
@@ -69,6 +71,7 @@ function CreateTask({
         priority: 'medium',
         type: 'schedule' as CustomDatabase['public']['Enums']['task_type_enum'],
         due_date: dayjs(scheduleDate.end_date).toString(),
+        start_date: selectCallDate,
       });
     }
   }, [
@@ -76,6 +79,7 @@ function CreateTask({
     selectedSession,
     scheduleDate.start_date,
     scheduleDate.end_date,
+    selectCallDate,
   ]);
   return (
     <>
@@ -84,6 +88,10 @@ function CreateTask({
           <SelectScheduleDate
             scheduleDate={scheduleDate}
             setScheduleDate={setScheduleDate}
+            onChange={(e) => {
+              if (Array.isArray(e)) setSelectCallDate(dayjs(e[0]).toString());
+              else setSelectCallDate(dayjs(e).toString());
+            }}
           />
         }
         slotInterview={
