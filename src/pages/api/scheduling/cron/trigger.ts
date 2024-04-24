@@ -33,11 +33,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (error) {
       throw new Error(error.message);
     } else {
-      const filterTaskAgent = data.filter(
-        (task) =>
-          task.assignee.includes(EmailAgentId) ||
-          task.assignee.includes(PhoneAgentId),
-      );
+      const filterTaskAgent =
+        data?.filter(
+          (task) =>
+            task.assignee.includes(EmailAgentId) ||
+            task.assignee.includes(PhoneAgentId),
+        ) || [];
       if (filterTaskAgent?.length > 0) {
         await Promise.all(
           filterTaskAgent.map(async (task) => {

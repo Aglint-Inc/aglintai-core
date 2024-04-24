@@ -30,7 +30,6 @@ import {
   setDateRange,
   setFetchingPlan,
   setFetchingSchedule,
-  setinitialSessions,
   setIsScheduleNowOpen,
   setNoOptions,
   setSchedulingOptions,
@@ -177,21 +176,8 @@ function SchedulingApplication() {
             ? 'Email Agent Initiated'
             : 'Phone Call scheduled',
         );
-        setinitialSessions(
-          initialSessions.map((session) => ({
-            ...session,
-            interview_meeting: selectedSessionIds.includes(session.id)
-              ? session.interview_meeting
-                ? {
-                    ...session.interview_meeting,
-                    status: 'waiting',
-                  }
-                : { status: 'waiting', interview_schedule_id: null }
-              : session.interview_meeting
-                ? { ...session.interview_meeting }
-                : null,
-          })),
-        );
+
+        fetchInterviewDataByApplication();
       } else {
         toast.error(
           'Failed to schedule with agent. Please try again later or contact support.',

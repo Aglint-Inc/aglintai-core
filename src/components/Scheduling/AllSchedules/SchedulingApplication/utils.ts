@@ -516,6 +516,7 @@ export const scheduleWithAgent = async ({
           schedule_id: createCloneRes.schedule.id,
           recruiter_id,
           user_tz,
+          supabase,
         });
 
         if (task_id) {
@@ -580,6 +581,7 @@ export const scheduleWithAgent = async ({
             selectedSessions: selSes,
             type,
             recruiter_user_name,
+            supabase,
           });
 
           addScheduleActivity({
@@ -643,6 +645,7 @@ export const scheduleWithAgent = async ({
           schedule_id: checkSch[0].id,
           recruiter_id,
           user_tz,
+          supabase,
         });
 
         if (task_id) {
@@ -698,6 +701,7 @@ export const scheduleWithAgent = async ({
             selectedSessions,
             type,
             recruiter_user_name,
+            supabase,
           });
 
           addScheduleActivity({
@@ -743,6 +747,7 @@ export const createFilterJson = async ({
   user_tz,
   recruiter_id,
   dateRange,
+  supabase,
 }: {
   sessions_ids: string[];
   schedule_id: string;
@@ -753,6 +758,7 @@ export const createFilterJson = async ({
     start_date: string;
     end_date: string;
   };
+  supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   const { data: filterJson, error: errorFilterJson } = await supabase
     .from('interview_filter_json')
@@ -796,28 +802,32 @@ export const fetchInterviewSessionTask = async ({
       const { data: interviewSession, error: interviewSessionError } =
         await supabase
           .from('interview_session')
-          .select('*,interview_module(*),interview_plan!inner(*)')
+          .select(
+            '*,interview_module(*),interview_plan!inner(*),interview_session_relation(id)',
+          )
           .eq('interview_plan.job_id', job_id)
           .neq('session_type', 'debrief');
 
       if (interviewSessionError) throw new Error(interviewSessionError.message);
-      const sessions = interviewSession.map(
-        (meet) =>
-          ({
-            break_duration: meet.break_duration,
-            created_at: meet.created_at,
-            id: meet.id,
-            interview_plan_id: meet.interview_plan_id,
-            interviewer_cnt: meet.interviewer_cnt,
-            location: meet.location,
-            module_id: meet.module_id,
-            name: meet.name,
-            schedule_type: meet.schedule_type,
-            session_duration: meet.session_duration,
-            session_order: meet.session_order,
-            session_type: meet.session_type,
-          }) as InterviewSessionTypeDB,
-      );
+      const sessions = interviewSession
+        .filter((ses) => ses.interview_session_relation.length > 0)
+        .map(
+          (meet) =>
+            ({
+              break_duration: meet.break_duration,
+              created_at: meet.created_at,
+              id: meet.id,
+              interview_plan_id: meet.interview_plan_id,
+              interviewer_cnt: meet.interviewer_cnt,
+              location: meet.location,
+              module_id: meet.module_id,
+              name: meet.name,
+              schedule_type: meet.schedule_type,
+              session_duration: meet.session_duration,
+              session_order: meet.session_order,
+              session_type: meet.session_type,
+            }) as InterviewSessionTypeDB,
+        );
 
       return sessions.sort(
         (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
@@ -826,16 +836,20 @@ export const fetchInterviewSessionTask = async ({
       const { data: interviewSessions, error: interviewSessionError } =
         await supabase
           .from('interview_session')
-          .select('*,interview_meeting!inner(*,interview_schedule(*))')
+          .select(
+            '*,interview_meeting!inner(*,interview_schedule(*)),interview_session_relation(id)',
+          )
           .eq('interview_meeting.interview_schedule_id', schedule[0].id)
           .neq('session_type', 'debrief')
           .eq('interview_meeting.status', 'not_scheduled');
 
       if (interviewSessionError) throw new Error(interviewSessionError.message);
 
-      return interviewSessions.sort(
-        (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
-      ) as InterviewSessionTypeDB[];
+      return interviewSessions
+        .filter((ses) => ses.interview_session_relation.length > 0)
+        .sort(
+          (itemA, itemB) => itemA['session_order'] - itemB['session_order'],
+        ) as InterviewSessionTypeDB[];
     }
   } catch (e) {
     toast.error(e.message);
@@ -892,6 +906,7 @@ export const agentTrigger = async ({
       {
         begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
         interviewer_name: recruiter_user_name,
+        // to_phone_no: '+919482306657',
         from_phone_no: '+12512066348',
         // to_phone_no: '+919482306657',
         to_phone_no: rec_user_phone
@@ -925,6 +940,7 @@ export const createTask = async ({
   filter_id,
   type,
   recruiter_user_name,
+  supabase,
 }: {
   selectedSessions: Awaited<
     ReturnType<typeof fetchInterviewDataJob>
@@ -940,6 +956,7 @@ export const createTask = async ({
   filter_id: string;
   type: 'phone_agent' | 'email_agent';
   recruiter_user_name: string;
+  supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   const { data: task, error: errorTasks } = await supabase
     .from('new_tasks')
