@@ -6,14 +6,15 @@ const SelectionComp: FC<{
   // eslint-disable-next-line no-unused-vars
   onChange: (event: SelectChangeEvent<any>) => void;
   children: ReactNode;
-}> = ({ value, onChange, children }) => {
+  height?: number;
+}> = ({ value, onChange, children, height = 40 }) => {
   return (
     <Stack width={'100%'}>
       <Select
         value={value}
         onChange={onChange}
         sx={{
-          height: '40px',
+          height: `${height}px`,
           '&:hover': {
             '&& fieldset': {
               border: '1px solid #d0cccc',

@@ -2,10 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import {
-  SchedulingDashboard as SchedulingDashboardDev,
-  YourSchedules,
-} from '@/devlink3';
+import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import InterviewConversion from './InterviewConversion';
@@ -42,20 +39,18 @@ const SchedulingDashboard = () => {
         }}
         slotFirstGrid={
           <>
-            <YourSchedules />
             <Stack>
               <InterviewConversion />
             </Stack>
+            <LeaderBoardWidget />
           </>
         }
         slotGridInterviewDetail={
           <>
             <InterviewMeetingStatus />
-            <LeaderBoardWidget />
+            <InterviewTrainingStatus />
           </>
         }
-        slotInterviewStatic={<></>}
-        slotInterviewModuleStats={<InterviewTrainingStatus />}
         slotTrainingProgress={<TrainingProgress />}
       />
     </Stack>

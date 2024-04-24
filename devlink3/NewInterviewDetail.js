@@ -8,6 +8,7 @@ import _styles from "./NewInterviewDetail.module.css";
 export function NewInterviewDetail({
   as: _Component = _Builtin.Block,
   slotInterviewDetailPill,
+  slotDropdownButton,
 }) {
   return (
     <_Component
@@ -19,10 +20,16 @@ export function NewInterviewDetail({
       tag="div"
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "fw-semibold", "p-lr-16")}
+        className={_utils.cx(_styles, "div-block-1596")}
         tag="div"
       >
-        {"Interviews detail"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "fw-semibold", "p-lr-16")}
+          tag="div"
+        >
+          {"Interviews detail"}
+        </_Builtin.Block>
+        <_Builtin.Block tag="div">{slotDropdownButton}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1499")}

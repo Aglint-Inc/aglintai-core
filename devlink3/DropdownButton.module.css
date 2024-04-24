@@ -1,0 +1,66 @@
+.div-block-1504 {
+  position: relative;
+  cursor: pointer;
+}
+
+.div-block-1474 {
+  display: flex;
+  padding: 4px 16px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 6px;
+
+  background-color: white;
+}
+
+.div-block-1474.active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-style: none;
+
+  background-color: #49545c;
+
+  color: white;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}

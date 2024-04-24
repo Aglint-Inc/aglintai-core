@@ -10,54 +10,53 @@ import {
 import React, { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { NewInterviewDetail } from '@/devlink3';
+import { NewInterviewDetail, NoData } from '@/devlink3';
 import { useInterviewMeetingStatus } from '@/src/queries/scheduling-dashboard';
 
-import AUIButton from '../../Common/AUIButton';
+import Loader from '../../Common/Loader';
+import SchedulingDropdown from './SchedulingDropdown';
 import { interviewMeetingTimeFormat } from './utils';
 
-const InterviewMeetingStatus = () => {
+type MeetingStatusObjType = ReturnType<
+  typeof useInterviewMeetingStatus
+>['data'][number];
+
+type InterviewMeetingStatusCountProps = {
+  interviewMeetingStatus: {
+    [id in keyof MeetingStatusObjType]: MeetingStatusObjType[id][];
+  };
+};
+export const InterviewMeetingStatus = () => {
   const [type, setType] =
-    useState<InterviewMeetingStatusGraphProps['type']>('month');
+    useState<InterviewMeetingStatusProps['type']>('month');
   return (
-    <Stack direction={'column'}>
-      <Stack direction={'row'} ml={'auto'} gap={2}>
-        <AUIButton onClick={() => setType('day')} disabled={type === 'day'}>
-          Past week
-        </AUIButton>
-        <AUIButton onClick={() => setType('week')} disabled={type === 'week'}>
-          Past month
-        </AUIButton>
-        <AUIButton onClick={() => setType('month')} disabled={type === 'month'}>
-          Past year
-        </AUIButton>
-        <AUIButton onClick={() => setType('year')} disabled={type === 'year'}>
-          All time
-        </AUIButton>
-      </Stack>
-      <InterviewMeetingStatusGraph
-        key={`InterviewMeetingStatusGraph_${type}`}
-        type={type}
-      />
-    </Stack>
+    <NewInterviewDetail
+      slotDropdownButton={
+        <SchedulingDropdown
+          type={type}
+          onChange={(e) => setType(e.target.value as typeof type)}
+        />
+      }
+      slotInterviewDetailPill={<InterviewMeetingStatusComponent type={type} />}
+    />
   );
 };
 
-type InterviewMeetingStatusGraphProps = {
+export default InterviewMeetingStatus;
+
+type InterviewMeetingStatusProps = {
   type: Parameters<typeof useInterviewMeetingStatus>[0];
 };
 
-const InterviewMeetingStatusGraph = ({
+const InterviewMeetingStatusComponent = ({
   type,
-}: InterviewMeetingStatusGraphProps) => {
+}: InterviewMeetingStatusProps) => {
   const { data, status } = useInterviewMeetingStatus(type);
 
-  if (status === 'error') return <>Error</>;
-
-  if (status === 'pending') return <>Loading...</>;
+  if (status === 'pending') return <Loader />;
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <>Empty</>;
+    return <NoData />;
 
   const safeData = interviewMeetingTimeFormat(type, data).reduce(
     (acc, curr) => {
@@ -70,31 +69,10 @@ const InterviewMeetingStatusGraph = ({
     {} as InterviewMeetingStatusCountProps['interviewMeetingStatus'],
   );
 
-  return <InterviewMeetingStatusComponent interviewMeetingStatus={safeData} />;
-};
-
-export default InterviewMeetingStatus;
-
-type MeetingStatusObjType = ReturnType<
-  typeof useInterviewMeetingStatus
->['data'][number];
-
-type InterviewMeetingStatusCountProps = {
-  interviewMeetingStatus: {
-    [id in keyof MeetingStatusObjType]: MeetingStatusObjType[id][];
-  };
-};
-export const InterviewMeetingStatusComponent = ({
-  interviewMeetingStatus,
-}: InterviewMeetingStatusCountProps) => {
   return (
-    <NewInterviewDetail
-      slotInterviewDetailPill={
-        <Stack height={'100%'}>
-          <StackedBar interviewMeetingStatus={interviewMeetingStatus} />
-        </Stack>
-      }
-    />
+    <Stack height={'100%'}>
+      <StackedBar interviewMeetingStatus={safeData} />
+    </Stack>
   );
 };
 

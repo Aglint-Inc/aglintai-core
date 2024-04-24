@@ -6,35 +6,39 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js/auto';
+import { capitalize } from 'lodash';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
+import { InterviewRatio, NoData } from '@/devlink3';
 import { useInterviewConversion } from '@/src/queries/scheduling-dashboard';
 
-import AUIButton from '../../Common/AUIButton';
+import Loader from '../../Common/Loader';
+import SchedulingDropdown from './SchedulingDropdown';
 import { interviewConversionTimeFormat } from './utils';
 
 const InterviewConversion = () => {
   const [type, setType] =
     useState<InterviewConversionGraphProps['type']>('month');
   return (
-    <Stack direction={'column'} height={'600px'}>
-      <Stack direction={'row'} ml={'auto'} gap={2}>
-        <AUIButton onClick={() => setType('day')} disabled={type === 'day'}>
-          Past week
-        </AUIButton>
-        <AUIButton onClick={() => setType('week')} disabled={type === 'week'}>
-          Past month
-        </AUIButton>
-        <AUIButton onClick={() => setType('month')} disabled={type === 'month'}>
-          Past year
-        </AUIButton>
-        <AUIButton onClick={() => setType('year')} disabled={type === 'year'}>
-          All time
-        </AUIButton>
-      </Stack>
-      <InterviewConversionGraph type={type} />
-    </Stack>
+    <InterviewRatio
+      slotDropdownButton={
+        <SchedulingDropdown
+          type={type}
+          onChange={(e) => setType(e.target.value as typeof type)}
+        />
+      }
+      slotInterviewGraph={
+        <Stack
+          width={'100%'}
+          height={'100%'}
+          alignItems={'center'}
+          justifyContent={'center'}
+        >
+          <InterviewConversionGraph type={type} />
+        </Stack>
+      }
+    />
   );
 };
 
@@ -45,18 +49,17 @@ type InterviewConversionGraphProps = {
 const InterviewConversionGraph = ({ type }: InterviewConversionGraphProps) => {
   const { data, status } = useInterviewConversion(type);
 
-  if (status === 'error') return <>Error</>;
-
-  if (status === 'pending') return <>Loading...</>;
+  if (status === 'pending') return <Loader />;
 
   if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <>Empty</>;
+    return <NoData />;
 
   const interviewConversion = interviewConversionTimeFormat(type, data);
   return (
     <InterviewConversionComponent
       key={`InterviewConversionComponent${type}`}
       interviewConversion={interviewConversion}
+      type={type}
     />
   );
 };
@@ -65,17 +68,19 @@ export default InterviewConversion;
 
 type InterviewConversionProps = {
   interviewConversion: ReturnType<typeof useInterviewConversion>['data'];
+  type: InterviewConversionGraphProps['type'];
 };
 
 const InterviewConversionComponent = ({
   interviewConversion,
+  type,
 }: InterviewConversionProps) => {
-  return <LineChart interviewConversion={interviewConversion} />;
+  return <LineChart interviewConversion={interviewConversion} type={type} />;
 };
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
 
-const LineChart = ({ interviewConversion }: InterviewConversionProps) => {
+const LineChart = ({ interviewConversion, type }: InterviewConversionProps) => {
   const matches = useMediaQuery('(min-width:1920px)');
   const { names, counts, pointBackgroundColor } = interviewConversion.reduce(
     (acc, { timeline, count }) => {
@@ -122,8 +127,7 @@ const LineChart = ({ interviewConversion }: InterviewConversionProps) => {
         plugins: {
           tooltip: {
             callbacks: {
-              title: (values) =>
-                `${values[0].label} year${+values[0].label === 1 ? '' : 's'}`,
+              title: (values) => `${values[0].label}`, //year${+values[0].label === 1 ? '' : 's'}
             },
           },
           legend: {
@@ -135,7 +139,7 @@ const LineChart = ({ interviewConversion }: InterviewConversionProps) => {
             title: {
               display: true,
               font: { weight: 'bold' },
-              text: 'Days',
+              text: `${capitalize(type)}s`,
             },
             border: {
               color: 'transparent',

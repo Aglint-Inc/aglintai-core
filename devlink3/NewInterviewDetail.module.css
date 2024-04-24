@@ -14,6 +14,14 @@
   border-radius: 10px;
 }
 
+.div-block-1596 {
+  display: flex;
+  width: 100%;
+  padding-right: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -70,6 +78,11 @@
   padding-left: 16px;
 }
 
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 24px;
@@ -82,6 +95,18 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
 }
 
 .div-block-1499 {

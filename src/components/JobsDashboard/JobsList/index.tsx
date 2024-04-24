@@ -2,6 +2,7 @@ import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
 import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
@@ -17,6 +18,10 @@ interface JobsListProps {
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
+  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+
   const router = useRouter();
   if (jobs?.length == 0) {
     return (
@@ -39,8 +44,11 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <>
             <ScrollList uniqueKey={job.id}>
               <JobsListingCard
-                isAssessmentPillVisible={job.assessment}
-                isScreeningPillsVisible={job.phone_screen_enabled}
+                isAssessmentPillVisible={isAssessmentEnabled && job.assessment}
+                isScreeningPillsVisible={
+                  isScreeningEnabled && job.phone_screen_enabled
+                }
+                isInterviewPillVisible={isSchedulingEnabled}
                 slotAtsBadge={
                   job.posted_by == POSTED_BY.LEVER ? (
                     <AtsBadge

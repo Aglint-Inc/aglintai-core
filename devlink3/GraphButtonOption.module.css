@@ -1,0 +1,31 @@
+.div-block-1591 {
+  position: absolute;
+  left: auto;
+  top: 35px;
+  right: 0%;
+  bottom: auto;
+
+  width: 200px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  background-color: white;
+
+  box-shadow: 0 4px 8px 0 rgba(4, 68, 77, 0.15);
+}
+
+.div-block-1592 {
+  padding: 12px 20px;
+  border-bottom: 1px solid #e9ebed;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.div-block-1592:hover {
+  background-color: #f3f4f6;
+}
+
+.div-block-1592.no-border {
+  border-bottom-style: none;
+}

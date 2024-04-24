@@ -1,10 +1,9 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { YourSchedules } from "./YourSchedules";
 import { InterviewRatio } from "./InterviewRatio";
-import { NewInterviewDetail } from "./NewInterviewDetail";
 import { LeaderBoard } from "./LeaderBoard";
+import { NewInterviewDetail } from "./NewInterviewDetail";
 import { InterviewModuleStats } from "./InterviewModuleStats";
 import { TrainingProgress } from "./TrainingProgress";
 import { InterviewStatic } from "./InterviewStatic";
@@ -133,8 +132,8 @@ export function SchedulingDashboard({
       >
         {slotFirstGrid ?? (
           <>
-            <YourSchedules />
             <InterviewRatio />
+            <LeaderBoard />
           </>
         )}
       </_Builtin.Block>
@@ -161,19 +160,19 @@ export function SchedulingDashboard({
             {slotGridInterviewDetail ?? (
               <>
                 <NewInterviewDetail />
-                <LeaderBoard />
+                <InterviewModuleStats />
               </>
             )}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {slotInterviewModuleStats ?? <InterviewModuleStats />}
+          <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
+            {slotInterviewModuleStats}
           </_Builtin.Block>
           <_Builtin.Block tag="div">
             {slotTrainingProgress ?? <TrainingProgress />}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1484")}
+          className={_utils.cx(_styles, "div-block-1484", "hide")}
           id={_utils.cx(
             _styles,
             "w-node-c30bcde5-63b2-80de-996c-79d1aa8c5b76-aa8c5b1c"

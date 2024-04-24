@@ -1,40 +1,53 @@
-import { InterviewModuleStats, InterviewModuleStatsCard } from '@/devlink3';
+import { useRouter } from 'next/router';
+
+import { Skeleton } from '@/devlink2';
+import {
+  InterviewModuleStats,
+  InterviewModuleStatsCard,
+  InterviewStatsLoader,
+  NoData,
+} from '@/devlink3';
 import { useInterviewTrainingStatus } from '@/src/queries/scheduling-dashboard';
+import { pageRoutes } from '@/src/utils/pageRouting';
+
+const LIMIT = 6;
 
 const TrainingStatus = () => {
-  const { data, status } = useInterviewTrainingStatus();
-
-  if (status === 'error') return <>Error</>;
-
-  if (status === 'pending') return <>Loading...</>;
-
-  if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <>Empty</>;
-
-  return <TrainingStatusComponent interviewTrainingStatus={data} />;
+  const { push } = useRouter();
+  const { data } = useInterviewTrainingStatus();
+  return (
+    <InterviewModuleStats
+      onClickViewAllModules={{
+        onClick: () => push(`${pageRoutes.SCHEDULING}?tab=interviewers`),
+      }}
+      isViewAllVisible={!!data && data.length !== 0}
+      slotInterviewModuleStatsCard={<TrainingStatusComponent />}
+    />
+  );
 };
 
 export default TrainingStatus;
 
-type TrainingStatusProps = {
-  interviewTrainingStatus: ReturnType<
-    typeof useInterviewTrainingStatus
-  >['data'];
-};
+const TrainingStatusComponent = () => {
+  const { data, status } = useInterviewTrainingStatus();
 
-const TrainingStatusComponent = ({
-  interviewTrainingStatus,
-}: TrainingStatusProps) => {
-  const rows = interviewTrainingStatus.map(
-    ({ id, name, training_status_count: { qualified, training } }) => (
+  if (status === 'pending')
+    return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
+      (_, i) => <InterviewStatsLoader key={i} slotSkeleton={<Skeleton />} />,
+    );
+
+  if (!(!!data && !!Array.isArray(data) && data.length !== 0))
+    return <NoData />;
+
+  const rows = data
+    .slice(0, LIMIT)
+    .map(({ id, name, training_status_count: { qualified, training } }) => (
       <InterviewModuleStatsCard
         key={id}
         textInterviewModule={name}
         textQualifiedMember={qualified}
-        textTraineeShadow={training}
-        textTraineeReverse={training}
+        textTraining={training}
       />
-    ),
-  );
-  return <InterviewModuleStats slotInterviewModuleStatsCard={rows} />;
+    ));
+  return <>{rows}</>;
 };

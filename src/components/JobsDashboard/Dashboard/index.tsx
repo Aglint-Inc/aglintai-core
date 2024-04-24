@@ -4,7 +4,6 @@ import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import {
@@ -392,13 +391,15 @@ const Pipeline = () => {
           }}
         />
       )}
-      <PipeLine
-        textCandidateCount={newSections.interview.label}
-        textName={capitalize(JobApplicationSections.INTERVIEW)}
-        onClickPipeline={{
-          onClick: () => handlClick(JobApplicationSections.INTERVIEW),
-        }}
-      />
+      {activeSections.includes(JobApplicationSections.INTERVIEW) && (
+        <PipeLine
+          textCandidateCount={newSections.interview.label}
+          textName={capitalize(JobApplicationSections.INTERVIEW)}
+          onClickPipeline={{
+            onClick: () => handlClick(JobApplicationSections.INTERVIEW),
+          }}
+        />
+      )}
       <PipeLine
         textCandidateCount={newSections.qualified.label}
         textName={capitalize(JobApplicationSections.QUALIFIED)}
@@ -614,20 +615,19 @@ const JobClose = ({
 };
 
 const Modules = () => {
-  const isNewAssessmentEnabled = useFeatureFlagEnabled(
-    'isNewAssessmentEnabled',
-  );
-  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
-  const isPhoneScreeningEnabled = useFeatureFlagEnabled(
-    'isPhoneScreeningEnabled',
-  );
-
+  const { activeSections } = useJobApplications();
   return (
     <>
       <ProfileScoreModule />
-      {isSchedulingEnabled && <InterviewModule />}
-      {isNewAssessmentEnabled && <AssessmentModule />}
-      {isPhoneScreeningEnabled && <ScreeningModule />}
+      {activeSections.includes(JobApplicationSections.INTERVIEW) && (
+        <InterviewModule />
+      )}
+      {activeSections.includes(JobApplicationSections.ASSESSMENT) && (
+        <AssessmentModule />
+      )}
+      {activeSections.includes(JobApplicationSections.SCREENING) && (
+        <ScreeningModule />
+      )}
       <EmailTemplatesModule />
     </>
   );

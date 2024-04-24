@@ -1,26 +1,34 @@
 import { Avatar } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import { Skeleton } from '@/devlink2';
 import {
   HistoryPill as HistoryPillDev,
+  NoData,
   TrainingProgress as TrainingProgressDev,
   TrainingProgressList,
+  TrainingProgressLoader,
 } from '@/devlink3';
 import { useInterviewTrainingProgress } from '@/src/queries/scheduling-dashboard';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
+const LIMIT = 4;
+
 const TrainingProgress = () => {
-  const { data, status } = useInterviewTrainingProgress();
-
-  if (status === 'error') return <>Error</>;
-
-  if (status === 'pending') return <>Loading...</>;
-
-  if (!(!!data && !!Array.isArray(data) && data.length !== 0))
-    return <>Empty</>;
-
-  return <TrainingProgressComponent interviewTrainingProgress={data} />;
+  const { push } = useRouter();
+  const { data } = useInterviewTrainingProgress();
+  return (
+    <TrainingProgressDev
+      onClickViewAllInterviewers={{
+        onClick: () => push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`),
+      }}
+      isViewAllVisible={!!data && data.length !== 0}
+      slotTrainingProgressList={<TrainingProgressComponent />}
+    />
+  );
 };
 
 export default TrainingProgress;
@@ -31,41 +39,52 @@ type TrainigProgressProps = {
   >['data'];
 };
 
-const TrainingProgressComponent = ({
-  interviewTrainingProgress,
-}: TrainigProgressProps) => {
-  const rows = interviewTrainingProgress.map(
-    ({
-      recruiter_user: {
-        user_id,
-        first_name,
-        last_name,
-        profile_image,
-        position,
-      },
-      module,
-      count,
-    }) => (
-      <TrainingProgressList
-        key={module.id + user_id}
-        slotHistoryPill={<HistoryPills count={count} module={module} />}
-        slotInterviewerImage={
-          <Avatar
-            src={profile_image}
-            alt={capitalizeAll(getFullName(first_name, last_name))}
-            sx={{
-              width: '100%',
-              height: '100%',
-            }}
-          />
-        }
-        textInterviewModule={module.name}
-        textName={capitalizeAll(getFullName(first_name, last_name))}
-        textRole={position}
-      />
-    ),
-  );
-  return <TrainingProgressDev slotTrainingProgressList={rows} />;
+const TrainingProgressComponent = () => {
+  const { data, status } = useInterviewTrainingProgress();
+
+  if (status === 'pending')
+    return [...new Array(Math.trunc(Math.random() * (LIMIT - 1)) + 1)].map(
+      (_, i) => <TrainingProgressLoader key={i} slotSkeleton={<Skeleton />} />,
+    );
+
+  if (!(!!data && !!Array.isArray(data) && data.length !== 0))
+    return <NoData />;
+
+  const rows = data
+    .slice(0, LIMIT)
+    .map(
+      ({
+        recruiter_user: {
+          user_id,
+          first_name,
+          last_name,
+          profile_image,
+          position,
+        },
+        module,
+        count,
+      }) => (
+        <TrainingProgressList
+          key={module.id + user_id}
+          slotHistoryPill={<HistoryPills count={count} module={module} />}
+          slotInterviewerImage={
+            <Avatar
+              src={profile_image}
+              alt={capitalizeAll(getFullName(first_name, last_name))}
+              sx={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          }
+          textInterviewModule={module.name}
+          textName={capitalizeAll(getFullName(first_name, last_name))}
+          textRole={position}
+        />
+      ),
+    );
+
+  return <>{rows}</>;
 };
 
 const HistoryPills = ({
@@ -77,10 +96,21 @@ const HistoryPills = ({
 >) => {
   const shadowPills = [...new Array(module.settings.noShadow)].reduce(
     (acc, curr, index) => {
+      const isActive = index < shadow;
+      const isStart = index === 0;
+      const isEnd =
+        index ===
+        module.settings.noShadow + module.settings.noReverseShadow - 1;
+      const isMiddle = !(isStart || isEnd);
       acc.push(
         <HistoryPillDev
           key={index}
-          isActive={index < shadow}
+          isActive={isActive}
+          isStartActive={isStart && isActive}
+          isMiddle={isMiddle}
+          isMiddleActive={isMiddle && isActive}
+          isEnd={isEnd}
+          isEndActive={isEnd && isActive}
           isReverseShadow={false}
           isShadow={true}
         />,
@@ -92,10 +122,20 @@ const HistoryPills = ({
   const reverseShadowPills = [
     ...new Array(module.settings.noReverseShadow),
   ].reduce((acc, curr, index) => {
+    const isActive = index < reverse_shadow;
+    const isStart = module.settings.noShadow + index === 0;
+    const isEnd =
+      index === module.settings.noShadow + module.settings.noReverseShadow - 1;
+    const isMiddle = !(isStart || isEnd);
     acc.push(
       <HistoryPillDev
         key={index}
-        isActive={index < reverse_shadow}
+        isActive={isActive}
+        isStartActive={isStart && isActive}
+        isMiddle={isMiddle}
+        isMiddleActive={isMiddle && isActive}
+        isEnd={isEnd}
+        isEndActive={isEnd && isActive}
         isReverseShadow={true}
         isShadow={false}
       />,

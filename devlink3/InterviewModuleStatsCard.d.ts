@@ -7,4 +7,5 @@ declare function InterviewModuleStatsCard(props: {
   textQualifiedMember?: React.ReactNode;
   textTraineeShadow?: React.ReactNode;
   textTraineeReverse?: React.ReactNode;
+  textTraining?: React.ReactNode;
 }): React.JSX.Element;
