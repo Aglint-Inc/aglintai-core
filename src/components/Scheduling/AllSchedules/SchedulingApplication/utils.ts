@@ -520,7 +520,7 @@ export const scheduleWithAgent = async ({
         });
 
         if (task_id) {
-          const { error: eroorSubTasks } = await supabase
+          const { data: task, error: eroorSubTasks } = await supabase
             .from('new_tasks')
             .update({
               filter_id: filterJson.id,
@@ -535,8 +535,11 @@ export const scheduleWithAgent = async ({
               task_triggered: true,
               status: 'in_progress',
             })
-            .eq('id', task_id);
+            .eq('id', task_id)
+            .select();
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
+
+          console.log(`task status updated to ${task[0].status}`);
 
           addScheduleActivity({
             title: `Candidate invited for ${createCloneRes.refSessions
@@ -661,7 +664,7 @@ export const scheduleWithAgent = async ({
             .select();
           if (eroorSubTasks) throw new Error(eroorSubTasks.message);
 
-          console.log(task[0]);
+          console.log(`task status updated to ${task[0].status}`);
 
           addScheduleActivity({
             title: `Candidate invited for ${selectedSessions
@@ -989,6 +992,7 @@ export const createTask = async ({
     });
 
   if (errorTaskProgress) throw new Error(errorTaskProgress.message);
+  console.log(`Create task ${task[0].id}`);
 
   return task[0];
 };
