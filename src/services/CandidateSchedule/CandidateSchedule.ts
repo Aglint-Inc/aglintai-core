@@ -224,13 +224,6 @@ export class CandidatesScheduling {
         return [];
       }
 
-      const curr_time = userTzDayjs()
-        .tz(this.api_payload.user_tz)
-        .startOf('day');
-      if (curr_time.format('DD/MM/YYYY') === curr_date.format('DD/MM/YYYY')) {
-        return [];
-      }
-
       const curr_day_start_time = curr_date
         .tz(this.api_payload.user_tz)
         .startOf('day')
@@ -1272,17 +1265,6 @@ export class CandidatesScheduling {
       if (curr_day_idx === session_rounds.length) {
         return final_combs;
       }
-
-      // const curr_time = userTzDayjs()
-      //   .tz(this.api_payload.user_tz)
-      //   .startOf('day');
-
-      // if (curr_time.format('DD/MM/YYYY') === curr_date.format('DD/MM/YYYY')) {
-      //   return [];
-      // }
-      // if (dayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
-      //   return [];
-      // }
 
       let curr_day_start_time = curr_date.startOf('day').format();
       let curr_day_end_time = curr_date.endOf('day').format();
