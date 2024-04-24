@@ -965,7 +965,7 @@ export const createTask = async ({
   const { error: errorTaskProgress } = await supabase
     .from('new_tasks_progress')
     .insert({
-      created_by: rec_user_id,
+      created_by: { id: rec_user_id, name: recruiter_user_name },
       task_id: task[0].id,
       title: `Task assigned to <span class="agent_mention">@${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}</span> by <span class="mention">@${recruiter_user_name}</span>`,
       progress_type: 'standard',
