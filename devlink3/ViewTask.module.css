@@ -20,7 +20,7 @@
 
 .div-block-1339.plr-16 {
   padding-right: 16px;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
   padding-left: 16px;
 }
 
@@ -171,6 +171,7 @@
   display: flex;
   overflow: auto;
   height: 100%;
+  padding-top: 8px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 20px;

@@ -543,6 +543,12 @@
   margin-top: 8px;
 }
 
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
 .candidate-all-icon-wrap {
   display: flex;
   width: 50px;
