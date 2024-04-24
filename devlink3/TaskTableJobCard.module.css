@@ -29,6 +29,10 @@
   height: 100%;
 }
 
+.div-block-1441.header {
+  width: 4.5%;
+}
+
 .icons {
   display: flex;
   flex-direction: column;
@@ -93,7 +97,6 @@
 }
 
 .div-block-1442.cursor-pointer {
-  transition: all 250ms ease;
   cursor: pointer;
 }
 
