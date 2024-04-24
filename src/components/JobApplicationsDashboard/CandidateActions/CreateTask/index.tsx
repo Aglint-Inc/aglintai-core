@@ -70,11 +70,14 @@ function CreateTask({
         schedule_date_range: { ...scheduleDate },
         session_ids: selectedSession,
         task_owner: selectedAssignee.user_id,
-        status: 'not_started',
+        status: (selectedAssignee.user_id === EmailAgentId ||
+        selectedAssignee.user_id === PhoneAgentId
+          ? 'scheduled'
+          : 'not_started') as CustomDatabase['public']['Enums']['task_status'],
         priority: 'medium',
         type: 'schedule' as CustomDatabase['public']['Enums']['task_type_enum'],
         due_date: dayjs(scheduleDate.end_date).toString(),
-        start_date: selectCallDate,
+        start_date: dayjs(selectCallDate).toString(),
       });
     }
   }, [
