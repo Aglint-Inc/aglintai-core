@@ -35,7 +35,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { handelUpdateTask } = useTasksContext();
-  const { assignerList } = useTaskStatesContext();
+  const { assignerList, setIsImmediate } = useTaskStatesContext();
   const [sessionList, setSessionList] = useState<Awaited<
     ReturnType<typeof fetchInterviewSessionTask>
   > | null>([]);
@@ -74,6 +74,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         (ele) => ele.user_id === task.assignee[0],
       );
       setSelectedAssignee(assigner);
+      setIsImmediate(false);
       getSessionList();
     }
   }, [router.query?.task_id]);
@@ -171,7 +172,6 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               createProgress(assigner);
             }}
             isOptionList={task.status === 'not_started'}
-
           />
         }
         slotInterviewTaskPill={

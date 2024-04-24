@@ -3,12 +3,21 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { MoveAssessment } from '@/devlink2';
 import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import {
+  CallIcon,
+  EmailIcon,
+} from '@/src/components/Tasks/TaskBody/AddNewTask';
 import SelectScheduleDate from '@/src/components/Tasks/TaskBody/AddNewTask/SelectScheduleDate';
 import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList';
-import { assigneeType } from '@/src/components/Tasks/utils';
+import {
+  assigneeType,
+  EmailAgentId,
+  PhoneAgentId,
+} from '@/src/components/Tasks/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CustomDatabase } from '@/src/types/customSchema';
 
+import SelectDateTime from './SelectDateTime';
 import TaskOwners from './TaskOwners';
 export type TaskType = {
   assignee: string[];
@@ -37,6 +46,7 @@ function CreateTask({
     null,
   );
 
+  const [selectCallDate, setSelectCallDate] = useState(dayjs().toString());
   const {
     interviewPlans: {
       data: { interview_session },
@@ -58,7 +68,7 @@ function CreateTask({
         status: 'not_started',
         priority: 'medium',
         type: 'schedule' as CustomDatabase['public']['Enums']['task_type_enum'],
-        due_date: dayjs().toString(),
+        due_date: dayjs(scheduleDate.end_date).toString(),
       });
     }
   }, [
@@ -89,22 +99,31 @@ function CreateTask({
             setSelectedAssignee={setSelectedAssignee}
           />
         }
+        slotWhentoCall={
+          <SelectDateTime
+            selectCallDate={selectCallDate}
+            setSelectCallDate={setSelectCallDate}
+          />
+        }
         isAssignedToVisible={true}
         isInterviewDateVisible={true}
         isInterviewVisible={true}
-        isWhentoCallVisible={false}
-        // textWhenToCall={
-        //   selectedAssignee?.user_id === EmailAgentId
-        //     ? 'When to mail'
-        //     : 'When to call'
-        // }
-        // slotWhentoCallIcon={
-        //   selectedAssignee?.user_id === EmailAgentId ? (
-        //     <EmailIcon />
-        //   ) : (
-        //     <CallIcon />
-        //   )
-        // }
+        isWhentoCallVisible={
+          selectedAssignee?.user_id === EmailAgentId ||
+          selectedAssignee?.user_id === PhoneAgentId
+        }
+        textWhenToCall={
+          selectedAssignee?.user_id === EmailAgentId
+            ? 'When to mail'
+            : 'When to call'
+        }
+        slotWhentoCallIcon={
+          selectedAssignee?.user_id === EmailAgentId ? (
+            <EmailIcon />
+          ) : (
+            <CallIcon />
+          )
+        }
       />
     </>
   );
