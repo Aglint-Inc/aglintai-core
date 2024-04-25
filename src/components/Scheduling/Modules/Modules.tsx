@@ -69,7 +69,7 @@ export function Modules() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
-                        <Icon variant='JobSearch' height='14' />
+                        <Icon variant='Search' width='14' height='14' />
                       </InputAdornment>
                     ),
                   }}
@@ -79,6 +79,8 @@ export function Modules() {
                   }}
                   value={textSearch}
                   borderRadius={10}
+                  height={42}
+                  width={'250px'}
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />
