@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -18,7 +19,10 @@ export function ButtonFilter({
       tag="div"
       {...onClickStatus}
     >
-      <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "relative-1", "hide")}
+        tag="div"
+      >
         {slotLeftIcon}
       </_Builtin.Block>
       <_Builtin.Block

@@ -1,6 +1,6 @@
 .all-interview-filter {
   display: flex;
-  width: 180px;
+  width: 150px;
   padding: 16px;
   flex-direction: column;
   grid-column-gap: 10px;
@@ -49,6 +49,21 @@
 
 .icons.ml--6 {
   margin-left: -6px;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
 }
 
 .all-interview-filter-copy {
