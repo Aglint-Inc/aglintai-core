@@ -11,10 +11,12 @@ function SelectDueDate({
   selectedDueDate,
   setSelectedDueDate,
   isOptionList = true,
+  onChange,
 }: {
   selectedDueDate: string;
   setSelectedDueDate: (x: string) => void;
   isOptionList?: boolean;
+  onChange?: any;
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -63,10 +65,12 @@ function SelectDueDate({
               disablePast
               value={dayjs(selectedDueDate)}
               onChange={(e) => {
-                setSelectedDueDate(String(new Date(e)));
+                setSelectedDueDate(dayjs(e).toString());
+                if (onChange) {
+                  onChange(e);
+                }
               }}
               shouldDisableDate={(date) => {
-                const formattedDate = dayjs(date).format('DD MMM YYYY');
                 const dayOfWeek = dayjs(date).day(); // 0 for Sunday, 6 for Saturday
                 return dayOfWeek === 0 || dayOfWeek === 6; // Disable if Sunday or Saturday
               }}

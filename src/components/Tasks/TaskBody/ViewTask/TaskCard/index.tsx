@@ -17,7 +17,11 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
+import {
+  CustomDatabase,
+  DatabaseEnums,
+  DatabaseTableUpdate,
+} from '@/src/types/customSchema';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import SelectStatus from '../../../Components/SelectStatus';
@@ -56,9 +60,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const [selectedDueDate, setSelectedDueDate] = useState<string>(null);
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(null);
   const [selectedPriority, setSelectedPriority] =
-    useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
+    useState<CustomDatabase['public']['Enums']['task_priority']>(null);
   const [selectedStatus, setSelectedStatus] =
-    useState<DatabaseEnums['task_status']>('not_started');
+    useState<DatabaseEnums['task_status']>(null);
   async function getSessionList() {
     const data = await fetchInterviewSessionTask({
       application_id: task?.application_id,
@@ -84,35 +88,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     }
   }, [router.query?.task_id]);
 
-  useEffect(() => {
-    if (
-      selectTriggerTime ||
-      selectedDueDate ||
-      selectedSession.length ||
-      scheduleDate.start_date
-    ) {
-      handelUpdateTask({
-        id: task.id,
-        data: {
-          due_date: dayjs(selectedDueDate).toString(),
-          session_ids: selectedSession,
-          start_date: dayjs(selectTriggerTime).toString(),
-          schedule_date_range: { ...scheduleDate },
-          priority: selectedPriority,
-          status: selectedStatus,
-          assignee: [selectedAssignee?.user_id],
-        },
-      });
-    }
-  }, [
-    selectedSession,
-    scheduleDate,
-    selectedDueDate,
-    selectTriggerTime,
-    selectedPriority,
-    selectedStatus,
-    selectedAssignee,
-  ]);
+  async function updateChanges(data: DatabaseTableUpdate['new_tasks']) {
+    handelUpdateTask({
+      id: task.id,
+      data: {
+        ...data,
+      },
+    });
+  }
 
   const createdBy = assignerList.find((ele) => ele.user_id === task.created_by);
 
@@ -166,6 +149,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             setSelectedSession={setSelectedSession}
             sessionList={sessionList}
             isOptionList={task.status === 'not_started'}
+            onChange={(data: any) => {
+              updateChanges({ session_ids: data });
+            }}
           />
         }
         slotInterviewDate={
@@ -175,7 +161,16 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             onChange={(e) => {
               if (Array.isArray(e)) {
                 if (e[0] && e[1]) {
-                  setScheduleDate({ end_date: e[1], start_date: e[0] });
+                  updateChanges({
+                    schedule_date_range: {
+                      start_date: dayjs(e[0]).toString(),
+                      end_date: dayjs(e[1]).toString(),
+                    },
+                  });
+                  setScheduleDate({
+                    start_date: dayjs(e[0]).toString(),
+                    end_date: dayjs(e[1]).toString(),
+                  });
                   createTaskProgress({
                     type: 'schedule_date_update',
                     data: {
@@ -200,8 +195,16 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 }
               }
               if (!Array.isArray(e)) {
-                setScheduleDate({ start_date: e, end_date: null });
-
+                setScheduleDate({
+                  start_date: dayjs(e).toString(),
+                  end_date: null,
+                });
+                updateChanges({
+                  schedule_date_range: {
+                    start_date: dayjs(e).toString(),
+                    end_date: null,
+                  },
+                });
                 createTaskProgress({
                   type: 'schedule_date_update',
                   data: {
@@ -261,6 +264,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             selectedDueDate={selectedDueDate}
             setSelectedDueDate={setSelectedDueDate}
             isOptionList={task.status === 'not_started'}
+            onChange={(e: any) => {
+              updateChanges({ due_date: dayjs(e).toString() });
+            }}
           />
         }
         slotAssignedTo={
@@ -271,6 +277,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               onChange={(assigner: AssignerType) => {
                 // createProgress(assigner);
                 if (task.assignee[0] !== assigner.user_id) {
+                  updateChanges({ assignee: [assigner.user_id] });
                   createTaskProgress({
                     type: 'create_task',
                     data: {
@@ -314,6 +321,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               openTriggerTime={openTriggerTime}
               setOpenTriggerTime={setOpenTriggerTime}
               onChange={(e) => {
+                updateChanges({
+                  start_date: dayjs(selectTriggerTime).toString(),
+                });
                 createTaskProgress({
                   type: 'trigger_time_update',
                   data: {
@@ -339,7 +349,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             // isOptionList={task.status === 'not_started'}
             onChange={(e: any) => {
               const status = e as DatabaseEnums['task_status'];
-
+              updateChanges({ status });
               if (task.status !== status) {
                 createTaskProgress({
                   type: 'status_update',
@@ -376,6 +386,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             selectedPriority={selectedPriority}
             setSelectedPriority={setSelectedPriority}
             isOptionList={task.status === 'not_started'}
+            onChange={(e: DatabaseEnums['task_priority']) => {
+              updateChanges({ priority: e });
+            }}
           />
         }
       />

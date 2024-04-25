@@ -85,15 +85,15 @@ function AddNewTask() {
     null,
   );
   const [selectedDueDate, setSelectedDueDate] = useState<string>(
-    new Date().toString(),
+    dayjs().toString(),
   );
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(
-    new Date().toString(),
+    dayjs().toString(),
   );
 
   const [scheduleDate, setScheduleDate] = useState({
-    start_date: new Date().toString(),
-    end_date: new Date().toString(),
+    start_date: dayjs().toString(),
+    end_date: dayjs().toString(),
   });
   const [selectedPriority, setSelectedPriority] =
     useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
@@ -116,7 +116,11 @@ function AddNewTask() {
       schedule_date_range: scheduleDate,
       session_ids: selectedSession,
       type: selectedType || 'schedule',
-      status: 'not_started',
+      status:
+        selectedAssignee?.user_id === EmailAgentId ||
+        selectedAssignee?.user_id === PhoneAgentId
+          ? 'scheduled'
+          : 'not_started',
       priority: selectedPriority,
     }).then(async (data) => {
       // chinmai code for cron job
@@ -212,6 +216,7 @@ function AddNewTask() {
     setCandidates([]);
     setSelectedApplication(null);
     setInputData('');
+    setSelectedPriority('medium');
   };
 
   // open trigger Time
@@ -498,6 +503,9 @@ function AddNewTask() {
                         assigner.user_id === PhoneAgentId
                       ) {
                         setOpenTriggerTime(spanRef.current);
+                        setSelectedStatus('scheduled');
+                      } else {
+                        setSelectedStatus('not_started');
                       }
                     }}
                   />
@@ -516,6 +524,7 @@ function AddNewTask() {
                 <SelectStatus
                   setSelectedStatus={setSelectedStatus}
                   status={selectedStatus}
+                  isOptionList={false}
                 />
               }
               isWhenToCallVisible={

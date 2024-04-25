@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import {
   InterviewModuleType,
-  InterviewScheduleTypeDB
+  InterviewScheduleTypeDB,
 } from '@/src/types/data.types';
 import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 
@@ -24,7 +24,6 @@ export interface SchedulingApplication {
     end_date: string;
   };
   members: InterviewScheduleContextType['members'];
-  step: number;
   schedulingOptions: PlanCombinationRespType[];
   totalSlots: number;
   isScheduleNowOpen: boolean;
@@ -56,7 +55,6 @@ const initialState: SchedulingApplication = {
     end_date: '',
   },
   members: [],
-  step: 1,
   schedulingOptions: [],
   fetchingPlan: false,
   isViewProfileOpen: false,
@@ -145,9 +143,6 @@ export const setFetchingPlan = (fetchingPlan: boolean) =>
 
 export const setMembers = (members: InterviewScheduleContextType['members']) =>
   useSchedulingApplicationStore.setState({ members });
-
-export const setStep = (step: number) =>
-  useSchedulingApplicationStore.setState({ step });
 
 export const setDateRange = (dateRange: {
   start_date: string;
