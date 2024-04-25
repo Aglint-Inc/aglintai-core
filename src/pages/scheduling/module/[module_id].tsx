@@ -41,9 +41,9 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { DatabaseTableUpdate } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { supabase } from '../../api/invite_user';
 import IProgressDrawer from './IProgressDrawer';
 
 const ModuleMembers = () => {
