@@ -25,7 +25,7 @@ const tabs: {
   { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
   { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
   { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
-  { text: 'interview types', roles: ['interviewer'] },
+  { text: 'interview modules', roles: ['interviewer'] },
   {
     text: 'settings',
   },

@@ -544,7 +544,7 @@ function SlotQualifiedMembers({
                           }
                           // @ts-ignore
                           textPlatformName={getScheduleType(
-                            item.meeting.interview_session.schedule_type,
+                            item.meeting?.interview_session?.schedule_type,
                           )}
                         />
                       }
