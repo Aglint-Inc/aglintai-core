@@ -62,7 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const schedule_name = `Interview for ${job_tile} - ${candidate_name}`;
     const schedule_id = filterJson[0].interview_schedule.id;
 
-    if (emailTemplate)
+    if (emailTemplate) {
       await axios
         .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
           fromEmail: `messenger@aglinthq.com`,
@@ -96,6 +96,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return false;
           }
         });
+    } else {
+      console.log('unable to find email template ');
+      return res.status(400).send('unable to find email template ');
+    }
   } catch (error) {
     // console.log('error', error);
     return res.status(400).send(error.message);

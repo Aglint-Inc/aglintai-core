@@ -521,7 +521,10 @@ export const scheduleWithAgent = async ({
           recruiter_id,
           user_tz,
           supabase,
+          rec_user_id,
         });
+
+        console.log(filterJson.id, 'filter_id');
 
         if (task_id) {
           const { data: task, error: eroorSubTasks } = await supabase
@@ -652,6 +655,7 @@ export const scheduleWithAgent = async ({
           recruiter_id,
           user_tz,
           supabase,
+          rec_user_id,
         });
 
         if (task_id) {
@@ -753,6 +757,7 @@ export const createFilterJson = async ({
   recruiter_id,
   dateRange,
   supabase,
+  rec_user_id,
 }: {
   sessions_ids: string[];
   schedule_id: string;
@@ -764,6 +769,7 @@ export const createFilterJson = async ({
     end_date: string;
   };
   supabase: ReturnType<typeof createServerClient<Database>>;
+  rec_user_id: string;
 }) => {
   const { data: filterJson, error: errorFilterJson } = await supabase
     .from('interview_filter_json')
@@ -780,6 +786,7 @@ export const createFilterJson = async ({
       },
       session_ids: sessions_ids,
       schedule_id: schedule_id,
+      created_by: rec_user_id,
     })
     .select();
 
