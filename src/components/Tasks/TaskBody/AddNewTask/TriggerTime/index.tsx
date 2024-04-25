@@ -118,7 +118,7 @@ function TriggerTime({
                       disablePast
                       value={dayjs(selectTriggerTime)}
                       onAccept={(e: any) => {
-                        setSelectTriggerTime(String(new Date(e)));
+                        setSelectTriggerTime(e);
                         setOpenTriggerTime(null);
                         if (onChange) {
                           onChange(e);
