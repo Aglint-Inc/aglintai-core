@@ -25,9 +25,11 @@ const tabs: {
   },
   { text: 'my schedules' },
   { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
-  { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
+  {
+    text: 'interview types',
+    roles: ['admin', 'recruiter', 'scheduler', 'interviewer'],
+  },
   { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
-  { text: 'interview types', roles: ['interviewer'] },
   {
     text: 'settings',
   },

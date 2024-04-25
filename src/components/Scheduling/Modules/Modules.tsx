@@ -30,9 +30,11 @@ export function Modules() {
   const createdBy = useFilterModuleStore((state) => state.created_by);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
   const [showArchive, setShowArchive] = useState(false);
+  const [archives, setArchives] = useState(false);
 
   const filterModules = allModules
     .filter((mod) => {
+      !archives && setArchives(true);
       return (
         (departments.length === 0 ||
           departments.includes(mod.interview_modules.department)) &&
@@ -164,8 +166,8 @@ export function Modules() {
                     })}
 
                     <ArchivedButton
-                      isHideVisible={showArchive}
-                      isShowVisible={!showArchive}
+                      isHideVisible={archives && showArchive}
+                      isShowVisible={archives && !showArchive}
                       onClickHide={{
                         onClick: () => {
                           setShowArchive((prev) => !prev);
