@@ -13,11 +13,13 @@ function AllList({
   isError,
   applicationList,
   isFetching,
+  isLoading,
 }: {
   isPending: boolean;
   isError: boolean;
   applicationList: ApplicationList[];
   isFetching: boolean;
+  isLoading;
 }) {
   const router = useRouter();
   const onClickCard = (app: ApplicationList) => {
@@ -33,8 +35,8 @@ function AllList({
   return (
     <Stack
       style={{
-        opacity: isFetching ? 0.5 : 1,
-        pointerEvents: isFetching ? 'none' : 'auto',
+        opacity: isLoading ? 0.5 : 1,
+        pointerEvents: isLoading ? 'none' : 'auto',
       }}
     >
       {isFetching && applicationList.length === 0 && (
