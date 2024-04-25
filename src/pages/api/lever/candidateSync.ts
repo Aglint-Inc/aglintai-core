@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,14 +7,10 @@ import {
   extractLinkedInURL,
   splitFullName,
 } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
-import { Database } from '@/src/types/schema';
+
+import { supabaseAdmin as supabase } from '../fetchCompanyDetails';
 
 const crypto = require('crypto');
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;
@@ -98,7 +93,11 @@ export default async function handler(req, res) {
           ),
         ];
 
-        const checkCandidates = await processEmailsInBatches(emails, rec[0].id);
+        const checkCandidates = await processEmailsInBatches(
+          emails,
+          rec[0].id,
+          supabase,
+        );
 
         //new candidates insert flow
         const uniqueRefCandidates = refCandidates.filter((cand) => {

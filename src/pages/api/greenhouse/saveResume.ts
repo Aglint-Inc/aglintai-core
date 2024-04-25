@@ -1,14 +1,8 @@
 /* eslint-disable no-console */
-import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Database } from '@/src/types/schema';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+import { supabaseAdmin as supabase } from '../fetchCompanyDetails';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -21,7 +15,11 @@ export default async function handler(req, res) {
     if (!payload.resume) {
       await supabase
         .from('applications')
-        .update({ processing_status: 'failed', retry: 2 })
+        .update({
+          processing_status: 'failed',
+          retry: 2,
+          is_resume_fetching: false,
+        })
         .eq('application_id', payload.application_id);
       return res.status(400).json('Resume URL is missing');
     }
@@ -84,7 +82,7 @@ export default async function handler(req, res) {
               upsert: true,
             },
           );
-        const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
+        const fileLink = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/${data.path}`;
         if (!uploadError) {
           console.log(fileLink);
 
@@ -130,7 +128,11 @@ export default async function handler(req, res) {
     } else {
       await supabase
         .from('applications')
-        .update({ processing_status: 'failed', retry: 2 })
+        .update({
+          processing_status: 'failed',
+          retry: 2,
+          is_resume_fetching: false,
+        })
         .eq('application_id', payload.application_id);
       await supabase
         .from('greenhouse_reference')
