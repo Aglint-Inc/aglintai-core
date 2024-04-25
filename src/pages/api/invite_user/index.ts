@@ -6,14 +6,9 @@ import { RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { companyType } from '@/src/utils/userRoles';
 
-// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-// const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<Database>(
-  // supabaseUrl,
-  'https://plionpfmgvenmdwwjzac.supabase.co',
-  // supabaseAnonKey,
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsaW9ucGZtZ3Zlbm1kd3dqemFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5ODY1ODE4MywiZXhwIjoyMDE0MjM0MTgzfQ.mSmvcr8K9STsaMCuMwbtdA9uwa7RIrRVs1KPzD2Inws',
+export const supabase = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
 );
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
