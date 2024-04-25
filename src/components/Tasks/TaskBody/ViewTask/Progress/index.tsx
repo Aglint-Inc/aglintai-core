@@ -3,6 +3,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
+import { marked } from 'marked';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -49,7 +50,6 @@ function SubTaskProgress() {
       <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
         {progressList
           ? progressList.map((item, i) => {
-           
               const CandidateCreator = tasks
                 .map((ele) => ele.applications.candidates)
                 .find((ele) => ele.id === (item.created_by as any).id);
@@ -150,7 +150,11 @@ function SubTaskProgress() {
                         >
                           <span
                             dangerouslySetInnerHTML={{
-                              __html: String(item.jsonb_data?.message),
+                              __html: marked(
+                                String(item.jsonb_data?.message)
+                                  ?.replaceAll('- **', '<b>')
+                                  ?.replaceAll('**', '</b> '),
+                              ),
                             }}
                           ></span>
                         </Typography>

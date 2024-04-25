@@ -33,14 +33,13 @@ function SelectScheduleDate({
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
   return (
     <>
       <Stack onClick={handleClick}>
         <ShowCode>
           <ShowCode.When isTrue={!!scheduleDate.end_date}>
             {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')} - ${dayjs(scheduleDate.end_date).format('DD MMM YYYY')}`}</>
+              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('DD MMM YYYY') : ''}`}</>
             ) : (
               <>Select Date</>
             )}
@@ -98,9 +97,15 @@ function SelectScheduleDate({
                       }
                     }}
                     value={
-                      scheduleDate.end_date
-                        ? [scheduleDate.start_date, scheduleDate.end_date]
-                        : []
+                      dayjs(scheduleDate.end_date).toString() == 'Invalid Date'
+                        ? [
+                            dayjs(scheduleDate.start_date),
+                            dayjs(scheduleDate.start_date),
+                          ]
+                        : [
+                            dayjs(scheduleDate.start_date),
+                            dayjs(scheduleDate.end_date),
+                          ]
                     }
                   />
                 </ShowCode.When>

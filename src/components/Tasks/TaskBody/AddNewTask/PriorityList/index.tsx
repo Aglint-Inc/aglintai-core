@@ -10,12 +10,14 @@ function PriorityList({
   selectedPriority,
   setSelectedPriority,
   isOptionList = true,
+  onChange,
 }: {
   selectedPriority: CustomDatabase['public']['Enums']['task_priority'];
   setSelectedPriority: (
     x: CustomDatabase['public']['Enums']['task_priority'],
   ) => void;
   isOptionList?: boolean;
+  onChange?: any;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -70,18 +72,27 @@ function PriorityList({
             onClick: () => {
               setSelectedPriority('high');
               setAnchorEl(null);
+              if (onChange) {
+                onChange('high');
+              }
             },
           }}
           onClickLow={{
             onClick: () => {
               setSelectedPriority('low');
               setAnchorEl(null);
+              if (onChange) {
+                onChange('low');
+              }
             },
           }}
           onClickMedium={{
             onClick: () => {
               setSelectedPriority('medium');
               setAnchorEl(null);
+              if (onChange) {
+                onChange('medium');
+              }
             },
           }}
         />

@@ -120,7 +120,9 @@ function CandidateList({
                 {candidates &&
                   candidates
                     .filter((ele) =>
-                      ele.candidates.first_name.includes(searchText),
+                      ele.candidates.first_name
+                        .toLowerCase()
+                        .includes(searchText?.toLowerCase()),
                     )
                     .map((ele, i) => {
                       return (

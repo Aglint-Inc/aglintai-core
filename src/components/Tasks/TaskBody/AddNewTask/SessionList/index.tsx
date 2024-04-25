@@ -12,6 +12,7 @@ function SessionList({
   setSelectedSession,
   sessionList,
   isOptionList = true,
+  onChange,
 }: {
   selectedSession: Awaited<ReturnType<typeof fetchInterviewSessionTask>> | null;
   sessionList: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
@@ -19,6 +20,7 @@ function SessionList({
     x: Awaited<ReturnType<typeof fetchInterviewSessionTask>>,
   ) => void;
   isOptionList?: boolean;
+  onChange?: any;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -105,11 +107,19 @@ function SessionList({
                                 .map((ele: { id: any }) => ele.id)
                                 .includes(item.id)
                             ) {
-                              return pre.filter(
+                              const data = pre.filter(
                                 (ele: { id: string }) => ele.id !== item.id,
                               );
+                              if (onChange) {
+                                onChange(data);
+                              }
+                              return data;
                             }
-                            return [item, ...pre];
+                            const data = [item, ...pre];
+                            if (onChange) {
+                              onChange(data);
+                            }
+                            return data;
                           });
                         }}
                       >
