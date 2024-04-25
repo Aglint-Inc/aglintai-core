@@ -183,14 +183,26 @@ function SubTaskProgress() {
                             }}
                             py={1}
                           >
-                            <Typography variant='body1'>Transcript</Typography>
+                            <Typography variant='inherit'>
+                              Transcript
+                            </Typography>
                             {openTranscript ? (
                               <IconChevronUp />
                             ) : (
                               <IconChevronDown />
                             )}
                           </Stack>
-                          <Collapse in={openTranscript} collapsedSize={0}>
+                          <Collapse
+                            sx={{
+                              '& .MuiCollapse-wrapperInner': {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '20px',
+                              },
+                            }}
+                            in={openTranscript}
+                            collapsedSize={0}
+                          >
                             {item.jsonb_data &&
                               item.jsonb_data.length &&
                               (

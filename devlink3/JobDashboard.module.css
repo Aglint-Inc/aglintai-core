@@ -100,6 +100,28 @@
   color: rgba(28, 28, 28, 0.4);
 }
 
+.text-sm.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .embed_flex {
   display: flex;
   align-items: center;
@@ -152,11 +174,6 @@
   line-height: 32px;
 }
 
-.relative-1 {
-  position: relative;
-  z-index: 1;
-}
-
 .fw-semibold.relative_2 {
   position: relative;
   z-index: 2;
@@ -199,6 +216,11 @@
   padding-left: 16px;
 }
 
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 24px;
@@ -211,6 +233,10 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
 }
 
 .text-gray-600 {
@@ -360,6 +386,12 @@
   .graph_wrapper {
     width: 100%;
   }
+}
+
+.div-block-1606 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .slot_schedulecards {

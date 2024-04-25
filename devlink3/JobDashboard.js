@@ -315,10 +315,24 @@ export function JobDashboard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "div-block-1606")}
               tag="div"
             >
-              {"Upcoming Schedules"}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold")}
+                tag="div"
+              >
+                {"Upcoming Schedules"}
+              </_Builtin.Block>
+              {isViewScheduleVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-600", "is_link")}
+                  tag="div"
+                  {...onClickViewSchedule}
+                >
+                  {"View all"}
+                </_Builtin.Block>
+              ) : null}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "slot_schedulecards")}
@@ -506,15 +520,6 @@ export function JobDashboard({
                 </>
               )}
             </_Builtin.Block>
-            {isViewScheduleVisible ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-600", "is_link")}
-                tag="div"
-                {...onClickViewSchedule}
-              >
-                {"View All Schedules"}
-              </_Builtin.Block>
-            ) : null}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "graph_wrapper-copy-copy")}
