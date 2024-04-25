@@ -20,6 +20,7 @@ import {
   InsightTagReliable,
   // InsightTagReliable,
   InsightTagSkilled,
+  JobHopper,
   RcCheckbox,
   ScreeningStatus,
 } from '@/devlink2';
@@ -420,6 +421,7 @@ const badgePriority = [
   'leadership',
   'jobStability',
   'careerGrowth',
+  'jobHopping',
   'positions',
   'skills',
   'schools',
@@ -452,6 +454,8 @@ const getBadge = (key: string, count: number, pills: any) => {
       return count >= 70 ? <InsightTagLeader /> : null;
     case 'jobStability':
       return count >= 90 ? <InsightTagReliable /> : null;
+    case 'jobHopping':
+      return count >= 0 ? <JobHopper /> : null;
     case 'careerGrowth':
       return count >= 90 ? <InsightTagAmbitious /> : null;
   }

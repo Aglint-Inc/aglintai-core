@@ -54,11 +54,28 @@
   opacity: 0.8;
 }
 
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
 .relative_2 {
   position: relative;
   z-index: 2;
 }
 
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
 .text-grey-500 {
   color: #87929d;
+}
+
+.hide {
+  display: none;
 }

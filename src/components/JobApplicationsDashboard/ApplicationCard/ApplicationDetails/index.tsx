@@ -127,7 +127,9 @@ const ApplicationDetails = ({
     // >
     //   <CandidateAvatar application={application} fontSize={12} />
     // </RedirectWrapper>
-    <CandidateAvatar application={application} fontSize={12} />
+    <Stack onClick={() => navigator.clipboard.writeText(application.id)}>
+      <CandidateAvatar application={application} fontSize={12} />
+    </Stack>
   ) : (
     <></>
   );
