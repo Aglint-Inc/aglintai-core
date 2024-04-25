@@ -30,6 +30,17 @@
   color: hsla(206.95652173913044, 69.70%, 19.41%, 1.00);
 }
 
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .dot-indicator {
   position: absolute;
   left: auto;

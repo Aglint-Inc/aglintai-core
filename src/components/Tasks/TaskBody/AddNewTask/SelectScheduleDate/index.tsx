@@ -12,12 +12,12 @@ import DateRange from '../../../Components/DateRange';
 
 function SelectScheduleDate({
   scheduleDate,
-  setScheduleDate,
   isOptionList = true,
+  onChange,
 }: {
   scheduleDate: { start_date: string; end_date: string };
-  setScheduleDate: (x: { start_date: string; end_date: string }) => void;
   isOptionList?: boolean;
+  onChange?: any;
 }) {
   const [rangeActive, setRangeActive] = useState(true);
 
@@ -33,14 +33,13 @@ function SelectScheduleDate({
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
   return (
     <>
       <Stack onClick={handleClick}>
         <ShowCode>
           <ShowCode.When isTrue={!!scheduleDate.end_date}>
             {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')} - ${dayjs(scheduleDate.end_date).format('DD MMM YYYY')}`}</>
+              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('DD MMM YYYY') : ''}`}</>
             ) : (
               <>Select Date</>
             )}
@@ -83,10 +82,6 @@ function SelectScheduleDate({
           onClickSpecificDate={{
             onClick: () => {
               setRangeActive(false);
-              setScheduleDate({
-                start_date: String(new Date()),
-                end_date: null,
-              });
             },
           }}
           isInDateRangeActive={rangeActive}
@@ -97,12 +92,20 @@ function SelectScheduleDate({
                 <ShowCode.When isTrue={rangeActive}>
                   <DateRange
                     onChange={(e) => {
-                      setScheduleDate({ start_date: e[0], end_date: e[1] });
+                      if (onChange) {
+                        onChange(e);
+                      }
                     }}
                     value={
-                      scheduleDate.end_date
-                        ? [scheduleDate.start_date, scheduleDate.end_date]
-                        : []
+                      dayjs(scheduleDate.end_date).toString() == 'Invalid Date'
+                        ? [
+                            dayjs(scheduleDate.start_date),
+                            dayjs(scheduleDate.start_date),
+                          ]
+                        : [
+                            dayjs(scheduleDate.start_date),
+                            dayjs(scheduleDate.end_date),
+                          ]
                     }
                   />
                 </ShowCode.When>
@@ -110,8 +113,11 @@ function SelectScheduleDate({
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                       disablePast
+                      value={dayjs(scheduleDate.start_date)}
                       onChange={(e) => {
-                        setScheduleDate({ start_date: e, end_date: null });
+                        if (onChange) {
+                          onChange(e);
+                        }
                       }}
                     />
                   </LocalizationProvider>

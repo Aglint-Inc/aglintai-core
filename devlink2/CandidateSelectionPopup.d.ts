@@ -13,4 +13,5 @@ declare function CandidateSelectionPopup(props: {
   isCheckVisible?: Types.Visibility.VisibilityConditions;
   textWarning?: React.ReactNode;
   isWarningVisible?: Types.Visibility.VisibilityConditions;
+  slotMoveAssessment?: Types.Devlink.Slot;
 }): React.JSX.Element;

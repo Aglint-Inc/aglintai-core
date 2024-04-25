@@ -8,17 +8,13 @@
 
 .div-block-1272 {
   display: flex;
-  padding: 4px 16px;
+  padding: 0px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
   border-radius: 100px;
-
-  background-color: #edf8f4;
-
-  color: #186146;
 }
 
 .div-block-1272.blue {
@@ -44,6 +40,26 @@
 .div-block-1272.yellow {
   background-color: #fff7ed;
   color: #ad5918;
+}
+
+.div-block-1272.confirmed {
+  color: #337fbd;
+}
+
+.div-block-1272.not-schedule {
+  color: #87929d;
+}
+
+.div-block-1272.in-progress {
+  color: #17494d;
+}
+
+.div-block-1272.cancelled {
+  color: #d93f4c;
+}
+
+.div-block-1272.waiting {
+  color: #ed8f1c;
 }
 
 .icons {

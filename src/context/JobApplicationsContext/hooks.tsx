@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
-import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
+import { TaskType } from '@/src/components/JobApplicationsDashboard/CandidateActions/CreateTask';
 import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
   checkSyncCand,
@@ -127,12 +127,15 @@ const reducer = (state: JobApplicationsData, action: Action) => {
 };
 
 const useProviderJobApplicationActions = (job_id: string = undefined) => {
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const {
+    recruiter,
+    recruiterUser,
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+  } = useAuthDetails();
 
   const router = useRouter();
-
-  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
-  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
 
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
   const { handleJobRefresh, jobPolling } = useJobDetails();
@@ -181,15 +184,16 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           case JobApplicationSections.ASSESSMENT:
             return (job?.assessment ?? false) && isAssessmentEnabled;
           case JobApplicationSections.INTERVIEW:
-            return true;
+            return isSchedulingEnabled;
           case JobApplicationSections.QUALIFIED:
             return true;
           case JobApplicationSections.DISQUALIFIED:
             return true;
         }
       }),
-    [job],
+    [job, isScreeningEnabled, isAssessmentEnabled, isSchedulingEnabled],
   );
+
   const [section, setSection] = useState<JobApplicationSections>(
     JobApplicationSections.NEW,
   );
@@ -278,7 +282,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
           return { confirmation: true, filteredCount };
         }
         if (initialLoad) handleJobApplicationError(error);
-      } else handleJobApplicationError('Something went wrong');
+      } else handleJobApplicationError('Unable to fetch applications');
       return {
         confirmation: false,
         filteredCount: null as CountJobs,
@@ -403,7 +407,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       source: JobApplicationSections;
       destination: JobApplicationSections;
     },
-    task: boolean,
+    task: TaskType,
     purposes?: JobApplicationEmails['request']['purposes'],
     applicationIdSet?: Set<string>,
     updateAll: boolean = false,

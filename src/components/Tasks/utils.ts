@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
+import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
+import { Supabase } from '@/src/pages/api/job/jobApplications/candidateUpload/types';
+import { DatabaseEnums } from '@/src/types/customSchema';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
+import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
 export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
@@ -84,5 +90,84 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
     }, delay) as any;
   };
 }
+// end
+type ProgressType =
+  | 'status_update'
+  | 'create_task'
+  | 'schedule_date_update'
+  | 'trigger_time_update';
 
+type optionDataType = {
+  assignerId?: string;
+  assignerName?: string;
+  creatorName?: string;
+  currentStatus?: DatabaseEnums['task_status'];
+  status?: DatabaseEnums['task_status'];
+  supabse?: Supabase;
+  scheduleDateRange?: {
+    start_date: string | null;
+    end_date: string | null;
+  };
+  prevScheduleDateRange?: {
+    start_date: string | null;
+    end_date: string | null;
+  };
+  triggerTime?: {
+    prev: string;
+    current: string;
+  };
+};
 
+export async function createTaskProgress({
+  type,
+  optionData,
+  data,
+  supabaseCaller = supabase,
+}: {
+  type: ProgressType;
+  optionData?: optionDataType;
+  data: {
+    task_id: string;
+    created_by: {
+      name: string;
+      id: string;
+    };
+    progress_type: DatabaseEnums['progress_type'];
+    jsonb_data?: null;
+  };
+  supabaseCaller?: ReturnType<typeof createServerClient<Database>>;
+}) {
+  var {
+    assignerId,
+    assignerName,
+    creatorName,
+    currentStatus,
+    status,
+    scheduleDateRange,
+    prevScheduleDateRange,
+    triggerTime,
+  } = optionData;
+
+  const progressTitle = (cusType: ProgressType) => {
+    switch (cusType) {
+      case 'status_update':
+        return `Task status moved from <span class="${currentStatus}">${capitalizeAll(currentStatus.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span>`;
+      case 'create_task':
+        return `Task assigned to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span> by <span class="mention">@${creatorName}</span>`;
+      case 'schedule_date_update':
+        return `Schedule time changed from <span class="progress_date_section"> ${dayjs(prevScheduleDateRange.start_date).format('DD MMM')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('DD MMM') : ''}</span> to <span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('DD MMM')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('DD MMM') : ''}</span>`;
+      case 'trigger_time_update':
+        return `Trigger time changed from <span class="progress_date_section"> ${dayjs(triggerTime.prev).format('DD MMM, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('DD MMM, hh:mm A')}</span>`;
+      default:
+        return '';
+    }
+  };
+
+  const { error, data: progress } = await supabaseCaller
+    .from('new_tasks_progress')
+    .insert({ ...data, title: progressTitle(type) })
+    .select();
+  if (!error) {
+    return progress;
+  }
+}

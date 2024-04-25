@@ -6,6 +6,7 @@ import {
 } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { TaskType } from '@/src/components/JobApplicationsDashboard/CandidateActions/CreateTask';
 import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { type EmailTemplateType, type JobType } from '@/src/types/data.types';
@@ -68,7 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      if (task) await createTasks(supabase, job, candidates);
+      if (task) await createTasks(supabase, job, candidates, task);
       res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
         sendMails(supabase, job, purposes, candidates, sgMail);
@@ -83,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         job,
         parameter,
       );
-      if (task) await createTasks(supabase, job, candidates);
+      if (task) await createTasks(supabase, job, candidates, task);
       res.status(200).send(results as ReadJobApplicationApi['response']);
       try {
         sendMails(supabase, job, purposes, candidates, sgMail);
@@ -179,7 +180,7 @@ export type JobApplicationEmails = {
       destination: JobApplicationSections;
     };
     purposes: (keyof EmailTemplateType)[];
-    task: boolean;
+    task: TaskType;
     applicationIds?: string[]; //Awaited<ReturnType<typeof readCandidates>>;
     parameter: Omit<
       ReadJobApplicationApi['request'],

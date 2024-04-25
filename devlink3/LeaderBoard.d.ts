@@ -10,4 +10,7 @@ declare function LeaderBoard(props: {
   onClickThisYear?: Types.Devlink.RuntimeProps;
   isYearActive?: Types.Visibility.VisibilityConditions;
   slotLeaderboardCard?: Types.Devlink.Slot;
+  isAllTimeActive?: Types.Visibility.VisibilityConditions;
+  onClickAllTime?: Types.Devlink.RuntimeProps;
+  slotDropdownButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

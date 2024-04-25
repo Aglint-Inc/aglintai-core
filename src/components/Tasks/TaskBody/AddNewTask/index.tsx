@@ -1,16 +1,22 @@
-import { Drawer, TextField, Typography } from '@mui/material';
+import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { AvatarWithName, CreateTask, ListCard, ViewTaskCard } from '@/devlink3';
+import {
+  AvatarWithName,
+  CreateTask,
+  InterviewTaskPill,
+  ListCard,
+  ViewTaskCard,
+} from '@/devlink3';
+import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   fetchInterviewSessionTask,
   scheduleWithAgent,
-} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
-import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
@@ -51,7 +57,8 @@ function AddNewTask() {
   const {
     jobs: { data: jobs },
   } = useJobs();
-  const [inputData, setInputData] = useState(null);
+  const [inputData, setInputData] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const [selectedStatus, setSelectedStatus] =
     useState<CustomDatabase['public']['Enums']['task_status']>('not_started');
 
@@ -69,7 +76,8 @@ function AddNewTask() {
     null,
   );
 
-  const [sessionList, setSessionList] = useState(null);
+  const [sessionList, setSessionList] =
+    useState<Awaited<ReturnType<typeof fetchInterviewSessionTask>>>(null);
   const [selectedSession, setSelectedSession] = useState<
     Awaited<ReturnType<typeof fetchInterviewSessionTask>>
   >([]);
@@ -77,21 +85,20 @@ function AddNewTask() {
     null,
   );
   const [selectedDueDate, setSelectedDueDate] = useState<string>(
-    new Date().toString(),
+    dayjs().toString(),
   );
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(
-    new Date().toString(),
+    dayjs().toString(),
   );
 
   const [scheduleDate, setScheduleDate] = useState({
-    start_date: new Date().toString(),
-    end_date: new Date().toString(),
+    start_date: dayjs().toString(),
+    end_date: dayjs().toString(),
   });
   const [selectedPriority, setSelectedPriority] =
     useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
 
   const [aiload, setAiLoad] = useState(false);
-  const [editMode, setEditMode] = useState(false);
 
   async function handleCreate() {
     if (!selectedSession.length) {
@@ -109,7 +116,11 @@ function AddNewTask() {
       schedule_date_range: scheduleDate,
       session_ids: selectedSession,
       type: selectedType || 'schedule',
-      status: 'not_started',
+      status:
+        selectedAssignee?.user_id === EmailAgentId ||
+        selectedAssignee?.user_id === PhoneAgentId
+          ? 'scheduled'
+          : 'not_started',
       priority: selectedPriority,
     }).then(async (data) => {
       // chinmai code for cron job
@@ -146,14 +157,8 @@ function AddNewTask() {
           rec_user_id: recruiterUser.user_id,
           supabase: supabase,
           user_tz: dayjs.tz.guess(),
+          trigger_count: 0,
         });
-        // update task
-        await supabase
-          .from('new_tasks')
-          .update({
-            task_triggered: true,
-          })
-          .eq('id', selectedTask.id);
       }
       // end
     });
@@ -207,10 +212,16 @@ function AddNewTask() {
     setSelectedJob(null);
     setSelectedCandidate(null);
     setSelectedSession([]);
-    setSessionList([]);
+    setSessionList(null);
     setCandidates([]);
     setSelectedApplication(null);
+    setInputData('');
+    setSelectedPriority('medium');
   };
+
+  // open trigger Time
+  const [openTriggerTime, setOpenTriggerTime] = useState(null);
+  const spanRef = useRef(null);
   return (
     <Drawer anchor={'right'} open={showAddNew} onClose={handleClose}>
       <CreateTask
@@ -223,7 +234,7 @@ function AddNewTask() {
         textPrimaryButton={
           <>
             <ShowCode>
-              {/* <ShowCode.When
+              <ShowCode.When
                 isTrue={selectedAssignee?.user_id === EmailAgentId}
               >
                 Email Now
@@ -232,7 +243,7 @@ function AddNewTask() {
                 isTrue={selectedAssignee?.user_id === PhoneAgentId}
               >
                 Call Now
-              </ShowCode.When> */}
+              </ShowCode.When>
               <ShowCode.Else>Create</ShowCode.Else>
             </ShowCode>
           </>
@@ -242,80 +253,157 @@ function AddNewTask() {
           onClick: handleCreate,
         }}
         textTaskDetail={
-          <ShowCode>
-            <ShowCode.When isTrue={!editMode}>
-              <Typography
-                onClick={() => {
-                  setEditMode(true);
-                }}
-                bgcolor={'#F7F9FB'}
-                padding={'10px'}
-                borderRadius={'10px'}
-                fontSize={'18px'}
-                lineHeight={'24px'}
-                fontWeight={600}
-              >
-                {inputData || 'Untitled'}
-              </Typography>
-            </ShowCode.When>
-            <ShowCode.Else>
-              <TextField
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus={true}
-                multiline
-                minRows={1}
-                maxRows={3}
-                fullWidth
-                placeholder='Untitled'
-                onChange={(e) => {
-                  setInputData(e.target.value);
-                }}
-                onBlur={async () => {
-                  if (inputData) {
-                    setAiLoad(true);
-                    await extractDataFromText(
-                      inputData,
-                      recruiterUser.user_id,
-                    ).then((data: any) => {
-                      setSelectedAssignee(
-                        assignerList.find(
-                          (ele) => ele.user_id === data.assignee,
-                        ),
-                      );
-                      setSelectedDueDate(String(new Date(data.end_date)));
-                      // setSelectTriggerTime(String(new Date(data.start_date)));
-                      setScheduleDate({
-                        start_date: String(new Date(data.start_date)),
-                        end_date: String(new Date(data.end_date)),
-                      });
-                      //   setSelectedType(
-                      //     data.type as CustomDatabase['public']['Enums']['task_type_enum'],
-                      //   );
+          <Stack minHeight={48}>
+            <TextField
+              InputProps={{
+                endAdornment: aiload && (
+                  <Stack
+                    sx={{
+                      '& svg': {
+                        height: '25px',
+                        width: '25px',
+                      },
+                    }}
+                    position={'absolute'}
+                    right={'10px'}
+                  >
+                    <Loader />
+                  </Stack>
+                ),
+              }}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={true}
+              multiline
+              minRows={1}
+              maxRows={3}
+              fullWidth
+              placeholder='Untitled'
+              onChange={(e) => {
+                setInputData(e.target.value);
+                if (!e.target.value.trim()) {
+                  setSelectedSession([]);
+                }
+              }}
+              value={inputData}
+              inputRef={inputRef}
+              onKeyDown={async (e) => {
+                if (inputData.trim() && e.shiftKey && e.key === 'Enter') {
+                  e.preventDefault();
+                  setAiLoad(true);
+                  await extractDataFromText(
+                    inputData,
+                    recruiterUser.user_id,
+                  ).then((data: any) => {
+                    setSelectedAssignee(
+                      assignerList.find((ele) => ele.user_id === data.assignee),
+                    );
+                    setSelectedDueDate(String(new Date(data.end_date)));
+                    setScheduleDate({
+                      start_date: String(new Date(data.start_date)),
+                      end_date: String(new Date(data.end_date)),
                     });
-                    setAiLoad(false);
-                  }
-                  setEditMode(false);
-                }}
-                sx={{
-                  '& .MuiInputBase-root': {
-                    border: 'none',
-                    fontSize: '18px',
-                    lineHeight: '24px',
-                    fontWeight: 600,
-                    padding: '10px',
-                  },
-                }}
-              />
-            </ShowCode.Else>
-          </ShowCode>
+                  });
+                  setAiLoad(false);
+                }
+              }}
+              sx={{
+                '& .MuiInputBase-root': {
+                  border: 'none',
+                  fontSize: '18px',
+                  lineHeight: '24px',
+                  fontWeight: 600,
+                  padding: '10px',
+                  bgcolor: '#F7F9FB',
+                  borderRadius: '10px',
+                },
+              }}
+            />
+
+            <Collapse
+              in={inputData && inputData.toLowerCase().includes('schedule')}
+            >
+              <ShowCode>
+                <ShowCode.When isTrue={sessionList && !!sessionList.length}>
+                  <Typography ml={1} fontSize={'14px'} variant='caption'>
+                    Select Session
+                  </Typography>
+                  <Stack
+                    overflow={'hidden'}
+                    direction={'row'}
+                    flexWrap={'wrap'}
+                  >
+                    {sessionList &&
+                      sessionList.map((item, i) => {
+                        return (
+                          <Stack
+                            key={i}
+                            p={'4px'}
+                            onClick={() => {
+                              //   @ts-ignore
+                              setSelectedSession((pre: any[]) => {
+                                if (
+                                  pre
+                                    .map((ele: { id: any }) => ele.id)
+                                    .includes(item.id)
+                                ) {
+                                  setInputData((pre) =>
+                                    pre.replaceAll(` ${item.name}`, ''),
+                                  );
+                                  inputRef.current.focus();
+                                  return pre.filter(
+                                    (ele: { id: string }) => ele.id !== item.id,
+                                  );
+                                }
+                                setInputData((pre) => pre + ' ' + item.name);
+                                inputRef.current.focus();
+                                return [item, ...pre];
+                              });
+                            }}
+                          >
+                            {/* <InterviewTaskPill
+                                  textInterviewName={item.name}
+                                /> */}
+                            <InterviewTaskPill
+                              onClickPill={{
+                                style: {
+                                  backgroundColor:
+                                    selectedSession
+                                      .map((ele) => ele.id)
+                                      .includes(item.id) && '#90caf988',
+                                  fontSize: '14px',
+                                  cursor: 'pointer',
+                                },
+                              }}
+                              textInterviewName={item.name}
+                            />
+                          </Stack>
+                        );
+                      })}
+                  </Stack>
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <Typography ml={1} fontSize={'14px'} variant='caption'>
+                    Sessions are not available!
+                  </Typography>
+                </ShowCode.Else>
+              </ShowCode>
+            </Collapse>
+          </Stack>
         }
         slotViewTaskCard={
           <>
-            <ShowCode>
-              <ShowCode.When isTrue={aiload}>
-                <DynamicLoader height='400px' />
+            {/* <ShowCode> */}
+            {/* <ShowCode.When isTrue={aiload}>
+                <Stack
+                  width={'100%'}
+                  top={10}
+                  position={'absolute'}
+                  height='600px'
+                >
+                  <Loader />
+                </Stack>
               </ShowCode.When>
-            </ShowCode>
+            </ShowCode> */}
             <ViewTaskCard
               isPriorityVisible={true}
               slotPriorityPill={
@@ -354,8 +442,15 @@ function AddNewTask() {
               }
               slotInterviewDate={
                 <SelectScheduleDate
-                  setScheduleDate={setScheduleDate}
                   scheduleDate={scheduleDate}
+                  onChange={(e: any) => {
+                    if (Array.isArray(e) && e[0] && e[1]) {
+                      setScheduleDate({ start_date: e[0], end_date: e[1] });
+                    }
+                    if (!Array.isArray(e)) {
+                      setScheduleDate({ start_date: e, end_date: null });
+                    }
+                  }}
                 />
               }
               slotCreatedBy={
@@ -398,21 +493,38 @@ function AddNewTask() {
                 />
               }
               slotAssignedTo={
-                <AssigneeList
-                  selectedAssignee={selectedAssignee}
-                  setSelectedAssignee={setSelectedAssignee}
-                />
+                <Stack direction={'column'}>
+                  <AssigneeList
+                    selectedAssignee={selectedAssignee}
+                    setSelectedAssignee={setSelectedAssignee}
+                    onChange={(assigner: any) => {
+                      if (
+                        assigner.user_id === EmailAgentId ||
+                        assigner.user_id === PhoneAgentId
+                      ) {
+                        setOpenTriggerTime(spanRef.current);
+                        setSelectedStatus('scheduled');
+                      } else {
+                        setSelectedStatus('not_started');
+                      }
+                    }}
+                  />
+                  <span ref={spanRef}></span>
+                </Stack>
               }
               slotWhenToCall={
                 <TriggerTime
                   selectTriggerTime={selectTriggerTime}
                   setSelectTriggerTime={setSelectTriggerTime}
+                  openTriggerTime={openTriggerTime}
+                  setOpenTriggerTime={setOpenTriggerTime}
                 />
               }
               slotStatus={
                 <SelectStatus
                   setSelectedStatus={setSelectedStatus}
                   status={selectedStatus}
+                  isOptionList={false}
                 />
               }
               isWhenToCallVisible={

@@ -1,12 +1,14 @@
 import { capitalize } from 'lodash';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { SubLinkSubMenu, SublinkTab } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 // import { settingsItems } from './utils';
 const tabs: {
@@ -23,16 +25,29 @@ const tabs: {
   },
   { text: 'my schedules' },
   { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
-  { text: 'interview types', roles: ['admin', 'recruiter', 'scheduler'] },
+  {
+    text: 'interview types',
+    roles: ['admin', 'recruiter', 'scheduler', 'interviewer'],
+  },
   { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
-  { text: 'interview modules', roles: ['interviewer'] },
   {
     text: 'settings',
   },
 ];
 function SubNav() {
+  const tab = useSearchParams().get('tab');
   const router = useRouter();
   const { isAllowed } = useAuthDetails();
+
+  useEffect(() => {
+    const tempR = tabs.find((item) => {
+      return tab === item.text.replace(' ', '');
+    })?.roles;
+    if (tempR && !isAllowed(tempR)) {
+      toast.error("You don't have Access to this Module.");
+      router.replace(`scheduling?tab=myschedules`);
+    }
+  }, [tab]);
 
   return (
     <>

@@ -45,7 +45,7 @@ export function InterviewMemberSide({
                 className={_utils.cx(_styles, "div-block-1076", "active")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Confirmed"}</_Builtin.Block>
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>

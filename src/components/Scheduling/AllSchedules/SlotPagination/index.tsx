@@ -7,31 +7,38 @@ import { ApplicationList } from '../store';
 
 interface SlotPaginationProps {
   isPending: boolean;
-  fetching: boolean;
+  isFetching: boolean;
   applicationList: ApplicationList[];
+  isLoading: boolean;
 }
 
 function SlotPagination({
   isPending,
-  fetching,
+  isFetching,
   applicationList,
+  isLoading,
 }: SlotPaginationProps) {
   const pagination = useFilterCandidateStore((state) => state.pagination);
 
   const ITEM_PAGE_LIMIT = 50;
+
   return (
     <>
       {!isPending && (
         <Stack
           sx={{
-            opacity: fetching ? 0.5 : 1,
-            pointerEvents: fetching ? 'none' : 'auto',
+            opacity: isLoading ? 0.5 : 1,
+            pointerEvents: isLoading ? 'none' : 'auto',
             zIndex: 3,
           }}
         >
           <CandidatesListPagination
             totalCandidatesCount={pagination.total}
-            currentCandidatesCount={applicationList.length}
+            currentCandidatesCount={
+              isFetching && applicationList.length == 0
+                ? '--'
+                : applicationList.length
+            }
             totalPageCount={Math.ceil(pagination.total / ITEM_PAGE_LIMIT)}
             onclickNext={{
               onClick: () => {

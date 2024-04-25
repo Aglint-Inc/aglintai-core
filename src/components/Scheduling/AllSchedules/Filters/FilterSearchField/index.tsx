@@ -16,7 +16,7 @@ function FilterSearchField() {
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Icon variant='JobSearch' height='14' />
+              <Icon variant='Search' width='14' height='14' />
             </InputAdornment>
           ),
         }}

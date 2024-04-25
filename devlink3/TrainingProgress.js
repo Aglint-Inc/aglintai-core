@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { TrainingProgressList } from "./TrainingProgressList";
+import { TrainingProgressLoader } from "./TrainingProgressLoader";
 import * as _utils from "./utils";
 import _styles from "./TrainingProgress.module.css";
 
@@ -9,9 +10,13 @@ export function TrainingProgress({
   as: _Component = _Builtin.Block,
   onClickViewAllInterviewers = {},
   slotTrainingProgressList,
+  isViewAllVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1487")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1487", "height-430")}
+      tag="div"
+    >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1488")}
         tag="div"
@@ -19,18 +24,20 @@ export function TrainingProgress({
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Training progress"}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-blue-500",
-            "text-underline",
-            "cursor-pointer"
-          )}
-          tag="div"
-          {...onClickViewAllInterviewers}
-        >
-          {"View all"}
-        </_Builtin.Block>
+        {isViewAllVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-blue-500",
+              "text-underline",
+              "cursor-pointer"
+            )}
+            tag="div"
+            {...onClickViewAllInterviewers}
+          >
+            {"View all"}
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1514")}
@@ -87,7 +94,12 @@ export function TrainingProgress({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">
-          {slotTrainingProgressList ?? <TrainingProgressList />}
+          {slotTrainingProgressList ?? (
+            <>
+              <TrainingProgressList />
+              <TrainingProgressLoader />
+            </>
+          )}
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>

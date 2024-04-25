@@ -203,40 +203,38 @@ export const useDeleteRelationHandler = () => {
   const queryClient = useQueryClient();
 
   const deleteRelationByUserId = async ({
+    module_relation_id,
     module_id,
-    user_id,
   }: {
+    module_relation_id: string;
     module_id: string;
-    user_id: string;
   }) => {
     try {
       const editModule = queryClient.getQueryData<ModuleType>(
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
       if (!editModule) throw new Error('Module not found');
-      const isDeleted = await deleteRelationByUserDbDelete({
-        module_id: module_id,
-        user_id: user_id,
-      });
-      if (!isDeleted) {
-        throw new Error('Error deleting user');
-      }
-      const updatedEditModule = {
-        ...editModule,
-        relations: editModule.relations.filter(
-          (rel) => rel.user_id !== user_id,
-        ),
-      } as ModuleType;
-      queryClient.setQueryData<ModuleType>(
-        QueryKeysInteviewModules.USERS_BY_MODULE_ID({
-          moduleId: editModule.id,
-        }),
-        {
-          ...updatedEditModule,
-        },
-      );
 
-      return true;
+      const isDeleted = await deleteRelationByUserDbDelete({
+        module_relation_id,
+      });
+      if (isDeleted) {
+        const updatedEditModule = {
+          ...editModule,
+          relations: editModule.relations.filter(
+            (rel) => rel.id !== module_relation_id,
+          ),
+        } as ModuleType;
+        queryClient.setQueryData<ModuleType>(
+          QueryKeysInteviewModules.USERS_BY_MODULE_ID({
+            moduleId: editModule.id,
+          }),
+          {
+            ...updatedEditModule,
+          },
+        );
+        return true;
+      }
     } catch (e) {
       toast.error(e.message);
     }

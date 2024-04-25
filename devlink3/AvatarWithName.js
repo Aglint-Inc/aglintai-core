@@ -41,7 +41,12 @@ export function AvatarWithName({
           ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block tag="div">{textName}</_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "one-line-clamp")}
+        tag="div"
+      >
+        {textName}
+      </_Builtin.Block>
       {isRoleVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "text-grey-500")}

@@ -59,6 +59,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
       open={isAddMemberDialogOpen}
       onClose={() => {
         setIsAddMemberDialogOpen(false);
+        setSelectedUsers([]);
       }}
     >
       <ConfirmationPopup
@@ -71,6 +72,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
         isIcon={false}
         slotWidget={
           <MembersAutoComplete
+            pillColor='grey.200'
             disabled={loading}
             renderUsers={allMembers}
             selectedUsers={selectedUsers}
@@ -81,6 +83,7 @@ function AddMemberDialog({ editModule }: { editModule: ModuleType }) {
         onClickCancel={{
           onClick: () => {
             setIsAddMemberDialogOpen(false);
+            setSelectedUsers([]);
           },
         }}
         onClickAction={{

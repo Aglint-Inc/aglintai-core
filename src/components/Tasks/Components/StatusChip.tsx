@@ -70,7 +70,7 @@ export const colorsData = [
   {
     id: 'completed' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: '#D1E8DF',
-    label: 'completed',
+    label: 'Completed',
     color: '#228F67',
   },
   {

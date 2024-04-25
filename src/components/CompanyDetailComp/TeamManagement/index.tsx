@@ -20,6 +20,7 @@ import LocationIcon from './Icons/LocationIcon';
 import StatusIcon from './Icons/StatusIcon';
 import UserRoleIcon from './Icons/UserRoleIcon';
 import Member from './MemberList';
+
 type ItemType = string;
 
 const debounce = (func, delay) => {

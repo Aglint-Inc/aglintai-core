@@ -26,15 +26,18 @@ import { customSortModules } from './utils';
 export function Modules() {
   const router = useRouter();
   const textSearch = useFilterModuleStore((state) => state.textSearch);
-  const department = useFilterModuleStore((state) => state.department);
+  const departments = useFilterModuleStore((state) => state.departments);
   const createdBy = useFilterModuleStore((state) => state.created_by);
   const { data: allModules, isLoading, isFetching } = useAllInterviewModules();
   const [showArchive, setShowArchive] = useState(false);
+  const [archives, setArchives] = useState(false);
 
   const filterModules = allModules
     .filter((mod) => {
+      !archives && setArchives(true);
       return (
-        (!department || mod.interview_modules.department === department) &&
+        (departments.length === 0 ||
+          departments.includes(mod.interview_modules.department)) &&
         (createdBy.length == 0 ||
           createdBy.includes(mod.interview_modules.created_by)) &&
         (!textSearch ||
@@ -68,7 +71,7 @@ export function Modules() {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
-                        <Icon variant='JobSearch' height='14' />
+                        <Icon variant='Search' width='14' height='14' />
                       </InputAdornment>
                     ),
                   }}
@@ -78,6 +81,8 @@ export function Modules() {
                   }}
                   value={textSearch}
                   borderRadius={10}
+                  height={42}
+                  width={'250px'}
                 />
                 <FilterDepartment />
                 <FilterCreatedBy />
@@ -161,8 +166,8 @@ export function Modules() {
                     })}
 
                     <ArchivedButton
-                      isHideVisible={showArchive}
-                      isShowVisible={!showArchive}
+                      isHideVisible={archives && showArchive}
+                      isShowVisible={archives && !showArchive}
                       onClickHide={{
                         onClick: () => {
                           setShowArchive((prev) => !prev);

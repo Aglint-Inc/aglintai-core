@@ -77,7 +77,7 @@ const MailCandidateDialog: React.FC<{
           source: section,
           destination: null,
         },
-        false,
+        null,
         purposes,
         list,
         selectAll,

@@ -108,12 +108,16 @@ function FullSchedule() {
   }: {
     session: SchedulingApplication['initialSessions'][0];
   }) => {
-    if (selectedSessionIds.includes(session.id)) {
-      setSelectedSessionIds(
-        selectedSessionIds.filter((id) => id !== session.id),
-      );
+    if (session.users.length > 0) {
+      if (selectedSessionIds.includes(session.id)) {
+        setSelectedSessionIds(
+          selectedSessionIds.filter((id) => id !== session.id),
+        );
+      } else {
+        setSelectedSessionIds([...selectedSessionIds, session.id]);
+      }
     } else {
-      setSelectedSessionIds([...selectedSessionIds, session.id]);
+      toast.warning('There are no interviewers. Please add before scheduling');
     }
   };
 

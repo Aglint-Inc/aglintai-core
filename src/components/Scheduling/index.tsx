@@ -60,7 +60,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
-        `${pageRoutes.SCHEDULING}?tab=${'myschedules' as SchedulingTab}`,
+        `${pageRoutes.SCHEDULING}?tab=${'dashboard' as SchedulingTab}`,
         undefined,
         {
           shallow: true,
@@ -110,21 +110,20 @@ function SchedulingMainComp() {
               ) : tab === 'myschedules' ? (
                 <MySchedule />
               ) : tab === 'interviewtypes' ? (
-                allowAction(<Modules />, ['admin', 'recruiter', 'scheduler'])
+                isAllowed(['admin', 'recruiter', 'scheduler']) ? (
+                  <Modules />
+                ) : (
+                  <InterviewerModule
+                    user_id={recruiterUser.user_id}
+                    recruiter_id={recruiter.id}
+                  />
+                )
               ) : tab === 'interviewers' ? (
                 allowAction(<InterviewTab />, [
                   'admin',
                   'recruiter',
                   'scheduler',
                 ])
-              ) : tab === 'interviewmodules' ? (
-                allowAction(
-                  <InterviewerModule
-                    user_id={recruiterUser.user_id}
-                    recruiter_id={recruiter.id}
-                  />,
-                  ['interviewer'],
-                )
               ) : tab === 'settings' ? (
                 isAllowed(['interviewer']) ? (
                   <InterviewerSetting />
@@ -137,10 +136,12 @@ function SchedulingMainComp() {
                     ['admin', 'recruiter', 'scheduler'],
                   )
                 )
-              ) : tab === 'dashboard' ? (
-                <SchedulingDashboard />
               ) : (
-                ''
+                allowAction(<SchedulingDashboard />, [
+                  'admin',
+                  'recruiter',
+                  'scheduler',
+                ])
               )
             }
             slotSublinkTab={<SubNav />}
@@ -162,13 +163,16 @@ const InterviewerModule = ({
 }) => {
   const router = useRouter();
   const { data } = useInterviewModules({ recruiter_id, user_id });
+  const filteredData = data.filter(
+    (item) => !item.interview_modules.is_archived,
+  );
   return (
     <InterviewModuleTable
       isFilterVisible={false}
       slotInterviewModuleCard={
         <Stack width={'100%'} height={'calc(100vh - 112px)'}>
-          {data.length > 0 ? (
-            data.map((mod) => {
+          {filteredData.length > 0 ? (
+            filteredData.map((mod) => {
               return (
                 <Stack
                   key={mod.interview_modules.id}

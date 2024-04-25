@@ -107,6 +107,7 @@ const DeleteCandidateDialog = ({
         textCheck={subTitle}
         onclickCheck={{ onClick: () => checkAction() }}
         onclickClose={{ onClick: () => onClose() }}
+        slotMoveAssessment={<></>}
         slotButtons={
           <Stack
             spacing={'10px'}

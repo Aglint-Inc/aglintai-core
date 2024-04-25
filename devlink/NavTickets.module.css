@@ -154,7 +154,7 @@
   top: auto;
   right: auto;
   bottom: 8px;
-  z-index: 10;
+  z-index: 110;
 
   display: none;
   width: 50px;
@@ -186,5 +186,30 @@
 }
 
 .nav-bar-icon-hover.message {
+  display: none;
   width: 160px;
+}
+
+.nav-bar-icon-hover.schedule {
+  width: 85px;
+}
+
+.nav-bar-icon-hover.schedule-copy {
+  display: none;
+  width: 90px;
+  justify-content: center;
+}
+
+.nav-bar-icon-hover.phone-screen {
+  display: none;
+  width: 135px;
+}
+
+.nav-bar-icon-hover.integration {
+  width: 94px;
+}
+
+.nav-bar-icon-hover.tickets {
+  display: none;
+  width: 50px;
 }

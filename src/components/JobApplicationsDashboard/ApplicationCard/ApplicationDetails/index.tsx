@@ -86,7 +86,7 @@ import InterviewScore, {
 // } from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
 import CopyWrapper from '../../Common/Wrappers/copyWrapper';
-import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
+// import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
 import {
@@ -121,12 +121,15 @@ const ApplicationDetails = ({
   const [drawerOpen, setDrawerOpen] = useState(open);
 
   const candidateImage = application ? (
-    <RedirectWrapper
-      toast='Open application in Supabase'
-      primaryUrl={`https://supabase.com/dashboard/project/plionpfmgvenmdwwjzac/editor/232210?filter=id:eq:${application.id}`}
-    >
+    // <RedirectWrapper
+    //   toast='Open application in Supabase'
+    //   primaryUrl={`https://supabase.com/dashboard/project/plionpfmgvenmdwwjzac/editor/232210?filter=id:eq:${application.id}`}
+    // >
+    //   <CandidateAvatar application={application} fontSize={12} />
+    // </RedirectWrapper>
+    <Stack onClick={() => navigator.clipboard.writeText(application.id)}>
       <CandidateAvatar application={application} fontSize={12} />
-    </RedirectWrapper>
+    </Stack>
   ) : (
     <></>
   );
@@ -564,7 +567,7 @@ const NewInterviewStatus = ({
           source: section,
           destination: null,
         },
-        false,
+        null,
         [purpose],
         new Set([application.id]),
       );
@@ -1036,12 +1039,12 @@ export const ResumeResultParams = ({
     return e === 100
       ? 'Perfect'
       : e >= 75
-      ? 'High'
-      : e >= 50
-      ? 'Average'
-      : e >= 25
-      ? 'Low'
-      : 'Poor';
+        ? 'High'
+        : e >= 50
+          ? 'Average'
+          : e >= 25
+            ? 'Low'
+            : 'Poor';
   };
   return (
     <>
@@ -1114,7 +1117,7 @@ const PhoneScreeningSection = ({
           source: section,
           destination: null,
         },
-        false,
+        null,
         [purpose],
         new Set([application.id]),
       );
@@ -1604,18 +1607,18 @@ export function giveRateInWordForInterview(overAllScore: number) {
   return overAllScore > 90
     ? `Absolutely incredible! 🌟😍`
     : overAllScore > 70
-    ? `Truly outstanding! 🤩`
-    : overAllScore > 50
-    ? `Excellent job! 👏`
-    : `Not up to mark! 😑`;
+      ? `Truly outstanding! 🤩`
+      : overAllScore > 50
+        ? `Excellent job! 👏`
+        : `Not up to mark! 😑`;
 }
 
 export function giveColorForInterviewScore(rating) {
   return rating >= 90
     ? '#228F67'
     : rating >= 70
-    ? '#f79a3e'
-    : rating >= 50
-    ? '#de701d'
-    : '#d93f4c';
+      ? '#f79a3e'
+      : rating >= 50
+        ? '#de701d'
+        : '#d93f4c';
 }

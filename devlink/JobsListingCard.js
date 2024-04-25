@@ -30,6 +30,7 @@ export function JobsListingCard({
   isScreeningPillsVisible = true,
   isAssessmentPillVisible = true,
   interviewCount = "0",
+  isInterviewPillVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -462,59 +463,61 @@ export function JobsListingCard({
               />
             </_Builtin.Block>
           ) : null}
-          <_Builtin.Block
-            className={_utils.cx(_styles, "pipeline", "small-height")}
-            tag="div"
-          >
+          {isInterviewPillVisible ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_left")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2224%22%20height%3D%2235%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M34%200V89H0C0%2089%2034%2047%2034%2044.5C34%2042%200%200%200%200H34Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(
-                _styles,
-                "text_bloxk",
-                "change_on_hover",
-                "job-dash"
-              )}
+              className={_utils.cx(_styles, "pipeline", "small-height")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
+                className={_utils.cx(_styles, "arrow_left")}
                 tag="div"
               >
-                {"Interview"}
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
+                  value="%3Csvg%20width%3D%2224%22%20height%3D%2235%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M34%200V89H0C0%2089%2034%2047%2034%2044.5C34%2042%200%200%200%200H34Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "relative_2")}
+                className={_utils.cx(
+                  _styles,
+                  "text_bloxk",
+                  "change_on_hover",
+                  "job-dash"
+                )}
                 tag="div"
               >
-                {interviewCount}
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "relative_2")}
+                  tag="div"
+                >
+                  {"Interview"}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "relative_2")}
+                  tag="div"
+                >
+                  {interviewCount}
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                  tag="div"
+                />
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "is_end", "change_on_hover")}
+                className={_utils.cx(_styles, "arrow_right")}
+                tag="div"
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "embed_flex", "ml--1")}
+                  value="%3Csvg%20width%3D%2224%22%20height%3D%2235%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%200L34%2044L0%2089.5V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "change_on_hover", "hide")}
                 tag="div"
               />
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "arrow_right")}
-              tag="div"
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "embed_flex", "ml--1")}
-                value="%3Csvg%20width%3D%2224%22%20height%3D%2235%22%20viewBox%3D%220%200%2034%2089%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M0%200L34%2044L0%2089.5V0Z%22%20fill%3D%22currentColor%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "change_on_hover", "hide")}
-              tag="div"
-            />
-          </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
             className={_utils.cx(_styles, "pipeline", "small-height")}
             tag="div"

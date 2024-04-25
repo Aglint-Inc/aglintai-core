@@ -293,7 +293,7 @@ const AddMember = ({
                       setFormError({ ...formError, email: false });
                     }}
                     onChange={(e) => {
-                      setForm({ ...form, email: e.target.value });
+                      setForm({ ...form, email: e.target.value.trim() });
                     }}
                   />
                   <CustomTextField

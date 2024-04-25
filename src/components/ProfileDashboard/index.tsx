@@ -48,8 +48,12 @@ type FormValues = {
 type FormFields = {
   first_name: FormValues;
   last_name: FormValues;
-  position: FormValues;
+  email: FormValues;
   phone: FormValues;
+  location: FormValues;
+  designation: FormValues;
+  department: FormValues;
+  role: FormValues;
 };
 type PreferenceFormFields = {
   language: FormValues;
@@ -123,6 +127,14 @@ const ProfileDashboard = () => {
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
+    email: {
+      ...initialFormValues,
+      value: recruiterUser.email,
+      blocked: true,
+      required: false,
+      label: 'Email',
+      placeholder: 'Enter your email.',
+    },
     phone: {
       ...initialFormValues,
       value: recruiterUser.phone,
@@ -130,13 +142,35 @@ const ProfileDashboard = () => {
       label: 'Contact Number',
       required: false,
     },
-    position: {
+    location: {
+      ...initialFormValues,
+      value: recruiterUser.interview_location,
+      // validation: 'Location',
+      label: 'Location',
+      blocked: true,
+      required: false,
+    },
+    designation: {
       ...initialFormValues,
       value: recruiterUser.position,
-      label: 'Position',
-      blocked: false,
+      label: 'Designation',
+      blocked: true,
       required: false,
-      placeholder: 'Enter your job title.',
+    },
+    department: {
+      ...initialFormValues,
+      value: recruiterUser.department,
+      label: 'Department',
+      blocked: true,
+      required: false,
+    },
+    role: {
+      ...initialFormValues,
+      value: capitalize(recruiterUser.role),
+      label: 'Role',
+      blocked: true,
+      required: false,
+      placeholder: 'Enter your role.',
     },
   };
   const initialEmail: EmailFormFields = {
@@ -266,6 +300,7 @@ const ProfileDashboard = () => {
       });
     }
   };
+
   const handleSubmitEmail = async () => {
     const { newEmail, error } = handleValidateMail();
     if (!error) {
@@ -293,6 +328,7 @@ const ProfileDashboard = () => {
     setEmail(initialEmail);
   };
   const [isError, setError] = useState(false);
+
   return (
     <Stack>
       <UserProfile

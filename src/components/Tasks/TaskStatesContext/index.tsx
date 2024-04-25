@@ -5,7 +5,6 @@ import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksC
 import { RecruiterUserType } from '@/src/types/data.types';
 
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
-import { fetchInterviewSessionTask } from '../../Scheduling/AllSchedules/SchedulingApplication/hooks';
 import { useInterviewerList } from '../Components/AssigneeChip';
 import { EmailAgentId, PhoneAgentId } from '../utils';
 
@@ -25,8 +24,7 @@ interface ContextValue {
   // for textInput while creating subtask
   isPopUpOpen: boolean;
   setIsPopUpOpen: (x: boolean) => void;
-  selectedMemberId: null | string;
-  setSelectedMemberId: (x: null | string) => void;
+
   showAddNew: boolean;
   setShowAddNew: (x: boolean) => void;
 
@@ -54,8 +52,7 @@ const defaultProvider: ContextValue = {
   // for textInput while creating subtask
   isPopUpOpen: false,
   setIsPopUpOpen: () => {},
-  selectedMemberId: null,
-  setSelectedMemberId: () => {},
+
   showAddNew: false,
   setShowAddNew: () => {},
   selectedApplication: null,
@@ -77,7 +74,6 @@ function TaskStatesProvider({ children }) {
   const [showAddNew, setShowAddNew] = useState(false);
   // for textInput while creating subTask
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
-  const [selectedMemberId, setSelectedMemberId] = useState<null | string>(null);
   const [selectedApplication, setSelectedApplication] = useState<
     TasksAgentContextType['tasks'][number]['applications'] | null
   >(null);
@@ -107,8 +103,6 @@ function TaskStatesProvider({ children }) {
         setOpenViewTask,
         isPopUpOpen,
         setIsPopUpOpen,
-        selectedMemberId,
-        setSelectedMemberId,
         assignerList,
         setAssignerList,
         showAddNew,

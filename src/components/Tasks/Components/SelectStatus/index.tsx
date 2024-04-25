@@ -12,12 +12,14 @@ function SelectStatus({
   status,
   setSelectedStatus,
   isOptionList = true,
+  onChange,
 }: {
   status: CustomDatabase['public']['Enums']['task_status'];
   setSelectedStatus: (
     x: CustomDatabase['public']['Enums']['task_status'],
   ) => void;
   isOptionList?: boolean;
+  onChange?: any;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -58,7 +60,7 @@ function SelectStatus({
           },
         }}
       >
-        <Stack spacing={'10px'} p={'10px'} direction={'column'}>
+        <Stack spacing={'10px'} p={'10px'}>
           {colorsData.map(
             (
               {
@@ -75,21 +77,23 @@ function SelectStatus({
               i,
             ) => {
               return (
-                <TaskStatus
-                  bgColorProps={{
-                    style: {
-                      backgroundColor,
-                      color,
-                      fontWeight: 400,
-                    },
-                    onClick: () => {
-                      setAnchorEl(null);
-                      setSelectedStatus(id);
-                    },
-                  }}
-                  key={i}
-                  textStatus={label}
-                />
+                <Stack direction={'row'} key={i}>
+                  <TaskStatus
+                    bgColorProps={{
+                      style: {
+                        backgroundColor,
+                        color,
+                        fontWeight: 400,
+                      },
+                      onClick: () => {
+                        setAnchorEl(null);
+                        setSelectedStatus(id);
+                        if (onChange) onChange(id);
+                      },
+                    }}
+                    textStatus={label}
+                  />
+                </Stack>
               );
             },
           )}

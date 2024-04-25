@@ -26,6 +26,7 @@ export const fetch_details_from_db = async (
     end: string;
   },
 ) => {
+  //
   const getUniqueInts = (ints: SessionInterviewerType[]) => {
     let mp = new Map();
 
@@ -36,34 +37,53 @@ export const fetch_details_from_db = async (
     return [...mp.values()] as SessionInterviewerType[];
   };
 
-  const r = supabaseWrap(
-    await supabaseAdmin.rpc('upd_get_interview_session_data', {
-      session_ids: session_ids,
-      company_id,
-      meet_start_date: meeting_date?.start ?? null,
-      meet_end_date: meeting_date?.end ?? null,
-    }),
-  );
+  const fetchAndVerifyDb = async () => {
+    const r = supabaseWrap(
+      await supabaseAdmin.rpc('upd_get_interview_session_data', {
+        session_ids: session_ids,
+        company_id,
+        meet_start_date: null,
+        meet_end_date: null,
+      }),
+    );
 
-  if (r.length === 0) throw new Error('Invalid plan_id');
-  let company_cred: CompServiceKeyCred = null;
-  if (r[0].service_cred) {
-    company_cred = JSON.parse(decrypt_string(r[0].service_cred));
-  }
-  const interview_sessions = r[0].interview_sessions as InterviewSession[];
-  let inter_data = r[0].interviewers as unknown as SessionInterviewerType[][];
-  let int_modules_data = r[0]
-    .interview_modules as unknown as InterviewModuleType[][];
+    if (!r[0]?.interview_sessions || !r[0]?.interview_modules) {
+      throw new Error('invalid payload');
+    }
+    if (!r[0]?.comp_schedule_setting) {
+      throw new Error('Invalid Company id');
+    }
 
-  let comp_schedule_setting = r[0]
-    .comp_schedule_setting as unknown as schedulingSettingType;
+    return {
+      comp_schedule_setting: r[0]
+        .comp_schedule_setting as unknown as schedulingSettingType,
 
-  let int_meetings = r[0].int_meetings as InterviewerMeetingScheduled[];
+      int_meetings: r[0].int_meetings as InterviewerMeetingScheduled[],
+      int_modules_data: r[0]
+        .interview_modules as unknown as InterviewModuleType[][],
+      interview_sessions: r[0].interview_sessions as InterviewSession[],
+      inter_data: r[0].interviewers as unknown as SessionInterviewerType[][],
+      company_cred: JSON.parse(
+        decrypt_string(r[0].service_cred),
+      ) as CompServiceKeyCred,
+    };
+  };
+
+  const {
+    comp_schedule_setting,
+    int_meetings,
+    int_modules_data,
+    inter_data,
+    interview_sessions,
+    company_cred,
+  } = await fetchAndVerifyDb();
+
   let interviewers: SessionInterviewerType[] = inter_data
     .filter(Boolean)
     .reduce((tot, curr) => {
       return [...tot, ...curr];
     }, []);
+
   const int_modules: InterviewModuleType[] = int_modules_data
     .filter(Boolean)
     .reduce((tot, curr) => {

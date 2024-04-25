@@ -2,7 +2,7 @@
   overflow: hidden;
   width: 100%;
   max-width: 510px;
-  min-width: 420px;
+  min-width: 440px;
 
   border-radius: 20px;
 
@@ -191,6 +191,10 @@
 
 .fw-semibold.text-width-100 {
   width: 100px;
+}
+
+.text-capitalize-word {
+  text-transform: capitalize;
 }
 
 .cansel-popup-close-btn {

@@ -136,7 +136,6 @@ export function NewInterviewPlanCard({
                     className={_utils.cx(_styles, "div-block-1398")}
                     tag="div"
                   >
-                    <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
                     <_Builtin.Block
                       className={_utils.cx(_styles, "fw-semibold")}
                       tag="div"
@@ -146,6 +145,7 @@ export function NewInterviewPlanCard({
                     {isTimeVisible ? (
                       <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
                     ) : null}
+                    <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(_styles, "div-block-1392")}

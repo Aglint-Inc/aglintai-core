@@ -4,6 +4,7 @@ import { pageRoutes } from '@utils/pageRouting';
 import { datacatalog_v1beta1 } from 'googleapis';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import {
   createContext,
   Dispatch,
@@ -59,6 +60,9 @@ export interface ContextValue {
     func: T,
     role: Database['public']['Enums']['user_roles'][],
   ) => T;
+  isAssessmentEnabled: boolean;
+  isScreeningEnabled: boolean;
+  isSchedulingEnabled: boolean;
 }
 
 const defaultProvider = {
@@ -83,6 +87,9 @@ const defaultProvider = {
   handelMemberUpdate: (x) => Promise.resolve(true),
   isAllowed: (role) => true,
   allowAction: (func, role) => func,
+  isAssessmentEnabled: false,
+  isScreeningEnabled: false,
+  isSchedulingEnabled: false,
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
@@ -105,7 +112,7 @@ const AuthProvider = ({ children }) => {
     const { data, error } = await supabase
       .from('recruiter_relation')
       .select()
-      .eq('recruiter_id', recruiter_id)
+      .eq('recruiter_id', recruiter_id);
     if (!error && data.length) {
       const userIds = data.map((item) => item.user_id);
       const { data: users, error: userError } = await supabase
@@ -276,6 +283,10 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const isAssessmentEnabled = useFeatureFlagEnabled('isNewAssessmentEnabled');
+  const isScreeningEnabled = useFeatureFlagEnabled('isPhoneScreeningEnabled');
+  const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
+
   // role based access
   const isAllowed: ContextValue['isAllowed'] = (roles, flags) => {
     if (recruiterUser) {
@@ -353,6 +364,9 @@ const AuthProvider = ({ children }) => {
         handelMemberUpdate,
         isAllowed,
         allowAction,
+        isAssessmentEnabled,
+        isScreeningEnabled,
+        isSchedulingEnabled,
       }}
     >
       {loading ? <AuthLoader /> : children}

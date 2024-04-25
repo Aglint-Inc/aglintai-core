@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { InterviewModuleStatsCard } from "./InterviewModuleStatsCard";
+import { InterviewStatsLoader } from "./InterviewStatsLoader";
 import * as _utils from "./utils";
 import _styles from "./InterviewModuleStats.module.css";
 
@@ -9,35 +10,41 @@ export function InterviewModuleStats({
   as: _Component = _Builtin.Block,
   slotInterviewModuleStatsCard,
   onClickViewAllModules = {},
+  isViewAllVisible = true,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1487")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1487", "over-hidden")}
+      tag="div"
+    >
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1488")}
+        className={_utils.cx(_styles, "div-block-1488", "header")}
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
           {"Interview stats"}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-blue-500",
-            "text-underline",
-            "cursor-pointer"
-          )}
-          tag="div"
-          {...onClickViewAllModules}
-        >
-          {"View all"}
-        </_Builtin.Block>
+        {isViewAllVisible ? (
+          <_Builtin.Block
+            className={_utils.cx(
+              _styles,
+              "text-blue-500",
+              "text-underline",
+              "cursor-pointer"
+            )}
+            tag="div"
+            {...onClickViewAllModules}
+          >
+            {"View all"}
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1514")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1507")}
+          className={_utils.cx(_styles, "div-block-1507", "height-56")}
           tag="div"
         >
           <_Builtin.Block
@@ -82,30 +89,19 @@ export function InterviewModuleStats({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Shadow"}
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1508")}
-            id={_utils.cx(
-              _styles,
-              "w-node-d0086500-dc7e-dd71-8fe3-288597e9f58f-97e9f57e"
-            )}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-grey-500")}
-              tag="div"
-            >
-              {"Reverse shadow"}
+              {"Training"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1566")}
+          tag="div"
+        >
           {slotInterviewModuleStatsCard ?? (
             <>
               <InterviewModuleStatsCard />
               <InterviewModuleStatsCard />
+              <InterviewStatsLoader />
             </>
           )}
         </_Builtin.Block>

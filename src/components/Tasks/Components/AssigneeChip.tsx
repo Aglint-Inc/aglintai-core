@@ -33,39 +33,37 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
           isPhoneAgentVisible={assigneeId === PhoneAgentId}
         />
       </ShowCode.When>
-      <ShowCode.Else>
-        <ShowCode.When isTrue={!!assigneeDetails?.first_name}>
-          <ListCard
-            isAvatarWithNameVisible={true}
-            isListVisible={false}
-            slotAvatarWithName={
-              assigneeDetails && (
-                <AvatarWithName
-                  slotAvatar={
-                    <MuiAvatar
-                      height={'25px'}
-                      width={'25px'}
-                      src={assigneeDetails.profile_image}
-                      variant='circular'
-                      fontSize='14px'
-                      level={capitalizeAll(
-                        assigneeDetails?.first_name +
-                          ' ' +
-                          assigneeDetails?.last_name,
-                      )}
-                    />
-                  }
-                  textName={capitalizeAll(
-                    assigneeDetails?.first_name +
-                      ' ' +
-                      assigneeDetails?.last_name,
-                  )}
-                />
-              )
-            }
-          />
-        </ShowCode.When>
-      </ShowCode.Else>
+      <ShowCode.When isTrue={Boolean(assigneeDetails?.first_name)}>
+        <ListCard
+          isAvatarWithNameVisible={true}
+          isListVisible={false}
+          slotAvatarWithName={
+            assigneeDetails && (
+              <AvatarWithName
+                slotAvatar={
+                  <MuiAvatar
+                    height={'25px'}
+                    width={'25px'}
+                    src={assigneeDetails.profile_image}
+                    variant='circular'
+                    fontSize='14px'
+                    level={capitalizeAll(
+                      assigneeDetails?.first_name +
+                        ' ' +
+                        assigneeDetails?.last_name,
+                    )}
+                  />
+                }
+                textName={capitalizeAll(
+                  assigneeDetails?.first_name +
+                    ' ' +
+                    assigneeDetails?.last_name,
+                )}
+              />
+            )
+          }
+        />
+      </ShowCode.When>
     </ShowCode>
   );
 }

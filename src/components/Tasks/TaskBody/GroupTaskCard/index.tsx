@@ -36,7 +36,7 @@ function GroupTaskCard({
   return (
     <Stack
       sx={{
-        bgcolor: selectedTasksIds.includes(task.id) && 'grey.100',
+        bgcolor: 'white',
         '&:hover': {
           bgcolor: 'grey.100',
           '& div:first-child div .checkboxClass': {

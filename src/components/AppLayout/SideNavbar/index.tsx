@@ -75,6 +75,20 @@ function SideNavbar() {
       ] as Database['public']['Enums']['user_roles'][],
     },
     {
+      icon: <NavScheduler isActive={false} />,
+      text: 'Scheduler',
+      SubComponents: null,
+      route: pageRoutes.SCHEDULING,
+      comingsoon: false,
+      isvisible: isSchedulingEnabled,
+      roles: [
+        'admin',
+        'recruiter',
+        'scheduler',
+        'interviewer',
+      ] as Database['public']['Enums']['user_roles'][],
+    },
+    {
       icon: <NavCd isActive={false} />,
       text: 'Candidates',
       SubComponents: null,
@@ -104,6 +118,7 @@ function SideNavbar() {
       isvisible: isAssistantEnabled,
       roles: ['admin'] as Database['public']['Enums']['user_roles'][],
     },
+
     {
       icon: <NavPhoneScreening isActive={false} />,
       text: 'Phone Screening',
@@ -118,20 +133,7 @@ function SideNavbar() {
         'interviewer',
       ] as Database['public']['Enums']['user_roles'][],
     },
-    {
-      icon: <NavScheduler isActive={false} />,
-      text: 'Scheduler',
-      SubComponents: null,
-      route: pageRoutes.SCHEDULING,
-      comingsoon: false,
-      isvisible: isSchedulingEnabled,
-      roles: [
-        'admin',
-        'recruiter',
-        'scheduler',
-        'interviewer',
-      ] as Database['public']['Enums']['user_roles'][],
-    },
+
     {
       icon: <NavAssessment isActive={false} />,
       text: 'Assessment',

@@ -80,15 +80,9 @@ function TaskBody({ byGroup }) {
             slotFilter={<FilterTasks />}
             slotTaskJobCard={
               <>
-                {formattedTasks
-                  // .sort((a, b) =>
-                  //   a.applications.candidates.first_name.localeCompare(
-                  //     b.applications.candidates.first_name,
-                  //   ),
-                  // )
-                  .map((item, i) => {
-                    return <GroupSections key={i} item={item} index={i} />;
-                  })}
+                {formattedTasks.map((item, i) => {
+                  return <GroupSections key={i} item={item} index={i} />;
+                })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
                   <Stack height={'40vh'}>
                     <TaskEmpty />

@@ -8,7 +8,7 @@ import * as _utils from "./utils";
 import _styles from "./TaskTableJobCard.module.css";
 
 const _interactionsData = JSON.parse(
-  '{"events":{"e-51":{"id":"e-51","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-52"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713779599870},"e-52":{"id":"e-52","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-30","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-51"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713779599870}},"actionLists":{"a-29":{"id":"a-29","title":"Task Drop 1","actionItemGroups":[{"actionItems":[{"id":"a-29-n","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]},{"actionItems":[{"id":"a-29-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":-180,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"createdOn":1713779606035,"useFirstGroupAsInitialState":true},"a-30":{"id":"a-30","title":"Task Drop 2","actionItemGroups":[{"actionItems":[{"id":"a-30-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"createdOn":1713779606035,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+  '{"events":{"e-51":{"id":"e-51","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-29","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-52"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713779599870},"e-52":{"id":"e-52","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-30","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-51"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713779599870},"e-57":{"id":"e-57","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-35","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-58"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"9da4f4b4-a7a7-a6db-016f-1db257523c4b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713937608410},"e-58":{"id":"e-58","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-36","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-57"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"9da4f4b4-a7a7-a6db-016f-1db257523c4b"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1713937608410}},"actionLists":{"a-29":{"id":"a-29","title":"Task Drop 1","actionItemGroups":[{"actionItems":[{"id":"a-29-n","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]},{"actionItems":[{"id":"a-29-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":-90,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"useFirstGroupAsInitialState":true,"createdOn":1713779606035},"a-30":{"id":"a-30","title":"Task Drop 2","actionItemGroups":[{"actionItems":[{"id":"a-30-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":true,"id":"3e3d1427-88f1-9fc7-7c74-98c39f17a683"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1713779606035},"a-35":{"id":"a-35","title":"New Task Hover in","actionItemGroups":[{"actionItems":[{"id":"a-35-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]}}},{"id":"a-35-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-35-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]},"value":1,"unit":""}},{"id":"a-35-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]}}}]}],"createdOn":1713937614107,"useFirstGroupAsInitialState":true},"a-36":{"id":"a-36","title":"New Task Hover out","actionItemGroups":[{"actionItems":[{"id":"a-36-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]},"value":0,"unit":""}},{"id":"a-36-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":200,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".div-block-1442.cursor-pointer","selectorGuids":["72d14f47-67bb-1c62-e201-448036c8d602","a75752ea-5703-ca42-9f63-098bc9a557c3"]}}}]}],"createdOn":1713937614107,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function TaskTableJobCard({
@@ -27,7 +27,13 @@ export function TaskTableJobCard({
     <_Component tag="div">
       <_Builtin.Block tag="div">
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1440", "job-cand")}
+          className={_utils.cx(
+            _styles,
+            "div-block-1440",
+            "job-cand",
+            "height-40"
+          )}
+          data-w-id="9da4f4b4-a7a7-a6db-016f-1db257523c4b"
           tag="div"
         >
           <_Builtin.Block
@@ -35,11 +41,23 @@ export function TaskTableJobCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1441")}
+              className={_utils.cx(_styles, "div-block-1441", "header")}
               tag="div"
             />
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(
+                _styles,
+                "icons",
+                "cursor-pointer",
+                "mr-20",
+                "icon-left"
+              )}
+              data-w-id="3e3d1427-88f1-9fc7-7c74-98c39f17a683"
+              value="%3Csvg%20width%3D%2210%22%20height%3D%229%22%20viewBox%3D%220%200%2010%209%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5.64952%207.875C5.36084%208.375%204.63916%208.375%204.35048%207.875L0.453367%201.125C0.164692%200.625%200.525536%200%201.10289%200L8.89711%200C9.47446%200%209.83531%200.625%209.54663%201.125L5.64952%207.875Z%22%20fill%3D%22%231F2A37%22%2F%3E%0A%3C%2Fsvg%3E"
+              {...onClickDropIcon}
+            />
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1451")}
+              className={_utils.cx(_styles, "div-block-1451", "hide")}
               tag="div"
             >
               <_Builtin.HtmlEmbed
@@ -76,12 +94,6 @@ export function TaskTableJobCard({
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-          <_Builtin.HtmlEmbed
-            className={_utils.cx(_styles, "icons", "cursor-pointer", "mr-20")}
-            data-w-id="3e3d1427-88f1-9fc7-7c74-98c39f17a683"
-            value="%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%2223.75%22%20y%3D%2223.75%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20transform%3D%22rotate(-180%2023.75%2023.75)%22%20fill%3D%22white%22%2F%3E%0A%3Crect%20x%3D%2223.75%22%20y%3D%2223.75%22%20width%3D%2223.5%22%20height%3D%2223.5%22%20rx%3D%2211.75%22%20transform%3D%22rotate(-180%2023.75%2023.75)%22%20stroke%3D%22%23D8DCDE%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M11.7422%208.74219C11.9141%208.58594%2012.0859%208.58594%2012.2578%208.74219L16.7578%2013.2422C16.9141%2013.4141%2016.9141%2013.5859%2016.7578%2013.7578C16.5859%2013.9141%2016.4141%2013.9141%2016.2422%2013.7578L12%209.53906L7.75781%2013.7578C7.58594%2013.9141%207.41406%2013.9141%207.24219%2013.7578C7.08594%2013.5859%207.08594%2013.4141%207.24219%2013.2422L11.7422%208.74219Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-            {...onClickDropIcon}
-          />
         </_Builtin.Block>
         {isNewTaskInputVisible ? (
           <_Builtin.Block tag="div">

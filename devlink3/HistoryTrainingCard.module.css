@@ -4,7 +4,7 @@
   top: 35px;
   right: auto;
   bottom: auto;
-  z-index: 2;
+  z-index: 4;
 
   display: flex;
   width: 420px;
@@ -139,6 +139,11 @@
 }
 
 .fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.plr-16 {
   padding-right: 16px;
   padding-left: 16px;
 }

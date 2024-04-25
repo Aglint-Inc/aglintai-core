@@ -22,6 +22,7 @@ import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
 import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
 import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
 import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import {
@@ -41,9 +42,9 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { DatabaseTableUpdate } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { supabase } from '../../api/invite_user';
 import IProgressDrawer from './IProgressDrawer';
 
 const ModuleMembers = () => {
@@ -541,11 +542,10 @@ function SlotQualifiedMembers({
                               } Minutes`}
                             </>
                           }
-                          textPlatformName={
-                            item.meeting?.interview_meeting?.meeting_json
-                            // @ts-ignore
-                              ?.conferenceData?.conferenceSolution?.name
-                          }
+                          // @ts-ignore
+                          textPlatformName={getScheduleType(
+                            item.meeting?.interview_session?.schedule_type,
+                          )}
                         />
                       }
                       isShadow={item.text === 'shadow'}

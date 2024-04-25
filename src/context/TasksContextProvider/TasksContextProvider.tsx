@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 'use client';
-import { tasks } from 'googleapis/build/src/apis/tasks';
 import { capitalize, cloneDeep } from 'lodash';
 import {
   createContext,
@@ -12,10 +11,10 @@ import {
   useState,
 } from 'react';
 
-import { EmailAgentId } from '@/src/components/Tasks/utils';
-import { PhoneAgentId } from '@/src/components/Tasks/utils';
+import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
+import { useAllInterviewersDetails } from '@/src/components/Scheduling/SchedulingView/hooks';
+import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
-  CustomDatabase,
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
@@ -26,7 +25,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
 type TasksReducerType = {
-  tasks: Awaited<ReturnType<typeof getAllTasks>>;
+  tasks: Awaited<ReturnType<typeof getTasks>>['data'];
   taskProgress: DatabaseTable['new_tasks_progress'][];
   search: string;
   filter: {
@@ -204,7 +203,9 @@ const reducer = (
 
 export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
-  const { recruiter_id, members, recruiterUser } = useAuthDetails();
+  const { recruiter_id, recruiterUser, isAllowed } = useAuthDetails();
+  const { data: members, isFetching } = useAllInterviewersDetails();
+
   const init = (data: TasksReducerType) => {
     data.filter.assignee.options = [
       ...new Set(data.tasks.map((task) => task.assignee).flat(2)),
@@ -415,15 +416,18 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [loadingTasks, setLoading] = useState(true);
 
   useEffect(() => {
-    if (recruiter_id) {
-      getTasks(
-        recruiter_id,
-        {
+    if (recruiter_id && members) {
+      getTasks({
+        id: recruiter_id,
+        pagination: {
           page: tasksReducer.pagination.page,
           rows: tasksReducer.pagination.rows,
         },
-        true,
-      ).then((data) => {
+        getCount: true,
+        user_id: isAllowed(['admin', 'recruiter', 'scheduler'])
+          ? undefined
+          : recruiterUser.user_id,
+      }).then((data) => {
         const temp = cloneDeep(reducerInitialState);
         temp.tasks = data.data;
         temp.pagination.totalRows = data.count;
@@ -431,31 +435,35 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
       });
     }
-  }, [recruiter_id]);
+  }, [recruiter_id, members]);
 
   return (
     <>
-      <TaskContext.Provider
-        value={{
-          tasks: searchedTask,
-          pagination: tasksReducer.pagination,
-          taskProgress: tasksReducer.taskProgress,
-          search: tasksReducer.search,
-          filter: tasksReducer.filter,
-          sort: tasksReducer.sort,
-          handelAddTask,
-          handelUpdateTask,
-          handelDeleteTask,
-          handelGetTaskProgress,
-          handelAddTaskProgress,
-          handelSearch,
-          handelFilter,
-          handelSort,
-          loadingTasks,
-        }}
-      >
-        {children}
-      </TaskContext.Provider>
+      {isFetching || loadingTasks ? (
+        <DynamicLoader />
+      ) : (
+        <TaskContext.Provider
+          value={{
+            tasks: searchedTask,
+            pagination: tasksReducer.pagination,
+            taskProgress: tasksReducer.taskProgress,
+            search: tasksReducer.search,
+            filter: tasksReducer.filter,
+            sort: tasksReducer.sort,
+            handelAddTask,
+            handelUpdateTask,
+            handelDeleteTask,
+            handelGetTaskProgress,
+            handelAddTaskProgress,
+            handelSearch,
+            handelFilter,
+            handelSort,
+            loadingTasks,
+          }}
+        >
+          {children}
+        </TaskContext.Provider>
+      )}
     </>
   );
 };
@@ -471,9 +479,7 @@ export const useTasksContext = () => {
 const getAllTasks = (id: string) => {
   return supabase
     .from('new_tasks')
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
-    )
+    .select('*, applications(* , candidates( * ), public_jobs( * ))')
     .eq('recruiter_id', id)
     .order('created_at', {
       ascending: false,
@@ -484,32 +490,49 @@ const getAllTasks = (id: string) => {
         'applications, recruiter_user'
       > & {
         applications: (typeof data)[number]['applications'];
-        recruiter_user: (typeof data)[number]['recruiter_user'];
       })[];
       if (error) throw new Error(error.message);
       return temp;
     });
 };
 
-const getTasks = (
-  id: string,
-  pagination: { page: number; rows: number },
-  getCount: boolean,
-) => {
-  return supabase
-    .from('new_tasks')
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
-      getCount ? { count: 'exact' } : {},
-    )
-    .range(
-      pagination.page * pagination.rows,
-      pagination.page * pagination.rows + pagination.rows - 1,
-    )
+const getTasks = ({
+  id,
+  pagination,
+  getCount,
+  user_id,
+}: {
+  id: string;
+  pagination: { page: number; rows: number };
+  getCount: boolean;
+  user_id: string;
+}) => {
+  return (
+    user_id
+      ? supabase
+          .from('new_tasks')
+          .select(
+            '*, applications(* , candidates( * ), public_jobs( * ))',
+            getCount ? { count: 'exact' } : {},
+          )
+          .or(
+            `assignee.cs.{${user_id}}, or(task_owner.eq.${user_id}, created_by.eq.${user_id})`,
+          )
+      : supabase
+          .from('new_tasks')
+          .select(
+            '*, applications(* , candidates( * ), public_jobs( * ))',
+            getCount ? { count: 'exact' } : {},
+          )
+  )
     .eq('recruiter_id', id)
     .order('created_at', {
       ascending: false,
     })
+    .range(
+      pagination.page * pagination.rows,
+      pagination.page * pagination.rows + pagination.rows - 1,
+    )
     .then(({ data, count, error }) => {
       // const temp = data as unknown as (Omit<
       //   (typeof data)[number],
@@ -523,7 +546,7 @@ const getTasks = (
     });
 };
 
-const updateTask = ({
+export const updateTask = ({
   type,
   task,
 }:
@@ -537,17 +560,11 @@ const updateTask = ({
       ? supabase.from('new_tasks').update(task).eq('id', task.id)
       : supabase.from('new_tasks').insert(task)
   )
-    .select(
-      '*, applications(* , candidates( * ), public_jobs( * )), recruiter_user(*)',
-    )
+    .select('*, applications(* , candidates( * ), public_jobs( * ))')
     .single()
     .then(({ data, error }) => {
-      const temp = data as unknown as Omit<
-        typeof data,
-        'applications, recruiter_user'
-      > & {
+      const temp = data as unknown as Omit<typeof data, 'applications'> & {
         applications: (typeof data)['applications'];
-        recruiter_user: (typeof data)['recruiter_user'];
       };
       if (error) throw new Error(error.message);
       return temp;
@@ -589,7 +606,6 @@ const createTaskProgress = (
       ascending: true,
     })
     .single()
-
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
       return data;

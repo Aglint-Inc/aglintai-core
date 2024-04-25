@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { scheduleWithAgent } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { scheduleWithAgent } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsScheduleAgent {
@@ -14,7 +14,7 @@ export interface ApiBodyParamsScheduleAgent {
     end_date: string | null;
   };
   recruiter_id: string;
-  sub_task_id: string;
+  task_id: string;
   recruiter_user_name: string;
   candidate_name?: string;
   company_name?: string;
@@ -22,7 +22,7 @@ export interface ApiBodyParamsScheduleAgent {
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
-  filter_id: string;
+  trigger_count: number;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -36,11 +36,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       recruiter_user_name,
       session_ids,
-      sub_task_id,
+      task_id,
       type,
       candidate_name,
       company_name,
       user_tz,
+      trigger_count,
     } = req.body as ApiBodyParamsScheduleAgent;
 
     const resAgent = await scheduleWithAgent({
@@ -49,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_id,
       recruiter_user_name,
       session_ids,
-      task_id: sub_task_id,
+      task_id: task_id,
       type: type,
       candidate_name: candidate_name,
       company_name: company_name,
@@ -58,6 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       rec_user_id,
       supabase: supabaseAdmin,
       user_tz,
+      trigger_count,
     });
 
     return res.status(200).send(resAgent);

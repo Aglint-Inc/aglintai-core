@@ -1813,7 +1813,8 @@ export type Database = {
           session_ids: Json[] | null
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
-          task_triggered: boolean | null
+          task_owner: string | null
+          trigger_count: number
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Insert: {
@@ -1832,7 +1833,8 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
-          task_triggered?: boolean | null
+          task_owner?: string | null
+          trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Update: {
@@ -1851,7 +1853,8 @@ export type Database = {
           session_ids?: Json[] | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
-          task_triggered?: boolean | null
+          task_owner?: string | null
+          trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
         Relationships: [
@@ -4296,6 +4299,9 @@ export type Database = {
         | "not_started"
         | "scheduled"
         | "cancelled"
+        | "overdue"
+        | "on_hold"
+        | "failed"
       task_type_enum: "schedule" | "training" | "empty"
       template_type:
         | "cognitive"

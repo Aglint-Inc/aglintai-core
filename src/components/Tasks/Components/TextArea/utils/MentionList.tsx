@@ -15,7 +15,7 @@ import { assigneeType } from '../../../utils';
 // import {assigneeType} from '../../../UpdateSubTask'
 
 export default forwardRef((props: any, ref) => {
-  let { setIsPopUpOpen, setSelectedMemberId } = useTaskStatesContext();
+  let { setIsPopUpOpen } = useTaskStatesContext();
   let listOfUsers = props.items as assigneeType[];
   const [selectedIndex, setSelectedIndex] = useState(null);
   const selectItem = (index) => {
@@ -24,7 +24,6 @@ export default forwardRef((props: any, ref) => {
       ' ' +
       listOfUsers[Number(index)]?.last_name;
     const item = listOfUsers[Number(index)]?.user_id;
-    setSelectedMemberId(listOfUsers[Number(index)]?.user_id);
 
     if (item) {
       props.command({ id: item, label });

@@ -3,6 +3,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
+import { marked } from 'marked';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -149,7 +150,11 @@ function SubTaskProgress() {
                         >
                           <span
                             dangerouslySetInnerHTML={{
-                              __html: String(item.jsonb_data?.message),
+                              __html: marked(
+                                String(item.jsonb_data?.message)
+                                  ?.replaceAll('- **', '<b>')
+                                  ?.replaceAll('**', '</b> '),
+                              ),
                             }}
                           ></span>
                         </Typography>
@@ -178,14 +183,26 @@ function SubTaskProgress() {
                             }}
                             py={1}
                           >
-                            <Typography variant='body1'>Transcript</Typography>
+                            <Typography variant='inherit'>
+                              Transcript
+                            </Typography>
                             {openTranscript ? (
                               <IconChevronUp />
                             ) : (
                               <IconChevronDown />
                             )}
                           </Stack>
-                          <Collapse in={openTranscript} collapsedSize={0}>
+                          <Collapse
+                            sx={{
+                              '& .MuiCollapse-wrapperInner': {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '20px',
+                              },
+                            }}
+                            in={openTranscript}
+                            collapsedSize={0}
+                          >
                             {item.jsonb_data &&
                               item.jsonb_data.length &&
                               (

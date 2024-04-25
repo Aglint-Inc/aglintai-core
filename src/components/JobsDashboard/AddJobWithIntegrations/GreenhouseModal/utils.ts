@@ -322,8 +322,9 @@ const MAX_EMAILS_PER_BATCH = 100; // adjust this number based on your requiremen
 const processBatch = async (
   emailBatch: string[],
   recruiter_id: string,
+  supabaseCaller = supabase,
 ): Promise<NewCandidateType[] | undefined> => {
-  const { data: checkCandidates, error: errorCheck } = await supabase
+  const { data: checkCandidates, error: errorCheck } = await supabaseCaller
     .from('candidates')
     .select()
     .in('email', emailBatch)
@@ -339,11 +340,12 @@ const processBatch = async (
 export const processEmailsInBatches = async (
   emails: string[],
   recruiter_id: string,
+  supabaseCaller = supabase,
 ): Promise<CandidateType[] | undefined> => {
   let allCandidates = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
     const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
-    const cand = await processBatch(emailBatch, recruiter_id);
+    const cand = await processBatch(emailBatch, recruiter_id, supabaseCaller);
     allCandidates = [...allCandidates, ...cand];
   }
   return allCandidates;

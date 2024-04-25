@@ -1,13 +1,7 @@
-import { Collapse, Stack } from '@mui/material';
-import React, { useState } from 'react';
+import { Collapse, Stack, Tooltip, Typography } from '@mui/material';
+import { useState } from 'react';
 
-import {
-  AvatarWithName,
-  ListCard,
-  TaskEmpty,
-  TaskTableJobCard,
-} from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { TaskEmpty, TaskTableJobCard } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -29,7 +23,7 @@ function GroupSections({
   const [sectionIndex, setSectionIndex] = useState(true);
 
   return (
-    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={60}>
+    <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={41}>
       <TaskTableJobCard
         onClickDropIcon={{
           onClick: () => {
@@ -39,37 +33,35 @@ function GroupSections({
         }}
         textRole={capitalizeAll(item.applications.public_jobs.job_title)}
         slotAvatarWithName={
-          <>
-            <ListCard
-              isAvatarWithNameVisible={true}
-              isListVisible={false}
-              slotAvatarWithName={
-                item?.applications && (
-                  <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'24px'}
-                        width={'24px'}
-                        src={item?.applications?.candidates.avatar}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          item?.applications.candidates?.first_name +
-                            ' ' +
-                            item?.applications.candidates?.last_name,
-                        )}
-                      />
-                    }
-                    textName={capitalizeAll(
-                      item?.applications.candidates?.first_name +
-                        ' ' +
-                        item?.applications.candidates?.last_name,
-                    )}
-                  />
-                )
-              }
-            />
-          </>
+          <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
+            <Typography>
+              {capitalizeAll(item.applications.public_jobs.job_title)}
+            </Typography>
+            <Typography
+              alignItems={'center'}
+              display={'flex'}
+              fontSize={'14px'}
+            >
+              ({' '}
+              {capitalizeAll(
+                item.applications.candidates.first_name +
+                  ' ' +
+                  item.applications.candidates.last_name,
+              )}{' '}
+              )
+            </Typography>
+            <Tooltip title='Task count'>
+              <Typography
+                sx={{
+                  cursor: 'pointer',
+                }}
+                variant='caption'
+                fontSize={'16px'}
+              >
+                {item.tasklist.length}
+              </Typography>
+            </Tooltip>
+          </Stack>
         }
         key={index}
         slotTaskTableJobCard={
