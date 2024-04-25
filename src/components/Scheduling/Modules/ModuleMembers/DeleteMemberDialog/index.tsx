@@ -43,7 +43,7 @@ function DeleteMemberDialog() {
             if (selUser.id) {
               await deleteRelationByUserId({
                 module_id: selUser.module_id,
-                user_id: selUser.user_id,
+                module_relation_id: selUser.id,
               });
               setIsDeleteMemberDialogOpen(false);
             }

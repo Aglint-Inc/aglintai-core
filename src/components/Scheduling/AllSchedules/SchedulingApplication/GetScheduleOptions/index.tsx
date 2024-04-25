@@ -21,8 +21,7 @@ import {
   setIsScheduleNowOpen,
   setSchedulingOptions,
   setSelectedSessionIds,
-  setStep,
-  useSchedulingApplicationStore,
+  useSchedulingApplicationStore
 } from '../store';
 
 function GetScheduleOptionsDialog() {
@@ -60,7 +59,6 @@ function GetScheduleOptionsDialog() {
     });
     return () => {
       setIsScheduleNowOpen(false);
-      setStep(1);
       setSchedulingOptions([]);
       setSelectedSessionIds([]);
     };

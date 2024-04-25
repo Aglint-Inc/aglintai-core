@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 
 import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { initialEditModule } from '../store';
 import {
@@ -151,21 +152,38 @@ export const updatePauseJsonByUserId = async ({
 };
 
 export const deleteRelationByUserDbDelete = async ({
-  module_id,
-  user_id,
+  module_relation_id,
 }: {
-  module_id: string;
-  user_id: string;
+  module_relation_id: string;
 }) => {
-  const { error } = await supabase
-    .from('interview_module_relation')
-    .delete()
-    .eq('module_id', module_id)
-    .eq('user_id', user_id);
-  if (error) {
+  const { data: intSesRel, error: errorSelRel } = await supabase
+    .from('interview_session_relation')
+    .select('*')
+    .eq('interview_module_relation_id', module_relation_id)
+    .eq('is_confirmed', true);
+
+  if (errorSelRel) {
+    toast.error(errorSelRel.message);
     return false;
   }
-  return true;
+
+  if (intSesRel.length === 0) {
+    const { error } = await supabase
+      .from('interview_module_relation')
+      .delete()
+      .eq('id', module_relation_id);
+    if (error) {
+      toast.error(errorSelRel.message);
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    toast.warning(
+      'Cannot delete user. There are meetings associated with this user.',
+    );
+    return false;
+  }
 };
 
 export const addMemberbyUserIds = async ({

@@ -11,7 +11,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
-  InterviewScheduleActivityTypeDb
+  InterviewScheduleActivityTypeDb,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -229,7 +229,3 @@ export const fetchInterviewDataSchedule = async (
     toast.error(e.message);
   }
 };
-
-
-
-
