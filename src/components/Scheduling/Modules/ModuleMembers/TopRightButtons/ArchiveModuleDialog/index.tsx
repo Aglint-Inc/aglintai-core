@@ -88,7 +88,7 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
     <Dialog open={isArchiveDialogOpen} onClose={onClose}>
       <CloseJobModal
         textPopupTitle={`Archive`}
-        textWarning={`By clicking archive the module will not be able to select in interview plan while scheduling`}
+        textWarning={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
         textButton={'Archive'}
         textJobTitle={moduleName}
         onClickCancel={{

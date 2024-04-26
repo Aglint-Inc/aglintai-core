@@ -274,7 +274,7 @@ export function JobDashboard({
               className={_utils.cx(_styles, "fw-semibold", "text-red")}
               tag="div"
             >
-              {"Not A Match"}
+              {"Not a match"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-xl", "fw-semibold")}

@@ -10,6 +10,11 @@
   border-radius: 10px;
 }
 
+.div-block-1166.no-border {
+  padding-left: 0px;
+  border-style: none;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -187,10 +192,29 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .div-block-1167 {
   padding: 10px 16px;
   border-radius: 10px;
   background-color: #fff7ed;
+}
+
+.div-block-1167.no-border {
+  padding: 0px;
+  background-color: white;
+}
+
+.text-grey-600.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
 }
 
 .div-block-1168 {

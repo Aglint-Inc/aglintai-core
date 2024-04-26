@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { CompanyLocation } from "./CompanyLocation";
@@ -38,14 +39,14 @@ export function CompanyInfo({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Additional Info"}
+            {"Recruitment Settings"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-grey-600")}
             tag="div"
           >
             {
-              "Providing extra details helps us better understand your requirements, offering a more personalized recruitment experience."
+              "Refine your recruitment process by providing key details, enabling a tailored approach to job postings and candidate scheduling."
             }
           </_Builtin.Block>
         </_Builtin.Block>
@@ -69,7 +70,7 @@ export function CompanyInfo({
               tag="div"
             >
               {
-                "Consider adding your office locations; they'll be helpful when drafting job posts."
+                "Include office locations to organize data, schedule effectively, and identify correct time zones."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -115,7 +116,7 @@ export function CompanyInfo({
               tag="div"
             >
               {
-                "Consider listing all departments; they'll be helpful when creating job posts."
+                "Catalog your departments to sort and filter data efficiently, aiding in job posting and scheduling."
               }
             </_Builtin.Block>
           </_Builtin.Block>
@@ -162,7 +163,7 @@ export function CompanyInfo({
                 tag="div"
               >
                 {
-                  "Consider specifying your specialities; they'll aid in finding the right candidate for you."
+                  "Define your specialties to streamline the search and match process for job candidates."
                 }
               </_Builtin.Block>
             </_Builtin.Block>
@@ -210,7 +211,7 @@ export function CompanyInfo({
                 tag="div"
               >
                 {
-                  "Consider detailing the available roles; they'll be beneficial when matching candidates to job positions."
+                  "List available roles to assist in filtering applications and matching candidates to job positions."
                 }
               </_Builtin.Block>
             </_Builtin.Block>

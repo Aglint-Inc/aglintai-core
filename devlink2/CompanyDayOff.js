@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -22,15 +23,13 @@ export function CompanyDayOff({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Company Days Off"}
+            <_Builtin.Strong>{"Standard Days Off"}</_Builtin.Strong>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-500")}
             tag="div"
           >
-            {
-              "Add company holidays and these dates will be excluded from scheduling."
-            }
+            {"List company holidays to exclude them from scheduling."}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

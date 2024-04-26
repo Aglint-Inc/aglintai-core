@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -21,7 +22,7 @@ export function Keywords({
           tag="div"
         >
           {
-            "Keywords allow you to identify events on interviewer’s calendars that can be scheduled over by either you or a candidate when booking interviews."
+            "Use keywords to mark events on interviewers’ calendars that can be overridden for interview scheduling."
           }
         </_Builtin.Block>
       </_Builtin.Block>

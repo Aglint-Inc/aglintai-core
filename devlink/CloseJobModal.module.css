@@ -270,6 +270,21 @@
   margin-top: 20px;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .close-data-wrap {
   display: flex;
   margin-top: 16px;
@@ -282,11 +297,6 @@
   border-radius: 10px;
 
   background-color: #f8f9f9;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
 }
 
 .text-white {

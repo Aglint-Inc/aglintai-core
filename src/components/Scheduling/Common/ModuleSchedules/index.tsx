@@ -223,7 +223,7 @@ function ModuleSchedules({
             )}
           </ShowCode.When>
           <ShowCode.When isTrue={!loading && filterSchedules().length === 0}>
-            <AllInterviewEmpty />
+            <AllInterviewEmpty textDynamic='No schedule found' />
           </ShowCode.When>
         </ShowCode>
       }
