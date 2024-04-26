@@ -199,6 +199,7 @@ function CreateTask({
         isAssignedToVisible={true}
         isInterviewDateVisible={true}
         isInterviewVisible={true}
+        isStatusVisible={false}
         isWhentoCallVisible={
           selectedAssignee?.user_id === EmailAgentId ||
           selectedAssignee?.user_id === PhoneAgentId

@@ -1,22 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { Drawer, Stack, TextField, Typography } from '@mui/material';
+import { Drawer, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { ViewTask } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import {
-  createTaskProgress,
-  taskUpdateDebounce,
-  UpdateFunction,
-} from '../../utils';
+import { createTaskProgress } from '../../utils';
 import SubTaskProgress from './Progress';
 import TaskCard from './TaskCard';
 
@@ -95,6 +92,53 @@ function ViewTaskDrawer() {
     });
   }
 
+  function nextTask() {
+    const nextIndex = tasks.findIndex((ele) => ele.id === taskId) + 1;
+    if (nextIndex < tasks.length) {
+      {
+        setDisableNext(false);
+        setDisablePrev(false);
+
+        const nextTask = tasks.find(
+          (ele) => ele.id === tasks[Number(nextIndex)].id,
+        );
+        route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
+      }
+    } else {
+      setDisableNext(true);
+    }
+  }
+
+  function prevTask() {
+    const prevIndex = tasks.findIndex((ele) => ele.id === taskId) - 1;
+    if (prevIndex >= 0) {
+      {
+        setDisablePrev(false);
+        setDisableNext(false);
+        const nextTask = tasks.find(
+          (ele) => ele.id === tasks[Number(prevIndex)].id,
+        );
+        route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
+      }
+    } else {
+      setDisablePrev(true);
+    }
+  }
+  const { pressed: shift } = useKeyPress('Shift');
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
+  const leftShift = shift && left;
+  const rightShift = shift && right;
+
+  useEffect(() => {
+    if (leftShift) {
+      prevTask();
+    }
+    if (rightShift) {
+      nextTask();
+    }
+  }, [leftShift, rightShift]);
   return (
     <Drawer
       anchor={'right'}
@@ -128,41 +172,10 @@ function ViewTaskDrawer() {
             isDisableNext={disableNext}
             isDisablePrev={disablePrev}
             onClickNext={{
-              onClick: () => {
-                const nextIndex =
-                  tasks.findIndex((ele) => ele.id === taskId) + 1;
-                if (nextIndex < tasks.length) {
-                  {
-                    setDisableNext(false);
-                    setDisablePrev(false);
-
-                    const nextTask = tasks.find(
-                      (ele) => ele.id === tasks[Number(nextIndex)].id,
-                    );
-                    route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
-                  }
-                } else {
-                  setDisableNext(true);
-                }
-              },
+              onClick: nextTask,
             }}
             onClickPrev={{
-              onClick: () => {
-                const prevIndex =
-                  tasks.findIndex((ele) => ele.id === taskId) - 1;
-                if (prevIndex >= 0) {
-                  {
-                    setDisablePrev(false);
-                    setDisableNext(false);
-                    const nextTask = tasks.find(
-                      (ele) => ele.id === tasks[Number(prevIndex)].id,
-                    );
-                    route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
-                  }
-                } else {
-                  setDisablePrev(true);
-                }
-              },
+              onClick: prevTask,
             }}
             textTaskDetail={
               <TextField

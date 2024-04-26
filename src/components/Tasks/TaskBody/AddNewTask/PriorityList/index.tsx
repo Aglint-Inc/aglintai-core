@@ -47,7 +47,7 @@ function PriorityList({
           />
         ) : (
           <Typography variant='caption' fontSize={'14px'}>
-            Select priority
+            Select new priority
           </Typography>
         )}
       </Stack>

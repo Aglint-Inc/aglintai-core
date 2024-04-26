@@ -19,6 +19,7 @@ export function TaskTable({
   slotNewTaskCard,
   isNewTaskCardVisible = false,
   slotFilter,
+  slotCheckbox,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -39,13 +40,24 @@ export function TaskTable({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1437")}
+            className={_utils.cx(_styles, "div-block-1535")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ec7-401c4ec4"
             )}
             tag="div"
-          />
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "checkbox-wrap-task")}
+              id={_utils.cx(
+                _styles,
+                "w-node-a912ad28-61de-e2be-3b5b-b1a487db6b63-401c4ec4"
+              )}
+              tag="div"
+            >
+              {slotCheckbox}
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1435")}
             id={_utils.cx(

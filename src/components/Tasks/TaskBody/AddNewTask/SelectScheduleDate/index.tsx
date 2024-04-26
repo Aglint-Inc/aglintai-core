@@ -26,6 +26,10 @@ function SelectScheduleDate({
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const [selectedDate, setSelectedDate] = useState([
+    scheduleDate.start_date,
+    scheduleDate.end_date,
+  ]);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -92,9 +96,7 @@ function SelectScheduleDate({
                 <ShowCode.When isTrue={rangeActive}>
                   <DateRange
                     onChange={(e) => {
-                      if (onChange) {
-                        onChange(e);
-                      }
+                      setSelectedDate(e);
                     }}
                     value={
                       dayjs(scheduleDate.end_date).toString() == 'Invalid Date'
@@ -115,14 +117,31 @@ function SelectScheduleDate({
                       disablePast
                       value={dayjs(scheduleDate.start_date)}
                       onChange={(e) => {
-                        if (onChange) {
-                          onChange(e);
-                        }
+                        setSelectedDate(e);
                       }}
                     />
                   </LocalizationProvider>
                 </ShowCode.Else>
               </ShowCode>
+              <Stack justifyContent={'end'} direction={'row'} spacing={'10px'}>
+                <Button
+                  onClick={() => {
+                    setAnchorEl(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (onChange) {
+                      onChange(selectedDate);
+                      setAnchorEl(null);
+                    }
+                  }}
+                >
+                  OK
+                </Button>
+              </Stack>
             </>
           }
         />

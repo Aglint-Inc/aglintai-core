@@ -216,6 +216,25 @@ const SingleDayConfirmation = () => {
   )
     .format('MMMM DD dddd')
     .split(' ');
+  // calculate total duration of each session
+  let totalHours = 0;
+  let totalMinutes = 0;
+
+  selectedSlots[0]?.sessions.forEach((session) => {
+    const start = dayjs(session.start_time);
+    const end = dayjs(session.end_time);
+    const duration = end.diff(start, 'minutes');
+
+    totalHours += Math.floor(duration / 60);
+    totalMinutes += duration % 60;
+  });
+
+  totalHours += Math.floor(totalMinutes / 60);
+  totalMinutes %= 60;
+
+  const totalTimeDifference = `${totalHours} hour ${totalMinutes} minutes`;
+  // end
+
   return (
     <Dialog open={open} onClose={() => handleClose()}>
       <ConfirmationPopup
@@ -229,6 +248,7 @@ const SingleDayConfirmation = () => {
         slotWidget={
           <CandidateScheduleCard
             isTitle={false}
+            textDuration={totalTimeDifference}
             slotButton={<></>}
             slotSessionInfo={
               <SelectedDateAndTime

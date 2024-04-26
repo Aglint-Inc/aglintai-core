@@ -41,8 +41,14 @@ function SelectStatus({
             <StatusChip arrowDown={true} status={status} />
           </ShowCode.When>
           <ShowCode.Else>
-            <Typography variant='caption' fontSize={'14px'}>
-              Select Status
+            <Typography
+              sx={{
+                cursor: 'pointer',
+              }}
+              variant='caption'
+              fontSize={'14px'}
+            >
+              Select new status
             </Typography>
           </ShowCode.Else>
         </ShowCode>

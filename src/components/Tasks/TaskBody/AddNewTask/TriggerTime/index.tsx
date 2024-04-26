@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Popover, Stack } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import {
   LocalizationProvider,
   renderTimeViewClock,
@@ -51,14 +51,32 @@ function TriggerTime({
           <ShowCode.When isTrue={!!selectTriggerTime}>
             <ShowCode>
               <ShowCode.When isTrue={isImmediate}>
-                {'Immediately'}
+                <Typography
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  variant='caption'
+                  fontSize={'14px'}
+                >
+                  Immediately
+                </Typography>
               </ShowCode.When>
               <ShowCode.When isTrue={!isImmediate}>
                 {`${dayjs(selectTriggerTime).format('DD MMM YYYY, hh:mm A')} (${timeZone})`}
               </ShowCode.When>
             </ShowCode>
           </ShowCode.When>
-          <ShowCode.Else>Select Date</ShowCode.Else>
+          <ShowCode.Else>
+            <Typography
+              sx={{
+                cursor: 'pointer',
+              }}
+              variant='caption'
+              fontSize={'14px'}
+            >
+              Select Date
+            </Typography>
+          </ShowCode.Else>
         </ShowCode>
       </Stack>
       <Popover

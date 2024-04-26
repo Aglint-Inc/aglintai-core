@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
-import { Stack } from '@mui/material';
+import { Checkbox, Stack } from '@mui/material';
 
 import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
 import {
@@ -21,7 +21,8 @@ import ViewTaskDrawer from './ViewTask';
 function TaskBody({ byGroup }) {
   const { tasks, loadingTasks } = useTasksContext();
 
-  const { setShowAddNew, selectedTasksIds } = useTaskStatesContext();
+  const { setShowAddNew, selectedTasksIds, setSelectedTasksIds } =
+    useTaskStatesContext();
 
   const groupedTasks = tasks
     .filter((ele) => ele.application_id)
@@ -47,6 +48,20 @@ function TaskBody({ byGroup }) {
       <ShowCode>
         <ShowCode.When isTrue={!byGroup}>
           <TaskTable
+            slotCheckbox={
+              <Checkbox
+                checked={selectedTasksIds.length > 0}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedTasksIds(tasks.map((ele) => ele.id));
+                  } else {
+                    setSelectedTasksIds([]);
+                  }
+                }}
+                size='small'
+                color='info'
+              />
+            }
             slotFilter={
               <ShowCode>
                 <ShowCode.When isTrue={selectedTasksIds.length > 0}>
