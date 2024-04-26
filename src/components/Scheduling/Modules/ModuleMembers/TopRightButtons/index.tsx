@@ -52,7 +52,7 @@ function TopRightButtons({ editModule }: { editModule: ModuleType }) {
                   ...updatedEditModule,
                 },
               );
-              toast.success('Unarchived');
+              toast.success(' Interview type unarchived');
             }
           },
         }}

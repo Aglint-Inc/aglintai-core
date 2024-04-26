@@ -153,7 +153,7 @@ const ProfileDashboard = () => {
     designation: {
       ...initialFormValues,
       value: recruiterUser.position,
-      label: 'Designation',
+      label: 'Tittle',
       blocked: true,
       required: false,
     },

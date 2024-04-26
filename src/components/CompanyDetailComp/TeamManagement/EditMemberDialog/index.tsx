@@ -136,8 +136,8 @@ const EditMember = ({
               />
               <CustomTextField
                 value={form.designation ? form.designation : ''}
-                placeholder='Designation'
-                label='Designation'
+                placeholder='Tittle'
+                label='Tittle'
                 error={formError.designation}
                 onFocus={() => {
                   setFormError({ ...formError, designation: false });

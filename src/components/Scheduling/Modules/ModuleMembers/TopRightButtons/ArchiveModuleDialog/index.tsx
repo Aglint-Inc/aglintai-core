@@ -52,17 +52,17 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
                 ...updatedEditModule,
               },
             );
-            toast.success('Module archived');
+            toast.success('Interview type archived');
           } else {
             throw new Error();
           }
         } else {
           toast.warning(
-            'Cannot archiving module, active schedules are present for this module',
+            'Cannot archiving interview type, active schedules are present for this interview type',
           );
         }
       } catch {
-        toast.error('Error archiving module');
+        toast.error('Error archiving interview type');
       } finally {
         setLoading(false);
         setIsArchiveDialogOpen(false);

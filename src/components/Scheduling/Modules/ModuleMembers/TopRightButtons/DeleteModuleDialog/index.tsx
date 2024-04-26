@@ -43,7 +43,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
           );
         }
       } catch {
-        toast.error('Error deleting user');
+        toast.error('Error deleting interview type');
       } finally {
         setLoading(false);
         setIsDeleteModuleDialogOpen(false);
