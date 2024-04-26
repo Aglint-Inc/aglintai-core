@@ -158,13 +158,15 @@ const getInitialEmailTemplate = ({
   candidate_time_zone,
   self_schedule_link,
 }) => {
+  const [first_name] = candidate_name.split(' ');
   return (
-    `<p>Hi ${candidate_name},</p>` +
+    `<p>Hi ${first_name},</p>` +
     `<p>Congratulations! You have been selected for an interview at ${company_name} for the ${job_role} position. Your qualifications are impressive, and we're excited to meet you and discuss them further.</p>` +
     `<p>Please let me know your availability within the following date range: ${start_date} - ${end_date} (${organizer_time_zone}). </p>` +
     `${
-      candidate_time_zone ??
-      `<p>Also, to make sure we find an interview time that works well for you, could you tell us your general location.</p>`
+      candidate_time_zone === null
+        ? `<p>Also, to make sure we find an interview time that works well for you, could you tell us your general location.</p>`
+        : ''
     }` +
     `<p>Or use the following link to schedule your interview: ${self_schedule_link}</p>` +
     `<p>Looking forward to connecting with you!</p>` +
