@@ -592,13 +592,14 @@ const handleSubmit = async (
   recruiterUser: RecruiterUserType,
 ) => {
   const { newProfile, error } = handleValidate(profile);
+
   if (!error) {
     const confirmation = await handleUpdateProfile({
       ...recruiterUser,
       first_name: profile.first_name.value,
       last_name: profile.last_name.value,
       phone: profile.phone.value,
-      position: profile.position.value,
+      position: profile.designation.value,
     });
     if (confirmation) {
       toast.success('Profile infomation saved successfully');

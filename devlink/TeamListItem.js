@@ -67,7 +67,7 @@ export function TeamListItem({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
               tag="div"
             >
               {userName}
@@ -81,13 +81,13 @@ export function TeamListItem({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "text-grey-600", "one-line-clamp")}
             tag="div"
           >
             {textDesignation}
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-grey-600")}
+            className={_utils.cx(_styles, "text-grey-600", "one-line-clamp")}
             tag="div"
           >
             {userEmail}

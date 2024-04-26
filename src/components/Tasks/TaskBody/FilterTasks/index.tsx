@@ -59,7 +59,7 @@ function FilterTasks() {
         },
         {
           type: 'filter',
-          name: 'Job Title',
+          name: 'Job',
           options: filter.jobTitle.options,
           setValue: (val) => {
             handelFilter({

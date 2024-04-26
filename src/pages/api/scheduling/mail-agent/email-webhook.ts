@@ -74,6 +74,9 @@ export default async function handler(
   try {
     const [fields] = await form.parse(req);
     const candidate_email = getEmail(fields.from[0]);
+
+    console.log(candidate_email);
+
     // const to_email = getEmail(fields.to[0]);
     // const subject = fields.subject[0];
     const raw_email_body: string = fields.text[0];
@@ -174,6 +177,8 @@ export const fetchCandidateDetails = async (
     return null;
   }
 
+  console.log(cand_rec);
+
   const job =
     cand_rec.interview_filter_json.interview_schedule.applications.public_jobs;
   const candidate =
@@ -194,6 +199,8 @@ export const fetchCandidateDetails = async (
       .select('*,interview_meeting(*)')
       .in('id', filter_json.session_ids),
   );
+
+  console.log(sessions);
 
   const meet_status = sessions[0].interview_meeting.status;
 
