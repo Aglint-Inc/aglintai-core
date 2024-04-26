@@ -86,15 +86,15 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       setIsImmediate(false);
       getSessionList();
     }
-  }, [router.query?.task_id]);
+  }, [router.query?.task_id, assignerList]);
 
   async function updateChanges(data: DatabaseTableUpdate['new_tasks']) {
-    handelUpdateTask({
-      id: task.id,
-      data: {
+    handelUpdateTask([
+      {
+        id: task.id,
         ...data,
       },
-    });
+    ]);
   }
 
   const createdBy = assignerList.find((ele) => ele.user_id === task.created_by);
@@ -118,20 +118,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               slotAvatarWithName={
                 task.applications?.candidates && (
                   <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'24px'}
-                        width={'24px'}
-                        src={task.applications?.candidates.avatar}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          task.applications.candidates?.first_name +
-                            ' ' +
-                            task.applications.candidates?.last_name,
-                        )}
-                      />
-                    }
+                    isAvatarVisible={false}
+                    isCandidateIconVisible={true}
+                    isRoleVisible={false}
+                    isReverseShadowVisible={false}
+                    isShadowVisible={false}
+                    slotAvatar={<></>}
+                    isTickVisible={false}
+                    // slotAvatar={}
                     textName={capitalizeAll(
                       task.applications.candidates?.first_name +
                         ' ' +
@@ -166,11 +160,13 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       start_date: dayjs(e[0]).toString(),
                       end_date: dayjs(e[1]).toString(),
                     },
+                    due_date: dayjs(e[0]).toString(),
                   });
                   setScheduleDate({
                     start_date: dayjs(e[0]).toString(),
                     end_date: dayjs(e[1]).toString(),
                   });
+                  setSelectedDueDate(dayjs(e[0]).toString());
                   createTaskProgress({
                     type: 'schedule_date_update',
                     data: {
@@ -204,7 +200,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     start_date: dayjs(e).toString(),
                     end_date: null,
                   },
+                  due_date: dayjs(e).toString(),
                 });
+                setSelectedDueDate(dayjs(e).toString());
                 createTaskProgress({
                   type: 'schedule_date_update',
                   data: {
@@ -304,6 +302,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     assigner.user_id === PhoneAgentId
                   ) {
                     setOpenTriggerTime(spanRef.current);
+                    setSelectedStatus('scheduled');
+                  } else {
+                    setSelectedStatus('not_started');
                   }
                 }
               }}
@@ -320,9 +321,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               isOptionList={task.status === 'not_started'}
               openTriggerTime={openTriggerTime}
               setOpenTriggerTime={setOpenTriggerTime}
-              onChange={(e) => {
+              onChange={(e: any) => {
                 updateChanges({
-                  start_date: dayjs(selectTriggerTime).toString(),
+                  start_date: dayjs(e).toString(),
                 });
                 createTaskProgress({
                   type: 'trigger_time_update',

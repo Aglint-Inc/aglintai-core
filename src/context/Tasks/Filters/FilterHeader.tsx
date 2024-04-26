@@ -238,7 +238,7 @@ function FilterDropDown({
                         //   }
                         // }}
                       >
-                        {capitalizeAll(label || '')}
+                        {capitalizeAll(label.replaceAll('null', '') || '')}
                       </Typography>
                     </Stack>
                   );

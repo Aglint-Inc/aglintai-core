@@ -15,12 +15,13 @@ import AddNewTask from './AddNewTask';
 import FilterTasks from './FilterTasks';
 import GroupSections from './GroupSections';
 import TaskRow from './TaskRow';
+import ToolBar from './ToolBar';
 import ViewTaskDrawer from './ViewTask';
 
 function TaskBody({ byGroup }) {
   const { tasks, loadingTasks } = useTasksContext();
 
-  const { setShowAddNew } = useTaskStatesContext();
+  const { setShowAddNew, selectedTasksIds } = useTaskStatesContext();
 
   const groupedTasks = tasks
     .filter((ele) => ele.application_id)
@@ -46,12 +47,22 @@ function TaskBody({ byGroup }) {
       <ShowCode>
         <ShowCode.When isTrue={!byGroup}>
           <TaskTable
-            slotFilter={<FilterTasks />}
+            slotFilter={
+              <ShowCode>
+                <ShowCode.When isTrue={selectedTasksIds.length > 0}>
+                  <ToolBar />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <FilterTasks />
+                </ShowCode.Else>
+              </ShowCode>
+            }
             onClickNewTask={{
               onClick: () => {
                 setShowAddNew(true);
               },
             }}
+            isNewTaskCardVisible={false}
             slotTaskTableCard={
               <>
                 {tasks

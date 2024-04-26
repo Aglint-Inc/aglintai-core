@@ -6,11 +6,17 @@ import { useEffect, useState } from 'react';
 import { ViewTask } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import { taskUpdateDebounce, UpdateFunction } from '../../utils';
+import {
+  createTaskProgress,
+  taskUpdateDebounce,
+  UpdateFunction,
+} from '../../utils';
 import SubTaskProgress from './Progress';
 import TaskCard from './TaskCard';
 
@@ -18,27 +24,16 @@ function ViewTaskDrawer() {
   const route = useRouter();
   const { openViewTask, setOpenViewTask } = useTaskStatesContext();
   const { tasks: taskList, handelUpdateTask } = useTasksContext();
+  const { recruiterUser } = useAuthDetails();
   const tasks = taskList.filter(
     (ele) => ele.type !== 'empty' && ele.application_id,
   );
   let taskId = route.query.task_id ? (route.query.task_id as string) : null;
-
   let selectedTask = tasks.find((item) => item.id === taskId);
+  const [inputValue, setInputValue] = useState(selectedTask?.name);
 
   const [disableNext, setDisableNext] = useState(false);
   const [disablePrev, setDisablePrev] = useState(false);
-
-  const debouncedUpdateTask: UpdateFunction = taskUpdateDebounce(
-    (taskId: string, changeValue: string) => {
-      handelUpdateTask({
-        id: taskId,
-        data: {
-          name: changeValue,
-        },
-      });
-    },
-    1000,
-  );
 
   useEffect(() => {
     if (taskId) {
@@ -50,7 +45,55 @@ function ViewTaskDrawer() {
         setDisableNext(true);
       }
     } else setOpenViewTask(false);
+    setInputValue(selectedTask?.name);
   }, [route.query.task_id]);
+
+  function cancelTask() {
+    handelUpdateTask([
+      {
+        status: 'cancelled',
+        id: taskId,
+      },
+    ]);
+    createTaskProgress({
+      type: 'status_update',
+      data: {
+        task_id: route.query.task_id as string,
+        created_by: {
+          name: recruiterUser.first_name as string,
+          id: recruiterUser.user_id as string,
+        },
+        progress_type: 'standard',
+      },
+      optionData: {
+        currentStatus: selectedTask.status,
+        status: 'cancelled',
+      },
+    });
+    toast.action('Task cancelled', () => {
+      handelUpdateTask([
+        {
+          status: 'not_started',
+          id: taskId,
+        },
+      ]);
+      createTaskProgress({
+        type: 'status_update',
+        data: {
+          task_id: route.query.task_id as string,
+          created_by: {
+            name: recruiterUser.first_name as string,
+            id: recruiterUser.user_id as string,
+          },
+          progress_type: 'standard',
+        },
+        optionData: {
+          currentStatus: 'cancelled',
+          status: 'not_started',
+        },
+      });
+    });
+  }
 
   return (
     <Drawer
@@ -80,17 +123,7 @@ function ViewTaskDrawer() {
               selectedTask?.status !== 'completed'
             }
             onClickCancelTask={{
-              onClick: () => {
-                handelUpdateTask({
-                  data: {
-                    status: 'cancelled',
-                  },
-                  id: taskId,
-                });
-                route.push(pageRoutes.TASKS);
-                setDisableNext(false);
-                setDisablePrev(false);
-              },
+              onClick: cancelTask,
             }}
             isDisableNext={disableNext}
             isDisablePrev={disablePrev}
@@ -135,19 +168,27 @@ function ViewTaskDrawer() {
               <TextField
                 placeholder='Untitled'
                 onChange={({ currentTarget: { value: changeValue } }) => {
-                  debouncedUpdateTask(taskId, changeValue);
+                  setInputValue(changeValue);
+                }}
+                onBlur={() => {
+                  handelUpdateTask([
+                    {
+                      id: taskId,
+                      name: inputValue,
+                    },
+                  ]);
                 }}
                 multiline
                 minRows={1}
                 maxRows={3}
                 fullWidth
-                value={selectedTask?.name}
+                value={inputValue}
                 sx={{
                   '& .MuiInputBase-root': {
                     border: 'none',
                     fontSize: '18px',
                     lineHeight: '24px',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     padding: '10px',
                     bgcolor: '#F7F9FB',
                     borderRadius: '10px',

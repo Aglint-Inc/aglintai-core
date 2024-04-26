@@ -57,7 +57,7 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
                 textName={capitalizeAll(
                   assigneeDetails?.first_name +
                     ' ' +
-                    assigneeDetails?.last_name,
+                    (assigneeDetails?.last_name??''),
                 )}
               />
             )

@@ -1,7 +1,6 @@
 import { Checkbox, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 import {
   AvatarWithName,
@@ -9,33 +8,19 @@ import {
   PriorityPill,
   TaskTableCard,
 } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import {
-  TasksAgentContextType,
-  useTasksContext,
-} from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { CustomDatabase } from '@/src/types/customSchema';
+import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
-import SelectStatus from '../../Components/SelectStatus';
+import StatusChip from '../../Components/StatusChip';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 
 function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const route = useRouter();
   const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
-  const { handelUpdateTask } = useTasksContext();
-  const [selectedStatus, setSelectedStatus] = useState<
-    CustomDatabase['public']['Enums']['task_status'] | null
-  >(null);
 
-  useEffect(() => {
-    if (selectedStatus) {
-      handelUpdateTask({ id: task.id, data: { status: selectedStatus } });
-    }
-  }, [selectedStatus]);
   return (
     <Stack
       sx={{
@@ -67,20 +52,13 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 slotAvatarWithName={
                   task?.applications && (
                     <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
-                          height={'25px'}
-                          width={'25px'}
-                          src={task?.applications?.candidates.avatar}
-                          variant='circular'
-                          fontSize='14px'
-                          level={capitalizeAll(
-                            task?.applications.candidates?.first_name +
-                              ' ' +
-                              task?.applications.candidates?.last_name,
-                          )}
-                        />
-                      }
+                      isAvatarVisible={false}
+                      isCandidateIconVisible={true}
+                      isRoleVisible={false}
+                      isReverseShadowVisible={false}
+                      isShadowVisible={false}
+                      slotAvatar={<></>}
+                      isTickVisible={false}
                       textName={capitalizeAll(
                         task?.applications.candidates?.first_name +
                           ' ' +
@@ -95,12 +73,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             '--'
           )
         }
-        slotStatus={
-          <SelectStatus
-            status={task.status}
-            setSelectedStatus={setSelectedStatus}
-          />
-        }
+        slotStatus={<StatusChip status={task.status} />}
         textJob={task?.applications?.public_jobs?.job_title || '--'}
         slotPriority={
           <PriorityPill

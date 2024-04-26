@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Popover, Stack } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
@@ -39,11 +39,17 @@ function PriorityList({
         }}
         onClick={handleClick}
       >
-        <PriorityPill
-          isHighVisible={selectedPriority === 'high'}
-          isLowVisible={selectedPriority === 'low'}
-          isMediumVisible={selectedPriority === 'medium'}
-        />
+        {selectedPriority ? (
+          <PriorityPill
+            isHighVisible={selectedPriority === 'high'}
+            isLowVisible={selectedPriority === 'low'}
+            isMediumVisible={selectedPriority === 'medium'}
+          />
+        ) : (
+          <Typography variant='caption' fontSize={'14px'}>
+            Select priority
+          </Typography>
+        )}
       </Stack>
       <Popover
         id={id}

@@ -1,18 +1,13 @@
 import { Checkbox, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 import { PriorityPill, TaskTableJobSubCard } from '@/devlink3';
-import {
-  TasksAgentContextType,
-  useTasksContext,
-} from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { CustomDatabase } from '@/src/types/customSchema';
+import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import AssigneeChip from '../../Components/AssigneeChip';
-import SelectStatus from '../../Components/SelectStatus';
+import StatusChip from '../../Components/StatusChip';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 
 function GroupTaskCard({
@@ -23,16 +18,7 @@ function GroupTaskCard({
   const route = useRouter();
   const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
-  const { handelUpdateTask } = useTasksContext();
-  const [selectedStatus, setSelectedStatus] = useState<
-    CustomDatabase['public']['Enums']['task_status'] | null
-  >(null);
 
-  useEffect(() => {
-    if (selectedStatus) {
-      handelUpdateTask({ id: task.id, data: { status: selectedStatus } });
-    }
-  }, [selectedStatus]);
   return (
     <Stack
       sx={{
@@ -53,12 +39,7 @@ function GroupTaskCard({
           },
         }}
         slotAssignedTo={<AssigneeChip assigneeId={task.assignee[0]} />}
-        slotStatus={
-          <SelectStatus
-            status={task.status}
-            setSelectedStatus={setSelectedStatus}
-          />
-        }
+        slotStatus={<StatusChip status={task.status} />}
         textTask={capitalize(task.name) || 'Untitled'}
         slotCheckbox={
           <Stack

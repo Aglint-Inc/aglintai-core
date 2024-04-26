@@ -142,6 +142,7 @@ export const createTasks = async (
     recruiter_id: job.recruiter_id,
     application_id: candidate.application_id,
     created_by: job.recruiterUser.id as string,
+    type: 'schedule',
     ...task,
   }));
   const { error, data } = await supabase

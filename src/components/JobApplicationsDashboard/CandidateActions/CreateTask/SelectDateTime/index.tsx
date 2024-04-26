@@ -12,9 +12,11 @@ import React, { useState } from 'react';
 function SelectDateTime({
   selectCallDate,
   setSelectCallDate,
+  onChange,
 }: {
   selectCallDate: string;
   setSelectCallDate: (x: string) => void;
+  onChange: any;
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -72,6 +74,9 @@ function SelectDateTime({
             onAccept={(e: any) => {
               setSelectCallDate(String(new Date(e)));
               setAnchorEl(null);
+              if (onChange) {
+                onChange(e);
+              }
             }}
             shouldDisableDate={(date) => {
               const dayOfWeek = dayjs(date).day();

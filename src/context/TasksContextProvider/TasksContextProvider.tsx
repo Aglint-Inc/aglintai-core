@@ -48,10 +48,9 @@ export type TasksAgentContextType = TasksReducerType & {
   handelAddTask: (
     x: DatabaseTableInsert['new_tasks'],
   ) => Promise<DatabaseTable['new_tasks']>;
-  handelUpdateTask: (x: {
-    id: string;
-    data: DatabaseTableUpdate['new_tasks'];
-  }) => Promise<DatabaseTable['new_tasks']>;
+  handelUpdateTask: (
+    x: (Omit<DatabaseTableUpdate['new_tasks'], 'id'> & { id: string })[],
+  ) => Promise<DatabaseTable['new_tasks'][]>;
   handelDeleteTask: (id: string) => Promise<boolean>;
   handelGetTaskProgress: (task_id: string) => Promise<boolean>;
   handelAddTaskProgress: (
@@ -297,20 +296,26 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const handelUpdateTask: TasksAgentContextType['handelUpdateTask'] = async ({
-    id,
-    data,
-  }) => {
-    return updateTask({
-      type: 'update',
-      task: { ...data, id },
-    }).then((taskData) => {
-      const tempTask = cloneDeep(tasksReducer.tasks).map((item) =>
+  const handelUpdateTask: TasksAgentContextType['handelUpdateTask'] = async (
+    updates,
+  ) => {
+    let tempTask = cloneDeep(tasksReducer.tasks);
+    const updatedTasks = await Promise.all(
+      updates.map((task) =>
+        updateTask({
+          type: 'update',
+          task,
+        }),
+      ),
+    );
+
+    updatedTasks.forEach((taskData) => {
+      tempTask = tempTask.map((item) =>
         item.id === taskData.id ? { ...item, ...taskData } : item,
       );
+    }),
       handelTaskChanges(tempTask);
-      return taskData;
-    });
+    return updatedTasks;
   };
 
   const handelDeleteTask: TasksAgentContextType['handelDeleteTask'] = async (
@@ -570,6 +575,7 @@ export const updateTask = ({
       return temp;
     });
 };
+
 const deleteTask = (id: string) => {
   return supabase
     .from('new_tasks')
