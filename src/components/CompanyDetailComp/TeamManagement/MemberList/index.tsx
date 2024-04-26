@@ -120,7 +120,9 @@ const Member = ({
           },
         }}
         key={1}
-        dateText={dayjs(member.joined_at).fromNow()}
+        textLastActive={
+          member.last_login ? dayjs(member.last_login).fromNow() : '--:--'
+        }
         slotProfileImage={
           <MuiAvatar
             src={member.profile_image}

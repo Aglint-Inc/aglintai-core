@@ -25,4 +25,5 @@ declare function TeamListItem(props: {
   onClickSuspend?: Types.Devlink.RuntimeProps;
   onClickResetPassword?: Types.Devlink.RuntimeProps;
   isResetPasswordVisible?: Types.Visibility.VisibilityConditions;
+  textLastActive?: React.ReactNode;
 }): React.JSX.Element;
