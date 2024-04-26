@@ -40,23 +40,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       cand_email,
       filter_json_id,
       interviewer_name,
-      cand_time_zone = 'Asia/colombo',
-      organizer_time_zone = 'Asia/colombo',
+      cand_time_zone,
+      organizer_time_zone,
       task_id,
     } = req.body as InitAgentBodyParams;
 
     if (
       !cand_email ||
-      !cand_time_zone ||
       !filter_json_id ||
       !interviewer_name ||
       !organizer_time_zone
     ) {
       return res.status(400).send('missing fields');
     }
-    // if (process.env.NODE_ENV === 'development') {
-    //   cand_email = 'dileepwert@gmail.com';
-    // }
+    if (process.env.NODE_ENV === 'development') {
+      cand_email = 'dileepwert@gmail.com';
+    }
 
     const cand_details = await fetchCandDetails({
       filter_json_id,
@@ -78,8 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .tz(cand_details.filter_json.user_tz)
         .format('DD MMMM'),
       organizer_time_zone,
-      candidate_time_zone: cand_details.filter_json.user_tz,
-      organizer_name: cand_details.filter_json.organizer_name,
+      candidate_time_zone: cand_time_zone ?? null,
       self_schedule_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}&task_id=${task_id}'>link</a>`,
     });
 
@@ -104,7 +102,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
         company_id: cand_details.company_id,
         filter_json_id: filter_json_id,
-        time_zone: cand_details.time_zone,
         task_id: task_id ?? undefined,
       }),
     );
@@ -114,8 +111,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       from_name: cand_details.company_name,
       mail_body: initMailBody,
       headers,
-      candidate_name: cand_details.candidate_name,
-      job_role: cand_details.job_role,
+      company_name: cand_details.company_name,
     });
 
     if (task_id) {
@@ -160,23 +156,19 @@ const getInitialEmailTemplate = ({
   end_date,
   organizer_time_zone,
   candidate_time_zone,
-  organizer_name,
   self_schedule_link,
 }) => {
   return (
     `<p>Hi ${candidate_name},</p>` +
-    `<p>Congratulations! Your resume has passed our initial screening for the ${job_role} position at ${company_name}. Impressive qualifications! Let's schedule your interview.</p>` +
-    `<p>Please let me know your availability from the following date range :</p>` +
-    `<p>${start_date} - ${end_date} (${organizer_time_zone}).</p>` +
-    `<p>reply to this email with your preferred date and time (${candidate_time_zone}).</p>` +
-    `<p>If you prefer to self schedule here's the ${self_schedule_link}.</p>` +
+    `<p>Congratulations! You have been selected for an interview at ${company_name} for the ${job_role} position. Your qualifications are impressive, and we're excited to meet you and discuss them further.</p>` +
+    `<p>Please let me know your availability within the following date range: ${start_date} - ${end_date} (${organizer_time_zone}). </p>` +
     `${
-      candidate_time_zone
-        ? ''
-        : `<p>Also, to make sure we find an interview time that works well for you, could you tell us your general location (city, state)?</p>`
+      candidate_time_zone ??
+      `<p>Also, to make sure we find an interview time that works well for you, could you tell us your general location.</p>`
     }` +
-    `<p>I'll confirm the interview details promptly. Excited to discuss your potential role at ${company_name}. Any questions? Feel free to reach out.</p>` +
-    `<p>Best regards,<br>${organizer_name}</p>`
+    `<p>Or use the following link to schedule your interview: ${self_schedule_link}</p>` +
+    `<p>Looking forward to connecting with you!</p>` +
+    `<p>Best regards,<br>${company_name} Recruitment Team</p>`
   );
 };
 
@@ -185,14 +177,13 @@ export const sendEmailFromAgent = async ({
   from_name,
   mail_body,
   headers,
-  job_role,
-  candidate_name,
+  company_name,
 }) => {
   await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
     email: candidate_email,
     fromEmail: process.env.NEXT_PUBLIC_AGENT_EMAIL,
     fromName: from_name,
-    subject: `Interview for ${job_role} - ${candidate_name}`,
+    subject: `Schedule Your Interview with ${company_name} - Important Next Step`,
     text: mail_body,
     headers,
   });
