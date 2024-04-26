@@ -27,7 +27,7 @@ export function NewInterviewDetail({
           className={_utils.cx(_styles, "fw-semibold", "p-lr-16")}
           tag="div"
         >
-          {"Interviews detail"}
+          {"Interviews Detail"}
         </_Builtin.Block>
         <_Builtin.Block tag="div">{slotDropdownButton}</_Builtin.Block>
       </_Builtin.Block>

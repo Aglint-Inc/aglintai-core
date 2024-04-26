@@ -22,7 +22,7 @@ export function InterviewModuleStats({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Interview stats"}
+          {"Interview Stats"}
         </_Builtin.Block>
         {isViewAllVisible ? (
           <_Builtin.Block
@@ -59,7 +59,7 @@ export function InterviewModuleStats({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Interview type"}
+              {"Interview Type"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block

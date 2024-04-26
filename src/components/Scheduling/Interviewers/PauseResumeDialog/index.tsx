@@ -91,7 +91,7 @@ function PauseResumeDialog({
       close();
       refetch();
     } else {
-      toast.warning('Please choose a module!');
+      toast.warning('Please pick a module!');
     }
   }
   return (
@@ -366,7 +366,7 @@ function PauseResumeDialog({
                             labelSize='medium'
                             // fullWidth
                             label=''
-                            placeholder='Ex. Healthcare'
+                            placeholder='Ex. Initial Screening'
                             InputProps={{
                               ...params.InputProps,
                               autoComplete: 'new-password',

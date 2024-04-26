@@ -1,4 +1,5 @@
 .div-block-1487 {
+  overflow: hidden;
   height: 420px;
   border: 1px solid #e9ebed;
   border-radius: 10px;
@@ -6,6 +7,10 @@
 
 .div-block-1487.over-hidden {
   overflow: hidden;
+}
+
+.div-block-1487.height-430 {
+  height: 430px;
 }
 
 .div-block-1488 {

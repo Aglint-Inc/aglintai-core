@@ -140,7 +140,7 @@ function CreateModuleDialog() {
                     },
                   }}
                 />
-                <Typography variant='body2'>Requires Training</Typography>
+                <Typography variant='inherit'>Requires Training</Typography>
               </Stack>
               <Stack
                 style={{
