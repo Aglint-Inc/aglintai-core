@@ -1,5 +1,5 @@
 export type ToolPopUpReason =
   | 'close_tasks'
-  | 'update_tasks'
+  | 'change_status'
   | 'change_assignee'
   | 'update_priority';

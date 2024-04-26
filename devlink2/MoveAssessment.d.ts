@@ -20,4 +20,7 @@ declare function MoveAssessment(props: {
   isPriorityVisible?: Types.Visibility.VisibilityConditions;
   slotPriority?: Types.Devlink.Slot;
   onClickPriority?: Types.Devlink.RuntimeProps;
+  isStatusVisible?: Types.Visibility.VisibilityConditions;
+  onClickStatus?: Types.Devlink.RuntimeProps;
+  slotStatus?: Types.Devlink.Slot;
 }): React.JSX.Element;

@@ -62,7 +62,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       textName={capitalizeAll(
                         task?.applications.candidates?.first_name +
                           ' ' +
-                          task?.applications.candidates?.last_name,
+                          (task?.applications.candidates?.last_name ?? ''),
                       )}
                     />
                   )
@@ -99,7 +99,10 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               onChange={(e) => {
                 if (e.target.checked) {
                   //@ts-ignore
-                  setSelectedTasksIds((pre: any[]) => [task.id, ...pre]);
+                  setSelectedTasksIds((pre: any[]) => {
+                    const selectedIds = [task.id, ...pre];
+                    return selectedIds;
+                  });
                 } else {
                   //@ts-ignore
                   setSelectedTasksIds((pre: any[]) => {

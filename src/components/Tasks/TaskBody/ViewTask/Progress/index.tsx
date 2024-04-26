@@ -239,22 +239,17 @@ function SubTaskProgress() {
                                                   slotAvatarWithName={
                                                     receiver && (
                                                       <AvatarWithName
-                                                        slotAvatar={
-                                                          <MuiAvatar
-                                                            height={'24px'}
-                                                            width={'24px'}
-                                                            src={
-                                                              receiver.avatar
-                                                            }
-                                                            variant='circular'
-                                                            fontSize='14px'
-                                                            level={capitalizeAll(
-                                                              receiver?.first_name +
-                                                                ' ' +
-                                                                receiver?.last_name,
-                                                            )}
-                                                          />
+                                                        isAvatarVisible={false}
+                                                        isCandidateIconVisible={
+                                                          true
                                                         }
+                                                        isRoleVisible={false}
+                                                        isReverseShadowVisible={
+                                                          false
+                                                        }
+                                                        isShadowVisible={false}
+                                                        slotAvatar={<></>}
+                                                        isTickVisible={false}
                                                         textName={capitalizeAll(
                                                           receiver?.first_name +
                                                             ' ' +

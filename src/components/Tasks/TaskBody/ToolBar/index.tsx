@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { useRef, useState } from 'react';
@@ -27,7 +27,7 @@ import PopUps from './PopUps';
 import { ToolPopUpReason } from './utils';
 
 function ToolBar() {
-  const { selectedTasksIds, isImmediate, setSelectedTasksIds } =
+  const { selectedTasksIds, isImmediate, setSelectedTasksIds, setIsImmediate } =
     useTaskStatesContext();
   const { handelUpdateTask, tasks } = useTasksContext();
   const { recruiterUser } = useAuthDetails();
@@ -48,8 +48,8 @@ function ToolBar() {
       selectedTasksIds.includes(ele.id),
     );
 
-    if (reason === 'close_tasks' || reason === 'update_tasks') {
-      if (reason === 'update_tasks' && !selectedStatus) {
+    if (reason === 'close_tasks' || reason === 'change_status') {
+      if (reason === 'change_status' && !selectedStatus) {
         toast.message('Please select status!');
         return;
       }
@@ -102,9 +102,11 @@ function ToolBar() {
           selectedAssignee.user_id === PhoneAgentId
             ? 'scheduled'
             : 'not_started';
-        item.start_date = isImmediate
-          ? dayjs().add(5, 'minute').toString()
-          : dayjs(selectedTriggerTime).toString();
+        if (selectedTriggerTime) {
+          item.start_date = isImmediate
+            ? dayjs().add(5, 'minute').toString()
+            : dayjs(selectedTriggerTime).toString();
+        }
         return item;
       });
       handelUpdateTask(tempTasks);
@@ -129,12 +131,23 @@ function ToolBar() {
         });
       }
     }
+    closePopup();
+    toast.message(`${selectedTasksIds.length} tasks updated`);
+  }
+
+  function closePopup() {
     setIsOpen(false);
+    setSelectedAssignee(null);
+    setSelectedPriority(null);
+    setSelectedStatus(null);
+    setSelectedTriggerTime(null);
+    setOpenTriggerTime(null);
   }
 
   return (
     <Stack py={'20px'} px={'40px'} direction={'row'} spacing={'20px'}>
       <TaskUpdateButton
+        textTaskSelected={`${selectedTasksIds.length} tasks selected`}
         onClickCloseTask={{
           onClick: () => {
             setIsOpen(true);
@@ -144,7 +157,7 @@ function ToolBar() {
         onClickChangeStatus={{
           onClick: () => {
             setIsOpen(true);
-            setReason('update_tasks');
+            setReason('change_status');
           },
         }}
         onClickChangeAssignee={{
@@ -167,14 +180,24 @@ function ToolBar() {
       />
 
       <PopUps
+        assigneeId={selectedAssignee?.user_id}
         popUpBody={
           <ShowCode>
-            <ShowCode.When isTrue={reason === 'update_tasks'}>
-              <Stack direction={'row'} spacing={'5px'} alignItems={'center'}>
-                <Typography variant='body2'> Status :</Typography>
-                <SelectStatus
-                  status={selectedStatus}
-                  setSelectedStatus={setSelectedStatus}
+            <ShowCode.When isTrue={reason === 'change_status'}>
+              <Stack width={'100%'}>
+                <MoveAssessment
+                  isAssignedToVisible={false}
+                  isInterviewDateVisible={false}
+                  isInterviewVisible={false}
+                  isWhentoCallVisible={false}
+                  isPriorityVisible={false}
+                  isStatusVisible={true}
+                  slotStatus={
+                    <SelectStatus
+                      status={selectedStatus}
+                      setSelectedStatus={setSelectedStatus}
+                    />
+                  }
                 />
               </Stack>
             </ShowCode.When>
@@ -185,6 +208,7 @@ function ToolBar() {
                   isInterviewDateVisible={false}
                   isInterviewVisible={false}
                   isWhentoCallVisible={false}
+                  isStatusVisible={false}
                   isPriorityVisible={true}
                   slotPriority={
                     <PriorityList
@@ -201,6 +225,7 @@ function ToolBar() {
                   isPriorityVisible={false}
                   isInterviewVisible={false}
                   isInterviewDateVisible={false}
+                  isStatusVisible={false}
                   slotAssignedTo={
                     <>
                       <AssigneeList
@@ -212,6 +237,7 @@ function ToolBar() {
                             assigner.user_id === PhoneAgentId
                           ) {
                             setOpenTriggerTime(spanRef.current);
+                            setIsImmediate(false);
                           }
                         }}
                       />
@@ -248,7 +274,7 @@ function ToolBar() {
           </ShowCode>
         }
         close={() => {
-          setIsOpen(false);
+          closePopup();
         }}
         isOpen={isOpen}
         action={action}
