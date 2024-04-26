@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -183,7 +184,9 @@ export function CreateJob({
         </_Builtin.Block>
       ) : null}
       <_Builtin.Block className={_utils.cx(_styles, "div-block-733")} tag="div">
-        <_Builtin.Block tag="div">{"Not finding your ATS?"}</_Builtin.Block>
+        <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
+          {"Not finding your ATS?"}
+        </_Builtin.Block>
         <_Builtin.Link
           className={_utils.cx(_styles, "request-wrap")}
           button={false}

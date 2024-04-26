@@ -357,10 +357,10 @@ function SchedulingSettings({
                 <Stack direction={'column'} spacing={1} marginTop={'20px'}>
                   <Stack direction={'column'} spacing={0.5}>
                     <Typography variant='body1' fontSize={'15px'}>
-                      Break Hour
+                      Default Break Times
                     </Typography>
                     <Typography variant='body2'>
-                      Setup company Break hour.
+                      Define standard break times for the company.
                     </Typography>
                   </Stack>
                   <Stack spacing={1} direction={'column'}>
@@ -575,7 +575,7 @@ function SchedulingSettings({
               <KeywordCard
                 textTitle={'Free'}
                 textWarning={
-                  'If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.'
+                  'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.'
                 }
                 slotInput={
                   <FilterInput
@@ -624,9 +624,9 @@ function SchedulingSettings({
                 })}
               />
               <KeywordCard
-                textTitle={'Soft conflicts'}
+                textTitle={'Soft Conflicts'}
                 textWarning={
-                  'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation'
+                  'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
                 }
                 slotInput={
                   <FilterInput

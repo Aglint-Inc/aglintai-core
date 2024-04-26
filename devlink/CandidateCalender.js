@@ -72,7 +72,12 @@ export function CandidateCalender({
           ) : null}
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "day_columns")} tag="div">
-          {slotDayColumn ?? <DayColumn />}
+          {slotDayColumn ?? (
+            <>
+              <DayColumn />
+              <DayColumn />
+            </>
+          )}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "arrorw_block")}

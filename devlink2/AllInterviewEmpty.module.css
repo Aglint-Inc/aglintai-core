@@ -48,6 +48,21 @@
   margin-left: -6px;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -140,17 +155,6 @@
 
 .fw-semibold.text-grey-400 {
   color: #c2c8cc;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .text-blue-600 {

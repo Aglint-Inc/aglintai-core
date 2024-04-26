@@ -32,7 +32,7 @@ export function Integration({
             tag="div"
           >
             {
-              "Integrate your Applicant Tracking System (ATS) with Aglint, enabling seamless job importation from your ATS."
+              "Easily manage job postings and candidate information by connecting your preferred ATS."
             }
           </_Builtin.Block>
         </_Builtin.Block>
@@ -47,8 +47,24 @@ export function Integration({
         className={_utils.cx(_styles, "div-block-1240")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Scheduling"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "integration_title")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Scheduling Tools"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {
+              "Connect your calendar and video conferencing tools to simplify interview scheduling."
+            }
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1241")}
@@ -61,8 +77,24 @@ export function Integration({
         className={_utils.cx(_styles, "div-block-1240", "border-none")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Messaging"}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "integration_title")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Communication Platforms"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-gray-600")}
+            tag="div"
+          >
+            {
+              "Coming soon! You’ll be able to connect popular communication tools to enhance your team’s coordination."
+            }
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1241")}

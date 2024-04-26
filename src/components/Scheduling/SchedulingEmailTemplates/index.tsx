@@ -188,14 +188,14 @@ export default SchedulingEmailTemplates;
 
 export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
   candidate_availability_request: {
-    listing: 'Candidate Availability Request',
-    heading: 'Candidate Availability Request Template',
+    listing: 'Candidate Booking Link Email Template',
+    heading: 'Candidate Booking Link Email Template',
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
     and [pickYourSlotLink].`,
-    triggerInfo: 'Triggered to send schedule options',
+    triggerInfo: 'Manually Sending Candidate Booking Link',
     description:
-      'Set up a default application recieved email template. You can make specific changes for individual job posts later.',
+      'This template is used for sending the candidate booking link to schedule interviews. Ensure to include clear instructions and personalize the email for better engagement.',
     descriptionInJob:
       'Customise candidate_availability request email template for this job',
     subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
@@ -206,7 +206,7 @@ export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
     Regards,
     
     [companyName] Recruitment Team`,
-    trigger: 'Triggered to send schedule options',
+    trigger: 'Manually Sending Candidate Booking Link',
   },
   candidate_invite_confirmation: {
     listing: 'Candidate Invite Confirmation',

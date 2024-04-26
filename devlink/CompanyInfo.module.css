@@ -325,6 +325,21 @@
   margin-top: 20px;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .max-width-500 {
   max-width: 500px;
 }
@@ -406,6 +421,12 @@
 
 .text-grey-600.mt-8 {
   margin-top: 8px;
+}
+
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
 }
 
 .profile-inputs-wrapper {
