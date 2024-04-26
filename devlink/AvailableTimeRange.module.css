@@ -4,6 +4,7 @@
   display: flex;
   height: 40px;
   min-height: 40px;
+  padding: 4px 16px;
   justify-content: center;
   align-items: center;
 
@@ -59,6 +60,7 @@
   bottom: 0%;
 
   display: flex;
+  padding: 4px 16px;
   justify-content: center;
   align-items: center;
 
