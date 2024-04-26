@@ -1,10 +1,12 @@
+import { Dialog, Stack, Typography } from '@mui/material';
+import { ReactNode } from 'react';
+
 import { ConfirmationPopup, DeletePopup } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
-import { Dialog, Stack, Typography } from '@mui/material';
-import { ReactNode } from 'react';
-import { ToolPopUpReason } from '../utils';
+
 import { useTaskStatesContext } from '../../../TaskStatesContext';
+import { ToolPopUpReason } from '../utils';
 
 function PopUps({
   isOpen,

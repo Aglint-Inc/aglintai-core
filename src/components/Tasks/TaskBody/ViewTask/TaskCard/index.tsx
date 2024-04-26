@@ -44,7 +44,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { handelUpdateTask } = useTasksContext();
-  const { assignerList, setIsImmediate, isImmediate } = useTaskStatesContext();
+  const { assignerList, setIsImmediate } = useTaskStatesContext();
   const [sessionList, setSessionList] = useState<Awaited<
     ReturnType<typeof fetchInterviewSessionTask>
   > | null>([]);
@@ -263,7 +263,6 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             setSelectedDueDate={setSelectedDueDate}
             isOptionList={task.status === 'not_started'}
             onChange={(e: any) => {
-              console.log(e);
               updateChanges({ due_date: dayjs(e).toString() });
             }}
           />

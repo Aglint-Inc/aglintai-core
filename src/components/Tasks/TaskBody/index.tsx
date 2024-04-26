@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
-import { Collapse, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
 import {
@@ -15,8 +15,8 @@ import AddNewTask from './AddNewTask';
 import FilterTasks from './FilterTasks';
 import GroupSections from './GroupSections';
 import TaskRow from './TaskRow';
-import ViewTaskDrawer from './ViewTask';
 import ToolBar from './ToolBar';
+import ViewTaskDrawer from './ViewTask';
 
 function TaskBody({ byGroup }) {
   const { tasks, loadingTasks } = useTasksContext();

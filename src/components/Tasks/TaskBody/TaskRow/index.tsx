@@ -8,7 +8,6 @@ import {
   PriorityPill,
   TaskTableCard,
 } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

@@ -11,13 +11,13 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
+import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
 import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
 import CreateTask, { TaskType } from './CreateTask';
-import toast from '@/src/utils/toast';
 
 const MoveCandidate: React.FC<{
   applicationLimit: CountJobs;

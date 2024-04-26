@@ -95,7 +95,7 @@ const contextInitialState: TasksAgentContextType = {
   ...reducerInitialState,
   // eslint-disable-next-line no-unused-vars
   handelAddTask: (x) => Promise.resolve(null),
-  handelUpdateTask: (x) => Promise.resolve(false),
+  handelUpdateTask: (x) => Promise.resolve(null),
   handelDeleteTask: (x) => Promise.resolve(false),
   handelGetTaskProgress: (x) => Promise.resolve(false),
   handelAddTaskProgress: (x) => Promise.resolve(false),

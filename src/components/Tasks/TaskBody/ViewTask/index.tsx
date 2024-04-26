@@ -6,8 +6,10 @@ import { useEffect, useState } from 'react';
 import { ViewTask } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
@@ -17,8 +19,6 @@ import {
 } from '../../utils';
 import SubTaskProgress from './Progress';
 import TaskCard from './TaskCard';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import toast from '@/src/utils/toast';
 
 function ViewTaskDrawer() {
   const route = useRouter();

@@ -59,9 +59,7 @@ function CreateTask({
       data: { interview_session },
     },
   } = useJobInterviewPlan();
-  console.log(dayjs().add(1, 'day').toString());
   useEffect(() => {
-    console.log(interview_session);
     if (interview_session) {
       setSelectedSession(interview_session.slice(0, 2));
       setTask((pre) => {
