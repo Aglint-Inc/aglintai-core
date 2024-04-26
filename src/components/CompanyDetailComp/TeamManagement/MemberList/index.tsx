@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
@@ -8,6 +9,7 @@ import { TeamListItem } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import { palette } from '@/src/context/Theme/Theme';
+import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -89,25 +91,34 @@ const Member = ({
         // isEditInviteVisible={member.join_status === 'invited'}
         isActiveVisible={canSuspend && member.is_suspended}
         isSuspendVisible={canSuspend && !member.is_suspended}
-        onClickSuspend={{
-          onClick: () => updateMember({ ...member, is_suspended: true }),
-        }}
-        onClickActive={{
-          onClick: () => updateMember({ ...member, is_suspended: false }),
-        }}
         textLocation={member.interview_location}
-        onClickEditInvite={{ onClick: editMember }}
+        isCancelInviteVisible={member.join_status === 'invited' ? true : false}
         isDeleteVisible={
           member.role === 'admin' || member.join_status === 'invited'
             ? false
             : true
         }
+        isResetPasswordVisible={
+          true
+          // member.role === 'admin' || member.join_status !== 'invited'
+        }
+        onClickActive={{
+          onClick: () => updateMember({ ...member, is_suspended: false }),
+        }}
+        onClickSuspend={{
+          onClick: () => updateMember({ ...member, is_suspended: true }),
+        }}
+        onClickEditInvite={{ onClick: editMember }}
         onClickCancelInvite={{
           onClick: () => {
             setOpenForCancel(true);
           },
         }}
-        isCancelInviteVisible={member.join_status === 'invited' ? true : false}
+        onClickResetPassword={{
+          onClick: () => {
+            resetPassword(member.email);
+          },
+        }}
         key={1}
         dateText={dayjs(member.joined_at).fromNow()}
         slotProfileImage={
@@ -180,3 +191,12 @@ export default Member;
 //       return data;
 //     });
 // };
+
+const resetPassword = (email: string) => {
+  const body: API_reset_password['request'] = { email };
+  return axios
+    .post<API_reset_password['response']>('/api/reset_password', body)
+    .then(({ data }) => {
+      return data;
+    });
+};
