@@ -5,4 +5,5 @@ declare function TaskTableJobCand(props: {
   as?: React.ElementType;
   slotFilter?: Types.Devlink.Slot;
   slotTaskJobCard?: Types.Devlink.Slot;
+  slotCheckbox?: Types.Devlink.Slot;
 }): React.JSX.Element;

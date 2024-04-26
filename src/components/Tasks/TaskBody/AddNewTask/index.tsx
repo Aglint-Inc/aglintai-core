@@ -101,6 +101,10 @@ function AddNewTask() {
   const [aiload, setAiLoad] = useState(false);
 
   async function handleCreate() {
+    if (!selectedCandidate?.candidates?.email) {
+      toast.warning('Candidate email is not provided!');
+      return;
+    }
     if (!selectedSession.length) {
       toast.warning('Please select interview session!');
       return;
