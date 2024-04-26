@@ -39,6 +39,8 @@ interface ContextValue {
   setIsImmediate: (x: boolean) => void;
   selectedTasksIds: string[];
   setSelectedTasksIds: (x: string[]) => any;
+  showToolBar: boolean;
+  setShowToolBar: (x: boolean) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -61,12 +63,15 @@ const defaultProvider: ContextValue = {
   setIsImmediate: () => {},
   selectedTasksIds: [],
   setSelectedTasksIds: (x: string[]) => {},
+  showToolBar: false,
+  setShowToolBar: () => {},
 };
 const TaskStatesContext = createContext<ContextValue>(defaultProvider);
 const useTaskStatesContext = () => useContext(TaskStatesContext);
 function TaskStatesProvider({ children }) {
   const [taskId, setTaskId] = useState<string | null>(null);
   const [openViewTask, setOpenViewTask] = useState(false);
+  const [showToolBar, setShowToolBar] = useState(false);
 
   const { data: interviewers } = useInterviewerList();
 
@@ -113,6 +118,8 @@ function TaskStatesProvider({ children }) {
         setIsImmediate,
         selectedTasksIds,
         setSelectedTasksIds,
+        showToolBar,
+        setShowToolBar,
       }}
     >
       {children}

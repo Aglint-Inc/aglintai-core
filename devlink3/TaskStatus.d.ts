@@ -6,4 +6,5 @@ declare function TaskStatus(props: {
   textStatus?: React.ReactNode;
   bgColorProps?: Types.Devlink.RuntimeProps;
   textColorProps?: Types.Devlink.RuntimeProps;
+  isDropIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

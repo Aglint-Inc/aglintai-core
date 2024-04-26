@@ -178,6 +178,7 @@ export * from "./TaskTableCard";
 export * from "./TaskTableJobCand";
 export * from "./TaskTableJobCard";
 export * from "./TaskTableJobSubCard";
+export * from "./TaskUpdateButton";
 export * from "./TeamEmpty";
 export * from "./Timeline";
 export * from "./TimelineBlock";

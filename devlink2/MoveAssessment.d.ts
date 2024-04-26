@@ -17,4 +17,7 @@ declare function MoveAssessment(props: {
   onClickInterviewDate?: Types.Devlink.RuntimeProps;
   onClickAssignedTo?: Types.Devlink.RuntimeProps;
   onClickWhenToCall?: Types.Devlink.RuntimeProps;
+  isPriorityVisible?: Types.Visibility.VisibilityConditions;
+  slotPriority?: Types.Devlink.Slot;
+  onClickPriority?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

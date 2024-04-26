@@ -17,6 +17,7 @@ import { TaskStatesProvider } from '../../Tasks/TaskStatesContext';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalize } from '../utils';
 import CreateTask, { TaskType } from './CreateTask';
+import toast from '@/src/utils/toast';
 
 const MoveCandidate: React.FC<{
   applicationLimit: CountJobs;
@@ -54,6 +55,18 @@ const MoveCandidate: React.FC<{
         );
   };
   const handleMoveCandidate = async () => {
+    if (task?.session_ids.length === 0) {
+      toast.message('Please select session!');
+      return;
+    }
+    if (!task?.task_owner) {
+      toast.message('Please select assignee!');
+      return;
+    }
+    if (!task.schedule_date_range) {
+      toast.message('Please select schedule date range!');
+      return;
+    }
     if (!disabled) {
       setActionProps((prev) => ({ ...prev, open: false }));
       setCardStates((prev) => ({

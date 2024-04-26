@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
-import { Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 
 import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
 import {
@@ -16,11 +16,12 @@ import FilterTasks from './FilterTasks';
 import GroupSections from './GroupSections';
 import TaskRow from './TaskRow';
 import ViewTaskDrawer from './ViewTask';
+import ToolBar from './ToolBar';
 
 function TaskBody({ byGroup }) {
   const { tasks, loadingTasks } = useTasksContext();
 
-  const { setShowAddNew } = useTaskStatesContext();
+  const { setShowAddNew, selectedTasksIds } = useTaskStatesContext();
 
   const groupedTasks = tasks
     .filter((ele) => ele.application_id)
@@ -46,12 +47,22 @@ function TaskBody({ byGroup }) {
       <ShowCode>
         <ShowCode.When isTrue={!byGroup}>
           <TaskTable
-            slotFilter={<FilterTasks />}
+            slotFilter={
+              <ShowCode>
+                <ShowCode.When isTrue={selectedTasksIds.length > 0}>
+                  <ToolBar />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <FilterTasks />
+                </ShowCode.Else>
+              </ShowCode>
+            }
             onClickNewTask={{
               onClick: () => {
                 setShowAddNew(true);
               },
             }}
+            isNewTaskCardVisible={false}
             slotTaskTableCard={
               <>
                 {tasks

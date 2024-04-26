@@ -6,12 +6,14 @@ import { CustomDatabase } from '@/src/types/customSchema';
 
 function StatusChip({
   status,
+  arrowDown = false,
 }: {
   status: CustomDatabase['public']['Enums']['task_status'];
+  arrowDown?: boolean;
 }) {
   return (
     <Stack direction={'column'}>
-      {colorsData.map(
+      {statusList.map(
         (
           {
             backgroundColor,
@@ -29,6 +31,7 @@ function StatusChip({
           if (id === status)
             return (
               <TaskStatus
+                isDropIconVisible={arrowDown}
                 bgColorProps={{
                   style: {
                     backgroundColor,
@@ -48,7 +51,7 @@ function StatusChip({
 
 export default StatusChip;
 
-export const colorsData = [
+export const statusList = [
   {
     id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: palette.yellow[400] + '55',

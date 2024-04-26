@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Button, Popover, Stack } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { ListPop, TaskStatus } from '@/devlink3';
-import { palette } from '@/src/context/Theme/Theme';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { CustomDatabase } from '@/src/types/customSchema';
 
-import StatusChip, { colorsData } from '../StatusChip';
+import StatusChip, { statusList } from '../StatusChip';
 
 function SelectStatus({
   status,
@@ -37,7 +36,16 @@ function SelectStatus({
   return (
     <>
       <Stack onClick={handleClick}>
-        <StatusChip status={status} />
+        <ShowCode>
+          <ShowCode.When isTrue={Boolean(status)}>
+            <StatusChip arrowDown={true} status={status} />
+          </ShowCode.When>
+          <ShowCode.Else>
+            <Typography variant='caption' fontSize={'14px'}>
+              Select Status
+            </Typography>
+          </ShowCode.Else>
+        </ShowCode>
       </Stack>
 
       <Popover
@@ -60,39 +68,27 @@ function SelectStatus({
           },
         }}
       >
-        <Stack spacing={'10px'} p={'10px'}>
-          {colorsData.map(
+        <Stack width={150} spacing={'10px'} p={'10px'}>
+          {statusList.map(
             (
               {
-                backgroundColor,
                 id,
-                label,
-                color,
               }: {
-                backgroundColor: string;
                 id: CustomDatabase['public']['Enums']['task_status'];
-                label: string;
-                color: string;
               },
               i,
             ) => {
               return (
-                <Stack direction={'row'} key={i}>
-                  <TaskStatus
-                    bgColorProps={{
-                      style: {
-                        backgroundColor,
-                        color,
-                        fontWeight: 400,
-                      },
-                      onClick: () => {
-                        setAnchorEl(null);
-                        setSelectedStatus(id);
-                        if (onChange) onChange(id);
-                      },
-                    }}
-                    textStatus={label}
-                  />
+                <Stack
+                  onClick={() => {
+                    setAnchorEl(null);
+                    setSelectedStatus(id);
+                    if (onChange) onChange(id);
+                  }}
+                  direction={'row'}
+                  key={i}
+                >
+                  <StatusChip status={id} />
                 </Stack>
               );
             },

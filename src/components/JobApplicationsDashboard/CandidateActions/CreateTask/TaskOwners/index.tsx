@@ -12,12 +12,14 @@ import { assigneeType } from '@/src/components/Tasks/utils';
 function TaskOwners({
   selectedAssignee,
   setSelectedAssignee,
+  onChange,
 }: {
   selectedAssignee: assigneeType;
   setSelectedAssignee: (x: assigneeType) => void;
+  onChange: any;
 }) {
   const { data: members } = useInterviewerList();
-  const {assignerList}=useTaskStatesContext()
+  const { assignerList } = useTaskStatesContext();
 
   // let assignerList = members
   //   .map((ele) => ele.rec_user)
@@ -29,7 +31,6 @@ function TaskOwners({
     setAnchorEl(event.currentTarget);
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -87,6 +88,9 @@ function TaskOwners({
                 onClick={() => {
                   setSelectedAssignee(ele);
                   handleClose();
+                  if (onChange) {
+                    onChange(ele);
+                  }
                 }}
               >
                 <AssigneeChip assigneeId={ele.user_id} />

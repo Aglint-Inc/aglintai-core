@@ -91,7 +91,10 @@ function TriggerTime({
           onClickSpecificDate={{
             onClick: () => {
               setIsImmediate(true);
-              setSelectTriggerTime(String(new Date()));
+              setSelectTriggerTime(dayjs().add(5, 'minute').toString());
+              if (onChange) {
+                onChange(dayjs().add(5, 'minute').toString());
+              }
             },
           }}
           isInDateRangeActive={!isImmediate}

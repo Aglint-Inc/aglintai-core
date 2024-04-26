@@ -210,3 +210,39 @@
 .div-block-1465:hover {
   background-color: #f7f9fb;
 }
+
+.div-block-1467 {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-1468 {
+  display: flex;
+  width: 170px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.div-block-1469 {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  padding-right: 10px;
+  padding-left: 10px;
+  justify-content: flex-start;
+  align-items: center;
+
+  transition: all 250ms ease;
+
+  cursor: pointer;
+}
+
+.div-block-1469:hover {
+  background-color: #f7f9fb;
+}

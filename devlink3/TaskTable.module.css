@@ -4,6 +4,8 @@
 }
 
 .div-block-1436 {
+  position: relative;
+
   display: flex;
   height: 60px;
   padding: 10px 16px;
