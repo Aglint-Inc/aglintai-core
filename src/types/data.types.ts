@@ -156,6 +156,7 @@ export type Summary = {
 type TempRecruiterUser = Database['public']['Tables']['recruiter_user']['Row'];
 export interface RecruiterUserType extends TempRecruiterUser {
   scheduling_settings: schedulingSettingType;
+  last_login?: string;
 }
 // export type RecruiterUserType =
 //   Database['public']['Tables']['recruiter_user']['Row'] & {

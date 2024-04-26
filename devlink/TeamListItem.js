@@ -33,6 +33,7 @@ export function TeamListItem({
   onClickSuspend = {},
   onClickResetPassword = {},
   isResetPasswordVisible = false,
+  textLastActive = "29 Aug 2023",
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -136,7 +137,7 @@ export function TeamListItem({
           className={_utils.cx(_styles, "text-color-black")}
           tag="div"
         >
-          {dateText}
+          {textLastActive}
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block

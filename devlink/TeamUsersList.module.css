@@ -410,6 +410,12 @@
   margin-top: 8px;
 }
 
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
 .div-block-463 {
   display: flex;
   justify-content: space-between;
@@ -433,8 +439,8 @@
 .tu-list {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .tu-pending-invites-block {
@@ -569,8 +575,6 @@
   padding-top: 0px;
   padding-bottom: 0px;
   flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 }
 
 .cs-team-users-roles {
@@ -724,6 +728,19 @@
   color: #337fbd;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.text-link {
+  color: #337fbd;
+  text-decoration: underline;
+}
+
+.fw-light {
+  font-weight: 300;
+}
+
+.text-capitalize {
+  text-transform: uppercase;
 }
 
 .tu-roles-wrapper {

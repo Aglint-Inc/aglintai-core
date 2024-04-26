@@ -1,4 +1,5 @@
 import { InputAdornment, Stack } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import converter from 'number-to-words';
 import { useEffect, useState } from 'react';
@@ -6,12 +7,14 @@ import { useEffect, useState } from 'react';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
 import { TeamEmpty } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
+import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import AddMember from './AddMemberDialog';
 import EditMember from './EditMemberDialog';
 import FilterDropDown from './FilterDropDown';
@@ -33,8 +36,8 @@ const debounce = (func, delay) => {
   };
 };
 const TeamManagement = () => {
-  const { recruiterUser, members, setMembers, handelMemberUpdate } =
-    useAuthDetails();
+  const { recruiterUser, setMembers, handelMemberUpdate } = useAuthDetails();
+  const { data: members, isFetching } = useTeamMembers();
 
   const [openDrawer, setOpenDrawer] = useState<{
     open: boolean;
@@ -105,7 +108,7 @@ const TeamManagement = () => {
           (item) => item.join_status && String(item.join_status).toLowerCase(),
         ),
     ),
-  ];
+  ].map((item) => (item === 'joined' ? 'active' : item));
 
   useEffect(() => {
     const debouncedFilter = debounce(filterMembers, 300);
@@ -125,7 +128,9 @@ const TeamManagement = () => {
         );
       const statusMatch =
         !selectedStatus.length ||
-        selectedStatus.includes(String(member.join_status).toLowerCase());
+        selectedStatus
+          .map((item) => (item === 'active' ? 'joined' : item))
+          .includes(String(member.join_status).toLowerCase());
       const roleMatch =
         !selectedRoles.length ||
         selectedRoles.includes(String(member.role).toLowerCase());
@@ -213,6 +218,16 @@ const TeamManagement = () => {
         slotTeamList={
           <>
             <ShowCode>
+              <ShowCode.When isTrue={!filteredMembers.length && isFetching}>
+                <Stack
+                  width={'100%'}
+                  height={'100%'}
+                  minHeight={'300px'}
+                  position={'relative'}
+                >
+                  <DynamicLoader />
+                </Stack>
+              </ShowCode.When>
               <ShowCode.When isTrue={filteredMembers.length === 0}>
                 <TeamEmpty />
               </ShowCode.When>
@@ -302,3 +317,36 @@ const TeamManagement = () => {
 };
 
 export default TeamManagement;
+
+const useTeamMembers = () => {
+  const { members } = useAuthDetails();
+  return useQuery({
+    queryKey: ['TeamMembers'],
+    queryFn: () => {
+      return getLastLogins(members.map((item) => item.user_id)).then((data) => {
+        return members.map((member) => {
+          return { ...member, last_login: data[member.user_id] };
+        });
+      });
+    },
+    initialData: [] as unknown as ((typeof members)[number] & {
+      last_login: string;
+    })[],
+    enabled: Boolean(members?.length),
+    refetchOnWindowFocus: false,
+  });
+};
+
+const getLastLogins = (ids: string[]) => {
+  const body: API_get_last_login['request'] = { ids };
+  return axios
+    .post<API_get_last_login['response']>('/api/get_last_login', body)
+    .then(({ data: { data, error } }) => {
+      if (error) throw new Error(error);
+      const tempData: { [key: string]: string } = {};
+      data.forEach((item) => {
+        tempData[item.id] = item.last_login;
+      });
+      return tempData;
+    });
+};
