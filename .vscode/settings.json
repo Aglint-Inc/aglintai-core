@@ -1,5 +1,8 @@
 {
   "editor.codeActionsOnSave": {
     "source.fixAll": "always" // use always for both manual and auto saves
-  }
+  },
+  "cSpell.words": [
+    "supabase"
+  ]
 }

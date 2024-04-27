@@ -9,6 +9,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { DatabaseEnums } from '@/src/types/customSchema';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import SelectStatus from '../../Components/SelectStatus';
@@ -76,6 +77,15 @@ function ToolBar() {
           },
         });
       }
+      if (reason === 'close_tasks')
+        toast.message(
+          `Closed ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'}.`,
+        );
+      else {
+        toast.message(
+          `Moved ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'} to '${capitalizeAll(selectedStatus.replace('_', ' '))}'.`,
+        );
+      }
     }
     if (reason === 'update_priority') {
       if (!selectedPriority) {
@@ -88,6 +98,9 @@ function ToolBar() {
         return item;
       });
       handelUpdateTask(tempTasks);
+      toast.message(
+        `Set ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'} to ${selectedPriority} priority.`,
+      );
     }
     if (reason === 'change_assignee') {
       if (!selectedAssignee) {
@@ -130,9 +143,11 @@ function ToolBar() {
           },
         });
       }
+      toast.message(
+        `Assigned ${selectedTasksIds.length} ${selectedTasksIds.length === 1 ? 'task' : 'tasks'} to ${capitalizeAll(selectedAssignee.first_name + ' ' + (selectedAssignee.last_name ?? ''))}.`,
+      );
     }
     closePopup();
-    toast.message(`${selectedTasksIds.length} tasks updated`);
   }
 
   function closePopup() {

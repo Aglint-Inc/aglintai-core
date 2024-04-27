@@ -38,7 +38,7 @@ function Scheduling() {
   const clientSecretRef = useRef<HTMLInputElement>(null);
   const domainRef = useRef<HTMLInputElement>(null);
   async function action() {
-    const google_workspace_domain = domainRef.current.value;
+    const google_workspace_domain = domainRef.current?.value;
     if (
       reason === 'connect_google_workSpace' ||
       reason === 'update_google_workspace'

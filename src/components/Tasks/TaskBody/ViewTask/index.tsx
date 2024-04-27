@@ -48,7 +48,7 @@ function ViewTaskDrawer() {
   function cancelTask() {
     handelUpdateTask([
       {
-        status: 'cancelled',
+        status: 'closed',
         id: taskId,
       },
     ]);
@@ -64,10 +64,10 @@ function ViewTaskDrawer() {
       },
       optionData: {
         currentStatus: selectedTask.status,
-        status: 'cancelled',
+        status: 'closed',
       },
     });
-    toast.action('Task cancelled', () => {
+    toast.action('Task closed', () => {
       handelUpdateTask([
         {
           status: 'not_started',
@@ -85,7 +85,7 @@ function ViewTaskDrawer() {
           progress_type: 'standard',
         },
         optionData: {
-          currentStatus: 'cancelled',
+          currentStatus: 'closed',
           status: 'not_started',
         },
       });

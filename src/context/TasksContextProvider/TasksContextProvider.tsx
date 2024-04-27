@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 'use client';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { capitalize, cloneDeep } from 'lodash';
 import {
   createContext,
@@ -18,7 +19,7 @@ import {
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
-  DatabaseTableUpdate,
+  DatabaseTableUpdate
 } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 
@@ -441,6 +442,42 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
       });
     }
   }, [recruiter_id, members]);
+
+  useEffect(() => {
+    let channel: RealtimeChannel;
+    if (tasksReducer.tasks.length) {
+      channel = supabase
+        .channel('db-changes')
+        .on(
+          'postgres_changes',
+          {
+            // event: 'UPDATE',
+            event: '*',
+            schema: 'public',
+            table: 'new_tasks',
+            // filter: `id=in.(${tasksReducer.tasks.map((item) => item.id)})`,
+          },
+          (payload) => {
+            const rowData =
+              payload.new as unknown as DatabaseTable['new_tasks'];
+            if (rowData)
+              handelTaskChanges(
+                tasksReducer.tasks.map((item) => {
+                  if (item.id == rowData.id) {
+                    return { ...item, status: rowData.status };
+                  }
+                  return item;
+                }),
+              );
+          },
+        )
+        .subscribe();
+    }
+    if (channel)
+      return () => {
+        channel.unsubscribe();
+      };
+  }, [tasksReducer.tasks]);
 
   return (
     <>
