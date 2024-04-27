@@ -73,7 +73,8 @@ type EmailTemplateTypes =
   | 'rejection'
   | 'phone_screening'
   | 'phone_screening_resend'
-  | 'application_received';
+  | 'application_received'
+  | 'init_email_agent';
 
 type EmailTemplate = {
   body: string;

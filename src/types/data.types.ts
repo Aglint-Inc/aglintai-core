@@ -89,7 +89,7 @@ export type SupportEmailAPIType = {
   email: string;
 } & getMailBodyType;
 
-export type ApplicationReceived = {
+export type EmailTemplateFields = {
   body: string;
   default: boolean;
   subject: string;
@@ -97,12 +97,12 @@ export type ApplicationReceived = {
 };
 
 export type EmailTemplateType = {
-  interview: ApplicationReceived;
-  rejection: ApplicationReceived;
-  application_received: ApplicationReceived;
-  phone_screening: ApplicationReceived;
-  interview_resend: ApplicationReceived;
-  phone_screening_resend: ApplicationReceived;
+  interview: EmailTemplateFields;
+  rejection: EmailTemplateFields;
+  application_received: EmailTemplateFields;
+  phone_screening: EmailTemplateFields;
+  interview_resend: EmailTemplateFields;
+  phone_screening_resend: EmailTemplateFields;
 };
 
 export type getNotificationMailBodyType = {
