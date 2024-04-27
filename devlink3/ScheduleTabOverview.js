@@ -156,7 +156,7 @@ export function ScheduleTabOverview({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Interviewers"}
+            {"Attendies"}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1424")}

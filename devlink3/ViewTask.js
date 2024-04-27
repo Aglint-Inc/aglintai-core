@@ -176,7 +176,7 @@ export function ViewTask({
             tag="div"
             {...onClickCancelTask}
           >
-            <_Builtin.Block tag="div">{"Cancel Task"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Close Task"}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
