@@ -3,7 +3,7 @@
   overflow: hidden;
   height: 600px;
   max-width: 900px;
-  min-width: 500px;
+  min-width: 400px;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: start;
