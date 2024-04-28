@@ -62,7 +62,7 @@ function TriggerTime({
                 </Typography>
               </ShowCode.When>
               <ShowCode.When isTrue={!isImmediate}>
-                {`${dayjs(selectTriggerTime).format('DD MMM YYYY, hh:mm A')} (${timeZone})`}
+                {`${dayjs(selectTriggerTime).format('MMM DD, YYYY hh:mm A')} (${timeZone})`}
               </ShowCode.When>
             </ShowCode>
           </ShowCode.When>

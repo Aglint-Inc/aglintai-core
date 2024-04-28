@@ -35,7 +35,7 @@ function SelectDueDate({
     <>
       <Stack onClick={handleClick}>
         {selectedDueDate ? (
-          <>{`${dayjs(selectedDueDate).format('DD MMM YYYY')}`}</>
+          <>{`${dayjs(selectedDueDate).format('MMM DD, YYYY')}`}</>
         ) : (
           <>Select Date</>
         )}

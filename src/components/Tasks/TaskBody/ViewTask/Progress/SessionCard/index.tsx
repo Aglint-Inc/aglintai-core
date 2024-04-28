@@ -18,6 +18,17 @@ function SessionCard({
 }) {
   const { data: sessionList } = useScheduleSession();
 
+  // const timeZone = dayjs.tz.guess();
+
+  const localTime = new Date().toTimeString();
+  const timeZonea = localTime.substring(
+    localTime.lastIndexOf('(') + 1,
+    localTime.lastIndexOf(')'),
+  );
+  const timezone = timeZonea
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
   return (
     <AvailableOptionCardDate
       isDateWrapVisible={
@@ -36,7 +47,7 @@ function SessionCard({
           <OptionAvailable
             textTime={`${dayjs(ses.interview_meeting?.start_time).format(
               'hh:mm A',
-            )} - ${dayjs(ses.interview_meeting?.end_time).format('hh:mm A')}`}
+            )} - ${dayjs(ses.interview_meeting?.end_time).format('hh:mm A')} (${timezone})`}
             textTitle={ses.interview_session.name}
             textBreakTime={
               `${ses.interview_session.break_duration} Minutes` || ''
@@ -84,7 +95,7 @@ function SessionCard({
               </Stack>
             }
           />
-          {ses.interview_session.break_duration > 0 && (
+          {/* {ses.interview_session.break_duration > 0 && (
             <OptionAvailable
               textTime={''}
               textBreakTime={
@@ -93,7 +104,7 @@ function SessionCard({
               isTitleVisible={false}
               isBreakVisible={true}
             />
-          )}
+          )} */}
         </>
       }
     />
