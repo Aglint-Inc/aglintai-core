@@ -99,7 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const allSlots = resSchOpt.data.filter(
-      (subArr) => subArr.length > 0,
+      (subArr) => subArr?.length > 0,
     ) as SessionsCombType[][];
 
     // console.log(dateRanges);
@@ -115,7 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter: recruiter,
       meetings: resMeetings,
       allSlots: allSlots,
-      numberOfDays: allSlots[0].length,
+      numberOfDays: allSlots[0]?.length || 0,
     });
   } catch (error) {
     res.status(400).send(error.message);
@@ -135,22 +135,26 @@ const getScheduleDetails = async (schedule_id: string) => {
     .select(
       '*,applications(*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),interview_filter_json(*),recruiter(id,logo,name)',
     )
-    .eq('id', schedule_id);
+    .eq('id', schedule_id)
+    .single();
 
   if (errSch) throw new Error(errSch.message);
 
-  if (sch.length === 0) {
+  if (!sch) {
     throw new Error('Schedule not found');
   }
 
-  return sch[0];
+  return sch;
 };
 
 const getInterviewSessionsMeetings = async (session_ids: string[]) => {
   const { data: intSes, error: errSes } = await supabase
     .from('interview_session')
     .select('*,interview_meeting(*)')
-    .in('id', session_ids);
+    .in('id', session_ids)
+    .order('session_order', {
+      ascending: true,
+    });
 
   if (errSes) throw new Error(errSes.message);
 
