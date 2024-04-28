@@ -155,9 +155,9 @@ export async function createTaskProgress({
       case 'create_task':
         return `Task assigned to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span> by <span class="mention">@${creatorName}</span>`;
       case 'schedule_date_update':
-        return `Schedule time changed from <span class="progress_date_section"> ${dayjs(prevScheduleDateRange.start_date).format('DD MMM')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('DD MMM') : ''}</span> to <span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('DD MMM')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('DD MMM') : ''}</span>`;
+        return `Schedule time changed from <span class="progress_date_section"> ${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span> to <span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('MMM DD')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD') : ''}</span>`;
       case 'trigger_time_update':
-        return `Trigger time changed from <span class="progress_date_section"> ${dayjs(triggerTime.prev).format('DD MMM, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('DD MMM, hh:mm A')}</span>`;
+        return `Trigger time changed from <span class="progress_date_section"> ${dayjs(triggerTime.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('MMM DD, hh:mm A')}</span>`;
       default:
         return '';
     }

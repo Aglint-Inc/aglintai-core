@@ -275,15 +275,21 @@ function SubTaskProgress() {
                         isTrue={item.progress_type === 'interview_schedule'}
                       >
                         <Stack direction={'column'} spacing={3} width={'100%'}>
-                          {sessionList?.map((ses, indOpt) => {
-                            return (
-                              <SessionCard
-                                indOpt={indOpt}
-                                ses={ses}
-                                key={indOpt}
-                              />
-                            );
-                          })}
+                          {sessionList
+                            ?.sort(
+                              (a, b) =>
+                                a.interview_session.session_order -
+                                b.interview_session.session_order,
+                            )
+                            ?.map((ses, indOpt) => {
+                              return (
+                                <SessionCard
+                                  indOpt={indOpt}
+                                  ses={ses}
+                                  key={indOpt}
+                                />
+                              );
+                            })}
                         </Stack>
                       </ShowCode.When>
                     </ShowCode>

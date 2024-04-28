@@ -43,14 +43,14 @@ function SelectScheduleDate({
         <ShowCode>
           <ShowCode.When isTrue={!!scheduleDate.end_date}>
             {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('DD MMM YYYY') : ''}`}</>
+              <>{`${dayjs(scheduleDate.start_date).format('MMM DD, YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('MMM DD, YYYY') : ''}`}</>
             ) : (
               <>Select Date</>
             )}
           </ShowCode.When>
           <ShowCode.Else>
             {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')}`}</>
+              <>{`${dayjs(scheduleDate.start_date).format('MMM DD, YYYY')}`}</>
             ) : (
               <>Select Date</>
             )}
