@@ -80,18 +80,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_body.candidate_name &&
       req_body.agent_type
     ) {
+      const agent_type =
+        req_body.agent_type === 'phone' ? 'phone_agent' : 'email_agent';
       const candLogger = getCandidateLogger(
         req_body.task_id,
         req_body.candidate_name,
-        req_body.agent_type,
         req_body.candidate_id,
+        agent_type,
       );
       await candLogger(
-        `Interview scheduled for {candidate} on ${dayjs(
-          req_body.candidate_plan[0].sessions[0].start_time,
-        )
-          .tz(req_body.user_tz)
-          .format(BookingTimeFormat)}`,
+        `Interview scheduled for {candidate} on {date}`,
+        {
+          '{candidate}': '',
+          '{date}': dayjs(req_body.candidate_plan[0].sessions[0].start_time)
+            .tz(req_body.user_tz)
+            .format(BookingTimeFormat),
+        },
+        agent_type,
         'interview_schedule',
       );
       supabaseWrap(
