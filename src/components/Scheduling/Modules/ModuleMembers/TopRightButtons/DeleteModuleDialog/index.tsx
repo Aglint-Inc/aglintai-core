@@ -45,6 +45,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
       } catch {
         toast.error('Error deleting interview type');
       } finally {
+        setValue('');
         setLoading(false);
         setIsDeleteModuleDialogOpen(false);
       }

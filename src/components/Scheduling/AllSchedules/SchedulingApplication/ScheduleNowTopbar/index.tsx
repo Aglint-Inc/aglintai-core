@@ -203,6 +203,17 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
         />
       </LocalizationProvider>
       <ScheduleNowButton
+        onClickMySelf={{
+          onClick: async () => {
+            if (dateRange.start_date && dateRange.end_date && !fetchingPlan) {
+              await findScheduleOptions({
+                dateRange: dateRange,
+                session_ids: selectedSessionIds,
+                rec_id: recruiter.id,
+              });
+            }
+          },
+        }}
         isHoverScheduleVisible={!isDebrief}
         isLoaderVisible={fetchingPlan}
         slotLoaderIcon={

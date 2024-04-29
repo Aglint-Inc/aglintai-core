@@ -102,7 +102,11 @@ const DisqualifiedIcon = () => {
   );
 };
 
-const SectionIcons = ({ section }: { section: JobApplicationSections }) => {
+export const SectionIcons = ({
+  section,
+}: {
+  section: JobApplicationSections;
+}) => {
   switch (section) {
     case JobApplicationSections.NEW:
       return <NewIcon />;

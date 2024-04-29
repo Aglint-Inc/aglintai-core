@@ -205,16 +205,14 @@ export const getScheduleTextcolor = (
 };
 
 export const cancelMailHandler = async ({
-  schedule_id,
   rec_id,
   candidate_name,
-  schedule_name,
+  session_name,
   mail,
-  position,
-  filter_id,
+  job_title,
   supabase,
   rec_mail,
-}: MailHandlerparam) => {
+}) => {
   try {
     const { data, error } = await supabase
       .from('recruiter')
@@ -230,24 +228,23 @@ export const cancelMailHandler = async ({
           fromName: 'Aglint',
           email: rec_mail ?? mail,
           subject: fillEmailTemplate(
-            data[0].email_template[''].subject,
+            data[0].email_template['cancel_interview_session'].subject,
             {
               company_name: data[0].name,
-              schedule_name: schedule_name,
               first_name: candidate_name,
               last_name: '',
-              job_title: position,
+              job_title: job_title,
+              session_name: session_name,
             },
           ),
           text: fillEmailTemplate(
-            data[0].email_template['candidate_availability_request'].body,
+            data[0].email_template['cancel_interview_session'].body,
             {
               company_name: data[0].name,
-              schedule_name: schedule_name,
               first_name: candidate_name,
               last_name: '',
-              job_title: position,
-              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+              job_title: job_title,
+              session_name: session_name,
             },
           ),
         },
