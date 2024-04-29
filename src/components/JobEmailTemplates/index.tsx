@@ -163,6 +163,7 @@ const JobEmailTemplates = () => {
           handleChange={handleChange}
         />
       }
+
       // onClickApplicationRecieved={{ onClick: () => console.log('A') }}
       // onClickDisqualified={{ onClick: () => console.log('B') }}
       // onClickDone={{ onClick: () => console.log('C') }}

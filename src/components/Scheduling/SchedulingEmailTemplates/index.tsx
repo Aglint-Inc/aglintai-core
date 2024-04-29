@@ -209,12 +209,13 @@ export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
     trigger: 'Manually Sending Candidate Booking Link',
   },
   candidate_invite_confirmation: {
-    listing: 'Candidate Invite Confirmation',
-    heading: 'Candidate Invite Confirmation Template',
+    listing: 'Interview Booking Confirmation',
+    heading: 'Interview Booking Confirmation',
     dynamicContent: `For dynamic content, utilize placeholders like [firstName], [lastName], [companyName], [jobTitle] and [viewDetailsLink].`,
-    triggerInfo: 'Triggered after candidate confirms the slot',
+    triggerInfo: 'Sent immediately after candidate booking is confirmed',
     descriptionInJob: '',
-    description: '',
+    description:
+      'This template is used to send Booking Confirmation to candidate after successful booking.',
     subjectPlaceHolder: 'Your Interview is Scheduled for [positionName]',
     bodyPlaceHolder: `Dear [candidateName],
 
@@ -222,15 +223,16 @@ We are pleased to confirm your interview for the [positionName] position on [Dat
 
 Regards,
 [yourCompanyName] Recruitment Team`,
-    trigger: 'Triggered after candidate confirms the slot',
+    trigger: 'Sent immediately after candidate booking is confirmed',
   },
   debrief_calendar_invite: {
-    listing: 'Debrief Calendar Invite',
-    heading: 'Debrief Calendar Invite Template',
+    listing: 'Debrief Invite',
+    heading: 'Debrief Session Confirmation Email Template',
     triggerInfo: 'Triggered when the candidate selected for assessment.',
     dynamicContent: `For dynamic content, utilize placeholders like [firstName], [lastName], [companyName] and [teamMemberName].`,
     descriptionInJob: '',
-    description: '',
+    description:
+      'Used to invite relevant team members to a debrief session after interviews to discuss candidate evaluations.',
     subjectPlaceHolder: 'Interview Debrief for [candidateName]',
     bodyPlaceHolder: `Dear [TeamMemberName],
 

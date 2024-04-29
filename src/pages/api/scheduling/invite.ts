@@ -35,11 +35,17 @@ export type BodyParamsCandidateInvite = {
 };
 
 export type ApiResponseCandidateInvite = {
-  job: Awaited<ReturnType<typeof getApplicationDetails>>['public_jobs'];
+  job: Awaited<
+    ReturnType<typeof getScheduleDetails>
+  >['applications']['public_jobs'];
   schedule: Awaited<ReturnType<typeof getScheduleDetails>>;
-  candidate: Awaited<ReturnType<typeof getApplicationDetails>>['candidates'];
-  filter_json: Awaited<ReturnType<typeof getFilterJson>>['filter_json'];
-  recruiter: Awaited<ReturnType<typeof getRecruiterDetails>>;
+  candidate: Awaited<
+    ReturnType<typeof getScheduleDetails>
+  >['applications']['candidates'];
+  filter_json: Awaited<
+    ReturnType<typeof getScheduleDetails>
+  >['interview_filter_json'];
+  recruiter: Awaited<ReturnType<typeof getScheduleDetails>>['recruiter'];
   meetings: Awaited<
     ReturnType<typeof getInterviewSessionsMeetings>
   >['resMeetings'];
@@ -58,13 +64,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const schedule = await getScheduleDetails(schedule_id);
 
-    const filterJson = await getFilterJson(filter_id);
+    const filterJson = schedule.interview_filter_json[0] as unknown as {
+      created_at: string;
+      filter_json: FilterJsonDateRangeCandidateInvite;
+      id: string;
+      schedule_id: string;
+      session_ids: string[];
+    };
 
-    const application = await getApplicationDetails(schedule.application_id);
+    const application = schedule.applications;
 
-    const recruiter = await getRecruiterDetails(
-      application.public_jobs.recruiter_id,
-    );
+    const recruiter = schedule.recruiter;
 
     const { resMeetings } = await getInterviewSessionsMeetings(
       filterJson.session_ids,
@@ -84,14 +94,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     );
 
-    // console.log(resSchOpt.data);
-
     if (resSchOpt.status !== 200) {
       throw new Error('Failed to fetch slots');
     }
 
     const allSlots = resSchOpt.data.filter(
-      (subArr) => subArr.length > 0,
+      (subArr) => subArr?.length > 0,
     ) as SessionsCombType[][];
 
     // console.log(dateRanges);
@@ -107,7 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter: recruiter,
       meetings: resMeetings,
       allSlots: allSlots,
-      numberOfDays: allSlots[0].length,
+      numberOfDays: allSlots[0]?.length || 0,
     });
   } catch (error) {
     res.status(400).send(error.message);
@@ -124,23 +132,29 @@ export interface DateRangeCandidateInvite {
 const getScheduleDetails = async (schedule_id: string) => {
   const { data: sch, error: errSch } = await supabase
     .from('interview_schedule')
-    .select('*')
-    .eq('id', schedule_id);
+    .select(
+      '*,applications(*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),interview_filter_json(*),recruiter(id,logo,name)',
+    )
+    .eq('id', schedule_id)
+    .single();
 
   if (errSch) throw new Error(errSch.message);
 
-  if (sch.length === 0) {
+  if (!sch) {
     throw new Error('Schedule not found');
   }
 
-  return sch[0];
+  return sch;
 };
 
 const getInterviewSessionsMeetings = async (session_ids: string[]) => {
   const { data: intSes, error: errSes } = await supabase
     .from('interview_session')
     .select('*,interview_meeting(*)')
-    .in('id', session_ids);
+    .in('id', session_ids)
+    .order('session_order', {
+      ascending: true,
+    });
 
   if (errSes) throw new Error(errSes.message);
 
@@ -156,59 +170,4 @@ const getInterviewSessionsMeetings = async (session_ids: string[]) => {
   }));
 
   return { resMeetings, maxDurationInDays };
-};
-
-const getApplicationDetails = async (application_id: string) => {
-  const { data: app, error } = await supabase
-    .from('applications')
-    .select(
-      '*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)',
-    )
-    .eq('id', application_id);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  if (app.length === 0) {
-    throw new Error('Application not found');
-  }
-
-  return app[0];
-};
-
-const getFilterJson = async (filter_id: string) => {
-  const { data: filterJson, error: errFilterJson } = await supabase
-    .from('interview_filter_json')
-    .select('*')
-    .eq('id', filter_id);
-
-  if (errFilterJson) throw new Error(errFilterJson.message);
-
-  if (filterJson.length === 0) {
-    throw new Error('Filter not found');
-  }
-
-  return filterJson[0] as unknown as {
-    created_at: string;
-    filter_json: FilterJsonDateRangeCandidateInvite;
-    id: string;
-    schedule_id: string;
-    session_ids: string[];
-  };
-};
-
-const getRecruiterDetails = async (recruiter_id: string) => {
-  const { data: rec, error: errRec } = await supabase
-    .from('recruiter')
-    .select('id,logo,name')
-    .eq('id', recruiter_id);
-
-  if (errRec) throw new Error(errRec.message);
-
-  if (rec.length === 0) {
-    throw new Error('Recruiter not found');
-  }
-
-  return rec[0];
 };

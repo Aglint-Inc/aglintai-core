@@ -51,20 +51,13 @@ function CandidateList({
               slotAvatarWithName={
                 selectedCandidate && (
                   <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
-                        src={selectedCandidate?.candidates.avatar}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          selectedCandidate.candidates?.first_name +
-                            ' ' +
-                            selectedCandidate.candidates?.last_name,
-                        )}
-                      />
-                    }
+                    isAvatarVisible={false}
+                    isCandidateIconVisible={true}
+                    isRoleVisible={false}
+                    isReverseShadowVisible={false}
+                    isShadowVisible={false}
+                    slotAvatar={<></>}
+                    isTickVisible={false}
                     textName={capitalizeAll(
                       selectedCandidate.candidates?.first_name +
                         ' ' +

@@ -38,6 +38,7 @@ export const useAllActivities = ({ application_id }) => {
     queryKey: queryKey,
     queryFn: () => fetchAllActivities({ application_id }),
     enabled: !!application_id,
+    initialData: [],
   });
   const refetch = async () => {
     await queryClient.invalidateQueries({ queryKey });

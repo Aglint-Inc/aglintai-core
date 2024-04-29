@@ -103,7 +103,16 @@ function TaskBody({ byGroup }) {
         </ShowCode.When>
         <ShowCode.When isTrue={byGroup}>
           <TaskTableJobCand
-            slotFilter={<FilterTasks />}
+            slotFilter={
+              <ShowCode>
+                <ShowCode.When isTrue={selectedTasksIds.length > 0}>
+                  <ToolBar />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <FilterTasks />
+                </ShowCode.Else>
+              </ShowCode>
+            }
             slotTaskJobCard={
               <>
                 {formattedTasks.map((item, i) => {

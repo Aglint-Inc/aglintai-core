@@ -232,7 +232,7 @@ const SingleDayConfirmation = () => {
   totalHours += Math.floor(totalMinutes / 60);
   totalMinutes %= 60;
 
-  const totalTimeDifference = `${totalHours} hour ${totalMinutes} minutes`;
+  const totalTimeDifference = `${totalHours ? totalHours + ' hour' : ''} ${totalMinutes} minutes`;
   // end
 
   return (

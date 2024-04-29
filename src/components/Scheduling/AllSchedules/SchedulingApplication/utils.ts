@@ -902,6 +902,7 @@ export const agentTrigger = async ({
         cand_email: rec_user_email,
         // cand_email: sessionsWithPlan.application.candidates.email,
         cand_time_zone: user_tz,
+        // cand_time_zone: 'America/Los_Angeles',
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
         organizer_time_zone: user_tz,

@@ -852,6 +852,8 @@ export class CandidatesScheduling {
           return true;
         }
         const prev_session = plan_comb[Number(module_idx - 1)];
+        const curr_session = plan_comb[Number(module_idx)];
+
         const break_duration = prev_session.break_duration;
         let required_time: TimeDurationType = {
           startTime: userTzDayjs(prev_time_range.endTime)
@@ -859,7 +861,7 @@ export class CandidatesScheduling {
             .tz(this.api_payload.user_tz)
             .format(),
           endTime: userTzDayjs(prev_time_range.endTime)
-            .add(prev_session.duration + break_duration, 'minutes')
+            .add(curr_session.duration + break_duration, 'minutes')
             .tz(this.api_payload.user_tz)
             .format(),
         };

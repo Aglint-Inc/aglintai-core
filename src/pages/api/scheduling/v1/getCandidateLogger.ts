@@ -2,45 +2,74 @@
 /* eslint-disable no-unused-vars */
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
+import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { SubTaskProgress } from '@/src/types/data.types';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
+type TitleAttrType = {
+  '{candidate}'?: string | undefined;
+  '{date}'?: string | undefined;
+};
 export type LoggerType = (
   log_msg: string,
+  title_attr: TitleAttrType,
+  created?: 'candidate' | 'phone_agent' | 'email_agent',
   progress_type?: SubTaskProgress['progress_type'],
-  transcript?: any[],
+  transcript?: Record<string, string> | Record<string, string>[],
 ) => Promise<void>;
 
 export const getCandidateLogger = (
   task_id: string,
   candidate_name: string,
-  agent_type: 'self' | 'email' | 'phone',
-  candidate_id?: string,
+  candidate_id: string,
+  default_created: 'candidate' | 'phone_agent' | 'email_agent',
 ) => {
   const logger: LoggerType = async (
     log_msg,
-    progress_type: SubTaskProgress['progress_type'],
-    transcript?: any[],
+    title_attr,
+    created,
+    progress_type,
+    transcript,
   ) => {
-    log_msg = log_msg.replace(
-      '{candidate}',
-      `<span class="mention">@${candidate_name}</span>`,
-    );
-    try {
-      console.log('Log :', log_msg);
-      if (!task_id) return;
-      let created_by = {
+    let created_by = null;
+    if (!created) {
+      created = default_created;
+    }
+    if (created === 'candidate') {
+      created_by = {
         id: candidate_id,
         name: 'Candidate',
       };
-      if (agent_type === 'email') {
-        created_by.id = EmailAgentId;
-        created_by.name = 'Email Agent';
-      } else if (agent_type === 'phone') {
-        created_by.id = PhoneAgentId;
-        created_by.name = 'Phone Agent';
+    } else if (created === 'phone_agent') {
+      created_by = {
+        id: PhoneAgentId,
+        name: 'Phone Agent',
+      };
+    } else if (created === 'email_agent') {
+      created_by = {
+        id: EmailAgentId,
+        name: 'Email Agent',
+      };
+    }
+
+    for (let key of Object.keys(title_attr)) {
+      if (key === '{candidate}') {
+        log_msg = log_msg.replaceAll(
+          key,
+          `<span class="mention">@${candidate_name}</span>`,
+        );
       }
+      if (key === '{date}') {
+        log_msg = log_msg.replaceAll(
+          key,
+          `<span class="progress_date_section">${title_attr[key]}</span>`,
+        );
+      }
+    }
+
+    try {
+      if (!task_id) return;
       supabaseWrap(
         await supabaseAdmin
           .from('new_tasks_progress')
@@ -53,6 +82,7 @@ export const getCandidateLogger = (
             jsonb_data: transcript ?? null,
             task_id: task_id,
             progress_type: progress_type,
+            created_at: userTzDayjs().toISOString(),
           })
           .select(),
       );

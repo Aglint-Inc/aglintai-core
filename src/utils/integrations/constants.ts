@@ -9,4 +9,5 @@ export const allowed_outbound_emails = [
 ];
 
 export const SINGLE_DAY_TIME = 24 * 60;
-export const BookingTimeFormat = 'MMMM DD hh:mm A';
+export const BookingTimeFormat = 'MMM, DD YYYY hh:mm A Z';
+export const BookingDateFormat = 'MMM, DD YYYY';
