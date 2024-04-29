@@ -98,7 +98,10 @@ function SchedulingOptionComp({
                                   return (
                                     <AvatarWithName
                                       key={int.email}
-                                      textName={int.first_name}
+                                      textName={getFullName(
+                                        int.first_name,
+                                        int.last_name,
+                                      )}
                                       slotAvatar={
                                         <MuiAvatar
                                           level={getFullName(
@@ -121,7 +124,10 @@ function SchedulingOptionComp({
                                       key={int.email}
                                       isShadowVisible={false}
                                       isReverseShadowVisible={false}
-                                      textName={int.first_name}
+                                      textName={getFullName(
+                                        int.first_name,
+                                        int.last_name,
+                                      )}
                                       slotAvatar={
                                         <MuiAvatar
                                           level={getFullName(

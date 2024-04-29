@@ -1046,3 +1046,17 @@ const getCandidateTimezone = async (location, candidate_id) => {
     }
   }
 };
+
+export const getTimeZoneBrowser = () => {
+  const localTime = new Date().toTimeString();
+  const timeZonea = localTime.substring(
+    localTime.lastIndexOf('(') + 1,
+    localTime.lastIndexOf(')'),
+  );
+  const timezone = timeZonea
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
+
+  return timezone;
+};

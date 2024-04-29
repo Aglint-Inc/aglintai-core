@@ -16,6 +16,7 @@ import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
+import { getTimeZoneBrowser } from '../../AllSchedules/SchedulingApplication/utils';
 import { getScheduleType } from '../../AllSchedules/utils';
 import { TransformSchedule } from '../../Modules/types';
 import { getColorStatusSchedule } from '../../Modules/utils';
@@ -118,7 +119,7 @@ function ModuleSchedules({
                               >
                                 <MyScheduleSubCard
                                   textLocation={sch.interview_session.location}
-                                  textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}`}
+                                  textTime={`${dayjs(sch.interview_meeting.start_time).format('hh:mm A')} - ${dayjs(sch.interview_meeting.end_time).format('hh:mm A')}  ${getTimeZoneBrowser()}`}
                                   textMeetingPlatform={getScheduleType(
                                     sch.interview_session.schedule_type,
                                   )}

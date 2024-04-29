@@ -32,6 +32,7 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
+import { getTimeZoneBrowser } from '../utils';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 
@@ -250,7 +251,11 @@ function FullSchedule() {
                     )
                   }
                   isSelected={selectedSessionIds.includes(session.id)}
-                  isTimeVisible={Boolean(session.interview_meeting?.start_time)}
+                  isTimeVisible={
+                    (session.interview_meeting?.status == 'confirmed' ||
+                      session.interview_meeting?.status == 'completed') &&
+                    Boolean(session.interview_meeting?.start_time)
+                  }
                   slotPlatformIcon={
                     <IconScheduleType type={session.schedule_type} />
                   }
@@ -259,11 +264,13 @@ function FullSchedule() {
                   textMeetingPlatform={getScheduleType(session.schedule_type)}
                   textMeetingTitle={session.name || '--'}
                   textDate={
-                    session.interview_meeting?.start_time
+                    (session.interview_meeting?.status == 'confirmed' ||
+                      session.interview_meeting?.status == 'completed') &&
+                    (session.interview_meeting?.start_time
                       ? dayjs(session.interview_meeting?.start_time).format(
                           'ddd, MMM DD, YYYY',
                         )
-                      : ''
+                      : '')
                   }
                   textTime={
                     session.interview_meeting?.start_time
@@ -271,7 +278,7 @@ function FullSchedule() {
                           'hh:mm A',
                         )} - ${dayjs(
                           session.interview_meeting?.end_time,
-                        ).format('hh:mm A')}`
+                        ).format('hh:mm A')} ${getTimeZoneBrowser()}`
                       : '--'
                   }
                   slotEditOptionModule={
@@ -296,8 +303,7 @@ function FullSchedule() {
                       }
                       isRescheduleVisible={
                         session.interview_meeting?.status === 'confirmed' ||
-                        session.interview_meeting?.status === 'waiting' ||
-                        session.interview_meeting?.status === 'cancelled'
+                        session.interview_meeting?.status === 'waiting'
                       }
                       onClickCancelSchedule={{
                         onClick: () => {
