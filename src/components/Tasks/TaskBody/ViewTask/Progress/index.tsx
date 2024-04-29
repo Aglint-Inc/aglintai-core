@@ -2,7 +2,6 @@ import { Collapse, Stack, Typography } from '@mui/material';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -65,7 +64,7 @@ function SubTaskProgress() {
                   textTask={
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: capitalize(item.title),
+                        __html: item.title.replaceAll('Pm', 'PM'),
                       }}
                     ></span>
                   }

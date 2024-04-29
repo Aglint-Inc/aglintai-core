@@ -16,6 +16,7 @@ const SpecializedTimePicker = ({
   maxTime = undefined,
   minTime = undefined,
   disable,
+  disableIgnoringDatePartForTimeValidation = false,
 }: {
   label?: string;
   defaultValue?: Dayjs;
@@ -26,6 +27,7 @@ const SpecializedTimePicker = ({
   maxTime?: Dayjs;
   minTime?: Dayjs;
   disable?: boolean;
+  disableIgnoringDatePartForTimeValidation?: boolean;
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -49,6 +51,9 @@ const SpecializedTimePicker = ({
         maxTime={maxTime}
         minTime={minTime}
         disabled={disable}
+        disableIgnoringDatePartForTimeValidation={
+          disableIgnoringDatePartForTimeValidation
+        }
       />
     </LocalizationProvider>
   );

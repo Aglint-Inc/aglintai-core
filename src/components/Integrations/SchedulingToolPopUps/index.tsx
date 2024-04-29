@@ -117,7 +117,7 @@ function SchedulingPopUps({
               </ShowCode>
             }
             textPopupDescription={<>{popUpBody}</>}
-            isGreyButtonVisible={reason !== 'connect_google_workSpace'}
+            // isGreyButtonVisible={reason === 'connect_google_workSpace'}
             textPopupButton={
               <>
                 <ShowCode>
