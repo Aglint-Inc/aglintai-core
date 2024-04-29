@@ -36,7 +36,7 @@ import { SchedulingTab } from './types';
 
 function SchedulingMainComp() {
   const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, isAllowed } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
 
   useEffect(() => {
