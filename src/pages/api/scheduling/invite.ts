@@ -47,6 +47,8 @@ export type ApiResponseCandidateInvite = {
   meetings: Awaited<
     ReturnType<typeof getInterviewSessionsMeetings>
   >['resMeetings'];
+  allSlots: SessionsCombType[][][];
+  numberOfDays: number;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

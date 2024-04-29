@@ -11,14 +11,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
-import {
-  Dispatch,
-  MouseEvent,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -84,7 +77,7 @@ function SchedulingSettings({
   const [freeKeyWords, setFreeKeywords] = useState([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
-  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
+  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
 
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
@@ -245,7 +238,6 @@ function SchedulingSettings({
 
   return (
     <Stack overflow={isOverflow ? 'auto' : 'visible'}>
-<<<<<<< HEAD
       <BodyWithSublink
         slotSublinkTab={
           <>
@@ -298,169 +290,6 @@ function SchedulingSettings({
                           );
                         }}
                       />
-=======
-      <ShowCode>
-        <ShowCode.When
-          isTrue={router.query.subtab == settingSubNavItem.WORKINGHOURS}
-        >
-          <WorkingHours
-            slotTimeZoneInput={
-              <TimezoneSelector
-                disabled={isTimeZone}
-                value={selectedTimeZone}
-                setValue={setSelectedTimeZone}
-              />
-            }
-            // slotTimeZoneToggle={}
-            slotWorkingHourDay={
-              <Stack direction={'column'} paddingBottom={'50px'}>
-                {!!workingHours.length &&
-                  workingHours.map((day, i) => {
-                    return (
-                      <>
-                        <WorkingHourDay
-                          slotRcCheckbox={
-                            <RcCheckbox
-                              onclickCheck={{
-                                onClick: () => {
-                                  setWorkingHours((pre) => {
-                                    const data = pre;
-                                    data[Number(i)].isWorkDay =
-                                      !data[Number(i)].isWorkDay;
-
-                                    return [...data];
-                                  });
-                                },
-                              }}
-                              isChecked={day.isWorkDay}
-                              text={capitalize(day.day)}
-                            />
-                          }
-                          slotTimeRageInput={
-                            <TimeRangeInput
-                              slotStartTimeInput={
-                                <SelectTime
-                                  disable={!day.isWorkDay}
-                                  value={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        day.timeRange.startTime.split(':')[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        day.timeRange.startTime.split(':')[1],
-                                      ),
-                                    )}
-                                  onSelect={selectStartTime}
-                                  i={i}
-                                />
-                              }
-                              slotEndTimeInput={
-                                <SelectTime
-                                  disable={!day.isWorkDay}
-                                  value={dayjs()
-                                    .set(
-                                      'hour',
-                                      parseInt(
-                                        day.timeRange.endTime.split(':')[0],
-                                      ),
-                                    )
-                                    .set(
-                                      'minute',
-                                      parseInt(
-                                        day.timeRange.endTime.split(':')[1],
-                                      ),
-                                    )}
-                                  onSelect={selectEndTime}
-                                  i={i}
-                                />
-                              }
-                            />
-                          }
-                        />
-                      </>
-                    );
-                  })}
-
-                <Stack direction={'column'} spacing={1} marginTop={'20px'}>
-                  <Stack direction={'column'} spacing={0.5}>
-                    <Typography variant='body1' fontSize={'15px'}>
-                      Default Break Times
-                    </Typography>
-                    <Typography variant='body2'>
-                      Define standard break times for the company.
-                    </Typography>
-                  </Stack>
-                  <Stack spacing={1} direction={'column'}>
-                    <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                      <Typography width={120} fontSize={'14px'}>
-                        Break Start Time
-                      </Typography>
-
-                      {selectedHourBreak?.start_time &&
-                        workingHours[1]?.timeRange?.startTime && (
-                          <SelectTime
-                            minTime={dayjs()
-                              .set(
-                                'hour',
-                                parseInt(
-                                  workingHours[1]?.timeRange?.startTime.split(
-                                    ':',
-                                  )[0],
-                                ),
-                              )
-                              .set(
-                                'minute',
-                                parseInt(
-                                  workingHours[1]?.timeRange?.startTime.split(
-                                    ':',
-                                  )[1],
-                                ),
-                              )}
-                            maxTime={dayjs()
-                              .set(
-                                'hour',
-                                parseInt(
-                                  workingHours[1]?.timeRange?.endTime.split(
-                                    ':',
-                                  )[0],
-                                ),
-                              )
-                              .set(
-                                'minute',
-                                parseInt(
-                                  workingHours[1]?.timeRange?.endTime.split(
-                                    ':',
-                                  )[1],
-                                ),
-                              )}
-                            disableIgnoringDatePartForTimeValidation={true}
-                            value={dayjs()
-                              .set(
-                                'hour',
-                                parseInt(
-                                  selectedHourBreak?.start_time?.split(':')[0],
-                                ),
-                              )
-                              .set(
-                                'minute',
-                                parseInt(
-                                  selectedHourBreak?.start_time?.split(':')[1],
-                                ),
-                              )}
-                            onSelect={(e) => {
-                              setSelectedHourBreak((pre) => {
-                                pre.start_time = `${dayjs(e).format('HH:mm')}`;
-                                return { ...pre };
-                              });
-                            }}
-                            key={0}
-                          />
-                        )}
->>>>>>> 5eebe28b9f8088f13bce22fb263b45d8bec2e36e
                     </Stack>
                   }
                   // slotTimeZoneToggle={}
@@ -992,7 +821,6 @@ function SchedulingSettings({
 
 export default SchedulingSettings;
 
-<<<<<<< HEAD
 const settingsItems = [
   { label: 'Interview Load', value: 'interviewLoad' },
   { label: 'Working Hours', value: 'workingHours' },
@@ -1026,63 +854,3 @@ function SettingsSubNabItem() {
     </>
   );
 }
-=======
-type TimezoneObj = {
-  label: string;
-  tzCode: string;
-  name: string;
-  utc: string;
-};
-type TimezoneSelectorProps = {
-  value: TimezoneObj;
-  setValue: Dispatch<SetStateAction<TimezoneObj>>;
-  disabled: boolean;
-};
-export const TimezoneSelector = ({
-  disabled,
-  setValue,
-  value,
-}: TimezoneSelectorProps) => {
-  return (
-    <Stack spacing={'10px'} width={420}>
-      <Autocomplete
-        disabled={disabled}
-        disableClearable
-        options={timeZones}
-        value={value}
-        onChange={(event, value) => {
-          if (value) {
-            setValue(value);
-          }
-        }}
-        autoComplete={false}
-        getOptionLabel={(option) => option.label}
-        renderOption={(props, option) => {
-          return (
-            <li {...props}>
-              <Typography variant='body2' color={'#000'}>
-                {option.label}
-              </Typography>
-            </li>
-          );
-        }}
-        renderInput={(params) => {
-          return (
-            <UITextField
-              rest={{ ...params }}
-              labelSize='medium'
-              // fullWidth
-              label=''
-              placeholder='Ex. Healthcare'
-              InputProps={{
-                ...params.InputProps,
-                autoComplete: 'new-password',
-              }}
-            />
-          );
-        }}
-      />
-    </Stack>
-  );
-};
->>>>>>> 5eebe28b9f8088f13bce22fb263b45d8bec2e36e
