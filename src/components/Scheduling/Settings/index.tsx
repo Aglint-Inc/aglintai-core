@@ -11,7 +11,14 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -74,7 +81,7 @@ function SchedulingSettings({
   const [freeKeyWords, setFreeKeywords] = useState([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
-  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
 
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
@@ -240,45 +247,11 @@ function SchedulingSettings({
         >
           <WorkingHours
             slotTimeZoneInput={
-              <Stack spacing={'10px'} width={420}>
-                <Autocomplete
-                  disabled={isTimeZone}
-                  disableClearable
-                  options={timeZones}
-                  value={selectedTimeZone}
-                  onChange={(event, value) => {
-                    if (value) {
-                      setSelectedTimeZone(value);
-                    }
-                  }}
-                  autoComplete={false}
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => {
-                    return (
-                      <li {...props}>
-                        <Typography variant='body2' color={'#000'}>
-                          {option.label}
-                        </Typography>
-                      </li>
-                    );
-                  }}
-                  renderInput={(params) => {
-                    return (
-                      <UITextField
-                        rest={{ ...params }}
-                        labelSize='medium'
-                        // fullWidth
-                        label=''
-                        placeholder='Ex. Healthcare'
-                        InputProps={{
-                          ...params.InputProps,
-                          autoComplete: 'new-password',
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </Stack>
+              <TimezoneSelector
+                disabled={isTimeZone}
+                value={selectedTimeZone}
+                setValue={setSelectedTimeZone}
+              />
             }
             // slotTimeZoneToggle={}
             slotWorkingHourDay={
@@ -766,3 +739,62 @@ function SchedulingSettings({
 }
 
 export default SchedulingSettings;
+
+type TimezoneObj = {
+  label: string;
+  tzCode: string;
+  name: string;
+  utc: string;
+};
+type TimezoneSelectorProps = {
+  value: TimezoneObj;
+  setValue: Dispatch<SetStateAction<TimezoneObj>>;
+  disabled: boolean;
+};
+export const TimezoneSelector = ({
+  disabled,
+  setValue,
+  value,
+}: TimezoneSelectorProps) => {
+  return (
+    <Stack spacing={'10px'} width={420}>
+      <Autocomplete
+        disabled={disabled}
+        disableClearable
+        options={timeZones}
+        value={value}
+        onChange={(event, value) => {
+          if (value) {
+            setValue(value);
+          }
+        }}
+        autoComplete={false}
+        getOptionLabel={(option) => option.label}
+        renderOption={(props, option) => {
+          return (
+            <li {...props}>
+              <Typography variant='body2' color={'#000'}>
+                {option.label}
+              </Typography>
+            </li>
+          );
+        }}
+        renderInput={(params) => {
+          return (
+            <UITextField
+              rest={{ ...params }}
+              labelSize='medium'
+              // fullWidth
+              label=''
+              placeholder='Ex. Healthcare'
+              InputProps={{
+                ...params.InputProps,
+                autoComplete: 'new-password',
+              }}
+            />
+          );
+        }}
+      />
+    </Stack>
+  );
+};
