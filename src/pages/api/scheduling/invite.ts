@@ -10,8 +10,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import axios from 'axios';
-
 import { SessionsCombType } from '@/src/types/scheduleTypes/types';
 import { Database } from '@/src/types/schema';
 
@@ -80,28 +78,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       filterJson.session_ids,
     );
 
-    const resSchOpt = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find_slots_date_range`,
-      {
-        session_ids: filterJson.session_ids,
-        recruiter_id: recruiter.id,
-        date_range_start:
-          filterJson.filter_json.start_date > dayjs().format('DD/MM/YYYY')
-            ? filterJson.filter_json.start_date
-            : dayjs().format('DD/MM/YYYY'),
-        date_range_end: filterJson.filter_json.end_date,
-        user_tz: user_tz,
-      },
-    );
-
-    if (resSchOpt.status !== 200) {
-      throw new Error('Failed to fetch slots');
-    }
-
-    const allSlots = resSchOpt.data.filter(
-      (subArr) => subArr?.length > 0,
-    ) as SessionsCombType[][];
-
     // console.log(dateRanges);
 
     return res.status(200).json({
@@ -114,8 +90,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       recruiter: recruiter,
       meetings: resMeetings,
-      allSlots: allSlots,
-      numberOfDays: allSlots[0]?.length || 0,
     });
   } catch (error) {
     res.status(400).send(error.message);

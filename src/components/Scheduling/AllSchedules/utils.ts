@@ -203,3 +203,63 @@ export const getScheduleTextcolor = (
         ? '#703815'
         : '#681219';
 };
+
+export const cancelMailHandler = async ({
+  schedule_id,
+  rec_id,
+  candidate_name,
+  schedule_name,
+  mail,
+  position,
+  filter_id,
+  supabase,
+  rec_mail,
+}: MailHandlerparam) => {
+  try {
+    const { data, error } = await supabase
+      .from('recruiter')
+      .select('name, email_template')
+      .eq('id', rec_id);
+    if (error) throw new Error(error.message);
+
+    if (data[0].email_template) {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
+        {
+          fromEmail: `messenger@aglinthq.com`,
+          fromName: 'Aglint',
+          email: rec_mail ?? mail,
+          subject: fillEmailTemplate(
+            data[0].email_template[''].subject,
+            {
+              company_name: data[0].name,
+              schedule_name: schedule_name,
+              first_name: candidate_name,
+              last_name: '',
+              job_title: position,
+            },
+          ),
+          text: fillEmailTemplate(
+            data[0].email_template['candidate_availability_request'].body,
+            {
+              company_name: data[0].name,
+              schedule_name: schedule_name,
+              first_name: candidate_name,
+              last_name: '',
+              job_title: position,
+              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+            },
+          ),
+        },
+      );
+
+      if (res.status === 200 && res.data.data === 'Email sent') {
+        return true;
+      } else {
+        toast.error('Unable to send mail. Please try again later.');
+      }
+    }
+  } catch (e) {
+    toast.error('Unable to send mail. Please try again later.');
+  }
+};

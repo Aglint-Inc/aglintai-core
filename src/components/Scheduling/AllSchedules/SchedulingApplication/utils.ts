@@ -20,6 +20,10 @@ import {
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
+import {
+  geoCodeLocation,
+  getTimeZoneOfGeo,
+} from '@/src/utils/location-to-time-zone';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -870,7 +874,6 @@ export const fetchInterviewSessionTask = async ({
 
 export const agentTrigger = async ({
   type,
-  // eslint-disable-next-line no-unused-vars
   sessionsWithPlan,
   filterJsonId,
   task_id,
@@ -881,6 +884,18 @@ export const agentTrigger = async ({
   rec_user_email,
   rec_user_phone = '',
   user_tz,
+}: {
+  type: 'email_agent' | 'phone_agent';
+  sessionsWithPlan: Awaited<ReturnType<typeof fetchInterviewDataSchedule>>;
+  filterJsonId: string;
+  task_id: string;
+  recruiter_user_name: string;
+  candidate_name: string;
+  company_name: string;
+  jobRole: string;
+  rec_user_email: string;
+  rec_user_phone: string;
+  user_tz: string;
 }) => {
   console.log({
     type,
@@ -895,17 +910,22 @@ export const agentTrigger = async ({
     user_tz,
   });
 
+  const candidate = sessionsWithPlan.application.candidates;
+
+  if (!candidate.timezone && (candidate.city || candidate.state)) {
+    await getCandidateTimezone(
+      `${sessionsWithPlan.application.candidates.city} ${sessionsWithPlan.application.candidates.state}`,
+      candidate.id,
+    );
+  }
+
   if (type === 'email_agent') {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
       {
         cand_email: rec_user_email,
-        // cand_email: sessionsWithPlan.application.candidates.email,
-        cand_time_zone: user_tz,
-        // cand_time_zone: 'America/Los_Angeles',
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
-        organizer_time_zone: user_tz,
         task_id: task_id,
       } as InitAgentBodyParams,
     );
@@ -932,8 +952,6 @@ export const agentTrigger = async ({
         cand_email: rec_user_email,
         // cand_email: sessionsWithPlan.application.candidates.email,
         task_id: task_id,
-        // cand_time_zone: 'America/Los_Angeles',
-        cand_time_zone: user_tz,
       },
     );
     console.log(res?.data);
@@ -1010,4 +1028,21 @@ export const createTask = async ({
   console.log(`Create task ${task.id}`);
 
   return task;
+};
+
+const getCandidateTimezone = async (location, candidate_id) => {
+  const resGeoCode = await geoCodeLocation(location);
+  if (resGeoCode) {
+    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
+    if (resTimezone) {
+      const { data } = await supabase
+        .from('candidates')
+        .update({
+          timezone: resTimezone,
+        })
+        .eq('id', candidate_id)
+        .select();
+      console.log(data);
+    }
+  }
 };

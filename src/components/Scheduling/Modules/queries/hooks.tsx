@@ -213,7 +213,7 @@ export const useDeleteRelationHandler = () => {
       const editModule = queryClient.getQueryData<ModuleType>(
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
-      if (!editModule) throw new Error('Module not found');
+      if (!editModule) throw new Error('Interview type not found');
 
       const isDeleted = await deleteRelationByUserDbDelete({
         module_relation_id,
@@ -259,7 +259,7 @@ export const useAddMemberHandler = () => {
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
 
-      if (!editModule) throw new Error('Module not found');
+      if (!editModule) throw new Error('Interview type not found');
 
       const { error } = await addMemberbyUserIds({
         module_id: editModule.id,

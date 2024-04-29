@@ -188,6 +188,18 @@ export type Database = {
           },
         ]
       }
+      aggregated_data: {
+        Row: {
+          json_agg: Json | null
+        }
+        Insert: {
+          json_agg?: Json | null
+        }
+        Update: {
+          json_agg?: Json | null
+        }
+        Relationships: []
+      }
       aglint_candidates: {
         Row: {
           aglint_id: string
@@ -922,6 +934,7 @@ export type Database = {
           phone: string | null
           recruiter_id: string | null
           state: string | null
+          timezone: string | null
         }
         Insert: {
           avatar?: string | null
@@ -940,6 +953,7 @@ export type Database = {
           phone?: string | null
           recruiter_id?: string | null
           state?: string | null
+          timezone?: string | null
         }
         Update: {
           avatar?: string | null
@@ -958,6 +972,7 @@ export type Database = {
           phone?: string | null
           recruiter_id?: string | null
           state?: string | null
+          timezone?: string | null
         }
         Relationships: [
           {
@@ -1070,6 +1085,38 @@ export type Database = {
           resume_saved?: boolean
         }
         Relationships: []
+      }
+      integrations: {
+        Row: {
+          created_at: string
+          id: string
+          recruiter_id: string
+          schedule_agent_email: string | null
+          twilio_phone_number: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recruiter_id?: string
+          schedule_agent_email?: string | null
+          twilio_phone_number?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recruiter_id?: string
+          schedule_agent_email?: string | null
+          twilio_phone_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integrations_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: true
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       interview_filter_json: {
         Row: {
@@ -1814,6 +1861,7 @@ export type Database = {
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
           task_owner: string | null
+          task_triggered: boolean
           trigger_count: number
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1834,6 +1882,7 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_owner?: string | null
+          task_triggered?: boolean
           trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1854,6 +1903,7 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_owner?: string | null
+          task_triggered?: boolean
           trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1890,6 +1940,7 @@ export type Database = {
           progress_type: Database["public"]["Enums"]["progress_type"]
           task_id: string
           title: string
+          title_meta: Json | null
         }
         Insert: {
           created_at?: string
@@ -1899,6 +1950,7 @@ export type Database = {
           progress_type?: Database["public"]["Enums"]["progress_type"]
           task_id: string
           title: string
+          title_meta?: Json | null
         }
         Update: {
           created_at?: string
@@ -1908,6 +1960,7 @@ export type Database = {
           progress_type?: Database["public"]["Enums"]["progress_type"]
           task_id?: string
           title?: string
+          title_meta?: Json | null
         }
         Relationships: [
           {
