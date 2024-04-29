@@ -8,9 +8,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import toast from '@/src/utils/toast';
+// import toast from '@/src/utils/toast';
 
-// import { settingsItems } from './utils';
 const tabs: {
   text: string;
   roles?: Database['public']['Enums']['user_roles'][];
@@ -44,7 +43,7 @@ function SubNav() {
       return tab === item.text.replace(' ', '');
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
-      toast.error("You don't have Access to this Module.");
+      // toast.error("You don't have Access to this Module.");
       router.replace(`scheduling?tab=myschedules`);
     }
   }, [tab]);

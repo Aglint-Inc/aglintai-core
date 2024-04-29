@@ -76,26 +76,27 @@ function SchedulingMainComp() {
         slotSaving={<SyncStatus status={saving} />}
         slotTopbarRight={
           <>
-            {tab === 'interviewtypes' && (
-              <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                <ButtonPrimaryDefaultRegular
-                  startIconSlot={
-                    <Icon
-                      variant='PlusThin'
-                      height='12'
-                      width='12'
-                      color='#fff'
-                    />
-                  }
-                  buttonText={'New Interview Type'}
-                  buttonProps={{
-                    onClick: () => {
-                      setIsCreateDialogOpen(true);
-                    },
-                  }}
-                />
-              </Stack>
-            )}
+            {tab === 'interviewtypes' &&
+              isAllowed(['admin', 'recruiter', 'scheduler']) && (
+                <Stack direction={'row'} alignItems={'center'} spacing={2}>
+                  <ButtonPrimaryDefaultRegular
+                    startIconSlot={
+                      <Icon
+                        variant='PlusThin'
+                        height='12'
+                        width='12'
+                        color='#fff'
+                      />
+                    }
+                    buttonText={'New Interview Type'}
+                    buttonProps={{
+                      onClick: () => {
+                        setIsCreateDialogOpen(true);
+                      },
+                    }}
+                  />
+                </Stack>
+              )}
           </>
         }
         slotBody={

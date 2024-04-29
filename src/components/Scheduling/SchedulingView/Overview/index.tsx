@@ -136,6 +136,36 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
         }
         isTraineesVisible={trainingMembers.length > 0}
         isCoordinatorVisible={Boolean(schedule?.coordinator?.first_name)}
+        textInterviewModuleLink={schedule.interview_session.name}
+        slotTrainees={trainingMembers.map((item, i) => {
+          const isTickVisible = ['accepted', 'tentative'].includes(
+            allCalendarStatus.find((event) => event.email === item.email)
+              ?.responseStatus,
+          );
+          return (
+            <AvatarWithName
+              key={i}
+              isRoleVisible={false}
+              textName={
+                getFullName(item.first_name, item.last_name) +
+                `${item.email === recruiterUser.email ? ' ( You )' : ''}`
+              }
+              isTickVisible={isTickVisible}
+              isShadowVisible={item.training_type === 'shadow'}
+              isReverseShadowVisible={item.training_type === 'reverse_shadow'}
+              slotAvatar={
+                <MuiAvatar
+                  level={getFullName(item.first_name, item.last_name)}
+                  src={item.profile_image}
+                  variant={'circular'}
+                  width={'100%'}
+                  height={'100%'}
+                  fontSize={'14px'}
+                />
+              }
+            />
+          );
+        })}
         slotInterviewers={qualifiedMembers.map((item, i) => {
           const isTickVisible =
             allCalendarStatus.find((event) => event.email === item.email)
@@ -151,35 +181,8 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
                 getFullName(item.first_name, item.last_name) +
                 `${item.email === recruiterUser.email ? ' ( You )' : ''}`
               }
-              isTickVisible={isTickVisible}
-              slotAvatar={
-                <MuiAvatar
-                  level={getFullName(item.first_name, item.last_name)}
-                  src={item.profile_image}
-                  variant={'circular'}
-                  width={'100%'}
-                  height={'100%'}
-                  fontSize={'14px'}
-                />
-              }
-            />
-          );
-        })}
-        textInterviewModuleLink={schedule.interview_session.name}
-        slotTrainees={trainingMembers.map((item, i) => {
-          const isTickVisible =
-            allCalendarStatus.find((event) => event.email === item.email)
-              ?.responseStatus === 'accepted' ||
-            allCalendarStatus.find((event) => event.email === item.email)
-              ?.responseStatus === 'tentative';
-          return (
-            <AvatarWithName
-              key={i}
-              isRoleVisible={false}
-              textName={
-                getFullName(item.first_name, item.last_name) +
-                `${item.email === recruiterUser.email ? ' ( You )' : ''}`
-              }
+              isShadowVisible={item.training_type === 'shadow'}
+              isReverseShadowVisible={item.training_type === 'reverse_shadow'}
               isTickVisible={isTickVisible}
               slotAvatar={
                 <MuiAvatar
