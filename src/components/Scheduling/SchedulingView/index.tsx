@@ -95,6 +95,11 @@ function SchedulingViewComp() {
                           status: schedule?.interview_meeting.status,
                         },
                       ]}
+                      candidate={{
+                        email: schedule?.candidates.email,
+                        name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+                        job_id: schedule?.applications?.job_id,
+                      }}
                     />
                   </ShowCode.When>
                   <ShowCode.When isTrue={router.query.tab === 'job_details'}>

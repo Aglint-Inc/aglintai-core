@@ -8,7 +8,7 @@ export type API_reset_password = {
         error: null;
       }
     | {
-        passwordRest: false;
+        passwordReset: null;
         error: string;
       };
 };

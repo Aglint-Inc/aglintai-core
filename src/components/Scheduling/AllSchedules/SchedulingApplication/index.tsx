@@ -19,7 +19,7 @@ import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
   setSelectedSessionIds,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from './store';
 import TabsSchedulingApplication from './Tabs';
 
@@ -121,6 +121,11 @@ function SchedulingApplication() {
                           end: item.interview_meeting?.end_time,
                         },
                       }))}
+                      candidate={{
+                        email: selectedApplication?.candidates.email,
+                        name: `${selectedApplication?.candidates.first_name || ''} ${selectedApplication?.candidates.last_name || ''}`.trim(),
+                        job_id: selectedApplication?.job_id,
+                      }}
                     />
                   ) : (
                     ''
