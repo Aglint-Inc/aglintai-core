@@ -61,7 +61,7 @@ function CandidateList({
                     textName={capitalizeAll(
                       selectedCandidate.candidates?.first_name +
                         ' ' +
-                        selectedCandidate.candidates?.last_name,
+                        (selectedCandidate.candidates?.last_name ?? ''),
                     )}
                   />
                 )
