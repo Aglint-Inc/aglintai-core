@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -13,7 +14,10 @@ export function LearnHowLever({
         className={_utils.cx(_styles, "popup_title_block")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+          tag="div"
+        >
           {"How to connect with Lever"}
         </_Builtin.Block>
         <_Builtin.Block
@@ -27,10 +31,7 @@ export function LearnHowLever({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "popup_body-copy")}
-        tag="div"
-      >
+      <_Builtin.Block tag="div">
         <_Builtin.RichText
           className={_utils.cx(_styles, "helper_richtext")}
           tag="div"
@@ -40,7 +41,11 @@ export function LearnHowLever({
               "To establish a connection with Lever, you'll first need to obtain your API key. Here's how:"
             }
           </_Builtin.Paragraph>
-          <_Builtin.List tag="ul" unstyled={false}>
+          <_Builtin.List
+            className={_utils.cx(_styles, "list", "mt-20", "mb-20")}
+            tag="ul"
+            unstyled={false}
+          >
             <_Builtin.ListItem>
               {"To generate lever API navigate to "}
               <_Builtin.Strong>

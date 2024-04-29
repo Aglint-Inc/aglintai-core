@@ -112,6 +112,10 @@
   margin-left: -6px;
 }
 
+.icons.hide {
+  display: none;
+}
+
 .div-block-958 {
   margin-right: 4px;
 }

@@ -15,6 +15,7 @@ import FullSchedule from './FullSchedule';
 import { useGetScheduleApplication } from './hooks';
 import RightPanel from './RightPanel';
 import ScheduleNowTopbar from './ScheduleNowTopbar';
+import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
@@ -71,6 +72,7 @@ function SchedulingApplication() {
         slotTopbarLeft={
           <>
             <Breadcrum textName={scheduleName} />
+            {!fetchingSchedule && <StatusUpdateDropdownBreadcrum />}
           </>
         }
         slotBody={

@@ -1,6 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 
 import { Checkbox, Stack } from '@mui/material';
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
 import {
@@ -40,6 +42,24 @@ function TaskBody({ byGroup }) {
     applications: TasksAgentContextType['tasks'][number]['applications'];
     tasklist: TasksAgentContextType['tasks'];
   }[];
+
+  const { handelUpdateTask } = useTasksContext();
+
+  async function upDateTasks() {
+    const overDueTasks = [];
+    for (let task of tasks) {
+      const toDayDateTime = dayjs();
+      const dueDateTime = dayjs(task.due_date);
+      if (dueDateTime.isBefore(toDayDateTime) && task.status !== 'overdue') {
+        overDueTasks.push({ id: task.id, status: 'overdue' });
+      }
+    }
+    handelUpdateTask([...overDueTasks]);
+  }
+
+  useEffect(() => {
+    upDateTasks();
+  }, []);
 
   return (
     <>

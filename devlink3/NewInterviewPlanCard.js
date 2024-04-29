@@ -39,6 +39,7 @@ export function NewInterviewPlanCard({
   onClickCard = {},
   propsBgColorStatus = {},
   isCheckboxVisible = true,
+  isDateVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -136,12 +137,14 @@ export function NewInterviewPlanCard({
                     className={_utils.cx(_styles, "div-block-1398")}
                     tag="div"
                   >
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "fw-semibold")}
-                      tag="div"
-                    >
-                      {textDate}
-                    </_Builtin.Block>
+                    {isDateVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "fw-semibold")}
+                        tag="div"
+                      >
+                        {textDate}
+                      </_Builtin.Block>
+                    ) : null}
                     {isTimeVisible ? (
                       <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
                     ) : null}

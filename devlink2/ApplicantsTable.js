@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { CandidateListItem } from "./CandidateListItem";
+import { TopCandidateListItem } from "./TopCandidateListItem";
 import * as _utils from "./utils";
 import _styles from "./ApplicantsTable.module.css";
 
@@ -80,7 +81,7 @@ export function ApplicantsTable({
             )}
             tag="div"
           >
-            <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Candidates"}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -228,7 +229,12 @@ export function ApplicantsTable({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block tag="div">
-        {slotCandidatesList ?? <CandidateListItem />}
+        {slotCandidatesList ?? (
+          <>
+            <CandidateListItem />
+            <TopCandidateListItem />
+          </>
+        )}
       </_Builtin.Block>
     </_Component>
   );

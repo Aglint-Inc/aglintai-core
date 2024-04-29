@@ -7,11 +7,12 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { addScheduleActivity } from '../../../queries/utils';
 import { setIsCancelOpen, useInterviewSchedulingStore } from '../../../store';
+import { cancelMailHandler } from '../../../utils';
 import { useAllActivities } from '../../hooks';
 import { setinitialSessions, useSchedulingApplicationStore } from '../../store';
 
 function CancelScheduleDialog() {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, recruiter } = useAuthDetails();
   const isCancelOpen = useInterviewSchedulingStore(
     (state) => state.isCancelOpen,
   );
@@ -36,6 +37,16 @@ function CancelScheduleDialog() {
             .from('interview_filter_json')
             .select('*')
             .contains('session_ids', [selectedSession.id]);
+
+        cancelMailHandler({
+          candidate_name: selectedApplication.candidates.first_name,
+          mail: recruiterUser.email,
+          job_title: selectedApplication.public_jobs.job_title,
+          rec_id: recruiter.id,
+          rec_mail: recruiterUser.email,
+          session_name: selectedSession.name,
+          supabase: supabase,
+        });
 
         if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 

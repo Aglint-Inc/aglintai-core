@@ -96,8 +96,7 @@ export const deleteModuleById = async (id: string) => {
   const { error } = await supabase
     .from('interview_module')
     .delete()
-    .eq('id', id)
-    .limit(1);
+    .eq('id', id);
   if (error) {
     return false;
   } else {

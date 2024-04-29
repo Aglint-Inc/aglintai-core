@@ -208,6 +208,27 @@ export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
     [companyName] Recruitment Team`,
     trigger: 'Manually Sending Candidate Booking Link',
   },
+  cancel_interview_session: {
+    listing: 'Candidate Cancel Interview Session',
+    heading: 'Candidate Cancel Interview Session',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [sessionName]`,
+    triggerInfo: '',
+    description:
+      'This template is used for sending the cancel interview session',
+    descriptionInJob:
+      'Customise candidate_availability request email template for this job',
+    subjectPlaceHolder: 'Interview Cancellation: [sessionName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    I regret to inform you that we need to cancel your scheduled interview session [sessionName].
+    
+    We apologize for any inconvenience caused and will be in touch soon to reschedule.
+    
+    Best regards,
+    [companyName]`,
+    trigger: 'Triggerd when interview session get cancelled',
+  },
   candidate_invite_confirmation: {
     listing: 'Interview Booking Confirmation',
     heading: 'Interview Booking Confirmation',
@@ -247,12 +268,14 @@ Cheers,
 export type EmailTempPath =
   | 'candidate_availability_request'
   | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite';
+  | 'debrief_calendar_invite'
+  | 'cancel_interview_session';
 
 export const emailTempKeys: EmailTempPath[] = [
   'candidate_invite_confirmation',
   'candidate_availability_request',
   'debrief_calendar_invite',
+  'cancel_interview_session',
 ];
 
 type EmailTemplatType = {

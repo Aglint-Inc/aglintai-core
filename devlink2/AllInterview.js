@@ -91,7 +91,7 @@ export function AllInterview({
                     {slotCheckbox}
                   </_Builtin.Block>
                 ) : null}
-                <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Candidates"}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(

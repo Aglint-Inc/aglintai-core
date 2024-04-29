@@ -50,10 +50,8 @@ function ListCardInterviewSchedule({
           isDragVisible={isChecked}
           slotScheduleWithAgent={<ScheduleWithAgent />}
           textCurrentRole={
-            <Stack style={{ textTransform: 'capitalize' }}>
-              {(app.file?.resume_json as unknown as ResumeJson)?.basics
-                ?.currentJobTitle || <></>}
-            </Stack>
+            (app.file?.resume_json as unknown as ResumeJson)?.basics
+              ?.currentJobTitle || <></>
           }
           isSelected={isSelected}
           propsGrid={{
@@ -64,14 +62,10 @@ function ListCardInterviewSchedule({
           isSchedulerTable={!isJobDasboard}
           isCheckBoxVisible={isJobDasboard}
           slotCheckbox={slotCheckbox}
-          textName={
-            <Stack style={{ textTransform: 'capitalize' }}>
-              {getFullName(
-                app.candidates.first_name,
-                app.candidates.last_name,
-              ).toLowerCase()}
-            </Stack>
-          }
+          textName={getFullName(
+            app.candidates.first_name,
+            app.candidates.last_name,
+          ).toLowerCase()}
           slotCandidateImage={
             <Stack
               width={'100%'}

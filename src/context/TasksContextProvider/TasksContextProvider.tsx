@@ -19,11 +19,17 @@ import {
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
-  DatabaseTableUpdate
+  DatabaseTableUpdate,
 } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
+export type taskFilterType = {
+  Job: string[];
+  Status: DatabaseEnums['task_status'][];
+  Priority: DatabaseEnums['task_priority'][];
+  Assignee: string[];
+};
 
 type TasksReducerType = {
   tasks: Awaited<ReturnType<typeof getTasks>>['data'];
@@ -81,6 +87,7 @@ const reducerInitialState: TasksReducerType = {
         { id: 'closed', label: 'Closed' },
         { id: 'cancelled', label: 'Cancelled' },
         { id: 'scheduled', label: 'Scheduled' },
+        { id: 'overdue', label: 'Overdue' },
       ],
       values: [],
     },
@@ -434,7 +441,17 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           ? undefined
           : recruiterUser.user_id,
       }).then((data) => {
+        const preFilterData = JSON.parse(
+          localStorage.getItem('taskFilters'),
+        ) as taskFilterType;
         const temp = cloneDeep(reducerInitialState);
+        if (preFilterData) {
+          temp.filter.assignee.values = preFilterData?.Assignee || [];
+          temp.filter.priority.values = preFilterData?.Priority || [];
+          temp.filter.status.values = preFilterData?.Status || [];
+          temp.filter.jobTitle.values = preFilterData?.Job || [];
+        }
+
         temp.tasks = data.data;
         temp.pagination.totalRows = data.count;
         init({ ...temp, tasks: data.data });

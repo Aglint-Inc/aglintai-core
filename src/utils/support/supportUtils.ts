@@ -77,6 +77,7 @@ export function fillEmailTemplate(
     team_member_name?: string;
     view_details?: string;
     pick_your_slot_link?: string;
+    session_name?: string;
   },
 ) {
   let filledTemplate = template;
@@ -93,6 +94,7 @@ export function fillEmailTemplate(
     '[scheduleName]': email.schedule_name,
     '[teamMemberName]': email.team_member_name,
     '[pickYourSlotLink]': email.pick_your_slot_link,
+    '[sessionName]': email.session_name,
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {

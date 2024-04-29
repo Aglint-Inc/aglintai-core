@@ -180,6 +180,10 @@ function FullSchedule() {
                       }
                     },
                   }}
+                  isDateVisible={
+                    session.interview_meeting?.status !== 'cancelled' &&
+                    Boolean(session.interview_meeting?.start_time)
+                  }
                   isThreeDotVisible={
                     session.interview_meeting?.status !== 'completed'
                   }
