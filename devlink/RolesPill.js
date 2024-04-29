@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -13,7 +14,7 @@ export function RolesPill({
       className={_utils.cx(_styles, "", "cj-suggested-roles-block")}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "", "text-cap")} tag="div">
+      <_Builtin.Block className={_utils.cx(_styles, "")} tag="div">
         {textRoles}
       </_Builtin.Block>
       <_Builtin.Block

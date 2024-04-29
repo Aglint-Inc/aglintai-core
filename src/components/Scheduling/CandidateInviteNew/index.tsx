@@ -232,7 +232,9 @@ const SingleDayConfirmation = () => {
   totalHours += Math.floor(totalMinutes / 60);
   totalMinutes %= 60;
 
-  const totalTimeDifference = `${totalHours ? totalHours + ' hour' : ''} ${totalMinutes} minutes`;
+  const totalTimeDifference = `${
+    totalHours ? totalHours + ' hour' : ''
+  } ${totalMinutes} minutes`;
   // end
 
   return (
@@ -462,7 +464,10 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         )
       : allSlots.reduce(
           (acc, curr) => {
-            if (selectedSlots.length !== 0 && curr[0][0] === selectedSlots[0]) {
+            if (
+              selectedSlots.length !== 0 &&
+              curr[0].includes(selectedSlots[0])
+            ) {
               const { start_time } = curr[props.index][0].sessions[0];
               acc.push({
                 date: start_time,
@@ -517,13 +522,11 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         onClose={() => setOpen(false)}
         sx={{ '& .MuiPaper-root': { maxWidth: 'none !important' } }}
       >
-        <Stack width={'1000px'}>
-          <CandidateInviteCalendar
-            sessions={sessions}
-            selections={selectedSlots}
-            handleSelect={handleSelect}
-          />
-        </Stack>
+        <CandidateInviteCalendar
+          sessions={sessions}
+          selections={selectedSlots}
+          handleSelect={handleSelect}
+        />
       </Dialog>
     </Stack>
   );
