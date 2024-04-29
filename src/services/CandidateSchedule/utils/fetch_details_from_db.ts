@@ -63,9 +63,9 @@ export const fetch_details_from_db = async (
         .interview_modules as unknown as InterviewModuleType[][],
       interview_sessions: r[0].interview_sessions as InterviewSession[],
       inter_data: r[0].interviewers as unknown as SessionInterviewerType[][],
-      company_cred: JSON.parse(
-        decrypt_string(r[0].service_cred),
-      ) as CompServiceKeyCred,
+      company_cred: r[0].service_cred
+        ? (JSON.parse(decrypt_string(r[0].service_cred)) as CompServiceKeyCred)
+        : null,
     };
   };
 
