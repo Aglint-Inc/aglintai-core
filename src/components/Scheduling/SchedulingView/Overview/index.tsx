@@ -97,7 +97,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
         }}
         textSchedule={
           schedule.interview_meeting.confirmed_date &&
-          `This Schedule has been confirmed on ${dayjs(schedule.interview_meeting.confirmed_date).format('DD MMM YYYY')}`
+          `on ${dayjs(schedule.interview_meeting.confirmed_date).format('DD MMM YYYY')}`
         }
         slotStatus={
           <>

@@ -160,9 +160,9 @@ function SubTaskProgress() {
                         }
                       >
                         <Typography
-                          sx={{
-                            whiteSpace: 'pre-wrap',
-                          }}
+                          // sx={{
+                          //   whiteSpace: 'pre-wrap',
+                          // }}
                           variant='body2'
                         >
                           <span
