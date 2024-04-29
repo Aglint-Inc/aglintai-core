@@ -13,6 +13,8 @@ dayjs.extend(customParseFormat);
 import { SessionsCombType } from '@/src/types/scheduleTypes/types';
 import { Database } from '@/src/types/schema';
 
+import { TFilterJSON } from './mail-agent/init-agent';
+
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
@@ -40,16 +42,14 @@ export type ApiResponseCandidateInvite = {
   candidate: Awaited<
     ReturnType<typeof getScheduleDetails>
   >['applications']['candidates'];
-  filter_json: Awaited<
-    ReturnType<typeof getScheduleDetails>
-  >['interview_filter_json'];
+  filter_json: TFilterJSON;
   recruiter: Awaited<ReturnType<typeof getScheduleDetails>>['recruiter'];
   meetings: Awaited<
     ReturnType<typeof getInterviewSessionsMeetings>
   >['resMeetings'];
-  allSlots: SessionsCombType[][][];
-  numberOfDays: number;
 };
+
+export type ApiResponseAllSlots = SessionsCombType[][][];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -62,13 +62,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const schedule = await getScheduleDetails(schedule_id);
 
-    const filterJson = schedule.interview_filter_json[0] as unknown as {
-      created_at: string;
-      filter_json: FilterJsonDateRangeCandidateInvite;
-      id: string;
-      schedule_id: string;
-      session_ids: string[];
-    };
+    const filterJson = schedule
+      .interview_filter_json[0] as unknown as FilterjsonType;
 
     const application = schedule.applications;
 
@@ -102,6 +97,14 @@ export interface DateRangeCandidateInvite {
   start_date: dayjs.Dayjs;
   end_date: dayjs.Dayjs | null;
 }
+
+type FilterjsonType = {
+  created_at: string;
+  filter_json: FilterJsonDateRangeCandidateInvite;
+  id: string;
+  schedule_id: string;
+  session_ids: string[];
+};
 
 const getScheduleDetails = async (schedule_id: string) => {
   const { data: sch, error: errSch } = await supabase

@@ -927,6 +927,8 @@ export const agentTrigger = async ({
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
         task_id: task_id,
+        cand_time_zone: user_tz,
+        organizer_time_zone: user_tz,
       } as InitAgentBodyParams,
     );
     console.log(res?.data);
@@ -1045,4 +1047,18 @@ const getCandidateTimezone = async (location, candidate_id) => {
       console.log(data);
     }
   }
+};
+
+export const getTimeZoneBrowser = () => {
+  const localTime = new Date().toTimeString();
+  const timeZonea = localTime.substring(
+    localTime.lastIndexOf('(') + 1,
+    localTime.lastIndexOf(')'),
+  );
+  const timezone = timeZonea
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
+
+  return timezone;
 };

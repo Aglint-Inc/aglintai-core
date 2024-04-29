@@ -307,9 +307,10 @@ const NewJobApplicationSideDrawer = ({
         slotMoveTo={<></>}
         slotOverview={
           <>
-            {(interviewPlanEnabled?.data ?? false) && (
-              <InterviewStatusBlock application={application} />
-            )}
+            {(interviewPlanEnabled?.data ?? false) &&
+              (application?.emailValidity?.isValidEmail ?? false) && (
+                <InterviewStatusBlock application={application} />
+              )}
             {overview.valid && (
               <OverviewBlock title={'Overview'} description={overview.value} />
             )}

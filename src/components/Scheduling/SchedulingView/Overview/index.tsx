@@ -19,6 +19,7 @@ import { BodyParams } from '@/src/pages/api/scheduling/v1/event_attendee_status'
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
+import { getTimeZoneBrowser } from '../../AllSchedules/SchedulingApplication/utils';
 import { getScheduleType } from '../../AllSchedules/utils';
 import { TransformSchedule } from '../../Modules/types';
 import DeleteScheduleDialog from './DeleteDialog';
@@ -257,7 +258,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
               schedule.interview_meeting.start_time,
             ).format(
               'hh:mm A',
-            )} - ${dayjs(schedule.interview_meeting.end_time).format('hh:mm A')}`}
+            )} - ${dayjs(schedule.interview_meeting.end_time).format('hh:mm A')} ${getTimeZoneBrowser()}`}
             slotPlatformIcon={
               <IconScheduleType
                 type={schedule.interview_session.schedule_type}

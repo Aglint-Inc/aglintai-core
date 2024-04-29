@@ -21,7 +21,7 @@ import {
   setIsScheduleNowOpen,
   setSchedulingOptions,
   setSelectedSessionIds,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../store';
 
 function GetScheduleOptionsDialog() {
@@ -150,7 +150,9 @@ function GetScheduleOptionsDialog() {
           slotSendtoCandidateButton={
             <>
               <ButtonPrimaryDefaultRegular
-                buttonText={isDebrief ? 'Schedule Now' : 'Send to Candidate'}
+                buttonText={
+                  isDebrief ? 'Schedule Now' : 'Send Booking Link to Candidate'
+                }
                 buttonProps={{
                   onClick: () => {
                     if (!saving) onClickSendToCandidate();

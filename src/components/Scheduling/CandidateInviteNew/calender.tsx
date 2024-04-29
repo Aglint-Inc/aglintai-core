@@ -4,13 +4,12 @@ import { useState } from 'react';
 
 import { AvailableTimeRange, CandidateCalender, DayColumn } from '@/devlink';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { useInviteSlots } from '@/src/queries/candidate-invite';
 
 export type CandidateInviteCalendarProps = {
   sessions: {
     date: string;
-    slots: ReturnType<
-      typeof useCandidateInvite
-    >['invites']['data']['allSlots'][number][number];
+    slots: ReturnType<typeof useInviteSlots>['data'][number][number];
   }[];
   selections: ReturnType<typeof useCandidateInvite>['selectedSlots'];
   handleSelect: (
@@ -21,15 +20,17 @@ export type CandidateInviteCalendarProps = {
 const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
   const xl = useMediaQuery('(min-width:1920px)');
   const l = useMediaQuery('(min-width:1440px)');
-  const m = useMediaQuery('(min-width:1024px)');
-  const s = useMediaQuery('(min-width:768px)');
-  const columns = xl ? 5 : l ? 4 : m ? 3 : s ? 2 : 1;
+  const m = useMediaQuery('(min-width:768px)');
+  // const s = useMediaQuery('(min-width:768px)');
+  const columns = xl ? 4 : l ? 3 : m ? 2 : 1;
   const [offset, setOffest] = useState(0);
   const sessions = props.sessions.slice(offset, offset + columns);
-  const startMonth = dayjs(sessions[0].date).format('MMMM YYYY');
-  const endMonth = dayjs(sessions[sessions.length - 1].date).format(
-    'MMMM YYYY',
-  );
+  const startMonth = sessions[0]?.date
+    ? dayjs(sessions[0].date).format('MMMM YYYY')
+    : null;
+  const endMonth = sessions[sessions.length - 1]?.date
+    ? dayjs(sessions[sessions.length - 1].date).format('MMMM YYYY')
+    : null;
   const displayMonth =
     startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
   return (
@@ -63,7 +64,7 @@ const Columns = (props: CandidateInviteCalendarProps) => {
     />
   ));
   return (
-    <Stack direction={'row'} gap={2}>
+    <Stack direction={'row'} gap={1}>
       {columns}
     </Stack>
   );

@@ -1,29 +1,27 @@
 import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
 
 import { appKey } from '..';
-import { InviteSlotParams } from '../candidate-invite';
+import { InviteSlotsParams } from '.';
 
 export const candidateInviteKeys = {
   all: { queryKey: [appKey, 'candidate-invite'] as string[] },
-  inviteDate: () => ({
-    queryKey: [...candidateInviteKeys.all.queryKey, 'invite-date'] as string[],
+  inviteMeta: () => ({
+    queryKey: [...candidateInviteKeys.all.queryKey, 'invite-meta'] as string[],
   }),
-  inviteSlot: () => ({
-    queryKey: [...candidateInviteKeys.all.queryKey, 'invite-slot'] as string[],
+  inviteSlots: () => ({
+    queryKey: [...candidateInviteKeys.all.queryKey, 'invite_slots'] as string[],
   }),
-  inviteDateWithFilter: (
+  inviteMetaWithFilter: (
     params: Omit<ReturnType<typeof useInviteParams>, 'enabled'>,
   ) => ({
     queryKey: [
-      ...candidateInviteKeys.inviteDate().queryKey,
+      ...candidateInviteKeys.inviteMeta().queryKey,
       ...Object.entries(params).map(([key, value]) => ({ [key]: value })),
     ] as string[],
   }),
-  inviteSlotWithFilter: (
-    params: Pick<InviteSlotParams, 'start_date' | 'end_date'>,
-  ) => ({
+  inviteSlotsWithFilter: (params: InviteSlotsParams) => ({
     queryKey: [
-      ...candidateInviteKeys.inviteSlot().queryKey,
+      ...candidateInviteKeys.inviteSlots().queryKey,
       ...Object.entries(params).map(([key, value]) => ({ [key]: value })),
     ] as string[],
   }),
