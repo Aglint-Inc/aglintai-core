@@ -1,16 +1,15 @@
-/* eslint-disable security/detect-object-injection */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { SubTaskProgress } from '@/src/types/data.types';
 
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { supabaseAdmin } from '../../fetchCompanyDetails';
 
+/* eslint-disable no-unused-vars */
 type TitleAttrType = {
   '{candidate}'?: string | undefined;
-  '{date}'?: string | undefined;
+  '{booking_date}'?: string | undefined;
+  '{booking_time}'?: string | undefined;
 };
 export type LoggerType = (
   log_msg: string,
@@ -58,13 +57,13 @@ export const getCandidateLogger = (
     //   if (key === '{candidate}') {
     //     log_msg = log_msg.replaceAll(
     //       key,
-    //       `<span class="mention">@${candidate_name}</span>`,
+    //       `<span class="mention">@${candidate_name}</span>`
     //     );
     //   }
     //   if (key === '{date}') {
     //     log_msg = log_msg.replaceAll(
     //       key,
-    //       `<span class="progress_date_section">${title_attr[key]}</span>`,
+    //       `<span class="progress_date_section">${title_attr[key]}</span>`
     //     );
     //   }
     // }
