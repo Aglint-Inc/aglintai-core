@@ -30,6 +30,9 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
+import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
+import axios from 'axios';
+import { useSchedulingApplicationStore } from '../../AllSchedules/SchedulingApplication/store';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
@@ -65,8 +68,10 @@ type FeedbackWindowInterviewersType = {
 
 const FeedbackWindow = ({
   interview_sessions,
+  candidate,
 }: {
   interview_sessions: FeedbackWindowInterviewersType[string][number]['session'][];
+  candidate: { name: string; email: string; job_id: string };
 }) => {
   const {
     data: relationsData,
@@ -75,6 +80,7 @@ const FeedbackWindow = ({
   } = useInterviewerRelations({
     session_ids: interview_sessions.map((item) => item.id),
   });
+
   const { isAllowed, userDetails } = useAuthDetails();
   const user_id = userDetails?.user.id;
   const { data: members, isFetching } = useAllInterviewersDetails();
@@ -186,6 +192,7 @@ const FeedbackWindow = ({
                 .map((key) => interviewers[String(key)])
                 .flat(),
               handelSubmit,
+              candidate,
             }}
           />
         </ShowCode.When>
@@ -212,6 +219,7 @@ const AdminFeedback = ({
   interviewers,
   handelSubmit,
   multiSession,
+  candidate,
 }: {
   user_id: string;
   interviewers: FeedbackWindowInterviewersType[string];
@@ -228,7 +236,13 @@ const AdminFeedback = ({
     feedback: DatabaseTable['interview_session_relation']['feedback'];
   }) => Promise<Boolean>;
   multiSession: boolean;
+  candidate: {
+    email: string;
+    name: string;
+    job_id: string;
+  };
 }) => {
+  const { recruiter } = useAuthDetails();
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
     index: number;
     interviewer: (typeof interviewers)[number];
@@ -240,16 +254,25 @@ const AdminFeedback = ({
     e,
     session_id,
     relation_id,
-    email,
+    receiver,
   }: {
     e: MouseEvent;
     session_id: string;
     relation_id: string;
-    email: string;
+    receiver: { name: string; email: string };
   }) => {
     e.stopPropagation();
 
-    await requestFeedback(email);
+    await requestFeedback({
+      session_id,
+      relation_id,
+      job_id: candidate.job_id,
+      receiver,
+      candidate: {
+        email: candidate.email,
+        name: candidate.name,
+      },
+    });
 
     return handelSubmit({
       session_id: session_id,
@@ -354,7 +377,10 @@ const AdminFeedback = ({
                                         e,
                                         session_id: int.session.id,
                                         relation_id: int.relation_id,
-                                        email: int.email,
+                                        receiver: {
+                                          name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                                          email: int.email,
+                                        },
                                       }),
                                   }}
                                   onClickResendRequest={{
@@ -363,7 +389,10 @@ const AdminFeedback = ({
                                         e,
                                         session_id: int.session.id,
                                         relation_id: int.relation_id,
-                                        email: int.email,
+                                        receiver: {
+                                          name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                                          email: int.email,
+                                        },
                                       }),
                                   }}
                                   textSessionTitle={
@@ -461,7 +490,10 @@ const AdminFeedback = ({
                             e,
                             session_id: int.session.id,
                             relation_id: int.relation_id,
-                            email: int.email,
+                            receiver: {
+                              name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                              email: int.email,
+                            },
                           }),
                       }}
                       onClickResendRequest={{
@@ -470,7 +502,10 @@ const AdminFeedback = ({
                             e,
                             session_id: int.session.id,
                             relation_id: int.relation_id,
-                            email: int.email,
+                            receiver: {
+                              name: `${int.first_name || ''} ${int.last_name || ''}`.trim(),
+                              email: int.email,
+                            },
                           }),
                       }}
                       textSessionTitle={multiSession ? int.session.title : ''}
@@ -593,7 +628,10 @@ const AdminFeedback = ({
                             selectedInterviewer.interviewer.session.id,
                           relation_id:
                             selectedInterviewer.interviewer.relation_id,
-                          email: selectedInterviewer.interviewer.email,
+                          receiver: {
+                            name: `${selectedInterviewer.interviewer.first_name || ''} ${selectedInterviewer.interviewer.last_name || ''}`.trim(),
+                            email: selectedInterviewer.interviewer.email,
+                          },
                         }).then(() => {
                           const temp = selectedInterviewer;
                           temp.interviewer.feedback = {
@@ -611,7 +649,10 @@ const AdminFeedback = ({
                             selectedInterviewer.interviewer.session.id,
                           relation_id:
                             selectedInterviewer.interviewer.relation_id,
-                          email: selectedInterviewer.interviewer.email,
+                          receiver: {
+                            name: `${selectedInterviewer.interviewer.first_name || ''} ${selectedInterviewer.interviewer.last_name || ''}`.trim(),
+                            email: selectedInterviewer.interviewer.email,
+                          },
                         }).then(() => {
                           const temp = selectedInterviewer;
                           temp.interviewer.feedback = {
@@ -1159,8 +1200,11 @@ const FeedbackForm = ({
   );
 };
 
-const requestFeedback = (email: string) => {
-  email;
-  return true;
-  // return axios.post('', { email }).then(() => true);
+const requestFeedback = (body: API_request_feedback['request']) => {
+  return axios
+    .post<API_request_feedback['response']>('/api/request_feedback', body)
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.mailSent;
+    });
 };

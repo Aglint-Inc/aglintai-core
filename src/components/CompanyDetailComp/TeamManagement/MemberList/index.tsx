@@ -13,6 +13,7 @@ import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
 import DeleteMemberDialog from './DeleteMemberDialog';
 dayjs.extend(relativeTime);
@@ -116,7 +117,9 @@ const Member = ({
         }}
         onClickResetPassword={{
           onClick: () => {
-            resetPassword(member.email);
+            resetPassword(member.email)
+              .then(() => toast.success('Password Reset mail Sent.'))
+              .catch(() => toast.error('Password Reset Failed.'));
           },
         }}
         key={1}
@@ -199,6 +202,7 @@ const resetPassword = (email: string) => {
   return axios
     .post<API_reset_password['response']>('/api/reset_password', body)
     .then(({ data }) => {
-      return data;
+      if (data.error) throw new Error(data.error);
+      return data.passwordReset;
     });
 };
