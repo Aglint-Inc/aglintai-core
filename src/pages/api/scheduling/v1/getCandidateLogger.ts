@@ -54,20 +54,20 @@ export const getCandidateLogger = (
       };
     }
 
-    for (let key of Object.keys(title_attr)) {
-      if (key === '{candidate}') {
-        log_msg = log_msg.replaceAll(
-          key,
-          `<span class="mention">@${candidate_name}</span>`,
-        );
-      }
-      if (key === '{date}') {
-        log_msg = log_msg.replaceAll(
-          key,
-          `<span class="progress_date_section">${title_attr[key]}</span>`,
-        );
-      }
-    }
+    // for (let key of Object.keys(title_attr)) {
+    //   if (key === '{candidate}') {
+    //     log_msg = log_msg.replaceAll(
+    //       key,
+    //       `<span class="mention">@${candidate_name}</span>`,
+    //     );
+    //   }
+    //   if (key === '{date}') {
+    //     log_msg = log_msg.replaceAll(
+    //       key,
+    //       `<span class="progress_date_section">${title_attr[key]}</span>`,
+    //     );
+    //   }
+    // }
 
     try {
       if (!task_id) return;
@@ -84,6 +84,7 @@ export const getCandidateLogger = (
             task_id: task_id,
             progress_type: progress_type,
             created_at: userTzDayjs().toISOString(),
+            title_meta: title_attr,
           })
           .select(),
       );
