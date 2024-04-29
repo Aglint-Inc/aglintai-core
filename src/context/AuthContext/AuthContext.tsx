@@ -252,7 +252,7 @@ const AuthProvider = ({ children }) => {
       {
         email: email,
       },
-      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
+      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/login` },
     );
     if (error) {
       toast.error(`Oops! Something went wrong. (${error.message})`);

@@ -60,10 +60,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error('Invalid request');
     }
 
-    const schedule = await getScheduleDetails(schedule_id);
+    const schedule = await getScheduleDetails(schedule_id, filter_id);
 
-    const filterJson = schedule
-      .interview_filter_json[0] as unknown as FilterjsonType;
+    const filterJson = schedule.interview_filter_json[0]
+      .filter_json as unknown as FilterjsonType;
 
     const application = schedule.applications;
 
@@ -79,10 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       job: application.public_jobs,
       schedule: schedule,
       candidate: application.candidates,
-      filter_json: {
-        ...filterJson.filter_json,
-        session_ids: filterJson.session_ids,
-      },
+      filter_json: filterJson,
       recruiter: recruiter,
       meetings: resMeetings,
     });
@@ -106,13 +103,14 @@ type FilterjsonType = {
   session_ids: string[];
 };
 
-const getScheduleDetails = async (schedule_id: string) => {
+const getScheduleDetails = async (schedule_id: string, filter_id: string) => {
   const { data: sch, error: errSch } = await supabase
     .from('interview_schedule')
     .select(
       '*,applications(*, public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type)),interview_filter_json(*),recruiter(id,logo,name)',
     )
     .eq('id', schedule_id)
+    .eq('interview_filter_json.id', filter_id)
     .single();
 
   if (errSch) throw new Error(errSch.message);
