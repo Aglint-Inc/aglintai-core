@@ -16,7 +16,6 @@ type GeoPoint = {
 };
 
 // import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
-import { EmailAgentId } from '@/src/components/Tasks/utils';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import {
   CandidateType,
@@ -27,30 +26,20 @@ import {
   PublicJobsType,
   RecruiterType,
 } from '@/src/types/data.types';
+import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
-import { log_task_progress } from '@/src/utils/scheduling_v2/utils';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { getCandidateLogger } from '../v1/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let {
-      cand_email,
-      filter_json_id,
-      interviewer_name,
-      cand_time_zone,
-      organizer_time_zone,
-      task_id,
-    } = req.body as InitAgentBodyParams;
+    let { cand_email, filter_json_id, interviewer_name, task_id } =
+      req.body as InitAgentBodyParams;
 
-    if (
-      !cand_email ||
-      !filter_json_id ||
-      !interviewer_name ||
-      !organizer_time_zone
-    ) {
+    if (!cand_email || !filter_json_id || !interviewer_name) {
       return res.status(400).send('missing fields');
     }
     // if (process.env.NODE_ENV === 'development') {
@@ -72,16 +61,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '[jobRole]': cand_details.job_role,
         '[endDate]': CandidatesScheduling.convertDateFormatToDayjs(
           cand_details.filter_json.end_date,
-          cand_details.filter_json.user_tz,
+          cand_details.company_timezone,
         ).format(BookingDateFormat),
         '[startDate]': CandidatesScheduling.convertDateFormatToDayjs(
           cand_details.filter_json.start_date,
-          cand_details.filter_json.user_tz,
-        )
-          .tz(cand_details.filter_json.user_tz)
-          .format(BookingDateFormat),
-        '[companyTimeZone]': organizer_time_zone,
-        '[candidateTimeZone]': cand_time_zone ?? null,
+          cand_details.company_timezone,
+        ).format(BookingDateFormat),
+        '[companyTimeZone]': cand_details.company_timezone,
+        '[candidateTimeZone]': cand_details.time_zone,
         '[selfScheduleLink]': `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}&task_id=${task_id}'>link</a>`,
       };
 
@@ -132,21 +119,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .eq('id', task_id),
       );
     }
-
-    await log_task_progress({
-      agent_type: 'email_agent',
-      log_msg: 'Sent interview schedule email to {candidate}',
-      task_id: task_id,
-      candidate_name: cand_details.candidate_name,
-      transcript: {
+    const candLogger = getCandidateLogger(
+      task_id,
+      cand_details.candidate_name,
+      cand_details.candidate_id,
+      'email_agent',
+    );
+    candLogger(
+      `Sent interview schedule email to {candidate}`,
+      {
+        '{candidate}': cand_details.candidate_name,
+      },
+      'email_agent',
+      'email_messages',
+      {
         message: email_details.body,
       },
-      created_by: {
-        id: EmailAgentId,
-        name: 'Email Agent',
-      },
-      progress_type: 'email_messages',
-    });
+    );
 
     return res.status(200).send('ok');
   } catch (error) {
@@ -200,6 +189,8 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
       .in('id', filter_json.session_ids),
   );
 
+  const company_sched_sett = job.recruiter
+    .scheduling_settings as schedulingSettingType;
   let cand_details = {
     application_id: rec.interview_schedule.applications.id,
     job_id: job.id,
@@ -212,7 +203,8 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     // date_range: [start_date, end_date],
     company_id: job.recruiter_id,
     // recruiter_user_id:,
-    time_zone: filter_json.user_tz,
+    time_zone: cand_basic_info.timezone,
+    company_timezone: company_sched_sett.timeZone.tzCode,
     company_name: job.company,
     job_role: job.job_title,
     schedule_name: `Interview for ${job.job_title} - ${getFullName(
@@ -222,6 +214,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     interview_sessions: int_sessions,
     schedule_id: rec.schedule_id,
     email_template: job.email_template['init_email_agent'],
+    candidate_id: cand_basic_info.id,
   };
   if (geo) {
     const timeZoneCode = await getTimeZoneOfGeo({
@@ -248,7 +241,7 @@ type CandidateScheduleDetails = InterviewFilterJsonType & {
     applications: Pick<JobApplcationDB, 'id'> & {
       candidates: Pick<
         CandidateType,
-        'first_name' | 'last_name' | 'email' | 'geolocation'
+        'first_name' | 'last_name' | 'email' | 'geolocation' | 'timezone' | 'id'
       >;
       public_jobs: Pick<
         PublicJobsType,

@@ -16,12 +16,8 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession } from './book_session';
 
 export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
-  let {
-    candidate_plan,
-    recruiter_id,
-    user_tz = 'Asia/colombo',
-    candidate_email,
-  } = req_body as ConfirmApiBodyParams;
+  let { candidate_plan, recruiter_id, user_tz, candidate_email } =
+    req_body as ConfirmApiBodyParams;
   const all_sess_ids: string[] = candidate_plan.reduce((tot, curr) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
