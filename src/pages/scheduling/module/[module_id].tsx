@@ -172,8 +172,9 @@ function ModuleMembersComp() {
                     </>
                   ) : subTab === 'instructions' ? (
                     <>
-                      <Stack p={'20px'}>
+                      <Stack p={'20px'} maxWidth={'1000px'}>
                         <Typography
+                          fontSize={'14px'}
                           dangerouslySetInnerHTML={{
                             __html: module?.instructions,
                           }}
@@ -585,7 +586,7 @@ function SlotQualifiedMembers({
                   fontSize='24px'
                 />
               }
-              textName={member.first_name}
+              textName={getFullName(member.first_name, member.last_name) || ''}
               textRole={member.position || '--'}
               isThreeDotVisible={false}
               isPauseResumeVisible={false}
