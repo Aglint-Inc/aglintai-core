@@ -55,6 +55,11 @@ export type CustomDatabase = {
                       'jsonb_data'
                     > & {
                       jsonb_data: sub_task_log_jsonb_data;
+                      title_meta: {
+                        '{booking_date}': string;
+                        '{candidate}': string;
+                        '{date}': string;
+                      };
                     };
                     Insert: Omit<
                       Database['public']['Tables'][Table]['Insert'],

@@ -50,7 +50,14 @@ function TaskBody({ byGroup }) {
     for (let task of tasks) {
       const toDayDateTime = dayjs();
       const dueDateTime = dayjs(task.due_date);
-      if (dueDateTime.isBefore(toDayDateTime) && task.status !== 'overdue') {
+      if (
+        dueDateTime.isBefore(toDayDateTime) &&
+        task.status !== 'overdue' &&
+        task.status !== 'completed' &&
+        task.status !== 'closed' &&
+        task.status !== 'cancelled' &&
+        task.status !== 'on_hold'
+      ) {
         overDueTasks.push({ id: task.id, status: 'overdue' });
       }
     }
