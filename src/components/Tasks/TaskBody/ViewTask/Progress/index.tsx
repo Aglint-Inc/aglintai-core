@@ -56,6 +56,19 @@ function SubTaskProgress() {
               const InterviewerCreator = assignerList.find(
                 (ele) => ele.user_id === (item.created_by as any).id,
               );
+              // const timeZone = dayjs.tz.guess();
+              const localTime = new Date().toTimeString();
+              const timeZonea = localTime.substring(
+                localTime.lastIndexOf('(') + 1,
+                localTime.lastIndexOf(')'),
+              );
+              const timezone = timeZonea
+                .split(' ')
+                .map((ele) => ele[0])
+                .join('');
+              const date = `<span class="progress_date_section">${item.title_meta['{date}'] + ' ' + timezone}</span>`;
+              const bookingTime = `<span class="progress_date_section">${item.title_meta['{booking_date}'] + ' ' + timezone}</span>`;
+              const candidateName = `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`;
               return (
                 <TaskProgress
                   isLineVisible={progressList.length !== i + 1}
@@ -64,7 +77,12 @@ function SubTaskProgress() {
                   textTask={
                     <span
                       dangerouslySetInnerHTML={{
-                        __html: item.title.replaceAll('Pm', 'PM'),
+                        __html: String(item.title)
+                          .trim()
+                          .replaceAll('Pm', 'PM')
+                          .replaceAll('{candidate}', candidateName)
+                          .replaceAll('{date}', date)
+                          .replaceAll('{booking_date}', bookingTime),
                       }}
                     ></span>
                   }
