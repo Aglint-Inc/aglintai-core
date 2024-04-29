@@ -152,6 +152,15 @@ export default function Loading() {
               if (error) {
                 throw error;
               }
+
+              if (userDetails.user.email !== data[0].email) {
+                await supabase
+                  .from('recruiter_user')
+                  .update({
+                    email: userDetails.user.email,
+                  })
+                  .eq('user_id', userDetails?.user?.id);
+              }
               // // last login time stamp Update
               // const temp_time = new Date().toISOString();
               // supabase

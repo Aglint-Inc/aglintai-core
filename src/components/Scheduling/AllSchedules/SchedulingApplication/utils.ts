@@ -927,6 +927,8 @@ export const agentTrigger = async ({
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
         task_id: task_id,
+        cand_time_zone: user_tz,
+        organizer_time_zone: user_tz,
       } as InitAgentBodyParams,
     );
     console.log(res?.data);
