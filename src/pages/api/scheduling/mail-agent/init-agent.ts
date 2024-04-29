@@ -189,14 +189,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
   const cand_basic_info = rec.interview_schedule.applications.candidates;
   const job = rec.interview_schedule.applications.public_jobs;
   // const sched_setting = rec.interview_schedule;
-  const filter_json = rec.filter_json as {
-    user_tz: string;
-    end_date: string;
-    start_date: string;
-    session_ids: string[];
-    recruiter_id: string;
-    organizer_name: string;
-  };
+  const filter_json = rec.filter_json as TFilterJSON;
 
   const geo = cand_basic_info.geolocation as GeoPoint | null;
 
@@ -239,6 +232,15 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
   }
 
   return cand_details;
+};
+
+export type TFilterJSON = {
+  user_tz: string;
+  end_date: string;
+  start_date: string;
+  session_ids: string[];
+  recruiter_id: string;
+  organizer_name: string;
 };
 
 type CandidateScheduleDetails = InterviewFilterJsonType & {

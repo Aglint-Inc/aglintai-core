@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';

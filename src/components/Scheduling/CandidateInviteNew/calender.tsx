@@ -4,13 +4,12 @@ import { useState } from 'react';
 
 import { AvailableTimeRange, CandidateCalender, DayColumn } from '@/devlink';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
+import { useInviteSlots } from '@/src/queries/candidate-invite';
 
 export type CandidateInviteCalendarProps = {
   sessions: {
     date: string;
-    slots: ReturnType<
-      typeof useCandidateInvite
-    >['invites']['data']['allSlots'][number][number];
+    slots: ReturnType<typeof useInviteSlots>['data'][number][number];
   }[];
   selections: ReturnType<typeof useCandidateInvite>['selectedSlots'];
   handleSelect: (

@@ -77,7 +77,7 @@ function SchedulingSettings({
   const [freeKeyWords, setFreeKeywords] = useState([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
 
-  const [selectedTimeZone, setSelectedTimeZone] = useState(null);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
 
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
@@ -252,45 +252,11 @@ function SchedulingSettings({
               >
                 <WorkingHours
                   slotTimeZoneInput={
-                    <Stack spacing={'10px'} width={420}>
-                      <Autocomplete
-                        disabled={isTimeZone}
-                        disableClearable
-                        options={timeZones}
-                        value={selectedTimeZone}
-                        onChange={(event, value) => {
-                          if (value) {
-                            setSelectedTimeZone(value);
-                          }
-                        }}
-                        autoComplete={false}
-                        getOptionLabel={(option) => option.label}
-                        renderOption={(props, option) => {
-                          return (
-                            <li {...props}>
-                              <Typography variant='body2' color={'#000'}>
-                                {option.label}
-                              </Typography>
-                            </li>
-                          );
-                        }}
-                        renderInput={(params) => {
-                          return (
-                            <UITextField
-                              rest={{ ...params }}
-                              labelSize='medium'
-                              // fullWidth
-                              label=''
-                              placeholder='Ex. Healthcare'
-                              InputProps={{
-                                ...params.InputProps,
-                                autoComplete: 'new-password',
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    </Stack>
+                    <TimezoneSelector
+                      disabled={isTimeZone}
+                      value={selectedTimeZone}
+                      setValue={setSelectedTimeZone}
+                    />
                   }
                   // slotTimeZoneToggle={}
                   slotWorkingHourDay={
@@ -456,7 +422,9 @@ function SchedulingSettings({
                                     )}
                                   onSelect={(e) => {
                                     setSelectedHourBreak((pre) => {
-                                      pre.start_time = `${dayjs(e).format('HH:mm')}`;
+                                      pre.start_time = `${dayjs(e).format(
+                                        'HH:mm',
+                                      )}`;
                                       return { ...pre };
                                     });
                                   }}
@@ -532,7 +500,9 @@ function SchedulingSettings({
                                     )}
                                   onSelect={(e) => {
                                     setSelectedHourBreak((pre) => {
-                                      pre.end_time = `${dayjs(e).format('HH:mm')}`;
+                                      pre.end_time = `${dayjs(e).format(
+                                        'HH:mm',
+                                      )}`;
                                       return { ...pre };
                                     });
                                   }}
@@ -820,6 +790,66 @@ function SchedulingSettings({
 }
 
 export default SchedulingSettings;
+
+export type TimezoneObj = {
+  label: string;
+  tzCode: string;
+  name: string;
+  utc: string;
+};
+type TimezoneSelectorProps = {
+  value: TimezoneObj;
+  // eslint-disable-next-line no-unused-vars
+  setValue: (value: TimezoneObj) => void;
+  disabled: boolean;
+};
+export const TimezoneSelector = ({
+  disabled,
+  setValue,
+  value,
+}: TimezoneSelectorProps) => {
+  return (
+    <Stack spacing={'10px'} width={420}>
+      <Autocomplete
+        disabled={disabled}
+        disableClearable
+        options={timeZones}
+        value={value}
+        onChange={(event, value) => {
+          if (value) {
+            setValue(value);
+          }
+        }}
+        autoComplete={false}
+        getOptionLabel={(option) => option.label}
+        renderOption={(props, option) => {
+          return (
+            <li {...props}>
+              <Typography variant='body2' color={'#000'}>
+                {option.label}
+              </Typography>
+            </li>
+          );
+        }}
+        renderInput={(params) => {
+          return (
+            <UITextField
+              rest={{ ...params }}
+              labelSize='medium'
+              // fullWidth
+              label=''
+              placeholder='Ex. Healthcare'
+              InputProps={{
+                ...params.InputProps,
+                autoComplete: 'new-password',
+              }}
+            />
+          );
+        }}
+      />
+    </Stack>
+  );
+};
 
 const settingsItems = [
   { label: 'Interview Load', value: 'interviewLoad' },
