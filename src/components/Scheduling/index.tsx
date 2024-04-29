@@ -57,6 +57,7 @@ function SchedulingMainComp() {
     recruiterUser.role === 'admin' ||
     recruiterUser.role === 'recruiter' ||
     recruiterUser.role === 'scheduler';
+
   return (
     <>
       <PageLayout
@@ -86,7 +87,9 @@ function SchedulingMainComp() {
                           ? 'My Schedules'
                           : tab === 'settings'
                             ? 'Settings'
-                            : 'Scheduler'
+                            : tab === 'dashboard'
+                              ? 'Dashboard'
+                              : 'Scheduler'
                   : 'Scheduler'
               }
               showArrow={isSubNavDisabled}

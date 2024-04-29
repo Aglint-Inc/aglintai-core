@@ -4,4 +4,5 @@ export type SchedulingTab =
   | 'interviewtypes'
   | 'interviewers'
   | 'interviewmodules'
-  | 'settings';
+  | 'settings'
+  | 'dashboard';
