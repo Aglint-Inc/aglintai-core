@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Dialog, Stack, Typography } from '@mui/material';
+import axios from 'axios';
 // import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
@@ -19,6 +20,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
 import { DatabaseTable } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -30,9 +32,6 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
-import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
-import axios from 'axios';
-import { useSchedulingApplicationStore } from '../../AllSchedules/SchedulingApplication/store';
 
 type FeedbackWindowInterviewersType = {
   [key: string]: {
@@ -242,7 +241,6 @@ const AdminFeedback = ({
     job_id: string;
   };
 }) => {
-  const { recruiter } = useAuthDetails();
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
     index: number;
     interviewer: (typeof interviewers)[number];
