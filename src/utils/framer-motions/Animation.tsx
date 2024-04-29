@@ -25,7 +25,7 @@ export function YTransform({ children, uniqueKey }) {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -10, opacity: 0 }}
         transition={{ duration: 0.4 }}
-        style={{ height: '100%' }}
+        // style={{ height: '100%' }}
       >
         {children}
       </motion.div>
