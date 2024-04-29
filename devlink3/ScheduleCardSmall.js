@@ -47,7 +47,9 @@ export function ScheduleCardSmall({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "timer_flex")} tag="div">
-          <_Builtin.Block tag="div">{"Candidate :"}</_Builtin.Block>
+          <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
+            {"Candidate :"}
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "meeting_type")}
             tag="div"

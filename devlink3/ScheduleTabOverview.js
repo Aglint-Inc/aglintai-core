@@ -16,7 +16,7 @@ export function ScheduleTabOverview({
   onClickCopyLink = {},
   textMeetingLink = "meet.google.com/efg-rgt-tte",
   slotStatus,
-  textSchedule = "This Schedule has been confirmed on 24th Jan 2023",
+  textSchedule = "on April 26, 2024",
   onClickInterviewModuleLink = {},
   slotInterviewers,
   slotTrainees,
@@ -74,18 +74,7 @@ export function ScheduleTabOverview({
           className={_utils.cx(_styles, "div-block-1419")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold")}
-            tag="div"
-          >
-            {"Schedule Status"}
-          </_Builtin.Block>
           <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1420")}
-          tag="div"
-        >
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-600")}
             tag="div"
