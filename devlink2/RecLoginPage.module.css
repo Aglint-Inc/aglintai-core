@@ -232,6 +232,15 @@
   }
 }
 
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
 .sl-button {
   display: flex;
   padding: 10px 16px;
@@ -317,6 +326,10 @@
   align-items: center;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
+}
+
+.div-block-428.hide {
+  display: none;
 }
 
 .sl-inline-block {

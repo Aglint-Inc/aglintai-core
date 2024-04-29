@@ -215,6 +215,27 @@ function FilterDropDown({
                         } else {
                           temp = [...selectedItems, id];
                         }
+                        //@ts-ignore
+                        const preData =
+                          JSON.parse(localStorage.getItem('taskFilters')) || {};
+                        if (title === 'Job') {
+                          preData.Job = [...temp];
+                        }
+                        if (title === 'Priority') {
+                          preData.Priority = [...temp];
+                        }
+                        if (title === 'Status') {
+                          preData.Status = [...temp];
+                        }
+                        if (title === 'Assignee') {
+                          preData.Assignee = [...temp];
+                        }
+
+                        localStorage.setItem(
+                          'taskFilters',
+                          JSON.stringify(preData),
+                        );
+
                         setSelectedItems(temp);
                       }}
                     >

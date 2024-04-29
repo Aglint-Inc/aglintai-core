@@ -126,9 +126,11 @@ function Scheduling() {
                 client_secret: string;
                 account_id: string;
               };
-              clientIdRef.current.value = keys.client_id;
-              accountIdRef.current.value = keys.account_id;
-              clientSecretRef.current.value = keys.client_secret;
+              if (clientIdRef.current) {
+                clientIdRef.current.value = keys.client_id;
+                accountIdRef.current.value = keys.account_id;
+                clientSecretRef.current.value = keys.client_secret;
+              }
             }, 100);
           }
         });
