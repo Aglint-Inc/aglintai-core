@@ -52,34 +52,44 @@ function SchedulingMainComp() {
   }, [router]);
 
   const tab = router.query.tab as SchedulingTab;
+
+  const isSubNavDisabled =
+    recruiterUser.role === 'admin' ||
+    recruiterUser.role === 'recruiter' ||
+    recruiterUser.role === 'scheduler';
   return (
     <>
       <PageLayout
         slotTopbarLeft={
           <>
-            <Breadcrum
-              isLink={true}
-              onClickLink={{
-                onClick: () => {
-                  router.push(`${pageRoutes.SCHEDULING}?tab=dashboard`);
-                },
-              }}
-            />
+            {isSubNavDisabled && (
+              <Breadcrum
+                isLink={true}
+                onClickLink={{
+                  onClick: () => {
+                    router.push(`${pageRoutes.SCHEDULING}?tab=dashboard`);
+                  },
+                }}
+              />
+            )}
+
             <Breadcrum
               textName={
-                tab === 'candidates'
-                  ? 'Candidates'
-                  : tab === 'interviewers'
-                    ? 'Interviewers'
-                    : tab === 'interviewtypes'
-                      ? 'Interview Types'
-                      : tab === 'myschedules'
-                        ? 'My Schedules'
-                        : tab === 'settings'
-                          ? 'Settings'
-                          : ''
+                isSubNavDisabled
+                  ? tab === 'candidates'
+                    ? 'Candidates'
+                    : tab === 'interviewers'
+                      ? 'Interviewers'
+                      : tab === 'interviewtypes'
+                        ? 'Interview Types'
+                        : tab === 'myschedules'
+                          ? 'My Schedules'
+                          : tab === 'settings'
+                            ? 'Settings'
+                            : 'Scheduler'
+                  : 'Scheduler'
               }
-              showArrow={true}
+              showArrow={isSubNavDisabled}
             />
           </>
         }
@@ -109,9 +119,7 @@ function SchedulingMainComp() {
           </>
         }
         slotBody={
-          recruiterUser.role === 'admin' ||
-          recruiterUser.role === 'recruiter' ||
-          recruiterUser.role === 'scheduler' ? (
+          isSubNavDisabled ? (
             <BodyComp setSaving={setSaving} />
           ) : (
             <BodyWithSublink
