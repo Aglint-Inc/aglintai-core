@@ -42,7 +42,15 @@ function TriggerTime({
   const open = Boolean(openTriggerTime);
   const id = open ? 'simple-popover' : undefined;
 
-  const timeZone = dayjs.tz.guess();
+  const localTime = new Date().toTimeString();
+  const timeZonea = localTime.substring(
+    localTime.lastIndexOf('(') + 1,
+    localTime.lastIndexOf(')'),
+  );
+  const timezone = timeZonea
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
 
   return (
     <>
@@ -62,7 +70,7 @@ function TriggerTime({
                 </Typography>
               </ShowCode.When>
               <ShowCode.When isTrue={!isImmediate}>
-                {`${dayjs(selectTriggerTime).format('MMM DD, YYYY hh:mm A')} (${timeZone})`}
+                {`${dayjs(selectTriggerTime).format('MMM DD, YYYY hh:mm A')} (${timezone})`}
               </ShowCode.When>
             </ShowCode>
           </ShowCode.When>

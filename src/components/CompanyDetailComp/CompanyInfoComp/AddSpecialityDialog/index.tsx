@@ -56,7 +56,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       const newValue = inputValue.trim();
       if (!stacks.includes(newValue)) {
-        setStacks([...new Set([...stacks, newValue.toLocaleLowerCase()])]);
+        setStacks([...new Set([...stacks, newValue])]);
       }
       setTimeout(() => {
         setInputValue('');
@@ -103,7 +103,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
                       width={'100%'}
                       onClick={() => {
                         setStacks([
-                          ...new Set([...stacks, option.toLocaleLowerCase()])
+                          ...new Set([...stacks, option])
                         ]);
                         setTimeout(() => {
                           setInputValue('');
@@ -128,7 +128,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
                     onClick={() => {
                       if (!stacks.includes(option)) {
                         setStacks([
-                          ...new Set([...stacks, option.toLocaleLowerCase()])
+                          ...new Set([...stacks, option])
                         ]);
                         setTimeout(() => {
                           setInputValue('');

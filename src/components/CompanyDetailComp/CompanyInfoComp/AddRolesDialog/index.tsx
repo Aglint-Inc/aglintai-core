@@ -3,7 +3,7 @@ import {
   Dialog,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ interface RolesProps {
 const AddRolesDialog: React.FC<RolesProps> = ({
   handleClose,
   open,
-  handleChange
+  handleChange,
 }) => {
   const { recruiter } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
@@ -56,7 +56,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
     if (event.key === 'Enter' && inputValue.trim() !== '') {
       const newValue = inputValue.trim();
       if (!roles.includes(newValue)) {
-        setRoles([...new Set([...roles, newValue.toLocaleLowerCase()])]);
+        setRoles([...new Set([...roles, newValue])]);
       }
       setTimeout(() => {
         setInputValue('');
@@ -76,7 +76,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
               onClickRemoveRoles={{
                 onClick: () => {
                   setRoles(roles.filter((rol) => role != rol));
-                }
+                },
               }}
             />
           );
@@ -102,13 +102,11 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                       direction={'row'}
                       width={'100%'}
                       onClick={() => {
-                        setRoles([
-                          ...new Set([...roles, option.toLocaleLowerCase()])
-                        ]);
+                        setRoles([...new Set([...roles, option])]);
                         setTimeout(() => {
                           setInputValue('');
                           setOptions(initialRoles);
-                        }, 10);
+                        }, 50);
                       }}
                       alignItems={'center'}
                       spacing={'4px'}
@@ -125,9 +123,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                     width={'100%'}
                     onClick={() => {
                       if (!roles.includes(option)) {
-                        setRoles([
-                          ...new Set([...roles, option.toLocaleLowerCase()])
-                        ]);
+                        setRoles([...new Set([...roles, option])]);
                         setTimeout(() => {
                           setInputValue('');
                         }, 50);
@@ -147,7 +143,7 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
-                  disableUnderline: true
+                  disableUnderline: true,
                 }}
                 onKeyDown={handleKeyDown}
               />
@@ -157,16 +153,16 @@ const AddRolesDialog: React.FC<RolesProps> = ({
         onClickCancel={{
           onClick: () => {
             handleClose();
-          }
+          },
         }}
         onClickDone={{
           onClick: () => {
             handleChange({
               ...recruiter,
-              available_roles: roles
+              available_roles: roles,
             });
             handleClose();
-          }
+          },
         }}
       />
     </Dialog>

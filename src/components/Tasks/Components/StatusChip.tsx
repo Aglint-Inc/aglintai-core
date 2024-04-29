@@ -83,12 +83,6 @@ export const statusList = [
     color: '#CC3340',
   },
   {
-    id: 'overdue' as CustomDatabase['public']['Enums']['task_status'],
-    backgroundColor: palette['orange'][500] + '55',
-    label: 'Overdue',
-    color: palette['orange'][600],
-  },
-  {
     id: 'closed' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: palette.grey[500] + 'aa',
     label: 'Closed',

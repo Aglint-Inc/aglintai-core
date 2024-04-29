@@ -102,7 +102,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   // open trigger Time
   const [openTriggerTime, setOpenTriggerTime] = useState(null);
   const spanRef = useRef(null);
-
+  let overDueText = '';
+  let toDayDateTime = dayjs();
+  let dueDateTime = dayjs(task.due_date);
+  if (dueDateTime.isBefore(toDayDateTime)) {
+    overDueText = '(overdue)';
+    // eslint-disable-next-line no-console
+    console.log(overDueText);
+  }
   return (
     <>
       <ViewTaskCard

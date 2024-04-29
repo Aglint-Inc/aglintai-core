@@ -67,6 +67,102 @@
   grid-row-gap: 8px;
 }
 
+.div-block-1435.overview-wrap {
+  justify-content: space-between;
+}
+
+.div-block-1625 {
+  position: relative;
+  z-index: 1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: #f8f9f9;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-sm.color-grey-600 {
+  color: #68737d;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-sm.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-sm.badge {
+  color: #228f67;
+}
+
+.text-sm.done {
+  color: #228f67;
+}
+
+.text-sm.in-progress {
+  color: #337fbd;
+}
+
+.text-sm.progress {
+  color: #68737d;
+}
+
+.text-sm.justnow-text {
+  color: rgba(28, 28, 28, 0.4);
+}
+
+.text-sm.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .div-block-1449 {
   position: absolute;
   left: 0%;
