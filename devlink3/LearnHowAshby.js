@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -13,7 +14,10 @@ export function LearnHowAshby({
         className={_utils.cx(_styles, "popup_title_block")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-lg", "fw-semibold")}
+          tag="div"
+        >
           {"How to connect with Ashby"}
         </_Builtin.Block>
         <_Builtin.Block
@@ -27,10 +31,7 @@ export function LearnHowAshby({
           />
         </_Builtin.Block>
       </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "popup_body-copy")}
-        tag="div"
-      >
+      <_Builtin.Block tag="div">
         <_Builtin.RichText
           className={_utils.cx(_styles, "helper_richtext")}
           tag="div"
@@ -40,7 +41,11 @@ export function LearnHowAshby({
               "To establish a connection with Ashby, you'll first need to obtain your API key. Here's how:"
             }
           </_Builtin.Paragraph>
-          <_Builtin.List tag="ul" unstyled={false}>
+          <_Builtin.List
+            className={_utils.cx(_styles, "list", "mt-20", "mb-20")}
+            tag="ul"
+            unstyled={false}
+          >
             <_Builtin.ListItem>
               {"To create a new API key, navigate to "}
               <_Builtin.Strong>{"Admin tab."}</_Builtin.Strong>
@@ -104,6 +109,10 @@ export function LearnHowAshby({
           }
         </_Builtin.Link>
       </_Builtin.Block>
+      <_Builtin.HtmlEmbed
+        className={_utils.cx(_styles, "hide")}
+        value="%3Cstyle%3E%0A%5Bclass*%3D%22LearnHowAshby_figure__%22%5D%0A%3C%2Fstyle%3E"
+      />
     </_Component>
   );
 }

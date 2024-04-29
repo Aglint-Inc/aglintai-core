@@ -46,6 +46,69 @@
   text-transform: uppercase;
 }
 
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-sm.badge {
+  color: #228f67;
+}
+
+.text-sm.done {
+  color: #228f67;
+}
+
+.text-sm.in-progress {
+  color: #337fbd;
+}
+
+.text-sm.progress {
+  color: #68737d;
+}
+
+.text-sm.justnow-text {
+  color: rgba(28, 28, 28, 0.4);
+}
+
+.text-sm.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
 .big_date {
   font-size: 20px;
   line-height: 30px;
@@ -61,11 +124,6 @@
   align-items: flex-start;
   grid-column-gap: 6px;
   grid-row-gap: 6px;
-}
-
-.relative-1 {
-  position: relative;
-  z-index: 1;
 }
 
 .fw-semibold.relative_2 {
@@ -84,6 +142,10 @@
 
 .fw-semibold.capitalize {
   text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
 }
 
 .fw-semibold.text-purple {
@@ -106,6 +168,34 @@
   color: #d93f4c;
 }
 
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
 .timer_flex {
   display: flex;
   justify-content: flex-start;
@@ -122,4 +212,37 @@
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
+}
+
+.hide {
+  display: none;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
 }

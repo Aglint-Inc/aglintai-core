@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { CdSavedList } from "./CdSavedList";
@@ -176,7 +177,7 @@ export function CdAglintDb({
                     tag="div"
                   >
                     <_Builtin.Block tag="div">{slotCheckbox}</_Builtin.Block>
-                    <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+                    <_Builtin.Block tag="div">{"Candidates"}</_Builtin.Block>
                   </_Builtin.Block>
                   <_Builtin.Block
                     className={_utils.cx(_styles, "experince-head-wrap")}

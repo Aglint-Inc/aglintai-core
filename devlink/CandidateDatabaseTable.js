@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -173,7 +174,7 @@ export function CandidateDatabaseTable({
                     className={_utils.cx(_styles, "line-clamp-1")}
                     tag="div"
                   >
-                    {"Candidate"}
+                    {"Candidates"}
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
