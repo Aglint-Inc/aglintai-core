@@ -87,6 +87,7 @@ const reducerInitialState: TasksReducerType = {
         { id: 'closed', label: 'Closed' },
         { id: 'cancelled', label: 'Cancelled' },
         { id: 'scheduled', label: 'Scheduled' },
+        { id: 'overdue', label: 'Overdue' },
       ],
       values: [],
     },
