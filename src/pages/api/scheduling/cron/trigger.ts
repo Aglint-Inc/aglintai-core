@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { Database } from '@/src/types/schema';
@@ -17,7 +17,11 @@ const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/schedulewithagent`;
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const config = {
+  runtime: 'edge',
+};
+
+export default async function handler() {
   try {
     const { data, error } = await supabase
       .from('new_tasks')
@@ -75,18 +79,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         // You might want to handle errors here
         console.log(`${filterTaskAgent.length} applications triggered`);
-        return res
-          .status(200)
-          .send(`${filterTaskAgent.length} applications triggered`);
+
+        return new NextResponse(
+          JSON.stringify(`${filterTaskAgent.length} applications triggered`),
+          {
+            status: 200,
+          },
+        );
       } else {
         console.log('no applications');
-        return res.status(200).send('no applications');
+        return new NextResponse(JSON.stringify('no applications'), {
+          status: 200,
+        });
       }
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error.message);
+    return new NextResponse(JSON.stringify(error.message), {
+      status: 200,
+    });
   }
-};
-
-export default handler;
+}
