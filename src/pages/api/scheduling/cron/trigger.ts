@@ -32,8 +32,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ascending: true,
       });
 
-    console.log(data);
-
     if (error) {
       throw new Error(error.message);
     } else {
