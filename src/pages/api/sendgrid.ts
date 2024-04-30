@@ -28,8 +28,7 @@ export default async function handler(req, res) {
     };
 
     msg.to = getOutboundEmail(msg.to, true);
-
-    const s = await sgMail.send({
+    await sgMail.send({
       ...msg,
     });
     return res.status(200).json({ data: 'Email sent' });
