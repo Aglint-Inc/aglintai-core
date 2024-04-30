@@ -290,7 +290,7 @@ function SourcingAgent() {
       setSelectedCandidates(new Set<string>());
       setLoading(false);
     } else {
-      toast.warning('Please enter your message!');
+      toast.warning('Please enter your request.');
     }
   }
   useEffect(() => {

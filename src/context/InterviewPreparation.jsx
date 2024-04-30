@@ -771,7 +771,7 @@ const InterviewPrepProvider = ({ children }) => {
         setAiFailed(true);
       }
     } else {
-      toast.warning('Please give you answer');
+      toast.warning('Please give you answer.');
     }
   }
 
@@ -1064,7 +1064,7 @@ const InterviewPrepProvider = ({ children }) => {
         (pre) => pre.id !== interviewId,
       );
       setInterviewsList(filteredInterview);
-      toast.success('Interview successfully deleted');
+      toast.success('Interview successfully deleted.');
     }
     // deleting all files from bucket
     const { data: allfiles, error: allfilesError } = await supabase.storage

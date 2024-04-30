@@ -201,7 +201,7 @@ const SingleDayError = () => {
   const { params } = useCandidateInvite();
   const { refetch } = useInviteSlots(params);
   useEffect(() => {
-    toast.error('Something went wrong. Please try again');
+    toast.error('Something went wrong. Please try again.');
   }, []);
   return <AUIButton onClick={() => refetch()}>Try again</AUIButton>;
 };
@@ -409,7 +409,7 @@ const MultiDayError = () => {
   const { params } = useCandidateInvite();
   const { refetch } = useInviteSlots(params);
   useEffect(() => {
-    toast.error('Something went wrong. Please try again');
+    toast.error('Something went wrong. Please try again.');
   }, []);
   return <AUIButton onClick={() => refetch()}>Try again</AUIButton>;
 };

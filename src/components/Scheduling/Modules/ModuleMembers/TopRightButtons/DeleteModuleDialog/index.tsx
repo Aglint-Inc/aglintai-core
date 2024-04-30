@@ -33,24 +33,24 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
             router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`);
-            toast.success('Module deleted successfully');
+            toast.success('Interview type deleted successfully.');
           } else {
             throw new Error();
           }
         } else {
           toast.warning(
-            'Cannot delete module, this module is tagged in some interview plan',
+            'Cannot delete interview type; it is being used in interview plans.',
           );
         }
       } catch {
-        toast.error('Error deleting interview type');
+        toast.error('Error deleting interview type.');
       } finally {
         setValue('');
         setLoading(false);
         setIsDeleteModuleDialogOpen(false);
       }
     } else {
-      toast.warning('Please wait, till the ongoing process is complete');
+      toast.warning('Please wait until the ongoing process is complete.');
     }
   };
 
@@ -62,7 +62,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
       setIsDeleteModuleDialogOpen(false);
       setTimeout(() => setValue(''), 400);
     } else {
-      toast.warning('Please wait, till the ongoing process is complete');
+      toast.warning('Please wait until the ongoing process is complete.');
     }
   }, [loading]);
 

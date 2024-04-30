@@ -96,7 +96,7 @@ function EditFilter() {
           );
 
         if (errorCompanies) {
-          toast.error('Something went wrong! Please try again later.');
+          toast.error('Something went wrong. Please try again.');
           setIsFilterLoading(false);
           return;
         }
@@ -156,7 +156,7 @@ function EditFilter() {
       );
 
       if (!resCand.data.people) {
-        toast.error('Something went wrong! Please try again later.');
+        toast.error('Something went wrong. Please try again.');
         setIsFilterLoading(false);
       }
 
@@ -191,7 +191,7 @@ function EditFilter() {
       setIsFilterLoading(false);
       setIsFilterOpen(false);
     } catch (e) {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
       setIsFilterLoading(false);
     }
   };

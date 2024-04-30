@@ -462,7 +462,6 @@ export const scheduleWithAgent = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
-  user_tz,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -480,7 +479,6 @@ export const scheduleWithAgent = async ({
   rec_user_phone: string;
   rec_user_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
-  user_tz: string;
 }) => {
   try {
     console.log(application_id, 'application_id');
@@ -530,7 +528,6 @@ export const scheduleWithAgent = async ({
           sessions_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
           recruiter_id,
-          user_tz,
           supabase,
           rec_user_id,
         });
@@ -582,7 +579,6 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
-          user_tz,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -616,7 +612,6 @@ export const scheduleWithAgent = async ({
           sessions_ids: session_ids,
           schedule_id: checkSch[0].id,
           recruiter_id,
-          user_tz,
           supabase,
           rec_user_id,
         });
@@ -655,7 +650,6 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
-          user_tz,
         });
       }
       return true;
@@ -678,7 +672,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
-  user_tz,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -744,7 +737,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           sessions_ids: createCloneRes.session_ids,
           schedule_id: createCloneRes.schedule.id,
           recruiter_id,
-          user_tz,
           supabase,
           rec_user_id,
         });
@@ -793,7 +785,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
-          user_tz,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -827,7 +818,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           sessions_ids: session_ids,
           schedule_id: checkSch[0].id,
           recruiter_id,
-          user_tz,
           supabase,
           rec_user_id,
         });
@@ -870,7 +860,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
-          user_tz,
         });
       }
       return true;
@@ -884,7 +873,6 @@ export const createFilterJson = async ({
   sessions_ids,
   schedule_id,
   organizer_name,
-  user_tz,
   recruiter_id,
   dateRange,
   supabase,
@@ -893,7 +881,6 @@ export const createFilterJson = async ({
   sessions_ids: string[];
   schedule_id: string;
   organizer_name: string;
-  user_tz: string;
   recruiter_id: string;
   dateRange: {
     start_date: string;
@@ -908,11 +895,8 @@ export const createFilterJson = async ({
       filter_json: {
         session_ids: sessions_ids,
         recruiter_id: recruiter_id,
-        start_date: dayjs
-          .tz(dateRange.start_date, user_tz)
-          .format('DD/MM/YYYY'),
-        end_date: dayjs.tz(dateRange.end_date, user_tz).format('DD/MM/YYYY'),
-        user_tz: user_tz,
+        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         organizer_name: organizer_name,
       },
       session_ids: sessions_ids,
@@ -1010,7 +994,6 @@ export const agentTrigger = async ({
   jobRole,
   rec_user_email,
   rec_user_phone = '',
-  user_tz,
 }: {
   type: 'email_agent' | 'phone_agent';
   sessionsWithPlan: Awaited<ReturnType<typeof fetchInterviewDataSchedule>>;
@@ -1022,14 +1005,12 @@ export const agentTrigger = async ({
   jobRole: string;
   rec_user_email: string;
   rec_user_phone: string;
-  user_tz: string;
 }) => {
   console.log({
     type,
     candidate_name,
     rec_user_email,
     rec_user_phone,
-    user_tz,
   });
 
   const candidate = sessionsWithPlan.application.candidates;
@@ -1049,8 +1030,6 @@ export const agentTrigger = async ({
         filter_json_id: filterJsonId,
         interviewer_name: recruiter_user_name,
         task_id: task_id,
-        cand_time_zone: user_tz,
-        organizer_time_zone: user_tz,
       } as InitAgentBodyParams,
     );
 

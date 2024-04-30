@@ -61,7 +61,7 @@ function CdTableRecords({ loading }) {
         person_seniorities: filters.person_seniorities,
       });
       if (!resCand.data.people) {
-        toast.error('Something went wrong! Please try again later.');
+        toast.error('Something went wrong. Please try again.');
       }
       let fetchedCandidates: Candidate[] = resCand.data.people;
       const fetchedIds = fetchedCandidates.map((c) => c.id);
@@ -87,7 +87,7 @@ function CdTableRecords({ loading }) {
       }
       setFetchingNextPage(false);
     } catch (e) {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
       setFetchingNextPage(false);
     }
   };

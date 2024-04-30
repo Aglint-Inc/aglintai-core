@@ -105,7 +105,7 @@ function ModuleMembersComp() {
           return item;
         });
         setModule({ ...module, relations });
-        toast.success('Candidate Qualified as Interviewer for this module');
+        toast.success('Candidate qualified as interviewer for this module.');
       },
     );
   };

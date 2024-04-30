@@ -185,7 +185,7 @@ function CandidateSearchHistory() {
           );
 
         if (errorCompanies) {
-          toast.error('Something went wrong! Please try again later.');
+          toast.error('Something went wrong. Please try again.');
           return;
         }
 
@@ -294,7 +294,7 @@ function CandidateSearchHistory() {
       setText('');
       setIsInputVisible(false);
     } else {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -316,7 +316,7 @@ function CandidateSearchHistory() {
       setEditListText('');
       setEditList(null);
     } else {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -432,7 +432,7 @@ function CandidateSearchHistory() {
                                   );
                                 } else {
                                   toast.error(
-                                    'None of the jobs have candidates. Please add candidates to the jobs.',
+                                    'No candidates are linked to the jobs. Please add candidates.',
                                   );
                                 }
                               }

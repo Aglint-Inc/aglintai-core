@@ -81,15 +81,15 @@ function ATSTools() {
               posthog.capture('Green House Data Fetched');
             }
           } else {
-            toast.error('Api is invalid!');
+            toast.error('API is invalid!');
             setLoading(false);
             return;
           }
         } catch (error) {
-          toast.error('Something went wrong!');
+          toast.error('Something went wrong.');
         }
       } else {
-        toast.warning('Please provide api key!');
+        toast.warning('Please provide API key.');
         setLoading(false);
         return;
       }
@@ -114,7 +114,7 @@ function ATSTools() {
               posthog.capture('Ashby Data Fetched');
             }
           } else {
-            toast.error('Api is invalid!');
+            toast.error('API is invalid.');
             setLoading(false);
             return;
           }
@@ -122,7 +122,7 @@ function ATSTools() {
           toast.error('Something went wrong!');
         }
       } else {
-        toast.warning('Please provide api key!');
+        toast.warning('Please provide API key!');
         setLoading(false);
         return;
       }
@@ -147,15 +147,15 @@ function ATSTools() {
               posthog.capture('Lever Data Fetched');
             }
           } else {
-            toast.error('Api is invalid!');
+            toast.error('API is invalid!');
             setLoading(false);
             return;
           }
         } catch (error) {
-          toast.error('Something went wrong!');
+          toast.error('Something went wrong.');
         }
       } else {
-        toast.warning('Please provide api key!');
+        toast.warning('Please provide API key!');
         setLoading(false);
         return;
       }

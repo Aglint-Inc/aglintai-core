@@ -82,7 +82,7 @@ export default function ForgotPasswordComponent() {
         setLoading(false);
       }
     } else {
-      toast.error('Please Enter Email Address');
+      toast.error('Please enter email.');
     }
   };
 

@@ -29,7 +29,7 @@ function Assistant({ setIsSaving }) {
       });
       createAssistant(data);
     }
-    toast.success('Saved changes!');
+    toast.success('Changes saved.');
     setbtnhide(true);
   }
 

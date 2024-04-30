@@ -25,7 +25,7 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
         .eq('id', editModule?.id)
         .select();
       if (data) {
-        toast.success('Instruction updated!');
+        toast.success('Instructions updated successfully.');
         setOpenInstructions(false);
         refetch();
       }

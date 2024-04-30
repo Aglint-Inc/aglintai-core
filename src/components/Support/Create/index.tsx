@@ -171,7 +171,7 @@ function Support() {
           navigator.clipboard
             .writeText(`${window.location.host}/support/${ticketId}`)
             .then(() => {
-              toast.message('Copied to clipboard');
+              toast.message('Copied to clipboard.');
             });
         },
       }}

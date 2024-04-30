@@ -159,7 +159,7 @@ const AuthProvider = ({ children }) => {
       .eq('user_id', userDetails.user.id);
     if (!errorUser && recruiterUser.length > 0) {
       if (recruiterUser[0].is_suspended) {
-        toast.error('Your account is Suspended.');
+        toast.error('Your account is suspended.');
         return setTimeout(() => {
           handleLogout();
         }, 300);
@@ -258,7 +258,7 @@ const AuthProvider = ({ children }) => {
       toast.error(`Oops! Something went wrong. (${error.message})`);
       return false;
     } else {
-      showToast && toast.success(`Confirmation email sent`);
+      showToast && toast.success(`Confirmation email sent.`);
       return true;
     }
   };

@@ -72,7 +72,7 @@ function GetScheduleOptionsDialog() {
     try {
       setSaving(true);
       if (isDebrief && !selectedId) {
-        toast.warning('Please select a slot to schedule');
+        toast.warning('Please select a time slot to schedule.');
       } else {
         const res = await axios.post(
           '/api/scheduling/application/sendtocandidate',

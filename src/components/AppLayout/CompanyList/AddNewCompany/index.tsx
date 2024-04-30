@@ -508,7 +508,7 @@ function CompanyDetails({
         setRecruiter(rec[0] as RecruiterType);
         setOpenSideBar(false);
         getCompanies();
-        toast.success('Added company sucessfully');
+        toast.success('Company added successfully.');
       }
     }
   };

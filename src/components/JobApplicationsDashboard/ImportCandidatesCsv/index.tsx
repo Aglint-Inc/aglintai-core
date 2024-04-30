@@ -100,7 +100,7 @@ const ImportCandidatesCSV = ({
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {
-              toast.error('Candidates are not in CSV file😑');
+              toast.error('Candidates are not in CSV format.');
               setIsLoading(false);
               return;
             }
@@ -115,7 +115,7 @@ const ImportCandidatesCSV = ({
               // console.log('valid header');
               setbulkImportdata(data);
             } else {
-              toast.error('Invalid header😑');
+              toast.error('Invalid header.');
               // console.log('invalid header');
             }
           }

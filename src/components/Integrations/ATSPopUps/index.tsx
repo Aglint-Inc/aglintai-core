@@ -222,7 +222,7 @@ function ATSPopUps({
                             navigator.clipboard
                               .writeText(inputValue)
                               .then(() => {
-                                toast.message('Copied to clipboard');
+                                toast.message('Copied to clipboard.');
                               });
                           }}
                         >

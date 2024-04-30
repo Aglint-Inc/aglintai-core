@@ -73,14 +73,14 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
           total: number;
         };
         if (respTyped.plan_combs.length === 0) {
-          toast.error('No slots available');
+          toast.error('No availability found.');
         } else {
           setTotalSlots(respTyped.total);
           setSchedulingOptions(respTyped.plan_combs);
           setIsScheduleNowOpen(true);
         }
       } else {
-        toast.error('Error fetching schedule options');
+        toast.error('Error retrieving availability.');
       }
     } catch (e) {
       toast.error(e.message);
@@ -106,7 +106,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
       );
 
       if (resAllOptions.data.length === 0) {
-        toast.warning('No Slots Found');
+        toast.warning('No availability found.');
         return;
       }
 

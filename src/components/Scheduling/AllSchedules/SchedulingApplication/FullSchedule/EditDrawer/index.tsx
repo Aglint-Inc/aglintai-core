@@ -301,7 +301,7 @@ function SideDrawerEdit() {
           } as UpdateDebriefSession);
         }
       } else {
-        toast.error('Error caching session');
+        toast.error('Error caching session.');
       }
       await fetchInterviewDataByApplication();
       handleClose();

@@ -308,10 +308,10 @@ const EditMember = ({
                     })
                       .then(() => {
                         onClose();
-                        toast.success('Member Updated');
+                        toast.success('Member updated successfully.');
                       })
                       .catch(() => {
-                        toast.error('Error Updating Member');
+                        toast.error('Error updating member.');
                         setIsDisable(false);
                       });
                   }

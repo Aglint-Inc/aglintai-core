@@ -57,7 +57,7 @@ function ToolBar() {
 
     if (reason === 'close_tasks' || reason === 'change_status') {
       if (reason === 'change_status' && !selectedStatus) {
-        toast.message('Please select status!');
+        toast.message('Please select status.');
         return;
       }
       const tempTasks = cloneDeep(selectedTasks).map((item) => {
@@ -98,7 +98,7 @@ function ToolBar() {
     }
     if (reason === 'update_priority') {
       if (!selectedPriority) {
-        toast.message('Please select priority!');
+        toast.message('Please select priority.');
         return;
       }
       const tempTasks = cloneDeep(selectedTasks).map((item) => {
@@ -113,7 +113,7 @@ function ToolBar() {
     }
     if (reason === 'change_assignee') {
       if (!selectedAssignee) {
-        toast.message('Please select assignee!');
+        toast.message('Please select assignee.');
         return;
       }
       const tempTasks = cloneDeep(selectedTasks).map((item) => {

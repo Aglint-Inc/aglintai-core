@@ -171,7 +171,7 @@ function SideNavbar() {
       return pathName?.includes(item.route);
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
-      toast.error("You don't have Access to this Module.");
+      toast.error("This section of the application is not accessible to you.");
       router.replace(pageRoutes.LOADING);
     }
   }, [pathName]);

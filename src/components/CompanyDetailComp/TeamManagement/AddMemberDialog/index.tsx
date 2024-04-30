@@ -121,7 +121,7 @@ const AddMember = ({
       form.email.split('@')[1] !== recruiter.email.split('@')[1]
     ) {
       if (form.email.split('@')[1] !== recruiter.email.split('@')[1]) {
-        toast.error(`Email doesn't match with organization!`);
+        toast.error(`Email domain doesn't match organization.`);
       }
       temp = { ...temp, email: true };
       flag = true;
@@ -176,7 +176,7 @@ const AddMember = ({
           },
         ]);
         setInviteCardVisible(true);
-        toast.success('Invite sent');
+        toast.success('Invite sent successfully.');
         setIsDisable(false);
         setForm({
           first_name: null,
@@ -190,7 +190,7 @@ const AddMember = ({
           employment: null,
         });
       } else {
-        toast.error('User already exists');
+        toast.error('Member already exists.');
       }
     }
     setIsDisable(false);
@@ -506,7 +506,7 @@ const AddMember = ({
                         ({ error, emailSend }) => {
                           setResendDisable(null);
                           if (!error && emailSend) {
-                            return toast.success('Invite sent');
+                            return toast.success('Invite sent successfully.');
                           }
                           return toast.error(error);
                         },

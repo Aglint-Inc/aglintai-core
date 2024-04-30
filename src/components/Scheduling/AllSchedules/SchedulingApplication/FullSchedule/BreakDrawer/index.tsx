@@ -79,7 +79,7 @@ function BreakDrawerEdit() {
               .newId,
           );
       } else {
-        toast.error('Error caching session');
+        toast.error('Error caching session.');
       }
 
       await fetchInterviewDataByApplication();
