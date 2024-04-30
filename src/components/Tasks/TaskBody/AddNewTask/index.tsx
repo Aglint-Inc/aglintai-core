@@ -447,6 +447,8 @@ function AddNewTask() {
                   isOptionList={!selectedApplication?.id}
                 />
               }
+              isCandidateVisible={!!selectedJob?.id}
+              isInterviewVisible={!!selectedJob?.id}
               slotCandidate={
                 <CandidateList
                   selectedCandidate={selectedCandidate}
