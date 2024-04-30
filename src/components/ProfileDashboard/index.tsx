@@ -630,7 +630,7 @@ const handleValidate = (profile: FormFields | PreferenceFormFields) => {
     (acc, [key, curr]) => {
       let value = curr.value?.trim() || null;
       let error = false;
-      if (curr.required || (curr.validation === 'linkedIn' && value?.length)) {
+      if (curr.required || value?.length) {
         switch (curr.validation) {
           case 'string':
             {
@@ -918,6 +918,6 @@ export default ProfileDashboard;
 
 const validateLinkedIn = (value: string) => {
   const linkedInURLPattern =
-    /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+    /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
   return linkedInURLPattern.test(value);
 };
