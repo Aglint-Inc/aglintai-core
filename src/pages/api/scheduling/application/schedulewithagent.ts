@@ -47,6 +47,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let resAgent = null;
 
     if (task_id) {
+      await supabaseAdmin
+        .from('new_tasks')
+        .update({
+          trigger_count: trigger_count + 1,
+          status: 'in_progress',
+        })
+        .eq('id', task_id)
+        .select();
       resAgent = await scheduleWithAgent({
         application_id,
         dateRange,
@@ -62,7 +70,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         rec_user_id,
         supabase: supabaseAdmin,
         user_tz,
-        trigger_count,
       });
     } else {
       console.log('no task id');
