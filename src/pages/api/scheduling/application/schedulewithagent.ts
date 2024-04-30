@@ -66,6 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     } else {
       console.log('no task id');
+      return res.status(200).send('no task id');
     }
 
     return res.status(200).send(resAgent);
