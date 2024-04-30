@@ -19,40 +19,33 @@ const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/sch
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { data: emailTasks, error: errorEmail } = await supabase
+    const { data, error } = await supabase
       .from('new_tasks')
       .select(
         '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
       .eq('status', 'scheduled')
-      .containedBy('assignee', [EmailAgentId])
+      .or(`assignee.eq.{"${EmailAgentId}"},assignee.eq.{"${PhoneAgentId}"}`)
       .lt('trigger_count', 2)
       .lt('start_date', new Date().toISOString())
       .order('created_by', {
         ascending: true,
       });
 
-    const { data: phoneTasks, error: errorPhone } = await supabase
-      .from('new_tasks')
-      .select(
-        '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
-      )
-      .eq('status', 'scheduled')
-      .containedBy('assignee', [PhoneAgentId])
-      .lt('trigger_count', 2)
-      .lt('start_date', new Date().toISOString())
-      .order('created_by', {
-        ascending: true,
-      });
+    console.log(data);
 
-    if (errorPhone || errorEmail) {
-      throw new Error(errorEmail.message || errorPhone.message);
+    if (error) {
+      throw new Error(error.message);
     } else {
-      const allTasks = [...emailTasks, ...phoneTasks];
-
-      if (allTasks?.length > 0) {
+      const filterTaskAgent =
+        data?.filter(
+          (task) =>
+            task.assignee.includes(EmailAgentId) ||
+            task.assignee.includes(PhoneAgentId),
+        ) || [];
+      if (filterTaskAgent?.length > 0) {
         await Promise.all(
-          allTasks.map(async (task) => {
+          filterTaskAgent.map(async (task) => {
             try {
               axios.post(url, {
                 application_id: task.application_id,
@@ -80,11 +73,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
           }),
         );
+        
         // You might want to handle errors here
-        console.log(`${allTasks.length} applications triggered`);
+        console.log(`${filterTaskAgent.length} applications triggered`);
         return res
           .status(200)
-          .send(`${allTasks.length} applications triggered`);
+          .send(`${filterTaskAgent.length} applications triggered`);
       } else {
         console.log('no applications');
         return res.status(200).send('no applications');
