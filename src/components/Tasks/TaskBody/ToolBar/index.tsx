@@ -9,6 +9,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { DatabaseEnums } from '@/src/types/customSchema';
+import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -28,8 +29,13 @@ import PopUps from './PopUps';
 import { ToolPopUpReason } from './utils';
 
 function ToolBar() {
-  const { selectedTasksIds, isImmediate, setSelectedTasksIds, setIsImmediate } =
-    useTaskStatesContext();
+  const {
+    selectedTasksIds,
+    isImmediate,
+    setSelectedTasksIds,
+    setIsImmediate,
+    assignerList,
+  } = useTaskStatesContext();
   const { handelUpdateTask, tasks } = useTasksContext();
   const { recruiterUser } = useAuthDetails();
   const [isOpen, setIsOpen] = useState(false);
@@ -127,8 +133,11 @@ function ToolBar() {
       });
       handelUpdateTask(tempTasks);
       for (let task of selectedTasks) {
+        const currentAssignee = assignerList.find(
+          (ele) => ele.user_id === task.assignee[0],
+        );
         await createTaskProgress({
-          type: 'create_task',
+          type: 'change_assignee',
           data: {
             created_by: {
               id: recruiterUser.user_id,
@@ -141,13 +150,16 @@ function ToolBar() {
             task_id: task.id,
           },
           optionData: {
-            creatorName:
-              recruiterUser.first_name + ' ' + (recruiterUser.last_name ?? ''),
-            assignerName:
-              selectedAssignee.first_name +
-              ' ' +
-              (selectedAssignee.last_name ?? ''),
+            currentAssigneeId: task.assignee[0],
             assignerId: selectedAssignee.user_id,
+            assignerName: getFullName(
+              selectedAssignee.first_name,
+              selectedAssignee.last_name,
+            ),
+            currentAssigneeName: getFullName(
+              currentAssignee.first_name,
+              currentAssignee.last_name,
+            ),
           },
         });
       }

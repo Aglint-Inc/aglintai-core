@@ -297,6 +297,7 @@ export * from "./Priority";
 export * from "./PrioritySmall";
 export * from "./ProfileEmailPop";
 export * from "./ProfileInterviewScore";
+export * from "./ProfileList";
 export * from "./ProfileShare";
 export * from "./QuestionSkeletonLoader";
 export * from "./RadioButton";
