@@ -82,6 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .eq('candidate_email', cand_email),
     );
     supabaseWrap(
+      // error here //
       // @ts-ignore
       await supabaseAdmin.from('scheduling-agent-chat-history').insert({
         application_id: cand_details.application_id,
