@@ -136,7 +136,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     textName={capitalizeAll(
                       task.applications.candidates?.first_name +
                         ' ' +
-                        task.applications.candidates?.last_name,
+                        (task.applications.candidates?.last_name ?? ''),
                     )}
                   />
                 )
