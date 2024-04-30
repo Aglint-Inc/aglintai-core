@@ -10,10 +10,10 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import {
-  ButtonPrimaryRegular,
   EmailChangePop,
   NavSublink,
   PasswordUpdated,
+  ProfileList,
   UserChangeEmail,
   UserDetails,
   UserPasswordChange,
@@ -36,7 +36,7 @@ type FormValues = {
   type: 'text' | 'password';
   placeholder: string;
   error: boolean;
-  validation: 'string' | 'phone' | 'mail' | 'password';
+  validation: 'string' | 'phone' | 'mail' | 'password' | 'linkedIn';
   helperText: string;
   blocked: boolean;
   required: boolean;
@@ -48,12 +48,13 @@ type FormValues = {
 type FormFields = {
   first_name: FormValues;
   last_name: FormValues;
-  email: FormValues;
+  // email: FormValues;
   phone: FormValues;
-  location: FormValues;
-  designation: FormValues;
-  department: FormValues;
-  role: FormValues;
+  linked_in: FormValues;
+  // location: FormValues;
+  // designation: FormValues;
+  // department: FormValues;
+  // role: FormValues;
 };
 type PreferenceFormFields = {
   language: FormValues;
@@ -127,14 +128,14 @@ const ProfileDashboard = () => {
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
-    email: {
-      ...initialFormValues,
-      value: recruiterUser.email,
-      blocked: true,
-      required: false,
-      label: 'Email',
-      placeholder: 'Enter your email.',
-    },
+    // email: {
+    //   ...initialFormValues,
+    //   value: recruiterUser.email,
+    //   blocked: true,
+    //   required: false,
+    //   label: 'Email',
+    //   placeholder: 'Enter your email.',
+    // },
     phone: {
       ...initialFormValues,
       value: recruiterUser.phone,
@@ -142,36 +143,43 @@ const ProfileDashboard = () => {
       label: 'Contact Number',
       required: false,
     },
-    location: {
+    linked_in: {
       ...initialFormValues,
-      value: recruiterUser.interview_location,
-      // validation: 'Location',
-      label: 'Location',
-      blocked: true,
+      value: recruiterUser.linked_in,
+      validation: 'linkedIn',
+      label: 'LinkedIn',
       required: false,
     },
-    designation: {
-      ...initialFormValues,
-      value: recruiterUser.position,
-      label: 'Tittle',
-      blocked: true,
-      required: false,
-    },
-    department: {
-      ...initialFormValues,
-      value: recruiterUser.department,
-      label: 'Department',
-      blocked: true,
-      required: false,
-    },
-    role: {
-      ...initialFormValues,
-      value: capitalize(recruiterUser.role),
-      label: 'Role',
-      blocked: true,
-      required: false,
-      placeholder: 'Enter your role.',
-    },
+    // location: {
+    //   ...initialFormValues,
+    //   value: recruiterUser.interview_location,
+    //   // validation: 'Location',
+    //   label: 'Location',
+    //   blocked: true,
+    //   required: false,
+    // },
+    // designation: {
+    //   ...initialFormValues,
+    //   value: recruiterUser.position,
+    //   label: 'Tittle',
+    //   blocked: true,
+    //   required: false,
+    // },
+    // department: {
+    //   ...initialFormValues,
+    //   value: recruiterUser.department,
+    //   label: 'Department',
+    //   blocked: true,
+    //   required: false,
+    // },
+    // role: {
+    //   ...initialFormValues,
+    //   value: capitalize(recruiterUser.role),
+    //   label: 'Role',
+    //   blocked: true,
+    //   required: false,
+    //   placeholder: 'Enter your role.',
+    // },
   };
   const initialEmail: EmailFormFields = {
     email: {
@@ -203,7 +211,8 @@ const ProfileDashboard = () => {
     },
   };
 
-  const [profileChange, setProfileChange] = React.useState(false);
+  const [profileChange, setProfileChange] = useState(false);
+  const [profileForm, setProfileForm] = useState(false);
   const [loading, setLoading] = React.useState({
     profile: false,
     preferences: false,
@@ -212,7 +221,7 @@ const ProfileDashboard = () => {
   });
 
   const [profile, setProfile] = React.useState<FormFields>(
-    initialProfileFormFields,
+    structuredClone(initialProfileFormFields),
   );
   const [email, setEmail] = React.useState(initialEmail);
   const [password, setPassword] = React.useState(initialPassword);
@@ -330,243 +339,317 @@ const ProfileDashboard = () => {
   const [isError, setError] = useState(false);
 
   return (
-    <Stack>
-      <UserProfile
-        slotInfo={
-          <>
-            {currTab === 'user_detail' && (
-              <UserDetails
-                isWarningVisible={isError}
-                slotWarning={
-                  <Typography variant='caption' color='error'>
-                    The file you uploaded exceeds the maximum allowed size.
-                    Please ensure that the file size is less than 5 MB
-                  </Typography>
-                }
-                slotUserImage={
-                  <ImageUpload
-                    image={recruiterUser.profile_image}
-                    size={80}
-                    table='recruiter-user'
-                    handleUpdateProfile={handleUpdateProfile}
-                    error={(e) => {
-                      if (e) {
-                        setError(true);
-                      } else {
-                        setError(false);
-                      }
-                    }}
-                  />
-                }
-                slotUserForm={
-                  <>
-                    <ProfileForms
-                      profile={profile}
-                      setProfile={setProfile}
-                      setChanges={() => setProfileChange(true)}
-                    />
-                  </>
-                }
-                slotUserInfoBtn={
-                  <>
-                    <Stack
-                      style={{
-                        position: 'relative',
-                        pointerEvents: loading.profile ? 'none' : 'auto',
-                        zIndex: 0,
-                      }}
-                    >
-                      <ButtonPrimaryRegular
-                        textLabel={'Save Changes'}
-                        isDisabled={!profileChange}
-                        onClickButton={{
-                          onClick: async () => {
-                            setLoading((prev) => {
-                              return { ...prev, password: true };
-                            });
-                            const confirmation = await handleSubmit(
-                              profile,
-                              setProfile,
-                              handleUpdateProfile,
-                              recruiterUser,
-                            );
-                            if (confirmation) setProfileChange(false);
-                            setLoading((prev) => {
-                              return { ...prev, profile: false };
-                            });
-                          },
-                        }}
-                      />
-                    </Stack>
-                  </>
-                }
-                onClickProfilePhotoChange={{
-                  onClick: () => {
-                    document.getElementById('image-upload').click();
-                  },
+    <>
+      {profileForm && (
+        <Dialog
+          open={profileForm}
+          onClose={() => {
+            setProfile(structuredClone(initialProfileFormFields));
+            setProfileForm(false);
+          }}
+        >
+          <UserDetails
+            isWarningVisible={isError}
+            slotWarning={
+              <Typography variant='caption' color='error'>
+                The file you uploaded exceeds the maximum allowed size. Please
+                ensure that the file size is less than 5 MB
+              </Typography>
+            }
+            slotUserImage={
+              <ImageUpload
+                image={recruiterUser.profile_image}
+                size={80}
+                table='recruiter-user'
+                handleUpdateProfile={handleUpdateProfile}
+                error={(e) => {
+                  if (e) {
+                    setError(true);
+                  } else {
+                    setError(false);
+                  }
                 }}
               />
-            )}
-            {currTab === 'change_email' && (
+            }
+            slotUserForm={
+              // <></>
               <>
-                <Dialog
-                  open={email.email.modal}
-                  onClose={() => handleCloseEmail()}
-                >
-                  <EmailChangePop
-                    textDesc={
-                      <>
-                        <>A confirmation link has been sent to </>
-                        <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
-                          {email.email.value}
-                        </span>
-                        <>. Please confirm it to update your email ID.</>
-                      </>
-                    }
-                    onClickClose={{
-                      onClick: () => handleCloseEmail(),
-                    }}
-                  />
-                </Dialog>
-                <UserChangeEmail
-                  texDesc={
-                    <>
-                      <>Your registered email is </>
-                      <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
-                        {userMail}
-                      </span>
-                      <>
-                        . To change your email, enter the new email address
-                        below. A verification link will be sent to this new
-                        address.
-                      </>
-                    </>
-                  }
-                  onClickEmailChange={{
-                    onClick: async () => {
-                      setLoading((prev) => ({ ...prev, email: true }));
-                      await handleSubmitEmail();
-                      setLoading((prev) => ({ ...prev, email: false }));
-                    },
-                  }}
-                  slotEmail={
-                    <ProfileForms
-                      profile={email}
-                      setProfile={setEmail}
-                      setChanges={() => setPasswordChange(true)}
-                    />
-                  }
+                <ProfileForms
+                  profile={profile}
+                  setProfile={setProfile}
+                  setChanges={() => setProfileChange(true)}
                 />
               </>
-            )}
+            }
+            slotUserInfoBtn={
+              <>
+                {/* <Stack
+                  style={{
+                    position: 'relative',
+                    pointerEvents: loading.profile ? 'none' : 'auto',
+                    zIndex: 0,
+                  }}
+                >
+                  <ButtonPrimaryRegular
+                    textLabel={'Save Changes'}
+                    isDisabled={!profileChange}
+                    onClickButton={{
+                      onClick: async () => {
+                        setLoading((prev) => {
+                          return { ...prev, password: true };
+                        });
+                        const confirmation = await handleSubmit(
+                          profile,
+                          setProfile,
+                          handleUpdateProfile,
+                          recruiterUser,
+                        );
+                        if (confirmation) setProfileChange(false);
+                        setLoading((prev) => {
+                          return { ...prev, profile: false };
+                        });
+                      },
+                    }}
+                  />
+                </Stack> */}
+              </>
+            }
+            onClickClose={{
+              onClick: () => {
+                setProfile(structuredClone(initialProfileFormFields));
+                setProfileForm(false);
+              },
+            }}
+            onClickUpdate={{
+              onClick: async () => {
+                if (profileChange) {
+                  if (profile) {
+                    setLoading((prev) => {
+                      return { ...prev, password: true };
+                    });
+                    const confirmation = await handleSubmit(
+                      profile,
+                      setProfile,
+                      handleUpdateProfile,
+                      recruiterUser,
+                    );
+                    if (confirmation) {
+                      setProfileChange(false);
+                      setProfileForm(false);
+                    }
+                    setLoading((prev) => {
+                      return { ...prev, profile: false };
+                    });
+                  }
+                } else {
+                  toast.error('No changes.');
+                }
+              },
+            }}
+            onClickProfilePhotoChange={{
+              onClick: () => {
+                document.getElementById('image-upload').click();
+              },
+            }}
+          />
+        </Dialog>
+      )}
+      <Stack>
+        <UserProfile
+          slotInfo={
             <>
-              {currTab === 'password_update' && (
+              {currTab === 'user_detail' && (
+                <ProfileList
+                  slotUserImage={
+                    <ImageUpload
+                      image={recruiterUser.profile_image}
+                      size={80}
+                      table='recruiter-user'
+                      handleUpdateProfile={handleUpdateProfile}
+                      error={(e) => {
+                        if (e) {
+                          setError(true);
+                        } else {
+                          setError(false);
+                        }
+                      }}
+                    />
+                  }
+                  textName={`${recruiterUser.first_name || ''} ${recruiterUser.first_name || ''}`.trim()}
+                  textDepartment={recruiterUser.department}
+                  textEmail={recruiterUser.email}
+                  textJobTitle={recruiterUser.position}
+                  textLocation={recruiterUser.interview_location}
+                  textRole={recruiterUser.role}
+                  textNumber={recruiterUser.phone}
+                  onClickEdit={{
+                    onClick: () => {
+                      setProfileForm(true);
+                    },
+                  }}
+                />
+              )}
+              {currTab === 'change_email' && (
                 <>
                   <Dialog
-                    open={password.password.modal}
-                    onClose={() => handleClosePassword()}
+                    open={email.email.modal}
+                    onClose={() => handleCloseEmail()}
                   >
-                    <PasswordUpdated
+                    <EmailChangePop
+                      textDesc={
+                        <>
+                          <>A confirmation link has been sent to </>
+                          <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
+                            {email.email.value}
+                          </span>
+                          <>. Please confirm it to update your email ID.</>
+                        </>
+                      }
                       onClickClose={{
-                        onClick: () => handleClosePassword(),
+                        onClick: () => handleCloseEmail(),
                       }}
                     />
                   </Dialog>
-                  <UserPasswordChange
-                    slotPassword={
+                  <UserChangeEmail
+                    texDesc={
                       <>
-                        <ProfileForms
-                          profile={password}
-                          setProfile={setPassword}
-                          setChanges={() => setPasswordChange(true)}
-                        />
+                        <>Your registered email is </>
+                        <span style={{ color: '#ED8F1C', fontWeight: 400 }}>
+                          {userMail}
+                        </span>
+                        <>
+                          . To change your email, enter the new email address
+                          below. A verification link will be sent to this new
+                          address.
+                        </>
                       </>
                     }
-                    slotSavePassword={
-                      <>
-                        <Stack
-                          style={{
-                            pointerEvents: loading.password ? 'none' : 'auto',
-                            zIndex: 0,
-                          }}
-                        >
-                          <AUIButton
-                            disabled={
-                              !passwordChange ||
-                              password.password.value === '' ||
-                              password.confirmPassword.value === ''
-                            }
-                            onClick={async () => {
-                              setLoading((prev) => {
-                                return { ...prev, profile: true };
-                              });
-                              await handleSubmitPassword();
-                              setLoading((prev) => {
-                                return { ...prev, password: false };
-                              });
-                            }}
-                          >
-                            Update Password
-                          </AUIButton>
-                        </Stack>
-                      </>
+                    onClickEmailChange={{
+                      onClick: async () => {
+                        setLoading((prev) => ({ ...prev, email: true }));
+                        await handleSubmitEmail();
+                        setLoading((prev) => ({ ...prev, email: false }));
+                      },
+                    }}
+                    slotEmail={
+                      <ProfileForms
+                        profile={email}
+                        setProfile={setEmail}
+                        setChanges={() => setPasswordChange(true)}
+                      />
                     }
                   />
                 </>
               )}
+              <>
+                {currTab === 'password_update' && (
+                  <>
+                    <Dialog
+                      open={password.password.modal}
+                      onClose={() => handleClosePassword()}
+                    >
+                      <PasswordUpdated
+                        onClickClose={{
+                          onClick: () => handleClosePassword(),
+                        }}
+                      />
+                    </Dialog>
+                    <UserPasswordChange
+                      slotPassword={
+                        <>
+                          <ProfileForms
+                            profile={password}
+                            setProfile={setPassword}
+                            setChanges={() => setPasswordChange(true)}
+                          />
+                        </>
+                      }
+                      slotSavePassword={
+                        <>
+                          <Stack
+                            style={{
+                              pointerEvents: loading.password ? 'none' : 'auto',
+                              zIndex: 0,
+                            }}
+                          >
+                            <AUIButton
+                              disabled={
+                                !passwordChange ||
+                                password.password.value === '' ||
+                                password.confirmPassword.value === ''
+                              }
+                              onClick={async () => {
+                                setLoading((prev) => {
+                                  return { ...prev, profile: true };
+                                });
+                                await handleSubmitPassword();
+                                setLoading((prev) => {
+                                  return { ...prev, password: false };
+                                });
+                              }}
+                            >
+                              Update Password
+                            </AUIButton>
+                          </Stack>
+                        </>
+                      }
+                    />
+                  </>
+                )}
+              </>
             </>
-          </>
-        }
-        // slotPreferenceForm={<>fjerknferjkn</>}
-        slotNavSublink={
-          <>
-            {navTabs
-              .filter((item) => (item.roles ? isAllowed(item.roles) : true))
-              .map((item) => (
-                <NavSublink
-                  key={item.route}
-                  isActive={currTab === item.route}
-                  onClickNav={{
-                    onClick: () => {
-                      router.query.tab = item.route;
-                      router.push(router);
-                    },
-                  }}
-                  textLink={item.label}
-                />
-              ))}
-          </>
-        }
-      />
-    </Stack>
+          }
+          // slotPreferenceForm={<>fjerknferjkn</>}
+          slotNavSublink={
+            <>
+              {navTabs
+                .filter((item) => (item.roles ? isAllowed(item.roles) : true))
+                .map((item) => (
+                  <NavSublink
+                    key={item.route}
+                    isActive={currTab === item.route}
+                    onClickNav={{
+                      onClick: () => {
+                        router.query.tab = item.route;
+                        router.push(router);
+                      },
+                    }}
+                    textLink={item.label}
+                  />
+                ))}
+            </>
+          }
+        />
+      </Stack>
+    </>
   );
 };
 
 const handleValidate = (profile: FormFields | PreferenceFormFields) => {
   return Object.entries(profile).reduce(
     (acc, [key, curr]) => {
-      let value = curr.value;
+      let value = curr.value?.trim() || null;
       let error = false;
-      if (curr.required) {
+      if (curr.required || (curr.validation === 'linkedIn' && value?.length)) {
         switch (curr.validation) {
           case 'string':
             {
-              if (validateString(value)) value = value.trim();
-              else error = true;
+              if (!validateString(value)) error = true;
             }
             break;
           case 'mail':
             {
-              if (validateMail(value)) value = value.trim();
-              else error = true;
+              if (!validateMail(value)) error = true;
             }
             break;
           case 'phone':
             {
-              if (validatePhone(value)) value = value.trim();
-              else error = true;
+              if (!validatePhone(value)) error = true;
             }
             break;
+          case 'linkedIn': {
+            if (!validateLinkedIn(value)) error = true;
+          }
         }
       }
       return {
@@ -599,7 +682,7 @@ const handleSubmit = async (
       first_name: profile.first_name.value,
       last_name: profile.last_name.value,
       phone: profile.phone.value,
-      position: profile.designation.value,
+      // position: profile.designation.value,
     });
     if (confirmation) {
       toast.success('Profile infomation saved successfully');
@@ -832,3 +915,9 @@ const ProfileForm = ({
   }
 };
 export default ProfileDashboard;
+
+const validateLinkedIn = (value: string) => {
+  const linkedInURLPattern =
+    /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+  return linkedInURLPattern.test(value);
+};

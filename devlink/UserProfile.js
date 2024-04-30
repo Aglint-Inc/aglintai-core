@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { NavSublink } from "./NavSublink";
 import { UserDetails } from "./UserDetails";
+import { ProfileList } from "./ProfileList";
 import * as _utils from "./utils";
 import _styles from "./UserProfile.module.css";
 
@@ -85,6 +87,7 @@ export function UserProfile({
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
+              <ProfileList />
             </>
           )}
         </_Builtin.Block>
