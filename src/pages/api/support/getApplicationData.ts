@@ -42,7 +42,7 @@ const getApplication = async (id: any) => {
       })
       // @ts-ignore
       .catch(() => {
-        throw new Error('Application data not found');
+        throw new Error('Application data not found.');
       });
     // console.log(applicationData);
     const candidate = await supabase

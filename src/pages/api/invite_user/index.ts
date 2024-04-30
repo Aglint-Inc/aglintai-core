@@ -116,6 +116,6 @@ const getRecruiterUser = async (id: string) => {
     .select('role, recruiter_id')
     .eq('user_id', id);
   if (error) throw new Error(error.message);
-  if (data?.length === 0) throw new Error('User not found');
+  if (data?.length === 0) throw new Error('User not found.');
   return data[0];
 };

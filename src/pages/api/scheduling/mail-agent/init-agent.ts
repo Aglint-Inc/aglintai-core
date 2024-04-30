@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       candidate_email: cand_email,
     });
     if (!cand_details.email_template) {
-      throw new Error('email template not found');
+      throw new Error('Email template not found.');
     }
 
     const getInitialEmailTemplate = () => {

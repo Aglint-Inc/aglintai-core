@@ -116,7 +116,7 @@ const getScheduleDetails = async (schedule_id: string, filter_id: string) => {
   if (errSch) throw new Error(errSch.message);
 
   if (!sch) {
-    throw new Error('Schedule not found');
+    throw new Error('Schedule not found.');
   }
 
   return sch;
