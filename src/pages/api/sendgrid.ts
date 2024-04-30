@@ -28,7 +28,6 @@ export default async function handler(req, res) {
     };
 
     msg.to = getOutboundEmail(msg.to, true);
-
     await sgMail.send({
       ...msg,
     });

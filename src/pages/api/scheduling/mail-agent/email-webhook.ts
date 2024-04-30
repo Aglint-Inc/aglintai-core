@@ -5,6 +5,8 @@ import axios from 'axios';
 import formidable from 'formidable';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
+
 export const config = {
   api: {
     bodyParser: false,
@@ -20,32 +22,32 @@ export default async function handler(
   try {
     const [fields] = await form.parse(req);
     const candidate_email = getEmail(fields.from[0]);
-
-    console.log(candidate_email);
-
-    // const to_email = getEmail(fields.to[0]);
-    // const subject = fields.subject[0];
     const raw_email_body: string = fields.text[0];
+    const raw_headers = fields.headers[0];
 
-    //clean incoming email body
-    const cleaned_email_body = raw_email_body
-      .split('\r\n')
-      .filter((s) => !(s.includes('>') || s.endsWith('wrote:')))
-      .filter((s) => s.length > 0)
-      .join('\r\n');
-
-    const header = getNewMailHeader(fields.headers[0]);
+    const curr_email_body = EmailWebHook.parseEmailBody(raw_email_body);
+    const curr_email_headers = EmailWebHook.parseMailHeaders(raw_headers);
+    const thread_id = EmailWebHook.parseThreadId(curr_email_headers);
+    if (!thread_id) {
+      return res.status(200).send('invlaid thread id');
+    }
+    const reply_email_headers = EmailWebHook.getNewMailHeader(
+      curr_email_headers,
+      thread_id,
+    );
 
     type ApiPayload = {
       from_email?: string;
       email_body?: string;
       mail_header?: any;
+      thread_id: string;
     };
 
     const api_payload: ApiPayload = {
-      email_body: cleaned_email_body,
+      email_body: curr_email_body,
       from_email: candidate_email,
-      mail_header: header,
+      mail_header: reply_email_headers,
+      thread_id: thread_id,
     };
 
     const { status } = await axios.post(
@@ -56,29 +58,11 @@ export default async function handler(
     );
     return res.status(status).send('');
   } catch (err) {
-    console.log(err);
-    return res.status(500).send('');
+    return res.status(200).send('');
   }
 }
 
 const getEmail = (to_string: string) => {
   to_string = to_string.trim();
   return to_string.substring(to_string.indexOf('<') + 1, to_string.length - 1);
-};
-
-const getNewMailHeader = (headers: string) => {
-  let newHeader = {};
-  let record = {};
-  headers.split('\n').forEach((field) => {
-    const [key, val] = field.split(':');
-    record[String(key)] = val;
-  });
-
-  newHeader = {
-    'Message-ID': ``,
-    'In-Reply-To': ``,
-    References: record['References'],
-  };
-
-  return newHeader;
 };

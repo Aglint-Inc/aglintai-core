@@ -6,10 +6,10 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { v4 as uuidV4 } from 'uuid';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
-
 type GeoPoint = {
   type: string;
   coordinates: [number, number];
@@ -17,6 +17,7 @@ type GeoPoint = {
 
 // import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import {
   CandidateType,
   EmailTemplateFields,
@@ -73,14 +74,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     const email_details = getInitialEmailTemplate();
-    // delete previous chat hitory of that candidate email email
-    // testing purpose only
-    supabaseWrap(
-      await supabaseAdmin
-        .from('scheduling-agent-chat-history')
-        .delete()
-        .eq('candidate_email', cand_email),
-    );
+
+    const thread_id = uuidV4();
+
     supabaseWrap(
       // error here //
       // @ts-ignore
@@ -97,9 +93,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         company_id: cand_details.company_id,
         filter_json_id: filter_json_id,
         task_id: task_id ?? undefined,
+        thread_id: thread_id,
+        agent_processing: false,
       }),
     );
-    let headers;
+
+    // const message_id = `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
+    const message_id = EmailWebHook.getMessageId(
+      thread_id,
+      process.env.NEXT_PUBLIC_AGENT_EMAIL,
+    );
+    let headers = {
+      'Message-ID': message_id,
+      'In-Reply-To': message_id,
+    };
     await sendEmailFromAgent({
       candidate_email: cand_email,
       from_name: cand_details.company_name,
