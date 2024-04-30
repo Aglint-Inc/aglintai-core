@@ -10,6 +10,7 @@ import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider, {
   useJobDetails,
 } from '@/src/context/JobDashboard';
+import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const JobAgentPage = () => {
   return (
@@ -29,7 +30,9 @@ export default JobAgentPage;
 JobAgentPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };

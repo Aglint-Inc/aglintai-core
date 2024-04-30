@@ -403,8 +403,10 @@ const InterviewSession = ({
             isLinkVisilble={session.session_type !== 'debrief'}
             textPlatformName={capitalizeAll(session.schedule_type)}
             textLink={session?.interview_module?.name ?? '---'}
-            isTextSelectedVisible={session.session_type === 'panel'}
-            textSelected={`(${session.interviewer_cnt} out of the members will be selected)`}
+            isTextSelectedVisible={
+              session.session_type !== 'debrief' && members.qualified.length > 1
+            }
+            textSelected={`(${session.interviewer_cnt} out of ${members.qualified.length} members will be selected)`}
             isTraineesVisible={members.training.length !== 0}
             slotTrainees={members.training.map((member) => (
               <InterviewSessionMember key={member.user_id} member={member} />
@@ -515,7 +517,7 @@ const InterviewCoordinator = () => {
   const {
     plan_id,
     coordinator,
-    interviewCoordinator: { data },
+    companyMembers: { data },
     handleSelectCoordinator,
   } = useJobInterviewPlan();
   const options = data.map((c) => ({

@@ -90,7 +90,7 @@ const DebriefForms = ({
   setFields: Dispatch<SetStateAction<DebriefFormFields>>;
 }) => {
   const {
-    interviewCoordinator: { data },
+    companyMembers: { data },
   } = useJobInterviewPlan();
 
   const { name, session_duration, schedule_type, members } = fields;

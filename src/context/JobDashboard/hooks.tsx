@@ -78,7 +78,11 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
       settingsValidity && jdValidity && !job?.scoring_criteria_loading,
   };
   settingsValidity && jdValidity && !job.scoring_criteria_loading;
-  const [dismiss, setDismiss] = useState(false);
+  const [dismissWarnings, setDismissWarnings] = useState({
+    job_description: false,
+    interview_plan: false,
+    interview_session: false,
+  });
   // console.log(hashCode(job?.draft?.description ?? ''), job?.description_hash);
 
   const jobPolling =
@@ -95,7 +99,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
-        !dismiss &&
+        !dismissWarnings.job_description &&
         hashCode(job?.draft?.description ?? '') !== job?.description_hash,
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
       scoring_criteria_changed:
@@ -125,11 +129,11 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const value = {
     job,
-    dismiss,
+    dismissWarnings,
     jobPolling,
     emailTemplateValidity,
     interviewPlanEnabled,
-    setDismiss,
+    setDismissWarnings,
     handleJobRefresh,
     scoringPoll,
     schedules,

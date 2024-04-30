@@ -48,6 +48,10 @@ export const QueryProvider: React.FC<{ children: React.JSX.Element }> = ({
   );
 };
 
+export const argsToKeys = (obj: Object) => {
+  return Object.entries(obj).map(([key, value]) => ({ [key]: value }));
+};
+
 // const getBasePath = (route: string) => {
 //   const secondSlashIndex = route.indexOf('/', 1);
 //   if (secondSlashIndex !== -1) return route.slice(0, secondSlashIndex);

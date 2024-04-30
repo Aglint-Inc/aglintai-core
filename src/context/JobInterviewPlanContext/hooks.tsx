@@ -1,6 +1,6 @@
 import { useMutationState } from '@tanstack/react-query';
 
-import { useInterviewCoordinators } from '@/src/queries/interview-coordinators';
+import { useCompanyMembers } from '@/src/queries/company-members';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import {
   CreateDebriefSession,
@@ -23,7 +23,7 @@ import { useJobDetails } from '../JobDashboard';
 
 const useJobInterviewPlanActions = () => {
   const { job } = useJobDetails();
-  const interviewCoordinator = useInterviewCoordinators();
+  const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const interviewPlans = useInterviewPlans();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
@@ -53,7 +53,7 @@ const useJobInterviewPlanActions = () => {
   const initialLoad = !!(
     job &&
     interviewModules.status !== 'pending' &&
-    interviewCoordinator.status !== 'pending' &&
+    companyMembers.status !== 'pending' &&
     interviewPlans.status !== 'pending'
   );
 
@@ -95,7 +95,7 @@ const useJobInterviewPlanActions = () => {
   const value = {
     job,
     interviewModules,
-    interviewCoordinator,
+    companyMembers,
     handleSelectCoordinator,
     handleCreateSession,
     handleEditSession,

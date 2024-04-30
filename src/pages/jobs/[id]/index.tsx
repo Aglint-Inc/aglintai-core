@@ -4,6 +4,7 @@ import JobDashboard from '@/src/components/JobsDashboard/Dashboard';
 import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
+import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const JobPage = () => {
   return (
@@ -19,7 +20,9 @@ const JobPage = () => {
 JobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };

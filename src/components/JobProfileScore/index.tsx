@@ -289,7 +289,7 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { experimental_handleRegenerateJd } = useJobs();
-  const { status, job, dismiss, setDismiss } = useJobDetails();
+  const { status, job, dismissWarnings, setDismissWarnings } = useJobDetails();
   if (status.loading) return <></>;
   if (status.description_error)
     return (
@@ -311,14 +311,17 @@ const Banners = () => {
       />
     );
   if (status.description_changed)
-    return dismiss ? (
+    return dismissWarnings.job_description ? (
       <></>
     ) : (
       <BannerWarning
         textBanner={
           'Job description has changed. Regenerate for updated scoring criterias.'
         }
-        onClickDismiss={{ onClick: () => setDismiss(true) }}
+        onClickDismiss={{
+          onClick: () =>
+            setDismissWarnings((prev) => ({ ...prev, job_description: true })),
+        }}
         onClickButton={{
           onClick: () => experimental_handleRegenerateJd(job),
         }}
