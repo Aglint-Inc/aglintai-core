@@ -32,20 +32,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ascending: true,
       });
 
-    console.log(data);
-
     if (error) {
       throw new Error(error.message);
     } else {
-      const filterTaskAgent =
-        data?.filter(
-          (task) =>
-            task.assignee.includes(EmailAgentId) ||
-            task.assignee.includes(PhoneAgentId),
-        ) || [];
-      if (filterTaskAgent?.length > 0) {
+      if (data?.length > 0) {
         await Promise.all(
-          filterTaskAgent.map(async (task) => {
+          data.map(async (task) => {
             try {
               axios.post(url, {
                 application_id: task.application_id,
@@ -74,10 +66,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }),
         );
         // You might want to handle errors here
-        console.log(`${filterTaskAgent.length} applications triggered`);
-        return res
-          .status(200)
-          .send(`${filterTaskAgent.length} applications triggered`);
+        console.log(`${data.length} applications triggered`);
+        return res.status(200).send(`${data.length} applications triggered`);
       } else {
         console.log('no applications');
         return res.status(200).send('no applications');

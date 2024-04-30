@@ -111,7 +111,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
       }
 
       const res = await axios.post(
-        '/api/scheduling/application/schedulewithagent',
+        '/api/scheduling/application/schedulewithagentwithouttaskid',
         {
           application_id: selectedApplication.id,
           dateRange: dateRange,

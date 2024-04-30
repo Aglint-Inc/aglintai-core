@@ -251,12 +251,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                         variant='circular'
                         fontSize='14px'
                         level={capitalizeAll(
-                          createdBy.first_name + ' ' + createdBy.last_name,
+                          createdBy.first_name +
+                            ' ' +
+                            (createdBy.last_name ?? ''),
                         )}
                       />
                     }
                     textName={capitalizeAll(
-                      createdBy.first_name + ' ' + createdBy.last_name,
+                      createdBy.first_name + ' ' + (createdBy.last_name ?? ''),
                     )}
                   />
                 )
@@ -295,12 +297,12 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     },
                     optionData: {
                       assignerName:
-                        assigner.first_name + ' ' + assigner.last_name,
+                        assigner.first_name + ' ' + (assigner.last_name ?? ''),
                       assignerId: assigner.user_id,
                       creatorName:
                         recruiterUser.first_name +
                         ' ' +
-                        recruiterUser.last_name,
+                        (recruiterUser.last_name ?? ''),
                     },
                   });
 

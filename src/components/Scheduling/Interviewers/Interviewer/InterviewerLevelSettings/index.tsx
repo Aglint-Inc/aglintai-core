@@ -6,12 +6,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
+
+import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import {

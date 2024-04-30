@@ -66,7 +66,10 @@ function ToolBar() {
           data: {
             created_by: {
               id: recruiterUser.user_id,
-              name: recruiterUser.first_name + ' ' + recruiterUser.last_name,
+              name:
+                recruiterUser.first_name +
+                ' ' +
+                (recruiterUser.last_name ?? ''),
             },
             progress_type: 'standard',
             task_id: task.id,
@@ -129,16 +132,21 @@ function ToolBar() {
           data: {
             created_by: {
               id: recruiterUser.user_id,
-              name: recruiterUser.first_name + ' ' + recruiterUser.last_name,
+              name:
+                recruiterUser.first_name +
+                ' ' +
+                (recruiterUser.last_name ?? ''),
             },
             progress_type: 'standard',
             task_id: task.id,
           },
           optionData: {
             creatorName:
-              recruiterUser.first_name + ' ' + recruiterUser.last_name,
+              recruiterUser.first_name + ' ' + (recruiterUser.last_name ?? ''),
             assignerName:
-              selectedAssignee.first_name + ' ' + selectedAssignee.last_name,
+              selectedAssignee.first_name +
+              ' ' +
+              (selectedAssignee.last_name ?? ''),
             assignerId: selectedAssignee.user_id,
           },
         });

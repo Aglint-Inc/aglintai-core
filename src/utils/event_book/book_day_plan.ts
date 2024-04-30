@@ -7,6 +7,7 @@ dayjs.extend(timezone);
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
 
 import { SessionInterviewerType } from '../../types/scheduleTypes/types';
@@ -22,12 +23,26 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
 
-  const cand_scheduling = new CandidatesScheduling({
-    company_id: recruiter_id,
-    session_ids: all_sess_ids,
-    user_tz,
-  });
+  const first_day_slot = candidate_plan[0].sessions;
+  const last_day_slot = candidate_plan[candidate_plan.length - 1].sessions;
+  const cand_scheduling = new CandidatesScheduling(
+    {
+      company_id: recruiter_id,
+      session_ids: all_sess_ids,
+      user_tz,
+    },
+    {
+      start_date_js: userTzDayjs(first_day_slot[0].start_time)
+        .tz(user_tz)
+        .startOf('day'),
+      end_date_js: userTzDayjs(last_day_slot[0].start_time)
+        .tz(user_tz)
+        .endOf('day'),
+    },
+  );
   await cand_scheduling.fetchDetails();
+  await cand_scheduling.fetchInterviewrsCalEvents();
+
   const { company_cred } = cand_scheduling.db_details;
 
   const bookDayPlan = async ({
@@ -73,8 +88,10 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     };
 
     const curr_date = dayjs(day_plan.sessions[0].start_time).tz(user_tz);
-    cand_scheduling.setSchedulingDates(curr_date, curr_date);
-    await cand_scheduling.fetchInterviewrsCalEvents();
+    cand_scheduling.setSchedulingDates(
+      curr_date.startOf('day'),
+      curr_date.endOf('day'),
+    );
     const plan_combs = cand_scheduling.findCandSlotForTheDay();
     const assisgned_slot = assignCandidateSlot(plan_combs[0], curr_date);
     const meet_promises = assisgned_slot.sessions.map(async (session) => {

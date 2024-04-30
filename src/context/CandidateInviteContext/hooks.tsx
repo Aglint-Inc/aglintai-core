@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import dayjs from '@utils/dayjs';
-import timeZones from '@utils/timeZone.json';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 
@@ -13,6 +12,7 @@ import {
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
 import { getFullName } from '@/src/utils/jsonResume';
+import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 
 const useInviteActions = () => {

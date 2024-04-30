@@ -1,4 +1,5 @@
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
@@ -13,13 +14,11 @@ import {
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  fetchInterviewSessionTask,
-  scheduleWithAgent,
-} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -85,15 +84,15 @@ function AddNewTask() {
     null,
   );
   const [selectedDueDate, setSelectedDueDate] = useState<string>(
-    dayjs().toString(),
+    dayjs().add(1, 'day').toString(),
   );
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(
-    dayjs().toString(),
+    dayjs().add(5, 'minute').toString(),
   );
 
   const [scheduleDate, setScheduleDate] = useState({
-    start_date: dayjs().toString(),
-    end_date: dayjs().toString(),
+    start_date: dayjs().add(1, 'day').toString(),
+    end_date: dayjs().add(7, 'day').toString(),
   });
   const [selectedPriority, setSelectedPriority] =
     useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
@@ -140,7 +139,7 @@ function AddNewTask() {
         isImmediate &&
         (assignee === EmailAgentId || assignee === PhoneAgentId)
       ) {
-        scheduleWithAgent({
+        await axios.post('/api/scheduling/application/schedulewithagent', {
           application_id: selectedTask.application_id,
           dateRange: { ...selectedTask.schedule_date_range },
           recruiter_id: recruiter.id,
@@ -162,7 +161,7 @@ function AddNewTask() {
           supabase: supabase,
           user_tz: dayjs.tz.guess(),
           trigger_count: 0,
-        });
+        } as ApiBodyParamsScheduleAgent);
       }
       // end
     });
@@ -450,9 +449,11 @@ function AddNewTask() {
                   onChange={(e: any) => {
                     if (Array.isArray(e) && e[0] && e[1]) {
                       setScheduleDate({ start_date: e[0], end_date: e[1] });
+                      setSelectedDueDate(e[0]);
                     }
                     if (!Array.isArray(e)) {
                       setScheduleDate({ start_date: e, end_date: null });
+                      setSelectedDueDate(e);
                     }
                   }}
                 />
@@ -475,14 +476,14 @@ function AddNewTask() {
                               level={capitalize(
                                 recruiterUser?.first_name +
                                   ' ' +
-                                  recruiterUser?.last_name,
+                                  (recruiterUser?.last_name ?? ''),
                               )}
                             />
                           }
                           textName={capitalize(
                             recruiterUser?.first_name +
                               ' ' +
-                              recruiterUser?.last_name,
+                              (recruiterUser?.last_name ?? ''),
                           )}
                         />
                       )

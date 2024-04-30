@@ -48,20 +48,6 @@ export function TeamListItem({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "tu-list-item-user-image", "large")}
-          tag="div"
-        >
-          {slotProfileImage ?? (
-            <_Builtin.Image
-              loading="lazy"
-              width="auto"
-              height="auto"
-              alt=""
-              src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
-            />
-          )}
-        </_Builtin.Block>
-        <_Builtin.Block
           className={_utils.cx(_styles, "tu-list-item-user-info")}
           tag="div"
         >
@@ -69,6 +55,20 @@ export function TeamListItem({
             className={_utils.cx(_styles, "name_wraop")}
             tag="div"
           >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "tu-list-item-user-image", "small")}
+              tag="div"
+            >
+              {slotProfileImage ?? (
+                <_Builtin.Image
+                  loading="lazy"
+                  width="auto"
+                  height="auto"
+                  alt=""
+                  src="https://uploads-ssl.webflow.com/650c129b14ba3ec43088ffdd/6544ea9f949aaadda8d5c97d_michael-turner.jpeg"
+                />
+              )}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "fw-semibold", "one-line-clamp")}
               tag="div"
@@ -141,7 +141,7 @@ export function TeamListItem({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "tu-list-item", "actions-copy")}
+        className={_utils.cx(_styles, "tu-list-item", "actions-copy", "center")}
         id={_utils.cx(
           _styles,
           "w-node-a60860aa-9493-87fc-f445-b3f1087efc9b-087efc8b"
