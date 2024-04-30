@@ -52,23 +52,23 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
                 ...updatedEditModule,
               },
             );
-            toast.success('Interview type archived');
+            toast.success('Interview type archived.');
           } else {
             throw new Error();
           }
         } else {
           toast.warning(
-            'Cannot archiving interview type, active schedules are present for this interview type',
+            'Cannot archive interview type; active schedules are present for this type.',
           );
         }
       } catch {
-        toast.error('Error archiving interview type');
+        toast.error('Error archiving interview type.');
       } finally {
         setLoading(false);
         setIsArchiveDialogOpen(false);
       }
     } else {
-      toast.warning('Please wait, till the ongoing process is complete');
+      toast.warning('Please wait until the ongoing process is complete.');
     }
   };
 
@@ -80,7 +80,7 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
       setIsArchiveDialogOpen(false);
       setTimeout(() => setValue(''), 400);
     } else {
-      toast.warning('Please wait, till the ongoing process is complete');
+      toast.warning('Please wait until the ongoing process is complete.');
     }
   }, [loading]);
 

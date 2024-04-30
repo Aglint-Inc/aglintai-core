@@ -36,19 +36,19 @@ export default function Loading() {
           await axios.post('/api/supabase/deleteuser', {
             user_id: userDetails?.user?.id,
           });
-          toast.error('Please signup/login with company email');
+          toast.error('Please signup/login with company email.');
           await handleLogout();
           return;
         } else {
           await createUser();
         }
       } else {
-        toast.error('Unable to login. Please try again later');
+        toast.error('Unable to login. Please try again.');
         router.push(pageRoutes.LOGIN);
         await handleLogout();
       }
     } catch (error) {
-      toast.error('Unable to login. Please try again later');
+      toast.error('Unable to login. Please try again.');
       router.push(pageRoutes.LOGIN);
       await handleLogout();
     }

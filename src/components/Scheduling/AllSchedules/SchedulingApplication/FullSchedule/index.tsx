@@ -96,7 +96,7 @@ function FullSchedule() {
             supabase,
             created_by: recruiterUser.user_id,
           });
-          toast.success('Invite Resent');
+          toast.success('Invite resent successfully.');
         }
       }
     } catch (e) {
@@ -118,7 +118,7 @@ function FullSchedule() {
         setSelectedSessionIds([...selectedSessionIds, session.id]);
       }
     } else {
-      toast.warning('There are no interviewers. Please add before scheduling');
+      toast.warning('There are no available interviewers. Please add some before scheduling.');
     }
   };
 

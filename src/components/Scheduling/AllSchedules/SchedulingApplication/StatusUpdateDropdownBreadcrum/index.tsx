@@ -63,7 +63,7 @@ function StatusUpdateDropdownBreadcrum() {
         throw new Error();
       }
     } catch {
-      toast.error('Error updating status');
+      toast.error('Error updating status.');
     } finally {
       refetch();
       handleClose();

@@ -171,7 +171,7 @@ function SupportTicketDetails({
               navigator.clipboard
                 .writeText(getInterviewUrl(ticket.application_id))
                 .then(() => {
-                  toast.message('Copied to clipboard');
+                  toast.message('Copied to clipboard.');
                 });
             },
           }}

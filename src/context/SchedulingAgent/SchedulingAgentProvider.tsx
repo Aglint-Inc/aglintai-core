@@ -193,7 +193,7 @@ const SchedulingAgentProvider = ({ children }) => {
       // eslint-disable-next-line no-console
       console.error('Error:', error);
       setLoading(false);
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -267,14 +267,14 @@ const SchedulingAgentProvider = ({ children }) => {
         .delete()
         .eq('id', selectedChat.id);
       if (error) {
-        toast.error('Error deleting chat');
+        toast.error('Error deleting chat.');
       } else {
         setAllChat(allChat.filter((c) => c.id !== selectedChat.id));
         setSelectedChat({ history: [], id: null, title: null } as any);
         router.push('/scheduling/agent', undefined, { shallow: true });
       }
     } catch (e) {
-      toast.error('Error deleting task');
+      toast.error('Error deleting task.');
     } finally {
       setDeletePopupOpen(false);
     }

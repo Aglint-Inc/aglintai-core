@@ -19,12 +19,12 @@ const withRoleProtection = (
         switch (recruiterUser.role) {
           case 'interviewer': {
             router.push(pageRoutes.SCHEDULING);
-            toast.warning('You are not authorized to access this page');
+            toast.warning('You are not authorized to access this page.');
             return null;
           }
           default: {
             router.push(pageRoutes.AGENT);
-            toast.warning('You are not authorized to access this page');
+            toast.warning('You are not authorized to access this page.');
             return null;
           }
         }

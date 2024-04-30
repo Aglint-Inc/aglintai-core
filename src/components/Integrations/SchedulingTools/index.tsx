@@ -79,7 +79,7 @@ function Scheduling() {
       const account_id = accountIdRef.current.value;
 
       if (!client_id && !client_secret && !account_id) {
-        toast.warning('Give api keys!');
+        toast.warning('Provide API key.');
         return null;
       }
       updateZoomAuth({ client_id, client_secret, account_id });
@@ -90,7 +90,7 @@ function Scheduling() {
       const account_id = accountIdRef.current.value;
 
       if (!client_id && !client_secret && !account_id) {
-        toast.warning('Give api keys!');
+        toast.warning('Provide API key.');
         return null;
       }
       updateZoomAuth({ client_id, client_secret, account_id });
@@ -210,7 +210,7 @@ function Scheduling() {
     },
     onDrop: (acceptedFiles) => {
       if (acceptedFiles.length < 1) {
-        toast.warning('Please provide correct file format!');
+        toast.warning('Please upload the file in .json format.');
         return null;
       }
 

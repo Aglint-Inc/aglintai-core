@@ -67,7 +67,7 @@ function ViewTaskDrawer() {
         status: 'closed',
       },
     });
-    toast.action('Task closed', () => {
+    toast.action('Task closed.', () => {
       handelUpdateTask([
         {
           status: 'not_started',

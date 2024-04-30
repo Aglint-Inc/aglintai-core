@@ -31,7 +31,7 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
 
     return intPan;
   } catch (e) {
-    toast.error('Error fetching interview panel');
+    toast.error('Error fetching interview plan.');
     return [];
   }
 };

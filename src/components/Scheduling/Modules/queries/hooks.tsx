@@ -162,7 +162,7 @@ export const usePauseHandler = () => {
           QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
         );
         if (selectedType === 'custom' && !pause_json?.end_date) {
-          return toast.error('Please select end date');
+          return toast.error('Please select end date.');
         }
         const isUpdated = await updatePauseJsonByUserId({
           user_id: user_id,
@@ -192,7 +192,7 @@ export const usePauseHandler = () => {
         throw new Error();
       }
     } catch {
-      toast.error('Error pausing user');
+      toast.error('Error pausing user.');
     }
   };
 

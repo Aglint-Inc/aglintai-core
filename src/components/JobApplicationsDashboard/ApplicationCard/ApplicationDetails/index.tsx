@@ -257,7 +257,7 @@ const NewJobApplicationSideDrawer = ({
         questions: parametersInput,
       },
     );
-    toast.success('Call Initiated');
+    toast.success('Call Initiated.');
   };
   const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningPhoneCallEnabled',
@@ -609,7 +609,7 @@ const NewInterviewStatus = ({
                         `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`,
                       )
                       .then(() => {
-                        toast.success('Interview link copied');
+                        toast.success('Interview link copied.');
                       });
                   },
                 }}
@@ -828,10 +828,10 @@ const ResumeUpload: React.FC<{
         }
         setLoading(false);
       } else {
-        toast.warning('Uploading candidate resume. Please wait');
+        toast.warning('Uploading candidate resume. Please wait.');
       }
     } else {
-      toast.error('Upload a valid file');
+      toast.error('Upload a valid file.');
     }
   };
   return (
@@ -1151,7 +1151,7 @@ const PhoneScreeningSection = ({
     navigator.clipboard.writeText(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${application.job_id}&application_id=${application.id}`,
     );
-    toast.success('Interview link copied!');
+    toast.success('Interview link copied.');
   };
 
   const [collapse, setCollapse] = useState(false);

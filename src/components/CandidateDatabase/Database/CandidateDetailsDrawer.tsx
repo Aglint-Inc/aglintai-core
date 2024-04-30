@@ -218,7 +218,7 @@ const CandidateDrawer = ({
         onClickPhone={{
           onClick: () => {
             navigator.clipboard.writeText(candidate.json_resume.basics.phone);
-            toast.success('Phone number copied');
+            toast.success('Phone number copied.');
           },
         }}
         slotAddJob={

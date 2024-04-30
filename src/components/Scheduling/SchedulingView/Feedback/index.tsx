@@ -277,7 +277,7 @@ const AdminFeedback = ({
       relation_id: relation_id,
       feedback: { recommendation: null, objective: null },
     }).then(() => {
-      toast.success('Mail Request for Feedback Sent.');
+      toast.success('Feedback request email sent successfully.');
       return true;
     });
   };
@@ -587,7 +587,7 @@ const AdminFeedback = ({
                     interviewerData={selectedInterviewer.interviewer}
                     onSubmit={(feedback) =>
                       handelSubmit(feedback).then(() => {
-                        toast.success('Feedback Saved.');
+                        toast.success('Feedback saved successfully.');
                         setEdit(false);
                         setSelectedInterviewer({
                           index: null,
@@ -1005,7 +1005,7 @@ const InterviewerFeedback = ({
                     interviewerData={selectedInterviewer.interviewer}
                     onSubmit={(feedback) =>
                       handelSubmit(feedback).then(() => {
-                        toast.success('Feedback Saved.');
+                        toast.success('Feedback saved successfully.');
                         setEdit(false);
                         setSelectedInterviewer({
                           index: null,
@@ -1144,7 +1144,7 @@ const FeedbackForm = ({
       onClickSubmitFeedback={{
         onClick: () => {
           if (!interviewer.feedback) {
-            return toast.warning('Please give Feedback');
+            return toast.warning('Please provide feedback.');
           }
           onSubmit({
             relation_id: interviewer.relation_id,

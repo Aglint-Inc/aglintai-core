@@ -91,7 +91,7 @@ function PauseResumeDialog({
       close();
       refetch();
     } else {
-      toast.warning('Please pick a module!');
+      toast.warning('Please pick interview type.');
     }
   }
   return (

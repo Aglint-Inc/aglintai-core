@@ -40,7 +40,7 @@ const useUploadCandidate = () => {
     );
     if (response.confirmation) {
       await handleJobApplicationPaginate(pageNumber[section], section);
-      toast.success('Candidates uploaded');
+      toast.success('Candidates uploaded successfully.');
     } else if (response.error) toast.error(response.error);
     return response;
   };
@@ -105,12 +105,12 @@ const useUploadCandidate = () => {
       toast.success(
         `${successCount} resume${
           successCount === 1 ? '' : 's'
-        } successfully uploaded!`,
+        } uploaded successfully.`,
       );
     }
     if (failedCount > 0) {
       toast.error(
-        `${failedCount} resume${failedCount === 1 ? '' : 's'} failed to upload`,
+        `${failedCount} resume${failedCount === 1 ? '' : 's'} failed to upload.`,
       );
     }
     return { confirmation: true, error: null };
@@ -132,7 +132,7 @@ const useUploadCandidate = () => {
     );
     if (response.confirmation) {
       await handleJobApplicationPaginate(pageNumber[section], section);
-      toast.success('Candidates uploaded');
+      toast.success('Candidates uploaded successfully.');
     } else if (response.error) toast.error(response.error);
     return response;
   };

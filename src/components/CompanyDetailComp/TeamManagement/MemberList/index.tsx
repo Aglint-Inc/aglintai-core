@@ -118,8 +118,8 @@ const Member = ({
         onClickResetPassword={{
           onClick: () => {
             resetPassword(member.email)
-              .then(() => toast.success('Password Reset mail Sent.'))
-              .catch(() => toast.error('Password Reset Failed.'));
+              .then(() => toast.success('Password reset email sent.'))
+              .catch(() => toast.error('Password reset failed.'));
           },
         }}
         key={1}

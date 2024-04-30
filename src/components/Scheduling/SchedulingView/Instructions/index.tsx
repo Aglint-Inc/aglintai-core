@@ -33,9 +33,9 @@ function Instructions({ schedule }: { schedule: TransformSchedule }) {
           .eq('id', schedule.interview_meeting.id);
         if (error) throw Error(error.message);
         refetch();
-        toast.success('Instruction updated!');
+        toast.success('Instruction updated successfully.');
       } else {
-        toast.warning('Please give instructions!');
+        toast.warning('Please give instructions.');
       }
     } catch (error) {
       toast.error(error.message);

@@ -143,7 +143,7 @@ const SlideTwoSignUp = () => {
           setRecruiter(res.data.recruiter);
           setStep(stepObj.type);
         } else {
-          toast.error('Something went wrong. Please try again later.');
+          toast.error('Something went wrong. Please try again.');
         }
       } else {
         if (

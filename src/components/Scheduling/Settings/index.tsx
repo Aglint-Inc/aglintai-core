@@ -692,7 +692,7 @@ function SchedulingSettings({
                             const keyword = String(s).split(',');
                             keyword.map((item) => {
                               if (freeKeyWords.includes(item)) {
-                                toast.warning(`"${item}" keyword exist!`);
+                                toast.warning(`"${item}" keyword exists.`);
                                 return null;
                               } else {
                                 setFreeKeywords((pre) => [item, ...pre]);
@@ -743,7 +743,7 @@ function SchedulingSettings({
                             const keyword = String(s).split(',');
                             keyword.map((item) => {
                               if (freeKeyWords.includes(item)) {
-                                toast.warning(`"${item}" keyword exist!`);
+                                toast.warning(`"${item}" keyword exists.`);
                                 return null;
                               } else {
                                 setSoftConflictsKeyWords((pre) => [
@@ -799,7 +799,7 @@ function SchedulingSettings({
                               const item = itemX.trim();
                               if (item?.length) {
                                 if (outOfOffice.includes(item)) {
-                                  toast.warning(`"${item}" keyword exist!`);
+                                  toast.warning(`"${item}" keyword exists.`);
                                   return null;
                                 } else {
                                   setOutOfOffice((pre) => [item, ...pre]);
@@ -853,7 +853,7 @@ function SchedulingSettings({
                               const item = itemX.trim();
                               if (item?.length) {
                                 if (recruitingBlocks.includes(item)) {
-                                  toast.warning(`"${item}" keyword exist!`);
+                                  toast.warning(`"${item}" keyword exists.`);
                                   return null;
                                 } else {
                                   setRecruitingBlocks((pre) => [item, ...pre]);

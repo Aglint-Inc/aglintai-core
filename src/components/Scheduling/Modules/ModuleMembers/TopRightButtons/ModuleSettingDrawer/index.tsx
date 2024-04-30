@@ -197,7 +197,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
                     }));
                   } else {
                     toast.warning(
-                      'Cannot disable training when there are members in training',
+                      'Cannot disable training while members are still in training.',
                     );
                   }
                 },

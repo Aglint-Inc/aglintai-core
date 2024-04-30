@@ -180,7 +180,7 @@ export const deleteRelationByUserDbDelete = async ({
     }
   } else {
     toast.warning(
-      'Cannot delete user. There are meetings associated with this user.',
+      'User cannot be deleted. Meetings are associated with this user.',
     );
     return false;
   }

@@ -241,14 +241,14 @@ const TeamManagement = () => {
                   editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
-                      toast.error('Cannot remove admin account');
+                      toast.error('Unable to remove the admin account.');
                     } else {
                       try {
                         await axios.post('/api/supabase/deleteuser', {
                           user_id: member.user_id,
                         });
                       } catch (error) {
-                        toast.error('This user is connect with scheduling');
+                        toast.error("This member is tied to an active schedule, so removal is unavailable until it's finished.");
                         return null;
                       }
                       setMembers((members) =>

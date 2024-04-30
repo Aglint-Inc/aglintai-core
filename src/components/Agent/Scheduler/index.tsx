@@ -157,7 +157,7 @@ function SchedulerAgent() {
                 reRunMessage.status,
               )
             ) {
-              toast.error('network error, please try again.');
+              toast.error('Network error, please try again.');
               clearInterval(timeInterval);
               setLoading(false);
               tempActiveChat.messages.pop();
@@ -244,7 +244,7 @@ function SchedulerAgent() {
       }
       // inputRef.current.focus();
     } else {
-      toast.warning('Please enter your message!');
+      toast.warning('Please enter your request.');
     }
   }
   useEffect(() => {
