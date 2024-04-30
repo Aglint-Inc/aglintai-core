@@ -86,7 +86,7 @@ export function ProfileList({
                 className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"
               >
-                {"Job Title"}
+                {"Title"}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block tag="div">{textJobTitle}</_Builtin.Block>
