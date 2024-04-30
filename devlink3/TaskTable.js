@@ -115,7 +115,7 @@ export function TaskTable({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Assigned to"}
+              {"Assignee"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
