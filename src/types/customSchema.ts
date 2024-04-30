@@ -58,6 +58,7 @@ export type CustomDatabase = {
                       title_meta: {
                         '{booking_time}': string;
                         '{candidate}': string;
+                        '{booking_date}': string;
                         '{date}': string;
                       };
                     };

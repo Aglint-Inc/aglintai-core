@@ -35,10 +35,13 @@ import SessionCard from './SessionCard';
 function SubTaskProgress() {
   const { tasks } = useTasksContext();
   const { assignerList } = useTaskStatesContext();
-
+  const router = useRouter();
   const { data: progressList, isFetchedAfterMount } = useProgress();
   const { data: sessionList } = useScheduleSession();
   const [openTranscript, setOpenTranscript] = useState(false);
+
+  const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
+  const candidateDetails = selectedTask?.applications?.candidates;
   return (
     <ShowCode>
       <ShowCode.When isTrue={!isFetchedAfterMount}>
@@ -49,7 +52,7 @@ function SubTaskProgress() {
       <ShowCode.When isTrue={progressList && Boolean(progressList.length)}>
         {progressList
           ? progressList.map((item, i) => {
-              const CandidateCreator = tasks
+              let CandidateCreator = tasks
                 .map((ele) => ele.applications.candidates)
                 .find((ele) => ele.id === (item.created_by as any).id);
 
@@ -57,11 +60,13 @@ function SubTaskProgress() {
                 (ele) => ele.user_id === (item.created_by as any).id,
               );
 
+              // console.log(CandidateCreator);
+
               const date = item.title_meta['{date}']
-                ? `<span class="progress_date_section">${dayjs(item.title_meta['{date}']).format('MMM DD, hh:mm A')}</span>`
+                ? `<span class="progress_date_section">${dayjs(item.title_meta['{date}']).tz(candidateDetails?.timezone).format('MMM DD')} (${candidateDetails?.timezone})</span>`
                 : '';
               const bookingTime = item.title_meta['{booking_time}']
-                ? `<span class="progress_date_section">${dayjs(item.title_meta['{booking_time}']).format('MMM DD, hh:mm A')}</span>`
+                ? `<span class="progress_date_section">${dayjs(item.title_meta['{booking_time}']).tz(candidateDetails?.timezone).format('MMM DD, hh:mm A')} (${candidateDetails?.timezone})</span>`
                 : '';
               const candidateName = item.title_meta['{candidate}']
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
@@ -78,8 +83,9 @@ function SubTaskProgress() {
                           .trim()
                           .replaceAll('Pm', 'PM')
                           .replaceAll('{candidate}', candidateName)
-                          .replaceAll('{date}', date)
+                          .replaceAll('{booking_date}', date)
                           .replaceAll('{booking_time}', bookingTime),
+                        // .replaceAll('{date}', date),
                       }}
                     ></span>
                   }
