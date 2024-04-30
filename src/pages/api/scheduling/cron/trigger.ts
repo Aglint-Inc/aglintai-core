@@ -49,7 +49,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new Error(errorEmail.message || errorPhone.message);
     } else {
       const allTasks = [...emailTasks, ...phoneTasks];
-      console.log(allTasks);
 
       if (allTasks?.length > 0) {
         await Promise.all(
