@@ -114,122 +114,140 @@ const EditMember = ({
           })}
           slotForm={
             <Stack spacing={2}>
-              <CustomTextField
-                value={form.first_name ? form.first_name : ''}
-                placeholder='First Name'
-                label='First Name'
-                error={formError.first_name}
-                onFocus={() => {
-                  setFormError({ ...formError, first_name: false });
-                }}
-                onChange={(e) => {
-                  setForm({ ...form, first_name: e.target.value });
-                }}
-              />
-              <CustomTextField
-                value={form.last_name ? form.last_name : ''}
-                placeholder='Last Name'
-                label='Last Name'
-                onChange={(e) => {
-                  setForm({ ...form, last_name: e.target.value });
-                }}
-              />
-              <CustomTextField
-                value={form.designation ? form.designation : ''}
-                placeholder='Tittle'
-                label='Tittle'
-                error={formError.designation}
-                onFocus={() => {
-                  setFormError({ ...formError, designation: false });
-                }}
-                onChange={(e) => {
-                  setForm({ ...form, designation: e.target.value });
-                }}
-              />
-              <Autocomplete
-                fullWidth
-                value={form.employment || ''}
-                onChange={(event: any, newValue: employmentTypeEnum | null) => {
-                  setForm({
-                    ...form,
-                    employment: newValue,
-                  });
-                }}
-                options={
-                  ['contractor', 'fulltime', 'parttime'] as employmentTypeEnum[]
-                }
-                getOptionLabel={(option) => capitalize(option)}
-                renderInput={(params) => (
-                  <CustomTextField
-                    {...params}
-                    error={formError.employment}
-                    onFocus={() => {
-                      setFormError({
-                        ...formError,
-                        employment: false,
-                      });
-                    }}
-                    name='Employment'
-                    placeholder='Employment'
-                    label='Employment'
-                  />
-                )}
-              />
-              <Autocomplete
-                fullWidth
-                value={form.interview_location || ''}
-                onChange={(event: any, newValue: string | null) => {
-                  setForm({
-                    ...form,
-                    interview_location: newValue,
-                  });
-                }}
-                options={recruiter?.office_locations.map(
-                  (item: interviewLocationType) => {
-                    return `${item.city}, ${item.region}, ${item.country}`;
-                  },
-                )}
-                renderInput={(params) => (
-                  <CustomTextField
-                    {...params}
-                    error={formError.interview_location}
-                    onFocus={() => {
-                      setFormError({
-                        ...formError,
-                        interview_location: false,
-                      });
-                    }}
-                    name='Location'
-                    placeholder='Location'
-                    label='Location'
-                  />
-                )}
-              />
-              <Autocomplete
-                fullWidth
-                value={capitalize(form.department)}
-                onChange={(event: any, newValue: string | null) => {
-                  setForm({
-                    ...form,
-                    department: newValue,
-                  });
-                }}
-                options={recruiter?.departments?.map((departments) =>
-                  capitalize(departments),
-                )}
-                renderInput={(params) => (
-                  <CustomTextField
-                    {...params}
-                    error={formError.department}
-                    onFocus={() => {
-                      setFormError({ ...formError, department: false });
-                    }}
-                    name='Department'
-                    placeholder='Department'
-                    label='Department'
-                  />
-                )}
-              />
+              <Stack flexDirection={'row'} gap={2} width={'100%'}>
+                <CustomTextField
+                  // sx={{ width: '50% !important' }}
+                  value={form.first_name ? form.first_name : ''}
+                  placeholder='First Name'
+                  label='First Name'
+                  error={formError.first_name}
+                  onFocus={() => {
+                    setFormError({ ...formError, first_name: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({ ...form, first_name: e.target.value });
+                  }}
+                />
+                <CustomTextField
+                  // sx={{ width: '50% !important' }}
+                  value={form.last_name ? form.last_name : ''}
+                  placeholder='Last Name'
+                  label='Last Name'
+                  onChange={(e) => {
+                    setForm({ ...form, last_name: e.target.value });
+                  }}
+                />
+              </Stack>
+
+              <Stack flexDirection={'row'} gap={2} width={'100%'}>
+                <CustomTextField
+                  value={form.designation ? form.designation : ''}
+                  placeholder='Tittle'
+                  label='Tittle'
+                  error={formError.designation}
+                  onFocus={() => {
+                    setFormError({ ...formError, designation: false });
+                  }}
+                  onChange={(e) => {
+                    setForm({ ...form, designation: e.target.value });
+                  }}
+                />
+                <Autocomplete
+                  fullWidth
+                  value={form.employment || ''}
+                  onChange={(
+                    event: any,
+                    newValue: employmentTypeEnum | null,
+                  ) => {
+                    setForm({
+                      ...form,
+                      employment: newValue,
+                    });
+                  }}
+                  options={
+                    [
+                      'contractor',
+                      'fulltime',
+                      'parttime',
+                    ] as employmentTypeEnum[]
+                  }
+                  getOptionLabel={(option) => capitalize(option)}
+                  renderInput={(params) => (
+                    <CustomTextField
+                      {...params}
+                      error={formError.employment}
+                      onFocus={() => {
+                        setFormError({
+                          ...formError,
+                          employment: false,
+                        });
+                      }}
+                      name='Employment'
+                      placeholder='Employment'
+                      label='Employment'
+                    />
+                  )}
+                />
+              </Stack>
+
+              <Stack flexDirection={'row'} gap={2} width={'100%'}>
+                <Autocomplete
+                  fullWidth
+                  value={form.interview_location || ''}
+                  onChange={(event: any, newValue: string | null) => {
+                    setForm({
+                      ...form,
+                      interview_location: newValue,
+                    });
+                  }}
+                  options={recruiter?.office_locations.map(
+                    (item: interviewLocationType) => {
+                      return `${item.city}, ${item.region}, ${item.country}`;
+                    },
+                  )}
+                  renderInput={(params) => (
+                    <CustomTextField
+                      {...params}
+                      error={formError.interview_location}
+                      onFocus={() => {
+                        setFormError({
+                          ...formError,
+                          interview_location: false,
+                        });
+                      }}
+                      name='Location'
+                      placeholder='Location'
+                      label='Location'
+                    />
+                  )}
+                />
+                <Autocomplete
+                  fullWidth
+                  value={capitalize(form.department)}
+                  onChange={(event: any, newValue: string | null) => {
+                    setForm({
+                      ...form,
+                      department: newValue,
+                    });
+                  }}
+                  options={recruiter?.departments?.map((departments) =>
+                    capitalize(departments),
+                  )}
+                  renderInput={(params) => (
+                    <CustomTextField
+                      {...params}
+                      error={formError.department}
+                      onFocus={() => {
+                        setFormError({ ...formError, department: false });
+                      }}
+                      name='Department'
+                      placeholder='Department'
+                      label='Department'
+                    />
+                  )}
+                />
+              </Stack>
+
               {member.role !== 'admin' && (
                 <Autocomplete
                   fullWidth
@@ -268,14 +286,8 @@ const EditMember = ({
             </Stack>
           }
           slotButtons={
-            <Stack
-              direction={'row'}
-              justifyContent={'end'}
-              width={'100%'}
-              marginTop={'10px'}
-            >
+            <Stack width={'100%'} marginTop={'10px'}>
               <AUIButton
-                variant='outlined'
                 disabled={isDisable}
                 size='medium'
                 onClick={() => {
@@ -335,7 +347,7 @@ export default EditMember;
 const CustomTextField = (props: TextFieldProps) => {
   const label = props.label;
   return (
-    <Stack>
+    <Stack width={'100%'}>
       {Boolean(label) && (
         <Typography fontSize={'14px'} marginBottom={'3px'}>
           {label}

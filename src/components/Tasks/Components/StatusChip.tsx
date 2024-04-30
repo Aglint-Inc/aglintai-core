@@ -53,17 +53,18 @@ export default StatusChip;
 
 export const statusList = [
   {
-    id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
-    backgroundColor: palette.yellow[400] + '55',
-    label: 'Scheduled',
-    color: palette.yellow[700],
-  },
-  {
     id: 'not_started' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: '#e9ebed',
     label: 'Not Started',
     color: '#49545c',
   },
+  {
+    id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: palette.yellow[400] + '55',
+    label: 'Scheduled',
+    color: palette.yellow[700],
+  },
+
   {
     id: 'in_progress' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: '#CEE2F2',

@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { scheduleWithAgent } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export interface ApiBodyParamsScheduleAgent {
+export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
@@ -23,7 +23,7 @@ export interface ApiBodyParamsScheduleAgent {
   rec_user_id: string;
   user_tz: string;
   trigger_count: number;
-}
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -47,6 +47,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let resAgent = null;
 
     if (task_id) {
+      await supabaseAdmin
+        .from('new_tasks')
+        .update({
+          trigger_count: trigger_count + 1,
+          status: 'in_progress',
+        })
+        .eq('id', task_id)
+        .select();
       resAgent = await scheduleWithAgent({
         application_id,
         dateRange,
@@ -62,7 +70,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         rec_user_id,
         supabase: supabaseAdmin,
         user_tz,
-        trigger_count,
       });
     } else {
       console.log('no task id');

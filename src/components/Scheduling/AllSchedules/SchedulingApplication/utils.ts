@@ -463,7 +463,6 @@ export const scheduleWithAgent = async ({
   rec_user_id,
   supabase,
   user_tz,
-  trigger_count,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -482,7 +481,6 @@ export const scheduleWithAgent = async ({
   rec_user_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
   user_tz: string;
-  trigger_count: number;
 }) => {
   try {
     console.log(application_id, 'application_id');
@@ -551,8 +549,6 @@ export const scheduleWithAgent = async ({
                   id: ses.newId,
                 };
               }),
-            trigger_count: trigger_count + 1,
-            status: 'in_progress',
           })
           .eq('id', task_id)
           .select();
@@ -625,19 +621,14 @@ export const scheduleWithAgent = async ({
           rec_user_id,
         });
 
-        const { data: task, error: eroorSubTasks } = await supabase
+        const { error: eroorSubTasks } = await supabase
           .from('new_tasks')
           .update({
             filter_id: filterJson.id,
             session_ids: selectedSessions,
-            status: 'in_progress',
-            trigger_count: trigger_count + 1,
           })
-          .eq('id', task_id)
-          .select();
+          .eq('id', task_id);
         if (eroorSubTasks) throw new Error(eroorSubTasks.message);
-
-        console.log(`task status updated to ${task[0].status}`);
 
         addScheduleActivity({
           title: `Candidate invited for ${selectedSessions
@@ -669,8 +660,8 @@ export const scheduleWithAgent = async ({
       }
       return true;
     }
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err?.message || err);
   }
 };
 
@@ -681,8 +672,8 @@ export const scheduleWithAgentWithoutTaskId = async ({
   dateRange,
   recruiter_id,
   recruiter_user_name,
-  candidate_name = 'chinmai',
-  company_name = 'aglint',
+  candidate_name,
+  company_name,
   rec_user_email,
   rec_user_phone,
   rec_user_id,
@@ -774,6 +765,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           type,
           recruiter_user_name,
           supabase,
+          candidate_name,
         });
 
         addScheduleActivity({
@@ -850,6 +842,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           type,
           recruiter_user_name,
           supabase,
+          candidate_name,
         });
 
         addScheduleActivity({
@@ -1033,12 +1026,7 @@ export const agentTrigger = async ({
 }) => {
   console.log({
     type,
-    filterJsonId,
-    task_id,
-    recruiter_user_name,
     candidate_name,
-    company_name,
-    jobRole,
     rec_user_email,
     rec_user_phone,
     user_tz,
@@ -1115,6 +1103,7 @@ export const createTask = async ({
   type,
   recruiter_user_name,
   supabase,
+  candidate_name,
 }: {
   selectedSessions: Awaited<
     ReturnType<typeof fetchInterviewDataJob>
@@ -1129,6 +1118,7 @@ export const createTask = async ({
   filter_id: string;
   type: 'phone_agent' | 'email_agent';
   recruiter_user_name: string;
+  candidate_name: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
@@ -1163,9 +1153,8 @@ export const createTask = async ({
       task_id: task.id,
     },
     optionData: {
-      assignerId: assignee,
-      assignerName: type === 'email_agent' ? 'Email Agent' : 'Phone Agent',
-      creatorName: recruiter_user_name,
+      candidateName: candidate_name,
+      sessions: selectedSessions,
     },
     supabaseCaller: supabase,
   });

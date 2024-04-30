@@ -1,4 +1,5 @@
 import { Checkbox, Stack } from '@mui/material';
+import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
@@ -8,6 +9,7 @@ import {
   PriorityPill,
   TaskTableCard,
 } from '@/devlink3';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -20,7 +22,15 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const route = useRouter();
   const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
-
+  let overDueText = '';
+  let toDayDateTime = dayjs();
+  const tomorrowDate = toDayDateTime.add(1, 'day');
+  let dueDateTime = dayjs(task.due_date);
+  if (dueDateTime.isBefore(toDayDateTime)) {
+    overDueText = `Overdue ${dueDateTime.fromNow()}`;
+    // eslint-disable-next-line no-console
+    console.log(overDueText);
+  }
   return (
     <Stack
       sx={{
@@ -34,6 +44,45 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       }}
     >
       <TaskTableCard
+        isOverdueVisible={
+          task.status === 'in_progress' || task.status === 'scheduled'
+        }
+        textOverdue={
+          <ShowCode>
+            <ShowCode.When isTrue={task.status === 'in_progress'}>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(toDayDateTime, 'day')}
+                >
+                  {`Due Today`}
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(tomorrowDate, 'day')}
+                >
+                  {`Due Tomorrow`}
+                </ShowCode.When>
+                <ShowCode.Else>{`Due ${dueDateTime.fromNow()}`}</ShowCode.Else>
+              </ShowCode>
+            </ShowCode.When>
+            <ShowCode.When isTrue={task.status === 'scheduled'}>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(toDayDateTime, 'day')}
+                >
+                  {`Today at ${dueDateTime.format('hh:mm A')}`}
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(tomorrowDate, 'day')}
+                >
+                  {`Tomorrow at ${dueDateTime.format('hh:mm A')}`}
+                </ShowCode.When>
+                <ShowCode.Else>
+                  {`${dueDateTime.format(`MMMM D [at] hh:mm A`)}`}
+                </ShowCode.Else>
+              </ShowCode>
+            </ShowCode.When>
+          </ShowCode>
+        }
         onClickCard={{
           onClick: () => {
             route.push(pageRoutes.TASKS + '?task_id=' + task.id);

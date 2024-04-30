@@ -6,10 +6,6 @@ declare function TaskTableCard(props: {
   slotCheckbox?: Types.Devlink.Slot;
   slotStatus?: Types.Devlink.Slot;
   textTask?: React.ReactNode;
-  isEmailAgentVisible?: Types.Visibility.VisibilityConditions;
-  isPhoneAgentVisible?: Types.Visibility.VisibilityConditions;
-  isAssignedtoVisible?: Types.Visibility.VisibilityConditions;
-  slotAvatarWithName?: Types.Devlink.Slot;
   textJob?: React.ReactNode;
   slotCandidate?: Types.Devlink.Slot;
   isActiveCard?: Types.Visibility.VisibilityConditions;
@@ -17,4 +13,6 @@ declare function TaskTableCard(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   slotPriority?: Types.Devlink.Slot;
   onClickOverview?: Types.Devlink.RuntimeProps;
+  isOverdueVisible?: Types.Visibility.VisibilityConditions;
+  textOverdue?: React.ReactNode;
 }): React.JSX.Element;

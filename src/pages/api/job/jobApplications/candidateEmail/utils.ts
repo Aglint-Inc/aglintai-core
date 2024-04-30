@@ -107,7 +107,7 @@ export const sendMails = async (
   candidates: Awaited<ReturnType<typeof readCandidates>>,
   sgMail: MailService,
 ) => {
-  const safeCandidates = candidates.reduce((acc, curr) => {
+  const safeCandidates = filterEmails(candidates).reduce((acc, curr) => {
     const safePurposes = Object.keys(
       getUpdateEmailStatus(purposes, curr),
     ) as (keyof EmailTemplateType)[];
@@ -137,7 +137,7 @@ export const createTasks = async (
   candidates: Awaited<ReturnType<typeof readCandidates>>,
   task: TaskType,
 ) => {
-  const safeData = candidates.map((candidate) => ({
+  const safeData = filterEmails(candidates).map((candidate) => ({
     name: `Schedule for interview`,
     recruiter_id: job.recruiter_id,
     application_id: candidate.application_id,
@@ -330,4 +330,13 @@ export const createBatches = <T>(
       return acc;
     }, batches)
     .filter((f) => f.length !== 0);
+};
+
+const filterEmails = (
+  candidates: Awaited<ReturnType<typeof readCandidates>>,
+) => {
+  return candidates.filter(
+    ({ candidate_id, email }) =>
+      candidateEmailValidity(email, candidate_id).isValidEmail,
+  );
 };
