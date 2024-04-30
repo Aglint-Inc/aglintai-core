@@ -49,7 +49,6 @@ const required_fields = [
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const req_body = req.body as ConfirmApiBodyParams;
   try {
-    console.log(req_body);
     required_fields.forEach((field) => {
       if (!has(req_body, field)) {
         throw new Error(`missing Field ${field}`);

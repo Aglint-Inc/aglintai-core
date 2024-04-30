@@ -536,6 +536,7 @@ export class CandidatesScheduling {
       if (minutes % 5 !== 0) {
         minutes += 5 - (minutes % 5);
       }
+      minutes += 30; // show slots 30 minutes from now (to avoid failing booking api)
       curr_time = curr_time.set('minutes', minutes).set('seconds', 0);
       return curr_time;
     };
