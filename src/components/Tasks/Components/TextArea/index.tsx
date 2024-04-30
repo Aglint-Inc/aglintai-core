@@ -50,7 +50,7 @@ function TextArea({
           ...suggetion,
           items: ({ query }) => {
             return dataList.filter((item) =>
-              String(item.first_name + ' ' + item?.last_name)
+              String(item.first_name + ' ' + (item?.last_name ?? ''))
                 .toLowerCase()
                 .includes(query.toLowerCase()),
             );

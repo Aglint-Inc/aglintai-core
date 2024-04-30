@@ -476,14 +476,14 @@ function AddNewTask() {
                               level={capitalize(
                                 recruiterUser?.first_name +
                                   ' ' +
-                                  recruiterUser?.last_name,
+                                  (recruiterUser?.last_name ?? ''),
                               )}
                             />
                           }
                           textName={capitalize(
                             recruiterUser?.first_name +
                               ' ' +
-                              recruiterUser?.last_name,
+                              (recruiterUser?.last_name ?? ''),
                           )}
                         />
                       )
