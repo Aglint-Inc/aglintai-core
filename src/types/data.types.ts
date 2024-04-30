@@ -1,3 +1,4 @@
+import { DatabaseTable } from './customSchema';
 import { schedulingSettingType } from './scheduleTypes/scheduleSetting';
 import { Database } from './schema';
 
@@ -13,10 +14,9 @@ export type SocialsType = {
   [key: string]: string;
 };
 
-export type RecruiterType = Omit<
-  Database['public']['Tables']['recruiter']['Row'],
-  'socials'
-> & { socials: SocialsType | null };
+export type RecruiterType = Omit<DatabaseTable['recruiter'], 'socials'> & {
+  socials: SocialsType | null;
+};
 
 export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
 export type JobAssistantChats =

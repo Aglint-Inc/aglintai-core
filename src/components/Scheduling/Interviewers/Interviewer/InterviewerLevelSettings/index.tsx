@@ -67,6 +67,8 @@ function InterviewerLevelSettings({
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [freeKeyWords, setFreeKeywords] = useState([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
+  const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
+  const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
 
   const [selectedTimeZone, setSelectedTimeZone] = useState(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
@@ -162,6 +164,12 @@ function InterviewerLevelSettings({
       setSoftConflictsKeyWords(
         schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
       );
+      setOutOfOffice(
+        schedulingSettingData?.schedulingKeyWords?.outOfOffice || [],
+      );
+      setRecruitingBlocks(
+        schedulingSettingData?.schedulingKeyWords?.recruitingBlocks || [],
+      );
     }
   }
 
@@ -178,6 +186,8 @@ function InterviewerLevelSettings({
         schedulingKeyWords: {
           free: freeKeyWords,
           SoftConflicts: softConflictsKeyWords,
+          outOfOffice: outOfOffice,
+          recruitingBlocks: recruitingBlocks,
         },
         isAutomaticTimezone: isTimeZone,
       } as schedulingSettingType;
@@ -198,6 +208,8 @@ function InterviewerLevelSettings({
     selectedTimeZone,
     freeKeyWords,
     softConflictsKeyWords,
+    outOfOffice,
+    recruitingBlocks,
     isTimeZone,
   ]);
 
@@ -540,6 +552,114 @@ function InterviewerLevelSettings({
                             clickable
                             onDelete={() => {
                               setSoftConflictsKeyWords((pre) => {
+                                return pre.filter((ele) => ele !== item);
+                              });
+                            }}
+                            sx={{
+                              p: '5px',
+                            }}
+                            deleteIcon={
+                              <IconButton>
+                                <Icon
+                                  width='14'
+                                  height='14'
+                                  color='grey'
+                                  variant='CloseThinIcon'
+                                />
+                              </IconButton>
+                            }
+                            label={item}
+                          />
+                        </>
+                      );
+                    })}
+                  />
+                  <KeywordCard
+                    textTitle={'Out of Office'}
+                    textWarning={
+                      'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
+                    }
+                    slotInput={
+                      <FilterInput
+                        handleAdd={(s) => {
+                          const keyword = String(s).split(',');
+                          keyword.map((itemX) => {
+                            const item = itemX.trim();
+                            if (item?.length) {
+                              if (outOfOffice.includes(item)) {
+                                toast.warning(`"${item}" keyword exist!`);
+                                return null;
+                              } else {
+                                setOutOfOffice((pre) => [item, ...pre]);
+                              }
+                            }
+                          });
+                        }}
+                        path='softConflictsKeywords'
+                        type='string'
+                      />
+                    }
+                    slotSuggestPill={outOfOffice.map((item) => {
+                      return (
+                        <>
+                          <Chip
+                            clickable
+                            onDelete={() => {
+                              setOutOfOffice((pre) => {
+                                return pre.filter((ele) => ele !== item);
+                              });
+                            }}
+                            sx={{
+                              p: '5px',
+                            }}
+                            deleteIcon={
+                              <IconButton>
+                                <Icon
+                                  width='14'
+                                  height='14'
+                                  color='grey'
+                                  variant='CloseThinIcon'
+                                />
+                              </IconButton>
+                            }
+                            label={item}
+                          />
+                        </>
+                      );
+                    })}
+                  />
+                  <KeywordCard
+                    textTitle={'Recruiting Blocks'}
+                    textWarning={
+                      'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
+                    }
+                    slotInput={
+                      <FilterInput
+                        handleAdd={(s) => {
+                          const keyword = String(s).split(',');
+                          keyword.map((itemX) => {
+                            const item = itemX.trim();
+                            if (item?.length) {
+                              if (recruitingBlocks.includes(item)) {
+                                toast.warning(`"${item}" keyword exist!`);
+                                return null;
+                              } else {
+                                setRecruitingBlocks((pre) => [item, ...pre]);
+                              }
+                            }
+                          });
+                        }}
+                        path='softConflictsKeywords'
+                        type='string'
+                      />
+                    }
+                    slotSuggestPill={recruitingBlocks.map((item) => {
+                      return (
+                        <>
+                          <Chip
+                            clickable
+                            onDelete={() => {
+                              setRecruitingBlocks((pre) => {
                                 return pre.filter((ele) => ele !== item);
                               });
                             }}
