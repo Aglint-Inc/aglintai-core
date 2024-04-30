@@ -517,6 +517,12 @@ export const scheduleWithAgent = async ({
           rec_user_id,
         });
 
+        console.log(
+          createCloneRes.refSessions
+            .filter((ses) => ses.isSelected)
+            .map((ses) => `old session_id ${ses.id} to ${ses.newId}`),
+        );
+
         const filterJson = await createFilterJson({
           dateRange,
           organizer_name: recruiter_user_name,
@@ -931,7 +937,12 @@ export const agentTrigger = async ({
         organizer_time_zone: user_tz,
       } as InitAgentBodyParams,
     );
-    console.log(res?.data);
+
+    if (res?.status === 200) {
+      console.log('mail agent triggered successfully');
+    } else {
+      console.log('error in mail agent');
+    }
 
     return res.status;
   } else if (type === 'phone_agent') {
@@ -956,8 +967,12 @@ export const agentTrigger = async ({
         task_id: task_id,
       },
     );
-    console.log(res?.data);
 
+    if (res?.status === 200) {
+      console.log('phone agent triggered successfully');
+    } else {
+      console.log('error in phone agent');
+    }
     return res.status;
   }
 };
