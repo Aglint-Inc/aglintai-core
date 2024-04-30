@@ -1,8 +1,16 @@
-import { Checkbox, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
+import {
+  Checkbox,
+  Stack,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+} from '@mui/material';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import { PriorityPill, TaskTableJobSubCard } from '@/devlink3';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -18,7 +26,25 @@ function GroupTaskCard({
   const route = useRouter();
   const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
-
+  let overDueText = '';
+  let toDayDateTime = dayjs();
+  const tomorrowDate = toDayDateTime.add(1, 'day');
+  let dueDateTime = dayjs(task.due_date);
+  if (dueDateTime.isBefore(toDayDateTime)) {
+    overDueText = `Overdue ${dueDateTime.fromNow()}`;
+    // eslint-disable-next-line no-console
+    console.log(overDueText, tomorrowDate);
+  }
+  const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: 'rgba(255, 255, 255, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 11,
+    },
+  }));
   return (
     <Stack
       sx={{
@@ -32,6 +58,47 @@ function GroupTaskCard({
       }}
     >
       <TaskTableJobSubCard
+        isOverdueVisible={
+          (task.status === 'in_progress' &&
+            dueDateTime.isBefore(tomorrowDate)) ||
+          task.status === 'scheduled'
+        }
+        textOverdue={
+          <ShowCode>
+            <ShowCode.When isTrue={task.status === 'in_progress'}>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(toDayDateTime, 'day')}
+                >
+                  {`Due Today`}
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(tomorrowDate, 'day')}
+                >
+                  {`Due Tomorrow`}
+                </ShowCode.When>
+                <ShowCode.Else>{''}</ShowCode.Else>
+              </ShowCode>
+            </ShowCode.When>
+            <ShowCode.When isTrue={task.status === 'scheduled'}>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(toDayDateTime, 'day')}
+                >
+                  {`Today at ${dueDateTime.format('hh:mm A')}`}
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(tomorrowDate, 'day')}
+                >
+                  {`Tomorrow at ${dueDateTime.format('hh:mm A')}`}
+                </ShowCode.When>
+                <ShowCode.Else>
+                  {`${dueDateTime.format(`MMMM D [at] hh:mm A`)}`}
+                </ShowCode.Else>
+              </ShowCode>
+            </ShowCode.When>
+          </ShowCode>
+        }
         onClickCard={{
           onClick: () => {
             route.push(pageRoutes.TASKS + '?task_id=' + task.id);
@@ -40,7 +107,30 @@ function GroupTaskCard({
         }}
         slotAssignedTo={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotStatus={<StatusChip status={task.status} />}
-        textTask={capitalize(task.name) || 'Untitled'}
+        textTask={
+          <LightTooltip
+            enterDelay={1000}
+            enterNextDelay={1000}
+            title={
+              <>
+                <span
+                  style={{
+                    fontSize: '12px',
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: task.name || 'Untitled',
+                  }}
+                ></span>
+              </>
+            }
+          >
+            <span
+              dangerouslySetInnerHTML={{
+                __html: task.name || 'Untitled',
+              }}
+            ></span>
+          </LightTooltip>
+        }
         slotCheckbox={
           <Stack
             className='checkboxClass'

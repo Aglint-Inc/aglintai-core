@@ -34,7 +34,7 @@ function GroupSections({
         textRole={capitalizeAll(item.applications.public_jobs.job_title)}
         slotAvatarWithName={
           <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
-            <Typography>
+            <Typography fontSize={'14px'}>
               {capitalizeAll(item.applications.public_jobs.job_title)}
             </Typography>
             <Typography

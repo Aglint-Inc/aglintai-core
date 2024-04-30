@@ -9,6 +9,7 @@ import {
   getAllApplicationStatus,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 import {
   JobApplication,
   JobApplicationSections,
@@ -16,6 +17,7 @@ import {
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+import { getFullName } from '@/src/utils/jsonResume';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
 import {
@@ -138,7 +140,7 @@ export const createTasks = async (
   task: TaskType,
 ) => {
   const safeData = filterEmails(candidates).map((candidate) => ({
-    name: `Schedule for interview`,
+    name: `Schedule interview for ${getFullName(candidate.first_name, candidate.last_name)} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
     recruiter_id: job.recruiter_id,
     application_id: candidate.application_id,
     created_by: job.recruiterUser.id as string,
@@ -152,12 +154,29 @@ export const createTasks = async (
 
   if (error) throw new Error(error.message);
   for (let eachTask of data) {
-    await supabase.from('new_tasks_progress').insert({
-      title: `Task created by <span class="mention">@${job.recruiterUser.name}</span>`,
-      progress_type: 'standard',
-      created_by: job.recruiterUser,
-      task_id: eachTask.id,
+    const candidate = candidates.find(
+      (ele) => ele.application_id === eachTask.application_id,
+    );
+    await createTaskProgress({
+      type: 'create_task',
+      data: {
+        task_id: eachTask.id as string,
+        created_by: {
+          ...job.recruiterUser,
+        },
+        progress_type: 'standard',
+      },
+      optionData: {
+        candidateName: getFullName(candidate.first_name, candidate.last_name),
+        sessions: eachTask.session_ids as any,
+      },
     });
+    // await supabase.from('new_tasks_progress').insert({
+    //   title: `Task created by <span class="mention">@${job.recruiterUser.name}</span>`,
+    //   progress_type: 'standard',
+    //   created_by: job.recruiterUser,
+    //   task_id: eachTask.id,
+    // });
   }
 };
 
