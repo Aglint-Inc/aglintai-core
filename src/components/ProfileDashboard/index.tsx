@@ -3,7 +3,7 @@
 /* eslint-disable security/detect-object-injection */
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Autocomplete, Dialog, Stack, Typography } from '@mui/material';
+import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
@@ -430,18 +430,21 @@ const ProfileDashboard = () => {
             <>
               {currTab === 'user_detail' && (
                 <ProfileList
+                  isLinkedInVisible={Boolean(recruiterUser.linked_in?.length)}
+                  onClickLinkedIn={{
+                    onClick: () => {
+                      recruiterUser.linked_in?.length &&
+                        window.open(recruiterUser.linked_in, '_ blank');
+                    },
+                  }}
                   slotUserImage={
-                    <ImageUpload
-                      image={recruiterUser.profile_image}
-                      size={80}
-                      table='recruiter-user'
-                      handleUpdateProfile={handleUpdateProfile}
-                      error={(e) => {
-                        if (e) {
-                          setError(true);
-                        } else {
-                          setError(false);
-                        }
+                    <Avatar
+                      variant='rounded'
+                      src={recruiterUser.profile_image}
+                      alt={recruiterUser.first_name}
+                      sx={{
+                        width: '50px',
+                        height: '50px',
                       }}
                     />
                   }
