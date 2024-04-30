@@ -150,36 +150,6 @@ const ProfileDashboard = () => {
       label: 'LinkedIn',
       required: false,
     },
-    // location: {
-    //   ...initialFormValues,
-    //   value: recruiterUser.interview_location,
-    //   // validation: 'Location',
-    //   label: 'Location',
-    //   blocked: true,
-    //   required: false,
-    // },
-    // designation: {
-    //   ...initialFormValues,
-    //   value: recruiterUser.position,
-    //   label: 'Tittle',
-    //   blocked: true,
-    //   required: false,
-    // },
-    // department: {
-    //   ...initialFormValues,
-    //   value: recruiterUser.department,
-    //   label: 'Department',
-    //   blocked: true,
-    //   required: false,
-    // },
-    // role: {
-    //   ...initialFormValues,
-    //   value: capitalize(recruiterUser.role),
-    //   label: 'Role',
-    //   blocked: true,
-    //   required: false,
-    //   placeholder: 'Enter your role.',
-    // },
   };
   const initialEmail: EmailFormFields = {
     email: {
@@ -682,7 +652,7 @@ const handleSubmit = async (
       first_name: profile.first_name.value,
       last_name: profile.last_name.value,
       phone: profile.phone.value,
-      // position: profile.designation.value,
+      linked_in: profile.linked_in.value,
     });
     if (confirmation) {
       toast.success('Profile infomation saved successfully');
