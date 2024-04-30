@@ -130,9 +130,7 @@ export default forwardRef((props: any, ref) => {
                   />
                   <Typography variant='body1'>
                     {capitalize(
-                      item?.first_name +
-                        ' ' +
-                        (item?.last_name ? item?.last_name : ''),
+                      item?.first_name + ' ' + (item?.last_name ?? ''),
                     )}
                   </Typography>
                 </ShowCode.Else>

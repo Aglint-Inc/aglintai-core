@@ -40,8 +40,8 @@ function CreateTask({
     start_date: string;
     end_date: string;
   }>({
-    start_date: dayjs().toString(),
-    end_date: dayjs().toString(),
+    start_date: dayjs().add(1, 'day').toString(),
+    end_date: dayjs().add(7, 'day').toString(),
   });
 
   const [selectedSession, setSelectedSession] = useState<
@@ -51,7 +51,9 @@ function CreateTask({
     null,
   );
 
-  const [selectCallDate, setSelectCallDate] = useState(dayjs().toString());
+  const [selectCallDate, setSelectCallDate] = useState(
+    dayjs().add(5, 'minute').toString(),
+  );
   const [selectedPriority, setSelectedPriority] =
     useState<DatabaseEnums['task_priority']>('medium');
   const {
@@ -68,11 +70,11 @@ function CreateTask({
           ...preTask,
           session_ids: interview_session.slice(0, 2),
           schedule_date_range: {
-            start_date: dayjs().toString(),
-            end_date: dayjs().toString(),
+            start_date: dayjs().add(1, 'day').toString(),
+            end_date: dayjs().add(7, 'day').toString(),
           },
           start_date: dayjs().add(5, 'minute').toString(),
-          due_date: dayjs().toString(),
+          due_date: dayjs().add(1, 'day').toString(),
         };
       });
     }
@@ -99,7 +101,7 @@ function CreateTask({
                       start_date: dayjs(e[0]).toString(),
                       end_date: dayjs(e[1]).toString(),
                     },
-                    due_date: dayjs(e[1]).toString(),
+                    due_date: dayjs(e[0]).toString(),
                   };
                 });
               }

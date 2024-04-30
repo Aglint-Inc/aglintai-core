@@ -267,7 +267,8 @@ function SubTaskProgress() {
                                                         textName={capitalizeAll(
                                                           receiver?.first_name +
                                                             ' ' +
-                                                            receiver?.last_name,
+                                                            (receiver?.last_name ??
+                                                              ''),
                                                         )}
                                                       />
                                                     )

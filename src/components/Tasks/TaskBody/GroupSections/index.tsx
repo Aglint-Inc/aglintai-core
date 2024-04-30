@@ -42,12 +42,12 @@ function GroupSections({
               display={'flex'}
               fontSize={'14px'}
             >
-              ({' '}
+              (
               {capitalizeAll(
                 item.applications.candidates.first_name +
                   ' ' +
-                  item.applications.candidates.last_name,
-              )}{' '}
+                  (item.applications.candidates.last_name ?? ''),
+              )}
               )
             </Typography>
             <Tooltip title='Task count'>
