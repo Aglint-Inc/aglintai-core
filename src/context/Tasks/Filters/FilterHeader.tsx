@@ -1,12 +1,21 @@
 import { Button, InputAdornment, Popover, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import React, { ReactNode } from 'react';
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { IconReload } from '@tabler/icons-react';
+import dayjs from 'dayjs';
+import React, { ReactNode, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
+import { TaskDate } from '@/devlink3';
 import Icon from '@/src/components/Common/Icons/Icon';
+import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
+import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
+
+import { useTasksContext } from '../../TasksContextProvider/TasksContextProvider';
 
 // eslint-disable-next-line no-unused-vars
 // type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any
@@ -43,6 +52,23 @@ export const FilterHeader = ({
   };
   filters: FilterType[];
 }) => {
+  const { filter, handelFilter } = useTasksContext();
+
+  const [selectedDate, setSelectedDate] = useState([
+    dayjs().toString(),
+    dayjs().toString(),
+  ]);
+
+  const [rangeActive, setRangeActive] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   return (
     <Stack
       direction={'row'}
@@ -93,6 +119,147 @@ export const FilterHeader = ({
             )}
           </>
         ))}
+        <ButtonFilter
+          onClickStatus={{
+            onClick: (e) => {
+              setAnchorEl(e.target);
+            },
+          }}
+          textLabel={'Due Date'}
+          isDotVisible={false}
+          isActive={false}
+          slotRightIcon={
+            <Stack>
+              <svg
+                width='15'
+                height='16'
+                viewBox='0 0 15 16'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M7.75781 11.2578C7.58594 11.4141 7.41406 11.4141 7.24219 11.2578L2.74219 6.75781C2.58594 6.58594 2.58594 6.41406 2.74219 6.24219C2.91406 6.08594 3.08594 6.08594 3.25781 6.24219L7.5 10.4609L11.7422 6.24219C11.9141 6.08594 12.0859 6.08594 12.2578 6.24219C12.4141 6.41406 12.4141 6.58594 12.2578 6.75781L7.75781 11.2578Z'
+                  fill='#0F3554'
+                />
+              </svg>
+            </Stack>
+          }
+        />
+
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          sx={{
+            '& .MuiPopover-paper': {
+              border: 'none',
+            },
+          }}
+        >
+          <TaskDate
+            onClickInDateRange={{
+              onClick: () => {
+                setRangeActive(true);
+              },
+            }}
+            onClickSpecificDate={{
+              onClick: () => {
+                setRangeActive(false);
+              },
+            }}
+            isInDateRangeActive={rangeActive}
+            isSpecificDateActive={!rangeActive}
+            slotDate={
+              <>
+                <ShowCode>
+                  <ShowCode.When isTrue={rangeActive}>
+                    <DateRange
+                      onChange={(e) => {
+                        if (e[1]) {
+                          setSelectedDate(e);
+                        }
+                      }}
+                      value={
+                        dayjs(selectedDate[0]).toString() == 'Invalid Date'
+                          ? [dayjs(selectedDate[0]), dayjs(selectedDate[1])]
+                          : [dayjs(selectedDate[0]), dayjs(selectedDate[1])]
+                      }
+                    />
+                  </ShowCode.When>
+                  <ShowCode.Else>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateCalendar
+                        disablePast
+                        value={dayjs(selectedDate[0])}
+                        onChange={(e) => {
+                          setSelectedDate([e]);
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </ShowCode.Else>
+                </ShowCode>
+                <Stack
+                  width={'100%'}
+                  direction={'row'}
+                  alignItems={'center'}
+                  spacing={'10px'}
+                  justifyContent={'space-between'}
+                >
+                  <Button
+                    onClick={() => {
+                      handelFilter({
+                        ...filter,
+                        date: {
+                          values: [],
+                        },
+                      });
+                    }}
+                    startIcon={<IconReload size={'16px'} />}
+                    variant='text'
+                  >
+                    Reset
+                  </Button>
+                  <Stack
+                    direction={'row'}
+                    spacing={'10px'}
+                    alignItems={'center'}
+                  >
+                    <Button
+                      onClick={() => {
+                        setAnchorEl(null);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handelFilter({
+                          ...filter,
+                          date: {
+                            values: selectedDate,
+                          },
+                        });
+
+                        setAnchorEl(null);
+                      }}
+                    >
+                      OK
+                    </Button>
+                  </Stack>
+                </Stack>
+              </>
+            }
+          />
+        </Popover>
       </Stack>
     </Stack>
   );

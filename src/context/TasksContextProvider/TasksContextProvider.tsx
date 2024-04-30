@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 'use client';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import dayjs from 'dayjs';
 import { capitalize, cloneDeep } from 'lodash';
 import {
   createContext,
@@ -40,6 +41,7 @@ type TasksReducerType = {
     assignee: { options: { id: string; label: string }[]; values: string[] };
     jobTitle: { options: { id: string; label: string }[]; values: string[] };
     priority: { options: DatabaseEnums['task_priority'][]; values: string[] };
+    date: { values: string[] };
   };
   pagination: {
     rows: number;
@@ -87,13 +89,13 @@ const reducerInitialState: TasksReducerType = {
         { id: 'closed', label: 'Closed' },
         { id: 'cancelled', label: 'Cancelled' },
         { id: 'scheduled', label: 'Scheduled' },
-        { id: 'overdue', label: 'Overdue' },
       ],
       values: [],
     },
     assignee: { options: [], values: [] },
     jobTitle: { options: [], values: [] },
     priority: { options: ['high', 'low', 'medium'], values: [] },
+    date: { values: [] },
   },
   sort: 'date',
   loadingTasks: true,
@@ -385,6 +387,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     const assignee = tasksReducer.filter.assignee;
     const jobTitle = tasksReducer.filter.jobTitle;
     const priority = tasksReducer.filter.priority;
+    const date = tasksReducer.filter.date;
     let temp = [...sortedTask];
 
     if (status.values.length) {
@@ -408,6 +411,29 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     }
     if (priority.values.length) {
       temp = temp.filter((task) => priority.values.includes(task?.priority));
+    }
+    if (date.values.length) {
+      if (date.values.length === 2) {
+        temp = temp.filter((task) => {
+          const dueDateTime = dayjs(task.due_date).startOf('day');
+          const startDateTime = dayjs(date.values[0]).startOf('day');
+          const endDateTime = dayjs(date.values[1]).startOf('day');
+          if (
+            (dueDateTime.isAfter(startDateTime) ||
+              dueDateTime.isSame(startDateTime)) &&
+            (dueDateTime.isBefore(endDateTime) ||
+              dueDateTime.isSame(endDateTime))
+          ) {
+            return task;
+          }
+        });
+      } else {
+        temp = temp.filter((task) => {
+          const dueDateTime = dayjs(task.due_date).startOf('day');
+          const toDayDateTime = dayjs(date.values[0]).startOf('day');
+          return dueDateTime.isSame(toDayDateTime);
+        });
+      }
     }
 
     return temp;

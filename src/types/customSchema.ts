@@ -56,7 +56,7 @@ export type CustomDatabase = {
                     > & {
                       jsonb_data: sub_task_log_jsonb_data;
                       title_meta: {
-                        '{booking_date}': string;
+                        '{booking_time}': string;
                         '{candidate}': string;
                         '{date}': string;
                       };

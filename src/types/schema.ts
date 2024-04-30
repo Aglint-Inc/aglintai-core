@@ -2654,7 +2654,6 @@ export type Database = {
           filter_json_id: string | null
           job_id: string
           task_id: string | null
-          time_zone: string | null
         }
         Insert: {
           application_id?: string
@@ -2665,7 +2664,6 @@ export type Database = {
           filter_json_id?: string | null
           job_id: string
           task_id?: string | null
-          time_zone?: string | null
         }
         Update: {
           application_id?: string
@@ -2676,7 +2674,6 @@ export type Database = {
           filter_json_id?: string | null
           job_id?: string
           task_id?: string | null
-          time_zone?: string | null
         }
         Relationships: [
           {

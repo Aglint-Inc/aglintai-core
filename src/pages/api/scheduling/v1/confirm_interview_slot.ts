@@ -9,7 +9,6 @@ import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,
 } from '@/src/utils/event_book/book_day_plan';
-import { BookingTimeFormat } from '@/src/utils/integrations/constants';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
 import { getCandidateLogger } from './getCandidateLogger';
@@ -92,9 +91,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         `Interview scheduled for {candidate} on {date}`,
         {
           '{candidate}': '',
-          '{date}': dayjs(req_body.candidate_plan[0].sessions[0].start_time)
+          '{booking_time}': dayjs(
+            req_body.candidate_plan[0].sessions[0].start_time,
+          )
             .tz(req_body.user_tz)
-            .format(BookingTimeFormat),
+            .toISOString(),
         },
         agent_type,
         'interview_schedule',
