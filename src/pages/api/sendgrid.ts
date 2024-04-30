@@ -29,9 +29,12 @@ export default async function handler(req, res) {
 
     msg.to = getOutboundEmail(msg.to, true);
 
-    const s = await sgMail.send({
+    const resEmail = await sgMail.send({
       ...msg,
     });
+    // eslint-disable-next-line no-console
+    console.log(resEmail);
+
     return res.status(200).json({ data: 'Email sent' });
   } catch (error) {
     return res.status(200).json({ data: { error: error.message } });
