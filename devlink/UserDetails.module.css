@@ -1,11 +1,15 @@
 .div-block-678 {
   display: flex;
+  width: 470px;
+  padding: 20px;
   flex-direction: column;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+
+  border-radius: 10px;
 }
 
-.profile-header-wrappers {
+.div-block-954 {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -276,6 +280,112 @@
   margin-top: 20px;
 }
 
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
 .profile-image-block {
   display: flex;
   align-items: center;
@@ -342,11 +452,6 @@
 
 .text-underline:hover {
   opacity: 0.7;
-}
-
-.text-sm {
-  font-size: 12px;
-  line-height: 1.4;
 }
 
 .text-white {
@@ -492,4 +597,41 @@
 
 .div-block-387 {
   position: relative;
+}
+
+.div-block-956 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.div-block-955 {
+  display: flex;
+  width: 50%;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  transition: opacity 200ms ease;
+
+  cursor: pointer;
+}
+
+.div-block-955:hover {
+  opacity: 0.8;
+}
+
+.div-block-955.blue {
+  background-color: #1f73b7;
+  color: white;
+}
+
+.blue {
+  background-color: var(--blue500-72579298);
 }

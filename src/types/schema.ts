@@ -1861,7 +1861,6 @@ export type Database = {
           start_date: string | null
           status: Database["public"]["Enums"]["task_status"]
           task_owner: string | null
-          task_triggered: boolean
           trigger_count: number
           type: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1882,7 +1881,6 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_owner?: string | null
-          task_triggered?: boolean
           trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -1903,7 +1901,6 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["task_status"]
           task_owner?: string | null
-          task_triggered?: boolean
           trigger_count?: number
           type?: Database["public"]["Enums"]["task_type_enum"] | null
         }
@@ -2494,6 +2491,7 @@ export type Database = {
           join_status: string
           joined_at: string | null
           last_name: string | null
+          linked_in: string | null
           phone: string | null
           position: string | null
           profile_image: string | null
@@ -2516,6 +2514,7 @@ export type Database = {
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
+          linked_in?: string | null
           phone?: string | null
           position?: string | null
           profile_image?: string | null
@@ -2538,6 +2537,7 @@ export type Database = {
           join_status?: string
           joined_at?: string | null
           last_name?: string | null
+          linked_in?: string | null
           phone?: string | null
           position?: string | null
           profile_image?: string | null
@@ -2646,32 +2646,38 @@ export type Database = {
       }
       "scheduling-agent-chat-history": {
         Row: {
+          agent_processing: boolean
           application_id: string
           candidate_email: string
           chat_history: Json[]
           company_id: string | null
+          conversation_id: string
           created_at: string
-          filter_json_id: string | null
+          filter_json_id: string
           job_id: string
           task_id: string | null
         }
         Insert: {
+          agent_processing?: boolean
           application_id?: string
           candidate_email: string
           chat_history?: Json[]
           company_id?: string | null
+          conversation_id: string
           created_at?: string
-          filter_json_id?: string | null
+          filter_json_id: string
           job_id: string
           task_id?: string | null
         }
         Update: {
+          agent_processing?: boolean
           application_id?: string
           candidate_email?: string
           chat_history?: Json[]
           company_id?: string | null
+          conversation_id?: string
           created_at?: string
-          filter_json_id?: string | null
+          filter_json_id?: string
           job_id?: string
           task_id?: string | null
         }

@@ -15,6 +15,8 @@ export type schedulingSettingType = {
   schedulingKeyWords: {
     free: any[];
     SoftConflicts: any[];
+    outOfOffice: string[];
+    recruitingBlocks: string[];
   };
   break_hour: {
     start_time: string;

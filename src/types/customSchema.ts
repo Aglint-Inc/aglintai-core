@@ -52,7 +52,7 @@ export type CustomDatabase = {
                 ? {
                     Row: Omit<
                       Database['public']['Tables'][Table]['Row'],
-                      'jsonb_data'
+                      'jsonb_data' | 'title_meta'
                     > & {
                       jsonb_data: sub_task_log_jsonb_data;
                       title_meta: {
@@ -75,7 +75,29 @@ export type CustomDatabase = {
                     };
                     Relationships: Database['public']['Tables'][Table]['Relationships'];
                   }
-                : Database['public']['Tables'][Table];
+                : Table extends 'recruiter'
+                  ? {
+                      Row: Omit<
+                        Database['public']['Tables'][Table]['Row'],
+                        'scheduling_settings'
+                      > & {
+                        scheduling_settings: recruiter_scheduling_settings;
+                      };
+                      Insert: Omit<
+                        Database['public']['Tables'][Table]['Insert'],
+                        'scheduling_settings'
+                      > & {
+                        scheduling_settings?: recruiter_scheduling_settings;
+                      };
+                      Update: Omit<
+                        Database['public']['Tables'][Table]['Update'],
+                        'scheduling_settings'
+                      > & {
+                        scheduling_settings?: recruiter_scheduling_settings;
+                      };
+                      Relationships: Database['public']['Tables'][Table]['Relationships'];
+                    }
+                  : Database['public']['Tables'][Table];
         }
       : Database['public'][keys];
   };
@@ -105,3 +127,45 @@ type new_task_schedule_date_range = {
 type sub_task_log_jsonb_data = {
   [key: string]: any;
 };
+
+interface recruiter_scheduling_settings {
+  isAutomaticTimezone: boolean;
+  timeZone: {
+    label: string;
+    name: string;
+    tzCode: string;
+    utc: string;
+  };
+  interviewLoad: {
+    dailyLimit: {
+      value: number;
+      type: 'Hours' | 'Interviews';
+    };
+    weeklyLimit: {
+      value: number;
+      type: 'Hours' | 'Interviews';
+    };
+  };
+  workingHours: {
+    day: string;
+    isWorkDay: boolean;
+    timeRange: {
+      startTime: string;
+      endTime: string;
+    };
+  }[];
+  totalDaysOff: {
+    date: string;
+    event_name: string;
+  }[];
+  schedulingKeyWords: {
+    free: any[];
+    SoftConflicts: any[];
+    outOfOffice: string[];
+    recruitingBlocks: string[];
+  };
+  break_hour: {
+    start_time: string;
+    end_time: string;
+  };
+}
