@@ -6,12 +6,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import timeZones from '@utils/timeZone.json';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
+
+import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -160,7 +161,7 @@ function SchedulingSettings({
       // eslint-disable-next-line no-console
       console.log('local timeZones', dayjs.tz.guess());
 
-      setSelectedTimeZone({ ...schedulingSettingData.timeZone });
+      setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
       setIsTimeZone(schedulingSettingData.isAutomaticTimezone);
       setSelectedDailyLimit({
         ...schedulingSettingData.interviewLoad.dailyLimit,
@@ -791,11 +792,10 @@ function SchedulingSettings({
 
 export default SchedulingSettings;
 
+type TZ = (typeof timeZones)[number];
+
 export type TimezoneObj = {
-  label: string;
-  tzCode: string;
-  name: string;
-  utc: string;
+  [key in keyof TZ]: TZ[key];
 };
 type TimezoneSelectorProps = {
   value: TimezoneObj;
@@ -838,7 +838,7 @@ export const TimezoneSelector = ({
               labelSize='medium'
               // fullWidth
               label=''
-              placeholder='Ex. Healthcare'
+              placeholder='America/Los_Angeles (GMT-08:00)'
               InputProps={{
                 ...params.InputProps,
                 autoComplete: 'new-password',

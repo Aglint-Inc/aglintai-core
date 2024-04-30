@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { Dialog, Stack } from '@mui/material';
-import dayjs from 'dayjs';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import {
@@ -35,7 +34,7 @@ import { TimezoneSelector } from '../Settings';
 import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
-import { getDurationText } from './utils';
+import { dayJS, getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -212,7 +211,8 @@ const SingleDayLoading = () => {
 };
 
 const SingleDaySuccess = () => {
-  const { params, selectedSlots, handleSelectSlot } = useCandidateInvite();
+  const { params, selectedSlots, handleSelectSlot, timezone } =
+    useCandidateInvite();
   const { data } = useInviteSlots(params);
   const sessions = data.reduce(
     (acc, curr) => {
@@ -231,6 +231,7 @@ const SingleDaySuccess = () => {
         sessions={sessions}
         selections={selectedSlots}
         handleSelect={(id) => handleSelectSlot(0, id)}
+        tz={timezone.tzCode}
       />
       <SingleDayConfirmation />
     </>
@@ -238,7 +239,7 @@ const SingleDaySuccess = () => {
 };
 
 const SingleDayConfirmation = () => {
-  const { selectedSlots, setSelectedSlots, handleSubmit } =
+  const { selectedSlots, setSelectedSlots, handleSubmit, timezone } =
     useCandidateInvite();
   const [open, setOpen] = useState(false);
 
@@ -250,8 +251,9 @@ const SingleDayConfirmation = () => {
     setOpen(false);
     setTimeout(() => setSelectedSlots([]), 200);
   };
-  const [month, date, day] = dayjs(
+  const [month, date, day] = dayJS(
     selectedSlots?.[0]?.sessions?.[0]?.start_time ?? null,
+    timezone.tzCode,
   )
     .format('MMMM DD dddd')
     .split(' ');
@@ -260,8 +262,8 @@ const SingleDayConfirmation = () => {
   let totalMinutes = 0;
 
   selectedSlots[0]?.sessions.forEach((session) => {
-    const start = dayjs(session.start_time);
-    const end = dayjs(session.end_time);
+    const start = dayJS(session.start_time, timezone.tzCode);
+    const end = dayJS(session.end_time, timezone.tzCode);
     const duration = end.diff(start, 'minutes');
 
     totalHours += Math.floor(duration / 60);
@@ -328,10 +330,11 @@ type SingleDaySessionProps = {
   >['selectedSlots'][number]['sessions'][number];
 };
 const SingleDaySession = (props: SingleDaySessionProps) => {
+  const { timezone } = useCandidateInvite();
   const name = props.session.session_name;
-  const duration = `${dayjs(props.session.start_time).format(
+  const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
     'hh:mm A',
-  )} to ${dayjs(props.session.end_time).format('hh:mm A')}`;
+  )} to ${dayJS(props.session.end_time, timezone.tzCode).format('hh:mm A')}`;
   return <SessionAndTime textSessionName={name} textTime={duration} />;
 };
 
@@ -349,8 +352,10 @@ const ConfirmedScheduleCards = (props: ScheduleCardsProps) => {
 };
 
 const ConfirmedScheduleCard = (props: ScheduleCardProps) => {
-  const [month, date, day] = dayjs(
+  const { timezone } = useCandidateInvite();
+  const [month, date, day] = dayJS(
     props?.round?.sessions?.[0].interview_meeting?.start_time ?? null,
+    timezone.tzCode,
   )
     .format('MMMM DD dddd')
     .split(' ');
@@ -361,9 +366,13 @@ const ConfirmedScheduleCard = (props: ScheduleCardProps) => {
 
   const sessions = props.round.sessions.map((session, i) => {
     const name = session.interview_session.name;
-    const duration = `${dayjs(session.interview_meeting.start_time).format(
-      'hh:mm A',
-    )} to ${dayjs(session.interview_meeting.end_time).format('hh:mm A')}`;
+    const duration = `${dayJS(
+      session.interview_meeting.start_time,
+      timezone.tzCode,
+    ).format('hh:mm A')} to ${dayJS(
+      session.interview_meeting.end_time,
+      timezone.tzCode,
+    ).format('hh:mm A')}`;
     return (
       <SessionAndTime key={i} textSessionName={name} textTime={duration} />
     );
@@ -480,7 +489,8 @@ type ScheduleCardProps = {
 };
 
 const ScheduleCard = (props: ScheduleCardProps) => {
-  const { params, selectedSlots, handleSelectSlot } = useCandidateInvite();
+  const { params, selectedSlots, handleSelectSlot, timezone } =
+    useCandidateInvite();
   const { data } = useInviteSlots(params);
 
   const [open, setOpen] = useState(false);
@@ -488,8 +498,9 @@ const ScheduleCard = (props: ScheduleCardProps) => {
   const isSelected = !!selectedSlots[props.index];
   const enabled = props.index <= selectedSlots.length;
 
-  const [month, date, day] = dayjs(
+  const [month, date, day] = dayJS(
     selectedSlots?.[props.index]?.sessions?.[0]?.start_time ?? null,
+    timezone.tzCode,
   )
     .format('MMMM DD dddd')
     .split(' ');
@@ -571,6 +582,7 @@ const ScheduleCard = (props: ScheduleCardProps) => {
           sessions={sessions}
           selections={selectedSlots}
           handleSelect={handleSelect}
+          tz={timezone.tzCode}
         />
       </Dialog>
     </Stack>
