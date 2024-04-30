@@ -30,6 +30,7 @@ export type TaskType = {
   type: CustomDatabase['public']['Enums']['task_type_enum'];
   due_date: string;
   start_date: string;
+  name: string;
 };
 function CreateTask({
   setTask,

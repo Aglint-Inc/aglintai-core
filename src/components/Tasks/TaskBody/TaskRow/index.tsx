@@ -1,6 +1,12 @@
-import { Checkbox, Stack } from '@mui/material';
+import {
+  Checkbox,
+  Stack,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+} from '@mui/material';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
 import {
@@ -31,6 +37,16 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     // eslint-disable-next-line no-console
     console.log(overDueText);
   }
+  const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: 'rgba(255, 255, 255, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 11,
+    },
+  }));
   return (
     <Stack
       sx={{
@@ -45,7 +61,9 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     >
       <TaskTableCard
         isOverdueVisible={
-          task.status === 'in_progress' || task.status === 'scheduled'
+          (task.status === 'in_progress' &&
+            dueDateTime.isBefore(tomorrowDate)) ||
+          task.status === 'scheduled'
         }
         textOverdue={
           <ShowCode>
@@ -61,7 +79,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 >
                   {`Due Tomorrow`}
                 </ShowCode.When>
-                <ShowCode.Else>{`Due ${dueDateTime.fromNow()}`}</ShowCode.Else>
+                <ShowCode.Else>{''}</ShowCode.Else>
               </ShowCode>
             </ShowCode.When>
             <ShowCode.When isTrue={task.status === 'scheduled'}>
@@ -89,7 +107,30 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             setTaskId(task.id);
           },
         }}
-        textTask={capitalize(task.name) || 'Untitled'}
+        textTask={
+          <LightTooltip
+            enterDelay={1000}
+            enterNextDelay={1000}
+            title={
+              <>
+                <span
+                  style={{
+                    fontSize: '12px',
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: task.name || 'Untitled',
+                  }}
+                ></span>
+              </>
+            }
+          >
+            <span
+              dangerouslySetInnerHTML={{
+                __html: task.name || 'Untitled',
+              }}
+            ></span>
+          </LightTooltip>
+        }
         //   slotAvatarWithName={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotAssignedToCard={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotCandidate={
