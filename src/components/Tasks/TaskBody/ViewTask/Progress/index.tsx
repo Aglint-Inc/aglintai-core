@@ -58,10 +58,10 @@ function SubTaskProgress() {
               );
 
               const date = item.title_meta['{date}']
-                ? `<span class="progress_date_section">${item.title_meta['{date}']}</span>`
+                ? `<span class="progress_date_section">${dayjs(item.title_meta['{date}']).format('MMM DD, hh:mm A')}</span>`
                 : '';
               const bookingTime = item.title_meta['{booking_time}']
-                ? `<span class="progress_date_section">${item.title_meta['{booking_time}']}</span>`
+                ? `<span class="progress_date_section">${dayjs(item.title_meta['{booking_time}']).format('MMM DD, hh:mm A')}</span>`
                 : '';
               const candidateName = item.title_meta['{candidate}']
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`

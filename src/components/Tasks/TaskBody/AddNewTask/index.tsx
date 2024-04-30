@@ -1,4 +1,5 @@
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
@@ -20,6 +21,7 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -163,6 +165,29 @@ function AddNewTask() {
           user_tz: dayjs.tz.guess(),
           trigger_count: 0,
         });
+        await axios.post('/api/scheduling/application/schedulewithagent', {
+          application_id: selectedTask.application_id,
+          dateRange: { ...selectedTask.schedule_date_range },
+          recruiter_id: recruiter.id,
+          recruiter_user_name:
+            recruiterUser.first_name + ' ' + recruiterUser.last_name,
+          session_ids: selectedSession.map((ele) => ele.id),
+          task_id: selectedTask.id,
+          type:
+            assignee === EmailAgentId
+              ? 'email_agent'
+              : assignee === PhoneAgentId
+                ? 'phone_agent'
+                : null,
+          candidate_name: selectedTask.applications.candidates?.first_name,
+          company_name: recruiter?.name,
+          rec_user_email: recruiterUser.email,
+          rec_user_phone: recruiterUser.phone,
+          rec_user_id: recruiterUser.user_id,
+          supabase: supabase,
+          user_tz: dayjs.tz.guess(),
+          trigger_count: 0,
+        } as ApiBodyParamsScheduleAgent);
       }
       // end
     });
