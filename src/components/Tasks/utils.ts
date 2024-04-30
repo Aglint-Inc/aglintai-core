@@ -11,6 +11,8 @@ import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
+import { fetchInterviewSessionTask } from '../Scheduling/AllSchedules/SchedulingApplication/utils';
+
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
 export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
 
@@ -92,6 +94,10 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
 }
 // end
 type ProgressType =
+  | 'session_update'
+  | 'due_date_update'
+  | 'priority_update'
+  | 'change_assignee'
   | 'status_update'
   | 'create_task'
   | 'schedule_date_update'
@@ -100,7 +106,8 @@ type ProgressType =
 type optionDataType = {
   assignerId?: string;
   assignerName?: string;
-  creatorName?: string;
+  currentAssigneeName?: string;
+  currentAssigneeId?: string;
   currentStatus?: DatabaseEnums['task_status'];
   status?: DatabaseEnums['task_status'];
   supabse?: Supabase;
@@ -116,6 +123,16 @@ type optionDataType = {
     prev: string;
     current: string;
   };
+  sessions?: Awaited<ReturnType<typeof fetchInterviewSessionTask>> | null;
+  candidateName?: string;
+  priority?: DatabaseEnums['task_priority'];
+  currentPriority?: DatabaseEnums['task_priority'];
+  dueDate?: {
+    prev: string;
+    selectedDate: string;
+  };
+  currentSessions?: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
+  selectedSession?: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
 };
 
 export async function createTaskProgress({
@@ -140,24 +157,50 @@ export async function createTaskProgress({
   var {
     assignerId,
     assignerName,
-    creatorName,
+    currentAssigneeName,
+    currentAssigneeId,
     currentStatus,
     status,
     scheduleDateRange,
     prevScheduleDateRange,
     triggerTime,
+    candidateName,
+    sessions,
+    priority,
+    currentPriority,
+    dueDate,
+    currentSessions,
+    selectedSession,
   } = optionData;
-
   const progressTitle = (cusType: ProgressType) => {
+    const removedSessions = currentSessions?.filter(
+      (ele) => !selectedSession?.map((ele) => ele.id).includes(ele.id),
+    );
+    const addedSessions = selectedSession?.filter(
+      (ele) => !currentSessions?.map((ele) => ele.id).includes(ele.id),
+    );
+
     switch (cusType) {
-      case 'status_update':
-        return `Task status moved from <span class="${currentStatus}">${capitalizeAll(currentStatus.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span>`;
+      case 'session_update':
+        return addedSessions.length
+          ? `Added <b>${addedSessions.map((ele) => ele.name).join(', ')}</b> to interview.`
+          : removedSessions.length
+            ? `Removed <b>${removedSessions.map((ele) => ele.name).join(', ')}</b> from interview.`
+            : '';
+      case 'due_date_update':
+        return `Due Date changed from <span class="progress_date_section">${dayjs(dueDate.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(dueDate.selectedDate).format('MMM DD, hh:mm A')}</span>.`;
+      case 'priority_update':
+        return `Priority changed from <span class="priority_card_${currentPriority}">${currentPriority}</span> to <span class="priority_card_${priority}">${priority}</span>.`;
       case 'create_task':
-        return `Task assigned to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span> by <span class="mention">@${creatorName}</span>`;
+        return `Created task for <span class="mention">@${candidateName}</span> to schedule interviews for <b>${sessions.map((ele) => ele.name).join(', ')}</b>.`;
+      case 'change_assignee':
+        return `Assignee changed from <span ${currentAssigneeId === EmailAgentId || currentAssigneeId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(currentAssigneeName)}</span> to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span>.`;
+      case 'status_update':
+        return `Status changed from <span class="${currentStatus}">${capitalizeAll(currentStatus.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span>`;
       case 'schedule_date_update':
-        return `Schedule time changed from <span class="progress_date_section"> ${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span> to <span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('MMM DD')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD') : ''}</span>`;
+        return `Interview Date changed from (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>) to (<span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('MMM DD')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
       case 'trigger_time_update':
-        return `Trigger time changed from <span class="progress_date_section"> ${dayjs(triggerTime.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('MMM DD, hh:mm A')}</span>`;
+        return `Schedule time changed from <span class="progress_date_section">${dayjs(triggerTime.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('MMM DD, hh:mm A')}</span>`;
       default:
         return '';
     }

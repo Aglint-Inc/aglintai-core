@@ -284,23 +284,6 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     return updateTask({ type: 'new', task }).then(async (taskData) => {
       const tempTask = [{ ...taskData }, ...cloneDeep(tasksReducer.tasks)];
-      const assigner = [
-        ...agentsDetails,
-        ...members.map((item) => {
-          return { ...item, assignee: 'Interviewers' };
-        }),
-      ].find((item) => item.user_id === taskData.assignee[0]);
-      if (assigner) {
-        await handelAddTaskProgress({
-          task_id: taskData.id,
-          title: `Task assigned to <span ${assigner.user_id === EmailAgentId || assigner.user_id === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalize(assigner?.first_name + ' ' + (assigner?.last_name ?? ''))}</span> by <span class="mention">@${recruiterUser.first_name + ' ' + (recruiterUser.last_name ?? '')}</span>`,
-          created_by: {
-            name: recruiterUser.first_name,
-            id: recruiterUser.user_id,
-          },
-          progress_type: 'standard',
-        });
-      }
       handelTaskChanges(tempTask, 'add');
       return taskData;
     });

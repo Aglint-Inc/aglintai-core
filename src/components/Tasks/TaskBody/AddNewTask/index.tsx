@@ -27,6 +27,7 @@ import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
   assigneeType,
+  createTaskProgress,
   EmailAgentId,
   extractDataFromText,
   JobCandidatesType,
@@ -158,12 +159,30 @@ function AddNewTask() {
           rec_user_email: recruiterUser.email,
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
-          supabase: supabase,
           user_tz: dayjs.tz.guess(),
           trigger_count: 0,
         } as ApiBodyParamsScheduleAgent);
       }
       // end
+
+      await createTaskProgress({
+        type: 'create_task',
+        data: {
+          task_id: data.id as string,
+          created_by: {
+            name: recruiterUser.first_name,
+            id: recruiterUser.user_id,
+          },
+          progress_type: 'standard',
+        },
+        optionData: {
+          candidateName:
+            selectedCandidate.candidates.first_name +
+            ' ' +
+            (selectedCandidate.candidates.last_name ?? ''),
+          sessions: selectedSession,
+        },
+      });
     });
     handleClose();
   }

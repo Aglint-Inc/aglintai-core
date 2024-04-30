@@ -341,6 +341,31 @@ textarea::placeholder {
   border-radius: 5px;
   text-transform: capitalize;
 }
+
+//priority
+
+.priority_card_low {
+  border-radius: 5px;
+  background-color: #deecdc !important;
+  color: #23372a;
+  padding: 3px 10px;
+  text-transform: capitalize;
+}
+.priority_card_medium {
+  border-radius: 5px;
+  background-color: #faedcc !important;
+  color: #3d2d1e;
+  padding: 3px 10px;
+  text-transform: capitalize;
+}
+.priority_card_high {
+  border-radius: 5px;
+  background-color: #fae3de !important;
+  color: #551c18;
+  padding: 3px 10px;
+  text-transform: capitalize;
+}
+
 //task progress
 .progress_date_section {
   color: #337fbd;

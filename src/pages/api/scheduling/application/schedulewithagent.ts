@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { scheduleWithAgent } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-export interface ApiBodyParamsScheduleAgent {
+export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
   application_id: string;
@@ -23,7 +23,7 @@ export interface ApiBodyParamsScheduleAgent {
   rec_user_id: string;
   user_tz: string;
   trigger_count: number;
-}
+};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

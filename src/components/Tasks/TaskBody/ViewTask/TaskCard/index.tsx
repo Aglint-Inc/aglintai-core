@@ -102,14 +102,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   // open trigger Time
   const [openTriggerTime, setOpenTriggerTime] = useState(null);
   const spanRef = useRef(null);
-  let overDueText = '';
-  let toDayDateTime = dayjs();
-  let dueDateTime = dayjs(task.due_date);
-  if (dueDateTime.isBefore(toDayDateTime)) {
-    overDueText = '(overdue)';
-    // eslint-disable-next-line no-console
-    console.log(overDueText);
-  }
+
   return (
     <>
       <ViewTaskCard
@@ -152,6 +145,21 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             isOptionList={task.status === 'not_started'}
             onChange={(data: any) => {
               updateChanges({ session_ids: data });
+              createTaskProgress({
+                type: 'session_update',
+                data: {
+                  task_id: router.query.task_id as string,
+                  created_by: {
+                    name: recruiterUser.first_name,
+                    id: recruiterUser.user_id,
+                  },
+                  progress_type: 'standard',
+                },
+                optionData: {
+                  currentSessions: task.session_ids as any,
+                  selectedSession: data,
+                },
+              });
             }}
           />
         }
@@ -273,6 +281,23 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             isOptionList={task.status === 'not_started'}
             onChange={(e: any) => {
               updateChanges({ due_date: dayjs(e).toString() });
+              createTaskProgress({
+                type: 'due_date_update',
+                data: {
+                  task_id: router.query.task_id as string,
+                  created_by: {
+                    name: recruiterUser.first_name as string,
+                    id: recruiterUser.user_id as string,
+                  },
+                  progress_type: 'standard',
+                },
+                optionData: {
+                  dueDate: {
+                    prev: dayjs(task.due_date).toString(),
+                    selectedDate: dayjs(e).toString(),
+                  },
+                },
+              });
             }}
           />
         }
@@ -284,9 +309,12 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               onChange={(assigner: AssignerType) => {
                 // createProgress(assigner);
                 if (task.assignee[0] !== assigner.user_id) {
+                  const currentAssignee = assignerList.find(
+                    (ele) => ele.user_id === task.assignee[0],
+                  );
                   updateChanges({ assignee: [assigner.user_id] });
                   createTaskProgress({
-                    type: 'create_task',
+                    type: 'change_assignee',
                     data: {
                       task_id: router.query.task_id as string,
                       created_by: {
@@ -296,13 +324,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       progress_type: 'standard',
                     },
                     optionData: {
+                      assignerId: assigner.user_id,
+                      currentAssigneeId: task.assignee[0],
                       assignerName:
                         assigner.first_name + ' ' + (assigner.last_name ?? ''),
-                      assignerId: assigner.user_id,
-                      creatorName:
-                        recruiterUser.first_name +
+                      currentAssigneeName:
+                        currentAssignee.first_name +
                         ' ' +
-                        (recruiterUser.last_name ?? ''),
+                        (currentAssignee.last_name ?? ''),
                     },
                   });
 
@@ -359,8 +388,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             // isOptionList={task.status === 'not_started'}
             onChange={(e: any) => {
               const status = e as DatabaseEnums['task_status'];
-              updateChanges({ status });
               if (task.status !== status) {
+                updateChanges({ status });
                 createTaskProgress({
                   type: 'status_update',
                   data: {
@@ -396,8 +425,25 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             selectedPriority={selectedPriority}
             setSelectedPriority={setSelectedPriority}
             isOptionList={task.status === 'not_started'}
-            onChange={(e: DatabaseEnums['task_priority']) => {
-              updateChanges({ priority: e });
+            onChange={async (e: DatabaseEnums['task_priority']) => {
+              if (e !== task.priority) {
+                updateChanges({ priority: e });
+                createTaskProgress({
+                  type: 'priority_update',
+                  data: {
+                    task_id: router.query.task_id as string,
+                    created_by: {
+                      name: recruiterUser.first_name as string,
+                      id: recruiterUser.user_id as string,
+                    },
+                    progress_type: 'standard',
+                  },
+                  optionData: {
+                    currentPriority: task.priority,
+                    priority: e,
+                  },
+                });
+              }
             }}
           />
         }
