@@ -141,7 +141,7 @@ function SessionList({
               </ShowCode.When>
 
               <ShowCode.Else>
-                <EmptyState textDescription={'Sessions are not available!'} />
+                <EmptyState textDescription={'No sessions found.'} />
               </ShowCode.Else>
             </ShowCode>
           }

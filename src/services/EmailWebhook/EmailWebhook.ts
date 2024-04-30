@@ -46,7 +46,7 @@ export class EmailWebHook {
       const ref = refrences.find((ref) => ref.includes(agent_mail_domain));
 
       if (!ref || !ref.includes(agent_mail_domain)) {
-        throw new Error('not found any referencs');
+        throw new Error('Not found any referenc.');
       }
       const thread_id = ref.split('.')[0];
       return thread_id;

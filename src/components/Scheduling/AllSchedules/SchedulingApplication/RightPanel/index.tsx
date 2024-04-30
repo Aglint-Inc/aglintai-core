@@ -33,7 +33,7 @@ function RightPanel() {
                 slotIcons={
                   <Icon variant='ActivityTimeline' width='50px' height='50px' />
                 }
-                textDescription={'Not added yet'}
+                textDescription={'No activity found.'}
               />
             )}
             {activities?.map((act, ind) => {

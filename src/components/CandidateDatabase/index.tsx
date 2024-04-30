@@ -610,7 +610,7 @@ function CandidateSearchHistory() {
                               >
                                 <EmptyState />
                                 <Typography variant='body2'>
-                                  No search history
+                                  No search history found.
                                 </Typography>
                               </Stack>
                             )}

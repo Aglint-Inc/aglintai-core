@@ -30,7 +30,7 @@
 }
 
 .div-block-1441.header {
-  width: 2%;
+  width: 20px;
 }
 
 .icons {
@@ -86,6 +86,11 @@
 
 .text-grey-600 {
   color: #68737d;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .div-block-1442 {

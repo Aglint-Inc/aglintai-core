@@ -8,8 +8,8 @@ function SupportPage() {
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
-        description='AI Powered Talent Development Platform.'
+        title='Support'
+        description='AI for People Products'
       />
       <Support />
     </>

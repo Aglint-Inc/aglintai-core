@@ -213,7 +213,7 @@ export default function Loading() {
     >
       <Seo
         title='Loading'
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <LoaderSvg />
     </Box>

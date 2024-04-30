@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 const defaultMeta = {
   title:
-    'AI-Powered Career Transition & Outplacement Platform | Aglint - Tailored for Businesses ',
+    'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
   site_name: 'Aglint Inc',
   description:
-    'Explore Aglint’s AI-driven Career Transition Platform, offering personalized outplacement services, professional career coaching, interview preparation, and salary negotiation tools designed to support businesses in empowering their employees and fostering growth.',
+    'Discover Aglint AI, the intelligent solution designed to enhance recruitment efficiency. Source, screen, rank, and schedule interviews with candidates faster than ever. Transform your hiring strategy with our AI-driven tools.',
   url: process.env.NEXT_PUBLIC_HOST_NAME,
   icon: '/images/favicon.ico',
   image:

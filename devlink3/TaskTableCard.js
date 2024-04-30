@@ -126,7 +126,7 @@ export function TaskTableCard({
         </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1435")}
+        className={_utils.cx(_styles, "div-block-1435", "hide")}
         id={_utils.cx(
           _styles,
           "w-node-_577b6da5-5053-c3a6-5b02-37d3f9aebf20-f9aebf0d"

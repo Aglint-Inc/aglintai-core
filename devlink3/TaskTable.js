@@ -134,7 +134,7 @@ export function TaskTable({
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1435")}
+            className={_utils.cx(_styles, "div-block-1435", "hide")}
             id={_utils.cx(
               _styles,
               "w-node-e2a009d4-d014-04d6-b837-039f401c4ed4-401c4ec4"
