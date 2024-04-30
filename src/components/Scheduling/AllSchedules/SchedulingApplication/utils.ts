@@ -621,17 +621,14 @@ export const scheduleWithAgent = async ({
           rec_user_id,
         });
 
-        const { data: task, error: eroorSubTasks } = await supabase
+        const { error: eroorSubTasks } = await supabase
           .from('new_tasks')
           .update({
             filter_id: filterJson.id,
             session_ids: selectedSessions,
           })
-          .eq('id', task_id)
-          .select();
+          .eq('id', task_id);
         if (eroorSubTasks) throw new Error(eroorSubTasks.message);
-
-        console.log(`task status updated to ${task[0].status}`);
 
         addScheduleActivity({
           title: `Candidate invited for ${selectedSessions
