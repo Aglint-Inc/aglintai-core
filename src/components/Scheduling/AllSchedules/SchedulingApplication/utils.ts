@@ -672,8 +672,8 @@ export const scheduleWithAgentWithoutTaskId = async ({
   dateRange,
   recruiter_id,
   recruiter_user_name,
-  candidate_name = 'chinmai',
-  company_name = 'aglint',
+  candidate_name,
+  company_name,
   rec_user_email,
   rec_user_phone,
   rec_user_id,
@@ -765,6 +765,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           type,
           recruiter_user_name,
           supabase,
+          candidate_name,
         });
 
         addScheduleActivity({
@@ -841,6 +842,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           type,
           recruiter_user_name,
           supabase,
+          candidate_name,
         });
 
         addScheduleActivity({
@@ -1101,6 +1103,7 @@ export const createTask = async ({
   type,
   recruiter_user_name,
   supabase,
+  candidate_name,
 }: {
   selectedSessions: Awaited<
     ReturnType<typeof fetchInterviewDataJob>
@@ -1115,6 +1118,7 @@ export const createTask = async ({
   filter_id: string;
   type: 'phone_agent' | 'email_agent';
   recruiter_user_name: string;
+  candidate_name: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
@@ -1149,9 +1153,8 @@ export const createTask = async ({
       task_id: task.id,
     },
     optionData: {
-      assignerId: assignee,
-      assignerName: type === 'email_agent' ? 'Email Agent' : 'Phone Agent',
-      creatorName: recruiter_user_name,
+      candidateName: candidate_name,
+      sessions: selectedSessions,
     },
     supabaseCaller: supabase,
   });
