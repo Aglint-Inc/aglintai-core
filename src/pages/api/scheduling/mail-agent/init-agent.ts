@@ -173,7 +173,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter(scheduling_settings)), candidates(*)))',
+        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter(scheduling_settings,email_template)), candidates(*)))',
       )
       .eq('id', filter_json_id),
   ) as CandidateScheduleDetails[];
@@ -219,7 +219,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     )}`,
     interview_sessions: int_sessions,
     schedule_id: rec.schedule_id,
-    email_template: job.email_template['init_email_agent'],
+    email_template: job.recruiter.email_template['init_email_agent'],
     candidate_id: cand_basic_info.id,
   };
   if (geo) {
@@ -251,14 +251,12 @@ type CandidateScheduleDetails = InterviewFilterJsonType & {
       >;
       public_jobs: Pick<
         PublicJobsType,
-        | 'recruiter_id'
-        | 'company'
-        | 'id'
-        | 'logo'
-        | 'job_title'
-        | 'email_template'
+        'recruiter_id' | 'company' | 'id' | 'logo' | 'job_title'
       > & {
-        recruiter: Pick<RecruiterType, 'scheduling_settings'>;
+        recruiter: Pick<
+          RecruiterType,
+          'scheduling_settings' | 'email_template'
+        >;
       };
     };
   };

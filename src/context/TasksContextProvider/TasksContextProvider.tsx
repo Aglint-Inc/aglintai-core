@@ -84,11 +84,11 @@ const reducerInitialState: TasksReducerType = {
     status: {
       options: [
         { id: 'not_started', label: 'Not Started' },
-        { id: 'completed', label: 'Completed' },
-        { id: 'in_progress', label: 'In Progress' },
-        { id: 'closed', label: 'Closed' },
-        { id: 'cancelled', label: 'Cancelled' },
         { id: 'scheduled', label: 'Scheduled' },
+        { id: 'in_progress', label: 'In Progress' },
+        { id: 'completed', label: 'Completed' },
+        { id: 'cancelled', label: 'Cancelled' },
+        { id: 'closed', label: 'Closed' },
       ],
       values: [],
     },

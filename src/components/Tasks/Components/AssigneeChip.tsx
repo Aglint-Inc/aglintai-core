@@ -1,3 +1,4 @@
+import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
@@ -54,11 +55,20 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
                     )}
                   />
                 }
-                textName={capitalizeAll(
-                  assigneeDetails?.first_name +
-                    ' ' +
-                    (assigneeDetails?.last_name ?? ''),
-                )}
+                textName={
+                  <Stack>
+                    <Typography fontSize={'14px'}>
+                      {capitalizeAll(
+                        assigneeDetails?.first_name +
+                          ' ' +
+                          (assigneeDetails?.last_name ?? ''),
+                      )}{' '}
+                    </Typography>
+                    <Typography variant='caption' fontSize={'12px'}>
+                      {capitalizeAll(assigneeDetails?.position)}
+                    </Typography>
+                  </Stack>
+                }
               />
             )
           }

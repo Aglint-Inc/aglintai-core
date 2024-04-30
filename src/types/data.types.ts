@@ -263,3 +263,5 @@ export type InterviewScheduleActivityTypeDb =
 
 export type ApplicationLogsTypeDb =
   Database['public']['Tables']['application_logs']['Row'];
+
+export type TaskTypeDb = Database['public']['Tables']['new_tasks']['Row'];

@@ -22,7 +22,6 @@ export type ApiBodyParamsScheduleAgent = {
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
-  trigger_count: number;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -40,21 +39,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       type,
       candidate_name,
       company_name,
-      user_tz,
-      trigger_count,
     } = req.body as ApiBodyParamsScheduleAgent;
 
     let resAgent = null;
 
     if (task_id) {
-      await supabaseAdmin
-        .from('new_tasks')
-        .update({
-          trigger_count: trigger_count + 1,
-          status: 'in_progress',
-        })
-        .eq('id', task_id)
-        .select();
       resAgent = await scheduleWithAgent({
         application_id,
         dateRange,
@@ -69,7 +58,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         rec_user_phone,
         rec_user_id,
         supabase: supabaseAdmin,
-        user_tz,
       });
     } else {
       console.log('no task id');
