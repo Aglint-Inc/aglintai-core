@@ -242,7 +242,7 @@ function SchedulingSettings({
       <BodyWithSublink
         slotSublinkTab={
           <>
-            <SettingsSubNabItem />;
+            <SettingsSubNabItem />
           </>
         }
         slotTabContent={
