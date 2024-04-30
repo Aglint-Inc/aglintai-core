@@ -2,14 +2,14 @@ import { get, isEmpty, isUndefined } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
 
+import { DatabaseTable } from '@/src/types/customSchema';
 import { JobTypeDB, RecruiterUserType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 import { JobFormState } from './JobPostFormProvider';
 
 export const getSeedJobFormData = (
   recruiterUser: RecruiterUserType,
-  recruiter?: Database['public']['Tables']['recruiter']['Row'],
+  recruiter?: DatabaseTable['recruiter'],
 ) => {
   const seedFormState: JobFormState = {
     isFormOpen: false,
@@ -175,7 +175,7 @@ export const getSeedJobFormData = (
 
 export const dbToClientjobPostForm = (
   jobPost: Partial<JobTypeDB>,
-  recruiter: Database['public']['Tables']['recruiter']['Row'],
+  recruiter: DatabaseTable['recruiter'],
   jobPostStatus: string,
   recruiterUser: RecruiterUserType,
 ) => {
