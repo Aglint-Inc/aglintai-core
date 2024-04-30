@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { Database } from '@/src/types/schema';
@@ -17,7 +17,7 @@ const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/schedulewithagent`;
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(res: NextApiResponse) {
   try {
     const { data, error } = await supabase
       .from('new_tasks')
@@ -73,7 +73,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
           }),
         );
-        
         // You might want to handle errors here
         console.log(`${filterTaskAgent.length} applications triggered`);
         return res
@@ -88,6 +87,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(error);
     return res.status(500).send(error.message);
   }
-};
-
-export default handler;
+}
