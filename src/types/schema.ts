@@ -2656,6 +2656,7 @@ export type Database = {
           filter_json_id: string
           job_id: string
           task_id: string | null
+          thread_id: string
         }
         Insert: {
           agent_processing?: boolean
@@ -2668,6 +2669,7 @@ export type Database = {
           filter_json_id: string
           job_id: string
           task_id?: string | null
+          thread_id: string
         }
         Update: {
           agent_processing?: boolean
@@ -2680,6 +2682,7 @@ export type Database = {
           filter_json_id?: string
           job_id?: string
           task_id?: string | null
+          thread_id?: string
         }
         Relationships: [
           {
