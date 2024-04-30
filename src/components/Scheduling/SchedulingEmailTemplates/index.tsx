@@ -263,19 +263,34 @@ Cheers,
 [yourCompanyName] Recruitment Team`,
     trigger: 'Triggered to send debrief session information',
   },
+  init_email_agent: {
+    listing: 'Email Agent',
+    heading: 'Assign Email Agent',
+    triggerInfo: 'Used When Email Agent is assigned for Scheduling Interview',
+    description:
+      'Set up a default Assign Email Agent template. You can make specific changes for individual job posts later.',
+    descriptionInJob: 'Customise Assign Email Agent for this job.',
+    bodyPlaceHolder: '',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [candidate_first_name], [company_name], [companyName], [start_date],[job_role], [end_date], [company_time_zone], [self_schedule_link] .`,
+    subjectPlaceHolder: '',
+    trigger: "Used When Email Agent is assigned for Scheduling Interview'",
+  },
 };
 
 export type EmailTempPath =
   | 'candidate_availability_request'
   | 'candidate_invite_confirmation'
   | 'debrief_calendar_invite'
-  | 'cancel_interview_session';
+  | 'cancel_interview_session'
+  | 'init_email_agent';
 
 export const emailTempKeys: EmailTempPath[] = [
   'candidate_invite_confirmation',
   'candidate_availability_request',
   'debrief_calendar_invite',
   'cancel_interview_session',
+  'init_email_agent',
 ];
 
 type EmailTemplatType = {
