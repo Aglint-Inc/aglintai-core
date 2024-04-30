@@ -133,7 +133,7 @@ const Member = ({
             variant='circular'
             height='100%'
             width='100%'
-            fontSize='20px'
+            fontSize='12px'
           />
         }
         userEmail={member.email}

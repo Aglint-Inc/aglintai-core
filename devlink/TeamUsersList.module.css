@@ -535,7 +535,6 @@
 
 .tu-list-wrapper.mlr-20.radius-10 {
   overflow: visible;
-  border-top-style: none;
   border-radius: 10px;
 }
 
@@ -546,16 +545,19 @@
   justify-content: space-between;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 30% 15% 15% 17% 13% 10%;
+  grid-template-columns: 25% 15% 17% 20% 13% 10%;
   grid-template-rows: auto;
 }
 
 .tu-list-block.header-block {
   padding-top: 0px;
   padding-bottom: 0px;
-  grid-template-columns: 30% 15% 15% 17% 13% 10%;
+  grid-template-columns: 25% 15% 17% 20% 13% 10%;
+
+  border-bottom: 1px solid #e9ebed;
   border-radius: 10px 10px 0px 0px;
-  background-color: #e9ebed;
+
+  background-color: #f7f9fb;
 }
 
 .tu-list-header {
@@ -567,7 +569,12 @@
 }
 
 .tu-list-header.color-add {
-  background-color: #e9ebed;
+  background-color: #f7f9fb;
+}
+
+.tu-list-header.center {
+  justify-content: center;
+  align-items: center;
 }
 
 .div-block-464 {
