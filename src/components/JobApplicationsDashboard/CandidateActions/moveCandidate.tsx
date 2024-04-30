@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { Collapse, Dialog, Stack } from '@mui/material';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 // import axios from 'axios';
 import { CandidateSelectionPopup, SelectActionsDropdown } from '@/devlink2';
@@ -33,22 +33,27 @@ const MoveCandidate: React.FC<{
     actionVisibilities,
     actionProps,
     setActionProps,
+    canCreateTask,
   } = useJobApplications();
   const [purposes, setPurposes] = useState([]);
-  const [taskCheck, setTaskCheck] = useState(true);
+  const [taskCheck, setTaskCheck] = useState(false);
   const [task, setTask] = useState<TaskType>(null);
   const isChecked = list.size !== 0;
 
   const showNew = isChecked && actionVisibilities.new;
   const showScreening = isChecked && actionVisibilities.screening;
   const showAssessment = isChecked && actionVisibilities.assessment;
-  const showInterview = isChecked && actionVisibilities.interview;
+  const showInterview =
+    isChecked && actionVisibilities.interview && canCreateTask;
   const showQualified = isChecked && actionVisibilities.qualified;
   const showDisqualified = isChecked && actionVisibilities.disqualified;
 
   const handlePopUpCheck = () => {
     actionProps.destination === 'interview'
-      ? setTaskCheck((prev) => !prev)
+      ? setTaskCheck((prev) => {
+          if (prev) setTask(null);
+          return !prev;
+        })
       : setPurposes((prev) =>
           prev.length !== 0 ? [] : getPurpose(actionProps.destination),
         );
@@ -65,7 +70,7 @@ const MoveCandidate: React.FC<{
           source: section,
           destination: actionProps.destination,
         },
-        task,
+        taskCheck && canCreateTask ? task : null,
         purposes,
         list,
         selectAll,
@@ -87,10 +92,16 @@ const MoveCandidate: React.FC<{
     setActionProps((prev) => ({ ...prev, open: false }));
     setTimeout(() => {
       setActionProps({ open: false, destination: null });
-      setTaskCheck(true);
+      setTaskCheck(false);
       setTask(null);
     }, 200);
   };
+
+  useEffect(() => {
+    if (actionProps.destination === 'interview' && canCreateTask) {
+      setTaskCheck(true);
+    }
+  }, [actionProps.destination, canCreateTask]);
 
   return (
     <>
@@ -125,6 +136,10 @@ const MoveCandidate: React.FC<{
         onClose={() => handleClose()}
         destination={actionProps.destination}
         onSubmit={async () => await handleMoveCandidate()}
+        showCheck={
+          checkVisibility(actionProps.destination) ||
+          (actionProps.destination === 'interview' && canCreateTask)
+        }
         checked={
           actionProps.destination === 'interview'
             ? taskCheck
@@ -133,9 +148,11 @@ const MoveCandidate: React.FC<{
         checkAction={() => handlePopUpCheck()}
         count={selectAll ? applicationLimit[section] : list.size}
         slotMoveAssessment={
-          <Collapse in={actionProps.destination === 'interview' && taskCheck}>
-            <CreateTask setTask={setTask} />
-          </Collapse>
+          showInterview && (
+            <Collapse in={actionProps.destination === 'interview' && taskCheck}>
+              <CreateTask setTask={setTask} />
+            </Collapse>
+          )
         }
       />
     </>
@@ -148,6 +165,7 @@ const MoveCandidateDialog = ({
   open,
   onClose,
   checked,
+  showCheck,
   destination,
   onSubmit,
   checkAction,
@@ -157,6 +175,7 @@ const MoveCandidateDialog = ({
 }: {
   open: boolean;
   checked: boolean;
+  showCheck: boolean;
   onClose: () => void;
   destination: JobApplicationSections;
   onSubmit: () => Promise<void>;
@@ -168,7 +187,6 @@ const MoveCandidateDialog = ({
   const title = capitalize(destination);
   const subTitle = getSubTitle(destination, count, name);
   const description = getDescription(destination, count, name);
-  const showCheck = checkVisibility(destination);
 
   return (
     <TaskStatesProvider>
@@ -207,7 +225,6 @@ const checkVisibility = (destination: JobApplicationSections) => {
   return (
     destination === JobApplicationSections.SCREENING ||
     destination === JobApplicationSections.ASSESSMENT ||
-    destination === JobApplicationSections.INTERVIEW ||
     destination === JobApplicationSections.DISQUALIFIED
   );
 };

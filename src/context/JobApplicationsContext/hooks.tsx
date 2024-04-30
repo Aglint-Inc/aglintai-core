@@ -23,6 +23,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import { useJobDetails } from '../JobDashboard';
+import { useJobInterviewPlan } from '../JobInterviewPlanContext';
 import { useJobs } from '../JobsContext';
 import { CountJobs } from '../JobsContext/types';
 import {
@@ -138,7 +139,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const router = useRouter();
 
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
-  const { handleJobRefresh, jobPolling } = useJobDetails();
+  const {
+    handleJobRefresh,
+    jobPolling,
+    interviewPlanEnabled: { data: interviewPlanEnabled },
+  } = useJobDetails();
+  const interviewPlans = useJobInterviewPlan();
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
@@ -746,6 +752,11 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     setAllApplicationsDisabled(false);
   };
 
+  const canCreateTask =
+    interviewPlanEnabled &&
+    (interviewPlans?.interviewPlans?.data?.interview_session ?? []).length !==
+      0;
+
   usePolling(async () => await handleAutoRefresh(), longPolling, [
     ...Object.values(pageNumber),
     section,
@@ -798,6 +809,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     setSelectAll,
     setActionProps,
     actionVisibilities,
+    canCreateTask,
   };
 
   return value;
