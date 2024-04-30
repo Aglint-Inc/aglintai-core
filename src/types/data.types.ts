@@ -34,7 +34,7 @@ export type CandidateListTypeDB =
 export type JobApplcationDB =
   Database['public']['Tables']['applications']['Row'];
 
-export type RecruiterDB = Database['public']['Tables']['recruiter']['Row'];
+export type RecruiterDB = DatabaseTable['recruiter'];
 export type RecruiterRelationsType =
   Database['public']['Tables']['recruiter_relation']['Row'];
 

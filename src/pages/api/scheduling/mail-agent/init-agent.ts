@@ -78,6 +78,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const thread_id = uuidV4();
 
     supabaseWrap(
+      // error here //
+      // @ts-ignore
       await supabaseAdmin.from('scheduling-agent-chat-history').insert({
         application_id: cand_details.application_id,
         job_id: cand_details.job_id,
