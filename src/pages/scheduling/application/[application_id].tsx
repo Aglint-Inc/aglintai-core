@@ -6,7 +6,7 @@ export default function SchedulingApplicationPage() {
     <>
       <Seo
         title={`Scheduling`}
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <SchedulingApplication />
     </>

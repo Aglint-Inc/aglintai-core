@@ -98,7 +98,7 @@ function JobList({
                 })}
               </ShowCode.When>
               <ShowCode.Else>
-                <EmptyState textDescription='Jobs are not empty!' />
+                <EmptyState textDescription='No jobs found.' />
               </ShowCode.Else>
             </ShowCode>
           }

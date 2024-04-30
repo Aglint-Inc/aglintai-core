@@ -8,7 +8,7 @@ import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 const JobPage = () => {
   return (
     <>
-      <Seo title='Jobs' description='AI Powered Talent Development Platform.' />
+      <Seo title='Jobs' description='AI for People Products' />
       <JobApplicationsDashboard />
     </>
   );

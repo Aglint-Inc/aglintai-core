@@ -7,7 +7,7 @@ export default function InternalServerError() {
     <>
       <Seo
         title='Internal server Error'
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       PageNothing
       {/* <PageNothing /> */}

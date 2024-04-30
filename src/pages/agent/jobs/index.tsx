@@ -30,7 +30,7 @@ function AgentPage() {
     <>
       <Seo
         title='Aglint | Agents'
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <JobAssistantProvider>
         <Stack

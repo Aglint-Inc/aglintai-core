@@ -9,7 +9,7 @@ const Screening = () => {
     <>
       <Seo
         title={'Aglint | Phone Screening'}
-        description='Find Your Ideal Candidates'
+        description='AI for People Products'
       />
       <ScreeningCtxProvider>
         <KnockOffQns />

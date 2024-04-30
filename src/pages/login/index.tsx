@@ -1,10 +1,15 @@
 import React from 'react';
 
+import Seo from '@/src/components/Common/Seo';
 import Login from '@/src/components/Login';
 
 function SignInPage() {
   return (
     <>
+      <Seo
+        title={`Login`}
+        description='AI for People Products'
+      />
       <Login />
     </>
   );

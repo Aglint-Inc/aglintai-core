@@ -186,7 +186,7 @@ export function Modules() {
                       slotIcons={
                         <Icon height='60' width='80' variant='EmptyState' />
                       }
-                      textDescription={'No Interview Types'}
+                      textDescription={'No interview types found.'}
                     />
                   </Stack>
                 )}

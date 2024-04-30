@@ -7,7 +7,7 @@ const ProfilePage = () => {
     <>
       <Seo
         title={'Profile'}
-        description='Explore exciting career opportunities and find your perfect job match on our job listing page'
+        description='AI for People Products'
       />
       <ProfileDashboard />
     </>

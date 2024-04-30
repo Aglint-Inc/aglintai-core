@@ -7,7 +7,7 @@ import JobDashboardProvider from '@/src/context/JobDashboard';
 const JobEmailTemplatesPage = () => {
   return (
     <>
-      <Seo title='Jobs' description='AI Powered Talent Development Platform.' />
+      <Seo title='Jobs' description='AI for People Products' />
       <JobEmailTemplatesDashboard />
     </>
   );
