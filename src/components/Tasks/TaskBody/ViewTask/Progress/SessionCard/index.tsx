@@ -69,7 +69,11 @@ function SessionCard({
                         int.interview_module_relation?.recruiter_user.first_name
                       }
                       textName={
-                        int.interview_module_relation?.recruiter_user.first_name
+                        int.interview_module_relation?.recruiter_user
+                          .first_name +
+                        ' ' +
+                        (int.interview_module_relation?.recruiter_user
+                          .last_name ?? '')
                       }
                       slotAvatar={
                         <MuiAvatar
