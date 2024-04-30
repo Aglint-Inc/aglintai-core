@@ -165,11 +165,11 @@ function CandidateList({
                     ).length
                   }
                 >
-                  <EmptyState textDescription={'Candidate not found!'} />
+                  <EmptyState textDescription={'No candidates found.'} />
                 </ShowCode.When>
               </ShowCode.When>
               <ShowCode.Else>
-                <EmptyState textDescription='Candidate are not available!' />
+                <EmptyState textDescription='No candidates found.' />
               </ShowCode.Else>
             </ShowCode>
           }

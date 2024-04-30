@@ -8,7 +8,7 @@ const AssessmentDashboardPage = () => {
     <>
       <Seo
         title='Aglint | Jobs'
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <AssessmentDashboard />
     </>

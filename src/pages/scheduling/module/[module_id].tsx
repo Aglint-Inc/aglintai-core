@@ -114,7 +114,7 @@ function ModuleMembersComp() {
     <>
       <Seo
         title={`Scheduling`}
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <PageLayout
         onClickBack={{

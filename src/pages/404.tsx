@@ -7,7 +7,7 @@ export default function NotFoundPage() {
     <>
       <Seo
         title='Page not found'
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <Page404 />
     </>

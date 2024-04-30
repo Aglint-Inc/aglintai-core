@@ -306,7 +306,7 @@ function JobAssistant({ setMaximizeChat, maximizeChat }) {
       <Stack>
         <EmptyState />
       </Stack>
-      Candidates not found
+      No candidates found.
     </Stack>
   );
 }

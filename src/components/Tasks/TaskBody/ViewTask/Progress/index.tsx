@@ -315,7 +315,7 @@ function SubTaskProgress() {
           : null}
       </ShowCode.When>
       <ShowCode.Else>
-        <EmptyState textDescription={'Progress not found!'} />
+        <EmptyState textDescription={'No progress found.'} />
       </ShowCode.Else>
     </ShowCode>
   );
