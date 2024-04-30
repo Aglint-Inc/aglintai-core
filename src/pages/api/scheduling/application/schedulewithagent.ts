@@ -2,7 +2,10 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { scheduleWithAgent } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import {
+  scheduleWithAgent,
+  scheduleWithAgentWithoutTaskId,
+} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsScheduleAgent {
@@ -44,23 +47,43 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       trigger_count,
     } = req.body as ApiBodyParamsScheduleAgent;
 
-    const resAgent = await scheduleWithAgent({
-      application_id,
-      dateRange,
-      recruiter_id,
-      recruiter_user_name,
-      session_ids,
-      task_id: task_id,
-      type: type,
-      candidate_name: candidate_name,
-      company_name: company_name,
-      rec_user_email,
-      rec_user_phone,
-      rec_user_id,
-      supabase: supabaseAdmin,
-      user_tz,
-      trigger_count,
-    });
+    let resAgent = null;
+
+    if (task_id) {
+      resAgent = await scheduleWithAgent({
+        application_id,
+        dateRange,
+        recruiter_id,
+        recruiter_user_name,
+        session_ids,
+        task_id: task_id,
+        type: type,
+        candidate_name: candidate_name,
+        company_name: company_name,
+        rec_user_email,
+        rec_user_phone,
+        rec_user_id,
+        supabase: supabaseAdmin,
+        user_tz,
+        trigger_count,
+      });
+    } else {
+      resAgent = await scheduleWithAgentWithoutTaskId({
+        application_id,
+        dateRange,
+        recruiter_id,
+        recruiter_user_name,
+        session_ids,
+        type: type,
+        candidate_name: candidate_name,
+        company_name: company_name,
+        rec_user_email,
+        rec_user_phone,
+        rec_user_id,
+        supabase: supabaseAdmin,
+        user_tz,
+      });
+    }
 
     return res.status(200).send(resAgent);
   } catch (error) {
