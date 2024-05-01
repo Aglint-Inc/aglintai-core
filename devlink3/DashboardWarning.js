@@ -8,6 +8,8 @@ export function DashboardWarning({
   as: _Component = _Builtin.Block,
   onClickDismiss = {},
   onClickView = {},
+  textWarningTitle = "Job description is changed",
+  textDesc = "You may need to adjust the criteria for profile scoring.",
 }) {
   return (
     <_Component
@@ -42,11 +44,9 @@ export function DashboardWarning({
             className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
-            {"Job description is changed"}
+            {textWarningTitle}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
-            {"You may need to adjust the criteria for profile scoring."}
-          </_Builtin.Block>
+          <_Builtin.Block tag="div">{textDesc}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "right_buttons")}

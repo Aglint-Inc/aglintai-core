@@ -5,7 +5,7 @@ import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { interviewPlanRecruiterUserQuery } from '../interview-coordinators';
+import { interviewPlanRecruiterUserQuery } from '../company-members';
 import { useCurrentJob } from '../job-assessment/keys';
 import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';

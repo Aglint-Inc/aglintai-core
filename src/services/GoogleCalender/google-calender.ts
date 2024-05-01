@@ -34,8 +34,14 @@ export class GoogleCalender {
       const [rec_relns] = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_relation')
-          .select('recruiter(service_json),recruiter_user(email,schedule_auth)')
-          .eq('user_id', this.recruiter_user_id),
+          .select(
+            'recruiter(service_json),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
+          )
+          .eq('user_id', this.recruiter_user_id)
+          .then(({ data, error }) => ({
+            data: data.filter((d) => d.recruiter_user),
+            error,
+          })),
       );
       this.auth_details = {
         company_cred: null,

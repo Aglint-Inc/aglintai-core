@@ -3,6 +3,7 @@ import Seo from '@components/Common/Seo';
 import JobProfileScoreDashboard from '@/src/components/JobProfileScore';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
+import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const ProfileScoreJobPage = () => {
   return (
@@ -16,7 +17,9 @@ const ProfileScoreJobPage = () => {
 ProfileScoreJobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };

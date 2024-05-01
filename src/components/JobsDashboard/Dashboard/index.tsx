@@ -31,6 +31,7 @@ import {
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobInterviewPlanWarnings } from '@/src/context/JobInterviewPlanContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
@@ -202,9 +203,6 @@ const Dashboard = () => {
               counts?.total ?? '---'
             }`}
             slotScoringLoader={scoringLoader}
-            isBanner={
-              !publishable || description_changed || job.status === 'draft'
-            }
             isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners />}
@@ -485,9 +483,40 @@ const Schedules = () => {
 
 const Banners = () => {
   const { push } = useRouter();
-  const { publishStatus, status, setDismiss, job } = useJobDetails();
+  const { publishStatus, status, dismissWarnings, setDismissWarnings, job } =
+    useJobDetails();
+  const { isInterviewPlanDisabled, isInterviewSessionEmpty } =
+    useJobInterviewPlanWarnings();
   const banners: React.JSX.Element[] = [];
   if (job.status === 'draft') banners.push(<JobsBanner />);
+  if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
+    banners.push(
+      <DashboardWarning
+        textWarningTitle={'Scheduling disabled'}
+        textDesc={'Creare interview plans to enable scheduling for this job.'}
+        onClickDismiss={{
+          onClick: () =>
+            setDismissWarnings((prev) => ({ ...prev, interview_plan: true })),
+        }}
+        onClickView={{ onClick: () => push(`/jobs/${job.id}/interview-plan`) }}
+      />,
+    );
+  else if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
+    banners.push(
+      <DashboardWarning
+        textWarningTitle={'Scheduling disabled'}
+        textDesc={
+          'Creare atleast one session to enable scheduling for this job.'
+        }
+        onClickDismiss={{
+          onClick: () =>
+            setDismissWarnings((prev) => ({ ...prev, interview_plan: true })),
+        }}
+        onClickView={{
+          onClick: () => push(`/jobs/${job.id}/interview-plan`),
+        }}
+      />,
+    );
   if (!publishStatus.settingsValidity)
     banners.push(
       <DashboardAlert
@@ -517,14 +546,23 @@ const Banners = () => {
         textShortDescription={
           'Candidate cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
         }
-        onClickBanner={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
+        onClickBanner={{
+          onClick: () => push(`/jobs/${job.id}/profile-score`),
+        }}
       />,
     );
   else if (status.description_changed)
     banners.push(
       <DashboardWarning
-        onClickDismiss={{ onClick: () => setDismiss(true) }}
-        onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
+        textWarningTitle={'Job description is changed'}
+        textDesc={'You may need to adjust the criteria for profile scoring.'}
+        onClickDismiss={{
+          onClick: () =>
+            setDismissWarnings((prev) => ({ ...prev, job_description: true })),
+        }}
+        onClickView={{
+          onClick: () => push(`/jobs/${job.id}/profile-score`),
+        }}
       />,
     );
   // if (status.scoring_criteria_changed)
@@ -778,17 +816,26 @@ const ScreeningModule = () => {
 };
 
 const InterviewModule = () => {
-  const { job } = useJobDetails();
+  const {
+    job,
+    dismissWarnings: { interview_plan, interview_session },
+  } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/interview-plan`);
   };
+  const { isInterviewPlanDisabled, isInterviewSessionEmpty } =
+    useJobInterviewPlanWarnings();
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Interview Plan'}
       slotIcon={<SchedulingIcon />}
       slotEnableDisable={<></>}
+      isWarning={
+        (isInterviewPlanDisabled && !interview_plan) ||
+        (isInterviewSessionEmpty && !interview_session)
+      }
     />
   );
 };

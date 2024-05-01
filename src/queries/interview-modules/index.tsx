@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { interviewPlanRecruiterUserQuery } from '../interview-coordinators';
+import { interviewPlanRecruiterUserQuery } from '../company-members';
 import { interviewModuleKeys } from './keys';
 
 export const useInterviewModules = () => {

@@ -1,4 +1,4 @@
-import { appKey } from '..';
+import { appKey, argsToKeys } from '..';
 import { type getInterviewTrainingProgress } from '.';
 import { Functions } from './types';
 
@@ -48,7 +48,3 @@ export const schedulingDashboardQueryKeys = {
     ] as string[],
   }),
 } as const;
-
-const argsToKeys = (obj: Object) => {
-  return Object.entries(obj).map(([key, value]) => ({ [key]: value }));
-};

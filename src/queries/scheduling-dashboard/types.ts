@@ -1,6 +1,6 @@
 import { Database } from '@/src/types/schema';
 
-import { type useInterviewCoordinators } from '../interview-coordinators';
+import { type useCompanyMembers } from '../company-members';
 import { type InterviewModulesType } from '../interview-modules/types';
 import { getInterviewTrainingProgress } from '.';
 
@@ -54,7 +54,7 @@ export type CustomType<
 type TrainingTypes = Exclude<Enums['interviewer_type'], 'qualified'>;
 
 type InterviewTrainingProgressType = ({
-  recruiter_user: ReturnType<typeof useInterviewCoordinators>['data'][number];
+  recruiter_user: ReturnType<typeof useCompanyMembers>['data'][number];
   module: Pick<InterviewModulesType[number], 'name' | 'settings' | 'id'>;
 } & {
   // eslint-disable-next-line no-unused-vars
