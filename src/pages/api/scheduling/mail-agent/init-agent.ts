@@ -76,7 +76,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     const email_details = getInitialEmailTemplate();
-
     const thread_id = uuidV4();
 
     supabaseWrap(
