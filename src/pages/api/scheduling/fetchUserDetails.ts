@@ -35,7 +35,7 @@ const fetchUsers = async (recruiter_id: string, status: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      'role,recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, email, profile_image, position, schedule_auth, scheduling_settings)',
+      'role,recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, email, profile_image, position, schedule_auth, scheduling_settings, department)',
     )
     .eq('recruiter_id', recruiter_id)
     .eq('recruiter_user.join_status', status)
