@@ -1,7 +1,11 @@
 import { createServerClient } from '@supabase/ssr';
 
-import { CustomDatabase, DatabaseEnums, DatabaseTable } from './customSchema';
-import { schedulingSettingType } from './scheduleTypes/scheduleSetting';
+import {
+  CustomDatabase,
+  DatabaseEnums,
+  DatabaseTable,
+  DatabaseTableInsert,
+} from './customSchema';
 import { Database } from './schema';
 
 export type AddressType = {
@@ -24,25 +28,20 @@ export type RecruiterType = Omit<DatabaseTable['recruiter'], 'socials'> & {
   socials: SocialsType | null;
 };
 
-export type JobTypeDB = Database['public']['Tables']['public_jobs']['Row'];
-export type JobAssistantChats =
-  Database['public']['Tables']['job_assiatan_chat']['Row'];
+export type JobTypeDB = DatabaseTable['public_jobs'];
+export type JobAssistantChats = DatabaseTable['job_assiatan_chat'];
 export type JobAssistantChatMessages =
-  Database['public']['Tables']['job_assiatan_chat_messages']['Row'];
+  DatabaseTable['job_assiatan_chat_messages'];
 
-export type AglintCandidatesTypeDB =
-  Database['public']['Tables']['aglint_candidates']['Row'];
+export type AglintCandidatesTypeDB = DatabaseTable['aglint_candidates'];
 
-export type CandidateListTypeDB =
-  Database['public']['Tables']['candidate_list']['Row'];
+export type CandidateListTypeDB = DatabaseTable['candidate_list'];
 //TODO: Draft?
 
-export type JobApplcationDB =
-  Database['public']['Tables']['applications']['Row'];
+export type JobApplcationDB = DatabaseTable['applications'];
 
 export type RecruiterDB = DatabaseTable['recruiter'];
-export type RecruiterRelationsType =
-  Database['public']['Tables']['recruiter_relation']['Row'];
+export type RecruiterRelationsType = DatabaseTable['recruiter_relation'];
 
 export type JobType = Omit<JobTypeDB, 'active_status'> & {
   active_status: StatusJobs | null;
@@ -65,14 +64,11 @@ export type StatusJobs = {
   };
 };
 
-export type Support_ticketType =
-  Database['public']['Tables']['support_ticket']['Row'];
+export type Support_ticketType = DatabaseTable['support_ticket'];
 
-export type Public_jobsType =
-  Database['public']['Tables']['public_jobs']['Row'];
+export type Public_jobsType = DatabaseTable['public_jobs'];
 
-export type SupportGroupType =
-  Database['public']['Tables']['support_groups']['Row'];
+export type SupportGroupType = DatabaseTable['support_groups'];
 
 // //////////////////////////////////////// API types ///////////////////////////////////////////////
 
@@ -162,10 +158,10 @@ export type Summary = {
 type TempRecruiterUser = DatabaseTable['recruiter_user'];
 export interface RecruiterUserType extends TempRecruiterUser {
   role: DatabaseEnums['user_roles'];
-  scheduling_settings: schedulingSettingType;
+  last_login?: string;
 }
 // export type RecruiterUserType =
-//   Database['public']['Tables']['recruiter_user']['Row'] & {
+//   DatabaseTable['recruiter_user'] & {
 //     scheduling_settings: schedulingSettingType;
 //   };
 
@@ -182,44 +178,35 @@ export type RoleType = {
   view_candidates_profile: boolean;
 };
 
-export type JobApplicationType =
-  Database['public']['Tables']['applications']['Row'];
+export type JobApplicationType = DatabaseTable['applications'];
 
-export type CandidateType = Database['public']['Tables']['candidates']['Row'];
+export type CandidateType = DatabaseTable['candidates'];
 
-export type CandidateFileTypeDB =
-  Database['public']['Tables']['candidate_files']['Row'];
+export type CandidateFileTypeDB = DatabaseTable['candidate_files'];
 
-export type InterviewScheduleTypeDB =
-  Database['public']['Tables']['interview_schedule']['Row'];
+export type InterviewScheduleTypeDB = DatabaseTable['interview_schedule'];
 
-export type NewCandidateType =
-  Database['public']['Tables']['candidates']['Row'];
+export type NewCandidateType = DatabaseTable['candidates'];
 
-export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
+export type PublicJobsType = DatabaseTable['public_jobs'];
 
-export type SupportTicketType =
-  Database['public']['Tables']['support_ticket']['Row'];
+export type SupportTicketType = DatabaseTable['support_ticket'];
 
-export type SearchHistoryType =
-  Database['public']['Tables']['candidate_search_history']['Row'];
+export type SearchHistoryType = DatabaseTable['candidate_search_history'];
 
-export type GreenhouseRefDbType =
-  Database['public']['Tables']['greenhouse_reference']['Row'];
+export type GreenhouseRefDbType = DatabaseTable['greenhouse_reference'];
 
 export type GreenhouseType = Pick<
-  Database['public']['Tables']['greenhouse_reference']['Row'],
+  DatabaseTable['greenhouse_reference'],
   'posting_id' | 'application_id' | 'greenhouse_id' | 'public_job_id' | 'resume'
 >;
 
-export type OutreachEmailDbType =
-  Database['public']['Tables']['outreached_emails']['Row'];
+export type OutreachEmailDbType = DatabaseTable['outreached_emails'];
 
-export type InterviewModuleType =
-  Database['public']['Tables']['interview_module']['Row'];
+export type InterviewModuleType = DatabaseTable['interview_module'];
 
 export type InterviewModuleRelationType =
-  Database['public']['Tables']['interview_module_relation']['Row'] & {
+  DatabaseTable['interview_module_relation'] & {
     pause_json: {
       start_date: string;
       end_date: string;
@@ -227,47 +214,38 @@ export type InterviewModuleRelationType =
     };
   };
 
-export type AgentChatType = Database['public']['Tables']['agent_chatx']['Row'];
+export type AgentChatType = DatabaseTable['agent_chatx'];
 
-export type AgentActivityType =
-  Database['public']['Tables']['agent_activity']['Insert'];
+export type AgentActivityType = DatabaseTableInsert['agent_activity'];
 
-export type InterviewMeetingTypeDb =
-  Database['public']['Tables']['interview_meeting']['Insert'];
+export type InterviewMeetingTypeDb = DatabaseTableInsert['interview_meeting'];
 
-export type IntegrationType =
-  Database['public']['Tables']['request_integration_tool']['Row'];
+export type IntegrationType = DatabaseTable['request_integration_tool'];
 
 export type ScheduleAgentChatHistoryTypeDB =
-  Database['public']['Tables']['scheduling-agent-chat-history']['Row'];
+  DatabaseTable['scheduling-agent-chat-history'];
 
-export type InterviewPlanTypeDB =
-  Database['public']['Tables']['interview_plan']['Row'];
+export type InterviewPlanTypeDB = DatabaseTable['interview_plan'];
 
-export type InterviewSessionTypeDB =
-  Database['public']['Tables']['interview_session']['Row'];
-export type InterviewFilterJsonType =
-  Database['public']['Tables']['interview_filter_json']['Row'];
+export type InterviewSessionTypeDB = DatabaseTable['interview_session'];
+export type InterviewFilterJsonType = DatabaseTable['interview_filter_json'];
 
 export type InterviewSessionRelationTypeDB =
-  Database['public']['Tables']['interview_session_relation']['Row'];
+  DatabaseTable['interview_session_relation'];
 
 export type employmentTypeEnum =
   Database['public']['Enums']['employment_type_enum'];
 
-export type InterviewSession =
-  Database['public']['Tables']['interview_session']['Row'];
+export type InterviewSession = DatabaseTable['interview_session'];
 
 export type InterviewerSessionRelation =
-  Database['public']['Tables']['interview_session_relation']['Row'];
+  DatabaseTable['interview_session_relation'];
 
-export type SubTaskProgress =
-  Database['public']['Tables']['sub_task_progress']['Row'];
+export type SubTaskProgress = DatabaseTable['sub_task_progress'];
 
 export type InterviewScheduleActivityTypeDb =
-  Database['public']['Tables']['interview_schedule_activity']['Row'];
+  DatabaseTable['interview_schedule_activity'];
 
-export type ApplicationLogsTypeDb =
-  Database['public']['Tables']['application_logs']['Row'];
+export type ApplicationLogsTypeDb = DatabaseTable['application_logs'];
 
-export type TaskTypeDb = Database['public']['Tables']['new_tasks']['Row'];
+export type TaskTypeDb = DatabaseTable['new_tasks'];

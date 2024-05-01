@@ -1,8 +1,6 @@
 import {
   Autocomplete,
   Drawer,
-  ListItem,
-  ListItemButton,
   Stack,
   TextField,
   TextFieldProps,
@@ -51,8 +49,7 @@ const AddMember = ({
   pendingList: RecruiterUserType[];
   onClose: () => void;
 }) => {
-  const { userDetails, setMembers, recruiter, recruiterUser } =
-    useAuthDetails();
+  const { userDetails, setMembers, recruiter } = useAuthDetails();
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
@@ -135,6 +132,7 @@ const AddMember = ({
     }
     if (form.linked_in?.length) {
       const linkedInURLPattern =
+        // eslint-disable-next-line security/detect-unsafe-regex
         /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
       temp = { ...temp, linked_in: linkedInURLPattern.test(form.linked_in) };
       flag = true;
@@ -165,11 +163,8 @@ const AddMember = ({
         scheduling_settings:
           recruiter.scheduling_settings as schedulingSettingType,
       },
-      userDetails.user.id,
-      {
-        name: recruiterUser.first_name,
-        email: recruiterUser.email,
-      },
+      // userDetails.user.id,
+      recruiter.id,
     );
     if (res.status === 200) {
       let { error, created, user } = res.data;

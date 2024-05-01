@@ -15,10 +15,10 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { interviewLocationType } from '../AddMemberDialog';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const EditMember = ({
   open,
@@ -329,7 +329,7 @@ const EditMember = ({
                         employment: form.employment,
                         department: form.department,
                         position: form.designation,
-                        // role: form.role.toLowerCase() as typeof form.role,
+                        role: form.role.toLowerCase() as typeof form.role,
                       },
                     })
                       .then(() => {

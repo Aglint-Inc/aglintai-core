@@ -8,7 +8,7 @@ import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SERVICE_KEY,
 );
 
 export type ApiBodyParamsSignup = {
@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email: email,
         first_name: first_name,
         last_name: last_name || '',
-        role: role
+        role: role,
       })
       .select();
     if (errUser) throw new Error(errUser.message);
@@ -44,16 +44,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email: email,
         recruiter_type: flow,
         recruiter_active: true,
-        id: rec_id
+        id: rec_id,
       })
       .select();
     if (errRec) throw new Error(errRec.message);
 
     const { error: errRel } = await supabase.from('recruiter_relation').insert({
+      role: 'admin',
       recruiter_id: rec_id,
       user_id: user_id,
       is_active: true,
-      created_by: user_id
+      created_by: user_id,
     });
     if (errRel) throw new Error(errRel.message);
 
@@ -61,13 +62,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .from('recruiter_user')
       .update({
         recruiter_id: rec[0].id,
-        scheduling_settings: rec[0].scheduling_settings
+        scheduling_settings: rec[0].scheduling_settings,
       })
       .eq('user_id', user_id);
 
     return res.status(200).json({
       recruiter_user: recUser[0],
-      recruiter: rec[0]
+      recruiter: rec[0],
     });
   } catch (error) {
     // console.log('error', error);

@@ -23,12 +23,18 @@ const tabs: {
     ],
   },
   { text: 'my schedules' },
-  { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
+  {
+    text: 'candidates',
+    roles: ['admin', 'recruiter', 'recruiting_coordinator'],
+  },
   {
     text: 'interview types',
-    roles: ['admin', 'recruiter', 'scheduler', 'interviewer'],
+    roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
   },
-  { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
+  {
+    text: 'interviewers',
+    roles: ['admin', 'recruiter', 'recruiting_coordinator'],
+  },
   {
     text: 'settings',
   },

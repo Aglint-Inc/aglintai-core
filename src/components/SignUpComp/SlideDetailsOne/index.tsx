@@ -67,24 +67,22 @@ export function FetchCompanyDetails() {
   const [loading, setLoading] = useState(false);
 
   async function getRecruiter() {
-    const { data: recruiterUser, error: errorUser } = await supabase
-      .from('recruiter_user')
-      .select('*')
-      .eq('user_id', userDetails.user.id);
-    if (!errorUser && recruiterUser.length > 0) {
-      const { data: recruiter, error } = await supabase
-        .from('recruiter')
-        .select('*')
-        .eq('id', recruiterUser[0].recruiter_id);
-      if (!error && recruiter.length > 0) {
-        setRecruiter({
-          ...recruiter[0],
-          socials: recruiter[0]?.socials as unknown as SocialsType
-        });
-      }
-    } else {
-      router.push(pageRoutes.SIGNUP);
-    }
+    const recruiter = await supabase
+      .from('recruiter_relation')
+      .select('recruiter(*)')
+      .eq('user_id', userDetails.user.id)
+      .eq('is_active', true)
+      .single()
+      .then(({ data, error }) => {
+        if (error && data?.recruiter) {
+          router.push(pageRoutes.SIGNUP);
+        }
+        return data.recruiter;
+      });
+    setRecruiter({
+      ...recruiter,
+      socials: recruiter?.socials as unknown as SocialsType,
+    });
   }
   useEffect(() => {
     if (userDetails?.user) {
@@ -99,7 +97,7 @@ export function FetchCompanyDetails() {
       setDetails({
         website:
           recruiter?.company_website ||
-          extractDomainAndAddCom(recruiter.email || '')
+          extractDomainAndAddCom(recruiter.email || ''),
       });
     }
   }, [recruiter]);
@@ -151,26 +149,26 @@ export function FetchCompanyDetails() {
                   country: companyDetails?.country || '',
                   zipcode: companyDetails?.postal_code,
                   full_address: companyDetails?.raw_address,
-                  is_headquarter: true
-                }
+                  is_headquarter: true,
+                },
               ] || [],
             company_overview: companyDetails?.short_description || '',
             // technology_score: companyDetails.technologies || [],
             socials: {
               custom: {
                 crunchbase: companyDetails?.crunchbase_url || '',
-                angellist: companyDetails?.angellist_url || ''
+                angellist: companyDetails?.angellist_url || '',
               },
               twitter: companyDetails?.twitter_url || '',
               youtube: companyDetails?.youtube_url || '',
               facebook: companyDetails?.facebook_url || '',
               linkedin: companyDetails?.linkedin_url || '',
-              instagram: companyDetails?.instagram_url || ''
+              instagram: companyDetails?.instagram_url || '',
             },
             technology_score: companyDetails?.keywords.map(capitalize) || [],
             departments: Object.keys(
-              companyDetails?.departmental_head_count || {}
-            ).map((dep) => capitalize(dep.split('_').join(' ')))
+              companyDetails?.departmental_head_count || {},
+            ).map((dep) => capitalize(dep.split('_').join(' '))),
           })
           .eq('id', recruiter.id)
           .select();
@@ -178,23 +176,23 @@ export function FetchCompanyDetails() {
           setRecruiter({
             ...data[0],
             socials: data[0].socials as SocialsType,
-            phone_number: data[0].phone_number as any
+            phone_number: data[0].phone_number as any,
           });
           if (companyDetails?.name) {
             router.push(
               `?step=${stepObj.detailsTwo}&api_fetch=true`,
               undefined,
               {
-                shallow: true
-              }
+                shallow: true,
+              },
             );
           } else {
             router.push(
               `?step=${stepObj.detailsTwo}&api_fetch=false`,
               undefined,
               {
-                shallow: true
-              }
+                shallow: true,
+              },
             );
           }
         }
@@ -202,7 +200,7 @@ export function FetchCompanyDetails() {
       }
     } catch (err) {
       router.push(`?step=${stepObj.detailsTwo}&api_fetch=false`, undefined, {
-        shallow: true
+        shallow: true,
       });
     } finally {
       setLoading(false);
@@ -230,8 +228,8 @@ export function FetchCompanyDetails() {
             inputProps={{
               autoCapitalize: 'true',
               style: {
-                fontSize: '14px'
-              }
+                fontSize: '14px',
+              },
             }}
           />
           <Stack direction={'row'} justifyContent={'end'}>
@@ -263,8 +261,8 @@ const fetchCompanyDetail = async (url) => {
     const { data: companyDetails } = await axios.post(
       `/api/fetchCompanyDetails`,
       {
-        domain_name: url
-      }
+        domain_name: url,
+      },
     );
     return companyDetails;
   } catch (err) {

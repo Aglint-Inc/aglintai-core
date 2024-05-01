@@ -504,6 +504,8 @@ const getAllAdmins = async (recruiter_ids: string[]) => {
       ];
     } = {};
     data.forEach((item) => {
+      // fix here //
+      // @ts-ignore
       temp[item.recruiter_id] = [item];
     });
     return temp;

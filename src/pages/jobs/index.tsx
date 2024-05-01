@@ -18,10 +18,7 @@ const Dashboard = () => {
   }, [recruiter]);
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <IntegrationProvider>
         <JobPostFormProvider>
           <DashboardComp />
@@ -34,5 +31,5 @@ const Dashboard = () => {
 export default withRoleProtection(Dashboard, [
   'admin',
   'recruiter',
-  'scheduler',
+  'recruiting_coordinator',
 ]);

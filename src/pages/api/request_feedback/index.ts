@@ -49,12 +49,12 @@ export default async function handler(
         },
       });
       //   return res.status(200).send(email);
-        await sgMail.send({
-          from: { name: sender.name, email: sender.email },
-          to: receiver.email,
-          subject: email.subject,
-          html: email.content,
-        });
+      await sgMail.send({
+        from: { name: sender.name, email: sender.email },
+        to: receiver.email,
+        subject: email.subject,
+        html: email.content,
+      });
       return res.status(200).send(getResponse({ emailSent: true }));
     }
     return res
@@ -103,8 +103,10 @@ const checkPermissionsAndGetDetails = async ({
       if (data.user.id) {
         const asyncCalls = await Promise.all([
           supabase
-            .from('recruiter_user')
-            .select('role, first_name, last_name, position')
+            .from('recruiter_relation')
+            .select(
+              'role,recruiter_user!public_recruiter_relation_user_id_fkey( first_name, last_name, position)',
+            )
             // .select('*')
             .eq('user_id', data.user.id)
             .single()
@@ -113,8 +115,8 @@ const checkPermissionsAndGetDetails = async ({
               if (roles.includes(rData.role)) {
                 return {
                   email: data.user.email,
-                  name: `${rData.first_name || ''} ${rData.last_name || ''}`.trim(),
-                  job_title: rData.position,
+                  name: `${rData.recruiter_user.first_name || ''} ${rData.recruiter_user.last_name || ''}`.trim(),
+                  job_title: rData.recruiter_user.position,
                 };
               }
               throw new Error('request rejected.');

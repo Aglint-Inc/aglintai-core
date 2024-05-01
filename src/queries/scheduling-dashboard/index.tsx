@@ -41,6 +41,7 @@ export const useInterviewMeetingStatus = (
 export const useInterviewTrainingProgress = () => {
   const { recruiter_id, enabled, gcTime } = useDashboardEnabled();
   const { queryKey } = schedulingDashboardQueryKeys.interviewTrainingProgress({
+    supabase,
     recruiter_id,
   });
   return useQuery({
@@ -189,6 +190,8 @@ export const getInterviewTrainingProgress = async ({
               (acc, { interview_session_relation, recruiter_user }) => {
                 const entry: SchedulingDashboardTypes['interviewTrainingProgress'][number] =
                   {
+                    // fix here pg //
+                    // @ts-ignore
                     recruiter_user,
                     module: {
                       id,

@@ -98,7 +98,29 @@ export type CustomDatabase = {
                       };
                       Relationships: Database['public']['Tables'][Table]['Relationships'];
                     }
-                  : Database['public']['Tables'][Table];
+                  : Table extends 'recruiter_user'
+                    ? {
+                        Row: Omit<
+                          Database['public']['Tables'][Table]['Row'],
+                          'scheduling_settings'
+                        > & {
+                          scheduling_settings: recruiter_scheduling_settings;
+                        };
+                        Insert: Omit<
+                          Database['public']['Tables'][Table]['Insert'],
+                          'scheduling_settings'
+                        > & {
+                          scheduling_settings?: recruiter_scheduling_settings;
+                        };
+                        Update: Omit<
+                          Database['public']['Tables'][Table]['Update'],
+                          'scheduling_settings'
+                        > & {
+                          scheduling_settings?: recruiter_scheduling_settings;
+                        };
+                        Relationships: Database['public']['Tables'][Table]['Relationships'];
+                      }
+                    : Database['public']['Tables'][Table];
         }
       : Database['public'][keys];
   };

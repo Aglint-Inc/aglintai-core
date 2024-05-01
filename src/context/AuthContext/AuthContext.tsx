@@ -17,6 +17,8 @@ import {
 
 import { LoaderSvg } from '@/devlink';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
+import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
+import { DatabaseEnums, DatabaseTableUpdate } from '@/src/types/customSchema';
 import {
   RecruiterRelationsType,
   RecruiterType,
@@ -37,8 +39,8 @@ export interface ContextValue {
   recruiter: RecruiterType | null;
   recruiter_id: string | null;
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
-  allrecruterRelation: RecruiterRelationsType[];
-  setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
+  allRecruiterRelation: RecruiterRelationsType[];
+  setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
@@ -50,15 +52,17 @@ export interface ContextValue {
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
   handelMemberUpdate: (x: {
     user_id: string;
-    data: Database['public']['Tables']['recruiter_user']['Update'];
+    data: DatabaseTableUpdate['recruiter_user'] & {
+      role?: DatabaseEnums['user_roles'];
+    };
   }) => Promise<boolean>;
   isAllowed: (
-    roles: Database['public']['Enums']['user_roles'][],
+    roles: DatabaseEnums['user_roles'][],
     flags?: featureFlag[],
   ) => boolean;
   allowAction: <T extends Function | ReactNode>(
     func: T,
-    role: Database['public']['Enums']['user_roles'][],
+    role: DatabaseEnums['user_roles'][],
   ) => T;
   isAssessmentEnabled: boolean;
   isScreeningEnabled: boolean;
@@ -75,8 +79,8 @@ const defaultProvider = {
   recruiter: null,
   recruiter_id: null,
   setRecruiter: () => {},
-  allrecruterRelation: null,
-  setAllrecruterRelation: () => {},
+  allRecruiterRelation: null,
+  setAllRecruiterRelation: () => {},
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
@@ -102,7 +106,7 @@ const AuthProvider = ({ children }) => {
     null,
   );
   const recruiter_id = recruiter?.id ?? null;
-  const [allrecruterRelation, setAllrecruterRelation] =
+  const [allRecruiterRelation, setAllRecruiterRelation] =
     useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
   const [loading, setLoading] = useState<boolean>(true);
@@ -247,14 +251,17 @@ const AuthProvider = ({ children }) => {
     user_id,
     data,
   }) => {
-    if (!user_id && data) return Promise.resolve(false);
-    return updateMember({ user_id, data }).then((data) => {
+    if (!user_id && data && recruiter.id) return Promise.resolve(false);
+    return updateMember({
+      data: { ...data, user_id },
+      recruiter_id: recruiter.id,
+    }).then((data) => {
       if (data) {
         setMembers((prev) =>
           prev.map((item) => {
-            return data.user_id !== item.user_id
-              ? item
-              : (data as RecruiterUserType);
+            return data.user_id === item.user_id
+              ? ({ ...item, ...data } as RecruiterUserType)
+              : item;
           }),
         );
         return true;
@@ -336,8 +343,8 @@ const AuthProvider = ({ children }) => {
         setLoading,
         handleLogout,
         recruiterUser,
-        allrecruterRelation,
-        setAllrecruterRelation,
+        allRecruiterRelation: allRecruiterRelation,
+        setAllRecruiterRelation,
         setRecruiterUser,
         members,
         setMembers,
@@ -388,18 +395,23 @@ const pageFeatureMapper = {
   [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
 };
 
-const updateMember = async ({
-  user_id,
+const updateMember = ({
   data,
+  recruiter_id,
 }: {
-  user_id: string;
-  data: Database['public']['Tables']['recruiter_user']['Update'];
+  data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
+    user_id: string;
+    role?: DatabaseEnums['user_roles'];
+  };
+  recruiter_id: string;
 }) => {
-  const { data: user } = await axios.post('/api/updateUsers', {
-    user_id,
-    data,
-  });
-  return user as RecruiterType;
+  const body: API_setMembersWithRole['request'] = { data: data, recruiter_id };
+  return axios
+    .post<API_setMembersWithRole['response']>('/api/setMembersWithRole', body)
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.data;
+    });
 };
 
 const getMembers = (id: string) => {
