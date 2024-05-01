@@ -388,25 +388,18 @@ const pageFeatureMapper = {
   [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
 };
 
-const updateMember = ({
+const updateMember = async ({
   user_id,
   data,
 }: {
   user_id: string;
   data: Database['public']['Tables']['recruiter_user']['Update'];
 }) => {
-  return supabase
-    .from('recruiter_user')
-    .update(data)
-    .eq('user_id', user_id)
-    .select()
-    .single()
-    .then(({ data, error }) => {
-      if (error) {
-        throw new Error(error.message);
-      }
-      return data;
-    });
+  const { data: user } = await axios.post('/api/updateUsers', {
+    user_id,
+    data,
+  });
+  return user as RecruiterType;
 };
 
 const getMembers = (id: string) => {

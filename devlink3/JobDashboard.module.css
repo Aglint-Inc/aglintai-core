@@ -548,6 +548,8 @@
 }
 
 .jd_aglint_toggle {
+  position: relative;
+
   display: flex;
   padding: 16px;
   flex-direction: column;
@@ -566,6 +568,22 @@
 
 .jd_aglint_toggle:hover {
   background-color: #ffeedb;
+}
+
+.div-block-1631 {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 10px;
+  bottom: auto;
+
+  padding: 2px 8px;
+
+  border-radius: 4px;
+
+  background-color: #68737d;
+
+  color: white;
 }
 
 #w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b69091-06b69083 {

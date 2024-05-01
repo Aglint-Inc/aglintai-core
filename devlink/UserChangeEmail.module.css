@@ -1,5 +1,6 @@
 .profile-block {
   display: flex;
+  width: 400px;
   flex-direction: column;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
@@ -285,6 +286,25 @@
   overflow-wrap: anywhere;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .div-block-802 {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -339,6 +359,10 @@
   margin-top: 9px;
 }
 
+.mt-9 {
+  margin-top: 9px;
+}
+
 .mt-15 {
   margin-top: 15px;
 }
@@ -371,6 +395,12 @@
 
 .text-grey-600.mt-8 {
   margin-top: 8px;
+}
+
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
 }
 
 .profile-inputs-wrapper {
