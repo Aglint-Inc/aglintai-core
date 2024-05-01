@@ -69,6 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .eq('id', req_body.task_id),
     );
+
     return res.status(200).json('sucess');
   } catch (error) {
     return res.status(500).send(error.message);

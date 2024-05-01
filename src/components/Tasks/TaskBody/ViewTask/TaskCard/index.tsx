@@ -93,7 +93,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       setIsImmediate(false);
       getSessionList();
     }
-  }, [router.query?.task_id, assignerList, task.status]);
+  }, [router.query?.task_id, assignerList, task]);
 
   async function updateChanges(data: DatabaseTableUpdate['new_tasks']) {
     handelUpdateTask([

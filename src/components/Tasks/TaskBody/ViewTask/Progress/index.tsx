@@ -1,19 +1,11 @@
-import { Collapse, Stack, Typography } from '@mui/material';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { EmptyState } from '@/devlink2';
-import {
-  AgentPill,
-  AvatarWithName,
-  ListCard,
-  TaskProgress,
-  TranscriptCard,
-} from '@/devlink3';
+import { TaskProgress } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
@@ -24,21 +16,19 @@ import {
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '../../../Components/PhoneAgentIcon';
 import { useTaskStatesContext } from '../../../TaskStatesContext';
 import { EmailAgentId, PhoneAgentId } from '../../../utils';
-import SessionCard from './SessionCard';
+import PhoneTranscript from './PhoneTrancript';
+import SessionCard, { meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
   const { tasks } = useTasksContext();
   const { assignerList } = useTaskStatesContext();
   const router = useRouter();
   const { data: progressList, isFetchedAfterMount } = useProgress();
-  const { data: sessionList } = useScheduleSession();
-  const [openTranscript, setOpenTranscript] = useState(false);
 
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const candidateDetails = selectedTask?.applications?.candidates;
@@ -162,7 +152,6 @@ function SubTaskProgress() {
                   textTimeCompleted={'sd'}
                   textTime={dayjs(item.created_at).fromNow()}
                   isMailContentVisible={
-                    item.progress_type === 'call_completed' ||
                     (item.progress_type === 'email_messages' &&
                       item.jsonb_data?.message) ||
                     item.progress_type === 'interview_schedule'
@@ -192,141 +181,51 @@ function SubTaskProgress() {
                           ></span>
                         </Typography>
                       </ShowCode.When>
-                      <ShowCode.When
-                        isTrue={
-                          item.progress_type === 'call_completed' &&
-                          Boolean(item.jsonb_data.length)
-                        }
-                      >
-                        <Stack
-                          width={'100%'}
-                          direction={'column'}
-                          px={1}
-                          position={'relative'}
-                        >
-                          <Stack
-                            onClick={() => {
-                              setOpenTranscript((pre) => !pre);
-                            }}
-                            direction={'row'}
-                            justifyContent={'space-between'}
-                            alignItems={'center'}
-                            sx={{
-                              cursor: 'pointer',
-                            }}
-                            py={1}
-                          >
-                            <Typography variant='inherit'>
-                              Transcript
-                            </Typography>
-                            {openTranscript ? (
-                              <IconChevronUp />
-                            ) : (
-                              <IconChevronDown />
-                            )}
-                          </Stack>
-                          <Collapse
-                            sx={{
-                              '& .MuiCollapse-wrapperInner': {
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '20px',
-                              },
-                            }}
-                            in={openTranscript}
-                            collapsedSize={0}
-                          >
-                            {item.jsonb_data &&
-                              item.jsonb_data.length &&
-                              (
-                                item.jsonb_data as unknown as {
-                                  id: string;
-                                  message: string;
-                                }[]
-                              ).map((ele, i) => {
-                                const receiver = tasks
-                                  .map((item) => item.applications.candidates)
-                                  .find((item) => item.id === ele.id);
-                                if (ele.message && ele.message.trim())
-                                  return (
-                                    <Stack width={'100%'} gap={1} key={i}>
-                                      <TranscriptCard
-                                        isBackgroundActive={
-                                          ele.id !== PhoneAgentId
-                                        }
-                                        slotAgent={
-                                          <Stack width={'100%'}>
-                                            <ShowCode>
-                                              <ShowCode.When
-                                                isTrue={ele.id === PhoneAgentId}
-                                              >
-                                                <AgentPill
-                                                  isPhoneAgentVisible={true}
-                                                  isEmailAgentVisible={false}
-                                                />
-                                              </ShowCode.When>
-                                              <ShowCode.Else>
-                                                <ListCard
-                                                  isAvatarWithNameVisible={true}
-                                                  isListVisible={false}
-                                                  slotAvatarWithName={
-                                                    receiver && (
-                                                      <AvatarWithName
-                                                        isAvatarVisible={false}
-                                                        isCandidateIconVisible={
-                                                          true
-                                                        }
-                                                        isRoleVisible={false}
-                                                        isReverseShadowVisible={
-                                                          false
-                                                        }
-                                                        isShadowVisible={false}
-                                                        slotAvatar={<></>}
-                                                        isTickVisible={false}
-                                                        textName={capitalizeAll(
-                                                          receiver?.first_name +
-                                                            ' ' +
-                                                            (receiver?.last_name ??
-                                                              ''),
-                                                        )}
-                                                      />
-                                                    )
-                                                  }
-                                                />
-                                              </ShowCode.Else>
-                                            </ShowCode>
-                                          </Stack>
-                                        }
-                                        textScript={ele.message}
-                                      />
-                                    </Stack>
-                                  );
-                              })}
-                          </Collapse>
-                        </Stack>
-                      </ShowCode.When>
+
                       <ShowCode.When
                         isTrue={item.progress_type === 'interview_schedule'}
                       >
                         <Stack direction={'column'} spacing={3} width={'100%'}>
-                          {sessionList
-                            ?.sort(
-                              (a, b) =>
-                                a.interview_session.session_order -
-                                b.interview_session.session_order,
-                            )
-                            ?.map((ses, indOpt) => {
+                          {selectedTask.session_ids &&
+                            selectedTask.session_ids?.map((ses, indOpt) => {
                               return (
                                 <SessionCard
                                   indOpt={indOpt}
-                                  ses={ses}
+                                  ses={ses as meetingCardType}
                                   key={indOpt}
+                                  sessionList={
+                                    selectedTask.session_ids as any[]
+                                  }
                                 />
                               );
                             })}
                         </Stack>
                       </ShowCode.When>
                     </ShowCode>
+                  }
+                  isSoundTaskVisible={
+                    item.progress_type === 'call_completed' &&
+                    Boolean(item.jsonb_data?.transcript.length)
+                  }
+                  slotSoundTask={
+                    <ShowCode.When
+                      isTrue={
+                        item.progress_type === 'call_completed' &&
+                        Boolean(item.jsonb_data?.transcript.length)
+                      }
+                    >
+                      <PhoneTranscript
+                        audio_url={
+                          'https://dxc03zgurdly9.cloudfront.net/b0deaa1feac5bd2a81e0f96bbe3eb79b/recording.wav'
+                        }
+                        transcript={
+                          item.jsonb_data?.transcript as {
+                            id: string;
+                            message: string;
+                          }[]
+                        }
+                      />
+                    </ShowCode.When>
                   }
                 />
               );

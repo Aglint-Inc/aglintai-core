@@ -1,22 +1,46 @@
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import React from 'react';
 
 import { AvailableOptionCardDate, OptionAvailable } from '@/devlink2';
 import { AvatarWithName } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
+import { DatabaseEnums } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { useScheduleSession } from '..';
+
+export type meetingCardType = {
+  id: string;
+  name: string;
+  interview_meeting: {
+    id: string;
+    start_time: string;
+    end_time: string;
+    meeting_link: string;
+  };
+  session_order: number;
+  users: {
+    email: string;
+    user_id: string;
+    last_name: string;
+    first_name: string;
+    meeting_id: string;
+    session_id: string;
+    profile_image: string | null;
+    training_type: DatabaseEnums['interviewer_type'];
+    interviewer_type: DatabaseEnums['status_training'];
+  }[];
+};
 
 function SessionCard({
   indOpt,
   ses,
+  sessionList
 }: {
   indOpt: number;
-  ses: ReturnType<typeof useScheduleSession>['data'][number];
+  ses: meetingCardType;
+  sessionList:any[]
 }) {
-  const { data: sessionList } = useScheduleSession();
+ 
 
   // const timeZone = dayjs.tz.guess();
 
@@ -41,17 +65,13 @@ function SessionCard({
       textDate={dayjs(ses.interview_meeting?.start_time).format('DD')}
       textDay={dayjs(ses.interview_meeting?.start_time).format('dddd')}
       textMonth={dayjs(ses.interview_meeting?.start_time).format('MMM')}
-      key={ses.interview_session.id}
       slotOptionAvailable={
         <>
           <OptionAvailable
             textTime={`${dayjs(ses.interview_meeting?.start_time).format(
               'hh:mm A',
             )} - ${dayjs(ses.interview_meeting?.end_time).format('hh:mm A')} (${timezone})`}
-            textTitle={ses.interview_session.name}
-            textBreakTime={
-              `${ses.interview_session.break_duration} Minutes` || ''
-            }
+            textTitle={ses.name}
             isTitleVisible={true}
             isBreakVisible={false}
             slotMember={
@@ -62,31 +82,15 @@ function SessionCard({
                   gap: 2.5,
                 }}
               >
-                {ses.interview_session_relation?.map((int) => {
+                {ses.users?.map((user) => {
                   return (
                     <AvatarWithName
-                      key={
-                        int.interview_module_relation?.recruiter_user.first_name
-                      }
-                      textName={
-                        int.interview_module_relation?.recruiter_user
-                          .first_name +
-                        ' ' +
-                        (int.interview_module_relation?.recruiter_user
-                          .last_name ?? '')
-                      }
+                      key={user.first_name}
+                      textName={getFullName(user.first_name, user.last_name)}
                       slotAvatar={
                         <MuiAvatar
-                          level={getFullName(
-                            int.interview_module_relation?.recruiter_user
-                              .first_name,
-                            int.interview_module_relation?.recruiter_user
-                              .last_name,
-                          )}
-                          src={
-                            int.interview_module_relation?.recruiter_user
-                              ?.profile_image
-                          }
+                          level={getFullName(user.first_name, user.last_name)}
+                          src={user?.profile_image}
                           variant={'circular'}
                           width={'24px'}
                           height={'24px'}

@@ -17,6 +17,8 @@ export function TaskProgress({
   slotMailContent,
   isMailContentVisible = true,
   isLineVisible = true,
+  slotSoundTask,
+  isSoundTaskVisible = false,
 }) {
   return (
     <_Component tag="div">
@@ -60,6 +62,9 @@ export function TaskProgress({
                     </>
                   )}
                 </_Builtin.Block>
+              ) : null}
+              {isSoundTaskVisible ? (
+                <_Builtin.Block tag="div">{slotSoundTask}</_Builtin.Block>
               ) : null}
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-sm", "text-grey_600")}
