@@ -1,7 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { getInterviewTrainingProgress } from '@/src/queries/scheduling-dashboard';
 import { CustomDatabase } from '@/src/types/customSchema';
 
 const supabase = createClient<CustomDatabase>(
@@ -9,23 +8,24 @@ const supabase = createClient<CustomDatabase>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
-export type ApiResponseInterviewTrainingProgress = Awaited<
-  ReturnType<typeof getInterviewTrainingProgress>
->;
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const { recruiter_id } = req.body;
-    if (recruiter_id) {
-      const resTrainingProgress = await getInterviewTrainingProgress({
-        recruiter_id,
-        supabase,
-      });
+    const { user_id } = req.body;
+    if (user_id) {
+      const { data: interviewer } = await supabase
+        .from('recruiter_user')
+        .select()
+        .eq('user_id', user_id)
+        .single();
+      const { data } = await supabase
+        .from('interview_module_relation')
+        .select('* , interview_module(*)')
+        .eq('user_id', user_id);
 
-      return res.send(resTrainingProgress);
+      return res.send({ modules: data, interviewer });
     } else {
       return res.send([]); // do error handling
     }

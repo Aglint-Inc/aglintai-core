@@ -100,12 +100,19 @@ export const fetchInterviewModuleByIdApi = async (
   if (errorRel) {
     throw new Error(errorRel.message);
   }
-
-  return {
+  const response = {
     ...dataModule[0],
     relations: dataRel,
     settings: dataModule[0].settings || initialEditModule.settings, //for some columns setting is null thats why we are adding this
   } as ModuleType;
+
+  return {
+    data: response,
+    error: errorModule?.message || errorRel?.message,
+  } as {
+    data: ModuleType | null;
+    error: string | null;
+  };
 };
 
 export const fetchMembers = async (rec_id: string) => {

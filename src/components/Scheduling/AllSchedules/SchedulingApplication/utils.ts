@@ -17,6 +17,7 @@ import {
   InterviewSessionTypeDB,
   JobApplcationDB,
   RecruiterUserType,
+  SupabaseType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -913,9 +914,11 @@ export const createFilterJson = async ({
 export const fetchInterviewSessionTask = async ({
   job_id,
   application_id,
+  supabase,
 }: {
   job_id: string;
   application_id: string;
+  supabase: SupabaseType;
 }) => {
   try {
     const { data: schedule, error } = await supabase
@@ -979,7 +982,7 @@ export const fetchInterviewSessionTask = async ({
         ) as InterviewSessionTypeDB[];
     }
   } catch (e) {
-    toast.error(e.message);
+    console.log(e.message);
   }
 };
 
@@ -1101,7 +1104,7 @@ export const createTask = async ({
     .from('new_tasks')
     .insert({
       name: `Schedule interview for ${candidate_name} - ${selectedSessions.map((ses) => ses.name).join(' , ')}`,
-            //`Schedule interview for ${)} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`
+      //`Schedule interview for ${)} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`
       application_id,
       created_by: rec_user_id,
       type: 'schedule',

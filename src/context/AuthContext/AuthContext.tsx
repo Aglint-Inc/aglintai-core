@@ -208,9 +208,11 @@ const AuthProvider = ({ children }) => {
     details: Partial<RecruiterUserType>,
     id?: string,
   ): Promise<boolean> => {
+    const detailsAll = { ...details };
+    delete detailsAll['role'];
     const { data, error } = await supabase
       .from('recruiter_user')
-      .update(details)
+      .update(detailsAll)
       .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {

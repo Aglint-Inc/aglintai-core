@@ -9,6 +9,10 @@ const supabase = createClient<CustomDatabase>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+export type ApiResponseInterviewModuleById = Awaited<
+  ReturnType<typeof fetchInterviewModuleByIdApi>
+>;
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -16,10 +20,19 @@ export default async function handler(
   if (req.method === 'POST') {
     const { module_id } = req.body;
     if (module_id) {
-      const resIntMod = await fetchInterviewModuleByIdApi(module_id, supabase);
-      return res.send(resIntMod);
+      const { data, error } = await fetchInterviewModuleByIdApi(
+        module_id,
+        supabase,
+      );
+      return res.send({
+        data: data,
+        error: error,
+      } as ApiResponseInterviewModuleById);
     } else {
-      return res.send([]); // do error handling
+      return res.send({
+        data: null,
+        error: 'missing requierd fields',
+      } as ApiResponseInterviewModuleById);
     }
   }
   res.setHeader('Allow', 'POST');

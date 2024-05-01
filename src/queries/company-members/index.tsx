@@ -1,7 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { ApiResponseFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 import { companyMembersKeys } from './keys';
 
@@ -31,13 +32,10 @@ export const getCompanyMembers = async ({
 }: {
   recruiter_id: string;
 }) => {
-  const { data, error } = await supabase
-    .from('recruiter_relation')
-    .select(
-      `recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery})`,
-    )
-    .eq('recruiter_id', recruiter_id)
-    .eq('recruiter_user.join_status', 'joined');
-  if (error) throw new Error(error.message);
-  return data.map(({ recruiter_user }) => recruiter_user).filter((v) => v);
+  const res = await axios.post('/api/scheduling/fetchUserDetails', {
+    recruiter_id,
+  });
+  const allUsers =
+    (res.data as unknown as Awaited<ApiResponseFetchUserDetails>) || [];
+  return allUsers;
 };
