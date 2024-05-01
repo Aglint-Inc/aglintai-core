@@ -63,6 +63,24 @@
   opacity: 0.8;
 }
 
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
 .text-yellow-800 {
   color: #703815;
 }
@@ -103,6 +121,10 @@
 
 .text-blue-500.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.text-blue-500.text-capital {
+  text-transform: uppercase;
 }
 
 .button_primary {
