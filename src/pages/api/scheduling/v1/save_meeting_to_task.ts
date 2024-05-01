@@ -28,18 +28,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
 
-    const session_details = supabaseWrap(
+    const meeting_details = supabaseWrap(
       await supabaseAdmin
-        .from('interview_session')
-        .select('*,interview_meeting(*)')
-        .in('id', req_body.session_ids),
+        .from('meeting_details')
+        .select(
+          'id,session_name,start_time,end_time,meeting_link,session_id,session_order',
+        )
+        .in('session_id', req_body.session_ids),
     );
+    const meeting_users = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_interviewers')
+        .select('*')
+        .in('session_id', req_body.session_ids),
+    );
+
+    const meetings = meeting_details
+      .map((m) => {
+        return {
+          ...m,
+          meeting_users: meeting_users.filter(
+            (u) => u.session_id === m.session_id,
+          ),
+        };
+      })
+      .sort((m1, m2) => m1.session_order - m2.session_order);
 
     supabaseWrap(
       await supabaseAdmin
         .from('new_tasks')
         .update({
-          session_ids: session_details,
+          session_ids: meetings,
         })
         .eq('id', req_body.task_id),
     );
