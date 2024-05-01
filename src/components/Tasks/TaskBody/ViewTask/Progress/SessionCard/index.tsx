@@ -7,7 +7,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { DatabaseEnums } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 
-
 export type meetingCardType = {
   id: string;
   name: string;
@@ -34,14 +33,12 @@ export type meetingCardType = {
 function SessionCard({
   indOpt,
   ses,
-  sessionList
+  sessionList,
 }: {
   indOpt: number;
   ses: meetingCardType;
-  sessionList:any[]
+  sessionList: meetingCardType[];
 }) {
- 
-
   // const timeZone = dayjs.tz.guess();
 
   const localTime = new Date().toTimeString();
@@ -53,6 +50,7 @@ function SessionCard({
     .split(' ')
     .map((ele) => ele[0])
     .join('');
+
   return (
     <AvailableOptionCardDate
       isDateWrapVisible={
@@ -103,16 +101,6 @@ function SessionCard({
               </Stack>
             }
           />
-          {/* {ses.interview_session.break_duration > 0 && (
-            <OptionAvailable
-              textTime={''}
-              textBreakTime={
-                `${ses.interview_session.break_duration} Minutes` || ''
-              }
-              isTitleVisible={false}
-              isBreakVisible={true}
-            />
-          )} */}
         </>
       }
     />

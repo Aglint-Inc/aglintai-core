@@ -121,6 +121,7 @@ function TriggerTime({
               if (onChange) {
                 onChange(dayjs().add(5, 'minute').toString());
               }
+              handleClose();
             },
           }}
           isInDateRangeActive={!isImmediate}

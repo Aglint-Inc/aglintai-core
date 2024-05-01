@@ -32,6 +32,8 @@ function SubTaskProgress() {
 
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
   const candidateDetails = selectedTask?.applications?.candidates;
+  const { data: sessionList } = useSessionsList();
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={!isFetchedAfterMount}>
@@ -183,19 +185,20 @@ function SubTaskProgress() {
                       </ShowCode.When>
 
                       <ShowCode.When
-                        isTrue={item.progress_type === 'interview_schedule'}
+                        isTrue={
+                          item.progress_type === 'interview_schedule' &&
+                          !!sessionList.length
+                        }
                       >
                         <Stack direction={'column'} spacing={3} width={'100%'}>
-                          {selectedTask.session_ids &&
-                            selectedTask.session_ids?.map((ses, indOpt) => {
+                          {sessionList &&
+                            sessionList?.map((ses, indOpt) => {
                               return (
                                 <SessionCard
                                   indOpt={indOpt}
                                   ses={ses as meetingCardType}
                                   key={indOpt}
-                                  sessionList={
-                                    selectedTask.session_ids as any[]
-                                  }
+                                  sessionList={sessionList}
                                 />
                               );
                             })}
@@ -299,4 +302,32 @@ async function getTaskProgress(taskId: string) {
     .eq('task_id', taskId);
 
   return data as TasksAgentContextType['taskProgress'];
+}
+
+// progress list
+export const useSessionsList = () => {
+  const route = useRouter();
+  let taskId = route.query.task_id ? (route.query.task_id as string) : null;
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ['get_Sessions_List'],
+    queryFn: () => getSessionsList(taskId),
+    refetchInterval: 1000,
+    enabled: true,
+  });
+  const refetch = () =>
+    queryClient.invalidateQueries({
+      queryKey: ['get_Sessions_List'],
+    });
+  return { ...query, refetch };
+};
+
+async function getSessionsList(taskId: string) {
+  const { data } = await supabase
+    .from('new_tasks')
+    .select('session_ids')
+    .eq('id', taskId)
+    .single();
+
+  return data.session_ids as meetingCardType[];
 }
