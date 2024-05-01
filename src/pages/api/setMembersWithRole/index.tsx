@@ -3,10 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { CustomDatabase, DatabaseTableUpdate } from '@/src/types/customSchema';
 
-import {
-  server_checkUserRolePermissions,
-  server_getUserRoleAndId,
-} from '../reset_password';
+import { server_getUserRoleAndId } from '../reset_password';
 import { API_setMembersWithRole } from './type';
 
 const supabase = createClient<CustomDatabase>(
@@ -42,14 +39,7 @@ export default async function handler(
 
       const userData = await setMembers(data);
 
-      if (
-        userData &&
-        role &&
-        server_checkUserRolePermissions({
-          getVal: (name) => req.cookies[String(name)],
-          roles: ['admin'],
-        })
-      ) {
+      if (userData && role && updater.role === 'admin') {
         role = await setRelation({
           user_id: userData.user_id,
           recruiter_id,

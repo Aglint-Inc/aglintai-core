@@ -71,6 +71,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
 
+    // save snapshot of interview meeting details to tasks
+    if (req_body.task_id) {
+      const session_ids: string[] = req_body.candidate_plan.reduce(
+        (s_ids, curr) => {
+          s_ids = [...s_ids, ...curr.sessions.map((s) => s.session_id)];
+          return s_ids;
+        },
+        [],
+      );
+
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/save_meeting_to_task`,
+        {
+          session_ids: session_ids,
+          task_id: req_body.task_id,
+        },
+      );
+    }
+
     if (
       req_body.task_id &&
       req_body.candidate_id &&

@@ -617,6 +617,14 @@ export function JobDashboard({
           <_Builtin.Block tag="div">
             {"Utilize AI for seamless execution of all job tasks."}
           </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1631")}
+            tag="div"
+          >
+            <_Builtin.Block className={_utils.cx(_styles, "text-sm")} tag="div">
+              {"Beta"}
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Grid
           id={_utils.cx(
