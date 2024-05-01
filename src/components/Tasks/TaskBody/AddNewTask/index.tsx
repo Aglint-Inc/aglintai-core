@@ -19,6 +19,10 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
+import {
+  ApiRequestInterviewSessionTask,
+  ApiResponseInterviewSessionTask,
+} from '@/src/pages/api/scheduling/fetch_interview_session_task';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -188,12 +192,14 @@ function AddNewTask() {
   }
 
   async function getSessionList() {
-    const data = await fetchInterviewSessionTask({
+    const {
+      data: { data },
+    } = await axios.post('/api/scheduling/fetch_interview_session_task', {
       application_id: selectedCandidate.id,
       job_id: selectedJob.id,
-    });
+    } as ApiRequestInterviewSessionTask);
     setSessionList(data);
-    return data;
+    return data as ApiResponseInterviewSessionTask;
   }
   useEffect(() => {
     if (selectedCandidate) {
