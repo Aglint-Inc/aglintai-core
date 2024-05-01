@@ -56,7 +56,7 @@ function SchedulingMainComp() {
   const isSubNavDisabled =
     recruiterUser.role === 'admin' ||
     recruiterUser.role === 'recruiter' ||
-    recruiterUser.role === 'scheduler';
+    recruiterUser.role === 'recruiting_coordinator';
 
   return (
     <>
@@ -100,7 +100,7 @@ function SchedulingMainComp() {
         slotTopbarRight={
           <>
             {tab === 'interviewtypes' &&
-              isAllowed(['admin', 'recruiter', 'scheduler']) && (
+              isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) && (
                 <Stack direction={'row'} alignItems={'center'} spacing={2}>
                   <ButtonPrimaryDefaultRegular
                     startIconSlot={
@@ -167,11 +167,11 @@ const BodyComp = ({ setSaving }) => {
   return (
     <>
       {tab === 'candidates' ? (
-        allowAction(<AllSchedules />, ['admin', 'recruiter', 'scheduler'])
+        allowAction(<AllSchedules />, ['admin', 'recruiter', 'recruiting_coordinator'])
       ) : tab === 'myschedules' ? (
         <MySchedule />
       ) : tab === 'interviewtypes' ? (
-        isAllowed(['admin', 'recruiter', 'scheduler']) ? (
+        isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) ? (
           <Modules />
         ) : (
           <InterviewerModule
@@ -180,7 +180,7 @@ const BodyComp = ({ setSaving }) => {
           />
         )
       ) : tab === 'interviewers' ? (
-        allowAction(<InterviewTab />, ['admin', 'recruiter', 'scheduler'])
+        allowAction(<InterviewTab />, ['admin', 'recruiter', 'recruiting_coordinator'])
       ) : tab === 'settings' ? (
         isAllowed(['interviewer']) ? (
           <InterviewerSetting />
@@ -190,14 +190,14 @@ const BodyComp = ({ setSaving }) => {
               updateSettings={updateSettings}
               initialData={recruiter?.scheduling_settings}
             />,
-            ['admin', 'recruiter', 'scheduler'],
+            ['admin', 'recruiter', 'recruiting_coordinator'],
           )
         )
       ) : (
         allowAction(<SchedulingDashboard />, [
           'admin',
           'recruiter',
-          'scheduler',
+          'recruiting_coordinator',
         ])
       )}
     </>

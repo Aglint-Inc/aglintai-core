@@ -1,4 +1,6 @@
-import { DatabaseEnums, DatabaseTable } from './customSchema';
+import { createServerClient } from '@supabase/ssr';
+
+import { CustomDatabase, DatabaseEnums, DatabaseTable } from './customSchema';
 import { Database } from './schema';
 
 export type AddressType = {
@@ -8,6 +10,10 @@ export type AddressType = {
   region: string;
   country: string;
 };
+
+export type SupabaseType = ReturnType<
+  typeof createServerClient<CustomDatabase>
+>;
 
 export type SocialsType = {
   [key: string]: string;

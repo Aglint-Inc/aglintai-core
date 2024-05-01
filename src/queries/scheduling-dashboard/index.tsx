@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { SupabaseType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { interviewPlanRecruiterUserQuery } from '../company-members';
@@ -45,7 +47,15 @@ export const useInterviewTrainingProgress = () => {
     queryKey,
     enabled,
     gcTime,
-    queryFn: () => getInterviewTrainingProgress({ recruiter_id }),
+    queryFn: async () => {
+      const res = await axios.post(
+        '/api/scheduling/get_interview_training_progress',
+        {
+          recruiter_id,
+        },
+      );
+      return res.data;
+    },
   });
 };
 
@@ -143,8 +153,10 @@ const rpc = async <T extends keyof Functions, R = Functions[T]['Returns']>(
 
 export const getInterviewTrainingProgress = async ({
   recruiter_id,
+  supabase,
 }: {
   recruiter_id: string;
+  supabase: SupabaseType;
 }) => {
   const { data, error } = await supabase
     .from('interview_module')
@@ -167,6 +179,7 @@ export const getInterviewTrainingProgress = async ({
       'completed',
     );
   if (error) throw new Error(error.message);
+
   return data
     .reduce(
       (acc, { interview_module_relation, id, name, settings }) => {

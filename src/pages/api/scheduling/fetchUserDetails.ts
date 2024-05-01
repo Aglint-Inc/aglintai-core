@@ -35,12 +35,14 @@ const fetchUsers = async (recruiter_id: string, status: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      'role,recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, email, profile_image, position, schedule_auth)',
+      'role,recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, email, profile_image, position, schedule_auth, scheduling_settings)',
     )
     .eq('recruiter_id', recruiter_id)
     .eq('recruiter_user.join_status', status)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
-      return data.map((item) => ({ ...item.recruiter_user, role: item.role }));
+      return data
+        .filter((item) => item.recruiter_user)
+        .map((item) => ({ ...item.recruiter_user, role: item.role }));
     });
 };

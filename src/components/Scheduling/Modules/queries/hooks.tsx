@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -11,7 +12,6 @@ import { QueryKeysInteviewModules } from './type';
 import {
   addMemberbyUserIds,
   deleteRelationByUserDbDelete,
-  fetchInterviewModuleById,
   fetchInterviewModules,
   fetchModules,
   fetchProgress,
@@ -97,7 +97,13 @@ export const useModuleAndUsers = () => {
     queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
       moduleId: router.query.module_id as string,
     }),
-    queryFn: () => fetchInterviewModuleById(router.query.module_id as string),
+    queryFn: async () => {
+      const res = await axios.post(
+        '/api/scheduling/fetch_interview_module_by_id',
+        { module_id: router.query.module_id },
+      );
+      return res?.data || [];
+    },
     initialData: null,
     enabled: !!router.query.module_id,
     refetchOnWindowFocus: false,
