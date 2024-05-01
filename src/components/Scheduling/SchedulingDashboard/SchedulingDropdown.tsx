@@ -11,13 +11,13 @@ const SchedulingDropdown = <T extends any>({
   onChange: (event: SelectChangeEvent<T>) => void;
 }) => {
   const cards = [
-    { label: 'Past week', value: 'day' },
-    { label: 'Past month', value: 'week' },
-    { label: 'Past year', value: 'month' },
-    { label: 'All time', value: 'year' },
+    { label: 'Past Week', value: 'day' },
+    { label: 'Past Month', value: 'week' },
+    { label: 'Past Year', value: 'month' },
+    { label: 'All Time', value: 'year' },
   ].map(({ label, value }, i) => (
     <MenuItem key={i} value={value}>
-      <Stack>{label}</Stack>
+      <Stack sx={{fontSize:'14px'}}>{label}</Stack>
     </MenuItem>
   ));
   return (
