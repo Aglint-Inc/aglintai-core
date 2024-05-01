@@ -449,7 +449,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         }
       });
     } catch (err) {
-      toast.error('Something went wrong! Please Check Your Network');
+      toast.error('Something went wrong. Please check your network connection.');
     }
   };
 
@@ -523,7 +523,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         });
       }
     } catch (err) {
-      toast.error('Failed to perform the action. Please try again');
+      toast.error('Action failed. Please try again.');
     }
   };
 

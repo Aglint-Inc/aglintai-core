@@ -154,9 +154,9 @@ const Dashboard = () => {
     } else {
       if (loading)
         toast.warning(
-          'Generating profile score criteria. Please wait to publish.',
+          'Generating profile score criteria. Please wait before publishing.',
         );
-      else toast.error('Unable to publish. Please check job details.');
+      else toast.error('Unable to publish. Please verify the job details.');
     }
   };
 

@@ -366,7 +366,7 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
       const jd = await generateJobDescription(jdGenConfig);
       editor.commands.setContent(jd, true, { preserveWhitespace: true });
     } catch {
-      toast.error('Something went wrong! Please try again');
+      toast.error('Something went wrong. Please try again');
     } finally {
       setIsAiGenerating(false);
     }

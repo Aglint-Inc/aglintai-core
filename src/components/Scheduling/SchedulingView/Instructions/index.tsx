@@ -35,7 +35,7 @@ function Instructions({ schedule }: { schedule: TransformSchedule }) {
         refetch();
         toast.success('Instruction updated successfully.');
       } else {
-        toast.warning('Please give instructions.');
+        toast.warning('Please provide instructions.');
       }
     } catch (error) {
       toast.error(error.message);

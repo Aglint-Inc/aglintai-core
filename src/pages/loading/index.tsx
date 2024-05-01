@@ -36,7 +36,7 @@ export default function Loading() {
           await axios.post('/api/supabase/deleteuser', {
             user_id: userDetails?.user?.id,
           });
-          toast.error('Please signup/login with company email.');
+          toast.error('Please signup with company email.');
           await handleLogout();
           return;
         } else {

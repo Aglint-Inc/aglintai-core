@@ -77,7 +77,7 @@ function AppoloSearch() {
         await fetchList(String(router.query.list));
       }
     } catch (e) {
-      toast.error('Something went wrong. Please contact support for help.');
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }

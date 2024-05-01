@@ -75,7 +75,7 @@ const JobPublishButton = () => {
       });
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       axios.post('/api/editjob/publishjob', { job: job });
-      toast.success('Job published successfully');
+      toast.success('Job published successfully.');
       posthog.capture('Publish Job Button Clicked');
     } catch (err) {
       toast.error(API_FAIL_MSG);

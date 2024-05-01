@@ -29,7 +29,7 @@ export const handleUpdatePassword = async (
     toast.error(`Oops! Something went wrong. (${error.message})`);
     return false;
   } else {
-    showToast && toast.success(`Password reset successfully`);
+    showToast && toast.success(`Password reset successfully.`);
     return true;
   }
 };

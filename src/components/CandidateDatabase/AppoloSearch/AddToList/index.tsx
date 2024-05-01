@@ -152,7 +152,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
       if (!oldList.candidates.includes(selectedCandidate.id)) {
         updateListHandler(list);
       } else {
-        toast.error('Candidate already added to this list.');
+        toast.error('The candidate is already on the list.');
       }
     }
   };
