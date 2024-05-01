@@ -446,7 +446,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           rows: tasksReducer.pagination.rows,
         },
         getCount: true,
-        user_id: isAllowed(['admin', 'recruiter', 'scheduler'])
+        user_id: isAllowed(['admin', 'recruiter', 'recruiting_coordinator'])
           ? undefined
           : recruiterUser.user_id,
       }).then((data) => {
