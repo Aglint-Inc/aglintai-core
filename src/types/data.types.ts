@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 
 import { CustomDatabase, DatabaseEnums, DatabaseTable } from './customSchema';
+import { schedulingSettingType } from './scheduleTypes/scheduleSetting';
 import { Database } from './schema';
 
 export type AddressType = {
@@ -161,6 +162,7 @@ export type Summary = {
 type TempRecruiterUser = DatabaseTable['recruiter_user'];
 export interface RecruiterUserType extends TempRecruiterUser {
   role: DatabaseEnums['user_roles'];
+  scheduling_settings: schedulingSettingType;
 }
 // export type RecruiterUserType =
 //   Database['public']['Tables']['recruiter_user']['Row'] & {
