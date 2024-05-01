@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -43,7 +44,6 @@ function InterviewerPage() {
   const router = useRouter();
   const { recruiter, recruiterUser } = useAuthDetails();
   const [openDrawer, setOpenDrawer] = React.useState(false);
-
   const toggleDrawer = () => {
     setOpenDrawer(true);
   };
@@ -79,7 +79,7 @@ function InterviewerPage() {
               <ShowCode.When
                 isTrue={
                   (recruiterUser.role === 'recruiter' ||
-                    recruiterUser.role === 'scheduler') &&
+                    recruiterUser.role === 'recruiting_coordinator') &&
                   data.interviewer.email === recruiter.email
                 }
               >
@@ -145,17 +145,13 @@ export const useImrQuery = () => {
 };
 
 const getInterviewerDetails = async (user_id: string) => {
-  const { data: interviewer } = await supabase
-    .from('recruiter_user')
-    .select()
-    .eq('user_id', user_id)
-    .single();
-  const { data, error } = await supabase
-    .from('interview_module_relation')
-    .select('* , interview_module(*)')
-    .eq('user_id', user_id);
-  if (error) throw Error(error.message);
-  return { modules: data, interviewer };
+  const { data } = await axios.post(
+    '/api/scheduling/get_interviewer_and_modules',
+    {
+      user_id: user_id,
+    },
+  );
+  return data as interviewerDetailsType;
 };
 
 const imrQueryKeys = {

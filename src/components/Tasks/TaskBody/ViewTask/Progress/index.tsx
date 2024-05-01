@@ -61,19 +61,26 @@ function SubTaskProgress() {
               );
 
               // console.log(CandidateCreator);
+              const currentTimeZone = dayjs.tz.guess();
 
-              const time_zone =
-                candidateDetails?.timezone || 'America/Los_Angeles';
-
-              const date = item.title_meta['{date}']
+              // console.log(item.title_meta);
+              const bookingDate = item.title_meta['{booking_date}']
                 ? `<span class="progress_date_section">${dayjs(
-                    item.title_meta['{date}'],
+                    item.title_meta['{booking_date}'],
                   )
-                    .tz(time_zone)
-                    .format('MMM DD')} (${time_zone})</span>`
+                    .tz(candidateDetails?.timezone || currentTimeZone)
+                    .format(
+                      'MMM DD',
+                    )} (${candidateDetails?.timezone || currentTimeZone})</span>`
                 : '';
               const bookingTime = item.title_meta['{booking_time}']
-                ? `<span class="progress_date_section">${dayjs(item.title_meta['{booking_time}']).tz(time_zone).format('MMM DD, hh:mm A')} (${time_zone})</span>`
+                ? `<span class="progress_date_section">${dayjs(
+                    item.title_meta['{booking_time}'],
+                  )
+                    .tz(candidateDetails?.timezone || currentTimeZone)
+                    .format(
+                      'MMM DD, hh:mm A',
+                    )} (${candidateDetails?.timezone || currentTimeZone})</span>`
                 : '';
               const candidateName = item.title_meta['{candidate}']
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
@@ -90,9 +97,8 @@ function SubTaskProgress() {
                           .trim()
                           .replaceAll('Pm', 'PM')
                           .replaceAll('{candidate}', candidateName)
-                          .replaceAll('{booking_date}', date)
+                          .replaceAll('{booking_date}', bookingDate)
                           .replaceAll('{booking_time}', bookingTime),
-                        // .replaceAll('{date}', date),
                       }}
                     ></span>
                   }
@@ -243,13 +249,13 @@ function SubTaskProgress() {
                                   .find((item) => item.id === ele.id);
                                 if (ele.message && ele.message.trim())
                                   return (
-                                    <Stack gap={1} key={i}>
+                                    <Stack width={'100%'} gap={1} key={i}>
                                       <TranscriptCard
                                         isBackgroundActive={
                                           ele.id !== PhoneAgentId
                                         }
                                         slotAgent={
-                                          <Stack width={150}>
+                                          <Stack width={'100%'}>
                                             <ShowCode>
                                               <ShowCode.When
                                                 isTrue={ele.id === PhoneAgentId}
