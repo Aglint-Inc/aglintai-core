@@ -58,7 +58,7 @@ export default async function handler(
     );
     return res.status(status).send('');
   } catch (err) {
-    return res.status(200).send('');
+    return res.status(500).send('');
   }
 }
 

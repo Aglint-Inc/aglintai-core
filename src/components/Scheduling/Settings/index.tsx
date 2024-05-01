@@ -625,7 +625,7 @@ function SchedulingSettings({
                                   } ${eventRef.current.value}`,
                                 );
                               } else {
-                                toast.message('Please select a date');
+                                toast.message('Please select a date.');
                               }
                             },
                           }}

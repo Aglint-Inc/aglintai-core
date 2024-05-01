@@ -69,7 +69,7 @@ const CloseJobPopup = ({ onClose }) => {
       });
       router.replace('/jobs');
     } catch (err) {
-      toast.error('Something went wrong, please try again');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 

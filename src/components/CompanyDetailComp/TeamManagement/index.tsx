@@ -241,7 +241,7 @@ const TeamManagement = () => {
                   editMember={() => setEditMember(member)}
                   removeMember={async () => {
                     if (recruiterUser?.user_id === member.user_id) {
-                      toast.error('Unable to remove the admin account.');
+                      toast.error("Can't remove admin account; it's the primary one.");
                     } else {
                       try {
                         await axios.post('/api/supabase/deleteuser', {

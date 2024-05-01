@@ -96,7 +96,7 @@ const CandidateDashboard = () => {
     });
 
     if (error) {
-      toast.error('Failed to Fetch Details');
+      toast.error('Failed to fetch details. Please try again.');
     } else {
       setDetails(data as any);
       setFilterDetails(data as any);

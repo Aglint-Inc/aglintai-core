@@ -186,11 +186,11 @@ const EditEmailDrawer = ({ templatePath, setTemplatePath }) => {
         })
         .then((res) => {
           if (res.status === 200 && res.data.data === 'Email sent') {
-            toast.success('Mail sent successfully');
+            toast.success('Mail sent successfully.');
           }
         });
     } catch (err) {
-      toast.error('Something went wrong please try again');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 

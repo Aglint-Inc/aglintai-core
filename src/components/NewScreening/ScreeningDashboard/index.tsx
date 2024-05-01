@@ -37,7 +37,7 @@ const Screening = () => {
       if (error) {
         toast.error('Failed to submit');
       } else {
-        toast.success('Screening Created');
+        toast.success('Created screening.');
         setIsPopupOpen(false);
         setInput('');
         setTemplates((prev: any) => {

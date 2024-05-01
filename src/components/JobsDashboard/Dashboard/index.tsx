@@ -154,9 +154,9 @@ const Dashboard = () => {
     } else {
       if (loading)
         toast.warning(
-          'Generating profile score criteria. Please wait to publish.',
+          'Generating profile score criteria. Please wait before publishing.',
         );
-      else toast.error('Unable to publish. Please check job details.');
+      else toast.error('Unable to publish. Please verify the job details.');
     }
   };
 
@@ -492,8 +492,10 @@ const Banners = () => {
   if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Scheduling disabled'}
-        textDesc={'Creare interview plans to enable scheduling for this job.'}
+        textWarningTitle={'Scheduling Disabled for This Job'}
+        textDesc={
+          'Please enable scheduling by creating at least one interview session. This will allow you to schedule interviews for this job.'
+        }
         onClickDismiss={{
           onClick: () =>
             setDismissWarnings((prev) => ({ ...prev, interview_plan: true })),
@@ -504,9 +506,9 @@ const Banners = () => {
   else if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Scheduling disabled'}
+        textWarningTitle={'Scheduling Disabled for This Job'}
         textDesc={
-          'Creare atleast one session to enable scheduling for this job.'
+          'Please enable scheduling by creating at least one interview session. This will allow you to schedule interviews for this job.'
         }
         onClickDismiss={{
           onClick: () =>

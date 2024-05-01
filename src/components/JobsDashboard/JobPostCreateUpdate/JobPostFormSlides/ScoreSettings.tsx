@@ -174,7 +174,7 @@ ${jobForm.formFields.jobDescription}
         s.field.trim().toLowerCase() === newField.value.trim().toLowerCase()
     );
     if (isFeildValExist) {
-      toast.warning(`Field already exist`);
+      toast.warning(`Field already exists.`);
       setNewField(null);
 
       return;
@@ -204,7 +204,7 @@ ${jobForm.formFields.jobDescription}
         it.field.trim().toLowerCase() === editParam.value.trim().toLowerCase()
     );
     if (existedItem) {
-      toast.warning(`Field already exist`);
+      toast.warning(`Field already exists.`);
       setPopUpEl(null);
       return;
     }

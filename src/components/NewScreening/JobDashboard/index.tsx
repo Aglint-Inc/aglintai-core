@@ -55,13 +55,13 @@ const ScreeningDashboardComp = () => {
         .update({ phone_screen_enabled: false })
         .eq('id', job.id);
       if (error) {
-        toast.error('Couldnt Disable Phone Screening');
+        toast.error("Couldn't disable phone screening. Please try again.");
       } else {
-        toast.success('Successfully Updated');
+        toast.success('Updated successfully.');
         isEnable();
       }
     } catch {
-      toast.error('Unable to update Screening Templates');
+      toast.error('Unable to update screening templates. Please try again.');
     }
   };
   const submitScreeningVisibility = async () => {
@@ -71,13 +71,13 @@ const ScreeningDashboardComp = () => {
         .update({ phone_screen_enabled: true })
         .eq('id', job.id);
       if (error) {
-        toast.error('Couldnt Enable Screening');
+        toast.error('Screening enabled successfully.');
       } else {
-        toast.success('Successfully Updated');
+        toast.success('Updated successfully.');
         isEnable();
       }
     } catch {
-      toast.error('Unable to update Screening Templates');
+      toast.error('Unable to update screening templates.');
     }
   };
 
@@ -89,13 +89,13 @@ const ScreeningDashboardComp = () => {
         .eq('id', job.id);
 
       if (error) {
-        toast.error('Error Fetching Data');
+        toast.error('Error fetching data.');
       } else {
         setPhoneScreening(data[0]);
         setLoading(false);
       }
     } catch {
-      toast.error('Failed to Fetch Screening Templates');
+      toast.error('Failed to fetch screening templates.');
     }
   };
 
@@ -107,12 +107,12 @@ const ScreeningDashboardComp = () => {
         .eq('recruiter_id', recruiter_id);
 
       if (error) {
-        toast.error('Error Fetching Screening Templates');
+        toast.error('Error fetching screening templates');
       } else {
         setTemplates(data);
       }
     } catch {
-      toast.error('Failed to Fetch Screening Templates');
+      toast.error('Failed to fetch screening templates');
     }
   };
 
@@ -123,14 +123,14 @@ const ScreeningDashboardComp = () => {
         .update({ screening_template: selectedTemplate })
         .eq('id', job.id);
       if (error) {
-        toast.error('Error Submiitting Template');
+        toast.error('Error submiitting template.');
       } else {
-        toast.success('Successfully Updated');
+        toast.success('Updated successfully.');
         isEnable();
         setIsTemplateOpen(false);
       }
     } catch {
-      toast.error('Unable to update Screening Templates');
+      toast.error('Unable to update screening templates.');
     }
   };
 

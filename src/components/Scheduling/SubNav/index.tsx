@@ -43,7 +43,7 @@ function SubNav() {
       return tab === item.text.replace(' ', '');
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
-      // toast.error("You don't have Access to this Module.");
+      // toast.error("You don't have access to this module.");
       router.replace(`scheduling?tab=myschedules`);
     }
   }, [tab]);
