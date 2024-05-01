@@ -133,7 +133,7 @@ function CreateTask({
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            sessionList={interview_session}
+            sessionList={interview_session as any[]}
             onChange={(sessions: any) => {
               setTask((pre) => {
                 const preTask = { ...pre };

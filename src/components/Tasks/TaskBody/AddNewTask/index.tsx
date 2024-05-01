@@ -467,7 +467,7 @@ function AddNewTask() {
                 <SessionList
                   selectedSession={selectedSession}
                   setSelectedSession={setSelectedSession}
-                  sessionList={sessionList}
+                  sessionList={sessionList as any[]}
                 />
               }
               slotInterviewDate={
