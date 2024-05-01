@@ -32,6 +32,7 @@ const EditMember = ({
   const [form, setForm] = useState<{
     first_name: string;
     last_name: string;
+    linked_in: string;
     interview_location: string;
     employment: employmentTypeEnum;
     designation: string;
@@ -40,6 +41,7 @@ const EditMember = ({
   }>({
     first_name: member.first_name,
     last_name: member.last_name,
+    linked_in: member.linked_in,
     interview_location: member.interview_location,
     employment: member.employment,
     department: member.department,
@@ -58,6 +60,7 @@ const EditMember = ({
   const [formError, setFormError] = useState<{
     first_name: boolean;
     department: boolean;
+    linked_in: boolean;
     interview_location: boolean;
     employment: boolean;
     designation: boolean;
@@ -65,6 +68,7 @@ const EditMember = ({
   }>({
     first_name: false,
     department: false,
+    linked_in: false,
     interview_location: false,
     employment: false,
     designation: false,
@@ -138,12 +142,24 @@ const EditMember = ({
                   }}
                 />
               </Stack>
-
+              <CustomTextField
+                value={form.linked_in ? form.linked_in : ''}
+                name='LinkedIn'
+                placeholder='URL'
+                label='LinkedIn'
+                error={formError.linked_in}
+                onFocus={() => {
+                  setFormError({ ...formError, linked_in: false });
+                }}
+                onChange={(e) => {
+                  setForm({ ...form, linked_in: e.target.value.trim() });
+                }}
+              />
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
                 <CustomTextField
                   value={form.designation ? form.designation : ''}
-                  placeholder='Tittle'
-                  label='Tittle'
+                  placeholder='Title'
+                  label='Title'
                   error={formError.designation}
                   onFocus={() => {
                     setFormError({ ...formError, designation: false });
@@ -300,6 +316,7 @@ const EditMember = ({
                         first_name: form.first_name,
                         last_name: form.last_name,
                         interview_location: form.interview_location,
+                        linked_in: form.linked_in,
                         employment: form.employment,
                         department: form.department,
                         position: form.designation,
@@ -330,6 +347,7 @@ const EditMember = ({
                   last_name: null,
                   department: null,
                   employment: null,
+                  linked_in: null,
                   interview_location: null,
                   designation: null,
                   role: 'recruiter',
