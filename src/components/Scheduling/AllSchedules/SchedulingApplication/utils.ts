@@ -1070,6 +1070,23 @@ export const agentTrigger = async ({
   }
 };
 
+const getCandidateTimezone = async (location, candidate_id) => {
+  const resGeoCode = await geoCodeLocation(location);
+  if (resGeoCode) {
+    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
+    if (resTimezone) {
+      const { data } = await supabase
+        .from('candidates')
+        .update({
+          timezone: resTimezone,
+        })
+        .eq('id', candidate_id)
+        .select();
+      console.log(data);
+    }
+  }
+};
+
 export const createTask = async ({
   selectedSessions,
   application_id,
@@ -1114,7 +1131,20 @@ export const createTask = async ({
       start_date: new Date(),
       assignee: [assignee],
       filter_id: filter_id,
-      session_ids: selectedSessions,
+      session_ids: selectedSessions.map((ses) => {
+        return {
+          id: ses.id,
+          name: ses.name,
+          interview_meeting: {
+            id: ses.interview_meeting.id,
+            start_time: ses.interview_meeting.start_time,
+            end_time: ses.interview_meeting.end_time,
+            meeting_link: ses.interview_meeting.meeting_link,
+          },
+          session_order: ses.session_order,
+          users: [],
+        };
+      }),
       trigger_count: 1,
     } as any)
     .select()
@@ -1140,23 +1170,6 @@ export const createTask = async ({
   console.log(`Create task ${task.id}`);
 
   return task;
-};
-
-const getCandidateTimezone = async (location, candidate_id) => {
-  const resGeoCode = await geoCodeLocation(location);
-  if (resGeoCode) {
-    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
-    if (resTimezone) {
-      const { data } = await supabase
-        .from('candidates')
-        .update({
-          timezone: resTimezone,
-        })
-        .eq('id', candidate_id)
-        .select();
-      console.log(data);
-    }
-  }
 };
 
 export const getTimeZoneBrowser = () => {
