@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
@@ -17,6 +18,10 @@ import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import {
+  ApiRequestInterviewSessionTask,
+  ApiResponseInterviewSessionTask,
+} from '@/src/pages/api/scheduling/fetch_interview_session_task';
 import {
   CustomDatabase,
   DatabaseEnums,
@@ -64,12 +69,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const [selectedStatus, setSelectedStatus] =
     useState<DatabaseEnums['task_status']>(null);
   async function getSessionList() {
-    const data = await fetchInterviewSessionTask({
-      application_id: task?.application_id,
-      job_id: task.applications?.job_id,
-    });
+    const {
+      data: { data },
+    } = await axios.post('/api/scheduling/fetch_interview_session_task', {
+      application_id: task.application_id,
+      job_id: task.applications.job_id,
+    } as ApiRequestInterviewSessionTask);
     setSessionList(data);
-    return data;
+    return data as ApiResponseInterviewSessionTask;
   }
   useEffect(() => {
     if (task) {
