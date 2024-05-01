@@ -1,6 +1,7 @@
 export type API_get_last_login = {
   request: {
     ids: string[];
+    recruiter_id: string;
   };
   response:
     | {

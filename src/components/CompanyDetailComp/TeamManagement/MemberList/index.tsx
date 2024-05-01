@@ -39,7 +39,6 @@ const Member = ({
   };
   const [openForDelete, setOpenForDelete] = useState(false);
   const [openForCancel, setOpenForCancel] = useState(false);
-
   const { data: memDetails } = useInterviewerList();
   const membersDetails = useMemo(() => {
     const temp: {
@@ -100,8 +99,7 @@ const Member = ({
             : true
         }
         isResetPasswordVisible={
-          true
-          // member.role === 'admin' || member.join_status !== 'invited'
+          member.role !== 'admin' && member.join_status !== 'invited'
         }
         onClickActive={{
           onClick: () => updateMember({ ...member, is_suspended: false }),

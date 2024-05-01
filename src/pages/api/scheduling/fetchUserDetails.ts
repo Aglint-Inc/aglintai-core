@@ -19,18 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { recruiter_id, status = 'joined' } =
       req.body as BodyParamsFetchUserDetails;
-    const { data, error } = await supabase
-      .from('recruiter_relation')
-      .select()
-      .eq('recruiter_id', recruiter_id);
-    if (!error && data.length) {
-      const userIds = data.map((item) => item.user_id);
-      const resUsers = await fetchUsers(userIds, status);
-      if (resUsers.data) {
-        return res.status(200).json(resUsers.data);
-      }
-    } else {
-      return res.status(200).json([]);
+
+    const resUsers = await fetchUsers(recruiter_id, status);
+    if (resUsers.length) {
+      return res.status(200).json(resUsers);
     }
   } catch (error) {
     res.status(400).send(error.message);
@@ -39,14 +31,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const fetchUsers = async (user_ids: string[], status: string) => {
-  const { data: users, error: userError } = await supabase
-    .from('recruiter_user')
+const fetchUsers = async (recruiter_id: string, status: string) => {
+  return supabase
+    .from('recruiter_relation')
     .select(
-      'user_id, first_name, last_name, email, profile_image, position, schedule_auth, role',
+      'role,recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, email, profile_image, position, schedule_auth)',
     )
-    .in('user_id', user_ids)
-    .eq('join_status', status);
-
-  return { data: users, error: userError };
+    .eq('recruiter_id', recruiter_id)
+    .eq('recruiter_user.join_status', status)
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data.map((item) => ({ ...item.recruiter_user, role: item.role }));
+    });
 };

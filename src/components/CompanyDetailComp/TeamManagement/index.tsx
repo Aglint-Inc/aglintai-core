@@ -248,7 +248,9 @@ const TeamManagement = () => {
                           user_id: member.user_id,
                         });
                       } catch (error) {
-                        toast.error("This member is tied to an active schedule, so removal is unavailable until it's finished.");
+                        toast.error(
+                          "This member is tied to an active schedule, so removal is unavailable until it's finished.",
+                        );
                         return null;
                       }
                       setMembers((members) =>
@@ -348,11 +350,14 @@ const TeamManagement = () => {
 export default TeamManagement;
 
 const useTeamMembers = () => {
-  const { members } = useAuthDetails();
+  const { members, recruiter } = useAuthDetails();
   return useQuery({
     queryKey: ['TeamMembers'],
     queryFn: () => {
-      return getLastLogins(members.map((item) => item.user_id)).then((data) => {
+      return getLastLogins(
+        members.map((item) => item.user_id),
+        recruiter.id,
+      ).then((data) => {
         return members.map((member) => {
           return { ...member, last_login: data[member.user_id] };
         });
@@ -366,8 +371,8 @@ const useTeamMembers = () => {
   });
 };
 
-const getLastLogins = (ids: string[]) => {
-  const body: API_get_last_login['request'] = { ids };
+const getLastLogins = (ids: string[], recruiter_id: string) => {
+  const body: API_get_last_login['request'] = { ids, recruiter_id };
   return axios
     .post<API_get_last_login['response']>('/api/get_last_login', body)
     .then(({ data: { data, error } }) => {

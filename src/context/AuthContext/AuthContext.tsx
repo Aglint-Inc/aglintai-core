@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
-import { datacatalog_v1beta1 } from 'googleapis';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
@@ -16,6 +16,7 @@ import {
 } from 'react';
 
 import { LoaderSvg } from '@/devlink';
+import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import {
   RecruiterRelationsType,
   RecruiterType,
@@ -108,22 +109,7 @@ const AuthProvider = ({ children }) => {
   const [members, setMembers] = useState<RecruiterUserType[]>([]);
 
   const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
-    const { data, error } = await supabase
-      .from('recruiter_relation')
-      .select()
-      .eq('recruiter_id', recruiter_id);
-    if (!error && data.length) {
-      const userIds = data.map((item) => item.user_id);
-      const { data: users, error: userError } = await supabase
-        .from('recruiter_user')
-        .select()
-        .in('user_id', userIds);
-
-      if (!userError && users.length) {
-        setMembers(users as RecruiterUserType[]);
-      }
-    }
-    return [];
+    setMembers(await getMembers(recruiter_id));
   };
 
   async function getSupabaseSession() {
@@ -152,54 +138,47 @@ const AuthProvider = ({ children }) => {
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    const { data: recruiterUser, error: errorUser } = await supabase
-      .from('recruiter_user')
-      .select('*')
-      .eq('user_id', userDetails.user.id);
-    if (!errorUser && recruiterUser.length > 0) {
-      if (recruiterUser[0].is_suspended) {
-        toast.error('Your account is suspended.');
-        return setTimeout(() => {
-          handleLogout();
-        }, 300);
-      }
-      setRecruiterUser(recruiterUser[0] as RecruiterUserType);
-      (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
+    // const { data: recruiterUser, error: errorUser } = await supabase
+    //   .from('recruiter_user')
+    //   .select('*')
+    //   .eq('user_id', userDetails.user.id);
+    // if (!errorUser && recruiterUser.length > 0) {
+    //   if (recruiterUser[0].is_suspended) {
+    //     toast.error('Your account is suspended.');
+    //     return setTimeout(() => {
+    //       handleLogout();
+    //     }, 300);
+    //   }
+    const { data: recruiterRel, error: errorRel } = await supabase
+      .from('recruiter_relation')
+      .select(
+        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+      )
+      .match({ user_id: userDetails.user.id, is_active: true })
+      .single();
+
+    if (!errorRel) {
+      posthog.identify(userDetails.user.email, {
+        Email: userDetails.user.email,
+        CompanyId: recruiterRel.recruiter.id,
+      });
+      const recruiterUser = recruiterRel.recruiter_user;
+      (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
-      const { data: recruiterRel, error: errorRel } = await supabase
-        .from('recruiter_relation')
-        .select('* , recruiter(*)')
-        .match({ user_id: userDetails.user.id, is_active: true });
-
-      if (!errorRel && recruiterRel.length > 0) {
-        posthog.identify(userDetails.user.email, {
-          Email: userDetails.user.email,
-          CompanyId: recruiterRel[0].recruiter.id,
-        });
-        // posthog.setPersonPropertiesForFlags({
-        //   CompanyId: recruiterRel[0].recruiter.id,
-        // });
-        // console.log({ cId: recruiterRel[0].recruiter.id });
-
-        setRecruiter({
-          ...recruiterRel[0].recruiter,
-          socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
-        });
-        if (
-          recruiterUser[0].role === 'admin' ||
-          recruiterUser[0].role === 'recruiter'
-        ) {
-          await getMembersFromDB(
-            recruiterRel[0].recruiter.id,
-            userDetails.user.id,
-          );
-        }
-      } else {
-        toast.error('Something went wrong! Please try logging in again.');
+      setRecruiterUser({ ...recruiterUser, role: recruiterRel.role });
+      setRecruiter({
+        ...recruiterRel.recruiter,
+        socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
+      });
+      if (recruiterRel.role === 'admin' || recruiterRel.role === 'recruiter') {
+        await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
       }
     } else {
       toast.error('Something went wrong! Please try logging in again.');
     }
+    // } else {
+    //   toast.error('Something went wrong! Please try logging in again.');
+    // }
   };
 
   const handleLogout = async () => {
@@ -425,5 +404,14 @@ const updateMember = ({
         throw new Error(error.message);
       }
       return data;
+    });
+};
+
+const getMembers = (id: string) => {
+  return axios
+    .post<API_getMembersWithRole['response']>('/api/getMembersWithRole', { id })
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.members;
     });
 };
