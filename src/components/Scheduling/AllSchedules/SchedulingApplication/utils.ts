@@ -1100,7 +1100,8 @@ export const createTask = async ({
   const { data: task, error: errorTasks } = await supabase
     .from('new_tasks')
     .insert({
-      name: `Schedule interview for ${selectedSessions.map((ses) => ses.name).join(' , ')} via ${type == 'email_agent' ? 'email' : 'phone'}`,
+      name: `Schedule interview for ${candidate_name} - ${selectedSessions.map((ses) => ses.name).join(' , ')}`,
+            //`Schedule interview for ${)} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`
       application_id,
       created_by: rec_user_id,
       type: 'schedule',
