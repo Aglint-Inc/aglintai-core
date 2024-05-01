@@ -1012,7 +1012,7 @@ export const agentTrigger = async ({
     type,
     candidate_name,
     rec_user_email,
-    rec_user_phone,
+    rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
   const candidate = sessionsWithPlan.application.candidates;
@@ -1173,12 +1173,9 @@ export const getTimeZoneBrowser = () => {
   return timezone;
 };
 
-export function formatPhoneNumber(phoneNumber) {
-  // Remove all non-numeric characters from the phone number
-  const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+function formatPhoneNumber(phoneNumber) {
+  // Remove all non-numeric characters except '+'
+  const numericPhoneNumber = phoneNumber.replace(/[^\d+]/g, '');
 
-  // Prepend the desired prefix
-  const formattedPhoneNumber = '+1' + numericPhoneNumber;
-
-  return formattedPhoneNumber;
+  return numericPhoneNumber;
 }
