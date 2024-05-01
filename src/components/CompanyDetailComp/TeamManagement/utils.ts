@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { DatabaseEnums } from '@/src/types/customSchema';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { supabase } from '@/src/utils/supabase/client';
@@ -30,16 +31,18 @@ export const inviteUserApi = (
     role: string;
     scheduling_settings: schedulingSettingType;
   },
-  id: string,
-  recruiter_user: {
-    name: string;
-    email: string;
-  },
+  // id: string,
+  recruiter_id: string,
+  // recruiter_user: {
+  //   name: string;
+  //   email: string;
+  // },
 ) => {
   const res = axios.post<InviteUserAPIType['out']>('/api/invite_user', {
     users: [form],
-    id: id,
-    recruiter_user: recruiter_user,
+    // id: id,
+    recruiter_id,
+    // recruiter_user: recruiter_user,
   });
 
   return res;
@@ -70,14 +73,15 @@ export type InviteUserAPIType = {
       interview_location: string;
       employment: employmentTypeEnum;
       department: string;
-      role: string;
+      role: DatabaseEnums['user_roles'];
       scheduling_settings: schedulingSettingType;
     }[];
     id: string;
-    recruiter_user: {
-      name: string;
-      email: string;
-    };
+    recruiter_id: string;
+    // recruiter_user: {
+    //   name: string;
+    //   email: string;
+    // };
   };
   out: {
     created: boolean;

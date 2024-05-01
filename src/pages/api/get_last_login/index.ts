@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { Database } from '@/src/types/schema';
 
+import { server_checkUserRolePermissions } from '../reset_password';
 import { API_get_last_login } from './types';
 
 const supabase = createClient<Database>(
@@ -26,10 +27,9 @@ export default async function handler(
           );
       }
 
-      const isAllowed = await checkPermissions({
+      const isAllowed = await server_checkUserRolePermissions({
         getVal: (name) => req.cookies[String(name)],
         roles: ['admin'],
-        recruiter_id,
       });
       if (isAllowed) {
         const last_login_data = await Promise.all(
@@ -60,60 +60,54 @@ export default async function handler(
   }
 }
 
-import { createServerClient } from '@supabase/ssr';
-
-import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
-
 const getResponse = (data: Partial<API_get_last_login['response']>) => {
   return { data: false, error: null, ...data };
 };
 
-const checkPermissions = async ({
-  getVal,
-  roles,
-  recruiter_id,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  getVal: (name: string) => string;
-  roles: DatabaseEnums['user_roles'][];
-  recruiter_id: string;
-}) => {
-  try {
-    const supabase = createServerClient<CustomDatabase>(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return getVal(name);
-          },
-          //   set(name: string, value: string, options: { [key: string]: any }) {
-          //     res.setHeader('Set-Cookie', `${name}=${value}; ${options}`);
-          //   },
-          //   remove(name: string) {
-          //     res.setHeader('Set-Cookie', `${name}=; Max-Age=0`);
-          //   },
-        },
-      },
-    );
+// import { createServerClient } from '@supabase/ssr';
 
-    return await supabase.auth.getUser().then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      if (data.user.id) {
-        return supabase
-          .from('recruiter_relation')
-          .select('role')
-          .eq('user_id', data.user.id)
-          .eq('recruiter_id', recruiter_id)
-          .single()
-          .then(({ data, error }) => {
-            if (error) throw new Error(error.message);
-            return roles.includes(data.role);
-          });
-      }
-      throw new Error('Failed to load auth user.');
-    });
-  } catch (error) {
-    throw new Error(error);
-  }
-};
+// import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
+
+// const checkPermissions = async ({
+//   getVal,
+//   roles,
+//   recruiter_id,
+// }: {
+//   // eslint-disable-next-line no-unused-vars
+//   getVal: (name: string) => string;
+//   roles: DatabaseEnums['user_roles'][];
+//   recruiter_id: string;
+// }) => {
+//   try {
+//     const supabase = createServerClient<CustomDatabase>(
+//       process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+//       {
+//         cookies: {
+//           get(name: string) {
+//             return getVal(name);
+//           },
+//         },
+//       },
+//     );
+
+//     return await supabase.auth.getUser().then(({ data, error }) => {
+//       if (error) throw new Error(error.message);
+//       if (data.user.id) {
+//         return supabase
+//           .from('recruiter_relation')
+//           .select('role')
+//           .eq('user_id', data.user.id)
+//           .eq('recruiter_id', recruiter_id)
+//           .single()
+//           .then(({ data, error }) => {
+//             if (error) throw new Error(error.message);
+//             return roles.includes(data.role);
+//           });
+//       }
+//       throw new Error('Failed to load auth user.');
+//     });
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// };

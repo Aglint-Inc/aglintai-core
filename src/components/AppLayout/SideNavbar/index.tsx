@@ -84,7 +84,7 @@ function SideNavbar() {
       roles: [
         'admin',
         'recruiter',
-        'scheduler',
+        'recruiting_coordinator',
         'interviewer',
       ] as Database['public']['Enums']['user_roles'][],
     },
@@ -129,7 +129,7 @@ function SideNavbar() {
       roles: [
         'admin',
         'recruiter',
-        'scheduler',
+        'recruiting_coordinator',
         'interviewer',
       ] as Database['public']['Enums']['user_roles'][],
     },

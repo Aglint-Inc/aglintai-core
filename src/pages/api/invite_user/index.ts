@@ -2,11 +2,12 @@ import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
-import { RecruiterUserType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
+import { CustomDatabase } from '@/src/types/customSchema';
 import { companyType } from '@/src/utils/userRoles';
 
-export const supabase = createClient<Database>(
+import { server_getUserRoleAndId } from '../reset_password';
+
+export const supabase = createClient<CustomDatabase>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -17,14 +18,19 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const { users, id, recruiter_user } =
+    const { users, recruiter_id } =
       req.body as unknown as InviteUserAPIType['in'];
-    if (!users && !id) {
+    if (!users || !recruiter_id) {
       return res
         .status(400)
         .send({ message: 'Invalid request. Required props missing.' });
     }
-    const { role, recruiter_id: companyId } = await getRecruiterUser(id);
+
+    // const { role, recruiter_id: companyId } = await getRecruiterUser(id);
+
+    const { role, user_id: id } = await server_getUserRoleAndId({
+      getVal: (name) => req.cookies[String(name)],
+    });
 
     if (role === 'admin') {
       let user_id: string = null;
@@ -34,11 +40,11 @@ export default async function handler(
             email: user.email,
             password: 'Welcome@123',
             user_metadata: {
-              name: `${user.first_name} ${user.last_name || ''}`?.trim(),
+              name: `${user.first_name} ${user.last_name || ''}`.trim(),
               role: companyType.COMPANY,
               roles: companyType.COMPANY,
               is_invite: 'true',
-              invite_user: recruiter_user,
+              // invite_user: recruiter_user,
             },
             email_confirm: true,
           });
@@ -56,12 +62,11 @@ export default async function handler(
               position: user.designation,
               employment: user.employment,
               department: user.department,
-              role: user.role.toLocaleLowerCase(),
               email: email,
               join_status: 'invited',
               scheduling_settings: user.scheduling_settings,
               interview_location: user.interview_location,
-            } as RecruiterUserType)
+            })
             .select();
 
           if (errorRecUser) throw new Error(error.message);
@@ -69,17 +74,18 @@ export default async function handler(
           const { error: relationError } = await supabase
             .from('recruiter_relation')
             .insert({
-              recruiter_id: companyId,
+              recruiter_id,
               user_id: userId,
+              role: user.role,
               is_active: true,
               created_by: id,
             })
             .select('*');
           if (relationError) {
-            return res.status(200).send({
-              created: null,
-              error: 'Inserting in user relation failed!',
-            });
+            throw new Error(
+              'user relation creation failed!\n message' +
+                relationError.message,
+            );
           }
 
           const { error: resetEmail } =
@@ -87,10 +93,7 @@ export default async function handler(
               redirectTo,
             });
           if (resetEmail) {
-            return res.status(200).send({
-              created: null,
-              error: 'Sending reset password failed!',
-            });
+            throw new Error('Sending reset password failed!');
           }
 
           return res.status(200).send({
@@ -110,12 +113,47 @@ export default async function handler(
   res.status(405).end('Method Not Allowed!');
 }
 
-const getRecruiterUser = async (id: string) => {
-  const { data, error } = await supabase
-    .from('recruiter_user')
-    .select('role, recruiter_id')
-    .eq('user_id', id);
-  if (error) throw new Error(error.message);
-  if (data?.length === 0) throw new Error('User not found.');
-  return data[0];
-};
+// export const checkPermissionsId = async ({
+//   getVal,
+//   // recruiter_id,
+// }: {
+//   // eslint-disable-next-line no-unused-vars
+//   getVal: (name: string) => string;
+//   // roles: DatabaseEnums['user_roles'][];
+//   // recruiter_id: string;
+// }) => {
+//   try {
+//     const supabase = createServerClient<CustomDatabase>(
+//       process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+//       {
+//         cookies: {
+//           get(name: string) {
+//             return getVal(name);
+//           },
+//         },
+//       },
+//     );
+
+//     return await supabase.auth.getUser().then(({ data, error }) => {
+//       if (error) throw new Error(error.message);
+//       if (data.user.id) {
+//         return (
+//           supabase
+//             .from('recruiter_relation')
+//             .select('role')
+//             .eq('user_id', data.user.id)
+//             // .eq('recruiter_id', recruiter_id)
+//             .single()
+//             .then(({ data: dataR, error }) => {
+//               if (error) throw new Error(error.message);
+//               return { role: dataR.role, id: data.user.id };
+//             })
+//         );
+//       }
+//       throw new Error('Failed to load auth user.');
+//     });
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// };

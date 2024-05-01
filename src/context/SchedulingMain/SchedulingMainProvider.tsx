@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
+// import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
 import { MemberType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
@@ -35,9 +35,9 @@ const SchedulingProvider = ({ children }) => {
     if (recruiter?.id) {
       initialFetch();
     }
-    return () => {
-      resetInterviewState();
-    };
+    // return () => {
+    //   resetInterviewState();
+    // };
   }, [recruiter?.id]);
 
   const initialFetch = async () => {

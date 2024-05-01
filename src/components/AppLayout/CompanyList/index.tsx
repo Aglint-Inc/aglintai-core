@@ -27,14 +27,14 @@ type CompanyTYpe = {
 };
 function CompanyList() {
   // const router = useRouter();
-  const { userDetails, setRecruiter, recruiter, setAllrecruterRelation } =
+  const { userDetails, setRecruiter, recruiter, setAllRecruiterRelation } =
     useAuthDetails();
   const [allCompanies, setAllCompanies] = useState<CompanyTYpe[]>([]);
   const [anchorlEl, setAnchorEl] = useState(null);
   async function getCompanies() {
     try {
       setAllCompanies([]);
-      setAllrecruterRelation([] as any);
+      setAllRecruiterRelation([] as any);
       const relations = supabaseWrap(
         await supabase
           .from('recruiter_relation')
@@ -49,7 +49,7 @@ function CompanyList() {
           logo: reln.recruiter?.logo,
         })),
       );
-      setAllrecruterRelation(() =>
+      setAllRecruiterRelation(() =>
         relations.map((reln) => ({
           created_at: reln.created_at,
           created_by: reln.created_by,
@@ -57,6 +57,8 @@ function CompanyList() {
           is_active: reln.is_active,
           recruiter_id: reln.recruiter_id,
           user_id: userDetails.user.id,
+          role: reln.role,
+          manager: reln.manager,
         })),
       );
     } catch (error) {

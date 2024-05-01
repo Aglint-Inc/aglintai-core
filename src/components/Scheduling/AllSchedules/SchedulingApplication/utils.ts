@@ -26,7 +26,6 @@ import {
   getTimeZoneOfGeo,
 } from '@/src/utils/location-to-time-zone';
 import { supabase } from '@/src/utils/supabase/client';
-import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../queries/utils';
 import { mailHandler } from '../utils';
