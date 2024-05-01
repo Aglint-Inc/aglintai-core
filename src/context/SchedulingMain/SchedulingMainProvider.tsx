@@ -15,7 +15,7 @@ export type InterviewScheduleContextType = {
 const initialState = {
   loading: true,
   members: [],
-  allModules: []
+  allModules: [],
 };
 
 const AllSchedulingContext =
@@ -28,7 +28,7 @@ const SchedulingProvider = ({ children }) => {
     InterviewScheduleContextType['members']
   >([]);
   const [allModules, setAllModules] = useState<{ id: string; name: string }[]>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const SchedulingProvider = ({ children }) => {
       }
 
       const resMem = await axios.post('/api/scheduling/fetchUserDetails', {
-        recruiter_id: recruiter.id
+        recruiter_id: recruiter.id,
       });
       if (resMem.data) {
         setMembers(resMem.data);
@@ -69,7 +69,7 @@ const SchedulingProvider = ({ children }) => {
       value={{
         loading,
         members,
-        allModules
+        allModules,
       }}
     >
       {children}

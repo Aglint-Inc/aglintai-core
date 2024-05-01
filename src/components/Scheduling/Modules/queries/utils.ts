@@ -1,6 +1,7 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
+import { SupabaseType } from '@/src/types/data.types';
 import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -78,7 +79,10 @@ export const fetchInterviewModules = async (rec_id: string) => {
   return data as unknown as ModuleDashboard[];
 };
 
-export const fetchInterviewModuleById = async (module_id: string) => {
+export const fetchInterviewModuleByIdApi = async (
+  module_id: string,
+  supabase: SupabaseType,
+) => {
   const { data: dataModule, error: errorModule } = await supabase
     .from('interview_module')
     .select('*')
