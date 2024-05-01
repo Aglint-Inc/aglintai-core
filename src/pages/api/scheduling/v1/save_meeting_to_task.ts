@@ -45,15 +45,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     const meetings = meeting_details
+      .sort((m1, m2) => m1.session_order - m2.session_order)
       .map((m) => {
         return {
-          ...m,
-          meeting_users: meeting_users.filter(
-            (u) => u.session_id === m.session_id,
-          ),
+          id: m.session_id,
+          name: m.session_name,
+          interview_meeting: {
+            id: m.id,
+            start_time: m.start_time,
+            end_time: m.end_time,
+            meeting_link: m.meeting_link,
+          },
+          session_order: m.session_order,
+          users: meeting_users.filter((u) => u.session_id === m.session_id),
         };
-      })
-      .sort((m1, m2) => m1.session_order - m2.session_order);
+      });
 
     supabaseWrap(
       await supabaseAdmin
