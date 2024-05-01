@@ -9,6 +9,10 @@ const supabase = createClient<CustomDatabase>(
   process.env.SUPABASE_SERVICE_KEY,
 );
 
+export type ApiResponseInterviewTrainingProgress = Awaited<
+  ReturnType<typeof getInterviewTrainingProgress>
+>;
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,

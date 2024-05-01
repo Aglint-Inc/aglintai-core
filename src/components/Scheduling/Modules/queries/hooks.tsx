@@ -1,8 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
 import { PauseJson } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
 
@@ -98,11 +99,19 @@ export const useModuleAndUsers = () => {
       moduleId: router.query.module_id as string,
     }),
     queryFn: async () => {
-      const res = await axios.post(
+      const {
+        data: resMod,
+        status,
+      }: AxiosResponse<ApiResponseInterviewModuleById> = await axios.post(
         '/api/scheduling/fetch_interview_module_by_id',
-        { module_id: router.query.module_id },
+        {
+          module_id: router.query.module_id,
+        },
       );
-      return res?.data || [];
+      if (status !== 200 && resMod.error) {
+        toast.error('Error fetching Module Members');
+      }
+      return resMod.data;
     },
     initialData: null,
     enabled: !!router.query.module_id,
