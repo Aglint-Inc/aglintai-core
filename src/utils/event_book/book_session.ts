@@ -6,7 +6,7 @@ import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
-import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
+// import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -149,7 +149,8 @@ export const bookSession = async ({
   }
 
   calendar_event.attendees.push({
-    email: getOutboundEmail(candidate_email, false) as string,
+    email: candidate_email,
+    // email: getOutboundEmail(candidate_email, false) as string,
   });
 
   const google_cal = new GoogleCalender({
