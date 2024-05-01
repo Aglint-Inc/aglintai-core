@@ -187,7 +187,7 @@ function SubTaskProgress() {
                       <ShowCode.When
                         isTrue={
                           item.progress_type === 'interview_schedule' &&
-                          !!sessionList.length
+                          !!sessionList?.length
                         }
                       >
                         <Stack direction={'column'} spacing={3} width={'100%'}>
