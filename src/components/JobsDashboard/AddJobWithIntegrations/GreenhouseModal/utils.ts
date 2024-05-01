@@ -151,7 +151,7 @@ export const createJobApplications = async (
           await createReference(referenceObj);
         } else {
           toast.error(
-            'Sorry unable to import. Please try again later or contact support.',
+            'Import failed. Please try again later or contact support for assistance.',
           );
         }
       }
@@ -309,7 +309,7 @@ export const createReference = async (
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Import failed. Please try again later or contact support for assistance.',
     );
     return undefined;
   } else {

@@ -105,7 +105,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           await createLeverReference(referenceObj);
         } else {
           toast.error(
-            'Sorry unable to import. Please try again later or contact support.',
+            'Import failed. Please try again later or contact support for assistance.',
           );
         }
         //new candidates insert flow
@@ -123,7 +123,7 @@ export const createLeverReference = async (reference) => {
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Import failed. Please try again later or contact support for assistance.',
     );
   } else {
     await createGoogleTaskQueue(data);
@@ -139,7 +139,7 @@ export const createLeverJobReference = async (reference) => {
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Import failed. Please try again later or contact support for assistance.',
     );
   }
 };

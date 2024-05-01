@@ -1,8 +1,9 @@
 import React from "react";
+
 import * as _Builtin from "./_Builtin";
 import { ButtonPrimaryOutlinedRegular } from "./ButtonPrimaryOutlinedRegular";
-import * as _utils from "./utils";
 import _styles from "./EnableInterviewPlan.module.css";
+import * as _utils from "./utils";
 
 export function EnableInterviewPlan({
   as: _Component = _Builtin.Block,
@@ -14,11 +15,11 @@ export function EnableInterviewPlan({
       tag="div"
     >
       <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {"Optimize Your Interviews with our Interview Plan"}
+        {"Manage your interview plan"}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "text-grey_600")} tag="div">
         {
-          "Enable Interview Plan simplifies and enhances your interview process. Customizable plans, streamlined scheduling, and collaborative features ensure you find the perfect candidates efficiently."
+          'Create your interview stages for the job to ensure a structured evaluation process. Add different interview types such as "Initial Screening" or "Technical Interview." Use this template each time you schedule interviews for candidates to maintain consistency and efficiency.'
         }
       </_Builtin.Block>
       <_Builtin.Block

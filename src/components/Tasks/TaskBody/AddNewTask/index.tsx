@@ -102,11 +102,11 @@ function AddNewTask() {
 
   async function handleCreate() {
     if (!selectedCandidate?.candidates?.email) {
-      toast.warning('Candidate email is not provided.');
+      toast.warning('No email associated with this candidate.');
       return;
     }
     if (!selectedSession.length) {
-      toast.warning('Please select interview session.');
+      toast.warning('Please select an interview session.');
       return;
     }
     handelAddTask({

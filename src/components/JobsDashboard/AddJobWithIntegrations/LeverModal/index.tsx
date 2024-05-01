@@ -123,14 +123,14 @@ export function LeverModalComp() {
         router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       } else {
         toast.error(
-          'Sorry unable to import. Please try again later or contact support.'
+          'Import failed. Please try again later or contact support for assistance.'
         );
         posthog.capture('Error Importing Lever Jobs');
         handleClose();
       }
     } catch (error) {
       toast.error(
-        'Sorry unable to import. Please try again later or contact support.'
+        'Import failed. Please try again later or contact support for assistance.'
       );
       handleClose();
     }
@@ -335,7 +335,7 @@ export function LeverModalComp() {
                                       ]);
                                     } else {
                                       toast.warning(
-                                        'You can import 1 job at a time'
+                                        'You can import one job at a time.'
                                       );
                                     }
                                   }
