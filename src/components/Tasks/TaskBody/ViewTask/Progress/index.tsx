@@ -62,11 +62,18 @@ function SubTaskProgress() {
 
               // console.log(CandidateCreator);
 
+              const time_zone =
+                candidateDetails?.timezone || 'America/Los_Angeles';
+
               const date = item.title_meta['{date}']
-                ? `<span class="progress_date_section">${dayjs(item.title_meta['{date}']).tz(candidateDetails?.timezone).format('MMM DD')} (${candidateDetails?.timezone})</span>`
+                ? `<span class="progress_date_section">${dayjs(
+                    item.title_meta['{date}'],
+                  )
+                    .tz(time_zone)
+                    .format('MMM DD')} (${time_zone})</span>`
                 : '';
               const bookingTime = item.title_meta['{booking_time}']
-                ? `<span class="progress_date_section">${dayjs(item.title_meta['{booking_time}']).tz(candidateDetails?.timezone).format('MMM DD, hh:mm A')} (${candidateDetails?.timezone})</span>`
+                ? `<span class="progress_date_section">${dayjs(item.title_meta['{booking_time}']).tz(time_zone).format('MMM DD, hh:mm A')} (${time_zone})</span>`
                 : '';
               const candidateName = item.title_meta['{candidate}']
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`

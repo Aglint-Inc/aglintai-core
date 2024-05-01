@@ -55,6 +55,7 @@ const AddMember = ({
     first_name: string;
     last_name: string;
     email: string;
+    linked_in: string;
     employment: employmentTypeEnum;
     designation: string;
     interview_location: string;
@@ -65,6 +66,7 @@ const AddMember = ({
     first_name: null,
     last_name: null,
     email: null,
+    linked_in: null,
     employment: null,
     interview_location: null,
     designation: null,
@@ -78,6 +80,7 @@ const AddMember = ({
       first_name: string;
       last_name: string;
       email: string;
+      linked_in: string;
       employment: employmentTypeEnum;
       department: string;
       interview_location: string;
@@ -89,6 +92,7 @@ const AddMember = ({
   const [formError, setFormError] = useState<{
     first_name: boolean;
     email: boolean;
+    linked_in: boolean;
     department: boolean;
     employment: boolean;
     interview_location: boolean;
@@ -97,6 +101,7 @@ const AddMember = ({
   }>({
     first_name: false,
     email: false,
+    linked_in: false,
     employment: false,
     department: false,
     interview_location: false,
@@ -124,6 +129,12 @@ const AddMember = ({
         toast.error(`Email domain doesn't match organization.`);
       }
       temp = { ...temp, email: true };
+      flag = true;
+    }
+    if (form.linked_in?.length) {
+      const linkedInURLPattern =
+        /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+      temp = { ...temp, linked_in: linkedInURLPattern.test(form.linked_in) };
       flag = true;
     }
     if (!form.department || form.department.trim() === '') {
@@ -168,6 +179,7 @@ const AddMember = ({
             first_name: form.first_name,
             last_name: form.last_name,
             email: form.email,
+            linked_in: form.linked_in,
             department: form.department,
             interview_location: form.interview_location,
             designation: form.designation,
@@ -182,6 +194,7 @@ const AddMember = ({
           first_name: null,
           last_name: null,
           email: null,
+          linked_in: null,
           department: null,
           interview_location: null,
           designation: null,
@@ -299,10 +312,23 @@ const AddMember = ({
                       setForm({ ...form, email: e.target.value.trim() });
                     }}
                   />
+                  <CustomTextField
+                    value={form.linked_in ? form.linked_in : ''}
+                    name='LinkedIn'
+                    placeholder='URL'
+                    label='LinkedIn'
+                    error={formError.linked_in}
+                    onFocus={() => {
+                      setFormError({ ...formError, linked_in: false });
+                    }}
+                    onChange={(e) => {
+                      setForm({ ...form, linked_in: e.target.value.trim() });
+                    }}
+                  />
                   <Stack direction={'row'} gap={2}>
                     <CustomTextField
                       value={form.designation ? form.designation : ''}
-                      name='designation'
+                      name='title'
                       placeholder='Title'
                       label='Title'
                       error={formError.designation}
