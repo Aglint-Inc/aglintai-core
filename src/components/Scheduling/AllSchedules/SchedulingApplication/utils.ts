@@ -1049,11 +1049,7 @@ export const agentTrigger = async ({
         interviewer_name: recruiter_user_name,
         // to_phone_no: '+919482306657',
         from_phone_no: '+12512066348',
-        to_phone_no: rec_user_phone
-          .replace(' ', '')
-          .replace('-', '')
-          .replace('(', '')
-          .replace(')', ''),
+        to_phone_no: formatPhoneNumber(rec_user_phone),
         // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
         retell_agent_id: process.env.RETELL_AGENT_ID,
         filter_json_id: filterJsonId,
@@ -1173,3 +1169,13 @@ export const getTimeZoneBrowser = () => {
 
   return timezone;
 };
+
+export function formatPhoneNumber(phoneNumber) {
+  // Remove all non-numeric characters from the phone number
+  const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+  // Prepend the desired prefix
+  const formattedPhoneNumber = '+1' + numericPhoneNumber;
+
+  return formattedPhoneNumber;
+}
