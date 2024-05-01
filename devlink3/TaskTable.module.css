@@ -104,6 +104,10 @@
   display: none;
 }
 
+.div-block-1435.space-between {
+  justify-content: space-between;
+}
+
 .text-grey-500 {
   color: #87929d;
 }

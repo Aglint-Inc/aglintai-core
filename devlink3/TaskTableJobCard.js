@@ -90,7 +90,7 @@ export function TaskTableJobCard({
                 className={_utils.cx(_styles, "text-blue-500")}
                 tag="div"
               >
-                {"New Task"}
+                {"New"}
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
