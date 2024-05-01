@@ -2427,7 +2427,9 @@ export type Database = {
           created_by: string
           id: number
           is_active: boolean
+          manager: string | null
           recruiter_id: string
+          role: Database["public"]["Enums"]["user_roles"]
           user_id: string
         }
         Insert: {
@@ -2435,7 +2437,9 @@ export type Database = {
           created_by?: string
           id?: number
           is_active?: boolean
+          manager?: string | null
           recruiter_id: string
+          role: Database["public"]["Enums"]["user_roles"]
           user_id: string
         }
         Update: {
@@ -2443,7 +2447,9 @@ export type Database = {
           created_by?: string
           id?: number
           is_active?: boolean
+          manager?: string | null
           recruiter_id?: string
+          role?: Database["public"]["Enums"]["user_roles"]
           user_id?: string
         }
         Relationships: [
@@ -2462,17 +2468,17 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "recruiter_relation_manager_fkey"
+            columns: ["manager"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
             foreignKeyName: "recruiter_relation_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "recruiter_relation_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -2495,8 +2501,6 @@ export type Database = {
           phone: string | null
           position: string | null
           profile_image: string | null
-          recruiter_id: string | null
-          role: Database["public"]["Enums"]["user_roles"] | null
           schedule_auth: Json | null
           scheduling_settings: Json | null
           user_id: string
@@ -2518,8 +2522,6 @@ export type Database = {
           phone?: string | null
           position?: string | null
           profile_image?: string | null
-          recruiter_id?: string | null
-          role?: Database["public"]["Enums"]["user_roles"] | null
           schedule_auth?: Json | null
           scheduling_settings?: Json | null
           user_id: string
@@ -2541,20 +2543,11 @@ export type Database = {
           phone?: string | null
           position?: string | null
           profile_image?: string | null
-          recruiter_id?: string | null
-          role?: Database["public"]["Enums"]["user_roles"] | null
           schedule_auth?: Json | null
           scheduling_settings?: Json | null
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "recruiter_user_recruiter_id_fkey"
-            columns: ["recruiter_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
@@ -2651,7 +2644,6 @@ export type Database = {
           candidate_email: string
           chat_history: Json[]
           company_id: string | null
-          conversation_id: string
           created_at: string
           filter_json_id: string
           job_id: string
@@ -2664,7 +2656,6 @@ export type Database = {
           candidate_email: string
           chat_history?: Json[]
           company_id?: string | null
-          conversation_id: string
           created_at?: string
           filter_json_id: string
           job_id: string
@@ -2677,7 +2668,6 @@ export type Database = {
           candidate_email?: string
           chat_history?: Json[]
           company_id?: string | null
-          conversation_id?: string
           created_at?: string
           filter_json_id?: string
           job_id?: string
@@ -4372,7 +4362,13 @@ export type Database = {
         | "situational"
         | "software"
         | "typing"
-      user_roles: "admin" | "recruiter" | "interviewer" | "scheduler"
+      user_roles:
+        | "admin"
+        | "recruiter"
+        | "interviewer"
+        | "recruiting_coordinator"
+        | "sourcer"
+        | "hiring_manager"
     }
     CompositeTypes: {
       location_type: {

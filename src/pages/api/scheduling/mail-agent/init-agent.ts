@@ -43,7 +43,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!cand_email || !filter_json_id || !interviewer_name) {
       return res.status(400).send('missing fields');
     }
-
+    if (process.env.LOCAL_CAND_EMAIL) {
+      cand_email = process.env.LOCAL_CAND_EMAIL;
+    }
     const cand_details = await fetchCandDetails({
       filter_json_id,
       candidate_email: cand_email,
@@ -78,8 +80,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const thread_id = uuidV4();
 
     supabaseWrap(
-      // error here //
-      // @ts-ignore
       await supabaseAdmin.from('scheduling-agent-chat-history').insert({
         application_id: cand_details.application_id,
         job_id: cand_details.job_id,
