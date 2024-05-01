@@ -18,6 +18,7 @@ import { Database } from '@/src/types/schema';
 import toast from '@/src/utils/toast';
 
 import { interviewLocationType } from '../AddMemberDialog';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const EditMember = ({
   open,
@@ -266,25 +267,33 @@ const EditMember = ({
 
               {member.role !== 'admin' && (
                 <Autocomplete
+                  style={{ marginTop: '20px' }}
                   fullWidth
-                  value={capitalize(form.role)}
+                  value={capitalizeAll(form.role)}
                   onChange={(event: any, newValue: string | null) => {
                     setForm({
                       ...form,
                       role: newValue as
                         | 'recruiter'
                         | 'interviewer'
-                        | 'scheduler',
+                        | 'hiring_manager'
+                        | 'recruiting_coordinator'
+                        | 'sourcer',
                     });
                   }}
                   id='controllable-states-demo'
-                  options={(
+                  options={
                     [
                       'recruiter',
                       'interviewer',
-                      'scheduler',
-                    ] as Database['public']['Enums']['agent_type'][]
-                  ).map((role) => capitalize(role))}
+                      'hiring_manager',
+                      'recruiting_coordinator',
+                      'sourcer',
+                    ] as Database['public']['Enums']['user_roles'][]
+                  }
+                  renderOption={(props, op) => (
+                    <li {...props}>{capitalizeAll(op)}</li>
+                  )}
                   renderInput={(params) => (
                     <CustomTextField
                       {...params}
@@ -320,7 +329,7 @@ const EditMember = ({
                         employment: form.employment,
                         department: form.department,
                         position: form.designation,
-                        role: form.role.toLowerCase() as typeof form.role,
+                        // role: form.role.toLowerCase() as typeof form.role,
                       },
                     })
                       .then(() => {

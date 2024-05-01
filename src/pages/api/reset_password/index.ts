@@ -95,7 +95,7 @@ const checkPermissions = async ({
       if (error) throw new Error(error.message);
       if (data.user.id) {
         return supabase
-          .from('recruiter_user')
+          .from('recruiter_relation')
           .select('role')
           .eq('user_id', data.user.id)
           .single()

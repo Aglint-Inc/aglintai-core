@@ -16,8 +16,9 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     try {
-      const { ids } = req.body as unknown as API_get_last_login['request'];
-      if (!ids?.length) {
+      const { ids, recruiter_id } =
+        req.body as unknown as API_get_last_login['request'];
+      if (!ids?.length || !recruiter_id) {
         return res
           .status(400)
           .send(
@@ -28,6 +29,7 @@ export default async function handler(
       const isAllowed = await checkPermissions({
         getVal: (name) => req.cookies[String(name)],
         roles: ['admin'],
+        recruiter_id,
       });
       if (isAllowed) {
         const last_login_data = await Promise.all(
@@ -69,10 +71,12 @@ const getResponse = (data: Partial<API_get_last_login['response']>) => {
 const checkPermissions = async ({
   getVal,
   roles,
+  recruiter_id,
 }: {
   // eslint-disable-next-line no-unused-vars
   getVal: (name: string) => string;
   roles: DatabaseEnums['user_roles'][];
+  recruiter_id: string;
 }) => {
   try {
     const supabase = createServerClient<CustomDatabase>(
@@ -97,9 +101,10 @@ const checkPermissions = async ({
       if (error) throw new Error(error.message);
       if (data.user.id) {
         return supabase
-          .from('recruiter_user')
+          .from('recruiter_relation')
           .select('role')
           .eq('user_id', data.user.id)
+          .eq('recruiter_id', recruiter_id)
           .single()
           .then(({ data, error }) => {
             if (error) throw new Error(error.message);

@@ -1,6 +1,8 @@
 import {
   Autocomplete,
   Drawer,
+  ListItem,
+  ListItemButton,
   Stack,
   TextField,
   TextFieldProps,
@@ -24,7 +26,7 @@ import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
-import { capitalize } from '@/src/utils/text/textUtils';
+import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { inviteUserApi, reinviteUser } from '../utils';
@@ -436,24 +438,31 @@ const AddMember = ({
                   <Autocomplete
                     style={{ marginTop: '20px' }}
                     fullWidth
-                    value={form.role}
+                    value={capitalizeAll(form.role)}
                     onChange={(event: any, newValue: string | null) => {
                       setForm({
                         ...form,
                         role: newValue as
                           | 'recruiter'
                           | 'interviewer'
-                          | 'scheduler',
+                          | 'hiring_manager'
+                          | 'recruiting_coordinator'
+                          | 'sourcer',
                       });
                     }}
                     id='controllable-states-demo'
-                    options={(
+                    options={
                       [
                         'recruiter',
                         'interviewer',
-                        'scheduler',
-                      ] as Database['public']['Enums']['agent_type'][]
-                    ).map((role) => capitalize(role))}
+                        'hiring_manager',
+                        'recruiting_coordinator',
+                        'sourcer',
+                      ] as Database['public']['Enums']['user_roles'][]
+                    }
+                    renderOption={(props, op) => (
+                      <li {...props}>{capitalizeAll(op)}</li>
+                    )}
                     renderInput={(params) => (
                       <CustomTextField
                         {...params}

@@ -1,5 +1,4 @@
-import { DatabaseTable } from './customSchema';
-import { schedulingSettingType } from './scheduleTypes/scheduleSetting';
+import { DatabaseEnums, DatabaseTable } from './customSchema';
 import { Database } from './schema';
 
 export type AddressType = {
@@ -153,10 +152,9 @@ export type Summary = {
   color?: 'string';
 };
 
-type TempRecruiterUser = Database['public']['Tables']['recruiter_user']['Row'];
+type TempRecruiterUser = DatabaseTable['recruiter_user'];
 export interface RecruiterUserType extends TempRecruiterUser {
-  scheduling_settings: schedulingSettingType;
-  last_login?: string;
+  role: DatabaseEnums['user_roles'];
 }
 // export type RecruiterUserType =
 //   Database['public']['Tables']['recruiter_user']['Row'] & {

@@ -171,7 +171,7 @@ function SideNavbar() {
       return pathName?.includes(item.route);
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
-      toast.error("This section of the application is not accessible to you.");
+      toast.error('This section of the application is not accessible to you.');
       router.replace(pageRoutes.LOADING);
     }
   }, [pathName]);
