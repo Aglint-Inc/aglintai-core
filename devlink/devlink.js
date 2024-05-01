@@ -75,14 +75,14 @@ var zr = u((sV, lr) => {
   }
   function V_(e, r) {
     if (!r && e && e.__esModule) return e;
-    if (e === null || (G_(e) !== "object" && typeof e != "function"))
+    if (e === null || (G_(e) != "object" && typeof e != "function"))
       return { default: e };
     var t = ca(r);
     if (t && t.has(e)) return t.get(e);
-    var n = {},
+    var n = { __proto__: null },
       i = Object.defineProperty && Object.getOwnPropertyDescriptor;
     for (var o in e)
-      if (o !== "default" && Object.prototype.hasOwnProperty.call(e, o)) {
+      if (o !== "default" && {}.hasOwnProperty.call(e, o)) {
         var a = i ? Object.getOwnPropertyDescriptor(e, o) : null;
         a && (a.get || a.set) ? Object.defineProperty(n, o, a) : (n[o] = e[o]);
       }
