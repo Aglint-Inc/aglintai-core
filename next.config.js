@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME, //dont comment this
+  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME, //dont comment this needed for reverse proxy job links
   eslint: {
     dirs: ['src'],
   },
