@@ -1023,7 +1023,7 @@ export const agentTrigger = async ({
       candidate.id,
     );
   }
-
+  
   if (type === 'email_agent') {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
@@ -1135,12 +1135,14 @@ export const createTask = async ({
         return {
           id: ses.id,
           name: ses.name,
-          interview_meeting: {
-            id: ses.interview_meeting.id,
-            start_time: ses.interview_meeting.start_time,
-            end_time: ses.interview_meeting.end_time,
-            meeting_link: ses.interview_meeting.meeting_link,
-          },
+          interview_meeting: ses.interview_meeting
+            ? {
+                id: ses.interview_meeting.id,
+                start_time: ses.interview_meeting.start_time,
+                end_time: ses.interview_meeting.end_time,
+                meeting_link: ses.interview_meeting.meeting_link,
+              }
+            : null,
           session_order: ses.session_order,
           users: [],
         };
