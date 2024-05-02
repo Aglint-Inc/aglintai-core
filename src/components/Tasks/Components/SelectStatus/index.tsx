@@ -75,30 +75,32 @@ function SelectStatus({
         }}
       >
         <Stack width={150} spacing={'10px'} p={'10px'}>
-          {statusList.map(
-            (
-              {
-                id,
-              }: {
-                id: CustomDatabase['public']['Enums']['task_status'];
+          {statusList
+            .filter((ele) => !['failed'].includes(ele.id))
+            .map(
+              (
+                {
+                  id,
+                }: {
+                  id: CustomDatabase['public']['Enums']['task_status'];
+                },
+                i,
+              ) => {
+                return (
+                  <Stack
+                    onClick={() => {
+                      setAnchorEl(null);
+                      setSelectedStatus(id);
+                      if (onChange) onChange(id);
+                    }}
+                    direction={'row'}
+                    key={i}
+                  >
+                    <StatusChip status={id} />
+                  </Stack>
+                );
               },
-              i,
-            ) => {
-              return (
-                <Stack
-                  onClick={() => {
-                    setAnchorEl(null);
-                    setSelectedStatus(id);
-                    if (onChange) onChange(id);
-                  }}
-                  direction={'row'}
-                  key={i}
-                >
-                  <StatusChip status={id} />
-                </Stack>
-              );
-            },
-          )}
+            )}
         </Stack>
       </Popover>
     </>

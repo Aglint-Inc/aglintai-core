@@ -89,4 +89,10 @@ export const statusList = [
     label: 'Closed',
     color: '#000',
   },
+  {
+    id: 'failed' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: '#f5d5d8' + 'aa',
+    label: 'Failed',
+    color: '#CC3340',
+  },
 ];
