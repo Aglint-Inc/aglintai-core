@@ -14,7 +14,6 @@ import {
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
@@ -37,6 +36,7 @@ import {
   JobCandidatesType,
   PhoneAgentId,
 } from '../../utils';
+import { meetingCardType } from '../ViewTask/Progress/SessionCard';
 import AssigneeList from './AssigneeList';
 import CandidateList from './CandidateList';
 import JobList from './JobList';
@@ -80,11 +80,10 @@ function AddNewTask() {
     null,
   );
 
-  const [sessionList, setSessionList] =
-    useState<Awaited<ReturnType<typeof fetchInterviewSessionTask>>>(null);
-  const [selectedSession, setSelectedSession] = useState<
-    Awaited<ReturnType<typeof fetchInterviewSessionTask>>
-  >([]);
+  const [sessionList, setSessionList] = useState<meetingCardType[] | null>(
+    null,
+  );
+  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
   const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
     null,
   );
@@ -203,8 +202,17 @@ function AddNewTask() {
       application_id: selectedCandidate.id,
       job_id: selectedJob.id,
     } as ApiRequestInterviewSessionTask);
-    setSessionList(data);
-    return data as ApiResponseInterviewSessionTask;
+    const sessions = data as ApiResponseInterviewSessionTask['data'];
+    setSessionList(
+      sessions.map(
+        (ele) =>
+          ({
+            id: ele.id,
+            name: ele.name,
+          }) as meetingCardType,
+      ),
+    );
+    return data as ApiResponseInterviewSessionTask['data'];
   }
   useEffect(() => {
     if (selectedCandidate) {
@@ -472,7 +480,8 @@ function AddNewTask() {
                 <SessionList
                   selectedSession={selectedSession}
                   setSelectedSession={setSelectedSession}
-                  sessionList={sessionList as any[]}
+                  application_id={selectedCandidate?.id}
+                  job_id={selectedJob?.id}
                 />
               }
               slotInterviewDate={
