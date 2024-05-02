@@ -560,8 +560,8 @@ export class CandidatesScheduling {
 
       const day2_interviewer_time: TimeDurationDayjsType & { day: string } = {
         startTime: userTzDayjs(current_day.endOf('day').toISOString())
-          .startOf('day')
-          .tz(int_timezone),
+          .tz(int_timezone)
+          .startOf('day'),
         endTime: userTzDayjs(current_day.endOf('day').toISOString()).tz(
           int_timezone,
         ),

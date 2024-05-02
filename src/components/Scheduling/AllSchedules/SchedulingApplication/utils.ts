@@ -1012,7 +1012,7 @@ export const agentTrigger = async ({
     type,
     candidate_name,
     rec_user_email,
-    rec_user_phone,
+    rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
   const candidate = sessionsWithPlan.application.candidates;
@@ -1023,7 +1023,7 @@ export const agentTrigger = async ({
       candidate.id,
     );
   }
-
+  
   if (type === 'email_agent') {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
@@ -1067,6 +1067,23 @@ export const agentTrigger = async ({
       console.log('error in phone agent');
     }
     return res.status;
+  }
+};
+
+const getCandidateTimezone = async (location, candidate_id) => {
+  const resGeoCode = await geoCodeLocation(location);
+  if (resGeoCode) {
+    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
+    if (resTimezone) {
+      const { data } = await supabase
+        .from('candidates')
+        .update({
+          timezone: resTimezone,
+        })
+        .eq('id', candidate_id)
+        .select();
+      console.log(data);
+    }
   }
 };
 
@@ -1114,7 +1131,22 @@ export const createTask = async ({
       start_date: new Date(),
       assignee: [assignee],
       filter_id: filter_id,
-      session_ids: selectedSessions,
+      session_ids: selectedSessions.map((ses) => {
+        return {
+          id: ses.id,
+          name: ses.name,
+          interview_meeting: ses.interview_meeting
+            ? {
+                id: ses.interview_meeting.id,
+                start_time: ses.interview_meeting.start_time,
+                end_time: ses.interview_meeting.end_time,
+                meeting_link: ses.interview_meeting.meeting_link,
+              }
+            : null,
+          session_order: ses.session_order,
+          users: [],
+        };
+      }),
       trigger_count: 1,
     } as any)
     .select()
@@ -1142,23 +1174,6 @@ export const createTask = async ({
   return task;
 };
 
-const getCandidateTimezone = async (location, candidate_id) => {
-  const resGeoCode = await geoCodeLocation(location);
-  if (resGeoCode) {
-    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
-    if (resTimezone) {
-      const { data } = await supabase
-        .from('candidates')
-        .update({
-          timezone: resTimezone,
-        })
-        .eq('id', candidate_id)
-        .select();
-      console.log(data);
-    }
-  }
-};
-
 export const getTimeZoneBrowser = () => {
   const localTime = new Date().toTimeString();
   const timeZonea = localTime.substring(
@@ -1173,12 +1188,9 @@ export const getTimeZoneBrowser = () => {
   return timezone;
 };
 
-export function formatPhoneNumber(phoneNumber) {
-  // Remove all non-numeric characters from the phone number
-  const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+function formatPhoneNumber(phoneNumber) {
+  // Remove all non-numeric characters except '+'
+  const numericPhoneNumber = phoneNumber.replace(/[^\d+]/g, '');
 
-  // Prepend the desired prefix
-  const formattedPhoneNumber = '+1' + numericPhoneNumber;
-
-  return formattedPhoneNumber;
+  return numericPhoneNumber;
 }

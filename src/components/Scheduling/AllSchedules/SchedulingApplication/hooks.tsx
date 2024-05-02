@@ -52,7 +52,10 @@ const fetchAllActivities = async ({ application_id }) => {
     .select(
       '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*)',
     )
-    .eq('application_id', application_id);
+    .eq('application_id', application_id)
+    .order('created_at', {
+      ascending: true,
+    });
 
   if (error) throw new Error(error.message);
 

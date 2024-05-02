@@ -7,6 +7,8 @@ import { InterviewTaskPill, ListCard, ListPop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 
+import { meetingCardType } from '../../ViewTask/Progress/SessionCard';
+
 function SessionList({
   selectedSession,
   setSelectedSession,
@@ -15,7 +17,7 @@ function SessionList({
   onChange,
 }: {
   selectedSession: Awaited<ReturnType<typeof fetchInterviewSessionTask>> | null;
-  sessionList: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
+  sessionList: meetingCardType[];
   setSelectedSession: (
     x: Awaited<ReturnType<typeof fetchInterviewSessionTask>>,
   ) => void;
@@ -124,17 +126,6 @@ function SessionList({
                         }}
                       >
                         <ListCard isListVisible={true} textList={item.name} />
-                        {/* <InterviewTaskPill
-                          onClickPill={{
-                            style: {
-                              backgroundColor:
-                                selectedSession
-                                  .map((ele) => ele.id)
-                                  .includes(item.id) && '#90caf9bb',
-                            },
-                          }}
-                          textInterviewName={item.name}
-                        /> */}
                       </Stack>
                     );
                   })}

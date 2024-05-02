@@ -13,4 +13,6 @@ declare function TaskProgress(props: {
   slotMailContent?: Types.Devlink.Slot;
   isMailContentVisible?: Types.Visibility.VisibilityConditions;
   isLineVisible?: Types.Visibility.VisibilityConditions;
+  slotSoundTask?: Types.Devlink.Slot;
+  isSoundTaskVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

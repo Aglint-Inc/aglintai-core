@@ -108,7 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await candLogger(
         `Interview scheduled for {candidate} on {booking_time}`,
         {
-          '{candidate}': '',
+          '{candidate}': req_body.candidate_name,
           '{booking_time}': dayjs(
             req_body.candidate_plan[0].sessions[0].start_time,
           )

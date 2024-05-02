@@ -163,6 +163,7 @@ export * from "./ScheduleTabFeedback";
 export * from "./ScheduleTabOverview";
 export * from "./SchedulingDashboard";
 export * from "./SchedulingPop";
+export * from "./SoundTask";
 export * from "./StatusDropdown";
 export * from "./SuggetionCard";
 export * from "./SuggetionPill";

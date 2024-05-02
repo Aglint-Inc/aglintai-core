@@ -63,8 +63,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const schedule_id = filterJson[0].interview_schedule.id;
 
     if (emailTemplate) {
-      await axios
-        .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+      const { data, status } = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
+        {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
           email: 'admin@aglinthq.com' ?? candidate_email,
@@ -83,19 +84,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             job_title: job_tile,
             view_details: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>View Details</a>`,
           }),
-        })
-        .then((res) => {
-          if (res.status === 200 && res.data.data === 'Email sent') {
-            return true;
-          } else {
-            // eslint-disable-next-line no-console
-            console.log(
-              'error',
-              'Unable to send the mail. Please try again later.',
-            );
-            return false;
-          }
-        });
+        },
+      );
+      if (status === 200) {
+        console.log(data);
+      } else {
+        console.log('Failed to send email');
+      }
+      return res.status(200).send(true);
     } else {
       console.log('unable to find email template ');
       return res.status(400).send('unable to find email template ');

@@ -125,10 +125,15 @@ function AddNewTask() {
       session_ids: selectedSession,
       type: selectedType || 'schedule',
       status:
-        selectedAssignee?.user_id === EmailAgentId ||
-        selectedAssignee?.user_id === PhoneAgentId
-          ? 'scheduled'
-          : 'not_started',
+        (selectedAssignee?.user_id === EmailAgentId ||
+          selectedAssignee?.user_id === PhoneAgentId) &&
+        isImmediate
+          ? 'in_progress'
+          : (selectedAssignee?.user_id === EmailAgentId ||
+                selectedAssignee?.user_id === PhoneAgentId) &&
+              !isImmediate
+            ? 'scheduled'
+            : 'not_started',
       priority: selectedPriority,
     }).then(async (data) => {
       // chinmai code for cron job
@@ -467,7 +472,7 @@ function AddNewTask() {
                 <SessionList
                   selectedSession={selectedSession}
                   setSelectedSession={setSelectedSession}
-                  sessionList={sessionList}
+                  sessionList={sessionList as any[]}
                 />
               }
               slotInterviewDate={

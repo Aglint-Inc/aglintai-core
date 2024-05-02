@@ -490,7 +490,11 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
               handelTaskChanges(
                 tasksReducer.tasks.map((item) => {
                   if (item.id == rowData.id) {
-                    return { ...item, status: rowData.status };
+                    return {
+                      ...item,
+                      status: rowData.status,
+                      session_ids: rowData.session_ids,
+                    };
                   }
                   return item;
                 }),

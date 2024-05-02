@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
@@ -12,16 +11,11 @@ import {
   ViewTaskCard,
 } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import {
-  ApiRequestInterviewSessionTask,
-  ApiResponseInterviewSessionTask,
-} from '@/src/pages/api/scheduling/fetch_interview_session_task';
 import {
   CustomDatabase,
   DatabaseEnums,
@@ -44,15 +38,14 @@ import SelectDueDate from '../../AddNewTask/SelecteDueDate';
 import SelectScheduleDate from '../../AddNewTask/SelectScheduleDate';
 import SessionList from '../../AddNewTask/SessionList';
 import TriggerTime from '../../AddNewTask/TriggerTime';
+import { meetingCardType } from '../Progress/SessionCard';
 
 function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const { handelUpdateTask } = useTasksContext();
   const { assignerList, setIsImmediate } = useTaskStatesContext();
-  const [sessionList, setSessionList] = useState<Awaited<
-    ReturnType<typeof fetchInterviewSessionTask>
-  > | null>([]);
+
   const [selectedSession, setSelectedSession] = useState([]);
 
   const [scheduleDate, setScheduleDate] = useState({
@@ -68,20 +61,11 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     useState<CustomDatabase['public']['Enums']['task_priority']>(null);
   const [selectedStatus, setSelectedStatus] =
     useState<DatabaseEnums['task_status']>(null);
-  async function getSessionList() {
-    const {
-      data: { data },
-    } = await axios.post('/api/scheduling/fetch_interview_session_task', {
-      application_id: task.application_id,
-      job_id: task.applications.job_id,
-    } as ApiRequestInterviewSessionTask);
-    setSessionList(data);
-    return data as ApiResponseInterviewSessionTask;
-  }
+
   useEffect(() => {
     if (task) {
       setScheduleDate({ ...task.schedule_date_range });
-      setSelectedSession([...task.session_ids]);
+      setSelectedSession(task.session_ids ? [...task.session_ids] : []);
       setSelectedDueDate(task.due_date);
       setSelectTriggerTime(task.start_date);
       setSelectedPriority(task.priority);
@@ -91,9 +75,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       );
       setSelectedAssignee(assigner);
       setIsImmediate(false);
-      getSessionList();
     }
-  }, [router.query?.task_id, assignerList, task.status]);
+  }, [router.query?.task_id, assignerList, task]);
 
   async function updateChanges(data: DatabaseTableUpdate['new_tasks']) {
     handelUpdateTask([
@@ -148,7 +131,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            sessionList={sessionList}
+            sessionList={task.session_ids as meetingCardType[]}
             isOptionList={task.status === 'not_started'}
             onChange={(data: any) => {
               updateChanges({ session_ids: data });
