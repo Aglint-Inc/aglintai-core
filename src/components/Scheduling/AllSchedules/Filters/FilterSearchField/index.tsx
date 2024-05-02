@@ -27,6 +27,7 @@ function FilterSearchField() {
         }}
         borderRadius={10}
         height={42}
+        width='250px'
       />
     </>
   );

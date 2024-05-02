@@ -118,7 +118,9 @@ function FullSchedule() {
         setSelectedSessionIds([...selectedSessionIds, session.id]);
       }
     } else {
-      toast.warning('There are no available interviewers. Please add some before scheduling.');
+      toast.warning(
+        'There are no available interviewers. Please add some before scheduling.',
+      );
     }
   };
 

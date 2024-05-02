@@ -94,6 +94,7 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
 }
 // end
 type ProgressType =
+  | 'slots_failed'
   | 'session_update'
   | 'due_date_update'
   | 'priority_update'
@@ -187,6 +188,7 @@ export async function createTaskProgress({
           : removedSessions.length
             ? `Removed <b>${removedSessions.map((ele) => ele.name).join(', ')}</b> from interview.`
             : '';
+
       case 'due_date_update':
         return `Due Date changed from <span class="progress_date_section">${dayjs(dueDate.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(dueDate.selectedDate).format('MMM DD, hh:mm A')}</span>.`;
       case 'priority_update':
@@ -201,6 +203,8 @@ export async function createTaskProgress({
         return `Interview Date changed from (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>) to (<span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('MMM DD')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
       case 'trigger_time_update':
         return `Schedule time changed from <span class="progress_date_section">${dayjs(triggerTime.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('MMM DD, hh:mm A')}</span>`;
+      case 'slots_failed':
+        return `Unable to find slots between (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
       default:
         return '';
     }
