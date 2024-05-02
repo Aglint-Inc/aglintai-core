@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { MoveAssessment } from '@/devlink2';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import {
   CallIcon,
   EmailIcon,
@@ -10,6 +9,7 @@ import {
 import PriorityList from '@/src/components/Tasks/TaskBody/AddNewTask/PriorityList';
 import SelectScheduleDate from '@/src/components/Tasks/TaskBody/AddNewTask/SelectScheduleDate';
 import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import {
   assigneeType,
   EmailAgentId,
@@ -17,6 +17,7 @@ import {
 } from '@/src/components/Tasks/utils';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
+import { JobApplcationDB } from '@/src/types/data.types';
 
 import SelectDateTime from './SelectDateTime';
 import TaskOwners from './TaskOwners';
@@ -34,8 +35,10 @@ export type TaskType = {
 };
 function CreateTask({
   setTask,
+  applications,
 }: {
   setTask: Dispatch<SetStateAction<TaskType>>;
+  applications: JobApplcationDB[];
 }) {
   const [scheduleDate, setScheduleDate] = useState<{
     start_date: string;
@@ -45,9 +48,7 @@ function CreateTask({
     end_date: dayjs().add(7, 'day').toString(),
   });
 
-  const [selectedSession, setSelectedSession] = useState<
-    Awaited<ReturnType<typeof fetchInterviewSessionTask>>
-  >([]);
+  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
   const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
     null,
   );
@@ -64,7 +65,11 @@ function CreateTask({
   } = useJobInterviewPlan();
   useEffect(() => {
     if (interview_session) {
-      setSelectedSession(interview_session.slice(0, 2));
+      setSelectedSession(
+        interview_session
+          .slice(0, 2)
+          .map((ele) => ({ id: ele.id, name: ele.name }) as meetingCardType),
+      );
       setTask((pre) => {
         const preTask = { ...pre };
         return {
@@ -133,7 +138,8 @@ function CreateTask({
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            sessionList={interview_session as any[]}
+            application_id={applications[0].id}
+            job_id={applications[0].job_id}
             onChange={(sessions: any) => {
               setTask((pre) => {
                 const preTask = { ...pre };

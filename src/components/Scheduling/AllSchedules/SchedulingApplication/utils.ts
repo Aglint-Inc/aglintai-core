@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import {
   createTaskProgress,
   EmailAgentId,
@@ -1186,7 +1187,10 @@ export const createTask = async ({
     },
     optionData: {
       candidateName: candidate_name,
-      sessions: selectedSessions,
+      sessions: selectedSessions.map((ele) => ({
+        id: ele.id,
+        name: ele.name,
+      })) as meetingCardType[],
     },
     supabaseCaller: supabase,
   });

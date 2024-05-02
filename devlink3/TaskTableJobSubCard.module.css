@@ -89,6 +89,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex: 0 0 auto;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 }

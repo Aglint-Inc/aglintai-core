@@ -34,6 +34,7 @@ const MoveCandidate: React.FC<{
     actionProps,
     setActionProps,
     canCreateTask,
+    applications,
   } = useJobApplications();
   const [purposes, setPurposes] = useState([]);
   const [taskCheck, setTaskCheck] = useState(false);
@@ -47,7 +48,6 @@ const MoveCandidate: React.FC<{
     isChecked && actionVisibilities.interview && canCreateTask;
   const showQualified = isChecked && actionVisibilities.qualified;
   const showDisqualified = isChecked && actionVisibilities.disqualified;
-
   const handlePopUpCheck = () => {
     actionProps.destination === 'interview'
       ? setTaskCheck((prev) => {
@@ -150,7 +150,7 @@ const MoveCandidate: React.FC<{
         slotMoveAssessment={
           showInterview && (
             <Collapse in={actionProps.destination === 'interview' && taskCheck}>
-              <CreateTask setTask={setTask} />
+              <CreateTask applications={applications.new} setTask={setTask} />
             </Collapse>
           )
         }

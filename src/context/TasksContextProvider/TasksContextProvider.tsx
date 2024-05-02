@@ -493,7 +493,6 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
                     return {
                       ...item,
                       status: rowData.status,
-                      session_ids: rowData.session_ids,
                     };
                   }
                   return item;

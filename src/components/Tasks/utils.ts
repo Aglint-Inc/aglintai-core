@@ -12,6 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { fetchInterviewSessionTask } from '../Scheduling/AllSchedules/SchedulingApplication/utils';
+import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
 export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
@@ -124,7 +125,7 @@ type optionDataType = {
     prev: string;
     current: string;
   };
-  sessions?: Awaited<ReturnType<typeof fetchInterviewSessionTask>> | null;
+  sessions?: meetingCardType[] | null;
   candidateName?: string;
   priority?: DatabaseEnums['task_priority'];
   currentPriority?: DatabaseEnums['task_priority'];
@@ -132,8 +133,8 @@ type optionDataType = {
     prev: string;
     selectedDate: string;
   };
-  currentSessions?: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
-  selectedSession?: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
+  currentSessions?: meetingCardType[];
+  selectedSession?: meetingCardType[];
 };
 
 export async function createTaskProgress({
