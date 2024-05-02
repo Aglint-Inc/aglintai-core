@@ -52,9 +52,9 @@ const useJobInterviewPlanActions = () => {
 
   const initialLoad = !!(
     job &&
-    interviewModules.status !== 'pending' &&
-    companyMembers.status !== 'pending' &&
-    interviewPlans.status !== 'pending'
+    !interviewModules.isPending &&
+    !companyMembers.isPending &&
+    !interviewPlans.isPending
   );
 
   if (!initialLoad) return undefined;

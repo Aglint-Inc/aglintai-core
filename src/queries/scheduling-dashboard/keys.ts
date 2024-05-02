@@ -1,5 +1,5 @@
 import { appKey, argsToKeys } from '..';
-import { type getInterviewTrainingProgress } from '.';
+import { type getInterviewTrainingProgressAPI } from '.';
 import { Functions } from './types';
 
 export const schedulingDashboardQueryKeys = {
@@ -30,7 +30,10 @@ export const schedulingDashboardQueryKeys = {
     ] as string[],
   }),
   interviewTrainingProgress: (
-    args: Parameters<typeof getInterviewTrainingProgress>[0],
+    args: Omit<
+      Parameters<typeof getInterviewTrainingProgressAPI>[0],
+      'supabase'
+    >,
   ) => ({
     queryKey: [
       ...schedulingDashboardQueryKeys.all.queryKey,

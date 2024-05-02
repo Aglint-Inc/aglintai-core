@@ -2,13 +2,14 @@ import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { Database } from '@/src/types/schema';
+import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
 
-export interface BodyParamsFetchUserDetails {
+interface BodyParamsFetchUserDetails {
   recruiter_id: string;
   status?: 'joined' | 'invited';
 }
@@ -35,7 +36,7 @@ const fetchUsers = async (recruiter_id: string, status: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      'role,recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name, email, profile_image, position, schedule_auth, scheduling_settings, department)',
+      `role,recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery},schedule_auth, scheduling_settings)`,
     )
     .eq('recruiter_id', recruiter_id)
     .eq('recruiter_user.join_status', status)

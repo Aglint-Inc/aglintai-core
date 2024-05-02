@@ -1,8 +1,10 @@
 import { Database } from '@/src/types/schema';
 
-import { getInterviewPlans } from '.';
+import { getInterviewPlansAPI } from '.';
 
-export type InterviewPlansType = Awaited<ReturnType<typeof getInterviewPlans>>;
+export type InterviewPlansType = Awaited<
+  ReturnType<typeof getInterviewPlansAPI>
+>;
 
 export type InterviewSessionType =
   InterviewPlansType['interview_session'][number];

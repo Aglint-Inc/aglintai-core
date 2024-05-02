@@ -321,9 +321,6 @@ function AddNewTask() {
               placeholder='Untitled'
               onChange={(e) => {
                 setInputData(e.target.value);
-                if (!e.target.value.trim()) {
-                  setSelectedSession([]);
-                }
               }}
               value={inputData}
               inputRef={inputRef}

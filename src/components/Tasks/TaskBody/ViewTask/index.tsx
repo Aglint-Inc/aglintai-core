@@ -163,7 +163,7 @@ function ViewTaskDrawer() {
         <ShowCode.Else>
           <ViewTask
             isCancelTaskVisible={
-              selectedTask?.status !== 'cancelled' &&
+              selectedTask?.status !== 'closed' &&
               selectedTask?.status !== 'completed'
             }
             onClickCancelTask={{

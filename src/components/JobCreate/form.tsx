@@ -217,7 +217,6 @@ const defaults: Defaults = {
     'data science',
     'education',
     'engineering',
-    'engineering',
     'entrepreneurship',
     'finance',
     'human resources',
