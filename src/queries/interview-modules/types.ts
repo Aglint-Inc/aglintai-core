@@ -1,9 +1,9 @@
 import { type ModuleType } from '@/src/components/Scheduling/Modules/types';
 
 import { type CustomType } from '../scheduling-dashboard/types';
-import { type getInterviewModules } from '.';
+import { type getInterviewModulesAPI } from '.';
 
 export type InterviewModulesType = CustomType<
-  Awaited<ReturnType<typeof getInterviewModules>>,
+  Awaited<ReturnType<typeof getInterviewModulesAPI>>,
   { settings: ModuleType['settings'] }
 >;

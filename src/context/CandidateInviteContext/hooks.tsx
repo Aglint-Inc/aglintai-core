@@ -41,7 +41,7 @@ const useInviteActions = () => {
 
   const [detailsPop, setDetailsPop] = useState(false);
 
-  const initialLoad = !!(meta.status !== 'pending');
+  const initialLoad = !meta.isPending;
 
   const handleSelectSlot = useCallback(
     (day: number, meeting: (typeof selectedSlots)[number]) => {

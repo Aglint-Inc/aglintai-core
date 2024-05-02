@@ -24,9 +24,6 @@ export const useCompanyMembers = () => {
   return { ...response, refetch };
 };
 
-export const interviewPlanRecruiterUserQuery =
-  'user_id, email, profile_image,first_name,last_name, position, department' as const;
-
 export const getCompanyMembers = async ({
   recruiter_id,
 }: {

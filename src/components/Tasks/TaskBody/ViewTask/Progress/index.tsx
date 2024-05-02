@@ -185,24 +185,37 @@ function SubTaskProgress() {
                       </ShowCode.When>
 
                       <ShowCode.When
-                        isTrue={
-                          item.progress_type === 'interview_schedule' &&
-                          !!sessionList?.length
-                        }
+                        isTrue={item.progress_type === 'interview_schedule'}
                       >
-                        <Stack direction={'column'} spacing={3} width={'100%'}>
-                          {sessionList &&
-                            sessionList?.map((ses, indOpt) => {
-                              return (
-                                <SessionCard
-                                  indOpt={indOpt}
-                                  ses={ses as meetingCardType}
-                                  key={indOpt}
-                                  sessionList={sessionList}
-                                />
-                              );
-                            })}
-                        </Stack>
+                        <ShowCode>
+                          <ShowCode.When
+                            isTrue={
+                              sessionList &&
+                              !sessionList[0]?.interview_meeting?.id
+                            }
+                          >
+                            <>Scheduling...</>
+                          </ShowCode.When>
+                          <ShowCode.Else>
+                            <Stack
+                              direction={'column'}
+                              spacing={3}
+                              width={'100%'}
+                            >
+                              {sessionList &&
+                                sessionList?.map((ses, indOpt) => {
+                                  return (
+                                    <SessionCard
+                                      indOpt={indOpt}
+                                      ses={ses as meetingCardType}
+                                      key={indOpt}
+                                      sessionList={sessionList}
+                                    />
+                                  );
+                                })}
+                            </Stack>
+                          </ShowCode.Else>
+                        </ShowCode>
                       </ShowCode.When>
                     </ShowCode>
                   }

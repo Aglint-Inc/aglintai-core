@@ -46,7 +46,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const { handelUpdateTask } = useTasksContext();
   const { assignerList, setIsImmediate } = useTaskStatesContext();
 
-  const [selectedSession, setSelectedSession] = useState([]);
+  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
 
   const [scheduleDate, setScheduleDate] = useState({
     start_date: null,
@@ -65,7 +65,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   useEffect(() => {
     if (task) {
       setScheduleDate({ ...task.schedule_date_range });
-      setSelectedSession(task.session_ids ? [...task.session_ids] : []);
+      setSelectedSession([...task.session_ids] as meetingCardType[]);
       setSelectedDueDate(task.due_date);
       setSelectTriggerTime(task.start_date);
       setSelectedPriority(task.priority);
@@ -131,7 +131,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            sessionList={task.session_ids as meetingCardType[]}
+            application_id={task.applications.id}
+            job_id={task.applications.job_id}
             isOptionList={task.status === 'not_started'}
             onChange={(data: any) => {
               updateChanges({ session_ids: data });

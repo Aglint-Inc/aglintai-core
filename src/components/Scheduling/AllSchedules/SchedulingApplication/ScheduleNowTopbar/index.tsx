@@ -93,23 +93,6 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
   const onClickScheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
     try {
       setFetchingPlan(true);
-      const resAllOptions = await axios.post(
-        '/api/scheduling/v1/find_availability',
-        {
-          session_ids: selectedSessionIds,
-          recruiter_id: recruiter.id,
-          start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-          end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-          user_tz: dayjs.tz.guess(),
-          is_debreif: isDebrief,
-        } as BodyParams,
-      );
-
-      if (resAllOptions.data.length === 0) {
-        toast.warning('No availability found.');
-        return;
-      }
-
       const res = await axios.post(
         '/api/scheduling/application/schedulewithagentwithouttaskid',
         {
@@ -155,6 +138,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          disabled={fetchingPlan}
           value={dayjs(dateRange?.start_date)}
           onChange={(newValue) => {
             if (dayjs(newValue) < dayjs(dateRange?.end_date)) {
@@ -185,6 +169,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          disabled={fetchingPlan}
           value={dayjs(dateRange?.end_date)}
           minDate={dayjs(dateRange?.start_date)}
           maxDate={dayjs(dateRange?.start_date).add(1, 'month')}

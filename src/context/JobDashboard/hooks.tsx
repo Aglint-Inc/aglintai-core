@@ -109,15 +109,15 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const initialLoad = !!(
     jobLoad &&
-    assessments.status !== 'pending' &&
-    schedules.status !== 'pending' &&
-    scoringPoll.status !== 'pending' &&
-    interviewPlanEnabled.status !== 'pending' &&
-    tenureAndExperience.status !== 'pending' &&
-    templates.status !== 'pending' &&
-    matches.status !== 'pending' &&
-    skills.status !== 'pending' &&
-    locations.status !== 'pending'
+    !assessments.isPending &&
+    !schedules.isPending &&
+    !scoringPoll.isPending &&
+    !interviewPlanEnabled.isPending &&
+    !tenureAndExperience.isPending &&
+    !templates.isPending &&
+    !matches.isPending &&
+    !skills.isPending &&
+    !locations.isPending
   );
 
   const handleJobRefresh = async () => {

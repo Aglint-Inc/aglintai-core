@@ -5,12 +5,14 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import {
   createTaskProgress,
   EmailAgentId,
   PhoneAgentId,
 } from '@/src/components/Tasks/utils';
 import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
+import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
 import {
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -456,8 +458,8 @@ export const scheduleWithAgent = async ({
   recruiter_id,
   task_id,
   recruiter_user_name,
-  candidate_name = 'chinmai',
-  company_name = 'aglint',
+  candidate_name,
+  company_name,
   rec_user_email,
   rec_user_phone,
   rec_user_id,
@@ -473,8 +475,8 @@ export const scheduleWithAgent = async ({
   recruiter_id: string;
   task_id: string;
   recruiter_user_name: string;
-  candidate_name?: string;
-  company_name?: string;
+  candidate_name: string;
+  company_name: string;
   rec_user_email: string;
   rec_user_phone: string;
   rec_user_id: string;
@@ -489,8 +491,6 @@ export const scheduleWithAgent = async ({
         .from('interview_schedule')
         .select('id')
         .eq('application_id', application_id);
-
-      console.log(checkSch[0]);
 
       if (errorCheckSch) throw new Error(errorCheckSch.message);
 
@@ -579,6 +579,10 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
+          dateRange,
+          session_ids: createCloneRes.session_ids,
+          rec_user_id,
+          recruiter_id,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -650,9 +654,15 @@ export const scheduleWithAgent = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
+          dateRange,
+          session_ids,
+          rec_user_id,
+          recruiter_id,
         });
       }
       return true;
+    } else {
+      throw new Error('agent type not mentioned');
     }
   } catch (err) {
     console.log(err?.message || err);
@@ -785,6 +795,10 @@ export const scheduleWithAgentWithoutTaskId = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
+          dateRange,
+          rec_user_id,
+          recruiter_id,
+          session_ids: createCloneRes.session_ids,
         });
       } else {
         console.log('fetchInterviewDataSchedule');
@@ -860,6 +874,10 @@ export const scheduleWithAgentWithoutTaskId = async ({
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_email,
           rec_user_phone,
+          dateRange,
+          rec_user_id,
+          recruiter_id,
+          session_ids,
         });
       }
       return true;
@@ -996,6 +1014,10 @@ export const agentTrigger = async ({
   jobRole,
   rec_user_email,
   rec_user_phone = '',
+  dateRange,
+  rec_user_id,
+  recruiter_id,
+  session_ids,
 }: {
   type: 'email_agent' | 'phone_agent';
   sessionsWithPlan: Awaited<ReturnType<typeof fetchInterviewDataSchedule>>;
@@ -1007,6 +1029,13 @@ export const agentTrigger = async ({
   jobRole: string;
   rec_user_email: string;
   rec_user_phone: string;
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+  session_ids: string[];
+  rec_user_id: string;
+  recruiter_id: string;
 }) => {
   console.log({
     type,
@@ -1016,73 +1045,68 @@ export const agentTrigger = async ({
   });
 
   const candidate = sessionsWithPlan.application.candidates;
-
+  let timezone = null;
   if (!candidate.timezone && (candidate.city || candidate.state)) {
-    await getCandidateTimezone(
+    timezone = await getCandidateTimezone(
       `${sessionsWithPlan.application.candidates.city} ${sessionsWithPlan.application.candidates.state}`,
       candidate.id,
     );
   }
-  
-  if (type === 'email_agent') {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
-      {
-        cand_email: rec_user_email,
-        filter_json_id: filterJsonId,
-        interviewer_name: recruiter_user_name,
-        task_id: task_id,
-      } as InitAgentBodyParams,
-    );
 
-    if (res?.status === 200) {
-      console.log('mail agent triggered successfully');
-    } else {
-      console.log('error in mail agent');
-    }
+  if (
+    await checkAvailibility({
+      dateRange,
+      rec_user_id,
+      recruiter_id,
+      recruiter_user_name,
+      session_ids,
+      task_id,
+      timezone,
+    })
+  ) {
+    if (type === 'email_agent') {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
+        {
+          cand_email: rec_user_email,
+          filter_json_id: filterJsonId,
+          interviewer_name: recruiter_user_name,
+          task_id: task_id,
+        } as InitAgentBodyParams,
+      );
 
-    return res.status;
-  } else if (type === 'phone_agent') {
-    const res = await axios.post(
-      // 'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
-      `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
-      {
-        begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
-        interviewer_name: recruiter_user_name,
-        // to_phone_no: '+919482306657',
-        from_phone_no: '+12512066348',
-        to_phone_no: formatPhoneNumber(rec_user_phone),
-        // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
-        retell_agent_id: process.env.RETELL_AGENT_ID,
-        filter_json_id: filterJsonId,
-        cand_email: rec_user_email,
-        // cand_email: sessionsWithPlan.application.candidates.email,
-        task_id: task_id,
-      },
-    );
+      if (res?.status === 200) {
+        console.log('mail agent triggered successfully');
+      } else {
+        console.log('error in mail agent');
+      }
 
-    if (res?.status === 200) {
-      console.log('phone agent triggered successfully');
-    } else {
-      console.log('error in phone agent');
-    }
-    return res.status;
-  }
-};
+      return res.status;
+    } else if (type === 'phone_agent') {
+      const res = await axios.post(
+        // 'https://rested-logically-lynx.ngrok-free.app/api/schedule-agent/create-phone-call',
+        `${process.env.NEXT_PUBLIC_AGENT_API}/api/schedule-agent/create-phone-call`,
+        {
+          begin_sentence_template: `Hi ${candidate_name}, this is ${recruiter_user_name} calling from ${company_name}. We wanted to schedule an interview for the position of ${jobRole}, Is this the right time to talk?`,
+          interviewer_name: recruiter_user_name,
+          // to_phone_no: '+919482306657',
+          from_phone_no: '+12512066348',
+          to_phone_no: formatPhoneNumber(rec_user_phone),
+          // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
+          retell_agent_id: process.env.RETELL_AGENT_ID,
+          filter_json_id: filterJsonId,
+          cand_email: rec_user_email,
+          // cand_email: sessionsWithPlan.application.candidates.email,
+          task_id: task_id,
+        },
+      );
 
-const getCandidateTimezone = async (location, candidate_id) => {
-  const resGeoCode = await geoCodeLocation(location);
-  if (resGeoCode) {
-    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
-    if (resTimezone) {
-      const { data } = await supabase
-        .from('candidates')
-        .update({
-          timezone: resTimezone,
-        })
-        .eq('id', candidate_id)
-        .select();
-      console.log(data);
+      if (res?.status === 200) {
+        console.log('phone agent triggered successfully');
+      } else {
+        console.log('error in phone agent');
+      }
+      return res.status;
     }
   }
 };
@@ -1153,7 +1177,6 @@ export const createTask = async ({
     .single();
 
   if (errorTasks) throw new Error(errorTasks.message);
-  console.log(task);
 
   await createTaskProgress({
     type: 'create_task',
@@ -1164,14 +1187,98 @@ export const createTask = async ({
     },
     optionData: {
       candidateName: candidate_name,
-      sessions: selectedSessions,
+      sessions: selectedSessions.map((ele) => ({
+        id: ele.id,
+        name: ele.name,
+      })) as meetingCardType[],
     },
     supabaseCaller: supabase,
   });
 
-  console.log(`Create task ${task.id}`);
+  console.log(`Created task ${task.id}`);
 
   return task;
+};
+
+function formatPhoneNumber(phoneNumber) {
+  // Remove all non-numeric characters except '+'
+  const numericPhoneNumber = phoneNumber.replace(/[^\d+]/g, '');
+
+  return numericPhoneNumber;
+}
+
+const getCandidateTimezone = async (location, candidate_id) => {
+  const resGeoCode = await geoCodeLocation(location);
+  let timeZone = null;
+  if (resGeoCode) {
+    const resTimezone = await getTimeZoneOfGeo(resGeoCode);
+    timeZone = resTimezone;
+    if (resTimezone) {
+      const { data } = await supabase
+        .from('candidates')
+        .update({
+          timezone: resTimezone,
+        })
+        .eq('id', candidate_id)
+        .select();
+      console.log(data);
+    }
+  }
+  return timeZone;
+};
+
+const checkAvailibility = async ({
+  session_ids,
+  recruiter_id,
+  dateRange,
+  timezone,
+  rec_user_id,
+  recruiter_user_name,
+  task_id,
+}) => {
+  const resAllOptions = await axios.post(
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find_availability`,
+    {
+      session_ids: session_ids,
+      recruiter_id: recruiter_id,
+      start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+      end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+      user_tz: timezone || 'America/Los_Angeles',
+      is_debreif: false,
+    } as BodyParams,
+  );
+
+  if (resAllOptions.data.length === 0) {
+    console.log('No slots for selected date range');
+
+    const { error } = await supabase
+      .from('new_tasks')
+      .update({
+        status: 'failed',
+      })
+      .eq('id', task_id);
+
+    if (error) {
+      console.log(error.message);
+    }
+
+    await createTaskProgress({
+      type: 'slots_failed',
+      data: {
+        progress_type: 'standard',
+        created_by: { id: rec_user_id, name: recruiter_user_name },
+        task_id: task_id,
+      },
+      optionData: {
+        prevScheduleDateRange: dateRange,
+      },
+      supabaseCaller: supabase,
+    });
+
+    return false;
+  } else {
+    return true;
+  }
 };
 
 export const getTimeZoneBrowser = () => {
@@ -1187,10 +1294,3 @@ export const getTimeZoneBrowser = () => {
 
   return timezone;
 };
-
-function formatPhoneNumber(phoneNumber) {
-  // Remove all non-numeric characters except '+'
-  const numericPhoneNumber = phoneNumber.replace(/[^\d+]/g, '');
-
-  return numericPhoneNumber;
-}

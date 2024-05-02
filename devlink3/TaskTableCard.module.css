@@ -81,10 +81,15 @@
   display: none;
 }
 
+.div-block-1435.space-between {
+  justify-content: space-between;
+}
+
 .div-block-1626 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  flex: 0 0 auto;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
 }

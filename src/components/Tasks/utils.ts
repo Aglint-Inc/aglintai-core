@@ -12,6 +12,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { fetchInterviewSessionTask } from '../Scheduling/AllSchedules/SchedulingApplication/utils';
+import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
 export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
@@ -94,6 +95,7 @@ export function taskUpdateDebounce<T extends (...args: any[]) => void>(
 }
 // end
 type ProgressType =
+  | 'slots_failed'
   | 'session_update'
   | 'due_date_update'
   | 'priority_update'
@@ -123,7 +125,7 @@ type optionDataType = {
     prev: string;
     current: string;
   };
-  sessions?: Awaited<ReturnType<typeof fetchInterviewSessionTask>> | null;
+  sessions?: meetingCardType[] | null;
   candidateName?: string;
   priority?: DatabaseEnums['task_priority'];
   currentPriority?: DatabaseEnums['task_priority'];
@@ -131,8 +133,8 @@ type optionDataType = {
     prev: string;
     selectedDate: string;
   };
-  currentSessions?: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
-  selectedSession?: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
+  currentSessions?: meetingCardType[];
+  selectedSession?: meetingCardType[];
 };
 
 export async function createTaskProgress({
@@ -187,6 +189,7 @@ export async function createTaskProgress({
           : removedSessions.length
             ? `Removed <b>${removedSessions.map((ele) => ele.name).join(', ')}</b> from interview.`
             : '';
+
       case 'due_date_update':
         return `Due Date changed from <span class="progress_date_section">${dayjs(dueDate.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(dueDate.selectedDate).format('MMM DD, hh:mm A')}</span>.`;
       case 'priority_update':
@@ -201,6 +204,8 @@ export async function createTaskProgress({
         return `Interview Date changed from (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>) to (<span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('MMM DD')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
       case 'trigger_time_update':
         return `Schedule time changed from <span class="progress_date_section">${dayjs(triggerTime.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('MMM DD, hh:mm A')}</span>`;
+      case 'slots_failed':
+        return `Unable to find slots between (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
       default:
         return '';
     }
