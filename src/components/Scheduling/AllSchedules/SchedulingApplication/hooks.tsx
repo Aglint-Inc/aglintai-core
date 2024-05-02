@@ -7,11 +7,14 @@ dayjs.extend(timezone);
 
 import { createServerClient } from '@supabase/ssr';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 
+import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   InterviewScheduleActivityTypeDb,
+  SupabaseType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -36,7 +39,16 @@ export const useAllActivities = ({ application_id }) => {
   const queryKey = ['activitiesCandidate', { application_id }];
   const query = useQuery({
     queryKey: queryKey,
-    queryFn: () => fetchAllActivities({ application_id }),
+    queryFn: async () => {
+      const { data: resAct, status }: AxiosResponse<ApiResponseActivities> =
+        await axios.post('/api/scheduling/fetch_activities', {
+          application_id,
+        });
+      if (status !== 200) {
+        toast.error('Unable to fetch activities');
+      }
+      return resAct.data;
+    },
     enabled: !!application_id,
     initialData: [],
   });
@@ -46,7 +58,13 @@ export const useAllActivities = ({ application_id }) => {
   return { ...query, refetch };
 };
 
-const fetchAllActivities = async ({ application_id }) => {
+export const fetchAllActivities = async ({
+  application_id,
+  supabase,
+}: {
+  application_id: string;
+  supabase: SupabaseType;
+}) => {
   const { data, error } = await supabase
     .from('application_logs')
     .select(
