@@ -189,7 +189,10 @@ function SubTaskProgress() {
                       >
                         <ShowCode>
                           <ShowCode.When
-                            isTrue={!sessionList[0]?.interview_meeting?.id}
+                            isTrue={
+                              sessionList &&
+                              !sessionList[0]?.interview_meeting?.id
+                            }
                           >
                             <>Scheduling...</>
                           </ShowCode.When>
