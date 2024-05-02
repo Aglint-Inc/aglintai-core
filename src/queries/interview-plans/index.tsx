@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { addInterviewCoordinatorType } from '@/src/pages/api/scheduling/add_interview_coordinator';
+import { getInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { interviewPlanRecruiterUserQuery } from '../company-members';
 import { useCurrentJob } from '../job-assessment/keys';
 import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';
@@ -25,7 +27,7 @@ export const useInterviewPlans = () => {
     jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
   const response = useQuery({
     queryKey,
-    queryFn: () => getInterviewPlans(job_id),
+    queryFn: () => getInterviewPlansAPI(job_id),
     enabled: !!(recruiter_id && job),
   });
   const refetch = async () => {
@@ -177,7 +179,7 @@ export const useAddInterviewCoordinator = () => {
   const { job_id } = useCurrentJob();
   const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
   const mutation = useMutation({
-    mutationFn: addInterviewCoordinator,
+    mutationFn: addInterviewCoordinatorAPI,
     onMutate: async (payload) => {
       await queryClient.cancelQueries({ queryKey });
       const previousPlans =
@@ -285,21 +287,10 @@ export const createInterviewPlan = async (job_id: string) => {
   return data[0];
 };
 
-export const getInterviewPlans = async (job_id: string) => {
-  const { data, error } = await supabase
-    .from('interview_plan')
-    .select(
-      `*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
-    )
-    .eq('job_id', job_id);
-  if (error) throw new Error(error.message);
-  if (data.length === 0) return null;
-  const response = data[0];
-  if (response?.interview_session)
-    response.interview_session.sort(
-      (a, b) => a.session_order - b.session_order,
-    );
-  return response;
+export const getInterviewPlansAPI = async (job_id: string) => {
+  return (
+    await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`)
+  ).data as ReturnType<getInterviewPlansType>;
 };
 
 export type CreateInterviewSession = Omit<
@@ -352,17 +343,16 @@ export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   if (error) throw new Error(error.message);
 };
 
-export const addInterviewCoordinator = async ({
+export const addInterviewCoordinatorAPI = async ({
   coordinator,
   plan_id,
 }: AddInterviewCoordinatorType) => {
-  const { data, error } = await supabase
-    .from('interview_plan')
-    .update({ coordinator_id: coordinator.user_id })
-    .eq('id', plan_id)
-    .select(`recruiter_user(${interviewPlanRecruiterUserQuery})`);
-  if (error) throw new Error(error.message);
-  return data[0]['recruiter_user'];
+  return (
+    await axios.patch(`/api/scheduling/add_interview_coordinator`, {
+      coordinator,
+      plan_id,
+    })
+  ).data as ReturnType<addInterviewCoordinatorType>;
 };
 
 export type ReorderSessions = Omit<

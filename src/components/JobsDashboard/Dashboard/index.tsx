@@ -512,7 +512,10 @@ const Banners = () => {
         }
         onClickDismiss={{
           onClick: () =>
-            setDismissWarnings((prev) => ({ ...prev, interview_plan: true })),
+            setDismissWarnings((prev) => ({
+              ...prev,
+              interview_session: true,
+            })),
         }}
         onClickView={{
           onClick: () => push(`/jobs/${job.id}/interview-plan`),

@@ -28,7 +28,7 @@ const useJobActions = () => {
 
   const jobsData = { jobs: jobs.data };
 
-  const initialLoad = !!(jobs.status !== 'pending' && recruiter?.id);
+  const initialLoad = !!(!jobs.isPending && recruiter?.id);
 
   const handleJobRead = async () => {
     if (recruiter) {
