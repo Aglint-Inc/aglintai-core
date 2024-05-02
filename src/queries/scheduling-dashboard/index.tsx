@@ -40,6 +40,7 @@ export const useInterviewMeetingStatus = (
 export const useInterviewTrainingProgress = () => {
   const { recruiter_id, enabled, gcTime } = useDashboardEnabled();
   const { queryKey } = schedulingDashboardQueryKeys.interviewTrainingProgress({
+    supabase,
     recruiter_id,
   });
   return useQuery({
