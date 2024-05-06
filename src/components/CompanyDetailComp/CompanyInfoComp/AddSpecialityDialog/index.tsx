@@ -3,7 +3,7 @@ import {
   Dialog,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -21,7 +21,7 @@ interface StacksProps {
 const AddSpecialityDialog: React.FC<StacksProps> = ({
   handleClose,
   open,
-  handleChange
+  handleChange,
 }) => {
   const { recruiter } = useAuthDetails();
   const [inputValue, setInputValue] = useState('');
@@ -76,7 +76,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
               onClickRemoveRoles={{
                 onClick: () => {
                   setStacks(stacks.filter((rol) => role != rol));
-                }
+                },
               }}
             />
           );
@@ -102,9 +102,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
                       direction={'row'}
                       width={'100%'}
                       onClick={() => {
-                        setStacks([
-                          ...new Set([...stacks, option])
-                        ]);
+                        setStacks([...new Set([...stacks, option])]);
                         setTimeout(() => {
                           setInputValue('');
                           setOptions(initialStacks);
@@ -127,9 +125,7 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
                     width={'100%'}
                     onClick={() => {
                       if (!stacks.includes(option)) {
-                        setStacks([
-                          ...new Set([...stacks, option])
-                        ]);
+                        setStacks([...new Set([...stacks, option])]);
                         setTimeout(() => {
                           setInputValue('');
                         }, 50);
@@ -149,7 +145,6 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
-                  disableUnderline: true
                 }}
                 onKeyDown={handleKeyDown}
               />
@@ -159,16 +154,16 @@ const AddSpecialityDialog: React.FC<StacksProps> = ({
         onClickCancel={{
           onClick: () => {
             handleClose();
-          }
+          },
         }}
         onClickDone={{
           onClick: () => {
             handleChange({
               ...recruiter,
-              technology_score: stacks
+              technology_score: stacks,
             });
             handleClose();
-          }
+          },
         }}
       />
     </Dialog>
