@@ -578,7 +578,7 @@ function InterviewerLevelSettings({
                   <KeywordCard
                     textTitle={'Out of Office'}
                     textWarning={
-                      'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
+                      'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day, and interviews will not be scheduled.'
                     }
                     slotInput={
                       <FilterInput
@@ -632,7 +632,7 @@ function InterviewerLevelSettings({
                   <KeywordCard
                     textTitle={'Recruiting Blocks'}
                     textWarning={
-                      'When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.'
+                      'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.'
                     }
                     slotInput={
                       <FilterInput

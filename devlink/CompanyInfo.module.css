@@ -27,6 +27,7 @@
 
 .profile-block {
   display: flex;
+  width: 400px;
   flex-direction: column;
   grid-column-gap: 0px;
   grid-row-gap: 0px;

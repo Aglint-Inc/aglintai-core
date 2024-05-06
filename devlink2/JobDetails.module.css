@@ -518,6 +518,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .warning-job-wrap {
   position: relative;
   cursor: pointer;
@@ -546,6 +550,10 @@
 
 .icons.ml--6 {
   margin-left: -6px;
+}
+
+.icons.hide {
+  display: none;
 }
 
 .job-desc-warn-wrap {

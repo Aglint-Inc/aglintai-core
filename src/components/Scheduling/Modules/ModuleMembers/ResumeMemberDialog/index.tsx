@@ -29,7 +29,7 @@ function ResumeMemberDialog({ editModule }: { editModule: any }) {
       }}
     >
       <ResumePop
-        textResumeWarning={`This member is paused from scheduling until ${selUser?.pause_json?.isManual ? 'you resume' : dayjs(selUser?.pause_json?.end_date).format('MMMM DD YYYY')}`}
+        textResumeWarning={`This member is currently paused from scheduling for this interview until  ${selUser?.pause_json?.isManual ? 'you resume' : dayjs(selUser?.pause_json?.end_date).format('MMMM DD YYYY')}`}
         onClickClose={{
           onClick: () => {
             setIsResumeDialogOpen(false);

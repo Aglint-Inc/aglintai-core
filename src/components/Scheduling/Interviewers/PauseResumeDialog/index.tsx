@@ -118,8 +118,8 @@ function PauseResumeDialog({
             <ShowCode>
               <ShowCode.When isTrue={pauseResumeDialog.type === 'pause'}>
                 <ConfirmationPopup
-                  textPopupTitle={`Pause from scheduling ${pauseResumeDialog.isAll ? 'for  all ' + pauseResumeDialog.training_status + ' modules' : ' for this module'}.`}
-                  textPopupDescription={`This member won’t be considered for any new interviews scheduled with ${pauseResumeDialog.isAll ? 'all qualified' : 'this'} module until the pause durations is completed.`}
+                  textPopupTitle={`Pause Scheduling ${pauseResumeDialog.isAll ? 'for  all ' + pauseResumeDialog.training_status + ' modules' : ' for this Module'}.`}
+                  textPopupDescription={`This member will be excluded from all new interview scheduling within ${pauseResumeDialog.isAll ? 'all qualified' : 'this'} module until the pause period ends.`}
                   isIcon={false}
                   slotWidget={
                     <Stack spacing={2}>
@@ -142,10 +142,10 @@ function PauseResumeDialog({
                       >
                         <Checkbox isChecked={selectedType === 'isManual'} />
                         <Typography variant='body2' color={'#000'}>
-                          Indefinetly
+                          Indefinitely
                         </Typography>
                         <Typography variant='body2'>
-                          Until when you manualy resumes
+                          Until you manually resume
                         </Typography>
                       </Stack>
                       <Stack
