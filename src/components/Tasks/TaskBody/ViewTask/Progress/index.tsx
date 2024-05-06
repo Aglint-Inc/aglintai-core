@@ -56,18 +56,18 @@ function SubTaskProgress() {
               const currentTimeZone = dayjs.tz.guess();
 
               // console.log(item.title_meta);
-              const bookingDate = item.title_meta['{booking_date}']
+              const bookingDate = item.title_meta['{date_format}']
                 ? `<span class="progress_date_section">${dayjs(
-                    item.title_meta['{booking_date}'],
+                    item.title_meta['{date_format}'],
                   )
                     .tz(candidateDetails?.timezone || currentTimeZone)
                     .format(
                       'MMM DD',
                     )} (${candidateDetails?.timezone || currentTimeZone})</span>`
                 : '';
-              const bookingTime = item.title_meta['{booking_time}']
+              const bookingTime = item.title_meta['{time_format}']
                 ? `<span class="progress_date_section">${dayjs(
-                    item.title_meta['{booking_time}'],
+                    item.title_meta['{time_format}'],
                   )
                     .tz(candidateDetails?.timezone || currentTimeZone)
                     .format(
@@ -77,6 +77,7 @@ function SubTaskProgress() {
               const candidateName = item.title_meta['{candidate}']
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
                 : '';
+              const location = item.title_meta['{location}'];
               return (
                 <TaskProgress
                   isLineVisible={progressList.length !== i + 1}
@@ -89,8 +90,9 @@ function SubTaskProgress() {
                           .trim()
                           .replaceAll('Pm', 'PM')
                           .replaceAll('{candidate}', candidateName)
-                          .replaceAll('{booking_date}', bookingDate)
-                          .replaceAll('{booking_time}', bookingTime),
+                          .replaceAll('{date_format}', bookingDate)
+                          .replaceAll('{time_format}', bookingTime)
+                          .replaceAll('{location}', location),
                       }}
                     ></span>
                   }
