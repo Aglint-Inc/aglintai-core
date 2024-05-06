@@ -28,15 +28,9 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const route = useRouter();
   const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
-  let overDueText = '';
   let toDayDateTime = dayjs();
   const tomorrowDate = toDayDateTime.add(1, 'day');
   let dueDateTime = dayjs(task.due_date);
-  if (dueDateTime.isBefore(toDayDateTime)) {
-    overDueText = `Overdue ${dueDateTime.fromNow()}`;
-    // eslint-disable-next-line no-console
-    console.log(overDueText);
-  }
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
   ))(({ theme }) => ({

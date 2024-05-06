@@ -5,7 +5,7 @@ import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
 import { EmptyState } from '@/devlink2';
-import { TaskProgress } from '@/devlink3';
+import { AvatarWithName, TaskProgress } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
@@ -131,13 +131,15 @@ function SubTaskProgress() {
                         </Stack>
                       </ShowCode.When>
                       <ShowCode.When isTrue={!!CandidateCreator?.id}>
-                        <MuiAvatar
-                          level={CandidateCreator?.first_name}
-                          src={CandidateCreator?.avatar}
-                          variant='circular'
-                          width='24px'
-                          height='24px'
-                          fontSize='12px'
+                        <AvatarWithName
+                          isAvatarVisible={false}
+                          isCandidateIconVisible={true}
+                          isRoleVisible={false}
+                          isReverseShadowVisible={false}
+                          isShadowVisible={false}
+                          slotAvatar={<></>}
+                          isTickVisible={false}
+                          textName={''}
                         />
                       </ShowCode.When>
                       <ShowCode.When isTrue={!!InterviewerCreator?.user_id}>

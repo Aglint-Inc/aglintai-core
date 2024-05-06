@@ -22,6 +22,8 @@
 
 .div-block-924 {
   display: flex;
+  overflow: auto;
+  max-height: 350px;
   padding-bottom: 16px;
   flex-direction: column;
   grid-column-gap: 16px;
@@ -82,6 +84,21 @@
   margin-left: -6px;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
@@ -109,17 +126,6 @@
 
 .clickable:hover {
   opacity: 0.8;
-}
-
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
 }
 
 .text-blue-500.ml-12 {

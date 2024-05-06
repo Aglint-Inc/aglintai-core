@@ -3,6 +3,7 @@
 import { RealtimeChannel } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { capitalize, cloneDeep } from 'lodash';
+import { useRouter } from 'next/router';
 import {
   createContext,
   ReactNode,
@@ -22,6 +23,7 @@ import {
   DatabaseTableInsert,
   DatabaseTableUpdate,
 } from '@/src/types/customSchema';
+import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
@@ -42,6 +44,7 @@ type TasksReducerType = {
     jobTitle: { options: { id: string; label: string }[]; values: string[] };
     priority: { options: DatabaseEnums['task_priority'][]; values: string[] };
     date: { values: string[] };
+    candidate: { options: { id: string; label: string }[]; values: string[] };
   };
   pagination: {
     rows: number;
@@ -96,6 +99,7 @@ const reducerInitialState: TasksReducerType = {
     jobTitle: { options: [], values: [] },
     priority: { options: ['high', 'low', 'medium'], values: [] },
     date: { values: [] },
+    candidate: { options: [], values: [] },
   },
   sort: 'date',
   loadingTasks: true,
@@ -215,6 +219,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const { recruiter_id, recruiterUser, isAllowed } = useAuthDetails();
   const { data: members, isFetching } = useAllInterviewersDetails();
 
+  const router = useRouter();
   const init = (data: TasksReducerType) => {
     data.filter.assignee.options = [
       ...new Set(data.tasks.map((task) => task.assignee).flat(2)),
@@ -238,6 +243,22 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           .map((task) => ({
             id: task.applications.public_jobs.id,
             label: task.applications.public_jobs.job_title,
+          }))
+          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
+      ),
+    ];
+    const application_id = router.query.application_id as string;
+    data.filter.candidate.values = application_id ? [application_id] : [];
+    data.filter.candidate.options = [
+      ...new Set(
+        data.tasks
+          .filter((task) => Boolean(task.application_id))
+          .map((task) => ({
+            id: task.application_id,
+            label: getFullName(
+              task.applications.candidates.first_name,
+              task.applications.candidates.last_name,
+            ),
           }))
           .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
       ),
@@ -371,6 +392,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     const jobTitle = tasksReducer.filter.jobTitle;
     const priority = tasksReducer.filter.priority;
     const date = tasksReducer.filter.date;
+    const candidate = tasksReducer.filter.candidate;
     let temp = [...sortedTask];
 
     if (status.values.length) {
@@ -418,7 +440,11 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         });
       }
     }
-
+    if (candidate.values.length) {
+      temp = temp.filter((task) =>
+        candidate.values.includes(task?.application_id),
+      );
+    }
     return temp;
   }, [tasksReducer.filter, sortedTask]);
 
