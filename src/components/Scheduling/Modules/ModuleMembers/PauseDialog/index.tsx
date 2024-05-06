@@ -188,11 +188,6 @@ function PauseDialog() {
                       }
                     }}
                     minDate={currentDate}
-                    slotProps={{
-                      textField: {
-                        InputProps: { disableUnderline: true },
-                      },
-                    }}
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -204,11 +199,6 @@ function PauseDialog() {
                         ...pause_json,
                         end_date: newValue.toISOString(),
                       });
-                    }}
-                    slotProps={{
-                      textField: {
-                        InputProps: { disableUnderline: true },
-                      },
                     }}
                   />
                 </LocalizationProvider>

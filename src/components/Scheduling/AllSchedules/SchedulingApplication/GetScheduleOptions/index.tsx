@@ -221,7 +221,6 @@ function GetScheduleOptionsDialog() {
                     textField: {
                       fullWidth: true,
                       variant: 'outlined',
-                      InputProps: { disableUnderline: true },
                       placeholder: 'Start Date',
                     },
                   }}
@@ -242,7 +241,6 @@ function GetScheduleOptionsDialog() {
                     textField: {
                       fullWidth: true,
                       variant: 'outlined',
-                      InputProps: { disableUnderline: true },
                       placeholder: 'End Date',
                     },
                   }}

@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import {
   NavAssessment,
@@ -18,7 +18,6 @@ import {
 } from '@/devlink';
 import { AssistantLogo } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Database } from '@/src/types/schema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
@@ -39,7 +38,22 @@ function SideNavbar() {
 
   const isSchedulingEnabled = useFeatureFlagEnabled('isSchedulingEnabled');
 
-  const navList = [
+  const navList: {
+    icon: ReactNode;
+    text: string;
+    SubComponents: any;
+    route: string;
+    comingsoon: boolean;
+    isvisible: boolean;
+    roles?: (
+      | 'admin'
+      | 'recruiter'
+      | 'interviewer'
+      | 'recruiting_coordinator'
+      | 'sourcer'
+      | 'hiring_manager'
+    )[];
+  }[] = [
     {
       icon: <AssistantLogo />,
       text: 'Agent',
@@ -47,7 +61,7 @@ function SideNavbar() {
       route: pageRoutes.AGENT,
       comingsoon: false,
       isvisible: isAgentEnabled,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin'],
     },
     {
       icon: <NavTask isActive={false} />,
@@ -56,11 +70,11 @@ function SideNavbar() {
       route: pageRoutes.TASKS + '?myTasks',
       comingsoon: false,
       isvisible: isTasksEnabled,
-      roles: [
-        'admin',
-        'interviewer',
-        'recruiter',
-      ] as Database['public']['Enums']['user_roles'][],
+      // roles: [
+      //   'admin',
+      //   'interviewer',
+      //   'recruiter',
+      // ],
     },
     {
       icon: <NavJobs isActive={false} />,
@@ -71,8 +85,11 @@ function SideNavbar() {
       isvisible: true,
       roles: [
         'admin',
+        'hiring_manager',
         'recruiter',
-      ] as Database['public']['Enums']['user_roles'][],
+        'recruiting_coordinator',
+        'sourcer',
+      ],
     },
     {
       icon: <NavScheduler isActive={false} />,
@@ -81,12 +98,7 @@ function SideNavbar() {
       route: pageRoutes.SCHEDULING,
       comingsoon: false,
       isvisible: isSchedulingEnabled,
-      roles: [
-        'admin',
-        'recruiter',
-        'recruiting_coordinator',
-        'interviewer',
-      ] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
     },
     {
       icon: <NavCd isActive={false} />,
@@ -95,10 +107,7 @@ function SideNavbar() {
       route: pageRoutes.CANDIDATES,
       comingsoon: false,
       isvisible: isSourcingEnabled,
-      roles: [
-        'admin',
-        'recruiter',
-      ] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin', 'recruiter'],
     },
     {
       icon: <NavTickets isActive={false} />,
@@ -107,7 +116,7 @@ function SideNavbar() {
       route: pageRoutes.SUPPORT,
       comingsoon: false,
       isvisible: isSupportEnabled,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin'],
     },
     {
       icon: <NavAssistant isActive={false} />,
@@ -116,7 +125,7 @@ function SideNavbar() {
       route: pageRoutes.ASSISTANT,
       comingsoon: false,
       isvisible: isAssistantEnabled,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin'],
     },
 
     {
@@ -126,12 +135,7 @@ function SideNavbar() {
       route: pageRoutes.SCREENING,
       comingsoon: false,
       isvisible: isPhoneScreeningEnabled,
-      roles: [
-        'admin',
-        'recruiter',
-        'recruiting_coordinator',
-        'interviewer',
-      ] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
     },
 
     {
@@ -141,10 +145,7 @@ function SideNavbar() {
       route: pageRoutes.ASSESSMENTS,
       comingsoon: false,
       isvisible: isAssessmentEnabled,
-      roles: [
-        'admin',
-        'recruiter',
-      ] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin', 'recruiter'],
     },
     {
       icon: <NavIntegration isActive={false} />,
@@ -153,7 +154,7 @@ function SideNavbar() {
       route: '/integrations',
       comingsoon: false,
       isvisible: true,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin'],
     },
     {
       icon: <NavCompanySetting isActive={false} />,
@@ -162,7 +163,7 @@ function SideNavbar() {
       route: pageRoutes.COMPANY,
       comingsoon: false,
       isvisible: true,
-      roles: ['admin'] as Database['public']['Enums']['user_roles'][],
+      roles: ['admin'],
     },
   ];
 

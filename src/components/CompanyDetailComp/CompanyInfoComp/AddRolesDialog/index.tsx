@@ -143,7 +143,6 @@ const AddRolesDialog: React.FC<RolesProps> = ({
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
-                  disableUnderline: true,
                 }}
                 onKeyDown={handleKeyDown}
               />

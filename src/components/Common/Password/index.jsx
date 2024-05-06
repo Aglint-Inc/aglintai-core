@@ -39,7 +39,6 @@ const Password = ({ passwordRef, label, error, onChange }) => {
             : ''
       }
       InputProps={{
-        disableUnderline: true,
         endAdornment: (
           <InputAdornment position='end'>
             <IconButton
@@ -51,7 +50,7 @@ const Password = ({ passwordRef, label, error, onChange }) => {
               {/* {showPassword ? <IconUnlock /> : <IconLock />} */}
             </IconButton>
           </InputAdornment>
-        )
+        ),
       }}
       inputRef={passwordRef}
     />

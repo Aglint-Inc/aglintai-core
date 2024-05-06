@@ -352,7 +352,7 @@ export default TeamManagement;
 
 const useTeamMembers = () => {
   const { members, recruiter } = useAuthDetails();
-  return useQuery({
+  const query = useQuery({
     queryKey: ['TeamMembers'],
     queryFn: () => {
       return getLastLogins(
@@ -370,6 +370,12 @@ const useTeamMembers = () => {
     enabled: Boolean(members?.length),
     refetchOnWindowFocus: false,
   });
+  useEffect(() => {
+    if (query.data && members.length) {
+      query.refetch();
+    }
+  }, [members, query.refetch]);
+  return query;
 };
 
 const getLastLogins = (ids: string[], recruiter_id: string) => {
