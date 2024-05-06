@@ -2493,7 +2493,7 @@ export type Database = {
           primary_contact: Json | null
           recruiter_active: boolean | null
           recruiter_type: string | null
-          roles: Json
+          scheduling_reason: Json | null
           scheduling_settings: Json | null
           service_json: string | null
           socials: Json | null
@@ -2538,7 +2538,7 @@ export type Database = {
           primary_contact?: Json | null
           recruiter_active?: boolean | null
           recruiter_type?: string | null
-          roles?: Json
+          scheduling_reason?: Json | null
           scheduling_settings?: Json | null
           service_json?: string | null
           socials?: Json | null
@@ -2583,7 +2583,7 @@ export type Database = {
           primary_contact?: Json | null
           recruiter_active?: boolean | null
           recruiter_type?: string | null
-          roles?: Json
+          scheduling_reason?: Json | null
           scheduling_settings?: Json | null
           service_json?: string | null
           socials?: Json | null
