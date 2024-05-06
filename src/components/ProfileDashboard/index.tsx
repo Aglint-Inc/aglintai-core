@@ -816,7 +816,6 @@ const ProfileForm = ({
           }
           onChange={(e) => onChange(e, id)}
           InputProps={{
-            disableUnderline: true,
             endAdornment: (
               <InputAdornment position='end'>
                 <IconButton

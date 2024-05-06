@@ -371,7 +371,6 @@ const CustomAutocomplete = (props: AutocompleteProps) => {
             }}
             InputProps={{
               ...params.InputProps,
-              disableUnderline: true,
             }}
             placeholder={placeholder}
             variant='filled'

@@ -235,7 +235,6 @@ function EditFilter() {
                     fullWidth
                     InputProps={{
                       ...params.InputProps,
-                      disableUnderline: true,
                     }}
                     sx={{
                       '& .MuiFilledInput-root': {

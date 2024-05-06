@@ -154,7 +154,6 @@ const AddDepartmentsDialog: React.FC<DepartmentsProps> = ({
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
-                  disableUnderline: true,
                 }}
                 onKeyDown={handleKeyDown}
               />
