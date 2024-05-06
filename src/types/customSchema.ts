@@ -81,21 +81,24 @@ export type CustomDatabase = {
                   ? {
                       Row: Omit<
                         Database['public']['Tables'][Table]['Row'],
-                        'scheduling_settings'
+                        'scheduling_settings' | 'scheduling_reason'
                       > & {
                         scheduling_settings: recruiter_scheduling_settings;
+                        scheduling_reason: recruiter_scheduling_reason | null;
                       };
                       Insert: Omit<
                         Database['public']['Tables'][Table]['Insert'],
-                        'scheduling_settings'
+                        'scheduling_settings' | 'scheduling_reason'
                       > & {
                         scheduling_settings?: recruiter_scheduling_settings;
+                        scheduling_reason?: recruiter_scheduling_reason;
                       };
                       Update: Omit<
                         Database['public']['Tables'][Table]['Update'],
-                        'scheduling_settings'
+                        'scheduling_settings' | 'scheduling_reason'
                       > & {
                         scheduling_settings?: recruiter_scheduling_settings;
+                        scheduling_reason?: recruiter_scheduling_reason;
                       };
                       Relationships: Database['public']['Tables'][Table]['Relationships'];
                     }
@@ -193,3 +196,9 @@ interface recruiter_scheduling_settings {
     end_time: string;
   };
 }
+
+type recruiter_scheduling_reason = {
+  reschedule: string[];
+  cancel: string[];
+  decline: string[];
+};
