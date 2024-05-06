@@ -5,7 +5,7 @@ import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
 import { EmptyState } from '@/devlink2';
-import { TaskProgress } from '@/devlink3';
+import { AvatarWithName, TaskProgress } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
@@ -78,6 +78,8 @@ function SubTaskProgress() {
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
                 : '';
               const location = item.title_meta['{location}'];
+              const errorMessage = item.title_meta['{err_msg}'];
+
               return (
                 <TaskProgress
                   isLineVisible={progressList.length !== i + 1}
@@ -92,7 +94,8 @@ function SubTaskProgress() {
                           .replaceAll('{candidate}', candidateName)
                           .replaceAll('{date_format}', bookingDate)
                           .replaceAll('{time_format}', bookingTime)
-                          .replaceAll('{location}', location),
+                          .replaceAll('{location}', location)
+                          .replaceAll('{err_msg}', errorMessage),
                       }}
                     ></span>
                   }
@@ -131,13 +134,15 @@ function SubTaskProgress() {
                         </Stack>
                       </ShowCode.When>
                       <ShowCode.When isTrue={!!CandidateCreator?.id}>
-                        <MuiAvatar
-                          level={CandidateCreator?.first_name}
-                          src={CandidateCreator?.avatar}
-                          variant='circular'
-                          width='24px'
-                          height='24px'
-                          fontSize='12px'
+                        <AvatarWithName
+                          isAvatarVisible={false}
+                          isCandidateIconVisible={true}
+                          isRoleVisible={false}
+                          isReverseShadowVisible={false}
+                          isShadowVisible={false}
+                          slotAvatar={<></>}
+                          isTickVisible={false}
+                          textName={''}
                         />
                       </ShowCode.When>
                       <ShowCode.When isTrue={!!InterviewerCreator?.user_id}>

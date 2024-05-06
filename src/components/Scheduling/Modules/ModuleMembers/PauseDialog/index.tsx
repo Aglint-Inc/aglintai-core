@@ -75,11 +75,9 @@ function PauseDialog() {
             >
               <Checkbox isChecked={selectedType === 'isManual'} />
               <Typography variant='body2' color={'#000'}>
-                Indefinetly
+                Indefinitely
               </Typography>
-              <Typography variant='body2'>
-                Until when you manually resumes
-              </Typography>
+              <Typography variant='body2'>Until you manually resume</Typography>
             </Stack>
             <Stack
               direction={'row'}

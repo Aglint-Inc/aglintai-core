@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -8,7 +9,7 @@ export function ResumePop({
   onClickResume = {},
   onClickClose = {},
   textResumeWarning = "This member is paused from scheduling with this module until March 04 2014",
-  textDescription = "By Clicking resume the member will be considerd with the schdules.",
+  textDescription = 'By clicking "Resume," this member will be included in new interviews scheduled.',
 }) {
   return (
     <_Component
@@ -24,7 +25,7 @@ export function ResumePop({
             />
           </_Builtin.Block>
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-red-600")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {"Resume"}

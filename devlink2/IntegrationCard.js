@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -34,7 +35,7 @@ export function IntegrationCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
+              className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
               tag="div"
             >
               {textName}

@@ -122,9 +122,9 @@ function RescheduleDialog() {
       }}
     >
       <ConfirmationPopup
-        textPopupTitle={'Confirm Reschedule'}
+        textPopupTitle={'Reschedule'}
         textPopupDescription={
-          'Old schedule will be canceled and new schedule will be created. Are you sure you want to reschedule?'
+          'Are you sure you want to reschedule? The old schedule will be canceled and a new schedule will be created. This action cannot be undone.'
         }
         isIcon={false}
         onClickCancel={{
@@ -135,7 +135,7 @@ function RescheduleDialog() {
         onClickAction={{
           onClick: onClickReschedule,
         }}
-        textPopupButton={'Confirm'}
+        textPopupButton={'Reschedule'}
       />
     </Dialog>
   );

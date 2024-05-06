@@ -157,7 +157,7 @@ export function CompanyInfo({
               className={_utils.cx(_styles, "cs-info-header")}
               tag="div"
             >
-              <_Builtin.Block tag="div">{"Specialities"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Specialties"}</_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "text-grey-600")}
                 tag="div"

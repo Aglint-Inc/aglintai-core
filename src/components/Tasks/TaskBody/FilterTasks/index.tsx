@@ -20,6 +20,18 @@ function FilterTasks() {
       filters={[
         {
           type: 'filter',
+          name: 'Candidate',
+          options: filter.candidate.options,
+          setValue: (val) => {
+            handelFilter({
+              ...filter,
+              candidate: { ...filter.candidate, values: val },
+            });
+          },
+          value: filter.candidate.values,
+        },
+        {
+          type: 'filter',
           name: 'Status',
           options: filter.status.options,
           setValue: (val) => {

@@ -60,6 +60,7 @@ export type CustomDatabase = {
                         '{candidate}': string;
                         '{date_format}': string;
                         '{location}': string;
+                        '{err_msg}': string;
                       };
                     };
                     Insert: Omit<
