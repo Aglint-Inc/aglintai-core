@@ -581,7 +581,6 @@ export const scheduleWithAgent = async ({
           rec_user_phone,
           dateRange,
           session_ids: createCloneRes.session_ids,
-          rec_user_id,
           recruiter_id,
         });
       } else {
@@ -656,7 +655,6 @@ export const scheduleWithAgent = async ({
           rec_user_phone,
           dateRange,
           session_ids,
-          rec_user_id,
           recruiter_id,
         });
       }
@@ -796,7 +794,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           rec_user_email,
           rec_user_phone,
           dateRange,
-          rec_user_id,
           recruiter_id,
           session_ids: createCloneRes.session_ids,
         });
@@ -875,7 +872,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
           rec_user_email,
           rec_user_phone,
           dateRange,
-          rec_user_id,
           recruiter_id,
           session_ids,
         });
@@ -1015,7 +1011,6 @@ export const agentTrigger = async ({
   rec_user_email,
   rec_user_phone = '',
   dateRange,
-  rec_user_id,
   recruiter_id,
   session_ids,
 }: {
@@ -1034,7 +1029,6 @@ export const agentTrigger = async ({
     end_date: string;
   };
   session_ids: string[];
-  rec_user_id: string;
   recruiter_id: string;
 }) => {
   console.log({
@@ -1056,12 +1050,11 @@ export const agentTrigger = async ({
   if (
     await checkAvailibility({
       dateRange,
-      rec_user_id,
       recruiter_id,
-      recruiter_user_name,
       session_ids,
       task_id,
       timezone,
+      type,
     })
   ) {
     if (type === 'email_agent') {
@@ -1140,6 +1133,7 @@ export const createTask = async ({
   supabase: ReturnType<typeof createServerClient<Database>>;
 }) => {
   const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
+
   const { data: task, error: errorTasks } = await supabase
     .from('new_tasks')
     .insert({
@@ -1232,10 +1226,10 @@ const checkAvailibility = async ({
   recruiter_id,
   dateRange,
   timezone,
-  rec_user_id,
-  recruiter_user_name,
   task_id,
+  type,
 }) => {
+  const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
   const resAllOptions = await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find_availability`,
     {
@@ -1266,7 +1260,10 @@ const checkAvailibility = async ({
       type: 'slots_failed',
       data: {
         progress_type: 'standard',
-        created_by: { id: rec_user_id, name: recruiter_user_name },
+        created_by: {
+          id: assignee,
+          name: type === 'email_agent ' ? 'Email Agent' : 'Phone Agent',
+        },
         task_id: task_id,
       },
       optionData: {
