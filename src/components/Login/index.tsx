@@ -253,7 +253,6 @@ function Login() {
               error={errors.password && Boolean(errors.password.message)}
               helperText={String(errors?.password?.message || '')}
               InputProps={{
-                disableUnderline: true,
                 endAdornment: (
                   <InputAdornment position='end'>
                     <IconButton

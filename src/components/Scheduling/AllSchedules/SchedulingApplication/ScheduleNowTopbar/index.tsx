@@ -161,7 +161,6 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
               fullWidth: true,
               variant: 'outlined',
               margin: 'none',
-              InputProps: { disableUnderline: true },
               placeholder: 'Start Date',
             },
           }}
@@ -184,7 +183,6 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
               fullWidth: true,
               variant: 'outlined',
               margin: 'none',
-              InputProps: { disableUnderline: true },
               placeholder: 'End Date',
             },
           }}

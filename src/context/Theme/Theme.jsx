@@ -299,9 +299,7 @@ function Theme({ children }) {
       },
       MuiAutocomplete: {
         defaultProps: {
-          renderInput: (params) => (
-            <TextField {...params} InputProps={{ disableUnderline: true }} />
-          ),
+          renderInput: (params) => <TextField {...params} />,
         },
         styleOverrides: {
           paper: {
@@ -333,9 +331,6 @@ function Theme({ children }) {
           margin: 'none',
           size: 'small',
           variant: 'outlined',
-          InputProps: {
-            disableUnderline: true,
-          },
         },
         styleOverrides: {
           root: {
