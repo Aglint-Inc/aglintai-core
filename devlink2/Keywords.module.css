@@ -1,3 +1,8 @@
+.div-block-1481 {
+  overflow: auto;
+  height: calc(100vh - 60px);
+}
+
 .div-block-1228 {
   display: flex;
   max-width: 650px;

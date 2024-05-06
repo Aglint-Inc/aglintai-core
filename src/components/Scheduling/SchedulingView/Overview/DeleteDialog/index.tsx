@@ -93,7 +93,7 @@ function DeleteScheduleDialog({
       <DeletePopup
         textTitle={'Cancel Schedule'}
         textDescription={
-          'Are you sure you want to delete this schedule? This action cannot be undone.'
+          'Are you sure you want to cancel this schedule? This action cannot be undone. Please note, canceling will automatically send an email notification to the candidate.'
         }
         isIcon={false}
         onClickCancel={{

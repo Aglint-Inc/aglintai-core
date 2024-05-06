@@ -219,6 +219,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .div-block-1244 {
   display: flex;
   justify-content: flex-start;
@@ -259,6 +263,10 @@
 
 .icons.ml--6 {
   margin-left: -6px;
+}
+
+.icons.hide {
+  display: none;
 }
 
 .div-block-1247 {

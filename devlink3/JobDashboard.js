@@ -134,7 +134,7 @@ export function JobDashboard({
                     className={_utils.cx(_styles, "fw-semibold")}
                     tag="div"
                   >
-                    {"Import Candidates"}
+                    {"Add Candidates"}
                   </_Builtin.Block>
                 </_Builtin.Block>
               ) : null}
