@@ -33,8 +33,8 @@ import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
 
+import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
-import { getCandidateLogger } from '../v1/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -188,6 +188,9 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
   const filter_json = rec.filter_json as TFilterJSON;
 
   const geo = cand_basic_info.geolocation as GeoPoint | null;
+  if (filter_json.session_ids.length === 0) {
+    throw new Error('Empty sessions');
+  }
 
   const int_sessions = supabaseWrap(
     await supabaseAdmin

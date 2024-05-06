@@ -201,34 +201,10 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobLocation.displayName = 'JobLocation';
 
 type Defaults = {
-  [id in keyof Pick<
-    Form,
-    'workplace_type' | 'department' | 'job_type'
-  >]: Form[id]['value'][];
+  [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: Form[id]['value'][];
 };
 
 const defaults: Defaults = {
-  department: [
-    'accounting',
-    'administrative',
-    'arts and design',
-    'business development',
-    'consulting',
-    'data science',
-    'education',
-    'engineering',
-    'entrepreneurship',
-    'finance',
-    'human resources',
-    'information technology',
-    'legal',
-    'marketing',
-    'media and communication',
-    'operations',
-    'product management',
-    'sales',
-    'support',
-  ],
   job_type: [
     'contract',
     'full time',
@@ -263,7 +239,11 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobType.displayName = 'JobType';
 
 const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const options = getOptions('department');
+  const { recruiter } = useAuthDetails();
+  const options = recruiter.departments.map((department) => ({
+    name: department,
+    value: department,
+  }));
   return (
     <UISelect
       label={'Department'}

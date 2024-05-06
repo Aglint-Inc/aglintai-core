@@ -7,7 +7,7 @@ import { PageLayout } from '@/devlink2';
 import {
   ConfirmationPopup,
   CreateJobLoader,
-  EditJobTopbarLeft
+  EditJobTopbarLeft,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { hashCode } from '@/src/context/JobDashboard/hooks';
@@ -25,35 +25,35 @@ const JobCreate = () => {
   const [fields, setFields] = useState<Form>({
     job_title: {
       value: initialTitle,
-      error: { value: false, helper: `Job title can't be empty` }
+      error: { value: false, helper: `Job title can't be empty` },
     },
     company: {
       value: initialCompany,
-      error: { value: false, helper: `Company name can't be empty` }
+      error: { value: false, helper: `Company name can't be empty` },
     },
     department: {
-      value: 'legal',
-      error: { value: false, helper: `Department name can't be empty` }
+      value: recruiter?.departments?.[0] ?? 'legal',
+      error: { value: false, helper: `Department name can't be empty` },
     },
     job_type: {
       value: 'full time',
-      error: { value: false, helper: `Job type can't be empty` }
+      error: { value: false, helper: `Job type can't be empty` },
     },
     location: {
       value: '',
-      error: { value: false, helper: `Job location can't be empty` }
+      error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
       value: 'on site',
-      error: { value: false, helper: `Workplace type can't be empty` }
+      error: { value: false, helper: `Workplace type can't be empty` },
     },
     description: {
       value: '',
       error: {
         value: false,
-        helper: 'Job description must have more than 100 characters'
-      }
-    }
+        helper: 'Job description must have more than 100 characters',
+      },
+    },
   });
   const [modal, setModal] = useState(false);
   return (
@@ -81,8 +81,8 @@ const validateForms = (fields: Form) => {
             ? value.value.length < 100
             : value.value.length === 0
           : true,
-        helper: value.error.helper
-      }
+        helper: value.error.helper,
+      },
     };
     return acc;
   }, {} as Form);
@@ -98,7 +98,7 @@ type Payload = Parameters<ReturnType<typeof useJobs>['handleJobCreate']>[0];
 
 const JobCreateForm = ({
   fields,
-  setFields
+  setFields,
 }: {
   fields: Form;
   setFields: Dispatch<SetStateAction<Form>>;
@@ -118,7 +118,7 @@ const JobCreateForm = ({
 
       const { id } = await handleJobCreate({
         ...newJob,
-        description_hash: hashCode(newJob.description)
+        description_hash: hashCode(newJob.description),
       });
       push(`${pageRoutes.JOBS}/${id}`);
     } else {
@@ -136,12 +136,12 @@ const JobCreateForm = ({
           value: value,
           error: {
             ...prev[name].error,
-            value: false
-          }
-        }
+            value: false,
+          },
+        },
       }));
     },
-    []
+    [],
   );
 
   return (

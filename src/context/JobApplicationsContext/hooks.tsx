@@ -219,15 +219,6 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       }
     : undefined;
 
-  const ranges = Object.values(JobApplicationSections)
-    .filter((section) => initialJobLoad && activeSections.includes(section))
-    .reduce((acc, curr) => {
-      return {
-        ...acc,
-        [curr]: getRange(pageNumber[curr], paginationLimit),
-      };
-    }, {}) as ReadJobApplicationApi['request']['ranges'];
-
   const [atsSync, setAtsSync] = useState(false);
 
   const defaultFilters: FilterParameter = {
@@ -256,6 +247,15 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const [searchParameters, setSearchParameters] = useState({
     ...initialParameters,
   });
+
+  const ranges = Object.values(JobApplicationSections)
+    .filter((section) => initialJobLoad && activeSections.includes(section))
+    .reduce((acc, curr) => {
+      return {
+        ...acc,
+        [curr]: getRange(pageNumber[curr], paginationLimit),
+      };
+    }, {}) as ReadJobApplicationApi['request']['ranges'];
 
   const [allApplicationsDisabled, setAllApplicationsDisabled] = useState(false);
 
@@ -571,7 +571,19 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     const { confirmation, filteredCount } = await handleJobApplicationRead(
       {
         job_id: jobId,
-        ranges: ranges,
+        ranges: Object.values(JobApplicationSections)
+          .filter(
+            (section) => initialJobLoad && activeSections.includes(section),
+          )
+          .reduce((acc, curr) => {
+            return {
+              ...acc,
+              [curr]: getRange(
+                initialJobApplicationPageNumbers[curr],
+                paginationLimit,
+              ),
+            };
+          }, {}) as ReadJobApplicationApi['request']['ranges'],
         sections: activeSections,
         ...parameters,
       },
@@ -579,6 +591,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     );
     setAllApplicationsDisabled(false);
     if (confirmation) {
+      if (parameters.search) setPageNumber(initialJobApplicationPageNumbers);
       return { confirmation: true, filteredCount };
     }
     setSearchParameters(structuredClone(searchParameters));

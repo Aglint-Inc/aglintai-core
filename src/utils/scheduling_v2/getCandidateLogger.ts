@@ -3,20 +3,22 @@ import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { SubTaskProgress } from '@/src/types/data.types';
 
-import { supabaseAdmin } from '../../fetchCompanyDetails';
+import { supabaseAdmin } from '../../pages/api/fetchCompanyDetails';
 
 /* eslint-disable no-unused-vars */
 type TitleAttrType = {
   '{candidate}'?: string | undefined;
-  '{booking_date}'?: string | undefined;
-  '{booking_time}'?: string | undefined;
+  '{date_format}'?: string | undefined;
+  '{time_format}'?: string | undefined;
+  '{location}'?: string | undefined;
+  '{err_msg}'?: string | undefined;
 };
 export type LoggerType = (
   log_msg: string,
   title_attr: TitleAttrType,
   created?: 'candidate' | 'phone_agent' | 'email_agent',
   progress_type?: SubTaskProgress['progress_type'],
-  transcript?: Record<string, string> | Record<string, string>[],
+  transcript?: Record<string, any> | Record<string, any>[],
 ) => Promise<void>;
 
 export const getCandidateLogger = (
@@ -51,6 +53,9 @@ export const getCandidateLogger = (
         id: EmailAgentId,
         name: 'Email Agent',
       };
+    }
+    if (Object.keys(title_attr).includes('{candidate}')) {
+      title_attr['{candidate}'] = candidate_name;
     }
 
     // for (let key of Object.keys(title_attr)) {
