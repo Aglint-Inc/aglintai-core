@@ -825,7 +825,7 @@ export type Database = {
           id: string
           recording_url: string | null
           retell_call_id: string | null
-          sub_task_id: string | null
+          task_id: string | null
           transcript: Json[] | null
         }
         Insert: {
@@ -839,7 +839,7 @@ export type Database = {
           id?: string
           recording_url?: string | null
           retell_call_id?: string | null
-          sub_task_id?: string | null
+          task_id?: string | null
           transcript?: Json[] | null
         }
         Update: {
@@ -853,22 +853,22 @@ export type Database = {
           id?: string
           recording_url?: string | null
           retell_call_id?: string | null
-          sub_task_id?: string | null
+          task_id?: string | null
           transcript?: Json[] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "candidate_phone_call_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "new_tasks"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_candidate_phone_call_applicant_id_fkey"
             columns: ["applicant_id"]
             isOneToOne: false
             referencedRelation: "applications"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_candidate_phone_call_sub_task_id_fkey"
-            columns: ["sub_task_id"]
-            isOneToOne: false
-            referencedRelation: "sub_tasks"
             referencedColumns: ["id"]
           },
         ]
@@ -1522,6 +1522,35 @@ export type Database = {
           },
         ]
       }
+      interview_schedule_phone_call: {
+        Row: {
+          created_at: string
+          id: string
+          retell_call_id: string
+          task_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          retell_call_id: string
+          task_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          retell_call_id?: string
+          task_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_schedule_phone_call_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "new_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       interview_session: {
         Row: {
           break_duration: number | null
@@ -1595,6 +1624,38 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "interview_module"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_session_cancel: {
+        Row: {
+          created_at: string
+          id: string
+          is_resolved: boolean
+          reason: string
+          session_relation_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          reason: string
+          session_relation_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_resolved?: boolean
+          reason?: string
+          session_relation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_session_cancel_session_relation_id_fkey"
+            columns: ["session_relation_id"]
+            isOneToOne: false
+            referencedRelation: "interview_session_relation"
             referencedColumns: ["id"]
           },
         ]
@@ -2190,9 +2251,7 @@ export type Database = {
           company: string | null
           company_details: string | null
           created_at: string
-          department:
-            | Database["public"]["Enums"]["public_job_department"]
-            | null
+          department: string | null
           description: string | null
           description_hash: number
           draft: Json | null
@@ -2244,9 +2303,7 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          department?:
-            | Database["public"]["Enums"]["public_job_department"]
-            | null
+          department?: string | null
           description?: string | null
           description_hash?: number
           draft?: Json | null
@@ -2298,9 +2355,7 @@ export type Database = {
           company?: string | null
           company_details?: string | null
           created_at?: string
-          department?:
-            | Database["public"]["Enums"]["public_job_department"]
-            | null
+          department?: string | null
           description?: string | null
           description_hash?: number
           draft?: Json | null
@@ -3945,37 +4000,7 @@ export type Database = {
           assessment: boolean
           company: string
           created_at: string
-          department: Database["public"]["Enums"]["public_job_department"]
-          description: string
-          description_hash: number
-          draft: Json
-          email_template: Json
-          id: string
-          jd_json: Json
-          job_title: string
-          job_type: Database["public"]["Enums"]["public_job_type"]
-          location: string
-          parameter_weights: Json
-          phone_screen_enabled: boolean
-          posted_by: string
-          recruiter_id: string
-          scoring_criteria_loading: boolean
-          status: Database["public"]["Enums"]["public_job_status"]
-          workplace_type: Database["public"]["Enums"]["public_job_workplace"]
-          count: Json
-          processing_count: Json
-        }[]
-      }
-      getjobaaaaaa: {
-        Args: {
-          jobid: string
-        }
-        Returns: {
-          active_status: Json
-          assessment: boolean
-          company: string
-          created_at: string
-          department: Database["public"]["Enums"]["public_job_department"]
+          department: string
           description: string
           description_hash: number
           draft: Json
@@ -4051,7 +4076,7 @@ export type Database = {
           assessment: boolean
           company: string
           created_at: string
-          department: Database["public"]["Enums"]["public_job_department"]
+          department: string
           description: string
           description_hash: number
           draft: Json
@@ -4488,26 +4513,6 @@ export type Database = {
         | "interview_schedule"
         | "email_messages"
         | "call_completed"
-      public_job_department:
-        | "legal"
-        | "sales"
-        | "finance"
-        | "support"
-        | "education"
-        | "marketing"
-        | "accounting"
-        | "consulting"
-        | "operations"
-        | "engineering"
-        | "data science"
-        | "administrative"
-        | "arts and design"
-        | "human resources"
-        | "entrepreneurship"
-        | "product management"
-        | "business development"
-        | "information technology"
-        | "media and communication"
       public_job_status: "draft" | "published" | "closed"
       public_job_type:
         | "contract"
