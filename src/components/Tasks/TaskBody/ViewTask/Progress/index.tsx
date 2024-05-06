@@ -78,6 +78,8 @@ function SubTaskProgress() {
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
                 : '';
               const location = item.title_meta['{location}'];
+              const errorMessage = item.title_meta['{err_msg}'];
+
               return (
                 <TaskProgress
                   isLineVisible={progressList.length !== i + 1}
@@ -92,7 +94,8 @@ function SubTaskProgress() {
                           .replaceAll('{candidate}', candidateName)
                           .replaceAll('{date_format}', bookingDate)
                           .replaceAll('{time_format}', bookingTime)
-                          .replaceAll('{location}', location),
+                          .replaceAll('{location}', location)
+                          .replaceAll('{err_msg}', errorMessage),
                       }}
                     ></span>
                   }
