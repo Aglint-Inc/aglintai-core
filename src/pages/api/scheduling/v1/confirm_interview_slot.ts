@@ -9,9 +9,10 @@ import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,
 } from '@/src/utils/event_book/book_day_plan';
+import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
 
+import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
-import { getCandidateLogger } from './getCandidateLogger';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -106,10 +107,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         agent_type,
       );
       await candLogger(
-        `Interview scheduled for {candidate} on {booking_time}`,
+        agent_activities['email_agent'].tools['book-interview-slot']
+          .scheduled_sucess,
         {
           '{candidate}': req_body.candidate_name,
-          '{booking_time}': dayjs(
+          '{time_format}': dayjs(
             req_body.candidate_plan[0].sessions[0].start_time,
           )
             .tz(req_body.user_tz)

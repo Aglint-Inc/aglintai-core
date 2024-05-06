@@ -34,7 +34,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
 
 import { supabaseAdmin } from '../../phone-screening/get-application-info';
-import { getCandidateLogger } from '../v1/getCandidateLogger';
+import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
