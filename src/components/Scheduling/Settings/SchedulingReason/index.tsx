@@ -10,7 +10,6 @@ import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import { ReasonList, ScheduleReason, ScheduleReasonSection } from '@/devlink3';
-import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { DatabaseTable, DatabaseTableUpdate } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -112,7 +111,7 @@ const ScheduleReasonSectionCard = ({
           ))}
           {edit.state && (
             <AddEditReasonsDialogs
-              title={`Add ${scheduleReason}`}
+              title={`${edit.index === null ? 'Add' : 'Update'} ${capitalize(scheduleReason)} Reasons`}
               item={
                 edit.index !== null
                   ? {
@@ -195,9 +194,22 @@ const AddEditReasonsDialogs = ({
           width={'100%'}
           justifyContent={'space-between'}
         >
-          <Typography>{title} </Typography>
+          <Typography fontSize={'14px'} fontWeight={600}>
+            {title}{' '}
+          </Typography>
           <Box onClick={onClose} sx={{ cursor: 'pointer' }}>
-            <Icon variant='CloseThinIcon' />
+            <svg
+              width='16'
+              height='17'
+              viewBox='0 0 16 17'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                d='M2.28125 1.71875L8 7.4375L13.7188 1.71875C14.0729 1.42708 14.4271 1.42708 14.7812 1.71875C15.0729 2.07292 15.0729 2.42708 14.7812 2.78125L9.0625 8.5L14.7812 14.2188C15.0729 14.5729 15.0729 14.9271 14.7812 15.2812C14.4271 15.5729 14.0729 15.5729 13.7188 15.2812L8 9.5625L2.28125 15.2812C1.92708 15.5729 1.57292 15.5729 1.21875 15.2812C0.927083 14.9271 0.927083 14.5729 1.21875 14.2188L6.9375 8.5L1.21875 2.78125C0.927083 2.42708 0.927083 2.07292 1.21875 1.71875C1.57292 1.42708 1.92708 1.42708 2.28125 1.71875Z'
+                fill='#68737D'
+              />
+            </svg>
           </Box>
         </Stack>
         <TextField
