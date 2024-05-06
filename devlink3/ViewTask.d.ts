@@ -13,4 +13,6 @@ declare function ViewTask(props: {
   onClickNext?: Types.Devlink.RuntimeProps;
   isDisablePrev?: Types.Visibility.VisibilityConditions;
   isDisableNext?: Types.Visibility.VisibilityConditions;
+  onClickCompleteTask?: Types.Devlink.RuntimeProps;
+  isCompleteTaskVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -42,6 +42,19 @@
   line-height: 16px;
 }
 
+.text-grey-600.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600.text-underline.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.text-grey-600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .div-block-1570 {
   display: flex;
   justify-content: flex-start;
@@ -130,6 +143,10 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .arrow-tooltips-drawer {
@@ -240,6 +257,8 @@
   padding: 13px 20px;
   justify-content: flex-start;
   align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 
   border-top: 1px solid #e9ebed;
 
@@ -260,4 +279,14 @@
 
 .div-block-1546.cursor-pointer:hover {
   background-color: hsla(356, 56.31%, 92.37%, 1.00);
+}
+
+.div-block-1546.cursor-pointer.blue {
+  background-color: #edf7ff;
+  color: #337fbd;
+}
+
+.div-block-1546.cursor-pointer.green {
+  background-color: #d1e8df;
+  color: #228f67;
 }
