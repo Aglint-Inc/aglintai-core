@@ -58,21 +58,22 @@ function InterviewerDetailsCard({
 
   const firstDayOfWeek = dayjs().startOf('week').startOf('day').format();
   const lastDayOfWeek = dayjs().endOf('week').endOf('day').format();
+  if (user.weekly_meetings) {
+    totalInterviewsToday = user.weekly_meetings.filter((interview) =>
+      dayjs(interview.end_time).isSame(today, 'day'),
+    );
 
-  totalInterviewsToday = user.weekly_meetings.filter((interview) =>
-    dayjs(interview.end_time).isSame(today, 'day'),
-  );
+    totalInterviewsThisWeek = user.weekly_meetings.filter(
+      (interview) =>
+        interview.start_time >= firstDayOfWeek &&
+        interview.end_time <= lastDayOfWeek,
+    );
+    totalHoursToday =
+      Number(totalInterviewsToday.reduce((a, b) => a + b.duration, 0)) / 60;
 
-  totalInterviewsThisWeek = user.weekly_meetings.filter(
-    (interview) =>
-      interview.start_time >= firstDayOfWeek &&
-      interview.end_time <= lastDayOfWeek,
-  );
-  totalHoursToday =
-    Number(totalInterviewsToday.reduce((a, b) => a + b.duration, 0)) / 60;
-
-  totalHoursThisWeek =
-    Number(totalInterviewsThisWeek.reduce((a, b) => a + b.duration, 0)) / 60;
+    totalHoursThisWeek =
+      Number(totalInterviewsThisWeek.reduce((a, b) => a + b.duration, 0)) / 60;
+  }
   return (
     <MembersList
       isCorrectVisible={user.accepted_status === 'accepted'}
@@ -96,7 +97,8 @@ function InterviewerDetailsCard({
       textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${timezone}`}
       isShadow={user.training_type !== 'qualified'}
       onClickViewInterviewDetail={{
-        onClick: () => {
+        onClick: (e) => {
+          e.stopPropagation();
           router.push(`/scheduling/interviewer/${user.id}`);
         },
       }}

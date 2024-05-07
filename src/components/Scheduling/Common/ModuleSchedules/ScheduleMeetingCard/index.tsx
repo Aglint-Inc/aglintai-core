@@ -1,5 +1,4 @@
 import { Collapse, Stack } from '@mui/material';
-import { IconEye } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -27,24 +26,17 @@ function ScheduleMeetingCard({
         sx={{
           cursor: 'pointer',
         }}
+        onClick={() => {
+          router.push(
+            `/scheduling/view?meeting_id=${meetingDetails.interview_meeting.meeting_id}&tab=candidate_details`,
+          );
+        }}
       >
         <MyScheduleSubCard
-          slotThreeDot={
-            <IconEye
-              onClick={() => {
-                router.push(
-                  `/scheduling/view?meeting_id=${meetingDetails.interview_meeting.meeting_id}&tab=candidate_details`,
-                );
-              }}
-              stroke={1}
-            >
-              View
-            </IconEye>
-          }
           onClickDropdownIocn={{
             onClick: (e) => {
-              e.preventDefault();
               setCollapseOpen((pre) => !pre);
+              e.stopPropagation();
             },
           }}
           slotMembersList={

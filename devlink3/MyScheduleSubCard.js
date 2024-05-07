@@ -179,7 +179,12 @@ export function MyScheduleSubCard({
                 value="%3Csvg%20width%3D%2223%22%20height%3D%2223%22%20viewBox%3D%220%200%2023%2023%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2222.5%22%20height%3D%2222.5%22%20rx%3D%2211.25%22%20fill%3D%22%23F8F9F9%22%2F%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2222.5%22%20height%3D%2222.5%22%20rx%3D%2211.25%22%20stroke%3D%22%23E9EBED%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M11.7578%2014.7578C11.5859%2014.9141%2011.4141%2014.9141%2011.2422%2014.7578L6.74219%2010.2578C6.58594%2010.0859%206.58594%209.91406%206.74219%209.74219C6.91406%209.58594%207.08594%209.58594%207.25781%209.74219L11.5%2013.9609L15.7422%209.74219C15.9141%209.58594%2016.0859%209.58594%2016.2578%209.74219C16.4141%209.91406%2016.4141%2010.0859%2016.2578%2010.2578L11.7578%2014.7578Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
                 {...onClickDropdownIocn}
               />
-              <_Builtin.Block tag="div">{slotThreeDot}</_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1683")}
+                tag="div"
+              >
+                {slotThreeDot}
+              </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
           {isMembersListVisible ? (

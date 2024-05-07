@@ -59,18 +59,22 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         otherAssessments: [] as Assessment[],
       };
   const skills = useJobSkills();
-  const refreshDashboard = useJobDashboardRefresh();
   const locations = useJobLocations();
   const matches = useJobMatches();
   const tenureAndExperience = useJobTenureAndExperience();
   const schedules = useJobSchedules();
   const interviewPlanEnabled = useJobInterviewPlanEnabled();
-  const scoringPoll = useJobScoringPoll();
   const interviewPlans = useInterviewPlans();
+  const scoringPoll = useJobScoringPoll();
 
-  const isInterviewPlanDisabled = interviewPlans?.data;
+  const refreshDashboard = useJobDashboardRefresh();
+
+  const isInterviewPlanDisabled =
+    !interviewPlans.isPending && !interviewPlans?.data;
   const isInterviewSessionEmpty =
-    interviewPlans?.data?.interview_session?.length === 0;
+    !interviewPlans.isPending &&
+    (isInterviewPlanDisabled ||
+      interviewPlans?.data?.interview_session?.length === 0);
 
   const settingsValidity = getSettingsValidity(job);
 
@@ -113,14 +117,15 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const initialLoad = !!(
     jobLoad &&
     !assessments.isPending &&
-    !schedules.isPending &&
-    !scoringPoll.isPending &&
-    !interviewPlanEnabled.isPending &&
-    !tenureAndExperience.isPending &&
     !templates.isPending &&
-    !matches.isPending &&
     !skills.isPending &&
-    !locations.isPending
+    !locations.isPending &&
+    !matches.isPending &&
+    !tenureAndExperience.isPending &&
+    !schedules.isPending &&
+    !interviewPlanEnabled.isPending &&
+    !interviewPlans.isPending &&
+    !scoringPoll.isPending
   );
 
   const handleJobRefresh = async () => {
