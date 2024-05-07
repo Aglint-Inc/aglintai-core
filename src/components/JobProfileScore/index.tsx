@@ -26,6 +26,7 @@ import {
 } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
+import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/job/types';
@@ -289,7 +290,13 @@ const ProfileScore = () => {
 const Banners = () => {
   const { push } = useRouter();
   const { experimental_handleRegenerateJd } = useJobs();
-  const { status, job, dismissWarnings, setDismissWarnings } = useJobDetails();
+  const { status, job } = useJobDetails();
+  const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
+    ({ dismissWarnings, setDismissWarnings }) => ({
+      dismissWarnings,
+      setDismissWarnings,
+    }),
+  );
   if (status.loading) return <></>;
   if (status.description_error)
     return (
@@ -319,8 +326,7 @@ const Banners = () => {
           'Job description has changed. Regenerate for updated scoring criterias.'
         }
         onClickDismiss={{
-          onClick: () =>
-            setDismissWarnings((prev) => ({ ...prev, job_description: true })),
+          onClick: () => setDismissWarnings({ job_description: true }),
         }}
         onClickButton={{
           onClick: () => experimental_handleRegenerateJd(job),

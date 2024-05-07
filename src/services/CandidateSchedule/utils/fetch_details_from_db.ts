@@ -93,7 +93,6 @@ export const fetch_details_from_db = async (
   const ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
       let session: InterviewSessionApiType = {
-        ...s,
         duration: s.session_duration,
         schedule_type: s.schedule_type,
         session_type: s.session_type,
@@ -110,6 +109,8 @@ export const fetch_details_from_db = async (
         trainingIntervs: interviewers.filter(
           (i) => i.session_id === s.id && i.interviewer_type === 'training',
         ),
+        location: s.location,
+        meeting_id: s.meeting_id,
       };
       return session;
     })

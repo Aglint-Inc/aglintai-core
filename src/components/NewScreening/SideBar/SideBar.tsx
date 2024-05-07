@@ -116,6 +116,7 @@ const SideBar = ({ appId, openDrawer }) => {
               (data.last_name === null ? '' : data.last_name)
             );
           })}
+        isSmallWidthVisible={false}
         isAppliedOnVisible={false}
         isLocationRoleVisible={false}
         isLocationVisible={false}
@@ -186,7 +187,7 @@ const SideBar = ({ appId, openDrawer }) => {
                           data.result_created_at,
                           'phone_screening',
                         );
-                        toast.success('Invite sent.');
+                        toast.success('Invite sent successfully.');
                       },
                     }}
                     onClickResendInvite={{

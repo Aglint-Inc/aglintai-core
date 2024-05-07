@@ -114,7 +114,7 @@ export const useJobDelete = () => {
       queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
     },
     onSuccess: () => {
-      toast.success('Job successfully deleted');
+      toast.success('Job deleted successfully.');
     },
   });
   return mutation;

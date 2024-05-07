@@ -57,8 +57,6 @@ const useJobInterviewPlanActions = () => {
     !interviewPlans.isPending
   );
 
-  if (!initialLoad) return undefined;
-
   const getLoadingState = (sessionId: string) => {
     return !![...updateQueue, ...deleteQueue].find(
       ({ session_id }) => session_id === sessionId,
@@ -94,6 +92,7 @@ const useJobInterviewPlanActions = () => {
 
   const value = {
     job,
+    initialLoad,
     interviewModules,
     companyMembers,
     handleSelectCoordinator,

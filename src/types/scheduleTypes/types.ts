@@ -34,6 +34,7 @@ export type SessionInterviewerType = Pick<
 
 export type InterviewSessionApiType = {
   session_id: InterviewSession['id'];
+  meeting_id: InterviewSession['meeting_id'];
   module_id: InterviewSession['module_id'];
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];

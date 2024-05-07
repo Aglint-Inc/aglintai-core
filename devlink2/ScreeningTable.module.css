@@ -1,4 +1,13 @@
 .all-interview-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.div-block-1476 {
+  display: flex;
+}
+
+.div-block-1477 {
   width: 100%;
 }
 
@@ -32,6 +41,21 @@
   grid-row-gap: 10px;
 }
 
+.div-block-830.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
 .cursor-pointer {
   transition: all 250ms ease;
   cursor: pointer;
@@ -43,10 +67,11 @@
 
 .screening-candidates {
   display: grid;
+  width: 100%;
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: 1fr;
   grid-template-rows: auto auto;
 }
 
@@ -117,17 +142,6 @@
   display: none;
 }
 
-.hide {
-  display: none;
-  flex-direction: row;
-}
-
-@media screen and (max-width: 479px) {
-  .hide {
-    display: none;
-  }
-}
-
 .div-block-958 {
   margin-right: 4px;
 }
@@ -135,6 +149,7 @@
 .slot_candidaterow {
   display: flex;
   width: 100%;
+  padding-bottom: 60px;
   flex-direction: column;
 }
 
@@ -155,6 +170,17 @@
 
 .job-page-nav-bar.bg-color-add {
   background-color: #f8f9f9;
+}
+
+.div-block-1293 {
+  z-index: 2;
+  height: calc(100vh - 60px);
+}
+
+.slot_sidebar {
+  overflow: auto;
+  height: 100%;
+  border-left: 1px solid #e9ebed;
 }
 
 .embed_css {

@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { InvitedCards } from "./InvitedCards";
 import { ResponseCard } from "./ResponseCard";
 import * as _utils from "./utils";
 import _styles from "./SubmittedCard.module.css";
@@ -15,7 +17,9 @@ export function SubmittedCard({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1022")} tag="div">
-      <_Builtin.Block tag="div">{slotInvitedCard}</_Builtin.Block>
+      <_Builtin.Block tag="div">
+        {slotInvitedCard ?? <InvitedCards />}
+      </_Builtin.Block>
       {isResponseVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1025")}
@@ -27,7 +31,10 @@ export function SubmittedCard({
           >
             {"Response"}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1478")}
+            tag="div"
+          >
             {slotResponseCard ?? <ResponseCard />}
           </_Builtin.Block>
         </_Builtin.Block>

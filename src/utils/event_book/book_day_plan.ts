@@ -15,6 +15,7 @@ import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession } from './book_session';
+import { getCalEventDescription } from './getCalEventDescription';
 
 export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
   let { candidate_plan, recruiter_id, user_tz, candidate_email } =
@@ -42,8 +43,7 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
   );
   await cand_scheduling.fetchDetails();
   await cand_scheduling.fetchInterviewrsCalEvents();
-
-  const { company_cred } = cand_scheduling.db_details;
+  const { company_cred, ses_with_ints } = cand_scheduling.db_details;
 
   const bookDayPlan = async ({
     day_plan,
@@ -118,6 +118,7 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
         },
         schedule_name: session.session_name,
         session_id: session.session_id,
+        description: getCalEventDescription(session.meeting_id),
       });
 
       // assisgn training status shadow or rShadow to ints
@@ -136,6 +137,10 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
     const meeting_events = await Promise.all(meet_promises);
     await update_meetings_info({
       meeting_events: meeting_events,
+      meetings_info: ses_with_ints.map((s) => ({
+        id: s.meeting_id,
+        session_id: s.session_id,
+      })),
     });
     return meeting_events;
   };
@@ -153,11 +158,13 @@ export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
 
 export const update_meetings_info = async ({
   meeting_events,
+  meetings_info,
 }: {
   meeting_events: {
     session_id: string;
     cal_event: CalendarEvent;
   }[];
+  meetings_info: { id: string; session_id }[];
 }) => {
   const updateMeetingInfo = async ({
     cal_event,
@@ -172,12 +179,7 @@ export const update_meetings_info = async ({
     } else {
       meeting_link = cal_event.hangoutLink;
     }
-    const [meeting] = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session')
-        .select('meeting_id')
-        .eq('id', session_id),
-    );
+    const meeting = meetings_info.find((m) => m.session_id === session_id);
     return supabaseWrap(
       await supabaseAdmin
         .from('interview_meeting')
@@ -189,7 +191,7 @@ export const update_meetings_info = async ({
           status: 'confirmed',
           confirmed_date: dayjs().toISOString(),
         })
-        .eq('id', meeting.meeting_id)
+        .eq('id', meeting.id)
         .select(),
     );
   };

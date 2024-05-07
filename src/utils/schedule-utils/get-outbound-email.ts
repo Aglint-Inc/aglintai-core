@@ -1,25 +1,20 @@
+import { get } from '@vercel/edge-config';
+
 import { isEnvProd } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 
-import { allowed_outbound_emails } from '../integrations/constants';
-
-export const getOutboundEmail = (email: string, is_sendgrid = false) => {
-  if (
-    isEnvProd() ||
-    email.toLowerCase().includes('@aglinthq.com') ||
-    allowed_outbound_emails.includes(email.toLowerCase())
-  ) {
+export const getOutboundEmail = async (email: string, is_sendgrid = false) => {
+  let allowed_outbound_emails = (await get('allowlist-candidates')) as string[];
+  allowed_outbound_emails = allowed_outbound_emails.map((e) =>
+    e.toLocaleLowerCase(),
+  );
+  if (isEnvProd() || allowed_outbound_emails.includes(email.toLowerCase())) {
     return email;
   } else {
     if (is_sendgrid) {
-      return [
-        'chinmail@aglinthq.com',
-        'ravi@aglinthq.com',
-        'dileep@aglinthq.com',
-        'dheeraj@aglinthq.com',
-        'punith@aglinthq.com',
-        'raj@aglinthq.com',
-      ];
+      const bounce_email = await get('bounce-back-email');
+      return bounce_email;
     }
-    return 'chinmai@aglinthq.com';
+    const sudo_cand_email = await get('sudo-candidate');
+    return sudo_cand_email;
   }
 };

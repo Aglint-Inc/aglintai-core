@@ -22,6 +22,7 @@ import {
 } from '@/devlink3';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
+import NotFoundPage from '@/src/pages/404';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
 import { interviewPlanKeys } from '@/src/queries/interview-plans/keys';
 import {
@@ -45,10 +46,16 @@ import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';
 
 const JobNewInterviewPlanDashboard = () => {
-  const load = useJobInterviewPlan();
-  return (
-    <Stack height={'100%'} width={'100%'}>
-      {!load ? <Loader /> : <InterviewPlanPage />}
+  const { initialLoad, job } = useJobInterviewPlan();
+  return initialLoad ? (
+    job !== undefined ? (
+      <InterviewPlanPage />
+    ) : (
+      <NotFoundPage />
+    )
+  ) : (
+    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+      <Loader />
     </Stack>
   );
 };

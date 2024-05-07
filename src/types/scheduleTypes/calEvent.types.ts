@@ -44,6 +44,7 @@ export type NewCalenderEvent = {
       passcode: string;
     }[];
   };
+  description: string;
 };
 
 export type CalendarEvent = {

@@ -87,7 +87,7 @@ const CandidateDrawer = ({
         questions: parametersInput,
       },
     );
-    toast.success('Call Initiated');
+    toast.success('Call initiated successfully.');
   };
   const resumeNullCheck = (resume: any) => {
     const array = [];

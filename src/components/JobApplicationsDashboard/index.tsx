@@ -63,7 +63,10 @@ import SearchField from './SearchField';
 import { capitalize, handleOngoingWarning } from './utils';
 
 const JobApplicationsDashboard = () => {
-  const { initialLoad, job } = useJobApplications();
+  const { initialLoad, job, handleResetFilters } = useJobApplications();
+  useEffect(() => {
+    return () => handleResetFilters();
+  }, []);
   return initialLoad ? (
     job !== undefined ? (
       <JobApplicationComponent />
