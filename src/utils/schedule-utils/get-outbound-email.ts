@@ -7,6 +7,7 @@ export const getOutboundEmail = async (email: string) => {
   allowed_outbound_emails = allowed_outbound_emails.map((e) =>
     e.toLocaleLowerCase(),
   );
+  // console.log(allowed_outbound_emails);
   if (isEnvProd() || allowed_outbound_emails.includes(email.toLowerCase())) {
     return email;
   } else {
