@@ -516,7 +516,7 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
         onClickView={{ onClick: () => push(`/jobs/${job.id}/interview-plan`) }}
       />,
     );
-  else if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
+  if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
     banners.push(
       <DashboardWarning
         textWarningTitle={'Interview sessions not set'}
