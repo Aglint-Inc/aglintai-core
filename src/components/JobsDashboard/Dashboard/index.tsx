@@ -31,7 +31,7 @@ import {
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { useJobInterviewPlanWarnings } from '@/src/context/JobInterviewPlanContext';
+import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
@@ -60,7 +60,6 @@ import TenureAndExpSummary from './TenureAndExpSummary';
 
 const JobDashboard = () => {
   const { initialLoad, job } = useJobDetails();
-
   return initialLoad ? (
     job !== undefined ? (
       <Dashboard />
@@ -160,6 +159,16 @@ const Dashboard = () => {
     }
   };
 
+  const publishButton = useMemo(
+    () => (
+      <PublishButton
+        onClick={async () => await handlePublish()}
+        disabled={!canPublish}
+      />
+    ),
+    [canPublish],
+  );
+
   const scoringLoader = useMemo(
     () => (
       <Stack sx={{ width: '12px', aspectRatio: 1 }}>
@@ -205,7 +214,7 @@ const Dashboard = () => {
             slotScoringLoader={scoringLoader}
             isImport={job?.status !== 'closed'}
             onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
-            slotBanner={<Banners />}
+            slotBanner={<Banners publishButton={publishButton} />}
             onClickTopMatch={{
               style: { cursor: 'pointer' },
               onClick: () => handleFilter({ max: 100, min: 80 }),
@@ -263,12 +272,7 @@ const Dashboard = () => {
                 isPublishedVisible={job?.status === 'published'}
               />
             }
-            slotPublishButton={
-              <PublishButton
-                onClick={async () => await handlePublish()}
-                disabled={!canPublish}
-              />
-            }
+            slotPublishButton={publishButton}
             isPublish={job.status !== 'closed'}
             isEditError={!settingsValidity}
             onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
@@ -481,24 +485,33 @@ const Schedules = () => {
   );
 };
 
-const Banners = () => {
+const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
   const { push } = useRouter();
-  const { publishStatus, status, dismissWarnings, setDismissWarnings, job } =
-    useJobDetails();
-  const { isInterviewPlanDisabled, isInterviewSessionEmpty } =
-    useJobInterviewPlanWarnings();
+  const {
+    publishStatus,
+    status,
+    job,
+    isInterviewPlanDisabled,
+    isInterviewSessionEmpty,
+  } = useJobDetails();
+  const { dismissWarnings, setDismissWarnings } = useJobDashboardStore(
+    ({ dismissWarnings, setDismissWarnings }) => ({
+      dismissWarnings,
+      setDismissWarnings,
+    }),
+  );
   const banners: React.JSX.Element[] = [];
-  if (job.status === 'draft') banners.push(<JobsBanner />);
+  if (job.status === 'draft')
+    banners.push(<JobsBanner slotButton={publishButton} />);
   if (isInterviewPlanDisabled && !dismissWarnings.interview_plan)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Scheduling Disabled for This Job'}
+        textWarningTitle={'Interview plan not set'}
         textDesc={
-          'Please enable scheduling by creating at least one interview session. This will allow you to schedule interviews for this job.'
+          'To use the scheduling module, please configure an interview plan for this job.'
         }
         onClickDismiss={{
-          onClick: () =>
-            setDismissWarnings((prev) => ({ ...prev, interview_plan: true })),
+          onClick: () => setDismissWarnings({ interview_plan: true }),
         }}
         onClickView={{ onClick: () => push(`/jobs/${job.id}/interview-plan`) }}
       />,
@@ -506,16 +519,12 @@ const Banners = () => {
   else if (isInterviewSessionEmpty && !dismissWarnings.interview_session)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Scheduling Disabled for This Job'}
+        textWarningTitle={'Interview sessions not set'}
         textDesc={
-          'Please enable scheduling by creating at least one interview session. This will allow you to schedule interviews for this job.'
+          'To use the scheduling module, please create atleast one interview session for the plan.'
         }
         onClickDismiss={{
-          onClick: () =>
-            setDismissWarnings((prev) => ({
-              ...prev,
-              interview_session: true,
-            })),
+          onClick: () => setDismissWarnings({ interview_session: true }),
         }}
         onClickView={{
           onClick: () => push(`/jobs/${job.id}/interview-plan`),
@@ -549,7 +558,7 @@ const Banners = () => {
       <DashboardAlert
         textTitile={'Profile score is empty'}
         textShortDescription={
-          'Candidate cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
+          'Candidates cannot be scored without scoring criterias. Please ensure that valid scoring criterias are provided.'
         }
         onClickBanner={{
           onClick: () => push(`/jobs/${job.id}/profile-score`),
@@ -562,8 +571,7 @@ const Banners = () => {
         textWarningTitle={'Job description is changed'}
         textDesc={'You may need to adjust the criteria for profile scoring.'}
         onClickDismiss={{
-          onClick: () =>
-            setDismissWarnings((prev) => ({ ...prev, job_description: true })),
+          onClick: () => setDismissWarnings({ job_description: true }),
         }}
         onClickView={{
           onClick: () => push(`/jobs/${job.id}/profile-score`),
@@ -577,7 +585,13 @@ const Banners = () => {
   //       onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
   //     />
   //   );
-  return <Stack gap={1}>{banners}</Stack>;
+  return (
+    <Stack gap={1}>
+      {banners.map((banner, i) => (
+        <Stack key={i}>{banner}</Stack>
+      ))}
+    </Stack>
+  );
 };
 
 const JobClose = ({
@@ -821,16 +835,15 @@ const ScreeningModule = () => {
 };
 
 const InterviewModule = () => {
-  const {
-    job,
-    dismissWarnings: { interview_plan, interview_session },
-  } = useJobDetails();
+  const { job, isInterviewPlanDisabled, isInterviewSessionEmpty } =
+    useJobDetails();
+  const { interview_plan, interview_session } = useJobDashboardStore(
+    ({ dismissWarnings }) => dismissWarnings,
+  );
   const { push } = useRouter();
   const handleClick = () => {
     push(`/jobs/${job.id}/interview-plan`);
   };
-  const { isInterviewPlanDisabled, isInterviewSessionEmpty } =
-    useJobInterviewPlanWarnings();
   return (
     <ModuleCard
       onClickCard={{ onClick: () => handleClick() }}

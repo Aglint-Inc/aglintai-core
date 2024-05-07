@@ -41,6 +41,7 @@
     "@types/lodash": "^4.14.199",
     "@types/react-beautiful-dnd": "^13.1.6",
     "@typescript-eslint/typescript-estree": "^6.9.1",
+    "@vercel/edge-config": "^1.1.0",
     "@webflow/webflow-cli": "^1.6.9",
     "axios": "^1.5.0",
     "chart.js": "^4.4.1",

@@ -5,7 +5,7 @@ import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
-const JobPage = () => {
+const JobCandidateListPage = () => {
   return (
     <>
       <Seo title='Jobs' description='AI for People Products' />
@@ -14,7 +14,7 @@ const JobPage = () => {
   );
 };
 
-JobPage.privateProvider = function privateProvider(page) {
+JobCandidateListPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
       <JobInterviewPlanProvider>
@@ -24,4 +24,4 @@ JobPage.privateProvider = function privateProvider(page) {
   );
 };
 
-export default JobPage;
+export default JobCandidateListPage;
