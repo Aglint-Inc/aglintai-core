@@ -60,7 +60,7 @@ function AllList({
       ) : (
         <>
           {!isPending && !isFetching && applicationList.length === 0 && (
-            <AllInterviewEmpty textDynamic='No schedule found' />
+            <AllInterviewEmpty textDynamic='No candidate found' />
           )}
           {applicationList.map((app) => {
             return (
