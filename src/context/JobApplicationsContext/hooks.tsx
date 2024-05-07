@@ -373,9 +373,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       };
       const responses = await Promise.allSettled([
         handleJobRefresh(),
-        handleJobApplicationApi('read', request),
+        handleJobApplicationRead(request),
       ]);
-      if (responses[1].status === 'fulfilled' && responses[1].value)
+      if (
+        responses[1].status === 'fulfilled' &&
+        responses[1].value.confirmation
+      )
         return true;
     }
     return false;
