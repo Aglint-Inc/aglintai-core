@@ -10,11 +10,13 @@ import PriorityList from '@/src/components/Tasks/TaskBody/AddNewTask/PriorityLis
 import SelectScheduleDate from '@/src/components/Tasks/TaskBody/AddNewTask/SelectScheduleDate';
 import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { useTaskStatesContext } from '@/src/components/Tasks/TaskStatesContext';
 import {
   assigneeType,
   EmailAgentId,
   PhoneAgentId,
 } from '@/src/components/Tasks/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
 import { JobApplcationDB } from '@/src/types/data.types';
@@ -40,6 +42,9 @@ function CreateTask({
   setTask: Dispatch<SetStateAction<TaskType>>;
   applications: JobApplcationDB[];
 }) {
+  const { assignerList } = useTaskStatesContext();
+  const { recruiterUser } = useAuthDetails();
+
   const [scheduleDate, setScheduleDate] = useState<{
     start_date: string;
     end_date: string;
@@ -70,6 +75,9 @@ function CreateTask({
           .slice(0, 2)
           .map((ele) => ({ id: ele.id, name: ele.name }) as meetingCardType),
       );
+      setSelectedAssignee(
+        assignerList.find((ele) => ele.user_id === recruiterUser.user_id),
+      );
       setTask((pre) => {
         const preTask = { ...pre };
         return {
@@ -81,10 +89,14 @@ function CreateTask({
           },
           start_date: dayjs().add(5, 'minute').toString(),
           due_date: dayjs().add(1, 'day').toString(),
+          assignee: [
+            assignerList.find((ele) => ele.user_id === recruiterUser.user_id)
+              .user_id,
+          ],
         };
       });
     }
-  }, [interview_session]);
+  }, [interview_session, assignerList]);
 
   return (
     <>
@@ -93,12 +105,11 @@ function CreateTask({
           <SelectScheduleDate
             scheduleDate={scheduleDate}
             onChange={(e: any) => {
-              if (Array.isArray(e) && e[0] && e[1]) {
+              if (e[1]) {
                 setScheduleDate({
                   start_date: dayjs(e[0]).toString(),
                   end_date: dayjs(e[1]).toString(),
                 });
-
                 setTask((pre) => {
                   const preTask = { ...pre };
                   return {
@@ -110,24 +121,20 @@ function CreateTask({
                     due_date: dayjs(e[0]).toString(),
                   };
                 });
-              }
-              if (!Array.isArray(e)) {
+              } else {
                 setScheduleDate({
-                  start_date: dayjs(e).toString(),
+                  start_date: dayjs(e[0]).toString(),
                   end_date: null,
                 });
-
-                // set task
-
                 setTask((pre) => {
                   const preTask = { ...pre };
                   return {
                     ...preTask,
                     schedule_date_range: {
-                      start_date: dayjs(e).toString(),
+                      start_date: dayjs(e[0]).toString(),
                       end_date: null,
                     },
-                    due_date: dayjs(e).toString(),
+                    due_date: dayjs(e[0]).toString(),
                   };
                 });
               }
