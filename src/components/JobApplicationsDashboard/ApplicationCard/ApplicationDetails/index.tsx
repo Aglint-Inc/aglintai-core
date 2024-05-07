@@ -257,7 +257,7 @@ const NewJobApplicationSideDrawer = ({
         questions: parametersInput,
       },
     );
-    toast.success('Call Initiated.');
+    toast.success('Call initiated successfully.');
   };
   const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningPhoneCallEnabled',

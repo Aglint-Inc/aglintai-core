@@ -186,7 +186,7 @@ const SideBar = ({ appId, openDrawer }) => {
                           data.result_created_at,
                           'phone_screening',
                         );
-                        toast.success('Invite sent.');
+                        toast.success('Invite sent successfully.');
                       },
                     }}
                     onClickResendInvite={{

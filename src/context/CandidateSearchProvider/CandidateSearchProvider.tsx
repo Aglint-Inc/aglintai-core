@@ -241,7 +241,7 @@ const CandidateSearchProvider = ({ children }) => {
         value: updaCandState,
       });
       supabaseWrap(await supabase.from('applications').insert([...newJobApps]));
-      toast.success('Applied to job(s) successfully');
+      toast.success('Applied to jobs successfully.');
     } catch (er) {
       toast.error(API_FAIL_MSG);
       // console.log(er);
