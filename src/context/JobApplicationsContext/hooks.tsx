@@ -139,12 +139,14 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const router = useRouter();
 
   const { jobsData, initialLoad: jobLoad, handleUIJobUpdate } = useJobs();
+
   const {
     handleJobRefresh,
     jobPolling,
     interviewPlanEnabled: { data: interviewPlanEnabled },
   } = useJobDetails();
   const interviewPlans = useJobInterviewPlan();
+
   const jobId = job_id ?? (router.query?.id as string);
 
   const [applications, dispatch] = useReducer(reducer, undefined);
@@ -265,29 +267,26 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     signal?: AbortSignal,
   ) => {
     if (recruiter) {
-      const responses = await Promise.allSettled([
-        handleJobRefresh(),
-        handleJobApplicationApi('read', request, signal),
-      ]);
-      if (responses[1].status === 'fulfilled') {
-        const { data, error, filteredCount } = responses[1].value;
-        if (data) {
-          const action: Action = {
-            type: ActionType.READ,
-            payload: {
-              applicationData: data,
-              activeSections: request.sections,
-            },
-          };
-          if (job?.posted_by == POSTED_BY.ASHBY) {
-            const is_sync = await checkSyncCand(job);
-            setAtsSync(is_sync);
-          }
-          // handleUIJobUpdate({ ...job, count: unFilteredCount });
-          dispatch(action);
-          return { confirmation: true, filteredCount };
+      const { data, filteredCount } = await handleJobApplicationApi(
+        'read',
+        request,
+        signal,
+      );
+      if (data) {
+        const action: Action = {
+          type: ActionType.READ,
+          payload: {
+            applicationData: data,
+            activeSections: request.sections,
+          },
+        };
+        if (job?.posted_by == POSTED_BY.ASHBY) {
+          const is_sync = await checkSyncCand(job);
+          setAtsSync(is_sync);
         }
-        if (initialLoad) handleJobApplicationError(error);
+        // handleUIJobUpdate({ ...job, count: unFilteredCount });
+        dispatch(action);
+        return { confirmation: true, filteredCount };
       } else handleJobApplicationError('Unable to fetch applications');
       return {
         confirmation: false,
@@ -372,8 +371,12 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         sections: activeSections,
         ...searchParameters,
       };
-      const { confirmation } = await handleJobApplicationRead(request);
-      if (confirmation) return true;
+      const responses = await Promise.allSettled([
+        handleJobRefresh(),
+        handleJobApplicationApi('read', request),
+      ]);
+      if (responses[1].status === 'fulfilled' && responses[1].value)
+        return true;
     }
     return false;
   };
@@ -715,6 +718,22 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     ) as { [key in JobApplicationSections]: boolean };
   };
 
+  const handleResetFilters = () => {
+    if (
+      recruiter &&
+      JSON.stringify(searchParameters) !== JSON.stringify(initialParameters)
+    ) {
+      const request = {
+        job_id: jobId,
+        ranges: ranges,
+        sections: activeSections,
+        ...initialParameters,
+      };
+      setSearchParameters(structuredClone(initialParameters));
+      handleJobApplicationRead(request);
+    }
+  };
+
   const views = getSectionVisibilities();
 
   const actionVisibilities = {
@@ -810,6 +829,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     handleSelectPrevSection,
     handleSelectSection,
     handleSelectNextSection,
+    handleResetFilters,
     defaultFilters,
     searchParameters,
     initialLoad,

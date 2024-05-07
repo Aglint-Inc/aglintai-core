@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { getHelper } from '@/src/components/JobEmailTemplates';
 import { templateObj } from '@/src/components/JobEmailTemplates/utils';
@@ -10,6 +9,7 @@ import {
   useAllAssessmentTemplates,
 } from '@/src/queries/assessment';
 import { Assessment } from '@/src/queries/assessment/types';
+import { useInterviewPlans } from '@/src/queries/interview-plans';
 import { Job } from '@/src/queries/job/types';
 import {
   useJobDashboardRefresh,
@@ -24,6 +24,7 @@ import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
+import { useJobDashboardStore } from './store';
 
 const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
@@ -65,6 +66,11 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const schedules = useJobSchedules();
   const interviewPlanEnabled = useJobInterviewPlanEnabled();
   const scoringPoll = useJobScoringPoll();
+  const interviewPlans = useInterviewPlans();
+
+  const isInterviewPlanDisabled = interviewPlans?.data;
+  const isInterviewSessionEmpty =
+    interviewPlans?.data?.interview_session?.length === 0;
 
   const settingsValidity = getSettingsValidity(job);
 
@@ -78,12 +84,9 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
       settingsValidity && jdValidity && !job?.scoring_criteria_loading,
   };
   settingsValidity && jdValidity && !job.scoring_criteria_loading;
-  const [dismissWarnings, setDismissWarnings] = useState({
-    job_description: false,
-    interview_plan: false,
-    interview_session: false,
-  });
-  // console.log(hashCode(job?.draft?.description ?? ''), job?.description_hash);
+  const { dismissWarnings } = useJobDashboardStore(({ dismissWarnings }) => ({
+    dismissWarnings,
+  }));
 
   const jobPolling =
     !!job &&
@@ -129,12 +132,12 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const value = {
     job,
-    dismissWarnings,
     jobPolling,
     emailTemplateValidity,
     interviewPlanEnabled,
-    setDismissWarnings,
     handleJobRefresh,
+    isInterviewPlanDisabled,
+    isInterviewSessionEmpty,
     scoringPoll,
     schedules,
     status,
