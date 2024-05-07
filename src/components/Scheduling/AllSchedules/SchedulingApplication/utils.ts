@@ -460,7 +460,6 @@ export const scheduleWithAgent = async ({
   recruiter_user_name,
   candidate_name,
   company_name,
-  rec_user_email,
   rec_user_phone,
   rec_user_id,
   supabase,
@@ -477,7 +476,6 @@ export const scheduleWithAgent = async ({
   recruiter_user_name: string;
   candidate_name: string;
   company_name: string;
-  rec_user_email: string;
   rec_user_phone: string;
   rec_user_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
@@ -557,9 +555,9 @@ export const scheduleWithAgent = async ({
           title: `Candidate invited for ${createCloneRes.refSessions
             .filter((ses) => ses.isSelected)
             .map((ses) => ses.name)
-            .join(
-              ' , ',
-            )} via ${type === 'email_agent' ? 'email agent' : 'phone agent'}`,
+            .join(' , ')} via ${
+            type === 'email_agent' ? 'email agent' : 'phone agent'
+          }`,
           logger: rec_user_id,
           type: 'schedule',
           application_id,
@@ -577,7 +575,7 @@ export const scheduleWithAgent = async ({
           candidate_name,
           company_name,
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          rec_user_email,
+          candidate_email: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_phone,
           dateRange,
           session_ids: createCloneRes.session_ids,
@@ -631,9 +629,9 @@ export const scheduleWithAgent = async ({
         addScheduleActivity({
           title: `Candidate invited for ${selectedSessions
             .map((ses) => ses.name)
-            .join(
-              ' , ',
-            )} via ${type === 'email_agent' ? 'email agent' : 'phone agent'}`,
+            .join(' , ')} via ${
+            type === 'email_agent' ? 'email agent' : 'phone agent'
+          }`,
           logger: rec_user_id,
           type: 'schedule',
           application_id,
@@ -651,7 +649,7 @@ export const scheduleWithAgent = async ({
           candidate_name,
           company_name,
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          rec_user_email,
+          candidate_email: sessionsWithPlan.application.public_jobs.job_title,
           rec_user_phone,
           dateRange,
           session_ids,
@@ -676,7 +674,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
   recruiter_user_name,
   candidate_name,
   company_name,
-  rec_user_email,
   rec_user_phone,
   rec_user_id,
   supabase,
@@ -692,7 +689,6 @@ export const scheduleWithAgentWithoutTaskId = async ({
   recruiter_user_name: string;
   candidate_name?: string;
   company_name?: string;
-  rec_user_email: string;
   rec_user_phone: string;
   rec_user_id: string;
   supabase: ReturnType<typeof createServerClient<Database>>;
@@ -771,9 +767,9 @@ export const scheduleWithAgentWithoutTaskId = async ({
         addScheduleActivity({
           title: `Candidate invited for session ${selSes
             .map((ses) => ses.name)
-            .join(
-              ' , ',
-            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+            .join(' , ')} via ${
+            type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
+          }`,
           logger: rec_user_id,
           type: 'schedule',
           application_id,
@@ -791,7 +787,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           candidate_name,
           company_name,
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          rec_user_email,
+          candidate_email: sessionsWithPlan.application.candidates.email,
           rec_user_phone,
           dateRange,
           recruiter_id,
@@ -849,9 +845,9 @@ export const scheduleWithAgentWithoutTaskId = async ({
         addScheduleActivity({
           title: `Candidate invited for session ${selectedSessions
             .map((ses) => ses.name)
-            .join(
-              ' , ',
-            )} via ${type === 'email_agent' ? 'Email Agent' : 'Phone Agent'}`,
+            .join(' , ')} via ${
+            type === 'email_agent' ? 'Email Agent' : 'Phone Agent'
+          }`,
           logger: rec_user_id,
           type: 'schedule',
           application_id,
@@ -869,7 +865,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           candidate_name,
           company_name,
           jobRole: sessionsWithPlan.application.public_jobs.job_title,
-          rec_user_email,
+          candidate_email: sessionsWithPlan.application.candidates.email,
           rec_user_phone,
           dateRange,
           recruiter_id,
@@ -1008,7 +1004,7 @@ export const agentTrigger = async ({
   candidate_name,
   company_name,
   jobRole,
-  rec_user_email,
+  candidate_email,
   rec_user_phone = '',
   dateRange,
   recruiter_id,
@@ -1022,7 +1018,7 @@ export const agentTrigger = async ({
   candidate_name: string;
   company_name: string;
   jobRole: string;
-  rec_user_email: string;
+  candidate_email: string;
   rec_user_phone: string;
   dateRange: {
     start_date: string;
@@ -1034,7 +1030,7 @@ export const agentTrigger = async ({
   console.log({
     type,
     candidate_name,
-    rec_user_email,
+    candidate_email,
     rec_user_phone: formatPhoneNumber(rec_user_phone),
   });
 
@@ -1061,7 +1057,7 @@ export const agentTrigger = async ({
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/mail-agent/init-agent`,
         {
-          cand_email: rec_user_email,
+          cand_email: candidate_email,
           filter_json_id: filterJsonId,
           interviewer_name: recruiter_user_name,
           task_id: task_id,
@@ -1088,7 +1084,7 @@ export const agentTrigger = async ({
           // retell_agent_id: 'dcc1869a822931ef646f28e185e7402e',
           retell_agent_id: process.env.RETELL_AGENT_ID,
           filter_json_id: filterJsonId,
-          cand_email: rec_user_email,
+          cand_email: candidate_email,
           // cand_email: sessionsWithPlan.application.candidates.email,
           task_id: task_id,
         },
@@ -1137,7 +1133,9 @@ export const createTask = async ({
   const { data: task, error: errorTasks } = await supabase
     .from('new_tasks')
     .insert({
-      name: `Schedule interview for ${candidate_name} - ${selectedSessions.map((ses) => ses.name).join(' , ')}`,
+      name: `Schedule interview for ${candidate_name} - ${selectedSessions
+        .map((ses) => ses.name)
+        .join(' , ')}`,
       //`Schedule interview for ${)} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`
       application_id,
       created_by: rec_user_id,

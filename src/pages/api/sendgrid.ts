@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       headers: details.headers,
     };
 
-    msg.to = await getOutboundEmail(msg.to, true);
+    msg.to = await getOutboundEmail(msg.to);
     await sgMail.send({
       ...msg,
     });

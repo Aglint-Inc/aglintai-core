@@ -55,7 +55,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   : 'phone_agent',
                 candidate_name: task.applications.candidates.first_name,
                 company_name: task.applications.public_jobs.recruiter.name,
-                rec_user_email: task.recruiter_user.email,
                 rec_user_phone: task.recruiter_user.phone,
                 rec_user_id: task.recruiter_user.user_id,
                 user_tz: 'Asia/Calcutta',

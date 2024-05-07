@@ -153,7 +153,7 @@ export const bookSession = async ({
   }
 
   calendar_event.attendees.push({
-    email: (await getOutboundEmail(candidate_email, false)) as string,
+    email: (await getOutboundEmail(candidate_email)) as string,
   });
 
   const google_cal = new GoogleCalender({

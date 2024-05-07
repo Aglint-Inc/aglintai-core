@@ -18,7 +18,6 @@ export type ApiBodyParamsScheduleAgent = {
   recruiter_user_name: string;
   candidate_name?: string;
   company_name?: string;
-  rec_user_email: string;
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
@@ -30,7 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       application_id,
       dateRange,
       rec_user_id,
-      rec_user_email,
       rec_user_phone,
       recruiter_id,
       recruiter_user_name,
@@ -54,7 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         type: type,
         candidate_name: candidate_name,
         company_name: company_name,
-        rec_user_email,
         rec_user_phone,
         rec_user_id,
         supabase: supabaseAdmin,
