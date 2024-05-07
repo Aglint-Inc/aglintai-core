@@ -71,6 +71,7 @@ export const bookSession = async ({
   meet_type,
   company_id,
   duration,
+  description,
 }: {
   schedule_name: string;
   start_time: string;
@@ -83,6 +84,7 @@ export const bookSession = async ({
   meet_type: InterviewSession['schedule_type'];
   company_id: string;
   duration: number;
+  description: string;
 }) => {
   const calendar_event: NewCalenderEvent = {
     summary: schedule_name,
@@ -105,6 +107,7 @@ export const bookSession = async ({
     conferenceData: {
       createRequest: null,
     },
+    description: description,
   };
   if (meet_type === 'google_meet') {
     calendar_event.conferenceData.createRequest = {
