@@ -1662,6 +1662,7 @@ export type Database = {
       }
       interview_session_relation: {
         Row: {
+          accepted_status: Database["public"]["Enums"]["session_accepted_status"]
           feedback: Json | null
           id: string
           interview_module_relation_id: string | null
@@ -1672,6 +1673,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          accepted_status?: Database["public"]["Enums"]["session_accepted_status"]
           feedback?: Json | null
           id?: string
           interview_module_relation_id?: string | null
@@ -1682,6 +1684,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          accepted_status?: Database["public"]["Enums"]["session_accepted_status"]
           feedback?: Json | null
           id?: string
           interview_module_relation_id?: string | null
@@ -4223,6 +4226,7 @@ export type Database = {
         Returns: {
           job_app: Json
           cand: Json
+          tasks: Json
           candfiles: Json
           assres: Json
           schedule: Json
@@ -4326,6 +4330,15 @@ export type Database = {
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      new_get_interview_schedule_by_user_id: {
+        Args: {
+          target_user_id: string
+        }
+        Returns: {
+          interview_meeting: Json
+          users: Json
+        }[]
       }
       outreachhandler: {
         Args: Record<PropertyKey, never>
@@ -4531,6 +4544,11 @@ export type Database = {
         | "scheduler"
         | "recruiter"
       sender_type: "aglint" | "you" | "system" | "user"
+      session_accepted_status:
+        | "waiting"
+        | "accepted"
+        | "declined"
+        | "request_reschedule"
       session_type: "panel" | "individual" | "debrief"
       status_training: "qualified" | "training"
       sub_task_status:

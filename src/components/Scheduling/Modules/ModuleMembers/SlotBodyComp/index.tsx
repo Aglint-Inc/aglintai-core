@@ -30,8 +30,7 @@ function SlotBodyComp({
   isFetching,
 }: SlotBodyCompProps) {
   const { loading } = useSchedulingContext();
-  const { data: schedules, isLoading: schedulesLoading } =
-    useAllSchedulesByModuleId();
+  const { isLoading: schedulesLoading } = useAllSchedulesByModuleId();
 
   const { data: meetingData } = useGetMeetingsByModuleId({
     schedulesLoading: schedulesLoading,
@@ -54,12 +53,7 @@ function SlotBodyComp({
           <InterviewMemberList
             textObjective={editModule.description || 'No description'}
             isMembersTrainingVisible={editModule.settings?.require_training}
-            slotInterviewCard={
-              <ModuleSchedules
-                schedules={schedules}
-                loading={schedulesLoading}
-              />
-            }
+            slotInterviewCard={<ModuleSchedules />}
             onClickAddTrainee={{
               onClick: () => {
                 setIsAddMemberDialogOpen(true);

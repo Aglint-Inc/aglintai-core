@@ -18,6 +18,8 @@ export function InterviewMemberSide({
   isAllActive = false,
   propsGrids = {},
   slotInterview,
+  onClickWaiting = {},
+  isWaitingActive = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">
@@ -66,6 +68,26 @@ export function InterviewMemberSide({
                 tag="div"
               >
                 <_Builtin.Block tag="div">{"Cancelled"}</_Builtin.Block>
+              </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "all-wrap-navi")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1076")}
+              tag="div"
+              {...onClickWaiting}
+            >
+              <_Builtin.Block tag="div">{"Waiting"}</_Builtin.Block>
+            </_Builtin.Block>
+            {isWaitingActive ? (
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1076", "active")}
+                tag="div"
+              >
+                <_Builtin.Block tag="div">{"Waiting"}</_Builtin.Block>
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>

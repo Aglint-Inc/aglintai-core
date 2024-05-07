@@ -17,8 +17,11 @@ declare function MyScheduleSubCard(props: {
   textDuration?: React.ReactNode;
   isLocationVisible?: Types.Visibility.VisibilityConditions;
   textLocation?: React.ReactNode;
-  slotCandidateImage?: Types.Devlink.Slot;
-  textCandidateName?: React.ReactNode;
-  isCandidateNameVisible?: Types.Visibility.VisibilityConditions;
   isPhoneCallVisible?: Types.Visibility.VisibilityConditions;
+  bgColorProps?: Types.Devlink.RuntimeProps;
+  textJob?: React.ReactNode;
+  slotMembersList?: Types.Devlink.Slot;
+  onClickDropdownIocn?: Types.Devlink.RuntimeProps;
+  isMembersListVisible?: Types.Visibility.VisibilityConditions;
+  slotThreeDot?: Types.Devlink.Slot;
 }): React.JSX.Element;

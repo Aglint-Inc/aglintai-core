@@ -705,16 +705,17 @@ function Interviewer({
             </ShowCode.When>
           </ShowCode>
         }
-        slotScheduleTabs={
-          <ShowCode>
-            <ShowCode.When isTrue={interviewerSchedules.isLoading!}>
-              <Loader />
-            </ShowCode.When>
-            <ShowCode.When isTrue={interviewerSchedules.isFetched}>
-              <Interviews interviewsData={interviewerSchedules.data} />
-            </ShowCode.When>
-          </ShowCode>
-        }
+        // slotScheduleTabs={
+        //   <ShowCode>
+        //     <ShowCode.When isTrue={interviewerSchedules.isLoading!}>
+        //       <Loader />
+        //     </ShowCode.When>
+        //     <ShowCode.When isTrue={interviewerSchedules.isFetched}>
+        //       <Interviews interviewsData={interviewerSchedules.data} />
+        //     </ShowCode.When>
+        //   </ShowCode>
+        // }
+        slotScheduleTabs={<Interviews />}
         onClickAddInterviewModules={{
           onClick: () => {
             setPauseResumeDialog((pre) => ({
