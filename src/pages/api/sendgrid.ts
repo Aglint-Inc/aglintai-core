@@ -1,5 +1,4 @@
-// import { getOutboundEmail } from '@/src/utils/schedule-utils/get-outbound-email';
-
+/* eslint-disable no-console */
 import { getOutboundEmail } from '@/src/utils/schedule-utils/get-outbound-email';
 
 const sgMail = require('@sendgrid/mail');
@@ -29,7 +28,9 @@ export default async function handler(req, res) {
       headers: details.headers,
     };
 
+    console.log(msg.to);
     msg.to = await getOutboundEmail(msg.to);
+    console.log(msg.to);
     await sgMail.send({
       ...msg,
     });
