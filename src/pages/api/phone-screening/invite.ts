@@ -78,7 +78,7 @@ const updateDataInDb = async (candidates: { application_id: string }[]) => {
       .eq('id', candidates[0].application_id),
   ) as unknown as JobApplication[];
   if (app.status_emails_sent) {
-    if (app.status_emails_sent) {
+    if (app.status_emails_sent.phone_screening) {
       app.status_emails_sent.phone_screening_resend = timeStamp;
 
       supabaseWrap(

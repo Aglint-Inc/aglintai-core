@@ -685,6 +685,7 @@ const Modules = () => {
       {activeSections.includes(JobApplicationSections.SCREENING) && (
         <ScreeningModule />
       )}
+
       <EmailTemplatesModule />
     </>
   );

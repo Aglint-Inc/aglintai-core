@@ -1,7 +1,3 @@
-.div-block-1026 {
-  padding: 16px;
-}
-
 .div-block-1020 {
   display: flex;
   padding: 20px;
@@ -190,6 +186,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .div-block-1021 {
   display: flex;
   align-items: center;
@@ -255,6 +255,10 @@
 
 .icons.ml--6 {
   margin-left: -6px;
+}
+
+.icons.hide {
+  display: none;
 }
 
 .text-underline {

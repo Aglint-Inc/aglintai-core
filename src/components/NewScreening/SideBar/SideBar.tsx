@@ -116,6 +116,7 @@ const SideBar = ({ appId, openDrawer }) => {
               (data.last_name === null ? '' : data.last_name)
             );
           })}
+        isSmallWidthVisible={false}
         isAppliedOnVisible={false}
         isLocationRoleVisible={false}
         isLocationVisible={false}
