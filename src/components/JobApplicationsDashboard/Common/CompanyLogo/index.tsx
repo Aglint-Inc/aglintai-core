@@ -9,7 +9,9 @@ const CompanyLogo = ({
   companyName: string;
   borderRadius?: number;
 }) => {
-  return companyName ? (
+  const name =
+    typeof companyName === 'string' ? companyName.toLowerCase().trim() : '';
+  return name && !(name.includes('pvt') || name.includes('ltd')) ? (
     <Avatar
       variant='square'
       sx={{
@@ -24,11 +26,9 @@ const CompanyLogo = ({
       style={{ color: 'black' }}
       src={
         companyLogo ||
-        `https://logo.clearbit.com/${companyName
-          .toLowerCase()
-          .replaceAll(' ', '')}.com `
+        `https://logo.clearbit.com/${name.replaceAll(' ', '')}.com `
       }
-      alt={companyName}
+      alt={name}
     >
       <UnknownCompany />
     </Avatar>

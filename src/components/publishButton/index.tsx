@@ -1,6 +1,7 @@
 import { Button, CircularProgress, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
+import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { palette } from '@/src/context/Theme/Theme';
 
 const PublishButton = ({
@@ -10,7 +11,9 @@ const PublishButton = ({
   onClick: () => Promise<boolean>;
   disabled?: boolean;
 }) => {
-  const [publishing, setPublishing] = useState(0);
+  const { publishing, setPublishing } = useJobDashboardStore(
+    ({ publishing, setPublishing }) => ({ publishing, setPublishing }),
+  );
   const rocketPosition =
     publishing === 0 ? '-11px' : publishing === 1 ? '-40px' : '-68px';
   const text =
