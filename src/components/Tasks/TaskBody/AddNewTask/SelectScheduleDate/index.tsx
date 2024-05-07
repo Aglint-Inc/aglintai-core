@@ -3,7 +3,7 @@ import { Button, Popover, Stack } from '@mui/material';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TaskDate } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -26,15 +26,13 @@ function SelectScheduleDate({
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const [selectedDate, setSelectedDate] = useState([
-    scheduleDate.start_date,
-    scheduleDate.end_date,
-  ]);
-
+  const [selectedDate, setSelectedDate] = useState([]);
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  useEffect(() => {
+    setSelectedDate([scheduleDate.start_date, scheduleDate.end_date]);
+  }, [scheduleDate]);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   return (
@@ -115,9 +113,9 @@ function SelectScheduleDate({
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                       disablePast
-                      value={dayjs(scheduleDate.start_date)}
+                      value={dayjs(selectedDate[0])}
                       onChange={(e) => {
-                        setSelectedDate(e);
+                        setSelectedDate([e, null]);
                       }}
                     />
                   </LocalizationProvider>

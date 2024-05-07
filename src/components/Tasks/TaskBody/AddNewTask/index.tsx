@@ -104,14 +104,19 @@ function AddNewTask() {
   const [aiload, setAiLoad] = useState(false);
 
   async function handleCreate() {
-    if (!selectedCandidate?.candidates?.email) {
-      toast.warning('No email associated with this candidate.');
-      return;
-    }
     if (!selectedSession.length) {
       toast.warning('Please select an interview session.');
       return;
     }
+    if (!selectedCandidate?.candidates?.email) {
+      toast.warning('No email associated with this candidate.');
+      return;
+    }
+    if (!selectedAssignee?.user_id) {
+      toast.warning('Please select an assignee.');
+      return;
+    }
+
     handelAddTask({
       assignee: [selectedAssignee?.user_id],
       created_by: recruiterUser?.user_id || null,
@@ -485,13 +490,12 @@ function AddNewTask() {
                 <SelectScheduleDate
                   scheduleDate={scheduleDate}
                   onChange={(e: any) => {
-                    if (Array.isArray(e) && e[0] && e[1]) {
+                    if (e[1]) {
                       setScheduleDate({ start_date: e[0], end_date: e[1] });
                       setSelectedDueDate(e[0]);
-                    }
-                    if (!Array.isArray(e)) {
-                      setScheduleDate({ start_date: e, end_date: null });
-                      setSelectedDueDate(e);
+                    } else {
+                      setScheduleDate({ start_date: e[0], end_date: null });
+                      setSelectedDueDate(e[0]);
                     }
                   }}
                 />

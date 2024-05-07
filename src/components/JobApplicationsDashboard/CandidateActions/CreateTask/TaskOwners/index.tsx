@@ -18,15 +18,8 @@ function TaskOwners({
   setSelectedAssignee: (x: assigneeType) => void;
   onChange: any;
 }) {
-  const { data: members } = useInterviewerList();
   const { assignerList } = useTaskStatesContext();
 
-  // let assignerList = members
-  //   .map((ele) => ele.rec_user)
-  //   .filter((ele) => ele.first_name)
-  //   .map((item) => {
-  //     return { ...item, assignee: 'Interviewers' };
-  //   }) as assigneeType[];
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
