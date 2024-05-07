@@ -52,7 +52,7 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
                 ...updatedEditModule,
               },
             );
-            toast.success('Interview type archived.');
+            toast.success('Interview type archived successfully.');
           } else {
             throw new Error();
           }

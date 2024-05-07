@@ -244,6 +244,7 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
     name: department,
     value: department,
   }));
+
   return (
     <UISelect
       label={'Department'}
