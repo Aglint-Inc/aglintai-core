@@ -128,6 +128,7 @@ export * from "./LearnHowGreenhouse";
 export * from "./LearnHowLever";
 export * from "./ListCard";
 export * from "./ListPop";
+export * from "./MembersList";
 export * from "./ModuleCard";
 export * from "./ModuleGlobalMoreMenu";
 export * from "./ModulesMoreMenu";
