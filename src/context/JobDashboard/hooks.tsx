@@ -68,9 +68,12 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const scoringPoll = useJobScoringPoll();
   const interviewPlans = useInterviewPlans();
 
-  const isInterviewPlanDisabled = interviewPlans?.data;
+  const isInterviewPlanDisabled =
+    interviewPlans.isFetched && !interviewPlans?.data;
   const isInterviewSessionEmpty =
-    interviewPlans?.data?.interview_session?.length === 0;
+    interviewPlans.isFetched &&
+    (isInterviewPlanDisabled ||
+      interviewPlans?.data?.interview_session?.length === 0);
 
   const settingsValidity = getSettingsValidity(job);
 
