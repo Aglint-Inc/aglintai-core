@@ -9,4 +9,5 @@ declare function SoundTask(props: {
   onClickShow?: Types.Devlink.RuntimeProps;
   isHideVisible?: Types.Visibility.VisibilityConditions;
   onClickHide?: Types.Devlink.RuntimeProps;
+  isAudioPlayVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
