@@ -6,8 +6,7 @@ import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
-import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
-// import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
+import { getOutboundEmail } from '../scheduling_v2/get-outbound-email';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -47,6 +46,21 @@ export const getUserCalAuth = async ({
   } catch (error) {
     return null;
   }
+};
+
+export const getSuperAdminAuth = async (
+  company_cred: GetAuthParams['company_cred'],
+  admin_email,
+) => {
+  const jwtClient = new google.auth.JWT({
+    email: company_cred.client_email,
+    key: company_cred.private_key,
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+    subject: admin_email,
+  });
+
+  await jwtClient.authorize();
+  return jwtClient;
 };
 
 export type Interviewer = Pick<

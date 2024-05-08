@@ -15,7 +15,7 @@ import {
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { BodyParams } from '@/src/pages/api/scheduling/v1/event_attendee_status';
+import { APIEventAttendeeStatus } from '@/src/types/aglintApi/schedulingApi';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
@@ -53,7 +53,7 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
       const res = await axios.post('/api/scheduling/v1/event_attendee_status', {
         attendee_interv_id: user_id,
         event_id: eventId,
-      } as BodyParams);
+      } as APIEventAttendeeStatus);
 
       if (res?.data?.event_attendees_status)
         setAllCalendarStatus(res.data.event_attendees_status);
@@ -97,7 +97,9 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
         }}
         textSchedule={
           schedule.interview_meeting.confirmed_date &&
-          `on ${dayjs(schedule.interview_meeting.confirmed_date).format('DD MMM YYYY')}`
+          `on ${dayjs(schedule.interview_meeting.confirmed_date).format(
+            'DD MMM YYYY',
+          )}`
         }
         slotStatus={
           <>
@@ -256,9 +258,9 @@ function Overview({ schedule }: { schedule: TransformSchedule }) {
             )}
             textDuration={`${dayjs(
               schedule.interview_meeting.start_time,
-            ).format(
-              'hh:mm A',
-            )} - ${dayjs(schedule.interview_meeting.end_time).format('hh:mm A')} ${getTimeZoneBrowser()}`}
+            ).format('hh:mm A')} - ${dayjs(
+              schedule.interview_meeting.end_time,
+            ).format('hh:mm A')} ${getTimeZoneBrowser()}`}
             slotPlatformIcon={
               <IconScheduleType
                 type={schedule.interview_session.schedule_type}

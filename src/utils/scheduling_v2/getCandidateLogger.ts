@@ -3,7 +3,7 @@ import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { SubTaskProgress } from '@/src/types/data.types';
 
-import { supabaseAdmin } from '../../pages/api/fetchCompanyDetails';
+import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 /* eslint-disable no-unused-vars */
 type TitleAttrType = {

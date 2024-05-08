@@ -11,8 +11,10 @@ import {
   EmailAgentId,
   PhoneAgentId,
 } from '@/src/components/Tasks/utils';
-import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
-import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
+import {
+  APICandidateConfirmSlot,
+  ApiFindAvailability,
+} from '@/src/types/aglintApi/schedulingApi';
 import {
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -334,7 +336,7 @@ export const sendToCandidate = async ({
           user_tz: user_tz,
           candidate_email: selectedApplication.candidates.email,
           schedule_id: createCloneRes.schedule.id,
-        } as ConfirmApiBodyParams;
+        } as APICandidateConfirmSlot;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
           bodyParams,
@@ -432,7 +434,7 @@ export const sendToCandidate = async ({
           user_tz: user_tz,
           candidate_email: selectedApplication.candidates.email,
           schedule_id: checkSch[0].id,
-        } as ConfirmApiBodyParams;
+        } as APICandidateConfirmSlot;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
           bodyParams,
@@ -1237,7 +1239,7 @@ const checkAvailibility = async ({
       end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
       user_tz: timezone || 'America/Los_Angeles',
       is_debreif: false,
-    } as BodyParams,
+    } as ApiFindAvailability,
   );
 
   if (resAllOptions.data.length === 0) {

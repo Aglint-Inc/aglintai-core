@@ -8,14 +8,10 @@ dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-
-export type BodyParams = {
-  event_id: string;
-  attendee_interv_id: string;
-};
+import { APIEventAttendeeStatus } from '@/src/types/aglintApi/schedulingApi';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { event_id, attendee_interv_id } = req.body as BodyParams;
+  let { event_id, attendee_interv_id } = req.body as APIEventAttendeeStatus;
   if (!event_id || !attendee_interv_id)
     return res.status(400).send('missing fields');
 

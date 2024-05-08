@@ -5,9 +5,9 @@ var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
 import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
 
 import { SessionInterviewerType } from '../../types/scheduleTypes/types';
@@ -17,9 +17,8 @@ import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession } from './book_session';
 import { getCalEventDescription } from './getCalEventDescription';
 
-export const bookCandidatePlan = async (req_body: ConfirmApiBodyParams) => {
-  let { candidate_plan, recruiter_id, user_tz, candidate_email } =
-    req_body as ConfirmApiBodyParams;
+export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
+  let { candidate_plan, recruiter_id, user_tz, candidate_email } = req_body;
   const all_sess_ids: string[] = candidate_plan.reduce((tot, curr) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
@@ -187,6 +186,7 @@ export const update_meetings_info = async ({
           end_time: cal_event.end.dateTime,
           start_time: cal_event.start.dateTime,
           meeting_json: cal_event,
+          cal_event_id: cal_event.id,
           meeting_link: meeting_link,
           status: 'confirmed',
           confirmed_date: dayjs().toISOString(),

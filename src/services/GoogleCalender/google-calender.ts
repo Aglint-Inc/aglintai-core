@@ -6,6 +6,7 @@ import {
 
 import {
   GetAuthParams,
+  getSuperAdminAuth,
   getUserCalAuth,
 } from '../../utils/event_book/book_session';
 import { decrypt_string } from '../../utils/integrations/crypt-funcs';
@@ -68,6 +69,25 @@ export class GoogleCalender {
     }
     return this.user_auth;
   }
+  public async authSuperAdmin(company_id: string) {
+    const [company] = supabaseWrap(
+      await supabaseAdmin
+        .from('recruiter_relation')
+        .select('recruiter(service_json,domain_admin_email)')
+        .eq('recruiter_id', company_id),
+    );
+    if (!company.recruiter.service_json) {
+      throw new Error('Invalid Company Service Cred');
+    }
+    this.auth_details = {
+      company_cred: JSON.parse(decrypt_string(company.recruiter.service_json)),
+      recruiter: null,
+    };
+    this.user_auth = await getSuperAdminAuth(
+      this.auth_details.company_cred,
+      company.recruiter.domain_admin_email,
+    );
+  }
   public async getAllCalenderEvents(start_date: string, end_date: string) {
     if (!this.user_auth) {
       throw new Error('user not authorized');
@@ -123,5 +143,31 @@ export class GoogleCalender {
       sendNotifications: true,
     });
     return response.data;
+  }
+  public async updateEvent(updated_event: Partial<CalendarEvent>) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const response = await calendar.events.patch({
+      calendarId: 'primary', // Change to specific calendar ID if needed
+      eventId: updated_event.id,
+      requestBody: {
+        ...updated_event,
+      },
+      sendNotifications: true,
+    });
+    return response.data;
+  }
+  public async changeMeetingOrganizer(
+    from_calender: string,
+    event_id: string,
+    new_organizer_email: string,
+  ) {
+    const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
+    const result = await calendar.events.move({
+      calendarId: from_calender,
+      eventId: event_id,
+      destination: new_organizer_email,
+    });
+
+    return result.data;
   }
 }
