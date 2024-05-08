@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       confirmed_inters,
       not_confirmed_inters,
       service_json,
-      single_int_auth,
+      confirmed_inter,
     } = await fetch_details(req.body);
 
     const curr_meeting_ints = [...confirmed_inters, ...not_confirmed_inters];
@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }[] = [];
     if (is_organiser_changed) {
       const google_cal = new GoogleCalender(null, null);
-      await google_cal.authSuperAdmin(single_int_auth.recruiter.id);
+      await google_cal.authSuperAdmin(confirmed_inter.recruiter.id);
       const new_organiser = replaced_inters[0];
       updated_db_sess_reln = [
         {
@@ -180,19 +180,21 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
         current_meeting_inters.map((i) => i.user_id),
       ),
   );
-  const single_int_auth = curr_ints_auth[0];
+  const confirmed_inter = curr_ints_auth.find(
+    (int) => int.recruiter_user.email === confirmed_inters[0].email,
+  );
   let service_json: CompServiceKeyCred = null;
-  if (single_int_auth.recruiter.service_json) {
+  if (confirmed_inter.recruiter.service_json) {
     service_json = JSON.parse(
-      decrypt_string(single_int_auth.recruiter.service_json),
+      decrypt_string(confirmed_inter.recruiter.service_json),
     ) as CompServiceKeyCred;
   }
   const google_cal = new GoogleCalender({
     company_cred: service_json,
     recruiter: {
-      email: single_int_auth.recruiter_user.email,
-      schedule_auth: single_int_auth.recruiter_user.schedule_auth,
-      user_id: single_int_auth.recruiter_user.user_id,
+      email: confirmed_inter.recruiter_user.email,
+      schedule_auth: confirmed_inter.recruiter_user.schedule_auth,
+      user_id: confirmed_inter.recruiter_user.user_id,
     },
   });
   await google_cal.authorizeUser();
@@ -212,7 +214,7 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
     confirmed_inters,
     not_confirmed_inters,
     service_json,
-    single_int_auth,
+    confirmed_inter,
     curr_ints_auth,
   };
 };
