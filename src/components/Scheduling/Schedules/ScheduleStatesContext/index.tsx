@@ -29,7 +29,6 @@ const defaultProvider: ContextValue = {
 const ScheduleStatesContext = createContext<ContextValue>(defaultProvider);
 const useScheduleStatesContext = () => useContext(ScheduleStatesContext);
 function ScheduleStatesProvider({ children }) {
-  const { recruiterUser, members } = useAuthDetails();
   const [allSchedules, setAllSchedules] = useState<ScheduleListType | null>(
     null,
   );
@@ -76,7 +75,7 @@ export const useAllScheduleList = () => {
 };
 
 async function getAllScheduleList(user_ids: string[]) {
-  let schedules = [];
+  let schedules: ScheduleListType = [];
   for (let user_id of user_ids) {
     const { data } = await supabase.rpc(
       'new_get_interview_schedule_by_user_id',
@@ -85,8 +84,14 @@ async function getAllScheduleList(user_ids: string[]) {
       },
     );
 
-    schedules = [...schedules, ...data];
+    schedules = [...schedules, ...data] as ScheduleListType;
   }
 
-  return schedules;
+  return schedules.filter(
+    (v, i, a) =>
+      a.findIndex(
+        (v2) =>
+          v2.interview_meeting.meeting_id === v.interview_meeting.meeting_id,
+      ) === i,
+  );
 }

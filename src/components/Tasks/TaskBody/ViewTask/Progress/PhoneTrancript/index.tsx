@@ -25,6 +25,7 @@ function PhoneTranscript({
   const [openTranscript, setOpenTranscript] = useState(false);
   return (
     <SoundTask
+      isAudioPlayVisible={!!audio_url}
       isHideVisible={openTranscript}
       isShowVisible={!openTranscript}
       onClickHide={{
@@ -37,7 +38,7 @@ function PhoneTranscript({
           setOpenTranscript(true);
         },
       }}
-      slotAudioPlay={<TranscriptPlayer src={audio_url} />}
+      slotAudioPlay={audio_url && <TranscriptPlayer src={audio_url} />}
       slotTranscript={
         <Collapse
           sx={{

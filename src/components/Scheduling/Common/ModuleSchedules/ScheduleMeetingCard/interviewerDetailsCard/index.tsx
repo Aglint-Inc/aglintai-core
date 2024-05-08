@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
+import { convertTimeZoneToAbbreviation } from '@/src/components/Scheduling/utils';
+import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { ScheduleListType } from '../..';
@@ -25,22 +27,6 @@ function InterviewerDetailsCard({
   const timeTo = dayjs(meetingTiming.endDate).tz(
     user.scheduling_settings.timeZone.tzCode,
   );
-
-  const localTime = String(dayjs(timeFrom)['$d']);
-
-  let timeZonea =
-    localTime.length &&
-    localTime.substring(
-      localTime.lastIndexOf('(') + 1,
-      localTime.lastIndexOf(')'),
-    );
-
-  let timezone =
-    localTime.length &&
-    timeZonea
-      .split(' ')
-      .map((ele) => ele[0])
-      .join('');
 
   const today = dayjs().startOf('day');
   let totalInterviewsThisWeek: {
@@ -94,7 +80,7 @@ function InterviewerDetailsCard({
       textLocation={user.location}
       textMail={user.email}
       textTimeZone={user.scheduling_settings.timeZone.label}
-      textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${timezone}`}
+      textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`}
       isShadow={user.training_type !== 'qualified'}
       onClickViewInterviewDetail={{
         onClick: (e) => {

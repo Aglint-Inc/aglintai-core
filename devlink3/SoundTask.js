@@ -12,15 +12,18 @@ export function SoundTask({
   onClickShow = {},
   isHideVisible = false,
   onClickHide = {},
+  isAudioPlayVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1627")} tag="div">
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1628")}
-        tag="div"
-      >
-        {slotAudioPlay}
-      </_Builtin.Block>
+      {isAudioPlayVisible ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1628")}
+          tag="div"
+        >
+          {slotAudioPlay}
+        </_Builtin.Block>
+      ) : null}
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1629")}
         tag="div"
@@ -48,7 +51,12 @@ export function SoundTask({
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{slotTranscript}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1708")}
+          tag="div"
+        >
+          {slotTranscript}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );
