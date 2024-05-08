@@ -78,26 +78,6 @@ export function InterviewMemberSide({
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1076")}
               tag="div"
-              {...onClickWaiting}
-            >
-              <_Builtin.Block tag="div">{"Waiting"}</_Builtin.Block>
-            </_Builtin.Block>
-            {isWaitingActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1076", "active")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Waiting"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "all-wrap-navi")}
-            tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076")}
-              tag="div"
               {...onClickCompleted}
             >
               <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
