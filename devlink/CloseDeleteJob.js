@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -18,7 +19,7 @@ export function CloseDeleteJob({
     <_Component className={_utils.cx(_styles, "close-delete-wrap")} tag="div">
       {isCloseJobVisible ? (
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Close this job"}
+          {"Close This Job"}
         </_Builtin.Block>
       ) : null}
       {isDynamicDescVisible ? (
@@ -37,7 +38,7 @@ export function CloseDeleteJob({
           tag="div"
         >
           {
-            "By closing the job, candidates can no longer apply for this position, and this job will also be removed from the company page."
+            "Closing this job will permanently end all associated activities, including tasks and scheduled interviews. Once closed, this position will no longer accept applications and cannot be reactivated. The job will also be removed from the company page."
           }
         </_Builtin.Block>
       ) : null}

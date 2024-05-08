@@ -23,7 +23,7 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { Database } from '@/src/types/schema';
 import { addHttps, getUrlHost } from '@/src/utils/fetchCompDetails';
 
-const supabaseAdmin = createClient<Database>(
+export const supabaseAdmin = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_KEY || '',
 );
