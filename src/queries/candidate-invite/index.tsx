@@ -29,6 +29,7 @@ export const useInviteSlots = (params: InviteSlotsParams) => {
   const { queryKey } = candidateInviteKeys.inviteSlotsWithFilter(params);
   const query = useQuery({
     queryKey,
+    retry: 3,
     queryFn: () => getInviteSlots(params),
   });
   return query;

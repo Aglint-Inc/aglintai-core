@@ -183,7 +183,10 @@ export function CreateJob({
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}
-      <_Builtin.Block className={_utils.cx(_styles, "div-block-733")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-733", "hide")}
+        tag="div"
+      >
         <_Builtin.Block className={_utils.cx(_styles, "hide")} tag="div">
           {"Not finding your ATS?"}
         </_Builtin.Block>
