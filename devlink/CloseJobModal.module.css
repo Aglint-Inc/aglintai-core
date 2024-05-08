@@ -573,6 +573,10 @@
   margin-right: -8px;
 }
 
+.icons.mt-2 {
+  margin-top: 2px;
+}
+
 .buttn_flex {
   display: grid;
   padding-top: 12px;

@@ -5,39 +5,20 @@ import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
 import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,
 } from '@/src/utils/event_book/book_day_plan';
 import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export type ConfirmApiBodyParams = {
-  candidate_plan: {
-    sessions: {
-      session_id: string;
-      start_time: string;
-      end_time: string;
-    }[];
-  }[];
-  recruiter_id: string;
-  user_tz: string;
-  candidate_email: string;
-  schedule_id: string;
-  filter_id?: string;
-  //  if tasks id is present
-  task_id: string | null;
-  agent_type: 'email' | 'phone' | 'self';
-  candidate_name: string;
-  candidate_id: string;
-};
 
 const required_fields = [
   'candidate_plan',
@@ -48,7 +29,7 @@ const required_fields = [
 ];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const req_body = req.body as ConfirmApiBodyParams;
+  const req_body = req.body as APICandidateConfirmSlot;
   try {
     required_fields.forEach((field) => {
       if (!has(req_body, field)) {

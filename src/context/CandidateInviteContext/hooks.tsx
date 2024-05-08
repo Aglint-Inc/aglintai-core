@@ -5,12 +5,12 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { TimezoneObj } from '@/src/components/Scheduling/Settings';
 import { BodyParamsCandidateInvite } from '@/src/pages/api/scheduling/invite';
-import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
 import {
   useConfirmSlots,
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
+import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
 import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
@@ -69,7 +69,7 @@ const useInviteActions = () => {
         meta.data.candidate.first_name,
         meta.data.candidate.last_name,
       ),
-    } as ConfirmApiBodyParams;
+    } as APICandidateConfirmSlot;
     try {
       if (!isPending) {
         await mutateAsync(bodyParams);

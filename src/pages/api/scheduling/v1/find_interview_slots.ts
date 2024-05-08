@@ -3,21 +3,15 @@ import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { APIFindInterviewSlot } from '@/src/types/aglintApi/schedulingApi';
 import { combineSlots } from '@/src/utils/scheduling_v2/utils';
-
-export type BodyParams = {
-  session_ids: string[];
-  recruiter_id: string;
-  start_date: string;
-  user_tz: string;
-};
 
 const required_fields = ['recruiter_id', 'start_date', 'user_tz'];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     let { session_ids, recruiter_id, start_date, user_tz } =
-      req.body as BodyParams;
+      req.body as APIFindInterviewSlot;
 
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {

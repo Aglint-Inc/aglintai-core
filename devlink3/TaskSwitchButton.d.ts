@@ -7,4 +7,7 @@ declare function TaskSwitchButton(props: {
   onClickList?: Types.Devlink.RuntimeProps;
   isListActive?: Types.Visibility.VisibilityConditions;
   isJobCandActive?: Types.Visibility.VisibilityConditions;
+  textFirst?: React.ReactNode;
+  textSecond?: React.ReactNode;
+  isIconVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

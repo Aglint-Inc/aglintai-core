@@ -2186,6 +2186,13 @@ textarea.w-select {
 .wf-layout-layout {
   display: grid;
 }
+.w-code-component > * {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
 :root {
   --gray100-3a86b552: hsla(180, 7.69%, 97.45%, 1.00);

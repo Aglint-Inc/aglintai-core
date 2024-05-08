@@ -14,16 +14,20 @@ export function ScheduleReason({
     <_Component className={_utils.cx(_styles, "div-block-1669")} tag="div">
       {slotScheduleReasonSection ?? (
         <>
-          <ScheduleReasonSection slotReasonList={slotReasonList} />
           <ScheduleReasonSection
             slotReasonList={slotReasonList}
-            textHeading="Cancel Schedule Reasons"
-            textDesc="Add reasons for cancelling the schedule, and these options will be provided at the time of cancelling."
+            textDesc="Add reasons for rescheduling. These options will be available when either the interviewer or the candidate reschedules:"
+            textHeading="Reschedule Reason"
           />
           <ScheduleReasonSection
             slotReasonList={slotReasonList}
-            textHeading="Decline Reasons"
-            textDesc="Add reasons for declinnig the schedule, and these options will be provided at the time of declining."
+            textHeading="Cancel Reason"
+            textDesc="Add reasons for cancelling. These options will be available when either the interviewer or the candidate cancels:"
+          />
+          <ScheduleReasonSection
+            slotReasonList={slotReasonList}
+            textHeading="Decline Reason"
+            textDesc="Add reasons for declining. These options will be available when either the interviewer or the candidate declines:"
           />
         </>
       )}

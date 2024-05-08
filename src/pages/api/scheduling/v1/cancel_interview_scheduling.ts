@@ -8,17 +8,11 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-
-// import { InterviewMeetingTypeDb } from '@/src/types/data.types';
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
-
-export type BookingApiParams = {
-  session_ids: string[];
-  cand_email: string;
-};
+import { ApiCancelScheduledInterview } from '@/src/types/aglintApi/schedulingApi';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { session_ids } = req.body as BookingApiParams;
+  let { session_ids } = req.body as ApiCancelScheduledInterview;
   if (!session_ids) return res.status(400).send('missing fields');
   try {
     const meeting_ids = supabaseWrap(

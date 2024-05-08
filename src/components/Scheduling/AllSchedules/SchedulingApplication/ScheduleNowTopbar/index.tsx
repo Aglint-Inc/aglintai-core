@@ -9,7 +9,7 @@ import { ScheduleNowButton } from '@/devlink3';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
-import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
+import { ApiFindAvailability } from '@/src/types/aglintApi/schedulingApi';
 import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -65,7 +65,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
         is_debreif: isDebrief,
-      } as BodyParams);
+      } as ApiFindAvailability);
 
       if (res.status === 200) {
         const respTyped = res.data as {
@@ -93,6 +93,23 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
   const onClickScheduleAgent = async (type: 'phone_agent' | 'email_agent') => {
     try {
       setFetchingPlan(true);
+      const resAllOptions = await axios.post(
+        '/api/scheduling/v1/find_availability',
+        {
+          session_ids: selectedSessionIds,
+          recruiter_id: recruiter.id,
+          start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+          end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+          user_tz: dayjs.tz.guess(),
+          is_debreif: isDebrief,
+        } as ApiFindAvailability,
+      );
+
+      if (resAllOptions.data.length === 0) {
+        toast.warning('No availability found.');
+        return;
+      }
+
       const res = await axios.post(
         '/api/scheduling/application/schedulewithagentwithouttaskid',
         {

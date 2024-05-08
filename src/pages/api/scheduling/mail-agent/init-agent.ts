@@ -32,9 +32,9 @@ import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -177,7 +177,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
         '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter(scheduling_settings,email_template)), candidates(*)))',
       )
       .eq('id', filter_json_id),
-  ) as CandidateScheduleDetails[];
+  ) as unknown as CandidateScheduleDetails[];
 
   if (!rec) {
     throw new Error('Invalid Application');

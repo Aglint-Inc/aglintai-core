@@ -20,9 +20,11 @@ export type NewCalenderEvent = {
   location?: string;
   start: {
     dateTime: string;
+    timeZone: string;
   };
   end: {
     dateTime: string;
+    timeZone: string;
   };
   attendees: { email: string }[];
   reminders: {
@@ -72,7 +74,8 @@ export type CalendarEvent = {
   sequence: number;
   attendees: {
     email: string;
-    responseStatus: string;
+    responseStatus?: string;
+    organizer: boolean;
   }[];
   eventType: string;
   organizer: {

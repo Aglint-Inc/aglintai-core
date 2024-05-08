@@ -11,4 +11,5 @@ declare function DeletePopup(props: {
   isIcon?: Types.Visibility.VisibilityConditions;
   isWidget?: Types.Visibility.VisibilityConditions;
   buttonText?: React.ReactNode;
+  slotWidget?: Types.Devlink.Slot;
 }): React.JSX.Element;

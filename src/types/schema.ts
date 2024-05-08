@@ -381,6 +381,13 @@ export type Database = {
             foreignKeyName: "public_application_logs_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_application_logs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -728,6 +735,18 @@ export type Database = {
           mode?: Database["public"]["Enums"]["assessment_mode"]
           title?: string | null
           type?: Database["public"]["Enums"]["template_type"] | null
+        }
+        Relationships: []
+      }
+      cancel_data: {
+        Row: {
+          row_to_json: Json | null
+        }
+        Insert: {
+          row_to_json?: Json | null
+        }
+        Update: {
+          row_to_json?: Json | null
         }
         Relationships: []
       }
@@ -1096,23 +1115,29 @@ export type Database = {
       integrations: {
         Row: {
           created_at: string
+          domain_admin_email: string
           id: string
           recruiter_id: string
           schedule_agent_email: string | null
+          service_json: string | null
           twilio_phone_number: string | null
         }
         Insert: {
           created_at?: string
+          domain_admin_email: string
           id?: string
           recruiter_id?: string
           schedule_agent_email?: string | null
+          service_json?: string | null
           twilio_phone_number?: string | null
         }
         Update: {
           created_at?: string
+          domain_admin_email?: string
           id?: string
           recruiter_id?: string
           schedule_agent_email?: string | null
+          service_json?: string | null
           twilio_phone_number?: string | null
         }
         Relationships: [
@@ -1155,6 +1180,13 @@ export type Database = {
             foreignKeyName: "public_interview_filter_json_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_filter_json_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -1176,6 +1208,7 @@ export type Database = {
       }
       interview_meeting: {
         Row: {
+          cal_event_id: string | null
           confirmed_date: string | null
           created_at: string
           end_time: string | null
@@ -1188,6 +1221,7 @@ export type Database = {
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Insert: {
+          cal_event_id?: string | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -1200,6 +1234,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Update: {
+          cal_event_id?: string | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -1273,6 +1308,13 @@ export type Database = {
             foreignKeyName: "public_interview_module_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -1319,6 +1361,13 @@ export type Database = {
             foreignKeyName: "public_interview_module_relation_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_module_relation_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -1351,6 +1400,13 @@ export type Database = {
           job_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "public_interview_plan_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "public_interview_plan_coordinator_id_fkey"
             columns: ["coordinator_id"]
@@ -1423,6 +1479,13 @@ export type Database = {
             foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
             columns: ["coordinator_id"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_coordinator_id_fkey"
+            columns: ["coordinator_id"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -1431,6 +1494,13 @@ export type Database = {
             columns: ["coordinator_id"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
           {
@@ -1498,6 +1568,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "interview_filter_json"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_schedule_activity_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "public_interview_schedule_activity_user_id_fkey"
@@ -1631,24 +1708,33 @@ export type Database = {
       interview_session_cancel: {
         Row: {
           created_at: string
+          end_date: string | null
           id: string
           is_resolved: boolean
+          notes: string | null
           reason: string
           session_relation_id: string
+          start_date: string | null
         }
         Insert: {
           created_at?: string
+          end_date?: string | null
           id?: string
           is_resolved?: boolean
+          notes?: string | null
           reason: string
           session_relation_id: string
+          start_date?: string | null
         }
         Update: {
           created_at?: string
+          end_date?: string | null
           id?: string
           is_resolved?: boolean
+          notes?: string | null
           reason?: string
           session_relation_id?: string
+          start_date?: string | null
         }
         Relationships: [
           {
@@ -1657,6 +1743,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "interview_session_relation"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_session_relation_id_fkey"
+            columns: ["session_relation_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["session_relation_id"]
           },
         ]
       }
@@ -1706,6 +1799,13 @@ export type Database = {
             foreignKeyName: "public_interview_session_relation_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_relation_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -1715,6 +1815,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_inteview_session_relation_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "public_inteview_session_relation_session_id_fkey"
@@ -1763,6 +1870,13 @@ export type Database = {
             foreignKeyName: "public_interviewer_feedback_interviewer_id_fkey"
             columns: ["interviewer_id"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interviewer_feedback_interviewer_id_fkey"
+            columns: ["interviewer_id"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -1772,6 +1886,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_interviewer_feedback_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["session_id"]
           },
           {
             foreignKeyName: "public_interviewer_feedback_session_id_fkey"
@@ -1869,6 +1990,56 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "job_assiatan_chat"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_coordinators: {
+        Row: {
+          created_at: string
+          id: string
+          job_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          job_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_coordinators_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_coordinators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "job_coordinators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "job_coordinators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -2085,6 +2256,13 @@ export type Database = {
             foreignKeyName: "public_new_tasks_cretaed_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_new_tasks_cretaed_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -2192,6 +2370,13 @@ export type Database = {
           recruiter_user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "outreached_emails_recruiter_user_id_fkey"
+            columns: ["recruiter_user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "outreached_emails_recruiter_user_id_fkey"
             columns: ["recruiter_user_id"]
@@ -2477,6 +2662,7 @@ export type Database = {
           company_website: string | null
           created_at: string
           departments: string[]
+          domain_admin_email: string | null
           e_o_statement: string | null
           email: string | null
           email_template: Json
@@ -2522,6 +2708,7 @@ export type Database = {
           company_website?: string | null
           created_at?: string
           departments?: string[]
+          domain_admin_email?: string | null
           e_o_statement?: string | null
           email?: string | null
           email_template?: Json
@@ -2567,6 +2754,7 @@ export type Database = {
           company_website?: string | null
           created_at?: string
           departments?: string[]
+          domain_admin_email?: string | null
           e_o_statement?: string | null
           email?: string | null
           email_template?: Json
@@ -2634,6 +2822,13 @@ export type Database = {
             foreignKeyName: "public_recruiter_relation_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_recruiter_relation_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -2650,6 +2845,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_relation_manager_fkey"
+            columns: ["manager"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "recruiter_relation_manager_fkey"
@@ -3070,6 +3272,24 @@ export type Database = {
           },
         ]
       }
+      "supabase-branching": {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+        }
+        Relationships: []
+      }
       support_groups: {
         Row: {
           company_id: string | null
@@ -3236,6 +3456,13 @@ export type Database = {
             foreignKeyName: "public_tasks_interviewer_Id_fkey"
             columns: ["interviewer_Id"]
             isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_tasks_interviewer_Id_fkey"
+            columns: ["interviewer_Id"]
+            isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
@@ -3338,6 +3565,45 @@ export type Database = {
       }
     }
     Views: {
+      debreif_meeting_interviewers: {
+        Row: {
+          email: string | null
+          first_name: string | null
+          interviewer_type:
+            | Database["public"]["Enums"]["status_training"]
+            | null
+          is_confirmed: boolean | null
+          last_name: string | null
+          meeting_id: string | null
+          profile_image: string | null
+          session_id: string | null
+          training_type: Database["public"]["Enums"]["interviewer_type"] | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_interview_session_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "interview_meeting"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_user_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       meeting_details: {
         Row: {
           break_duration: number | null
@@ -3376,10 +3642,12 @@ export type Database = {
           interviewer_type:
             | Database["public"]["Enums"]["status_training"]
             | null
+          is_confirmed: boolean | null
           last_name: string | null
           meeting_id: string | null
           profile_image: string | null
           session_id: string | null
+          session_relation_id: string | null
           training_type: Database["public"]["Enums"]["interviewer_type"] | null
           user_id: string | null
         }
@@ -3801,18 +4069,7 @@ export type Database = {
         Args: {
           target_meeting_id: string
         }
-        Returns: {
-          interview_meeting: Json
-          interview_session: Json
-          schedule: Json
-          applications: Json
-          candidates: Json
-          interview_module: Json
-          file: Json
-          job: Json
-          users: Json
-          coordinator: Json
-        }[]
+        Returns: Json
       }
       get_interview_schedule_by_module_id: {
         Args: {
@@ -3822,6 +4079,15 @@ export type Database = {
           interview_meeting: Json
           interview_session: Json
           schedule: Json
+          users: Json
+        }[]
+      }
+      get_interview_schedule_by_rec_id: {
+        Args: {
+          target_rec_id: string
+        }
+        Returns: {
+          interview_meeting: Json
           users: Json
         }[]
       }
@@ -4020,6 +4286,7 @@ export type Database = {
           scoring_criteria_loading: boolean
           status: Database["public"]["Enums"]["public_job_status"]
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
+          job_coordinators: Json
           count: Json
           processing_count: Json
         }[]
@@ -4096,9 +4363,16 @@ export type Database = {
           scoring_criteria_loading: boolean
           status: Database["public"]["Enums"]["public_job_status"]
           workplace_type: Database["public"]["Enums"]["public_job_workplace"]
+          job_coordinators: Json
           count: Json
           processing_count: Json
         }[]
+      }
+      getjobsv2: {
+        Args: {
+          recruiter_id: string
+        }
+        Returns: Json[]
       }
       getlocationspool: {
         Args: {
@@ -4330,6 +4604,12 @@ export type Database = {
       move_scheduled_jobs_sourcing_to_active: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      new_get_interview_schedule_by_meeting_id: {
+        Args: {
+          target_meeting_id: string
+        }
+        Returns: Json
       }
       new_get_interview_schedule_by_user_id: {
         Args: {

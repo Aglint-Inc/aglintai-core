@@ -111,6 +111,8 @@ export * from "./EmptyState";
 export * from "./FilterDropdown";
 export * from "./FilterInputBlock";
 export * from "./FilterItem";
+export * from "./FilterList";
+export * from "./FilterPill";
 export * from "./FirstLandingQuestions";
 export * from "./GroupedSlots";
 export * from "./InboxListItem";

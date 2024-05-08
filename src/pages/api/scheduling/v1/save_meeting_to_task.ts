@@ -1,12 +1,10 @@
-
 /* eslint-disable no-console */
 import dayjs from 'dayjs';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-
-import { supabaseAdmin } from '../../fetchCompanyDetails';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -37,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         )
         .in('session_id', req_body.session_ids),
     );
-    const meeting_users = supabaseWrap(
+    let meeting_users = supabaseWrap(
       await supabaseAdmin
         .from('meeting_interviewers')
         .select('*')
@@ -57,7 +55,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             meeting_link: m.meeting_link,
           },
           session_order: m.session_order,
-          users: meeting_users.filter((u) => u.session_id === m.session_id),
+          users: meeting_users.filter(
+            (u) => u.session_id === m.session_id && u.is_confirmed,
+          ),
         };
       });
 

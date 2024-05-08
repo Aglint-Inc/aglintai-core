@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: 'admin@aglinthq.com' ?? candidate_email,
+          email: candidate_email,
           subject: fillEmailTemplate(emailTemplate.subject, {
             company_name: company_name,
             schedule_name: schedule_name,

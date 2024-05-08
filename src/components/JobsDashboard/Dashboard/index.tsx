@@ -646,11 +646,11 @@ const JobClose = ({
       </Popover>
       <Dialog open={modal} onClose={() => handleClose()}>
         <CloseJobModal
-          textPopupTitle={`${isDelete ? 'Delete' : 'Close'} Job Confirmation`}
+          textPopupTitle={`${isDelete ? 'Delete' : 'Close'}  This Job`}
           textWarning={
             isDelete
-              ? 'By deleting this job, it will no longer be accessible, and the data related to this job will be permanently deleted.'
-              : 'Closing this job will unpublish it, preventing candidates from applying or being imported. Additionally, the screening and assessment processes for this job will be stopped.'
+              ? 'Deleting this job will permanently remove all related data and make the job inaccessible. Candidate data will remain unaffected.'
+              : 'Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.'
           }
           textButton={isDelete ? 'Delete Job' : 'Close Job'}
           textJobTitle={job_title.trim()}

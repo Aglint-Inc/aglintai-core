@@ -2,8 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { ModuleType } from '@/src/components/Scheduling/Modules/types';
-
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   training_ints: {

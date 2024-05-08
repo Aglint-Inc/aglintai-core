@@ -9,13 +9,7 @@ dayjs.extend(timezone);
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export type BodyParams = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  user_tz: string;
-};
+import { APIFindSlotsDateRange } from '@/src/types/aglintApi/schedulingApi';
 
 const required_fields = ['recruiter_id', 'date_range_start', 'date_range_end'];
 
@@ -27,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       date_range_start,
       date_range_end,
       user_tz,
-    } = req.body as BodyParams;
+    } = req.body as APIFindSlotsDateRange;
 
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {

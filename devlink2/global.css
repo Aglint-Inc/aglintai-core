@@ -2182,6 +2182,13 @@ textarea.w-select {
 .wf-layout-layout {
   display: grid;
 }
+.w-code-component > * {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
 :root {
   --kale700-46084a49: hsla(187.2413793103448, 90.63%, 12.55%, 1.00);

@@ -41,19 +41,19 @@ const SchedulingRegions = () => {
           <ScheduleReasonSectionCard
             scheduleReason={'reschedule'}
             updateReasons={handelUpdateReasons}
-            description='Add reasons for Rescheduling, and these options will be provided at the time of Rescheduling.'
+            description='Add reasons for rescheduling. These options will be available when either the interviewer or the candidate reschedules:'
             scheduleReasonItems={reason.reschedule}
           />
           <ScheduleReasonSectionCard
             scheduleReason={'cancel'}
             updateReasons={handelUpdateReasons}
-            description='Add reasons for Cancelling the Scheduling, and these options will be provided at the time of Cancelling the Scheduling.'
+            description='Add reasons for cancelling. These options will be available when either the interviewer or the candidate cancels:'
             scheduleReasonItems={reason.cancel}
           />
           <ScheduleReasonSectionCard
             scheduleReason={'decline'}
             updateReasons={handelUpdateReasons}
-            description='Add reasons for Declining the Scheduling, and these options will be provided at the time of Declining.'
+            description='Add reasons for declining. These options will be available when either the interviewer or the candidate declines:'
             scheduleReasonItems={reason.decline}
           />
         </>
