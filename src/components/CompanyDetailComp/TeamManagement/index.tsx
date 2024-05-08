@@ -329,6 +329,12 @@ const TeamManagement = () => {
       {editMember ? (
         <EditMember
           open={Boolean(editMember)}
+          memberList={members
+            .map((mem) => ({
+              id: mem.user_id,
+              name: `${mem.first_name} ${mem.last_name}`.trim(),
+            }))
+            .filter((mem) => mem.id !== editMember.user_id)}
           member={editMember}
           onClose={() => {
             setEditMember(null);
@@ -338,6 +344,10 @@ const TeamManagement = () => {
         <AddMember
           open={openDrawer.open}
           menu={openDrawer.window}
+          memberList={members.map((mem) => ({
+            id: mem.user_id,
+            name: `${mem.first_name} ${mem.last_name}`.trim(),
+          }))}
           pendingList={pendingList}
           onClose={() => {
             setOpenDrawer({ open: false, window: null });

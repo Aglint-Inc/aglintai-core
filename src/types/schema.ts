@@ -1434,6 +1434,7 @@ export type Database = {
         Row: {
           application_id: string
           calender_event_api_status: Json | null
+          cancel_reschedule: Json | null
           coordinator_id: string | null
           created_at: string
           created_by: string
@@ -1446,6 +1447,7 @@ export type Database = {
         Insert: {
           application_id: string
           calender_event_api_status?: Json | null
+          cancel_reschedule?: Json | null
           coordinator_id?: string | null
           created_at?: string
           created_by?: string
@@ -1458,6 +1460,7 @@ export type Database = {
         Update: {
           application_id?: string
           calender_event_api_status?: Json | null
+          cancel_reschedule?: Json | null
           coordinator_id?: string | null
           created_at?: string
           created_by?: string
@@ -2792,7 +2795,7 @@ export type Database = {
           created_by: string
           id: number
           is_active: boolean
-          manager: string | null
+          manager_id: string | null
           recruiter_id: string
           role: Database["public"]["Enums"]["user_roles"]
           user_id: string
@@ -2802,7 +2805,7 @@ export type Database = {
           created_by?: string
           id?: number
           is_active?: boolean
-          manager?: string | null
+          manager_id?: string | null
           recruiter_id: string
           role: Database["public"]["Enums"]["user_roles"]
           user_id: string
@@ -2812,7 +2815,7 @@ export type Database = {
           created_by?: string
           id?: number
           is_active?: boolean
-          manager?: string | null
+          manager_id?: string | null
           recruiter_id?: string
           role?: Database["public"]["Enums"]["user_roles"]
           user_id?: string
@@ -2847,22 +2850,22 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "recruiter_relation_manager_fkey"
-            columns: ["manager"]
+            foreignKeyName: "recruiter_relation_manager_id_fkey"
+            columns: ["manager_id"]
             isOneToOne: false
             referencedRelation: "debreif_meeting_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "recruiter_relation_manager_fkey"
-            columns: ["manager"]
+            foreignKeyName: "recruiter_relation_manager_id_fkey"
+            columns: ["manager_id"]
             isOneToOne: false
             referencedRelation: "meeting_interviewers"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "recruiter_relation_manager_fkey"
-            columns: ["manager"]
+            foreignKeyName: "recruiter_relation_manager_id_fkey"
+            columns: ["manager_id"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
@@ -4069,7 +4072,18 @@ export type Database = {
         Args: {
           target_meeting_id: string
         }
-        Returns: Json
+        Returns: {
+          interview_meeting: Json
+          interview_session: Json
+          schedule: Json
+          applications: Json
+          candidates: Json
+          interview_module: Json
+          file: Json
+          job: Json
+          users: Json
+          coordinator: Json
+        }[]
       }
       get_interview_schedule_by_module_id: {
         Args: {

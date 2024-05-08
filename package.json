@@ -44,7 +44,7 @@
     "@typescript-eslint/typescript-estree": "^6.9.1",
     "@vercel/edge-config": "^1.1.0",
     "@webflow/webflow-cli": "^1.6.9",
-    "axios": "^1.5.0",
+    "axios": "^1.6.8",
     "chart.js": "^4.4.1",
     "dayjs": "1.11.6",
     "dayjs-plugin-utc": "^0.1.2",
