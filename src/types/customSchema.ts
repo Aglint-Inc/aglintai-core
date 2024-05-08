@@ -124,7 +124,30 @@ export type CustomDatabase = {
                         };
                         Relationships: Database['public']['Tables'][Table]['Relationships'];
                       }
-                    : Database['public']['Tables'][Table];
+                    : // interview_schedule table
+                      Table extends 'interview_schedule'
+                      ? {
+                          Row: Omit<
+                            Database['public']['Tables'][Table]['Row'],
+                            'cancel_reschedule'
+                          > & {
+                            cancel_reschedule: interview_schedule_cancel_reschedule;
+                          };
+                          Insert: Omit<
+                            Database['public']['Tables'][Table]['Insert'],
+                            'cancel_reschedule'
+                          > & {
+                            cancel_reschedule?: interview_schedule_cancel_reschedule;
+                          };
+                          Update: Omit<
+                            Database['public']['Tables'][Table]['Update'],
+                            'cancel_reschedule'
+                          > & {
+                            cancel_reschedule?: interview_schedule_cancel_reschedule;
+                          };
+                          Relationships: Database['public']['Tables'][Table]['Relationships'];
+                        }
+                      : Database['public']['Tables'][Table];
         }
       : Database['public'][keys];
   };
@@ -202,3 +225,12 @@ type recruiter_scheduling_reason = {
   cancel: string[];
   decline: string[];
 };
+
+type interview_schedule_cancel_reschedule =
+  | { type: 'cancel'; dateRange: null; reason: string; additionalNote?: string }
+  | {
+      type: 'reschedule';
+      dateRange: { start: string; end: string };
+      reason: string;
+      additionalNote?: string;
+    };

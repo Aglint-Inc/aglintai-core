@@ -1434,6 +1434,7 @@ export type Database = {
         Row: {
           application_id: string
           calender_event_api_status: Json | null
+          cancel_reschedule: Json | null
           coordinator_id: string | null
           created_at: string
           created_by: string
@@ -1446,6 +1447,7 @@ export type Database = {
         Insert: {
           application_id: string
           calender_event_api_status?: Json | null
+          cancel_reschedule?: Json | null
           coordinator_id?: string | null
           created_at?: string
           created_by?: string
@@ -1458,6 +1460,7 @@ export type Database = {
         Update: {
           application_id?: string
           calender_event_api_status?: Json | null
+          cancel_reschedule?: Json | null
           coordinator_id?: string | null
           created_at?: string
           created_by?: string
