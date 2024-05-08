@@ -40,7 +40,7 @@ export function InterviewConfirmed({
               className={_utils.cx(_styles, "text-xl", "fw-semibold")}
               tag="div"
             >
-              {"Interview Confirmed !"}
+              {"Interview Confirmed!"}
             </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "text-grey-600")}
