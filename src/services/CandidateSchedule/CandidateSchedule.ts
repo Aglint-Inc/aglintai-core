@@ -107,7 +107,6 @@ export class CandidatesScheduling {
 
   // fetches required details from DB
   //   start of api funcs
-
   async fetchDetails() {
     const meeting_date = {
       start: null,
@@ -145,6 +144,21 @@ export class CandidatesScheduling {
       int_meetings,
       ints_schd_meetings,
     };
+  }
+
+  /**
+   * filter training people from session from finding combs
+   * used when when trying to find alternative interviewer in same time of interviewer
+   */
+  public async ignoreTrainee() {
+    this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
+      ...s,
+      trainingIntervs: [],
+    }));
+    this.db_details.all_inters = this.db_details.all_inters.filter(
+      (i) => i.interviewer_type !== 'training',
+    );
+    //
   }
 
   // start_date and end date format DD/MM/YYYY

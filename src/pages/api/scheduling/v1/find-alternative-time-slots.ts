@@ -43,7 +43,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         end_date_js: slot_date.endOf('day'),
       },
     );
+
     await cand_schedule.fetchDetails();
+    cand_schedule.ignoreTrainee();
     await cand_schedule.fetchInterviewrsCalEvents();
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
     const slot_combs = single_day_slots.map((comb) => comb.sessions[0]);
