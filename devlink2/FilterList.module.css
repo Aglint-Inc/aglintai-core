@@ -1,0 +1,23 @@
+.all-interview-filter {
+  display: flex;
+  overflow: auto;
+  width: 150px;
+  max-height: 400px;
+  padding: 16px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.all-interview-filter-copy {
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 10px;
+}
