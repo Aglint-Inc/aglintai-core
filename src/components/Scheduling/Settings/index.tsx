@@ -622,7 +622,7 @@ function SchedulingSettings({
                                 handleClose();
                                 toast.success(
                                   `Holiday added on ${dayjs(
-                                    dateRef.current.value,
+                                    selectedDate,
                                   ).format('DD-MMM-YYYY')} ${
                                     eventRef.current.value ? 'for' : ''
                                   } ${eventRef.current.value}`,
