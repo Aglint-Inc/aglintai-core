@@ -25,7 +25,6 @@ import {
   RecruiterUserType,
   SocialsType,
 } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -120,7 +119,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        loading && setLoading(false);
+        throw new Error();
       }
       if (data?.session?.user?.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
@@ -186,7 +185,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({
+      scope: 'local',
+    });
     posthog.reset();
     if (!error) {
       router.push(pageRoutes.LOGIN);

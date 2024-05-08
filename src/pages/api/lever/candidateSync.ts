@@ -7,8 +7,7 @@ import {
   extractLinkedInURL,
   splitFullName,
 } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
-
-import { supabaseAdmin as supabase } from '../fetchCompanyDetails';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 const crypto = require('crypto');
 
@@ -22,7 +21,7 @@ export default async function handler(req, res) {
     res.status(400).send('No job id found');
     return;
   }
-  const { data: referenceJob, error: errorJob } = await supabase
+  const { data: referenceJob, error: errorJob } = await supabaseAdmin
     .from('lever_job_reference')
     .select('*')
     .eq('job_id', jobId);
@@ -32,7 +31,7 @@ export default async function handler(req, res) {
       res.status(400).send('No job reference found');
       return;
     }
-    const { data: app, error: errorApp } = await supabase
+    const { data: app, error: errorApp } = await supabaseAdmin
       .from('lever_reference')
       .select('*')
       .eq('public_job_id', jobId);
@@ -40,7 +39,7 @@ export default async function handler(req, res) {
     if (!errorApp) {
       previousApplications = app;
 
-      const { data: rec, error: errorRec } = await supabase
+      const { data: rec, error: errorRec } = await supabaseAdmin
         .from('recruiter')
         .select('*')
         .eq('id', referenceJob[0].recruiter_id);
@@ -96,7 +95,7 @@ export default async function handler(req, res) {
         const checkCandidates = await processEmailsInBatches(
           emails,
           rec[0].id,
-          supabase,
+          supabaseAdmin,
         );
 
         //new candidates insert flow
@@ -128,10 +127,8 @@ export default async function handler(req, res) {
           },
         );
 
-        const { data: newCandidates, error: errorCandidates } = await supabase
-          .from('candidates')
-          .insert(dbCandidates)
-          .select();
+        const { data: newCandidates, error: errorCandidates } =
+          await supabaseAdmin.from('candidates').insert(dbCandidates).select();
 
         if (!errorCandidates) {
           const allCandidates = [...newCandidates, ...checkCandidates];
@@ -145,7 +142,7 @@ export default async function handler(req, res) {
             };
           });
 
-          const { error } = await supabase
+          const { error } = await supabaseAdmin
             .from('applications')
             .insert(dbApplications);
 
@@ -219,7 +216,7 @@ const fetchAllOpporunities = async (apiKey, postingId) => {
 };
 
 const createLeverReference = async (reference) => {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('lever_reference')
     .insert(reference)
     .select();

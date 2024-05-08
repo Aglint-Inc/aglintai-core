@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -13,6 +14,7 @@ export function DeletePopup({
   isIcon = true,
   isWidget = false,
   buttonText = "Delete ",
+  slotWidget,
 }) {
   return (
     <_Component
@@ -21,18 +23,8 @@ export function DeletePopup({
     >
       <_Builtin.Block className={_utils.cx(_styles, "popup_header")} tag="div">
         <_Builtin.Block className={_utils.cx(_styles, "popup_title")} tag="div">
-          {isIcon ? (
-            <_Builtin.Block tag="div">
-              {slotIcon ?? (
-                <_Builtin.HtmlEmbed
-                  className={_utils.cx(_styles, "embed_flex-2")}
-                  value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.5625%203C8.375%203%208.22917%203.08333%208.125%203.25L7.65625%204H12.3438L11.875%203.25C11.7708%203.08333%2011.625%203%2011.4375%203H8.5625ZM13.5312%204H15H16H16.5C16.8125%204.02083%2016.9792%204.1875%2017%204.5C16.9792%204.8125%2016.8125%204.97917%2016.5%205H15.9375L15.125%2016.1562C15.0833%2016.6771%2014.875%2017.1146%2014.5%2017.4688C14.125%2017.8021%2013.6667%2017.9792%2013.125%2018H6.875C6.33333%2017.9792%205.875%2017.8021%205.5%2017.4688C5.125%2017.1146%204.91667%2016.6771%204.875%2016.1562L4.0625%205H3.5C3.1875%204.97917%203.02083%204.8125%203%204.5C3.02083%204.1875%203.1875%204.02083%203.5%204H4H5H6.46875L7.28125%202.71875C7.59375%202.26042%208.02083%202.02083%208.5625%202H11.4375C11.9792%202.02083%2012.4062%202.26042%2012.7188%202.71875L13.5312%204ZM14.9375%205H5.0625L5.875%2016.0625C5.89583%2016.3333%206%2016.5521%206.1875%2016.7188C6.375%2016.9062%206.60417%2017%206.875%2017H13.125C13.3958%2017%2013.625%2016.9062%2013.8125%2016.7188C14%2016.5521%2014.1042%2016.3333%2014.125%2016.0625L14.9375%205Z%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3C%2Fsvg%3E"
-                />
-              )}
-            </_Builtin.Block>
-          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-red-600")}
+            className={_utils.cx(_styles, "fw-semibold")}
             tag="div"
           >
             {textTitle}
@@ -60,7 +52,9 @@ export function DeletePopup({
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_widget")}
             tag="div"
-          />
+          >
+            {slotWidget}
+          </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "buttn_flex")} tag="div">

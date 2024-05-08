@@ -35,7 +35,6 @@ export const mailHandler = async ({
   position,
   filter_id,
   supabase,
-  rec_mail,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
@@ -50,7 +49,7 @@ export const mailHandler = async ({
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: rec_mail ?? mail,
+          email: mail,
           subject: fillEmailTemplate(
             data[0].email_template['candidate_availability_request'].subject,
             {

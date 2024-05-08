@@ -4069,18 +4069,7 @@ export type Database = {
         Args: {
           target_meeting_id: string
         }
-        Returns: {
-          interview_meeting: Json
-          interview_session: Json
-          schedule: Json
-          applications: Json
-          candidates: Json
-          interview_module: Json
-          file: Json
-          job: Json
-          users: Json
-          coordinator: Json
-        }[]
+        Returns: Json
       }
       get_interview_schedule_by_module_id: {
         Args: {

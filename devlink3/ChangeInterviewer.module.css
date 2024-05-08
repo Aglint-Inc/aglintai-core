@@ -25,6 +25,11 @@
   width: 463px;
 }
 
+.assessment_duplicate_popup.width-550 {
+  width: 550px;
+  padding: 20px;
+}
+
 .popup_header {
   display: flex;
   justify-content: space-between;
@@ -181,12 +186,168 @@
 
 .slot_widget {
   display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
 
-.buttn_flex {
+.div-block-1685 {
+  display: flex;
+  padding: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 10px;
+
+  background-color: #f7f9fb;
+}
+
+.div-block-1686 {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 100px;
+}
+
+.div-block-1687 {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-sm.color-grey-600 {
+  color: #68737d;
+}
+
+.color-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-capitalize {
+  text-transform: uppercase;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-grey_600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-blue-500 {
+  color: #337fbd;
+}
+
+.text-sm.badge {
+  color: #228f67;
+}
+
+.text-sm.done {
+  color: #228f67;
+}
+
+.text-sm.in-progress {
+  color: #337fbd;
+}
+
+.text-sm.progress {
+  color: #68737d;
+}
+
+.text-sm.justnow-text {
+  color: rgba(28, 28, 28, 0.4);
+}
+
+.text-sm.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600 {
+  color: #68737d;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-sm.text-underline.text-grey-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.div-block-1688 {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
+.div-block-1689 {
+  overflow: auto;
+  max-height: 280px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+}
+
+.button-pop-wrap {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.button-pop-wrap.stretch-vertical {
   display: grid;
+  align-items: stretch;
   grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -205,7 +366,7 @@
 
 .button_primary {
   display: flex;
-  padding: 6px 16px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
@@ -323,4 +484,67 @@
   padding-top: 8px;
   padding-bottom: 8px;
   background-color: #228f67;
+}
+
+.button-yellow {
+  display: flex;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  border-radius: 6px;
+
+  background-color: #ed8f1c;
+
+  transition: all 200ms ease-in-out;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.button-yellow:hover {
+  background-color: hsla(33.014354066985646, 81.45%, 45.93%, 1.00);
+}
+
+.button-yellow.danger {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #d93f4c;
+}
+
+.button-yellow.danger:hover {
+  background-color: #cc3340;
+}
+
+.button-yellow.greay_btn {
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button-yellow.greay_btn:hover {
+  background-color: #d8dcde;
+}
+
+.button-yellow.is_outline {
+  border: 1px solid #1f73b7;
+  background-color: white;
+  color: #1f73b7;
+}
+
+.button-yellow.greay_btn-copy {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #e9ebed;
+  color: #2f3941;
+}
+
+.button-yellow.greay_btn-copy:hover {
+  background-color: #d8dcde;
 }

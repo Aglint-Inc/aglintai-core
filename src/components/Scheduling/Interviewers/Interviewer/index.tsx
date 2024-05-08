@@ -283,7 +283,7 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                              ? `Till ${dayjs(pause_json.end_date).format(
+                              ? `${dayjs(pause_json.end_date).format(
                                   'DD MMMM YYYY',
                                 )}`
                               : '--'
@@ -499,7 +499,7 @@ function Interviewer({
                           ? pause_json.isManual
                             ? 'Paused indefinably'
                             : pause_json.end_date
-                              ? `Till ${dayjs(pause_json.end_date).format(
+                              ? `${dayjs(pause_json.end_date).format(
                                   'DD MMMM YYYY',
                                 )}`
                               : '--'
