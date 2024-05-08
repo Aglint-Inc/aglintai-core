@@ -25,10 +25,12 @@ function Filters() {
       const localSetFilterNames = JSON.parse(
         localStorage.getItem('schedulesFilter'),
       ) as string[];
-      const defaultFilters = filterOptions.filter((ele) =>
-        localSetFilterNames.includes(ele.name),
-      );
-      setSelectedFilters([...defaultFilters]);
+      if (localSetFilterNames) {
+        const defaultFilters = filterOptions.filter((ele) =>
+          localSetFilterNames.includes(ele.name),
+        );
+        setSelectedFilters([...defaultFilters]);
+      }
     }
   }, []);
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
