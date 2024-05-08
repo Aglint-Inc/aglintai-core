@@ -32,6 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       not_confirmed_inters,
       service_json,
       confirmed_inter,
+      curr_ints_auth,
     } = await fetch_details(req.body);
 
     const curr_meeting_ints = [...confirmed_inters, ...not_confirmed_inters];
@@ -83,10 +84,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         null,
       );
       await google_cal.authorizeUser();
-      const attendees = [
-        ...replaced_inters.slice(1).map((i) => i.email),
-        candidate_email,
-      ];
+      const new_inter_emails = replaced_inters.slice(1).map((i) => i.email);
+      const attendees = [...new_inter_emails, candidate_email];
       updated_event = await google_cal.updateEvent({
         id: curr_cal_event.id,
         attendees: attendees.map((i) => ({
@@ -94,6 +93,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           organizer: false,
         })),
       });
+      const attendees_promises = new_inter_emails.map(async (int_email) => {
+        const int = curr_ints_auth.find(
+          (a) => a.recruiter_user.email === int_email,
+        );
+
+        const email =
+          (int.recruiter_user.schedule_auth as any)?.email ??
+          int.recruiter_user.email;
+        const int_cal = new GoogleCalender({
+          company_cred: service_json,
+          recruiter: int.recruiter_user,
+        });
+        await int_cal.authorizeUser();
+        await int_cal.importEvent(updated_event, email);
+      });
+      await Promise.all(attendees_promises);
+
       confirmed_inters.forEach((conf_int) => {
         if (
           conf_int.email !== curr_org_email &&
