@@ -2,7 +2,6 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useCallback, useMemo, useState } from 'react';
 
@@ -50,6 +49,7 @@ import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import { AddCandidates } from '../../JobApplicationsDashboard';
+import { capitalize } from '../../JobApplicationsDashboard/utils';
 import PublishButton from '../../publishButton';
 import IconScheduleType from '../../Scheduling/AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../Scheduling/AllSchedules/utils';
@@ -439,7 +439,7 @@ const Schedules = () => {
         key={i}
         onClick={() =>
           push(
-            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=overview`,
+            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=candidate_details`,
           )
         }
       >
