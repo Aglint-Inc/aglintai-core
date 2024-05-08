@@ -439,7 +439,7 @@ const Schedules = () => {
         key={i}
         onClick={() =>
           push(
-            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=overview`,
+            `/scheduling/view?meeting_id=${sch.interview_meeting.id}&tab=candidate_details`,
           )
         }
       >
