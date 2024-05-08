@@ -138,7 +138,7 @@ function SchedulingMainComp() {
                     router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`);
                   },
                 }}
-                textFirst={'Schedules'}
+                textFirst={'All Schedules'}
                 textSecond={'My Schedules'}
               />
             )}

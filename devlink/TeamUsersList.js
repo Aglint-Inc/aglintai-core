@@ -48,11 +48,11 @@ export function TeamUsersList({
                 {"Manage Team"}
               </_Builtin.Block>
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-grey-600", "max-width-600")}
+                className={_utils.cx(_styles, "text-grey-600", "max-width-650")}
                 tag="div"
               >
                 {
-                  "Invite team members, assign titles like interviewer, hiring manager, or recruiter, and manage their roles and profile details all in one place for an organized team structure."
+                  "Invite team members and manage their roles and profile details in one place. Assign managers and roles such as interviewer, hiring manager, or recruiter to ensure an organized team structure."
                 }
               </_Builtin.Block>
             </_Builtin.Block>
