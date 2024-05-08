@@ -18,7 +18,7 @@ const required_fields: (keyof APIUpdateMeetingInterviewers)[] = [
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { replaced_inters, candidate_email } =
+    const { replaced_inters, candidate_email, meeting_id } =
       req.body as APIUpdateMeetingInterviewers;
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
@@ -115,7 +115,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       });
     }
-    console.log(updated_db_sess_reln);
+    supabaseWrap(
+      await supabaseAdmin
+        .from('interview_meeting')
+        .update({
+          meeting_json: updated_event,
+        })
+        .eq('id', meeting_id),
+    );
     await Promise.all(
       updated_db_sess_reln.map(async (reln) =>
         updateInterviewers({
@@ -125,7 +132,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ),
     );
 
-    return res.status(200).json(updated_event);
+    return res.status(200).json('ok');
   } catch (err) {
     console.error(err);
     return res.status(500).send(err.message);
