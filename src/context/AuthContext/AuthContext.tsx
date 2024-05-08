@@ -53,6 +53,7 @@ export interface ContextValue {
     user_id: string;
     data: DatabaseTableUpdate['recruiter_user'] & {
       role?: DatabaseEnums['user_roles'];
+      manager_id?: string;
     };
   }) => Promise<boolean>;
   isAllowed: (
@@ -168,7 +169,11 @@ const AuthProvider = ({ children }) => {
       const recruiterUser = recruiterRel.recruiter_user;
       (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
-      setRecruiterUser({ ...recruiterUser, role: recruiterRel.role });
+      setRecruiterUser({
+        ...recruiterUser,
+        role: recruiterRel.role,
+        manager_id: recruiterRel.manager_id,
+      });
       setRecruiter({
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
@@ -403,6 +408,7 @@ const updateMember = ({
   data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
     user_id: string;
     role?: DatabaseEnums['user_roles'];
+    manager_id?: string;
   };
   recruiter_id: string;
 }) => {

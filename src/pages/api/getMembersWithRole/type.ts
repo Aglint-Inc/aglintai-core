@@ -8,6 +8,7 @@ export type API_getMembersWithRole = {
     | {
         members: (DatabaseTable['recruiter_user'] & {
           role: DatabaseEnums['user_roles'];
+          manager_id: string;
         })[];
 
         error: null;

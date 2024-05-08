@@ -36,13 +36,14 @@ const getResponse = (data: Partial<API_getMembersWithRole['response']>) => {
 const getMembers = (id: string) => {
   return supabase
     .from('recruiter_relation')
-    .select('role,recruiter_user!public_recruiter_relation_user_id_fkey(*)')
+    .select('role, manager_id, recruiter_user!public_recruiter_relation_user_id_fkey(*)')
     .eq('recruiter_id', id)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
       return data.map((item) => ({
         ...item.recruiter_user,
         role: item.role,
+        manager_id: item.manager_id,
       }));
-    });
+    }); 
 };

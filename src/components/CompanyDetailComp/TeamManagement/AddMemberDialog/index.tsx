@@ -41,11 +41,13 @@ export type interviewLocationType = {
 const AddMember = ({
   open,
   menu,
+  memberList,
   pendingList,
   onClose,
 }: {
   open: boolean;
   menu: 'addMember' | 'pendingMember';
+  memberList: { id: string; name: string }[];
   pendingList: RecruiterUserType[];
   onClose: () => void;
 }) => {
@@ -61,6 +63,7 @@ const AddMember = ({
     department: string;
     role: RecruiterUserType['role'];
     scheduling_settings: schedulingSettingType;
+    manager_id: string;
   }>({
     first_name: null,
     last_name: null,
@@ -72,6 +75,7 @@ const AddMember = ({
     department: null,
     role: null,
     scheduling_settings: null,
+    manager_id: null,
   });
 
   const [inviteData, setInviteData] = useState<
@@ -85,6 +89,7 @@ const AddMember = ({
       interview_location: string;
       designation: string;
       role: RecruiterUserType['role'];
+      manager_id: string;
     }[]
   >([]);
 
@@ -97,6 +102,7 @@ const AddMember = ({
     interview_location: boolean;
     designation: boolean;
     role: boolean;
+    manager: boolean;
   }>({
     first_name: false,
     email: false,
@@ -106,6 +112,7 @@ const AddMember = ({
     interview_location: false,
     designation: false,
     role: false,
+    manager: false,
   });
 
   const [isDisable, setIsDisable] = useState(false);
@@ -134,7 +141,7 @@ const AddMember = ({
       const linkedInURLPattern =
         // eslint-disable-next-line security/detect-unsafe-regex
         /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
-      temp = { ...temp, linked_in: linkedInURLPattern.test(form.linked_in) };
+      temp = { ...temp, linked_in: !linkedInURLPattern.test(form.linked_in) };
       flag = true;
     }
     if (!form.department || form.department.trim() === '') {
@@ -147,6 +154,10 @@ const AddMember = ({
     }
     if (!form.role || form.role.trim() === '') {
       temp = { ...temp, role: true };
+      flag = true;
+    }
+    if (!form.manager_id || form.manager_id.trim() === '') {
+      temp = { ...temp, manager: true };
       flag = true;
     }
     if (flag) {
@@ -181,6 +192,7 @@ const AddMember = ({
             interview_location: form.interview_location,
             designation: form.designation,
             role: form.role.toLowerCase() as typeof form.role,
+            manager_id: form.manager_id,
             employment: form.employment,
           },
         ]);
@@ -198,13 +210,20 @@ const AddMember = ({
           role: null,
           scheduling_settings: null,
           employment: null,
+          manager_id: null,
         });
       } else {
-        toast.error('Member already exists.');
+        toast.error(
+          error?.includes('email address:') ? error : 'Member already exists.',
+        );
       }
     }
     setIsDisable(false);
   };
+  const memberListObj = memberList.reduce((acc, curr) => {
+    acc[curr.id] = curr.name;
+    return acc;
+  }, {});
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
@@ -430,47 +449,75 @@ const AddMember = ({
                     />
                   </Stack>
 
-                  <Autocomplete
-                    style={{ marginTop: '20px' }}
-                    fullWidth
-                    value={capitalizeAll(form.role)}
-                    onChange={(event: any, newValue: string | null) => {
-                      setForm({
-                        ...form,
-                        role: newValue as
-                          | 'recruiter'
-                          | 'interviewer'
-                          | 'hiring_manager'
-                          | 'recruiting_coordinator'
-                          | 'sourcer',
-                      });
-                    }}
-                    id='controllable-states-demo'
-                    options={
-                      [
-                        'recruiter',
-                        'interviewer',
-                        'hiring_manager',
-                        'recruiting_coordinator',
-                        'sourcer',
-                      ] as Database['public']['Enums']['user_roles'][]
-                    }
-                    renderOption={(props, op) => (
-                      <li {...props}>{capitalizeAll(op)}</li>
-                    )}
-                    renderInput={(params) => (
-                      <CustomTextField
-                        {...params}
-                        name='Role'
-                        placeholder='Role'
-                        label='Role'
-                        error={formError.role}
-                        onFocus={() => {
-                          setFormError({ ...formError, role: false });
-                        }}
-                      />
-                    )}
-                  />
+                  <Stack direction={'row'} gap={2}>
+                    <Autocomplete
+                      fullWidth
+                      value={capitalizeAll(form.role)}
+                      onChange={(event: any, newValue: string | null) => {
+                        setForm({
+                          ...form,
+                          role: newValue as
+                            | 'recruiter'
+                            | 'interviewer'
+                            | 'hiring_manager'
+                            | 'recruiting_coordinator'
+                            | 'sourcer',
+                        });
+                      }}
+                      id='controllable-states-demo'
+                      options={
+                        [
+                          'recruiter',
+                          'interviewer',
+                          'hiring_manager',
+                          'recruiting_coordinator',
+                          'sourcer',
+                        ] as Database['public']['Enums']['user_roles'][]
+                      }
+                      renderOption={(props, op) => (
+                        <li {...props}>{capitalizeAll(op)}</li>
+                      )}
+                      renderInput={(params) => (
+                        <CustomTextField
+                          {...params}
+                          name='Role'
+                          placeholder='Role'
+                          label='Role'
+                          error={formError.role}
+                          onFocus={() => {
+                            setFormError({ ...formError, role: false });
+                          }}
+                        />
+                      )}
+                    />
+                    <Autocomplete
+                      fullWidth
+                      value={form.manager_id}
+                      onChange={(event: any, newValue: string | null) => {
+                        setForm({
+                          ...form,
+                          manager_id: newValue,
+                        });
+                      }}
+                      id='controllable-states-demo'
+                      options={memberList.map((member) => member.id)}
+                      getOptionLabel={(option) => {
+                        return capitalizeAll(memberListObj[String(option)]);
+                      }}
+                      renderInput={(params) => (
+                        <CustomTextField
+                          {...params}
+                          name='manager'
+                          placeholder='Manager'
+                          label='Manager'
+                          error={formError.manager}
+                          onFocus={() => {
+                            setFormError({ ...formError, manager: false });
+                          }}
+                        />
+                      )}
+                    />
+                  </Stack>
                 </Stack>
               }
               slotButtons={
