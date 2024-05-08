@@ -91,7 +91,7 @@ export const bookSession = async ({
   start_time: string;
   end_time: string;
   interviewers: Interviewer[];
-  candidate_email: string;
+  candidate_email: string | null;
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
   session_id: string;
@@ -104,9 +104,11 @@ export const bookSession = async ({
     summary: schedule_name,
     start: {
       dateTime: start_time,
+      timeZone: organizer.timezone,
     },
     end: {
       dateTime: end_time,
+      timeZone: organizer.timezone,
     },
     attendees: interviewers.map((int) => ({
       email: (int.schedule_auth as any)?.email ?? int.email,
@@ -166,9 +168,11 @@ export const bookSession = async ({
     }
   }
 
-  calendar_event.attendees.push({
-    email: (await getOutboundEmail(candidate_email)) as string,
-  });
+  if (candidate_email) {
+    calendar_event.attendees.push({
+      email: (await getOutboundEmail(candidate_email)) as string,
+    });
+  }
 
   const google_cal = new GoogleCalender({
     recruiter: organizer,

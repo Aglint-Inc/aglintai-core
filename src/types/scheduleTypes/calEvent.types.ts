@@ -20,9 +20,11 @@ export type NewCalenderEvent = {
   location?: string;
   start: {
     dateTime: string;
+    timeZone: string;
   };
   end: {
     dateTime: string;
+    timeZone: string;
   };
   attendees: { email: string }[];
   reminders: {

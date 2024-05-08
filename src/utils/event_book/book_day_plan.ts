@@ -18,7 +18,8 @@ import { bookSession } from './book_session';
 import { getCalEventDescription } from './getCalEventDescription';
 
 export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
-  let { candidate_plan, recruiter_id, user_tz, candidate_email } = req_body;
+  let { candidate_plan, recruiter_id, user_tz, candidate_email, is_debreif } =
+    req_body;
   const all_sess_ids: string[] = candidate_plan.reduce((tot, curr) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
@@ -58,7 +59,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
     const confirmInterviewers = async (inters: SessionInterviewerType[]) => {
       await Promise.all(
         inters.map(async (int) => {
-          if (int.interview_module_relation_id) {
+          if (!is_debreif) {
             supabaseWrap(
               await supabaseAdmin
                 .from('interview_session_relation')
@@ -119,7 +120,6 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
         session_id: session.session_id,
         description: getCalEventDescription(session.meeting_id),
       });
-
       // assisgn training status shadow or rShadow to ints
       if (training_ints.length > 0) {
         updateTrainingStatus({

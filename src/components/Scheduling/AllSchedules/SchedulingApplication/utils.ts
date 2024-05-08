@@ -335,7 +335,7 @@ export const sendToCandidate = async ({
           recruiter_id: recruiter_id,
           user_tz: user_tz,
           candidate_email: selectedApplication.candidates.email,
-          schedule_id: createCloneRes.schedule.id,
+          is_debreif: true,
         } as APICandidateConfirmSlot;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
@@ -432,8 +432,8 @@ export const sendToCandidate = async ({
           ],
           recruiter_id: recruiter_id,
           user_tz: user_tz,
-          candidate_email: selectedApplication.candidates.email,
           schedule_id: checkSch[0].id,
+          is_debreif: true,
         } as APICandidateConfirmSlot;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,

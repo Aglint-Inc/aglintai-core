@@ -28,11 +28,12 @@ export type APICandidateConfirmSlot = {
   schedule_id: string;
   filter_id?: string;
   //  if tasks id is present
-  task_id: string | null;
   agent_type: 'email' | 'phone' | 'self';
-  candidate_email: string;
-  candidate_name: string;
-  candidate_id: string;
+  task_id: string | null;
+  candidate_email?: string;
+  candidate_name?: string;
+  candidate_id?: string;
+  is_debreif?: boolean;
 };
 
 export type APIEventAttendeeStatus = {
