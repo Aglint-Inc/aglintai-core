@@ -235,8 +235,8 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           }}
           options={
             (cancelReschedule === 'cancel'
-              ? scheduling_reason.cancel
-              : scheduling_reason.reschedule) || []
+              ? scheduling_reason?.cancel
+              : scheduling_reason?.reschedule) || ['other']
           }
           title=''
           type={cancelReschedule}
@@ -469,7 +469,7 @@ const CancelRescheduleDialog = ({
                 key={item}
                 value={item}
                 control={<Radio />}
-                label={item}
+                label={capitalizeAll(item)}
                 sx={{
                   ml: 0,
                   '& .MuiRadio-root': {
