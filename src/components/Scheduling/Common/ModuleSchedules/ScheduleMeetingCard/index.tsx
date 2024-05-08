@@ -8,8 +8,8 @@ import { MyScheduleSubCard } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
 import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
-import { getTimeZoneBrowser } from '../../../AllSchedules/SchedulingApplication/utils';
 import { getScheduleType } from '../../../AllSchedules/utils';
+import { convertTimeZoneToAbbreviation } from '../../../utils';
 import { ScheduleListType } from '..';
 import InterviewerDetailsCard from './interviewerDetailsCard';
 
@@ -60,7 +60,7 @@ function ScheduleMeetingCard({
               </Collapse>
             </>
           }
-          textTime={`${dayjs(meetingDetails.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails.interview_meeting?.end_time).format('hh:mm A')}  ${getTimeZoneBrowser()}`}
+          textTime={`${dayjs(meetingDetails.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails.interview_meeting?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
           textMeetingPlatform={getScheduleType(
             meetingDetails?.interview_meeting.schedule_type,
           )}

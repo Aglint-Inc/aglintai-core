@@ -19,38 +19,31 @@ export function ScheduleCard({
   isOneToOneIconVisible = true,
   isDebriefIconVisible = false,
   textTimeDuration = "45 Minutes",
+  bgColorProps = {},
 }) {
   return (
     <_Component className={_utils.cx(_styles, "schedule_card")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "schedule_dateblcok")}
+        className={_utils.cx(_styles, "div-block-1644")}
         tag="div"
-      >
-        <_Builtin.Block className={_utils.cx(_styles, "data_wrap")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "schedule_month", "opacity-40")}
-            tag="div"
-          >
-            {textMonth}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "scheduledate")}
-            tag="div"
-          >
-            {textDate}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "day", "text-blue-500")}
-            tag="div"
-          >
-            {textDay}
-          </_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
+        {...bgColorProps}
+      />
       <_Builtin.Block
         className={_utils.cx(_styles, "schedule_details")}
         tag="div"
       >
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1645")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {textDate}
+          </_Builtin.Block>
+          <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
+        </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1415")}
           tag="div"
@@ -82,7 +75,6 @@ export function ScheduleCard({
             {textTitle}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1416")}
           tag="div"

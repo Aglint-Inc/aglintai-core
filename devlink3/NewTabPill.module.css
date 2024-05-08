@@ -1,0 +1,33 @@
+.div-block-1681 {
+  position: relative;
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.div-block-1681:hover {
+  opacity: 0.8;
+}
+
+.div-block-1680 {
+  padding: 10px 28px;
+  color: #68737d;
+}
+
+.div-block-1682 {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom: 3px solid #1f73b7;
+
+  background-color: white;
+
+  color: #1f73b7;
+  font-weight: 600;
+}

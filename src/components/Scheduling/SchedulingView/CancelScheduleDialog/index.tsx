@@ -1,26 +1,24 @@
-/* eslint-disable no-unused-vars */
 import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import React, { Dispatch } from 'react';
 
 import { DeletePopup } from '@/devlink3';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { TransformSchedule } from '../../../Modules/types';
-import { useScheduleDetails } from '../../hooks';
+import { ScheduleMeeting } from '../types';
 
-function DeleteScheduleDialog({
+function CancelScheduleDialog({
   isCancelOpen,
   setIsCancelOpen,
   schedule,
 }: {
   isCancelOpen: boolean;
-  setIsCancelOpen: (x: boolean) => void;
-  schedule: TransformSchedule;
+  setIsCancelOpen: Dispatch<React.SetStateAction<boolean>>;
+  schedule: ScheduleMeeting;
 }) {
-  const router = useRouter();
-  const meeting_id = schedule.interview_meeting.id;
+  const meeting_id = schedule?.interview_meeting?.id;
+  const session_id = schedule?.interview_session?.id;
   const queryClient = useQueryClient();
   const refetch = () => {
     queryClient.invalidateQueries({
@@ -30,12 +28,12 @@ function DeleteScheduleDialog({
 
   const onClickCancel = async () => {
     try {
-      if (meeting_id) {
+      if (meeting_id && session_id) {
         const { data: checkFilterJson, error: errMeetFilterJson } =
           await supabase
             .from('interview_filter_json')
             .select('*')
-            .contains('session_ids', [meeting_id]);
+            .contains('session_ids', [session_id]);
 
         if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
 
@@ -112,4 +110,4 @@ function DeleteScheduleDialog({
   );
 }
 
-export default DeleteScheduleDialog;
+export default CancelScheduleDialog;

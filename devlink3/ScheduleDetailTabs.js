@@ -2,7 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { ScheduleTabOverview } from "./ScheduleTabOverview";
-import { DarkPill } from "./DarkPill";
+import { NewTabPill } from "./NewTabPill";
 import { ScheduleTabCandidateDetails } from "./ScheduleTabCandidateDetails";
 import * as _utils from "./utils";
 import _styles from "./ScheduleDetailTabs.module.css";
@@ -26,17 +26,10 @@ export function ScheduleDetailTabs({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "schedule_tabs")}
+          className={_utils.cx(_styles, "schedule_tabs", "gap-0")}
           tag="div"
         >
-          {slotDarkPills ?? (
-            <>
-              <DarkPill textPill="Overview" isActive={true} />
-              <DarkPill isActive={false} textPill="Candidate Details" />
-              <DarkPill textPill="Instructions" />
-              <DarkPill textPill="Feedback" />
-            </>
-          )}
+          {slotDarkPills ?? <NewTabPill />}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "scheduletab_content")}

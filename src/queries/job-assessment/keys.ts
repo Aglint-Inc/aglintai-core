@@ -15,6 +15,7 @@ export const jobAssessmentQueryKeys = {
 export const useCurrentJob = () => {
   const router = useRouter();
   const { jobsData } = useJobs();
+
   const job_id = (
     (router?.pathname ?? null).startsWith(pageRoutes.JOBS)
       ? router?.query?.id ?? null

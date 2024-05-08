@@ -4,7 +4,7 @@
 
 .div-block-1408 {
   overflow: auto;
-  width: 415px;
+  width: 480px;
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
@@ -43,6 +43,12 @@
   grid-row-gap: 10px;
 
   border-bottom: 1px solid #e9ebed;
+}
+
+.schedule_tabs.gap-0 {
+  padding: 0px 4px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .scheduletab_content {
