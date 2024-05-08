@@ -4,7 +4,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
-import { APIFindAltenativeTimeSlot } from '@/src/types/aglintApi/schedulingApi';
+import {
+  APIFindAltenativeTimeSlot,
+  APIFindAltenativeTimeSlotResponse,
+} from '@/src/types/aglintApi/schedulingApi';
 import { SessionCombinationType } from '@/src/types/scheduleTypes/types';
 
 const required_fields = [
@@ -47,19 +50,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const time_filtered_slots = slot_combs.filter((comb) =>
       filter_slots(comb, slot_start_time),
     );
-    // time_filtered_slots.forEach((s) => {
-    //   s.qualifiedIntervs.forEach((i) => {
-    //     console.log(i.email);
-    //     console.log(i.user_id);
-    //   });
-    // });
-    const ideal_slot = time_filtered_slots.some((slot) => {
-      return replacement_ints.every((int_id) =>
-        slot.qualifiedIntervs.find((q) => q.user_id === int_id),
-      );
+
+    const slot_ints: APIFindAltenativeTimeSlotResponse = [];
+    replacement_ints.forEach((int_id) => {
+      if (
+        time_filtered_slots.some((slot) =>
+          slot.qualifiedIntervs.find((q) => q.user_id === int_id),
+        )
+      ) {
+        slot_ints.push({
+          user_id: int_id,
+          is_exist: true,
+        });
+      } else {
+        slot_ints.push({
+          user_id: int_id,
+          is_exist: false,
+        });
+      }
     });
 
-    return res.status(200).json(Boolean(ideal_slot));
+    return res.status(200).json(slot_ints);
   } catch (error) {
     return res.status(500).send(error.message);
   }

@@ -68,3 +68,8 @@ export type APIUpdateMeetingInterviewers = {
   replaced_inters: Pick<RecruiterUserType, 'email' | 'user_id'>[];
   candidate_email: string;
 };
+
+export type APIFindAltenativeTimeSlotResponse = {
+  user_id: string;
+  is_exist: boolean;
+}[];
