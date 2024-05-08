@@ -1,5 +1,7 @@
+SET pgaudit.log = 'none';
 create extension if not exists "postgis" with schema "extensions";
-
+SET pgaudit.log = 'ddl';
+-- Added manulay to fix migration for supabse branching.
 
 revoke delete on table "public"."documents" from "anon";
 
