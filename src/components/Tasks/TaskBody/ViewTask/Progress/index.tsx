@@ -1,5 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
@@ -79,6 +80,32 @@ function SubTaskProgress() {
                 : '';
               const location = item.title_meta['{location}'];
               const errorMessage = item.title_meta['{err_msg}'];
+              let callDetails = item.jsonb_data as {
+                audio_url: string;
+                transcript: {
+                  id: string;
+                  message: string;
+                }[];
+                retell_call_id: string;
+              };
+
+              if (
+                item.progress_type === 'call_completed' &&
+                callDetails?.retell_call_id &&
+                !callDetails?.audio_url
+              ) {
+                getUpdateCallAudio();
+              }
+              async function getUpdateCallAudio() {
+                await axios.post(
+                  `${process.env.NEXT_PUBLIC_AGENT_API}/api/retell/call-details`,
+                  {
+                    call_id: callDetails?.retell_call_id,
+                    task_progress_id: item.id,
+                    candidate_id: selectedTask?.applications?.candidate_id,
+                  },
+                );
+              }
 
               return (
                 <TaskProgress
@@ -234,15 +261,13 @@ function SubTaskProgress() {
                     <ShowCode.When
                       isTrue={
                         item.progress_type === 'call_completed' &&
-                        Boolean(item.jsonb_data?.transcript.length)
+                        Boolean(callDetails?.transcript.length)
                       }
                     >
                       <PhoneTranscript
-                        audio_url={
-                          'https://dxc03zgurdly9.cloudfront.net/b0deaa1feac5bd2a81e0f96bbe3eb79b/recording.wav'
-                        }
+                        audio_url={callDetails?.audio_url}
                         transcript={
-                          item.jsonb_data?.transcript as {
+                          callDetails?.transcript as {
                             id: string;
                             message: string;
                           }[]
