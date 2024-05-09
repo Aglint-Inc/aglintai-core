@@ -235,4 +235,12 @@ export const dialogFormContent = {
     placeholder: 'Enter soft conflicts keyword',
     emptyMsg: 'No preferred keywords',
   },
+  recruitingBlocksKeywords: {
+    placeholder: 'Enter recruiting blocks keyword',
+    emptyMsg: 'No preferred keywords',
+  },
+  outOfOfficeKeywords: {
+    placeholder: 'Enter out of office keyword',
+    emptyMsg: 'No preferred keywords',
+  },
 };

@@ -810,7 +810,7 @@ function SchedulingSettings({
                               }
                             });
                           }}
-                          path='softConflictsKeywords'
+                          path='outOfOfficeKeywords'
                           type='string'
                         />
                       }
@@ -864,7 +864,7 @@ function SchedulingSettings({
                               }
                             });
                           }}
-                          path='softConflictsKeywords'
+                          path='recruitingBlocksKeywords'
                           type='string'
                         />
                       }
