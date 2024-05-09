@@ -107,6 +107,10 @@
   }
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-grey-600 {
   color: #68737d;
 }

@@ -20,7 +20,7 @@ function ModuleMembersComp() {
       <PageLayout
         onClickBack={{
           onClick: () => {
-            router.push('/scheduling?tab=interviewers');
+            router.push('/scheduling?tab=interviewtypes');
           },
         }}
         isBackButton={true}

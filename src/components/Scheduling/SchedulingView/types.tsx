@@ -19,6 +19,7 @@ export type ScheduleMeeting = ScheduleType & {
     email: string;
     profile_image: string;
     position: string;
+    department: string;
     interview_session_relation: InterviewSessionRelationTypeDB;
     location: string;
     scheduling_settings: schedulingSettingType;

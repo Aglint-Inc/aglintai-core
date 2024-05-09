@@ -66,6 +66,10 @@
   }
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
