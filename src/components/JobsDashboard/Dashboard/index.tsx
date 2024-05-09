@@ -609,7 +609,7 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
       <DashboardAlert
         textTitile={'Job details are incomplete'}
         textShortDescription={
-          'Scoring criterias cannot be generated without valid job details. Please ensure that valid job details are provided.'
+          'Please ensure that valid job details are provided.'
         }
         onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
       />,
