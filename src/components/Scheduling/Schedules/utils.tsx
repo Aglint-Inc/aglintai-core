@@ -16,10 +16,6 @@ export const filterOptions = [
     name: 'date_range' as FilterOptionsType['name'],
     Icon: <FilterDateRangeIcon />,
   },
-  {
-    name: 'training_type' as FilterOptionsType['name'],
-    Icon: <FilterInterviewTypeIcon />,
-  },
 ] as FilterOptionsType[];
 
 export function getListItems({
@@ -69,18 +65,6 @@ export function getListItems({
         label: schedule.interview_meeting.schedule_type,
       }))
       .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
-  }
-  if (filterType.name === 'training_type') {
-    const allMembers = allSchedules.map((ele) => [...ele.users]).flat();
-    itemList = allMembers
-      .map((member) => ({
-        id: member.training_type,
-        label: member.training_type,
-      }))
-      .filter(
-        (value1, i, a) =>
-          a.findIndex((value2) => value2.id === value1.id) === i,
-      );
   }
 
   return itemList;

@@ -8,6 +8,5 @@ export type FilterOptionsType = {
     | 'date_range'
     | 'schedule_type'
     | 'job'
-    | 'training_type';
   Icon: ReactNode;
 };

@@ -59,8 +59,8 @@ function FilterChip({
   return (
     <>
       <ButtonFilter
-        isDotVisible={selectedItem.length > 0}
-        isActive={selectedItem.length > 0}
+        isDotVisible={itemList.length && selectedItem.length > 0}
+        isActive={itemList.length && selectedItem.length > 0}
         slotLeftIcon={filterType.Icon}
         onClickStatus={{ onClick: handleClick }}
         textLabel={capitalizeAll(filterType.name.replaceAll('-', ' '))}
