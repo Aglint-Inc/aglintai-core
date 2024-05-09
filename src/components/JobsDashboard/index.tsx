@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { JobsDashboard } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { Job } from '@/src/queries/job/types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import SubNavBar from '../AppLayout/SubNavbar';
@@ -23,7 +23,7 @@ const DashboardComp = () => {
     jobs: { data },
     initialLoad,
   } = useJobs();
-  const [filteredJobs, setFilteredJobs] = useState<JobTypeDashboard[]>(data);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>(data);
   const { recruiter } = useAuthDetails();
 
   useEffect(() => {

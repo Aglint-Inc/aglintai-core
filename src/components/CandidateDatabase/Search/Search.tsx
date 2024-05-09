@@ -48,7 +48,7 @@ const CandidatesSearch = () => {
     handleAddCandidatesTojob,
   } = useCandidateSearchCtx();
   const router = useRouter();
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const [isfilterOpen, setIsFilterOpen] = useState(false);
   const [activeCandidate, setActiveCandidate] = useState<number>(0);
   const [isSearching, setIsSearching] = useState(false);
@@ -93,9 +93,9 @@ const CandidatesSearch = () => {
   }, [router.isReady, router.query]);
 
   useEffect(() => {
-    if (!jobsData.jobs) return;
+    if (jobs.status === 'pending') return;
     const candidates = candidateSearchState.candidates;
-    const publishedJobs = jobsData.jobs.filter((j) => j.status === 'published');
+    const publishedJobs = jobs.data.filter((j) => j.status === 'published');
     let candJobSet = new Set();
     for (let candJob of candidates.filter((cand) => cand.is_checked)) {
       for (let appliedJob of candJob.applied_job_posts) {
@@ -112,7 +112,7 @@ const CandidatesSearch = () => {
       }
     }
     setNewJobsForCand(remainJobs);
-  }, [jobsData, candidateSearchState.candidates]);
+  }, [jobs, candidateSearchState.candidates]);
 
   const resetActiveCards = () => {
     updateState({

@@ -6,7 +6,7 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
 import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { Job } from '@/src/queries/job/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
@@ -14,7 +14,7 @@ import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import { calculateTimeDifference, StatusColor } from '../utils';
 
 interface JobsListProps {
-  jobs: JobTypeDashboard[];
+  jobs: Job[];
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {

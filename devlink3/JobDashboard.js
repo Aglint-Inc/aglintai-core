@@ -7,6 +7,7 @@ import { ScheduleCardSmall } from "./ScheduleCardSmall";
 import { GraphBlock } from "./GraphBlock";
 import { CardWithNumber } from "./CardWithNumber";
 import { ModuleCard } from "./ModuleCard";
+import { JobRole } from "./JobRole";
 import * as _utils from "./utils";
 import _styles from "./JobDashboard.module.css";
 
@@ -46,6 +47,8 @@ export function JobDashboard({
   onClickAverageMatch = {},
   onClickBelowAverage = {},
   onClickNotaMatch = {},
+  slotJobRole,
+  isJobRoleVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "jobdashboard")} tag="div">
@@ -644,6 +647,17 @@ export function JobDashboard({
             </>
           )}
         </_Builtin.Grid>
+        {isJobRoleVisible ? (
+          <_Builtin.Block
+            id={_utils.cx(
+              _styles,
+              "w-node-aa7b022e-09a1-5735-d7ae-9984900320f8-06b69083"
+            )}
+            tag="div"
+          >
+            {slotJobRole ?? <JobRole />}
+          </_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
     </_Component>
   );

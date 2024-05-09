@@ -40,6 +40,7 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
+import { useJobDetails } from '@/src/context/JobDashboard';
 import { CountJobs } from '@/src/context/JobsContext/types';
 import NotFoundPage from '@/src/pages/404';
 
@@ -705,7 +706,7 @@ export const AddCandidates = ({
 };
 
 const NewJobDetailsTabs = () => {
-  const { activeSections } = useJobApplications();
+  const { job } = useJobDetails();
   return (
     <Stack
       style={{
@@ -719,7 +720,7 @@ const NewJobDetailsTabs = () => {
           '1px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00)',
       }}
     >
-      {activeSections.map((section) => (
+      {job.activeSections.map((section) => (
         <JobTab key={section} section={section} />
       ))}
     </Stack>
