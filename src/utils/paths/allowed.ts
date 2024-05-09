@@ -10,6 +10,7 @@ export const allowedPaths = new Set([
   '/api/webhook',
   '/api/ai/resume-embedding',
   '/api/interview',
+  '/api/get_interview_feedback_details',
   '/api/assistant/listAssistant',
   '/api/assistant/listMessages',
   '/api/assistant/createMessage',

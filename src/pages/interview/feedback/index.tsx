@@ -7,9 +7,9 @@ import React from 'react';
 import { FeedbackCandidate } from '@/devlink3';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { DatabaseTable } from '@/src/types/customSchema';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';
 import { API_save_interview_feedback } from '../../api/save_interview_feedback/types';
 
 const InterviewFeedbackPage = () => {
@@ -117,21 +117,13 @@ const useInterviewFeedback = (interview_id: string) => {
 InterviewFeedbackPage.publicProvider = (page) => page;
 
 const getInterviewDetails = async (interview_id: string) => {
-  return supabase
-    .from('interview_meeting')
-    .select(
-      'candidate_feedback, interview_schedule(applications(public_jobs(logo, job_title, company)))',
-    )
-    .eq('id', interview_id)
-    .single()
-    .then(({ error, data }) => {
-      if (error) throw error;
-      return {
-        candidate_feedback: data.candidate_feedback,
-        company_logo: data.interview_schedule.applications.public_jobs.logo,
-        company_name: data.interview_schedule.applications.public_jobs.company,
-        job_title: data.interview_schedule.applications.public_jobs.job_title,
-      };
+  return axios
+    .post<
+      API_get_interview_feedback_details['response']
+    >('/api/get_interview_feedback_details', { interview_id })
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.data;
     });
 };
 
