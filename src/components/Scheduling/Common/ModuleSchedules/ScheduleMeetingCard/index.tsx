@@ -101,6 +101,26 @@ function ScheduleMeetingCard({
             meetingDetails.interview_meeting.session_duration,
           )}
           textJob={meetingDetails?.interview_meeting?.job_title}
+          bgColorProps={{
+            style: {
+              background:
+                meetingDetails.interview_meeting?.status === 'cancelled'
+                  ? '#D93F4C'
+                  : meetingDetails.interview_meeting?.status === 'completed'
+                    ? '#228F67'
+                    : meetingDetails.interview_meeting?.status === 'confirmed'
+                      ? '#337FBD'
+                      : meetingDetails.interview_meeting?.status ===
+                          'not_scheduled'
+                        ? '#D8DCDE'
+                        : meetingDetails.interview_meeting?.status === 'waiting'
+                          ? '#F79A3E'
+                          : meetingDetails.interview_meeting?.status ===
+                              'reschedule'
+                            ? '#D8DCDE'
+                            : '#D8DCDE',
+            },
+          }}
         />
       </Stack>
     </>

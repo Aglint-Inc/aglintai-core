@@ -7,6 +7,7 @@ export type FilterOptionsType = {
     | 'candidate'
     | 'date_range'
     | 'schedule_type'
-    | 'job';
+    | 'job'
+    | 'training_type';
   Icon: ReactNode;
 };

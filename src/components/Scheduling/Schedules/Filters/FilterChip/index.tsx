@@ -16,14 +16,18 @@ function FilterChip({
   removeFilter,
   resetSelectedItem,
   handleChange,
+  defaultSelectedIds,
 }: {
   filterType: FilterOptionsType;
   itemList: { label: string; id: string }[];
   removeFilter: any;
   resetSelectedItem: any;
   handleChange: any;
+  defaultSelectedIds?: any;
 }) {
-  const [selectedItem, setSelectedItem] = useState<any[]>([]);
+  const [selectedItem, setSelectedItem] = useState<any[]>(
+    defaultSelectedIds || [],
+  );
   // popOver open state
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
