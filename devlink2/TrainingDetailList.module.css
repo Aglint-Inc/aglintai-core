@@ -64,6 +64,14 @@
   }
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
+.text-first-cap {
+  text-transform: capitalize;
+}
+
 .div-block-1673 {
   width: 150px;
 }

@@ -35,7 +35,12 @@ export function TrainingDetailList({
             />
           ) : null}
         </_Builtin.Block>
-        <_Builtin.Block tag="div">{textTraining}</_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "text-first-cap")}
+          tag="div"
+        >
+          {textTraining}
+        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1673")}
