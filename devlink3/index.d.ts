@@ -134,6 +134,7 @@ export * from "./LearnHowGreenhouse";
 export * from "./LearnHowLever";
 export * from "./ListCard";
 export * from "./ListPop";
+export * from "./MemberDetail";
 export * from "./MembersList";
 export * from "./ModuleCard";
 export * from "./ModuleGlobalMoreMenu";

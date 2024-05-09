@@ -14,12 +14,17 @@ import { filterOptions, getListItems } from '../utils';
 import FilterChip from './FilterChip';
 
 function Filters() {
-  const { allSchedules, setFilterSchedule, filterSchedules } =
-    useScheduleStatesContext();
+  const {
+    allSchedules,
+    setFilterSchedule,
+    filterSchedules,
+    setLoadingSchedules,
+  } = useScheduleStatesContext();
 
   const [selectedFilters, setSelectedFilters] = useState<FilterOptionsType[]>(
     [],
   );
+
   useEffect(() => {
     if (typeof window != 'undefined') {
       const localSetFilterNames = JSON.parse(
@@ -33,13 +38,23 @@ function Filters() {
       }
     }
   }, []);
-  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const [selectedJob, setSelectedJob] = useState<string[]>([]);
-  const [selectedScheduleType, setSelectedScheduleType] = useState<string[]>(
-    [],
+  const scheduleFilterIds =
+    JSON.parse(localStorage.getItem('scheduleFilterIds')) || {};
+  const [selectedStatus, setSelectedStatus] = useState<string[]>(
+    scheduleFilterIds?.status || [],
   );
-  const [selectedDateRange, setSelectedDateRange] = useState<string[]>([]);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>(
+    scheduleFilterIds?.member || [],
+  );
+  const [selectedJob, setSelectedJob] = useState<string[]>(
+    scheduleFilterIds?.job || [],
+  );
+  const [selectedScheduleType, setSelectedScheduleType] = useState<string[]>(
+    scheduleFilterIds?.schedule_type || [],
+  );
+  const [selectedDateRange, setSelectedDateRange] = useState<string[]>(
+    scheduleFilterIds?.date_range || [],
+  );
 
   // popOver
   const [openFilterOptions, setOpenFilterOptions] =
@@ -52,26 +67,37 @@ function Filters() {
   };
   const open = Boolean(openFilterOptions);
   const id = open ? 'simple-popover' : undefined;
+
   // popOver end
+
   const handleOnSelectItem = (
     ids: string[],
     filterTypeName: FilterOptionsType['name'],
   ) => {
     if (filterTypeName === 'status') {
       setSelectedStatus(ids);
+      scheduleFilterIds.status = ids;
     }
     if (filterTypeName === 'member') {
       setSelectedMembers(ids);
+      scheduleFilterIds.member = ids;
     }
     if (filterTypeName === 'job') {
       setSelectedJob(ids);
+      scheduleFilterIds.job = ids;
     }
     if (filterTypeName === 'schedule_type') {
       setSelectedScheduleType(ids);
+      scheduleFilterIds.schedule_type = ids;
     }
     if (filterTypeName === 'date_range') {
       setSelectedDateRange(ids);
+      scheduleFilterIds.date_range = ids;
     }
+    localStorage.setItem(
+      'scheduleFilterIds',
+      JSON.stringify(scheduleFilterIds),
+    );
   };
 
   function getMeetingIdsForMembers() {
@@ -100,7 +126,7 @@ function Filters() {
   }
 
   useEffect(() => {
-    if (allSchedules && allSchedules.length) {
+    if (Array.isArray(allSchedules)) {
       const filteredSchedule = allSchedules.filter((schedule) => {
         const statusMatch =
           !selectedStatus.length ||
@@ -132,8 +158,8 @@ function Filters() {
           dateRangeMatch
         );
       });
-
       setFilterSchedule(filteredSchedule);
+      setLoadingSchedules(false);
     }
   }, [
     selectedMembers,
@@ -141,6 +167,7 @@ function Filters() {
     selectedJob,
     selectedScheduleType,
     selectedDateRange,
+    allSchedules,
   ]);
 
   return (
@@ -205,6 +232,9 @@ function Filters() {
             itemList={itemList || []}
             key={i}
             filterType={filterType}
+            defaultSelectedIds={
+              scheduleFilterIds && scheduleFilterIds[String(filterType.name)]
+            }
           />
         );
       })}
@@ -243,41 +273,46 @@ function Filters() {
                 .includes(filterOption.name)
             )
               return (
-                <FilterPill
-                  key={i}
-                  onClickFilter={{
-                    onClick: () => {
-                      if (
-                        selectedFilters
-                          .map((ele) => ele.name)
-                          .includes(filterOption.name)
-                      ) {
-                        const tempList = selectedFilters.filter(
-                          (ele) => ele.name !== filterOption.name,
-                        );
-                        setSelectedFilters([...tempList]);
-                        localStorage.setItem(
-                          'schedulesFilter',
-                          JSON.stringify([...tempList].map((ele) => ele.name)),
-                        );
-                      } else {
-                        setOpenFilterOptions(null);
-                        localStorage.setItem(
-                          'schedulesFilter',
-                          JSON.stringify(
-                            [...selectedFilters, filterOption].map(
-                              (ele) => ele.name,
+                <Stack direction={'row'} spacing={'10px'} alignItems={'center'}>
+                  {filterOption.Icon}
+                  <FilterPill
+                    key={i}
+                    onClickFilter={{
+                      onClick: () => {
+                        if (
+                          selectedFilters
+                            .map((ele) => ele.name)
+                            .includes(filterOption.name)
+                        ) {
+                          const tempList = selectedFilters.filter(
+                            (ele) => ele.name !== filterOption.name,
+                          );
+                          setSelectedFilters([...tempList]);
+                          localStorage.setItem(
+                            'schedulesFilter',
+                            JSON.stringify(
+                              [...tempList].map((ele) => ele.name),
                             ),
-                          ),
-                        );
-                        setSelectedFilters((pre) => [...pre, filterOption]);
-                      }
-                    },
-                  }}
-                  textFilterName={capitalizeAll(
-                    filterOption.name.replaceAll('-', ' '),
-                  )}
-                />
+                          );
+                        } else {
+                          setOpenFilterOptions(null);
+                          localStorage.setItem(
+                            'schedulesFilter',
+                            JSON.stringify(
+                              [...selectedFilters, filterOption].map(
+                                (ele) => ele.name,
+                              ),
+                            ),
+                          );
+                          setSelectedFilters((pre) => [...pre, filterOption]);
+                        }
+                      },
+                    }}
+                    textFilterName={capitalizeAll(
+                      filterOption.name.replaceAll('-', ' '),
+                    )}
+                  />
+                </Stack>
               );
           })}
         />

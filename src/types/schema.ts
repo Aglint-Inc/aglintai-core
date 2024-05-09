@@ -1209,6 +1209,7 @@ export type Database = {
       interview_meeting: {
         Row: {
           cal_event_id: string | null
+          candidate_feedback: Json | null
           confirmed_date: string | null
           created_at: string
           end_time: string | null
@@ -1222,6 +1223,7 @@ export type Database = {
         }
         Insert: {
           cal_event_id?: string | null
+          candidate_feedback?: Json | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -1235,6 +1237,7 @@ export type Database = {
         }
         Update: {
           cal_event_id?: string | null
+          candidate_feedback?: Json | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
