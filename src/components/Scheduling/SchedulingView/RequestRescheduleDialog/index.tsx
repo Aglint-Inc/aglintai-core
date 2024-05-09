@@ -198,7 +198,7 @@ function RequestRescheduleDialog({
               multiline
               value={notes}
               minRows={3}
-              placeholder='Type additional notes to HR if any'
+              placeholder='Add additional notes.'
               onChange={(e) => {
                 setNotes(e.target.value);
               }}

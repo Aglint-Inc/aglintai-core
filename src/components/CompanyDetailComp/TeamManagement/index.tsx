@@ -177,7 +177,7 @@ const TeamManagement = () => {
                     </InputAdornment>
                   ),
                 }}
-                placeholder='Search by name, email or title'
+                placeholder='Search by Name, Email or Title'
                 onChange={handleSearchInputChange}
                 borderRadius={10}
                 height={42}

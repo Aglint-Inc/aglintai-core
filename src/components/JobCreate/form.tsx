@@ -227,7 +227,7 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
           name={name}
           rest={{ ...params }}
           label='Job Location'
-          placeholder='Ex : San Fransisco, United States'
+          placeholder='Ex. San Fransisco, United States'
           error={value.error.value}
           helperText={value.error.helper}
           onChange={(e) => onChange(name, e.target.value)}

@@ -331,7 +331,7 @@ const AddMember = ({
                   <CustomTextField
                     value={form.linked_in ? form.linked_in : ''}
                     name='LinkedIn'
-                    placeholder='URL'
+                    placeholder='Enter linkedin URL'
                     label='LinkedIn'
                     error={formError.linked_in}
                     onFocus={() => {
@@ -345,7 +345,7 @@ const AddMember = ({
                     <CustomTextField
                       value={form.designation ? form.designation : ''}
                       name='title'
-                      placeholder='Title'
+                      placeholder='Enter title'
                       label='Title'
                       error={formError.designation}
                       onFocus={() => {
@@ -384,7 +384,7 @@ const AddMember = ({
                             });
                           }}
                           name='Employment'
-                          placeholder='Employment'
+                          placeholder='Select Employment Type'
                           label='Employment'
                         />
                       )}
@@ -417,7 +417,7 @@ const AddMember = ({
                             });
                           }}
                           name='Location'
-                          placeholder='Location'
+                          placeholder='Choose Location'
                           label='Location'
                         />
                       )}
@@ -442,7 +442,7 @@ const AddMember = ({
                             setFormError({ ...formError, department: false });
                           }}
                           name='Department'
-                          placeholder='Department'
+                          placeholder='Select Department'
                           label='Department'
                         />
                       )}
@@ -481,7 +481,7 @@ const AddMember = ({
                         <CustomTextField
                           {...params}
                           name='Role'
-                          placeholder='Role'
+                          placeholder='Choose Role'
                           label='Role'
                           error={formError.role}
                           onFocus={() => {
@@ -508,7 +508,7 @@ const AddMember = ({
                         <CustomTextField
                           {...params}
                           name='manager'
-                          placeholder='Manager'
+                          placeholder='Select Manager'
                           label='Manager'
                           error={formError.manager}
                           onFocus={() => {

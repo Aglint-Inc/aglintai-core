@@ -81,7 +81,7 @@ const CandidateDashboard = () => {
               </InputAdornment>
             ),
           }}
-          placeholder='Search by name'
+          placeholder='Search by Name'
           onChange={() => {
             // let input = e.target.value;
             // setSearch(input);

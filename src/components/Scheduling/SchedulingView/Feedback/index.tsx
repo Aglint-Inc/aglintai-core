@@ -1181,7 +1181,7 @@ const FeedbackForm = ({
       textRecommendation={re_mapper[interviewer.feedback?.recommendation || 0]}
       slotObjective={
         <TipTapAIEditor
-          placeholder='Give Your Feedback.'
+          placeholder='Your feedback.'
           initialValue={interviewer.feedback?.objective || ''}
           border
           handleChange={(html) => {

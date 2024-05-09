@@ -75,7 +75,7 @@ export function Modules() {
                       </InputAdornment>
                     ),
                   }}
-                  placeholder='Search by name'
+                  placeholder='Search by Name'
                   onChange={(e) => {
                     setTextSearch(e.target.value);
                   }}

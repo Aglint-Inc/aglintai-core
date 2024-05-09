@@ -485,7 +485,7 @@ function CandidateSearchHistory() {
                       slotInput={
                         <UITextField
                           rest={{ autoFocus: true }}
-                          placeholder='Enter list name'
+                          placeholder='Enter List name'
                           value={text}
                           onChange={(e) => {
                             setText(e.target.value);
@@ -526,7 +526,7 @@ function CandidateSearchHistory() {
                                   }}
                                 >
                                   <UITextField
-                                    placeholder='Enter list name'
+                                    placeholder='Enter List name'
                                     ref={multiTextFieldRef}
                                     value={editListText}
                                     onChange={(e) => {
