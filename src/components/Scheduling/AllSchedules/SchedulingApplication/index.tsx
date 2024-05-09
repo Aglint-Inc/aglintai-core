@@ -60,6 +60,7 @@ function SchedulingApplication() {
 
   return (
     <>
+      
       <DeleteScheduleDialog />
       <RescheduleDialog />
       <PageLayout

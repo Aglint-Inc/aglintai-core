@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import DashboardComp from '@/src/components/JobsDashboard';
-import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -19,9 +18,7 @@ const Dashboard = () => {
     <>
       <Seo title={`Jobs`} description='AI for People Products' />
       <IntegrationProvider>
-        <JobPostFormProvider>
-          <DashboardComp />
-        </JobPostFormProvider>
+        <DashboardComp />
       </IntegrationProvider>
     </>
   );

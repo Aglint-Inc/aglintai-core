@@ -18,7 +18,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 function JobSubNavbar() {
   const router = useRouter();
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
 
   return (
     <Stack
@@ -45,14 +45,14 @@ function JobSubNavbar() {
         }}
         isJobAll={router.query.status === 'all'}
         activeCount={
-          jobsData?.jobs?.filter((job) => job.status == 'published').length || 0
+          jobs.data.filter((job) => job.status == 'published').length || 0
         }
-        allCount={jobsData?.jobs?.length || 0}
+        allCount={jobs.data.length || 0}
         inActiveCount={
-          jobsData?.jobs?.filter((job) => job.status == 'draft').length || 0
+          jobs.data.filter((job) => job.status == 'draft').length || 0
         }
         closedCount={
-          jobsData?.jobs?.filter((job) => job.status == 'closed').length || 0
+          jobs.data.filter((job) => job.status == 'closed').length || 0
         }
         isJobActive={router.query.status === 'published'}
         isJobInactive={router.query.status === 'draft'}

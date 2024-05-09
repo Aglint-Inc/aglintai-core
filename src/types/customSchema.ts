@@ -124,26 +124,26 @@ export type CustomDatabase = {
                         };
                         Relationships: Database['public']['Tables'][Table]['Relationships'];
                       }
-                    : // interview_schedule table
-                      Table extends 'interview_schedule'
+                    : // interview_session_cancel table
+                      Table extends 'interview_session_cancel'
                       ? {
                           Row: Omit<
                             Database['public']['Tables'][Table]['Row'],
-                            'cancel_reschedule'
+                            'other_details'
                           > & {
-                            cancel_reschedule: interview_schedule_cancel_reschedule;
+                            other_details: interview_session_cancel_other_details;
                           };
                           Insert: Omit<
                             Database['public']['Tables'][Table]['Insert'],
-                            'cancel_reschedule'
+                            'other_details'
                           > & {
-                            cancel_reschedule?: interview_schedule_cancel_reschedule;
+                            other_details?: interview_session_cancel_other_details;
                           };
                           Update: Omit<
                             Database['public']['Tables'][Table]['Update'],
-                            'cancel_reschedule'
+                            'other_details'
                           > & {
-                            cancel_reschedule?: interview_schedule_cancel_reschedule;
+                            other_details?: interview_session_cancel_other_details;
                           };
                           Relationships: Database['public']['Tables'][Table]['Relationships'];
                         }
@@ -226,11 +226,7 @@ type recruiter_scheduling_reason = {
   decline: string[];
 };
 
-type interview_schedule_cancel_reschedule =
-  | { type: 'cancel'; dateRange: null; reason: string; additionalNote?: string }
-  | {
-      type: 'reschedule';
-      dateRange: { start: string; end: string };
-      reason: string;
-      additionalNote?: string;
-    };
+type interview_session_cancel_other_details = {
+  dateRange?: { start: string; end: string };
+  note?: string;
+};

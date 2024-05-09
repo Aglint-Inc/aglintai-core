@@ -7,8 +7,7 @@ import { IconChevronDown } from '@/devlink';
 import { useJobs } from '@/src/context/JobsContext';
 
 function JobsPopOver({ currecntJob }) {
-  const { jobsData } = useJobs();
-  const { jobs } = jobsData;
+  const { jobs } = useJobs();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const router = useRouter();
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -48,8 +47,8 @@ function JobsPopOver({ currecntJob }) {
         }}
       >
         <Stack direction={'column'} p={'20px'} spacing={'8px'}>
-          {jobs.length &&
-            jobs.map((job, i) => {
+          {jobs.data.length &&
+            jobs.data.map((job, i) => {
               return (
                 <>
                   <Stack

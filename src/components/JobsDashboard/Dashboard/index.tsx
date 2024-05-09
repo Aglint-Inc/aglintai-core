@@ -21,10 +21,12 @@ import {
   GraphBlock,
   JobDashboard as JobDashboardDev,
   JobDashboardTopRight,
+  JobRole,
   JobsBanner,
   ModuleCard,
   NoData,
   PipeLine,
+  RoleList,
   ScheduleCardSmall,
 } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
@@ -34,9 +36,11 @@ import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
+import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
@@ -59,18 +63,19 @@ import DashboardLineChart from './LineChart';
 import TenureAndExpSummary from './TenureAndExpSummary';
 
 const JobDashboard = () => {
-  const { initialLoad, job } = useJobDetails();
-  return initialLoad ? (
-    job !== undefined ? (
-      <Dashboard />
-    ) : (
-      <NotFoundPage />
-    )
-  ) : (
-    <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
-      <Loader />
-    </Stack>
-  );
+  const { loadStatus } = useJobDetails();
+  switch (loadStatus) {
+    case 'loading':
+      return (
+        <Stack width={'100%'} height={'100vh'} justifyContent={'center'}>
+          <Loader />
+        </Stack>
+      );
+    case 'error':
+      return <NotFoundPage />;
+    case 'success':
+      return <Dashboard />;
+  }
 };
 
 const getMatches = (
@@ -134,8 +139,7 @@ const Dashboard = () => {
         break;
       case 'published':
         {
-          const { data } = await handleCloseJob();
-          if (data) toast.success('Job closed successfully');
+          await handleCloseJob();
         }
         break;
       case 'closed':
@@ -260,6 +264,7 @@ const Dashboard = () => {
             onClickAssistant={{
               onClick: () => push(`/jobs/${job.id}/agent`),
             }}
+            slotJobRole={<Roles />}
           />
         }
         slotTopbarLeft={<BreadCrumbs />}
@@ -300,6 +305,74 @@ const Dashboard = () => {
 };
 
 export default JobDashboard;
+
+const Roles = () => {
+  const { push } = useRouter();
+  const { job } = useJobDetails();
+  const { data, status } = useCompanyMembers();
+  const {
+    hiring_manager,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
+    interview_coordinator,
+  } = job;
+  const coordinatorsData = {
+    hiring_manager,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
+    interview_coordinator,
+  };
+  const coordinators = useMemo(() => {
+    return (
+      Object.entries(coordinatorsData)
+        // eslint-disable-next-line no-unused-vars
+        .filter(([_, value]) => value)
+        .reduce((acc, [key, value]) => {
+          const user = data.find(({ user_id }) => user_id === value);
+          if (user) {
+            const name = getFullName(
+              user?.first_name ?? null,
+              user?.last_name ?? null,
+            );
+            acc.push(
+              <RoleList
+                slotImage={
+                  <MuiAvatar
+                    src={user?.profile_image ?? null}
+                    level={name}
+                    variant='circular'
+                    fontSize='16px'
+                  />
+                }
+                textDesignation={capitalizeAll(user?.position ?? null)}
+                textName={name}
+                textRoleHeader={capitalizeAll(key)}
+              />,
+            );
+          }
+          return acc;
+        }, [])
+    );
+  }, [
+    status,
+    job,
+    hiring_manager,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
+    interview_coordinator,
+    data,
+  ]);
+  if (status !== 'success' || coordinators.length === 0) return <></>;
+  return (
+    <JobRole
+      onClickEdit={{ onClick: () => push(`/jobs/${job?.id}/edit`) }}
+      slotRoleList={coordinators}
+    />
+  );
+};
 
 const BreadCrumbs = () => {
   const router = useRouter();
@@ -350,7 +423,7 @@ const Preview = () => {
 
 const Pipeline = () => {
   const { job } = useJobDetails();
-  const { setSection, activeSections } = useJobApplications();
+  const { setSection } = useJobApplications();
   const { push } = useRouter();
 
   const newSections = Object.entries(job.count).reduce(
@@ -375,7 +448,7 @@ const Pipeline = () => {
           onClick: () => handlClick(JobApplicationSections.NEW),
         }}
       />
-      {activeSections.includes(JobApplicationSections.SCREENING) && (
+      {job.activeSections.includes(JobApplicationSections.SCREENING) && (
         <PipeLine
           textCandidateCount={newSections.screening.label}
           textName={capitalize(JobApplicationSections.SCREENING)}
@@ -384,7 +457,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {activeSections.includes(JobApplicationSections.ASSESSMENT) && (
+      {job.activeSections.includes(JobApplicationSections.ASSESSMENT) && (
         <PipeLine
           textCandidateCount={newSections.assessment.label}
           textName={capitalize(JobApplicationSections.ASSESSMENT)}
@@ -393,7 +466,7 @@ const Pipeline = () => {
           }}
         />
       )}
-      {activeSections.includes(JobApplicationSections.INTERVIEW) && (
+      {job.activeSections.includes(JobApplicationSections.INTERVIEW) && (
         <PipeLine
           textCandidateCount={newSections.interview.label}
           textName={capitalize(JobApplicationSections.INTERVIEW)}
@@ -536,7 +609,7 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
       <DashboardAlert
         textTitile={'Job details are incomplete'}
         textShortDescription={
-          'Scoring criterias cannot be generated without valid job details. Please ensure that valid job details are provided.'
+          'Please ensure that valid job details are provided.'
         }
         onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
       />,
@@ -672,17 +745,17 @@ const JobClose = ({
 };
 
 const Modules = () => {
-  const { activeSections } = useJobApplications();
+  const { job } = useJobDetails();
   return (
     <>
       <ProfileScoreModule />
-      {activeSections.includes(JobApplicationSections.INTERVIEW) && (
+      {job.activeSections.includes(JobApplicationSections.INTERVIEW) && (
         <InterviewModule />
       )}
-      {activeSections.includes(JobApplicationSections.ASSESSMENT) && (
+      {job.activeSections.includes(JobApplicationSections.ASSESSMENT) && (
         <AssessmentModule />
       )}
-      {activeSections.includes(JobApplicationSections.SCREENING) && (
+      {job.activeSections.includes(JobApplicationSections.SCREENING) && (
         <ScreeningModule />
       )}
 
