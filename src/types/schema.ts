@@ -1209,6 +1209,7 @@ export type Database = {
       interview_meeting: {
         Row: {
           cal_event_id: string | null
+          candidate_feedback: Json | null
           confirmed_date: string | null
           created_at: string
           end_time: string | null
@@ -1222,6 +1223,7 @@ export type Database = {
         }
         Insert: {
           cal_event_id?: string | null
+          candidate_feedback?: Json | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -1235,6 +1237,7 @@ export type Database = {
         }
         Update: {
           cal_event_id?: string | null
+          candidate_feedback?: Json | null
           confirmed_date?: string | null
           created_at?: string
           end_time?: string | null
@@ -2436,6 +2439,7 @@ export type Database = {
           experience_in_months: number | null
           hiring_manager: string | null
           id: string
+          interview_coordinator: string | null
           interview_instructions: string | null
           interview_plan: Json | null
           interview_success: string | null
@@ -2492,6 +2496,7 @@ export type Database = {
           experience_in_months?: number | null
           hiring_manager?: string | null
           id?: string
+          interview_coordinator?: string | null
           interview_instructions?: string | null
           interview_plan?: Json | null
           interview_success?: string | null
@@ -2548,6 +2553,7 @@ export type Database = {
           experience_in_months?: number | null
           hiring_manager?: string | null
           id?: string
+          interview_coordinator?: string | null
           interview_instructions?: string | null
           interview_plan?: Json | null
           interview_success?: string | null
@@ -2607,6 +2613,27 @@ export type Database = {
           {
             foreignKeyName: "public_jobs_hiring_manager_fkey"
             columns: ["hiring_manager"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_interview_coordinator_fkey"
+            columns: ["interview_coordinator"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_interview_coordinator_fkey"
+            columns: ["interview_coordinator"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "public_jobs_interview_coordinator_fkey"
+            columns: ["interview_coordinator"]
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
@@ -4220,6 +4247,14 @@ export type Database = {
           training_status_count: Json
         }[]
       }
+      get_interviewer_meetings: {
+        Args: {
+          target_user_id: string
+        }
+        Returns: {
+          interviewer_meetings: Json
+        }[]
+      }
       get_interviewers: {
         Args: {
           rec_id: string
@@ -4385,6 +4420,7 @@ export type Database = {
           recruiter: string
           recruiting_coordinator: string
           sourcer: string
+          interview_coordinator: string
           count: Json
           processing_count: Json
         }[]

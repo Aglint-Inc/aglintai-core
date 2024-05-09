@@ -4,29 +4,29 @@ export type CustomDatabase = {
   public: {
     [keys in keyof Database['public']]: keys extends 'Tables'
       ? {
-          [Table in keyof Database['public']['Tables']]: Table extends 'interview_session_relation'
+          [Table in keyof Database['public']['Tables']]: Table extends 'interview_session_relation' // interview_session_relation table
             ? {
                 Row: Omit<
                   Database['public']['Tables'][Table]['Row'],
                   'feedback'
                 > & {
-                  feedback: interview_meeting_user_feedback | null;
+                  feedback: interview_session_relation_user_feedback | null;
                 };
                 Insert: Omit<
                   Database['public']['Tables'][Table]['Insert'],
                   'feedback'
                 > & {
-                  feedback?: interview_meeting_user_feedback;
+                  feedback?: interview_session_relation_user_feedback;
                 };
                 Update: Omit<
                   Database['public']['Tables'][Table]['Update'],
                   'feedback'
                 > & {
-                  feedback?: interview_meeting_user_feedback;
+                  feedback?: interview_session_relation_user_feedback;
                 };
                 Relationships: Database['public']['Tables'][Table]['Relationships'];
               }
-            : Table extends 'new_tasks'
+            : Table extends 'new_tasks' // new Task
               ? {
                   Row: Omit<
                     Database['public']['Tables'][Table]['Row'],
@@ -147,7 +147,30 @@ export type CustomDatabase = {
                           };
                           Relationships: Database['public']['Tables'][Table]['Relationships'];
                         }
-                      : Database['public']['Tables'][Table];
+                      : // interview_meeting table
+                        Table extends 'interview_meeting'
+                        ? {
+                            Row: Omit<
+                              Database['public']['Tables'][Table]['Row'],
+                              'candidate_feedback'
+                            > & {
+                              candidate_feedback: interview_meeting_candidate_feedback;
+                            };
+                            Insert: Omit<
+                              Database['public']['Tables'][Table]['Insert'],
+                              'candidate_feedback'
+                            > & {
+                              candidate_feedback?: interview_meeting_candidate_feedback;
+                            };
+                            Update: Omit<
+                              Database['public']['Tables'][Table]['Update'],
+                              'candidate_feedback'
+                            > & {
+                              candidate_feedback?: interview_meeting_candidate_feedback;
+                            };
+                            Relationships: Database['public']['Tables'][Table]['Relationships'];
+                          }
+                        : Database['public']['Tables'][Table];
         }
       : Database['public'][keys];
   };
@@ -165,7 +188,7 @@ export type DatabaseTableUpdate = {
 
 export type DatabaseEnums = CustomDatabase['public']['Enums'];
 
-type interview_meeting_user_feedback = {
+type interview_session_relation_user_feedback = {
   recommendation: number;
   objective: string;
 } | null;
@@ -229,4 +252,9 @@ type recruiter_scheduling_reason = {
 type interview_session_cancel_other_details = {
   dateRange?: { start: string; end: string };
   note?: string;
+};
+
+type interview_meeting_candidate_feedback = {
+  feedback: string;
+  rating: number;
 };
