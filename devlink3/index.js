@@ -87,6 +87,7 @@ export * from "./EditOptionModule";
 export * from "./EnableDisable";
 export * from "./EnableInterviewPlan";
 export * from "./Feedback";
+export * from "./FeedbackCandidate";
 export * from "./FeedbackTableRow";
 export * from "./FeedbackViewPopup";
 export * from "./FullScheduleCard";
