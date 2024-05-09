@@ -8,7 +8,11 @@ import { MyScheduleSubCard } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
 import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../../../AllSchedules/utils';
+import {
+  getScheduleBgcolor,
+  getScheduleTextcolor,
+  getScheduleType,
+} from '../../../AllSchedules/utils';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import { ScheduleListType } from '..';
 import InterviewerDetailsCard from './interviewerDetailsCard';
@@ -103,22 +107,12 @@ function ScheduleMeetingCard({
           textJob={meetingDetails?.interview_meeting?.job_title}
           bgColorProps={{
             style: {
-              background:
-                meetingDetails.interview_meeting?.status === 'cancelled'
-                  ? '#D93F4C'
-                  : meetingDetails.interview_meeting?.status === 'completed'
-                    ? '#228F67'
-                    : meetingDetails.interview_meeting?.status === 'confirmed'
-                      ? '#337FBD'
-                      : meetingDetails.interview_meeting?.status ===
-                          'not_scheduled'
-                        ? '#D8DCDE'
-                        : meetingDetails.interview_meeting?.status === 'waiting'
-                          ? '#F79A3E'
-                          : meetingDetails.interview_meeting?.status ===
-                              'reschedule'
-                            ? '#D8DCDE'
-                            : '#D8DCDE',
+              background: getScheduleBgcolor(
+                meetingDetails.interview_meeting?.status,
+              ),
+              color: getScheduleTextcolor(
+                meetingDetails.interview_meeting?.status,
+              ),
             },
           }}
         />
