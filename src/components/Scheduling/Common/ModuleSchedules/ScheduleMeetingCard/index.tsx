@@ -8,7 +8,11 @@ import { MyScheduleSubCard } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
 import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../../../AllSchedules/utils';
+import {
+  getScheduleBgcolor,
+  getScheduleTextcolor,
+  getScheduleType,
+} from '../../../AllSchedules/utils';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import { ScheduleListType } from '..';
 import InterviewerDetailsCard from './interviewerDetailsCard';
@@ -101,6 +105,16 @@ function ScheduleMeetingCard({
             meetingDetails.interview_meeting.session_duration,
           )}
           textJob={meetingDetails?.interview_meeting?.job_title}
+          bgColorProps={{
+            style: {
+              background: getScheduleBgcolor(
+                meetingDetails.interview_meeting?.status,
+              ),
+              color: getScheduleTextcolor(
+                meetingDetails.interview_meeting?.status,
+              ),
+            },
+          }}
         />
       </Stack>
     </>

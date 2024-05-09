@@ -66,6 +66,7 @@ export function getListItems({
       }))
       .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
   }
+
   return itemList;
 }
 

@@ -491,12 +491,13 @@ function Theme({ children }) {
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            borderRadius: '4px',
+            borderRadius: '4px'
+
           },
         },
       },
     },
-    shadows: Array(25).fill('none'),
+    // shadows: Array(25).fill('none'),
   });
 
   return (

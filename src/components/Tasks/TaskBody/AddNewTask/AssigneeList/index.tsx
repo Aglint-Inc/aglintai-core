@@ -87,7 +87,10 @@ function AssigneeList({
                   }
                 }}
               >
-                <AssigneeChip assigneeId={ele.user_id} />
+                <AssigneeChip
+                  disableHoverListener={true}
+                  assigneeId={ele.user_id}
+                />
               </Stack>
             );
           })}
