@@ -129,7 +129,7 @@ const JobEdit = () => {
       required: true,
       error: {
         value: validateString(hiring_manager),
-        helper: 'Hiring manager must be seclected',
+        helper: 'Hiring manager must be selected',
       },
     },
     recruiter: {
@@ -137,7 +137,7 @@ const JobEdit = () => {
       required: true,
       error: {
         value: validateString(recruiter),
-        helper: 'Recruiter must be seclected',
+        helper: 'Recruiter must be selected',
       },
     },
     recruiting_coordinator: {
@@ -145,7 +145,7 @@ const JobEdit = () => {
       required: false,
       error: {
         value: false,
-        helper: 'Recruiter coordinator must be seclected',
+        helper: 'Recruiter coordinator must be selected',
       },
     },
     sourcer: {
@@ -153,7 +153,7 @@ const JobEdit = () => {
       required: false,
       error: {
         value: false,
-        helper: 'Sourcer must be seclected',
+        helper: 'Sourcer must be selected',
       },
     },
     interview_coordinator: {
@@ -161,7 +161,7 @@ const JobEdit = () => {
       required: false,
       error: {
         value: false,
-        helper: 'Interview coordinator must be seclected',
+        helper: 'Interview coordinator must be selected',
       },
     },
   });

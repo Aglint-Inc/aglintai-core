@@ -126,7 +126,7 @@ const JobCreate = () => {
       required: false,
       error: {
         value: false,
-        helper: 'Interview coordinator must be seclected',
+        helper: 'Interview coordinator must be selected',
       },
     },
   });
