@@ -127,6 +127,7 @@ function ChangeInterviewerDialog({
               'session_relation_id',
               cancelInterviewer.interview_session_relation.id,
             );
+
           queryClient.invalidateQueries({
             queryKey: ['schedule_details', schedule.interview_meeting.id],
           });
@@ -179,7 +180,7 @@ function ChangeInterviewerDialog({
               variant={'circular'}
               width={'100%'}
               height={'100%'}
-              fontSize={'12px'}
+              fontSize={'18px'}
             />
           }
           onClickChange={{
@@ -229,7 +230,7 @@ function ChangeInterviewerDialog({
                             variant={'circular'}
                             width={'100%'}
                             height={'100%'}
-                            fontSize={'12px'}
+                            fontSize={'18px'}
                           />
                         }
                       />

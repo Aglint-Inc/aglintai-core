@@ -16,16 +16,10 @@ declare function MembersList(props: {
   onClickCopyInvite?: Types.Devlink.RuntimeProps;
   isDesignationVisible?: Types.Visibility.VisibilityConditions;
   isDetailVisible?: Types.Visibility.VisibilityConditions;
-  textMail?: React.ReactNode;
-  textLocation?: React.ReactNode;
-  textTimeZone?: React.ReactNode;
-  textTodayInterview?: React.ReactNode;
-  textWeekInterview?: React.ReactNode;
-  onClickViewInterviewDetail?: Types.Devlink.RuntimeProps;
-  textJobTitle?: React.ReactNode;
   onClickAccept?: Types.Devlink.RuntimeProps;
   onClickDecline?: Types.Devlink.RuntimeProps;
   isAcceptVisible?: Types.Visibility.VisibilityConditions;
   isDeclineVisible?: Types.Visibility.VisibilityConditions;
   isAcceptDeclineVisibe?: Types.Visibility.VisibilityConditions;
+  slotMemberDetail?: Types.Devlink.Slot;
 }): React.JSX.Element;

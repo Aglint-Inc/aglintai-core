@@ -7,6 +7,7 @@ import React, { Dispatch, useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewSessionRelationTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -16,12 +17,15 @@ function RequestRescheduleDialog({
   setIsRequestRescheduleOpen,
   sessionRelation,
   meeting_id,
+  session_id,
 }: {
   isRequestRescheduleOpen: boolean;
   setIsRequestRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   meeting_id: string;
+  session_id: string;
 }) {
+  const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
   const currentDate = dayjs();
   const [reason, setReason] = useState('');
@@ -31,7 +35,7 @@ function RequestRescheduleDialog({
     end_date: string;
   }>();
 
-  const reasons = [
+  const reasons = recruiter.scheduling_reason.decline || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',
@@ -56,11 +60,17 @@ function RequestRescheduleDialog({
         const { error } = await supabase
           .from('interview_session_cancel')
           .insert({
-            notes,
             reason,
-            start_date: dateRange.start_date,
-            end_date: dateRange.end_date,
             session_relation_id: sessionRelation.id,
+            session_id,
+            type: 'reschedule',
+            other_details: {
+              dateRange: {
+                start: dateRange.start_date,
+                end: dateRange.end_date,
+              },
+              note: notes,
+            },
           });
         if (error) throw new Error();
         queryClient.invalidateQueries({
@@ -188,7 +198,7 @@ function RequestRescheduleDialog({
               multiline
               value={notes}
               minRows={3}
-              placeholder='Type additional notes to HR if any'
+              placeholder='Add additional notes.'
               onChange={(e) => {
                 setNotes(e.target.value);
               }}

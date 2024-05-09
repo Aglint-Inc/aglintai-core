@@ -1,13 +1,14 @@
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
 
 import { useModuleAndUsers } from '../queries/hooks';
-import Instructions from './Instructions';
 import SlotBodyComp from './SlotBodyComp';
 import TopRightButtons from './TopRightButtons';
 
 function ModuleMembersComp() {
+  const router = useRouter();
   const {
     data: editModule,
     isLoading: fetchingModule,
@@ -19,7 +20,7 @@ function ModuleMembersComp() {
       <PageLayout
         onClickBack={{
           onClick: () => {
-            window.history.back();
+            router.push('/scheduling?tab=interviewers');
           },
         }}
         isBackButton={true}
@@ -30,7 +31,6 @@ function ModuleMembersComp() {
         }
         slotTopbarRight={
           <Stack direction={'row'} justifyItems={'center'} gap={'10px'}>
-            <Instructions editModule={editModule} />
             <TopRightButtons editModule={editModule} />
           </Stack>
         }

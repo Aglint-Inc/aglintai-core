@@ -966,7 +966,7 @@ export const TimezoneSelector = ({
               labelSize='medium'
               // fullWidth
               label=''
-              placeholder='America/Los_Angeles (GMT-08:00)'
+              placeholder='Ex. America/Los_Angeles (GMT-08:00)'
               InputProps={{
                 ...params.InputProps,
                 autoComplete: 'new-password',

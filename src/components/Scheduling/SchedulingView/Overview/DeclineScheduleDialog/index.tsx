@@ -4,6 +4,7 @@ import React, { Dispatch, useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { DeletePopup } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewSessionRelationTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -13,18 +14,21 @@ function DeclineScheduleDialog({
   setIsDeclineOpen,
   sessionRelation,
   meeting_id,
+  session_id,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
   meeting_id: string;
+  session_id: string;
 }) {
+  const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
 
-  const reasons = [
+  const reasons = recruiter.scheduling_reason.decline || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',
@@ -45,9 +49,14 @@ function DeclineScheduleDialog({
         const { error } = await supabase
           .from('interview_session_cancel')
           .insert({
-            notes,
             reason,
             session_relation_id: sessionRelation.id,
+            type: 'declined',
+            session_id,
+            other_details: {
+              dateRange: null,
+              note: notes,
+            },
           });
         if (error) throw new Error();
         queryClient.invalidateQueries({
@@ -110,7 +119,7 @@ function DeclineScheduleDialog({
               multiline
               value={notes}
               minRows={3}
-              placeholder='Type additional notes to HR if any'
+              placeholder='Add additional notes.'
               onChange={(e) => {
                 setNotes(e.target.value);
               }}

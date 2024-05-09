@@ -63,6 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       total: combs.length,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).send(error.message);
   }
 };

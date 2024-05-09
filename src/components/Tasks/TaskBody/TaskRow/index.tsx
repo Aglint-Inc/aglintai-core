@@ -13,7 +13,7 @@ import {
   AvatarWithName,
   ListCard,
   PriorityPill,
-  TaskTableCard,
+  TaskTableCard
 } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';

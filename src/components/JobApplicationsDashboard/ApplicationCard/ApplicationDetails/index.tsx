@@ -66,9 +66,9 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
 import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
+import { Job } from '@/src/queries/job/types';
 // import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
@@ -224,8 +224,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
-  const { activeSections } = useJobApplications();
-  const { interviewPlanEnabled } = useJobDetails();
+  const { job, interviewPlanEnabled } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -262,7 +261,7 @@ const NewJobApplicationSideDrawer = ({
   const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningPhoneCallEnabled',
   );
-  const isPhoneScreeningEnabled = activeSections.includes(
+  const isPhoneScreeningEnabled = job.activeSections.includes(
     JobApplicationSections.SCREENING,
   );
   return (
@@ -911,7 +910,7 @@ const ResumeViewer: React.FC<{
 
 const ResumeBlock: React.FC<{
   application: JobApplication;
-  job: JobTypeDashboard;
+  job: Job;
   handleUpload: () => void;
 }> = ({ application, job, handleUpload }) => {
   if (job.status === 'draft') return <DangerMessage />;
@@ -983,7 +982,7 @@ export const NewResumeScoreDetails = ({
   setOpenResume,
 }: {
   application: JobApplication;
-  job: JobTypeDashboard;
+  job: Job;
   result: boolean;
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {

@@ -72,7 +72,7 @@ const BasicStepOne = () => {
                       value: String(e.target.value),
                     });
                   }}
-                  placeholder='Ex : Software developer'
+                  placeholder='Ex. Software developer'
                 />
               </Grid>
               <Grid item spacing={2} sm={6}>
@@ -139,7 +139,7 @@ const BasicStepOne = () => {
                     <UITextField
                       rest={{ ...params }}
                       label='Department (Optional) '
-                      placeholder='Ex : Marketing'
+                      placeholder='Ex. Marketing'
                       onChange={(e) => {
                         handleUpdateFormFields({
                           path: 'department',
@@ -170,7 +170,7 @@ const BasicStepOne = () => {
                     <UITextField
                       rest={{ ...params }}
                       label='Job Location'
-                      placeholder='Ex : San Fransisco, United States'
+                      placeholder='Ex. San Fransisco, United States'
                       onChange={(e) => {
                         handleUpdateFormFields({
                           path: 'jobLocation',

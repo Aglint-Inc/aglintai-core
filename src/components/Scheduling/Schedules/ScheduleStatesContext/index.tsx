@@ -12,11 +12,12 @@ export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
 interface ContextValue {
-  allSchedules: ScheduleListType;
+  allSchedules: ScheduleListType | null;
   setAllSchedules: (x: ScheduleListType | null) => void;
   filterSchedules: ScheduleListType;
   setFilterSchedule: (x: ScheduleListType | null) => void;
   loadingSchedules: boolean;
+  setLoadingSchedules: (x: boolean) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -25,6 +26,7 @@ const defaultProvider: ContextValue = {
   filterSchedules: null,
   setFilterSchedule: () => {},
   loadingSchedules: false,
+  setLoadingSchedules: () => {},
 };
 const ScheduleStatesContext = createContext<ContextValue>(defaultProvider);
 const useScheduleStatesContext = () => useContext(ScheduleStatesContext);
@@ -40,7 +42,6 @@ function ScheduleStatesProvider({ children }) {
     if (!isLoading && isFetched) {
       setAllSchedules((schedules || []) as ScheduleListType);
       setFilterSchedule((schedules || []) as ScheduleListType);
-      setLoadingSchedules(false);
     }
   }, [isLoading, isFetched]);
   return (
@@ -51,6 +52,7 @@ function ScheduleStatesProvider({ children }) {
         filterSchedules,
         setFilterSchedule,
         loadingSchedules,
+        setLoadingSchedules,
       }}
     >
       {children}

@@ -37,4 +37,6 @@ declare function JobDashboard(props: {
   onClickAverageMatch?: Types.Devlink.RuntimeProps;
   onClickBelowAverage?: Types.Devlink.RuntimeProps;
   onClickNotaMatch?: Types.Devlink.RuntimeProps;
+  slotJobRole?: Types.Devlink.Slot;
+  isJobRoleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

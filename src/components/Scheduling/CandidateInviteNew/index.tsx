@@ -508,7 +508,7 @@ const CancelRescheduleDialog = ({
         slotInputAdditionalNotes={
           <TextField
             multiline
-            placeholder='Type additional notes to HR if any'
+            placeholder='Add additional notes.'
             minRows={4}
             value={formData.additionalNote}
             fullWidth

@@ -130,6 +130,11 @@ function Overview({
     (item) => item.interview_session_relation.is_confirmed,
   );
 
+  const possibleUsers = schedule.users.filter(
+    (user) =>
+      user.id !== cancelUserId && !user.interview_session_relation.is_confirmed,
+  );
+
   return (
     <>
       <ChangeInterviewerDialog
@@ -168,23 +173,34 @@ function Overview({
                             : '#681219',
                       },
                     }}
-                    textName={getFullName(
-                      item.recruiter_user.first_name,
-                      item.recruiter_user.last_name,
-                    )}
+                    textName={
+                      item.interview_session_cancel.session_relation_id
+                        ? getFullName(
+                            item.recruiter_user.first_name,
+                            item.recruiter_user.last_name,
+                          )
+                        : getFullName(
+                            item.candidate.first_name,
+                            item.candidate.last_name,
+                          )
+                    }
                     key={item.interview_session_cancel.id}
                     slotProfileImage={
-                      <MuiAvatar
-                        level={getFullName(
-                          item.recruiter_user.first_name,
-                          item.recruiter_user.last_name,
-                        )}
-                        src={item.recruiter_user.profile_image}
-                        variant={'circular'}
-                        width={'100%'}
-                        height={'100%'}
-                        fontSize={'14px'}
-                      />
+                      item.interview_session_cancel.session_relation_id ? (
+                        <MuiAvatar
+                          level={getFullName(
+                            item.recruiter_user.first_name,
+                            item.recruiter_user.last_name,
+                          )}
+                          src={item.recruiter_user.profile_image}
+                          variant={'circular'}
+                          width={'100%'}
+                          height={'100%'}
+                          fontSize={'14px'}
+                        />
+                      ) : (
+                        ''
+                      )
                     }
                     onClickRescheduleNow={{
                       onClick: () => {
@@ -196,6 +212,10 @@ function Overview({
                       'request_reschedule'
                         ? 'requested for reschedule'
                         : 'declined this schedule'
+                    }
+                    isChangeInterviewerVisible={
+                      schedule.interview_session.session_type != 'debrief' &&
+                      possibleUsers.length > 0
                     }
                     textReason={item.interview_session_cancel.reason}
                     onClickChangeInterviewer={{

@@ -180,7 +180,7 @@ const EditMember = ({
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
                 <CustomTextField
                   value={form.designation ? form.designation : ''}
-                  placeholder='Title'
+                  placeholder='Enter Title'
                   label='Title'
                   error={formError.designation}
                   onFocus={() => {
@@ -221,7 +221,7 @@ const EditMember = ({
                         });
                       }}
                       name='Employment'
-                      placeholder='Employment'
+                      placeholder='Select Employment Type'
                       label='Employment'
                     />
                   )}
@@ -254,7 +254,7 @@ const EditMember = ({
                         });
                       }}
                       name='Location'
-                      placeholder='Location'
+                      placeholder='Choose Location'
                       label='Location'
                     />
                   )}
@@ -279,7 +279,7 @@ const EditMember = ({
                         setFormError({ ...formError, department: false });
                       }}
                       name='Department'
-                      placeholder='Department'
+                      placeholder='Select Department'
                       label='Department'
                     />
                   )}
@@ -319,7 +319,7 @@ const EditMember = ({
                       <CustomTextField
                         {...params}
                         name='Role'
-                        placeholder='Role'
+                        placeholder='Choose Role'
                         label='Role'
                         error={formError.role}
                         onFocus={() => {
@@ -346,7 +346,7 @@ const EditMember = ({
                       <CustomTextField
                         {...params}
                         name='manager'
-                        placeholder='Manager'
+                        placeholder='Select Manager'
                         label='Manager'
                         error={formError.manager}
                         onFocus={() => {

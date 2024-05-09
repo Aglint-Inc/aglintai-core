@@ -10,7 +10,6 @@ import {
   ListCard,
   ViewTaskCard,
 } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,
@@ -42,7 +41,7 @@ import { meetingCardType } from '../Progress/SessionCard';
 
 function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, members } = useAuthDetails();
   const { handelUpdateTask } = useTasksContext();
   const { assignerList, setIsImmediate } = useTaskStatesContext();
 
@@ -87,8 +86,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     ]);
   }
 
-  const createdBy = assignerList.find((ele) => ele.user_id === task.created_by);
-
+  const createdBy = members.find((ele) => ele.user_id === task.created_by);
   // open trigger Time
   const [openTriggerTime, setOpenTriggerTime] = useState(null);
   const spanRef = useRef(null);
@@ -233,32 +231,10 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }
         slotCreatedBy={
           createdBy && (
-            <ListCard
-              isAvatarWithNameVisible={true}
-              isListVisible={false}
-              slotAvatarWithName={
-                createdBy && (
-                  <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
-                        src={createdBy.profile_image}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          createdBy.first_name +
-                            ' ' +
-                            (createdBy.last_name ?? ''),
-                        )}
-                      />
-                    }
-                    textName={capitalizeAll(
-                      createdBy.first_name + ' ' + (createdBy.last_name ?? ''),
-                    )}
-                  />
-                )
-              }
+            <AssigneeList
+              isOptionList={false}
+              setSelectedAssignee={setSelectedAssignee}
+              selectedAssignee={createdBy as any}
             />
           )
         }

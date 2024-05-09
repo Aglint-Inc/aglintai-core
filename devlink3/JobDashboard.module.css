@@ -239,6 +239,10 @@
   color: #87929d;
 }
 
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
 .text-gray-600 {
   color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
 }
@@ -605,6 +609,8 @@
   grid-column-end: span 1;
 }
 #w-node-_455ef4cc-ff1b-729d-620d-560a6abf007f-06b69083 {
+}
+#w-node-aa7b022e-09a1-5735-d7ae-9984900320f8-06b69083 {
 }
 @media screen and (min-width: 1920px) {
   #w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b690d3-06b69083 {

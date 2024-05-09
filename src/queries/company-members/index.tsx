@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiResponseFetchUserDetails } from '@/src/pages/api/scheduling/fetchUserDetails';
+import { CompanyMembersAPI } from '@/src/pages/api/scheduling/fetchUserDetails';
 
 import { companyMembersKeys } from './keys';
 
@@ -16,7 +16,6 @@ export const useCompanyMembers = () => {
     queryKey,
     queryFn: () => getCompanyMembers({ recruiter_id }),
     enabled: !!recruiter_id,
-    gcTime: 0,
   });
   const refetch = async () => {
     await queryClient.invalidateQueries({ queryKey });
@@ -32,7 +31,6 @@ export const getCompanyMembers = async ({
   const res = await axios.post('/api/scheduling/fetchUserDetails', {
     recruiter_id,
   });
-  const allUsers =
-    (res.data as unknown as Awaited<ApiResponseFetchUserDetails>) || [];
+  const allUsers = (res.data as unknown as Awaited<CompanyMembersAPI>) || [];
   return allUsers;
 };

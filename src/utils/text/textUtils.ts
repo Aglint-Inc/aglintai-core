@@ -6,12 +6,12 @@ export const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.substring(1);
 };
 export const capitalizeAll = (str: string) => {
-  if (str)
-    return str
-      .replaceAll('_', ' ')
-      .split(' ')
-      .map((item) => cap(item))
-      .join(' ');
+  if (!str) return '';
+  return str
+    .replaceAll('_', ' ')
+    .split(' ')
+    .map((item) => cap(item))
+    .join(' ');
 };
 export const getRandomColor = (): string => {
   const colors = [

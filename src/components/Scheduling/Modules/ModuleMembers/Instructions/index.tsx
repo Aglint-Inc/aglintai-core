@@ -1,7 +1,6 @@
-import { Drawer, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Stack } from '@mui/material';
+import { useState } from 'react';
 
-import { Instructions, InstructionsButton } from '@/devlink3';
 import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { palette } from '@/src/context/Theme/Theme';
@@ -12,9 +11,6 @@ import { useModuleAndUsers } from '../../queries/hooks';
 import { ModuleType } from '../../types';
 
 function InstructionsComp({ editModule }: { editModule: ModuleType }) {
-  const [openInstructions, setOpenInstructions] = useState(false);
-  const [hideGotIt, setHideGotIt] = useState(false);
-
   const [textValue, setTextValue] = useState(null);
   const { refetch } = useModuleAndUsers();
   async function updateInstruction() {
@@ -26,82 +22,48 @@ function InstructionsComp({ editModule }: { editModule: ModuleType }) {
         .select();
       if (data) {
         toast.success('Instructions updated successfully.');
-        setOpenInstructions(false);
         refetch();
       }
     }
   }
 
-  useEffect(() => {
-    setHideGotIt(localStorage.getItem('hideModuleInstructionsWork') === 'true');
-  }, []);
   return (
     <>
-      <InstructionsButton
-        onClickInstructions={{
-          onClick: () => {
-            setOpenInstructions(true);
-          },
-        }}
-      />
-      <Drawer
-        anchor={'right'}
-        open={openInstructions}
-        onClose={() => {
-          setOpenInstructions(false);
-        }}
-      >
-        <Stack width={500}>
-          <Instructions
-            onClickGotit={{
-              onClick: () => {
-                setHideGotIt(true);
-                localStorage.setItem('hideModuleInstructionsWork', 'true');
-              },
+      <Stack maxWidth={'800px'} p={'20px'}>
+        <Stack
+          sx={{
+            mt: '8px',
+            border: '1px solid',
+            borderColor: palette.grey[300],
+            borderRadius: '4px',
+            maxHeight: '600px',
+            overflow: 'auto',
+          }}
+        >
+          <TipTapAIEditor
+            enablAI={false}
+            placeholder={'Instructions'}
+            handleChange={(html) => {
+              setTextValue(html);
             }}
-            isHowWorkVisible={!hideGotIt}
-            onClickClose={{
-              onClick: () => {
-                setOpenInstructions(false);
-              },
-            }}
-            slotButton={
-              <Stack direction={'column'} justifyContent={'end'}>
-                <AUIButton
-                  onClick={() => {
-                    updateInstruction();
-                  }}
-                >
-                  Update
-                </AUIButton>
-              </Stack>
-            }
-            slotInstructions={
-              <>
-                <Stack
-                  sx={{
-                    mt: '8px',
-                    border: '1px solid',
-                    borderColor: palette.grey[300],
-                    borderRadius: '4px',
-                    maxHeight: '600px',
-                    overflow: 'auto',
-                  }}
-                >
-                  <TipTapAIEditor
-                    enablAI={false}
-                    placeholder={'Instructions'}
-                    handleChange={(html) => {
-                      setTextValue(html);
-                    }}
-                    initialValue={editModule?.instructions}
-                  />
-                </Stack>
-              </>
-            }
+            initialValue={editModule?.instructions}
           />
         </Stack>
-      </Drawer>
+        <Stack
+          direction={'row'}
+          width={'100%'}
+          justifyContent={'flex-end'}
+          pt={2}
+        >
+          <AUIButton
+            onClick={() => {
+              updateInstruction();
+            }}
+          >
+            Update
+          </AUIButton>
+        </Stack>
+      </Stack>
     </>
   );
 }

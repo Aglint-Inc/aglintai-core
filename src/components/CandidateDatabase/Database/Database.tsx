@@ -29,7 +29,7 @@ import SortComp from './SortComp';
 import { getFilteredCands } from './utils';
 
 const CandDatabase = () => {
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const { recruiter } = useAuthDetails();
   const [isLoading, setLoading] = useState(true);
   const [selectedCandidate, setSelectedCand] = useState(0);
@@ -40,7 +40,7 @@ const CandDatabase = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!jobsData.jobs) return;
+    if (jobs.status === 'pending') return;
 
     if (router.isReady) {
       const { page_no, location, name, job_role, sort_by_param, sort_type } =
@@ -84,13 +84,13 @@ const CandDatabase = () => {
         }
       })();
     }
-  }, [jobsData.jobs, router.isReady, router.query]);
+  }, [jobs.data, router.isReady, router.query]);
 
   //for apply jobs
   useEffect(() => {
-    if (!jobsData.jobs) return;
+    if (jobs.status === 'pending') return;
     const candidates = candState.candidates;
-    const publishedJobs = jobsData.jobs.filter((j) => j.status === 'published');
+    const publishedJobs = jobs.data.filter((j) => j.status === 'published');
     let candJobSet = new Set();
     for (let candJob of candidates.filter((cand) => cand.is_checked)) {
       for (let appliedJob of candJob.applied_job_posts) {

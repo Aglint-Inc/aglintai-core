@@ -89,6 +89,7 @@ function SchedulingViewComp() {
               sessionRelation={sessionRelation}
               isDeclineOpen={isDeclineOpen}
               setIsDeclineOpen={setIsDeclineOpen}
+              session_id={schedule.interview_session.id}
             />
             <CancelScheduleDialog
               schedule={schedule}
@@ -106,10 +107,10 @@ function SchedulingViewComp() {
               isRequestRescheduleOpen={isRequestRescheduleOpen}
               setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
               sessionRelation={sessionRelation}
+              session_id={schedule.interview_session.id}
             />
           </>
         )}
-
         <PageLayout
           onClickBack={{
             onClick: () => {

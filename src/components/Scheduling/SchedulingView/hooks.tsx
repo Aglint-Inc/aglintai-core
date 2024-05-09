@@ -42,6 +42,7 @@ async function getSchedule(meeting_id: string) {
             profile_image: string;
             position: string;
           };
+          candidate: DatabaseTable['candidates'];
         }[];
       };
   }
