@@ -45,7 +45,7 @@ import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
-import { DatabaseTable } from '@/src/types/customSchema';
+import { DatabaseTable, DatabaseTableInsert } from '@/src/types/customSchema';
 import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -150,7 +150,7 @@ const CandidateInvitePlanPage = () => {
 const ConfirmedPage = (props: ScheduleCardsProps) => {
   const {
     meta: {
-      data: { schedule, candidate },
+      data: { candidate },
     },
   } = useCandidateInvite();
   const [cancelReschedule, setCancelReschedule] = useState<
@@ -165,11 +165,21 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
     });
   }, []);
   const handleCancelReschedule = async (
-    details: DatabaseTable['interview_schedule']['cancel_reschedule'],
+    detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
   ) => {
-    // console.log({ details });
     // return true;
-    return saveCancelReschedule({ id: schedule.id, details });
+
+    const details = props.rounds
+      .reduce(
+        (prev, curr) => [...prev, ...curr.sessions],
+        [] as (typeof props.rounds)[0]['sessions'],
+      )
+      .map((session) => ({
+        ...detail,
+        session_id: session.interview_session.id,
+        schedule_id: session.interview_meeting.interview_schedule_id,
+      }));
+    return saveCancelReschedule({ details });
   };
   return (
     <>
@@ -304,7 +314,7 @@ const CancelRescheduleDialog = ({
   onClickTryRescheduling: () => void;
   onSubmit: (
     // eslint-disable-next-line no-unused-vars
-    x: DatabaseTable['interview_schedule']['cancel_reschedule'],
+    x: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
   ) => Promise<boolean>;
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -337,6 +347,31 @@ const CancelRescheduleDialog = ({
   );
   const [selectedDateRangeError, setSelectedDateRangeError] = useState(false);
 
+  const handleSubmit = () => {
+    if (type === 'reschedule') {
+      const error = !formData.dateRange[1] || !formData.dateRange[0];
+      if (selectedDateRangeError || error) return;
+      setSelectedDateRangeError(error);
+    }
+    onSubmit({
+      reason: formData.reason,
+      type: type === 'cancel' ? 'declined' : type,
+      other_details: {
+        dateRange:
+          type === 'cancel'
+            ? null
+            : {
+                start: formData.dateRange[0].toDate().toUTCString(),
+                end: formData.dateRange[1].toDate().toUTCString(),
+              },
+        note: formData.additionalNote,
+      },
+    }).then(() => {
+      toast.success(`${capitalizeAll(type)} request submitted successfully`);
+      onClose();
+    });
+  };
+
   useEffect(
     () =>
       setSelectedDateRangeError(
@@ -348,38 +383,6 @@ const CancelRescheduleDialog = ({
     () => setFormData((pre) => ({ ...pre, reason: options[0] })),
     [options],
   );
-
-  const handleSubmit = () => {
-    if (type === 'reschedule') {
-      const error = !formData.dateRange[1] || !formData.dateRange[0];
-      if (selectedDateRangeError || error) return;
-      setSelectedDateRangeError(error);
-    }
-    onSubmit(
-      type === 'reschedule'
-        ? {
-            type,
-            dateRange:
-              type === 'reschedule'
-                ? {
-                    start: formData.dateRange[0].toDate().toUTCString(),
-                    end: formData.dateRange[1].toDate().toUTCString(),
-                  }
-                : null,
-            reason: formData.reason,
-            additionalNote: formData.additionalNote,
-          }
-        : {
-            type,
-            dateRange: null,
-            reason: formData.reason,
-            additionalNote: formData.additionalNote,
-          },
-    ).then(() => {
-      toast.success(`${capitalizeAll(type)} request submitted successfully`);
-      onClose();
-    });
-  };
 
   return (
     <Dialog open={true}>
@@ -1046,16 +1049,13 @@ const get_scheduling_reason = async (id: string) => {
 };
 
 const saveCancelReschedule = async ({
-  id,
   details,
 }: {
-  id: string;
-  details: DatabaseTable['interview_schedule']['cancel_reschedule'];
+  details: DatabaseTableInsert['interview_session_cancel'][];
 }) => {
   return supabase
-    .from('interview_schedule')
-    .update({ cancel_reschedule: details })
-    .eq('id', id)
+    .from('interview_session_cancel')
+    .insert(details)
     .then(({ error }) => {
       if (error) {
         throw new Error(error.message);
