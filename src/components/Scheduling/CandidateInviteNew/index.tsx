@@ -238,7 +238,11 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
               ? scheduling_reason?.cancel
               : scheduling_reason?.reschedule) || ['other']
           }
-          title=''
+          title={
+            cancelReschedule === 'reschedule'
+              ? 'Request Reschedule'
+              : 'Cancel Schedule'
+          }
           type={cancelReschedule}
         />
       )}
@@ -501,6 +505,7 @@ const CancelRescheduleDialog = ({
         slotInputAdditionalNotes={
           <TextField
             multiline
+            placeholder='Type additional notes to HR if any'
             minRows={4}
             value={formData.additionalNote}
             fullWidth
