@@ -539,22 +539,22 @@ function Interviewer({
                           }));
                         },
                       }}
-                      onClickViewProgress={{
-                        onClick: () => {
-                          setMeetingDetails({
-                            meetings: userMeetings[module.module_id] || [],
-                            settings: {
-                              noShadow:
-                                // @ts-ignore
-                                module.interview_module.settings?.noShadow || 0,
-                              noReverseShadow:
-                                // @ts-ignore
-                                module.interview_module.settings
-                                  ?.noReverseShadow || 0,
-                            },
-                          });
-                        },
-                      }}
+                      // onClickViewProgress={{
+                      //   onClick: () => {
+                      //     setMeetingDetails({
+                      //       meetings: userMeetings[module.module_id] || [],
+                      //       settings: {
+                      //         noShadow:
+                      //           // @ts-ignore
+                      //           module.interview_module.settings?.noShadow || 0,
+                      //         noReverseShadow:
+                      //           // @ts-ignore
+                      //           module.interview_module.settings
+                      //             ?.noReverseShadow || 0,
+                      //       },
+                      //     });
+                      //   },
+                      // }}
                       onClickCard={{
                         onClick: () => {
                           router.push(

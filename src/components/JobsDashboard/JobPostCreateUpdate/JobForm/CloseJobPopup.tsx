@@ -66,7 +66,7 @@ const CloseJobPopup = ({ onClose }) => {
           qualified: 0,
           disqualified: 0,
         },
-        job_coordinators: '',
+        // job_coordinators: '',
       });
       router.replace('/jobs');
     } catch (err) {

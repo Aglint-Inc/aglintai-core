@@ -1,0 +1,81 @@
+.div-block-1672 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+.div-block-1671 {
+  display: flex;
+  padding: 4px 10px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 6px;
+
+  background-color: #467b7c;
+
+  color: white;
+}
+
+.div-block-1671.pending {
+  background-color: #fff7ed;
+  color: hsla(33.014354066985646, 85.31%, 51.96%, 1.00);
+}
+
+.div-block-1671.not-schedule {
+  background-color: #f7f9fb;
+  color: #68737d;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.ml-4 {
+  margin-left: 4px;
+}
+
+.icons.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.icons.ml--6 {
+  margin-left: -6px;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
