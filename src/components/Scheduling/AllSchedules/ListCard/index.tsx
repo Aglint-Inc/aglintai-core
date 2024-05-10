@@ -9,7 +9,6 @@ import {
 } from '@/devlink2';
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
@@ -105,17 +104,6 @@ function ListCardInterviewSchedule({
 
 const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
   const router = useRouter();
-  const interviewPlans = useJobInterviewPlan();
-  const falseSessions: Parameters<typeof ScheduleProgress>[0]['sessions'] = (
-    interviewPlans?.interviewPlans?.data?.interview_session ?? []
-  ).map(({ name, session_duration, schedule_type, session_type }) => ({
-    duration: session_duration,
-    name,
-    scheduleType: schedule_type,
-    sessionType: session_type,
-    date: null,
-    status: 'not_scheduled',
-  }));
   const sessions: Parameters<typeof ScheduleProgress>[0]['sessions'] = (
     app?.interview_session_meetings ?? []
   ).map(
@@ -149,8 +137,6 @@ const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
   //  if sessions is empty, show empty interview progress
   return sessions.length ? (
     <ScheduleProgress sessions={sessions} />
-  ) : falseSessions.length ? (
-    <ScheduleProgress sessions={falseSessions} />
   ) : (
     <EmptyInterviewProgress
       onClickCreateInterviewPlan={{
