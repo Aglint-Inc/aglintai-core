@@ -267,7 +267,7 @@ const TeamManagement = () => {
                       data: updatedMem,
                     }).then(() => {
                       toast.success(
-                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'Suspended' : 'Activated'}.`,
+                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'suspended successfully' : 'activated successfully'}.`,
                       );
                     });
                   }}

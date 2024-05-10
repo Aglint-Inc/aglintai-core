@@ -46,19 +46,24 @@ export function JobDashboard({
   return (
     <_Component className={_utils.cx(_styles, "jobdashboard")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "jobdadhboard_left", "hide-scrollbar")}
+        className={_utils.cx(
+          _styles,
+          "jobdadhboard_left",
+          "hide-scrollbar",
+          "pt-0"
+        )}
         tag="div"
       >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "jd_titleblock")}
-          tag="div"
-        >
-          {isBanner ? (
+        {isBanner ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "jd_titleblock", "pt-20")}
+            tag="div"
+          >
             <_Builtin.Block tag="div">
               {slotBanner ?? <JobsBanner />}
             </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
+          </_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "jd_stats_block")}
           tag="div"

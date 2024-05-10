@@ -531,7 +531,7 @@ function CompanyDetails({
         labelSize='small'
         fullWidth
         value={details?.name}
-        placeholder={'Ex. Google'}
+        placeholder={'Ex. Acme Inc.'}
         error={error.name.error}
         helperText={error.name.error ? error.name.msg : ''}
         onChange={(e) => {

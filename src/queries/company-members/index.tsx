@@ -34,3 +34,5 @@ export const getCompanyMembers = async ({
   const allUsers = (res.data as unknown as Awaited<CompanyMembersAPI>) || [];
   return allUsers;
 };
+
+export type CompanyMember = Omit<Awaited<CompanyMembersAPI>[number], 'role'>;

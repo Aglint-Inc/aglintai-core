@@ -7,11 +7,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import {
-  Breadcrum,
-  InterviewCordinator as InterviewCoordinatorDev,
-  PageLayout,
-} from '@/devlink2';
+import { Breadcrum, PageLayout } from '@/devlink2';
 import {
   AddScheduleCard as AddScheduleCardDev,
   AvatarWithName,
@@ -23,10 +19,10 @@ import {
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
+import { CompanyMember } from '@/src/queries/company-members';
 import { DeleteInterviewSession } from '@/src/queries/interview-plans';
 import { interviewPlanKeys } from '@/src/queries/interview-plans/keys';
 import {
-  InterviewCoordinatorType,
   InterviewPlansType,
   InterviewSessionType,
 } from '@/src/queries/interview-plans/types';
@@ -36,7 +32,6 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
-import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
@@ -230,7 +225,7 @@ const InterviewPlan = () => {
   return (
     <>
       <InterviewPlanDev
-        slotInterviewCoordinator={<InterviewCoordinator />}
+        slotInterviewCoordinator={<></>}
         isEmptyVisible={sessions.length === 0}
         slotPrimaryButton={
           <AUIButton onClick={() => handleCreate('session', 0)}>
@@ -279,7 +274,7 @@ type InterviewSessionMemeberTypes =
   InterviewSessionType['interview_session_relation'][number]['interviewer_type'];
 type InterviewSessonMembers = {
   // eslint-disable-next-line no-unused-vars
-  [key in InterviewSessionMemeberTypes]: InterviewCoordinatorType[];
+  [key in InterviewSessionMemeberTypes]: CompanyMember[];
 };
 const InterviewSession = ({
   session,
@@ -315,7 +310,7 @@ const InterviewSession = ({
       return acc;
     },
     { qualified: [], training: [], members: [] } as InterviewSessonMembers & {
-      members: InterviewCoordinatorType[];
+      members: CompanyMember[];
     },
   );
   const isLoading = getLoadingState(session.id);
@@ -498,7 +493,7 @@ const sessionToEdit = (
   }
 };
 
-type InterviewSessionMemberProps = { member: InterviewCoordinatorType };
+type InterviewSessionMemberProps = { member: CompanyMember };
 const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   const name = getFullName(member.first_name, member.last_name);
   return (
@@ -514,42 +509,6 @@ const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
           fontSize='10px'
           height='100%'
           width='100%'
-        />
-      }
-    />
-  );
-};
-
-const InterviewCoordinator = () => {
-  const {
-    plan_id,
-    coordinator,
-    companyMembers: { data },
-    handleSelectCoordinator,
-  } = useJobInterviewPlan();
-  const options = data.map((c) => ({
-    name: getFullName(c.first_name, c.last_name),
-    value: c.user_id,
-    start_icon_url: c.profile_image,
-    meta: [
-      { title: c.position, icon: <RoleIcon /> },
-      { title: c.department, icon: <DepartmentIcon /> },
-    ],
-  }));
-  const onChange: React.ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => {
-    const coordinator = data.find((c) => c.user_id === e.target.value);
-    if (coordinator) handleSelectCoordinator({ coordinator, plan_id });
-  };
-  return (
-    <InterviewCoordinatorDev
-      slotInput={
-        <AvatarSelectDropDown
-          onChange={onChange}
-          menuOptions={options}
-          showMenuIcons
-          value={coordinator?.user_id ?? ''}
         />
       }
     />

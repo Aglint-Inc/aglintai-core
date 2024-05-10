@@ -15,7 +15,7 @@ function FilterTasks() {
         setValue: (e) => {
           handelSearch(e);
         },
-        placeholder: "Search by candidate's name or job title",
+        placeholder: "Search by candidate name or job title",
       }}
       filters={[
         {

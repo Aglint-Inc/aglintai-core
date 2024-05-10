@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { addInterviewCoordinatorType } from '@/src/pages/api/scheduling/add_interview_coordinator';
 import { getInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -12,7 +11,6 @@ import { useCurrentJob } from '../job-assessment/keys';
 import { jobDashboardQueryKeys } from '../job-dashboard/keys';
 import { interviewPlanKeys, interviewSessionMutationKeys } from './keys';
 import {
-  AddInterviewCoordinatorType,
   InterviewPlansType,
   InterviewSessionRelationType,
   InterviewSessionUpdate,
@@ -174,35 +172,6 @@ export const useEditDebriefSession = () => {
   return mutation;
 };
 
-export const useAddInterviewCoordinator = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const { queryKey } = interviewPlanKeys.interview_plan({ job_id });
-  const mutation = useMutation({
-    mutationFn: addInterviewCoordinatorAPI,
-    onMutate: async (payload) => {
-      await queryClient.cancelQueries({ queryKey });
-      const previousPlans =
-        queryClient.getQueryData<InterviewPlansType>(queryKey);
-      const newPlans = {
-        ...structuredClone(previousPlans),
-        coordinator_id: payload.coordinator.user_id,
-        recruiter_user: { ...payload.coordinator },
-      };
-      queryClient.setQueryData<InterviewPlansType>(queryKey, newPlans);
-      return { previousPlans, newPlans };
-    },
-    onError: (error, variables, context) => {
-      toast.error('Unable to add coordinator');
-      queryClient.setQueryData<InterviewPlansType>(
-        queryKey,
-        context.previousPlans,
-      );
-    },
-  });
-  return mutation;
-};
-
 export const useReorderInterviewSessions = () => {
   const queryClient = useQueryClient();
   const { job_id } = useCurrentJob();
@@ -341,18 +310,6 @@ export type UpdateDebriefSession = Omit<
 export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   const { error } = await supabase.rpc('update_debrief_session', args);
   if (error) throw new Error(error.message);
-};
-
-export const addInterviewCoordinatorAPI = async ({
-  coordinator,
-  plan_id,
-}: AddInterviewCoordinatorType) => {
-  return (
-    await axios.patch(`/api/scheduling/add_interview_coordinator`, {
-      coordinator,
-      plan_id,
-    })
-  ).data as ReturnType<addInterviewCoordinatorType>;
 };
 
 export type ReorderSessions = Omit<
