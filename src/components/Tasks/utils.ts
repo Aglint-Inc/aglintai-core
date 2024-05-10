@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -5,13 +6,13 @@ import dayjs from 'dayjs';
 
 import { Supabase } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
+import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { DatabaseEnums } from '@/src/types/customSchema';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 import { groupByTextType } from './TaskStatesContext';
 

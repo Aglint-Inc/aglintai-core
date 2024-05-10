@@ -1,16 +1,13 @@
 import { Popover, Stack } from '@mui/material';
+import { capitalize } from 'lodash';
 import { useState } from 'react';
 
+import { ButtonFilter, FilterList, FilterPill } from '@/devlink2';
+
 import {
-    ButtonFilter,
-    FilterList,
-    FilterPill
-} from '@/devlink2';
-import { capitalize } from 'lodash';
-import {
-    groupByText,
-    groupByTextType,
-    useTaskStatesContext
+  groupByText,
+  groupByTextType,
+  useTaskStatesContext,
 } from '../../TaskStatesContext';
 
 function GroupBy() {
@@ -79,7 +76,12 @@ function GroupBy() {
         <FilterList
           slotFilterPill={groupByText.map((item: groupByTextType) => {
             return (
-              <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+              <Stack
+                key={item.label}
+                direction={'row'}
+                alignItems={'center'}
+                spacing={'10px'}
+              >
                 <Stack>{item.icon}</Stack>
                 <FilterPill
                   onClickFilter={{
