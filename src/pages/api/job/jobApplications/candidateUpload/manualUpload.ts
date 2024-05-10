@@ -9,7 +9,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { Database } from '@/src/types/schema';
 
-import { ManualUploadApi, Supabase } from './types';
+import {
+  ManualUploadApi,
+  Supabase,
+} from '../../../../../apiUtils/job/jobApplications/candidateUpload/types';
 import {
   createApplication,
   createFile,
@@ -19,7 +22,7 @@ import {
   getFiles,
   uploadResume,
   verifyAndCreateCandidate,
-} from './utils';
+} from '../../../../../apiUtils/job/jobApplications/candidateUpload/utils';
 
 export const config = {
   api: {

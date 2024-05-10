@@ -13,6 +13,7 @@ import {
 } from '@/devlink';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import {
+  AddCandidateButton,
   BannerLoading,
   DarkPill,
   DashboardAlert,
@@ -28,6 +29,7 @@ import {
   PipeLine,
   RoleList,
   ScheduleCardSmall,
+  ScoreSetting,
 } from '@/devlink3';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
@@ -211,13 +213,6 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
-            isScoring={jobPolling}
-            textScoreCount={`${job?.processing_count?.success ?? '---'}/${
-              counts?.total ?? '---'
-            }`}
-            slotScoringLoader={scoringLoader}
-            isImport={job?.status !== 'closed'}
-            onClickImport={{ onClick: () => setOpenImportCandidates(true) }}
             slotBanner={<Banners publishButton={publishButton} />}
             onClickTopMatch={{
               style: { cursor: 'pointer' },
@@ -260,7 +255,7 @@ const Dashboard = () => {
               onClick: () => push(`/scheduling?tab=mySchedules`),
             }}
             slotScheduleCardSmall={<Schedules />}
-            textCandidateCount={counts.total}
+            // textCandidateCount={counts.total}
             onClickAssistant={{
               onClick: () => push(`/jobs/${job.id}/agent`),
             }}
@@ -276,6 +271,24 @@ const Dashboard = () => {
                 isDraftVisible={job?.status === 'draft'}
                 isPublishedVisible={job?.status === 'published'}
               />
+            }
+            slotAddCandidateButton={
+              <>
+                {jobPolling && (
+                  <ScoreSetting
+                    textScoreCount={`${
+                      job?.processing_count?.success ?? '---'
+                    }/${counts?.total ?? '---'}`}
+                    slotScoringLoader={scoringLoader}
+                  />
+                )}
+                <AddCandidateButton
+                  isImport={job?.status !== 'closed'}
+                  onClickImport={{
+                    onClick: () => setOpenImportCandidates(true),
+                  }}
+                />
+              </>
             }
             slotPublishButton={publishButton}
             isPublish={job.status !== 'closed'}
@@ -310,19 +323,12 @@ const Roles = () => {
   const { push } = useRouter();
   const { job } = useJobDetails();
   const { data, status } = useCompanyMembers();
-  const {
-    hiring_manager,
-    recruiter,
-    recruiting_coordinator,
-    sourcer,
-    interview_coordinator,
-  } = job;
+  const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = job;
   const coordinatorsData = {
     hiring_manager,
     recruiter,
     recruiting_coordinator,
     sourcer,
-    interview_coordinator,
   };
   const coordinators = useMemo(() => {
     return (
@@ -346,7 +352,7 @@ const Roles = () => {
                     fontSize='16px'
                   />
                 }
-                textDesignation={capitalizeAll(user?.position ?? null)}
+                textDesignation={user?.position ?? '--'}
                 textName={name}
                 textRoleHeader={capitalizeAll(key)}
               />,
@@ -362,7 +368,6 @@ const Roles = () => {
     recruiter,
     recruiting_coordinator,
     sourcer,
-    interview_coordinator,
     data,
   ]);
   if (status !== 'success' || coordinators.length === 0) return <></>;
@@ -376,7 +381,10 @@ const Roles = () => {
 
 const BreadCrumbs = () => {
   const router = useRouter();
-  const { job } = useJobDetails();
+  const {
+    job,
+    matches: { data: counts },
+  } = useJobDetails();
   return (
     <>
       <Breadcrum
@@ -389,7 +397,10 @@ const BreadCrumbs = () => {
           style: { cursor: 'pointer' },
         }}
       />
-      <Breadcrum textName={capitalize(job?.job_title ?? 'Job')} showArrow />
+      <Breadcrum
+        textName={`${capitalize(job?.job_title ?? 'Job')} (${counts.total})`}
+        showArrow
+      />
       <Preview />
     </>
   );

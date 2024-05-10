@@ -3,6 +3,8 @@ import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
+import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
 import { TaskType } from '@/src/components/JobApplicationsDashboard/CandidateActions/CreateTask';
 import { usePolling } from '@/src/components/JobApplicationsDashboard/hooks';
 import {
@@ -15,9 +17,7 @@ import {
 import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations/utils';
 import { JobApplicationDelete } from '@/src/pages/api/job/jobApplications/candidateDelete';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
-import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
-import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/utils';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';

@@ -7,8 +7,8 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
+import { sendMails } from '../../../apiUtils/job/jobApplications/candidateEmail/utils';
 import { JobApplicationEmails } from '../job/jobApplications/candidateEmail';
-import { sendMails } from '../job/jobApplications/candidateEmail/utils';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

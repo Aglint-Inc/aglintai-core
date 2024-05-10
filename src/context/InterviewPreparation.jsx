@@ -22,7 +22,7 @@ import SpeechRecognition, {
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { selectJobApplicationQuery } from '../pages/api/job/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '../apiUtils/job/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
 import { interviewCompleted } from '../utils/email_templates/innterview_completed';
 import { useInterviewSignUp } from './InterviewSignup';

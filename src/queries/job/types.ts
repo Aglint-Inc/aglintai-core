@@ -48,11 +48,7 @@ export type JobCreate = Required<
   Job['draft'] &
     Pick<
       Job,
-      | 'hiring_manager'
-      | 'recruiter'
-      | 'recruiting_coordinator'
-      | 'sourcer'
-      | 'interview_coordinator'
+      'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
     >
 > & {
   description_hash: Job['description_hash'];

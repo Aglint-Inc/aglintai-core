@@ -12,15 +12,15 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { type EmailTemplateType, type JobType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-import { type ReadJobApplicationApi } from '../read';
-import { handleRead } from '../read/utils';
 import {
   createTasks,
   readCandidates,
   readSomeCandidates,
   sendMails,
   updateApplication,
-} from './utils';
+} from '../../../../../apiUtils/job/jobApplications/candidateEmail/utils';
+import { handleRead } from '../../../../../apiUtils/job/jobApplications/read/utils';
+import { type ReadJobApplicationApi } from '../read';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);

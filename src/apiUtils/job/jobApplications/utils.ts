@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 
-import { JobApplicationDelete } from './candidateDelete';
+import { JobApplicationDelete } from '../../../pages/api/job/jobApplications/candidateDelete';
+import { type ReadJobApplicationApi } from '../../../pages/api/job/jobApplications/read';
 import {
   type CsvUploadApi,
   type ManualUploadApi,
@@ -10,7 +11,6 @@ import {
   ResumeReuploadApi,
   UploadApiFormData,
 } from './candidateUpload/types';
-import { type ReadJobApplicationApi } from './read';
 
 type ApiRouteTypes = {
   candidateEmail: JobApplicationEmails;

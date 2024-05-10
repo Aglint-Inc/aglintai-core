@@ -1,10 +1,10 @@
 import { Stack, Tooltip } from '@mui/material';
 
 import { AssessmentScore, ScreeningStatus } from '@/devlink2';
+import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 import { Assessment } from '@/src/queries/assessment/types';
 
 import { FetchingEmail, InavlidEmail } from '../../ApplicationCard';
@@ -15,17 +15,17 @@ import { getAssessmentStatus } from '../../utils';
 const InterviewScore = ({ application }: { application: JobApplication }) => {
   const {
     assessments: {
-      data: { jobAssessments: assessments }
-    }
+      data: { jobAssessments: assessments },
+    },
   } = useJobDetails();
   const { views } = useJobApplications();
   const {
-    emailValidity: { isFetching, isValidEmail }
+    emailValidity: { isFetching, isValidEmail },
   } = application;
   const { result, isNotInvited, isPending, timeInfo, assessmentStatus } =
     getAssessmentStatus(
       application.status_emails_sent,
-      getSafeAssessmentResult(application?.assessment_results)
+      getSafeAssessmentResult(application?.assessment_results),
     );
   if (!views.assessment) return <></>;
 
@@ -91,19 +91,19 @@ const InterviewScore = ({ application }: { application: JobApplication }) => {
 };
 
 export const getOverallInterviewScore = (
-  result: ReturnType<typeof getInterviewScores>
+  result: ReturnType<typeof getInterviewScores>,
 ) => {
   return Math.trunc(
     result.reduce((acc, { score: { percentage } }) => {
       acc += percentage ?? 0;
       return acc;
-    }, 0) / result.length
+    }, 0) / result.length,
   );
 };
 
 export const getInterviewScores = (
   application: JobApplication,
-  assessments: Assessment[]
+  assessments: Assessment[],
 ) => {
   if (
     !application.assessment_results ||
@@ -114,32 +114,32 @@ export const getInterviewScores = (
   return assessments.reduce(
     (acc, assessment) => {
       const assessment_result = application.assessment_results.find(
-        ({ assessment_id }) => assessment_id === assessment.id
+        ({ assessment_id }) => assessment_id === assessment.id,
       );
       if (assessment_result) {
         if (assessment_result.responses)
           acc.push({
             name: assessment.title,
-            score: sumAssessmentRatings(assessment_result)
+            score: sumAssessmentRatings(assessment_result),
           });
         else
           acc.push({
             name: assessment.title,
-            score: { candidateTotal: 0, percentage: 0, total: 0 }
+            score: { candidateTotal: 0, percentage: 0, total: 0 },
           });
       } else
         acc.push({
           name: assessment.title,
-          score: { candidateTotal: null, percentage: null, total: null }
+          score: { candidateTotal: null, percentage: null, total: null },
         });
       return acc;
     },
-    [] as { name: string; score: ReturnType<typeof sumAssessmentRatings> }[]
+    [] as { name: string; score: ReturnType<typeof sumAssessmentRatings> }[],
   );
 };
 
 const sumAssessmentRatings = (
-  assessment_result: JobApplication['assessment_results'][number]
+  assessment_result: JobApplication['assessment_results'][number],
 ) => {
   const total = (assessment_result?.responses ?? []).reduce((acc) => {
     acc += 10;
@@ -150,12 +150,12 @@ const sumAssessmentRatings = (
       if (curr?.rating && typeof curr.rating === 'number') acc += curr.rating;
       return acc;
     },
-    0
+    0,
   );
   return {
     total,
     candidateTotal,
-    percentage: Math.trunc((candidateTotal / total) * 100)
+    percentage: Math.trunc((candidateTotal / total) * 100),
   };
 };
 

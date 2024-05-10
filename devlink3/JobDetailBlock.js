@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -12,6 +13,7 @@ export function JobDetailBlock({
   textDescription = "Enter the basic job details below. ",
   styleBorder = {},
   slotRichtextWarning,
+  slotHiringTeamForm,
 }) {
   return (
     <_Component
@@ -75,6 +77,50 @@ export function JobDetailBlock({
             tag="div"
           >
             {slotRichtextWarning}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "job_detail_right", "mt-20")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-507")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "fw-semibold")}
+              tag="div"
+            >
+              {"Hiring Team"}
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "color-grey-600")}
+              tag="div"
+            >
+              {
+                "Set up and manage roles like hiring managers, recruiters, sourcers, and interview coordinators."
+              }
+            </_Builtin.Block>
+          </_Builtin.Block>
+          {isCreate ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "button_primary")}
+              tag="div"
+              {...onClickCreate}
+            >
+              <_Builtin.Block tag="div">{"Create Job"}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "cj-main-wrapper")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "slot-job-form-step-2")}
+            tag="div"
+          >
+            {slotHiringTeamForm}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

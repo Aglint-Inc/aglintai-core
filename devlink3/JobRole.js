@@ -17,7 +17,7 @@ export function JobRole({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Roles in this job"}
+          {"Hiring Team"}
         </_Builtin.Block>
         <_Builtin.HtmlEmbed
           className={_utils.cx(_styles, "icons", "cursor-pointer")}

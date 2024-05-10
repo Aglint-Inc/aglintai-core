@@ -97,13 +97,6 @@ export const JobForms: FC<JobMetaFormProps> = ({
       onChange={handleChange}
     />
   );
-  const interview_coordinator = (
-    <JobCoordinator
-      name='interview_coordinator'
-      value={fields.interview_coordinator}
-      onChange={handleChange}
-    />
-  );
   const description = (
     <JobDescription
       name='description'
@@ -119,16 +112,22 @@ export const JobForms: FC<JobMetaFormProps> = ({
       {department}
       {location}
       {job_type}
+    </>
+  );
+
+  const roleForms = (
+    <>
       {hiringManager}
       {recruiter}
       {recruiting_coordinator}
       {sourcer}
-      {interview_coordinator}
     </>
   );
+
   return (
     <JobDetailBlock
       slotJobForm={forms}
+      slotHiringTeamForm={roleForms}
       slotRichtext={description}
       textDescription={
         !handleCreate
@@ -303,7 +302,7 @@ JobDepartment.displayName = 'JobDepartment';
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
   const options = data
-    .filter(({ role }) => name === 'interview_coordinator' || role === name)
+    .filter(({ role }) => role === name)
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),
       value: c.user_id,
@@ -357,6 +356,8 @@ const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
         style={{
           opacity: job?.scoring_criteria_loading ? 0.4 : 1,
           pointerEvents: job?.scoring_criteria_loading ? 'none' : 'auto',
+          maxHeight: '400px',
+          overflow: 'scroll',
         }}
       >
         <TipTapAIEditor

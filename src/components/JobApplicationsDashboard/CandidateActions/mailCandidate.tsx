@@ -4,13 +4,13 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 
 // import axios from 'axios';
 import { CandidateSelectionPopup } from '@/devlink2';
+import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
-import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 
 import AUIButton from '../../Common/AUIButton';
 import {
