@@ -20,12 +20,8 @@
   cursor: pointer;
 }
 
-@media screen and (min-width: 1920px) {
-
-}
-
-@media screen and (min-width: 1440px) {
-
+.module_card:hover {
+  background-color: #f8f9f9;
 }
 
 .tittle_icon_flex {
