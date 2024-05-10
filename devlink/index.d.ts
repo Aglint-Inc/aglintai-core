@@ -397,6 +397,7 @@ export * from "./UserRoleBlock";
 export * from "./UserTranscript";
 export * from "./VideoSwitcherCard";
 export * from "./ViewMoreSkills";
+export * from "./ViewTask";
 export * from "./WelcomeMessage";
 export * from "./WelcomeSlider1";
 export * from "./WelcomeSlider3";
