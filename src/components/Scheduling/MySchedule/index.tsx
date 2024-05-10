@@ -8,7 +8,7 @@ import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
-import ModuleSchedules from '../Common/ModuleSchedules';
+import ModuleSchedules, { useScheduleList } from '../Common/ModuleSchedules';
 
 function MySchedule() {
   const { recruiterUser, recruiter } = useAuthDetails();
@@ -29,6 +29,10 @@ function MySchedule() {
     }
   };
 
+  const { data: scheduleList, isFetched } = useScheduleList({
+    user_id: recruiterUser.user_id,
+  });
+
   return (
     <Stack paddingRight={'0px'}>
       <ShowCode>
@@ -40,7 +44,10 @@ function MySchedule() {
             !!(recruiterUser.schedule_auth as any)?.access_token
           }
         >
-          <ModuleSchedules />
+          <ModuleSchedules
+            isFetched={isFetched}
+            newScheduleList={scheduleList}
+          />
         </ShowCode.When>
         <ShowCode.When
           isTrue={!recruiter.service_json || !recruiterUser.schedule_auth}

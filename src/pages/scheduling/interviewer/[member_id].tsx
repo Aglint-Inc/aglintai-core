@@ -4,49 +4,23 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Breadcrum, PageLayout } from '@/devlink2';
-import { InterviewerDetailTopRight } from '@/devlink3';
 import Seo from '@/src/components/Common/Seo';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import Interviewer from '@/src/components/Scheduling/Interviewers/Interviewer';
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
 import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import {
   InterviewMeetingTypeDb,
-  InterviewModuleType,
   InterviewScheduleTypeDB,
   InterviewSessionTypeDB,
-  RecruiterUserType,
 } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-export interface interviewerDetailsType {
-  modules: {
-    id: string;
-    module_id: string;
-    pause_json: {
-      start_date: string;
-      end_date: string;
-      isManual: boolean;
-      z;
-    };
-    training_status: 'qualified' | 'training';
-    user_id: string;
-    interview_module: InterviewModuleType & {
-      settings: ModuleType['settings'];
-    };
-  }[];
-  interviewer: RecruiterUserType;
-}
+import { InterviewerDetailsType } from '../../../components/Scheduling/Interviewers/type';
+
 function InterviewerPage() {
   const router = useRouter();
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const [openDrawer, setOpenDrawer] = React.useState(false);
-  const toggleDrawer = () => {
-    setOpenDrawer(true);
-  };
 
   const { data, isLoading, isError, isFetched } = useImrQuery();
   if (isLoading) {
@@ -58,7 +32,7 @@ function InterviewerPage() {
         <PageLayout
           onClickBack={{
             onClick: () => {
-              router.back();
+              router.push(`/scheduling?tab=interviewers`);
             },
           }}
           isBackButton={true}
@@ -71,31 +45,6 @@ function InterviewerPage() {
               />
             </>
           }
-          slotTopbarRight={
-            <ShowCode>
-              <ShowCode.When isTrue={isLoading}>
-                <DynamicLoader />
-              </ShowCode.When>
-              <ShowCode.When
-                isTrue={
-                  (recruiterUser.role === 'recruiter' ||
-                    recruiterUser.role === 'recruiting_coordinator') &&
-                  data.interviewer.email === recruiter.email
-                }
-              >
-                {null}
-              </ShowCode.When>
-              <ShowCode.Else>
-                <InterviewerDetailTopRight
-                  onClickSettings={{
-                    onClick: () => {
-                      toggleDrawer();
-                    },
-                  }}
-                />
-              </ShowCode.Else>
-            </ShowCode>
-          }
           slotBody={
             <>
               <ShowCode>
@@ -106,11 +55,7 @@ function InterviewerPage() {
                   <>Error...</>
                 </ShowCode.When>
                 <ShowCode.When isTrue={isFetched}>
-                  <Interviewer
-                    interviewerDetails={data as interviewerDetailsType}
-                    openDrawer={openDrawer}
-                    setOpenDrawer={setOpenDrawer}
-                  />
+                  <Interviewer interviewerDetails={data} />
                 </ShowCode.When>
               </ShowCode>
             </>
@@ -151,7 +96,7 @@ const getInterviewerDetails = async (user_id: string) => {
       user_id: user_id,
     },
   );
-  return data as interviewerDetailsType;
+  return data as InterviewerDetailsType;
 };
 
 const imrQueryKeys = {

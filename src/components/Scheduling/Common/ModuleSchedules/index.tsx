@@ -6,13 +6,13 @@ import { AllInterviewEmpty, InterviewMemberSide } from '@/devlink2';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { DatabaseEnums } from '@/src/types/customSchema';
 import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { supabase } from '@/src/utils/supabase/client';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
 import ScheduleMeetingList from './ScheduleMeetingList';
+
 export type ScheduleListType = {
   interview_meeting: {
     end_time: string;
@@ -43,13 +43,20 @@ export type ScheduleListType = {
     accepted_status: DatabaseEnums['session_accepted_status'];
   }[];
 }[];
-function ModuleSchedules() {
+
+function ModuleSchedules({
+  isFetched,
+  newScheduleList,
+}: {
+  isFetched: boolean;
+  newScheduleList: ScheduleListType;
+}) {
   const [filter, setFilter] = React.useState<
     'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting'
   >('confirmed');
   const [changeText, setChangeText] = useState('');
-  const { data: scheduleList, isFetched } = useScheduleList();
-  const newScheduleList = scheduleList as ScheduleListType;
+  // const { data: scheduleList, isFetched } = useScheduleList({ user_id });
+  // const newScheduleList = scheduleList as ScheduleListType;
   if (!isFetched) {
     return <DynamicLoader />;
   }
@@ -111,13 +118,13 @@ function ModuleSchedules() {
       }}
       slotInterviewCard={
         <ShowCode>
+          <ShowCode.When isTrue={isFetched && newScheduleList?.length === 0}>
+            <AllInterviewEmpty textDynamic='No schedule found' />
+          </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <Stack height={'calc(100vh - 154px)'}>
               <ScheduleMeetingList FilterSchedules={newFilterSchedules()} />
             </Stack>
-          </ShowCode.When>
-          <ShowCode.When isTrue={isFetched && newScheduleList?.length === 0}>
-            <AllInterviewEmpty textDynamic='No schedule found' />
           </ShowCode.When>
         </ShowCode>
       }
@@ -127,12 +134,11 @@ function ModuleSchedules() {
 
 export default ModuleSchedules;
 
-export const useScheduleList = () => {
-  const { recruiterUser } = useAuthDetails();
+export const useScheduleList = ({ user_id }) => {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_ScheduleList'],
-    queryFn: () => getScheduleList(recruiterUser.user_id),
+    queryFn: () => getScheduleList(user_id),
   });
   const refetch = () =>
     queryClient.invalidateQueries({ queryKey: ['get_ScheduleList'] });
@@ -147,5 +153,5 @@ async function getScheduleList(user_id: string) {
     },
   );
   if (error) throw Error(error.message);
-  else return data;
+  else return data as ScheduleListType;
 }
