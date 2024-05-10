@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import {
   Box,
   Button,
@@ -9,71 +10,114 @@ import {
 import { capitalize } from 'lodash';
 import { useState } from 'react';
 
-import { ReasonList, ScheduleReason, ScheduleReasonSection } from '@/devlink3';
+import {
+  NewTabPill,
+  ReasonList,
+  ScheduleReason,
+  ScheduleReasonSection,
+} from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { DatabaseTable, DatabaseTableUpdate } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
+
+const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
+  candidate: {
+    rescheduling: ['other'],
+    cancelation: ['other'],
+  },
+  interviewer: {
+    rescheduling: ['other'],
+    cancelation: ['other'],
+  },
+};
 
 const SchedulingRegions = () => {
   const { recruiter, setRecruiter: updateRecruiter } = useAuthDetails();
+  const [tab, setTab] =
+    useState<keyof DatabaseTable['recruiter']['scheduling_reason']>(
+      'candidate',
+    );
   const reason = {
-    reschedule: [],
-    cancel: [],
-    decline: [],
-    ...(recruiter.scheduling_reason ?? {}),
-  } as typeof recruiter.scheduling_reason;
-  const handelUpdateReasons = async (
-    updatedReason: typeof recruiter.scheduling_reason,
+    ...(recruiter.scheduling_reason ?? initialReasons),
+  };
+  const handelUpdateReasons = async <T extends typeof tab>(
+    updatedReason: Partial<DatabaseTable['recruiter']['scheduling_reason'][T]>,
   ) => {
+    const temp = {
+      ...reason,
+    };
+    temp[tab] = { ...(temp[tab] || {}), ...updatedReason };
     return setRecruiter({
       id: recruiter.id,
-      scheduling_reason: { ...reason, ...updatedReason },
+      scheduling_reason: temp,
     }).then((data) => {
       updateRecruiter({ ...data, socials: recruiter.socials });
       return true;
     });
   };
   return (
-    <ScheduleReason
-      slotScheduleReasonSection={
-        <>
-          <ScheduleReasonSectionCard
-            scheduleReason={'reschedule'}
-            updateReasons={handelUpdateReasons}
-            description='Add reasons for rescheduling. These options will be available when either the interviewer or the candidate reschedules:'
-            scheduleReasonItems={reason.reschedule}
-          />
-          <ScheduleReasonSectionCard
-            scheduleReason={'cancel'}
-            updateReasons={handelUpdateReasons}
-            description='Add reasons for cancelling. These options will be available when either the interviewer or the candidate cancels:'
-            scheduleReasonItems={reason.cancel}
-          />
-          <ScheduleReasonSectionCard
-            scheduleReason={'decline'}
-            updateReasons={handelUpdateReasons}
-            description='Add reasons for declining. These options will be available when either the interviewer or the candidate declines:'
-            scheduleReasonItems={reason.decline}
-          />
-        </>
-      }
-    />
+    <>
+      <ScheduleReason
+        sloNewTabPill={
+          <>
+            {(
+              Object.keys(
+                recruiter.scheduling_reason || {},
+              ) as unknown as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
+            ).map((key) => (
+              <NewTabPill
+                key={key}
+                textLabel={capitalizeFirstLetter(key)}
+                isPillActive={key === tab}
+                onClickPill={{
+                  onClick: () => {
+                    setTab(key);
+                  },
+                }}
+              />
+            ))}
+          </>
+        }
+        slotScheduleReasonSection={
+          <>
+            {Object.keys(reason[tab]).map(<T extends typeof tab>(item) => {
+              const typedItem =
+                item as keyof DatabaseTable['recruiter']['scheduling_reason'][T] &
+                  string;
+              return (
+                <ScheduleReasonSectionCard
+                  key={item}
+                  scheduleReason={typedItem}
+                  updateReasons={handelUpdateReasons}
+                  description={`Add reasons for ${capitalizeFirstLetter(item)}. These options will be available when the ${capitalizeFirstLetter(tab)} request Session ${capitalizeFirstLetter(item)}:`}
+                  scheduleReasonItems={reason[tab][item] || []}
+                />
+              );
+            })}
+          </>
+        }
+      />
+    </>
   );
 };
 export default SchedulingRegions;
 
-const ScheduleReasonSectionCard = ({
+const ScheduleReasonSectionCard = <
+  T extends keyof DatabaseTable['recruiter']['scheduling_reason'],
+>({
   scheduleReason,
   description,
   updateReasons,
   scheduleReasonItems,
 }: {
-  scheduleReason: keyof DatabaseTable['recruiter']['scheduling_reason'];
+  scheduleReason: keyof DatabaseTable['recruiter']['scheduling_reason'][T] &
+    string;
   description: string;
   updateReasons: (
     // eslint-disable-next-line no-unused-vars
-    x: Partial<DatabaseTable['recruiter']['scheduling_reason']>,
+    updatedReason: DatabaseTable['recruiter']['scheduling_reason'][T],
   ) => Promise<boolean>;
   scheduleReasonItems: string[];
 }) => {
@@ -83,7 +127,7 @@ const ScheduleReasonSectionCard = ({
   }>({ state: false, index: null });
   return (
     <ScheduleReasonSection
-      textHeading={`${capitalize(scheduleReason)} Reason`}
+      textHeading={`Session ${capitalize(scheduleReason)} Reason`}
       textDesc={description}
       onClickAdd={{
         onClick: () => {
@@ -98,11 +142,12 @@ const ScheduleReasonSectionCard = ({
               text={item}
               onEdit={() => setEdit({ state: true, index })}
               onDelete={() => {
-                const temp = {
-                  [scheduleReason]:
-                    scheduleReasonItems?.filter((_, ind) => index !== ind) ||
-                    [],
-                };
+                const temp: DatabaseTable['recruiter']['scheduling_reason'][T] =
+                  {
+                    [scheduleReason]:
+                      scheduleReasonItems?.filter((_, ind) => index !== ind) ||
+                      [],
+                  };
                 updateReasons(temp).then(() => {
                   toast.success('Deleted Successfully.');
                 });

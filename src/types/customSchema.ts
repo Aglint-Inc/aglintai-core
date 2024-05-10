@@ -244,9 +244,8 @@ interface recruiter_scheduling_settings {
 }
 
 type recruiter_scheduling_reason = {
-  reschedule: string[];
-  cancel: string[];
-  decline: string[];
+  interviewer?: { rescheduling?: string[]; cancelation?: string[] };
+  candidate?: { rescheduling?: string[]; cancelation?: string[] };
 };
 
 type interview_session_cancel_other_details = {

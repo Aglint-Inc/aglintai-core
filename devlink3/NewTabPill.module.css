@@ -9,7 +9,13 @@
 }
 
 .div-block-1680 {
+  display: flex;
   padding: 10px 28px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
   color: #68737d;
 }
 

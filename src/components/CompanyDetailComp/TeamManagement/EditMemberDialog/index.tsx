@@ -15,7 +15,7 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { interviewLocationType } from '../AddMemberDialog';
@@ -112,7 +112,7 @@ const EditMember = ({
       setFormError(temp);
       setIsDisable(false);
     }
-    return true;
+    return !flag;
   };
 
   const memberListObj = memberList.reduce((acc, curr) => {
@@ -290,7 +290,7 @@ const EditMember = ({
                 <Stack direction={'row'} gap={2}>
                   <Autocomplete
                     fullWidth
-                    value={capitalizeAll(form.role)}
+                    value={capitalizeFirstLetter(form.role)}
                     onChange={(event: any, newValue: string | null) => {
                       setForm({
                         ...form,
@@ -313,7 +313,7 @@ const EditMember = ({
                       ] as Database['public']['Enums']['user_roles'][]
                     }
                     renderOption={(props, op) => (
-                      <li {...props}>{capitalizeAll(op)}</li>
+                      <li {...props}>{capitalizeFirstLetter(op)}</li>
                     )}
                     renderInput={(params) => (
                       <CustomTextField
@@ -340,7 +340,9 @@ const EditMember = ({
                     id='controllable-states-demo'
                     options={memberList.map((member) => member.id)}
                     getOptionLabel={(option) => {
-                      return capitalizeAll(memberListObj[String(option)]);
+                      return capitalizeFirstLetter(
+                        memberListObj[String(option)],
+                      );
                     }}
                     renderInput={(params) => (
                       <CustomTextField
