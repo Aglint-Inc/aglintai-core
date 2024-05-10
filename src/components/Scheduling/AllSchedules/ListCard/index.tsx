@@ -138,19 +138,14 @@ const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
   return sessions.length ? (
     <ScheduleProgress sessions={sessions} />
   ) : (
-    <Stack
-      onClick={(e) => {
-        e.stopPropagation();
+    <EmptyInterviewProgress
+      onClickCreateInterviewPlan={{
+        onClick: (e) => {
+          e.stopPropagation();
+          router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
+        },
       }}
-    >
-      <EmptyInterviewProgress
-        onClickCreateInterviewPlan={{
-          onClick: () => {
-            router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
-          },
-        }}
-      />
-    </Stack>
+    />
   );
 };
 
