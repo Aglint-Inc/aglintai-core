@@ -325,7 +325,9 @@ function PauseResumeDialog({
                       ? 'Add to Qualified'
                       : 'Add to Training'
                   }
-                  textPopupDescription={'Pick a module from the list to add.'}
+                  textPopupDescription={
+                    'Pick an interview type from the list to add.'
+                  }
                   isIcon={false}
                   slotWidget={
                     <Autocomplete

@@ -34,7 +34,11 @@ function SlotBodyComp({
 }: SlotBodyCompProps) {
   const router = useRouter();
   const { loading } = useSchedulingContext();
-  const { isLoading: schedulesLoading } = useAllSchedulesByModuleId();
+  const {
+    data: scheduleList,
+    isLoading: schedulesLoading,
+    isFetched,
+  } = useAllSchedulesByModuleId();
 
   const { data: meetingData } = useGetMeetingsByModuleId({
     schedulesLoading: schedulesLoading,
@@ -148,7 +152,10 @@ function SlotBodyComp({
                 )}
                 {tab === 'schedules' && (
                   <Stack height={'calc(100vh - 232px)'}>
-                    <ModuleSchedules />
+                    <ModuleSchedules
+                      newScheduleList={scheduleList}
+                      isFetched={isFetched}
+                    />
                   </Stack>
                 )}
 

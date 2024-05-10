@@ -63,12 +63,11 @@ function ScheduleStatesProvider({ children }) {
 export { ScheduleStatesProvider, useScheduleStatesContext };
 
 export const useAllScheduleList = () => {
-  const { members } = useAuthDetails();
-  const user_ids = members.map((ele) => ele.user_id);
+  const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_All_Schedule_List'],
-    queryFn: () => getAllScheduleList(user_ids),
+    queryFn: () => getAllScheduleList(recruiter_id),
     gcTime: 20000,
   });
   const refetch = () =>
@@ -76,24 +75,13 @@ export const useAllScheduleList = () => {
   return { ...query, refetch };
 };
 
-async function getAllScheduleList(user_ids: string[]) {
-  let schedules: ScheduleListType = [];
-  for (let user_id of user_ids) {
-    const { data } = await supabase.rpc(
-      'new_get_interview_schedule_by_user_id',
-      {
-        target_user_id: user_id,
-      },
-    );
-
-    schedules = [...schedules, ...data] as ScheduleListType;
-  }
-
-  return schedules.filter(
-    (v, i, a) =>
-      a.findIndex(
-        (v2) =>
-          v2.interview_meeting.meeting_id === v.interview_meeting.meeting_id,
-      ) === i,
+async function getAllScheduleList(recruiter_id: string) {
+  const { data, error } = await supabase.rpc(
+    'get_interview_schedule_by_rec_id',
+    {
+      target_rec_id: recruiter_id,
+    },
   );
+  if (error) throw new Error();
+  return data as ScheduleListType;
 }
