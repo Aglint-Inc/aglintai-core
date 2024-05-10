@@ -1,18 +1,49 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { RecruiterUserType } from '@/src/types/data.types';
 
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { useInterviewerList } from '../Components/AssigneeChip';
-import { EmailAgentId, PhoneAgentId } from '../utils';
+import {
+  AssigneeIcon,
+  CandidateIcon,
+  JobIcon,
+  ListIcon,
+  PriorityIcon,
+  StatusIcon,
+} from '../TaskBody/GroupBy';
+import { agentsDetails } from '../utils';
 
 // let setTime;
 type SubTaskIndex = { taskIndex: number | null; subTaskIndex: number | null };
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
 };
+export type groupByType =
+  | 'job'
+  | 'priority'
+  | 'candidate'
+  | 'assignee'
+  | 'status'
+  | 'none';
+export type groupByTextType = { label: groupByType; icon: ReactNode };
+export let groupByText = [
+  { label: 'job', icon: <JobIcon /> },
+  { label: 'candidate', icon: <CandidateIcon /> },
+  { label: 'assignee', icon: <AssigneeIcon /> },
+  { label: 'status', icon: <StatusIcon /> },
+  { label: 'priority', icon: <PriorityIcon /> },
+  { label: 'none', icon: <ListIcon /> },
+] as groupByTextType[];
+
 interface ContextValue {
   taskId: string | null;
   setTaskId: (x: string | null) => void;
@@ -41,6 +72,8 @@ interface ContextValue {
   setSelectedTasksIds: (x: string[]) => any;
   showToolBar: boolean;
   setShowToolBar: (x: boolean) => void;
+  selectedGroupBy: groupByTextType | null;
+  setSelectedGroupBy: (x: groupByTextType | null) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -62,9 +95,11 @@ const defaultProvider: ContextValue = {
   isImmediate: false,
   setIsImmediate: () => {},
   selectedTasksIds: [],
-  setSelectedTasksIds: (x: string[]) => {},
+  setSelectedTasksIds: () => {},
   showToolBar: false,
   setShowToolBar: () => {},
+  selectedGroupBy: null,
+  setSelectedGroupBy: () => {},
 };
 const TaskStatesContext = createContext<ContextValue>(defaultProvider);
 const useTaskStatesContext = () => useContext(TaskStatesContext);
@@ -72,6 +107,9 @@ function TaskStatesProvider({ children }) {
   const [taskId, setTaskId] = useState<string | null>(null);
   const [openViewTask, setOpenViewTask] = useState(false);
   const [showToolBar, setShowToolBar] = useState(false);
+
+  const [selectedGroupBy, setSelectedGroupBy] =
+    useState<groupByTextType | null>(groupByText[5]);
 
   const { data: interviewers } = useInterviewerList();
 
@@ -120,6 +158,8 @@ function TaskStatesProvider({ children }) {
         setSelectedTasksIds,
         showToolBar,
         setShowToolBar,
+        selectedGroupBy,
+        setSelectedGroupBy,
       }}
     >
       {children}
@@ -128,20 +168,3 @@ function TaskStatesProvider({ children }) {
 }
 
 export { TaskStatesProvider, useTaskStatesContext };
-
-export const agentsDetails = [
-  {
-    user_id: EmailAgentId,
-    first_name: 'email',
-    last_name: 'agent',
-    assignee: 'Agents',
-    profile_image: '',
-  },
-  {
-    user_id: PhoneAgentId,
-    first_name: 'phone',
-    last_name: 'agent',
-    assignee: 'Agents',
-    profile_image: '',
-  },
-];

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DarkPill } from '@/devlink3';
+import { NewTabPill } from '@/devlink3';
 
 import { setTab, useSchedulingApplicationStore } from '../store';
 
@@ -17,18 +17,18 @@ function TabsSchedulingApplication() {
 
   return (
     <>
-      <DarkPill
-        textPill={'Interview Plan'}
-        isActive={tab === 'interview_plan'}
+      <NewTabPill
+        textLabel={'Interview Plan'}
+        isPillActive={tab === 'interview_plan'}
         onClickPill={{
           onClick: () => {
             setTab('interview_plan');
           },
         }}
       />
-      <DarkPill
-        textPill={'Candidate Detail'}
-        isActive={tab === 'candidate_detail'}
+      <NewTabPill
+        textLabel={'Candidate Detail'}
+        isPillActive={tab === 'candidate_detail'}
         onClickPill={{
           onClick: () => {
             setTab('candidate_detail');
@@ -37,18 +37,18 @@ function TabsSchedulingApplication() {
       />
       {isFeedbackVisible && (
         <>
-          <DarkPill
-            textPill={'Feedback'}
-            isActive={tab === 'feedback'}
+          <NewTabPill
+            textLabel={'Feedback'}
+            isPillActive={tab === 'feedback'}
             onClickPill={{
               onClick: () => {
                 setTab('feedback');
               },
             }}
           />
-          <DarkPill
-            textPill={'Candidate Feedback'}
-            isActive={tab === 'candidate_feedback'}
+          <NewTabPill
+            textLabel={'Candidate Feedback'}
+            isPillActive={tab === 'candidate_feedback'}
             onClickPill={{
               onClick: () => {
                 setTab('candidate_feedback');

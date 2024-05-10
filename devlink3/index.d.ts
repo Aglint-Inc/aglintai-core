@@ -116,6 +116,7 @@ export * from "./InterviewStatic";
 export * from "./InterviewStatsLoader";
 export * from "./InterviewTaskPill";
 export * from "./InterviewerDetail";
+export * from "./InterviewerDetailOverview";
 export * from "./InterviewerDetailTopRight";
 export * from "./InterviewerList";
 export * from "./InterviewerPage";

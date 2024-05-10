@@ -688,6 +688,11 @@
   bottom: 0%;
 }
 
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .text-red-500.text-grow {
   flex: 0 0 auto;
 }

@@ -6,13 +6,13 @@ import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { ScheduleListType } from '../../Common/ModuleSchedules';
 import { initialEditModule } from '../store';
 import {
   MemberType,
   ModuleDashboard,
   ModuleType,
   StatusTraining,
-  TransformSchedule,
 } from '../types';
 import { calculateHourDifference } from '../utils';
 import { useGetMeetingsByModuleId } from './hooks';
@@ -25,7 +25,7 @@ export const fetchModules = async (module_id: string) => {
     },
   );
   if (error) throw new Error(error.message);
-  return data as TransformSchedule[];
+  return data as unknown as ScheduleListType;
 };
 
 export const fetchProgress = async ({
