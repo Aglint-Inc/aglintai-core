@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { EmptyInterviewProgress } from "./EmptyInterviewProgress";
 import { ScheduleWithAgent } from "./ScheduleWithAgent";
 import * as _utils from "./utils";
 import _styles from "./AllInterviewCard.module.css";
@@ -131,13 +132,16 @@ export function AllInterviewCard({
         tag="div"
       >
         {slotInterviewProgress ?? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-840", "hide")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">{slotPanelImage}</_Builtin.Block>
-            <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
-          </_Builtin.Block>
+          <>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-840", "hide")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{slotPanelImage}</_Builtin.Block>
+              <_Builtin.Block tag="div">{textInterviewPanel}</_Builtin.Block>
+            </_Builtin.Block>
+            <EmptyInterviewProgress />
+          </>
         )}
       </_Builtin.Block>
       {isSchedulerTable ? (

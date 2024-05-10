@@ -28,7 +28,7 @@ function DeclineScheduleDialog({
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
 
-  const reasons = recruiter.scheduling_reason.decline || [
+  const reasons = recruiter.scheduling_reason.interviewer.cancelation || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',
