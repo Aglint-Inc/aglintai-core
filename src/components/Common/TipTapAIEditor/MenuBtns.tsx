@@ -29,7 +29,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   generateJobDescription,
   JDGenParams,
-} from '@/src/utils/prompts/addNewJob/generateJobDescription';
+} from '@/src/utils/prompts/addNewJob/GenerateJobDescription';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
