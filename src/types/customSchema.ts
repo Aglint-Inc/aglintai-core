@@ -84,7 +84,7 @@ export type CustomDatabase = {
                         'scheduling_settings' | 'scheduling_reason'
                       > & {
                         scheduling_settings: recruiter_scheduling_settings;
-                        scheduling_reason: recruiter_scheduling_reason | null;
+                        scheduling_reason?: recruiter_scheduling_reason | null;
                       };
                       Insert: Omit<
                         Database['public']['Tables'][Table]['Insert'],
@@ -244,7 +244,11 @@ interface recruiter_scheduling_settings {
 }
 
 type recruiter_scheduling_reason = {
-  company?: { rescheduling?: string[]; cancelation?: string[]; decline?: string[]};
+  company?: {
+    rescheduling?: string[];
+    cancelation?: string[];
+    decline?: string[];
+  };
   candidate?: { rescheduling?: string[]; cancelation?: string[] };
 };
 
