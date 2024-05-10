@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TaskEmpty, TaskTableJobCard } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeAll, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import GroupTaskCard from '../GroupTaskCard';
@@ -31,11 +31,11 @@ function GroupSections({
             else setSectionIndex(true);
           },
         }}
-        textRole={capitalizeAll(item.applications.public_jobs.job_title)}
+        textRole={capitalizeFirstLetter(item.applications.public_jobs.job_title)}
         slotAvatarWithName={
           <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
             <Typography fontSize={'14px'}>
-              {capitalizeAll(item.applications.public_jobs.job_title)}
+              {capitalizeFirstLetter(item.applications.public_jobs.job_title)}
             </Typography>
             <Typography
               alignItems={'center'}

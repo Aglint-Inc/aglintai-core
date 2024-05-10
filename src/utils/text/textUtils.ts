@@ -13,6 +13,18 @@ export const capitalizeAll = (str: string) => {
     .map((item) => cap(item))
     .join(' ');
 };
+// export const capitalizeFirstLatter = (text: string) => {
+//   let capitalizeText = '';
+//   const words = text.split(' ');
+//   words.forEach((word) => {
+//     if (word && word[0] === word[0].toLocaleLowerCase()) {
+//       capitalizeText += capitalize(word) + ' ';
+//     } else {
+//       capitalizeText += word + ' ';
+//     }
+//   });
+//   return capitalizeText;
+// };
 export const getRandomColor = (): string => {
   const colors = [
     'black',

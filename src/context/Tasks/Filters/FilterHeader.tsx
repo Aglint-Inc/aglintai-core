@@ -19,7 +19,10 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
 import { useTasksContext } from '../../TasksContextProvider/TasksContextProvider';
 
@@ -131,9 +134,9 @@ export const FilterHeader = ({
               setAnchorEl(e.target);
             },
           }}
-          textLabel={'Due Date'}
-          isDotVisible={false}
-          isActive={false}
+          textLabel={'Interview Date'}
+          isDotVisible={selectedDate.length > 0}
+          isActive={selectedDate.length > 0}
           slotRightIcon={
             <Stack>
               <svg
@@ -222,12 +225,14 @@ export const FilterHeader = ({
                 >
                   <Button
                     onClick={() => {
+                      setSelectedDate([]);
                       handelFilter({
                         ...filter,
                         date: {
                           values: [],
                         },
                       });
+                      setAnchorEl(null);
                     }}
                     startIcon={<IconReload size={'16px'} />}
                     variant='text'
@@ -460,7 +465,13 @@ function FilterDropDown({
                           //   }
                           // }}
                         >
-                          {capitalizeAll(label.replaceAll('null', '') || '')}
+                          {title !== 'Job' &&
+                            capitalizeAll(label.replaceAll('null', '') || '')}
+
+                          {title === 'Job' &&
+                            capitalizeFirstLetter(
+                              label.replaceAll('null', '') || '',
+                            )}
                         </Typography>
                       </Stack>
                     );
