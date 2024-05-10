@@ -9,9 +9,9 @@ import {
 } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
-import { getFullName } from '@/src/utils/jsonResume';
 import AssigneeChip from '../../Components/AssigneeChip';
 import StatusChip from '../../Components/StatusChip';
 import { useTaskStatesContext } from '../../TaskStatesContext';
