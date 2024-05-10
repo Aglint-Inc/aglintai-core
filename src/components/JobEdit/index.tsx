@@ -50,7 +50,6 @@ const JobEdit = () => {
     recruiter,
     recruiting_coordinator,
     sourcer,
-    interview_coordinator,
   } = {
     job_title: job.job_title,
     company: job.company,
@@ -63,7 +62,6 @@ const JobEdit = () => {
     recruiter: job.recruiter,
     recruiting_coordinator: job.recruiting_coordinator,
     sourcer: job.sourcer,
-    interview_coordinator: job.interview_coordinator,
     ...(job.draft ?? {}),
   };
   const { push } = useRouter();
@@ -156,14 +154,6 @@ const JobEdit = () => {
         helper: 'Sourcer must be selected',
       },
     },
-    interview_coordinator: {
-      value: interview_coordinator,
-      required: false,
-      error: {
-        value: false,
-        helper: 'Interview coordinator must be selected',
-      },
-    },
   });
   const [saving, setSaving] = useState(false);
   const [show, setShow] = useState(false);
@@ -250,7 +240,6 @@ const JobEditForm = ({
     recruiter,
     recruiting_coordinator,
     sourcer,
-    interview_coordinator,
     ...safeNewJob
   } = newJob;
 
@@ -262,7 +251,6 @@ const JobEditForm = ({
       recruiter,
       recruiting_coordinator,
       sourcer,
-      interview_coordinator,
     });
     setSaving(false);
   };

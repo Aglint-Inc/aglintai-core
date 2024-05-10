@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -11,12 +12,19 @@ export function JobDashboardTopRight({
   isPublish = true,
   isEditError = false,
   slotPublishButton,
+  slotAddCandidateButton,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "jobdashboardtop_right")}
       tag="div"
     >
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1717")}
+        tag="div"
+      >
+        {slotAddCandidateButton}
+      </_Builtin.Block>
       {isPublish ? (
         <_Builtin.Block
           className={_utils.cx(

@@ -10,7 +10,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Database } from '@/src/types/schema';
 
-import { ResumeUploadApi, Supabase } from './types';
+import {
+  ResumeUploadApi,
+  Supabase,
+} from '../../../../../apiUtils/job/jobApplications/candidateUpload/types';
 import {
   createAndUploadCandidate,
   createApplication,
@@ -19,7 +22,7 @@ import {
   deleteFile,
   deleteResume,
   getFiles,
-} from './utils';
+} from '../../../../../apiUtils/job/jobApplications/candidateUpload/utils';
 
 export const config = {
   api: {

@@ -3,15 +3,14 @@ import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
+import { Supabase } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
-import { Supabase } from '@/src/pages/api/job/jobApplications/candidateUpload/types';
 import { DatabaseEnums } from '@/src/types/customSchema';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { fetchInterviewSessionTask } from '../Scheduling/AllSchedules/SchedulingApplication/utils';
 import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
@@ -185,27 +184,76 @@ export async function createTaskProgress({
     switch (cusType) {
       case 'session_update':
         return addedSessions.length
-          ? `Added <b>${addedSessions.map((ele) => ele.name).join(', ')}</b> to interview.`
+          ? `Added <b>${addedSessions
+              .map((ele) => ele.name)
+              .join(', ')}</b> to interview.`
           : removedSessions.length
-            ? `Removed <b>${removedSessions.map((ele) => ele.name).join(', ')}</b> from interview.`
+            ? `Removed <b>${removedSessions
+                .map((ele) => ele.name)
+                .join(', ')}</b> from interview.`
             : '';
 
       case 'due_date_update':
-        return `Due Date changed from <span class="progress_date_section">${dayjs(dueDate.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(dueDate.selectedDate).format('MMM DD, hh:mm A')}</span>.`;
+        return `Due Date changed from <span class="progress_date_section">${dayjs(
+          dueDate.prev,
+        ).format(
+          'MMM DD, hh:mm A',
+        )}</span> to <span class="progress_date_section">${dayjs(
+          dueDate.selectedDate,
+        ).format('MMM DD, hh:mm A')}</span>.`;
       case 'priority_update':
         return `Priority changed from <span class="priority_card_${currentPriority}">${currentPriority}</span> to <span class="priority_card_${priority}">${priority}</span>.`;
       case 'create_task':
-        return `Created task for <span class="mention">@${candidateName}</span> to schedule interviews for <b>${sessions.map((ele) => ele.name).join(', ')}</b>.`;
+        return `Created task for <span class="mention">@${candidateName}</span> to schedule interviews for <b>${sessions
+          .map((ele) => ele.name)
+          .join(', ')}</b>.`;
       case 'change_assignee':
-        return `Assignee changed from <span ${currentAssigneeId === EmailAgentId || currentAssigneeId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(currentAssigneeName)}</span> to <span ${assignerId === EmailAgentId || assignerId === PhoneAgentId ? 'class="agent_mention"' : 'class="mention"'}>@${capitalizeAll(assignerName)}</span>.`;
+        return `Assignee changed from <span ${
+          currentAssigneeId === EmailAgentId ||
+          currentAssigneeId === PhoneAgentId
+            ? 'class="agent_mention"'
+            : 'class="mention"'
+        }>@${capitalizeAll(currentAssigneeName)}</span> to <span ${
+          assignerId === EmailAgentId || assignerId === PhoneAgentId
+            ? 'class="agent_mention"'
+            : 'class="mention"'
+        }>@${capitalizeAll(assignerName)}</span>.`;
       case 'status_update':
-        return `Status changed from <span class="${currentStatus}">${capitalizeAll(currentStatus.split('_').join(' '))}</span> to <span class="${status}">${capitalizeAll(status.split('_').join(' '))}</span>`;
+        return `Status changed from <span class="${currentStatus}">${capitalizeAll(
+          currentStatus.split('_').join(' '),
+        )}</span> to <span class="${status}">${capitalizeAll(
+          status.split('_').join(' '),
+        )}</span>`;
       case 'schedule_date_update':
-        return `Interview Date changed from (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>) to (<span class="progress_date_section">${dayjs(scheduleDateRange.start_date).format('MMM DD')} ${scheduleDateRange.end_date ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
+        return `Interview Date changed from (<span class="progress_date_section">${dayjs(
+          prevScheduleDateRange.start_date,
+        ).format('MMM DD')} ${
+          prevScheduleDateRange.end_date
+            ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD')
+            : ''
+        }</span>) to (<span class="progress_date_section">${dayjs(
+          scheduleDateRange.start_date,
+        ).format('MMM DD')} ${
+          scheduleDateRange.end_date
+            ? ' - ' + dayjs(scheduleDateRange.end_date).format('MMM DD')
+            : ''
+        }</span>)`;
       case 'trigger_time_update':
-        return `Schedule time changed from <span class="progress_date_section">${dayjs(triggerTime.prev).format('MMM DD, hh:mm A')}</span> to <span class="progress_date_section">${dayjs(triggerTime.current).format('MMM DD, hh:mm A')}</span>`;
+        return `Schedule time changed from <span class="progress_date_section">${dayjs(
+          triggerTime.prev,
+        ).format(
+          'MMM DD, hh:mm A',
+        )}</span> to <span class="progress_date_section">${dayjs(
+          triggerTime.current,
+        ).format('MMM DD, hh:mm A')}</span>`;
       case 'slots_failed':
-        return `Unable to find slots between (<span class="progress_date_section">${dayjs(prevScheduleDateRange.start_date).format('MMM DD')} ${prevScheduleDateRange.end_date ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD') : ''}</span>)`;
+        return `Unable to find slots between (<span class="progress_date_section">${dayjs(
+          prevScheduleDateRange.start_date,
+        ).format('MMM DD')} ${
+          prevScheduleDateRange.end_date
+            ? ' - ' + dayjs(prevScheduleDateRange.end_date).format('MMM DD')
+            : ''
+        }</span>)`;
       default:
         return '';
     }

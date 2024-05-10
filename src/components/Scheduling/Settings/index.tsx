@@ -810,7 +810,7 @@ function SchedulingSettings({
                               }
                             });
                           }}
-                          path='softConflictsKeywords'
+                          path='outOfOfficeKeywords'
                           type='string'
                         />
                       }
@@ -864,7 +864,7 @@ function SchedulingSettings({
                               }
                             });
                           }}
-                          path='softConflictsKeywords'
+                          path='recruitingBlocksKeywords'
                           type='string'
                         />
                       }
@@ -966,7 +966,7 @@ export const TimezoneSelector = ({
               labelSize='medium'
               // fullWidth
               label=''
-              placeholder='America/Los_Angeles (GMT-08:00)'
+              placeholder='Ex. America/Los_Angeles (GMT-08:00)'
               InputProps={{
                 ...params.InputProps,
                 autoComplete: 'new-password',

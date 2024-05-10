@@ -17,14 +17,12 @@ import Instructions from './Instructions';
 import JobDetails from './JobDetails';
 import Overview from './Overview';
 import DeclineScheduleDialog from './Overview/DeclineScheduleDialog';
-import RescheduleDialog from './Overview/RescheduleDialog';
 import RequestRescheduleDialog from './RequestRescheduleDialog';
 
 function SchedulingViewComp() {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
   const [isRequestRescheduleOpen, setIsRequestRescheduleOpen] = useState(false);
-  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
   const { data, isLoading } = useScheduleDetails();
@@ -95,12 +93,6 @@ function SchedulingViewComp() {
               schedule={schedule}
               isCancelOpen={isCancelOpen}
               setIsCancelOpen={setIsCancelOpen}
-            />
-            <RescheduleDialog
-              schedule={schedule}
-              isRescheduleOpen={isRescheduleOpen}
-              setIsRescheduleOpen={setIsRescheduleOpen}
-              cancelReasons={cancelReasons}
             />
             <RequestRescheduleDialog
               meeting_id={schedule.interview_meeting.id}
@@ -188,7 +180,6 @@ function SchedulingViewComp() {
                   cancelReasons={cancelReasons}
                   schedule={schedule}
                   setIsCancelOpen={setIsCancelOpen}
-                  setIsRescheduleOpen={setIsRescheduleOpen}
                   setIsDeclineOpen={setIsDeclineOpen}
                 />
               }

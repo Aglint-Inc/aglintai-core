@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 import { Popover, Stack, Typography } from '@mui/material';
-import { capitalize } from 'lodash';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 type ItemType = string;
 
 function FilterDropDown({
@@ -121,7 +119,8 @@ function FilterDropDown({
                     }
                   }}
                 >
-                  {capitalizeAll(item)}
+                  
+                  {capitalizeFirstLetter(item)}
                 </Typography>
               </Stack>
             );

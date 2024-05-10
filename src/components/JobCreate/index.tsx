@@ -121,14 +121,6 @@ const JobCreate = () => {
         helper: 'Sourcer must be selected',
       },
     },
-    interview_coordinator: {
-      value: null,
-      required: false,
-      error: {
-        value: false,
-        helper: 'Interview coordinator must be selected',
-      },
-    },
   });
   const [modal, setModal] = useState(false);
   return (

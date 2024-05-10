@@ -313,6 +313,10 @@
   display: none;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .div-block-1174.right-side {
   display: flex;
   flex-direction: column;

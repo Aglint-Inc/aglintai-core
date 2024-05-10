@@ -273,7 +273,12 @@ function Filters() {
                 .includes(filterOption.name)
             )
               return (
-                <Stack direction={'row'} spacing={'10px'} alignItems={'center'}>
+                <Stack
+                  direction={'row'}
+                  spacing={'10px'}
+                  alignItems={'center'}
+                  key={i}
+                >
                   {filterOption.Icon}
                   <FilterPill
                     key={i}

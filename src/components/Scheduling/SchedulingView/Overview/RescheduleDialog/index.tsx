@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { Dispatch, useState } from 'react';
 
 import { ScheduleOptions } from '@/devlink2';
 import { ButtonGrey, ButtonPrimaryDefaultRegular } from '@/devlink3';
@@ -29,11 +29,23 @@ function RescheduleDialog({
   setIsRescheduleOpen,
   schedule,
   cancelReasons,
+  dateRange,
+  setDateRange,
 }: {
   isRescheduleOpen: boolean;
   setIsRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
   schedule: ScheduleMeeting;
   cancelReasons: ReturnType<typeof useScheduleDetails>['data']['cancel_data'];
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+  setDateRange: Dispatch<
+    React.SetStateAction<{
+      start_date: string;
+      end_date: string;
+    }>
+  >;
 }) {
   const queryClient = useQueryClient();
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -43,19 +55,9 @@ function RescheduleDialog({
   const [schedulingOptions, setSchedulingOptions] = useState([]);
   const [selectedId, setSelectedId] = useState('');
   const [totalSlots, setTotalSlots] = useState(0);
-  const [dateRange, setDateRange] = useState({
-    start_date: '',
-    end_date: '',
-  });
+
   const [step, setStep] = useState(1);
   const [noOptions, setNoOptions] = useState(false);
-
-  useEffect(() => {
-    setDateRange({
-      start_date: currentDate.toISOString(),
-      end_date: currentDate.add(15, 'day').toISOString(),
-    });
-  }, []);
 
   const findScheduleOptions = async () => {
     try {
@@ -287,7 +289,7 @@ function RescheduleDialog({
                 },
               }}
               endIconSlot={
-                saving && (
+                fetchingPlan && (
                   <Stack height={'16px'} width={'16px'}>
                     <LoaderGrey />
                   </Stack>

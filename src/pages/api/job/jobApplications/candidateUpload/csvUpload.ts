@@ -11,12 +11,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
 import { Database } from '@/src/types/schema';
 
-import { CsvUploadApi, Supabase } from './types';
+import {
+  CsvUploadApi,
+  Supabase,
+} from '../../../../../apiUtils/job/jobApplications/candidateUpload/types';
 import {
   bulkCreateApplications,
   bulkCreateCandidate,
   bulkCreateFiles,
-} from './utils';
+} from '../../../../../apiUtils/job/jobApplications/candidateUpload/utils';
 
 const handler = async (
   req: NextApiRequest,

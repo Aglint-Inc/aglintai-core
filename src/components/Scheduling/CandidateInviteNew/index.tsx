@@ -21,6 +21,7 @@ import React, {
 } from 'react';
 
 import {
+  ButtonPrimaryRegular,
   // AvailableTimerangeEmpty,
   // AvailableTimeRangeLoader,
   CandidateConfirmationPage,
@@ -454,8 +455,8 @@ const CancelRescheduleDialog = ({
                 }}
               />
               <Stack px={1}>
-                <ButtonPrimary
-                  textLabel='done'
+                <ButtonPrimaryRegular
+                  textLabel='Done'
                   onClickButton={{ onClick: handleClose }}
                 />
               </Stack>
@@ -508,7 +509,7 @@ const CancelRescheduleDialog = ({
         slotInputAdditionalNotes={
           <TextField
             multiline
-            placeholder='Type additional notes to HR if any'
+            placeholder='Add additional notes.'
             minRows={4}
             value={formData.additionalNote}
             fullWidth

@@ -39,3 +39,12 @@ export const getRandomColor = (): string => {
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
   return palette[String(randomColor)][400] || palette[String(randomColor)][500];
 };
+
+
+export const capitalizeFirstLetter = (str) => {
+  if (!str) return '';
+  return str
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};

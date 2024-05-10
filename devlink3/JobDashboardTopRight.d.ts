@@ -9,4 +9,5 @@ declare function JobDashboardTopRight(props: {
   isPublish?: Types.Visibility.VisibilityConditions;
   isEditError?: Types.Visibility.VisibilityConditions;
   slotPublishButton?: Types.Devlink.Slot;
+  slotAddCandidateButton?: Types.Devlink.Slot;
 }): React.JSX.Element;

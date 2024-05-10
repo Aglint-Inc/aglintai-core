@@ -126,6 +126,10 @@
   display: none;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-blue-500 {
   color: hsla(206.95652173913044, 57.50%, 47.06%, 1.00);
 }
