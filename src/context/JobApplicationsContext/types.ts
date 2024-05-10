@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
 
+import { PromptEnum } from '@/src/apiUtils/resumeScoring/types';
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
-import { PromptEnum } from '@/src/pages/api/resumeScoring/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';
 import { Applications } from '@/src/types/applications.types';

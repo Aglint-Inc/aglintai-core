@@ -14,7 +14,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { Database } from '@/src/types/schema';
 
-import { ReadJobApplicationApi } from '.';
+import { ReadJobApplicationApi } from '../../../../pages/api/job/jobApplications/read';
 
 export const selectJobApplicationQuery =
   '*, candidates(*), assessment_results(*), candidate_files(id, created_at, candidate_id, file_url, resume_text, resume_json, type, overall_interview_score)';

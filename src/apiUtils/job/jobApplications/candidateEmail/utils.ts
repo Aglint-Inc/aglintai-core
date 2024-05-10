@@ -20,11 +20,11 @@ import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
+import { JobApplicationEmails } from '../../../../pages/api/job/jobApplications/candidateEmail';
 import {
   readNewJobApplicationDbAction,
   upsertNewJobApplicationDbAction,
 } from '../read/utils';
-import { JobApplicationEmails } from '.';
 
 export const readSomeCandidates = async (
   supabase: ReturnType<typeof createServerClient<Database>>,
@@ -140,7 +140,10 @@ export const createTasks = async (
   task: TaskType,
 ) => {
   const safeData = filterEmails(candidates).map((candidate) => ({
-    name: `Schedule interview for ${getFullName(candidate.first_name, candidate.last_name)} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
+    name: `Schedule interview for ${getFullName(
+      candidate.first_name,
+      candidate.last_name,
+    )} - ${task.session_ids.map((ele) => ele.name).join(', ')}.`,
     recruiter_id: job.recruiter_id,
     application_id: candidate.application_id,
     created_by: job.recruiterUser.id as string,

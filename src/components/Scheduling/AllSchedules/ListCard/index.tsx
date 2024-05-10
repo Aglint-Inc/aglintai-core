@@ -2,8 +2,8 @@ import { Stack } from '@mui/material';
 import { ReactNode } from 'react';
 
 import { AllInterviewCard, ScheduleWithAgent } from '@/devlink2';
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';

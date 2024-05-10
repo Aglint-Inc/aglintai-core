@@ -48,6 +48,7 @@ import {
   UploadCandidateResume,
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
+import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiPopup from '@/src/components/Common/MuiPopup';
@@ -67,7 +68,6 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { palette } from '@/src/context/Theme/Theme';
-import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
 import { Job } from '@/src/queries/job/types';
 // import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';

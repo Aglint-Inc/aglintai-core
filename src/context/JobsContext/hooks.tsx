@@ -2,7 +2,7 @@
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useMemo } from 'react';
 
-import { handleJobApi } from '@/src/pages/api/job/utils';
+import { handleJobApi } from '@/src/apiUtils/job/utils';
 import {
   useJobCreate,
   useJobDelete,

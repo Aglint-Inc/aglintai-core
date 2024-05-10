@@ -1,19 +1,19 @@
 import axios from 'axios';
 
-import { JobProfileScoreApi } from './profileScore';
+import { type JobDashboardApi } from '../../../pages/api/job/jobDashboard/read';
 
 type ApiRouteTypes = {
-  profileScore: JobProfileScoreApi;
+  read: JobDashboardApi;
 };
 
-export const handleJobApi = async <T extends keyof ApiRouteTypes>(
+export const handleJobDashboardApi = async <T extends keyof ApiRouteTypes>(
   route: T,
   payload: ApiRouteTypes[T]['request'],
   signal?: AbortSignal,
 ) => {
   const { data } = await axios<ApiRouteTypes[T]['response']>({
     method: 'post',
-    url: `/api/job/${route}`,
+    url: `/api/job/jobDashboard/${route}`,
     data: payload,
     timeout: 60000,
     signal: signal,

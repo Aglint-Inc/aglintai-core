@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { AssessmentResultReadApi } from './read';
-import { AssessmentResultApi } from './result';
+import { AssessmentResultReadApi } from '../../pages/api/assessment-result/read';
+import { AssessmentResultApi } from '../../pages/api/assessment-result/result';
 
 type ApiRouteTypes = {
   result: AssessmentResultApi;

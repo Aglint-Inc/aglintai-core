@@ -2,8 +2,8 @@ import { createServerClient } from '@supabase/ssr';
 
 import { Database } from '@/src/types/schema';
 
+import { JobApplicationDelete } from '../../../../pages/api/job/jobApplications/candidateDelete';
 import { handleRead, readNewJobApplicationDbAction } from '../read/utils';
-import { JobApplicationDelete } from '.';
 
 export const clearApplications = async (
   supabase: ReturnType<typeof createServerClient<Database>>,

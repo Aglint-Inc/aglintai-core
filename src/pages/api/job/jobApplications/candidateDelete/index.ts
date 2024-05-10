@@ -8,12 +8,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 
-import { type ReadJobApplicationApi } from '../read';
 import {
   deleteApplications,
   readAllApplications,
   readApplications,
-} from './utils';
+} from '../../../../../apiUtils/job/jobApplications/candidateDelete/utils';
+import { type ReadJobApplicationApi } from '../read';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   try {

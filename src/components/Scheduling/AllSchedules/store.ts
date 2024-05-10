@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import {
   type CandidateType,
   type InterviewMeetingTypeDb,
