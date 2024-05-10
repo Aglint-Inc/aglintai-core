@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { InterviewPlanEmpty, SideDrawerBlock } from '@/devlink2';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { InterviewCoordinatorType } from '@/src/queries/interview-plans/types';
+import { CompanyMember } from '@/src/queries/company-members';
 import toast from '@/src/utils/toast';
 
 import { DrawerType } from '.';
@@ -285,7 +285,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       if (curr.recruiter_user) acc.members.push(curr.recruiter_user);
       return acc;
     },
-    { members: [] as InterviewCoordinatorType[] },
+    { members: [] as CompanyMember[] },
   );
   const initialFields = {
     name,

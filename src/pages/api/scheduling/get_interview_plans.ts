@@ -34,7 +34,7 @@ const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
   const { data, error } = await supabase
     .from('interview_plan')
     .select(
-      `*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
+      `*, interview_session(*, interview_module(*), interview_session_relation(*, recruiter_user(${interviewPlanRecruiterUserQuery}), interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))))`,
     )
     .eq('job_id', job_id);
   if (error) throw new Error(error.message);

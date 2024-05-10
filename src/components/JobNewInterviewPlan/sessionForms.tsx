@@ -17,11 +17,9 @@ import {
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
-import {
-  InterviewCoordinatorType,
-  InterviewSessionType,
-} from '@/src/queries/interview-plans/types';
+import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -33,7 +31,7 @@ import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
 
-export type SessionUser = InterviewCoordinatorType & {
+export type SessionUser = CompanyMember & {
   moduleUserId: string;
   training_status: Database['public']['Enums']['status_training'];
 };
