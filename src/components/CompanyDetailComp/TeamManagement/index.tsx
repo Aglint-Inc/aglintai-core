@@ -76,9 +76,11 @@ const TeamManagement = () => {
     ...new Set(
       members
         .filter((ele) => ele.department)
-        .map((item) => String(item.department).toLowerCase()),
+        .map((item) => String(item.department)),
     ),
   ];
+
+  
 
   const uniqueLocations = [
     ...new Set(
@@ -87,7 +89,7 @@ const TeamManagement = () => {
         .map(
           (item) =>
             item.interview_location &&
-            String(item.interview_location).toLowerCase(),
+            String(item.interview_location),
         ),
     ),
   ];
@@ -96,7 +98,7 @@ const TeamManagement = () => {
     ...new Set(
       members
         .filter((ele) => ele.role)
-        .map((item) => item.role && String(item.role).toLowerCase()),
+        .map((item) => item.role && String(item.role)),
     ),
   ];
 
