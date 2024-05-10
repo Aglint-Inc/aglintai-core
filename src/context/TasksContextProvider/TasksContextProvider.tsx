@@ -217,7 +217,7 @@ const reducer = (
 export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const [tasksReducer, dispatch] = useReducer(reducer, reducerInitialState);
   const { recruiter_id, recruiterUser, isAllowed } = useAuthDetails();
-  const { data: members, isFetching } = useAllInterviewersDetails();
+  const { members, loading: isFetching } = useAuthDetails();
 
   const router = useRouter();
   const init = (data: TasksReducerType) => {
@@ -419,24 +419,34 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
     }
     if (date.values.length) {
       if (date.values.length === 2) {
+        const SelectedStartDate = dayjs(date.values[0])
+          .startOf('day')
+          .add(-1, 'day');
+        const SelectedEndDate = dayjs(date.values[1])
+          .startOf('day')
+          .add(1, 'day');
         temp = temp.filter((task) => {
-          const dueDateTime = dayjs(task.due_date).startOf('day');
-          const startDateTime = dayjs(date.values[0]).startOf('day');
-          const endDateTime = dayjs(date.values[1]).startOf('day');
+          const startDate = dayjs(task.schedule_date_range.start_date).startOf(
+            'day',
+          );
+          const endDate = dayjs(task.schedule_date_range.end_date).startOf(
+            'day',
+          );
+
           if (
-            (dueDateTime.isAfter(startDateTime) ||
-              dueDateTime.isSame(startDateTime)) &&
-            (dueDateTime.isBefore(endDateTime) ||
-              dueDateTime.isSame(endDateTime))
+            startDate.isAfter(SelectedStartDate) &&
+            endDate.isBefore(SelectedEndDate)
           ) {
             return task;
           }
         });
       } else {
         temp = temp.filter((task) => {
-          const dueDateTime = dayjs(task.due_date).startOf('day');
-          const toDayDateTime = dayjs(date.values[0]).startOf('day');
-          return dueDateTime.isSame(toDayDateTime);
+          const startDate = dayjs(task.schedule_date_range.start_date).startOf(
+            'day',
+          );
+          const SelectedStartDate = dayjs(date.values[0]).startOf('day');
+          return startDate.isSame(SelectedStartDate);
         });
       }
     }

@@ -20,7 +20,7 @@ import {
   DatabaseEnums,
   DatabaseTableUpdate,
 } from '@/src/types/customSchema';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeAll, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
@@ -97,7 +97,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotType={
           <InterviewTaskPill textInterviewName={capitalize(task.type)} />
         }
-        slotJob={capitalizeAll(task?.applications?.public_jobs?.job_title)}
+        slotJob={capitalizeFirstLetter(task?.applications?.public_jobs?.job_title)}
         slotCandidate={
           task.application_id && (
             <ListCard
