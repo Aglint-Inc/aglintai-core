@@ -5,4 +5,5 @@ declare function ScheduleReason(props: {
   as?: React.ElementType;
   slotReasonList?: Types.Devlink.Slot;
   slotScheduleReasonSection?: Types.Devlink.Slot;
+  sloNewTabPill?: Types.Devlink.Slot;
 }): React.JSX.Element;

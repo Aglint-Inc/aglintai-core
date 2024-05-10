@@ -24,7 +24,7 @@ import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
-import { capitalize, capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { inviteUserApi, reinviteUser } from '../utils';
@@ -372,7 +372,7 @@ const AddMember = ({
                           'parttime',
                         ] as employmentTypeEnum[]
                       }
-                      getOptionLabel={(option) => capitalize(option)}
+                      getOptionLabel={(option) => capitalizeFirstLetter(option)}
                       renderInput={(params) => (
                         <CustomTextField
                           {...params}
@@ -432,7 +432,7 @@ const AddMember = ({
                         });
                       }}
                       options={recruiter?.departments?.map((departments) =>
-                        capitalize(departments),
+                        capitalizeFirstLetter(departments),
                       )}
                       renderInput={(params) => (
                         <CustomTextField
@@ -452,7 +452,7 @@ const AddMember = ({
                   <Stack direction={'row'} gap={2}>
                     <Autocomplete
                       fullWidth
-                      value={capitalizeAll(form.role)}
+                      value={capitalizeFirstLetter(form.role)}
                       onChange={(event: any, newValue: string | null) => {
                         setForm({
                           ...form,
@@ -475,7 +475,7 @@ const AddMember = ({
                         ] as Database['public']['Enums']['user_roles'][]
                       }
                       renderOption={(props, op) => (
-                        <li {...props}>{capitalizeAll(op)}</li>
+                        <li {...props}>{capitalizeFirstLetter(op)}</li>
                       )}
                       renderInput={(params) => (
                         <CustomTextField
@@ -502,7 +502,9 @@ const AddMember = ({
                       id='controllable-states-demo'
                       options={memberList.map((member) => member.id)}
                       getOptionLabel={(option) => {
-                        return capitalizeAll(memberListObj[String(option)]);
+                        return capitalizeFirstLetter(
+                          memberListObj[String(option)],
+                        );
                       }}
                       renderInput={(params) => (
                         <CustomTextField

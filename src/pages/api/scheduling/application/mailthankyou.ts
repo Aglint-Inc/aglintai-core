@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: filterJson, error: errFilterJson } = await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,recruiter(name, email_template)),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
+        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(name, email_template)),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
       )
       .eq('id', filter_id);
 
@@ -35,7 +35,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(sessions);
 
     addScheduleActivity({
-      title: `Candidate confirmed ${sessions.map((ses) => ses.name).join(' , ')}`,
+      title: `Candidate confirmed ${sessions
+        .map((ses) => ses.name)
+        .join(' , ')}`,
       application_id: filterJson[0].interview_schedule.application_id,
       logger: filterJson[0].interview_schedule.application_id,
       type: 'schedule',

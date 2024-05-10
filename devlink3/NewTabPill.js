@@ -9,6 +9,10 @@ export function NewTabPill({
   isPillActive = false,
   onClickPill = {},
   textLabel = "Job Description",
+  slotStartIcon,
+  slotEndIcon,
+  isEndIconVisible = false,
+  isStartIconVisible = false,
 }) {
   return (
     <_Component
@@ -20,7 +24,13 @@ export function NewTabPill({
         className={_utils.cx(_styles, "div-block-1680")}
         tag="div"
       >
+        {isStartIconVisible ? (
+          <_Builtin.Block tag="div">{slotStartIcon}</_Builtin.Block>
+        ) : null}
         <_Builtin.Block tag="div">{textLabel}</_Builtin.Block>
+        {isEndIconVisible ? (
+          <_Builtin.Block tag="div">{slotEndIcon}</_Builtin.Block>
+        ) : null}
       </_Builtin.Block>
       {isPillActive ? (
         <_Builtin.Block
