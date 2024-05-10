@@ -15,7 +15,7 @@ import {
 } from '../../../AllSchedules/utils';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import { ScheduleListType } from '..';
-import InterviewerDetailsCard from './InterviewerDetailsCard';
+import InterviewerDetailsCard from './InterviewerDetailCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
