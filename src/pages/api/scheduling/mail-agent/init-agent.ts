@@ -174,7 +174,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter(scheduling_settings,email_template)), candidates(*)))',
+        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(*)))',
       )
       .eq('id', filter_json_id),
   ) as unknown as CandidateScheduleDetails[];

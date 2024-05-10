@@ -13,12 +13,15 @@ import {
   AvatarWithName,
   ListCard,
   PriorityPill,
-  TaskTableCard
+  TaskTableCard,
 } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
 import StatusChip from '../../Components/StatusChip';
@@ -159,7 +162,10 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           )
         }
         slotStatus={<StatusChip status={task.status} />}
-        textJob={task?.applications?.public_jobs?.job_title || '--'}
+        textJob={
+          capitalizeFirstLetter(task?.applications?.public_jobs?.job_title) ||
+          '--'
+        }
         slotPriority={
           <PriorityPill
             isHighVisible={task.priority === 'high'}
