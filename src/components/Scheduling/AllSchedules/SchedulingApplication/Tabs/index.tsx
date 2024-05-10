@@ -11,7 +11,7 @@ function TabsSchedulingApplication() {
 
   const tab = useSchedulingApplicationStore((state) => state.tab);
 
-  const isFeebackVisible = initialSessions.some(
+  const isFeedbackVisible = initialSessions.some(
     (ses) => ses?.interview_meeting?.status === 'completed',
   );
 
@@ -35,16 +35,27 @@ function TabsSchedulingApplication() {
           },
         }}
       />
-      {isFeebackVisible && (
-        <DarkPill
-          textPill={'Feedback'}
-          isActive={tab === 'feedback'}
-          onClickPill={{
-            onClick: () => {
-              setTab('feedback');
-            },
-          }}
-        />
+      {isFeedbackVisible && (
+        <>
+          <DarkPill
+            textPill={'Feedback'}
+            isActive={tab === 'feedback'}
+            onClickPill={{
+              onClick: () => {
+                setTab('feedback');
+              },
+            }}
+          />
+          <DarkPill
+            textPill={'Candidate Feedback'}
+            isActive={tab === 'candidate_feedback'}
+            onClickPill={{
+              onClick: () => {
+                setTab('candidate_feedback');
+              },
+            }}
+          />
+        </>
       )}
     </>
   );

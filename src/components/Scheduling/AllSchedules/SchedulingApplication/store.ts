@@ -11,7 +11,11 @@ import { SelectedApplicationTypeDB, SessionsType } from './types';
 
 export interface SchedulingApplication {
   initialLoading: boolean;
-  tab: 'interview_plan' | 'candidate_detail' | 'feedback';
+  tab:
+    | 'interview_plan'
+    | 'candidate_detail'
+    | 'feedback'
+    | 'candidate_feedback';
   initialSessions: SessionsType;
   selectedSessionIds: string[];
   selectedApplication: SelectedApplicationTypeDB;
@@ -143,6 +147,18 @@ export const setFetchingPlan = (fetchingPlan: boolean) =>
 
 export const setMembers = (members: InterviewScheduleContextType['members']) =>
   useSchedulingApplicationStore.setState({ members });
+export const setApplicationCandidateFeedback = (
+  feedback: SchedulingApplication['selectedApplication']['feedback'],
+) =>
+  useSchedulingApplicationStore.setState((pre) => {
+    const temp = {
+      selectedApplication: pre.selectedApplication,
+    };
+    if (temp.selectedApplication) {
+      temp.selectedApplication.feedback = feedback;
+    }
+    return temp;
+  });
 
 export const setDateRange = (dateRange: {
   start_date: string;

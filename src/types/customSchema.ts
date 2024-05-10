@@ -148,25 +148,25 @@ export type CustomDatabase = {
                           Relationships: Database['public']['Tables'][Table]['Relationships'];
                         }
                       : // interview_meeting table
-                        Table extends 'interview_meeting'
+                        Table extends 'applications'
                         ? {
                             Row: Omit<
                               Database['public']['Tables'][Table]['Row'],
-                              'candidate_feedback'
+                              'feedback'
                             > & {
-                              candidate_feedback: interview_meeting_candidate_feedback;
+                              feedback: applications_feedback;
                             };
                             Insert: Omit<
                               Database['public']['Tables'][Table]['Insert'],
-                              'candidate_feedback'
+                              'feedback'
                             > & {
-                              candidate_feedback?: interview_meeting_candidate_feedback;
+                              feedback?: applications_feedback;
                             };
                             Update: Omit<
                               Database['public']['Tables'][Table]['Update'],
-                              'candidate_feedback'
+                              'feedback'
                             > & {
-                              candidate_feedback?: interview_meeting_candidate_feedback;
+                              feedback?: applications_feedback;
                             };
                             Relationships: Database['public']['Tables'][Table]['Relationships'];
                           }
@@ -253,7 +253,7 @@ type interview_session_cancel_other_details = {
   note?: string;
 };
 
-type interview_meeting_candidate_feedback = {
-  feedback: string;
-  rating: number;
+type applications_feedback = {
+  schedule: { feedback: string; rating: number };
+  sessions?: { [key: string]: { rating: number; feedback: string } };
 };
