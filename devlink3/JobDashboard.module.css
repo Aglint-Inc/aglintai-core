@@ -24,11 +24,24 @@
   height: calc(100vh - 60px);
 }
 
+.jobdadhboard_left.hide-scrollbar.no-gap {
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.jobdadhboard_left.hide-scrollbar.pt-0 {
+  padding-top: 0px;
+}
+
 .jd_titleblock {
   display: flex;
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+.jd_titleblock.pt-20 {
+  padding-top: 20px;
 }
 
 .job_import_type {

@@ -138,6 +138,16 @@
   }
 }
 
+.text-underline {
+  transition: all 250ms ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-underline:hover {
+  opacity: 0.7;
+}
+
 .div-block-1212 {
   display: flex;
   justify-content: flex-start;
@@ -177,6 +187,10 @@
 
 .icons.hide {
   display: none;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .text-yellow-800 {

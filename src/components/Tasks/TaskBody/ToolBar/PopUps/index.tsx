@@ -71,13 +71,13 @@ function PopUps({
             textPopupTitle={
               <ShowCode>
                 <ShowCode.When isTrue={reason === 'change_status'}>
-                  Change Task Status
+                  Change task status
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'change_assignee'}>
-                  Assign Tasks
+                  Reassign Tasks
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'update_priority'}>
-                  Set Task Priority
+                  Set new priority
                 </ShowCode.When>
               </ShowCode>
             }
@@ -103,7 +103,7 @@ function PopUps({
                   </ShowCode>
                 </ShowCode.When>
                 <ShowCode.When isTrue={reason === 'update_priority'}>
-                  Set Now
+                  Set
                 </ShowCode.When>
               </ShowCode>
             }

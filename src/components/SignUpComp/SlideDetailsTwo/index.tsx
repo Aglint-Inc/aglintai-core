@@ -326,7 +326,7 @@ export function CompanyDetails() {
             labelSize='medium'
             fullWidth
             value={recruiter?.name}
-            placeholder={'Ex. Google'}
+            placeholder={'Ex. Acme Inc.'}
             error={error.name.error}
             helperText={error.name.error ? error.name.msg : ''}
             onChange={(e) => {

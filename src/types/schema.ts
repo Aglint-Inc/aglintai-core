@@ -439,6 +439,7 @@ export type Database = {
           candidate_id: string | null
           converted_at: string | null
           created_at: string
+          feedback: Json | null
           id: string
           is_resume_fetching: boolean
           job_id: string
@@ -458,6 +459,7 @@ export type Database = {
           candidate_id?: string | null
           converted_at?: string | null
           created_at?: string
+          feedback?: Json | null
           id?: string
           is_resume_fetching?: boolean
           job_id: string
@@ -477,6 +479,7 @@ export type Database = {
           candidate_id?: string | null
           converted_at?: string | null
           created_at?: string
+          feedback?: Json | null
           id?: string
           is_resume_fetching?: boolean
           job_id?: string
@@ -1385,45 +1388,21 @@ export type Database = {
       }
       interview_plan: {
         Row: {
-          coordinator_id: string | null
           created_at: string
           id: string
           job_id: string
         }
         Insert: {
-          coordinator_id?: string | null
           created_at?: string
           id?: string
           job_id: string
         }
         Update: {
-          coordinator_id?: string | null
           created_at?: string
           id?: string
           job_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "public_interview_plan_coordinator_id_fkey"
-            columns: ["coordinator_id"]
-            isOneToOne: false
-            referencedRelation: "debreif_meeting_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_interview_plan_coordinator_id_fkey"
-            columns: ["coordinator_id"]
-            isOneToOne: false
-            referencedRelation: "meeting_interviewers"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_interview_plan_coordinator_id_fkey"
-            columns: ["coordinator_id"]
-            isOneToOne: false
-            referencedRelation: "recruiter_user"
-            referencedColumns: ["user_id"]
-          },
           {
             foreignKeyName: "public_interview_plan_job_id_fkey"
             columns: ["job_id"]
@@ -4068,6 +4047,12 @@ export type Database = {
           rshadow_ints: Json
           int_mod_relns: Json
         }[]
+      }
+      get_all_interview_session_by_user_id: {
+        Args: {
+          target_user_id: string
+        }
+        Returns: Json
       }
       get_candidate_info: {
         Args: {

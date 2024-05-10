@@ -109,12 +109,6 @@ export const useGetScheduleApplication = () => {
                   itemA['session_order'] - itemB['session_order'],
               ),
             );
-
-            if (sessionsWithPlan?.interviewPlan?.coordinator_id) {
-              setSelCoordinator(
-                sessionsWithPlan?.interviewPlan?.coordinator_id,
-              );
-            }
           }
         } else {
           const sessionsWithPlan = await fetchInterviewDataSchedule(
