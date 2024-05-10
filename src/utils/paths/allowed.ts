@@ -6,6 +6,8 @@ export const allowedPaths = new Set([
   '/api/jobpost/indexing',
   '/api/sitemap.xml',
   '/api/sendgrid',
+  '/api/save_interview_feedback',
+  '/api/get_scheduling_reason',
   '/api/interview_feedback',
   '/api/webhook',
   '/api/ai/resume-embedding',
