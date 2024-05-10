@@ -70,7 +70,7 @@ export default async function handler(
 }
 
 const getResponse = (data: Partial<API_setMembersWithRole['response']>) => {
-  return { passwordReset: false, error: null, ...data };
+  return { data: null, error: null, ...data };
 };
 
 const setMembers = (
