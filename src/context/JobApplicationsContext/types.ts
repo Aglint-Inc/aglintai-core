@@ -13,6 +13,7 @@ import { Applications } from '@/src/types/applications.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 
 import useProviderJobApplicationActions from './hooks';
 
@@ -49,6 +50,7 @@ export type JobApplication = Applications & {
     isValidEmail: boolean;
   };
   status_emails_sent: Partial<{ [key in keyof Job['email_template']]: string }>;
+  tasks: Database['public']['Tables']['tasks']['Row'][];
 };
 
 export type Parameters = {
