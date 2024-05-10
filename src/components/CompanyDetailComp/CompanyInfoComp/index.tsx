@@ -308,7 +308,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                     labelSize='small'
                     fullWidth
                     label='Company Name'
-                    placeholder='Ex. Google'
+                    placeholder='Ex. Acme Inc.'
                     value={recruiter?.name}
                     onChange={(e) => {
                       handleChange({ ...recruiter, name: e.target.value });
