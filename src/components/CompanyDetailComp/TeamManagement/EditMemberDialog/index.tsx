@@ -107,6 +107,13 @@ const EditMember = ({
       temp.manager = true;
       flag = true;
     }
+    const linkedInURLPattern =
+      // eslint-disable-next-line security/detect-unsafe-regex
+      /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+    if (form.linked_in?.length && !linkedInURLPattern.test(form.linked_in)) {
+      temp.linked_in = true;
+      flag = true;
+    }
     if (flag) {
       setFormError(temp);
       setIsDisable(false);
