@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { capitalize, cloneDeep } from 'lodash';
+import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
 import {
@@ -29,7 +30,6 @@ import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
 import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
-import { useImrQuery } from '@/src/pages/scheduling/interviewer/[member_id]';
 import {
   DailyLimitType,
   holidayType,
@@ -38,6 +38,8 @@ import {
 } from '@/src/types/scheduleTypes/scheduleSetting';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
+
+import { useImrQuery } from '../hooks';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -218,8 +220,8 @@ function InterviewerLevelSettings({
       changeValue = null;
     };
   }, []);
-
-  const { refetch } = useImrQuery();
+  const router = useRouter();
+  const { refetch } = useImrQuery({ user_id: router.query.id as string });
   return (
     <Stack overflow={'hidden'}>
       {isAvailability ? (

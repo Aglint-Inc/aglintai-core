@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { MemberDetail } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { ScheduleListType } from '@/src/components/Scheduling/Common/ModuleSchedules';
+import { ScheduleListType } from '@/src/components/Scheduling/Common/ModuleSchedules/hooks';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';

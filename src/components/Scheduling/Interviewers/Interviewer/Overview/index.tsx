@@ -4,7 +4,7 @@ import React, { Dispatch } from 'react';
 
 import { InterviewerDetailOverview } from '@/devlink3';
 
-import { ScheduleListType } from '../../../Common/ModuleSchedules';
+import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
 import { InterviewerDetailsType, PauseDialog } from '../../type';
 import { getMeetingsByUserIdModuleId } from '..';

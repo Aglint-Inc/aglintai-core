@@ -1,32 +1,27 @@
-import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import { Breadcrum, PageLayout } from '@/devlink2';
 import { InterviewerDetail, NewTabPill } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
-import {
-  useImrQuery,
-  useInterviewerSchedulesQuery,
-} from '@/src/pages/scheduling/interviewer/[member_id]';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import ModuleSchedules, { useScheduleList } from '../../Common/ModuleSchedules';
+import ModuleSchedules from '../../Common/ModuleSchedules';
+import { useScheduleList } from '../../Common/ModuleSchedules/hooks';
+import DynamicLoader from '../DynamicLoader';
 import PauseResumeDialog from '../PauseResumeDialog';
-import { InterviewerDetailsType, PauseDialog } from '../type';
+import { PauseDialog } from '../type';
+import { useImrQuery } from './hooks';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Overview from './Overview';
 import TabInterviewModules from './TabModules';
 
-function Interviewer({
-  interviewerDetails,
-}: {
-  interviewerDetails: InterviewerDetailsType;
-}) {
+function Interviewer() {
   const router = useRouter();
   const { handelUpdateSchedule, handelRemoveMemberFormPanel } =
     useInterviewerContext();
@@ -40,59 +35,35 @@ function Interviewer({
     isLoading: false,
     end_time: '',
   });
-  const { refetch } = useImrQuery();
-  const today = dayjs().startOf('day');
-  let totalInterviewsThisWeek: ReturnType<
-    typeof useInterviewerSchedulesQuery
-  >['data'] = [];
-  let totalInterviewsToday: ReturnType<
-    typeof useInterviewerSchedulesQuery
-  >['data'] = [];
-  let totalHoursThisWeek = 0;
-  let totalHoursToday = 0;
 
-  const firstDayOfWeek = dayjs().startOf('week').startOf('day').format();
-  const lastDayOfWeek = dayjs().endOf('week').endOf('day').format();
+  const user_id = router.query.member_id as string;
 
-  const interviewerSchedules = useInterviewerSchedulesQuery();
-  if (interviewerSchedules.isFetched) {
-    const completedInterviews = interviewerSchedules.data.filter(
-      (item) =>
-        item.interview_meeting.status == 'completed' ||
-        item.interview_meeting.status == 'confirmed',
-    );
-    totalInterviewsToday = completedInterviews.filter((interview) =>
-      dayjs(interview.interview_meeting.end_time).isSame(today, 'day'),
-    );
+  const {
+    data: interviewerDetails,
+    isLoading: isLoadingInterviewer,
+    refetch,
+  } = useImrQuery({ user_id });
 
-    totalInterviewsThisWeek = completedInterviews.filter(
-      (interview) =>
-        interview.interview_meeting.start_time >= firstDayOfWeek &&
-        interview.interview_meeting.end_time <= lastDayOfWeek,
-    );
-
-    totalHoursToday =
-      Number(
-        totalInterviewsToday.reduce(
-          (a, b) => a + b.interview_session.session_duration,
-          0,
-        ),
-      ) / 60;
-
-    totalHoursThisWeek =
-      Number(
-        totalInterviewsThisWeek.reduce(
-          (a, b) => a + b.interview_session.session_duration,
-          0,
-        ),
-      ) / 60;
-  }
+  const {
+    data: {
+      schedules: scheduleList,
+      totalHoursThisWeek,
+      totalHoursToday,
+      totalInterviewsThisWeek,
+      totalInterviewsToday,
+    },
+    isFetched: isScheduleFetched,
+    isLoading: isLoadingSchedule,
+  } = useScheduleList({
+    user_id: user_id,
+  });
 
   const [userMeetings, setUserMeetings] = useState<
     Awaited<ReturnType<typeof getMeetingsByUserIdModuleId>>
   >({});
+
   useEffect(() => {
-    if (interviewerDetails.interviewer.user_id) {
+    if (interviewerDetails?.interviewer?.user_id) {
       getMeetingsByUserIdModuleId({
         user_id: interviewerDetails.interviewer.user_id,
         module_ids: interviewerDetails.modules.map((item) => item.module_id),
@@ -109,206 +80,231 @@ function Interviewer({
     | 'availibility'
     | 'keywords';
 
-  const { data: scheduleList, isFetched } = useScheduleList({
-    user_id: interviewerDetails.interviewer.user_id,
-  });
-
   return (
     <>
-      <InterviewerDetail
-        slotNewTabPill={
+      <PageLayout
+        onClickBack={{
+          onClick: () => {
+            router.push(`/scheduling?tab=interviewers`);
+          },
+        }}
+        isBackButton={true}
+        slotTopbarLeft={
           <>
-            <NewTabPill
-              textLabel={'Overview'}
-              isPillActive={tab === 'overview'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(
-                    `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=overview`,
-                  );
-                },
-              }}
-            />
-            <NewTabPill
-              textLabel={'Interview Types'}
-              isPillActive={tab === 'interviewtypes'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(
-                    `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=interviewtypes`,
-                  );
-                },
-              }}
-            />
-            <NewTabPill
-              textLabel={'All Schedules'}
-              isPillActive={tab === 'allschedules'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(
-                    `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=allschedules`,
-                  );
-                },
-              }}
-            />
-            <NewTabPill
-              textLabel={'Availibility'}
-              isPillActive={tab === 'availibility'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(
-                    `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=availibility`,
-                  );
-                },
-              }}
-            />
-            <NewTabPill
-              textLabel={'Keywords'}
-              isPillActive={tab === 'keywords'}
-              onClickPill={{
-                onClick: () => {
-                  router.push(
-                    `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=keywords`,
-                  );
-                },
-              }}
+            <Breadcrum
+              textName={getFullName(
+                interviewerDetails?.interviewer?.first_name,
+                interviewerDetails?.interviewer?.last_name,
+              )}
             />
           </>
         }
-        slotTabContent={
+        slotBody={
           <>
-            {tab === 'overview' && (
-              <Overview
-                interviewerDetails={interviewerDetails}
-                setPauseResumeDialog={setPauseResumeDialog}
-                userMeetings={userMeetings}
-                scheduleList={scheduleList}
-              />
-            )}
-            {tab === 'keywords' && (
-              <InterviewerLevelSettings
-                initialData={
-                  interviewerDetails.interviewer?.scheduling_settings as any
+            {isLoadingInterviewer || isLoadingSchedule ? (
+              <DynamicLoader />
+            ) : (
+              <InterviewerDetail
+                slotNewTabPill={
+                  <>
+                    <NewTabPill
+                      textLabel={'Overview'}
+                      isPillActive={tab === 'overview'}
+                      onClickPill={{
+                        onClick: () => {
+                          router.push(
+                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=overview`,
+                          );
+                        },
+                      }}
+                    />
+                    <NewTabPill
+                      textLabel={'Interview Types'}
+                      isPillActive={tab === 'interviewtypes'}
+                      onClickPill={{
+                        onClick: () => {
+                          router.push(
+                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=interviewtypes`,
+                          );
+                        },
+                      }}
+                    />
+                    <NewTabPill
+                      textLabel={'All Schedules'}
+                      isPillActive={tab === 'allschedules'}
+                      onClickPill={{
+                        onClick: () => {
+                          router.push(
+                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=allschedules`,
+                          );
+                        },
+                      }}
+                    />
+                    <NewTabPill
+                      textLabel={'Availibility'}
+                      isPillActive={tab === 'availibility'}
+                      onClickPill={{
+                        onClick: () => {
+                          router.push(
+                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=availibility`,
+                          );
+                        },
+                      }}
+                    />
+                    <NewTabPill
+                      textLabel={'Keywords'}
+                      isPillActive={tab === 'keywords'}
+                      onClickPill={{
+                        onClick: () => {
+                          router.push(
+                            `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=keywords`,
+                          );
+                        },
+                      }}
+                    />
+                  </>
                 }
-                updateSettings={(x) => {
-                  return handelMemberUpdate({
-                    user_id: interviewerDetails.interviewer.user_id,
-                    data: { scheduling_settings: x },
-                  });
-                }}
-                isAvailability={false}
-              />
-            )}
-            {tab === 'availibility' && (
-              <InterviewerLevelSettings
-                initialData={
-                  interviewerDetails.interviewer?.scheduling_settings as any
+                slotTabContent={
+                  <>
+                    {tab === 'overview' && (
+                      <Overview
+                        interviewerDetails={interviewerDetails}
+                        setPauseResumeDialog={setPauseResumeDialog}
+                        userMeetings={userMeetings}
+                        scheduleList={scheduleList}
+                      />
+                    )}
+                    {tab === 'keywords' && (
+                      <InterviewerLevelSettings
+                        initialData={
+                          interviewerDetails.interviewer
+                            ?.scheduling_settings as any
+                        }
+                        updateSettings={(x) => {
+                          return handelMemberUpdate({
+                            user_id: interviewerDetails.interviewer.user_id,
+                            data: { scheduling_settings: x },
+                          });
+                        }}
+                        isAvailability={false}
+                      />
+                    )}
+                    {tab === 'availibility' && (
+                      <InterviewerLevelSettings
+                        initialData={
+                          interviewerDetails.interviewer
+                            ?.scheduling_settings as any
+                        }
+                        updateSettings={(x) => {
+                          return handelMemberUpdate({
+                            user_id: interviewerDetails.interviewer.user_id,
+                            data: { scheduling_settings: x },
+                          });
+                        }}
+                        isAvailability={true}
+                      />
+                    )}
+                    {tab === 'interviewtypes' && (
+                      <TabInterviewModules
+                        interviewerDetails={interviewerDetails}
+                        userMeetings={userMeetings}
+                        setPauseResumeDialog={setPauseResumeDialog}
+                      />
+                    )}
+                    {tab === 'allschedules' && (
+                      <ModuleSchedules
+                        newScheduleList={scheduleList}
+                        isFetched={isScheduleFetched}
+                      />
+                    )}
+                  </>
                 }
-                updateSettings={(x) => {
-                  return handelMemberUpdate({
-                    user_id: interviewerDetails.interviewer.user_id,
-                    data: { scheduling_settings: x },
-                  });
-                }}
-                isAvailability={true}
-              />
-            )}
-            {tab === 'interviewtypes' && (
-              <TabInterviewModules
-                interviewerDetails={interviewerDetails}
-                userMeetings={userMeetings}
-                setPauseResumeDialog={setPauseResumeDialog}
-              />
-            )}
-            {tab === 'allschedules' && (
-              <ModuleSchedules
-                newScheduleList={scheduleList}
-                isFetched={isFetched}
+                textMail={interviewerDetails.interviewer?.email}
+                textDepartment={interviewerDetails.interviewer.position}
+                textInterviewerName={
+                  interviewerDetails.interviewer.first_name +
+                  ' ' +
+                  (interviewerDetails.interviewer.last_name
+                    ? interviewerDetails.interviewer.last_name
+                    : '')
+                }
+                slotInterviewerAvatar={
+                  <MuiAvatar
+                    key={interviewerDetails.interviewer.user_id}
+                    src={interviewerDetails.interviewer.profile_image}
+                    level={getFullName(
+                      interviewerDetails.interviewer.first_name,
+                      interviewerDetails.interviewer.last_name,
+                    )}
+                    variant='circular'
+                    height='100%'
+                    width='100%'
+                    fontSize='20px'
+                  />
+                }
+                textTimeZone={
+                  interviewerDetails.interviewer.scheduling_settings?.timeZone
+                    .label
+                }
+                textInterviewPerDay={
+                  <ShowCode>
+                    <ShowCode.When
+                      isTrue={
+                        interviewerDetails.interviewer?.scheduling_settings
+                          ?.interviewLoad?.dailyLimit.type === 'Interviews'
+                      }
+                    >
+                      {totalInterviewsToday +
+                        ' / ' +
+                        interviewerDetails.interviewer.scheduling_settings
+                          ?.interviewLoad?.dailyLimit.value || 0}{' '}
+                      Interviews
+                    </ShowCode.When>
+                    <ShowCode.When
+                      isTrue={
+                        interviewerDetails.interviewer?.scheduling_settings
+                          ?.interviewLoad?.dailyLimit.type === 'Hours'
+                      }
+                    >
+                      {totalHoursToday +
+                        ' / ' +
+                        interviewerDetails.interviewer.scheduling_settings
+                          ?.interviewLoad?.dailyLimit.value || 0}{' '}
+                      Hours
+                    </ShowCode.When>
+                  </ShowCode>
+                }
+                textInterviewPerWeek={
+                  <ShowCode>
+                    <ShowCode.When
+                      isTrue={
+                        interviewerDetails.interviewer?.scheduling_settings
+                          ?.interviewLoad?.weeklyLimit.type === 'Interviews'
+                      }
+                    >
+                      {totalInterviewsThisWeek +
+                        ' / ' +
+                        interviewerDetails.interviewer.scheduling_settings
+                          ?.interviewLoad?.weeklyLimit.value || 0}{' '}
+                      Interviews
+                    </ShowCode.When>
+                    <ShowCode.When
+                      isTrue={
+                        interviewerDetails.interviewer?.scheduling_settings
+                          ?.interviewLoad?.weeklyLimit.type === 'Hours'
+                      }
+                    >
+                      {totalHoursThisWeek +
+                        ' / ' +
+                        interviewerDetails.interviewer.scheduling_settings
+                          ?.interviewLoad?.weeklyLimit.value || 0}{' '}
+                      Hours
+                    </ShowCode.When>
+                  </ShowCode>
+                }
               />
             )}
           </>
-        }
-        textMail={interviewerDetails.interviewer?.email}
-        textDepartment={interviewerDetails.interviewer.position}
-        textInterviewerName={
-          interviewerDetails.interviewer.first_name +
-          ' ' +
-          (interviewerDetails.interviewer.last_name
-            ? interviewerDetails.interviewer.last_name
-            : '')
-        }
-        slotInterviewerAvatar={
-          <MuiAvatar
-            key={interviewerDetails.interviewer.user_id}
-            src={interviewerDetails.interviewer.profile_image}
-            level={getFullName(
-              interviewerDetails.interviewer.first_name,
-              interviewerDetails.interviewer.last_name,
-            )}
-            variant='circular'
-            height='100%'
-            width='100%'
-            fontSize='20px'
-          />
-        }
-        textTimeZone={
-          interviewerDetails.interviewer.scheduling_settings?.timeZone.label
-        }
-        textInterviewPerDay={
-          <ShowCode>
-            <ShowCode.When
-              isTrue={
-                interviewerDetails.interviewer?.scheduling_settings
-                  ?.interviewLoad?.dailyLimit.type === 'Interviews'
-              }
-            >
-              {totalInterviewsToday.length +
-                ' / ' +
-                interviewerDetails.interviewer.scheduling_settings
-                  ?.interviewLoad?.dailyLimit.value || 0}{' '}
-              Interviews
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={
-                interviewerDetails.interviewer?.scheduling_settings
-                  ?.interviewLoad?.dailyLimit.type === 'Hours'
-              }
-            >
-              {totalHoursToday +
-                ' / ' +
-                interviewerDetails.interviewer.scheduling_settings
-                  ?.interviewLoad?.dailyLimit.value || 0}{' '}
-              Hours
-            </ShowCode.When>
-          </ShowCode>
-        }
-        textInterviewPerWeek={
-          <ShowCode>
-            <ShowCode.When
-              isTrue={
-                interviewerDetails.interviewer?.scheduling_settings
-                  ?.interviewLoad?.weeklyLimit.type === 'Interviews'
-              }
-            >
-              {totalInterviewsThisWeek.length +
-                ' / ' +
-                interviewerDetails.interviewer.scheduling_settings
-                  ?.interviewLoad?.weeklyLimit.value || 0}{' '}
-              Interviews
-            </ShowCode.When>
-            <ShowCode.When
-              isTrue={
-                interviewerDetails.interviewer?.scheduling_settings
-                  ?.interviewLoad?.weeklyLimit.type === 'Hours'
-              }
-            >
-              {totalHoursThisWeek +
-                ' / ' +
-                interviewerDetails.interviewer.scheduling_settings
-                  ?.interviewLoad?.weeklyLimit.value || 0}{' '}
-              Hours
-            </ShowCode.When>
-          </ShowCode>
         }
       />
 
