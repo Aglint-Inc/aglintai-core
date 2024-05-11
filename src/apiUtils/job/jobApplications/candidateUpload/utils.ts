@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { PostgrestError } from '@supabase/supabase-js';
+import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import formidable from 'formidable';
 import * as fs from 'fs';
 import { NextApiRequest } from 'next';
@@ -16,6 +16,7 @@ import {
 import { Applications } from '@/src/types/applications.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
+import { CustomDatabase } from '@/src/types/customSchema';
 
 import { Supabase, UploadApiFormData } from './types';
 
@@ -164,7 +165,7 @@ export const bulkCreateFiles = async (
 };
 
 export const bulkCreateApplications = async (
-  supabase: Supabase,
+  supabase: SupabaseClient<CustomDatabase>,
   applications: ApplicationsBulkCreateAction['request']['inputData'],
   tries: ApplicationsBulkCreateAction['request']['tries'] = 0,
   prev_error?: PostgrestError,
@@ -333,7 +334,7 @@ export const deleteFile = async (
 };
 
 export const createApplication = async (
-  supabase: Supabase,
+  supabase: SupabaseClient<CustomDatabase>,
   job_id: string,
   candidate_id: string,
   candidate_file_id: string,
@@ -369,7 +370,7 @@ export const createApplication = async (
 };
 
 export const reProcessApplication = async (
-  supabase: Supabase,
+  supabase: SupabaseClient<CustomDatabase>,
   application_id: string,
   candidate_file_id: string,
   tries: number = 0,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DarkPill } from '@/devlink3';
+import { NewTabPill } from '@/devlink3';
 
 import { setTab, useSchedulingApplicationStore } from '../store';
 
@@ -11,40 +11,51 @@ function TabsSchedulingApplication() {
 
   const tab = useSchedulingApplicationStore((state) => state.tab);
 
-  const isFeebackVisible = initialSessions.some(
+  const isFeedbackVisible = initialSessions.some(
     (ses) => ses?.interview_meeting?.status === 'completed',
   );
 
   return (
     <>
-      <DarkPill
-        textPill={'Interview Plan'}
-        isActive={tab === 'interview_plan'}
+      <NewTabPill
+        textLabel={'Interview Plan'}
+        isPillActive={tab === 'interview_plan'}
         onClickPill={{
           onClick: () => {
             setTab('interview_plan');
           },
         }}
       />
-      <DarkPill
-        textPill={'Candidate Detail'}
-        isActive={tab === 'candidate_detail'}
+      <NewTabPill
+        textLabel={'Candidate Detail'}
+        isPillActive={tab === 'candidate_detail'}
         onClickPill={{
           onClick: () => {
             setTab('candidate_detail');
           },
         }}
       />
-      {isFeebackVisible && (
-        <DarkPill
-          textPill={'Feedback'}
-          isActive={tab === 'feedback'}
-          onClickPill={{
-            onClick: () => {
-              setTab('feedback');
-            },
-          }}
-        />
+      {isFeedbackVisible && (
+        <>
+          <NewTabPill
+            textLabel={'Feedback'}
+            isPillActive={tab === 'feedback'}
+            onClickPill={{
+              onClick: () => {
+                setTab('feedback');
+              },
+            }}
+          />
+          <NewTabPill
+            textLabel={'Candidate Feedback'}
+            isPillActive={tab === 'candidate_feedback'}
+            onClickPill={{
+              onClick: () => {
+                setTab('candidate_feedback');
+              },
+            }}
+          />
+        </>
       )}
     </>
   );

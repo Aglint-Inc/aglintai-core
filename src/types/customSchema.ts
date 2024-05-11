@@ -84,7 +84,7 @@ export type CustomDatabase = {
                         'scheduling_settings' | 'scheduling_reason'
                       > & {
                         scheduling_settings: recruiter_scheduling_settings;
-                        scheduling_reason: recruiter_scheduling_reason | null;
+                        scheduling_reason?: recruiter_scheduling_reason | null;
                       };
                       Insert: Omit<
                         Database['public']['Tables'][Table]['Insert'],
@@ -148,25 +148,25 @@ export type CustomDatabase = {
                           Relationships: Database['public']['Tables'][Table]['Relationships'];
                         }
                       : // interview_meeting table
-                        Table extends 'interview_meeting'
+                        Table extends 'applications'
                         ? {
                             Row: Omit<
                               Database['public']['Tables'][Table]['Row'],
-                              'candidate_feedback'
+                              'feedback'
                             > & {
-                              candidate_feedback: interview_meeting_candidate_feedback;
+                              feedback: applications_feedback;
                             };
                             Insert: Omit<
                               Database['public']['Tables'][Table]['Insert'],
-                              'candidate_feedback'
+                              'feedback'
                             > & {
-                              candidate_feedback?: interview_meeting_candidate_feedback;
+                              feedback?: applications_feedback;
                             };
                             Update: Omit<
                               Database['public']['Tables'][Table]['Update'],
-                              'candidate_feedback'
+                              'feedback'
                             > & {
-                              candidate_feedback?: interview_meeting_candidate_feedback;
+                              feedback?: applications_feedback;
                             };
                             Relationships: Database['public']['Tables'][Table]['Relationships'];
                           }
@@ -244,7 +244,11 @@ interface recruiter_scheduling_settings {
 }
 
 type recruiter_scheduling_reason = {
-  company?: { rescheduling?: string[]; cancelation?: string[]; decline?: string[]};
+  company?: {
+    rescheduling?: string[];
+    cancelation?: string[];
+    decline?: string[];
+  };
   candidate?: { rescheduling?: string[]; cancelation?: string[] };
 };
 
@@ -253,7 +257,7 @@ type interview_session_cancel_other_details = {
   note?: string;
 };
 
-type interview_meeting_candidate_feedback = {
-  feedback: string;
-  rating: number;
+type applications_feedback = {
+  schedule: { feedback: string; rating: number };
+  sessions?: { [key: string]: { rating: number; feedback: string } };
 };

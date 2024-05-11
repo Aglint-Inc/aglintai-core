@@ -49,6 +49,7 @@ export * from "./ButtonPrimaryOutlinedLarge";
 export * from "./ButtonPrimaryOutlinedRegular";
 export * from "./CandidateCard";
 export * from "./CandidateCards";
+export * from "./CandidateFeedback";
 export * from "./CandidateInterviewButton";
 export * from "./CandidateInterviewOption";
 export * from "./CandidateSchedule";
