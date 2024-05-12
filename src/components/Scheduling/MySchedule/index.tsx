@@ -8,7 +8,8 @@ import toast from '@/src/utils/toast';
 
 import { ShowCode } from '../../Common/ShowCode';
 import { API_FAIL_MSG } from '../../JobsDashboard/JobPostCreateUpdate/utils';
-import ModuleSchedules, { useScheduleList } from '../Common/ModuleSchedules';
+import ModuleSchedules from '../Common/ModuleSchedules';
+import { useScheduleList } from '../Common/ModuleSchedules/hooks';
 
 function MySchedule() {
   const { recruiterUser, recruiter } = useAuthDetails();
@@ -29,7 +30,10 @@ function MySchedule() {
     }
   };
 
-  const { data: scheduleList, isFetched } = useScheduleList({
+  const {
+    data: { schedules: scheduleList },
+    isFetched,
+  } = useScheduleList({
     user_id: recruiterUser.user_id,
   });
 

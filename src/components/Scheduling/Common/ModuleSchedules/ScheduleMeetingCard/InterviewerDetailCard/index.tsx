@@ -13,7 +13,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { ScheduleListType } from '../..';
+import { ScheduleListType } from '../../hooks';
 
 function InterviewerDetailsCard({
   user,

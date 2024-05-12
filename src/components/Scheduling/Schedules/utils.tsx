@@ -1,7 +1,7 @@
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-import { ScheduleListType } from '../Common/ModuleSchedules';
+import { ScheduleListType } from '../Common/ModuleSchedules/hooks';
 import { FilterOptionsType } from './types';
 
 export const filterOptions = [

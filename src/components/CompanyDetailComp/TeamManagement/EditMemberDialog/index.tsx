@@ -6,7 +6,6 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import { InviteTeamCard, TeamInvite } from '@/devlink';
@@ -209,7 +208,7 @@ const EditMember = ({
                       'parttime',
                     ] as employmentTypeEnum[]
                   }
-                  getOptionLabel={(option) => capitalize(option)}
+                  getOptionLabel={(option) => capitalizeFirstLetter(option)}
                   renderInput={(params) => (
                     <CustomTextField
                       {...params}
@@ -261,7 +260,7 @@ const EditMember = ({
                 />
                 <Autocomplete
                   fullWidth
-                  value={capitalize(form.department)}
+                  value={capitalizeFirstLetter(form.department)}
                   onChange={(event: any, newValue: string | null) => {
                     setForm({
                       ...form,
@@ -269,7 +268,7 @@ const EditMember = ({
                     });
                   }}
                   options={recruiter?.departments?.map((departments) =>
-                    capitalize(departments),
+                    capitalizeFirstLetter(departments),
                   )}
                   renderInput={(params) => (
                     <CustomTextField

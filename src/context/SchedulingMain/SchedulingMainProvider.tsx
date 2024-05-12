@@ -35,9 +35,6 @@ const SchedulingProvider = ({ children }) => {
     if (recruiter?.id) {
       initialFetch();
     }
-    // return () => {
-    //   resetInterviewState();
-    // };
   }, [recruiter?.id]);
 
   const initialFetch = async () => {

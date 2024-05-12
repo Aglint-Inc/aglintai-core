@@ -6,7 +6,7 @@ import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { ScheduleListType } from '../../Common/ModuleSchedules';
+import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
 import { initialEditModule } from '../store';
 import {
   MemberType,

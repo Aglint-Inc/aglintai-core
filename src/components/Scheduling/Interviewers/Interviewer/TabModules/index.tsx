@@ -51,6 +51,8 @@ function TabInterviewModules({
                     isScheduleCountVisible={false}
                     isProfileVisible={false}
                     isRoleVisible={false}
+                    isRemoveVisible={false}
+                    isInterviewsVisible={false}
                     textPause={
                       'Paused from assigning to new interviews with this module'
                     }

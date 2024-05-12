@@ -6,7 +6,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { ScheduleListType } from '../../Common/ModuleSchedules';
+import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
 
 export type AssignerType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';
