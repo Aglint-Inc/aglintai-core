@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Collapse, Dialog, Stack, Typography } from '@mui/material';
+import { Collapse, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 // import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -10,6 +10,7 @@ import React, {
   FC,
   SetStateAction,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -47,7 +48,11 @@ import {
   SummaryBlock,
   UploadCandidateResume,
 } from '@/devlink2';
-import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
+import {
+  ButtonPrimaryOutlinedRegular,
+  DangerMessage,
+  NewTabPill,
+} from '@/devlink3';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
@@ -155,29 +160,29 @@ const ApplicationDetails = ({
   };
 
   return (
-    <Stack
-      style={{
-        display: open && application ? 'flex' : 'none',
-        transition: '0.4s',
-        width: drawerOpen ? '420px' : '0px',
-        height: '100%',
-        pointerEvents: drawerOpen ? 'auto' : 'none',
-        overflow: drawerOpen ? 'visible' : 'auto',
-      }}
-    >
-      {application ? (
-        <NewJobApplicationSideDrawer
-          application={application}
-          onClose={() => handleClose()}
-          candidateImage={candidateImage}
-          handleSelectNextApplication={handleSelectNextApplication}
-          handleSelectPrevApplication={handleSelectPrevApplication}
-          hideNextPrev={hideNextPrev}
-        />
-      ) : (
-        <></>
-      )}
-    </Stack>
+    <Drawer open={drawerOpen} anchor='right' onClose={() => handleClose()}>
+      <Stack
+        style={{
+          width: '1000px',
+          height: '100%',
+          pointerEvents: drawerOpen ? 'auto' : 'none',
+          overflow: drawerOpen ? 'visible' : 'auto',
+        }}
+      >
+        {application ? (
+          <NewJobApplicationSideDrawer
+            application={application}
+            onClose={() => handleClose()}
+            candidateImage={candidateImage}
+            handleSelectNextApplication={handleSelectNextApplication}
+            handleSelectPrevApplication={handleSelectPrevApplication}
+            hideNextPrev={hideNextPrev}
+          />
+        ) : (
+          <></>
+        )}
+      </Stack>
+    </Drawer>
   );
 };
 
@@ -224,7 +229,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
-  const { job, interviewPlanEnabled } = useJobDetails();
+  const { job } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -234,7 +239,6 @@ const NewJobApplicationSideDrawer = ({
 
   const jobTitle = getCandidateDetails(application, 'job_title');
   const location = getCandidateDetails(application, 'location');
-  const overview = getCandidateDetails(application, 'overview');
   const firstName = getCandidateDetails(application, 'name');
 
   const [openResume, setOpenResume] = useState(false);
@@ -293,7 +297,7 @@ const NewJobApplicationSideDrawer = ({
           onClick: () => onClose(),
         }}
         slotSocialLink={<SocialsBlock application={application} />}
-        isOverviewVisible={overview.valid}
+        // isOverviewVisible={overview.valid}
         isLocationRoleVisible={jobTitle.valid || location.valid}
         isRoleVisible={jobTitle.valid}
         textRole={jobTitle.value}
@@ -304,25 +308,13 @@ const NewJobApplicationSideDrawer = ({
         }
         onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
         slotMoveTo={<></>}
-        slotOverview={
-          <>
-            {(interviewPlanEnabled?.data ?? false) &&
-              (application?.emailValidity?.isValidEmail ?? false) && (
-                <InterviewStatusBlock application={application} />
-              )}
-            {overview.valid && (
-              <OverviewBlock title={'Overview'} description={overview.value} />
-            )}
-          </>
-        }
+        slotOverview={<></>}
         slotCandidateDetails={
-          <>
-            <NewCandidateDetails
-              application={application}
-              openResume={openResume}
-              setOpenResume={setOpenResume}
-            />
-          </>
+          <SectionedDetails
+            application={application}
+            openResume={openResume}
+            setOpenResume={setOpenResume}
+          />
         }
         isAppliedOnVisible={true}
         textAppliedOn={creationDate}
@@ -405,11 +397,115 @@ const SocialsBlock: React.FC<{ application: JobApplication }> = ({
   );
 };
 
+type TabType =
+  | 'Details'
+  | 'Screening'
+  | 'Assessment'
+  | 'Interview'
+  | 'Tasks'
+  | 'Activity';
+
+const SectionedDetails: React.FC<{
+  application: JobApplication;
+  openResume: boolean;
+  setOpenResume: Dispatch<SetStateAction<boolean>>;
+}> = ({ application, openResume, setOpenResume }) => {
+  const { job, interviewPlanEnabled } = useJobDetails();
+  const [tab, setTab] = useState<TabType>('Details');
+  const interviewEnabled =
+    (interviewPlanEnabled?.data ?? false) &&
+    (application?.emailValidity?.isValidEmail ?? false) &&
+    (job?.activeSections ?? []).includes(JobApplicationSections.INTERVIEW) &&
+    !!(application?.schedule ?? null);
+  const tabs = useMemo(
+    () =>
+      (
+        [
+          'Details',
+          'Screening',
+          'Assessment',
+          'Interview',
+          'Tasks',
+          'Activity',
+        ] as (typeof tab)[]
+      )
+        .filter((tab) => {
+          switch (tab) {
+            case 'Details':
+              return true;
+            case 'Screening':
+              return (job?.activeSections ?? []).includes(
+                JobApplicationSections.SCREENING,
+              );
+            case 'Assessment':
+              return (job?.activeSections ?? []).includes(
+                JobApplicationSections.ASSESSMENT,
+              );
+            case 'Interview':
+              return interviewEnabled;
+            case 'Tasks':
+              return interviewEnabled && false;
+            case 'Activity':
+              return false;
+          }
+        })
+        .map((t) => (
+          <NewTabPill
+            key={t}
+            onClickPill={{ onClick: () => setTab(t) }}
+            textLabel={t}
+            isPillActive={tab === t}
+          />
+        )),
+    [tab, JSON.stringify(job?.activeSections ?? []), interviewEnabled],
+  );
+  return (
+    <>
+      <Stack direction={'row'}>{tabs}</Stack>
+      <Sections
+        application={application}
+        openResume={openResume}
+        setOpenResume={setOpenResume}
+        tab={tab}
+      />
+    </>
+  );
+};
+
+const Sections: React.FC<{
+  application: JobApplication;
+  openResume: boolean;
+  setOpenResume: Dispatch<SetStateAction<boolean>>;
+  tab: TabType;
+}> = ({ application, openResume, setOpenResume, tab }) => {
+  switch (tab) {
+    case 'Details':
+      return (
+        <NewCandidateDetails
+          application={application}
+          openResume={openResume}
+          setOpenResume={setOpenResume}
+        />
+      );
+    case 'Screening':
+      return <PhoneScreening application={application} />;
+    case 'Assessment':
+      return <AssessmentSection application={application} />;
+    case 'Interview':
+      return <IntreviewSection application={application} />;
+    case 'Tasks':
+      return <>{JSON.stringify(application?.tasks)}</>;
+    case 'Activity':
+      return <></>;
+  }
+};
+
 export const NewCandidateDetails: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
 }> = ({ application, openResume, setOpenResume }) => {
+  const overview = getCandidateDetails(application, 'overview');
   const resume = application.candidate_files?.resume_json as any;
   const validity = getApplicationProcessState(application);
   const validApplication = validity === 'processed';
@@ -417,13 +513,15 @@ export const NewCandidateDetails: React.FC<{
     <CandidateDetails
       slotInterviewScore={
         <>
+          {overview.valid && (
+            <OverviewBlock title={'Overview'} description={overview.value} />
+          )}
+          <></>
           <NewResumeSection
             application={application}
             openResume={openResume}
             setOpenResume={setOpenResume}
           />
-          <AssessmentSection application={application} />
-          <PhoneScreening application={application} />
           {validApplication && (
             <>
               <NewExperienceDetails
@@ -450,6 +548,12 @@ export const NewCandidateDetails: React.FC<{
       }
     />
   );
+};
+
+const IntreviewSection: React.FC<{
+  application: JobApplication;
+}> = ({ application }) => {
+  return <InterviewStatusBlock application={application} />;
 };
 
 export const AnalysisBlockSection: React.FC<{
@@ -672,8 +776,6 @@ const InterviewStatusBlock: FC<{ application: JobApplication }> = ({
   application,
 }) => {
   const router = useRouter();
-  const { section } = useJobApplications();
-  if (section !== JobApplicationSections.INTERVIEW) return <></>;
   if (!application.schedule)
     return (
       <Stack
