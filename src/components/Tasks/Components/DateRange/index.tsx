@@ -10,9 +10,11 @@ import dayjs from 'dayjs';
 function DateRange({
   onChange,
   value,
+  disablePast = true,
 }: {
   onChange: (x: any) => void;
   value: any[];
+  disablePast?: boolean;
 }) {
   return (
     <Stack
@@ -25,7 +27,7 @@ function DateRange({
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateRangeCalendar
-          disablePast
+          disablePast={disablePast}
           defaultValue={
             value.length
               ? [dayjs(value[0]), dayjs(value[1])]

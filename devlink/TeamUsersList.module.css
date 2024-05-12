@@ -416,6 +416,22 @@
   }
 }
 
+.text-grey-600.max-width-650 {
+  max-width: 650px;
+}
+
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-650 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-650 {
+    max-width: none;
+  }
+}
+
 .div-block-463 {
   display: flex;
   justify-content: space-between;

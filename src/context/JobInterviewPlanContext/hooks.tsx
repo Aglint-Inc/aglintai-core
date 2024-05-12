@@ -6,7 +6,6 @@ import {
   CreateDebriefSession,
   CreateInterviewSession,
   useAddDebriefSession,
-  useAddInterviewCoordinator,
   useAddInterviewSession,
   useCreateInterviewPlan,
   useDeleteInterviewSession,
@@ -33,7 +32,6 @@ const useJobInterviewPlanActions = () => {
   const { mutate: handleDeleteSession } = useDeleteInterviewSession();
   const { mutateAsync: createDebriefSession } = useAddDebriefSession();
   const { mutate: handleEditDebriefSession } = useEditDebriefSession();
-  const { mutate: handleSelectCoordinator } = useAddInterviewCoordinator();
   const { mutate: handleReorderSessions } = useReorderInterviewSessions();
 
   const { mutationKey: updateMutationKey } =
@@ -88,14 +86,12 @@ const useJobInterviewPlanActions = () => {
   };
 
   const plan_id = interviewPlans?.data?.id;
-  const coordinator = interviewPlans?.data?.recruiter_user;
 
   const value = {
     job,
     initialLoad,
     interviewModules,
     companyMembers,
-    handleSelectCoordinator,
     handleCreateSession,
     handleEditSession,
     handleCreateDebriefSession,
@@ -106,7 +102,6 @@ const useJobInterviewPlanActions = () => {
     handleCreatePlan,
     handleReorderSessions,
     interviewPlans,
-    coordinator,
     plan_id,
   };
   return value;

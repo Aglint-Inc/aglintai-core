@@ -125,3 +125,16 @@ export type InterviewerMeetingScheduled = {
   meeting_duration: InterviewSession['session_duration'];
   interv_user_id: string;
 };
+
+// TODO:
+// reduntant type
+export type SlotInterviwerType = SessionInterviewerApiRespType & {
+  user_id: string;
+};
+export type SlotSessionType = Omit<
+  SessionCombinationType,
+  'qualifiedIntervs' | 'trainingIntervs'
+> & {
+  qualified_intervs: SlotInterviwerType[];
+  training_intervs: SlotInterviwerType[];
+};

@@ -1,9 +1,8 @@
-import React from 'react';
 
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
-import { agentsDetails } from '../../utils';
+import { EmailAgentId, PhoneAgentId } from '../../utils';
 
 function FilterTasks() {
   const { search, filter, handelSearch, handelFilter } = useTasksContext();
@@ -15,7 +14,7 @@ function FilterTasks() {
         setValue: (e) => {
           handelSearch(e);
         },
-        placeholder: "Search by candidate's name or job title",
+        placeholder: 'Search by candidate name or job title',
       }}
       filters={[
         {
@@ -88,3 +87,13 @@ function FilterTasks() {
 }
 
 export default FilterTasks;
+export const agentsDetails = [
+  {
+    id: EmailAgentId,
+    label: 'Email',
+  },
+  {
+    id: PhoneAgentId,
+    label: 'Phone',
+  },
+];

@@ -16,4 +16,5 @@ declare function ScheduleCard(props: {
   isOneToOneIconVisible?: Types.Visibility.VisibilityConditions;
   isDebriefIconVisible?: Types.Visibility.VisibilityConditions;
   textTimeDuration?: React.ReactNode;
+  bgColorProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

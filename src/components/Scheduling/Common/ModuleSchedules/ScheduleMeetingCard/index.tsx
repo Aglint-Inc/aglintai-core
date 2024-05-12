@@ -8,10 +8,14 @@ import { MyScheduleSubCard } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
 import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
-import { getTimeZoneBrowser } from '../../../AllSchedules/SchedulingApplication/utils';
-import { getScheduleType } from '../../../AllSchedules/utils';
-import { ScheduleListType } from '..';
-import InterviewerDetailsCard from './interviewerDetailsCard';
+import {
+  getScheduleBgcolor,
+  getScheduleTextcolor,
+  getScheduleType,
+} from '../../../AllSchedules/utils';
+import { convertTimeZoneToAbbreviation } from '../../../utils';
+import { ScheduleListType } from '../hooks';
+import InterviewerDetailsCard from './InterviewerDetailCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
@@ -60,7 +64,7 @@ function ScheduleMeetingCard({
               </Collapse>
             </>
           }
-          textTime={`${dayjs(meetingDetails.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails.interview_meeting?.end_time).format('hh:mm A')}  ${getTimeZoneBrowser()}`}
+          textTime={`${dayjs(meetingDetails.interview_meeting?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails.interview_meeting?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
           textMeetingPlatform={getScheduleType(
             meetingDetails?.interview_meeting.schedule_type,
           )}
@@ -101,6 +105,16 @@ function ScheduleMeetingCard({
             meetingDetails.interview_meeting.session_duration,
           )}
           textJob={meetingDetails?.interview_meeting?.job_title}
+          bgColorProps={{
+            style: {
+              background: getScheduleBgcolor(
+                meetingDetails.interview_meeting?.status,
+              ),
+              color: getScheduleTextcolor(
+                meetingDetails.interview_meeting?.status,
+              ),
+            },
+          }}
         />
       </Stack>
     </>

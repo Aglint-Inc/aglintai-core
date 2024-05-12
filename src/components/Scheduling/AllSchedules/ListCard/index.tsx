@@ -1,9 +1,14 @@
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 
-import { AllInterviewCard, ScheduleWithAgent } from '@/devlink2';
+import {
+  AllInterviewCard,
+  EmptyInterviewProgress,
+  ScheduleWithAgent,
+} from '@/devlink2';
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { ResumeJson } from '@/src/pages/api/resumeScoring/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import ScheduleProgress from '../../Common/ScheduleProgress';
@@ -98,6 +103,7 @@ function ListCardInterviewSchedule({
 }
 
 const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
+  const router = useRouter();
   const sessions: Parameters<typeof ScheduleProgress>[0]['sessions'] = (
     app?.interview_session_meetings ?? []
   ).map(
@@ -128,7 +134,19 @@ const SessionProgressPipeline = ({ app }: { app: ApplicationList }) => {
       return response;
     },
   );
-  return <ScheduleProgress sessions={sessions} />;
+  //  if sessions is empty, show empty interview progress
+  return sessions.length ? (
+    <ScheduleProgress sessions={sessions} />
+  ) : (
+    <EmptyInterviewProgress
+      onClickCreateInterviewPlan={{
+        onClick: (e) => {
+          e.stopPropagation();
+          router.push(`/jobs/${app.public_jobs.id}/interview-plan`);
+        },
+      }}
+    />
+  );
 };
 
 export default ListCardInterviewSchedule;

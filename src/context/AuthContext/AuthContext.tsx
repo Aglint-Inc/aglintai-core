@@ -25,7 +25,6 @@ import {
   RecruiterUserType,
   SocialsType,
 } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -54,6 +53,7 @@ export interface ContextValue {
     user_id: string;
     data: DatabaseTableUpdate['recruiter_user'] & {
       role?: DatabaseEnums['user_roles'];
+      manager_id?: string;
     };
   }) => Promise<boolean>;
   isAllowed: (
@@ -120,7 +120,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        loading && setLoading(false);
+        throw new Error();
       }
       if (data?.session?.user?.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
@@ -169,7 +169,11 @@ const AuthProvider = ({ children }) => {
       const recruiterUser = recruiterRel.recruiter_user;
       (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
-      setRecruiterUser({ ...recruiterUser, role: recruiterRel.role });
+      setRecruiterUser({
+        ...recruiterUser,
+        role: recruiterRel.role,
+        manager_id: recruiterRel.manager_id,
+      });
       setRecruiter({
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
@@ -186,7 +190,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({
+      scope: 'local',
+    });
     posthog.reset();
     if (!error) {
       router.push(pageRoutes.LOGIN);
@@ -402,6 +408,7 @@ const updateMember = ({
   data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
     user_id: string;
     role?: DatabaseEnums['user_roles'];
+    manager_id?: string;
   };
   recruiter_id: string;
 }) => {

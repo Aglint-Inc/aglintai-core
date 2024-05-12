@@ -4,12 +4,11 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { jobQueryKeys } from '../job/keys';
 import { Job } from '../job/types';
-import { useCurrentJob } from '../job-assessment/keys';
 import { jobScoringParamKeys } from './keys';
 
-export const useJobScoringPoll = () => {
+export const useJobScoringPoll = (job: Job) => {
   const queryClient = useQueryClient();
-  const { job_id, job } = useCurrentJob();
+  const job_id = job?.id;
   const { queryKey: jobQueryKey } = jobQueryKeys.jobs();
   const { queryKey } = jobScoringParamKeys.job({ job_id });
   const jobs = queryClient.getQueryData<Job[]>(jobQueryKey);

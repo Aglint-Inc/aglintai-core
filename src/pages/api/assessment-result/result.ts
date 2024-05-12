@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Database } from '@/src/types/schema';
 
-import { getAssessmentAnalyses } from './assessment-result-prompt-builder';
+import { getAssessmentAnalyses } from '../../../apiUtils/assessment-result/assessment-result-prompt-builder';
 
 export const config = {
   runtime: 'edge',

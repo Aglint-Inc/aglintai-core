@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { EmptyGeneral, MemberListCard } from '@/devlink2';
+import {
+  EmptyGeneral,
+  MemberListCard
+} from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -73,9 +76,8 @@ function SlotQualifiedMembers({
         const userSettings = user.recruiter_user.scheduling_settings;
         return (
           <MemberListCard
-            isInterviewCountVisible={!user.pause_json}
-            textInterviewWeek={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per week`}
-            textInterviewToday={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type} per day`}
+            textWeekInterview={`${user.weekly} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
+            textTodayInterview={`${user.daily} / ${userSettings.interviewLoad.dailyLimit.value} ${userSettings.interviewLoad.dailyLimit.type}`}
             onClickCard={{
               onClick: () => {
                 router.push(
@@ -83,16 +85,17 @@ function SlotQualifiedMembers({
                 );
               },
             }}
+            isDropdownIconVisible={false}
             key={user.user_id}
             isMoveToQualifierVisible={false}
-            isTrainingProgessVisible={false}
+            isTrainingProgessVisible={true}
             isTrainingCompletedVisible={false}
             textPauseResumeDate={
               !user.pause_json?.isManual
                 ? user.pause_json?.end_date
-                  ? dayjs(user.pause_json.end_date).format('DD MMMM YYYY')
+                  ? `Until ${dayjs(user.pause_json.end_date).format('DD MMMM YYYY')}`
                   : '--'
-                : 'you resume'
+                : 'Indefinately'
             }
             onClickRemoveModule={{
               onClick: () => {

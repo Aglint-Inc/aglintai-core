@@ -561,11 +561,11 @@ function SlotQualifiedMembers({
               //     setProgressUser(tempUserProgress);
               //   },
               // }}
-              onClickViewProgress={{
-                onClick: () => {
-                  setProgressUser(tempUserProgress);
-                },
-              }}
+              // onClickViewProgress={{
+              //   onClick: () => {
+              //     setProgressUser(tempUserProgress);
+              //   },
+              // }}
               onClickApproveCandidate={{
                 onClick: () => {
                   updateMember({

@@ -5,8 +5,7 @@ import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
 import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
 import { Interviewer } from '@/src/utils/event_book/book_session';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
-
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   calender_event: CalendarEvent;

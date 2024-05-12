@@ -1,0 +1,27 @@
+.score_settings {
+  display: flex;
+  padding-left: 10px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  font-size: 14px;
+  line-height: 20px;
+
+  cursor: pointer;
+}
+
+.score_settings.pop {
+  padding: 4px 10px 4px 8px;
+  border-radius: 8px;
+  background-color: #f79a3d;
+  color: white;
+}
+
+.embed_flex-3 {
+  display: flex;
+  align-items: center;
+}

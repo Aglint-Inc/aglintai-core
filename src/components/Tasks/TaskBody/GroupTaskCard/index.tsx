@@ -55,7 +55,8 @@ function GroupTaskCard({
       <TaskTableJobSubCard
         isOverdueVisible={
           (task.status === 'in_progress' &&
-            dueDateTime.isBefore(tomorrowDate)) ||
+            (dueDateTime.isSame(tomorrowDate) ||
+              dueDateTime.isSame(toDayDateTime, 'day'))) ||
           task.status === 'scheduled'
         }
         textOverdue={

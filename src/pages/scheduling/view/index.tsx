@@ -4,10 +4,7 @@ import SchedulingViewComp from '@/src/components/Scheduling/SchedulingView';
 function SchedulingViewPage() {
   return (
     <>
-      <Seo
-        title={`Scheduling`}
-        description='AI for People Products'
-      />
+      <Seo title={`Scheduling`} description='AI for People Products' />
       <SchedulingViewComp />
     </>
   );

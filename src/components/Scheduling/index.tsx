@@ -11,7 +11,7 @@ import {
   InterviewModuleTable,
   PageLayout,
 } from '@/devlink2';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { ButtonPrimaryDefaultRegular, TaskSwitchButton } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { SocialsType } from '@/src/types/data.types';
 import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
@@ -21,14 +21,16 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import Icon from '../Common/Icons/Icon';
 import MuiAvatar from '../Common/MuiAvatar';
+import { ShowCode } from '../Common/ShowCode';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import AllSchedules from './AllSchedules';
-import InterviewTab from './Interviewers';
+import AllInterviewersComp from './Interviewers';
 import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
 import { Modules } from './Modules/Modules';
 import { fetchInterviewModules } from './Modules/queries/utils';
 import { setIsCreateDialogOpen } from './Modules/store';
 import MySchedule from './MySchedule';
+import Schedules from './Schedules';
 import SchedulingDashboard from './SchedulingDashboard';
 import SchedulingSettings from './Settings';
 import SubNav from './SubNav';
@@ -38,7 +40,6 @@ function SchedulingMainComp() {
   const router = useRouter();
   const { recruiterUser, isAllowed } = useAuthDetails();
   const [saving, setSaving] = useState<'saving' | 'saved'>('saved');
-
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
@@ -79,17 +80,19 @@ function SchedulingMainComp() {
                 isSubNavDisabled
                   ? tab === 'candidates'
                     ? 'Candidates'
-                    : tab === 'interviewers'
-                      ? 'Interviewers'
-                      : tab === 'interviewtypes'
-                        ? 'Interview Types'
-                        : tab === 'myschedules'
-                          ? 'My Schedules'
+                    : tab === 'schedules'
+                      ? 'Schedules'
+                      : tab === 'interviewers'
+                        ? 'Interviewers'
+                        : tab === 'interviewtypes'
+                          ? 'Interview Types'
                           : tab === 'settings'
                             ? 'Settings'
                             : tab === 'dashboard'
                               ? 'Dashboard'
-                              : 'Scheduler'
+                              : tab === 'myschedules'
+                                ? 'My Scheduler'
+                                : null
                   : 'Scheduler'
               }
               showArrow={isSubNavDisabled}
@@ -120,6 +123,25 @@ function SchedulingMainComp() {
                   />
                 </Stack>
               )}
+            {(tab === 'schedules' || tab === 'myschedules') && (
+              <TaskSwitchButton
+                isIconVisible={false}
+                isJobCandActive={tab === 'schedules'}
+                isListActive={tab === 'myschedules'}
+                onClickJobCand={{
+                  onClick: () => {
+                    router.push(`${pageRoutes.SCHEDULING}?tab=schedules`);
+                  },
+                }}
+                onClickList={{
+                  onClick: () => {
+                    router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`);
+                  },
+                }}
+                textFirst={'All Schedules'}
+                textSecond={'My Schedules'}
+              />
+            )}
           </>
         }
         slotBody={
@@ -144,7 +166,6 @@ const BodyComp = ({ setSaving }) => {
   const tab = router.query.tab as SchedulingTab;
   const { recruiter, allowAction, isAllowed, recruiterUser, setRecruiter } =
     useAuthDetails();
-
   async function updateSettings(schedulingSettingObj: schedulingSettingType) {
     setSaving('saving');
     const { data: updatedRecruiter, error } = await supabase
@@ -166,40 +187,58 @@ const BodyComp = ({ setSaving }) => {
 
   return (
     <>
-      {tab === 'candidates' ? (
-        allowAction(<AllSchedules />, ['admin', 'recruiter', 'recruiting_coordinator'])
-      ) : tab === 'myschedules' ? (
-        <MySchedule />
-      ) : tab === 'interviewtypes' ? (
-        isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) ? (
-          <Modules />
-        ) : (
-          <InterviewerModule
-            user_id={recruiterUser.user_id}
-            recruiter_id={recruiter.id}
-          />
-        )
-      ) : tab === 'interviewers' ? (
-        allowAction(<InterviewTab />, ['admin', 'recruiter', 'recruiting_coordinator'])
-      ) : tab === 'settings' ? (
-        isAllowed(['interviewer']) ? (
-          <InterviewerSetting />
-        ) : (
-          allowAction(
-            <SchedulingSettings
-              updateSettings={updateSettings}
-              initialData={recruiter?.scheduling_settings}
-            />,
-            ['admin', 'recruiter', 'recruiting_coordinator'],
-          )
-        )
-      ) : (
-        allowAction(<SchedulingDashboard />, [
-          'admin',
-          'recruiter',
-          'recruiting_coordinator',
-        ])
-      )}
+      <ShowCode>
+        <ShowCode.When isTrue={tab === 'candidates'}>
+          {allowAction(<AllSchedules />, [
+            'admin',
+            'recruiter',
+            'recruiting_coordinator',
+          ])}
+        </ShowCode.When>
+        <ShowCode.When isTrue={tab === 'interviewtypes'}>
+          {isAllowed(['admin', 'recruiter', 'recruiting_coordinator']) ? (
+            <Modules />
+          ) : (
+            <InterviewerModule
+              user_id={recruiterUser.user_id}
+              recruiter_id={recruiter.id}
+            />
+          )}
+        </ShowCode.When>
+        <ShowCode.When isTrue={tab === 'interviewers'}>
+          {allowAction(<AllInterviewersComp />, [
+            'admin',
+            'recruiter',
+            'recruiting_coordinator',
+          ])}
+        </ShowCode.When>
+        <ShowCode.When isTrue={tab === 'settings'}>
+          {isAllowed(['interviewer']) ? (
+            <InterviewerSetting />
+          ) : (
+            allowAction(
+              <SchedulingSettings
+                updateSettings={updateSettings}
+                initialData={recruiter?.scheduling_settings}
+              />,
+              ['admin', 'recruiter', 'recruiting_coordinator'],
+            )
+          )}
+        </ShowCode.When>
+        <ShowCode.When isTrue={tab === 'schedules'}>
+          <Schedules />
+        </ShowCode.When>
+        <ShowCode.When isTrue={tab === 'myschedules'}>
+          <MySchedule />
+        </ShowCode.When>
+        <ShowCode.Else>
+          {allowAction(<SchedulingDashboard />, [
+            'admin',
+            'recruiter',
+            'recruiting_coordinator',
+          ])}
+        </ShowCode.Else>
+      </ShowCode>
     </>
   );
 };
@@ -329,8 +368,6 @@ const InterviewerSetting = () => {
   return (
     <Stack height={'calc( 100vh - 60px)'}>
       <InterviewerLevelSettings
-        setOpenDrawer={() => {}}
-        closeBtnVisible={false}
         initialData={recruiterUser.scheduling_settings}
         updateSettings={(x) => {
           return handelMemberUpdate({
@@ -338,7 +375,7 @@ const InterviewerSetting = () => {
             data: { scheduling_settings: x },
           });
         }}
-        isOverflow={true}
+        isAvailability={true}
       />
     </Stack>
   );

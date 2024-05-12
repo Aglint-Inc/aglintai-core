@@ -243,12 +243,12 @@ const AddSupportTicket = ({
   }) => void;
 }) => {
   return (
-    <Stack gap={2} sx={{ fontFamily: 'SF Pro Text, system-ui,-apple-system' }}>
+    <Stack gap={2}>
       <CustomTextField
         required
         value={details?.title}
         label='Title'
-        placeholder='Enter Your Issue Title'
+        placeholder='Enter your issue title'
         error={detailsError?.title}
         onFocus={() => {
           setDetailsError({ ...detailsError, title: false });
@@ -258,7 +258,7 @@ const AddSupportTicket = ({
       <CustomAutocomplete
         required
         label='Issue Type'
-        placeholder='Choose Issue Type'
+        placeholder='Choose issue type'
         error={detailsError?.type}
         onFocus={() => {
           setDetailsError({ ...detailsError, type: false });
@@ -285,7 +285,7 @@ const AddSupportTicket = ({
         required
         multiline
         error={detailsError?.description}
-        placeholder='Describe Your Issue'
+        placeholder='Describe your issue'
         onFocus={() => {
           setDetailsError({ ...detailsError, description: false });
         }}

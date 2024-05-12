@@ -35,20 +35,31 @@ export default async function handler(
       }
 
       let role = data.role;
+      let manager_id = data.manager_id;
       delete data.role;
+      delete data.manager_id;
 
       const userData = await setMembers(data);
 
       if (userData && role && updater.role === 'admin') {
-        role = await setRelation({
+        const temp = await setRelation({
           user_id: userData.user_id,
           recruiter_id,
           role,
+          manager_id,
         });
+        role = temp.role;
+        manager_id = temp.manager_id;
       }
 
       return res.send(
-        getResponse({ data: { ...userData, role: role || undefined } }),
+        getResponse({
+          data: {
+            ...userData,
+            role: role || undefined,
+            manager_id: manager_id || undefined,
+          },
+        }),
       );
     } catch (error) {
       return res.send(getResponse({ error }));
@@ -59,7 +70,7 @@ export default async function handler(
 }
 
 const getResponse = (data: Partial<API_setMembersWithRole['response']>) => {
-  return { passwordReset: false, error: null, ...data };
+  return { data: null, error: null, ...data };
 };
 
 const setMembers = (
@@ -93,10 +104,10 @@ const setRelation = (
     .update(data)
     .eq('user_id', data.user_id)
     .eq('recruiter_id', data.recruiter_id)
-    .select('role')
+    .select('role, manager_id')
     .single()
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
-      return data.role;
+      return data;
     });
 };

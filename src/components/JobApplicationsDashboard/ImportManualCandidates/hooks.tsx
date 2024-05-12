@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { createBatches } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
+import { createBatches } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import {
   CsvUploadApi,
   UploadApiFormData,
-} from '@/src/pages/api/job/jobApplications/candidateUpload/types';
-import { handleJobApplicationApi } from '@/src/pages/api/job/jobApplications/utils';
+} from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
+import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
+import { useJobApplications } from '@/src/context/JobApplicationsContext';
+import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { CandidateInsert } from '@/src/types/candidates.types';
 import toast from '@/src/utils/toast';
 
@@ -110,7 +110,9 @@ const useUploadCandidate = () => {
     }
     if (failedCount > 0) {
       toast.error(
-        `${failedCount} resume${failedCount === 1 ? '' : 's'} failed to upload.`,
+        `${failedCount} resume${
+          failedCount === 1 ? '' : 's'
+        } failed to upload.`,
       );
     }
     return { confirmation: true, error: null };

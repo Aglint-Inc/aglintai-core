@@ -32,15 +32,16 @@ import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
+import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  let { cand_email, filter_json_id, interviewer_name, task_id } =
+    req.body as InitAgentBodyParams;
+  const candLogger = getCandidateLogger(task_id, '', '', 'email_agent');
   try {
-    let { cand_email, filter_json_id, interviewer_name, task_id } =
-      req.body as InitAgentBodyParams;
-
     if (!cand_email || !filter_json_id || !interviewer_name) {
       return res.status(400).send('missing fields');
     }
@@ -125,12 +126,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .eq('id', task_id),
       );
     }
-    const candLogger = getCandidateLogger(
-      task_id,
-      cand_details.candidate_name,
-      cand_details.candidate_id,
-      'email_agent',
-    );
+
     await candLogger(
       `Sent interview schedule email to {candidate}`,
       {
@@ -145,6 +141,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('ok');
   } catch (error) {
+    await candLogger(
+      agent_activities.email_agent.init_agent.failed_to_init,
+      {},
+    );
     console.error(error.message);
     return res.status(500).send(error.message);
   }
@@ -174,10 +174,10 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter(scheduling_settings,email_template)), candidates(*)))',
+        '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,email_template,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(*)))',
       )
       .eq('id', filter_json_id),
-  ) as CandidateScheduleDetails[];
+  ) as unknown as CandidateScheduleDetails[];
 
   if (!rec) {
     throw new Error('Invalid Application');

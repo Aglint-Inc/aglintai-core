@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 import { TeamListItem } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
+import { ContextValue } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { RecruiterUserType } from '@/src/types/data.types';
@@ -27,8 +28,10 @@ const Member = ({
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
-  // eslint-disable-next-line no-unused-vars
-  updateMember: (x: RecruiterUserType) => void;
+  updateMember: (
+    // eslint-disable-next-line no-unused-vars
+    x: Parameters<ContextValue['handelMemberUpdate']>[number]['data'],
+  ) => void;
   // eslint-disable-next-line no-unused-vars
   editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
@@ -102,10 +105,13 @@ const Member = ({
           member.role !== 'admin' && member.join_status !== 'invited'
         }
         onClickActive={{
-          onClick: () => updateMember({ ...member, is_suspended: false }),
+          onClick: () => updateMember({ is_suspended: false }),
         }}
         onClickSuspend={{
-          onClick: () => updateMember({ ...member, is_suspended: true }),
+          onClick: () =>
+            updateMember({
+              is_suspended: true,
+            }),
         }}
         onClickEditInvite={{ onClick: editMember }}
         onClickCancelInvite={{

@@ -159,6 +159,7 @@ type TempRecruiterUser = DatabaseTable['recruiter_user'];
 export interface RecruiterUserType extends TempRecruiterUser {
   role: DatabaseEnums['user_roles'];
   last_login?: string;
+  manager_id: string;
 }
 // export type RecruiterUserType =
 //   DatabaseTable['recruiter_user'] & {

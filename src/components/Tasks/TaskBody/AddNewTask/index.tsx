@@ -1,18 +1,14 @@
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
 import {
-  AvatarWithName,
   CreateTask,
   InterviewTaskPill,
-  ListCard,
-  ViewTaskCard,
+  ViewTaskCard
 } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
@@ -501,34 +497,10 @@ function AddNewTask() {
               }
               slotCreatedBy={
                 <>
-                  <ListCard
-                    isAvatarWithNameVisible={true}
-                    isListVisible={false}
-                    slotAvatarWithName={
-                      recruiterUser && (
-                        <AvatarWithName
-                          slotAvatar={
-                            <MuiAvatar
-                              height={'25px'}
-                              width={'25px'}
-                              src={recruiterUser.profile_image}
-                              variant='circular'
-                              fontSize='14px'
-                              level={capitalize(
-                                recruiterUser?.first_name +
-                                  ' ' +
-                                  (recruiterUser?.last_name ?? ''),
-                              )}
-                            />
-                          }
-                          textName={capitalize(
-                            recruiterUser?.first_name +
-                              ' ' +
-                              (recruiterUser?.last_name ?? ''),
-                          )}
-                        />
-                      )
-                    }
+                  <AssigneeList
+                    isOptionList={false}
+                    setSelectedAssignee={setSelectedAssignee}
+                    selectedAssignee={recruiterUser as any}
                   />
                 </>
               }

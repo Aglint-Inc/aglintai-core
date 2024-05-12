@@ -10,4 +10,5 @@ declare function JobDetailBlock(props: {
   textDescription?: React.ReactNode;
   styleBorder?: Types.Devlink.RuntimeProps;
   slotRichtextWarning?: Types.Devlink.Slot;
+  slotHiringTeamForm?: Types.Devlink.Slot;
 }): React.JSX.Element;

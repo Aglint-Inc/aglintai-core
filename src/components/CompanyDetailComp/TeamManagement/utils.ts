@@ -29,6 +29,7 @@ export const inviteUserApi = (
     employment: employmentTypeEnum;
     department: string;
     role: string;
+    manager_id: string;
     scheduling_settings: schedulingSettingType;
   },
   // id: string,
@@ -38,7 +39,7 @@ export const inviteUserApi = (
   //   email: string;
   // },
 ) => {
-  const res = axios.post<InviteUserAPIType['out']>('/api/invite_user', {
+  const res = axios.post<InviteUserAPIType['response']>('/api/invite_user', {
     users: [form],
     // id: id,
     recruiter_id,
@@ -64,7 +65,7 @@ export const reinviteUser = (email: string, id: string) => {
 };
 
 export type InviteUserAPIType = {
-  in: {
+  request: {
     users: {
       first_name: string;
       last_name: string;
@@ -74,6 +75,7 @@ export type InviteUserAPIType = {
       employment: employmentTypeEnum;
       department: string;
       role: DatabaseEnums['user_roles'];
+      manager_id: string;
       scheduling_settings: schedulingSettingType;
     }[];
     id: string;
@@ -83,7 +85,7 @@ export type InviteUserAPIType = {
     //   email: string;
     // };
   };
-  out: {
+  response: {
     created: boolean;
     error: string;
     user: RecruiterUserType;

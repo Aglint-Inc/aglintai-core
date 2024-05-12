@@ -3,6 +3,11 @@
     "source.fixAll": "always" // use always for both manual and auto saves
   },
   "cSpell.words": [
-    "supabase"
+    "nextjs",
+    "posthog",
+    "sendgrid",
+    "supabase",
+    "tiptap",
+    "webflow"
   ]
 }

@@ -9,7 +9,7 @@ import { EditJobTopbarLeft } from '@/devlink3';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import {
   validateDescription,
-  validateString
+  validateString,
 } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
@@ -45,7 +45,11 @@ const JobEdit = () => {
     description,
     job_type,
     location,
-    workplace_type
+    workplace_type,
+    hiring_manager,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
   } = {
     job_title: job.job_title,
     company: job.company,
@@ -54,59 +58,102 @@ const JobEdit = () => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
-    ...(job.draft ?? {})
+    hiring_manager: job.hiring_manager,
+    recruiter: job.recruiter,
+    recruiting_coordinator: job.recruiting_coordinator,
+    sourcer: job.sourcer,
+    ...(job.draft ?? {}),
   };
   const { push } = useRouter();
   const [fields, setFields] = useState<Form>({
     job_title: {
       value: job_title,
+      required: true,
       error: {
         value: validateString(job_title),
-        helper: `Job title can't be empty`
-      }
+        helper: `Job title can't be empty`,
+      },
     },
     company: {
       value: company,
+      required: true,
       error: {
         value: validateString(company),
-        helper: `Company name can't be empty`
-      }
+        helper: `Company name can't be empty`,
+      },
     },
     department: {
       value: department,
+      required: true,
       error: {
         value: validateString(department),
-        helper: `Department name can't be empty`
-      }
+        helper: `Department name can't be empty`,
+      },
     },
     job_type: {
       value: job_type,
+      required: true,
       error: {
         value: validateString(job_type),
-        helper: `Job type can't be empty`
-      }
+        helper: `Job type can't be empty`,
+      },
     },
     location: {
       value: location,
+      required: true,
       error: {
         value: validateString(location),
-        helper: `Job location can't be empty`
-      }
+        helper: `Job location can't be empty`,
+      },
     },
     workplace_type: {
       value: workplace_type,
+      required: true,
       error: {
         value: validateString(workplace_type),
-        helper: `Workplace type can't be empty`
-      }
+        helper: `Workplace type can't be empty`,
+      },
     },
     description: {
       value: description,
+      required: true,
       error: {
         value: validateDescription(description),
-        helper: 'Job description must have more than 100 characters'
-      }
-    }
+        helper: 'Job description must have more than 100 characters',
+      },
+    },
+    hiring_manager: {
+      value: hiring_manager,
+      required: true,
+      error: {
+        value: validateString(hiring_manager),
+        helper: 'Hiring manager must be selected',
+      },
+    },
+    recruiter: {
+      value: recruiter,
+      required: true,
+      error: {
+        value: validateString(recruiter),
+        helper: 'Recruiter must be selected',
+      },
+    },
+    recruiting_coordinator: {
+      value: recruiting_coordinator,
+      required: false,
+      error: {
+        value: false,
+        helper: 'Recruiter coordinator must be selected',
+      },
+    },
+    sourcer: {
+      value: sourcer,
+      required: false,
+      error: {
+        value: false,
+        helper: 'Sourcer must be selected',
+      },
+    },
   });
   const [saving, setSaving] = useState(false);
   const [show, setShow] = useState(false);
@@ -152,14 +199,15 @@ const validateForms = (fields: Form) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
       value: value.value,
+      required: value.required,
       error: {
         value: value?.value
           ? key === 'description'
             ? value.value.length < 100
             : value.value.length === 0
-          : true,
-        helper: value.error.helper
-      }
+          : value.required,
+        helper: value.error.helper,
+      },
     };
     return acc;
   }, {} as Form);
@@ -172,7 +220,7 @@ type Payload = Parameters<
 const JobEditForm = ({
   fields,
   setFields,
-  setSaving
+  setSaving,
 }: {
   fields: Form;
   setFields: Dispatch<SetStateAction<Form>>;
@@ -187,16 +235,30 @@ const JobEditForm = ({
     return acc;
   }, {} as Payload);
 
+  const {
+    hiring_manager,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
+    ...safeNewJob
+  } = newJob;
+
   const handleSave = async () => {
     setSaving(true);
-    await handleJobAsyncUpdate(job.id, { draft: { ...job.draft, ...newJob } });
+    await handleJobAsyncUpdate(job.id, {
+      draft: { ...job.draft, ...safeNewJob },
+      hiring_manager,
+      recruiter,
+      recruiting_coordinator,
+      sourcer,
+    });
     setSaving(false);
   };
 
   const handleChange = (name: keyof Form, value: string | number) => {
     const newFields = validateForms({
       ...fields,
-      [name]: { ...fields[name], value }
+      [name]: { ...fields[name], value },
     });
     setFields(newFields);
   };

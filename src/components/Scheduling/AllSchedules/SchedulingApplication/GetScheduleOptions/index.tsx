@@ -1,4 +1,4 @@
-import { Dialog, Stack, TextField } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
@@ -197,7 +197,6 @@ function GetScheduleOptionsDialog() {
           }
           slotDateRangeInput={
             <Stack direction={'row'} width={'100%'} spacing={2}>
-              <TextField fullWidth />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={dayjs(dateRange?.start_date)}

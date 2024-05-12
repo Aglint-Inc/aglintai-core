@@ -10,11 +10,9 @@ import React, {
 import { SelectedMemberPill, SidedrawerBodyDebrief } from '@/devlink2';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
+import { CompanyMember } from '@/src/queries/company-members';
 import { CreateDebriefSession } from '@/src/queries/interview-plans';
-import {
-  InterviewCoordinatorType,
-  InterviewSessionType,
-} from '@/src/queries/interview-plans/types';
+import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../Common/MuiAvatar';
@@ -31,7 +29,7 @@ type DebriefFormProps = Pick<
   CustomDebriefFormProps;
 
 type CustomDebriefFormProps = {
-  members: InterviewCoordinatorType[];
+  members: CompanyMember[];
 };
 
 type DebriefFormFields = {
@@ -305,7 +303,7 @@ const InterviewersField = ({
   handleChange,
 }: {
   value: DebriefFormProps['members'];
-  memberRecommendations: InterviewCoordinatorType[];
+  memberRecommendations: CompanyMember[];
   handleChange: HandleChange;
 }) => {
   const options = memberRecommendations.map((m) => ({

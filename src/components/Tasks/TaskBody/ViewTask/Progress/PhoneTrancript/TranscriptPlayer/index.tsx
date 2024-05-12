@@ -76,6 +76,9 @@ function TranscriptPlayer({ src }: { src: string }) {
       <ShowCode>
         <ShowCode.When isTrue={!playing}>
           <IconPlayerPlay
+            style={{
+              cursor: 'pointer',
+            }}
             onClick={() => {
               audioRef.current?.play();
               setPlaying(true);
@@ -84,6 +87,9 @@ function TranscriptPlayer({ src }: { src: string }) {
         </ShowCode.When>
         <ShowCode.When isTrue={playing}>
           <IconPlayerPause
+            style={{
+              cursor: 'pointer',
+            }}
             onClick={() => {
               audioRef.current?.pause();
               setPlaying(false);

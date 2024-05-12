@@ -1,5 +1,10 @@
 export const agent_activities = {
   phone_agent: {
+    phone_call: {
+      failed: 'Failed to call the candidate',
+      candidate_no_answer: `{candidate} Didn't Pick Up - Rescheduled Call to {time_format}`,
+      candidate_reject: `{candidate} Didn't Pick Up - Rescheduled Call to {time_format}`,
+    },
     tools: {
       'find-time-zone': {
         failed_to_find_time_zone: `Unable to determine the time zone for the candidate in {location}.`,
@@ -31,6 +36,9 @@ export const agent_activities = {
     //
   },
   email_agent: {
+    init_agent: {
+      failed_to_init: 'Failed to initialise email agent due to server error',
+    },
     tools: {
       'find-time-zone': {
         failed_to_find_time_zone: `Unable to find the time zone for the candidate in {location}. {err_msg}`,

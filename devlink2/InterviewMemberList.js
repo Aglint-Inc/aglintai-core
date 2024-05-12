@@ -1,25 +1,26 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import { MemberListCard } from "./MemberListCard";
-import { InterviewMemberSide } from "./InterviewMemberSide";
+import { ModuleMembers } from "./ModuleMembers";
 import * as _utils from "./utils";
 import _styles from "./InterviewMemberList.module.css";
 
 export function InterviewMemberList({
   as: _Component = _Builtin.Block,
-  slotInterviewCard,
-  onClickAddMember = {},
-  slotQualifiedMemberList,
-  onClickAddTrainee = {},
-  slotMembersInTraining,
-  isMembersTrainingVisible = true,
   textObjective = "This module aims to evaluate candidates' ability to write efficient, maintainable, and bug-free C++ code, covering a range of topics such as syntax, data structures, algorithms, object-oriented programming concepts, memory management, and best practices.",
+  textDepartment = "Engineering",
+  slotNewTabPill,
+  slotModuleContent,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "interview-sub-table")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "interview-sub-table-left", "plr-0")}
+        className={_utils.cx(
+          _styles,
+          "interview-sub-table-left",
+          "plr-0",
+          "gap-0"
+        )}
         tag="div"
       >
         <_Builtin.Block
@@ -27,94 +28,65 @@ export function InterviewMemberList({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-600")}
-            tag="div"
-          >
-            {textObjective}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        <_Builtin.Block className={_utils.cx(_styles, "plr-20")} tag="div">
-          <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1172")}
+            className={_utils.cx(_styles, "div-block-1498")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold")}
-              tag="div"
-            >
-              {"Qualified Members"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1171", "cursor-pointer")}
-              tag="div"
-              {...onClickAddMember}
-            >
-              <_Builtin.HtmlEmbed
-                className={_utils.cx(_styles, "icons")}
-                value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75%201.875V5.25H10.125C10.3438%205.25%2010.5234%205.32031%2010.6641%205.46094C10.8047%205.60156%2010.875%205.78125%2010.875%206C10.875%206.21875%2010.8047%206.39844%2010.6641%206.53906C10.5234%206.67969%2010.3438%206.75%2010.125%206.75H6.75V10.125C6.75%2010.3438%206.67969%2010.5234%206.53906%2010.6641C6.39844%2010.8047%206.21875%2010.875%206%2010.875C5.78125%2010.875%205.60156%2010.8047%205.46094%2010.6641C5.32031%2010.5234%205.25%2010.3438%205.25%2010.125V6.75H1.875C1.65625%206.75%201.47656%206.67969%201.33594%206.53906C1.19531%206.39844%201.125%206.21875%201.125%206C1.125%205.78125%201.19531%205.60156%201.33594%205.46094C1.47656%205.32031%201.65625%205.25%201.875%205.25H5.25V1.875C5.25%201.65625%205.32031%201.47656%205.46094%201.33594C5.60156%201.19531%205.78125%201.125%206%201.125C6.21875%201.125%206.39844%201.19531%206.53906%201.33594C6.67969%201.47656%206.75%201.65625%206.75%201.875Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
-              />
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-blue-500")}
-                tag="div"
-              >
-                {"Add"}
-              </_Builtin.Block>
-            </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot-member-list-card")}
-            tag="div"
-          >
-            {slotQualifiedMemberList ?? <MemberListCard />}
-          </_Builtin.Block>
-        </_Builtin.Block>
-        {isMembersTrainingVisible ? (
-          <_Builtin.Block className={_utils.cx(_styles, "plr-20")} tag="div">
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1172")}
+              className={_utils.cx(_styles, "div-block-1497")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "div-block-1496")}
                 tag="div"
-              >
-                {"Members in Training"}
-              </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(
-                  _styles,
-                  "div-block-1171",
-                  "cursor-pointer"
-                )}
-                tag="div"
-                {...onClickAddTrainee}
               >
                 <_Builtin.HtmlEmbed
                   className={_utils.cx(_styles, "icons")}
-                  value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6.75%201.875V5.25H10.125C10.3438%205.25%2010.5234%205.32031%2010.6641%205.46094C10.8047%205.60156%2010.875%205.78125%2010.875%206C10.875%206.21875%2010.8047%206.39844%2010.6641%206.53906C10.5234%206.67969%2010.3438%206.75%2010.125%206.75H6.75V10.125C6.75%2010.3438%206.67969%2010.5234%206.53906%2010.6641C6.39844%2010.8047%206.21875%2010.875%206%2010.875C5.78125%2010.875%205.60156%2010.8047%205.46094%2010.6641C5.32031%2010.5234%205.25%2010.3438%205.25%2010.125V6.75H1.875C1.65625%206.75%201.47656%206.67969%201.33594%206.53906C1.19531%206.39844%201.125%206.21875%201.125%206C1.125%205.78125%201.19531%205.60156%201.33594%205.46094C1.47656%205.32031%201.65625%205.25%201.875%205.25H5.25V1.875C5.25%201.65625%205.32031%201.47656%205.46094%201.33594C5.60156%201.19531%205.78125%201.125%206%201.125C6.21875%201.125%206.39844%201.19531%206.53906%201.33594C6.67969%201.47656%206.75%201.65625%206.75%201.875Z%22%20fill%3D%22%23337FBD%22%2F%3E%0A%3C%2Fsvg%3E"
+                  value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M16%203H11C10.7083%203%2010.4688%203.09375%2010.2812%203.28125C10.0938%203.46875%2010%203.70833%2010%204V16C10%2016.2917%2010.0938%2016.5312%2010.2812%2016.7188C10.4688%2016.9062%2010.7083%2017%2011%2017H16C16.2917%2017%2016.5312%2016.9062%2016.7188%2016.7188C16.9062%2016.5312%2017%2016.2917%2017%2016V4C17%203.70833%2016.9062%203.46875%2016.7188%203.28125C16.5312%203.09375%2016.2917%203%2016%203ZM11%202H16C16.5625%202.02083%2017.0312%202.21875%2017.4062%202.59375C17.7812%202.96875%2017.9792%203.4375%2018%204V16C17.9792%2016.5625%2017.7812%2017.0312%2017.4062%2017.4062C17.0312%2017.7812%2016.5625%2017.9792%2016%2018H11C10.4375%2017.9792%209.96875%2017.7812%209.59375%2017.4062C9.21875%2017.0312%209.02083%2016.5625%209%2016V4C9.02083%203.4375%209.21875%202.96875%209.59375%202.59375C9.96875%202.21875%2010.4375%202.02083%2011%202ZM8%206V7H4C3.70833%207%203.46875%207.09375%203.28125%207.28125C3.09375%207.46875%203%207.70833%203%208V16C3%2016.2917%203.09375%2016.5312%203.28125%2016.7188C3.46875%2016.9062%203.70833%2017%204%2017H8.15625C8.30208%2017.375%208.5%2017.7083%208.75%2018H4C3.4375%2017.9792%202.96875%2017.7812%202.59375%2017.4062C2.21875%2017.0312%202.02083%2016.5625%202%2016V8C2.02083%207.4375%202.21875%206.96875%202.59375%206.59375C2.96875%206.21875%203.4375%206.02083%204%206H8ZM4.75%2012H6.25C6.70833%2012.0417%206.95833%2012.2917%207%2012.75V14.25C6.95833%2014.7083%206.70833%2014.9583%206.25%2015H4.75C4.29167%2014.9583%204.04167%2014.7083%204%2014.25V12.75C4.04167%2012.2917%204.29167%2012.0417%204.75%2012ZM5%2014H6V13H5V14ZM12%2014.25V12.75C12.0417%2012.2917%2012.2917%2012.0417%2012.75%2012H14.25C14.7083%2012.0417%2014.9583%2012.2917%2015%2012.75V14.25C14.9583%2014.7083%2014.7083%2014.9583%2014.25%2015H12.75C12.2917%2014.9583%2012.0417%2014.7083%2012%2014.25ZM13%2014H14V13H13V14ZM4.75%208H6.25C6.70833%208.04167%206.95833%208.29167%207%208.75V10.25C6.95833%2010.7083%206.70833%2010.9583%206.25%2011H4.75C4.29167%2010.9583%204.04167%2010.7083%204%2010.25V8.75C4.04167%208.29167%204.29167%208.04167%204.75%208ZM5%2010H6V9H5V10ZM12%204.75C12.0417%204.29167%2012.2917%204.04167%2012.75%204H14.25C14.7083%204.04167%2014.9583%204.29167%2015%204.75V6.25C14.9583%206.70833%2014.7083%206.95833%2014.25%207H12.75C12.2917%206.95833%2012.0417%206.70833%2012%206.25V4.75ZM13%205V6H14V5H13ZM12.75%2011C12.2917%2010.9583%2012.0417%2010.7083%2012%2010.25V8.75C12.0417%208.29167%2012.2917%208.04167%2012.75%208H14.25C14.7083%208.04167%2014.9583%208.29167%2015%208.75V10.25C14.9583%2010.7083%2014.7083%2010.9583%2014.25%2011H12.75ZM13%209V10H14V9H13Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
                 />
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-blue-500")}
+                  className={_utils.cx(_styles, "text-grey-600")}
                   tag="div"
                 >
-                  {"Add"}
+                  {"Department"}
                 </_Builtin.Block>
               </_Builtin.Block>
+              <_Builtin.Block tag="div">{textDepartment}</_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot-member-list-card")}
+              className={_utils.cx(_styles, "div-block-1497")}
               tag="div"
             >
-              {slotMembersInTraining ?? <MemberListCard />}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1496")}
+                tag="div"
+              >
+                <_Builtin.HtmlEmbed
+                  className={_utils.cx(_styles, "icons")}
+                  value="%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6%203C5.70833%203%205.46875%203.09375%205.28125%203.28125C5.09375%203.46875%205%203.70833%205%204V16C5%2016.2917%205.09375%2016.5312%205.28125%2016.7188C5.46875%2016.9062%205.70833%2017%206%2017H14C14.2917%2017%2014.5312%2016.9062%2014.7188%2016.7188C14.9062%2016.5312%2015%2016.2917%2015%2016V4C15%203.70833%2014.9062%203.46875%2014.7188%203.28125C14.5312%203.09375%2014.2917%203%2014%203H6ZM4%204C4.02083%203.4375%204.21875%202.96875%204.59375%202.59375C4.96875%202.21875%205.4375%202.02083%206%202H14C14.5625%202.02083%2015.0312%202.21875%2015.4062%202.59375C15.7812%202.96875%2015.9792%203.4375%2016%204V16C15.9792%2016.5625%2015.7812%2017.0312%2015.4062%2017.4062C15.0312%2017.7812%2014.5625%2017.9792%2014%2018H6C5.4375%2017.9792%204.96875%2017.7812%204.59375%2017.4062C4.21875%2017.0312%204.02083%2016.5625%204%2016V4ZM6.5%206H13.5C13.8125%206.02083%2013.9792%206.1875%2014%206.5C13.9792%206.8125%2013.8125%206.97917%2013.5%207H6.5C6.1875%206.97917%206.02083%206.8125%206%206.5C6.02083%206.1875%206.1875%206.02083%206.5%206ZM6.5%209H13.5C13.8125%209.02083%2013.9792%209.1875%2014%209.5C13.9792%209.8125%2013.8125%209.97917%2013.5%2010H6.5C6.1875%209.97917%206.02083%209.8125%206%209.5C6.02083%209.1875%206.1875%209.02083%206.5%209ZM6.5%2012H10.5C10.8125%2012.0208%2010.9792%2012.1875%2011%2012.5C10.9792%2012.8125%2010.8125%2012.9792%2010.5%2013H6.5C6.1875%2012.9792%206.02083%2012.8125%206%2012.5C6.02083%2012.1875%206.1875%2012.0208%206.5%2012Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-grey-600")}
+                  tag="div"
+                >
+                  {"Objective"}
+                </_Builtin.Block>
+              </_Builtin.Block>
+              <_Builtin.Block tag="div">{textObjective}</_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>
-        ) : null}
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "interview-sub-table-right", "p-0")}
-        tag="div"
-      >
-        {slotInterviewCard ?? <InterviewMemberSide />}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1499")}
+            tag="div"
+          >
+            {slotNewTabPill}
+          </_Builtin.Block>
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1500")}
+          tag="div"
+        >
+          {slotModuleContent ?? <ModuleMembers />}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

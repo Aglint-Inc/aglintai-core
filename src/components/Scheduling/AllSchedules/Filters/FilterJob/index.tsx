@@ -13,7 +13,7 @@ import {
 import { FilterType } from '../../store';
 
 function FilterJob() {
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
@@ -46,8 +46,8 @@ function FilterJob() {
   }, []);
 
   const allJobs = useMemo(() => {
-    return jobsData?.jobs?.filter((job) => job.status === 'published');
-  }, [jobsData?.jobs]);
+    return jobs?.data?.filter((job) => job.status === 'published');
+  }, [jobs?.data]);
 
   return (
     <>

@@ -76,9 +76,11 @@ const TeamManagement = () => {
     ...new Set(
       members
         .filter((ele) => ele.department)
-        .map((item) => String(item.department).toLowerCase()),
+        .map((item) => String(item.department)),
     ),
   ];
+
+  
 
   const uniqueLocations = [
     ...new Set(
@@ -87,7 +89,7 @@ const TeamManagement = () => {
         .map(
           (item) =>
             item.interview_location &&
-            String(item.interview_location).toLowerCase(),
+            String(item.interview_location),
         ),
     ),
   ];
@@ -96,7 +98,7 @@ const TeamManagement = () => {
     ...new Set(
       members
         .filter((ele) => ele.role)
-        .map((item) => item.role && String(item.role).toLowerCase()),
+        .map((item) => item.role && String(item.role)),
     ),
   ];
 
@@ -177,7 +179,7 @@ const TeamManagement = () => {
                     </InputAdornment>
                   ),
                 }}
-                placeholder='Search by name, email or title'
+                placeholder='Search by Name, Email or Title'
                 onChange={handleSearchInputChange}
                 borderRadius={10}
                 height={42}
@@ -265,7 +267,7 @@ const TeamManagement = () => {
                       data: updatedMem,
                     }).then(() => {
                       toast.success(
-                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'Suspended' : 'Activated'}.`,
+                        `${member.first_name}'s account is ${updatedMem.is_suspended ? 'suspended successfully' : 'activated successfully'}.`,
                       );
                     });
                   }}
@@ -329,6 +331,12 @@ const TeamManagement = () => {
       {editMember ? (
         <EditMember
           open={Boolean(editMember)}
+          memberList={members
+            .map((mem) => ({
+              id: mem.user_id,
+              name: `${mem.first_name} ${mem.last_name}`.trim(),
+            }))
+            .filter((mem) => mem.id !== editMember.user_id)}
           member={editMember}
           onClose={() => {
             setEditMember(null);
@@ -338,6 +346,10 @@ const TeamManagement = () => {
         <AddMember
           open={openDrawer.open}
           menu={openDrawer.window}
+          memberList={members.map((mem) => ({
+            id: mem.user_id,
+            name: `${mem.first_name} ${mem.last_name}`.trim(),
+          }))}
           pendingList={pendingList}
           onClose={() => {
             setOpenDrawer({ open: false, window: null });

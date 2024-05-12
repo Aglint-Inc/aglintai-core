@@ -11,8 +11,10 @@ import {
   EmailAgentId,
   PhoneAgentId,
 } from '@/src/components/Tasks/utils';
-import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
-import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
+import {
+  APICandidateConfirmSlot,
+  ApiFindAvailability,
+} from '@/src/types/aglintApi/schedulingApi';
 import {
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -28,6 +30,7 @@ import {
   getTimeZoneOfGeo,
 } from '@/src/utils/location-to-time-zone';
 import { supabase } from '@/src/utils/supabase/client';
+import toast from '@/src/utils/toast';
 
 import { addScheduleActivity } from '../queries/utils';
 import { mailHandler } from '../utils';
@@ -333,8 +336,8 @@ export const sendToCandidate = async ({
           recruiter_id: recruiter_id,
           user_tz: user_tz,
           candidate_email: selectedApplication.candidates.email,
-          schedule_id: createCloneRes.schedule.id,
-        } as ConfirmApiBodyParams;
+          is_debreif: true,
+        } as APICandidateConfirmSlot;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
           bodyParams,
@@ -430,9 +433,9 @@ export const sendToCandidate = async ({
           ],
           recruiter_id: recruiter_id,
           user_tz: user_tz,
-          candidate_email: selectedApplication.candidates.email,
           schedule_id: checkSch[0].id,
-        } as ConfirmApiBodyParams;
+          is_debreif: true,
+        } as APICandidateConfirmSlot;
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
           bodyParams,
@@ -508,7 +511,7 @@ export const scheduleWithAgent = async ({
           allSessions: sessionsWithPlan.sessions,
           session_ids,
           scheduleName,
-          coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
+          coordinator_id: null,
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
@@ -540,8 +543,18 @@ export const scheduleWithAgent = async ({
               .filter((ses) => ses.isSelected)
               .map((ses) => {
                 return {
-                  ...ses,
-                  id: ses.newId,
+                  id: ses.id,
+                  name: ses.name,
+                  interview_meeting: ses.interview_meeting
+                    ? {
+                        id: ses.interview_meeting.id,
+                        start_time: ses.interview_meeting.start_time,
+                        end_time: ses.interview_meeting.end_time,
+                        meeting_link: ses.interview_meeting.meeting_link,
+                      }
+                    : null,
+                  session_order: ses.session_order,
+                  users: [],
                 };
               }),
           })
@@ -621,7 +634,22 @@ export const scheduleWithAgent = async ({
           .from('new_tasks')
           .update({
             filter_id: filterJson.id,
-            session_ids: selectedSessions,
+            session_ids: selectedSessions.map((ses) => {
+              return {
+                id: ses.id,
+                name: ses.name,
+                interview_meeting: ses.interview_meeting
+                  ? {
+                      id: ses.interview_meeting.id,
+                      start_time: ses.interview_meeting.start_time,
+                      end_time: ses.interview_meeting.end_time,
+                      meeting_link: ses.interview_meeting.meeting_link,
+                    }
+                  : null,
+                session_order: ses.session_order,
+                users: [],
+              };
+            }),
           })
           .eq('id', task_id);
         if (eroorSubTasks) throw new Error(eroorSubTasks.message);
@@ -723,7 +751,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
           allSessions: sessionsWithPlan.sessions,
           session_ids,
           scheduleName,
-          coordinator_id: sessionsWithPlan.interviewPlan.coordinator_id,
+          coordinator_id: null,
           supabase,
           recruiter_id: recruiter_id,
           rec_user_id,
@@ -1237,7 +1265,7 @@ const checkAvailibility = async ({
       end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
       user_tz: timezone || 'America/Los_Angeles',
       is_debreif: false,
-    } as BodyParams,
+    } as ApiFindAvailability,
   );
 
   if (resAllOptions.data.length === 0) {
@@ -1276,16 +1304,51 @@ const checkAvailibility = async ({
   }
 };
 
-export const getTimeZoneBrowser = () => {
-  const localTime = new Date().toTimeString();
-  const timeZonea = localTime.substring(
-    localTime.lastIndexOf('(') + 1,
-    localTime.lastIndexOf(')'),
-  );
-  const timezone = timeZonea
-    .split(' ')
-    .map((ele) => ele[0])
-    .join('');
+export const onClickResendInvite = async ({
+  session_id,
+  candidate_name,
+  candidate_email,
+  job_title,
+  recruiter_id,
+  rec_email,
+  rec_user_id,
+  schedule_id,
+  application_id,
+}) => {
+  try {
+    const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
+      .from('interview_filter_json')
+      .select('*')
+      .contains('session_ids', [session_id]);
 
-  return timezone;
+    if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+
+    if (checkFilterJson.length > 0) {
+      const res = await mailHandler({
+        candidate_name: candidate_name,
+        filter_id: checkFilterJson[0].id,
+        mail: candidate_email,
+        position: job_title,
+        rec_id: recruiter_id,
+        schedule_id: schedule_id,
+        schedule_name: `Interview for ${job_title} - ${candidate_name}`,
+        supabase,
+        rec_mail: rec_email,
+      });
+
+      if (res) {
+        addScheduleActivity({
+          title: `Interview link resent`,
+          application_id: application_id,
+          logger: rec_user_id,
+          type: 'schedule',
+          supabase,
+          created_by: rec_user_id,
+        });
+        toast.success('Invite resent successfully.');
+      }
+    }
+  } catch (e) {
+    toast.error(e.message);
+  }
 };
