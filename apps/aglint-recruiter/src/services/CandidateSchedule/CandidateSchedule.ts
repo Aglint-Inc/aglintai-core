@@ -4,12 +4,11 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
-
-import { InterviewModuleRelationType } from '@/src/types/data.types';
+import { InterviewModuleRelationType } from '@repo/shared-types/types/data.types';
 import {
   holidayType,
   schedulingSettingType,
-} from '@/src/types/scheduleTypes/scheduleSetting';
+} from '@repo/shared-types/types/scheduleTypes/scheduleSetting';
 import {
   CompServiceKeyCred,
   InterDetailsType,
@@ -17,7 +16,7 @@ import {
   IntervMeta,
   TimeDurationDayjsType,
   TimeDurationType,
-} from '@/src/types/scheduleTypes/types2';
+} from '@repo/shared-types/types/scheduleTypes/types2';
 import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -32,7 +31,7 @@ import {
   SessionInterviewerType,
   SessionsCombType,
   SessionSlotType,
-} from '../../types/scheduleTypes/types';
+} from '@repo/shared-types/types/scheduleTypes/types';
 import { GoogleCalender } from '../GoogleCalender/google-calender';
 import {
   fetch_details_from_db,

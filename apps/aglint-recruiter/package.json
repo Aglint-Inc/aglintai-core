@@ -6,11 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "tslint": "npx tsc --noEmit",
-    "lint": "next lint",
     "format": "prettier --write \"{,!(.next)/**/,!(.devlink)/**/}*.{js,jsx}\"",
     "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/types/schema.ts",
-    "devlink": "npx webflow devlink sync"
+    "devlink": "npx webflow devlink sync",
+    "lint": "next lint --max-warnings 0"
+
   },
   "dependencies": {
     "@emotion/styled": "^11.11.5",
@@ -41,18 +41,12 @@
     "@trigger.dev/sdk": "^2.2.11",
     "@types/lodash": "^4.14.199",
     "@types/react-beautiful-dnd": "^13.1.6",
-    "@typescript-eslint/typescript-estree": "^6.9.1",
     "@vercel/edge-config": "^1.1.0",
     "@webflow/webflow-cli": "^1.6.9",
     "axios": "^1.6.8",
     "chart.js": "^4.4.1",
     "dayjs": "1.11.6",
     "dayjs-plugin-utc": "^0.1.2",
-    "eslint": "8.26.0",
-    "eslint-config-next": "13.0.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-security": "^1.5.0",
-    "eslint-plugin-simple-import-sort": "^8.0.0",
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
     "google-auth-library": "^8.9.0",
@@ -98,6 +92,11 @@
   },
   "devDependencies": {
     "@types/react-speech-recognition": "^3.9.5",
+    "@repo/typescript-config": "*",
+    "@next/eslint-plugin-next": "^14.1.1",
+    "@repo/shared-types": "*",
+    "eslint": "8.57.0",
+    "@repo/eslint-config": "*",
     "prettier": "^3.0.3",
     "typescript": "^5.1.3"
   },
