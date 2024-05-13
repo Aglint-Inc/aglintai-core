@@ -361,6 +361,7 @@ export * from "./StepBottomProgress";
 export * from "./SubMenu";
 export * from "./SublinkSubMenu";
 export * from "./SuggestedSkillPill";
+export * from "./TaskDetailBlock";
 export * from "./TeamAddRole";
 export * from "./TeamInvite";
 export * from "./TeamInvitesBlock";

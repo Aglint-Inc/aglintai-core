@@ -8,6 +8,7 @@ export function JobDetailInterview({
   as: _Component = _Builtin.Block,
   slotNewInterviewPlanCard,
   onClickViewScheduler = {},
+  textButton = "View in scheduler",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-972")} tag="div">
@@ -24,7 +25,7 @@ export function JobDetailInterview({
             className={_utils.cx(_styles, "text-blue-500")}
             tag="div"
           >
-            {"View in scheduler"}
+            {textButton}
           </_Builtin.Block>
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "icons")}

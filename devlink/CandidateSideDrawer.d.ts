@@ -39,4 +39,6 @@ declare function CandidateSideDrawer(props: {
   onClickLinkedin?: Types.Devlink.RuntimeProps;
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
   slotNewTabPill?: Types.Devlink.Slot;
+  textMail?: React.ReactNode;
+  textPhone?: React.ReactNode;
 }): React.JSX.Element;
