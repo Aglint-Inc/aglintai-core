@@ -13,11 +13,16 @@ module.exports = {
   globals: {
     React: true,
     JSX: true,
+    fetch: true,
+    localStorage: true,
+    window: true,
+    document: true,
+    navigator: true
   },
   env: {
     node: true,
   },
-  plugins: ["only-warn"],
+  plugins: ["only-warn", "security"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -29,6 +34,16 @@ module.exports = {
     // Ignore dotfiles
     ".*.js",
     "node_modules/",
+    "devlink_queries",
+    "devlink",
+    "src/components/Icons",
+    "src/components/JobTracker/Activities/devlink",
   ],
   overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
+  rules:
+  {
+    "no-unused-vars": "error",
+    "no-console": "error",
+  }
+
 };

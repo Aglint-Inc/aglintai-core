@@ -10,7 +10,6 @@
     "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/types/schema.ts",
     "devlink": "npx webflow devlink sync",
     "lint": "next lint --max-warnings 0"
-
   },
   "dependencies": {
     "@emotion/styled": "^11.11.5",
@@ -88,13 +87,13 @@
     "uuid": "^9.0.1",
     "vercel-toast": "^1.8.0",
     "xlsx": "^0.18.5",
+    "@repo/shared-types": "*",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/react-speech-recognition": "^3.9.5",
     "@repo/typescript-config": "*",
     "@next/eslint-plugin-next": "^14.1.1",
-    "@repo/shared-types": "*",
     "eslint": "8.57.0",
     "@repo/eslint-config": "*",
     "prettier": "^3.0.3",
