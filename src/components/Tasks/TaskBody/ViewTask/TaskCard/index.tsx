@@ -60,7 +60,6 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     useState<CustomDatabase['public']['Enums']['task_priority']>(null);
   const [selectedStatus, setSelectedStatus] =
     useState<DatabaseEnums['task_status']>(null);
-
   useEffect(() => {
     if (task) {
       setScheduleDate({ ...task.schedule_date_range });

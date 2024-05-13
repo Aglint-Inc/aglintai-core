@@ -1,6 +1,7 @@
 .div-block-1433 {
   width: 100%;
   height: calc(100vh - 120px);
+  height: calc(100vh - 120px);
 }
 
 .div-block-1436 {
@@ -129,6 +130,12 @@
 
 .div-block-1440.job-cand.height-40 {
   height: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.div-block-1440.job-cand.height-40 {
+  height: 40px;
 }
 
 .div-block-1441 {
@@ -170,6 +177,11 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
 }
 
 .icons.cursor-pointer.mr-20 {
