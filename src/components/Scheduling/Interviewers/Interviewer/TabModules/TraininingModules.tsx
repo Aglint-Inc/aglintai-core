@@ -85,6 +85,8 @@ function TraininingModules({
                 isDropdownIconVisible={false}
                 isMoveToQualifierVisible={false}
                 isTrainingProgessVisible={true}
+                isRemoveVisible={false}
+                isInterviewsVisible={false}
                 slotProgressBar={
                   <>
                     {trainingStatusArray.map((item, index) => {

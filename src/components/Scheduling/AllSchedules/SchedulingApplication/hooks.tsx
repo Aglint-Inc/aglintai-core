@@ -102,7 +102,7 @@ export const useGetScheduleApplication = () => {
           setScheduleName(
             `Interview for ${sessionsWithPlan.application?.public_jobs?.job_title} - ${sessionsWithPlan.application?.candidates?.first_name}`,
           );
-          if (sessionsWithPlan.sessions.length > 0) {
+          if (sessionsWithPlan?.sessions?.length > 0) {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
@@ -117,8 +117,8 @@ export const useGetScheduleApplication = () => {
             supabase,
           );
           setSelectedApplication(sessionsWithPlan.application);
-
-          if (sessionsWithPlan.sessions.length > 0) {
+          setScheduleName(schedule[0].schedule_name);
+          if (sessionsWithPlan?.sessions?.length > 0) {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
@@ -126,7 +126,6 @@ export const useGetScheduleApplication = () => {
               ),
             );
 
-            setScheduleName(schedule[0].schedule_name);
             if (schedule[0].coordinator_id) {
               setSelCoordinator(schedule[0].coordinator_id);
             }

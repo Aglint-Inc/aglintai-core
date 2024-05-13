@@ -290,10 +290,10 @@
 
 .div-block-1699 {
   overflow: auto;
-  padding-top: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 30px;

@@ -1,48 +1,14 @@
 import { InputAdornment, Stack } from '@mui/material';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 import { AllInterviewEmpty, InterviewMemberSide } from '@/devlink2';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
-import { DatabaseEnums } from '@/src/types/customSchema';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
-import { supabase } from '@/src/utils/supabase/client';
 
 import DynamicLoader from '../../Interviewers/DynamicLoader';
+import { ScheduleListType } from './hooks';
 import ScheduleMeetingList from './ScheduleMeetingList';
-
-export type ScheduleListType = {
-  interview_meeting: {
-    end_time: string;
-    job_id: string;
-    job_title: string;
-    schedule_type: DatabaseEnums['interview_schedule_type'];
-    session_duration: number;
-    session_name: string;
-    start_time: string;
-    status: DatabaseEnums['interview_schedule_status'];
-    meeting_id: string;
-  };
-  users: {
-    email: string;
-    first_name: string;
-    id: string;
-    last_name: string;
-    location: string;
-    position: string;
-    profile_image: string;
-    scheduling_settings: schedulingSettingType;
-    training_type: DatabaseEnums['interviewer_type'];
-    weekly_meetings: {
-      end_time: string;
-      duration: number;
-      start_time: string;
-    }[];
-    accepted_status: DatabaseEnums['session_accepted_status'];
-  }[];
-}[];
 
 function ModuleSchedules({
   isFetched,
@@ -55,8 +21,7 @@ function ModuleSchedules({
     'all' | 'confirmed' | 'cancelled' | 'completed' | 'waiting'
   >('confirmed');
   const [changeText, setChangeText] = useState('');
-  // const { data: scheduleList, isFetched } = useScheduleList({ user_id });
-  // const newScheduleList = scheduleList as ScheduleListType;
+
   if (!isFetched) {
     return <DynamicLoader />;
   }
@@ -133,25 +98,3 @@ function ModuleSchedules({
 }
 
 export default ModuleSchedules;
-
-export const useScheduleList = ({ user_id }) => {
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['get_ScheduleList'],
-    queryFn: () => getScheduleList(user_id),
-  });
-  const refetch = () =>
-    queryClient.invalidateQueries({ queryKey: ['get_ScheduleList'] });
-  return { ...query, refetch };
-};
-
-async function getScheduleList(user_id: string) {
-  const { data, error } = await supabase.rpc(
-    'new_get_interview_schedule_by_user_id',
-    {
-      target_user_id: user_id,
-    },
-  );
-  if (error) throw Error(error.message);
-  else return data as ScheduleListType;
-}
