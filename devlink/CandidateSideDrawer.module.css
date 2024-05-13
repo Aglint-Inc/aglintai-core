@@ -453,6 +453,11 @@
   bottom: 0%;
 }
 
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .resume-candidate-details {
   display: flex;
   padding: 4px 7px 4px 9px;
@@ -672,6 +677,8 @@
   flex-direction: column;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+
+  border-bottom: 1px solid #e9ebed;
 }
 
 .cvs-intro-profile-block {
@@ -939,6 +946,12 @@
 .div-block-731 {
   width: 12px;
   height: 12px;
+}
+
+.div-block-971 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .div-block-673 {

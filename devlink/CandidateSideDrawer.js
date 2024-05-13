@@ -52,6 +52,7 @@ export function CandidateSideDrawer({
   isViewTaskVisible = false,
   onClickLinkedin = {},
   isLinkedInVisible = true,
+  slotNewTabPill,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -403,7 +404,12 @@ export function CandidateSideDrawer({
                     </_Builtin.Block>
                   </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block tag="div" />
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "div-block-971")}
+                  tag="div"
+                >
+                  {slotNewTabPill}
+                </_Builtin.Block>
               </_Builtin.Block>
             ) : null}
             {isFullWidthVisible ? (

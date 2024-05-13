@@ -229,7 +229,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
-  const { job } = useJobDetails();
+  const { job, interviewPlanEnabled } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -267,6 +267,55 @@ const NewJobApplicationSideDrawer = ({
   );
   const isPhoneScreeningEnabled = job.activeSections.includes(
     JobApplicationSections.SCREENING,
+  );
+
+  const [tab, setTab] = useState<TabType>('Details');
+  const interviewEnabled =
+    (interviewPlanEnabled?.data ?? false) &&
+    (application?.emailValidity?.isValidEmail ?? false) &&
+    (job?.activeSections ?? []).includes(JobApplicationSections.INTERVIEW) &&
+    !!(application?.schedule ?? null);
+  const tabs = useMemo(
+    () =>
+      (
+        [
+          'Details',
+          'Screening',
+          'Assessment',
+          'Interview',
+          'Tasks',
+          'Activity',
+        ] as (typeof tab)[]
+      )
+        .filter((tab) => {
+          switch (tab) {
+            case 'Details':
+              return true;
+            case 'Screening':
+              return (job?.activeSections ?? []).includes(
+                JobApplicationSections.SCREENING,
+              );
+            case 'Assessment':
+              return (job?.activeSections ?? []).includes(
+                JobApplicationSections.ASSESSMENT,
+              );
+            case 'Interview':
+              return interviewEnabled;
+            case 'Tasks':
+              return interviewEnabled && false;
+            case 'Activity':
+              return false;
+          }
+        })
+        .map((t) => (
+          <NewTabPill
+            key={t}
+            onClickPill={{ onClick: () => setTab(t) }}
+            textLabel={t}
+            isPillActive={tab === t}
+          />
+        )),
+    [tab, JSON.stringify(job?.activeSections ?? []), interviewEnabled],
   );
   return (
     <>
@@ -310,14 +359,16 @@ const NewJobApplicationSideDrawer = ({
         slotMoveTo={<></>}
         slotOverview={<></>}
         slotCandidateDetails={
-          <SectionedDetails
+          <Sections
             application={application}
             openResume={openResume}
             setOpenResume={setOpenResume}
+            tab={tab}
           />
         }
         isAppliedOnVisible={true}
         textAppliedOn={creationDate}
+        slotNewTabPill={tabs}
       />
       <MuiPopup
         props={{
@@ -404,73 +455,6 @@ type TabType =
   | 'Interview'
   | 'Tasks'
   | 'Activity';
-
-const SectionedDetails: React.FC<{
-  application: JobApplication;
-  openResume: boolean;
-  setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
-  const { job, interviewPlanEnabled } = useJobDetails();
-  const [tab, setTab] = useState<TabType>('Details');
-  const interviewEnabled =
-    (interviewPlanEnabled?.data ?? false) &&
-    (application?.emailValidity?.isValidEmail ?? false) &&
-    (job?.activeSections ?? []).includes(JobApplicationSections.INTERVIEW) &&
-    !!(application?.schedule ?? null);
-  const tabs = useMemo(
-    () =>
-      (
-        [
-          'Details',
-          'Screening',
-          'Assessment',
-          'Interview',
-          'Tasks',
-          'Activity',
-        ] as (typeof tab)[]
-      )
-        .filter((tab) => {
-          switch (tab) {
-            case 'Details':
-              return true;
-            case 'Screening':
-              return (job?.activeSections ?? []).includes(
-                JobApplicationSections.SCREENING,
-              );
-            case 'Assessment':
-              return (job?.activeSections ?? []).includes(
-                JobApplicationSections.ASSESSMENT,
-              );
-            case 'Interview':
-              return interviewEnabled;
-            case 'Tasks':
-              return interviewEnabled && false;
-            case 'Activity':
-              return false;
-          }
-        })
-        .map((t) => (
-          <NewTabPill
-            key={t}
-            onClickPill={{ onClick: () => setTab(t) }}
-            textLabel={t}
-            isPillActive={tab === t}
-          />
-        )),
-    [tab, JSON.stringify(job?.activeSections ?? []), interviewEnabled],
-  );
-  return (
-    <>
-      <Stack direction={'row'}>{tabs}</Stack>
-      <Sections
-        application={application}
-        openResume={openResume}
-        setOpenResume={setOpenResume}
-        tab={tab}
-      />
-    </>
-  );
-};
 
 const Sections: React.FC<{
   application: JobApplication;

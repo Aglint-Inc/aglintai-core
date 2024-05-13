@@ -38,4 +38,5 @@ declare function CandidateSideDrawer(props: {
   isViewTaskVisible?: Types.Visibility.VisibilityConditions;
   onClickLinkedin?: Types.Devlink.RuntimeProps;
   isLinkedInVisible?: Types.Visibility.VisibilityConditions;
+  slotNewTabPill?: Types.Devlink.Slot;
 }): React.JSX.Element;
