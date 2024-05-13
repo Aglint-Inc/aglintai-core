@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
-import { datacatalog_v1beta1 } from 'googleapis';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
@@ -10,20 +10,21 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
-  use,
   useContext,
   useEffect,
   useState,
 } from 'react';
 
 import { LoaderSvg } from '@/devlink';
+import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
+import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
+import { DatabaseEnums, DatabaseTableUpdate } from '@/src/types/customSchema';
 import {
   RecruiterRelationsType,
   RecruiterType,
   RecruiterUserType,
   SocialsType,
 } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -37,8 +38,8 @@ export interface ContextValue {
   recruiter: RecruiterType | null;
   recruiter_id: string | null;
   setRecruiter: Dispatch<SetStateAction<RecruiterType>>;
-  allrecruterRelation: RecruiterRelationsType[];
-  setAllrecruterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
+  allRecruiterRelation: RecruiterRelationsType[];
+  setAllRecruiterRelation: Dispatch<SetStateAction<RecruiterRelationsType[]>>;
   loading: boolean;
   handleUpdateProfile: (userMeta: RecruiterUserType) => Promise<boolean>;
   handleUpdateEmail: (email: string, showToast?: boolean) => Promise<boolean>;
@@ -50,15 +51,18 @@ export interface ContextValue {
   setMembers: Dispatch<SetStateAction<RecruiterUserType[]>>;
   handelMemberUpdate: (x: {
     user_id: string;
-    data: Database['public']['Tables']['recruiter_user']['Update'];
+    data: DatabaseTableUpdate['recruiter_user'] & {
+      role?: DatabaseEnums['user_roles'];
+      manager_id?: string;
+    };
   }) => Promise<boolean>;
   isAllowed: (
-    roles: Database['public']['Enums']['user_roles'][],
+    roles: DatabaseEnums['user_roles'][],
     flags?: featureFlag[],
   ) => boolean;
   allowAction: <T extends Function | ReactNode>(
     func: T,
-    role: Database['public']['Enums']['user_roles'][],
+    role: DatabaseEnums['user_roles'][],
   ) => T;
   isAssessmentEnabled: boolean;
   isScreeningEnabled: boolean;
@@ -75,8 +79,8 @@ const defaultProvider = {
   recruiter: null,
   recruiter_id: null,
   setRecruiter: () => {},
-  allrecruterRelation: null,
-  setAllrecruterRelation: () => {},
+  allRecruiterRelation: null,
+  setAllRecruiterRelation: () => {},
   loading: true,
   setLoading: () => {},
   handleLogout: () => Promise.resolve(),
@@ -102,36 +106,21 @@ const AuthProvider = ({ children }) => {
     null,
   );
   const recruiter_id = recruiter?.id ?? null;
-  const [allrecruterRelation, setAllrecruterRelation] =
+  const [allRecruiterRelation, setAllRecruiterRelation] =
     useState<RecruiterRelationsType[]>(null);
   const [userCountry, setUserCountry] = useState('us');
   const [loading, setLoading] = useState<boolean>(true);
   const [members, setMembers] = useState<RecruiterUserType[]>([]);
 
   const getMembersFromDB = async (recruiter_id: string, user_id: string) => {
-    const { data, error } = await supabase
-      .from('recruiter_relation')
-      .select()
-      .eq('recruiter_id', recruiter_id);
-    if (!error && data.length) {
-      const userIds = data.map((item) => item.user_id);
-      const { data: users, error: userError } = await supabase
-        .from('recruiter_user')
-        .select()
-        .in('user_id', userIds);
-
-      if (!userError && users.length) {
-        setMembers(users as RecruiterUserType[]);
-      }
-    }
-    return [];
+    setMembers(await getMembers(recruiter_id));
   };
 
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
       if (!data?.session) {
-        loading && setLoading(false);
+        throw new Error();
       }
       if (data?.session?.user?.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
@@ -153,58 +142,57 @@ const AuthProvider = ({ children }) => {
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    const { data: recruiterUser, error: errorUser } = await supabase
-      .from('recruiter_user')
-      .select('*')
-      .eq('user_id', userDetails.user.id);
-    if (!errorUser && recruiterUser.length > 0) {
-      if (recruiterUser[0].is_suspended) {
-        toast.error('Your account is Suspended.');
-        return setTimeout(() => {
-          handleLogout();
-        }, 300);
-      }
-      setRecruiterUser(recruiterUser[0] as RecruiterUserType);
-      (recruiterUser[0].join_status || '').toLocaleLowerCase() === 'invited' &&
+    // const { data: recruiterUser, error: errorUser } = await supabase
+    //   .from('recruiter_user')
+    //   .select('*')
+    //   .eq('user_id', userDetails.user.id);
+    // if (!errorUser && recruiterUser.length > 0) {
+    //   if (recruiterUser[0].is_suspended) {
+    //     toast.error('Your account is suspended.');
+    //     return setTimeout(() => {
+    //       handleLogout();
+    //     }, 300);
+    //   }
+    const { data: recruiterRel, error: errorRel } = await supabase
+      .from('recruiter_relation')
+      .select(
+        '*, recruiter(*),recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+      )
+      .match({ user_id: userDetails.user.id, is_active: true })
+      .single();
+
+    if (!errorRel) {
+      posthog.identify(userDetails.user.email, {
+        Email: userDetails.user.email,
+        CompanyId: recruiterRel.recruiter.id,
+      });
+      const recruiterUser = recruiterRel.recruiter_user;
+      (recruiterUser.join_status || '').toLocaleLowerCase() === 'invited' &&
         handleUpdateProfile({ join_status: 'joined' }, userDetails.user.id);
-      const { data: recruiterRel, error: errorRel } = await supabase
-        .from('recruiter_relation')
-        .select('* , recruiter(*)')
-        .match({ user_id: userDetails.user.id, is_active: true });
-
-      if (!errorRel && recruiterRel.length > 0) {
-        posthog.identify(userDetails.user.email, {
-          Email: userDetails.user.email,
-          CompanyId: recruiterRel[0].recruiter.id,
-        });
-        // posthog.setPersonPropertiesForFlags({
-        //   CompanyId: recruiterRel[0].recruiter.id,
-        // });
-        // console.log({ cId: recruiterRel[0].recruiter.id });
-
-        setRecruiter({
-          ...recruiterRel[0].recruiter,
-          socials: recruiterRel[0].recruiter?.socials as unknown as SocialsType,
-        });
-        if (
-          recruiterUser[0].role === 'admin' ||
-          recruiterUser[0].role === 'recruiter'
-        ) {
-          await getMembersFromDB(
-            recruiterRel[0].recruiter.id,
-            userDetails.user.id,
-          );
-        }
-      } else {
-        toast.error('Something went wrong! Please try logging in again.');
+      setRecruiterUser({
+        ...recruiterUser,
+        role: recruiterRel.role,
+        manager_id: recruiterRel.manager_id,
+      });
+      setRecruiter({
+        ...recruiterRel.recruiter,
+        socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
+      });
+      if (recruiterRel.role === 'admin' || recruiterRel.role === 'recruiter') {
+        await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
       }
     } else {
       toast.error('Something went wrong! Please try logging in again.');
     }
+    // } else {
+    //   toast.error('Something went wrong! Please try logging in again.');
+    // }
   };
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({
+      scope: 'local',
+    });
     posthog.reset();
     if (!error) {
       router.push(pageRoutes.LOGIN);
@@ -230,9 +218,11 @@ const AuthProvider = ({ children }) => {
     details: Partial<RecruiterUserType>,
     id?: string,
   ): Promise<boolean> => {
+    const detailsAll = { ...details };
+    delete detailsAll['role'];
     const { data, error } = await supabase
       .from('recruiter_user')
-      .update(details)
+      .update(detailsAll)
       .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {
@@ -252,13 +242,13 @@ const AuthProvider = ({ children }) => {
       {
         email: email,
       },
-      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading` },
+      { emailRedirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/login` },
     );
     if (error) {
       toast.error(`Oops! Something went wrong. (${error.message})`);
       return false;
     } else {
-      showToast && toast.success(`Confirmation email sent`);
+      showToast && toast.success(`Confirmation email sent.`);
       return true;
     }
   };
@@ -267,14 +257,17 @@ const AuthProvider = ({ children }) => {
     user_id,
     data,
   }) => {
-    if (!user_id && data) return Promise.resolve(false);
-    return updateMember({ user_id, data }).then((data) => {
+    if (!user_id && data && recruiter.id) return Promise.resolve(false);
+    return updateMember({
+      data: { ...data, user_id },
+      recruiter_id: recruiter.id,
+    }).then((data) => {
       if (data) {
         setMembers((prev) =>
           prev.map((item) => {
-            return data.user_id !== item.user_id
-              ? item
-              : (data as RecruiterUserType);
+            return data.user_id === item.user_id
+              ? ({ ...item, ...data } as RecruiterUserType)
+              : item;
           }),
         );
         return true;
@@ -356,8 +349,8 @@ const AuthProvider = ({ children }) => {
         setLoading,
         handleLogout,
         recruiterUser,
-        allrecruterRelation,
-        setAllrecruterRelation,
+        allRecruiterRelation: allRecruiterRelation,
+        setAllRecruiterRelation,
         setRecruiterUser,
         members,
         setMembers,
@@ -409,22 +402,30 @@ const pageFeatureMapper = {
 };
 
 const updateMember = ({
-  user_id,
   data,
+  recruiter_id,
 }: {
-  user_id: string;
-  data: Database['public']['Tables']['recruiter_user']['Update'];
+  data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
+    user_id: string;
+    role?: DatabaseEnums['user_roles'];
+    manager_id?: string;
+  };
+  recruiter_id: string;
 }) => {
-  return supabase
-    .from('recruiter_user')
-    .update(data)
-    .eq('user_id', user_id)
-    .select()
-    .single()
-    .then(({ data, error }) => {
-      if (error) {
-        throw new Error(error.message);
-      }
-      return data;
+  const body: API_setMembersWithRole['request'] = { data: data, recruiter_id };
+  return axios
+    .post<API_setMembersWithRole['response']>('/api/setMembersWithRole', body)
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.data;
+    });
+};
+
+const getMembers = (id: string) => {
+  return axios
+    .post<API_getMembersWithRole['response']>('/api/getMembersWithRole', { id })
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.members;
     });
 };

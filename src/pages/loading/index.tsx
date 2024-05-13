@@ -36,19 +36,19 @@ export default function Loading() {
           await axios.post('/api/supabase/deleteuser', {
             user_id: userDetails?.user?.id,
           });
-          toast.error('Please signup/login with company email');
+          toast.error('Please signup with company email.');
           await handleLogout();
           return;
         } else {
           await createUser();
         }
       } else {
-        toast.error('Unable to login. Please try again later');
+        toast.error('Unable to login. Please try again.');
         router.push(pageRoutes.LOGIN);
         await handleLogout();
       }
     } catch (error) {
-      toast.error('Unable to login. Please try again later');
+      toast.error('Unable to login. Please try again.');
       router.push(pageRoutes.LOGIN);
       await handleLogout();
     }
@@ -71,126 +71,238 @@ export default function Loading() {
   };
 
   const createUser = async () => {
-    supabase
-      .from('recruiter_relation')
-      .select('*')
-      .eq('user_id', userDetails?.user?.id)
-      .then(async ({ data, error }) => {
-        if (!error) {
-          if (data.length == 0) {
-            const { error: erroruser } = await supabase
-              .from('recruiter_user')
-              .insert({
-                user_id: userDetails.user.id,
-                email: userDetails.user.user_metadata.email,
-                first_name: splitFullName(
-                  userDetails.user.user_metadata.full_name,
-                ).firstName,
-                last_name: !userDetails.user.user_metadata.first_name
-                  ? splitFullName(userDetails.user.user_metadata.full_name)
-                      .lastName
-                  : userDetails.user.user_metadata.last_name,
-                role: 'admin',
-                profile_image: !userDetails.user.user_metadata.image_url
-                  ? null
-                  : userDetails.user.user_metadata.image_url,
-                phone: !userDetails.user.user_metadata.phone
-                  ? ''
-                  : userDetails.user.user_metadata.phone,
-              })
-              .select();
-
-            if (!erroruser) {
-              const rec_id = uuidv4();
-
-              await supabase.from('recruiter').insert({
-                email: userDetails.user.email,
-                name:
-                  userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                    '.com',
-                    '',
-                  ) || '',
-                id: rec_id,
-              });
-
-              const { error } = await supabase.rpc('createrecuriterrelation', {
-                in_recruiter_id: rec_id,
-                in_user_id: userDetails.user.id,
-                in_is_active: true,
-              });
-
-              if (error) {
-                throw new Error(error.message);
-              }
-
-              await supabase
-                .from('recruiter_user')
-                .update({ recruiter_id: rec_id })
-                .eq('user_id', userDetails.user.id);
-
-              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
-            }
-          } else {
-            if (!userDetails?.user.user_metadata?.role) {
-              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
-              return;
-            }
-            if (userDetails?.user.user_metadata?.is_invite === 'true') {
-              await supabase.auth.updateUser({
-                data: { is_invite: 'false' }, // for invite user flow this is needed
-              });
-            }
-            const { data: recruiter, error: recruiter_error } = await supabase
-              .from('recruiter')
-              .select()
-              .eq('id', data[0].recruiter_id);
-            if (!recruiter_error && recruiter[0].industry) {
-              const { data, error } = await supabase
-                .from('recruiter_user')
-                .select('*')
-                .eq('user_id', userDetails?.user?.id);
-              if (error) {
-                throw error;
-              }
-              // // last login time stamp Update
-              // const temp_time = new Date().toISOString();
-              // supabase
-              //   .from('recruiter_user')
-              //   .update({ last_login: temp_time })
-              //   .eq('user_id', userDetails.user.id)
-              //   .then(() => {});
-              // //last login END
-
-              if (data[0].role === 'interviewer') {
-                router.push(
-                  localStorage.getItem('redirectURL') ||
-                    `${pageRoutes.SCHEDULING}?tab=mySchedules`,
-                );
-                localStorage.removeItem('redirectURL');
-              } else if (data[0].role === 'recruiter') {
-                router.push(
-                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
-                );
-                localStorage.removeItem('redirectURL');
-              } else if (data[0].role === 'scheduler') {
-                router.push(
-                  localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
-                );
-                localStorage.removeItem('redirectURL');
-              } else {
-                router.push(
-                  localStorage.getItem('redirectURL') || pageRoutes.JOBS,
-                );
-                localStorage.removeItem('redirectURL');
-              }
-            } else {
-              router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
-            }
-          }
-        } else {
-          router.push(pageRoutes.LOGIN);
-        }
+    if (!userDetails?.user?.id) return;
+    try {
+      const relationData = await getRelationsDetails({
+        user_id: userDetails.user.id,
       });
+      if (relationData?.recruiter_user) {
+        if (!userDetails?.user.user_metadata?.role) {
+          router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+          return;
+        }
+        if (userDetails?.user.user_metadata?.is_invite === 'true') {
+          await supabase.auth.updateUser({
+            data: { is_invite: 'false' }, // for invite user flow this is needed
+          });
+        }
+        try {
+          const recruiterRel = relationData;
+          if (userDetails.user.email !== recruiterRel.recruiter_user.email) {
+            await supabase
+              .from('recruiter_user')
+              .update({
+                email: userDetails.user.email,
+              })
+              .eq('user_id', userDetails?.user?.id);
+          }
+          // // last login time stamp Update
+          // const temp_time = new Date().toISOString();
+          // supabase
+          //   .from('recruiter_user')
+          //   .update({ last_login: temp_time })
+          //   .eq('user_id', userDetails.user.id)
+          //   .then(() => {});
+          // //last login END
+
+          if (recruiterRel.role === 'interviewer') {
+            router.push(
+              localStorage.getItem('redirectURL') ||
+                `${pageRoutes.SCHEDULING}?tab=mySchedules`,
+            );
+            localStorage.removeItem('redirectURL');
+          } else if (recruiterRel.role === 'recruiter') {
+            router.push(localStorage.getItem('redirectURL') || pageRoutes.JOBS);
+            localStorage.removeItem('redirectURL');
+          } else if (recruiterRel.role === 'recruiting_coordinator') {
+            router.push(
+              localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
+            );
+            localStorage.removeItem('redirectURL');
+          } else {
+            router.push(localStorage.getItem('redirectURL') || pageRoutes.JOBS);
+            localStorage.removeItem('redirectURL');
+          }
+        } catch {
+          router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
+        }
+      } else {
+        const { error: erroruser } = await supabase
+          .from('recruiter_user')
+          .insert({
+            user_id: userDetails.user.id,
+            email: userDetails.user.user_metadata.email,
+            first_name: splitFullName(userDetails.user.user_metadata.full_name)
+              .firstName,
+            last_name: !userDetails.user.user_metadata.first_name
+              ? splitFullName(userDetails.user.user_metadata.full_name).lastName
+              : userDetails.user.user_metadata.last_name,
+            role: 'admin',
+            profile_image: !userDetails.user.user_metadata.image_url
+              ? null
+              : userDetails.user.user_metadata.image_url,
+            phone: !userDetails.user.user_metadata.phone
+              ? ''
+              : userDetails.user.user_metadata.phone,
+          })
+          .select();
+
+        if (!erroruser) {
+          const rec_id = uuidv4();
+
+          await supabase.from('recruiter').insert({
+            email: userDetails.user.email,
+            name:
+              userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+                '.com',
+                '',
+              ) || '',
+            id: rec_id,
+          });
+
+          const { error } = await supabase.rpc('createrecuriterrelation', {
+            in_recruiter_id: rec_id,
+            in_user_id: userDetails.user.id,
+            in_is_active: true,
+          });
+
+          if (error) {
+            throw new Error(error.message);
+          }
+
+          // await supabase
+          //   .from('recruiter_user')
+          //   .update({ recruiter_id: rec_id })
+          //   .eq('user_id', userDetails.user.id);
+
+          router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+        }
+      }
+    } catch {
+      router.push(pageRoutes.LOGIN);
+    }
+
+    // supabase
+    //   .from('recruiter_relation')
+    //   .select('*')
+    //   .eq('user_id', userDetails?.user?.id)
+    //   .eq('is_active', true)
+    //   .then(async ({ data, error }) => {
+    //     if (!error) {
+    //       if (data.length === 0) {
+    //         const { error: erroruser } = await supabase
+    //           .from('recruiter_user')
+    //           .insert({
+    //             user_id: userDetails.user.id,
+    //             email: userDetails.user.user_metadata.email,
+    //             first_name: splitFullName(
+    //               userDetails.user.user_metadata.full_name,
+    //             ).firstName,
+    //             last_name: !userDetails.user.user_metadata.first_name
+    //               ? splitFullName(userDetails.user.user_metadata.full_name)
+    //                   .lastName
+    //               : userDetails.user.user_metadata.last_name,
+    //             role: 'admin',
+    //             profile_image: !userDetails.user.user_metadata.image_url
+    //               ? null
+    //               : userDetails.user.user_metadata.image_url,
+    //             phone: !userDetails.user.user_metadata.phone
+    //               ? ''
+    //               : userDetails.user.user_metadata.phone,
+    //           })
+    //           .select();
+
+    //         if (!erroruser) {
+    //           const rec_id = uuidv4();
+
+    //           await supabase.from('recruiter').insert({
+    //             email: userDetails.user.email,
+    //             name:
+    //               userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
+    //                 '.com',
+    //                 '',
+    //               ) || '',
+    //             id: rec_id,
+    //           });
+
+    //           const { error } = await supabase.rpc('createrecuriterrelation', {
+    //             in_recruiter_id: rec_id,
+    //             in_user_id: userDetails.user.id,
+    //             in_is_active: true,
+    //           });
+
+    //           if (error) {
+    //             throw new Error(error.message);
+    //           }
+
+    //           // await supabase
+    //           //   .from('recruiter_user')
+    //           //   .update({ recruiter_id: rec_id })
+    //           //   .eq('user_id', userDetails.user.id);
+
+    //           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+    //         }
+    //       } else {
+    //         if (!userDetails?.user.user_metadata?.role) {
+    //           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+    //           return;
+    //         }
+    //         if (userDetails?.user.user_metadata?.is_invite === 'true') {
+    //           await supabase.auth.updateUser({
+    //             data: { is_invite: 'false' }, // for invite user flow this is needed
+    //           });
+    //         }
+    //         try {
+    //           const recruiterRel = await getRelationsDetails(data[0].user_id);
+    //           if (
+    //             userDetails.user.email !== recruiterRel.recruiter_user.email
+    //           ) {
+    //             await supabase
+    //               .from('recruiter_user')
+    //               .update({
+    //                 email: userDetails.user.email,
+    //               })
+    //               .eq('user_id', userDetails?.user?.id);
+    //           }
+    //           // // last login time stamp Update
+    //           // const temp_time = new Date().toISOString();
+    //           // supabase
+    //           //   .from('recruiter_user')
+    //           //   .update({ last_login: temp_time })
+    //           //   .eq('user_id', userDetails.user.id)
+    //           //   .then(() => {});
+    //           // //last login END
+
+    //           if (recruiterRel.role === 'interviewer') {
+    //             router.push(
+    //               localStorage.getItem('redirectURL') ||
+    //                 `${pageRoutes.SCHEDULING}?tab=mySchedules`,
+    //             );
+    //             localStorage.removeItem('redirectURL');
+    //           } else if (recruiterRel.role === 'recruiter') {
+    //             router.push(
+    //               localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+    //             );
+    //             localStorage.removeItem('redirectURL');
+    //           } else if (recruiterRel.role === 'recruiting_coordinator') {
+    //             router.push(
+    //               localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
+    //             );
+    //             localStorage.removeItem('redirectURL');
+    //           } else {
+    //             router.push(
+    //               localStorage.getItem('redirectURL') || pageRoutes.JOBS,
+    //             );
+    //             localStorage.removeItem('redirectURL');
+    //           }
+    //         } catch {
+    //           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
+    //         }
+    //       }
+    //     } else {
+    //       router.push(pageRoutes.LOGIN);
+    //     }
+    //   });
   };
 
   return (
@@ -202,10 +314,7 @@ export default function Loading() {
         justifyContent: 'center',
       }}
     >
-      <Seo
-        title='Loading'
-        description='AI Powered Talent Development Platform.'
-      />
+      <Seo title='Loading' description='AI for People Products' />
       <LoaderSvg />
     </Box>
   );
@@ -237,4 +346,19 @@ export const splitFullName = (name: string) => {
       lastName,
     };
   }
+};
+
+const getRelationsDetails = ({ user_id }: { user_id: string }) => {
+  return supabase
+    .from('recruiter_relation')
+    .select(
+      '*,recruiter_user!public_recruiter_relation_user_id_fkey(*),recruiter(industry)',
+    )
+    .eq('user_id', user_id)
+    .eq('is_active', true)
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw new Error(error.message);
+      return data;
+    });
 };

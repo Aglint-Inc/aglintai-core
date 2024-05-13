@@ -77,7 +77,7 @@ function AppoloSearch() {
         await fetchList(String(router.query.list));
       }
     } catch (e) {
-      toast.error('Something went wrong! Please contact support.');
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -144,7 +144,7 @@ function AppoloSearch() {
       setText('');
       setIsEditVisible(false);
     } else {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -199,7 +199,7 @@ function AppoloSearch() {
         onClickEmailOutReach={{
           onClick: () => {
             if (selectedCandidates.length === 0) {
-              toast.warning('Please select atleast one candidate');
+              toast.warning('Please select at least one candidate.');
               return;
             } else {
               setEmailOutReach('multiple');

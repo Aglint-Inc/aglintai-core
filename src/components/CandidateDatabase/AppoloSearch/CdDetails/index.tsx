@@ -52,7 +52,7 @@ function CandidateDetail() {
       });
 
       if (resEmail.status !== 200) {
-        toast.error('Unable to fetch email. Please try again later.');
+        toast.error('Unable to fetch email. Please try again.');
         return;
       }
 

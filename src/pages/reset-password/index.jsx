@@ -6,7 +6,7 @@ export default function ResetPasswordPage() {
   return (
     <div>
       <Seo
-        title='Aglint for Employers | Reset Password'
+        title='Reset Password'
         description='AI for People Products'
       />
       <ResetPasswordComponent />

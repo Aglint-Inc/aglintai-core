@@ -7,7 +7,10 @@ import { EmptyState } from '@/devlink2';
 import { ListCard, ListPop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useJobs } from '@/src/context/JobsContext';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
 function JobList({
   selectedJob,
@@ -43,7 +46,7 @@ function JobList({
       >
         <ShowCode>
           <ShowCode.When isTrue={!!selectedJob?.id}>
-            <ListCard textList={capitalizeAll(selectedJob?.name)} />
+            <ListCard textList={capitalizeFirstLetter(selectedJob?.name)} />
           </ShowCode.When>
           <ShowCode.Else>
             <Typography variant='caption' fontSize={'14px'}>
@@ -92,13 +95,15 @@ function JobList({
                         handleClose();
                       }}
                     >
-                      <ListCard textList={capitalizeAll(ele.job_title)} />
+                      <ListCard
+                        textList={capitalizeFirstLetter(ele.job_title)}
+                      />
                     </Stack>
                   );
                 })}
               </ShowCode.When>
               <ShowCode.Else>
-                <EmptyState textDescription='Jobs are not empty!' />
+                <EmptyState textDescription='No jobs found.' />
               </ShowCode.Else>
             </ShowCode>
           }

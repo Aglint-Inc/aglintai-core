@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: filterJson, error: errFilterJson } = await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,recruiter(name, email_template)),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
+        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(name, email_template)),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
       )
       .eq('id', filter_id);
 
@@ -35,7 +35,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(sessions);
 
     addScheduleActivity({
-      title: `Candidate confirmed ${sessions.map((ses) => ses.name).join(' , ')}`,
+      title: `Candidate confirmed ${sessions
+        .map((ses) => ses.name)
+        .join(' , ')}`,
       application_id: filterJson[0].interview_schedule.application_id,
       logger: filterJson[0].interview_schedule.application_id,
       type: 'schedule',
@@ -62,12 +64,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const schedule_name = `Interview for ${job_tile} - ${candidate_name}`;
     const schedule_id = filterJson[0].interview_schedule.id;
 
-    if (emailTemplate)
-      await axios
-        .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+    if (emailTemplate) {
+      const { data, status } = await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
+        {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: 'admin@aglinthq.com' ?? candidate_email,
+          email: candidate_email,
           subject: fillEmailTemplate(emailTemplate.subject, {
             company_name: company_name,
             schedule_name: schedule_name,
@@ -83,19 +86,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             job_title: job_tile,
             view_details: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>View Details</a>`,
           }),
-        })
-        .then((res) => {
-          if (res.status === 200 && res.data.data === 'Email sent') {
-            return true;
-          } else {
-            // eslint-disable-next-line no-console
-            console.log(
-              'error',
-              'Unable to send the mail. Please try again later.',
-            );
-            return false;
-          }
-        });
+        },
+      );
+      if (status === 200) {
+        console.log(data);
+      } else {
+        console.log('Failed to send email');
+      }
+      return res.status(200).send(true);
+    } else {
+      console.log('unable to find email template ');
+      return res.status(400).send('unable to find email template ');
+    }
   } catch (error) {
     // console.log('error', error);
     return res.status(400).send(error.message);

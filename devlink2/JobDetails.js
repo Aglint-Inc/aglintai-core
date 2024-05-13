@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -123,7 +124,7 @@ export function JobDetails({
                   className={_utils.cx(_styles, "fw-semibold")}
                   tag="div"
                 >
-                  {"Import Candidates"}
+                  {"Add Candidates"}
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}

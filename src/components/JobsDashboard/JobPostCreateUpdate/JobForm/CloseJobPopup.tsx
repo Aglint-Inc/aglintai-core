@@ -66,10 +66,11 @@ const CloseJobPopup = ({ onClose }) => {
           qualified: 0,
           disqualified: 0,
         },
+        activeSections: [],
       });
       router.replace('/jobs');
     } catch (err) {
-      toast.error('Something went wrong, please try again');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 

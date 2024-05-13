@@ -7,11 +7,14 @@ dayjs.extend(timezone);
 
 import { createServerClient } from '@supabase/ssr';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 
+import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   InterviewScheduleActivityTypeDb,
+  SupabaseType,
 } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
@@ -36,8 +39,18 @@ export const useAllActivities = ({ application_id }) => {
   const queryKey = ['activitiesCandidate', { application_id }];
   const query = useQuery({
     queryKey: queryKey,
-    queryFn: () => fetchAllActivities({ application_id }),
+    queryFn: async () => {
+      const { data: resAct, status }: AxiosResponse<ApiResponseActivities> =
+        await axios.post('/api/scheduling/fetch_activities', {
+          application_id,
+        });
+      if (status !== 200) {
+        toast.error('Unable to fetch activities');
+      }
+      return resAct.data;
+    },
     enabled: !!application_id,
+    initialData: [],
   });
   const refetch = async () => {
     await queryClient.invalidateQueries({ queryKey });
@@ -45,13 +58,22 @@ export const useAllActivities = ({ application_id }) => {
   return { ...query, refetch };
 };
 
-const fetchAllActivities = async ({ application_id }) => {
+export const fetchAllActivities = async ({
+  application_id,
+  supabase,
+}: {
+  application_id: string;
+  supabase: SupabaseType;
+}) => {
   const { data, error } = await supabase
     .from('application_logs')
     .select(
       '*,applications(id,candidates(first_name,last_name,avatar)),recruiter_user(*)',
     )
-    .eq('application_id', application_id);
+    .eq('application_id', application_id)
+    .order('created_at', {
+      ascending: true,
+    });
 
   if (error) throw new Error(error.message);
 
@@ -80,19 +102,13 @@ export const useGetScheduleApplication = () => {
           setScheduleName(
             `Interview for ${sessionsWithPlan.application?.public_jobs?.job_title} - ${sessionsWithPlan.application?.candidates?.first_name}`,
           );
-          if (sessionsWithPlan.sessions.length > 0) {
+          if (sessionsWithPlan?.sessions?.length > 0) {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
                   itemA['session_order'] - itemB['session_order'],
               ),
             );
-
-            if (sessionsWithPlan?.interviewPlan?.coordinator_id) {
-              setSelCoordinator(
-                sessionsWithPlan?.interviewPlan?.coordinator_id,
-              );
-            }
           }
         } else {
           const sessionsWithPlan = await fetchInterviewDataSchedule(
@@ -101,8 +117,8 @@ export const useGetScheduleApplication = () => {
             supabase,
           );
           setSelectedApplication(sessionsWithPlan.application);
-
-          if (sessionsWithPlan.sessions.length > 0) {
+          setScheduleName(schedule[0].schedule_name);
+          if (sessionsWithPlan?.sessions?.length > 0) {
             setinitialSessions(
               sessionsWithPlan.sessions.sort(
                 (itemA, itemB) =>
@@ -110,7 +126,6 @@ export const useGetScheduleApplication = () => {
               ),
             );
 
-            setScheduleName(schedule[0].schedule_name);
             if (schedule[0].coordinator_id) {
               setSelCoordinator(schedule[0].coordinator_id);
             }

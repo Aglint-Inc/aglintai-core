@@ -26,7 +26,7 @@ export class ZoomMeet {
         .eq('id', this.recruiter_id),
     );
     if (!rec.zoom_auth) {
-      throw new Error('Zoom credential not found for the company');
+      throw new Error('Zoom credential not found.');
     }
     const zoom_cred: ZoomMeetCred = JSON.parse(decrypt_string(rec.zoom_auth));
     const client_id = zoom_cred.client_id;

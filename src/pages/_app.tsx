@@ -20,9 +20,9 @@ import { QueryProvider } from '../queries';
 
 const MyApp = ({ Component, pageProps }) => {
   const provider =
-    Component.privateProvider ?? Component.publicProvider ?? ((page) => page);
+    Component?.privateProvider ?? Component?.publicProvider ?? ((page) => page);
 
-  if (Component.publicProvider) {
+  if (Component?.publicProvider) {
     return (
       <>
         <PHProvider>

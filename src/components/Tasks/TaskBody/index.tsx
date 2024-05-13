@@ -1,57 +1,70 @@
 /* eslint-disable security/detect-object-injection */
 
-import { Stack } from '@mui/material';
+import { Checkbox, Stack } from '@mui/material';
 
 import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
-import {
-  TasksAgentContextType,
-  useTasksContext,
-} from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 import { ShowCode } from '../../Common/ShowCode';
 import DynamicLoader from '../../Scheduling/Interviewers/DynamicLoader';
 import { useTaskStatesContext } from '../TaskStatesContext';
+import { getFormattedTask } from '../utils';
 import AddNewTask from './AddNewTask';
 import FilterTasks from './FilterTasks';
 import GroupSections from './GroupSections';
 import TaskRow from './TaskRow';
+import ToolBar from './ToolBar';
 import ViewTaskDrawer from './ViewTask';
 
-function TaskBody({ byGroup }) {
+function TaskBody() {
   const { tasks, loadingTasks } = useTasksContext();
 
-  const { setShowAddNew } = useTaskStatesContext();
+  const {
+    setShowAddNew,
+    selectedTasksIds,
+    setSelectedTasksIds,
+    selectedGroupBy,
+  } = useTaskStatesContext();
 
-  const groupedTasks = tasks
-    .filter((ele) => ele.application_id)
-    .reduce((acc, task) => {
-      const { application_id, ...taskDetails } = task;
-      if (!acc[application_id]) {
-        acc[application_id] = { applications: {}, tasklist: [] };
-      }
-      acc[application_id].applications = task.applications;
-      acc[application_id].tasklist.push(taskDetails);
-      return acc;
-    }, {});
-
-  const formattedTasks = Object.values(groupedTasks) as {
-    applications: TasksAgentContextType['tasks'][number]['applications'];
-    tasklist: TasksAgentContextType['tasks'];
-  }[];
+  const formattedTasks = getFormattedTask({ tasks, selectedGroupBy });
 
   return (
     <>
       <ViewTaskDrawer />
       <AddNewTask />
       <ShowCode>
-        <ShowCode.When isTrue={!byGroup}>
+        <ShowCode.When isTrue={selectedGroupBy.label === 'none'}>
           <TaskTable
-            slotFilter={<FilterTasks />}
+            slotCheckbox={
+              <Checkbox
+                checked={selectedTasksIds.length > 0}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setSelectedTasksIds(tasks.map((ele) => ele.id));
+                  } else {
+                    setSelectedTasksIds([]);
+                  }
+                }}
+                size='small'
+                color='info'
+              />
+            }
+            slotFilter={
+              <ShowCode>
+                <ShowCode.When isTrue={selectedTasksIds.length > 0}>
+                  <ToolBar />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <FilterTasks />
+                </ShowCode.Else>
+              </ShowCode>
+            }
             onClickNewTask={{
               onClick: () => {
                 setShowAddNew(true);
               },
             }}
+            isNewTaskCardVisible={false}
             slotTaskTableCard={
               <>
                 {tasks
@@ -75,14 +88,26 @@ function TaskBody({ byGroup }) {
             }
           />
         </ShowCode.When>
-        <ShowCode.When isTrue={byGroup}>
+        <ShowCode.When
+          isTrue={selectedGroupBy && selectedGroupBy.label !== 'none'}
+        >
           <TaskTableJobCand
-            slotFilter={<FilterTasks />}
+            slotFilter={
+              <ShowCode>
+                <ShowCode.When isTrue={selectedTasksIds.length > 0}>
+                  <ToolBar />
+                </ShowCode.When>
+                <ShowCode.Else>
+                  <FilterTasks />
+                </ShowCode.Else>
+              </ShowCode>
+            }
             slotTaskJobCard={
               <>
-                {formattedTasks.map((item, i) => {
-                  return <GroupSections key={i} item={item} index={i} />;
-                })}
+                {formattedTasks &&
+                  formattedTasks.map((item, i) => {
+                    return <GroupSections key={i} item={item} index={i} />;
+                  })}
                 <ShowCode.When isTrue={!loadingTasks && tasks.length === 0}>
                   <Stack height={'40vh'}>
                     <TaskEmpty />

@@ -1,9 +1,12 @@
 .div-block-1433 {
   width: 100%;
   height: calc(100vh - 120px);
+  height: calc(100vh - 120px);
 }
 
 .div-block-1436 {
+  position: relative;
+
   display: flex;
   height: 60px;
   padding: 10px 16px;
@@ -22,7 +25,7 @@
 .div-block-1434 {
   display: grid;
   grid-auto-columns: 1fr;
-  grid-template-columns: 3% 34% 12% 8% 13% 15% 15%;
+  grid-template-columns: 20px 1fr 130px 110px 160px 190px;
   grid-template-rows: auto;
   border-bottom: 1px solid #e9ebed;
 }
@@ -33,15 +36,16 @@
   z-index: 3;
 
   height: 40px;
+  padding-left: 10px;
   align-content: center;
-  grid-template-columns: 3% 34% 12% 8% 13% 15% 15%;
+  grid-template-columns: 20px 1fr 130px 110px 160px 190px;
 
   background-color: white;
 }
 
 .div-block-1434.height-40.job-cand {
   padding-left: 1%;
-  grid-template-columns: 3% 59% 15% 8% 15%;
+  grid-template-columns: 20px 1fr 130px 110px 160px;
 }
 
 .div-block-1434.height-53 {
@@ -52,16 +56,26 @@
 
 .div-block-1434.height-53.job-cand {
   padding-left: 1%;
-  grid-template-columns: 3% 59% 15% 8% 15%;
+  grid-template-columns: 20px 1fr 130px 110px 160px;
   cursor: pointer;
 }
 
 .div-block-1434.height-53.pointer {
+  padding-left: 10px;
   cursor: pointer;
 }
 
-.div-block-1437 {
-  height: 40px;
+.div-block-1535 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox-wrap-task {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
 }
 
 .div-block-1435 {
@@ -79,12 +93,24 @@
   grid-row-gap: 8px;
 }
 
-.text-grey-500 {
-  color: #87929d;
+.div-block-1435.overview-wrap {
+  justify-content: space-between;
+}
+
+.div-block-1435.hide {
+  display: none;
 }
 
 .hide {
   display: none;
+}
+
+.div-block-1435.space-between {
+  justify-content: space-between;
+}
+
+.text-grey-500 {
+  color: #87929d;
 }
 
 .div-block-1440 {
@@ -104,6 +130,12 @@
 
 .div-block-1440.job-cand.height-40 {
   height: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.div-block-1440.job-cand.height-40 {
+  height: 40px;
 }
 
 .div-block-1441 {
@@ -112,7 +144,7 @@
 }
 
 .div-block-1441.header {
-  width: 2%;
+  width: 20px;
 }
 
 .div-block-1442 {
@@ -145,6 +177,11 @@
 
 .icons.cursor-pointer:hover {
   opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
 }
 
 .icons.cursor-pointer.mr-20 {
@@ -201,6 +238,8 @@
 }
 
 #w-node-e2a009d4-d014-04d6-b837-039f401c4ec7-401c4ec4 {
+}
+#w-node-a912ad28-61de-e2be-3b5b-b1a487db6b63-401c4ec4 {
 }
 #w-node-e2a009d4-d014-04d6-b837-039f401c4ecb-401c4ec4 {
 }

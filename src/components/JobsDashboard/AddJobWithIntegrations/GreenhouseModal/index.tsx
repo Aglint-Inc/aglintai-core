@@ -44,7 +44,7 @@ export function GreenhouseModal() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
+  const { jobs, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
   const [postings, setPostings] = useState<JobGreenhouse[]>([]);
   const [selectedGreenhousePostings, setSelectedGreenhousePostings] = useState<
@@ -57,17 +57,17 @@ export function GreenhouseModal() {
   const apiRef = useRef(null);
 
   useEffect(() => {
-    if (jobsData.jobs && recruiter.greenhouse_key) {
+    if (jobs.status === 'success' && recruiter.greenhouse_key) {
       fetchJobs();
     }
-  }, [jobsData.jobs]);
+  }, [jobs.status]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(recruiter.greenhouse_key);
     setPostings(
       allJobs.filter((post) => {
         if (
-          jobsData.jobs?.filter(
+          jobs.data?.filter(
             (job) =>
               job.posted_by === POSTED_BY.GREENHOUSE &&
               job.job_title === post.title &&
@@ -135,7 +135,6 @@ export function GreenhouseModal() {
         await experimental_handleGenerateJd(newJobs[0].id);
         //creating candidates and job_applications
         await createJobApplications(jobsObj, recruiter.greenhouse_key);
-        //updating jobsData
         await handleJobRead();
         //closing modal once done
         setIntegration((prev) => ({
@@ -145,14 +144,14 @@ export function GreenhouseModal() {
         router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       } else {
         toast.error(
-          'Sorry unable to import. Please try again later or contact support.',
+          'Import failed. Please try again later or contact support for assistance.',
         );
         posthog.capture('GreenHouse Import Error');
         handleClose();
       }
     } catch (error) {
       toast.error(
-        'Sorry unable to import. Please try again later or contact support.',
+        'Import failed. Please try again later or contact support for assistance.',
       );
       handleClose();
     }
@@ -358,7 +357,7 @@ export function GreenhouseModal() {
                                     ]);
                                   } else {
                                     toast.warning(
-                                      'You can import 1 job at a time',
+                                      'You can import one job at a time.',
                                     );
                                   }
                                 }

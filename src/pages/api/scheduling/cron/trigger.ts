@@ -5,6 +5,7 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
+import { TaskTypeDb } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 
@@ -22,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data, error } = await supabase
       .from('new_tasks')
       .select(
-        '*,applications(id,candidates(first_name),public_jobs(id,recruiter(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
+        '*,applications(id,candidates(first_name),public_jobs(id,recruiter!public_jobs_recruiter_id_fkey(id,name))),recruiter_user(user_id,first_name,last_name,email,phone),interview_filter_json(*)',
       )
       .eq('status', 'scheduled')
       .or(`assignee.eq.{"${EmailAgentId}"},assignee.eq.{"${PhoneAgentId}"}`)
@@ -32,20 +33,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ascending: true,
       });
 
-    console.log(data);
-
     if (error) {
       throw new Error(error.message);
     } else {
-      const filterTaskAgent =
-        data?.filter(
-          (task) =>
-            task.assignee.includes(EmailAgentId) ||
-            task.assignee.includes(PhoneAgentId),
-        ) || [];
-      if (filterTaskAgent?.length > 0) {
+      if (data?.length > 0) {
         await Promise.all(
-          filterTaskAgent.map(async (task) => {
+          data.map(async (task) => {
             try {
               axios.post(url, {
                 application_id: task.application_id,
@@ -62,22 +55,46 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   : 'phone_agent',
                 candidate_name: task.applications.candidates.first_name,
                 company_name: task.applications.public_jobs.recruiter.name,
-                rec_user_email: task.recruiter_user.email,
                 rec_user_phone: task.recruiter_user.phone,
                 rec_user_id: task.recruiter_user.user_id,
                 user_tz: 'Asia/Calcutta',
-                trigger_count: task.trigger_count,
               } as ApiBodyParamsScheduleAgent);
             } catch (error) {
               console.error('Error for application:', error.message);
             }
           }),
         );
+
+        const { error } = await supabase.from('new_tasks').upsert(
+          data.map((task) => {
+            return {
+              id: task.id,
+              status: 'in_progress',
+              agent: task.agent,
+              application_id: task.application_id,
+              assignee: task.assignee,
+              name: task.name,
+              created_at: task.created_at,
+              created_by: task.created_by,
+              due_date: task.due_date,
+              filter_id: task.filter_id,
+              priority: task.priority,
+              recruiter_id: task.recruiter_id,
+              schedule_date_range: task.schedule_date_range,
+              session_ids: task.session_ids,
+              start_date: task.start_date,
+              task_owner: task.task_owner,
+              trigger_count: task.trigger_count + 1,
+              type: task.type,
+            } as TaskTypeDb;
+          }),
+        );
+
+        console.log(error?.message, 'error progress update');
+
         // You might want to handle errors here
-        console.log(`${filterTaskAgent.length} applications triggered`);
-        return res
-          .status(200)
-          .send(`${filterTaskAgent.length} applications triggered`);
+        console.log(`${data.length} applications triggered`);
+        return res.status(200).send(`${data.length} applications triggered`);
       } else {
         console.log('no applications');
         return res.status(200).send('no applications');

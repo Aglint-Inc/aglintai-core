@@ -43,7 +43,7 @@ function AssigneeList({
           <AssigneeChip assigneeId={selectedAssignee.user_id} />
         ) : (
           <Typography variant='caption' fontSize={'14px'}>
-            Select Assignee
+            Select an agent or member
           </Typography>
         )}
       </Stack>
@@ -87,7 +87,10 @@ function AssigneeList({
                   }
                 }}
               >
-                <AssigneeChip assigneeId={ele.user_id} />
+                <AssigneeChip
+                  disableHoverListener={true}
+                  assigneeId={ele.user_id}
+                />
               </Stack>
             );
           })}

@@ -1,4 +1,6 @@
-import { getOutboundEmail } from '@/src/utils/schedule-utils/get-outbound-email';
+/* eslint-disable no-console */
+
+import { getOutboundEmail } from '@/src/utils/scheduling_v2/get-outbound-email';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -27,8 +29,9 @@ export default async function handler(req, res) {
       headers: details.headers,
     };
 
-    msg.to = getOutboundEmail(msg.to, true);
-
+    console.log(msg.to);
+    msg.to = await getOutboundEmail(msg.to);
+    console.log(msg.to);
     await sgMail.send({
       ...msg,
     });

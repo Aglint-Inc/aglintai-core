@@ -8,8 +8,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
-import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { SubTaskProgress } from '@/src/types/data.types';
 import {
   holidayType,
   schedulingSettingType,
@@ -23,7 +21,6 @@ import {
   SessionsCombType,
   SessionSlotType,
 } from '../../types/scheduleTypes/types';
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
 export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
   const convertCombsToTimeSlot = (all_plan_combs: PlanCombinationType[]) => {
@@ -116,49 +113,4 @@ export const getNextWorkingDay = (
     break;
   }
   return nxt_day;
-};
-
-// email agent
-export const log_task_progress = async ({
-  task_id,
-  log_msg,
-  transcript,
-  candidate_name,
-  created_by,
-  progress_type = 'standard',
-}: {
-  task_id: string | null;
-  log_msg: string;
-  transcript?: { message: string };
-  agent_type?: 'email_agent' | 'phone_agent';
-  candidate_name?: string;
-  created_by: {
-    id: string;
-    name: string;
-  };
-  progress_type: SubTaskProgress['progress_type'];
-}) => {
-  if (!task_id) return;
-  if (candidate_name) {
-    log_msg = log_msg.replace(
-      '{candidate}',
-      `<span class="mention">@${candidate_name}</span>`,
-    );
-  }
-  try {
-    supabaseWrap(
-      await supabaseAdmin
-        .from('new_tasks_progress')
-        .insert({
-          created_by: created_by,
-          title: log_msg,
-          jsonb_data: transcript ?? null,
-          progress_type: progress_type,
-          task_id: task_id,
-        })
-        .select(),
-    );
-  } catch (error) {
-    // console.log(error);
-  }
 };

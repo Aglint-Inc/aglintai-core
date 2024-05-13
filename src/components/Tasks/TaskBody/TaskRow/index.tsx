@@ -1,7 +1,13 @@
-import { Checkbox, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
+import {
+  Checkbox,
+  Stack,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+} from '@mui/material';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 import {
   AvatarWithName,
@@ -9,33 +15,35 @@ import {
   PriorityPill,
   TaskTableCard,
 } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import {
-  TasksAgentContextType,
-  useTasksContext,
-} from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { CustomDatabase } from '@/src/types/customSchema';
+import { ShowCode } from '@/src/components/Common/ShowCode';
+import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
-import SelectStatus from '../../Components/SelectStatus';
+import StatusChip from '../../Components/StatusChip';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 
 function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const route = useRouter();
   const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
     useTaskStatesContext();
-  const { handelUpdateTask } = useTasksContext();
-  const [selectedStatus, setSelectedStatus] = useState<
-    CustomDatabase['public']['Enums']['task_status'] | null
-  >(null);
-
-  useEffect(() => {
-    if (selectedStatus) {
-      handelUpdateTask({ id: task.id, data: { status: selectedStatus } });
-    }
-  }, [selectedStatus]);
+  let toDayDateTime = dayjs();
+  const tomorrowDate = toDayDateTime.add(1, 'day');
+  let dueDateTime = dayjs(task.due_date);
+  const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: 'rgba(255, 255, 255, 0.87)',
+      boxShadow: theme.shadows[1],
+      fontSize: 11,
+    },
+  }));
   return (
     <Stack
       sx={{
@@ -49,13 +57,78 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       }}
     >
       <TaskTableCard
+        isOverdueVisible={
+          (task.status === 'in_progress' &&
+            (dueDateTime.isSame(tomorrowDate) ||
+              dueDateTime.isSame(toDayDateTime, 'day'))) ||
+          task.status === 'scheduled'
+        }
+        textOverdue={
+          <ShowCode>
+            <ShowCode.When isTrue={task.status === 'in_progress'}>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(toDayDateTime, 'day')}
+                >
+                  {`Due Today`}
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(tomorrowDate, 'day')}
+                >
+                  {`Due Tomorrow`}
+                </ShowCode.When>
+                <ShowCode.Else>{''}</ShowCode.Else>
+              </ShowCode>
+            </ShowCode.When>
+            <ShowCode.When isTrue={task.status === 'scheduled'}>
+              <ShowCode>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(toDayDateTime, 'day')}
+                >
+                  {`Today at ${dueDateTime.format('hh:mm A')}`}
+                </ShowCode.When>
+                <ShowCode.When
+                  isTrue={!!dueDateTime.isSame(tomorrowDate, 'day')}
+                >
+                  {`Tomorrow at ${dueDateTime.format('hh:mm A')}`}
+                </ShowCode.When>
+                <ShowCode.Else>
+                  {`${dueDateTime.format(`MMMM D [at] hh:mm A`)}`}
+                </ShowCode.Else>
+              </ShowCode>
+            </ShowCode.When>
+          </ShowCode>
+        }
         onClickCard={{
           onClick: () => {
             route.push(pageRoutes.TASKS + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}
-        textTask={capitalize(task.name) || 'Untitled'}
+        textTask={
+          <LightTooltip
+            enterDelay={1000}
+            enterNextDelay={1000}
+            title={
+              <>
+                <span
+                  style={{
+                    fontSize: '12px',
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: task.name || 'Untitled',
+                  }}
+                ></span>
+              </>
+            }
+          >
+            <span
+              dangerouslySetInnerHTML={{
+                __html: task.name || 'Untitled',
+              }}
+            ></span>
+          </LightTooltip>
+        }
         //   slotAvatarWithName={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotAssignedToCard={<AssigneeChip assigneeId={task.assignee[0]} />}
         slotCandidate={
@@ -67,24 +140,17 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                 slotAvatarWithName={
                   task?.applications && (
                     <AvatarWithName
-                      slotAvatar={
-                        <MuiAvatar
-                          height={'25px'}
-                          width={'25px'}
-                          src={task?.applications?.candidates.avatar}
-                          variant='circular'
-                          fontSize='14px'
-                          level={capitalizeAll(
-                            task?.applications.candidates?.first_name +
-                              ' ' +
-                              task?.applications.candidates?.last_name,
-                          )}
-                        />
-                      }
+                      isAvatarVisible={false}
+                      isCandidateIconVisible={true}
+                      isRoleVisible={false}
+                      isReverseShadowVisible={false}
+                      isShadowVisible={false}
+                      slotAvatar={<></>}
+                      isTickVisible={false}
                       textName={capitalizeAll(
                         task?.applications.candidates?.first_name +
                           ' ' +
-                          task?.applications.candidates?.last_name,
+                          (task?.applications.candidates?.last_name ?? ''),
                       )}
                     />
                   )
@@ -95,13 +161,11 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             '--'
           )
         }
-        slotStatus={
-          <SelectStatus
-            status={task.status}
-            setSelectedStatus={setSelectedStatus}
-          />
+        slotStatus={<StatusChip status={task.status} />}
+        textJob={
+          capitalizeFirstLetter(task?.applications?.public_jobs?.job_title) ||
+          '--'
         }
-        textJob={task?.applications?.public_jobs?.job_title || '--'}
         slotPriority={
           <PriorityPill
             isHighVisible={task.priority === 'high'}
@@ -126,7 +190,10 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               onChange={(e) => {
                 if (e.target.checked) {
                   //@ts-ignore
-                  setSelectedTasksIds((pre: any[]) => [task.id, ...pre]);
+                  setSelectedTasksIds((pre: any[]) => {
+                    const selectedIds = [task.id, ...pre];
+                    return selectedIds;
+                  });
                 } else {
                   //@ts-ignore
                   setSelectedTasksIds((pre: any[]) => {

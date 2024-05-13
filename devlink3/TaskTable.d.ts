@@ -8,4 +8,5 @@ declare function TaskTable(props: {
   slotNewTaskCard?: Types.Devlink.Slot;
   isNewTaskCardVisible?: Types.Visibility.VisibilityConditions;
   slotFilter?: Types.Devlink.Slot;
+  slotCheckbox?: Types.Devlink.Slot;
 }): React.JSX.Element;

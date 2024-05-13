@@ -55,7 +55,7 @@ function CandidateSearchHistory() {
   const [editList, setEditList] = useState<CandidateListTypeDB>(null);
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false); //in list page edit list input visible or not
   const [deleteList, setDeleteList] = useState<CandidateListTypeDB>(null);
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const [isJdPopUpOpen, setIsJdPopUPopOpen] = useState<boolean>(false);
   const [isCandidates, setIsCandidates] = useState<boolean>(false);
   const [deleteHistory, setDeleteHistory] = useState<boolean>(false);
@@ -130,7 +130,7 @@ function CandidateSearchHistory() {
 
       const cndates = (await getRelevantCndidates(
         queryJson,
-        jobsData.jobs.map((j) => j.id),
+        jobs.data.map((j) => j.id),
         25,
       )) as any;
 
@@ -185,7 +185,7 @@ function CandidateSearchHistory() {
           );
 
         if (errorCompanies) {
-          toast.error('Something went wrong! Please try again later.');
+          toast.error('Something went wrong. Please try again.');
           return;
         }
 
@@ -294,7 +294,7 @@ function CandidateSearchHistory() {
       setText('');
       setIsInputVisible(false);
     } else {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -316,7 +316,7 @@ function CandidateSearchHistory() {
       setEditListText('');
       setEditList(null);
     } else {
-      toast.error('Something went wrong! Please try again later.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -432,7 +432,7 @@ function CandidateSearchHistory() {
                                   );
                                 } else {
                                   toast.error(
-                                    'None of the jobs have candidates. Please add candidates to the jobs.',
+                                    'No candidates are linked to the jobs. Please add candidates.',
                                   );
                                 }
                               }
@@ -485,7 +485,7 @@ function CandidateSearchHistory() {
                       slotInput={
                         <UITextField
                           rest={{ autoFocus: true }}
-                          placeholder='Enter list name'
+                          placeholder='Enter List name'
                           value={text}
                           onChange={(e) => {
                             setText(e.target.value);
@@ -526,7 +526,7 @@ function CandidateSearchHistory() {
                                   }}
                                 >
                                   <UITextField
-                                    placeholder='Enter list name'
+                                    placeholder='Enter List name'
                                     ref={multiTextFieldRef}
                                     value={editListText}
                                     onChange={(e) => {
@@ -610,7 +610,7 @@ function CandidateSearchHistory() {
                               >
                                 <EmptyState />
                                 <Typography variant='body2'>
-                                  No search history
+                                  No search history found.
                                 </Typography>
                               </Stack>
                             )}
@@ -813,9 +813,9 @@ function CandidateSearchHistory() {
       >
         <ClearHistory
           textDesc={`By clicking 'Delete,' you're confirming that you want to remove this search history, and it cannot be undone.`}
-          textHeader={`Delete ${
-            history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
-          }`}
+          textHeader={`Delete ${history.filter(
+            (h) => h.id === deleteHistoryId,
+          )[0]?.search_query}`}
           onClickCancel={{
             onClick: () => {
               setDeleteHistory(false);

@@ -58,6 +58,6 @@ const getPagination = async ({ rec_id, filter }) => {
     });
     setPagination({ total: totalCount });
   } catch (error) {
-    toast.error('Error fetching interview data');
+    toast.error('Error fetching interview data.');
   }
 };

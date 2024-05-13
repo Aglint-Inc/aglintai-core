@@ -82,7 +82,7 @@ export default function ForgotPasswordComponent() {
         setLoading(false);
       }
     } else {
-      toast.error('Please Enter Email Address');
+      toast.error('Please enter email.');
     }
   };
 
@@ -109,7 +109,7 @@ export default function ForgotPasswordComponent() {
                     onBlur={handleEmail}
                     error={error.valid.error}
                     helperText={error.valid.error ? error.valid.msg : ''}
-                    placeholder='Email'
+                    placeholder='Enter Email'
                     id='Email'
                     required
                   />

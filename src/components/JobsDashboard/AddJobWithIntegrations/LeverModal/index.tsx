@@ -13,7 +13,7 @@ import {
   LeverApiKey,
   LoadingJobsAts,
   NoResultAts,
-  SkeletonLoaderAtsCard
+  SkeletonLoaderAtsCard,
 } from '@/devlink';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3';
 import UITextField from '@/src/components/Common/UITextField';
@@ -34,14 +34,14 @@ import {
   createJobObject,
   createLeverJobReference,
   fetchAllJobs,
-  getLeverStatusColor
+  getLeverStatusColor,
 } from './utils';
 
 export function LeverModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
+  const { jobs, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState([]);
   const [selectedLeverPostings, setSelectedLeverPostings] = useState([]);
@@ -50,28 +50,28 @@ export function LeverModalComp() {
   const apiRef = useRef(null);
 
   useEffect(() => {
-    if (jobsData.jobs && recruiter.lever_key) {
+    if (jobs.status === 'success' && recruiter.lever_key) {
       fetchJobs();
     }
-  }, [jobsData.jobs]);
+  }, [jobs.status]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(recruiter.lever_key);
     setLeverPostings(
       allJobs.filter((post) => {
         if (
-          jobsData.jobs?.filter(
+          jobs.data?.filter(
             (job) =>
               job.posted_by === POSTED_BY.LEVER &&
               job.job_title === post.text &&
-              job.location == post.categories.location
+              job.location == post.categories.location,
           ).length == 0
         ) {
           return true;
         } else {
           return false;
         }
-      })
+      }),
     );
     setInitialFetch(false);
   };
@@ -80,7 +80,7 @@ export function LeverModalComp() {
     try {
       setIntegration((prev) => ({
         ...prev,
-        lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING }
+        lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING },
       }));
 
       const dbJobs = await createJobObject(selectedLeverPostings, recruiter);
@@ -97,8 +97,8 @@ export function LeverModalComp() {
             job_id: newJobs.filter(
               (job) =>
                 job.job_title == post.text &&
-                job.location == post.categories.location
-            )[0].id
+                job.location == post.categories.location,
+            )[0].id,
           });
         });
 
@@ -108,9 +108,9 @@ export function LeverModalComp() {
             job_id: newJobs.filter(
               (job) =>
                 job.job_title == post.text &&
-                job.location == post.categories.location
+                job.location == post.categories.location,
             )[0].id,
-            recruiter_id: recruiter.id
+            recruiter_id: recruiter.id,
           };
         });
         await createJobApplications(jobsObj, recruiter.lever_key);
@@ -118,19 +118,19 @@ export function LeverModalComp() {
         await handleJobRead();
         setIntegration((prev) => ({
           ...prev,
-          lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING }
+          lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
         }));
         router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
       } else {
         toast.error(
-          'Sorry unable to import. Please try again later or contact support.'
+          'Import failed. Please try again later or contact support for assistance.',
         );
         posthog.capture('Error Importing Lever Jobs');
         handleClose();
       }
     } catch (error) {
       toast.error(
-        'Sorry unable to import. Please try again later or contact support.'
+        'Import failed. Please try again later or contact support for assistance.',
       );
       handleClose();
     }
@@ -142,16 +142,16 @@ export function LeverModalComp() {
       const response = await axios.post('/api/lever/getPostings', {
         offset: 0,
         apiKey: apiRef.current.value,
-        isInitial: true
+        isInitial: true,
       });
       if (response.status === 200 && response.data.data) {
         setIntegration((prev) => ({
           ...prev,
-          lever: { open: true, step: STATE_LEVER_DIALOG.FETCHING }
+          lever: { open: true, step: STATE_LEVER_DIALOG.FETCHING },
         }));
         const responseRec = await axios.post('/api/lever/saveApiKey', {
           recruiterId: recruiter.id,
-          apiKey: apiRef.current.value
+          apiKey: apiRef.current.value,
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
@@ -162,7 +162,7 @@ export function LeverModalComp() {
           setTimeout(() => {
             setIntegration((prev) => ({
               ...prev,
-              lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS }
+              lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
             }));
           }, 1000);
         }
@@ -170,14 +170,14 @@ export function LeverModalComp() {
         setLoading(false);
         setIntegration((prev) => ({
           ...prev,
-          lever: { open: true, step: STATE_LEVER_DIALOG.ERROR }
+          lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
         }));
       }
     } catch (error) {
       setLoading(false);
       setIntegration((prev) => ({
         ...prev,
-        lever: { open: true, step: STATE_LEVER_DIALOG.ERROR }
+        lever: { open: true, step: STATE_LEVER_DIALOG.ERROR },
       }));
     }
   };
@@ -200,7 +200,7 @@ export function LeverModalComp() {
                 buttonProps={{
                   onClick: () => {
                     submitApiKey();
-                  }
+                  },
                 }}
               />
             }
@@ -208,9 +208,9 @@ export function LeverModalComp() {
               onClick: () => {
                 window.open(
                   'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
-                  '_blank'
+                  '_blank',
                 );
-              }
+              },
             }}
             isApiWrong={integration.lever.step === STATE_LEVER_DIALOG.ERROR}
             slotSearch={
@@ -262,7 +262,7 @@ export function LeverModalComp() {
                 onClick: () => {
                   importLever();
                   posthog.capture('Lever Jobs successfully imported');
-                }
+                },
               }}
               isImportDisable={selectedLeverPostings.length === 0}
               isAllActive={leverFilter == 'all'}
@@ -272,22 +272,22 @@ export function LeverModalComp() {
               onClickClosed={{
                 onClick: () => {
                   setLeverFilter('closed');
-                }
+                },
               }}
               onClickPublished={{
                 onClick: () => {
                   setLeverFilter('published');
-                }
+                },
               }}
               onClickInternal={{
                 onClick: () => {
                   setLeverFilter('internal');
-                }
+                },
               }}
               onClickAll={{
                 onClick: () => {
                   setLeverFilter('all');
-                }
+                },
               }}
               slotAtsCard={
                 !initialFetch ? (
@@ -312,39 +312,39 @@ export function LeverModalComp() {
                             <AtsCard
                               isChecked={
                                 selectedLeverPostings?.filter(
-                                  (p) => p.id === post.id
+                                  (p) => p.id === post.id,
                                 )?.length > 0
                               }
                               onClickCheck={{
                                 onClick: () => {
                                   if (
                                     selectedLeverPostings?.some(
-                                      (p) => p.id === post.id
+                                      (p) => p.id === post.id,
                                     )
                                   ) {
                                     // If the object is already in the array, remove it
                                     setSelectedLeverPostings((prev) =>
-                                      prev.filter((p) => p.id !== post.id)
+                                      prev.filter((p) => p.id !== post.id),
                                     );
                                   } else {
                                     if (selectedLeverPostings.length < 1) {
                                       // If the object is not in the array, add it
                                       setSelectedLeverPostings((prev) => [
                                         ...prev,
-                                        post
+                                        post,
                                       ]);
                                     } else {
                                       toast.warning(
-                                        'You can import 1 job at a time'
+                                        'You can import one job at a time.',
                                       );
                                     }
                                   }
-                                }
+                                },
                               }}
                               propsTextColor={{
                                 style: {
-                                  color: getLeverStatusColor(post.state)
-                                }
+                                  color: getLeverStatusColor(post.state),
+                                },
                               }}
                               textRole={post.text}
                               textStatus={post.state}
@@ -383,7 +383,7 @@ export function LeverModalComp() {
       onClickClose={{
         onClick: () => {
           handleClose();
-        }
+        },
       }}
     />
   );

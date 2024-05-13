@@ -11,4 +11,5 @@ export const settingSubNavItem = {
   DAYOFF: 'dayOff',
   KEYWORDS: 'keywords',
   EMAILTEMPLATE: 'emailTemplate',
+  REASONS: 'reasons',
 };

@@ -10,8 +10,6 @@ import {
   ListCard,
   ViewTaskCard,
 } from '@/devlink3';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,
@@ -22,7 +20,7 @@ import {
   DatabaseEnums,
   DatabaseTableUpdate,
 } from '@/src/types/customSchema';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeAll, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
@@ -39,16 +37,15 @@ import SelectDueDate from '../../AddNewTask/SelecteDueDate';
 import SelectScheduleDate from '../../AddNewTask/SelectScheduleDate';
 import SessionList from '../../AddNewTask/SessionList';
 import TriggerTime from '../../AddNewTask/TriggerTime';
+import { meetingCardType } from '../Progress/SessionCard';
 
 function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const router = useRouter();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser, members } = useAuthDetails();
   const { handelUpdateTask } = useTasksContext();
   const { assignerList, setIsImmediate } = useTaskStatesContext();
-  const [sessionList, setSessionList] = useState<Awaited<
-    ReturnType<typeof fetchInterviewSessionTask>
-  > | null>([]);
-  const [selectedSession, setSelectedSession] = useState([]);
+
+  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
 
   const [scheduleDate, setScheduleDate] = useState({
     start_date: null,
@@ -63,18 +60,10 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
     useState<CustomDatabase['public']['Enums']['task_priority']>(null);
   const [selectedStatus, setSelectedStatus] =
     useState<DatabaseEnums['task_status']>(null);
-  async function getSessionList() {
-    const data = await fetchInterviewSessionTask({
-      application_id: task?.application_id,
-      job_id: task.applications?.job_id,
-    });
-    setSessionList(data);
-    return data;
-  }
   useEffect(() => {
     if (task) {
       setScheduleDate({ ...task.schedule_date_range });
-      setSelectedSession([...task.session_ids]);
+      setSelectedSession([...task.session_ids] as meetingCardType[]);
       setSelectedDueDate(task.due_date);
       setSelectTriggerTime(task.start_date);
       setSelectedPriority(task.priority);
@@ -84,21 +73,19 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
       );
       setSelectedAssignee(assigner);
       setIsImmediate(false);
-      getSessionList();
     }
-  }, [router.query?.task_id]);
+  }, [router.query?.task_id, assignerList, task]);
 
   async function updateChanges(data: DatabaseTableUpdate['new_tasks']) {
-    handelUpdateTask({
-      id: task.id,
-      data: {
+    handelUpdateTask([
+      {
+        id: task.id,
         ...data,
       },
-    });
+    ]);
   }
 
-  const createdBy = assignerList.find((ele) => ele.user_id === task.created_by);
-
+  const createdBy = members.find((ele) => ele.user_id === task.created_by);
   // open trigger Time
   const [openTriggerTime, setOpenTriggerTime] = useState(null);
   const spanRef = useRef(null);
@@ -109,7 +96,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotType={
           <InterviewTaskPill textInterviewName={capitalize(task.type)} />
         }
-        slotJob={capitalizeAll(task?.applications?.public_jobs?.job_title)}
+        slotJob={capitalizeFirstLetter(task?.applications?.public_jobs?.job_title)}
         slotCandidate={
           task.application_id && (
             <ListCard
@@ -118,24 +105,18 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               slotAvatarWithName={
                 task.applications?.candidates && (
                   <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'24px'}
-                        width={'24px'}
-                        src={task.applications?.candidates.avatar}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          task.applications.candidates?.first_name +
-                            ' ' +
-                            task.applications.candidates?.last_name,
-                        )}
-                      />
-                    }
+                    isAvatarVisible={false}
+                    isCandidateIconVisible={true}
+                    isRoleVisible={false}
+                    isReverseShadowVisible={false}
+                    isShadowVisible={false}
+                    slotAvatar={<></>}
+                    isTickVisible={false}
+                    // slotAvatar={}
                     textName={capitalizeAll(
                       task.applications.candidates?.first_name +
                         ' ' +
-                        task.applications.candidates?.last_name,
+                        (task.applications.candidates?.last_name ?? ''),
                     )}
                   />
                 )
@@ -147,10 +128,26 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            sessionList={sessionList}
+            application_id={task.applications.id}
+            job_id={task.applications.job_id}
             isOptionList={task.status === 'not_started'}
             onChange={(data: any) => {
               updateChanges({ session_ids: data });
+              createTaskProgress({
+                type: 'session_update',
+                data: {
+                  task_id: router.query.task_id as string,
+                  created_by: {
+                    name: recruiterUser.first_name,
+                    id: recruiterUser.user_id,
+                  },
+                  progress_type: 'standard',
+                },
+                optionData: {
+                  currentSessions: task.session_ids as any,
+                  selectedSession: data,
+                },
+              });
             }}
           />
         }
@@ -158,53 +155,20 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           <SelectScheduleDate
             scheduleDate={scheduleDate}
             isOptionList={task.status === 'not_started'}
-            onChange={(e) => {
-              if (Array.isArray(e)) {
-                if (e[0] && e[1]) {
-                  updateChanges({
-                    schedule_date_range: {
-                      start_date: dayjs(e[0]).toString(),
-                      end_date: dayjs(e[1]).toString(),
-                    },
-                  });
-                  setScheduleDate({
-                    start_date: dayjs(e[0]).toString(),
-                    end_date: dayjs(e[1]).toString(),
-                  });
-                  createTaskProgress({
-                    type: 'schedule_date_update',
-                    data: {
-                      task_id: router.query.task_id as string,
-                      created_by: {
-                        name: recruiterUser.first_name,
-                        id: recruiterUser.user_id,
-                      },
-                      progress_type: 'standard',
-                    },
-                    optionData: {
-                      scheduleDateRange: {
-                        start_date: dayjs(e[0]).toString(),
-                        end_date: dayjs(e[1]).toString(),
-                      },
-                      prevScheduleDateRange: {
-                        start_date: task.schedule_date_range.start_date,
-                        end_date: task.schedule_date_range.end_date,
-                      },
-                    },
-                  });
-                }
-              }
-              if (!Array.isArray(e)) {
-                setScheduleDate({
-                  start_date: dayjs(e).toString(),
-                  end_date: null,
-                });
+            onChange={(e: any[]) => {
+              if (e[1]) {
                 updateChanges({
                   schedule_date_range: {
-                    start_date: dayjs(e).toString(),
-                    end_date: null,
+                    start_date: dayjs(e[0]).toString(),
+                    end_date: dayjs(e[1]).toString(),
                   },
+                  due_date: dayjs(e[0]).toString(),
                 });
+                setScheduleDate({
+                  start_date: dayjs(e[0]).toString(),
+                  end_date: dayjs(e[1]).toString(),
+                });
+                setSelectedDueDate(dayjs(e[0]).toString());
                 createTaskProgress({
                   type: 'schedule_date_update',
                   data: {
@@ -217,7 +181,41 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                   },
                   optionData: {
                     scheduleDateRange: {
-                      start_date: dayjs(e).toString(),
+                      start_date: dayjs(e[0]).toString(),
+                      end_date: dayjs(e[1]).toString(),
+                    },
+                    prevScheduleDateRange: {
+                      start_date: task.schedule_date_range.start_date,
+                      end_date: task.schedule_date_range.end_date,
+                    },
+                  },
+                });
+              } else {
+                updateChanges({
+                  schedule_date_range: {
+                    start_date: dayjs(e[0]).toString(),
+                    end_date: null,
+                  },
+                  due_date: dayjs(e[0]).toString(),
+                });
+                setScheduleDate({
+                  start_date: dayjs(e[0]).toString(),
+                  end_date: null,
+                });
+                setSelectedDueDate(dayjs(e[0]).toString());
+                createTaskProgress({
+                  type: 'schedule_date_update',
+                  data: {
+                    task_id: router.query.task_id as string,
+                    created_by: {
+                      name: recruiterUser.first_name,
+                      id: recruiterUser.user_id,
+                    },
+                    progress_type: 'standard',
+                  },
+                  optionData: {
+                    scheduleDateRange: {
+                      start_date: dayjs(e[0]).toString(),
                       end_date: null,
                     },
                     prevScheduleDateRange: {
@@ -232,30 +230,10 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }
         slotCreatedBy={
           createdBy && (
-            <ListCard
-              isAvatarWithNameVisible={true}
-              isListVisible={false}
-              slotAvatarWithName={
-                createdBy && (
-                  <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
-                        src={createdBy.profile_image}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          createdBy.first_name + ' ' + createdBy.last_name,
-                        )}
-                      />
-                    }
-                    textName={capitalizeAll(
-                      createdBy.first_name + ' ' + createdBy.last_name,
-                    )}
-                  />
-                )
-              }
+            <AssigneeList
+              isOptionList={false}
+              setSelectedAssignee={setSelectedAssignee}
+              selectedAssignee={createdBy as any}
             />
           )
         }
@@ -266,6 +244,23 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             isOptionList={task.status === 'not_started'}
             onChange={(e: any) => {
               updateChanges({ due_date: dayjs(e).toString() });
+              createTaskProgress({
+                type: 'due_date_update',
+                data: {
+                  task_id: router.query.task_id as string,
+                  created_by: {
+                    name: recruiterUser.first_name as string,
+                    id: recruiterUser.user_id as string,
+                  },
+                  progress_type: 'standard',
+                },
+                optionData: {
+                  dueDate: {
+                    prev: dayjs(task.due_date).toString(),
+                    selectedDate: dayjs(e).toString(),
+                  },
+                },
+              });
             }}
           />
         }
@@ -277,9 +272,12 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               onChange={(assigner: AssignerType) => {
                 // createProgress(assigner);
                 if (task.assignee[0] !== assigner.user_id) {
+                  const currentAssignee = assignerList.find(
+                    (ele) => ele.user_id === task.assignee[0],
+                  );
                   updateChanges({ assignee: [assigner.user_id] });
                   createTaskProgress({
-                    type: 'create_task',
+                    type: 'change_assignee',
                     data: {
                       task_id: router.query.task_id as string,
                       created_by: {
@@ -289,13 +287,14 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                       progress_type: 'standard',
                     },
                     optionData: {
-                      assignerName:
-                        assigner.first_name + ' ' + assigner.last_name,
                       assignerId: assigner.user_id,
-                      creatorName:
-                        recruiterUser.first_name +
+                      currentAssigneeId: task.assignee[0],
+                      assignerName:
+                        assigner.first_name + ' ' + (assigner.last_name ?? ''),
+                      currentAssigneeName:
+                        currentAssignee.first_name +
                         ' ' +
-                        recruiterUser.last_name,
+                        (currentAssignee.last_name ?? ''),
                     },
                   });
 
@@ -304,6 +303,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
                     assigner.user_id === PhoneAgentId
                   ) {
                     setOpenTriggerTime(spanRef.current);
+                    setSelectedStatus('scheduled');
+                  } else {
+                    setSelectedStatus('not_started');
                   }
                 }
               }}
@@ -320,9 +322,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
               isOptionList={task.status === 'not_started'}
               openTriggerTime={openTriggerTime}
               setOpenTriggerTime={setOpenTriggerTime}
-              onChange={(e) => {
+              onChange={(e: any) => {
                 updateChanges({
-                  start_date: dayjs(selectTriggerTime).toString(),
+                  start_date: dayjs(e).toString(),
                 });
                 createTaskProgress({
                   type: 'trigger_time_update',
@@ -349,8 +351,8 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             // isOptionList={task.status === 'not_started'}
             onChange={(e: any) => {
               const status = e as DatabaseEnums['task_status'];
-              updateChanges({ status });
               if (task.status !== status) {
+                updateChanges({ status });
                 createTaskProgress({
                   type: 'status_update',
                   data: {
@@ -386,8 +388,25 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
             selectedPriority={selectedPriority}
             setSelectedPriority={setSelectedPriority}
             isOptionList={task.status === 'not_started'}
-            onChange={(e: DatabaseEnums['task_priority']) => {
-              updateChanges({ priority: e });
+            onChange={async (e: DatabaseEnums['task_priority']) => {
+              if (e !== task.priority) {
+                updateChanges({ priority: e });
+                createTaskProgress({
+                  type: 'priority_update',
+                  data: {
+                    task_id: router.query.task_id as string,
+                    created_by: {
+                      name: recruiterUser.first_name as string,
+                      id: recruiterUser.user_id as string,
+                    },
+                    progress_type: 'standard',
+                  },
+                  optionData: {
+                    currentPriority: task.priority,
+                    priority: e,
+                  },
+                });
+              }
             }}
           />
         }

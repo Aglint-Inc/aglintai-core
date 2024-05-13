@@ -3,7 +3,7 @@ import { Button, Popover, Stack } from '@mui/material';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TaskDate } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -26,11 +26,13 @@ function SelectScheduleDate({
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const [selectedDate, setSelectedDate] = useState([]);
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  useEffect(() => {
+    setSelectedDate([scheduleDate.start_date, scheduleDate.end_date]);
+  }, [scheduleDate]);
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   return (
@@ -39,14 +41,14 @@ function SelectScheduleDate({
         <ShowCode>
           <ShowCode.When isTrue={!!scheduleDate.end_date}>
             {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('DD MMM YYYY') : ''}`}</>
+              <>{`${dayjs(scheduleDate.start_date).format('MMM DD, YYYY')} ${dayjs(scheduleDate.end_date).toString() !== 'Invalid Date' ? ' - ' + dayjs(scheduleDate.end_date).format('MMM DD, YYYY') : ''}`}</>
             ) : (
               <>Select Date</>
             )}
           </ShowCode.When>
           <ShowCode.Else>
             {scheduleDate.start_date ? (
-              <>{`${dayjs(scheduleDate.start_date).format('DD MMM YYYY')}`}</>
+              <>{`${dayjs(scheduleDate.start_date).format('MMM DD, YYYY')}`}</>
             ) : (
               <>Select Date</>
             )}
@@ -92,9 +94,7 @@ function SelectScheduleDate({
                 <ShowCode.When isTrue={rangeActive}>
                   <DateRange
                     onChange={(e) => {
-                      if (onChange) {
-                        onChange(e);
-                      }
+                      setSelectedDate(e);
                     }}
                     value={
                       dayjs(scheduleDate.end_date).toString() == 'Invalid Date'
@@ -113,16 +113,33 @@ function SelectScheduleDate({
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateCalendar
                       disablePast
-                      value={dayjs(scheduleDate.start_date)}
+                      value={dayjs(selectedDate[0])}
                       onChange={(e) => {
-                        if (onChange) {
-                          onChange(e);
-                        }
+                        setSelectedDate([e, null]);
                       }}
                     />
                   </LocalizationProvider>
                 </ShowCode.Else>
               </ShowCode>
+              <Stack justifyContent={'end'} direction={'row'} spacing={'10px'}>
+                <Button
+                  onClick={() => {
+                    setAnchorEl(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (onChange) {
+                      onChange(selectedDate);
+                      setAnchorEl(null);
+                    }
+                  }}
+                >
+                  OK
+                </Button>
+              </Stack>
             </>
           }
         />

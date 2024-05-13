@@ -151,7 +151,7 @@ export const createJobApplications = async (
           await createReference(referenceObj);
         } else {
           toast.error(
-            'Sorry unable to import. Please try again later or contact support.',
+            'Import failed. Please try again later or contact support for assistance.',
           );
         }
       }
@@ -250,7 +250,7 @@ export const createJobObject = async (
           skills: [],
           title: post.title,
         },
-        department: 'support',
+        department: recruiter?.departments?.[0] ?? null,
       },
       description_hash: hashCode(post?.content ?? ''),
       location: post.location.name,
@@ -258,6 +258,7 @@ export const createJobObject = async (
       status: 'draft',
       scoring_criteria_loading: true,
       posted_by: POSTED_BY.GREENHOUSE,
+      department: recruiter?.departments?.[0] ?? null,
       id: post.public_job_id,
       recruiter_id: recruiter.id,
       description: post.content,
@@ -309,7 +310,7 @@ export const createReference = async (
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Import failed. Please try again later or contact support for assistance.',
     );
     return undefined;
   } else {

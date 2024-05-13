@@ -1,3 +1,4 @@
+import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
@@ -10,15 +11,20 @@ import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { EmailAgentId, PhoneAgentId } from '../utils';
+import AssigneeDetailsCard, { LightTooltip } from './AssigneeDetailsCard';
 
-function AssigneeChip({ assigneeId }: { assigneeId: string }) {
-  const { data: members } = useInterviewerList();
-
+function AssigneeChip({
+  assigneeId,
+  disableHoverListener = false,
+}: {
+  assigneeId: string;
+  disableHoverListener?: boolean;
+}) {
+  const { members } = useAuthDetails();
+  // const { data: members } = useInterviewerList();
   const assigneeDetails =
-    members &&
-    members
-      .map((item) => item.rec_user)
-      .find((item) => item.user_id === assigneeId);
+    members && members.find((item) => item.user_id === assigneeId);
+
   return (
     <ShowCode>
       <ShowCode.When isTrue={assigneeId === EmailAgentId}>
@@ -34,35 +40,53 @@ function AssigneeChip({ assigneeId }: { assigneeId: string }) {
         />
       </ShowCode.When>
       <ShowCode.When isTrue={Boolean(assigneeDetails?.first_name)}>
-        <ListCard
-          isAvatarWithNameVisible={true}
-          isListVisible={false}
-          slotAvatarWithName={
-            assigneeDetails && (
-              <AvatarWithName
-                slotAvatar={
-                  <MuiAvatar
-                    height={'25px'}
-                    width={'25px'}
-                    src={assigneeDetails.profile_image}
-                    variant='circular'
-                    fontSize='14px'
-                    level={capitalizeAll(
-                      assigneeDetails?.first_name +
-                        ' ' +
-                        assigneeDetails?.last_name,
-                    )}
+        <LightTooltip
+          // open={true}
+          disableHoverListener={disableHoverListener}
+          // TransitionComponent={Zoom}
+          title={<AssigneeDetailsCard assigneeDetails={assigneeDetails} />}
+        >
+          <Stack>
+            <ListCard
+              isAvatarWithNameVisible={true}
+              isListVisible={false}
+              slotAvatarWithName={
+                assigneeDetails && (
+                  <AvatarWithName
+                    slotAvatar={
+                      <MuiAvatar
+                        height={'25px'}
+                        width={'25px'}
+                        src={assigneeDetails.profile_image}
+                        variant='circular'
+                        fontSize='14px'
+                        level={capitalizeAll(
+                          assigneeDetails?.first_name +
+                            ' ' +
+                            (assigneeDetails?.last_name ?? ''),
+                        )}
+                      />
+                    }
+                    textName={
+                      <Stack>
+                        <Typography fontSize={'14px'}>
+                          {capitalizeAll(
+                            assigneeDetails?.first_name +
+                              ' ' +
+                              (assigneeDetails?.last_name ?? ''),
+                          )}{' '}
+                        </Typography>
+                        {/* <Typography variant='caption' fontSize={'12px'}>
+                          {capitalizeAll(assigneeDetails?.position)}
+                        </Typography> */}
+                      </Stack>
+                    }
                   />
-                }
-                textName={capitalizeAll(
-                  assigneeDetails?.first_name +
-                    ' ' +
-                    assigneeDetails?.last_name,
-                )}
-              />
-            )
-          }
-        />
+                )
+              }
+            />
+          </Stack>
+        </LightTooltip>
       </ShowCode.When>
     </ShowCode>
   );

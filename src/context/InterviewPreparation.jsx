@@ -22,7 +22,7 @@ import SpeechRecognition, {
 
 import { supabase } from '@/src/utils/supabase/client';
 
-import { selectJobApplicationQuery } from '../pages/api/job/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '../apiUtils/job/jobApplications/read/utils';
 import { mockTestPrePrompts } from '../utils/ai-prompts/mock-test-prompts';
 import { interviewCompleted } from '../utils/email_templates/innterview_completed';
 import { useInterviewSignUp } from './InterviewSignup';
@@ -771,7 +771,7 @@ const InterviewPrepProvider = ({ children }) => {
         setAiFailed(true);
       }
     } else {
-      toast.warning('Please give you answer');
+      toast.warning('Please give you answer.');
     }
   }
 
@@ -1064,7 +1064,7 @@ const InterviewPrepProvider = ({ children }) => {
         (pre) => pre.id !== interviewId,
       );
       setInterviewsList(filteredInterview);
-      toast.success('Interview successfully deleted');
+      toast.success('Interview deleted successfully.');
     }
     // deleting all files from bucket
     const { data: allfiles, error: allfilesError } = await supabase.storage

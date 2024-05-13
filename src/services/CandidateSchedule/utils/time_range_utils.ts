@@ -1,6 +1,8 @@
 import { Dayjs } from 'dayjs';
 
 import { TimeDurationDayjsType } from '@/src/types/scheduleTypes/types2';
+
+import { userTzDayjs } from './userTzDayjs';
 const precission = 'minutes';
 /**
  * @param chunk1 time chunk
@@ -100,4 +102,16 @@ export const dayjsMax = (day1: Dayjs, day2: Dayjs) => {
     return day1;
   }
   return day2;
+};
+
+export const convertCalEventToDayjsChunk = (
+  start_time: string,
+  end_time: string,
+) => {
+  const chunk: TimeDurationDayjsType = {
+    startTime: userTzDayjs(start_time),
+    endTime: userTzDayjs(end_time),
+  };
+
+  return chunk;
 };

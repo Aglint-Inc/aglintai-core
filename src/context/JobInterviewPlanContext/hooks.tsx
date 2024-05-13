@@ -1,12 +1,11 @@
 import { useMutationState } from '@tanstack/react-query';
 
-import { useInterviewCoordinators } from '@/src/queries/interview-coordinators';
+import { useCompanyMembers } from '@/src/queries/company-members';
 import { useInterviewModules } from '@/src/queries/interview-modules';
 import {
   CreateDebriefSession,
   CreateInterviewSession,
   useAddDebriefSession,
-  useAddInterviewCoordinator,
   useAddInterviewSession,
   useCreateInterviewPlan,
   useDeleteInterviewSession,
@@ -23,7 +22,7 @@ import { useJobDetails } from '../JobDashboard';
 
 const useJobInterviewPlanActions = () => {
   const { job } = useJobDetails();
-  const interviewCoordinator = useInterviewCoordinators();
+  const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();
   const interviewPlans = useInterviewPlans();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
@@ -33,7 +32,6 @@ const useJobInterviewPlanActions = () => {
   const { mutate: handleDeleteSession } = useDeleteInterviewSession();
   const { mutateAsync: createDebriefSession } = useAddDebriefSession();
   const { mutate: handleEditDebriefSession } = useEditDebriefSession();
-  const { mutate: handleSelectCoordinator } = useAddInterviewCoordinator();
   const { mutate: handleReorderSessions } = useReorderInterviewSessions();
 
   const { mutationKey: updateMutationKey } =
@@ -52,12 +50,10 @@ const useJobInterviewPlanActions = () => {
 
   const initialLoad = !!(
     job &&
-    interviewModules.status !== 'pending' &&
-    interviewCoordinator.status !== 'pending' &&
-    interviewPlans.status !== 'pending'
+    !interviewModules.isPending &&
+    !companyMembers.isPending &&
+    !interviewPlans.isPending
   );
-
-  if (!initialLoad) return undefined;
 
   const getLoadingState = (sessionId: string) => {
     return !![...updateQueue, ...deleteQueue].find(
@@ -90,13 +86,12 @@ const useJobInterviewPlanActions = () => {
   };
 
   const plan_id = interviewPlans?.data?.id;
-  const coordinator = interviewPlans?.data?.recruiter_user;
 
   const value = {
     job,
+    initialLoad,
     interviewModules,
-    interviewCoordinator,
-    handleSelectCoordinator,
+    companyMembers,
     handleCreateSession,
     handleEditSession,
     handleCreateDebriefSession,
@@ -107,7 +102,6 @@ const useJobInterviewPlanActions = () => {
     handleCreatePlan,
     handleReorderSessions,
     interviewPlans,
-    coordinator,
     plan_id,
   };
   return value;

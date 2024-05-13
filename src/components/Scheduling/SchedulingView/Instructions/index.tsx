@@ -11,9 +11,9 @@ import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { TransformSchedule } from '../../Modules/types';
+import { ScheduleMeeting } from '../types';
 
-function Instructions({ schedule }: { schedule: TransformSchedule }) {
+function Instructions({ schedule }: { schedule: ScheduleMeeting }) {
   const { recruiterUser } = useAuthDetails();
   const [textValue, setTextValue] = useState(null);
 
@@ -33,9 +33,9 @@ function Instructions({ schedule }: { schedule: TransformSchedule }) {
           .eq('id', schedule.interview_meeting.id);
         if (error) throw Error(error.message);
         refetch();
-        toast.success('Instruction updated!');
+        toast.success('Instruction updated successfully.');
       } else {
-        toast.warning('Please give instructions!');
+        toast.warning('Please provide instructions.');
       }
     } catch (error) {
       toast.error(error.message);

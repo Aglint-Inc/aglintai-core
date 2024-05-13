@@ -27,19 +27,19 @@ const SelectedCandidate = ({
   showEmailOutReach: boolean;
 }) => {
   // const { updateState, candidateSearchState } = useCandidateSearchCtx();
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const [eligibleJobs, setElegebleJobs] = useState<newCandJob[]>([]);
   const { handleAddCandidatesTojob, candidateSearchState } =
     useCandidateSearchCtx();
 
   useEffect(() => {
-    if (!jobsData.jobs || !candidate) return;
+    if (jobs.status === 'pending' || !candidate) return;
     const candJobIds = candidate.applied_job_posts.map((c) => c.job_id);
-    const eligiJobs: newCandJob[] = jobsData.jobs
+    const eligiJobs: newCandJob[] = jobs.data
       .filter((j) => j.status === 'published' && !candJobIds.includes(j.id))
       .map((j) => ({ id: j.id, title: j.job_title }));
     setElegebleJobs(eligiJobs);
-  }, [jobsData, candidate, candidateSearchState.candidates]);
+  }, [jobs, candidate, candidateSearchState.candidates]);
 
   if (!candidate) return <></>;
   const handleAddApplications = async (checkedJobIds: newCandJob[]) => {

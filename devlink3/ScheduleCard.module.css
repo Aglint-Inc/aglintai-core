@@ -1,7 +1,8 @@
 .schedule_card {
   display: flex;
+  overflow: hidden;
   justify-content: flex-start;
-  align-items: center;
+  align-items: stretch;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
 
@@ -9,129 +10,26 @@
   border-radius: 10px;
 }
 
-.schedule_dateblcok {
-  display: flex;
-  width: 80px;
-  height: 96px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-  flex: 0 0 auto;
-  grid-column-gap: 3px;
-  grid-row-gap: 3px;
-
-  border-radius: 10px 0px 0px 10px;
-
-  background-color: #f7f9fb;
-}
-
-.schedule_dateblcok.height-90 {
-  height: 90px;
-}
-
-.schedule_dateblcok.height-90.center {
-  justify-content: center;
-  align-items: center;
-}
-
-.schedule_dateblcok.height-90.center.width-85 {
-  width: 85px;
-}
-
-.schedule_dateblcok.height-90.center.width-85.not-schedule {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-}
-
-.schedule_dateblcok.height-90.center.width-85.not-schedule.active {
-  z-index: 3;
-}
-
-.schedule_dateblcok.height-90.center.width-85.active {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  right: 0%;
-  bottom: 0%;
-
-  background-color: #edf7ff;
-}
-
-.data_wrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-wrap: nowrap;
-  align-items: center;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-}
-
-.schedule_month {
-  color: #68737d;
-  font-size: 14px;
-}
-
-.schedule_month.opacity-40 {
-  opacity: 0.4;
-}
-
-.scheduledate {
-  font-size: 20px;
-  line-height: 22px;
-  font-weight: 600;
-}
-
-.day {
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.text-blue-500 {
-  color: #337fbd;
+.div-block-1644 {
+  width: 10px;
+  background-color: #337fbd;
 }
 
 .schedule_details {
   display: flex;
+  padding-top: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 7px;
   grid-row-gap: 7px;
 }
 
-.div-block-1415 {
+.div-block-1645 {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.relative_2 {
-  position: relative;
-  z-index: 2;
 }
 
 .fw-semibold {
@@ -144,6 +42,11 @@
 }
 
 .fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
   position: relative;
   z-index: 2;
 }
@@ -183,6 +86,78 @@
 .fw-semibold.plr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.div-block-1415 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.cursor-pointer.mr-20 {
+  margin-right: 20px;
+  transition-property: none;
+}
+
+.icons.task-hover {
+  position: absolute;
+  left: 50px;
+  top: -10px;
+  right: auto;
+  bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .div-block-1416 {

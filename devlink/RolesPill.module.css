@@ -12,10 +12,6 @@
   background-color: rgba(237, 247, 255, 1);
 }
 
-.text-cap {
-  text-transform: capitalize;
-}
-
 .plus---12px-icon {
   display: flex;
   padding: 1px;

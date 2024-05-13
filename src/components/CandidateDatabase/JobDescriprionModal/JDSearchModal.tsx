@@ -22,7 +22,7 @@ import { getRelevantCndidates } from '../utils';
 export const JDSearchModal = ({ setJdPopup }) => {
   const defaultValue = '';
   const { recruiter } = useAuthDetails();
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const [isJdSearching, setIsJdSearching] = useState(false);
   const [jobRole, setJobRole] = useState('');
   const [jdText, setJdText] = useState(defaultValue);
@@ -42,7 +42,7 @@ ${jdText}
       const queryJson = await searchJdToJson(fullJd);
       const cndates = (await getRelevantCndidates(
         queryJson,
-        jobsData.jobs.map((j) => j.id),
+        jobs.data.map((j) => j.id),
         25,
       )) as any;
       const [history] = supabaseWrap(

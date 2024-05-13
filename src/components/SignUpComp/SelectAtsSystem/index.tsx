@@ -171,7 +171,7 @@ function SelectAtsSystem() {
                             //       return pre;
                             //     });
                             //   }}
-                            placeholder='Ex : Indeed'
+                            placeholder='Ex. Indeed'
                             error={textCheck}
                             helperText='Please fill this field'
                           />

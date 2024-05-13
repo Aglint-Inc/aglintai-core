@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { WorkingHourDay } from "./WorkingHourDay";
@@ -30,7 +31,9 @@ export function WorkingHours({
             className={_utils.cx(_styles, "text-grey-600")}
             tag="div"
           >
-            {"Set up recruitng time ranges and available working hours"}
+            {
+              "Set up your company's default time zone, working hours, and breaks."
+            }
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
@@ -82,12 +85,12 @@ export function WorkingHours({
           className={_utils.cx(_styles, "setting_title")}
           tag="div"
         >
-          <_Builtin.Block tag="div">{"Working Hours"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Default Working Hours"}</_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "text-gray-500")}
             tag="div"
           >
-            {"Setup working hour across company level."}
+            {"Set the standard working hours for the company."}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block className={_utils.cx(_styles, "week_days")} tag="div">

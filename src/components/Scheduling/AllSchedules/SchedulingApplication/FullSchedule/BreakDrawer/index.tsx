@@ -79,7 +79,7 @@ function BreakDrawerEdit() {
               .newId,
           );
       } else {
-        toast.error('Error caching session');
+        toast.error('Error caching session.');
       }
 
       await fetchInterviewDataByApplication();
@@ -116,7 +116,7 @@ function BreakDrawerEdit() {
           <SideDrawerBlock
             onClickClose={{ onClick: () => handleClose() }}
             textPrimaryButton='Save'
-            textTitle='Edit Session'
+            textTitle='Edit break duration'
             slotSidedrawerBody={
               <Stack p={'4px'}>
                 <DropDown

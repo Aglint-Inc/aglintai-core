@@ -20,13 +20,14 @@ function FilterSearchField() {
             </InputAdornment>
           ),
         }}
-        placeholder='Search by name'
+        placeholder='Search by Name'
         value={textSearch}
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });
         }}
         borderRadius={10}
         height={42}
+        width='250px'
       />
     </>
   );

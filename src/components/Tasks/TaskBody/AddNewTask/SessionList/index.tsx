@@ -1,39 +1,68 @@
 /* eslint-disable no-unused-vars */
 import { Popover, Stack, Typography } from '@mui/material';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 import { EmptyState } from '@/devlink2';
 import { InterviewTaskPill, ListCard, ListPop } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import {
+  ApiRequestInterviewSessionTask,
+  ApiResponseInterviewSessionTask,
+} from '@/src/pages/api/scheduling/fetch_interview_session_task';
+
+import { meetingCardType } from '../../ViewTask/Progress/SessionCard';
 
 function SessionList({
   selectedSession,
   setSelectedSession,
-  sessionList,
   isOptionList = true,
   onChange,
+  application_id,
+  job_id,
 }: {
-  selectedSession: Awaited<ReturnType<typeof fetchInterviewSessionTask>> | null;
-  sessionList: Awaited<ReturnType<typeof fetchInterviewSessionTask>>;
-  setSelectedSession: (
-    x: Awaited<ReturnType<typeof fetchInterviewSessionTask>>,
-  ) => void;
+  selectedSession: meetingCardType[] | null;
+
+  setSelectedSession: (x: meetingCardType[]) => void;
   isOptionList?: boolean;
   onChange?: any;
+  application_id: string;
+  job_id: string;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   const handleClick = (event: { currentTarget: any }) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const [sessionList, setSessionList] = useState<meetingCardType[]>(null);
+  async function getSessionList() {
+    const {
+      data: { data },
+    } = await axios.post('/api/scheduling/fetch_interview_session_task', {
+      application_id: application_id,
+      job_id: job_id,
+    } as ApiRequestInterviewSessionTask);
+    const sessions = data as ApiResponseInterviewSessionTask['data'];
+    if (sessions) {
+      setSessionList(
+        sessions.map(
+          (ele) =>
+            ({
+              id: ele.id,
+              name: ele.name,
+            }) as meetingCardType,
+        ),
+      );
+    }
+  }
+  useEffect(() => {
+    getSessionList();
+  }, [application_id]);
   return (
     <>
       <Stack
@@ -107,15 +136,23 @@ function SessionList({
                                 .map((ele: { id: any }) => ele.id)
                                 .includes(item.id)
                             ) {
-                              const data = pre.filter(
-                                (ele: { id: string }) => ele.id !== item.id,
-                              );
+                              const data = pre
+                                .filter(
+                                  (ele: { id: string }) => ele.id !== item.id,
+                                )
+                                .map((ele) => ({
+                                  id: ele.id,
+                                  name: ele.name,
+                                }));
                               if (onChange) {
                                 onChange(data);
                               }
                               return data;
                             }
-                            const data = [item, ...pre];
+                            const data = [item, ...pre].map((ele) => ({
+                              id: ele.id,
+                              name: ele.name,
+                            }));
                             if (onChange) {
                               onChange(data);
                             }
@@ -124,24 +161,13 @@ function SessionList({
                         }}
                       >
                         <ListCard isListVisible={true} textList={item.name} />
-                        {/* <InterviewTaskPill
-                          onClickPill={{
-                            style: {
-                              backgroundColor:
-                                selectedSession
-                                  .map((ele) => ele.id)
-                                  .includes(item.id) && '#90caf9bb',
-                            },
-                          }}
-                          textInterviewName={item.name}
-                        /> */}
                       </Stack>
                     );
                   })}
               </ShowCode.When>
 
               <ShowCode.Else>
-                <EmptyState textDescription={'Sessions are not available!'} />
+                <EmptyState textDescription={'No sessions found.'} />
               </ShowCode.Else>
             </ShowCode>
           }

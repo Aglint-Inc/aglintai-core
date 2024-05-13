@@ -14,4 +14,6 @@ declare function InterviewMemberSide(props: {
   isAllActive?: Types.Visibility.VisibilityConditions;
   propsGrids?: Types.Devlink.RuntimeProps;
   slotInterview?: Types.Devlink.Slot;
+  onClickWaiting?: Types.Devlink.RuntimeProps;
+  isWaitingActive?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -105,7 +105,7 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
           await createLeverReference(referenceObj);
         } else {
           toast.error(
-            'Sorry unable to import. Please try again later or contact support.',
+            'Import failed. Please try again later or contact support for assistance.',
           );
         }
         //new candidates insert flow
@@ -123,7 +123,7 @@ export const createLeverReference = async (reference) => {
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Import failed. Please try again later or contact support for assistance.',
     );
   } else {
     await createGoogleTaskQueue(data);
@@ -139,7 +139,7 @@ export const createLeverJobReference = async (reference) => {
 
   if (error) {
     toast.error(
-      'Sorry unable to import. Please try again later or contact support.',
+      'Import failed. Please try again later or contact support for assistance.',
     );
   }
 };
@@ -217,7 +217,7 @@ export const createJobObject = async (
         location: post.categories.location,
         job_title: post.text,
         description: post.content.descriptionHtml,
-        department: 'support',
+        department: recruiter?.departments?.[0] ?? null,
         job_type:
           post.categories.commitment === 'Part Time'
             ? 'part time'
@@ -249,7 +249,7 @@ export const createJobObject = async (
       id: id,
       description: post.content.descriptionHtml,
       email_template: recruiter.email_template,
-      department: 'support',
+      department: recruiter?.departments?.[0] ?? null,
       job_type:
         post.categories.commitment === 'Part Time'
           ? 'parttime'

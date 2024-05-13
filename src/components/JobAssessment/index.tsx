@@ -49,7 +49,7 @@ const JobAssessmentDashboardBreadCrumbs = () => {
           onClick: () => {
             push(`/jobs?status=${job?.status ?? 'all'}`);
           },
-          style: { cursor: 'pointer' }
+          style: { cursor: 'pointer' },
         }}
       />
       <Breadcrum
@@ -59,7 +59,7 @@ const JobAssessmentDashboardBreadCrumbs = () => {
           onClick: () => {
             push(`/jobs/${job?.id}`);
           },
-          style: { cursor: 'pointer' }
+          style: { cursor: 'pointer' },
         }}
         showArrow
       />
@@ -85,7 +85,7 @@ const EnableAssessment = () => {
       style={{
         opacity: disable ? 0.4 : 1,
         pointerEvents: disable ? 'none' : 'auto',
-        transition: '0.5s'
+        transition: '0.5s',
       }}
     >
       <EnableAssessmentDev

@@ -22,7 +22,7 @@ export function TrainingProgress({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Training progress"}
+          {"Training Progress"}
         </_Builtin.Block>
         {isViewAllVisible ? (
           <_Builtin.Block
@@ -74,7 +74,7 @@ export function TrainingProgress({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Interview type"}
+              {"Interview Type"}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -89,7 +89,7 @@ export function TrainingProgress({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Training history"}
+              {"Training History"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

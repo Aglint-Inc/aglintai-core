@@ -21,7 +21,7 @@ import {
 
 const JobPublishButton = () => {
   const { jobForm, dispatch, formWarnings } = useJobForm();
-  const { handleUIJobUpdate, jobsData } = useJobs();
+  const { handleUIJobUpdate, jobs } = useJobs();
   const [isPublishing, setIsPublishing] = useState(false);
   const router = useRouter();
 
@@ -70,12 +70,12 @@ const JobPublishButton = () => {
       await handleUIJobUpdate({
         ...(job as any),
         count: {
-          ...jobsData.jobs.find((j) => j.id === job.id)?.count,
+          ...jobs.data.find((j) => j.id === job.id)?.count,
         },
       });
       await supabase.rpc('update_resume_score', { job_id: jobForm.jobPostId });
       axios.post('/api/editjob/publishjob', { job: job });
-      toast.success('Job published successfully');
+      toast.success('Job published successfully.');
       posthog.capture('Publish Job Button Clicked');
     } catch (err) {
       toast.error(API_FAIL_MSG);

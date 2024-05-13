@@ -7,8 +7,8 @@ const ScreeningDashboardPage = () => {
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
-        description='AI Powered Talent Development Platform.'
+        title='Screening | Jobs'
+        description='AI for People Products'
       />
       <Screening />
     </>

@@ -37,6 +37,24 @@
   display: none;
 }
 
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey-600.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey-600.text-underline.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.text-grey-600.text-underline.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .div-block-1570 {
   display: flex;
   justify-content: flex-start;
@@ -127,6 +145,10 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .arrow-tooltips-drawer {
   position: absolute;
   left: -70%;
@@ -158,12 +180,14 @@
 .arrow-tooltips-drawer.grey-600.task {
   left: -64%;
   bottom: -97%;
+  z-index: 4;
   display: none;
 }
 
 .arrow-tooltips-drawer.grey-600.task-next {
   left: -23%;
   bottom: -97%;
+  z-index: 4;
   display: none;
 }
 
@@ -225,11 +249,6 @@
   width: 80px;
 }
 
-.text-sm {
-  font-size: 12px;
-  line-height: 16px;
-}
-
 .div-block-1545 {
   z-index: 2;
 
@@ -238,6 +257,8 @@
   padding: 13px 20px;
   justify-content: flex-start;
   align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 
   border-top: 1px solid #e9ebed;
 
@@ -258,4 +279,14 @@
 
 .div-block-1546.cursor-pointer:hover {
   background-color: hsla(356, 56.31%, 92.37%, 1.00);
+}
+
+.div-block-1546.cursor-pointer.blue {
+  background-color: #edf7ff;
+  color: #337fbd;
+}
+
+.div-block-1546.cursor-pointer.green {
+  background-color: #d1e8df;
+  color: #228f67;
 }

@@ -9,6 +9,7 @@ export function TaskTableJobCand({
   as: _Component = _Builtin.Block,
   slotFilter,
   slotTaskJobCard,
+  slotCheckbox,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1433")} tag="div">
@@ -32,13 +33,24 @@ export function TaskTableJobCand({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1437")}
+            className={_utils.cx(_styles, "div-block-1537")}
             id={_utils.cx(
               _styles,
               "w-node-_4236db5e-3938-26b8-a04e-ed6679bd2c95-79bd2c91"
             )}
             tag="div"
-          />
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "checkbox-wrap-task")}
+              id={_utils.cx(
+                _styles,
+                "w-node-_7aa6a833-923f-9190-7ab6-0d3438ac9b89-79bd2c91"
+              )}
+              tag="div"
+            >
+              {slotCheckbox}
+            </_Builtin.Block>
+          </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1435")}
             id={_utils.cx(
@@ -96,7 +108,7 @@ export function TaskTableJobCand({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Assigned to"}
+              {"Assignee"}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

@@ -38,6 +38,7 @@ import {
   fetch_details_from_db,
   UserMeetingDetails,
 } from './utils/fetch_details_from_db';
+import { getInterviewerBlockedTimes } from './utils/isEventFreeTime';
 import {
   dayjsMax,
   isTimeChunksEnclosed,
@@ -107,7 +108,6 @@ export class CandidatesScheduling {
 
   // fetches required details from DB
   //   start of api funcs
-
   async fetchDetails() {
     const meeting_date = {
       start: null,
@@ -145,6 +145,21 @@ export class CandidatesScheduling {
       int_meetings,
       ints_schd_meetings,
     };
+  }
+
+  /**
+   * filter training people from session from finding combs
+   * used when when trying to find alternative interviewer in same time of interviewer
+   */
+  public async ignoreTrainee() {
+    this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
+      ...s,
+      trainingIntervs: [],
+    }));
+    this.db_details.all_inters = this.db_details.all_inters.filter(
+      (i) => i.interviewer_type !== 'training',
+    );
+    //
   }
 
   // start_date and end date format DD/MM/YYYY
@@ -536,6 +551,7 @@ export class CandidatesScheduling {
       if (minutes % 5 !== 0) {
         minutes += 5 - (minutes % 5);
       }
+      minutes += 30; // show slots 30 minutes from now (to avoid failing booking api)
       curr_time = curr_time.set('minutes', minutes).set('seconds', 0);
       return curr_time;
     };
@@ -559,8 +575,8 @@ export class CandidatesScheduling {
 
       const day2_interviewer_time: TimeDurationDayjsType & { day: string } = {
         startTime: userTzDayjs(current_day.endOf('day').toISOString())
-          .startOf('day')
-          .tz(int_timezone),
+          .tz(int_timezone)
+          .startOf('day'),
         endTime: userTzDayjs(current_day.endOf('day').toISOString()).tz(
           int_timezone,
         ),
@@ -614,34 +630,11 @@ export class CandidatesScheduling {
         });
       }
 
-      let current_day_blocked_times: TimeDurationDayjsType[] =
-        interviewer.events
-          .filter((cal_event) => {
-            let is_event_free_time = false;
-            interviewer.shedule_settings.schedulingKeyWords.free.forEach(
-              (key_word: string) => {
-                if (
-                  cal_event.summary &&
-                  cal_event.summary.toLocaleLowerCase().includes(key_word)
-                ) {
-                  is_event_free_time = true;
-                }
-              },
-            );
-
-            return !is_event_free_time;
-          })
-          .map((ev) => {
-            return {
-              startTime: userTzDayjs(ev.start.dateTime).tz(
-                this.api_payload.user_tz,
-              ),
-              endTime: userTzDayjs(ev.end.dateTime).tz(
-                this.api_payload.user_tz,
-              ),
-            };
-          });
-
+      let current_day_blocked_times = getInterviewerBlockedTimes(
+        this.db_details.comp_schedule_setting,
+        interviewer.events,
+        this.api_payload.user_tz,
+      );
       let curr_user_time = userTzDayjs().tz(
         interviewer.shedule_settings.timeZone.tzCode,
       );
@@ -654,13 +647,13 @@ export class CandidatesScheduling {
       }
 
       let day_free_times: TimeDurationType[] = [];
-      day_free_times = minusEventsTimeInWorkHours(
+      day_free_times = minusBlockedTimeInWorkHours(
         work_time_duration,
         current_day_blocked_times,
       );
       return day_free_times;
     };
-    const minusEventsTimeInWorkHours = (
+    const minusBlockedTimeInWorkHours = (
       work_hours_range: TimeDurationType[],
       curr_day_blocked_times: TimeDurationDayjsType[],
     ): TimeDurationType[] => {
@@ -852,6 +845,8 @@ export class CandidatesScheduling {
           return true;
         }
         const prev_session = plan_comb[Number(module_idx - 1)];
+        const curr_session = plan_comb[Number(module_idx)];
+
         const break_duration = prev_session.break_duration;
         let required_time: TimeDurationType = {
           startTime: userTzDayjs(prev_time_range.endTime)
@@ -859,7 +854,7 @@ export class CandidatesScheduling {
             .tz(this.api_payload.user_tz)
             .format(),
           endTime: userTzDayjs(prev_time_range.endTime)
-            .add(prev_session.duration + break_duration, 'minutes')
+            .add(curr_session.duration + break_duration, 'minutes')
             .tz(this.api_payload.user_tz)
             .format(),
         };

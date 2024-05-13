@@ -29,7 +29,7 @@ const SchedulingDashboard = () => {
         }}
         onClickMySchedule={{
           onClick: () =>
-            router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`),
+            router.push(`${pageRoutes.SCHEDULING}?tab=schedules`),
         }}
         onClickScheduleSetting={{
           onClick: () =>

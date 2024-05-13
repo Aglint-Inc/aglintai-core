@@ -299,9 +299,7 @@ function Theme({ children }) {
       },
       MuiAutocomplete: {
         defaultProps: {
-          renderInput: (params) => (
-            <TextField {...params} InputProps={{ disableUnderline: true }} />
-          ),
+          renderInput: (params) => <TextField {...params} />,
         },
         styleOverrides: {
           paper: {
@@ -333,9 +331,6 @@ function Theme({ children }) {
           margin: 'none',
           size: 'small',
           variant: 'outlined',
-          InputProps: {
-            disableUnderline: true,
-          },
         },
         styleOverrides: {
           root: {
@@ -496,12 +491,13 @@ function Theme({ children }) {
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            borderRadius: '4px',
+            borderRadius: '4px'
+
           },
         },
       },
     },
-    shadows: Array(25).fill('none'),
+    // shadows: Array(25).fill('none'),
   });
 
   return (

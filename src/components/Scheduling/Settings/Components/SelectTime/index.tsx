@@ -1,5 +1,6 @@
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Dayjs } from 'dayjs';
 
 import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
 
@@ -8,11 +9,17 @@ function SelectTime({
   value,
   onSelect,
   disable,
+  minTime = undefined,
+  maxTime = undefined,
+  disableIgnoringDatePartForTimeValidation,
 }: {
   i?: number;
   value: any;
   onSelect: any;
   disable?: boolean;
+  minTime?: Dayjs;
+  maxTime?: Dayjs;
+  disableIgnoringDatePartForTimeValidation?: boolean;
 }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -23,6 +30,11 @@ function SelectTime({
           onSelect(value, i);
         }}
         disable={disable}
+        minTime={minTime}
+        maxTime={maxTime}
+        disableIgnoringDatePartForTimeValidation={
+          disableIgnoringDatePartForTimeValidation
+        }
       />
     </LocalizationProvider>
   );

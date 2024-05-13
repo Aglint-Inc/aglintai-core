@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabaseAdmin as supabase } from '../fetchCompanyDetails';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   if (payload.application_id) {
     if (!payload.resume) {
-      await supabase
+      await supabaseAdmin
         .from('applications')
         .update({
           processing_status: 'failed',
@@ -28,13 +28,13 @@ export default async function handler(req, res) {
 
     // Supabase credentials
 
-    const { data: job } = await supabase
+    const { data: job } = await supabaseAdmin
       .from('applications')
       .select()
       .eq('id', payload.application_id);
 
     if (job.length === 0) {
-      await supabase
+      await supabaseAdmin
         .from('greenhouse_reference')
         .update({ resume_saved: true })
         .eq('application_id', payload.application_id)
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
           responseType: 'arraybuffer', // Request binary data
         });
 
-        const { data, error: uploadError } = await supabase.storage
+        const { data, error: uploadError } = await supabaseAdmin.storage
           .from(bucketName)
           .upload(
             `public/${fileId}${
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
         if (!uploadError) {
           console.log(fileLink);
 
-          const { error: errorCandFiles } = await supabase
+          const { error: errorCandFiles } = await supabaseAdmin
             .from('candidate_files')
             .insert({
               candidate_id: job[0].candidate_id,
@@ -98,14 +98,14 @@ export default async function handler(req, res) {
 
           console.log(errorCandFiles, 'errorCandFiles');
 
-          const { data: app, error: errorApp } = await supabase
+          const { data: app, error: errorApp } = await supabaseAdmin
             .from('applications')
             .update({ is_resume_fetching: false, candidate_file_id: fileId })
             .eq('id', payload.application_id)
             .select();
 
           if (!errorApp) {
-            await supabase
+            await supabaseAdmin
               .from('greenhouse_reference')
               .update({ resume_saved: true })
               .eq('application_id', payload.application_id)
@@ -126,7 +126,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error });
       }
     } else {
-      await supabase
+      await supabaseAdmin
         .from('applications')
         .update({
           processing_status: 'failed',
@@ -134,7 +134,7 @@ export default async function handler(req, res) {
           is_resume_fetching: false,
         })
         .eq('application_id', payload.application_id);
-      await supabase
+      await supabaseAdmin
         .from('greenhouse_reference')
         .update({ resume_saved: true })
         .eq('application_id', payload.application_id)
@@ -142,7 +142,7 @@ export default async function handler(req, res) {
       return res.status(200).json('Invalid file format');
     }
   } else {
-    await supabase
+    await supabaseAdmin
       .from('greenhouse_reference')
       .update({ resume_saved: true })
       .eq('application_id', payload.application_id)

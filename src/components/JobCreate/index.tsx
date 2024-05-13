@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
@@ -7,15 +7,43 @@ import { PageLayout } from '@/devlink2';
 import {
   ConfirmationPopup,
   CreateJobLoader,
-  EditJobTopbarLeft
+  EditJobTopbarLeft,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { useCompanyMembers } from '@/src/queries/company-members';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import Loader from '../Common/Loader';
 import { Form, JobForms } from './form';
+
+const JobCreateComponent = () => {
+  const { status } = useCompanyMembers();
+  if (status === 'error')
+    return (
+      <Stack
+        width={'100%'}
+        height={'100%'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <Stack>Error</Stack>
+      </Stack>
+    );
+  if (status === 'pending')
+    return (
+      <Stack
+        width={'100%'}
+        height={'100%'}
+        alignItems={'center'}
+        justifyContent={'center'}
+      >
+        <Loader />
+      </Stack>
+    );
+  return <JobCreate />;
+};
 
 const JobCreate = () => {
   const { recruiter } = useAuthDetails();
@@ -25,35 +53,74 @@ const JobCreate = () => {
   const [fields, setFields] = useState<Form>({
     job_title: {
       value: initialTitle,
-      error: { value: false, helper: `Job title can't be empty` }
+      required: true,
+      error: { value: false, helper: `Job title can't be empty` },
     },
     company: {
       value: initialCompany,
-      error: { value: false, helper: `Company name can't be empty` }
+      required: true,
+      error: { value: false, helper: `Company name can't be empty` },
     },
     department: {
-      value: 'legal',
-      error: { value: false, helper: `Department name can't be empty` }
+      value: recruiter?.departments?.[0] ?? null,
+      required: true,
+      error: { value: false, helper: `Department name can't be empty` },
     },
     job_type: {
       value: 'full time',
-      error: { value: false, helper: `Job type can't be empty` }
+      required: true,
+      error: { value: false, helper: `Job type can't be empty` },
     },
     location: {
       value: '',
-      error: { value: false, helper: `Job location can't be empty` }
+      required: true,
+      error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
       value: 'on site',
-      error: { value: false, helper: `Workplace type can't be empty` }
+      required: true,
+      error: { value: false, helper: `Workplace type can't be empty` },
     },
     description: {
       value: '',
+      required: true,
       error: {
         value: false,
-        helper: 'Job description must have more than 100 characters'
-      }
-    }
+        helper: 'Job description must have more than 100 characters',
+      },
+    },
+    hiring_manager: {
+      value: null,
+      required: true,
+      error: {
+        value: false,
+        helper: 'Hiring manager must be selected',
+      },
+    },
+    recruiter: {
+      value: null,
+      required: true,
+      error: {
+        value: false,
+        helper: 'Recruiter must be selected',
+      },
+    },
+    recruiting_coordinator: {
+      value: null,
+      required: false,
+      error: {
+        value: false,
+        helper: 'Recruiting coordinator must be selected',
+      },
+    },
+    sourcer: {
+      value: null,
+      required: false,
+      error: {
+        value: false,
+        helper: 'Sourcer must be selected',
+      },
+    },
   });
   const [modal, setModal] = useState(false);
   return (
@@ -75,14 +142,15 @@ const validateForms = (fields: Form) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
       value: value.value,
+      required: value.required,
       error: {
         value: value?.value
           ? key === 'description'
             ? value.value.length < 100
             : value.value.length === 0
-          : true,
-        helper: value.error.helper
-      }
+          : value.required,
+        helper: value.error.helper,
+      },
     };
     return acc;
   }, {} as Form);
@@ -98,7 +166,7 @@ type Payload = Parameters<ReturnType<typeof useJobs>['handleJobCreate']>[0];
 
 const JobCreateForm = ({
   fields,
-  setFields
+  setFields,
 }: {
   fields: Form;
   setFields: Dispatch<SetStateAction<Form>>;
@@ -118,7 +186,7 @@ const JobCreateForm = ({
 
       const { id } = await handleJobCreate({
         ...newJob,
-        description_hash: hashCode(newJob.description)
+        description_hash: hashCode(newJob.description),
       });
       push(`${pageRoutes.JOBS}/${id}`);
     } else {
@@ -136,12 +204,12 @@ const JobCreateForm = ({
           value: value,
           error: {
             ...prev[name].error,
-            value: false
-          }
-        }
+            value: false,
+          },
+        },
       }));
     },
-    []
+    [],
   );
 
   return (
@@ -158,4 +226,4 @@ const JobCreateForm = ({
   );
 };
 
-export default JobCreate;
+export default JobCreateComponent;

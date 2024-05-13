@@ -79,7 +79,7 @@ function CreateModuleDialog() {
           <Stack spacing={2} width={'100%'}>
             <UITextField
               label='Name'
-              placeholder='Ex. Node JS Developer'
+              placeholder='Ex: Initial Screening'
               fullWidth
               value={name}
               onChange={(e) => {
@@ -109,7 +109,7 @@ function CreateModuleDialog() {
                     margin='none'
                     {...params}
                     name='department'
-                    placeholder='Department'
+                    placeholder='Select Department'
                   />
                 )}
               />
@@ -118,7 +118,7 @@ function CreateModuleDialog() {
             <UITextField
               label='Objective'
               multiline
-              placeholder='Ex. Node JS Developer'
+              placeholder='Add a brief description of the interview'
               fullWidth
               value={objective}
               onChange={(e) => {
@@ -130,16 +130,32 @@ function CreateModuleDialog() {
                 }
               }}
             />
-            <Stack spacing={1} direction={'row'} alignItems={'center'}>
-              <Checkbox
-                isChecked={isTraining}
-                onClickCheck={{
-                  onClick: () => {
-                    setIsTraining(!isTraining);
-                  },
+            <Stack>
+              <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                <Checkbox
+                  isChecked={isTraining}
+                  onClickCheck={{
+                    onClick: () => {
+                      setIsTraining(!isTraining);
+                    },
+                  }}
+                />
+                <Typography variant='inherit'>Requires Training</Typography>
+              </Stack>
+              <Stack
+                style={{
+                  fontSize: '12px',
+                  lineHeight: '14px',
+                  marginTop: '8px',
+                  marginLeft: '26px',
+                  color: '#68737d',
                 }}
-              />
-              <Typography variant='body2'>Requires training</Typography>
+              >
+                <Typography variant='inherit'>
+                  Select if the interviewer requires training before conducting
+                  this interview
+                </Typography>
+              </Stack>
             </Stack>
           </Stack>
         }

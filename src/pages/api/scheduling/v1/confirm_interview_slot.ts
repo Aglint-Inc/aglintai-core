@@ -5,39 +5,20 @@ import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
+import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
 import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,
 } from '@/src/utils/event_book/book_day_plan';
-import { BookingTimeFormat } from '@/src/utils/integrations/constants';
+import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
+import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import { supabaseAdmin } from '../../phone-screening/get-application-info';
-import { getCandidateLogger } from './getCandidateLogger';
+import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export type ConfirmApiBodyParams = {
-  candidate_plan: {
-    sessions: {
-      session_id: string;
-      start_time: string;
-      end_time: string;
-    }[];
-  }[];
-  recruiter_id: string;
-  user_tz: string;
-  candidate_email: string;
-  schedule_id: string;
-  filter_id?: string;
-  //  if tasks id is present
-  task_id: string | null;
-  agent_type: 'email' | 'phone' | 'self';
-  candidate_name: string;
-  candidate_id: string;
-};
 
 const required_fields = [
   'candidate_plan',
@@ -48,9 +29,8 @@ const required_fields = [
 ];
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const req_body = req.body as ConfirmApiBodyParams;
+  const req_body = req.body as APICandidateConfirmSlot;
   try {
-    console.log(req_body);
     required_fields.forEach((field) => {
       if (!has(req_body, field)) {
         throw new Error(`missing Field ${field}`);
@@ -73,6 +53,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
 
+    // save snapshot of interview meeting details to tasks
+    if (req_body.task_id) {
+      const session_ids: string[] = req_body.candidate_plan.reduce(
+        (s_ids, curr) => {
+          s_ids = [...s_ids, ...curr.sessions.map((s) => s.session_id)];
+          return s_ids;
+        },
+        [],
+      );
+
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/save_meeting_to_task`,
+        {
+          session_ids: session_ids,
+          task_id: req_body.task_id,
+        },
+      );
+    }
+
     if (
       req_body.task_id &&
       req_body.candidate_id &&
@@ -80,18 +79,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_body.candidate_name &&
       req_body.agent_type
     ) {
+      const agent_type =
+        req_body.agent_type === 'phone' ? 'phone_agent' : 'email_agent';
       const candLogger = getCandidateLogger(
         req_body.task_id,
         req_body.candidate_name,
-        req_body.agent_type,
         req_body.candidate_id,
+        agent_type,
       );
       await candLogger(
-        `Interview scheduled for {candidate} on ${dayjs(
-          req_body.candidate_plan[0].sessions[0].start_time,
-        )
-          .tz(req_body.user_tz)
-          .format(BookingTimeFormat)}`,
+        agent_activities['email_agent'].tools['book-interview-slot']
+          .scheduled_sucess,
+        {
+          '{candidate}': req_body.candidate_name,
+          '{time_format}': dayjs(
+            req_body.candidate_plan[0].sessions[0].start_time,
+          )
+            .tz(req_body.user_tz)
+            .toISOString(),
+        },
+        agent_type,
         'interview_schedule',
       );
       supabaseWrap(

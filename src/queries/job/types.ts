@@ -1,11 +1,11 @@
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
+import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
 import { StatusJobs } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
 
-type JobTableRPC =
-  Database['public']['Functions']['getjobs']['Returns'][number];
+type JobTableRPC = Database['public']['Functions']['getjob']['Returns'][number];
 type JobTable = Database['public']['Tables']['public_jobs'];
 
 // export type Job = Pick<
@@ -37,9 +37,20 @@ type JobTable = Database['public']['Tables']['public_jobs'];
 export type Job = Omit<JobTableRPC, keyof CustomJobType> & CustomJobType;
 
 export type JobInsert = Omit<JobTable['Insert'], keyof CustomJobType> &
-  Partial<Omit<CustomJobType, 'count' | 'processing_count'>>;
+  Partial<Omit<CustomJobType, JobLocal>>;
+export type JobLocal =
+  | 'count'
+  | 'processing_count'
+  | 'interview_plan'
+  | 'activeSections';
 
-export type JobCreate = Required<Job['draft']> & {
+export type JobCreate = Required<
+  Job['draft'] &
+    Pick<
+      Job,
+      'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
+    >
+> & {
   description_hash: Job['description_hash'];
 };
 
@@ -47,6 +58,7 @@ type CustomJobType = {
   jd_json: JdJsonType;
   active_status: StatusJobs | null;
   count: CountJobs;
+  activeSections: JobApplicationSections[];
   // eslint-disable-next-line no-unused-vars
   email_template: { [key in EmailTemplateTypes]: EmailTemplate };
   processing_count: {
@@ -55,6 +67,7 @@ type CustomJobType = {
   };
   parameter_weights: ScoreWheelParams;
   interview_plan: InterviewPlan;
+
   draft: Pick<
     JobTableRPC,
     | 'job_title'
@@ -73,7 +86,8 @@ type EmailTemplateTypes =
   | 'rejection'
   | 'phone_screening'
   | 'phone_screening_resend'
-  | 'application_received';
+  | 'application_received'
+  | 'init_email_agent';
 
 type EmailTemplate = {
   body: string;

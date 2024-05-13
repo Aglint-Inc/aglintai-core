@@ -11,9 +11,10 @@ import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { useImrQuery } from '@/src/pages/scheduling/interviewer/[member_id]';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
+import { useImrQuery } from '../Interviewer/hooks';
 
 export type ModuleType = {
   id: string;
@@ -67,9 +68,9 @@ function PauseResumeDialog({
   // });
   const router = useRouter();
   const { allModules: modules } = useSchedulingContext();
-  const { data, refetch } = useImrQuery();
+  const { data, refetch } = useImrQuery({user_id: router.query.member_id as string});
 
-  const existingModule = data.modules.map((item) => item.module_id);
+  const existingModule = data?.modules.map((item) => item.module_id);
   const allModules = modules.filter(
     (item) => !existingModule.includes(item.id),
   );
@@ -91,7 +92,7 @@ function PauseResumeDialog({
       close();
       refetch();
     } else {
-      toast.warning('Please choose a module!');
+      toast.warning('Please pick interview type.');
     }
   }
   return (
@@ -118,8 +119,8 @@ function PauseResumeDialog({
             <ShowCode>
               <ShowCode.When isTrue={pauseResumeDialog.type === 'pause'}>
                 <ConfirmationPopup
-                  textPopupTitle={`Pause from scheduling ${pauseResumeDialog.isAll ? 'for  all ' + pauseResumeDialog.training_status + ' modules' : ' for this module'}.`}
-                  textPopupDescription={`This member won’t be considered for any new interviews scheduled with ${pauseResumeDialog.isAll ? 'all qualified' : 'this'} module until the pause durations is completed.`}
+                  textPopupTitle={`Pause Scheduling ${pauseResumeDialog.isAll ? 'for  all ' + pauseResumeDialog.training_status + ' modules' : ' for this Module'}.`}
+                  textPopupDescription={`This member will be excluded from all new interview scheduling within ${pauseResumeDialog.isAll ? 'all qualified' : 'this'} module until the pause period ends.`}
                   isIcon={false}
                   slotWidget={
                     <Stack spacing={2}>
@@ -142,10 +143,10 @@ function PauseResumeDialog({
                       >
                         <Checkbox isChecked={selectedType === 'isManual'} />
                         <Typography variant='body2' color={'#000'}>
-                          Indefinetly
+                          Indefinitely
                         </Typography>
                         <Typography variant='body2'>
-                          Until when you manualy resumes
+                          Until you manually resume
                         </Typography>
                       </Stack>
                       <Stack
@@ -257,11 +258,6 @@ function PauseResumeDialog({
                                 }
                               }}
                               minDate={currentDate}
-                              slotProps={{
-                                textField: {
-                                  InputProps: { disableUnderline: true },
-                                },
-                              }}
                             />
                           </LocalizationProvider>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -274,11 +270,6 @@ function PauseResumeDialog({
                                   ...pause_json,
                                   end_date: newValue.toISOString(),
                                 });
-                              }}
-                              slotProps={{
-                                textField: {
-                                  InputProps: { disableUnderline: true },
-                                },
                               }}
                             />
                           </LocalizationProvider>
@@ -335,7 +326,9 @@ function PauseResumeDialog({
                       ? 'Add to Qualified'
                       : 'Add to Training'
                   }
-                  textPopupDescription={'Pick a module from the list to add.'}
+                  textPopupDescription={
+                    'Pick an interview type from the list to add.'
+                  }
                   isIcon={false}
                   slotWidget={
                     <Autocomplete
@@ -366,7 +359,7 @@ function PauseResumeDialog({
                             labelSize='medium'
                             // fullWidth
                             label=''
-                            placeholder='Ex. Healthcare'
+                            placeholder='Ex. Initial Screening'
                             InputProps={{
                               ...params.InputProps,
                               autoComplete: 'new-password',

@@ -1,7 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
+import { useMemo } from 'react';
 
-import { handleJobApi } from '@/src/pages/api/job/utils';
+import { handleJobApi } from '@/src/apiUtils/job/utils';
 import {
   useJobCreate,
   useJobDelete,
@@ -10,15 +11,56 @@ import {
   useJobUIUpdate,
   useJobUpdate,
 } from '@/src/queries/job';
-import { JobInsert } from '@/src/queries/job/types';
+import { Job } from '@/src/queries/job/types';
 
+import { JobApplicationSections } from '../JobApplicationsContext/types';
 import { hashCode } from '../JobDashboard/hooks';
-import { JobTypeDashboard } from './types';
 
 const useJobActions = () => {
-  const { recruiter } = useAuthDetails();
+  const {
+    recruiter,
+    isAssessmentEnabled,
+    isSchedulingEnabled,
+    isScreeningEnabled,
+  } = useAuthDetails();
 
   const jobs = useJobRead();
+  const customJobs = useMemo(
+    () => ({
+      ...jobs,
+      data: (jobs?.data ?? []).map((job) => {
+        const activeSections = Object.values(JobApplicationSections).filter(
+          (section) => {
+            switch (section) {
+              case JobApplicationSections.NEW:
+                return true;
+              case JobApplicationSections.SCREENING:
+                return (
+                  (job?.phone_screen_enabled ?? false) && isScreeningEnabled
+                );
+              case JobApplicationSections.ASSESSMENT:
+                return (job?.assessment ?? false) && isAssessmentEnabled;
+              case JobApplicationSections.INTERVIEW:
+                return isSchedulingEnabled;
+              case JobApplicationSections.QUALIFIED:
+                return true;
+              case JobApplicationSections.DISQUALIFIED:
+                return true;
+            }
+          },
+        );
+        return { ...job, activeSections };
+      }),
+    }),
+    [
+      jobs,
+      jobs.status,
+      isScreeningEnabled,
+      isAssessmentEnabled,
+      isSchedulingEnabled,
+    ],
+  );
+
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
   const { mutateAsync: jobCreate } = useJobCreate();
   const { mutate: jobUIUpdate } = useJobUIUpdate();
@@ -26,9 +68,7 @@ const useJobActions = () => {
   const { mutate: jobRefresh } = useJobRefresh();
   const { refetch: jobRead } = jobs;
 
-  const jobsData = { jobs: jobs.data };
-
-  const initialLoad = !!(jobs.status !== 'pending' && recruiter?.id);
+  const initialLoad = !!(!jobs.isPending && recruiter?.id);
 
   const handleJobRead = async () => {
     if (recruiter) {
@@ -48,18 +88,17 @@ const useJobActions = () => {
     }
   };
 
-  const handleJobPublish = async (job: JobTypeDashboard) => {
+  const handleJobPublish = async (job: Job) => {
     if (recruiter) {
       try {
         // eslint-disable-next-line no-unused-vars
-        const { count, processing_count, ...newJob } = job;
-        const { error } = await jobAsyncUpdate({
+        const { count, processing_count, activeSections, ...newJob } = job;
+        await jobAsyncUpdate({
           ...newJob,
           ...newJob.draft,
           status: 'published',
           description_hash: hashCode(newJob.draft.description),
         });
-        if (error) return false;
         return true;
       } catch {
         return false;
@@ -69,26 +108,22 @@ const useJobActions = () => {
 
   const handleJobUpdate = async (
     jobId: string,
-    newJob: Omit<JobInsert, 'recruiter_id'>,
+    job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
     if (recruiter) {
-      jobUpdate({
-        id: jobId,
-        ...newJob,
-        recruiter_id: recruiter.id,
-      });
+      jobUpdate({ ...job, id: jobId, recruiter_id: recruiter.id });
     }
   };
 
   const handleJobAsyncUpdate = async (
     jobId: string,
-    newJob: Omit<JobInsert, 'recruiter_id'>,
+    job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
     if (recruiter) {
       try {
         return await jobAsyncUpdate({
+          ...job,
           id: jobId,
-          ...newJob,
           recruiter_id: recruiter.id,
         });
       } catch {
@@ -97,7 +132,7 @@ const useJobActions = () => {
     }
   };
 
-  const handleUIJobUpdate = (newJob: JobTypeDashboard) => {
+  const handleUIJobUpdate = (newJob: Job) => {
     if (recruiter) {
       jobUIUpdate(newJob);
     }
@@ -120,19 +155,18 @@ const useJobActions = () => {
     handleJobRefresh(jobId);
   };
 
-  const experimental_handleRegenerateJd = async (job: JobTypeDashboard) => {
+  const experimental_handleRegenerateJd = async (job: Job) => {
     handleUIJobUpdate({ ...job, scoring_criteria_loading: true });
     await handleGenerateJd(job.id);
     // handleJobRefresh(job.id);
   };
 
   const handleGetJob = (jobId: string) => {
-    return jobsData.jobs.find((job) => job.id === jobId);
+    return (jobs?.data ?? []).find((job) => job.id === jobId);
   };
 
   const value = {
-    jobs,
-    jobsData,
+    jobs: customJobs,
     handleJobRead,
     handleJobCreate,
     handleJobAsyncUpdate,

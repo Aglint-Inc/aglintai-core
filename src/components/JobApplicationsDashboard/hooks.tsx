@@ -39,6 +39,7 @@ export const useKeyPress = (key: KeyboardEvent['key']) => {
       document.removeEventListener('keyright', handleKeyRight, false);
     };
   }, [handleKeyRight]);
+  
   return { pressed };
 };
 

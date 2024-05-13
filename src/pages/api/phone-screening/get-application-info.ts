@@ -2,9 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { Database } from '@/src/types/schema';
+import { CustomDatabase } from '@/src/types/customSchema';
 
-export const supabaseAdmin = createClient<Database>(
+const supabaseAdmin = createClient<CustomDatabase>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );

@@ -82,7 +82,7 @@ export const getjobformToDbcolumns = (jobForm: JobFormState) => {
   return updateJobData;
 };
 
-export const API_FAIL_MSG = 'Something went wrong please try again';
+export const API_FAIL_MSG = 'Something went wrong. Please try again.';
 
 export const findDisclaimers = (jobForm: FormJobType) => {
   let warnings: FormErrorParams = {

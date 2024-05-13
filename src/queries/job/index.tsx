@@ -29,8 +29,15 @@ export const useJobCreate = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (newJob: Omit<JobCreate, 'jd_json'>) => {
+      const {
+        hiring_manager,
+        recruiter,
+        recruiting_coordinator,
+        sourcer,
+        ...rest
+      } = newJob;
       const job = {
-        ...newJob,
+        ...rest,
         jd_json: {
           educations: [],
           skills: [],
@@ -39,13 +46,18 @@ export const useJobCreate = () => {
           level: 'Mid-level',
         } as JdJsonType,
       };
+
       return createJob({
-        recruiter_id,
         ...job,
-        scoring_criteria_loading: true,
         draft: {
           ...job,
         },
+        recruiter_id,
+        scoring_criteria_loading: true,
+        hiring_manager,
+        recruiter,
+        recruiting_coordinator,
+        sourcer,
       });
     },
     onError: () => {
@@ -64,12 +76,17 @@ export const useJobUpdate = () => {
   const queryClient = useQueryClient();
   const { queryKey } = jobQueryKeys.jobs();
   const mutation = useMutation({
-    mutationFn: (newJob: JobInsert) => updateJob(newJob),
-    onMutate: (newJob) => {
+    mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
+    onMutate: (job) => {
       const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
       const newJobs = previousJobs.reduce((acc, curr) => {
-        if (curr.id === newJob.id) acc.push({ ...curr, ...newJob });
-        else acc.push(curr);
+        if (curr.id === job.id) {
+          const safeJob = {
+            ...structuredClone(curr),
+            ...structuredClone(job),
+          };
+          acc.push(safeJob);
+        } else acc.push(curr);
         return acc;
       }, [] as Job[]);
       queryClient.setQueryData<Job[]>(queryKey, newJobs);
@@ -114,7 +131,7 @@ export const useJobDelete = () => {
       queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
     },
     onSuccess: () => {
-      toast.success('Job successfully deleted');
+      toast.success('Job deleted successfully.');
     },
   });
   return mutation;
@@ -139,8 +156,8 @@ export const useJobRefresh = () => {
 };
 
 export const readJobs = async (recruiter_id: string) => {
-  const { data, error } = await supabase.rpc('getjobs', {
-    recruiterid: recruiter_id,
+  const { data, error } = await supabase.rpc('getjobsv2', {
+    recruiter_id,
   });
   if (error) throw new Error(error.message);
   return data as unknown as Job[];
@@ -154,12 +171,14 @@ export const readJob = async (id: Job['id']) => {
   return data[0] as unknown as Job;
 };
 
-const createJob = async (newJob: JobInsert) => {
+const createJob = async (job: JobInsert) => {
   const { data: d1, error: e1 } = await supabase
     .from('public_jobs')
-    .insert(newJob)
+    .insert(job)
     .select('id');
+
   if (e1) throw new Error(e1.message);
+
   const { data: d2, error: e2 } = await supabase.rpc('getjob', {
     jobid: d1[0].id,
   });
@@ -167,14 +186,13 @@ const createJob = async (newJob: JobInsert) => {
   return d2[0] as unknown as Job;
 };
 
-const updateJob = async (newJob: JobInsert) => {
-  const { data, error } = await supabase
+const updateJob = async (job: JobInsert) => {
+  const { error: e1 } = await supabase
     .from('public_jobs')
-    .update(newJob)
-    .eq('id', newJob.id)
-    .select();
-  if (error) throw new Error(error.message);
-  return { data, error };
+    .update(job)
+    .eq('id', job.id);
+
+  if (e1) throw new Error(e1.message);
 };
 
 const deleteJob = async (id: Job['id']) => {

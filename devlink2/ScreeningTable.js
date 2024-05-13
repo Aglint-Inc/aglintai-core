@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { AddFilter } from "./AddFilter";
+import { RefreshButton } from "./RefreshButton";
 import { ScreeningCards } from "./ScreeningCards";
 import * as _utils from "./utils";
 import _styles from "./ScreeningTable.module.css";
@@ -14,92 +16,123 @@ export function ScreeningTable({
   styleSidebarWidth = {},
   slotSidebar,
   isAddFilterVisible = true,
+  slotRefreshButton,
+  isSortVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "all-interview-wrap")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "all-interview-sub-head")}
+        className={_utils.cx(_styles, "div-block-1476")}
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-828")}
+          className={_utils.cx(_styles, "div-block-1477")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-922")}
-            tag="div"
-          >
-            {slotFilterButton}
-          </_Builtin.Block>
-          {isAddFilterVisible ? (
-            <_Builtin.Block tag="div">
-              {slotAddFilter ?? <AddFilter />}
-            </_Builtin.Block>
-          ) : null}
-        </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-830")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "cursor-pointer")}
-            tag="div"
-          >
-            {"Sort By"}
-          </_Builtin.Block>
-          <_Builtin.Block tag="div">{slotDate}</_Builtin.Block>
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "screening-candidates")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "interview_table_wrap")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "all-interview-table")}
+            className={_utils.cx(_styles, "all-interview-sub-head")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "screening-cand-header")}
+              className={_utils.cx(_styles, "div-block-828")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
+                className={_utils.cx(_styles, "div-block-922")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+                {slotFilterButton}
               </_Builtin.Block>
-              <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"Status"}</_Builtin.Block>
+              {isAddFilterVisible ? (
+                <_Builtin.Block tag="div">
+                  {slotAddFilter ?? <AddFilter />}
+                </_Builtin.Block>
+              ) : null}
+              <_Builtin.Block tag="div">
+                {slotRefreshButton ?? <RefreshButton />}
               </_Builtin.Block>
+            </_Builtin.Block>
+            {isSortVisible ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
+                className={_utils.cx(_styles, "div-block-830")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Screening Name"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "cursor-pointer")}
+                  tag="div"
+                >
+                  {"Sort By"}
+                </_Builtin.Block>
+                <_Builtin.Block tag="div">{slotDate}</_Builtin.Block>
               </_Builtin.Block>
+            ) : null}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "screening-candidates")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "interview_table_wrap")}
+              tag="div"
+            >
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
+                className={_utils.cx(_styles, "all-interview-table")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Related job"}</_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "screening-cand-header")}
+                  tag="div"
+                >
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "allinterview_header_cell")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">{"Candidate"}</_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "allinterview_header_cell")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">{"Status"}</_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "allinterview_header_cell")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">
+                      {"Screening Name"}
+                    </_Builtin.Block>
+                  </_Builtin.Block>
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "allinterview_header_cell")}
+                    tag="div"
+                  >
+                    <_Builtin.Block tag="div">{"Related job"}</_Builtin.Block>
+                  </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "slot_candidaterow")}
+                  tag="div"
+                >
+                  {slotScreeningCards ?? <ScreeningCards />}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "slot_candidaterow")}
+              className={_utils.cx(_styles, "job-page-nav-bar", "bg-color-add")}
+              id={_utils.cx(
+                _styles,
+                "w-node-_9d0ac486-06df-480d-f5ca-d3b22bf6f41a-2bf6f3fb"
+              )}
               tag="div"
-            >
-              {slotScreeningCards ?? <ScreeningCards />}
-            </_Builtin.Block>
+            />
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block tag="div" {...styleSidebarWidth}>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1293")}
+          tag="div"
+          {...styleSidebarWidth}
+        >
           <_Builtin.Block
             className={_utils.cx(_styles, "slot_sidebar")}
             tag="div"
@@ -107,14 +140,6 @@ export function ScreeningTable({
             {slotSidebar}
           </_Builtin.Block>
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "job-page-nav-bar", "bg-color-add")}
-          id={_utils.cx(
-            _styles,
-            "w-node-_9d0ac486-06df-480d-f5ca-d3b22bf6f41a-2bf6f3fb"
-          )}
-          tag="div"
-        />
       </_Builtin.Block>
       <_Builtin.HtmlEmbed
         className={_utils.cx(_styles, "embed_css")}

@@ -11,4 +11,5 @@ declare function ScheduleNowButton(props: {
   isDropIconVisible?: Types.Visibility.VisibilityConditions;
   slotLoaderIcon?: Types.Devlink.Slot;
   isHoverScheduleVisible?: Types.Visibility.VisibilityConditions;
+  onClickMySelf?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

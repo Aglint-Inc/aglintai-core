@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -12,17 +13,20 @@ export function KeywordCard({
   textWarning = "If these keywords are detected in a calendar event title, interviews booked over or overlapping these events will not be counted as a scheduling conflict.",
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1166")} tag="div">
+    <_Component
+      className={_utils.cx(_styles, "div-block-1166", "no-border")}
+      tag="div"
+    >
       <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
         {textTitle}
       </_Builtin.Block>
       {isTextWarningVisible ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1167")}
+          className={_utils.cx(_styles, "div-block-1167", "no-border")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "text-yellow-800")}
+            className={_utils.cx(_styles, "text-grey-600")}
             tag="div"
           >
             {textWarning}

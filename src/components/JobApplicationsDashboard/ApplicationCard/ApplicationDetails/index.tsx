@@ -48,6 +48,7 @@ import {
   UploadCandidateResume,
 } from '@/devlink2';
 import { ButtonPrimaryOutlinedRegular, DangerMessage } from '@/devlink3';
+import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiPopup from '@/src/components/Common/MuiPopup';
@@ -66,9 +67,8 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
-import { getSafeAssessmentResult } from '@/src/pages/api/job/jobApplications/candidateEmail/utils';
+import { Job } from '@/src/queries/job/types';
 // import interviewerList from '@/src/utils/interviewer_list';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
@@ -224,8 +224,7 @@ const NewJobApplicationSideDrawer = ({
   handleSelectPrevApplication: () => void;
   hideNextPrev: boolean;
 }) => {
-  const { activeSections } = useJobApplications();
-  const { interviewPlanEnabled } = useJobDetails();
+  const { job, interviewPlanEnabled } = useJobDetails();
   const name = capitalize(
     application.candidates.first_name +
       ' ' +
@@ -257,12 +256,12 @@ const NewJobApplicationSideDrawer = ({
         questions: parametersInput,
       },
     );
-    toast.success('Call Initiated');
+    toast.success('Call initiated successfully.');
   };
   const isPhoneScreeningPhoneCallEnabled = useFeatureFlagEnabled(
     'isPhoneScreeningPhoneCallEnabled',
   );
-  const isPhoneScreeningEnabled = activeSections.includes(
+  const isPhoneScreeningEnabled = job.activeSections.includes(
     JobApplicationSections.SCREENING,
   );
   return (
@@ -307,9 +306,10 @@ const NewJobApplicationSideDrawer = ({
         slotMoveTo={<></>}
         slotOverview={
           <>
-            {(interviewPlanEnabled?.data ?? false) && (
-              <InterviewStatusBlock application={application} />
-            )}
+            {(interviewPlanEnabled?.data ?? false) &&
+              (application?.emailValidity?.isValidEmail ?? false) && (
+                <InterviewStatusBlock application={application} />
+              )}
             {overview.valid && (
               <OverviewBlock title={'Overview'} description={overview.value} />
             )}
@@ -608,7 +608,7 @@ const NewInterviewStatus = ({
                         `${process.env.NEXT_PUBLIC_HOST_NAME}${pageRoutes.CANDIDATE_ASSESSMENT}/${application.id}`,
                       )
                       .then(() => {
-                        toast.success('Interview link copied');
+                        toast.success('Interview link copied.');
                       });
                   },
                 }}
@@ -827,10 +827,10 @@ const ResumeUpload: React.FC<{
         }
         setLoading(false);
       } else {
-        toast.warning('Uploading candidate resume. Please wait');
+        toast.warning('Uploading candidate resume. Please wait.');
       }
     } else {
-      toast.error('Upload a valid file');
+      toast.error('Upload a valid file.');
     }
   };
   return (
@@ -910,7 +910,7 @@ const ResumeViewer: React.FC<{
 
 const ResumeBlock: React.FC<{
   application: JobApplication;
-  job: JobTypeDashboard;
+  job: Job;
   handleUpload: () => void;
 }> = ({ application, job, handleUpload }) => {
   if (job.status === 'draft') return <DangerMessage />;
@@ -982,7 +982,7 @@ export const NewResumeScoreDetails = ({
   setOpenResume,
 }: {
   application: JobApplication;
-  job: JobTypeDashboard;
+  job: Job;
   result: boolean;
   setOpenResume?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -1150,7 +1150,7 @@ const PhoneScreeningSection = ({
     navigator.clipboard.writeText(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${application.job_id}&application_id=${application.id}`,
     );
-    toast.success('Interview link copied!');
+    toast.success('Interview link copied.');
   };
 
   const [collapse, setCollapse] = useState(false);

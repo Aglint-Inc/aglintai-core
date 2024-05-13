@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { getInterviewTrainingProgressType } from '@/src/pages/api/scheduling/get_interview_training_progress';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { interviewPlanRecruiterUserQuery } from '../interview-coordinators';
 import { schedulingDashboardQueryKeys } from './keys';
 import {
   Functions,
@@ -45,7 +46,7 @@ export const useInterviewTrainingProgress = () => {
     queryKey,
     enabled,
     gcTime,
-    queryFn: () => getInterviewTrainingProgress({ recruiter_id }),
+    queryFn: () => getInterviewTrainingProgressAPI({ recruiter_id }),
   });
 };
 
@@ -141,73 +142,14 @@ const rpc = async <T extends keyof Functions, R = Functions[T]['Returns']>(
   return data as R;
 };
 
-export const getInterviewTrainingProgress = async ({
+export const getInterviewTrainingProgressAPI = async ({
   recruiter_id,
 }: {
   recruiter_id: string;
 }) => {
-  const { data, error } = await supabase
-    .from('interview_module')
-    .select(
-      `id, name, settings, interview_module_relation(recruiter_user(${interviewPlanRecruiterUserQuery}), interview_session_relation(training_type,interview_session(interview_meeting(status))))`,
+  return (
+    await axios.get(
+      `/api/scheduling/get_interview_training_progress?recruiter_id=${recruiter_id}`,
     )
-    .eq('recruiter_id', recruiter_id)
-    .not('settings', 'is', null)
-    .eq('interview_module_relation.training_status', 'training')
-    .eq(
-      'interview_module_relation.interview_session_relation.is_confirmed',
-      true,
-    )
-    .in('interview_module_relation.interview_session_relation.training_type', [
-      'shadow',
-      'reverse_shadow',
-    ] as (keyof SchedulingDashboardTypes['interviewTrainingProgress'][number]['count'])[])
-    .eq(
-      'interview_module_relation.interview_session_relation.interview_session.interview_meeting.status',
-      'completed',
-    );
-  if (error) throw new Error(error.message);
-  return data
-    .reduce(
-      (acc, { interview_module_relation, id, name, settings }) => {
-        if (settings && interview_module_relation.length)
-          acc.push(
-            ...interview_module_relation.reduce(
-              (acc, { interview_session_relation, recruiter_user }) => {
-                const entry: SchedulingDashboardTypes['interviewTrainingProgress'][number] =
-                  {
-                    recruiter_user,
-                    module: {
-                      id,
-                      name,
-                      settings:
-                        settings as SchedulingDashboardTypes['interviewTrainingProgress'][number]['module']['settings'],
-                    },
-                    count: { reverse_shadow: 0, shadow: 0 },
-                  };
-                if (interview_session_relation.length)
-                  interview_session_relation.forEach((curr) => {
-                    if (curr.interview_session.interview_meeting)
-                      entry.count[curr.training_type] += 1;
-                  });
-                acc.push(entry);
-                return acc;
-              },
-              [] as SchedulingDashboardTypes['interviewTrainingProgress'],
-            ),
-          );
-        return acc;
-      },
-      [] as SchedulingDashboardTypes['interviewTrainingProgress'],
-    )
-    .sort((a, z) => sortHelper(z) - sortHelper(a));
-};
-
-const sortHelper = ({
-  count,
-}: SchedulingDashboardTypes['interviewTrainingProgress'][number]) => {
-  return Object.values(count).reduce((acc, curr) => {
-    acc += curr;
-    return acc;
-  }, 0);
+  ).data as ReturnType<getInterviewTrainingProgressType>;
 };

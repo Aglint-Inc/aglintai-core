@@ -22,7 +22,7 @@ export default forwardRef((props: any, ref) => {
     const label =
       listOfUsers[Number(index)]?.first_name +
       ' ' +
-      listOfUsers[Number(index)]?.last_name;
+      (listOfUsers[Number(index)]?.last_name ?? '');
     const item = listOfUsers[Number(index)]?.user_id;
 
     if (item) {
@@ -130,9 +130,7 @@ export default forwardRef((props: any, ref) => {
                   />
                   <Typography variant='body1'>
                     {capitalize(
-                      item?.first_name +
-                        ' ' +
-                        (item?.last_name ? item?.last_name : ''),
+                      item?.first_name + ' ' + (item?.last_name ?? ''),
                     )}
                   </Typography>
                 </ShowCode.Else>

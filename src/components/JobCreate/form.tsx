@@ -2,15 +2,19 @@
 import { Autocomplete, InputAdornment, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import Image from 'next/image';
-import { FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 
 import { JobDetailBlock } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { palette } from '@/src/context/Theme/Theme';
+import { useCompanyMembers } from '@/src/queries/company-members';
 import { JobCreate } from '@/src/queries/job/types';
+import { getFullName } from '@/src/utils/jsonResume';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
+import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import TipTapAIEditor from '../Common/TipTapAIEditor';
 import UISelect from '../Common/Uiselect';
 import UITextField from '../Common/UITextField';
@@ -18,6 +22,7 @@ import UITextField from '../Common/UITextField';
 export type Form = {
   [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
     value: JobCreate[id];
+    required: boolean;
     error: {
       value: boolean;
       helper: string;
@@ -37,7 +42,6 @@ export const JobForms: FC<JobMetaFormProps> = ({
       onChange={handleChange}
     />
   );
-
   const company = (
     <JobCompany name='company' value={fields.company} onChange={handleChange} />
   );
@@ -65,6 +69,34 @@ export const JobForms: FC<JobMetaFormProps> = ({
       onChange={handleChange}
     />
   );
+  const hiringManager = (
+    <JobCoordinator
+      name='hiring_manager'
+      value={fields.hiring_manager}
+      onChange={handleChange}
+    />
+  );
+  const recruiter = (
+    <JobCoordinator
+      name='recruiter'
+      value={fields.recruiter}
+      onChange={handleChange}
+    />
+  );
+  const recruiting_coordinator = (
+    <JobCoordinator
+      name='recruiting_coordinator'
+      value={fields.recruiting_coordinator}
+      onChange={handleChange}
+    />
+  );
+  const sourcer = (
+    <JobCoordinator
+      name='sourcer'
+      value={fields.sourcer}
+      onChange={handleChange}
+    />
+  );
   const description = (
     <JobDescription
       name='description'
@@ -82,9 +114,20 @@ export const JobForms: FC<JobMetaFormProps> = ({
       {job_type}
     </>
   );
+
+  const roleForms = (
+    <>
+      {hiringManager}
+      {recruiter}
+      {recruiting_coordinator}
+      {sourcer}
+    </>
+  );
+
   return (
     <JobDetailBlock
       slotJobForm={forms}
+      slotHiringTeamForm={roleForms}
       slotRichtext={description}
       textDescription={
         !handleCreate
@@ -122,7 +165,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
       label={'Job Title'}
       name={name}
       placeholder={'Ex : Software developer'}
-      value={value.value}
+      value={value.value as string}
       error={value.error.value}
       helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
@@ -138,7 +181,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
       label={'Company'}
       name={name}
       placeholder={'Ex : Google'}
-      value={value.value}
+      value={value.value as string}
       error={value.error.value}
       helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
@@ -183,7 +226,7 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
           name={name}
           rest={{ ...params }}
           label='Job Location'
-          placeholder='Ex : San Fransisco, United States'
+          placeholder='Ex. San Fransisco, United States'
           error={value.error.value}
           helperText={value.error.helper}
           onChange={(e) => onChange(name, e.target.value)}
@@ -201,35 +244,10 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobLocation.displayName = 'JobLocation';
 
 type Defaults = {
-  [id in keyof Pick<
-    Form,
-    'workplace_type' | 'department' | 'job_type'
-  >]: Form[id]['value'][];
+  [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: Form[id]['value'][];
 };
 
 const defaults: Defaults = {
-  department: [
-    'accounting',
-    'administrative',
-    'arts and design',
-    'business development',
-    'consulting',
-    'data science',
-    'education',
-    'engineering',
-    'engineering',
-    'entrepreneurship',
-    'finance',
-    'human resources',
-    'information technology',
-    'legal',
-    'marketing',
-    'media and communication',
-    'operations',
-    'product management',
-    'sales',
-    'support',
-  ],
   job_type: [
     'contract',
     'full time',
@@ -256,7 +274,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
     <UISelect
       label={'Job type'}
       menuOptions={options}
-      value={value.value}
+      value={value.value as string}
       onChange={(e) => onChange(name, e.target.value)}
     />
   );
@@ -264,17 +282,51 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobType.displayName = 'JobType';
 
 const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const options = getOptions('department');
+  const { recruiter } = useAuthDetails();
+  const options = recruiter.departments.map((department) => ({
+    name: department,
+    value: department,
+  }));
+
   return (
     <UISelect
       label={'Department'}
       menuOptions={options}
-      value={value.value}
+      value={value.value as string}
       onChange={(e) => onChange(name, e.target.value)}
     />
   );
 });
 JobDepartment.displayName = 'JobDepartment';
+
+const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
+  const { data } = useCompanyMembers();
+  const options = data
+    .filter(({ role }) => role === name)
+    .map((c) => ({
+      name: getFullName(c.first_name, c.last_name),
+      value: c.user_id,
+      start_icon_url: c.profile_image,
+    }));
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
+    const coordinator = data.find((c) => c.user_id === e.target.value);
+    if (coordinator) onChange(name, coordinator.user_id);
+  };
+  return (
+    <AvatarSelectDropDown
+      onChange={handleChange}
+      label={capitalizeAll(name)}
+      menuOptions={options}
+      showMenuIcons
+      value={value.value}
+      error={value.error.value}
+      helperText={value.error.helper}
+    />
+  );
+});
+JobCoordinator.displayName = 'JobCoordinator';
 
 const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const options = getOptions('workplace_type');
@@ -282,7 +334,7 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
     <UISelect
       label={'Workplace type'}
       menuOptions={options}
-      value={value.value}
+      value={value.value as string}
       onChange={(e) => onChange(name, e.target.value)}
     />
   );
@@ -304,10 +356,12 @@ const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
         style={{
           opacity: job?.scoring_criteria_loading ? 0.4 : 1,
           pointerEvents: job?.scoring_criteria_loading ? 'none' : 'auto',
+          maxHeight: '400px',
+          overflow: 'scroll',
         }}
       >
         <TipTapAIEditor
-          initialValue={value.value}
+          initialValue={value.value as string}
           handleChange={(e) => onChange(name, e)}
           placeholder='Enter job description'
           disabled={disable}
@@ -322,7 +376,7 @@ type MetaForms = {
   name: keyof Form;
   value: Form[keyof Form];
   // eslint-disable-next-line no-unused-vars
-  onChange: (name: keyof Form, value: string | number) => void;
+  onChange: (name: keyof Form, value: any) => void;
 };
 
 type JobMetaFormProps = {

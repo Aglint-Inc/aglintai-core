@@ -188,14 +188,14 @@ export default SchedulingEmailTemplates;
 
 export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
   candidate_availability_request: {
-    listing: 'Candidate Availability Request',
-    heading: 'Candidate Availability Request Template',
+    listing: 'Candidate Booking Link Email Template',
+    heading: 'Candidate Booking Link Email Template',
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
     and [pickYourSlotLink].`,
-    triggerInfo: 'Triggered to send schedule options',
+    triggerInfo: 'Manually Sending Candidate Booking Link',
     description:
-      'Set up a default application recieved email template. You can make specific changes for individual job posts later.',
+      'This template is used for sending the candidate booking link to schedule interviews. Ensure to include clear instructions and personalize the email for better engagement.',
     descriptionInJob:
       'Customise candidate_availability request email template for this job',
     subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
@@ -206,15 +206,37 @@ export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
     Regards,
     
     [companyName] Recruitment Team`,
-    trigger: 'Triggered to send schedule options',
+    trigger: 'Manually Sending Candidate Booking Link',
+  },
+  cancel_interview_session: {
+    listing: 'Candidate Cancel Interview Session',
+    heading: 'Candidate Cancel Interview Session',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [sessionName]`,
+    triggerInfo: '',
+    description:
+      'This template is used for sending the cancel interview session',
+    descriptionInJob:
+      'Customise candidate_availability request email template for this job',
+    subjectPlaceHolder: 'Interview Cancellation: [sessionName]',
+    bodyPlaceHolder: `Dear [firstName],
+
+    I regret to inform you that we need to cancel your scheduled interview session [sessionName].
+    
+    We apologize for any inconvenience caused and will be in touch soon to reschedule.
+    
+    Best regards,
+    [companyName]`,
+    trigger: 'Triggerd when interview session get cancelled',
   },
   candidate_invite_confirmation: {
-    listing: 'Candidate Invite Confirmation',
-    heading: 'Candidate Invite Confirmation Template',
+    listing: 'Interview Booking Confirmation',
+    heading: 'Interview Booking Confirmation',
     dynamicContent: `For dynamic content, utilize placeholders like [firstName], [lastName], [companyName], [jobTitle] and [viewDetailsLink].`,
-    triggerInfo: 'Triggered after candidate confirms the slot',
+    triggerInfo: 'Sent immediately after candidate booking is confirmed',
     descriptionInJob: '',
-    description: '',
+    description:
+      'This template is used to send Booking Confirmation to candidate after successful booking.',
     subjectPlaceHolder: 'Your Interview is Scheduled for [positionName]',
     bodyPlaceHolder: `Dear [candidateName],
 
@@ -222,15 +244,16 @@ We are pleased to confirm your interview for the [positionName] position on [Dat
 
 Regards,
 [yourCompanyName] Recruitment Team`,
-    trigger: 'Triggered after candidate confirms the slot',
+    trigger: 'Sent immediately after candidate booking is confirmed',
   },
   debrief_calendar_invite: {
-    listing: 'Debrief Calendar Invite',
-    heading: 'Debrief Calendar Invite Template',
+    listing: 'Debrief Invite',
+    heading: 'Debrief Session Confirmation Email Template',
     triggerInfo: 'Triggered when the candidate selected for assessment.',
     dynamicContent: `For dynamic content, utilize placeholders like [firstName], [lastName], [companyName] and [teamMemberName].`,
     descriptionInJob: '',
-    description: '',
+    description:
+      'Used to invite relevant team members to a debrief session after interviews to discuss candidate evaluations.',
     subjectPlaceHolder: 'Interview Debrief for [candidateName]',
     bodyPlaceHolder: `Dear [TeamMemberName],
 
@@ -240,17 +263,34 @@ Cheers,
 [yourCompanyName] Recruitment Team`,
     trigger: 'Triggered to send debrief session information',
   },
+  init_email_agent: {
+    listing: 'Email Agent',
+    heading: 'Assign Email Agent',
+    triggerInfo: 'Used When Email Agent is assigned for Scheduling Interview',
+    description:
+      'Set up a default Assign Email Agent template. You can make specific changes for individual job posts later.',
+    descriptionInJob: 'Customise Assign Email Agent for this job.',
+    bodyPlaceHolder: '',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [candidate_first_name], [company_name], [companyName], [start_date],[job_role], [end_date], [company_time_zone], [self_schedule_link] .`,
+    subjectPlaceHolder: '',
+    trigger: "Used When Email Agent is assigned for Scheduling Interview'",
+  },
 };
 
 export type EmailTempPath =
   | 'candidate_availability_request'
   | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite';
+  | 'debrief_calendar_invite'
+  | 'cancel_interview_session'
+  | 'init_email_agent';
 
 export const emailTempKeys: EmailTempPath[] = [
   'candidate_invite_confirmation',
   'candidate_availability_request',
   'debrief_calendar_invite',
+  'cancel_interview_session',
+  'init_email_agent',
 ];
 
 type EmailTemplatType = {

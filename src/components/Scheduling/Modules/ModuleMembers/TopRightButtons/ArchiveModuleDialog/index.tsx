@@ -52,23 +52,23 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
                 ...updatedEditModule,
               },
             );
-            toast.success('Module archived');
+            toast.success('Interview type archived successfully.');
           } else {
             throw new Error();
           }
         } else {
           toast.warning(
-            'Cannot archiving module, active schedules are present for this module',
+            'Cannot archive interview type; active schedules are present for this type.',
           );
         }
       } catch {
-        toast.error('Error archiving module');
+        toast.error('Error archiving interview type.');
       } finally {
         setLoading(false);
         setIsArchiveDialogOpen(false);
       }
     } else {
-      toast.warning('Please wait, till the ongoing process is complete');
+      toast.warning('Please wait until the ongoing process is complete.');
     }
   };
 
@@ -80,7 +80,7 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
       setIsArchiveDialogOpen(false);
       setTimeout(() => setValue(''), 400);
     } else {
-      toast.warning('Please wait, till the ongoing process is complete');
+      toast.warning('Please wait until the ongoing process is complete.');
     }
   }, [loading]);
 
@@ -88,7 +88,7 @@ function ArchiveModuleDialog({ editModule }: { editModule: ModuleType }) {
     <Dialog open={isArchiveDialogOpen} onClose={onClose}>
       <CloseJobModal
         textPopupTitle={`Archive`}
-        textWarning={`By clicking archive the module will not be able to select in interview plan while scheduling`}
+        textWarning={`By clicking archive the interview type will not be available to select in interview plans while scheduling.`}
         textButton={'Archive'}
         textJobTitle={moduleName}
         onClickCancel={{

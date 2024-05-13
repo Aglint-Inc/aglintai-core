@@ -1,7 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
 import { PauseJson } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
 
@@ -11,7 +13,6 @@ import { QueryKeysInteviewModules } from './type';
 import {
   addMemberbyUserIds,
   deleteRelationByUserDbDelete,
-  fetchInterviewModuleById,
   fetchInterviewModules,
   fetchModules,
   fetchProgress,
@@ -97,7 +98,21 @@ export const useModuleAndUsers = () => {
     queryKey: QueryKeysInteviewModules.USERS_BY_MODULE_ID({
       moduleId: router.query.module_id as string,
     }),
-    queryFn: () => fetchInterviewModuleById(router.query.module_id as string),
+    queryFn: async () => {
+      const {
+        data: resMod,
+        status,
+      }: AxiosResponse<ApiResponseInterviewModuleById> = await axios.post(
+        '/api/scheduling/fetch_interview_module_by_id',
+        {
+          module_id: router.query.module_id,
+        },
+      );
+      if (status !== 200 && resMod.error) {
+        toast.error('Error fetching Module Members');
+      }
+      return resMod.data;
+    },
     initialData: null,
     enabled: !!router.query.module_id,
     refetchOnWindowFocus: false,
@@ -162,7 +177,7 @@ export const usePauseHandler = () => {
           QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
         );
         if (selectedType === 'custom' && !pause_json?.end_date) {
-          return toast.error('Please select end date');
+          return toast.error('Please select end date.');
         }
         const isUpdated = await updatePauseJsonByUserId({
           user_id: user_id,
@@ -192,7 +207,7 @@ export const usePauseHandler = () => {
         throw new Error();
       }
     } catch {
-      toast.error('Error pausing user');
+      toast.error('Error pausing user.');
     }
   };
 
@@ -213,7 +228,7 @@ export const useDeleteRelationHandler = () => {
       const editModule = queryClient.getQueryData<ModuleType>(
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
-      if (!editModule) throw new Error('Module not found');
+      if (!editModule) throw new Error('Interview type not found');
 
       const isDeleted = await deleteRelationByUserDbDelete({
         module_relation_id,
@@ -259,7 +274,7 @@ export const useAddMemberHandler = () => {
         QueryKeysInteviewModules.USERS_BY_MODULE_ID({ moduleId: module_id }),
       );
 
-      if (!editModule) throw new Error('Module not found');
+      if (!editModule) throw new Error('Interview type not found');
 
       const { error } = await addMemberbyUserIds({
         module_id: editModule.id,

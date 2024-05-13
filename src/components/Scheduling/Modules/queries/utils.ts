@@ -1,17 +1,18 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
+import { SupabaseType } from '@/src/types/data.types';
 import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
 import { initialEditModule } from '../store';
 import {
   MemberType,
   ModuleDashboard,
   ModuleType,
   StatusTraining,
-  TransformSchedule,
 } from '../types';
 import { calculateHourDifference } from '../utils';
 import { useGetMeetingsByModuleId } from './hooks';
@@ -24,7 +25,7 @@ export const fetchModules = async (module_id: string) => {
     },
   );
   if (error) throw new Error(error.message);
-  return data as TransformSchedule[];
+  return data as unknown as ScheduleListType;
 };
 
 export const fetchProgress = async ({
@@ -78,7 +79,10 @@ export const fetchInterviewModules = async (rec_id: string) => {
   return data as unknown as ModuleDashboard[];
 };
 
-export const fetchInterviewModuleById = async (module_id: string) => {
+export const fetchInterviewModuleByIdApi = async (
+  module_id: string,
+  supabase: SupabaseType,
+) => {
   const { data: dataModule, error: errorModule } = await supabase
     .from('interview_module')
     .select('*')
@@ -96,12 +100,19 @@ export const fetchInterviewModuleById = async (module_id: string) => {
   if (errorRel) {
     throw new Error(errorRel.message);
   }
-
-  return {
+  const response = {
     ...dataModule[0],
     relations: dataRel,
     settings: dataModule[0].settings || initialEditModule.settings, //for some columns setting is null thats why we are adding this
   } as ModuleType;
+
+  return {
+    data: response,
+    error: errorModule?.message || errorRel?.message,
+  } as {
+    data: ModuleType | null;
+    error: string | null;
+  };
 };
 
 export const fetchMembers = async (rec_id: string) => {
@@ -180,7 +191,7 @@ export const deleteRelationByUserDbDelete = async ({
     }
   } else {
     toast.warning(
-      'Cannot delete user. There are meetings associated with this user.',
+      'User cannot be deleted. Meetings are associated with this user.',
     );
     return false;
   }

@@ -29,29 +29,29 @@ const SlideTwoSignUp = () => {
     userDetails,
     recruiter,
     setRecruiterUser,
-    recruiterUser
+    recruiterUser,
   } = useAuthDetails();
   const [details, setDetails] = useState<Details>({
     first_name: '',
     last_name: '',
     email: '',
-    password: ''
+    password: '',
   });
 
   const [checked, setChecked] = useState<boolean>(true);
   const [signUpError, setSignUpError] = useState<SignUpError>({
     first_name: {
       error: false,
-      msg: ''
+      msg: '',
     },
     email: {
       error: false,
-      msg: ''
+      msg: '',
     },
     password: {
       error: false,
-      msg: ''
-    }
+      msg: '',
+    },
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -63,16 +63,16 @@ const SlideTwoSignUp = () => {
         ...prevError,
         first_name: {
           error: true,
-          msg: errorMessages.nameRequired
-        }
+          msg: errorMessages.nameRequired,
+        },
       }));
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
         first_name: {
           error: false,
-          msg: ''
-        }
+          msg: '',
+        },
       }));
     }
     const email = handleEmail(details.email);
@@ -81,12 +81,12 @@ const SlideTwoSignUp = () => {
       isValid = false;
       setSignUpError((prevError) => ({
         ...prevError,
-        email: email
+        email: email,
       }));
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
-        email: email
+        email: email,
       }));
     }
     const password = handlePassword(details.password);
@@ -95,12 +95,12 @@ const SlideTwoSignUp = () => {
       isValid = false;
       setSignUpError((prevError) => ({
         ...prevError,
-        password: password
+        password: password,
       }));
     } else {
       setSignUpError((prevError) => ({
         ...prevError,
-        password: password
+        password: password,
       }));
     }
     return isValid;
@@ -119,7 +119,7 @@ const SlideTwoSignUp = () => {
       if (!(await formValidation())) return null;
       const authdata = await supabase.auth.signUp({
         email: details.email,
-        password: details.password
+        password: details.password,
       });
       if (!authdata.error) {
         const res = (await axios.post('/api/signup', {
@@ -128,7 +128,7 @@ const SlideTwoSignUp = () => {
           first_name: details.first_name,
           last_name: details.last_name,
           role: 'admin',
-          flow: flow
+          flow: flow,
         } as ApiBodyParamsSignup)) as {
           data: { recruiter_user: RecruiterUserType; recruiter: RecruiterType };
           status: number;
@@ -136,14 +136,14 @@ const SlideTwoSignUp = () => {
 
         if (res.status === 200) {
           router.push(`?step=${stepObj.type}`, undefined, {
-            shallow: true
+            shallow: true,
           });
           setRecruiterUser(res.data.recruiter_user);
           setUserDetails(authdata.data.session);
           setRecruiter(res.data.recruiter);
           setStep(stepObj.type);
         } else {
-          toast.error('Something went wrong. Please try again later.');
+          toast.error('Something went wrong. Please try again.');
         }
       } else {
         if (
@@ -154,16 +154,16 @@ const SlideTwoSignUp = () => {
             ...signUpError,
             password: {
               error: false,
-              msg: 'Signup requires a valid password'
-            }
+              msg: 'Signup requires a valid password',
+            },
           });
         } else if (authdata.error.message === errorMessages.userRegistered) {
           setSignUpError({
             ...signUpError,
             email: {
               error: true,
-              msg: authdata.error.message
-            }
+              msg: authdata.error.message,
+            },
           });
         }
       }
@@ -179,8 +179,8 @@ const SlideTwoSignUp = () => {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: provider,
           options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`
-          }
+            redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/loading`,
+          },
         });
         if (error) {
           toast.error(error.message);
@@ -209,12 +209,12 @@ const SlideTwoSignUp = () => {
         }
         if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
           router.push(`?step=${stepObj.type}`, undefined, {
-            shallow: true
+            shallow: true,
           });
           return;
         } else if (userDetails?.user && !recruiter?.industry) {
           router.push(`?step=${stepObj.detailsOne}`, undefined, {
-            shallow: true
+            shallow: true,
           });
           return;
         }
@@ -249,30 +249,30 @@ const SlideTwoSignUp = () => {
               onClickRegisterWithGoogle={{
                 onClick: () => {
                   oauthHandler('google');
-                }
+                },
               }}
               onClickBack={{
                 onClick: () => {
                   router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
                   setStep(stepObj.type);
-                }
+                },
               }}
               onClickCheck={{
                 onClick: () => {
                   setChecked(!checked);
-                }
+                },
               }}
               onClickSignUp={{
                 onClick: () => {
                   handelSignUp();
-                }
+                },
               }}
               isTermsChecked={checked}
               onClickSignIn={{
                 onClick: () => {
                   router.push(pageRoutes.LOGIN);
                   setStep(stepObj.signin);
-                }
+                },
               }}
               slotSignUpForm={
                 <Stack spacing={'20px'} p={'4px'}>
@@ -296,8 +296,8 @@ const SlideTwoSignUp = () => {
                       inputProps={{
                         autoCapitalize: 'true',
                         style: {
-                          fontSize: '14px'
-                        }
+                          fontSize: '14px',
+                        },
                       }}
                     />
                     <TextField
@@ -312,8 +312,8 @@ const SlideTwoSignUp = () => {
                       inputProps={{
                         autoCapitalize: 'true',
                         style: {
-                          fontSize: '14px'
-                        }
+                          fontSize: '14px',
+                        },
                       }}
                     />
                   </Stack>
@@ -333,7 +333,7 @@ const SlideTwoSignUp = () => {
                       const email = handleEmail(details.email);
                       setSignUpError((prevError) => ({
                         ...prevError,
-                        email: email
+                        email: email,
                       }));
                     }}
                     error={signUpError.email.error}
@@ -343,8 +343,8 @@ const SlideTwoSignUp = () => {
                     inputProps={{
                       autoCapitalize: 'true',
                       style: {
-                        fontSize: '14px'
-                      }
+                        fontSize: '14px',
+                      },
                     }}
                   />
                   <TextField
@@ -365,7 +365,6 @@ const SlideTwoSignUp = () => {
                       signUpError.password.error ? signUpError.password.msg : ''
                     }
                     InputProps={{
-                      disableUnderline: true,
                       endAdornment: (
                         <InputAdornment position='end'>
                           <IconButton
@@ -395,7 +394,7 @@ const SlideTwoSignUp = () => {
                             </svg>
                           </IconButton>
                         </InputAdornment>
-                      )
+                      ),
                     }}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
@@ -406,7 +405,7 @@ const SlideTwoSignUp = () => {
                       const password = handlePassword(details.password);
                       setSignUpError((prevError) => ({
                         ...prevError,
-                        password: password
+                        password: password,
                       }));
                     }}
                     value={details.password}
@@ -416,8 +415,8 @@ const SlideTwoSignUp = () => {
                     inputProps={{
                       autoCapitalize: 'true',
                       style: {
-                        fontSize: '14px'
-                      }
+                        fontSize: '14px',
+                      },
                     }}
                   />
                 </Stack>

@@ -2,20 +2,24 @@ import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { MoveAssessment } from '@/devlink2';
-import { fetchInterviewSessionTask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import {
   CallIcon,
   EmailIcon,
 } from '@/src/components/Tasks/TaskBody/AddNewTask';
+import PriorityList from '@/src/components/Tasks/TaskBody/AddNewTask/PriorityList';
 import SelectScheduleDate from '@/src/components/Tasks/TaskBody/AddNewTask/SelectScheduleDate';
 import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList';
+import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
+import { useTaskStatesContext } from '@/src/components/Tasks/TaskStatesContext';
 import {
   assigneeType,
   EmailAgentId,
   PhoneAgentId,
 } from '@/src/components/Tasks/utils';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CustomDatabase } from '@/src/types/customSchema';
+import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
+import { JobApplcationDB } from '@/src/types/data.types';
 
 import SelectDateTime from './SelectDateTime';
 import TaskOwners from './TaskOwners';
@@ -29,64 +33,71 @@ export type TaskType = {
   type: CustomDatabase['public']['Enums']['task_type_enum'];
   due_date: string;
   start_date: string;
+  name: string;
 };
 function CreateTask({
   setTask,
+  applications,
 }: {
   setTask: Dispatch<SetStateAction<TaskType>>;
+  applications: Omit<JobApplcationDB, 'feedback'>[];
 }) {
-  const [scheduleDate, setScheduleDate] = useState({
-    start_date: dayjs().toString(),
-    end_date: dayjs().toString(),
+  const { assignerList } = useTaskStatesContext();
+  const { recruiterUser } = useAuthDetails();
+
+  const [scheduleDate, setScheduleDate] = useState<{
+    start_date: string;
+    end_date: string;
+  }>({
+    start_date: dayjs().add(1, 'day').toString(),
+    end_date: dayjs().add(7, 'day').toString(),
   });
 
-  const [selectedSession, setSelectedSession] = useState<
-    Awaited<ReturnType<typeof fetchInterviewSessionTask>>
-  >([]);
+  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
   const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
     null,
   );
 
-  const [selectCallDate, setSelectCallDate] = useState(dayjs().toString());
+  const [selectCallDate, setSelectCallDate] = useState(
+    dayjs().add(5, 'minute').toString(),
+  );
+  const [selectedPriority, setSelectedPriority] =
+    useState<DatabaseEnums['task_priority']>('medium');
   const {
     interviewPlans: {
       data: { interview_session },
     },
   } = useJobInterviewPlan();
-
   useEffect(() => {
-    setSelectedSession(interview_session.slice(0, 2));
-  }, [interview_session]);
-  useEffect(() => {
-    if (
-      (selectedAssignee?.user_id ?? null) &&
-      (selectedSession ?? null) &&
-      (scheduleDate?.start_date ?? null) &&
-      (scheduleDate?.end_date ?? null) &&
-      (selectCallDate ?? null)
-    ) {
-      setTask({
-        assignee: [selectedAssignee.user_id],
-        schedule_date_range: { ...scheduleDate },
-        session_ids: selectedSession,
-        task_owner: selectedAssignee.user_id,
-        status: (selectedAssignee.user_id === EmailAgentId ||
-        selectedAssignee.user_id === PhoneAgentId
-          ? 'scheduled'
-          : 'not_started') as CustomDatabase['public']['Enums']['task_status'],
-        priority: 'medium',
-        type: 'schedule' as CustomDatabase['public']['Enums']['task_type_enum'],
-        due_date: dayjs(scheduleDate.end_date).toString(),
-        start_date: dayjs(selectCallDate).toString(),
+    if (interview_session) {
+      setSelectedSession(
+        interview_session
+          .slice(0, 2)
+          .map((ele) => ({ id: ele.id, name: ele.name }) as meetingCardType),
+      );
+      setSelectedAssignee(
+        assignerList.find((ele) => ele.user_id === recruiterUser.user_id),
+      );
+      setTask((pre) => {
+        const preTask = { ...pre };
+        return {
+          ...preTask,
+          session_ids: interview_session.slice(0, 2),
+          schedule_date_range: {
+            start_date: dayjs().add(1, 'day').toString(),
+            end_date: dayjs().add(7, 'day').toString(),
+          },
+          start_date: dayjs().add(5, 'minute').toString(),
+          due_date: dayjs().add(1, 'day').toString(),
+          assignee: [
+            assignerList.find((ele) => ele.user_id === recruiterUser.user_id)
+              .user_id,
+          ],
+        };
       });
     }
-  }, [
-    selectedAssignee?.user_id,
-    selectedSession,
-    scheduleDate.start_date,
-    scheduleDate.end_date,
-    selectCallDate,
-  ]);
+  }, [interview_session, assignerList]);
+
   return (
     <>
       <MoveAssessment
@@ -94,19 +105,38 @@ function CreateTask({
           <SelectScheduleDate
             scheduleDate={scheduleDate}
             onChange={(e: any) => {
-              if (Array.isArray(e) && e[0] && e[1]) {
+              if (e[1]) {
                 setScheduleDate({
                   start_date: dayjs(e[0]).toString(),
                   end_date: dayjs(e[1]).toString(),
                 });
-                setSelectCallDate(dayjs(e[0]).toString());
-              }
-              if (!Array.isArray(e)) {
+                setTask((pre) => {
+                  const preTask = { ...pre };
+                  return {
+                    ...preTask,
+                    schedule_date_range: {
+                      start_date: dayjs(e[0]).toString(),
+                      end_date: dayjs(e[1]).toString(),
+                    },
+                    due_date: dayjs(e[0]).toString(),
+                  };
+                });
+              } else {
                 setScheduleDate({
-                  start_date: dayjs(e).toString(),
+                  start_date: dayjs(e[0]).toString(),
                   end_date: null,
                 });
-                setSelectCallDate(dayjs(e).toString());
+                setTask((pre) => {
+                  const preTask = { ...pre };
+                  return {
+                    ...preTask,
+                    schedule_date_range: {
+                      start_date: dayjs(e[0]).toString(),
+                      end_date: null,
+                    },
+                    due_date: dayjs(e[0]).toString(),
+                  };
+                });
               }
             }}
           />
@@ -115,24 +145,77 @@ function CreateTask({
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            sessionList={interview_session}
+            application_id={applications[0].id}
+            job_id={applications[0].job_id}
+            onChange={(sessions: any) => {
+              setTask((pre) => {
+                const preTask = { ...pre };
+                return {
+                  ...preTask,
+                  session_ids: sessions,
+                };
+              });
+            }}
           />
         }
         slotAssignedTo={
           <TaskOwners
             selectedAssignee={selectedAssignee}
             setSelectedAssignee={setSelectedAssignee}
+            onChange={(owner: assigneeType) => {
+              setTask((pre) => {
+                const status =
+                  owner.user_id === EmailAgentId ||
+                  owner.user_id === PhoneAgentId
+                    ? ('scheduled' as DatabaseEnums['task_status'])
+                    : ('not_started' as DatabaseEnums['task_status']);
+
+                const preTask = { ...pre };
+                return {
+                  ...preTask,
+                  task_owner: owner.user_id,
+                  assignee: [owner.user_id],
+                  status: status,
+                };
+              });
+            }}
           />
         }
         slotWhentoCall={
           <SelectDateTime
             selectCallDate={selectCallDate}
             setSelectCallDate={setSelectCallDate}
+            onChange={(e: any) => {
+              setTask((pre) => {
+                const preTask = { ...pre };
+                return {
+                  ...preTask,
+                  start_date: dayjs(e).toString(),
+                };
+              });
+            }}
           />
         }
+        slotPriority={
+          <PriorityList
+            selectedPriority={selectedPriority}
+            setSelectedPriority={setSelectedPriority}
+            onChange={(e: DatabaseEnums['task_priority']) => {
+              setTask((pre) => {
+                const preTask = { ...pre };
+                return {
+                  ...preTask,
+                  priority: e,
+                };
+              });
+            }}
+          />
+        }
+        isPriorityVisible={true}
         isAssignedToVisible={true}
         isInterviewDateVisible={true}
         isInterviewVisible={true}
+        isStatusVisible={false}
         isWhentoCallVisible={
           selectedAssignee?.user_id === EmailAgentId ||
           selectedAssignee?.user_id === PhoneAgentId

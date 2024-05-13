@@ -1,4 +1,5 @@
 import { Stack } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
@@ -7,10 +8,13 @@ import { useMemo, useState } from 'react';
 import { TeamListItem } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
+import { ContextValue } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { RecruiterUserType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
+import toast from '@/src/utils/toast';
 
 import DeleteMemberDialog from './DeleteMemberDialog';
 dayjs.extend(relativeTime);
@@ -24,8 +28,10 @@ const Member = ({
 }: {
   member: RecruiterUserType;
   removeMember: () => void;
-  // eslint-disable-next-line no-unused-vars
-  updateMember: (x: RecruiterUserType) => void;
+  updateMember: (
+    // eslint-disable-next-line no-unused-vars
+    x: Parameters<ContextValue['handelMemberUpdate']>[number]['data'],
+  ) => void;
   // eslint-disable-next-line no-unused-vars
   editMember: (member: RecruiterUserType) => void;
   canSuspend: boolean;
@@ -36,7 +42,6 @@ const Member = ({
   };
   const [openForDelete, setOpenForDelete] = useState(false);
   const [openForCancel, setOpenForCancel] = useState(false);
-
   const { data: memDetails } = useInterviewerList();
   const membersDetails = useMemo(() => {
     const temp: {
@@ -89,27 +94,42 @@ const Member = ({
         // isEditInviteVisible={member.join_status === 'invited'}
         isActiveVisible={canSuspend && member.is_suspended}
         isSuspendVisible={canSuspend && !member.is_suspended}
-        onClickSuspend={{
-          onClick: () => updateMember({ ...member, is_suspended: true }),
-        }}
-        onClickActive={{
-          onClick: () => updateMember({ ...member, is_suspended: false }),
-        }}
         textLocation={member.interview_location}
-        onClickEditInvite={{ onClick: editMember }}
+        isCancelInviteVisible={member.join_status === 'invited' ? true : false}
         isDeleteVisible={
           member.role === 'admin' || member.join_status === 'invited'
             ? false
             : true
         }
+        isResetPasswordVisible={
+          member.role !== 'admin' && member.join_status !== 'invited'
+        }
+        onClickActive={{
+          onClick: () => updateMember({ is_suspended: false }),
+        }}
+        onClickSuspend={{
+          onClick: () =>
+            updateMember({
+              is_suspended: true,
+            }),
+        }}
+        onClickEditInvite={{ onClick: editMember }}
         onClickCancelInvite={{
           onClick: () => {
             setOpenForCancel(true);
           },
         }}
-        isCancelInviteVisible={member.join_status === 'invited' ? true : false}
+        onClickResetPassword={{
+          onClick: () => {
+            resetPassword(member.email)
+              .then(() => toast.success('Password reset email sent.'))
+              .catch(() => toast.error('Password reset failed.'));
+          },
+        }}
         key={1}
-        dateText={dayjs(member.joined_at).fromNow()}
+        textLastActive={
+          member.last_login ? dayjs(member.last_login).fromNow() : '--:--'
+        }
         slotProfileImage={
           <MuiAvatar
             src={member.profile_image}
@@ -117,7 +137,7 @@ const Member = ({
             variant='circular'
             height='100%'
             width='100%'
-            fontSize='20px'
+            fontSize='12px'
           />
         }
         userEmail={member.email}
@@ -180,3 +200,13 @@ export default Member;
 //       return data;
 //     });
 // };
+
+const resetPassword = (email: string) => {
+  const body: API_reset_password['request'] = { email };
+  return axios
+    .post<API_reset_password['response']>('/api/reset_password', body)
+    .then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+      return data.passwordReset;
+    });
+};

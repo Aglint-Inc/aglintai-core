@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -12,7 +13,7 @@ export function CloseJobModal({
   onClickCancel = {},
   slotButton,
   isDisabled = false,
-  textWarning = "Closing this job will unpublish it, preventing candidates from applying or being imported. Additionally, the screening and assessment processes for this job will be stopped.",
+  textWarning = "Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.",
   textPopupTitle = "Close Job Confirmation",
   textButton = "Close Job",
 }) {
@@ -25,16 +26,9 @@ export function CloseJobModal({
         className={_utils.cx(_styles, "close-data-wrap")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {textJobTitle}
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textJobTitle}</_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(
-            _styles,
-            "text-sm",
-            "fw-semibold",
-            "color-grey-600"
-          )}
+          className={_utils.cx(_styles, "text-sm", "color-grey-600")}
           tag="div"
         >
           {textLocation}

@@ -8,9 +8,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { pageRoutes } from '@/src/utils/pageRouting';
-import toast from '@/src/utils/toast';
+// import toast from '@/src/utils/toast';
 
-// import { settingsItems } from './utils';
 const tabs: {
   text: string;
   roles?: Database['public']['Enums']['user_roles'][];
@@ -24,12 +23,18 @@ const tabs: {
     ],
   },
   { text: 'my schedules' },
-  { text: 'candidates', roles: ['admin', 'recruiter', 'scheduler'] },
+  {
+    text: 'candidates',
+    roles: ['admin', 'recruiter', 'recruiting_coordinator'],
+  },
   {
     text: 'interview types',
-    roles: ['admin', 'recruiter', 'scheduler', 'interviewer'],
+    roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
   },
-  { text: 'interviewers', roles: ['admin', 'recruiter', 'scheduler'] },
+  {
+    text: 'interviewers',
+    roles: ['admin', 'recruiter', 'recruiting_coordinator'],
+  },
   {
     text: 'settings',
   },
@@ -44,7 +49,7 @@ function SubNav() {
       return tab === item.text.replace(' ', '');
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
-      toast.error("You don't have Access to this Module.");
+      // toast.error("You don't have access to this module.");
       router.replace(`scheduling?tab=myschedules`);
     }
   }, [tab]);

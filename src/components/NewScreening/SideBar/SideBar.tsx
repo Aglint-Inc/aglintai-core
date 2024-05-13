@@ -116,6 +116,7 @@ const SideBar = ({ appId, openDrawer }) => {
               (data.last_name === null ? '' : data.last_name)
             );
           })}
+        isSmallWidthVisible={false}
         isAppliedOnVisible={false}
         isLocationRoleVisible={false}
         isLocationVisible={false}
@@ -166,7 +167,7 @@ const SideBar = ({ appId, openDrawer }) => {
                           `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate-phone-screening?job_post_id=${data.public_job_id}&application_id=${data.id}
                         `,
                         );
-                        toast.success('Copied To Clipboard!');
+                        toast.success('Copied to clipboard.');
                       },
                     }}
                     onClickInviteNow={{
@@ -186,7 +187,7 @@ const SideBar = ({ appId, openDrawer }) => {
                           data.result_created_at,
                           'phone_screening',
                         );
-                        toast.success('Invite Sent');
+                        toast.success('Invite sent successfully.');
                       },
                     }}
                     onClickResendInvite={{
@@ -206,7 +207,7 @@ const SideBar = ({ appId, openDrawer }) => {
                           data.result_created_at,
                           'phone_screening_resend',
                         );
-                        toast.success('Invite Sent');
+                        toast.success('Invite sent.');
                       },
                     }}
                     slotInviteStatus={

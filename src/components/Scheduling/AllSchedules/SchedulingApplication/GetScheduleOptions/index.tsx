@@ -1,4 +1,4 @@
-import { Dialog, Stack, TextField } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
@@ -21,7 +21,7 @@ import {
   setIsScheduleNowOpen,
   setSchedulingOptions,
   setSelectedSessionIds,
-  useSchedulingApplicationStore
+  useSchedulingApplicationStore,
 } from '../store';
 
 function GetScheduleOptionsDialog() {
@@ -72,7 +72,7 @@ function GetScheduleOptionsDialog() {
     try {
       setSaving(true);
       if (isDebrief && !selectedId) {
-        toast.warning('Please select a slot to schedule');
+        toast.warning('Please select a time slot to schedule.');
       } else {
         const res = await axios.post(
           '/api/scheduling/application/sendtocandidate',
@@ -150,7 +150,9 @@ function GetScheduleOptionsDialog() {
           slotSendtoCandidateButton={
             <>
               <ButtonPrimaryDefaultRegular
-                buttonText={isDebrief ? 'Schedule Now' : 'Send to Candidate'}
+                buttonText={
+                  isDebrief ? 'Schedule Now' : 'Send Booking Link to Candidate'
+                }
                 buttonProps={{
                   onClick: () => {
                     if (!saving) onClickSendToCandidate();
@@ -195,7 +197,6 @@ function GetScheduleOptionsDialog() {
           }
           slotDateRangeInput={
             <Stack direction={'row'} width={'100%'} spacing={2}>
-              <TextField fullWidth />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={dayjs(dateRange?.start_date)}
@@ -219,7 +220,6 @@ function GetScheduleOptionsDialog() {
                     textField: {
                       fullWidth: true,
                       variant: 'outlined',
-                      InputProps: { disableUnderline: true },
                       placeholder: 'Start Date',
                     },
                   }}
@@ -240,7 +240,6 @@ function GetScheduleOptionsDialog() {
                     textField: {
                       fullWidth: true,
                       variant: 'outlined',
-                      InputProps: { disableUnderline: true },
                       placeholder: 'End Date',
                     },
                   }}

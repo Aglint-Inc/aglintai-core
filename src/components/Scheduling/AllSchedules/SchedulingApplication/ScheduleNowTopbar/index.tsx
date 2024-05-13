@@ -9,7 +9,7 @@ import { ScheduleNowButton } from '@/devlink3';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
-import { BodyParams } from '@/src/pages/api/scheduling/v1/find_availability';
+import { ApiFindAvailability } from '@/src/types/aglintApi/schedulingApi';
 import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
@@ -65,7 +65,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
         is_debreif: isDebrief,
-      } as BodyParams);
+      } as ApiFindAvailability);
 
       if (res.status === 200) {
         const respTyped = res.data as {
@@ -73,14 +73,14 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
           total: number;
         };
         if (respTyped.plan_combs.length === 0) {
-          toast.error('No slots available');
+          toast.error('No availability found.');
         } else {
           setTotalSlots(respTyped.total);
           setSchedulingOptions(respTyped.plan_combs);
           setIsScheduleNowOpen(true);
         }
       } else {
-        toast.error('Error fetching schedule options');
+        toast.error('Error retrieving availability.');
       }
     } catch (e) {
       toast.error(e.message);
@@ -102,16 +102,16 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
           end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
           user_tz: dayjs.tz.guess(),
           is_debreif: isDebrief,
-        } as BodyParams,
+        } as ApiFindAvailability,
       );
 
       if (resAllOptions.data.length === 0) {
-        toast.warning('No Slots Found');
+        toast.warning('No availability found.');
         return;
       }
 
       const res = await axios.post(
-        '/api/scheduling/application/schedulewithagent',
+        '/api/scheduling/application/schedulewithagentwithouttaskid',
         {
           application_id: selectedApplication.id,
           dateRange: dateRange,
@@ -123,9 +123,11 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
           session_ids: selectedSessionIds,
           task_id: null,
           type: type,
-          candidate_name: selectedApplication.candidates.first_name,
+          candidate_name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
           company_name: recruiter.name,
-          rec_user_email: recruiterUser.email,
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
           user_tz: dayjs.tz.guess(),
@@ -152,6 +154,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          disabled={fetchingPlan}
           value={dayjs(dateRange?.start_date)}
           onChange={(newValue) => {
             if (dayjs(newValue) < dayjs(dateRange?.end_date)) {
@@ -174,7 +177,6 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
               fullWidth: true,
               variant: 'outlined',
               margin: 'none',
-              InputProps: { disableUnderline: true },
               placeholder: 'Start Date',
             },
           }}
@@ -182,6 +184,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          disabled={fetchingPlan}
           value={dayjs(dateRange?.end_date)}
           minDate={dayjs(dateRange?.start_date)}
           maxDate={dayjs(dateRange?.start_date).add(1, 'month')}
@@ -196,13 +199,23 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
               fullWidth: true,
               variant: 'outlined',
               margin: 'none',
-              InputProps: { disableUnderline: true },
               placeholder: 'End Date',
             },
           }}
         />
       </LocalizationProvider>
       <ScheduleNowButton
+        onClickMySelf={{
+          onClick: async () => {
+            if (dateRange.start_date && dateRange.end_date && !fetchingPlan) {
+              await findScheduleOptions({
+                dateRange: dateRange,
+                session_ids: selectedSessionIds,
+                rec_id: recruiter.id,
+              });
+            }
+          },
+        }}
         isHoverScheduleVisible={!isDebrief}
         isLoaderVisible={fetchingPlan}
         slotLoaderIcon={

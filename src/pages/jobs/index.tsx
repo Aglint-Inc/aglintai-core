@@ -3,10 +3,8 @@ import { useEffect } from 'react';
 
 import Seo from '@/src/components/Common/Seo';
 import DashboardComp from '@/src/components/JobsDashboard';
-import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
-import withRoleProtection from '@/src/HOC/RoleProtection';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 const Dashboard = () => {
@@ -18,21 +16,12 @@ const Dashboard = () => {
   }, [recruiter]);
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI Powered Talent Development Platform.'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <IntegrationProvider>
-        <JobPostFormProvider>
-          <DashboardComp />
-        </JobPostFormProvider>
+        <DashboardComp />
       </IntegrationProvider>
     </>
   );
 };
 
-export default withRoleProtection(Dashboard, [
-  'admin',
-  'recruiter',
-  'scheduler',
-]);
+export default Dashboard;

@@ -5,7 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  assetPrefix: process.env.NEXT_PUBLIC_HOST_NAME, //dont comment this
   eslint: {
     dirs: ['src'],
   },
@@ -13,7 +12,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/signup',
+        destination: '/login',
         basePath: false,
         permanent: false,
       },

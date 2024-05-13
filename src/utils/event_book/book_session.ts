@@ -6,7 +6,7 @@ import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
-import { getOutboundEmail } from '../schedule-utils/get-outbound-email';
+import { getOutboundEmail } from '../scheduling_v2/get-outbound-email';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -48,6 +48,21 @@ export const getUserCalAuth = async ({
   }
 };
 
+export const getSuperAdminAuth = async (
+  company_cred: GetAuthParams['company_cred'],
+  admin_email,
+) => {
+  const jwtClient = new google.auth.JWT({
+    email: company_cred.client_email,
+    key: company_cred.private_key,
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+    subject: admin_email,
+  });
+
+  await jwtClient.authorize();
+  return jwtClient;
+};
+
 export type Interviewer = Pick<
   RecruiterUserType,
   'user_id' | 'schedule_auth' | 'email'
@@ -70,26 +85,30 @@ export const bookSession = async ({
   meet_type,
   company_id,
   duration,
+  description,
 }: {
   schedule_name: string;
   start_time: string;
   end_time: string;
   interviewers: Interviewer[];
-  candidate_email: string;
+  candidate_email: string | null;
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
   session_id: string;
   meet_type: InterviewSession['schedule_type'];
   company_id: string;
   duration: number;
+  description: string;
 }) => {
   const calendar_event: NewCalenderEvent = {
     summary: schedule_name,
     start: {
       dateTime: start_time,
+      timeZone: organizer.timezone,
     },
     end: {
       dateTime: end_time,
+      timeZone: organizer.timezone,
     },
     attendees: interviewers.map((int) => ({
       email: (int.schedule_auth as any)?.email ?? int.email,
@@ -104,6 +123,7 @@ export const bookSession = async ({
     conferenceData: {
       createRequest: null,
     },
+    description: description,
   };
   if (meet_type === 'google_meet') {
     calendar_event.conferenceData.createRequest = {
@@ -148,9 +168,11 @@ export const bookSession = async ({
     }
   }
 
-  calendar_event.attendees.push({
-    email: getOutboundEmail(candidate_email, false) as string,
-  });
+  if (candidate_email) {
+    calendar_event.attendees.push({
+      email: (await getOutboundEmail(candidate_email)) as string,
+    });
+  }
 
   const google_cal = new GoogleCalender({
     recruiter: organizer,

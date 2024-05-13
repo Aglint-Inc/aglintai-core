@@ -1,25 +1,23 @@
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
-import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
 import {
-  AvatarWithName,
   CreateTask,
   InterviewTaskPill,
-  ListCard,
-  ViewTaskCard,
+  ViewTaskCard
 } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
-import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import {
-  fetchInterviewSessionTask,
-  scheduleWithAgent,
-} from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
+import {
+  ApiRequestInterviewSessionTask,
+  ApiResponseInterviewSessionTask,
+} from '@/src/pages/api/scheduling/fetch_interview_session_task';
 import { CustomDatabase } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -28,11 +26,13 @@ import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
   assigneeType,
+  createTaskProgress,
   EmailAgentId,
   extractDataFromText,
   JobCandidatesType,
   PhoneAgentId,
 } from '../../utils';
+import { meetingCardType } from '../ViewTask/Progress/SessionCard';
 import AssigneeList from './AssigneeList';
 import CandidateList from './CandidateList';
 import JobList from './JobList';
@@ -76,24 +76,23 @@ function AddNewTask() {
     null,
   );
 
-  const [sessionList, setSessionList] =
-    useState<Awaited<ReturnType<typeof fetchInterviewSessionTask>>>(null);
-  const [selectedSession, setSelectedSession] = useState<
-    Awaited<ReturnType<typeof fetchInterviewSessionTask>>
-  >([]);
+  const [sessionList, setSessionList] = useState<meetingCardType[] | null>(
+    null,
+  );
+  const [selectedSession, setSelectedSession] = useState<meetingCardType[]>([]);
   const [selectedAssignee, setSelectedAssignee] = useState<assigneeType | null>(
     null,
   );
   const [selectedDueDate, setSelectedDueDate] = useState<string>(
-    dayjs().toString(),
+    dayjs().add(1, 'day').toString(),
   );
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(
-    dayjs().toString(),
+    dayjs().add(5, 'minute').toString(),
   );
 
   const [scheduleDate, setScheduleDate] = useState({
-    start_date: dayjs().toString(),
-    end_date: dayjs().toString(),
+    start_date: dayjs().add(1, 'day').toString(),
+    end_date: dayjs().add(7, 'day').toString(),
   });
   const [selectedPriority, setSelectedPriority] =
     useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
@@ -102,9 +101,18 @@ function AddNewTask() {
 
   async function handleCreate() {
     if (!selectedSession.length) {
-      toast.warning('Please select interview session!');
+      toast.warning('Please select an interview session.');
       return;
     }
+    if (!selectedCandidate?.candidates?.email) {
+      toast.warning('No email associated with this candidate.');
+      return;
+    }
+    if (!selectedAssignee?.user_id) {
+      toast.warning('Please select an assignee.');
+      return;
+    }
+
     handelAddTask({
       assignee: [selectedAssignee?.user_id],
       created_by: recruiterUser?.user_id || null,
@@ -117,10 +125,15 @@ function AddNewTask() {
       session_ids: selectedSession,
       type: selectedType || 'schedule',
       status:
-        selectedAssignee?.user_id === EmailAgentId ||
-        selectedAssignee?.user_id === PhoneAgentId
-          ? 'scheduled'
-          : 'not_started',
+        (selectedAssignee?.user_id === EmailAgentId ||
+          selectedAssignee?.user_id === PhoneAgentId) &&
+        isImmediate
+          ? 'in_progress'
+          : (selectedAssignee?.user_id === EmailAgentId ||
+                selectedAssignee?.user_id === PhoneAgentId) &&
+              !isImmediate
+            ? 'scheduled'
+            : 'not_started',
       priority: selectedPriority,
     }).then(async (data) => {
       // chinmai code for cron job
@@ -131,12 +144,31 @@ function AddNewTask() {
         )
         .eq('id', data.id)
         .single();
+
+      createTaskProgress({
+        type: 'create_task',
+        data: {
+          task_id: data.id as string,
+          created_by: {
+            name: recruiterUser.first_name,
+            id: recruiterUser.user_id,
+          },
+          progress_type: 'standard',
+        },
+        optionData: {
+          candidateName:
+            selectedCandidate.candidates.first_name +
+            ' ' +
+            (selectedCandidate.candidates.last_name ?? ''),
+          sessions: selectedSession,
+        },
+      });
       const assignee = selectedTask.assignee[0];
       if (
         isImmediate &&
         (assignee === EmailAgentId || assignee === PhoneAgentId)
       ) {
-        scheduleWithAgent({
+        await axios.post('/api/scheduling/application/schedulewithagent', {
           application_id: selectedTask.application_id,
           dateRange: { ...selectedTask.schedule_date_range },
           recruiter_id: recruiter.id,
@@ -152,13 +184,11 @@ function AddNewTask() {
                 : null,
           candidate_name: selectedTask.applications.candidates?.first_name,
           company_name: recruiter?.name,
-          rec_user_email: recruiterUser.email,
           rec_user_phone: recruiterUser.phone,
           rec_user_id: recruiterUser.user_id,
-          supabase: supabase,
           user_tz: dayjs.tz.guess(),
           trigger_count: 0,
-        });
+        } as ApiBodyParamsScheduleAgent);
       }
       // end
     });
@@ -166,12 +196,23 @@ function AddNewTask() {
   }
 
   async function getSessionList() {
-    const data = await fetchInterviewSessionTask({
+    const {
+      data: { data },
+    } = await axios.post('/api/scheduling/fetch_interview_session_task', {
       application_id: selectedCandidate.id,
       job_id: selectedJob.id,
-    });
-    setSessionList(data);
-    return data;
+    } as ApiRequestInterviewSessionTask);
+    const sessions = data as ApiResponseInterviewSessionTask['data'];
+    setSessionList(
+      sessions.map(
+        (ele) =>
+          ({
+            id: ele.id,
+            name: ele.name,
+          }) as meetingCardType,
+      ),
+    );
+    return data as ApiResponseInterviewSessionTask['data'];
   }
   useEffect(() => {
     if (selectedCandidate) {
@@ -280,9 +321,6 @@ function AddNewTask() {
               placeholder='Untitled'
               onChange={(e) => {
                 setInputData(e.target.value);
-                if (!e.target.value.trim()) {
-                  setSelectedSession([]);
-                }
               }}
               value={inputData}
               inputRef={inputRef}
@@ -425,6 +463,8 @@ function AddNewTask() {
                   isOptionList={!selectedApplication?.id}
                 />
               }
+              isCandidateVisible={!!selectedJob?.id}
+              isInterviewVisible={!!selectedJob?.id}
               slotCandidate={
                 <CandidateList
                   selectedCandidate={selectedCandidate}
@@ -437,52 +477,30 @@ function AddNewTask() {
                 <SessionList
                   selectedSession={selectedSession}
                   setSelectedSession={setSelectedSession}
-                  sessionList={sessionList}
+                  application_id={selectedCandidate?.id}
+                  job_id={selectedJob?.id}
                 />
               }
               slotInterviewDate={
                 <SelectScheduleDate
                   scheduleDate={scheduleDate}
                   onChange={(e: any) => {
-                    if (Array.isArray(e) && e[0] && e[1]) {
+                    if (e[1]) {
                       setScheduleDate({ start_date: e[0], end_date: e[1] });
-                    }
-                    if (!Array.isArray(e)) {
-                      setScheduleDate({ start_date: e, end_date: null });
+                      setSelectedDueDate(e[0]);
+                    } else {
+                      setScheduleDate({ start_date: e[0], end_date: null });
+                      setSelectedDueDate(e[0]);
                     }
                   }}
                 />
               }
               slotCreatedBy={
                 <>
-                  <ListCard
-                    isAvatarWithNameVisible={true}
-                    isListVisible={false}
-                    slotAvatarWithName={
-                      recruiterUser && (
-                        <AvatarWithName
-                          slotAvatar={
-                            <MuiAvatar
-                              height={'25px'}
-                              width={'25px'}
-                              src={recruiterUser.profile_image}
-                              variant='circular'
-                              fontSize='14px'
-                              level={capitalize(
-                                recruiterUser?.first_name +
-                                  ' ' +
-                                  recruiterUser?.last_name,
-                              )}
-                            />
-                          }
-                          textName={capitalize(
-                            recruiterUser?.first_name +
-                              ' ' +
-                              recruiterUser?.last_name,
-                          )}
-                        />
-                      )
-                    }
+                  <AssigneeList
+                    isOptionList={false}
+                    setSelectedAssignee={setSelectedAssignee}
+                    selectedAssignee={recruiterUser as any}
                   />
                 </>
               }

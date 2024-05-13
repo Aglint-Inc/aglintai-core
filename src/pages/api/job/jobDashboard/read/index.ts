@@ -2,7 +2,7 @@
 import {
   type CookieOptions,
   createServerClient,
-  serialize
+  serialize,
 } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -14,12 +14,12 @@ import { Database } from '@/src/types/schema';
 import {
   createInvalidResponse,
   getResumeMatch,
-  handleJobAnalytics
-} from './utils';
+  handleJobAnalytics,
+} from '../../../../../apiUtils/job/jobDashboard/read/utils';
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<JobDashboardApi['response']>
+  res: NextApiResponse<JobDashboardApi['response']>,
 ) => {
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -34,15 +34,15 @@ const handler = async (
         },
         remove(name: string, options: CookieOptions) {
           res.setHeader('Set-Cookie', serialize(name, '', options));
-        }
-      }
-    }
+        },
+      },
+    },
   );
   const { job_id } = req.body as JobDashboardApi['request'];
   if (!job_id)
     res.status(200).send({
       data: null,
-      error: createInvalidResponse()
+      error: createInvalidResponse(),
     });
   const result = await handleJobAnalytics(job_id, supabase);
   res.status(200).send(result);

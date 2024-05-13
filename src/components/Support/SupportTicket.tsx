@@ -171,7 +171,7 @@ function SupportTicketDetails({
               navigator.clipboard
                 .writeText(getInterviewUrl(ticket.application_id))
                 .then(() => {
-                  toast.message('Copied to clipboard');
+                  toast.message('Copied to clipboard.');
                 });
             },
           }}
@@ -858,7 +858,6 @@ const CustomAutoComplete = ({
             }}
             InputProps={{
               ...params.InputProps,
-              disableUnderline: true,
             }}
             variant='filled'
             // eslint-disable-next-line jsx-a11y/no-autofocus

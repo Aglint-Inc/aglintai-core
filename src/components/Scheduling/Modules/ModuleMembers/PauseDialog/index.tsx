@@ -75,11 +75,9 @@ function PauseDialog() {
             >
               <Checkbox isChecked={selectedType === 'isManual'} />
               <Typography variant='body2' color={'#000'}>
-                Indefinetly
+                Indefinitely
               </Typography>
-              <Typography variant='body2'>
-                Until when you manually resumes
-              </Typography>
+              <Typography variant='body2'>Until you manually resume</Typography>
             </Stack>
             <Stack
               direction={'row'}
@@ -188,11 +186,6 @@ function PauseDialog() {
                       }
                     }}
                     minDate={currentDate}
-                    slotProps={{
-                      textField: {
-                        InputProps: { disableUnderline: true },
-                      },
-                    }}
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -204,11 +197,6 @@ function PauseDialog() {
                         ...pause_json,
                         end_date: newValue.toISOString(),
                       });
-                    }}
-                    slotProps={{
-                      textField: {
-                        InputProps: { disableUnderline: true },
-                      },
                     }}
                   />
                 </LocalizationProvider>

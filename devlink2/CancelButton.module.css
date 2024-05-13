@@ -1,0 +1,28 @@
+.div-block-1679 {
+  display: flex;
+  padding: 10px 16px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 4px;
+
+  background-color: #e9ebed;
+
+  transition: opacity 200ms ease;
+
+  cursor: pointer;
+}
+
+.div-block-1679:hover {
+  opacity: 0.8;
+}
+
+.div-block-1679.primary {
+  background-color: #1f73b7;
+  color: white;
+}
+
+.div-block-1679.danger {
+  background-color: #d93f4c;
+  color: white;
+}

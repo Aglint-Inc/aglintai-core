@@ -410,6 +410,28 @@
   margin-top: 8px;
 }
 
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
+.text-grey-600.max-width-650 {
+  max-width: 650px;
+}
+
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-650 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-650 {
+    max-width: none;
+  }
+}
+
 .div-block-463 {
   display: flex;
   justify-content: space-between;
@@ -433,8 +455,8 @@
 .tu-list {
   display: flex;
   flex-direction: column;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .tu-pending-invites-block {
@@ -529,7 +551,6 @@
 
 .tu-list-wrapper.mlr-20.radius-10 {
   overflow: visible;
-  border-top-style: none;
   border-radius: 10px;
 }
 
@@ -540,16 +561,19 @@
   justify-content: space-between;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 30% 15% 15% 17% 13% 10%;
+  grid-template-columns: 25% 15% 17% 20% 13% 10%;
   grid-template-rows: auto;
 }
 
 .tu-list-block.header-block {
   padding-top: 0px;
   padding-bottom: 0px;
-  grid-template-columns: 30% 15% 15% 17% 13% 10%;
+  grid-template-columns: 25% 15% 17% 20% 13% 10%;
+
+  border-bottom: 1px solid #e9ebed;
   border-radius: 10px 10px 0px 0px;
-  background-color: #e9ebed;
+
+  background-color: #f7f9fb;
 }
 
 .tu-list-header {
@@ -561,7 +585,12 @@
 }
 
 .tu-list-header.color-add {
-  background-color: #e9ebed;
+  background-color: #f7f9fb;
+}
+
+.tu-list-header.center {
+  justify-content: center;
+  align-items: center;
 }
 
 .div-block-464 {
@@ -569,8 +598,6 @@
   padding-top: 0px;
   padding-bottom: 0px;
   flex-direction: column;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 }
 
 .cs-team-users-roles {
@@ -724,6 +751,19 @@
   color: #337fbd;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.text-link {
+  color: #337fbd;
+  text-decoration: underline;
+}
+
+.fw-light {
+  font-weight: 300;
+}
+
+.text-capitalize {
+  text-transform: uppercase;
 }
 
 .tu-roles-wrapper {

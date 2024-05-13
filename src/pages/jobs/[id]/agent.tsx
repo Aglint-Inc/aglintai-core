@@ -4,22 +4,20 @@ import { useRouter } from 'next/router';
 import { Breadcrum, PageLayout } from '@/devlink2';
 import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
-import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 import JobDashboardProvider, {
   useJobDetails,
 } from '@/src/context/JobDashboard';
+import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const JobAgentPage = () => {
   return (
     <>
       <Seo title={`Jobs`} description='AI for People Products' />
-      <JobPostFormProvider>
-        <JobAssistantProvider>
-          <AgentPage />
-        </JobAssistantProvider>
-      </JobPostFormProvider>
+      <JobAssistantProvider>
+        <AgentPage />
+      </JobAssistantProvider>
     </>
   );
 };
@@ -29,7 +27,9 @@ export default JobAgentPage;
 JobAgentPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };

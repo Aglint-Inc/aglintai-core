@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
 import { getHelper } from '@/src/components/JobEmailTemplates';
 import { templateObj } from '@/src/components/JobEmailTemplates/utils';
@@ -10,6 +10,7 @@ import {
   useAllAssessmentTemplates,
 } from '@/src/queries/assessment';
 import { Assessment } from '@/src/queries/assessment/types';
+import { useInterviewPlans } from '@/src/queries/interview-plans';
 import { Job } from '@/src/queries/job/types';
 import {
   useJobDashboardRefresh,
@@ -24,20 +25,25 @@ import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
+import { useJobDashboardStore } from './store';
 
 const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
   const router = useRouter();
   const {
-    jobsData,
+    jobs,
     initialLoad: jobLoad,
     handleJobRefresh: jobRefresh,
   } = useJobs();
-  const initialJobLoad = recruiter?.id && jobLoad ? true : false;
+  const initialJobLoad = !!(recruiter?.id && jobLoad);
   const jobId = job_id ?? (router.query?.id as string);
-  const job = initialJobLoad
-    ? jobsData.jobs.find((job) => job.id === jobId)
-    : undefined;
+  const job = useMemo(
+    () =>
+      initialJobLoad
+        ? jobs.data.find((job) => job.id === jobId) ?? null
+        : undefined,
+    [initialJobLoad, jobs.status, jobs.data, jobId],
+  );
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
   const assessmentData = assessments?.data
@@ -57,14 +63,23 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         jobAssessments: [] as Assessment[],
         otherAssessments: [] as Assessment[],
       };
-  const skills = useJobSkills();
+  const skills = useJobSkills(job);
+  const locations = useJobLocations(job);
+  const matches = useJobMatches(job);
+  const tenureAndExperience = useJobTenureAndExperience(job);
+  const schedules = useJobSchedules(job);
+  const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
+  const interviewPlans = useInterviewPlans();
+  const scoringPoll = useJobScoringPoll(job);
+
   const refreshDashboard = useJobDashboardRefresh();
-  const locations = useJobLocations();
-  const matches = useJobMatches();
-  const tenureAndExperience = useJobTenureAndExperience();
-  const schedules = useJobSchedules();
-  const interviewPlanEnabled = useJobInterviewPlanEnabled();
-  const scoringPoll = useJobScoringPoll();
+
+  const isInterviewPlanDisabled =
+    interviewPlans.isFetched && !interviewPlans?.data;
+  const isInterviewSessionEmpty =
+    interviewPlans.isFetched &&
+    (isInterviewPlanDisabled ||
+      interviewPlans?.data?.interview_session?.length === 0);
 
   const settingsValidity = getSettingsValidity(job);
 
@@ -78,8 +93,9 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
       settingsValidity && jdValidity && !job?.scoring_criteria_loading,
   };
   settingsValidity && jdValidity && !job.scoring_criteria_loading;
-  const [dismiss, setDismiss] = useState(false);
-  // console.log(hashCode(job?.draft?.description ?? ''), job?.description_hash);
+  const { dismissWarnings } = useJobDashboardStore(({ dismissWarnings }) => ({
+    dismissWarnings,
+  }));
 
   const jobPolling =
     !!job &&
@@ -95,7 +111,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         validateDescription(job?.draft?.description ?? ''),
       description_changed:
         !job.scoring_criteria_loading &&
-        !dismiss &&
+        !dismissWarnings.job_description &&
         hashCode(job?.draft?.description ?? '') !== job?.description_hash,
       jd_json_error: !job.scoring_criteria_loading && !jdValidity,
       scoring_criteria_changed:
@@ -105,15 +121,16 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const initialLoad = !!(
     jobLoad &&
-    assessments.status !== 'pending' &&
-    schedules.status !== 'pending' &&
-    scoringPoll.status !== 'pending' &&
-    interviewPlanEnabled.status !== 'pending' &&
-    tenureAndExperience.status !== 'pending' &&
-    templates.status !== 'pending' &&
-    matches.status !== 'pending' &&
-    skills.status !== 'pending' &&
-    locations.status !== 'pending'
+    !assessments.isPending &&
+    !templates.isPending &&
+    !skills.isPending &&
+    !locations.isPending &&
+    !matches.isPending &&
+    !tenureAndExperience.isPending &&
+    !schedules.isPending &&
+    !interviewPlanEnabled.isPending &&
+    !interviewPlans.isPending &&
+    !scoringPoll.isPending
   );
 
   const handleJobRefresh = async () => {
@@ -123,14 +140,25 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const emailTemplateValidity = validateEmailTemplates(job?.email_template);
 
+  const loadStatus: 'loading' | 'error' | 'success' =
+    jobLoad && job !== undefined
+      ? job === null
+        ? 'error'
+        : initialLoad
+          ? 'success'
+          : 'loading'
+      : 'loading';
+
   const value = {
     job,
-    dismiss,
+    jobLoad,
+    loadStatus,
     jobPolling,
     emailTemplateValidity,
     interviewPlanEnabled,
-    setDismiss,
     handleJobRefresh,
+    isInterviewPlanDisabled,
+    isInterviewSessionEmpty,
     scoringPoll,
     schedules,
     status,
@@ -161,6 +189,8 @@ export const getSettingsValidity = (job: Job) => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
+    hiring_manager: job.hiring_manager,
+    recrtuiter: job.recruiter,
     ...(job.draft ?? {}),
   };
   return Object.entries(draft).reduce((acc, [key, value]) => {
@@ -176,6 +206,8 @@ export const getSettingsValidity = (job: Job) => {
         case 'job_type':
         case 'location':
         case 'workplace_type':
+        case 'hiring_manager':
+        case 'recrtuiter':
           return !validateString(value as string);
         default:
           return acc;

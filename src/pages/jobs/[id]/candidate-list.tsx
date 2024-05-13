@@ -1,30 +1,27 @@
 import Seo from '@components/Common/Seo';
 
 import JobApplicationsDashboard from '@/src/components/JobApplicationsDashboard';
-import JobPostFormProvider from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
-const JobPage = () => {
+const JobCandidateListPage = () => {
   return (
     <>
-      <Seo title='Jobs' description='AI Powered Talent Development Platform.' />
-      <JobPostFormProvider>
-        <JobApplicationsDashboard />
-      </JobPostFormProvider>
+      <Seo title='Jobs' description='AI for People Products' />
+      <JobApplicationsDashboard />
     </>
   );
 };
 
-JobPage.privateProvider = function privateProvider(page) {
+JobCandidateListPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>
-        <JobInterviewPlanProvider>{page}</JobInterviewPlanProvider>
-      </JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };
 
-export default JobPage;
+export default JobCandidateListPage;

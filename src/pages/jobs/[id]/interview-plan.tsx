@@ -15,9 +15,9 @@ const InterviewPlanJobPage = () => {
 InterviewPlanJobPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>
-        <JobInterviewPlanProvider>{page}</JobInterviewPlanProvider>
-      </JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };

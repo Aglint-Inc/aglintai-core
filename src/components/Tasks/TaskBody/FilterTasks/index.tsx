@@ -1,9 +1,8 @@
-import React from 'react';
 
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
-import { agentsDetails } from '../../utils';
+import { EmailAgentId, PhoneAgentId } from '../../utils';
 
 function FilterTasks() {
   const { search, filter, handelSearch, handelFilter } = useTasksContext();
@@ -15,20 +14,20 @@ function FilterTasks() {
         setValue: (e) => {
           handelSearch(e);
         },
-        placeholder: "Search by candidate's name or job title",
+        placeholder: 'Search by candidate name or job title',
       }}
       filters={[
         {
           type: 'filter',
-          name: 'Priority',
-          options: filter.priority.options,
+          name: 'Candidate',
+          options: filter.candidate.options,
           setValue: (val) => {
             handelFilter({
               ...filter,
-              priority: { ...filter.priority, values: val },
+              candidate: { ...filter.candidate, values: val },
             });
           },
-          value: filter.priority.values,
+          value: filter.candidate.values,
         },
         {
           type: 'filter',
@@ -42,6 +41,19 @@ function FilterTasks() {
           },
           value: filter.status.values,
         },
+        {
+          type: 'filter',
+          name: 'Priority',
+          options: filter.priority.options,
+          setValue: (val) => {
+            handelFilter({
+              ...filter,
+              priority: { ...filter.priority, values: val },
+            });
+          },
+          value: filter.priority.values,
+        },
+
         {
           type: 'filter',
           name: 'Assignee',
@@ -59,7 +71,7 @@ function FilterTasks() {
         },
         {
           type: 'filter',
-          name: 'Job Title',
+          name: 'Job',
           options: filter.jobTitle.options,
           setValue: (val) => {
             handelFilter({
@@ -75,3 +87,13 @@ function FilterTasks() {
 }
 
 export default FilterTasks;
+export const agentsDetails = [
+  {
+    id: EmailAgentId,
+    label: 'Email',
+  },
+  {
+    id: PhoneAgentId,
+    label: 'Phone',
+  },
+];

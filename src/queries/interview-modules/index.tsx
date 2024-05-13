@@ -1,18 +1,18 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { supabase } from '@/src/utils/supabase/client';
+import { getInterviewModulesType } from '@/src/pages/api/scheduling/get_interview_modules';
 
-import { interviewPlanRecruiterUserQuery } from '../interview-coordinators';
 import { interviewModuleKeys } from './keys';
 
 export const useInterviewModules = () => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
-  const { queryKey } = interviewModuleKeys.interview_module;
+  const { queryKey } = interviewModuleKeys.interview_module({ recruiter_id });
   const response = useQuery({
     queryKey,
-    queryFn: () => getInterviewModules(recruiter_id),
+    queryFn: () => getInterviewModulesAPI(recruiter_id),
     enabled: !!recruiter_id,
   });
   const refetch = async () => {
@@ -21,22 +21,10 @@ export const useInterviewModules = () => {
   return { ...response, refetch };
 };
 
-export const getInterviewModules = async (recruiter_id: string) => {
-  const { data, error } = await supabase
-    .from('interview_module')
-    .select(
-      `*, interview_module_relation(id, training_status, recruiter_user(${interviewPlanRecruiterUserQuery}))`,
+export const getInterviewModulesAPI = async (recruiter_id: string) => {
+  return (
+    await axios.get(
+      `/api/scheduling/get_interview_modules?recruiter_id=${recruiter_id}`,
     )
-    .eq('recruiter_id', recruiter_id);
-  if (error) throw new Error(error.message);
-  return data.map(({ interview_module_relation, ...rest }) => {
-    const members = interview_module_relation.map(
-      ({ recruiter_user, id, training_status }) => ({
-        ...recruiter_user,
-        moduleUserId: id,
-        training_status,
-      }),
-    );
-    return { ...rest, members };
-  });
+  ).data as ReturnType<getInterviewModulesType>;
 };

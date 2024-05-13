@@ -1,20 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
-import { ApiResponseCandidateInvite } from '@/src/pages/api/scheduling/invite';
-import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
-import { SessionsCombType } from '@/src/types/scheduleTypes/types';
+import {
+  ApiResponseAllSlots,
+  ApiResponseCandidateInvite,
+} from '@/src/pages/api/scheduling/invite';
+import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
 import toast from '@/src/utils/toast';
 
 import { candidateInviteKeys } from './keys';
 
-export const useInvites = () => {
+export const useInviteMeta = () => {
   const { enabled, ...params } = useInviteParams();
-  const { queryKey } = candidateInviteKeys.inviteDateWithFilter(params);
+  const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const query = useQuery({
     queryKey,
-    queryFn: () => getInviteDates(params),
+    queryFn: () => getInviteMeta(params),
     enabled,
     staleTime: Infinity,
     gcTime: 0,
@@ -22,25 +25,12 @@ export const useInvites = () => {
   return query;
 };
 
-export const useInviteSlots = (
-  params: Parameters<typeof candidateInviteKeys.inviteSlotWithFilter>[0],
-) => {
-  const { user_tz, enabled: paramsEnabled } = useInviteParams();
-  const { status, data } = useInvites();
-  const enabled = !!(status === 'success' && data && paramsEnabled);
-  const payload: InviteSlotParams = enabled
-    ? {
-        recruiter_id: data.recruiter.id,
-        session_ids: data.meetings.map((m) => m.interview_session.id),
-        user_tz,
-        ...params,
-      }
-    : null;
-  const { queryKey } = candidateInviteKeys.inviteSlotWithFilter(params);
+export const useInviteSlots = (params: InviteSlotsParams) => {
+  const { queryKey } = candidateInviteKeys.inviteSlotsWithFilter(params);
   const query = useQuery({
     queryKey,
-    enabled: enabled,
-    queryFn: () => getInviteSlots(payload),
+    retry: 3,
+    queryFn: () => getInviteSlots(params),
   });
   return query;
 };
@@ -49,9 +39,9 @@ export const useConfirmSlots = () => {
   const queryClient = useQueryClient();
   // eslint-disable-next-line no-unused-vars
   const { enabled, ...params } = useInviteParams();
-  const { queryKey } = candidateInviteKeys.inviteDateWithFilter(params);
+  const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
-    mutationFn: async (bodyParams: ConfirmApiBodyParams) => {
+    mutationFn: async (bodyParams: APICandidateConfirmSlot) => {
       await confirmSlots(bodyParams);
       await queryClient.invalidateQueries({ queryKey });
     },
@@ -62,8 +52,8 @@ export const useConfirmSlots = () => {
   return mutation;
 };
 
-const getInviteDates = async (
-  params: Parameters<typeof candidateInviteKeys.inviteDateWithFilter>[0],
+const getInviteMeta = async (
+  params: Parameters<typeof candidateInviteKeys.inviteMetaWithFilter>[0],
 ) => {
   const apiRoute = '/api/scheduling/invite';
   const res = await axios.post(apiRoute, params);
@@ -72,7 +62,7 @@ const getInviteDates = async (
   return res.data as ApiResponseCandidateInvite;
 };
 
-const confirmSlots = async (bodyParams: ConfirmApiBodyParams) => {
+const confirmSlots = async (bodyParams: APICandidateConfirmSlot) => {
   try {
     const res = await axios.post(
       '/api/scheduling/v1/confirm_interview_slot',
@@ -84,17 +74,41 @@ const confirmSlots = async (bodyParams: ConfirmApiBodyParams) => {
   }
 };
 
-export type InviteSlotParams = {
+export type InviteMetaParams = {
   session_ids: string[];
   recruiter_id: string;
   user_tz: string;
   start_date: string;
   end_date?: string;
 };
-const getInviteSlots = async (params: InviteSlotParams) => {
-  const apiRoute = '/api/scheduling/v1/find_interview_slots';
-  const res = await axios.post(apiRoute, params);
-  if (!(res.status === 200 && res.data))
-    throw new Error(`Something went wrong. (${apiRoute})`);
-  return res.data.filter((d) => d.length > 0) as SessionsCombType[][];
+
+export type InviteSlotsParams = {
+  filter_json: ApiResponseCandidateInvite['filter_json'];
+  recruiter: ApiResponseCandidateInvite['recruiter'];
+  user_tz: string;
+};
+const getInviteSlots = async ({ filter_json, user_tz }: InviteSlotsParams) => {
+  try {
+    const resSchOpt = await axios.post(
+      '/api/scheduling/v1/find_slots_date_range',
+      {
+        session_ids: filter_json.session_ids,
+        recruiter_id: filter_json.recruiter_id,
+        date_range_start:
+          filter_json.start_date > dayjs().format('DD/MM/YYYY')
+            ? filter_json.start_date
+            : dayjs().format('DD/MM/YYYY'),
+        date_range_end: filter_json.end_date,
+        user_tz: user_tz,
+      },
+    );
+    if (resSchOpt.status !== 200) {
+      throw new Error('Failed to fetch slots');
+    }
+    return resSchOpt.data.filter(
+      (d) => d.length !== 0,
+    ) as unknown as ApiResponseAllSlots;
+  } catch (e) {
+    throw new Error(e);
+  }
 };

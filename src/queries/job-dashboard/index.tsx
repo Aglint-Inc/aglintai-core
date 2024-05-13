@@ -3,12 +3,12 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { useCurrentJob } from '../job-assessment/keys';
+import { Job } from '../job/types';
 import { jobDashboardQueryKeys } from './keys';
 import { DashboardTypes } from './types';
 
-export const useJobSkills = () => {
-  const { job_id, job } = useCurrentJob();
+export const useJobSkills = (job: Job) => {
+  const job_id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.skills({ job_id });
   const response = useQuery({
     queryKey,
@@ -26,8 +26,8 @@ export const useJobDashboardRefresh = () => {
   };
 };
 
-export const useJobLocations = () => {
-  const { job_id, job } = useCurrentJob();
+export const useJobLocations = (job: Job) => {
+  const job_id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.locations({ job_id });
   const response = useQuery({
     queryKey,
@@ -37,8 +37,8 @@ export const useJobLocations = () => {
   return response;
 };
 
-export const useJobMatches = () => {
-  const { job_id, job } = useCurrentJob();
+export const useJobMatches = (job: Job) => {
+  const job_id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.matches({ job_id });
   const response = useQuery({
     queryKey,
@@ -48,8 +48,8 @@ export const useJobMatches = () => {
   return response;
 };
 
-export const useJobTenureAndExperience = () => {
-  const { job_id, job } = useCurrentJob();
+export const useJobTenureAndExperience = (job: Job) => {
+  const job_id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.tenureAndExperience({ job_id });
   const response = useQuery({
     queryKey,
@@ -59,8 +59,8 @@ export const useJobTenureAndExperience = () => {
   return response;
 };
 
-export const useJobSchedules = () => {
-  const { job_id, job } = useCurrentJob();
+export const useJobSchedules = (job: Job) => {
+  const job_id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.schedules({ job_id });
   const response = useQuery({
     queryKey,
@@ -70,8 +70,8 @@ export const useJobSchedules = () => {
   return response;
 };
 
-export const useJobInterviewPlanEnabled = () => {
-  const { job_id, job } = useCurrentJob();
+export const useJobInterviewPlanEnabled = (job: Job) => {
+  const job_id = job?.id;
   const { queryKey } = jobDashboardQueryKeys.interviewPlanEnabled({ job_id });
   const response = useQuery({
     queryKey,

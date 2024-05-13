@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
+import { Job } from '@/src/queries/job/types';
 
 const Priority = {
   low: '#467B7C',
@@ -77,6 +77,7 @@ export function fillEmailTemplate(
     team_member_name?: string;
     view_details?: string;
     pick_your_slot_link?: string;
+    session_name?: string;
   },
 ) {
   let filledTemplate = template;
@@ -93,6 +94,7 @@ export function fillEmailTemplate(
     '[scheduleName]': email.schedule_name,
     '[teamMemberName]': email.team_member_name,
     '[pickYourSlotLink]': email.pick_your_slot_link,
+    '[sessionName]': email.session_name,
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {
@@ -167,7 +169,7 @@ export type QualificationRelevance =
 
 export const getOverallResumeScore = (
   scores: ScoreJson['scores'],
-  parameter_weights: JobTypeDashboard['parameter_weights'],
+  parameter_weights: Job['parameter_weights'],
 ) => {
   return Math.trunc(
     Object.keys(parameter_weights).reduce((acc, curr) => {

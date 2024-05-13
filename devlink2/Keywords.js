@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -8,28 +9,36 @@ export function Keywords({
   slotKeywordsCard,
 }) {
   return (
-    <_Component className={_utils.cx(_styles, "div-block-1228")} tag="div">
+    <_Component className={_utils.cx(_styles, "div-block-1481")} tag="div">
       <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1231")}
+        className={_utils.cx(_styles, "div-block-1228")}
         tag="div"
       >
-        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Keywords"}
-        </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600")}
+          className={_utils.cx(_styles, "div-block-1231")}
           tag="div"
         >
-          {
-            "Keywords allow you to identify events on interviewer’s calendars that can be scheduled over by either you or a candidate when booking interviews."
-          }
+          <_Builtin.Block
+            className={_utils.cx(_styles, "fw-semibold")}
+            tag="div"
+          >
+            {"Keywords"}
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "text-grey-600")}
+            tag="div"
+          >
+            {
+              "Use keywords to mark events on interviewers’ calendars that can be overridden for interview scheduling."
+            }
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "div-block-1229")}
-        tag="div"
-      >
-        {slotKeywordsCard}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-1229")}
+          tag="div"
+        >
+          {slotKeywordsCard}
+        </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
   );

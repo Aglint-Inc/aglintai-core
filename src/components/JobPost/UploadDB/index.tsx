@@ -199,7 +199,7 @@ function UploadDB({
       if (response.status === 200 && response.data) {
         if (response.data.applied) {
           setLoading(false);
-          toast.error('You have already applied for this job');
+          toast.error('You have already applied for this job.');
         } else {
           setCandidate(response.data.candidate);
           setApplication(response.data.application);
@@ -207,7 +207,7 @@ function UploadDB({
           setThank(true);
         }
       } else {
-        toast.error('Something went wrong! Please try again later');
+        toast.error('Something went wrong. Please try again.');
       }
     }
   };

@@ -51,24 +51,17 @@ function CandidateList({
               slotAvatarWithName={
                 selectedCandidate && (
                   <AvatarWithName
-                    slotAvatar={
-                      <MuiAvatar
-                        height={'25px'}
-                        width={'25px'}
-                        src={selectedCandidate?.candidates.avatar}
-                        variant='circular'
-                        fontSize='14px'
-                        level={capitalizeAll(
-                          selectedCandidate.candidates?.first_name +
-                            ' ' +
-                            selectedCandidate.candidates?.last_name,
-                        )}
-                      />
-                    }
+                    isAvatarVisible={false}
+                    isCandidateIconVisible={true}
+                    isRoleVisible={false}
+                    isReverseShadowVisible={false}
+                    isShadowVisible={false}
+                    slotAvatar={<></>}
+                    isTickVisible={false}
                     textName={capitalizeAll(
                       selectedCandidate.candidates?.first_name +
                         ' ' +
-                        selectedCandidate.candidates?.last_name,
+                        (selectedCandidate.candidates?.last_name ?? ''),
                     )}
                   />
                 )
@@ -112,7 +105,7 @@ function CandidateList({
                   sx={{
                     p: '4px',
                   }}
-                  placeholder='Search candidate'
+                  placeholder='Search by name'
                   onChange={(e) => {
                     setSearchText(e.target.value);
                   }}
@@ -146,24 +139,17 @@ function CandidateList({
                             isListVisible={false}
                             slotAvatarWithName={
                               <AvatarWithName
-                                slotAvatar={
-                                  <MuiAvatar
-                                    height={'25px'}
-                                    width={'25px'}
-                                    src={ele?.candidates.avatar}
-                                    variant='circular'
-                                    fontSize='14px'
-                                    level={capitalizeAll(
-                                      ele.candidates?.first_name +
-                                        ' ' +
-                                        ele.candidates?.last_name,
-                                    )}
-                                  />
-                                }
+                                isAvatarVisible={false}
+                                isCandidateIconVisible={true}
+                                isRoleVisible={false}
+                                isReverseShadowVisible={false}
+                                isShadowVisible={false}
+                                slotAvatar={<></>}
+                                isTickVisible={false}
                                 textName={capitalizeAll(
                                   ele.candidates?.first_name +
                                     ' ' +
-                                    ele.candidates?.last_name,
+                                    (ele.candidates?.last_name ?? ''),
                                 )}
                               />
                             }
@@ -179,11 +165,11 @@ function CandidateList({
                     ).length
                   }
                 >
-                  <EmptyState textDescription={'Candidate not found!'} />
+                  <EmptyState textDescription={'No candidates found.'} />
                 </ShowCode.When>
               </ShowCode.When>
               <ShowCode.Else>
-                <EmptyState textDescription='Candidate are not available!' />
+                <EmptyState textDescription='No candidates found.' />
               </ShowCode.Else>
             </ShowCode>
           }

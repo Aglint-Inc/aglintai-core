@@ -6,8 +6,8 @@ import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
 import { ImportCandidatesCsv, ImportCsv, LoaderSvg } from '@/devlink';
+import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
-import { CsvUploadApi } from '@/src/pages/api/job/jobApplications/candidateUpload/types';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
@@ -17,7 +17,7 @@ import CandidatesListTable from './CandidatesListTable';
 export type BulkImportCandidateCsv = CsvUploadApi['request']['candidates'];
 
 const ImportCandidatesCSV = ({
-  setOpenImportCandidates
+  setOpenImportCandidates,
 }: {
   setOpenImportCandidates: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -26,7 +26,7 @@ const ImportCandidatesCSV = ({
   const { handleBulkCsvUpload } = useUploadCandidate();
 
   const [bulkImportdata, setbulkImportdata] = useState<BulkImportCandidateCsv>(
-    []
+    [],
   );
   const headers = [
     'first_name',
@@ -34,7 +34,7 @@ const ImportCandidatesCSV = ({
     'email',
     'phone',
     'linkedin',
-    'file_url'
+    'file_url',
   ];
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,7 +46,7 @@ const ImportCandidatesCSV = ({
       'xyzabc@gmail.com',
       '1234567890',
       'https://www.linkedin.com',
-      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg'
+      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
     ],
 
     [
@@ -55,8 +55,8 @@ const ImportCandidatesCSV = ({
       'abcd@gmail.com',
       '9876543210',
       'https://www.linkedin.com',
-      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg'
-    ]
+      'https://img.freepik.com/free-psd/clean-modern-resume-portfolio-cv-template_120329-3607.jpg',
+    ],
   ];
 
   async function createCandidates(candidates: BulkImportCandidateCsv) {
@@ -75,8 +75,8 @@ const ImportCandidatesCSV = ({
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [
         '.xlsx',
         '.csv',
-        '.xls'
-      ]
+        '.xls',
+      ],
     },
     multiple: false,
     onDrop: (acceptedFiles) => {
@@ -95,12 +95,12 @@ const ImportCandidatesCSV = ({
           const ws = wb.Sheets[wsname];
           /* Convert array of arrays */
           const data = XLSX.utils.sheet_to_json(
-            ws
+            ws,
           ) as unknown as BulkImportCandidateCsv;
           /* Update state */
           if (headers?.length) {
             if (data.length === 0) {
-              toast.error('Candidates are not in CSV file😑');
+              toast.error('Candidates are not in CSV format.');
               setIsLoading(false);
               return;
             }
@@ -115,7 +115,7 @@ const ImportCandidatesCSV = ({
               // console.log('valid header');
               setbulkImportdata(data);
             } else {
-              toast.error('Invalid header😑');
+              toast.error('Invalid header.');
               // console.log('invalid header');
             }
           }
@@ -127,7 +127,7 @@ const ImportCandidatesCSV = ({
     },
     onDropRejected: () => {
       toast.error('Invalid file.');
-    }
+    },
     // disabled: !allowed || isLoading || areHeadersLoading,
   });
   return (
@@ -135,7 +135,7 @@ const ImportCandidatesCSV = ({
       sx={{
         bgcolor: 'white',
         borderRadius: '10px',
-        height: '100%'
+        height: '100%',
       }}
     >
       <Stack spacing={1} height={'100%'}>
@@ -173,7 +173,7 @@ const ImportCandidatesCSV = ({
                     <CSVLink filename={'candidates-sample.csv'} data={csvData}>
                       <Typography
                         sx={{
-                          textDecoration: 'underline'
+                          textDecoration: 'underline',
                         }}
                         color={'blue.600'}
                         fontSize={'14px'}
@@ -192,7 +192,7 @@ const ImportCandidatesCSV = ({
             onClickImportRemaining={{
               onClick: async () => {
                 await createCandidates(bulkImportdata);
-              }
+              },
             }}
           />
         )}

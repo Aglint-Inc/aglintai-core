@@ -109,7 +109,7 @@ function Filters({ setFilteredInterviewer }) {
               </InputAdornment>
             ),
           }}
-          placeholder='Search by name,email or position'
+          placeholder='Search by Name, Email or Title'
           onChange={handleSearchInputChange}
           borderRadius={10}
           height={42}

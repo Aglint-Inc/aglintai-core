@@ -105,7 +105,7 @@ function ModuleMembersComp() {
           return item;
         });
         setModule({ ...module, relations });
-        toast.success('Candidate Qualified as Interviewer for this module');
+        toast.success('Candidate qualified as interviewer for this interview type.');
       },
     );
   };
@@ -114,7 +114,7 @@ function ModuleMembersComp() {
     <>
       <Seo
         title={`Scheduling`}
-        description='AI Powered Talent Development Platform.'
+        description='AI for People Products'
       />
       <PageLayout
         onClickBack={{
@@ -172,8 +172,9 @@ function ModuleMembersComp() {
                     </>
                   ) : subTab === 'instructions' ? (
                     <>
-                      <Stack p={'20px'}>
+                      <Stack p={'20px'} maxWidth={'1000px'}>
                         <Typography
+                          fontSize={'14px'}
                           dangerouslySetInnerHTML={{
                             __html: module?.instructions,
                           }}
@@ -560,11 +561,11 @@ function SlotQualifiedMembers({
               //     setProgressUser(tempUserProgress);
               //   },
               // }}
-              onClickViewProgress={{
-                onClick: () => {
-                  setProgressUser(tempUserProgress);
-                },
-              }}
+              // onClickViewProgress={{
+              //   onClick: () => {
+              //     setProgressUser(tempUserProgress);
+              //   },
+              // }}
               onClickApproveCandidate={{
                 onClick: () => {
                   updateMember({
@@ -585,7 +586,7 @@ function SlotQualifiedMembers({
                   fontSize='24px'
                 />
               }
-              textName={member.first_name}
+              textName={getFullName(member.first_name, member.last_name) || ''}
               textRole={member.position || '--'}
               isThreeDotVisible={false}
               isPauseResumeVisible={false}

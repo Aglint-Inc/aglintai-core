@@ -112,13 +112,19 @@
   margin-left: -6px;
 }
 
+.icons.hide {
+  display: none;
+}
+
+.icons.pointer {
+  cursor: pointer;
+}
+
 .div-block-958 {
   margin-right: 4px;
 }
 
 .div-block-834 {
-  width: 40px;
-  height: 40px;
   flex: 0 0 auto;
   border-radius: 100px;
 }

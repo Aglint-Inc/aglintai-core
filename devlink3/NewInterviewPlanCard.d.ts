@@ -30,4 +30,5 @@ declare function NewInterviewPlanCard(props: {
   onClickCard?: Types.Devlink.RuntimeProps;
   propsBgColorStatus?: Types.Devlink.RuntimeProps;
   isCheckboxVisible?: Types.Visibility.VisibilityConditions;
+  isDateVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -6,12 +6,14 @@ import { CustomDatabase } from '@/src/types/customSchema';
 
 function StatusChip({
   status,
+  arrowDown = false,
 }: {
   status: CustomDatabase['public']['Enums']['task_status'];
+  arrowDown?: boolean;
 }) {
   return (
     <Stack direction={'column'}>
-      {colorsData.map(
+      {statusList.map(
         (
           {
             backgroundColor,
@@ -29,6 +31,7 @@ function StatusChip({
           if (id === status)
             return (
               <TaskStatus
+                isDropIconVisible={arrowDown}
                 bgColorProps={{
                   style: {
                     backgroundColor,
@@ -48,19 +51,20 @@ function StatusChip({
 
 export default StatusChip;
 
-export const colorsData = [
-  {
-    id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
-    backgroundColor: palette.yellow[400] + '55',
-    label: 'Scheduled',
-    color: palette.yellow[700],
-  },
+export const statusList = [
   {
     id: 'not_started' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: '#e9ebed',
     label: 'Not Started',
     color: '#49545c',
   },
+  {
+    id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: palette.yellow[400] + '55',
+    label: 'Scheduled',
+    color: palette.yellow[700],
+  },
+
   {
     id: 'in_progress' as CustomDatabase['public']['Enums']['task_status'],
     backgroundColor: '#CEE2F2',
@@ -84,5 +88,11 @@ export const colorsData = [
     backgroundColor: palette.grey[500] + 'aa',
     label: 'Closed',
     color: '#000',
+  },
+  {
+    id: 'failed' as CustomDatabase['public']['Enums']['task_status'],
+    backgroundColor: '#f5d5d8' + 'aa',
+    label: 'Failed',
+    color: '#CC3340',
   },
 ];

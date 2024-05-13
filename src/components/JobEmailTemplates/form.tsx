@@ -20,7 +20,6 @@ export const JobEmailTemplateForms: FC<MetaFormProps> = ({
   handleChange,
 }) => {
   const template = templateObj[selection as keyof typeof templateObj];
-
   const sender_name = (
     <SenderName
       name='fromName'

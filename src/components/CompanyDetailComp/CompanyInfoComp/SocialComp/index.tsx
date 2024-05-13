@@ -502,7 +502,7 @@ const AddSocialLinkButton = ({
         onChange={(e) => handleChange(e, 'name')}
       />
       <TextField
-        placeholder='Platform url'
+        placeholder='Platform URL'
         value={social.url.value}
         required
         error={social.url.error}

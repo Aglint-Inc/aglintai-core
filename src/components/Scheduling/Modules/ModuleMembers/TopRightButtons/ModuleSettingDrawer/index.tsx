@@ -111,7 +111,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
             <Stack spacing={2}>
               <TextField
                 fullWidth
-                placeholder='Module Name'
+                placeholder='Ex: Initial Screening'
                 value={localModule.name}
                 onChange={(e) =>
                   setEditLocalModule((prev) => ({
@@ -141,7 +141,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
                       margin='none'
                       {...params}
                       name='department'
-                      placeholder='Department'
+                      placeholder='Select Department'
                     />
                   )}
                 />
@@ -149,7 +149,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
               <UITextField
                 label='Objective'
                 multiline
-                placeholder='Ex. Node JS Developer'
+                placeholder='Add a brief description of the interview'
                 fullWidth
                 value={localModule.description}
                 onChange={(e) => {
@@ -197,7 +197,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
                     }));
                   } else {
                     toast.warning(
-                      'Cannot disable training when there are members in training',
+                      'Cannot disable training while members are still in training.',
                     );
                   }
                 },

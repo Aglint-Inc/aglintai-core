@@ -33,7 +33,7 @@ export const getPaginationDB = async ({
 
     return data;
   } catch (error) {
-    toast.error('Error fetching interview data');
+    toast.error('Error fetching interview data.');
   }
 };
 

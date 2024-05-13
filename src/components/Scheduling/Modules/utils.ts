@@ -31,7 +31,7 @@ export const fetchInterviewModule = async (recruiter_id: string) => {
 
     return intPan;
   } catch (e) {
-    toast.error('Error fetching interview panel');
+    toast.error('Error fetching interview plan.');
     return [];
   }
 };
@@ -96,8 +96,7 @@ export const deleteModuleById = async (id: string) => {
   const { error } = await supabase
     .from('interview_module')
     .delete()
-    .eq('id', id)
-    .limit(1);
+    .eq('id', id);
   if (error) {
     return false;
   } else {

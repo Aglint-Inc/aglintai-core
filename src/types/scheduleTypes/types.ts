@@ -34,6 +34,7 @@ export type SessionInterviewerType = Pick<
 
 export type InterviewSessionApiType = {
   session_id: InterviewSession['id'];
+  meeting_id: InterviewSession['meeting_id'];
   module_id: InterviewSession['module_id'];
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];
@@ -123,4 +124,17 @@ export type InterviewerMeetingScheduled = {
   int_session_id: InterviewSession['id'];
   meeting_duration: InterviewSession['session_duration'];
   interv_user_id: string;
+};
+
+// TODO:
+// reduntant type
+export type SlotInterviwerType = SessionInterviewerApiRespType & {
+  user_id: string;
+};
+export type SlotSessionType = Omit<
+  SessionCombinationType,
+  'qualifiedIntervs' | 'trainingIntervs'
+> & {
+  qualified_intervs: SlotInterviwerType[];
+  training_intervs: SlotInterviwerType[];
 };

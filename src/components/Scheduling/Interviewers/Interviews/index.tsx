@@ -1,8 +1,21 @@
 import ModuleSchedules from '@/src/components/Scheduling/Common/ModuleSchedules';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
-function Interviews({ interviewsData }) {
+import { useScheduleList } from '../../Common/ModuleSchedules/hooks';
+
+function Interviews() {
+  const { recruiterUser } = useAuthDetails();
+  const {
+    data: { schedules: scheduleList },
+    isFetched,
+  } = useScheduleList({
+    user_id: recruiterUser.user_id,
+  });
+
   return (
-    <>{interviewsData && <ModuleSchedules schedules={interviewsData} />}</>
+    <>
+      {<ModuleSchedules newScheduleList={scheduleList} isFetched={isFetched} />}
+    </>
   );
 }
 

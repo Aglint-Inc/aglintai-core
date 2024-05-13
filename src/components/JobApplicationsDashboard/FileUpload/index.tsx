@@ -77,7 +77,7 @@ const ResumeUpload = ({
             onSizeError={(file: any) =>
               file.size > 5
                 ? null
-                : toast.error('Please upload resume less than 5 MB.')
+                : toast.error('Please upload a resume that is less than 5 MB.')
             }
             handleChange={InputChange}
             multiple={true}
@@ -147,7 +147,7 @@ const ResumeUpload = ({
                       onSizeError={(file: any) =>
                         file.size > 5
                           ? null
-                          : toast.error('Please upload resume less than 5 MB.')
+                          : toast.error('Please upload a resume that is less than 5 MB.')
                       }
                     >
                       <Stack style={{ fontWeight: '400' }}>

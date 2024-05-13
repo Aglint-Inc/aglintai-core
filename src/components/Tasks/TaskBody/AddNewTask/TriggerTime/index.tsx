@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Popover, Stack } from '@mui/material';
+import { Popover, Stack, Typography } from '@mui/material';
 import {
   LocalizationProvider,
   renderTimeViewClock,
@@ -42,7 +42,15 @@ function TriggerTime({
   const open = Boolean(openTriggerTime);
   const id = open ? 'simple-popover' : undefined;
 
-  const timeZone = dayjs.tz.guess();
+  const localTime = new Date().toTimeString();
+  const timeZonea = localTime.substring(
+    localTime.lastIndexOf('(') + 1,
+    localTime.lastIndexOf(')'),
+  );
+  const timezone = timeZonea
+    .split(' ')
+    .map((ele) => ele[0])
+    .join('');
 
   return (
     <>
@@ -51,14 +59,32 @@ function TriggerTime({
           <ShowCode.When isTrue={!!selectTriggerTime}>
             <ShowCode>
               <ShowCode.When isTrue={isImmediate}>
-                {'Immediately'}
+                <Typography
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                  variant='caption'
+                  fontSize={'14px'}
+                >
+                  Immediately
+                </Typography>
               </ShowCode.When>
               <ShowCode.When isTrue={!isImmediate}>
-                {`${dayjs(selectTriggerTime).format('DD MMM YYYY, hh:mm A')} (${timeZone})`}
+                {`${dayjs(selectTriggerTime).format('MMM DD, YYYY hh:mm A')} (${timezone})`}
               </ShowCode.When>
             </ShowCode>
           </ShowCode.When>
-          <ShowCode.Else>Select Date</ShowCode.Else>
+          <ShowCode.Else>
+            <Typography
+              sx={{
+                cursor: 'pointer',
+              }}
+              variant='caption'
+              fontSize={'14px'}
+            >
+              Select Date
+            </Typography>
+          </ShowCode.Else>
         </ShowCode>
       </Stack>
       <Popover
@@ -91,7 +117,11 @@ function TriggerTime({
           onClickSpecificDate={{
             onClick: () => {
               setIsImmediate(true);
-              setSelectTriggerTime(String(new Date()));
+              setSelectTriggerTime(dayjs().add(5, 'minute').toString());
+              if (onChange) {
+                onChange(dayjs().add(5, 'minute').toString());
+              }
+              handleClose();
             },
           }}
           isInDateRangeActive={!isImmediate}

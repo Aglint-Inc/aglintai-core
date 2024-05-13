@@ -50,7 +50,12 @@ export function FeedbackTableRow({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "fw-semibold", "text-first-cap")}
+            className={_utils.cx(
+              _styles,
+              "fw-semibold",
+              "text-first-cap",
+              "one-line-clamp"
+            )}
             tag="div"
           >
             {textInterviewerName}

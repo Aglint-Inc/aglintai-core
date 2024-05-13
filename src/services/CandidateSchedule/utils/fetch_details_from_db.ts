@@ -63,9 +63,9 @@ export const fetch_details_from_db = async (
         .interview_modules as unknown as InterviewModuleType[][],
       interview_sessions: r[0].interview_sessions as InterviewSession[],
       inter_data: r[0].interviewers as unknown as SessionInterviewerType[][],
-      company_cred: JSON.parse(
-        decrypt_string(r[0].service_cred),
-      ) as CompServiceKeyCred,
+      company_cred: r[0].service_cred
+        ? (JSON.parse(decrypt_string(r[0].service_cred)) as CompServiceKeyCred)
+        : null,
     };
   };
 
@@ -93,7 +93,6 @@ export const fetch_details_from_db = async (
   const ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
       let session: InterviewSessionApiType = {
-        ...s,
         duration: s.session_duration,
         schedule_type: s.schedule_type,
         session_type: s.session_type,
@@ -110,6 +109,8 @@ export const fetch_details_from_db = async (
         trainingIntervs: interviewers.filter(
           (i) => i.session_id === s.id && i.interviewer_type === 'training',
         ),
+        location: s.location,
+        meeting_id: s.meeting_id,
       };
       return session;
     })

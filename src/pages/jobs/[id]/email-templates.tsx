@@ -3,11 +3,12 @@ import Seo from '@components/Common/Seo';
 import JobEmailTemplatesDashboard from '@/src/components/JobEmailTemplates';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
+import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
 const JobEmailTemplatesPage = () => {
   return (
     <>
-      <Seo title='Jobs' description='AI Powered Talent Development Platform.' />
+      <Seo title='Jobs' description='AI for People Products' />
       <JobEmailTemplatesDashboard />
     </>
   );
@@ -16,7 +17,9 @@ const JobEmailTemplatesPage = () => {
 JobEmailTemplatesPage.privateProvider = function privateProvider(page) {
   return (
     <JobDashboardProvider>
-      <JobApplicationProvider>{page}</JobApplicationProvider>
+      <JobInterviewPlanProvider>
+        <JobApplicationProvider>{page}</JobApplicationProvider>
+      </JobInterviewPlanProvider>
     </JobDashboardProvider>
   );
 };

@@ -75,7 +75,7 @@ export function Modules() {
                       </InputAdornment>
                     ),
                   }}
-                  placeholder='Search by name'
+                  placeholder='Search by Name'
                   onChange={(e) => {
                     setTextSearch(e.target.value);
                   }}
@@ -186,7 +186,7 @@ export function Modules() {
                       slotIcons={
                         <Icon height='60' width='80' variant='EmptyState' />
                       }
-                      textDescription={'No Interview Types'}
+                      textDescription={'No interview types found.'}
                     />
                   </Stack>
                 )}

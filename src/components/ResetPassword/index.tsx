@@ -188,7 +188,7 @@ export default function ResetPasswordComponent() {
       data: { is_invite: 'false' }, // for invite user flow this is needed
     });
     if (!error) {
-      toast.success('Password reset successful');
+      toast.success('Password reseted  successfully.');
       router.push(pageRoutes.LOADING);
     } else {
       toast.error(error.message);

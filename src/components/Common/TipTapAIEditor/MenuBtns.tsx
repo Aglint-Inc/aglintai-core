@@ -26,10 +26,11 @@ import {
   LoadingGenerate,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  generateJobDescription,
-  JDGenParams,
-} from '@/src/utils/prompts/addNewJob/generateJobDescription';
+import { generateJobDescription,JDGenParams } from '@/src/utils/prompts/addNewJob/generateJobDescription';
+// import {
+//   generateJobDescription,
+//   JDGenParams,
+// } from '@/src/utils/prompts/addNewJob/GenerateJobDescription';
 import toast from '@/src/utils/toast';
 
 import { useJobForm } from '../../JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
@@ -366,7 +367,7 @@ export const GenerateDescription = ({ isAiGenerating, setIsAiGenerating }) => {
       const jd = await generateJobDescription(jdGenConfig);
       editor.commands.setContent(jd, true, { preserveWhitespace: true });
     } catch {
-      toast.error('Something went wrong! Please try again');
+      toast.error('Something went wrong. Please try again');
     } finally {
       setIsAiGenerating(false);
     }

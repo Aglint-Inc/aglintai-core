@@ -7,7 +7,7 @@ const SignUpPage = () => {
   return (
     <>
       <Seo
-        title='Aglint for Employers | Signup'
+        title='Signup'
         description='AI for People Products'
       />
       <AuthProvider>

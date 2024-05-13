@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { DarkPill } from "./DarkPill";
@@ -9,7 +10,7 @@ export function GraphBlock({
   slotDarkPillLocation,
   slotLocationGraph,
   dummyImage = "https://uploads-ssl.webflow.com/651125c25c47e8494b8e9eb8/65f0312480e94d0722e57320_Chart.svg",
-  textGraphTitle = "Candidates by",
+  textGraphTitle = "Candidates By",
 }) {
   return (
     <_Component
