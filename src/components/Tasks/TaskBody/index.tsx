@@ -92,6 +92,36 @@ function TaskBody() {
           isTrue={selectedGroupBy && selectedGroupBy.label !== 'none'}
         >
           <TaskTableJobCand
+            gridProps={{
+              style: {
+                gridTemplateColumns:
+                  selectedGroupBy.label === 'job'
+                    ? `20px 1fr 130px 110px 160px 160px 1px`
+                    : selectedGroupBy.label === 'candidate'
+                      ? `20px 1fr 130px 110px 160px 1px 160px`
+                      : selectedGroupBy.label === 'assignee'
+                        ? `20px 1fr 130px 110px 1px 160px 160px`
+                        : selectedGroupBy.label === 'priority'
+                          ? `20px 1fr 130px 1px 160px 160px 160px`
+                          : selectedGroupBy.label === 'status'
+                            ? `20px 1fr 1px 160px 160px 160px 160px`
+                            : null,
+                alignContent: 'center',
+              },
+            }}
+            textJobHeader={selectedGroupBy.label === 'job' ? '' : 'Job'}
+            textAssigneeHeader={
+              selectedGroupBy.label === 'assignee' ? '' : 'Assignee'
+            }
+            textCandidateHeader={
+              selectedGroupBy.label === 'candidate' ? '' : 'Candidate'
+            }
+            textPriorityHeader={
+              selectedGroupBy.label === 'priority' ? '' : 'Priority'
+            }
+            textStatusHeader={
+              selectedGroupBy.label === 'status' ? '' : 'Status'
+            }
             slotFilter={
               <ShowCode>
                 <ShowCode.When isTrue={selectedTasksIds.length > 0}>
