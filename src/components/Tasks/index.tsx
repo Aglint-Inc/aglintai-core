@@ -1,35 +1,29 @@
-import { Typography } from '@mui/material';
-import { useState } from 'react';
+import { Stack, Typography } from '@mui/material';
 
 import { PageLayout } from '@/devlink2';
-import { TaskSwitchButton } from '@/devlink3';
 
 import TaskBody from './TaskBody';
+import GroupBy from './TaskBody/GroupBy';
 import { TaskStatesProvider } from './TaskStatesContext';
 
 function Tasks() {
-  const [byGroup, setByGroup] = useState(false);
   return (
     <TaskStatesProvider>
       <PageLayout
         slotTopbarLeft={<Typography variant='body1'>Tasks</Typography>}
         slotTopbarRight={
-          <TaskSwitchButton
-            onClickJobCand={{
-              onClick: () => {
-                setByGroup(true);
-              },
-            }}
-            onClickList={{
-              onClick: () => {
-                setByGroup(false);
-              },
-            }}
-            isJobCandActive={byGroup}
-            isListActive={!byGroup}
-          />
+          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+            <Typography
+              variant='caption'
+              fontSize={'14px'}
+              fontWeight={'400px'}
+            >
+              Group by
+            </Typography>
+            <GroupBy />
+          </Stack>
         }
-        slotBody={<TaskBody byGroup={byGroup} />}
+        slotBody={<TaskBody />}
       />
     </TaskStatesProvider>
   );

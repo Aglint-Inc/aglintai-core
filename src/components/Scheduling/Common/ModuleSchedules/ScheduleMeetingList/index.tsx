@@ -4,7 +4,7 @@ import React from 'react';
 
 import { NewMyScheduleCard } from '@/devlink3';
 
-import { ScheduleListType } from '..';
+import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({

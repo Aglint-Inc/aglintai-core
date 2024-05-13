@@ -39,4 +39,6 @@ declare function MemberListCard(props: {
   onClickDropdownIcon?: Types.Devlink.RuntimeProps;
   isDropdownIconVisible?: Types.Visibility.VisibilityConditions;
   textPause?: React.ReactNode;
+  isInterviewsVisible?: Types.Visibility.VisibilityConditions;
+  isRemoveVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

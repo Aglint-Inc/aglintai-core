@@ -24,7 +24,7 @@ import MuiAvatar from '../Common/MuiAvatar';
 import { ShowCode } from '../Common/ShowCode';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import AllSchedules from './AllSchedules';
-import InterviewTab from './Interviewers';
+import AllInterviewersComp from './Interviewers';
 import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
 import { Modules } from './Modules/Modules';
 import { fetchInterviewModules } from './Modules/queries/utils';
@@ -206,7 +206,7 @@ const BodyComp = ({ setSaving }) => {
           )}
         </ShowCode.When>
         <ShowCode.When isTrue={tab === 'interviewers'}>
-          {allowAction(<InterviewTab />, [
+          {allowAction(<AllInterviewersComp />, [
             'admin',
             'recruiter',
             'recruiting_coordinator',
@@ -368,8 +368,6 @@ const InterviewerSetting = () => {
   return (
     <Stack height={'calc( 100vh - 60px)'}>
       <InterviewerLevelSettings
-        setOpenDrawer={() => {}}
-        closeBtnVisible={false}
         initialData={recruiterUser.scheduling_settings}
         updateSettings={(x) => {
           return handelMemberUpdate({
@@ -377,7 +375,7 @@ const InterviewerSetting = () => {
             data: { scheduling_settings: x },
           });
         }}
-        isOverflow={true}
+        isAvailability={true}
       />
     </Stack>
   );

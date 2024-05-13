@@ -63,10 +63,7 @@ export const FilterHeader = ({
 }) => {
   const { filter, handelFilter } = useTasksContext();
 
-  const [selectedDate, setSelectedDate] = useState([
-    dayjs().toString(),
-    dayjs().toString(),
-  ]);
+  const [selectedDate, setSelectedDate] = useState([]);
 
   const [rangeActive, setRangeActive] = useState(false);
 
@@ -395,6 +392,7 @@ function FilterDropDown({
         <FilterDropdown
           isRemoveVisible={false}
           slotOption={filteredOptions?.map((optionList) => {
+
             return (
               <>
                 {optionList.header && (
@@ -481,6 +479,23 @@ function FilterDropDown({
           })}
           onClickReset={{
             onClick: () => {
+              //@ts-ignore
+              const preData =
+                JSON.parse(localStorage.getItem('taskFilters')) || {};
+              if (title === 'Job') {
+                preData.Job = [];
+              }
+              if (title === 'Priority') {
+                preData.Priority = [];
+              }
+              if (title === 'Status') {
+                preData.Status = [];
+              }
+              if (title === 'Assignee') {
+                preData.Assignee = [];
+              }
+
+              localStorage.setItem('taskFilters', JSON.stringify(preData));
               setSelectedItems([]);
             },
           }}

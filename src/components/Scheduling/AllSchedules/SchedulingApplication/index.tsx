@@ -9,6 +9,7 @@ import Loader from '@/src/components/Common/Loader';
 import ScheduleProgress from '../../Common/ScheduleProgress';
 import CandidateInfo from '../../SchedulingView/CandidateDetails';
 import FeedbackWindow from '../../SchedulingView/Feedback';
+import CandidateFeedback from './CandidateFeedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
@@ -60,7 +61,6 @@ function SchedulingApplication() {
 
   return (
     <>
-      
       <DeleteScheduleDialog />
       <RescheduleDialog />
       <PageLayout
@@ -129,6 +129,11 @@ function SchedulingApplication() {
                         name: `${selectedApplication?.candidates.first_name || ''} ${selectedApplication?.candidates.last_name || ''}`.trim(),
                         job_id: selectedApplication?.job_id,
                       }}
+                    />
+                  ) : tab === 'candidate_feedback' ? (
+                    <CandidateFeedback
+                      feedback={selectedApplication?.feedback}
+                      id={selectedApplication.id}
                     />
                   ) : (
                     ''

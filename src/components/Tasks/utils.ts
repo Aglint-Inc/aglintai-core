@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -5,6 +6,7 @@ import dayjs from 'dayjs';
 
 import { Supabase } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
+import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { DatabaseEnums } from '@/src/types/customSchema';
 import { CandidateType, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
@@ -12,6 +14,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
+import { groupByTextType } from './TaskStatesContext';
 
 export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
 export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
@@ -26,12 +29,18 @@ export type JobCandidatesType = ApplicationType & {
 
 export const agentsDetails = [
   {
-    id: EmailAgentId,
-    label: 'Email',
+    user_id: EmailAgentId,
+    first_name: 'email',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
   },
   {
-    id: PhoneAgentId,
-    label: 'Phone',
+    user_id: PhoneAgentId,
+    first_name: 'phone',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
   },
 ];
 
@@ -73,26 +82,6 @@ export async function extractDataFromText(
   return JSON.parse(data);
 }
 
-// debounce for task update
-
-export type UpdateFunction = (taskId: string, changeValue: string) => void;
-
-export function taskUpdateDebounce<T extends (...args: any[]) => void>(
-  func: T,
-  delay: number,
-) {
-  let timerId: ReturnType<typeof setTimeout> | null;
-  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-    timerId = setTimeout(() => {
-      func.apply(this, args);
-      timerId = null;
-    }, delay) as any;
-  };
-}
-// end
 type ProgressType =
   | 'slots_failed'
   | 'session_update'
@@ -265,5 +254,108 @@ export async function createTaskProgress({
     .select();
   if (!error) {
     return progress;
+  }
+}
+
+export function getFormattedTask({
+  tasks,
+  selectedGroupBy,
+}: {
+  tasks: TasksAgentContextType['tasks'];
+  selectedGroupBy: groupByTextType;
+}) {
+  const groupedTasksByJob = tasks
+    .filter((ele) => ele.application_id)
+    .reduce((acc, task) => {
+      const { applications, ...taskDetails } = task;
+      if (!acc[applications.public_jobs.job_title]) {
+        acc[applications.public_jobs.job_title] = { job: {}, tasklist: [] };
+      }
+      acc[applications.public_jobs.job_title].job =
+        task.applications.public_jobs.job_title;
+      acc[applications.public_jobs.job_title].tasklist.push(taskDetails);
+      return acc;
+    }, {});
+  const groupedTasksByCandidate = tasks
+    .filter((ele) => ele.application_id)
+    .reduce((acc, task) => {
+      const { application_id, ...taskDetails } = task;
+      if (!acc[application_id]) {
+        acc[application_id] = { applications: {}, tasklist: [] };
+      }
+      acc[application_id].applications = task.applications;
+      acc[application_id].tasklist.push(taskDetails);
+      return acc;
+    }, {});
+  const groupedTasksByPriority = tasks
+    .filter((ele) => ele.application_id)
+    .reduce((acc, task) => {
+      const { priority, ...taskDetails } = task;
+      if (!acc[priority]) {
+        acc[priority] = { priority: {}, tasklist: [] };
+      }
+      acc[priority].priority = task.priority;
+      acc[priority].tasklist.push({ priority, ...taskDetails });
+      return acc;
+    }, {});
+  const groupedTasksByStatus = tasks
+    .filter((ele) => ele.application_id)
+    .reduce((acc, task) => {
+      const { status, ...taskDetails } = task;
+      if (!acc[status]) {
+        acc[status] = { status: {}, tasklist: [] };
+      }
+      acc[status].status = task.status;
+      acc[status].tasklist.push({ status, ...taskDetails });
+      return acc;
+    }, {});
+
+  const groupedTasksByAssignee = tasks
+    .filter((ele) => ele.application_id)
+    .reduce((acc, task) => {
+      const { assignee, ...taskDetails } = task;
+      if (!acc[assignee[0]]) {
+        acc[assignee[0]] = { assignee: {}, tasklist: [] };
+      }
+      acc[assignee[0]].assignee = task.assignee[0];
+      acc[assignee[0]].tasklist.push({ assignee, ...taskDetails });
+      return acc;
+    }, {});
+  if (selectedGroupBy.label == 'candidate') {
+    return Object.values(groupedTasksByCandidate) as {
+      applications: TasksAgentContextType['tasks'][number]['applications'];
+      tasklist: TasksAgentContextType['tasks'];
+    }[];
+  }
+  if (selectedGroupBy.label == 'priority') {
+    const priorityOrder = {
+      high: 1,
+      medium: 2,
+      low: 3,
+    };
+    return (
+      Object.values(groupedTasksByPriority) as {
+        priority: TasksAgentContextType['tasks'][number]['priority'];
+        tasklist: TasksAgentContextType['tasks'];
+      }[]
+    ).sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+  }
+  if (selectedGroupBy.label == 'status') {
+    return Object.values(groupedTasksByStatus) as {
+      status: TasksAgentContextType['tasks'][number]['status'];
+      tasklist: TasksAgentContextType['tasks'];
+    }[];
+  }
+  if (selectedGroupBy.label === 'assignee') {
+    return Object.values(groupedTasksByAssignee) as {
+      assignee: TasksAgentContextType['tasks'][number]['assignee'][number];
+      tasklist: TasksAgentContextType['tasks'];
+    }[];
+  }
+  if (selectedGroupBy.label === 'job') {
+    return Object.values(groupedTasksByJob) as {
+      job: TasksAgentContextType['tasks'][number]['applications']['public_jobs']['job_title'];
+      tasklist: TasksAgentContextType['tasks'];
+    }[];
   }
 }

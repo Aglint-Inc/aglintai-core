@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 'use client';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
-import { capitalize, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import {
   createContext,
@@ -15,7 +14,6 @@ import {
 } from 'react';
 
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { useAllInterviewersDetails } from '@/src/components/Scheduling/SchedulingView/hooks';
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import {
   DatabaseEnums,
@@ -54,9 +52,8 @@ type TasksReducerType = {
   sort: 'date' | 'status';
   loadingTasks: boolean;
 };
-
+/* eslint-disable no-unused-vars */
 export type TasksAgentContextType = TasksReducerType & {
-  // eslint-disable-next-line no-unused-vars
   handelAddTask: (
     x: DatabaseTableInsert['new_tasks'],
   ) => Promise<DatabaseTable['new_tasks']>;
@@ -73,6 +70,7 @@ export type TasksAgentContextType = TasksReducerType & {
   handelSort: (x: TasksReducerType['sort']) => void;
   loadingTasks: boolean;
 };
+/* eslint-enable no-unused-vars */
 
 const reducerInitialState: TasksReducerType = {
   tasks: [],
@@ -105,9 +103,9 @@ const reducerInitialState: TasksReducerType = {
   loadingTasks: true,
 };
 
+/* eslint-disable no-unused-vars */
 const contextInitialState: TasksAgentContextType = {
   ...reducerInitialState,
-  // eslint-disable-next-line no-unused-vars
   handelAddTask: (x) => Promise.resolve(null),
   handelUpdateTask: (x) => Promise.resolve(null),
   handelDeleteTask: (x) => Promise.resolve(false),
@@ -117,9 +115,11 @@ const contextInitialState: TasksAgentContextType = {
   handelFilter: (x) => {},
   handelSort: (x) => {},
 };
+/* eslint-enable no-unused-vars */
 
 const TaskContext = createContext<TasksAgentContextType>(contextInitialState);
 
+/* eslint-disable no-unused-vars */
 enum TasksReducerAction {
   INIT,
   ADD_TASK,
@@ -130,6 +130,7 @@ enum TasksReducerAction {
   SET_TASK_PROGRESS,
   SET_PAGINATION,
 }
+/* eslint-enable no-unused-vars */
 
 type TasksReducerActionType =
   | {
@@ -583,25 +584,25 @@ export const useTasksContext = () => {
   return context;
 };
 
-const getAllTasks = (id: string) => {
-  return supabase
-    .from('new_tasks')
-    .select('*, applications(* , candidates( * ), public_jobs( * ))')
-    .eq('recruiter_id', id)
-    .order('created_at', {
-      ascending: false,
-    })
-    .then(({ data, error }) => {
-      const temp = data as unknown as (Omit<
-        (typeof data)[number],
-        'applications, recruiter_user'
-      > & {
-        applications: (typeof data)[number]['applications'];
-      })[];
-      if (error) throw new Error(error.message);
-      return temp;
-    });
-};
+// const getAllTasks = (id: string) => {
+//   return supabase
+//     .from('new_tasks')
+//     .select('*, applications(* , candidates( * ), public_jobs( * ))')
+//     .eq('recruiter_id', id)
+//     .order('created_at', {
+//       ascending: false,
+//     })
+//     .then(({ data, error }) => {
+//       const temp = data as unknown as (Omit<
+//         (typeof data)[number],
+//         'applications, recruiter_user'
+//       > & {
+//         applications: (typeof data)[number]['applications'];
+//       })[];
+//       if (error) throw new Error(error.message);
+//       return temp;
+//     });
+// };
 
 const getTasks = ({
   id,

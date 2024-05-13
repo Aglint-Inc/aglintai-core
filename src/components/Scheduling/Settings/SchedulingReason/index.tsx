@@ -27,9 +27,10 @@ const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
     rescheduling: ['other'],
     cancelation: ['other'],
   },
-  interviewer: {
+  company: {
     rescheduling: ['other'],
     cancelation: ['other'],
+    decline: ['other'],
   },
 };
 
@@ -40,8 +41,10 @@ const SchedulingRegions = () => {
       'candidate',
     );
   const reason = {
-    ...(recruiter.scheduling_reason ?? initialReasons),
+    ...initialReasons,
+    ...(recruiter.scheduling_reason ?? {}),
   };
+
   const handelUpdateReasons = async <T extends typeof tab>(
     updatedReason: Partial<DatabaseTable['recruiter']['scheduling_reason'][T]>,
   ) => {
@@ -64,7 +67,7 @@ const SchedulingRegions = () => {
           <>
             {(
               Object.keys(
-                recruiter.scheduling_reason || {},
+                reason || {},
               ) as unknown as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
             ).map((key) => (
               <NewTabPill
@@ -91,7 +94,7 @@ const SchedulingRegions = () => {
                   key={item}
                   scheduleReason={typedItem}
                   updateReasons={handelUpdateReasons}
-                  description={`Add reasons for ${capitalizeFirstLetter(item)}. These options will be available when the ${capitalizeFirstLetter(tab)} request Session ${capitalizeFirstLetter(item)}:`}
+                  description={`Add reasons for ${capitalizeFirstLetter(item)}. These options will be available when the ${capitalizeFirstLetter(tab === 'company' ? 'Internal user' : tab)} ${item === 'decline' ? 'decline the Session' : 'request for session ' + capitalizeFirstLetter(item)}.`}
                   scheduleReasonItems={reason[tab][item] || []}
                 />
               );
@@ -138,7 +141,7 @@ const ScheduleReasonSectionCard = <
         <>
           {scheduleReasonItems.map((item, index) => (
             <ReasonListItem
-              key={item}
+              key={item + index}
               text={item}
               onEdit={() => setEdit({ state: true, index })}
               onDelete={() => {

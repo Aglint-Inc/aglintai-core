@@ -40,7 +40,7 @@ function CreateTask({
   applications,
 }: {
   setTask: Dispatch<SetStateAction<TaskType>>;
-  applications: JobApplcationDB[];
+  applications: Omit<JobApplcationDB, 'feedback'>[];
 }) {
   const { assignerList } = useTaskStatesContext();
   const { recruiterUser } = useAuthDetails();
