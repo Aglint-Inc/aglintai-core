@@ -3,521 +3,219 @@ create extension if not exists "postgis" with schema "extensions";
 SET pgaudit.log = 'ddl';
 
 
-revoke delete on table "public"."documents"
-from
-  "anon";
-
-revoke
-insert
-  on table "public"."documents"
-from
-  "anon";
-
-revoke references on table "public"."documents"
-from
-  "anon";
-
-revoke
-select
-  on table "public"."documents"
-from
-  "anon";
-
-revoke trigger on table "public"."documents"
-from
-  "anon";
-
-revoke truncate on table "public"."documents"
-from
-  "anon";
-
-revoke
-update
-  on table "public"."documents"
-from
-  "anon";
-
-revoke delete on table "public"."documents"
-from
-  "authenticated";
-
-revoke
-insert
-  on table "public"."documents"
-from
-  "authenticated";
-
-revoke references on table "public"."documents"
-from
-  "authenticated";
-
-revoke
-select
-  on table "public"."documents"
-from
-  "authenticated";
-
-revoke trigger on table "public"."documents"
-from
-  "authenticated";
-
-revoke truncate on table "public"."documents"
-from
-  "authenticated";
-
-revoke
-update
-  on table "public"."documents"
-from
-  "authenticated";
-
-revoke delete on table "public"."documents"
-from
-  "service_role";
-
-revoke
-insert
-  on table "public"."documents"
-from
-  "service_role";
-
-revoke references on table "public"."documents"
-from
-  "service_role";
-
-revoke
-select
-  on table "public"."documents"
-from
-  "service_role";
-
-revoke trigger on table "public"."documents"
-from
-  "service_role";
-
-revoke truncate on table "public"."documents"
-from
-  "service_role";
-
-revoke
-update
-  on table "public"."documents"
-from
-  "service_role";
-
-revoke delete on table "public"."function"
-from
-  "anon";
-
-revoke
-insert
-  on table "public"."function"
-from
-  "anon";
-
-revoke references on table "public"."function"
-from
-  "anon";
-
-revoke
-select
-  on table "public"."function"
-from
-  "anon";
-
-revoke trigger on table "public"."function"
-from
-  "anon";
-
-revoke truncate on table "public"."function"
-from
-  "anon";
-
-revoke
-update
-  on table "public"."function"
-from
-  "anon";
-
-revoke delete on table "public"."function"
-from
-  "authenticated";
-
-revoke
-insert
-  on table "public"."function"
-from
-  "authenticated";
-
-revoke references on table "public"."function"
-from
-  "authenticated";
-
-revoke
-select
-  on table "public"."function"
-from
-  "authenticated";
-
-revoke trigger on table "public"."function"
-from
-  "authenticated";
-
-revoke truncate on table "public"."function"
-from
-  "authenticated";
-
-revoke
-update
-  on table "public"."function"
-from
-  "authenticated";
-
-revoke delete on table "public"."function"
-from
-  "service_role";
-
-revoke
-insert
-  on table "public"."function"
-from
-  "service_role";
-
-revoke references on table "public"."function"
-from
-  "service_role";
-
-revoke
-select
-  on table "public"."function"
-from
-  "service_role";
-
-revoke trigger on table "public"."function"
-from
-  "service_role";
-
-revoke truncate on table "public"."function"
-from
-  "service_role";
-
-revoke
-update
-  on table "public"."function"
-from
-  "service_role";
-
-revoke delete on table "public"."function_url"
-from
-  "anon";
-
-revoke
-insert
-  on table "public"."function_url"
-from
-  "anon";
-
-revoke references on table "public"."function_url"
-from
-  "anon";
-
-revoke
-select
-  on table "public"."function_url"
-from
-  "anon";
-
-revoke trigger on table "public"."function_url"
-from
-  "anon";
-
-revoke truncate on table "public"."function_url"
-from
-  "anon";
-
-revoke
-update
-  on table "public"."function_url"
-from
-  "anon";
-
-revoke delete on table "public"."function_url"
-from
-  "authenticated";
-
-revoke
-insert
-  on table "public"."function_url"
-from
-  "authenticated";
-
-revoke references on table "public"."function_url"
-from
-  "authenticated";
-
-revoke
-select
-  on table "public"."function_url"
-from
-  "authenticated";
-
-revoke trigger on table "public"."function_url"
-from
-  "authenticated";
-
-revoke truncate on table "public"."function_url"
-from
-  "authenticated";
-
-revoke
-update
-  on table "public"."function_url"
-from
-  "authenticated";
-
-revoke delete on table "public"."function_url"
-from
-  "service_role";
-
-revoke
-insert
-  on table "public"."function_url"
-from
-  "service_role";
-
-revoke references on table "public"."function_url"
-from
-  "service_role";
-
-revoke
-select
-  on table "public"."function_url"
-from
-  "service_role";
-
-revoke trigger on table "public"."function_url"
-from
-  "service_role";
-
-revoke truncate on table "public"."function_url"
-from
-  "service_role";
-
-revoke
-update
-  on table "public"."function_url"
-from
-  "service_role";
-
-revoke delete on table "public"."result"
-from
-  "anon";
-
-revoke
-insert
-  on table "public"."result"
-from
-  "anon";
-
-revoke references on table "public"."result"
-from
-  "anon";
-
-revoke
-select
-  on table "public"."result"
-from
-  "anon";
-
-revoke trigger on table "public"."result"
-from
-  "anon";
-
-revoke truncate on table "public"."result"
-from
-  "anon";
-
-revoke
-update
-  on table "public"."result"
-from
-  "anon";
-
-revoke delete on table "public"."result"
-from
-  "authenticated";
-
-revoke
-insert
-  on table "public"."result"
-from
-  "authenticated";
-
-revoke references on table "public"."result"
-from
-  "authenticated";
-
-revoke
-select
-  on table "public"."result"
-from
-  "authenticated";
-
-revoke trigger on table "public"."result"
-from
-  "authenticated";
-
-revoke truncate on table "public"."result"
-from
-  "authenticated";
-
-revoke
-update
-  on table "public"."result"
-from
-  "authenticated";
-
-revoke delete on table "public"."result"
-from
-  "service_role";
-
-revoke
-insert
-  on table "public"."result"
-from
-  "service_role";
-
-revoke references on table "public"."result"
-from
-  "service_role";
-
-revoke
-select
-  on table "public"."result"
-from
-  "service_role";
-
-revoke trigger on table "public"."result"
-from
-  "service_role";
-
-revoke truncate on table "public"."result"
-from
-  "service_role";
-
-revoke
-update
-  on table "public"."result"
-from
-  "service_role";
-
-revoke delete on table "public"."weight_record"
-from
-  "anon";
-
-revoke
-insert
-  on table "public"."weight_record"
-from
-  "anon";
-
-revoke references on table "public"."weight_record"
-from
-  "anon";
-
-revoke
-select
-  on table "public"."weight_record"
-from
-  "anon";
-
-revoke trigger on table "public"."weight_record"
-from
-  "anon";
-
-revoke truncate on table "public"."weight_record"
-from
-  "anon";
-
-revoke
-update
-  on table "public"."weight_record"
-from
-  "anon";
-
-revoke delete on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke
-insert
-  on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke references on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke
-select
-  on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke trigger on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke truncate on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke
-update
-  on table "public"."weight_record"
-from
-  "authenticated";
-
-revoke delete on table "public"."weight_record"
-from
-  "service_role";
-
-revoke
-insert
-  on table "public"."weight_record"
-from
-  "service_role";
-
-revoke references on table "public"."weight_record"
-from
-  "service_role";
-
-revoke
-select
-  on table "public"."weight_record"
-from
-  "service_role";
-
-revoke trigger on table "public"."weight_record"
-from
-  "service_role";
-
-revoke truncate on table "public"."weight_record"
-from
-  "service_role";
-
-revoke
-update
-  on table "public"."weight_record"
-from
-  "service_role";
-
-alter table
-  "public"."candidates" drop constraint "candidates_email_key";
-
-alter table
-  "public"."documents" drop constraint "documents_pkey";
+revoke delete on table "public"."documents" from "anon";
+
+revoke insert on table "public"."documents" from "anon";
+
+revoke references on table "public"."documents" from "anon";
+
+revoke select on table "public"."documents" from "anon";
+
+revoke trigger on table "public"."documents" from "anon";
+
+revoke truncate on table "public"."documents" from "anon";
+
+revoke update on table "public"."documents" from "anon";
+
+revoke delete on table "public"."documents" from "authenticated";
+
+revoke insert on table "public"."documents" from "authenticated";
+
+revoke references on table "public"."documents" from "authenticated";
+
+revoke select on table "public"."documents" from "authenticated";
+
+revoke trigger on table "public"."documents" from "authenticated";
+
+revoke truncate on table "public"."documents" from "authenticated";
+
+revoke update on table "public"."documents" from "authenticated";
+
+revoke delete on table "public"."documents" from "service_role";
+
+revoke insert on table "public"."documents" from "service_role";
+
+revoke references on table "public"."documents" from "service_role";
+
+revoke select on table "public"."documents" from "service_role";
+
+revoke trigger on table "public"."documents" from "service_role";
+
+revoke truncate on table "public"."documents" from "service_role";
+
+revoke update on table "public"."documents" from "service_role";
+
+revoke delete on table "public"."function" from "anon";
+
+revoke insert on table "public"."function" from "anon";
+
+revoke references on table "public"."function" from "anon";
+
+revoke select on table "public"."function" from "anon";
+
+revoke trigger on table "public"."function" from "anon";
+
+revoke truncate on table "public"."function" from "anon";
+
+revoke update on table "public"."function" from "anon";
+
+revoke delete on table "public"."function" from "authenticated";
+
+revoke insert on table "public"."function" from "authenticated";
+
+revoke references on table "public"."function" from "authenticated";
+
+revoke select on table "public"."function" from "authenticated";
+
+revoke trigger on table "public"."function" from "authenticated";
+
+revoke truncate on table "public"."function" from "authenticated";
+
+revoke update on table "public"."function" from "authenticated";
+
+revoke delete on table "public"."function" from "service_role";
+
+revoke insert on table "public"."function" from "service_role";
+
+revoke references on table "public"."function" from "service_role";
+
+revoke select on table "public"."function" from "service_role";
+
+revoke trigger on table "public"."function" from "service_role";
+
+revoke truncate on table "public"."function" from "service_role";
+
+revoke update on table "public"."function" from "service_role";
+
+revoke delete on table "public"."function_url" from "anon";
+
+revoke insert on table "public"."function_url" from "anon";
+
+revoke references on table "public"."function_url" from "anon";
+
+revoke select on table "public"."function_url" from "anon";
+
+revoke trigger on table "public"."function_url" from "anon";
+
+revoke truncate on table "public"."function_url" from "anon";
+
+revoke update on table "public"."function_url" from "anon";
+
+revoke delete on table "public"."function_url" from "authenticated";
+
+revoke insert on table "public"."function_url" from "authenticated";
+
+revoke references on table "public"."function_url" from "authenticated";
+
+revoke select on table "public"."function_url" from "authenticated";
+
+revoke trigger on table "public"."function_url" from "authenticated";
+
+revoke truncate on table "public"."function_url" from "authenticated";
+
+revoke update on table "public"."function_url" from "authenticated";
+
+revoke delete on table "public"."function_url" from "service_role";
+
+revoke insert on table "public"."function_url" from "service_role";
+
+revoke references on table "public"."function_url" from "service_role";
+
+revoke select on table "public"."function_url" from "service_role";
+
+revoke trigger on table "public"."function_url" from "service_role";
+
+revoke truncate on table "public"."function_url" from "service_role";
+
+revoke update on table "public"."function_url" from "service_role";
+
+revoke delete on table "public"."result" from "anon";
+
+revoke insert on table "public"."result" from "anon";
+
+revoke references on table "public"."result" from "anon";
+
+revoke select on table "public"."result" from "anon";
+
+revoke trigger on table "public"."result" from "anon";
+
+revoke truncate on table "public"."result" from "anon";
+
+revoke update on table "public"."result" from "anon";
+
+revoke delete on table "public"."result" from "authenticated";
+
+revoke insert on table "public"."result" from "authenticated";
+
+revoke references on table "public"."result" from "authenticated";
+
+revoke select on table "public"."result" from "authenticated";
+
+revoke trigger on table "public"."result" from "authenticated";
+
+revoke truncate on table "public"."result" from "authenticated";
+
+revoke update on table "public"."result" from "authenticated";
+
+revoke delete on table "public"."result" from "service_role";
+
+revoke insert on table "public"."result" from "service_role";
+
+revoke references on table "public"."result" from "service_role";
+
+revoke select on table "public"."result" from "service_role";
+
+revoke trigger on table "public"."result" from "service_role";
+
+revoke truncate on table "public"."result" from "service_role";
+
+revoke update on table "public"."result" from "service_role";
+
+revoke delete on table "public"."weight_record" from "anon";
+
+revoke insert on table "public"."weight_record" from "anon";
+
+revoke references on table "public"."weight_record" from "anon";
+
+revoke select on table "public"."weight_record" from "anon";
+
+revoke trigger on table "public"."weight_record" from "anon";
+
+revoke truncate on table "public"."weight_record" from "anon";
+
+revoke update on table "public"."weight_record" from "anon";
+
+revoke delete on table "public"."weight_record" from "authenticated";
+
+revoke insert on table "public"."weight_record" from "authenticated";
+
+revoke references on table "public"."weight_record" from "authenticated";
+
+revoke select on table "public"."weight_record" from "authenticated";
+
+revoke trigger on table "public"."weight_record" from "authenticated";
+
+revoke truncate on table "public"."weight_record" from "authenticated";
+
+revoke update on table "public"."weight_record" from "authenticated";
+
+revoke delete on table "public"."weight_record" from "service_role";
+
+revoke insert on table "public"."weight_record" from "service_role";
+
+revoke references on table "public"."weight_record" from "service_role";
+
+revoke select on table "public"."weight_record" from "service_role";
+
+revoke trigger on table "public"."weight_record" from "service_role";
+
+revoke truncate on table "public"."weight_record" from "service_role";
+
+revoke update on table "public"."weight_record" from "service_role";
+
+alter table "public"."candidates" drop constraint "candidates_email_key";
+
+alter table "public"."documents" drop constraint "documents_pkey";
 
 drop index if exists "public"."candidates_email_key";
 
@@ -533,82 +231,50 @@ drop table "public"."result";
 
 drop table "public"."weight_record";
 
-create table "public"."json_resume" ("?column?" jsonb);
-
-create table "public"."outreached_emails" (
-  "id" bigint generated by default as identity not null,
-  "recruiter_id" uuid not null,
-  "candidate_id" uuid not null,
-  "email" jsonb not null default '{}' :: jsonb
+create table "public"."json_resume" (
+    "?column?" jsonb
 );
 
-alter table
-  "public"."application_reference"
-add
-  column "recruiter_id" uuid;
 
-alter table
-  "public"."candidate_search_history"
-add
-  column "search_query" text;
+create table "public"."outreached_emails" (
+    "id" bigint generated by default as identity not null,
+    "recruiter_id" uuid not null,
+    "candidate_id" uuid not null,
+    "email" jsonb not null default '{}'::jsonb
+);
 
-alter table
-  "public"."job_applications"
-add
-  column "geolocation" geometry;
 
-alter table
-  "public"."public_jobs"
-add
-  column "is_ats_sync" boolean not null default false;
+alter table "public"."application_reference" add column "recruiter_id" uuid;
 
-alter table
-  "public"."public_jobs"
-alter column
-  "parameter_weights"
-set
-  default '{"skills": 45, "education": 5, "experience": 50}' :: jsonb;
+alter table "public"."candidate_search_history" add column "search_query" text;
 
-alter table
-  "public"."recruiter" drop column "outreach_templates";
+alter table "public"."job_applications" add column "geolocation" geometry;
 
-alter table
-  "public"."recruiter"
-add
-  column "ashby_last_synced" timestamp with time zone;
+alter table "public"."public_jobs" add column "is_ats_sync" boolean not null default false;
 
-alter table
-  "public"."recruiter"
-add
-  column "email_outreach_templates" jsonb [];
+alter table "public"."public_jobs" alter column "parameter_weights" set default '{"skills": 45, "education": 5, "experience": 50}'::jsonb;
+
+alter table "public"."recruiter" drop column "outreach_templates";
+
+alter table "public"."recruiter" add column "ashby_last_synced" timestamp with time zone;
+
+alter table "public"."recruiter" add column "email_outreach_templates" jsonb[];
 
 drop sequence if exists "public"."documents_id_seq";
 
 CREATE UNIQUE INDEX outreached_emails_pkey ON public.outreached_emails USING btree (id);
 
-alter table
-  "public"."outreached_emails"
-add
-  constraint "outreached_emails_pkey" PRIMARY KEY using index "outreached_emails_pkey";
+alter table "public"."outreached_emails" add constraint "outreached_emails_pkey" PRIMARY KEY using index "outreached_emails_pkey";
 
-alter table
-  "public"."outreached_emails"
-add
-  constraint "outreached_emails_candidate_id_fkey" FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."outreached_emails" add constraint "outreached_emails_candidate_id_fkey" FOREIGN KEY (candidate_id) REFERENCES candidates(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
-alter table
-  "public"."outreached_emails" validate constraint "outreached_emails_candidate_id_fkey";
+alter table "public"."outreached_emails" validate constraint "outreached_emails_candidate_id_fkey";
 
-alter table
-  "public"."outreached_emails"
-add
-  constraint "outreached_emails_recruiter_id_fkey" FOREIGN KEY (recruiter_id) REFERENCES recruiter(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."outreached_emails" add constraint "outreached_emails_recruiter_id_fkey" FOREIGN KEY (recruiter_id) REFERENCES recruiter(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
-alter table
-  "public"."outreached_emails" validate constraint "outreached_emails_recruiter_id_fkey";
+alter table "public"."outreached_emails" validate constraint "outreached_emails_recruiter_id_fkey";
 
-set
-  check_function_bodies = off;
+set check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION public.applications_inview(job_id uuid, min_lat double precision, min_long double precision, max_lat double precision, max_long double precision)
  RETURNS jsonb[]
@@ -890,244 +556,192 @@ AS $function$
         -- Initialize an empty JSON array for the results
         result := '[]'::JSONB;
 
--- Loop through the selected application IDs
-FOR app_id IN (
-  SELECT
-    job_id
-  FROM
-    lever_job_reference
-  ORDER BY
-    created_at ASC
-) LOOP
-SELECT
-  value INTO function_url
-FROM
-  env
-WHERE
-  name = 'lever-sync';
+        -- Loop through the selected application IDs
+        FOR app_id IN (
+            SELECT job_id
+            FROM lever_job_reference
+            ORDER BY created_at ASC
+        )
+        LOOP
 
--- Make the HTTP request for each application_id
-SELECT
-  net.http_post(
-    url := function_url,
-    body := jsonb_build_object('job_id', app_id)
-  ) INTO request_results;
+            SELECT value INTO function_url FROM env WHERE name = 'lever-sync';
+            -- Make the HTTP request for each application_id
+            SELECT
+                net.http_post(
+                    url := function_url,
+                    body := jsonb_build_object('job_id', app_id)
+                ) INTO request_results;
 
--- Append the request result to the result array
-result := result || jsonb_build_object('request_result', request_results);
+            -- Append the request result to the result array
+            result := result || jsonb_build_object('request_result', request_results);
+        END LOOP;
 
-END LOOP;
+        -- Return the final result as a JSONB array
+        RETURN result;
+    END;
+    $function$
+;
 
--- Return the final result as a JSONB array
-RETURN result;
+CREATE OR REPLACE FUNCTION public.retrybatchcalcresumejdscore()
+ RETURNS jsonb[]
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    result JSONB[];
+BEGIN
+    -- Initialize an empty JSONB array for the results
+    result := ARRAY[]::JSONB[];
 
+    -- Select up to 50 records that meet the specified conditions
+    SELECT ARRAY_AGG(row_to_json(data))
+    INTO result
+    FROM (
+        SELECT
+           ja.application_id AS application_id,
+           ja.candidate_id AS candidate_id,
+           ja.jd_score AS jd_score,
+           ja.resume AS resume,
+           ja.json_resume AS json_resume,
+           ja.resume_text AS resume_text,
+           ja.job_id as job_id,
+           pj.company as company,
+           pj.parameter_weights as parameter_weights,
+           pj.jd_json as jd_json,
+           1 as retry
+       FROM job_applications ja
+       JOIN public_jobs pj ON ja.job_id = pj.id
+       WHERE ja.api_status in ('failed')  and retry < 1 and pj.jd_json is not null
+       ORDER BY ja.created_at ASC
+       LIMIT 25
+    ) as data;
+
+    -- Return the final result as a JSONB array
+    RETURN result;
 END;
+$function$
+;
 
-$ function $;
+CREATE OR REPLACE FUNCTION public.secondretrybatchcalcresumejdscore()
+ RETURNS jsonb[]
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    result JSONB[];
+BEGIN
+    -- Initialize an empty JSONB array for the results
+    result := ARRAY[]::JSONB[];
 
-CREATE
-OR REPLACE FUNCTION public.retrybatchcalcresumejdscore() RETURNS jsonb [] LANGUAGE plpgsql AS $ function $ DECLARE result JSONB [];
+    -- Select up to 50 records that meet the specified conditions
+    SELECT ARRAY_AGG(row_to_json(data))
+    INTO result
+    FROM (
+       SELECT
+          ja.application_id AS application_id,
+           ja.candidate_id AS candidate_id,
+           ja.jd_score AS jd_score,
+           ja.resume AS resume,
+           ja.json_resume AS json_resume,
+           ja.resume_text AS resume_text,
+           ja.job_id as job_id,
+           pj.company as company,
+           pj.parameter_weights as parameter_weights,
+           pj.jd_json as jd_json,
+           2 as retry
+       FROM job_applications ja
+       JOIN public_jobs pj ON ja.job_id = pj.id
+       WHERE ja.api_status in ('failed')  and retry >= 1 and retry < 2 and pj.jd_json is not null
+       ORDER BY ja.created_at ASC
+       LIMIT 10
+    ) as data;
 
-BEGIN -- Initialize an empty JSONB array for the results
-result := ARRAY [] :: JSONB [];
-
--- Select up to 50 records that meet the specified conditions
-SELECT
-  ARRAY_AGG(row_to_json(data)) INTO result
-FROM
-  (
-    SELECT
-      ja.application_id AS application_id,
-      ja.candidate_id AS candidate_id,
-      ja.jd_score AS jd_score,
-      ja.resume AS resume,
-      ja.json_resume AS json_resume,
-      ja.resume_text AS resume_text,
-      ja.job_id as job_id,
-      pj.company as company,
-      pj.parameter_weights as parameter_weights,
-      pj.jd_json as jd_json,
-      1 as retry
-    FROM
-      job_applications ja
-      JOIN public_jobs pj ON ja.job_id = pj.id
-    WHERE
-      ja.api_status in ('failed')
-      and retry < 1
-      and pj.jd_json is not null
-    ORDER BY
-      ja.created_at ASC
-    LIMIT
-      25
-  ) as data;
-
--- Return the final result as a JSONB array
-RETURN result;
-
+    -- Return the final result as a JSONB array
+    RETURN result;
 END;
-
-$ function $;
-
-CREATE
-OR REPLACE FUNCTION public.secondretrybatchcalcresumejdscore() RETURNS jsonb [] LANGUAGE plpgsql AS $ function $ DECLARE result JSONB [];
-
-BEGIN -- Initialize an empty JSONB array for the results
-result := ARRAY [] :: JSONB [];
-
--- Select up to 50 records that meet the specified conditions
-SELECT
-  ARRAY_AGG(row_to_json(data)) INTO result
-FROM
-  (
-    SELECT
-      ja.application_id AS application_id,
-      ja.candidate_id AS candidate_id,
-      ja.jd_score AS jd_score,
-      ja.resume AS resume,
-      ja.json_resume AS json_resume,
-      ja.resume_text AS resume_text,
-      ja.job_id as job_id,
-      pj.company as company,
-      pj.parameter_weights as parameter_weights,
-      pj.jd_json as jd_json,
-      2 as retry
-    FROM
-      job_applications ja
-      JOIN public_jobs pj ON ja.job_id = pj.id
-    WHERE
-      ja.api_status in ('failed')
-      and retry >= 1
-      and retry < 2
-      and pj.jd_json is not null
-    ORDER BY
-      ja.created_at ASC
-    LIMIT
-      10
-  ) as data;
-
--- Return the final result as a JSONB array
-RETURN result;
-
-END;
-
-$ function $;
+$function$
+;
 
 grant delete on table "public"."json_resume" to "anon";
 
-grant
-insert
-  on table "public"."json_resume" to "anon";
+grant insert on table "public"."json_resume" to "anon";
 
 grant references on table "public"."json_resume" to "anon";
 
-grant
-select
-  on table "public"."json_resume" to "anon";
+grant select on table "public"."json_resume" to "anon";
 
 grant trigger on table "public"."json_resume" to "anon";
 
 grant truncate on table "public"."json_resume" to "anon";
 
-grant
-update
-  on table "public"."json_resume" to "anon";
+grant update on table "public"."json_resume" to "anon";
 
 grant delete on table "public"."json_resume" to "authenticated";
 
-grant
-insert
-  on table "public"."json_resume" to "authenticated";
+grant insert on table "public"."json_resume" to "authenticated";
 
 grant references on table "public"."json_resume" to "authenticated";
 
-grant
-select
-  on table "public"."json_resume" to "authenticated";
+grant select on table "public"."json_resume" to "authenticated";
 
 grant trigger on table "public"."json_resume" to "authenticated";
 
 grant truncate on table "public"."json_resume" to "authenticated";
 
-grant
-update
-  on table "public"."json_resume" to "authenticated";
+grant update on table "public"."json_resume" to "authenticated";
 
 grant delete on table "public"."json_resume" to "service_role";
 
-grant
-insert
-  on table "public"."json_resume" to "service_role";
+grant insert on table "public"."json_resume" to "service_role";
 
 grant references on table "public"."json_resume" to "service_role";
 
-grant
-select
-  on table "public"."json_resume" to "service_role";
+grant select on table "public"."json_resume" to "service_role";
 
 grant trigger on table "public"."json_resume" to "service_role";
 
 grant truncate on table "public"."json_resume" to "service_role";
 
-grant
-update
-  on table "public"."json_resume" to "service_role";
+grant update on table "public"."json_resume" to "service_role";
 
 grant delete on table "public"."outreached_emails" to "anon";
 
-grant
-insert
-  on table "public"."outreached_emails" to "anon";
+grant insert on table "public"."outreached_emails" to "anon";
 
 grant references on table "public"."outreached_emails" to "anon";
 
-grant
-select
-  on table "public"."outreached_emails" to "anon";
+grant select on table "public"."outreached_emails" to "anon";
 
 grant trigger on table "public"."outreached_emails" to "anon";
 
 grant truncate on table "public"."outreached_emails" to "anon";
 
-grant
-update
-  on table "public"."outreached_emails" to "anon";
+grant update on table "public"."outreached_emails" to "anon";
 
 grant delete on table "public"."outreached_emails" to "authenticated";
 
-grant
-insert
-  on table "public"."outreached_emails" to "authenticated";
+grant insert on table "public"."outreached_emails" to "authenticated";
 
 grant references on table "public"."outreached_emails" to "authenticated";
 
-grant
-select
-  on table "public"."outreached_emails" to "authenticated";
+grant select on table "public"."outreached_emails" to "authenticated";
 
 grant trigger on table "public"."outreached_emails" to "authenticated";
 
 grant truncate on table "public"."outreached_emails" to "authenticated";
 
-grant
-update
-  on table "public"."outreached_emails" to "authenticated";
+grant update on table "public"."outreached_emails" to "authenticated";
 
 grant delete on table "public"."outreached_emails" to "service_role";
 
-grant
-insert
-  on table "public"."outreached_emails" to "service_role";
+grant insert on table "public"."outreached_emails" to "service_role";
 
 grant references on table "public"."outreached_emails" to "service_role";
 
-grant
-select
-  on table "public"."outreached_emails" to "service_role";
+grant select on table "public"."outreached_emails" to "service_role";
 
 grant trigger on table "public"."outreached_emails" to "service_role";
 
 grant truncate on table "public"."outreached_emails" to "service_role";
 
-grant
-update
-  on table "public"."outreached_emails" to "service_role";
+grant update on table "public"."outreached_emails" to "service_role";
+
+
