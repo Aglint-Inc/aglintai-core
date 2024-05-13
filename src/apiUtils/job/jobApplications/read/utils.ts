@@ -276,6 +276,8 @@ const rpcDataFormatter = (
   const data = unsafeData.reduce((acc, curr) => {
     (curr.job_app as unknown as JobApplication).interview_session_meetings =
       curr.interview_session_meetings as unknown as JobApplication['interview_session_meetings'];
+    (curr.job_app as unknown as JobApplication).tasks =
+      curr.tasks as unknown as JobApplication['tasks'];
     (curr.job_app as unknown as JobApplication).schedule =
       curr.schedule as unknown as JobApplication['schedule'];
     (curr.job_app as unknown as JobApplication).candidates =
