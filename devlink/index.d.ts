@@ -232,6 +232,7 @@ export * from "./JobCandidateCard";
 export * from "./JobDashboardEmpty";
 export * from "./JobDescriptionModal";
 export * from "./JobDetail";
+export * from "./JobDetailInterview";
 export * from "./JobDetailLeft";
 export * from "./JobDetailsSideDrawer";
 export * from "./JobDiscardChanges";

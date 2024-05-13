@@ -1154,21 +1154,12 @@ const PhoneScreening: React.FC<{ application: JobApplication }> = ({
   application,
 }) => {
   const {
-    section,
     cardStates: {
       disabledList,
       checkList: { list, disabled },
     },
   } = useJobApplications();
 
-  const { isSubmitted } = getScreeningStatus(
-    application.status_emails_sent,
-    application.phone_screening,
-  );
-
-  const showComponent =
-    section === JobApplicationSections.SCREENING || isSubmitted;
-  if (!showComponent) return <></>;
   const disable =
     disabledList.has(application.id) || (disabled && list.has(application.id));
   const styles = disable
