@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   BackButton,
@@ -10,7 +10,6 @@ import {
   RcGoalsBlock,
   RecCompanyDetails,
 } from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { SocialsType } from '@/src/types/data.types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
@@ -22,8 +21,7 @@ import UITypography from '../../Common/UITypography';
 import { stepObj } from '../SlideSignup/utils';
 
 function SelectAtsSystem() {
-  const { setStep } = useSignupDetails();
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { setStep, recruiter, setRecruiter } = useSignupDetails();
 
   const router = useRouter();
 
@@ -31,36 +29,6 @@ function SelectAtsSystem() {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [textCheck, setTextCheck] = useState(false);
   const inputRef = useRef(null);
-
-  // async function handleContinue() {
-  //   if (
-  //     (selectedObject !== null && selectedObject !== 'Other') ||
-  //     (selectedObject === 'Other' && inputRef.current.value !== '')
-  //   ) {
-  //     setTextCheck(false);
-  //     const { data, error } = await supabase
-  //       .from('recruiter')
-  //       .update({
-  //         ats_familiar:
-  //           selectedObject === 'Other'
-  //             ? inputRef.current.value
-  //             : selectedObject,
-  //       })
-  //       .eq('id', recruiter.id)
-  //       .select();
-  //     if (!error) {
-  //       setRecruiter({ ...data[0], socials: data[0].socials as SocialsType });
-  //       router.push(`?step=${stepObj.useGoal}`, undefined, {
-  //         shallow: true,
-  //       });
-  //       setStep(stepObj.useGoal);
-  //     }
-  //   }
-
-  //   if (selectedObject === 'Other' && inputRef.current.value === '') {
-  //     setTextCheck(true);
-  //   }
-  // }
 
   async function handleContinue(ang) {
     if (selectedObject === 'Other' && inputRef.current.value === '') {
@@ -95,11 +63,12 @@ function SelectAtsSystem() {
   }
 
   useEffect(() => {
-    if (recruiter.use_of_purpose) {
+    if (recruiter?.use_of_purpose) {
       setSelectedObject(recruiter.ats_familiar as any);
       setSelectedOptions(recruiter.use_of_purpose as any);
     }
   }, [recruiter]);
+
   return (
     <Stack>
       <RecCompanyDetails
