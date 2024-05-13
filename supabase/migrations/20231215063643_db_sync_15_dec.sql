@@ -1,4 +1,6 @@
+SET pgaudit.log = 'none';
 create extension if not exists "postgis" with schema "extensions";
+SET pgaudit.log = 'ddl';
 
 
 revoke delete on table "public"."documents" from "anon";
