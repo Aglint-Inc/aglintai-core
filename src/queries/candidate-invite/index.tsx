@@ -7,7 +7,7 @@ import {
   ApiResponseAllSlots,
   ApiResponseCandidateInvite,
 } from '@/src/pages/api/scheduling/invite';
-import { ConfirmApiBodyParams } from '@/src/pages/api/scheduling/v1/confirm_interview_slot';
+import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
 import toast from '@/src/utils/toast';
 
 import { candidateInviteKeys } from './keys';
@@ -29,6 +29,7 @@ export const useInviteSlots = (params: InviteSlotsParams) => {
   const { queryKey } = candidateInviteKeys.inviteSlotsWithFilter(params);
   const query = useQuery({
     queryKey,
+    retry: 3,
     queryFn: () => getInviteSlots(params),
   });
   return query;
@@ -40,7 +41,7 @@ export const useConfirmSlots = () => {
   const { enabled, ...params } = useInviteParams();
   const { queryKey } = candidateInviteKeys.inviteMetaWithFilter(params);
   const mutation = useMutation({
-    mutationFn: async (bodyParams: ConfirmApiBodyParams) => {
+    mutationFn: async (bodyParams: APICandidateConfirmSlot) => {
       await confirmSlots(bodyParams);
       await queryClient.invalidateQueries({ queryKey });
     },
@@ -61,7 +62,7 @@ const getInviteMeta = async (
   return res.data as ApiResponseCandidateInvite;
 };
 
-const confirmSlots = async (bodyParams: ConfirmApiBodyParams) => {
+const confirmSlots = async (bodyParams: APICandidateConfirmSlot) => {
   try {
     const res = await axios.post(
       '/api/scheduling/v1/confirm_interview_slot',

@@ -13,7 +13,7 @@ export function CloseJobModal({
   onClickCancel = {},
   slotButton,
   isDisabled = false,
-  textWarning = "Closing this job will unpublish it, preventing candidates from applying or being imported. Additionally, the screening and assessment processes for this job will be stopped.",
+  textWarning = "Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.",
   textPopupTitle = "Close Job Confirmation",
   textButton = "Close Job",
 }) {

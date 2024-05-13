@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Drawer, Stack, TextField } from '@mui/material';
+import { Button, Drawer, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -9,11 +9,12 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { DatabaseEnums } from '@/src/types/customSchema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import { createTaskProgress } from '../../utils';
+import { createTaskProgress, EmailAgentId, PhoneAgentId } from '../../utils';
 import SubTaskProgress from './Progress';
 import TaskCard from './TaskCard';
 
@@ -45,10 +46,16 @@ function ViewTaskDrawer() {
     setInputValue(selectedTask?.name);
   }, [route.query.task_id]);
 
-  function cancelTask() {
+  function updateTask({
+    status,
+    currentStatus,
+  }: {
+    status: DatabaseEnums['task_status'];
+    currentStatus: DatabaseEnums['task_status'];
+  }) {
     handelUpdateTask([
       {
-        status: 'closed',
+        status: status,
         id: taskId,
       },
     ]);
@@ -63,14 +70,14 @@ function ViewTaskDrawer() {
         progress_type: 'standard',
       },
       optionData: {
-        currentStatus: selectedTask.status,
-        status: 'closed',
+        currentStatus: currentStatus,
+        status: status,
       },
     });
     toast.action('Task closed.', () => {
       handelUpdateTask([
         {
-          status: 'not_started',
+          status: currentStatus,
           id: taskId,
         },
       ]);
@@ -85,8 +92,8 @@ function ViewTaskDrawer() {
           progress_type: 'standard',
         },
         optionData: {
-          currentStatus: 'closed',
-          status: 'not_started',
+          currentStatus: status,
+          status: currentStatus,
         },
       });
     });
@@ -162,12 +169,31 @@ function ViewTaskDrawer() {
         </ShowCode.When>
         <ShowCode.Else>
           <ViewTask
+            isCompleteTaskVisible={
+              selectedTask?.assignee[0] !== EmailAgentId &&
+              selectedTask?.assignee[0] !== PhoneAgentId &&
+              selectedTask?.status !== 'closed' &&
+              selectedTask?.status !== 'completed'
+            }
+            onClickCompleteTask={{
+              onClick: () => {
+                updateTask({
+                  status: 'completed',
+                  currentStatus: selectedTask.status,
+                });
+              },
+            }}
             isCancelTaskVisible={
               selectedTask?.status !== 'closed' &&
               selectedTask?.status !== 'completed'
             }
             onClickCancelTask={{
-              onClick: cancelTask,
+              onClick: () => {
+                updateTask({
+                  status: 'closed',
+                  currentStatus: selectedTask.status,
+                });
+              },
             }}
             isDisableNext={disableNext}
             isDisablePrev={disablePrev}

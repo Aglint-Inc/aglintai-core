@@ -14,12 +14,12 @@ import {
   CandidateQuestion,
   CandidateQuestionLayout,
 } from '@/devlink2';
+import { handleAssessmentResultApi } from '@/src/apiUtils/assessment-result/utils';
 import Loader from '@/src/components/Common/Loader';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { responseType } from '@/src/context/CandidateAssessment/types';
-import { handleAssessmentResultApi } from '@/src/pages/api/assessment-result/utils';
 
 import Progress from '../Progress';
 import Timer from '../Timer';
@@ -270,7 +270,9 @@ function ClassicMode() {
             currentQuestionIndex === assessmentQuestions?.length - 1
           }
           textTitle={selectedAssessment?.title}
-          textTotalQuestion={`Question ${currentQuestionIndex + 1} of ${assessmentQuestions?.length < 10 ? '0' : ''}${assessmentQuestions?.length}`}
+          textTotalQuestion={`Question ${currentQuestionIndex + 1} of ${
+            assessmentQuestions?.length < 10 ? '0' : ''
+          }${assessmentQuestions?.length}`}
           slotTime={<Timer nextClick={nextClick} maxTime={timerTime} />}
           isTimeVisible={answers.length !== assessmentQuestions.length}
           slotQuestionProgress={
@@ -282,7 +284,9 @@ function ClassicMode() {
           slotCandidateQuestion={
             <CandidateQuestion
               textQuestion={selectedQuestion?.question.label as string}
-              textQuestionCount={`Question ${currentQuestionIndex + 1} of ${assessmentQuestions?.length < 10 ? '0' : ''}${assessmentQuestions?.length}`}
+              textQuestionCount={`Question ${currentQuestionIndex + 1} of ${
+                assessmentQuestions?.length < 10 ? '0' : ''
+              }${assessmentQuestions?.length}`}
               textRightTitle={
                 selectedQuestion?.type === 'qna'
                   ? 'Provide a short answer.'

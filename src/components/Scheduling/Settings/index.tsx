@@ -51,6 +51,7 @@ import DateSelect from './Components/DateSelector';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
+import SchedulingRegions from './SchedulingReason';
 import { hoursList } from './utils';
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -621,7 +622,7 @@ function SchedulingSettings({
                                 handleClose();
                                 toast.success(
                                   `Holiday added on ${dayjs(
-                                    dateRef.current.value,
+                                    selectedDate,
                                   ).format('DD-MMM-YYYY')} ${
                                     eventRef.current.value ? 'for' : ''
                                   } ${eventRef.current.value}`,
@@ -809,7 +810,7 @@ function SchedulingSettings({
                               }
                             });
                           }}
-                          path='softConflictsKeywords'
+                          path='outOfOfficeKeywords'
                           type='string'
                         />
                       }
@@ -863,7 +864,7 @@ function SchedulingSettings({
                               }
                             });
                           }}
-                          path='softConflictsKeywords'
+                          path='recruitingBlocksKeywords'
                           type='string'
                         />
                       }
@@ -904,6 +905,11 @@ function SchedulingSettings({
               isTrue={router.query.subtab == settingSubNavItem.EMAILTEMPLATE}
             >
               <SchedulingEmailTemplates />
+            </ShowCode.When>
+            <ShowCode.When
+              isTrue={router.query.subtab == settingSubNavItem.REASONS}
+            >
+              <SchedulingRegions />
             </ShowCode.When>
           </>
         }
@@ -960,7 +966,7 @@ export const TimezoneSelector = ({
               labelSize='medium'
               // fullWidth
               label=''
-              placeholder='America/Los_Angeles (GMT-08:00)'
+              placeholder='Ex. America/Los_Angeles (GMT-08:00)'
               InputProps={{
                 ...params.InputProps,
                 autoComplete: 'new-password',
@@ -979,6 +985,7 @@ const settingsItems = [
   { label: 'Company Day Off', value: 'dayOff' },
   { label: 'Keywords', value: 'keywords' },
   { label: 'Email Template', value: 'emailTemplate' },
+  { label: 'Scheduling Reasons', value: 'reasons' },
 ];
 
 function SettingsSubNabItem() {

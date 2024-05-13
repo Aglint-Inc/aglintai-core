@@ -16,7 +16,6 @@ declare function JobDashboard(props: {
   slotPipeline?: Types.Devlink.Slot;
   slotModuleCard?: Types.Devlink.Slot;
   onClickAssistant?: Types.Devlink.RuntimeProps;
-  textCandidateCount?: React.ReactNode;
   slotScheduleCardSmall?: Types.Devlink.Slot;
   slotLocationGraphBlock?: Types.Devlink.Slot;
   slotSkillGraphBlock?: Types.Devlink.Slot;
@@ -26,15 +25,11 @@ declare function JobDashboard(props: {
   slotBanner?: Types.Devlink.Slot;
   onClickViewSchedule?: Types.Devlink.RuntimeProps;
   isViewScheduleVisible?: Types.Visibility.VisibilityConditions;
-  onClickImport?: Types.Devlink.RuntimeProps;
-  isImport?: Types.Visibility.VisibilityConditions;
-  onClickCandidateList?: Types.Devlink.RuntimeProps;
-  textScoreCount?: React.ReactNode;
-  isScoring?: Types.Visibility.VisibilityConditions;
-  slotScoringLoader?: Types.Devlink.Slot;
   onClickTopMatch?: Types.Devlink.RuntimeProps;
   onClickGoodMatch?: Types.Devlink.RuntimeProps;
   onClickAverageMatch?: Types.Devlink.RuntimeProps;
   onClickBelowAverage?: Types.Devlink.RuntimeProps;
   onClickNotaMatch?: Types.Devlink.RuntimeProps;
+  slotJobRole?: Types.Devlink.Slot;
+  isJobRoleVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
 import { getHelper } from '@/src/components/JobEmailTemplates';
 import { templateObj } from '@/src/components/JobEmailTemplates/utils';
@@ -30,15 +31,19 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const { recruiter } = useAuthDetails();
   const router = useRouter();
   const {
-    jobsData,
+    jobs,
     initialLoad: jobLoad,
     handleJobRefresh: jobRefresh,
   } = useJobs();
-  const initialJobLoad = recruiter?.id && jobLoad ? true : false;
+  const initialJobLoad = !!(recruiter?.id && jobLoad);
   const jobId = job_id ?? (router.query?.id as string);
-  const job = initialJobLoad
-    ? jobsData.jobs.find((job) => job.id === jobId)
-    : undefined;
+  const job = useMemo(
+    () =>
+      initialJobLoad
+        ? jobs.data.find((job) => job.id === jobId) ?? null
+        : undefined,
+    [initialJobLoad, jobs.status, jobs.data, jobId],
+  );
   const assessments = useAllAssessments();
   const templates = useAllAssessmentTemplates();
   const assessmentData = assessments?.data
@@ -58,15 +63,16 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
         jobAssessments: [] as Assessment[],
         otherAssessments: [] as Assessment[],
       };
-  const skills = useJobSkills();
-  const refreshDashboard = useJobDashboardRefresh();
-  const locations = useJobLocations();
-  const matches = useJobMatches();
-  const tenureAndExperience = useJobTenureAndExperience();
-  const schedules = useJobSchedules();
-  const interviewPlanEnabled = useJobInterviewPlanEnabled();
-  const scoringPoll = useJobScoringPoll();
+  const skills = useJobSkills(job);
+  const locations = useJobLocations(job);
+  const matches = useJobMatches(job);
+  const tenureAndExperience = useJobTenureAndExperience(job);
+  const schedules = useJobSchedules(job);
+  const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
+  const scoringPoll = useJobScoringPoll(job);
+
+  const refreshDashboard = useJobDashboardRefresh();
 
   const isInterviewPlanDisabled =
     interviewPlans.isFetched && !interviewPlans?.data;
@@ -116,14 +122,15 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const initialLoad = !!(
     jobLoad &&
     !assessments.isPending &&
-    !schedules.isPending &&
-    !scoringPoll.isPending &&
-    !interviewPlanEnabled.isPending &&
-    !tenureAndExperience.isPending &&
     !templates.isPending &&
-    !matches.isPending &&
     !skills.isPending &&
-    !locations.isPending
+    !locations.isPending &&
+    !matches.isPending &&
+    !tenureAndExperience.isPending &&
+    !schedules.isPending &&
+    !interviewPlanEnabled.isPending &&
+    !interviewPlans.isPending &&
+    !scoringPoll.isPending
   );
 
   const handleJobRefresh = async () => {
@@ -133,8 +140,19 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 
   const emailTemplateValidity = validateEmailTemplates(job?.email_template);
 
+  const loadStatus: 'loading' | 'error' | 'success' =
+    jobLoad && job !== undefined
+      ? job === null
+        ? 'error'
+        : initialLoad
+          ? 'success'
+          : 'loading'
+      : 'loading';
+
   const value = {
     job,
+    jobLoad,
+    loadStatus,
     jobPolling,
     emailTemplateValidity,
     interviewPlanEnabled,
@@ -171,6 +189,8 @@ export const getSettingsValidity = (job: Job) => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
+    hiring_manager: job.hiring_manager,
+    recrtuiter: job.recruiter,
     ...(job.draft ?? {}),
   };
   return Object.entries(draft).reduce((acc, [key, value]) => {
@@ -186,6 +206,8 @@ export const getSettingsValidity = (job: Job) => {
         case 'job_type':
         case 'location':
         case 'workplace_type':
+        case 'hiring_manager':
+        case 'recrtuiter':
           return !validateString(value as string);
         default:
           return acc;

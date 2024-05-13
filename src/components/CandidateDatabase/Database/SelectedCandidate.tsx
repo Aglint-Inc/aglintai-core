@@ -20,16 +20,16 @@ const SelectedCandidate = ({
   const candidate = get(candState.candidates, path);
   const [eligibleJobs, setElegebleJobs] = useState<newCandJob[]>([]);
 
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   useEffect(() => {
     const candidate = get(candState.candidates, path);
     if (!candidate) return;
     const candJobIds = candidate.applied_job_posts.map((c) => c.job_id);
-    const eligiJobs: newCandJob[] = jobsData.jobs
+    const eligiJobs: newCandJob[] = jobs.data
       .filter((j) => j.status === 'published' && !candJobIds.includes(j.id))
       .map((j) => ({ id: j.id, title: j.job_title }));
     setElegebleJobs(eligiJobs);
-  }, [candState, jobsData.jobs, path]);
+  }, [candState, jobs.data, path]);
 
   if (!candidate) return <></>;
 

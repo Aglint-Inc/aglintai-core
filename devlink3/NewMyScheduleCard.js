@@ -10,7 +10,7 @@ export function NewMyScheduleCard({
   slotMyScheduleSubCard,
   textMonth = "February",
   textDate = "27",
-  textDay = "FRIDAY",
+  textDay = "FRI",
   isNotScheduledIconVisible = false,
 }) {
   return (
@@ -36,7 +36,12 @@ export function NewMyScheduleCard({
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1393", "radius-10")}
+              className={_utils.cx(
+                _styles,
+                "div-block-1393",
+                "radius-10",
+                "height-100"
+              )}
               tag="div"
             >
               <_Builtin.Block
@@ -50,7 +55,7 @@ export function NewMyScheduleCard({
                   {textMonth}
                 </_Builtin.Block>
                 <_Builtin.Block
-                  className={_utils.cx(_styles, "text-20", "fw-semibold")}
+                  className={_utils.cx(_styles, "text-40")}
                   tag="div"
                 >
                   {textDate}
@@ -91,7 +96,7 @@ export function NewMyScheduleCard({
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1405")}
+          className={_utils.cx(_styles, "div-block-1405", "no-border")}
           tag="div"
         >
           {slotMyScheduleSubCard ?? <MyScheduleSubCard />}

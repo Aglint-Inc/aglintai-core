@@ -11,9 +11,9 @@ import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { TransformSchedule } from '../../Modules/types';
+import { ScheduleMeeting } from '../types';
 
-function Instructions({ schedule }: { schedule: TransformSchedule }) {
+function Instructions({ schedule }: { schedule: ScheduleMeeting }) {
   const { recruiterUser } = useAuthDetails();
   const [textValue, setTextValue] = useState(null);
 

@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import { LoaderSvg } from '@/devlink';
 import {
   Breadcrum,
   ButtonWide,
@@ -27,6 +28,7 @@ const Screening = () => {
   const [templates, setTemplates] = useState<QuestionnaireData[]>([]);
   const [isloading, setLoading] = useState<boolean>(false);
   const [isloader, setIsLoader] = useState<boolean>(true);
+  const [isDashloader, setDashLoader] = useState<boolean>(true);
   const router = useRouter();
   const handleSubmit = async () => {
     try {
@@ -70,89 +72,104 @@ const Screening = () => {
   useEffect(() => {
     if (recruiter.id !== null) {
       fetchTemplate();
+      setDashLoader(false);
     }
   }, [recruiter]);
   return (
-    <div>
-      <PageLayout
-        slotBody={
-          <Stack px={2}>
-            {!isloader && templates.length === 0 ? (
-              <EmptyPhoneScreening />
-            ) : (
-              <ScreeningLanding
-                slotScreeningLandingCard={templates.map((data) => {
-                  const questionCount = data.questions.questions
-                    ? Object.keys(data.questions.questions).length
-                    : 0;
-                  return (
-                    <ScreeningLandingCard
-                      isChange={false}
-                      textTitle={data.title}
-                      key={data.id}
-                      textQuestionCount={questionCount}
-                      onClickCard={{
-                        onClick: () => {
-                          router.push(`/screening/${data.id}`);
-                        },
-                      }}
-                    />
-                  );
-                })}
-              />
-            )}
-          </Stack>
-        }
-        slotTopbarLeft={<ScreeningDashboardBreadCrumbs />}
-        slotTopbarRight={
-          <>
-            <PhoneScreeningTopRight
-              onClickAllCandidates={{
-                onClick: () => {
-                  router.push('/screening-dashboard');
-                },
-              }}
-              onClickNewScreening={{ onClick: () => setIsPopupOpen(true) }}
+    <>
+      {isDashloader ? (
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          width={'100%'}
+          height={'100vh'}
+          justifyContent={'center'}
+        >
+          <LoaderSvg />
+        </Stack>
+      ) : (
+        <>
+          <PageLayout
+            slotBody={
+              <Stack px={2}>
+                {!isloader && templates.length === 0 ? (
+                  <EmptyPhoneScreening />
+                ) : (
+                  <ScreeningLanding
+                    slotScreeningLandingCard={templates.map((data) => {
+                      const questionCount = data.questions.questions
+                        ? Object.keys(data.questions.questions).length
+                        : 0;
+                      return (
+                        <ScreeningLandingCard
+                          isChange={false}
+                          textTitle={data.title}
+                          key={data.id}
+                          textQuestionCount={questionCount}
+                          onClickCard={{
+                            onClick: () => {
+                              router.push(`/screening/${data.id}`);
+                            },
+                          }}
+                        />
+                      );
+                    })}
+                  />
+                )}
+              </Stack>
+            }
+            slotTopbarLeft={<ScreeningDashboardBreadCrumbs />}
+            slotTopbarRight={
+              <>
+                <PhoneScreeningTopRight
+                  onClickAllCandidates={{
+                    onClick: () => {
+                      router.push('/screening-dashboard');
+                    },
+                  }}
+                  onClickNewScreening={{ onClick: () => setIsPopupOpen(true) }}
+                />
+              </>
+            }
+          />
+          <MuiPopup
+            props={{
+              onClose: () => {
+                setIsPopupOpen(false);
+                setLoading(false);
+              },
+              open: isPopupOpen,
+            }}
+          >
+            <ScreeningLandingPop
+              onClickClose={{ onClick: () => setIsPopupOpen(false) }}
+              slotScreeningNameInput={
+                <UITextField
+                  placeholder='Enter Screening Name'
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+              }
+              slotButtonPrimaryRegular={
+                <>
+                  <ButtonWide
+                    isEnabled={input !== ''}
+                    textButton={'Submit'}
+                    isLoading={isloading}
+                    onClickButton={{
+                      onClick: () => {
+                        setLoading(true);
+                        handleSubmit();
+                      },
+                    }}
+                  />
+                </>
+              }
             />
-          </>
-        }
-      />
-      <MuiPopup
-        props={{
-          onClose: () => {
-            setIsPopupOpen(false);
-            setLoading(false);
-          },
-          open: isPopupOpen,
-        }}
-      >
-        <ScreeningLandingPop
-          onClickClose={{ onClick: () => setIsPopupOpen(false) }}
-          slotScreeningNameInput={
-            <UITextField
-              placeholder='Enter Screening Name'
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-          }
-          slotButtonPrimaryRegular={
-            <>
-              <ButtonWide
-                isEnabled={input !== ''}
-                textButton={'Submit'}
-                isLoading={isloading}
-                onClickButton={{
-                  onClick: () => {
-                    setLoading(true);
-                    handleSubmit();
-                  },
-                }}
-              />
-            </>
-          }
-        />
-      </MuiPopup>
-    </div>
+          </MuiPopup>
+        </>
+      )}
+    </>
   );
 };
 

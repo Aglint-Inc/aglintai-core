@@ -9,6 +9,16 @@
   background-color: white;
 }
 
+.div-block-1717 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
 .slot_status {
   display: flex;
   justify-content: flex-start;
@@ -63,10 +73,18 @@
   background-color: #d8dcde;
 }
 
+.button_primary.greay_btn.width-auto {
+  width: auto;
+}
+
 .button_primary.is_outline {
   border: 1px solid #1f73b7;
   background-color: white;
   color: #1f73b7;
+}
+
+.button_primary.is_outline.width-100 {
+  width: 100%;
 }
 
 .button_primary.greay_btn-copy {
@@ -118,6 +136,17 @@
 
 .button_primary.greay_btn-copy-copy:hover {
   background-color: #d8dcde;
+}
+
+.button_primary.success {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.button_primary.green-btn {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
 }
 
 .embed_flex {

@@ -1,11 +1,12 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
+
 import {
   JobApplication,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
-import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+import { Job } from '@/src/queries/job/types';
 import { EmailTemplateType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -146,7 +147,7 @@ export const candidateEmailValidity = (
   };
 };
 
-export const checkSyncCand = async (job: JobTypeDashboard) => {
+export const checkSyncCand = async (job: Job) => {
   let is_sync = true;
 
   const jobReferenceData = await supabase

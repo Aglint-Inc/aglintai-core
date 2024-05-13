@@ -68,6 +68,10 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -148,6 +152,10 @@
 
 .text-grey_600 {
   color: #68737d;
+}
+
+.fw-semibold.name-text {
+  color: #467b7c;
 }
 
 .div-block-1462 {

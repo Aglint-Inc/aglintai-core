@@ -14,7 +14,7 @@ import {
   AssessmentListCardLoader,
   BrowseAssessment,
   EmptyAssessmentList,
-  SelectButton
+  SelectButton,
 } from '@/devlink2';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
@@ -23,7 +23,7 @@ import {
   useJobAssessmentsBulkConnect,
   // useJobAssessmentsConnect,
   useJobAssessmentsDisconnect,
-  useJobAssessmentTemplateConnect
+  useJobAssessmentTemplateConnect,
 } from '@/src/queries/job-assessment';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
 
@@ -35,8 +35,8 @@ import TypeIcon from '../NewAssessment/Common/icons/types';
 const JobAssessment = () => {
   const {
     assessments: {
-      data: { jobAssessments }
-    }
+      data: { jobAssessments },
+    },
     // templates: { status, data: templates }
   } = useJobDetails();
   const [open, setOpen] = useState(false);
@@ -75,8 +75,8 @@ const JobAssessments = ({ onOpen }: { onOpen: () => void }) => {
     assessments: {
       status,
       data: { jobAssessments },
-      refetch
-    }
+      refetch,
+    },
   } = useJobDetails();
   const { mutate } = useJobAssessmentsDisconnect();
   const handleDisconnect = (assessment_id: Assessment['id']) => {
@@ -110,7 +110,7 @@ const JobAssessments = ({ onOpen }: { onOpen: () => void }) => {
 
 const AssessmentListCard = ({
   assessment,
-  handleDisconnect
+  handleDisconnect,
 }: {
   assessment: Assessment;
   // eslint-disable-next-line no-unused-vars
@@ -141,7 +141,7 @@ const AssessmentListCard = ({
 
 const AssessmentTemplates = () => {
   const {
-    templates: { data, status }
+    templates: { data, status },
   } = useJobDetails();
   const { mutate } = useJobAssessmentTemplateConnect();
   const handleConnect = (template: AssessmentTemplate) => {
@@ -178,7 +178,7 @@ const AssessmentTemplates = () => {
 
 const AssessmentEditor = ({
   payload,
-  skeletonCount
+  skeletonCount,
 }: {
   payload: 'interview_instructions' | 'interview_success';
   skeletonCount: number;
@@ -191,7 +191,7 @@ const AssessmentEditor = ({
     async (message: string) => {
       await handleJobAsyncUpdate(job.id, { [payload]: message });
     },
-    [job.id]
+    [job.id],
   );
   useEffect(() => {
     if (initialRef.current) {
@@ -206,7 +206,7 @@ const AssessmentEditor = ({
   return (
     <Stack
       style={{
-        border: '1px solid #dcdcdc'
+        border: '1px solid #dcdcdc',
       }}
     >
       <TipTapAIEditor
@@ -224,22 +224,22 @@ export type BroweserSelections = {
 };
 const AssessmentBrowser = ({
   open,
-  onClose
+  onClose,
 }: {
   open: boolean;
   onClose: () => void;
 }) => {
   const {
     assessments: {
-      data: { otherAssessments }
+      data: { otherAssessments },
     },
-    templates: { data: templates }
+    templates: { data: templates },
   } = useJobDetails();
   const { mutate } = useJobAssessmentsBulkConnect();
   const [section, setSection] = useState<keyof BroweserSelections>('private');
   const [selections, setSelections] = useState<BroweserSelections>({
     private: [],
-    public: []
+    public: [],
   });
   const [filter, setFilter] = useState('');
   const handleClose = useCallback(() => {
@@ -258,7 +258,7 @@ const AssessmentBrowser = ({
 
   const handleClick = (
     action: 'insert' | 'delete',
-    assessment: BrowserAssessments[number]
+    assessment: BrowserAssessments[number],
   ) => {
     switch (action) {
       case 'insert':
@@ -268,14 +268,14 @@ const AssessmentBrowser = ({
             newAssessment['assessment_id'] = uuidv4() as string;
           setSelections((prev) => ({
             ...prev,
-            [section]: [...prev[section], newAssessment]
+            [section]: [...prev[section], newAssessment],
           }));
         }
         break;
       case 'delete':
         setSelections((prev) => ({
           ...prev,
-          [section]: prev[section].filter(({ id }) => id !== assessment.id)
+          [section]: prev[section].filter(({ id }) => id !== assessment.id),
         }));
         break;
     }
@@ -292,8 +292,8 @@ const AssessmentBrowser = ({
       sx={{
         '& .MuiPaper-root': {
           width: '992px !important',
-          maxWidth: '992px !important'
-        }
+          maxWidth: '992px !important',
+        },
       }}
     >
       <BrowseAssessment
@@ -335,7 +335,7 @@ type BrowserAssessments = Assessment[] | AssessmentTemplate[];
 const AllBrowserCards = ({
   assessments,
   selections,
-  handleClick
+  handleClick,
 }: {
   assessments: BrowserAssessments;
   selections: BrowserAssessments;
@@ -359,7 +359,7 @@ const AllBrowserCards = ({
 const BrowserCard = ({
   assessment,
   handleClick,
-  selections
+  selections,
 }: {
   assessment: BrowserAssessments[number];
   selections: BrowserAssessments;
@@ -367,7 +367,7 @@ const BrowserCard = ({
     // eslint-disable-next-line no-unused-vars
     action: 'insert' | 'delete',
     // eslint-disable-next-line no-unused-vars
-    assessment: BrowserAssessments[number]
+    assessment: BrowserAssessments[number],
   ) => void;
 }) => {
   const isSelected = !!selections.find(({ id }) => id === assessment.id);
@@ -384,7 +384,8 @@ const BrowserCard = ({
       }
       slotAssessmentType={<TypeIcon type={assessment.type} />}
       onClickCard={{
-        onClick: () => handleClick(isSelected ? 'delete' : 'insert', assessment)
+        onClick: () =>
+          handleClick(isSelected ? 'delete' : 'insert', assessment),
       }}
       slotAssessmentStatus={
         <SelectButton
@@ -400,15 +401,15 @@ const BrowserCard = ({
 const AssessmentPreview = () => {
   const {
     assessments: {
-      data: { jobAssessments }
-    }
+      data: { jobAssessments },
+    },
   } = useJobDetails();
   const { handleJobAsyncUpdate } = useJobs();
   const { job_id } = useCurrentJob();
   const handlePreview = () => {
     window.open(
       `${process.env.NEXT_PUBLIC_HOST_NAME}/preview-assessment/${job_id}`,
-      '_blank'
+      '_blank',
     );
   };
 
@@ -425,7 +426,7 @@ const AssessmentPreview = () => {
       style={{
         opacity: disable ? 0.4 : 1,
         pointerEvents: disable ? 'none' : 'auto',
-        transition: '0.5s'
+        transition: '0.5s',
       }}
     >
       <AssessmentSide
@@ -438,10 +439,10 @@ const AssessmentPreview = () => {
         textDisableButton={'Disable Assessments'}
         textPreviewButton={'Preview Assessments'}
         onClickDisableAssessment={{
-          onClick: () => handleDisable()
+          onClick: () => handleDisable(),
         }}
         onClickAssessmentPreview={{
-          onClick: () => handlePreview()
+          onClick: () => handlePreview(),
         }}
       />
     </Stack>

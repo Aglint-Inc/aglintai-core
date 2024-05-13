@@ -39,7 +39,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import { selectJobApplicationQuery } from '../api/job/jobApplications/read/utils';
+import { selectJobApplicationQuery } from '../../apiUtils/job/jobApplications/read/utils';
 
 function InterviewFeedbackPage() {
   const router = useRouter();

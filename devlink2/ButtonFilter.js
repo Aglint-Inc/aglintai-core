@@ -20,7 +20,7 @@ export function ButtonFilter({
       {...onClickStatus}
     >
       <_Builtin.Block
-        className={_utils.cx(_styles, "relative-1", "hide")}
+        className={_utils.cx(_styles, "relative-1", "icon-center")}
         tag="div"
       >
         {slotLeftIcon}
@@ -31,7 +31,10 @@ export function ButtonFilter({
       >
         {textLabel}
       </_Builtin.Block>
-      <_Builtin.Block className={_utils.cx(_styles, "relative-1")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "relative-1", "icon-center")}
+        tag="div"
+      >
         {slotRightIcon}
       </_Builtin.Block>
       {isDotVisible ? (

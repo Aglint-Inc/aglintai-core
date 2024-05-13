@@ -12,9 +12,11 @@ let animationFrameId;
 const context = [];
 let totalNumberOfQuestions = [];
 
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
 
-import { handleAssessmentResultApi } from '@/src/pages/api/assessment-result/utils';
+import { handleAssessmentResultApi } from '@/src/apiUtils/assessment-result/utils';
 import interviewerList from '@/src/utils/interviewer_list';
 import toast from '@/src/utils/toast';
 
@@ -311,7 +313,7 @@ function InterviewContextProvider({ children }) {
         result_id: results.id,
       });
     } catch (error) {
-      return null
+      return null;
     }
     router.push('/assessment-thanks');
   }

@@ -40,7 +40,7 @@ type FilterType = {
 } & CandidateSearchState['queryJson'];
 
 const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const { candidateSearchState, updatenewSearchRes, updateState } =
     useCandidateSearchCtx();
   const [filters, setFilters] = useState<FilterType>({
@@ -121,7 +121,7 @@ const SearchFilter = ({ handleDialogClose, setActiveCandidate }) => {
       // eslint-disable-next-line no-undef
       const cands = (await getRelevantCndidates(
         newQueryJson,
-        jobsData.jobs.map((j) => j.id),
+        jobs.data.map((j) => j.id),
         filters.profileLimit,
       )) as any;
 

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { MembersList } from "./MembersList";
 import * as _utils from "./utils";
 import _styles from "./MyScheduleSubCard.module.css";
 
@@ -20,10 +21,13 @@ export function MyScheduleSubCard({
   textDuration = "45 Minutes",
   isLocationVisible = true,
   textLocation = "San Fransisco",
-  slotCandidateImage,
-  textCandidateName = "San Fransisco",
-  isCandidateNameVisible = true,
   isPhoneCallVisible = false,
+  bgColorProps = {},
+  textJob = "Senior Software Engineer",
+  slotMembersList,
+  onClickDropdownIocn = {},
+  isMembersListVisible = true,
+  slotThreeDot,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1402")} tag="div">
@@ -32,11 +36,11 @@ export function MyScheduleSubCard({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "div-block-1388")}
+          className={_utils.cx(_styles, "div-block-1388", "padding-26-l")}
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1387")}
+            className={_utils.cx(_styles, "div-block-1387", "space-between")}
             tag="div"
           >
             <_Builtin.Block
@@ -47,15 +51,10 @@ export function MyScheduleSubCard({
                 className={_utils.cx(_styles, "div-block-1398")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
                 {isTimeVisible ? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "fw-semibold")}
-                    tag="div"
-                  >
-                    {textTime}
-                  </_Builtin.Block>
+                  <_Builtin.Block tag="div">{textTime}</_Builtin.Block>
                 ) : null}
+                <_Builtin.Block tag="div">{slotStatus}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1392")}
@@ -110,36 +109,43 @@ export function MyScheduleSubCard({
                       <_Builtin.Block tag="div">{"Phone Call"}</_Builtin.Block>
                     </_Builtin.Block>
                   ) : null}
-                  {isMeetingPlatformVisible ? (
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1390")}
-                      tag="div"
-                    >
-                      <_Builtin.Block tag="div">
-                        {slotMeetingIcon}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-1655")}
+                    tag="div"
+                  >
+                    {isMeetingPlatformVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "div-block-1390")}
+                        tag="div"
+                      >
+                        <_Builtin.Block tag="div">
+                          {slotMeetingIcon}
+                        </_Builtin.Block>
+                        <_Builtin.Block tag="div">
+                          {textMeetingPlatform}
+                        </_Builtin.Block>
                       </_Builtin.Block>
-                      <_Builtin.Block tag="div">
-                        {textMeetingPlatform}
+                    ) : null}
+                    {isDurationVisible ? (
+                      <_Builtin.Block
+                        className={_utils.cx(_styles, "div-block-1390")}
+                        tag="div"
+                      >
+                        <_Builtin.Block tag="div">
+                          <_Builtin.HtmlEmbed
+                            className={_utils.cx(_styles, "icons")}
+                            value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6%200C7.125%200.015625%208.13281%200.289062%209.02344%200.820312C9.92969%201.35156%2010.6484%202.07031%2011.1797%202.97656C11.7109%203.86719%2011.9844%204.875%2012%206C11.9844%207.125%2011.7109%208.13281%2011.1797%209.02344C10.6484%209.92969%209.92969%2010.6484%209.02344%2011.1797C8.13281%2011.7109%207.125%2011.9844%206%2012C4.875%2011.9844%203.86719%2011.7109%202.97656%2011.1797C2.07031%2010.6484%201.35156%209.92969%200.820312%209.02344C0.289062%208.13281%200.015625%207.125%200%206C0%205.15625%200.164062%204.36719%200.492188%203.63281C0.804688%202.89844%201.24219%202.25781%201.80469%201.71094C1.96094%201.57031%202.14062%201.5%202.34375%201.5C2.53125%201.5%202.70312%201.57812%202.85938%201.73438C3%201.89063%203.07031%202.0625%203.07031%202.25C3.07031%202.45313%203%202.63281%202.85938%202.78906C1.98438%203.63281%201.53125%204.70312%201.5%206C1.53125%207.28125%201.96875%208.34375%202.8125%209.1875C3.65625%2010.0312%204.71875%2010.4688%206%2010.5C7.28125%2010.4688%208.34375%2010.0312%209.1875%209.1875C10.0312%208.34375%2010.4688%207.28125%2010.5%206C10.4844%204.85938%2010.125%203.88281%209.42188%203.07031C8.73438%202.27344%207.84375%201.77344%206.75%201.57031V2.25C6.75%202.46875%206.67969%202.64844%206.53906%202.78906C6.39844%202.92969%206.21875%203%206%203C5.78125%203%205.60156%202.92969%205.46094%202.78906C5.32031%202.64844%205.25%202.46875%205.25%202.25V0.75C5.25%200.53125%205.32031%200.351562%205.46094%200.210938C5.60156%200.0703125%205.78125%200%206%200ZM4.52344%203.72656L6.39844%205.60156C6.61719%205.86719%206.61719%206.13281%206.39844%206.39844C6.13281%206.61719%205.86719%206.61719%205.60156%206.39844L3.72656%204.52344C3.50781%204.25781%203.50781%203.99219%203.72656%203.72656C3.99219%203.50781%204.25781%203.50781%204.52344%203.72656Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                          />
+                        </_Builtin.Block>
+                        <_Builtin.Block tag="div">
+                          {textDuration}
+                        </_Builtin.Block>
                       </_Builtin.Block>
-                    </_Builtin.Block>
-                  ) : null}
-                  {isDurationVisible ? (
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1390")}
-                      tag="div"
-                    >
-                      <_Builtin.Block tag="div">
-                        <_Builtin.HtmlEmbed
-                          className={_utils.cx(_styles, "icons")}
-                          value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M6%200C7.125%200.015625%208.13281%200.289062%209.02344%200.820312C9.92969%201.35156%2010.6484%202.07031%2011.1797%202.97656C11.7109%203.86719%2011.9844%204.875%2012%206C11.9844%207.125%2011.7109%208.13281%2011.1797%209.02344C10.6484%209.92969%209.92969%2010.6484%209.02344%2011.1797C8.13281%2011.7109%207.125%2011.9844%206%2012C4.875%2011.9844%203.86719%2011.7109%202.97656%2011.1797C2.07031%2010.6484%201.35156%209.92969%200.820312%209.02344C0.289062%208.13281%200.015625%207.125%200%206C0%205.15625%200.164062%204.36719%200.492188%203.63281C0.804688%202.89844%201.24219%202.25781%201.80469%201.71094C1.96094%201.57031%202.14062%201.5%202.34375%201.5C2.53125%201.5%202.70312%201.57812%202.85938%201.73438C3%201.89063%203.07031%202.0625%203.07031%202.25C3.07031%202.45313%203%202.63281%202.85938%202.78906C1.98438%203.63281%201.53125%204.70312%201.5%206C1.53125%207.28125%201.96875%208.34375%202.8125%209.1875C3.65625%2010.0312%204.71875%2010.4688%206%2010.5C7.28125%2010.4688%208.34375%2010.0312%209.1875%209.1875C10.0312%208.34375%2010.4688%207.28125%2010.5%206C10.4844%204.85938%2010.125%203.88281%209.42188%203.07031C8.73438%202.27344%207.84375%201.77344%206.75%201.57031V2.25C6.75%202.46875%206.67969%202.64844%206.53906%202.78906C6.39844%202.92969%206.21875%203%206%203C5.78125%203%205.60156%202.92969%205.46094%202.78906C5.32031%202.64844%205.25%202.46875%205.25%202.25V0.75C5.25%200.53125%205.32031%200.351562%205.46094%200.210938C5.60156%200.0703125%205.78125%200%206%200ZM4.52344%203.72656L6.39844%205.60156C6.61719%205.86719%206.61719%206.13281%206.39844%206.39844C6.13281%206.61719%205.86719%206.61719%205.60156%206.39844L3.72656%204.52344C3.50781%204.25781%203.50781%203.99219%203.72656%203.72656C3.99219%203.50781%204.25781%203.50781%204.52344%203.72656Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-                        />
-                      </_Builtin.Block>
-                      <_Builtin.Block tag="div">{textDuration}</_Builtin.Block>
-                    </_Builtin.Block>
-                  ) : null}
+                    ) : null}
+                  </_Builtin.Block>
                   {isLocationVisible ? (
                     <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1390")}
+                      className={_utils.cx(_styles, "div-block-1390", "hide")}
                       tag="div"
                     >
                       <_Builtin.Block tag="div">
@@ -151,34 +157,45 @@ export function MyScheduleSubCard({
                       <_Builtin.Block tag="div">{textLocation}</_Builtin.Block>
                     </_Builtin.Block>
                   ) : null}
-                  {isCandidateNameVisible ? (
-                    <_Builtin.Block
-                      className={_utils.cx(_styles, "div-block-1390")}
-                      tag="div"
-                    >
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "text-grey_600")}
-                        tag="div"
-                      >
-                        {"Candidate:"}
-                      </_Builtin.Block>
-                      <_Builtin.Block
-                        className={_utils.cx(_styles, "div-block-1406")}
-                        tag="div"
-                      >
-                        {slotCandidateImage}
-                      </_Builtin.Block>
-                      <_Builtin.Block tag="div">
-                        {textCandidateName}
-                      </_Builtin.Block>
-                    </_Builtin.Block>
-                  ) : null}
+                  <_Builtin.Block
+                    className={_utils.cx(_styles, "div-block-1666")}
+                    tag="div"
+                  >
+                    <_Builtin.HtmlEmbed
+                      className={_utils.cx(_styles, "icons")}
+                      value="%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M5%201.5V3H11V1.5C10.9792%201.1875%2010.8125%201.02083%2010.5%201H5.5C5.1875%201.02083%205.02083%201.1875%205%201.5ZM4%203V1.5C4.02083%201.08333%204.16667%200.729167%204.4375%200.4375C4.72917%200.166667%205.08333%200.0208333%205.5%200H10.5C10.9167%200.0208333%2011.2708%200.166667%2011.5625%200.4375C11.8333%200.729167%2011.9792%201.08333%2012%201.5V3H14C14.5625%203.02083%2015.0312%203.21875%2015.4062%203.59375C15.7812%203.96875%2015.9792%204.4375%2016%205V13C15.9792%2013.5625%2015.7812%2014.0312%2015.4062%2014.4062C15.0312%2014.7812%2014.5625%2014.9792%2014%2015H2C1.4375%2014.9792%200.96875%2014.7812%200.59375%2014.4062C0.21875%2014.0312%200.0208333%2013.5625%200%2013V5C0.0208333%204.4375%200.21875%203.96875%200.59375%203.59375C0.96875%203.21875%201.4375%203.02083%202%203H4ZM11.5%204H4.5H2C1.70833%204%201.46875%204.09375%201.28125%204.28125C1.09375%204.46875%201%204.70833%201%205V8H5.5H6.5H9.5H10.5H15V5C15%204.70833%2014.9062%204.46875%2014.7188%204.28125C14.5312%204.09375%2014.2917%204%2014%204H11.5ZM15%209H10.5V10.5C10.5%2010.7917%2010.4062%2011.0312%2010.2188%2011.2188C10.0312%2011.4062%209.79167%2011.5%209.5%2011.5H6.5C6.20833%2011.5%205.96875%2011.4062%205.78125%2011.2188C5.59375%2011.0312%205.5%2010.7917%205.5%2010.5V9H1V13C1%2013.2917%201.09375%2013.5312%201.28125%2013.7188C1.46875%2013.9062%201.70833%2014%202%2014H14C14.2917%2014%2014.5312%2013.9062%2014.7188%2013.7188C14.9062%2013.5312%2015%2013.2917%2015%2013V9ZM6.5%209V10.5H9.5V9H6.5Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                    />
+                    <_Builtin.Block tag="div">{textJob}</_Builtin.Block>
+                  </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1656")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "icons", "pointer")}
+                value="%3Csvg%20width%3D%2223%22%20height%3D%2223%22%20viewBox%3D%220%200%2023%2023%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2222.5%22%20height%3D%2222.5%22%20rx%3D%2211.25%22%20fill%3D%22%23F8F9F9%22%2F%3E%0A%3Crect%20x%3D%220.25%22%20y%3D%220.25%22%20width%3D%2222.5%22%20height%3D%2222.5%22%20rx%3D%2211.25%22%20stroke%3D%22%23E9EBED%22%20stroke-width%3D%220.5%22%2F%3E%0A%3Cpath%20d%3D%22M11.7578%2014.7578C11.5859%2014.9141%2011.4141%2014.9141%2011.2422%2014.7578L6.74219%2010.2578C6.58594%2010.0859%206.58594%209.91406%206.74219%209.74219C6.91406%209.58594%207.08594%209.58594%207.25781%209.74219L11.5%2013.9609L15.7422%209.74219C15.9141%209.58594%2016.0859%209.58594%2016.2578%209.74219C16.4141%209.91406%2016.4141%2010.0859%2016.2578%2010.2578L11.7578%2014.7578Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+                {...onClickDropdownIocn}
+              />
+            </_Builtin.Block>
           </_Builtin.Block>
+          {isMembersListVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1658")}
+              tag="div"
+            >
+              {slotMembersList ?? <MembersList />}
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1657")}
+        tag="div"
+        {...bgColorProps}
+      />
     </_Component>
   );
 }

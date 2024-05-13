@@ -9,6 +9,7 @@ export type API_setMembersWithRole = {
     data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
       user_id: string;
       role?: DatabaseEnums['user_roles'];
+      manager_id?: string;
     };
     recruiter_id: string;
   };
@@ -16,6 +17,7 @@ export type API_setMembersWithRole = {
     | {
         data: DatabaseTable['recruiter_user'] & {
           role?: DatabaseEnums['user_roles'];
+          manager_id?: string;
         };
 
         error: null;

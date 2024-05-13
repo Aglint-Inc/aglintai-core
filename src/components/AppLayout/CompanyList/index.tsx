@@ -58,7 +58,7 @@ function CompanyList() {
           recruiter_id: reln.recruiter_id,
           user_id: userDetails.user.id,
           role: reln.role,
-          manager: reln.manager,
+          manager_id: reln.manager_id,
         })),
       );
     } catch (error) {

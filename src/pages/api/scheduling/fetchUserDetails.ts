@@ -14,7 +14,7 @@ interface BodyParamsFetchUserDetails {
   status?: 'joined' | 'invited';
 }
 
-export type ApiResponseFetchUserDetails = ReturnType<typeof fetchUsers>;
+export type CompanyMembersAPI = ReturnType<typeof fetchUsers>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -36,7 +36,7 @@ const fetchUsers = async (recruiter_id: string, status: string) => {
   return supabase
     .from('recruiter_relation')
     .select(
-      `role,recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery},schedule_auth, scheduling_settings)`,
+      `role,recruiter_user!public_recruiter_relation_user_id_fkey(${interviewPlanRecruiterUserQuery})`,
     )
     .eq('recruiter_id', recruiter_id)
     .eq('recruiter_user.join_status', status)

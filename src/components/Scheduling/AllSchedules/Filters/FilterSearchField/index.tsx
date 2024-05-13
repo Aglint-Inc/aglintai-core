@@ -20,7 +20,7 @@ function FilterSearchField() {
             </InputAdornment>
           ),
         }}
-        placeholder='Search by name'
+        placeholder='Search by Name'
         value={textSearch}
         onChange={(e) => {
           setFilter({ textSearch: e.target.value });

@@ -23,6 +23,8 @@ export function ViewTask({
   onClickNext = {},
   isDisablePrev = false,
   isDisableNext = false,
+  onClickCompleteTask = {},
+  isCompleteTaskVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -178,6 +180,20 @@ export function ViewTask({
           >
             <_Builtin.Block tag="div">{"Close Task"}</_Builtin.Block>
           </_Builtin.Block>
+          {isCompleteTaskVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "div-block-1546",
+                "cursor-pointer",
+                "green"
+              )}
+              tag="div"
+              {...onClickCompleteTask}
+            >
+              <_Builtin.Block tag="div">{"Complete Task"}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       ) : null}
     </_Component>

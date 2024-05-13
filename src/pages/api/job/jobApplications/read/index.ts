@@ -18,7 +18,7 @@ import {
 } from '@/src/context/JobApplicationsContext/types';
 import { Database } from '@/src/types/schema';
 
-import { handleRead } from './utils';
+import { handleRead } from '../../../../../apiUtils/job/jobApplications/read/utils';
 
 const handler = async (
   req: NextApiRequest,

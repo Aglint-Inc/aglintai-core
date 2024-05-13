@@ -12,14 +12,14 @@ import {
 } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { convertTimeZoneToAbbreviation } from '../../../utils';
 import IconScheduleType from '../../ListCard/Icon';
-import { addScheduleActivity } from '../../queries/utils';
 import { setIsCancelOpen, setIsRescheduleOpen } from '../../store';
-import { getScheduleBgcolor, getScheduleType, mailHandler } from '../../utils';
+import { getScheduleBgcolor, getScheduleType } from '../../utils';
 import CancelScheduleDialog from '../Common/CancelScheduleDialog';
 import RescheduleDialog from '../Common/RescheduleDialog';
 import GetScheduleOptionsDialog from '../GetScheduleOptions';
@@ -32,7 +32,7 @@ import {
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../store';
-import { getTimeZoneBrowser } from '../utils';
+import { onClickResendInvite } from '../utils';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 
@@ -61,48 +61,6 @@ function FullSchedule() {
   const isNormalSession = initialSessions
     .filter((ses) => selectedSessionIds.includes(ses.id))
     .some((ses) => ses.session_type !== 'debrief');
-
-  const onClickResendInvite = async (session_id) => {
-    try {
-      const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
-        .from('interview_filter_json')
-        .select('*')
-        .contains('session_ids', [session_id]);
-
-      if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
-
-      if (checkFilterJson.length > 0 && selectedSchedule.id) {
-        const res = await mailHandler({
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          filter_id: checkFilterJson[0].id,
-          mail: selectedApplication.candidates.email,
-          position: selectedApplication.public_jobs.job_title,
-          rec_id: recruiter.id,
-          schedule_id: selectedSchedule.id,
-          schedule_name: `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`,
-          supabase,
-          rec_mail: recruiterUser.email,
-        });
-
-        if (res) {
-          addScheduleActivity({
-            title: `Interview link resent`,
-            application_id: selectedApplication.id,
-            logger: recruiterUser.user_id,
-            type: 'schedule',
-            supabase,
-            created_by: recruiterUser.user_id,
-          });
-          toast.success('Invite resent successfully.');
-        }
-      }
-    } catch (e) {
-      toast.error(e.message);
-    }
-  };
 
   const selectSession = ({
     session,
@@ -280,7 +238,9 @@ function FullSchedule() {
                           'hh:mm A',
                         )} - ${dayjs(
                           session.interview_meeting?.end_time,
-                        ).format('hh:mm A')} ${getTimeZoneBrowser()}`
+                        ).format(
+                          'hh:mm A',
+                        )} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`
                       : '--'
                   }
                   slotEditOptionModule={
@@ -290,7 +250,22 @@ function FullSchedule() {
                       }
                       onClickResendInvite={{
                         onClick: () => {
-                          onClickResendInvite(session.id);
+                          onClickResendInvite({
+                            session_id: session.id,
+                            application_id: selectedApplication.id,
+                            candidate_email:
+                              selectedApplication.candidates.email,
+                            candidate_name: getFullName(
+                              selectedApplication.candidates.first_name,
+                              selectedApplication.candidates.first_name,
+                            ),
+                            job_title:
+                              selectedApplication.public_jobs.job_title,
+                            rec_email: recruiterUser.email,
+                            rec_user_id: recruiterUser.user_id,
+                            recruiter_id: recruiter.id,
+                            schedule_id: selectedSchedule.id,
+                          });
                         },
                       }}
                       isEditVisible={

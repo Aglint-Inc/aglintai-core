@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { DatabaseTable } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 
-import { MemberType, TransformSchedule } from '../Modules/types';
+import { MemberType } from '../Modules/types';
+import { ScheduleMeeting } from './types';
 
 export const useScheduleDetails = () => {
   const router = useRouter();
@@ -13,21 +15,36 @@ export const useScheduleDetails = () => {
     queryKey: ['schedule_details', router?.query?.meeting_id],
     queryFn: () => getSchedule(router?.query?.meeting_id as string),
     enabled: !!router?.query?.meeting_id,
-    refetchOnWindowFocus: false,
   });
   return query;
 };
 
 async function getSchedule(meeting_id: string) {
   const { data, error } = await supabase.rpc(
-    'get_interview_schedule_by_meeting_id',
+    'new_get_interview_schedule_by_meeting_id',
     {
       target_meeting_id: meeting_id as string,
     },
   );
-  if (data.length > 0) {
+  if (data) {
     if (error) throw Error(error.message);
-    else return data[0] as unknown as TransformSchedule;
+    else
+      return data as unknown as {
+        schedule_data: ScheduleMeeting;
+        cancel_data: {
+          interview_session_cancel: DatabaseTable['interview_session_cancel'];
+          interview_session_relation: DatabaseTable['interview_session_relation'];
+          recruiter_user: {
+            id: string;
+            first_name: string;
+            last_name: string;
+            email: string;
+            profile_image: string;
+            position: string;
+          };
+          candidate: DatabaseTable['candidates'];
+        }[];
+      };
   }
 }
 

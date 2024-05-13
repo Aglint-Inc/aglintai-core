@@ -1,0 +1,148 @@
+.score_settings {
+  display: flex;
+  padding-left: 10px;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  font-size: 14px;
+  line-height: 20px;
+
+  cursor: pointer;
+}
+
+.score_settings.pop {
+  padding: 4px 10px 4px 8px;
+  border-radius: 8px;
+  background-color: #f79a3d;
+  color: white;
+}
+
+.bu {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+  border-radius: 6px;
+}
+
+.rounded-icon {
+  border-radius: 6px;
+}
+
+.icon-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-block._30x30 {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+}
+
+.svg-icon {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  object-fit: contain;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.fw-semibold.relative_2.two-line-clamp.capitalize {
+  text-transform: capitalize;
+}
+
+.fw-semibold.capitalize {
+  text-transform: capitalize;
+}
+
+.text-red-600 {
+  color: #cc3340;
+}
+
+.fw-semibold.text-purple {
+  color: #a81897;
+}
+
+.fw-semibold.text-green {
+  color: #228f67;
+}
+
+.fw-semibold.text-yellow {
+  color: #eac05b;
+}
+
+.fw-semibold.text-orange {
+  color: #ed942d;
+}
+
+.fw-semibold.text-red {
+  color: #d93f4c;
+}
+
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.fw-semibold.name-text {
+  color: #467b7c;
+}

@@ -3,22 +3,14 @@ import dayjs from 'dayjs';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export type BodyParams = {
-  session_ids: string[];
-  plan_id: string;
-  recruiter_id: string;
-  start_date: string;
-  end_date: string;
-  user_tz: string;
-  is_debreif: boolean;
-};
+import { ApiFindAvailability } from '@/src/types/aglintApi/schedulingApi';
 
 const required_fields = ['recruiter_id', 'start_date', 'end_date'];
 
@@ -31,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       end_date,
       user_tz,
       is_debreif = false,
-    } = req.body as BodyParams;
+    } = req.body as ApiFindAvailability;
 
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
@@ -71,6 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       total: combs.length,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).send(error.message);
   }
 };

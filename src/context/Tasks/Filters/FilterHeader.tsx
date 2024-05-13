@@ -1,10 +1,16 @@
-import { Button, InputAdornment, Popover, Typography } from '@mui/material';
+import {
+  Button,
+  InputAdornment,
+  Popover,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Stack } from '@mui/system';
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IconReload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
@@ -13,7 +19,10 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
 import { useTasksContext } from '../../TasksContextProvider/TasksContextProvider';
 
@@ -54,10 +63,7 @@ export const FilterHeader = ({
 }) => {
   const { filter, handelFilter } = useTasksContext();
 
-  const [selectedDate, setSelectedDate] = useState([
-    dayjs().toString(),
-    dayjs().toString(),
-  ]);
+  const [selectedDate, setSelectedDate] = useState([]);
 
   const [rangeActive, setRangeActive] = useState(false);
 
@@ -125,9 +131,9 @@ export const FilterHeader = ({
               setAnchorEl(e.target);
             },
           }}
-          textLabel={'Due Date'}
-          isDotVisible={false}
-          isActive={false}
+          textLabel={'Interview Date'}
+          isDotVisible={selectedDate.length > 0}
+          isActive={selectedDate.length > 0}
           slotRightIcon={
             <Stack>
               <svg
@@ -216,12 +222,14 @@ export const FilterHeader = ({
                 >
                   <Button
                     onClick={() => {
+                      setSelectedDate([]);
                       handelFilter({
                         ...filter,
                         date: {
                           values: [],
                         },
                       });
+                      setAnchorEl(null);
                     }}
                     startIcon={<IconReload size={'16px'} />}
                     variant='text'
@@ -294,23 +302,26 @@ function FilterDropDown({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
-  const options = (
-    typeof itemList[0] === 'object'
-      ? 'header' in itemList[0]
-        ? itemList
-        : [{ header: null, options: itemList }]
-      : [
-          {
-            header: null,
-            options: itemList.map((item) => ({ id: item, label: item })),
-          },
-        ]
-  ) as {
-    header: string | null;
-    options: { id: string; label: string }[];
-  }[];
-
+  useEffect(() => {
+    setFilteredOptions(
+      (typeof itemList[0] === 'object'
+        ? 'header' in itemList[0]
+          ? itemList
+          : [{ header: null, options: itemList }]
+        : [
+            {
+              header: null,
+              options: itemList.map((item) => ({ id: item, label: item })),
+            },
+          ]) as {
+        header: string | null;
+        options: { id: string; label: string }[];
+      }[],
+    );
+  }, [searchText]);
   return (
     <>
       <ButtonFilter
@@ -355,87 +366,136 @@ function FilterDropDown({
             borderRadius: '10px',
             borderColor: '#E9EBED',
             minWidth: '176px',
+            // maxHeight: '400px',
+            // overflow: 'hidden',
           },
         }}
       >
+        <ShowCode>
+          <ShowCode.When isTrue={title === 'Candidate'}>
+            <Stack px={'10px'} pt={'5px'}>
+              <TextField
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus={true}
+                fullWidth
+                sx={{
+                  p: '4px',
+                }}
+                placeholder='Search by name'
+                onChange={(e) => {
+                  setSearchText(e.target.value);
+                }}
+              />
+            </Stack>
+          </ShowCode.When>
+        </ShowCode>
         <FilterDropdown
           isRemoveVisible={false}
-          slotOption={options?.map((optionList) => {
+          slotOption={filteredOptions?.map((optionList) => {
+
             return (
               <>
                 {optionList.header && (
                   <Typography>{optionList.header}</Typography>
                 )}
-                {optionList.options.map(({ id, label }) => {
-                  return (
-                    <Stack
-                      key={id}
-                      direction={'row'}
-                      sx={{ alignItems: 'center' }}
-                      spacing={1}
-                      onClick={() => {
-                        let temp = [];
-                        if (selectedItems.includes(id)) {
-                          temp = selectedItems.filter(
-                            (innerEle) => innerEle !== id,
+                {optionList.options
+                  .filter((ele) =>
+                    ele.label.toLowerCase().includes(searchText.toLowerCase()),
+                  )
+                  .map(({ id, label }) => {
+                    return (
+                      <Stack
+                        key={id}
+                        direction={'row'}
+                        sx={{ alignItems: 'center' }}
+                        spacing={1}
+                        onClick={() => {
+                          let temp = [];
+                          if (selectedItems.includes(id)) {
+                            temp = selectedItems.filter(
+                              (innerEle) => innerEle !== id,
+                            );
+                          } else {
+                            temp = [...selectedItems, id];
+                          }
+                          //@ts-ignore
+                          const preData =
+                            JSON.parse(localStorage.getItem('taskFilters')) ||
+                            {};
+                          if (title === 'Job') {
+                            preData.Job = [...temp];
+                          }
+                          if (title === 'Priority') {
+                            preData.Priority = [...temp];
+                          }
+                          if (title === 'Status') {
+                            preData.Status = [...temp];
+                          }
+                          if (title === 'Assignee') {
+                            preData.Assignee = [...temp];
+                          }
+
+                          localStorage.setItem(
+                            'taskFilters',
+                            JSON.stringify(preData),
                           );
-                        } else {
-                          temp = [...selectedItems, id];
-                        }
-                        //@ts-ignore
-                        const preData =
-                          JSON.parse(localStorage.getItem('taskFilters')) || {};
-                        if (title === 'Job') {
-                          preData.Job = [...temp];
-                        }
-                        if (title === 'Priority') {
-                          preData.Priority = [...temp];
-                        }
-                        if (title === 'Status') {
-                          preData.Status = [...temp];
-                        }
-                        if (title === 'Assignee') {
-                          preData.Assignee = [...temp];
-                        }
 
-                        localStorage.setItem(
-                          'taskFilters',
-                          JSON.stringify(preData),
-                        );
-
-                        setSelectedItems(temp);
-                      }}
-                    >
-                      <Checkbox
-                        isChecked={selectedItems.includes(id)}
-                        onClickCheck={{}}
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 600,
-                          cursor: 'pointer',
+                          setSelectedItems(temp);
                         }}
-                        // onClick={() => {
-                        //   if (selectedItems.includes(item)) {
-                        //     setSelectedItems((ele: ItemType[]) =>
-                        //       ele.filter((innerEle: ItemType) => innerEle !== item),
-                        //     );
-                        //   } else {
-                        //     setSelectedItems((ele: ItemType[]) => [...ele, item]);
-                        //   }
-                        // }}
                       >
-                        {capitalizeAll(label.replaceAll('null', '') || '')}
-                      </Typography>
-                    </Stack>
-                  );
-                })}
+                        <Checkbox
+                          isChecked={selectedItems.includes(id)}
+                          onClickCheck={{}}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: '14px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                          }}
+                          // onClick={() => {
+                          //   if (selectedItems.includes(item)) {
+                          //     setSelectedItems((ele: ItemType[]) =>
+                          //       ele.filter((innerEle: ItemType) => innerEle !== item),
+                          //     );
+                          //   } else {
+                          //     setSelectedItems((ele: ItemType[]) => [...ele, item]);
+                          //   }
+                          // }}
+                        >
+                          {title !== 'Job' &&
+                            capitalizeAll(label.replaceAll('null', '') || '')}
+
+                          {title === 'Job' &&
+                            capitalizeFirstLetter(
+                              label.replaceAll('null', '') || '',
+                            )}
+                        </Typography>
+                      </Stack>
+                    );
+                  })}
               </>
             );
           })}
           onClickReset={{
             onClick: () => {
+              //@ts-ignore
+              const preData =
+                JSON.parse(localStorage.getItem('taskFilters')) || {};
+              if (title === 'Job') {
+                preData.Job = [];
+              }
+              if (title === 'Priority') {
+                preData.Priority = [];
+              }
+              if (title === 'Status') {
+                preData.Status = [];
+              }
+              if (title === 'Assignee') {
+                preData.Assignee = [];
+              }
+
+              localStorage.setItem('taskFilters', JSON.stringify(preData));
               setSelectedItems([]);
             },
           }}

@@ -1,11 +1,12 @@
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
 import { EmptyState } from '@/devlink2';
-import { TaskProgress } from '@/devlink3';
+import { AvatarWithName, TaskProgress } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
@@ -78,6 +79,34 @@ function SubTaskProgress() {
                 ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
                 : '';
               const location = item.title_meta['{location}'];
+              const errorMessage = item.title_meta['{err_msg}'];
+              let callDetails = item.jsonb_data as {
+                audio_url: string;
+                transcript: {
+                  id: string;
+                  message: string;
+                }[];
+                retell_call_id: string;
+              };
+
+              if (
+                item.progress_type === 'call_completed' &&
+                callDetails?.retell_call_id &&
+                !callDetails?.audio_url
+              ) {
+                getUpdateCallAudio();
+              }
+              async function getUpdateCallAudio() {
+                await axios.post(
+                  `${process.env.NEXT_PUBLIC_AGENT_API}/api/retell/call-details`,
+                  {
+                    call_id: callDetails?.retell_call_id,
+                    task_progress_id: item.id,
+                    candidate_id: selectedTask?.applications?.candidate_id,
+                  },
+                );
+              }
+
               return (
                 <TaskProgress
                   isLineVisible={progressList.length !== i + 1}
@@ -92,7 +121,8 @@ function SubTaskProgress() {
                           .replaceAll('{candidate}', candidateName)
                           .replaceAll('{date_format}', bookingDate)
                           .replaceAll('{time_format}', bookingTime)
-                          .replaceAll('{location}', location),
+                          .replaceAll('{location}', location)
+                          .replaceAll('{err_msg}', errorMessage),
                       }}
                     ></span>
                   }
@@ -131,13 +161,15 @@ function SubTaskProgress() {
                         </Stack>
                       </ShowCode.When>
                       <ShowCode.When isTrue={!!CandidateCreator?.id}>
-                        <MuiAvatar
-                          level={CandidateCreator?.first_name}
-                          src={CandidateCreator?.avatar}
-                          variant='circular'
-                          width='24px'
-                          height='24px'
-                          fontSize='12px'
+                        <AvatarWithName
+                          isAvatarVisible={false}
+                          isCandidateIconVisible={true}
+                          isRoleVisible={false}
+                          isReverseShadowVisible={false}
+                          isShadowVisible={false}
+                          slotAvatar={<></>}
+                          isTickVisible={false}
+                          textName={''}
                         />
                       </ShowCode.When>
                       <ShowCode.When isTrue={!!InterviewerCreator?.user_id}>
@@ -229,15 +261,13 @@ function SubTaskProgress() {
                     <ShowCode.When
                       isTrue={
                         item.progress_type === 'call_completed' &&
-                        Boolean(item.jsonb_data?.transcript.length)
+                        Boolean(callDetails?.transcript.length)
                       }
                     >
                       <PhoneTranscript
-                        audio_url={
-                          'https://dxc03zgurdly9.cloudfront.net/b0deaa1feac5bd2a81e0f96bbe3eb79b/recording.wav'
-                        }
+                        audio_url={callDetails?.audio_url}
                         transcript={
-                          item.jsonb_data?.transcript as {
+                          callDetails?.transcript as {
                             id: string;
                             message: string;
                           }[]

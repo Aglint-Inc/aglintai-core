@@ -2,12 +2,12 @@ import { cloneDeep, debounce, get, isNull, set } from 'lodash';
 import React, { createContext, useContext, useReducer } from 'react';
 
 import { useJobs } from '@/src/context/JobsContext';
-// import { JobTypeDashboard } from '@/src/context/JobsContext/types';
+// import { Job } from '@/src/context/JobsContext/types';
 import {
   JobTypeDB,
   PublicJobsType,
   RecruiterDB,
-  RecruiterUserType
+  RecruiterUserType,
 } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
@@ -183,7 +183,7 @@ const initialState: JobFormState = {
   syncStatus: '',
   currSlide: 'details',
   isJobPostReverting: false,
-  jobPostStatus: 'draft'
+  jobPostStatus: 'draft',
 };
 
 // Define action types
@@ -264,7 +264,7 @@ const jobsReducer = (state: JobFormState, action: JobsAction): JobFormState => {
     }
     case 'closeForm': {
       const newState: JobFormState = {
-        ...initialState
+        ...initialState,
       };
       return newState;
     }
@@ -321,7 +321,7 @@ export type JobsContextType = {
     // eslint-disable-next-line no-unused-vars
     value,
     // eslint-disable-next-line no-unused-vars
-    multipayload
+    multipayload,
   }: {
     path?: string;
     value?: any;
@@ -332,7 +332,7 @@ export type JobsContextType = {
   }) => Promise<void>;
   handleInitializeForm: ({
     // eslint-disable-next-line no-unused-vars
-    type
+    type,
   }: {
     type: JobFormState['formType'];
     recruiter?: RecruiterDB | null;
@@ -357,35 +357,35 @@ const initialContextValue: JobsContextType = {
     details: {
       err: [],
       title: '',
-      rightErr: []
+      rightErr: [],
     },
     phoneScreening: {
       err: [],
       title: '',
-      rightErr: []
+      rightErr: [],
     },
     screening: {
       err: [],
       title: '',
-      rightErr: []
+      rightErr: [],
     },
 
     templates: {
       err: [],
       title: '',
-      rightErr: []
+      rightErr: [],
     },
     workflow: {
       err: [],
       title: '',
-      rightErr: []
+      rightErr: [],
     },
     resumeScore: {
       err: [],
       title: '',
-      rightErr: []
-    }
-  }
+      rightErr: [],
+    },
+  },
 };
 
 const JobsCtx = createContext<JobsContextType>(initialContextValue);
@@ -402,26 +402,26 @@ type JobPostFormProviderParams = {
 
 const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
   const [state, dispatch] = useReducer(jobsReducer, initialState);
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const updateFormTodb = async (currState: JobFormState) => {
     try {
       dispatch({
         type: 'setDbSyncStatus',
         payload: {
-          status: 'saving'
-        }
+          status: 'saving',
+        },
       });
 
       const updatedJobDb = await saveJobPostToDb(currState);
 
       //randomly .jobs was not initilised temp soln
-      if (jobsData.jobs) {
+      if (jobs.status === 'success') {
         // const uiJob = jobsData.jobs.find((j) => j.id === updatedJobDb.id);
         // handleUIJobUpdate({
         //   ...updatedJobDb,
-        //   jd_json: updatedJobDb.jd_json as JobTypeDashboard['jd_json'],
+        //   jd_json: updatedJobDb.jd_json as Job['jd_json'],
         //   active_status:
-        //     updatedJobDb.active_status as JobTypeDashboard['active_status'],
+        //     updatedJobDb.active_status as Job['active_status'],
         //   count: (uiJob
         //     ? uiJob.count
         //     : {
@@ -429,7 +429,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         //         assessment: 0,
         //         qualified: 0,
         //         disqualified: 0
-        //       }) as JobTypeDashboard['count']
+        //       }) as Job['count']
         // });
       }
 
@@ -438,23 +438,25 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
           type: 'setPostMeta',
           payload: {
             createdAt: updatedJobDb.created_at,
-            updatedAt: updatedJobDb.updated_at
-          }
+            updatedAt: updatedJobDb.updated_at,
+          },
         });
       }
       dispatch({
         type: 'setDbSyncStatus',
         payload: {
-          status: 'saved'
-        }
+          status: 'saved',
+        },
       });
     } catch (err) {
-      toast.error('Something went wrong. Please check your network connection.');
+      toast.error(
+        'Something went wrong. Please check your network connection.',
+      );
     }
   };
 
   const formSyncTODB = React.useRef(
-    debounce(updateFormTodb, SYNC_TIME)
+    debounce(updateFormTodb, SYNC_TIME),
   ).current;
 
   const handleUpdateFormFields: JobsContextType['handleUpdateFormFields'] =
@@ -463,7 +465,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         if (multipayload) {
           dispatch({
             type: 'UpdateMultiStates',
-            payload: multipayload
+            payload: multipayload,
           });
 
           const updatedState = cloneDeep(state);
@@ -480,8 +482,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
             type: 'editJobField',
             payload: {
               path,
-              value
-            }
+              value,
+            },
           });
 
           const updatedState = cloneDeep(state);
@@ -498,7 +500,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     recruiter,
     job,
     currSlide,
-    recruiterUser
+    recruiterUser,
   }) => {
     try {
       const seedFormData = getSeedJobFormData(recruiterUser, recruiter);
@@ -506,7 +508,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
       if (type === 'new') {
         dispatch({
           type: 'initForm',
-          payload: { seedData: seedFormData, currSlide }
+          payload: { seedData: seedFormData, currSlide },
         });
       } else {
         dispatch({
@@ -516,10 +518,10 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
               isNull(job.draft) ? job : (job.draft as PublicJobsType),
               recruiter,
               job.status,
-              recruiterUser
+              recruiterUser,
             ),
-            currSlide
-          }
+            currSlide,
+          },
         });
       }
     } catch (err) {
@@ -529,7 +531,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
 
   const handleFormClose = async () => {
     dispatch({
-      type: 'closeForm'
+      type: 'closeForm',
     });
   };
 
@@ -537,8 +539,8 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
     dispatch({
       type: 'updateRevertStatus',
       payload: {
-        status
-      }
+        status,
+      },
     });
   };
   const warning = state.formFields && findDisclaimers(state.formFields);
@@ -552,7 +554,7 @@ const JobPostFormProvider = ({ children }: JobPostFormProviderParams) => {
         handleInitializeForm,
         handleFormClose,
         handleUpdateRevertStatus,
-        formWarnings: warning
+        formWarnings: warning,
       }}
     >
       {children}

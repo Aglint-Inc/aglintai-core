@@ -10,4 +10,6 @@ declare function ScreeningTable(props: {
   styleSidebarWidth?: Types.Devlink.RuntimeProps;
   slotSidebar?: Types.Devlink.Slot;
   isAddFilterVisible?: Types.Visibility.VisibilityConditions;
+  slotRefreshButton?: Types.Devlink.Slot;
+  isSortVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

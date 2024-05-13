@@ -6,7 +6,6 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import { InviteTeamCard, TeamInvite } from '@/devlink';
@@ -15,7 +14,7 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
 import { Database } from '@/src/types/schema';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import { interviewLocationType } from '../AddMemberDialog';
@@ -23,10 +22,12 @@ import { interviewLocationType } from '../AddMemberDialog';
 const EditMember = ({
   open,
   member,
+  memberList,
   onClose,
 }: {
   open: boolean;
   member: RecruiterUserType;
+  memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
   const { handelMemberUpdate, recruiter } = useAuthDetails();
@@ -39,6 +40,7 @@ const EditMember = ({
     designation: string;
     department: string;
     role: RecruiterUserType['role'];
+    manager_id: string;
   }>({
     first_name: member.first_name,
     last_name: member.last_name,
@@ -48,6 +50,7 @@ const EditMember = ({
     department: member.department,
     designation: member.position,
     role: member.role,
+    manager_id: member.manager_id,
   });
 
   const [inviteData, setInviteData] = useState<
@@ -55,6 +58,7 @@ const EditMember = ({
       name: string;
       email: string;
       role: RecruiterUserType['role'];
+      manager_id: string;
     }[]
   >([]);
 
@@ -66,6 +70,7 @@ const EditMember = ({
     employment: boolean;
     designation: boolean;
     role: boolean;
+    manager: boolean;
   }>({
     first_name: false,
     department: false,
@@ -74,30 +79,45 @@ const EditMember = ({
     employment: false,
     designation: false,
     role: false,
+    manager: false,
   });
 
   const [isDisable, setIsDisable] = useState(false);
 
   const checkValidation = () => {
+    const temp = { ...formError };
+    let flag = false;
     if (!form.first_name || form.first_name.trim() === '') {
-      setFormError({ ...formError, first_name: true });
-      setIsDisable(false);
-      return false;
-    } else if (!form.department || form.department.trim() === '') {
-      setFormError({ ...formError, department: true });
-      setIsDisable(false);
-      return false;
-    } else if (!form.designation || form.designation.trim() === '') {
-      setFormError({ ...formError, designation: true });
-      setIsDisable(false);
-      return false;
-    } else if (!form.role || form.role.trim() === '') {
-      setFormError({ ...formError, role: true });
-      setIsDisable(false);
-      return false;
+      temp.first_name = true;
+      flag = true;
     }
-    return true;
+    if (!form.department || form.department.trim() === '') {
+      temp.department = true;
+      flag = true;
+    }
+    if (!form.designation || form.designation.trim() === '') {
+      temp.designation = true;
+      flag = true;
+    }
+    if (!form.role || form.role.trim() === '') {
+      temp.role = true;
+      flag = true;
+    }
+    if (!form.manager_id || form.manager_id.trim() === '') {
+      temp.manager = true;
+      flag = true;
+    }
+    if (flag) {
+      setFormError(temp);
+      setIsDisable(false);
+    }
+    return !flag;
   };
+
+  const memberListObj = memberList.reduce((acc, curr) => {
+    acc[curr.id] = curr.name;
+    return acc;
+  }, {});
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
@@ -159,7 +179,7 @@ const EditMember = ({
               <Stack flexDirection={'row'} gap={2} width={'100%'}>
                 <CustomTextField
                   value={form.designation ? form.designation : ''}
-                  placeholder='Title'
+                  placeholder='Enter Title'
                   label='Title'
                   error={formError.designation}
                   onFocus={() => {
@@ -188,7 +208,7 @@ const EditMember = ({
                       'parttime',
                     ] as employmentTypeEnum[]
                   }
-                  getOptionLabel={(option) => capitalize(option)}
+                  getOptionLabel={(option) => capitalizeFirstLetter(option)}
                   renderInput={(params) => (
                     <CustomTextField
                       {...params}
@@ -200,7 +220,7 @@ const EditMember = ({
                         });
                       }}
                       name='Employment'
-                      placeholder='Employment'
+                      placeholder='Select Employment Type'
                       label='Employment'
                     />
                   )}
@@ -233,14 +253,14 @@ const EditMember = ({
                         });
                       }}
                       name='Location'
-                      placeholder='Location'
+                      placeholder='Choose Location'
                       label='Location'
                     />
                   )}
                 />
                 <Autocomplete
                   fullWidth
-                  value={capitalize(form.department)}
+                  value={capitalizeFirstLetter(form.department)}
                   onChange={(event: any, newValue: string | null) => {
                     setForm({
                       ...form,
@@ -248,7 +268,7 @@ const EditMember = ({
                     });
                   }}
                   options={recruiter?.departments?.map((departments) =>
-                    capitalize(departments),
+                    capitalizeFirstLetter(departments),
                   )}
                   renderInput={(params) => (
                     <CustomTextField
@@ -258,7 +278,7 @@ const EditMember = ({
                         setFormError({ ...formError, department: false });
                       }}
                       name='Department'
-                      placeholder='Department'
+                      placeholder='Select Department'
                       label='Department'
                     />
                   )}
@@ -266,47 +286,77 @@ const EditMember = ({
               </Stack>
 
               {member.role !== 'admin' && (
-                <Autocomplete
-                  style={{ marginTop: '20px' }}
-                  fullWidth
-                  value={capitalizeAll(form.role)}
-                  onChange={(event: any, newValue: string | null) => {
-                    setForm({
-                      ...form,
-                      role: newValue as
-                        | 'recruiter'
-                        | 'interviewer'
-                        | 'hiring_manager'
-                        | 'recruiting_coordinator'
-                        | 'sourcer',
-                    });
-                  }}
-                  id='controllable-states-demo'
-                  options={
-                    [
-                      'recruiter',
-                      'interviewer',
-                      'hiring_manager',
-                      'recruiting_coordinator',
-                      'sourcer',
-                    ] as Database['public']['Enums']['user_roles'][]
-                  }
-                  renderOption={(props, op) => (
-                    <li {...props}>{capitalizeAll(op)}</li>
-                  )}
-                  renderInput={(params) => (
-                    <CustomTextField
-                      {...params}
-                      name='Role'
-                      placeholder='Role'
-                      label='Role'
-                      error={formError.role}
-                      onFocus={() => {
-                        setFormError({ ...formError, role: false });
-                      }}
-                    />
-                  )}
-                />
+                <Stack direction={'row'} gap={2}>
+                  <Autocomplete
+                    fullWidth
+                    value={capitalizeFirstLetter(form.role)}
+                    onChange={(event: any, newValue: string | null) => {
+                      setForm({
+                        ...form,
+                        role: newValue as
+                          | 'recruiter'
+                          | 'interviewer'
+                          | 'hiring_manager'
+                          | 'recruiting_coordinator'
+                          | 'sourcer',
+                      });
+                    }}
+                    id='controllable-states-demo'
+                    options={
+                      [
+                        'recruiter',
+                        'interviewer',
+                        'hiring_manager',
+                        'recruiting_coordinator',
+                        'sourcer',
+                      ] as Database['public']['Enums']['user_roles'][]
+                    }
+                    renderOption={(props, op) => (
+                      <li {...props}>{capitalizeFirstLetter(op)}</li>
+                    )}
+                    renderInput={(params) => (
+                      <CustomTextField
+                        {...params}
+                        name='Role'
+                        placeholder='Choose Role'
+                        label='Role'
+                        error={formError.role}
+                        onFocus={() => {
+                          setFormError({ ...formError, role: false });
+                        }}
+                      />
+                    )}
+                  />
+                  <Autocomplete
+                    fullWidth
+                    value={form.manager_id}
+                    onChange={(event: any, newValue: string | null) => {
+                      setForm({
+                        ...form,
+                        manager_id: newValue,
+                      });
+                    }}
+                    id='controllable-states-demo'
+                    options={memberList.map((member) => member.id)}
+                    getOptionLabel={(option) => {
+                      return capitalizeFirstLetter(
+                        memberListObj[String(option)],
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <CustomTextField
+                        {...params}
+                        name='manager'
+                        placeholder='Select Manager'
+                        label='Manager'
+                        error={formError.manager}
+                        onFocus={() => {
+                          setFormError({ ...formError, manager: false });
+                        }}
+                      />
+                    )}
+                  />
+                </Stack>
               )}
             </Stack>
           }
@@ -330,6 +380,7 @@ const EditMember = ({
                         department: form.department,
                         position: form.designation,
                         role: form.role.toLowerCase() as typeof form.role,
+                        manager_id: form.manager_id,
                       },
                     })
                       .then(() => {
@@ -360,6 +411,7 @@ const EditMember = ({
                   interview_location: null,
                   designation: null,
                   role: 'recruiter',
+                  manager_id: null,
                 });
             },
           }}

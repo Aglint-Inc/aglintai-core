@@ -19,7 +19,7 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     const { users, recruiter_id } =
-      req.body as unknown as InviteUserAPIType['in'];
+      req.body as unknown as InviteUserAPIType['request'];
     if (!users || !recruiter_id) {
       return res
         .status(400)
@@ -77,6 +77,7 @@ export default async function handler(
               recruiter_id,
               user_id: userId,
               role: user.role,
+              manager_id: user.manager_id,
               is_active: true,
               created_by: id,
             })
@@ -112,48 +113,3 @@ export default async function handler(
   res.setHeader('Allow', 'POST');
   res.status(405).end('Method Not Allowed!');
 }
-
-// export const checkPermissionsId = async ({
-//   getVal,
-//   // recruiter_id,
-// }: {
-//   // eslint-disable-next-line no-unused-vars
-//   getVal: (name: string) => string;
-//   // roles: DatabaseEnums['user_roles'][];
-//   // recruiter_id: string;
-// }) => {
-//   try {
-//     const supabase = createServerClient<CustomDatabase>(
-//       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-//       {
-//         cookies: {
-//           get(name: string) {
-//             return getVal(name);
-//           },
-//         },
-//       },
-//     );
-
-//     return await supabase.auth.getUser().then(({ data, error }) => {
-//       if (error) throw new Error(error.message);
-//       if (data.user.id) {
-//         return (
-//           supabase
-//             .from('recruiter_relation')
-//             .select('role')
-//             .eq('user_id', data.user.id)
-//             // .eq('recruiter_id', recruiter_id)
-//             .single()
-//             .then(({ data: dataR, error }) => {
-//               if (error) throw new Error(error.message);
-//               return { role: dataR.role, id: data.user.id };
-//             })
-//         );
-//       }
-//       throw new Error('Failed to load auth user.');
-//     });
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// };

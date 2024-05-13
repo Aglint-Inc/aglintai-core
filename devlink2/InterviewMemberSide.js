@@ -18,6 +18,8 @@ export function InterviewMemberSide({
   isAllActive = false,
   propsGrids = {},
   slotInterview,
+  onClickWaiting = {},
+  isWaitingActive = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1081")} tag="div">

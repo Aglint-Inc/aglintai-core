@@ -1,25 +1,55 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack } from '@mui/material';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Box,
+  Dialog,
+  FormControlLabel,
+  InputAdornment,
+  Menu,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+} from '@mui/material';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import {
+  ButtonPrimaryRegular,
   // AvailableTimerangeEmpty,
   // AvailableTimeRangeLoader,
   CandidateConfirmationPage,
   CandidateScheduleCard,
-  CandidateSuccessPage,
   ChangeButton,
   SelectButton,
   SelectedDateAndTime,
   SessionAndTime,
   SessionInfo,
 } from '@/devlink';
+import {
+  ButtonDanger,
+  ButtonPrimary,
+  CancelButton,
+  InterviewConfirmed,
+  InterviewConfirmedCard,
+  RequestReschedule,
+} from '@/devlink2';
 import { ConfirmationPopup } from '@/devlink3';
-// import { Skeleton } from '@/devlink2';
+import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
+import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
+import { DatabaseTable, DatabaseTableInsert } from '@/src/types/customSchema';
 import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
+import { supabase } from '@/src/utils/supabase/client';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
@@ -27,6 +57,7 @@ import Loader from '../../Common/Loader';
 import CandidateSlotLoad from '../../Common/Lotties/CandidateSlotLoad';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { getBreakLabel } from '../../JobNewInterviewPlan/utils';
+import DateRange from '../../Tasks/Components/DateRange';
 import IconScheduleType from '../AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../AllSchedules/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/scheduleProgressPill';
@@ -74,8 +105,8 @@ const CandidateInvitePlanPage = () => {
     setSelectedSlots,
     setTimezone,
   } = useCandidateInvite();
-  const confirmed = !!meetings.find(
-    ({ interview_meeting: { status } }) => status === 'confirmed',
+  const waiting = !!meetings.find(
+    ({ interview_meeting: { status } }) => status === 'waiting',
   );
   const { rounds } = meetings.reduce(
     (acc, curr) => {
@@ -95,7 +126,7 @@ const CandidateInvitePlanPage = () => {
     },
     { rounds: [] as ScheduleCardProps['round'][] },
   );
-  if (confirmed) return <ConfirmedPage rounds={rounds} />;
+  if (!waiting) return <ConfirmedPage rounds={rounds} />;
   return (
     <CandidateConfirmationPage
       slotCompanyLogo={<Logo />}
@@ -120,32 +151,113 @@ const CandidateInvitePlanPage = () => {
 const ConfirmedPage = (props: ScheduleCardsProps) => {
   const {
     meta: {
-      data: { schedule, candidate },
+      data: { candidate },
     },
   } = useCandidateInvite();
+  const [cancelReschedule, setCancelReschedule] = useState<
+    'reschedule' | 'cancel'
+  >(null);
+  const [scheduling_reason, setSchedulingReason] =
+    useState<DatabaseTable['recruiter']['scheduling_reason']>(null);
 
+  useEffect(() => {
+    get_scheduling_reason(candidate.recruiter_id).then((data) => {
+      setSchedulingReason(data);
+    });
+  }, []);
+  const handleCancelReschedule = async (
+    detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
+  ) => {
+    // return true;
+
+    const details = props.rounds
+      .reduce(
+        (prev, curr) => [...prev, ...curr.sessions],
+        [] as (typeof props.rounds)[0]['sessions'],
+      )
+      .map((session) => ({
+        ...detail,
+        session_id: session.interview_session.id,
+        schedule_id: session.interview_meeting.interview_schedule_id,
+      }));
+    return saveCancelReschedule({ details });
+  };
   return (
-    <CandidateSuccessPage
-      textDesc={
-        <>
-          <p style={{ marginBottom: '0px' }}>
-            Your interview is scheduled, and we look forward to speaking with
-            you.
-          </p>
-          <p>Please check {candidate.email} for the calendar invite.</p>
-        </>
-      }
-      slotScheduleCard={<ConfirmedScheduleCards rounds={props.rounds} />}
-      slotCompanyLogo={<Logo />}
-      onClickSupport={{
-        onClick: () => {
-          window.open(
-            `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${schedule.application_id}`,
-            '_blank',
-          );
-        },
-      }}
-    />
+    <>
+      <InterviewConfirmed
+        slotCompanyLogo={<Logo />}
+        slotInterviewConfirmedCard={
+          <ConfirmedScheduleCards rounds={props.rounds} />
+        }
+        textDesc={
+          'Your interview has been scheduled and we look forwarding to talking with you. A copy of your itinerary and calendar invites should be in your email.'
+        }
+        textMailSent={candidate.email}
+        slotButton={
+          <Stack direction={'row'} gap={2}>
+            <ScheduleButton
+              textLabel={'Request Reschedule'}
+              onClickProps={{
+                onClick: () => setCancelReschedule('reschedule'),
+              }}
+            />
+            <ScheduleButton
+              textLabel={'Cancel Schedule'}
+              textColorProps={{
+                style: { color: '#D93F4C' },
+              }}
+              onClickProps={{
+                onClick: () => setCancelReschedule('cancel'),
+                style: { background: '#FFF0F1' },
+              }}
+              slotIcon={
+                <Box
+                  display={'flex'}
+                  height={'100%'}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                >
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='13'
+                    height='16'
+                    viewBox='0 0 13 13'
+                    fill='none'
+                  >
+                    <path
+                      d='M4 0.498047V1.62305H8.5V0.498047C8.51562 0.263672 8.64062 0.138672 8.875 0.123047C9.10938 0.138672 9.23438 0.263672 9.25 0.498047V1.62305H10C10.4219 1.63867 10.7734 1.78711 11.0547 2.06836C11.3359 2.34961 11.4844 2.70117 11.5 3.12305V3.87305V4.62305V10.623C11.4844 11.0449 11.3359 11.3965 11.0547 11.6777C10.7734 11.959 10.4219 12.1074 10 12.123H2.5C2.07812 12.1074 1.72656 11.959 1.44531 11.6777C1.16406 11.3965 1.01562 11.0449 1 10.623V4.62305V3.87305V3.12305C1.01562 2.70117 1.16406 2.34961 1.44531 2.06836C1.72656 1.78711 2.07812 1.63867 2.5 1.62305H3.25V0.498047C3.26562 0.263672 3.39062 0.138672 3.625 0.123047C3.85938 0.138672 3.98438 0.263672 4 0.498047ZM1.75 4.62305V10.623C1.75 10.8418 1.82031 11.0215 1.96094 11.1621C2.10156 11.3027 2.28125 11.373 2.5 11.373H10C10.2188 11.373 10.3984 11.3027 10.5391 11.1621C10.6797 11.0215 10.75 10.8418 10.75 10.623V4.62305H1.75ZM2.5 2.37305C2.28125 2.37305 2.10156 2.44336 1.96094 2.58398C1.82031 2.72461 1.75 2.9043 1.75 3.12305V3.87305H10.75V3.12305C10.75 2.9043 10.6797 2.72461 10.5391 2.58398C10.3984 2.44336 10.2188 2.37305 10 2.37305H2.5ZM8.00781 6.75586L6.78906 7.99805L8.00781 9.24023C8.16406 9.41211 8.16406 9.58398 8.00781 9.75586C7.83594 9.91211 7.66406 9.91211 7.49219 9.75586L6.25 8.53711L5.00781 9.75586C4.83594 9.91211 4.66406 9.91211 4.49219 9.75586C4.33594 9.58398 4.33594 9.41211 4.49219 9.24023L5.71094 7.99805L4.49219 6.75586C4.33594 6.58398 4.33594 6.41211 4.49219 6.24023C4.66406 6.08398 4.83594 6.08398 5.00781 6.24023L6.25 7.45898L7.49219 6.24023C7.66406 6.08398 7.83594 6.08398 8.00781 6.24023C8.16406 6.41211 8.16406 6.58398 8.00781 6.75586Z'
+                      fill='#D93F4C'
+                    />
+                  </svg>
+                </Box>
+              }
+            />
+          </Stack>
+        }
+      />
+      {Boolean(cancelReschedule) && (
+        <CancelRescheduleDialog
+          onClickTryRescheduling={() => {
+            setCancelReschedule('reschedule');
+          }}
+          onSubmit={handleCancelReschedule}
+          onClose={() => {
+            setCancelReschedule(null);
+          }}
+          options={
+            (cancelReschedule === 'cancel'
+              ? scheduling_reason?.candidate?.cancelation
+              : scheduling_reason?.candidate?.rescheduling) || ['other']
+          }
+          title={
+            cancelReschedule === 'reschedule'
+              ? 'Request Reschedule'
+              : 'Cancel Schedule'
+          }
+          type={cancelReschedule}
+        />
+      )}
+    </>
   );
 };
 
@@ -187,6 +299,237 @@ const DetailsPopup = () => {
 const Invite = ({ rounds }: ScheduleCardsProps) => {
   if (rounds.length === 1) return <SingleDay />;
   return <MultiDay rounds={rounds} />;
+};
+const CancelRescheduleDialog = ({
+  title,
+  type,
+  options,
+  onClose,
+  onClickTryRescheduling,
+  onSubmit,
+}: {
+  title: string;
+  type: 'reschedule' | 'cancel';
+  options: string[];
+  onClose: () => void;
+  onClickTryRescheduling: () => void;
+  onSubmit: (
+    // eslint-disable-next-line no-unused-vars
+    x: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
+  ) => Promise<boolean>;
+}) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [formData, setFormData] = useState<{
+    type;
+    dateRange: [ReturnType<typeof dayjs>, ReturnType<typeof dayjs>];
+    reason: string;
+    additionalNote: string;
+  }>({
+    type,
+    reason: options[0],
+    dateRange: [dayjs(), dayjs().add(1, 'day')],
+    additionalNote: null,
+  });
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    !selectedDateRangeError && setAnchorEl(null);
+  };
+
+  const selectedDateRange = useMemo(
+    () =>
+      `${dayjs(formData.dateRange[0]).format(
+        'ddd, MMMM DD',
+      )} to ${dayjs(formData.dateRange[1]).format('ddd, MMMM DD')}`,
+    [formData.dateRange],
+  );
+  const [selectedDateRangeError, setSelectedDateRangeError] = useState(false);
+
+  const handleSubmit = () => {
+    if (type === 'reschedule') {
+      const error = !formData.dateRange[1] || !formData.dateRange[0];
+      if (selectedDateRangeError || error) return;
+      setSelectedDateRangeError(error);
+    }
+    onSubmit({
+      reason: formData.reason,
+      type: type === 'cancel' ? 'declined' : type,
+      other_details: {
+        dateRange:
+          type === 'cancel'
+            ? null
+            : {
+                start: formData.dateRange[0].toDate().toUTCString(),
+                end: formData.dateRange[1].toDate().toUTCString(),
+              },
+        note: formData.additionalNote,
+      },
+    }).then(() => {
+      toast.success(`${capitalizeAll(type)} request submitted successfully`);
+      onClose();
+    });
+  };
+
+  useEffect(
+    () =>
+      setSelectedDateRangeError(
+        !formData.dateRange[1] || !formData.dateRange[0],
+      ),
+    [formData.dateRange],
+  );
+  useEffect(
+    () => setFormData((pre) => ({ ...pre, reason: options[0] })),
+    [options],
+  );
+
+  return (
+    <Dialog open={true}>
+      <RequestReschedule
+        textHeader={title}
+        isCancelWarningVisible={type === 'cancel'}
+        isRangeVisible={type === 'reschedule'}
+        slotCancelButton={<CancelButton onClickButton={{ onClick: onClose }} />}
+        slotDateRangeInput={
+          <div>
+            <Stack
+              id='demo-customized-button'
+              aria-controls={open ? 'customized-calendar' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              sx={{ cursor: 'pointer' }}
+              onClick={handleClick}
+            >
+              <TextField
+                placeholder='Choose a Date Range'
+                value={selectedDateRange}
+                fullWidth
+                // disabled
+                error={selectedDateRangeError}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='14'
+                        height='16'
+                        viewBox='0 0 14 16'
+                        fill='none'
+                      >
+                        <path
+                          d='M3.5 0C3.8125 0.0208333 3.97917 0.1875 4 0.5V2H10V0.5C10.0208 0.1875 10.1875 0.0208333 10.5 0C10.8125 0.0208333 10.9792 0.1875 11 0.5V2H12C12.5625 2.02083 13.0312 2.21875 13.4062 2.59375C13.7812 2.96875 13.9792 3.4375 14 4V5V6V14C13.9792 14.5625 13.7812 15.0312 13.4062 15.4062C13.0312 15.7812 12.5625 15.9792 12 16H2C1.4375 15.9792 0.96875 15.7812 0.59375 15.4062C0.21875 15.0312 0.0208333 14.5625 0 14V6V5V4C0.0208333 3.4375 0.21875 2.96875 0.59375 2.59375C0.96875 2.21875 1.4375 2.02083 2 2H3V0.5C3.02083 0.1875 3.1875 0.0208333 3.5 0ZM13 6H1V14C1 14.2917 1.09375 14.5312 1.28125 14.7188C1.46875 14.9062 1.70833 15 2 15H12C12.2917 15 12.5312 14.9062 12.7188 14.7188C12.9062 14.5312 13 14.2917 13 14V6ZM12 3H2C1.70833 3 1.46875 3.09375 1.28125 3.28125C1.09375 3.46875 1 3.70833 1 4V5H13V4C13 3.70833 12.9062 3.46875 12.7188 3.28125C12.5312 3.09375 12.2917 3 12 3Z'
+                          fill='#68737D'
+                        />
+                      </svg>
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                Options
+              </TextField>
+            </Stack>
+            <Menu
+              elevation={0}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              id='customized-calendar'
+              MenuListProps={{
+                'aria-labelledby': 'demo-customized-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+            >
+              <DateRange
+                value={formData.dateRange}
+                onChange={(range) => {
+                  setFormData((pre) => ({ ...pre, dateRange: range }));
+                }}
+              />
+              <Stack px={1}>
+                <ButtonPrimaryRegular
+                  textLabel='Done'
+                  onClickButton={{ onClick: handleClose }}
+                />
+              </Stack>
+            </Menu>
+          </div>
+        }
+        slotRadioText={
+          // <FormControl>
+          <RadioGroup
+            name='radio-buttons-group'
+            value={formData.reason}
+            onChange={(e) => {
+              setFormData((pre) => ({ ...pre, reason: e.currentTarget.value }));
+            }}
+          >
+            {options.map((item) => (
+              <FormControlLabel
+                key={item}
+                value={item}
+                control={<Radio />}
+                label={capitalizeAll(item)}
+                sx={{
+                  ml: 0,
+                  '& .MuiRadio-root': {
+                    p: 0.5,
+                  },
+                  '& .MuiTypography-root': { fontSize: '14px' },
+                }}
+              />
+            ))}
+          </RadioGroup>
+          // {/* </FormControl> */}
+        }
+        slotPrimaryButton={
+          <Stack>
+            {type === 'reschedule' && (
+              <ButtonPrimary
+                textLabel={'Reschedule'}
+                onClickButton={{ onClick: handleSubmit }}
+              />
+            )}
+            {type === 'cancel' && (
+              <ButtonDanger
+                textLabel={'Cancel Schedule'}
+                onClickButton={{ onClick: handleSubmit }}
+              />
+            )}
+          </Stack>
+        }
+        slotInputAdditionalNotes={
+          <TextField
+            multiline
+            placeholder='Add additional notes.'
+            minRows={4}
+            value={formData.additionalNote}
+            fullWidth
+            onChange={(e) =>
+              setFormData((pre) => ({
+                ...pre,
+                additionalNote: e.target.value.trim(),
+              }))
+            }
+          />
+        }
+        onClickClose={{
+          onClick: onClose,
+        }}
+        onClickTryReschedulingNow={{
+          onClick: onClickTryRescheduling,
+        }}
+      />
+    </Dialog>
+  );
 };
 
 const SingleDay = () => {
@@ -353,48 +696,70 @@ const ConfirmedScheduleCards = (props: ScheduleCardsProps) => {
 
 const ConfirmedScheduleCard = (props: ScheduleCardProps) => {
   const { timezone } = useCandidateInvite();
-  const [month, date, day] = dayJS(
+  const [month, date, day, year] = dayJS(
     props?.round?.sessions?.[0].interview_meeting?.start_time ?? null,
     timezone.tzCode,
   )
-    .format('MMMM DD dddd')
+    .format('MMMM DD ddd YYYY')
     .split(' ');
-  const duration = (props?.round?.sessions ?? []).reduce((acc, curr) => {
-    acc += curr.interview_session.session_duration;
-    return acc;
-  }, 0);
+  // const duration = (props?.round?.sessions ?? []).reduce((acc, curr) => {
+  //   acc += curr.interview_session.session_duration;
+  //   return acc;
+  // }, 0);
 
   const sessions = props.round.sessions.map((session, i) => {
     const name = session.interview_session.name;
+    const tz = String(new Date(session.interview_meeting.start_time))
+      .match(/\(([^)]+)\)$/)[1]
+      ?.split(' ')
+      .map((item) => item.slice(0, 1))
+      .join('');
     const duration = `${dayJS(
       session.interview_meeting.start_time,
       timezone.tzCode,
     ).format('hh:mm A')} to ${dayJS(
       session.interview_meeting.end_time,
       timezone.tzCode,
-    ).format('hh:mm A')}`;
+    ).format('hh:mm A')} ${tz}`;
+
     return (
-      <SessionAndTime key={i} textSessionName={name} textTime={duration} />
+      <InterviewConfirmedCard
+        key={i}
+        slotMeetingIcon={
+          <IconScheduleType type={session.interview_session.schedule_type} />
+        }
+        textDate={`${day}, ${month} ${date}, ${year}`}
+        textDuration={getBreakLabel(session.interview_session.session_duration)}
+        textPanel={name}
+        textPlatformName={capitalizeAll(
+          session.interview_session.schedule_type,
+        )}
+        onClickJoinGoogleMeet={{
+          onClick: () =>
+            window.open(session.interview_meeting.meeting_link, '_blank'),
+        }}
+        textTime={duration}
+      />
+      // <SessionAndTime key={i} textSessionName={name} textTime={duration} />
     );
   });
 
-  return (
-    <CandidateScheduleCard
-      isTitle={props.showTitle}
-      textDay={props.round.title}
-      isSelected={true}
-      slotButton={<></>}
-      textDuration={getDurationText(duration)}
-      slotSessionInfo={
-        <SelectedDateAndTime
-          slotSessionAndTime={sessions}
-          textDate={date}
-          textDay={day}
-          textMonth={month}
-        />
-      }
-    />
-  );
+  return sessions;
+  // <CandidateScheduleCard
+  //   isTitle={props.showTitle}
+  //   textDay={props.round.title}
+  //   isSelected={true}
+  //   slotButton={<></>}
+  //   textDuration={getDurationText(duration)}
+  //   slotSessionInfo={
+  //     <SelectedDateAndTime
+  //       slotSessionAndTime={sessions}
+  //       textDate={date}
+  //       textDay={day}
+  //       textMonth={month}
+  //     />
+  //   }
+  // />
 };
 
 const MultiDay = ({ rounds }: ScheduleCardsProps) => {
@@ -421,7 +786,6 @@ const MultiDayLoading = () => {
 const MultiDaySuccess = (props: ScheduleCardsProps) => {
   const { selectedSlots } = useCandidateInvite();
   const [open, setOpen] = useState(false);
-
   const enabled = selectedSlots.length === props.rounds.length;
   return (
     <>
@@ -592,6 +956,7 @@ const ScheduleCard = (props: ScheduleCardProps) => {
 type SessionsProps = Pick<ScheduleCardProps['round'], 'sessions'> & {
   showBreak: boolean;
 };
+
 const Sessions = (props: SessionsProps) => {
   const sessions = props.sessions.reduce((acc, curr) => {
     acc.push(
@@ -612,6 +977,7 @@ const Sessions = (props: SessionsProps) => {
 type SessionCardProps = {
   session: SessionsProps['sessions'][number];
 };
+
 const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
   const duration = getBreakLabel(interview_session.session_duration);
   const scheduleType = getScheduleType(interview_session.schedule_type);
@@ -671,4 +1037,30 @@ const BreakIcon = () => {
       ></path>
     </svg>
   );
+};
+
+const get_scheduling_reason = async (id: string) => {
+  return axios
+    .post<
+      API_get_scheduling_reason['response']
+    >('/api/get_scheduling_reason', { id })
+    .then(({ data }) => {
+      return data.data;
+    });
+};
+
+const saveCancelReschedule = async ({
+  details,
+}: {
+  details: DatabaseTableInsert['interview_session_cancel'][];
+}) => {
+  return supabase
+    .from('interview_session_cancel')
+    .insert(details)
+    .then(({ error }) => {
+      if (error) {
+        throw new Error(error.message);
+      }
+      return true;
+    });
 };

@@ -65,6 +65,10 @@
   background-color: white;
 }
 
+.mt-20 {
+  margin-top: 20px;
+}
+
 .div-block-507 {
   display: flex;
   margin-bottom: 20px;
@@ -100,6 +104,10 @@
   text-transform: capitalize;
 }
 
+.text-red-600 {
+  color: #cc3340;
+}
+
 .fw-semibold.text-purple {
   color: #a81897;
 }
@@ -120,13 +128,53 @@
   color: #d93f4c;
 }
 
+.fw-semibold.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.fw-semibold.text-yellow-700 {
+  color: #ad5918;
+}
+
+.fw-semibold.p-lr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.fw-semibold.name-text {
+  color: #467b7c;
+}
+
 .color-grey-600 {
   color: #68737d;
 }
 
 .button_primary {
   display: flex;
-  padding: 6px 16px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
@@ -170,10 +218,18 @@
   background-color: #d8dcde;
 }
 
+.button_primary.greay_btn.width-auto {
+  width: auto;
+}
+
 .button_primary.is_outline {
   border: 1px solid #1f73b7;
   background-color: white;
   color: #1f73b7;
+}
+
+.button_primary.is_outline.width-100 {
+  width: 100%;
 }
 
 .button_primary.greay_btn-copy {
@@ -230,6 +286,12 @@
 .button_primary.success {
   padding-top: 8px;
   padding-bottom: 8px;
+}
+
+.button_primary.green-btn {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #228f67;
 }
 
 .cj-main-wrapper {

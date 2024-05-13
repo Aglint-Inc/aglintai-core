@@ -14,12 +14,12 @@ export const jobAssessmentQueryKeys = {
 
 export const useCurrentJob = () => {
   const router = useRouter();
-  const { jobsData } = useJobs();
+  const { jobs } = useJobs();
   const job_id = (
     (router?.pathname ?? null).startsWith(pageRoutes.JOBS)
       ? router?.query?.id ?? null
       : null
   ) as string;
-  const job = jobsData?.jobs?.find((job) => job.id === job_id) ?? null;
+  const job = jobs.data.find((job) => job.id === job_id) ?? null;
   return { job_id, job };
 };

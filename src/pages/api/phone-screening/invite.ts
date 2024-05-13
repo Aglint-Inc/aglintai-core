@@ -7,8 +7,8 @@ import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
+import { sendMails } from '../../../apiUtils/job/jobApplications/candidateEmail/utils';
 import { JobApplicationEmails } from '../job/jobApplications/candidateEmail';
-import { sendMails } from '../job/jobApplications/candidateEmail/utils';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -78,7 +78,7 @@ const updateDataInDb = async (candidates: { application_id: string }[]) => {
       .eq('id', candidates[0].application_id),
   ) as unknown as JobApplication[];
   if (app.status_emails_sent) {
-    if (app.status_emails_sent) {
+    if (app.status_emails_sent.phone_screening) {
       app.status_emails_sent.phone_screening_resend = timeStamp;
 
       supabaseWrap(

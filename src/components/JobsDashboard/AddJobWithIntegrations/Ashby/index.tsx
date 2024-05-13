@@ -38,7 +38,7 @@ export function AshbyModalComp() {
   const { recruiter, setRecruiter } = useAuthDetails();
   const { setIntegration, integration, handleClose } = useIntegration();
   const router = useRouter();
-  const { jobsData, handleJobRead, experimental_handleGenerateJd } = useJobs();
+  const { jobs, handleJobRead, experimental_handleGenerateJd } = useJobs();
   const [postings, setPostings] = useState<JobAshby[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedAshbyPostings, setSelectedAshbyPostings] = useState<
@@ -48,10 +48,10 @@ export function AshbyModalComp() {
   const apiRef = useRef(null);
 
   useEffect(() => {
-    if (jobsData.jobs && recruiter.ashby_key) {
+    if (jobs.status === 'success' && recruiter.ashby_key) {
       fetchJobs();
     }
-  }, [jobsData.jobs]);
+  }, [jobs.status]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(recruiter.ashby_key);
@@ -117,7 +117,6 @@ export function AshbyModalComp() {
         //   recruiter_id: recruiter.id,
         // });
 
-        //updating jobsData
         await handleJobRead();
         //closing modal once done
         setIntegration((prev) => ({
