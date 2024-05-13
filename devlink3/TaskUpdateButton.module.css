@@ -80,6 +80,10 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .div-block-1609 {
   display: flex;
   justify-content: flex-start;

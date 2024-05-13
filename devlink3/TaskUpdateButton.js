@@ -40,7 +40,7 @@ export function TaskUpdateButton({
           tag="div"
           {...onClickCloseTask}
         >
-          <_Builtin.Block tag="div">{"Close tasks"}</_Builtin.Block>
+          <_Builtin.Block tag="div">{"Close Tasks"}</_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1610", "no-red")}
