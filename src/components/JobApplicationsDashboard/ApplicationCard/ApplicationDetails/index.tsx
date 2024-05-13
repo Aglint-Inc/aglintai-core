@@ -110,6 +110,7 @@ import CopyWrapper from '../../Common/Wrappers/copyWrapper';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
+import NoApplicants from '../../Lotties/NoApplicants';
 import {
   capitalize,
   formatTimeStamp,
@@ -560,6 +561,7 @@ const Tasks = ({ application }: { application: JobApplication }) => {
       textName={<TaskName task={task} />}
     />
   ));
+  if (taskCards.length === 0) return <EmptyState type='Tasks' />;
   return (
     <JobDetailInterview
       slotNewInterviewPlanCard={taskCards}
@@ -568,6 +570,17 @@ const Tasks = ({ application }: { application: JobApplication }) => {
         onClick: () => push(`/tasks?application_id=${application?.id ?? null}`),
       }}
     />
+  );
+};
+
+const EmptyState = ({ type }: { type: TabType }) => {
+  return (
+    <Stack width={'100%'} alignItems={'center'} justifyContent={'center'}>
+      <Stack width={'100px'}>
+        <NoApplicants />
+      </Stack>
+      <Stack>No {type} data found</Stack>
+    </Stack>
   );
 };
 
@@ -671,6 +684,9 @@ const IntreviewSection: React.FC<{
       return response;
     },
   );
+
+  if (sessions.length === 0) return <EmptyState type='Interview' />;
+
   const sessionCards = sessions.map((session, i) => (
     <InterviewSessionCard key={i} session={session} />
   ));

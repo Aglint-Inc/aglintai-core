@@ -130,7 +130,7 @@ export function CandidateSideDrawer({
                   tag="div"
                 >
                   <_Builtin.Block
-                    className={_utils.cx(_styles, "div-block-968")}
+                    className={_utils.cx(_styles, "div-block-968", "hide")}
                     tag="div"
                     {...onClickBookmark}
                   >
