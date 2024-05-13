@@ -9,6 +9,5 @@
     "supabase",
     "tiptap",
     "webflow"
-  ],
-  "eslint.enable": true
+  ]
 }
