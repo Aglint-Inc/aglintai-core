@@ -31,6 +31,7 @@ import {
   ScheduleCardSmall,
   ScoreSetting,
 } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { useJobDetails } from '@/src/context/JobDashboard';
@@ -756,19 +757,14 @@ const JobClose = ({
 };
 
 const Modules = () => {
-  const { job } = useJobDetails();
+  const { isAssessmentEnabled, isScreeningEnabled, isSchedulingEnabled } =
+    useAuthDetails();
   return (
     <>
       <ProfileScoreModule />
-      {job.activeSections.includes(JobApplicationSections.INTERVIEW) && (
-        <InterviewModule />
-      )}
-      {job.activeSections.includes(JobApplicationSections.ASSESSMENT) && (
-        <AssessmentModule />
-      )}
-      {job.activeSections.includes(JobApplicationSections.SCREENING) && (
-        <ScreeningModule />
-      )}
+      {isSchedulingEnabled && <InterviewModule />}
+      {isAssessmentEnabled && <AssessmentModule />}
+      {isScreeningEnabled && <ScreeningModule />}
 
       <EmailTemplatesModule />
     </>

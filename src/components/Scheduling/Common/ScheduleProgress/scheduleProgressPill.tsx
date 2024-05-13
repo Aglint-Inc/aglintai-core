@@ -249,7 +249,7 @@ const DebriefSessionIcon = () => {
   );
 };
 
-const statusToColor = (status: ScheduleProgressPillProps['status']) => {
+export const statusToColor = (status: ScheduleProgressPillProps['status']) => {
   switch (status) {
     case 'waiting':
       return '#FFB057';
@@ -264,7 +264,7 @@ const statusToColor = (status: ScheduleProgressPillProps['status']) => {
   }
 };
 
-const getScheduleDate = (date: ScheduleProgressPillProps['date']) => {
+export const getScheduleDate = (date: ScheduleProgressPillProps['date']) => {
   if (!date) return '---';
   const startTime = `${dayjs(date.startTime).format('MMM')} ${dayjs(
     date.startTime,
