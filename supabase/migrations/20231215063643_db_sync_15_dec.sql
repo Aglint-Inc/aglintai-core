@@ -1,5 +1,3 @@
-create extension if not exists "postgis" with schema "extensions";
-
 SET
   pgaudit.log = 'none';
 
