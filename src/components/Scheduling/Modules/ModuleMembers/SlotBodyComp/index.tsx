@@ -97,7 +97,7 @@ function SlotBodyComp({
                   }}
                 />
                 <NewTabPill
-                  textLabel={'Intructions'}
+                  textLabel={'Instructions'}
                   isPillActive={tab === 'intructions'}
                   onClickPill={{
                     onClick: () => {
