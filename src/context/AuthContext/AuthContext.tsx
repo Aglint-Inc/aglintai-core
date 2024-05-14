@@ -222,7 +222,12 @@ const AuthProvider = ({ children }) => {
     delete detailsAll['role'];
     const { data, error } = await supabase
       .from('recruiter_user')
-      .update(detailsAll)
+      .update({
+        ...detailsAll,
+        manager_id: undefined,
+        role: undefined,
+        last_login: undefined,
+      })
       .eq('user_id', id || userDetails.user.id)
       .select();
     if (!error) {
