@@ -3398,5 +3398,3 @@ with check ((user_id = ( SELECT auth.uid() AS uid)));
 
 
 CREATE TRIGGER create_interview_plan AFTER INSERT ON public.public_jobs FOR EACH ROW EXECUTE FUNCTION trigger_create_interview_plan();
-
-
