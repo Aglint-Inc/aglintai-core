@@ -110,7 +110,12 @@ const Dashboard = () => {
     matches: { data: counts },
     schedules: { data: schedule },
     status: { description_changed, scoring_criteria_changed },
-    publishStatus: { publishable, loading },
+    publishStatus: {
+      publishable,
+      loading,
+      detailsValidity,
+      hiringTeamValidity,
+    },
     jobPolling,
   } = useJobDetails();
   const { push } = useRouter();
@@ -164,7 +169,15 @@ const Dashboard = () => {
         toast.warning(
           'Generating profile score criteria. Please wait before publishing.',
         );
-      else toast.error('Unable to publish. Please verify the job details.');
+      else {
+        if (!detailsValidity.validity || !hiringTeamValidity.validity) {
+          if (!detailsValidity.validity) toast.error(detailsValidity.message);
+          if (!hiringTeamValidity.validity)
+            toast.error(hiringTeamValidity.message);
+        } else {
+          toast.error('Unable to publish. Please verify the job details.');
+        }
+      }
     }
   };
 
@@ -625,14 +638,9 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
     !publishStatus.hiringTeamValidity.validity
   ) {
     if (!publishStatus.detailsValidity.validity) {
-      const titles = publishStatus.detailsValidity.invalidFields.map((field) =>
-        capitalizeAll(field),
-      );
       banners.push(
         <DashboardAlert
-          textTitile={`${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
-            titles.length === 1 ? 'field is' : 'fields are'
-          } incomplete`}
+          textTitile={publishStatus.detailsValidity.message}
           textShortDescription={
             'Please ensure that valid job details are provided.'
           }
@@ -644,14 +652,9 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
       );
     }
     if (!publishStatus.hiringTeamValidity.validity) {
-      const titles = publishStatus.hiringTeamValidity.invalidFields.map(
-        (field) => capitalizeAll(field),
-      );
       banners.push(
         <DashboardAlert
-          textTitile={`${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
-            titles.length === 1 ? 'field is' : 'fields are'
-          } incomplete`}
+          textTitile={publishStatus.hiringTeamValidity.message}
           textShortDescription={
             'Please ensure that necessary hiring members are selected.'
           }

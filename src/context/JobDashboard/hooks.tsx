@@ -26,6 +26,7 @@ import {
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
 import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
+import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
 import { useJobs } from '../JobsContext';
@@ -189,22 +190,27 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
 type DetailsValidity = {
   validity: boolean;
   invalidFields: (keyof JobDetailsForm)[];
+  message: string;
 };
 
 export const getDetailsValidity = (job: Job): DetailsValidity => {
-  if (!job)
+  if (!job) {
+    const invalidFields: DetailsValidity['invalidFields'] = [
+      'company',
+      'department',
+      'description',
+      'job_title',
+      'job_type',
+      'location',
+      'workplace_type',
+    ];
+    const message = getMessage(invalidFields);
     return {
       validity: false,
-      invalidFields: [
-        'company',
-        'department',
-        'description',
-        'job_title',
-        'job_type',
-        'location',
-        'workplace_type',
-      ],
+      invalidFields,
+      message,
     };
+  }
   //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
   const draft = {
     job_title: job.job_title,
@@ -216,7 +222,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
     workplace_type: job.workplace_type,
     ...(job.draft ?? {}),
   };
-  return Object.entries(draft).reduce(
+  const result = Object.entries(draft).reduce(
     (acc, [key, value]) => {
       const safeKey = key as keyof typeof draft;
       switch (safeKey) {
@@ -245,6 +251,15 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
     },
     { validity: true, invalidFields: [] } as DetailsValidity,
   );
+  result['message'] = getMessage(result.invalidFields);
+  return result;
+};
+
+const getMessage = (invalidFields: string[]) => {
+  const titles = (invalidFields ?? []).map((field) => capitalizeAll(field));
+  return `${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
+    titles.length === 1 ? 'field is' : 'fields are'
+  } incomplete`;
 };
 
 type HiringTeamValidity = {
@@ -253,20 +268,29 @@ type HiringTeamValidity = {
     JobHiringTeamForm,
     'hiring_manager' | 'recruiter'
   >)[];
+  message: string;
 };
 
 export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
-  if (!job)
+  if (!job) {
+    const invalidFields: HiringTeamValidity['invalidFields'] = [
+      'hiring_manager',
+      'recruiter',
+    ];
+    const message = getMessage(invalidFields);
     return {
       validity: false,
-      invalidFields: ['hiring_manager', 'recruiter'],
+      invalidFields,
+      message,
     };
+  }
+
   //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
   const draft = {
     hiring_manager: job.hiring_manager,
     recruiter: job.recruiter,
   };
-  return Object.entries(draft).reduce(
+  const result = Object.entries(draft).reduce(
     (acc, [key, value]) => {
       const safeKey = key as keyof typeof draft;
       switch (safeKey) {
@@ -284,6 +308,8 @@ export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
     },
     { validity: true, invalidFields: [] } as HiringTeamValidity,
   );
+  result['message'] = getMessage(result.invalidFields);
+  return result;
 };
 
 export const validateJd = (jd_json: JdJsonType) => {
