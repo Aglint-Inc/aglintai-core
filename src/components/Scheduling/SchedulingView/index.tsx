@@ -69,7 +69,7 @@ function SchedulingViewComp() {
     if (schedule?.users) {
       setSessionRelation(
         schedule?.users?.find((user) => user.email === recruiterUser.email)
-          .interview_session_relation,
+          ?.interview_session_relation,
       );
     }
   }, [schedule?.users]);
