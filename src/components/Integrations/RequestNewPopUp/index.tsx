@@ -43,7 +43,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         });
       setShowThanks(true);
     } else {
-      toast.error('Please enter tool name!');
+      toast.error('Please enter the name of the integration!');
     }
   }
 
@@ -87,16 +87,19 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                 <Typography fontSize={'14px'} variant='body1'>
                   Integration Name
                 </Typography>
-                <TextField inputRef={nameRef} placeholder='Enter tool a name' />
+                <TextField
+                  inputRef={nameRef}
+                  placeholder='Enter the name of the integration'
+                />
               </Stack>
               <Stack direction={'column'} spacing={'10px'}>
                 <Typography fontSize={'14px'} variant='body1'>
-                  Description (If any)
+                  Description (Optional)
                 </Typography>
                 <TextField
                   multiline
                   minRows={5}
-                  placeholder='Enter description (if any)'
+                  placeholder='Add a brief description (optional)'
                   inputRef={descriptionRef}
                 />
               </Stack>
@@ -112,7 +115,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
             onClick: requestTool,
           }}
           isGreyButtonVisible={false}
-          textPopupButton={'Send'}
+          textPopupButton={'Request'}
         />
       </ShowCode.When>
     </Dialog>
