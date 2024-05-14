@@ -1,8 +1,9 @@
+import {SubTaskProgress} from '@aglint/shared-types';
 import {
   supabaseWrap,
   supabaseAdmin,
 } from '../../services/supabase/SupabaseAdmin';
-import {SubTaskProgress} from '../../types/aglint_types/data.types';
+
 import {dayjsLocal} from '../dayjsLocal/dayjsLocal';
 import {EmailAgentId, PhoneAgentId} from './constants';
 

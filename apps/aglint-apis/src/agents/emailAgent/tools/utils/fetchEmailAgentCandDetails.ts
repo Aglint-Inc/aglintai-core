@@ -29,7 +29,7 @@ export const fetchEmailAgentCandDetails = async (
         '*, interview_filter_json(* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings,email_template)), candidates(*))))'
       )
       .eq('thread_id', thread_id)
-  ) as CandidateScheduleDetails[];
+  );
 
   if (!cand_rec) {
     // this email is not from candidate

@@ -6,23 +6,23 @@ import {
   supabaseAdmin,
 } from '../../services/supabase/SupabaseAdmin';
 import {
-  InterviewSessionTypeDB,
-  InterviewMeetingTypeDb,
-  InterviewFilterJsonType,
-  InterviewScheduleTypeDB,
-  JobApplcationDB,
-  CandidateType,
-  PublicJobsType,
-  RecruiterType,
-} from '../../types/aglint_types/data.types';
-import {schedulingSettingType} from '../../types/aglint_types/scheduleTypes/scheduleSetting';
-import {SessionsCombType} from '../../types/aglint_types/scheduleTypes/types';
-import {
   CandidateInfoType,
   schedule_req_body,
 } from '../../types/app_types/scheduleAgentTypes';
 import {getFullName} from '../getFullName';
 import {SINGLE_DAY_TIME} from './constants';
+import {
+  CandidateType,
+  InterviewFilterJsonType,
+  InterviewMeetingTypeDb,
+  InterviewScheduleTypeDB,
+  InterviewSessionTypeDB,
+  JobApplcationDB,
+  PublicJobsType,
+  RecruiterType,
+  SessionsCombType,
+  schedulingSettingType,
+} from '@aglint/shared-types';
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
@@ -38,7 +38,7 @@ export const fetchCandidateDetails = async (
         '* ,interview_schedule(id,application_id, applications(*,public_jobs(id,recruiter_id,logo,job_title,company,overview,description,recruiter!public_jobs_recruiter_id_fkey(scheduling_settings)), candidates(*)))'
       )
       .eq('id', req_payload.filter_json_id)
-  ) as CandidateScheduleDetails[];
+  );
 
   if (!cand_rec) {
     throw new Error('invalid filter id');

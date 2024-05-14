@@ -2,8 +2,8 @@ import OpenAI from 'openai';
 import {ZodType, ZodTypeDef} from 'zod';
 import zodToJsonSchema from 'zod-to-json-schema';
 import {ScheduleTool} from '../../../types/app_types/scheduleAgentTypes';
-import {SessionsCombType} from '../../../types/aglint_types/scheduleTypes/types';
 import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
+import {SessionsCombType} from '@aglint/shared-types';
 
 export const createOpenAiTool = ({
   description,

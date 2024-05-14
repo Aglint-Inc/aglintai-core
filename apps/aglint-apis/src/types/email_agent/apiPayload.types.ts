@@ -1,8 +1,8 @@
 import {
   InterviewMeetingTypeDb,
   InterviewSession,
-} from '../aglint_types/data.types';
-import {schedulingSettingType} from '../aglint_types/scheduleTypes/scheduleSetting';
+  schedulingSettingType,
+} from '@aglint/shared-types';
 
 export type EmailAgentPayload = {
   history: any[];
