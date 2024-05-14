@@ -309,7 +309,8 @@ function Theme({ children }) {
             boxShadow: '0px 0px 0px 1px #d8dcde inset',
           },
           option: {
-            fontSize: '14px'
+            fontSize: '14px',
+            // fontWeight: 'normal'
           }
         },
       },
