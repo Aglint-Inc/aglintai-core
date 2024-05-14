@@ -1,5 +1,5 @@
+import {PhoneAgentId} from '@aglint/shared-utils';
 import {supabaseWrap, supabaseAdmin} from '../services/supabase/SupabaseAdmin';
-import {PhoneAgentId} from './scheduling_utils/constants';
 import {LoggerType} from './scheduling_utils/getCandidateLogger';
 import {fetchTranascript} from './scheduling_utils/retell_transcript';
 

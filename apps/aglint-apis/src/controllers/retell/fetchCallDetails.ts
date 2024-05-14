@@ -4,7 +4,7 @@ import {
   supabaseAdmin,
   supabaseWrap,
 } from '../../services/supabase/SupabaseAdmin';
-import {PhoneAgentId} from '../../utils/scheduling_utils/constants';
+import {PhoneAgentId} from '@aglint/shared-utils';
 export const fetchCallDetails = async (req: Request, res: Response) => {
   const {call_id, task_progress_id, candidate_id} = req.body;
   if (!call_id || !task_progress_id || !candidate_id)

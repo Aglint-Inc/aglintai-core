@@ -10,7 +10,6 @@ import {
   schedule_req_body,
 } from '../../types/app_types/scheduleAgentTypes';
 import {getFullName} from '../getFullName';
-import {SINGLE_DAY_TIME} from './constants';
 import {
   CandidateType,
   InterviewFilterJsonType,
@@ -23,6 +22,7 @@ import {
   SessionsCombType,
   schedulingSettingType,
 } from '@aglint/shared-types';
+import {SINGLE_DAY_TIME} from '@aglint/shared-utils';
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);

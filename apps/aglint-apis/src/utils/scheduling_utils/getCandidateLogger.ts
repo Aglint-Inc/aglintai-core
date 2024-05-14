@@ -5,7 +5,7 @@ import {
 } from '../../services/supabase/SupabaseAdmin';
 
 import {dayjsLocal} from '../dayjsLocal/dayjsLocal';
-import {EmailAgentId, PhoneAgentId} from './constants';
+import {PhoneAgentId, EmailAgentId} from '@aglint/shared-utils';
 
 type TitleAttrType = {
   '{candidate}'?: string | undefined;
