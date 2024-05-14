@@ -43,6 +43,7 @@ export default async function handler(req, res) {
       const { data } = await axios.get(
         `https://api.apollo.io/v1/organizations/enrich?api_key=${process.env.APPOLO_API}&domain=${dbFormatterUrl}`,
       );
+
       companyDetails = data.organization;
       supabaseWrap(
         await supabaseAdmin.from('company_search_cache').insert({

@@ -222,11 +222,20 @@ const AuthProvider = ({ children }) => {
     delete detailsAll['role'];
     const { data, error } = await supabase
       .from('recruiter_user')
-      .update(detailsAll)
+      .update({
+        ...details,
+        manager_id: undefined,
+        role: undefined,
+        last_login: undefined,
+      })
       .eq('user_id', id || userDetails.user.id)
-      .select();
+      .select()
+      .single();
     if (!error) {
-      setRecruiterUser(data[0] as RecruiterUserType);
+      setRecruiterUser({
+        ...details,
+        ...data,
+      } as RecruiterUserType);
       return true;
     } else {
       toast.error(`Oops! Something went wrong. (${error.message})`);

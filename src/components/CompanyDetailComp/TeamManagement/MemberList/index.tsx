@@ -8,7 +8,10 @@ import { useMemo, useState } from 'react';
 import { TeamListItem } from '@/devlink';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
-import { ContextValue } from '@/src/context/AuthContext/AuthContext';
+import {
+  ContextValue,
+  useAuthDetails,
+} from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
 import { RecruiterUserType } from '@/src/types/data.types';
@@ -42,6 +45,7 @@ const Member = ({
   };
   const [openForDelete, setOpenForDelete] = useState(false);
   const [openForCancel, setOpenForCancel] = useState(false);
+  const { userDetails } = useAuthDetails();
   const { data: memDetails } = useInterviewerList();
   const membersDetails = useMemo(() => {
     const temp: {
@@ -63,14 +67,6 @@ const Member = ({
     setOpenForDelete(false);
     setOpenForCancel(false);
   }
-  // if (member.join_status === 'joined') {
-  //   const diffTime = Math.abs(
-  //     (new Date() as unknown as number) -
-  //       (new Date(member.last_login) as unknown as number),
-  //   );
-  //   const diffDays = diffTime / (1000 * 60 * 60 * 24);
-  //   member.join_status = diffDays <= 1 ? 'Active' : 'Not Active';
-  // }
 
   return (
     <>
@@ -141,11 +137,7 @@ const Member = ({
           />
         }
         userEmail={member.email}
-        userName={
-          member.role === 'admin'
-            ? `${member.first_name || ''} ${member.last_name || ''} (You)`
-            : `${member.first_name || ''} ${member.last_name || ''}`
-        }
+        userName={`${member.first_name || ''} ${member.last_name || ''} ${member.user_id === userDetails?.user?.id ? '(You)' : ''}`}
         textDepartment={member.department}
         textDesignation={member.position}
         slotUserRole={<Stack>{capitalizeAll(member.role)}</Stack>}

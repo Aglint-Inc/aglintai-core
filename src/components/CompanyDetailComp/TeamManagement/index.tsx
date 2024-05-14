@@ -75,8 +75,8 @@ const TeamManagement = () => {
   const uniqueDepartments = [
     ...new Set(
       members
-        .filter((ele) => ele.department)
-        .map((item) => String(item.department)),
+        .filter((ele) => Boolean(ele.department?.length))
+        .map((item) => item.department),
     ),
   ];
 
@@ -85,19 +85,15 @@ const TeamManagement = () => {
   const uniqueLocations = [
     ...new Set(
       members
-        .filter((ele) => ele.interview_location)
-        .map(
-          (item) =>
-            item.interview_location &&
-            String(item.interview_location),
-        ),
+        .filter((ele) => Boolean(ele.interview_location?.length))
+        .map((item) => item.interview_location),
     ),
   ];
 
   const uniqueRoles = [
     ...new Set(
       members
-        .filter((ele) => ele.role)
+        .filter((ele) => Boolean(ele.role?.length))
         .map((item) => item.role && String(item.role)),
     ),
   ];
@@ -105,7 +101,7 @@ const TeamManagement = () => {
   const uniqueStatus = [
     ...new Set(
       members
-        .filter((ele) => ele.role)
+        .filter((ele) => Boolean(ele.join_status?.length))
         .map(
           (item) => item.join_status && String(item.join_status).toLowerCase(),
         ),
@@ -122,12 +118,10 @@ const TeamManagement = () => {
     const filtered = members.filter((member) => {
       const departmentMatch =
         !selectedDepartments.length ||
-        selectedDepartments.includes(String(member.department).toLowerCase());
+        selectedDepartments.includes(String(member.department));
       const locationMatch =
         !selectedLocations.length ||
-        selectedLocations.includes(
-          String(member.interview_location).toLowerCase(),
-        );
+        selectedLocations.includes(String(member.interview_location));
       const statusMatch =
         !selectedStatus.length ||
         selectedStatus

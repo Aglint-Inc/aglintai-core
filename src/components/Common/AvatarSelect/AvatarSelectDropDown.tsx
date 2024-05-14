@@ -43,7 +43,7 @@ const AvatarSelectDropDown = ({
   helperText = null,
 }: Props) => {
   return (
-    <Stack gap={'6px'}>
+    <Stack gap={'6px'} width={'100%'}>
       {label && <Stack>{label}</Stack>}
       <TextField
         select

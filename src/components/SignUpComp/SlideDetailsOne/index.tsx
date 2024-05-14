@@ -1,3 +1,5 @@
+'use client';
+
 import { CircularProgress, Stack, TextField } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -5,11 +7,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import { RcInfoStep1, RecCompanyDetails } from '@/devlink2';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { SocialsType } from '@/src/types/data.types';
 import { addHttps } from '@/src/utils/fetchCompDetails';
-import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 
 import AUIButton from '../../Common/AUIButton';
@@ -61,36 +62,10 @@ export interface Error1 {
 export function FetchCompanyDetails() {
   const router = useRouter();
 
-  const { recruiter, setRecruiter, userDetails } = useAuthDetails();
+  const { recruiter, setRecruiter } = useSignupDetails();
   const [details, setDetails] = useState<Details | null>(null);
 
   const [loading, setLoading] = useState(false);
-
-  async function getRecruiter() {
-    const recruiter = await supabase
-      .from('recruiter_relation')
-      .select('recruiter(*)')
-      .eq('user_id', userDetails.user.id)
-      .eq('is_active', true)
-      .single()
-      .then(({ data, error }) => {
-        if (error && data?.recruiter) {
-          router.push(pageRoutes.SIGNUP);
-        }
-        return data.recruiter;
-      });
-    setRecruiter({
-      ...recruiter,
-      socials: recruiter?.socials as unknown as SocialsType,
-    });
-  }
-  useEffect(() => {
-    if (userDetails?.user) {
-      getRecruiter();
-    } else {
-      router.push(pageRoutes.SIGNUP);
-    }
-  }, [useAuthDetails]);
 
   useEffect(() => {
     if (recruiter?.id) {

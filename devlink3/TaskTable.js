@@ -23,8 +23,6 @@ export function TaskTable({
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
     <_Component className={_utils.cx(_styles, "div-block-1433")} tag="div">
       <_Builtin.Block

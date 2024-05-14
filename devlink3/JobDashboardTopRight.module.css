@@ -138,6 +138,10 @@
   background-color: #d8dcde;
 }
 
+.hide {
+  display: none;
+}
+
 .button_primary.success {
   padding-top: 8px;
   padding-bottom: 8px;
@@ -155,10 +159,6 @@
 }
 
 .embed_flex.hide {
-  display: none;
-}
-
-.hide {
   display: none;
 }
 

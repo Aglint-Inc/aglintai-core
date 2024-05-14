@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { EmptyState } from '@/devlink2';
+import { AllInterviewEmpty } from '@/devlink2';
 
 import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
 import DynamicLoader from '../../Interviewers/DynamicLoader';
@@ -13,7 +13,7 @@ function ScheduleList() {
   }
 
   if (!loadingSchedules && filterSchedules.length === 0) {
-    return <EmptyState />;
+    return <AllInterviewEmpty textDynamic='No schedule found' />;
   }
   return (
     <Stack pl={'20px'} overflow={'auto'}>
