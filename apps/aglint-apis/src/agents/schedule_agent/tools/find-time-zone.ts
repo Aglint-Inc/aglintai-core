@@ -49,7 +49,7 @@ export const findCandTimeZone = () => {
       return 'either city or state name is required';
     }
     try {
-      let geo = await geoCodeLocation(location);
+      const geo = await geoCodeLocation(location);
       const time_zone = await getTimeZoneOfGeo({
         lang: geo.lang,
         lat: geo.lat,
@@ -67,7 +67,7 @@ export const findCandTimeZone = () => {
         tz_label: googleTimeZone[time_zone].split(')')[1],
       };
       updateCandidateInfo(cand_info);
-      return googleTimeZone[time_zone].split(')')[1] + ' ' + time_zone;
+      return `${googleTimeZone[time_zone].split(')')[1]} ${time_zone}`;
     } catch (error: any) {
       candLogger(
         agent_activities.phone_agent.tools['find-time-zone']

@@ -34,7 +34,7 @@ export const formatDate = (
 ) => {
   const [day, month, year] = user_date.split('/');
   if (!day || !month || !year) {
-    throw new Error(`Date should in the format DD/MM/YYYY`);
+    throw new Error('Date should in the format DD/MM/YYYY');
   }
 
   return dayjs(`${year}-${month}-${day}`).tz(cand_tz).format(format);

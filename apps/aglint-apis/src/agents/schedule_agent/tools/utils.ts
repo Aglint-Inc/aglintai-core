@@ -34,7 +34,7 @@ export const findInterviewSlotOnThatDay = (
   ) => {
     const filterSlotsByHr = (start_hour: number, end_hour: number) => {
       return sessionComb.filter(s => {
-        let slot_start_hour = dayjsLocal(s.sessions[0].start_time)
+        const slot_start_hour = dayjsLocal(s.sessions[0].start_time)
           .tz(cand_time_zone)
           .format('HH');
         return (
@@ -75,23 +75,23 @@ export const findInterviewSlotOnThatDay = (
   const morning_slots_str = filterSlotsTime('morning');
   const afternoon_slots_str = filterSlotsTime('afternoon');
   if (morning_slots_str.length > 0) {
-    slots_str += `Morning Slots :\n` + morning_slots_str + '\n\n';
+    slots_str += `Morning Slots :\n${morning_slots_str}\n\n`;
   }
 
   if (afternoon_slots_str.length > 0) {
-    slots_str += `Afternoon Slots :\n` + afternoon_slots_str + '\n\n';
+    slots_str += `Afternoon Slots :\n${afternoon_slots_str}\n\n`;
   }
 
   // no slots on morning or afternoon
   if (slots_str.length === 0) {
     const evening_slots = filterSlotsTime('evening');
-    slots_str += `Evening Slots :\n` + evening_slots + '\n\n';
+    slots_str += `Evening Slots :\n${evening_slots}\n\n`;
     const early_morning = filterSlotsTime('early_morning');
-    slots_str += `Early Morning Slots :\n` + early_morning + '\n\n';
+    slots_str += `Early Morning Slots :\n${early_morning}\n\n`;
     // Extreme condition
     if (slots_str.length === 0) {
       const night_slots = filterSlotsTime('night');
-      slots_str += `Night Slots :\n` + night_slots;
+      slots_str += `Night Slots :\n${night_slots}`;
     }
   }
 

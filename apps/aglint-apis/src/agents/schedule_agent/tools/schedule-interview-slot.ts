@@ -58,7 +58,7 @@ export const scheduleInterviewSlot = () => {
       return fromError(error).toString();
     }
 
-    let {booking_date, confirmed_slot_time} = parsedData;
+    const {booking_date, confirmed_slot_time} = parsedData;
 
     const bookSlot = async () => {
       const cand_time_zone = cand_info.candidate_tz.tz_code;
@@ -68,7 +68,7 @@ export const scheduleInterviewSlot = () => {
         cand_time_zone
       );
 
-      let req_slot_time = slot_date
+      const req_slot_time = slot_date
         .set('hour', confirmed_slot_time.hour)
         .set('minutes', confirmed_slot_time.minutes);
 
@@ -145,7 +145,7 @@ export const scheduleInterviewSlot = () => {
           }
         );
 
-        return `Booking failed`;
+        return 'Booking failed';
       }
     };
 

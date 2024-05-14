@@ -1,5 +1,4 @@
 import {z} from 'zod';
-import {CandidateInfoType} from '../../../types/app_types/scheduleAgentTypes';
 import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {isCurrDayHoliday} from '../../../utils/scheduling_utils/fetchCandDetails';
 import {LoggerType} from '../../../utils/scheduling_utils/getCandidateLogger';
@@ -11,6 +10,7 @@ import {createOpenAiTool, findInterviewSlotOnThatDay} from './utils';
 import {fromError} from 'zod-validation-error';
 import {getCachedCandidateInfo} from '../../../services/cache/cache-db';
 import {agent_activities} from '../../../copies/agents_activity';
+import {appLogger} from '@/services/logger';
 
 export const findInterviewSlots = () => {
   const schema = z.object({
@@ -18,11 +18,11 @@ export const findInterviewSlots = () => {
       month: z.number().describe('month in 1 indexed integer format.'),
       day: z.number().describe('date in a month eg. 12.'),
     }),
-    time_zone: z.string().describe(`Candidate's time zone eg. Asia/colombo`),
+    time_zone: z.string().describe("Candidate's time zone eg. Asia/colombo"),
   });
   const tool_def = createOpenAiTool({
     name: 'find-interview-slots',
-    description: `finds available interview slots on a particular day.`,
+    description: 'finds available interview slots on a particular day.',
     schema: schema,
   });
 
@@ -67,8 +67,8 @@ export const findInterviewSlots = () => {
         return 'All Slots booked on that day try diffrent day';
       }
       return findInterviewSlotOnThatDay(req_day_slots, cand_time_zone);
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      appLogger.info(err.message, err);
       candLogger('Some thing went wrong while fetch slots', {});
       return 'Some thing went wrong';
     }

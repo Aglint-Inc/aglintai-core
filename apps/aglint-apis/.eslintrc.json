@@ -1,0 +1,16 @@
+{
+  "extends": "../../node_modules/gts",
+  "plugins": ["no-relative-import-paths"],
+  "rules": {
+    // "@typescript-eslint/no-explicit-any": "off",
+    "prefer-template": 1,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "no-console": ["error", {"allow": ["error"]}]
+  },
+  "ignorePatterns": ["dist"]
+}

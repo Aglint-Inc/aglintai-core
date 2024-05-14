@@ -41,7 +41,7 @@ export async function emailAgentHandler(
   const memoryPrompt = ChatPromptTemplate.fromMessages([
     ['system', emailAgentPrompt(payload)],
     new MessagesPlaceholder(MEMORY_KEY),
-    ['user', `{input}`],
+    ['user', '{input}'],
     new MessagesPlaceholder('agent_scratchpad'),
   ]);
 

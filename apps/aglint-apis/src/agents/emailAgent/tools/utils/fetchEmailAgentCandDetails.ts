@@ -3,19 +3,19 @@ import {
   supabaseWrap,
   supabaseAdmin,
 } from '../../../../services/supabase/SupabaseAdmin';
+
+import {getFullName} from '../../../../utils/getFullName';
+import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
 import {
-  ScheduleAgentChatHistoryTypeDB,
+  CandidateType,
+  EmailTemplateFields,
   InterviewFilterJsonType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
-  CandidateType,
   PublicJobsType,
   RecruiterType,
-  EmailTemplateFields,
-} from '../../../../types/aglint_types/data.types';
-import {getFullName} from '../../../../utils/getFullName';
-import {EmailAgentPayload} from '../../../../types/email_agent/apiPayload.types';
-import {threadId} from 'worker_threads';
+  ScheduleAgentChatHistoryTypeDB,
+} from '@aglint/shared-types';
 
 export const fetchEmailAgentCandDetails = async (
   cand_email: string,
@@ -184,8 +184,8 @@ const fillEmailTemplate = (
   email_template: EmailTemplateFields,
   dynamic_fields: Record<string, string>
 ): EmailTemplateFields => {
-  let updated_template = {...email_template};
-  for (let key of Object.keys(dynamic_fields)) {
+  const updated_template = {...email_template};
+  for (const key of Object.keys(dynamic_fields)) {
     updated_template.subject = updated_template.subject.replaceAll(
       key,
       dynamic_fields[String(key)]

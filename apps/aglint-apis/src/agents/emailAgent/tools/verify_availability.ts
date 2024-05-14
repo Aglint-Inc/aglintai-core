@@ -18,8 +18,8 @@ import {googleTimeZone} from '../../../utils/googleTimeZone';
 import {appLogger} from '../../../services/logger';
 import {agent_activities} from '../../../copies/agents_activity';
 
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -35,7 +35,7 @@ export const verifyAvailability = (
         month: z.number().describe('month in 1 indexed integer format.'),
         day: z.number().describe('date in a month eg. 12.'),
       }),
-      time_zone: z.string().describe(`Candidate's time zone`),
+      time_zone: z.string().describe("Candidate's time zone"),
     }),
     func: async ({date, time_zone}) => {
       if (!date) {
@@ -91,7 +91,7 @@ export const verifyAvailability = (
 
         return findInterviewSlotOnThatDay(first_day, cand_time_zone);
       } catch (error: any) {
-        appLogger.error(`Failed to find the interview slots `, {
+        appLogger.error('Failed to find the interview slots ', {
           error: error.message,
           task_id: cand_info.task_id,
           cand_time_zone,
@@ -106,7 +106,7 @@ export const verifyAvailability = (
           }
         );
 
-        return `Error finding slots`;
+        return 'Error finding slots';
       }
     },
   });

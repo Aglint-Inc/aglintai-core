@@ -52,7 +52,7 @@ export const cancelInterview = () => {
       );
       return 'cancelled interview sucessfully';
     } catch (error: any) {
-      appLogger.error(`Failed to cancel the scheduled interview`, {
+      appLogger.error('Failed to cancel the scheduled interview', {
         error: error.message,
         task_id: cand_info.req_payload.task_id,
       });

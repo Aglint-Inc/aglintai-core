@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {envConfig} from '../../../../config';
+import {appLogger} from '@/services/logger';
 
 export type EmailSenderType = {
   candidate_email: string;
@@ -26,7 +27,7 @@ export const sendEmailFromAgent = async (
   if (!agent_email) {
     throw new Error('agent email not set');
   }
-  console.log(agent_email);
+  appLogger.info(agent_email);
   await axios.post(`${envConfig.CLIENT_APP_URL}/api/sendgrid`, {
     email: payload.candidate_email,
     fromEmail: agent_email,

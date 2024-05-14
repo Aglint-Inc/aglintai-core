@@ -10,17 +10,16 @@
     "strictNullChecks": false,
     "noImplicitReturns": false,
     "lib": ["ES2021.String"],
-    // "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      // "@/*":["./*"],
-      // "@services/*":["services/*"],
-      // "@routes/*":["routes/*"],
-      // "@controllers/*":["controllers/*"],
-      // "@utils/*":["utils/*"],
-      // "@types/*":["types/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@/*": ["./src/*"],
+      "@services/*": ["./src/services/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
 
   "include": ["./src/**/*.ts", "test/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

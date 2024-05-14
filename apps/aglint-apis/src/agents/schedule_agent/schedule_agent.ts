@@ -21,6 +21,7 @@ import {
 } from '../../utils/scheduling_utils/tool_utils';
 import {scheduleTheCall} from './tools/schedule-call';
 import {findCandTimeZone} from './tools/find-time-zone';
+import {appLogger} from '@/services/logger';
 
 export class ScheduleAgent {
   // private candidate: CandidateInfoType;
@@ -167,7 +168,7 @@ export class ScheduleAgent {
               if (funcCall) {
                 // Another function received, old function complete, can break here
                 // You can also modify this to parse more functions to unlock parallel function calling
-                console.log('parallel function call triggered');
+                appLogger.error('parallel function call triggered');
                 break;
               } else {
                 funcCall = {
@@ -227,7 +228,7 @@ export class ScheduleAgent {
         logger: this.logger,
       });
     } else if (func_name === 'schedule-interterview') {
-      console.log('called', func_name);
+      appLogger.info('called', func_name);
 
       funcCall.arguments = JSON.parse(func_args);
       const {func} = scheduleInterviewSlot();
@@ -265,11 +266,11 @@ export class ScheduleAgent {
         candLogger: this.logger,
       });
     } else {
-      console.log('didnt find func', funcCall.funcName);
+      appLogger.info('didnt find func', funcCall.funcName);
     }
 
     if (funcCall.result) {
-      console.log('result', funcCall.result);
+      appLogger.info('result', funcCall.result);
       this.DraftResponse(ws, request, funcCall);
     }
     removeToolInvocFromCandCache(this.candidate_phone, func_name);

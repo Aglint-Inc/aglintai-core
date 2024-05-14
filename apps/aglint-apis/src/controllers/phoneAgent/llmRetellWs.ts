@@ -9,6 +9,7 @@ import {CustomLlmRequest, CustomLlmResponse} from '../../types/retell.types';
 import {getCandidateLogger} from '../../utils/scheduling_utils/getCandidateLogger';
 import {ScheduleAgent} from '../../agents/schedule_agent/schedule_agent';
 import {transcript_update} from '../../utils/transcript_update';
+import {appLogger} from '@/services/logger';
 
 export const llmRetellWs = async (ws: WebSocket, req: Request) => {
   const call_id = req.params.call_id;
@@ -25,7 +26,7 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
     cand.candidate_id,
     'phone_agent'
   );
-  await logger(`Phone conversation with candidate {candidate} initiated.`, {
+  await logger('Phone conversation with candidate {candidate} initiated.', {
     '{candidate}': '',
   });
   const schedule_agent = new ScheduleAgent(
@@ -87,6 +88,7 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
       ) {
         const cand_info = getCachedCandidateInfo(cand.req_payload.to_phone_no);
         if (cand_info.tool_invocations.length === 0) {
+          // eslint-disable-next-line no-console
           console.log(
             'candidate:',
             request.transcript[request.transcript.length - 1]?.content
@@ -101,11 +103,11 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
             end_call: false,
           };
           ws.send(JSON.stringify(res));
-          console.log('tool calling in progress user utterance');
+          appLogger.info('tool calling in progress user utterance');
         }
       }
     } catch (err: any) {
-      console.log(err);
+      appLogger.error(err.message);
       ws.close(1002, 'Cannot parse incoming message.');
     }
   });

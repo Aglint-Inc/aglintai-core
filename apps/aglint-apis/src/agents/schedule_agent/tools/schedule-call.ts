@@ -3,7 +3,6 @@ import {LoggerType} from '../../../utils/scheduling_utils/getCandidateLogger';
 import {createOpenAiTool} from './utils';
 import {dayjsLocal} from '../../../utils/dayjsLocal/dayjsLocal';
 import {fromError} from 'zod-validation-error';
-import {convertDateFormatToDayjs} from '../../../utils/scheduling_utils/tool_utils';
 import {scheduleCallUtil} from '../../../utils/scheduleCall';
 import {getCachedCandidateInfo} from '../../../services/cache/cache-db';
 import {appLogger} from '../../../services/logger';
@@ -23,11 +22,11 @@ export const scheduleTheCall = () => {
           })
           .required(),
       })
-      .describe(`candidate's requested schedule time.`),
+      .describe("candidate's requested schedule time."),
   });
   const tool_def = createOpenAiTool({
     name: 'schedule-call',
-    description: `reschedule the call to candidate's requested time`,
+    description: "reschedule the call to candidate's requested time",
     schema: schema,
   });
 

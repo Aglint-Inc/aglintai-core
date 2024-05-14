@@ -49,7 +49,7 @@ export async function transcript_update(
         });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 }

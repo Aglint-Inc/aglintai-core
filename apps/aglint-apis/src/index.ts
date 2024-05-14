@@ -1,15 +1,15 @@
-import {envConfig} from './config';
+import {envConfig} from '@/config';
 import express from 'express';
 import expressWs from 'express-ws';
 import cors from 'cors';
-import phoneAgentRoutes, {mountScheduleAgentWs} from './routes/scheduleAgent';
-import screenignAgentRouter from './routes/screeningAgent';
-import {twilioClient} from './services/twilio';
-import emailAgentRouter from './routes/emailAgent';
-import twilioRouter from './routes/twilio';
-import {appLogger} from './services/logger';
-import errorHandler from './middlewares/middleware';
-import retellRoutes from './routes/retell';
+import phoneAgentRoutes, {mountScheduleAgentWs} from '@routes/scheduleAgent';
+import screenignAgentRouter from '@routes/screeningAgent';
+import {twilioClient} from '@services/twilio';
+import emailAgentRouter from '@routes/emailAgent';
+import twilioRouter from '@routes/twilio';
+import {appLogger} from '@services/logger';
+import errorHandler from '@/middlewares/middleware';
+import retellRoutes from '@/routes/retell';
 
 const PORT = envConfig.PORT;
 
@@ -40,6 +40,5 @@ app.use(errorHandler);
 mountScheduleAgentWs();
 
 app.listen(PORT, () => {
-  console.log('fnekjwnkewj');
   appLogger.info(`server started on port ${PORT}`);
 });

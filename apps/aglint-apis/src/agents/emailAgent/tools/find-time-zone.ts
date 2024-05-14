@@ -28,7 +28,7 @@ export const findTimeZone = (
         return 'either city or state name is required';
       }
       try {
-        let geo = await geoCodeLocation(location);
+        const geo = await geoCodeLocation(location);
         const time_zone = await getTimeZoneOfGeo({
           lang: geo.lang,
           lat: geo.lat,
@@ -51,11 +51,11 @@ export const findTimeZone = (
             '{err_msg}': error.message,
           }
         );
-        appLogger.error(`Failed to find to the time zone`, {
+        appLogger.error('Failed to find to the time zone', {
           error: error.message,
           location: location,
         });
-        return `Failed to find to the time zone`;
+        return 'Failed to find to the time zone';
       }
     },
   });

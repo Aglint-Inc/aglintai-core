@@ -1,16 +1,15 @@
 import {Dayjs} from 'dayjs';
 import {InterviewSlotsRespAPI} from './schedule_agent.types';
 
-import {dayjsLocal} from '../dayjsLocal/dayjsLocal';
+import {dayjsLocal} from '@utils/dayjsLocal/dayjsLocal';
 import {
   getCachedCandidateInfo,
   updateCandidateInfo,
-} from '../../services/cache/cache-db';
+} from '@services/cache/cache-db';
 import {
   CandidateInfoType,
   ScheduleTool,
-} from '../../types/app_types/scheduleAgentTypes';
-import {SessionsCombType} from '../../types/aglint_types/scheduleTypes/types';
+} from '@/types/app_types/scheduleAgentTypes';
 
 export const findCurrDayPlan = (
   all_slots: CandidateInfoType['all_slots'],
@@ -73,7 +72,9 @@ export const filterPlansByTiming = ({
   }
   const first_day = slots[0];
   const filtered_time_slots = first_day.filter((time_slot: any) => {
-    let start_time = dayjsLocal(time_slot.sessions[0].start_time).tz(time_zone);
+    const start_time = dayjsLocal(time_slot.sessions[0].start_time).tz(
+      time_zone
+    );
     const start_hour = Number(start_time.format('H'));
     return (
       start_hour >= hours_range.start_hour && start_hour <= hours_range.end_hour
@@ -90,7 +91,7 @@ export const convertDateFormatToDayjs = (
 ) => {
   const [day, month, year] = user_date.split('/');
   if (!day || !month || !year) {
-    throw new Error(`Date should in the format DD/MM/YYYY`);
+    throw new Error('Date should in the format DD/MM/YYYY');
   }
   let user_dayjs = dayjsLocal.tz(`${year}-${month}-${day} 12:00`, user_tz);
   if (is_start_day) {

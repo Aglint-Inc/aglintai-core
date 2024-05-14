@@ -9,6 +9,7 @@ import {
   AudioEncoding,
 } from 'retell-sdk/models/components';
 import {addCallerToCache} from '../../services/cache/cache-db';
+import {appLogger} from '../logger';
 
 export class TwilioClient {
   private twilio: Twilio;
@@ -87,7 +88,7 @@ export class TwilioClient {
         statusCallback: `${envConfig.NGROK_IP_ADDRESS}/api/twilio/call-status`,
         statusCallbackMethod: 'POST',
       });
-      console.log(`Call from: ${fromNumber} to: ${toNumber}`);
+      appLogger.info(`Call from: ${fromNumber} to: ${toNumber}`);
     } catch (error: any) {
       console.error('failer to retrieve caller information: ', error);
     }
@@ -115,7 +116,7 @@ export class TwilioClient {
       const call = await this.twilio.calls(sid).update({
         twiml: `<Response><Dial>${transferTo}</Dial></Response>`,
       });
-      console.log('Transfer phone call: ', call);
+      appLogger.info('Transfer phone call: ', call);
     } catch (error) {
       console.error('Twilio transfer error: ', error);
     }

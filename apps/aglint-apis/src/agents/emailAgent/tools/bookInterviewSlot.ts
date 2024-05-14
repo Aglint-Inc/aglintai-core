@@ -3,8 +3,8 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
-var utc = require('dayjs/plugin/utc');
-var timezone = require('dayjs/plugin/timezone');
+const utc = require('dayjs/plugin/utc');
+const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -47,7 +47,7 @@ export const bookInterviewSlot = (
           `${booking_date.day}/${String(booking_date.month).padStart(2, '0')}/${dayjsLocal().get('year')}`,
           cand_time_zone
         );
-        let req_slot_time = slot_date
+        const req_slot_time = slot_date
           .set('hour', confirmed_slot_time.hour)
           .set('minutes', confirmed_slot_time.minutes);
 
@@ -108,7 +108,7 @@ export const bookInterviewSlot = (
 
           return `Booking scheduled at ${req_slot_time.toISOString()}`;
         } catch (error: any) {
-          appLogger.error(`Failed to schedule the interview slots `, {
+          appLogger.error('Failed to schedule the interview slots ', {
             error: error.message,
             task_id: cand_info.task_id,
             cand_time_zone,
@@ -124,7 +124,7 @@ export const bookInterviewSlot = (
             'email_agent'
           );
 
-          return `Booking failed`;
+          return 'Booking failed';
         }
       };
       return bookSlot();

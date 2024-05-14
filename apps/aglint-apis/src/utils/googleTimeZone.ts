@@ -1,5 +1,3 @@
-import {tz} from 'dayjs';
-
 export const googleTimeZone: Record<string, string> = {
   'Pacific/Niue': '(GMT-11:00) Niue',
   'Pacific/Pago_Pago': '(GMT-11:00) Pago Pago',
