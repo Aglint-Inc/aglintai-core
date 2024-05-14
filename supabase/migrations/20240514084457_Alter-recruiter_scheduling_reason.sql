@@ -9,7 +9,7 @@ SET DEFAULT '{
       "Technical Difficulties",
       "Other"
     ],
-    "cancelation": [
+    "cancellation": [
       "Position Filled",
       "Budget Constraints",
       "Reevaluation of Hiring Needs",
@@ -30,7 +30,7 @@ SET DEFAULT '{
       "Additional Preparation Needed",
       "Change of Interview Mode"
     ],
-    "cancelation": [
+    "cancellation": [
       "Conflicting Schedule",
       "Health Reasons",
       "Unexpected Emergency",
