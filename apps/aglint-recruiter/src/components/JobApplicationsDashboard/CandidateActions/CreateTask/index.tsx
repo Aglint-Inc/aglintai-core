@@ -1,5 +1,6 @@
 import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
 import { JobApplcationDB } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -13,11 +14,7 @@ import SelectScheduleDate from '@/src/components/Tasks/TaskBody/AddNewTask/Selec
 import SessionList from '@/src/components/Tasks/TaskBody/AddNewTask/SessionList';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { useTaskStatesContext } from '@/src/components/Tasks/TaskStatesContext';
-import {
-  assigneeType,
-  EmailAgentId,
-  PhoneAgentId,
-} from '@/src/components/Tasks/utils';
+import { assigneeType } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 

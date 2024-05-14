@@ -1,8 +1,7 @@
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
-
-import { EmailAgentId, PhoneAgentId } from '../../utils';
 
 function FilterTasks() {
   const { search, filter, handelSearch, handelFilter } = useTasksContext();

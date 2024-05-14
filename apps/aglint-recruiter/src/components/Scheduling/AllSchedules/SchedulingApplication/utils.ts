@@ -12,6 +12,7 @@ import {
   APICandidateConfirmSlot,
   ApiFindAvailability,
 } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -19,11 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { InitAgentBodyParams } from '@/src/components/ScheduleAgent/types';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
-import {
-  createTaskProgress,
-  EmailAgentId,
-  PhoneAgentId,
-} from '@/src/components/Tasks/utils';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
   geoCodeLocation,

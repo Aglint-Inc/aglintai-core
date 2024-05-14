@@ -1,3 +1,4 @@
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
@@ -7,7 +8,6 @@ import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { useAllActivities } from '../hooks';

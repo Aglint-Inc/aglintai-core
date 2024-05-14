@@ -2,11 +2,11 @@
 /* eslint-disable no-console */
 import { TaskTypeDb } from '@aglint/shared-types';
 import { Database } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { ApiBodyParamsScheduleAgent } from '../application/schedulewithagent';

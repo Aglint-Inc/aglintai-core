@@ -1,3 +1,4 @@
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -21,7 +22,6 @@ import { supabase } from '@/src/utils/supabase/client';
 import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '../../../Components/PhoneAgentIcon';
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { EmailAgentId, PhoneAgentId } from '../../../utils';
 import PhoneTranscript from './PhoneTrancript';
 import SessionCard, { meetingCardType } from './SessionCard';
 

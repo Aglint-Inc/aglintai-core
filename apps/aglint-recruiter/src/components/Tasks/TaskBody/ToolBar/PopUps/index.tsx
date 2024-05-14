@@ -1,3 +1,4 @@
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Dialog, Stack, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
@@ -6,7 +7,6 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useTaskStatesContext } from '../../../TaskStatesContext';
-import { EmailAgentId, PhoneAgentId } from '../../../utils';
 import { ToolPopUpReason } from '../utils';
 
 function PopUps({

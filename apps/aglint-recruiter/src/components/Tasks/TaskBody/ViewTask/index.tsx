@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { DatabaseEnums } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Button, Drawer, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -14,7 +15,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
-import { createTaskProgress, EmailAgentId, PhoneAgentId } from '../../utils';
+import { createTaskProgress } from '../../utils';
 import SubTaskProgress from './Progress';
 import TaskCard from './TaskCard';
 

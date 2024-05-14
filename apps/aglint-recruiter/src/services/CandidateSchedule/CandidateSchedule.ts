@@ -20,13 +20,13 @@ import {
   TimeDurationDayjsType,
   TimeDurationType,
 } from '@aglint/shared-types';
+import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Dayjs } from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
 
-import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { GoogleCalender } from '../GoogleCalender/google-calender';

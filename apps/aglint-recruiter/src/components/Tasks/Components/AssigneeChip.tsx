@@ -1,4 +1,5 @@
 import { RecruiterUserType } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -10,7 +11,6 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 import MuiAvatar from '../../Common/MuiAvatar';
 import { ShowCode } from '../../Common/ShowCode';
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
-import { EmailAgentId, PhoneAgentId } from '../utils';
 import AssigneeDetailsCard, { LightTooltip } from './AssigneeDetailsCard';
 
 function AssigneeChip({

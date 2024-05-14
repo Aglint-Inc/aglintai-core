@@ -1,3 +1,4 @@
+import { PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Stack } from '@mui/material';
 import { useState } from 'react';
 
@@ -10,7 +11,6 @@ import {
 } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TranscriptPlayer from '@/src/components/Tasks/TaskBody/ViewTask/Progress/PhoneTrancript/TranscriptPlayer';
-import { PhoneAgentId } from '@/src/components/Tasks/utils';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 

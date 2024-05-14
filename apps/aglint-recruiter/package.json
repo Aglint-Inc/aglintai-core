@@ -1,5 +1,5 @@
 {
-  "name": "aglint",
+  "name": "aglint-recruiter",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@aglint/shared-types": "*",
+    "@aglint/shared-utils": "*",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "5.14.8",
     "@mui/material": "^5.14.10",

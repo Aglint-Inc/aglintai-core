@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
+import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Box,
   Dialog,
@@ -47,7 +48,6 @@ import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
-import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Dialog, Drawer, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -78,7 +79,6 @@ import {
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon';
 import StatusChip from '@/src/components/Tasks/Components/StatusChip';
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {

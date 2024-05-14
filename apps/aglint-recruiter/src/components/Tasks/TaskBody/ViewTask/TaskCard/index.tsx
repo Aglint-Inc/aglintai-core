@@ -3,6 +3,7 @@ import {
   DatabaseEnums,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -27,12 +28,7 @@ import {
 
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
-import {
-  assigneeType,
-  createTaskProgress,
-  EmailAgentId,
-  PhoneAgentId,
-} from '../../../utils';
+import { assigneeType, createTaskProgress } from '../../../utils';
 import { CallIcon, EmailIcon } from '../../AddNewTask';
 import AssigneeList from '../../AddNewTask/AssigneeList';
 import PriorityList from '../../AddNewTask/PriorityList';

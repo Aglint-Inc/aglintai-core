@@ -1,4 +1,5 @@
 import { CustomDatabase } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -23,10 +24,8 @@ import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
   assigneeType,
   createTaskProgress,
-  EmailAgentId,
   extractDataFromText,
   JobCandidatesType,
-  PhoneAgentId,
 } from '../../utils';
 import { meetingCardType } from '../ViewTask/Progress/SessionCard';
 import AssigneeList from './AssigneeList';

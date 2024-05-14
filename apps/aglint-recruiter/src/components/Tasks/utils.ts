@@ -3,6 +3,7 @@
 import { CandidateType, RecruiterUserType } from '@aglint/shared-types';
 import { Database } from '@aglint/shared-types';
 import { DatabaseEnums } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -15,9 +16,6 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 import { groupByTextType } from './TaskStatesContext';
-
-export const EmailAgentId = '5acd5b49-a53d-4fc6-9365-ed5c7a7c08c1';
-export const PhoneAgentId = '241409e5-45c6-451a-b576-c54388924e76';
 
 export type assigneeType = RecruiterUserType & {
   assignee: 'Agents' | 'Interviewers';

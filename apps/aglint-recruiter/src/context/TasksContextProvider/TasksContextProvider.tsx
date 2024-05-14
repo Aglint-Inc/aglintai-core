@@ -5,6 +5,7 @@ import {
   DatabaseTableInsert,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -20,7 +21,6 @@ import {
 } from 'react';
 
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
