@@ -1,9 +1,8 @@
 {
-  "name": "@repo/shared-types",
+  "name": "@aglint/shared-types",
   "version": "0.0.1",
-  "exports": {
-    ".": "./index.ts"
-  },
+  "main": "./index.ts",
+  "types": "./index.ts",
   "dependencies": {
     "typescript": "latest"
   }

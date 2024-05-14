@@ -1,8 +1,5 @@
 {
-  "plugins": [
-    "simple-import-sort",
-    "jsx-a11y"
-  ],
+  "plugins": ["simple-import-sort", "jsx-a11y"],
   "env": {
     "es6": true
   },

@@ -1,0 +1,27 @@
+{
+  "extends": "./node_modules/gts/tsconfig-google.json",
+  "compilerOptions": {
+    "strict": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "target": "es2021",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitReturns": false,
+    "lib": ["ES2021.String"],
+    // "baseUrl": "src",
+    "paths": {
+      // "@/*":["./*"],
+      // "@services/*":["services/*"],
+      // "@routes/*":["routes/*"],
+      // "@controllers/*":["controllers/*"],
+      // "@utils/*":["utils/*"],
+      // "@types/*":["types/*"],
+    }
+  },
+
+  "include": ["./src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules"]
+}

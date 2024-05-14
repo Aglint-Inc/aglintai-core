@@ -1,11 +1,20 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "target": "es2015",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noErrorTruncation": true,
+    "jsx": "preserve",
     "paths": {
       "@/*": ["./*"],
       "@devlink": ["./devlink/*"],
@@ -15,20 +24,26 @@
       "@defaultData/*": ["./src/defaultData/*"],
       "@styles/*": ["./styles/*"],
       "@utils/*": ["./src/utils/*"],
-      "@public/*": ["./public/*"]
+      "@public/*": ["./public/*"],
+      "@types/*": ["./src/types/*"]
     },
-    "strictNullChecks": true
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": false
   },
   "include": [
     "next-env.d.ts",
-    "next.config.js",
-    ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.jsx",
     "**/*.js",
     "src/components/Feedback/Session/index.jsx",
-    "src/pages/api/getJobsPublic.js"
+    "src/pages/api/getJobsPublic.js",
+    ".next/types/**/*.ts"
+    // ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

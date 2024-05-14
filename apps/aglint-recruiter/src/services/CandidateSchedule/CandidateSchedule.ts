@@ -1,37 +1,33 @@
-/* eslint-disable security/detect-object-injection */
-import { Dayjs } from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { cloneDeep } from 'lodash';
-import { nanoid } from 'nanoid';
-import { InterviewModuleRelationType } from '@repo/shared-types/types/data.types';
-import {
-  holidayType,
-  schedulingSettingType,
-} from '@repo/shared-types/types/scheduleTypes/scheduleSetting';
 import {
   CompServiceKeyCred,
+  holidayType,
   InterDetailsType,
   IntervCntApp,
-  IntervMeta,
-  TimeDurationDayjsType,
-  TimeDurationType,
-} from '@repo/shared-types/types/scheduleTypes/types2';
-import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
-import { getFullName } from '@/src/utils/jsonResume';
-
-import {
   InterviewerMeetingScheduled,
+  InterviewModuleRelationType,
   InterviewSessionApiType,
+  IntervMeta,
   PlanCombinationRespType,
   PlanCombinationType,
+  schedulingSettingType,
   SessionCombinationRespType,
   SessionCombinationType,
   SessionInterviewerApiRespType,
   SessionInterviewerType,
   SessionsCombType,
   SessionSlotType,
-} from '@repo/shared-types/types/scheduleTypes/types';
+  TimeDurationDayjsType,
+  TimeDurationType,
+} from '@aglint/shared-types';
+import { Dayjs } from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { cloneDeep } from 'lodash';
+import { nanoid } from 'nanoid';
+
+import { SINGLE_DAY_TIME } from '@/src/utils/integrations/constants';
+import { getFullName } from '@/src/utils/jsonResume';
+
 import { GoogleCalender } from '../GoogleCalender/google-calender';
 import {
   fetch_details_from_db,

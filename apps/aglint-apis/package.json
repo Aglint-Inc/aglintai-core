@@ -1,0 +1,46 @@
+{
+  "name": "aglint-apis",
+  "type": "commonjs",
+  "scripts": {
+    "dev:local": "set NODE_ENV=development.local&& console-ninja nodemon src/index.ts",
+    "start:prod": "set NODE_ENV=production&& npm run build && node dist/src/index.js",
+    "start:development": "set NODE_ENV=development&& npm run build && node dist/src/index.js",
+    "build": "npx tsc",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix"
+  },
+  "dependencies": {
+    "@langchain/community": "^0.0.41",
+    "@supabase/supabase-js": "^2.39.8",
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.4.1",
+    "express": "^4.19.2",
+    "express-ws": "^5.0.2",
+    "langchain": "^0.1.28",
+    "openai": "^4.26.0",
+    "prettier": "^3.2.5",
+    "retell-client-js-sdk": "^1.3.2",
+    "retell-sdk": "2.4.0",
+    "supabase": "^1.150.0",
+    "twilio": "^4.21.0",
+    "winston": "^3.13.0",
+    "ws": "^8.16.0",
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.22.5",
+    "zod-validation-error": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/express-ws": "^3.0.4",
+    "@types/node": "20.11.5",
+    "gts": "^5.3.0",
+    "nodemon": "^3.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.4.3"
+  }
+}

@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       end_date,
       user_tz = 'Asia/colombo',
     } = req.body as BodyParams;
-
+    console.log(req.body);
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
         throw new Error(`missing Field ${field}`);

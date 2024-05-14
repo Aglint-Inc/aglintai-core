@@ -1,0 +1,14 @@
+{
+  "extends": "./node_modules/gts/",
+  "rules": {
+    "allowTemplateLiterals": true,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "quotes": ["error", "double", {"allowTemplateLiterals": true}],
+    "no-console": ["error", {"allow": ["error"]}]
+  }
+}
