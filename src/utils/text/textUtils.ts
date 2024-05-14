@@ -16,7 +16,7 @@ export const capitalizeAll = (str: string) => {
 export const capitalizeFirstLetter = (text: string) => {
   if (!text) return '';
   let capitalizeText = '';
-  const words = text.split(' ');
+  const words = text.replaceAll('_', ' ').split(' ');
   words.forEach((word) => {
     if (
       word != 'and' &&
