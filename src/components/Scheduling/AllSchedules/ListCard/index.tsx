@@ -16,6 +16,7 @@ import { ApplicationList } from '../store';
 
 function ListCardInterviewSchedule({
   app,
+  onClickCard,
   slotCheckbox = <></>,
   slotResumeScore = <></>,
   isJobDasboard = false,
@@ -23,6 +24,8 @@ function ListCardInterviewSchedule({
   isChecked = false,
 }: {
   app: ApplicationList;
+  // eslint-disable-next-line no-unused-vars
+  onClickCard: (app: ApplicationList) => void;
   slotResumeScore?: ReactNode;
   isJobDasboard?: boolean;
   slotCheckbox?: ReactNode;
@@ -43,52 +46,58 @@ function ListCardInterviewSchedule({
 
   return (
     <>
-      <AllInterviewCard
-        isDragVisible={isChecked}
-        slotScheduleWithAgent={<ScheduleWithAgent />}
-        textCurrentRole={
-          (app.file?.resume_json as unknown as ResumeJson)?.basics
-            ?.currentJobTitle || <></>
-        }
-        isSelected={isSelected}
-        propsGrid={{
-          style: {
-            gridTemplateColumns: isJobDasboard && '25% 25% 15% 20% 25%',
-          },
+      <Stack
+        onClick={() => {
+          onClickCard(app);
         }}
-        isSchedulerTable={!isJobDasboard}
-        isCheckBoxVisible={isJobDasboard}
-        slotCheckbox={slotCheckbox}
-        textName={getFullName(
-          app.candidates.first_name,
-          app.candidates.last_name,
-        ).toLowerCase()}
-        slotCandidateImage={
-          <Stack
-            width={'100%'}
-            height={'100%'}
-            alignItems={'center'}
-            justifyContent={'center'}
-          >
-            <MuiAvatar
-              level={getFullName(
-                app.candidates.first_name,
-                app.candidates.last_name,
-              )}
-              src={app.candidates.avatar}
-              variant={'circular'}
-              width={avatarStyles.width}
-              height={avatarStyles.height}
-              fontSize={avatarStyles.fontSize}
-            />
-          </Stack>
-        }
-        isResumeScoreVisible={isJobDasboard}
-        slotResumeScore={isJobDasboard ? slotResumeScore : <></>}
-        textInterviewPanel={'0'}
-        slotInterviewProgress={<SessionProgressPipeline app={app} />}
-        textRelatedJob={app.public_jobs?.job_title}
-      />
+      >
+        <AllInterviewCard
+          isDragVisible={isChecked}
+          slotScheduleWithAgent={<ScheduleWithAgent />}
+          textCurrentRole={
+            (app.file?.resume_json as unknown as ResumeJson)?.basics
+              ?.currentJobTitle || <></>
+          }
+          isSelected={isSelected}
+          propsGrid={{
+            style: {
+              gridTemplateColumns: isJobDasboard && '25% 25% 15% 20% 25%',
+            },
+          }}
+          isSchedulerTable={!isJobDasboard}
+          isCheckBoxVisible={isJobDasboard}
+          slotCheckbox={slotCheckbox}
+          textName={getFullName(
+            app.candidates.first_name,
+            app.candidates.last_name,
+          ).toLowerCase()}
+          slotCandidateImage={
+            <Stack
+              width={'100%'}
+              height={'100%'}
+              alignItems={'center'}
+              justifyContent={'center'}
+            >
+              <MuiAvatar
+                level={getFullName(
+                  app.candidates.first_name,
+                  app.candidates.last_name,
+                )}
+                src={app.candidates.avatar}
+                variant={'circular'}
+                width={avatarStyles.width}
+                height={avatarStyles.height}
+                fontSize={avatarStyles.fontSize}
+              />
+            </Stack>
+          }
+          isResumeScoreVisible={isJobDasboard}
+          slotResumeScore={isJobDasboard ? slotResumeScore : <></>}
+          textInterviewPanel={'0'}
+          slotInterviewProgress={<SessionProgressPipeline app={app} />}
+          textRelatedJob={app.public_jobs?.job_title}
+        />
+      </Stack>
     </>
   );
 }
