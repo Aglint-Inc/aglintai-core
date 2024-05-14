@@ -337,7 +337,7 @@ const Roles = () => {
         // eslint-disable-next-line no-unused-vars
         .filter(([_, value]) => value)
         .reduce((acc, [key, value]) => {
-          const user = data.find(({ user_id }) => user_id === value);
+          const user = (data ?? []).find(({ user_id }) => user_id === value);
           if (user) {
             const name = getFullName(
               user?.first_name ?? null,
@@ -374,7 +374,9 @@ const Roles = () => {
   if (status !== 'success' || coordinators.length === 0) return <></>;
   return (
     <JobRole
-      onClickEdit={{ onClick: () => push(`/jobs/${job?.id}/edit`) }}
+      onClickEdit={{
+        onClick: () => push(pages['/jobs/[id]/hiring-team']({ id: job?.id })),
+      }}
       slotRoleList={coordinators}
     />
   );
