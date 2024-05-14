@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  capitalize,
   Dialog,
   Stack,
   TextField,
