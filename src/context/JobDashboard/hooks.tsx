@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
+import { Form } from '@/src/components/JobCreate/form';
 import { getHelper } from '@/src/components/JobEmailTemplates';
 import { templateObj } from '@/src/components/JobEmailTemplates/utils';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
@@ -90,9 +91,9 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     jdValidity,
     loading: job?.scoring_criteria_loading,
     publishable:
-      settingsValidity && jdValidity && !job?.scoring_criteria_loading,
+      settingsValidity.validity && jdValidity && !job?.scoring_criteria_loading,
   };
-  settingsValidity && jdValidity && !job.scoring_criteria_loading;
+  settingsValidity.validity && jdValidity && !job.scoring_criteria_loading;
   const { dismissWarnings } = useJobDashboardStore(({ dismissWarnings }) => ({
     dismissWarnings,
   }));
@@ -178,8 +179,27 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   return value;
 };
 
-export const getSettingsValidity = (job: Job) => {
-  if (!job) return false;
+type SettingsValidity = {
+  validity: boolean;
+  invalidFields: (keyof Omit<Form, 'recruiting_coordinator' | 'sourcer'>)[];
+};
+
+export const getSettingsValidity = (job: Job): SettingsValidity => {
+  if (!job)
+    return {
+      validity: false,
+      invalidFields: [
+        'company',
+        'department',
+        'description',
+        'hiring_manager',
+        'job_title',
+        'job_type',
+        'location',
+        'recruiter',
+        'workplace_type',
+      ],
+    };
   //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
   const draft = {
     job_title: job.job_title,
@@ -190,15 +210,20 @@ export const getSettingsValidity = (job: Job) => {
     location: job.location,
     workplace_type: job.workplace_type,
     hiring_manager: job.hiring_manager,
-    recrtuiter: job.recruiter,
+    recruiter: job.recruiter,
     ...(job.draft ?? {}),
   };
-  return Object.entries(draft).reduce((acc, [key, value]) => {
-    if (acc) {
+  return Object.entries(draft).reduce(
+    (acc, [key, value]) => {
       const safeKey = key as keyof typeof draft;
       switch (safeKey) {
         case 'description':
-          return !validateDescription(value as string);
+          {
+            const valid = !validateDescription(value as string);
+            if (acc.validity && !valid) acc.validity = valid;
+            if (!valid) acc.invalidFields.push(safeKey);
+          }
+          break;
         //TODO: HACK HERE AGAIN
         case 'company':
         case 'department':
@@ -207,14 +232,18 @@ export const getSettingsValidity = (job: Job) => {
         case 'location':
         case 'workplace_type':
         case 'hiring_manager':
-        case 'recrtuiter':
-          return !validateString(value as string);
-        default:
-          return acc;
+        case 'recruiter':
+          {
+            const valid = !validateString(value as string);
+            if (acc.validity && !valid) acc.validity = valid;
+            if (!valid) acc.invalidFields.push(safeKey);
+          }
+          break;
       }
-    }
-    return acc;
-  }, true);
+      return acc;
+    },
+    { validity: true, invalidFields: [] } as SettingsValidity,
+  );
 };
 
 export const validateJd = (jd_json: JdJsonType) => {

@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { SavedChanges } from '@/devlink';
 import { PageLayout } from '@/devlink2';
-import { EditJobTopbarLeft } from '@/devlink3';
+import { EditJobTopbarLeft, JobDetailBlock } from '@/devlink3';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import {
   validateDescription,
@@ -17,9 +17,15 @@ import NotFoundPage from '@/src/pages/404';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import Loader from '../Common/Loader';
-import { Form, JobForms } from '../JobCreate/form';
+import {
+  Form,
+  JobDetailsForm,
+  JobMetaFormProps,
+  useJobForms,
+  WarningSvg,
+} from '../JobCreate/form';
 
-const JobEditDashboard = () => {
+const JobDetailsDashboard = () => {
   const { initialLoad, job } = useJobDetails();
 
   return initialLoad ? (
@@ -46,10 +52,6 @@ const JobEdit = () => {
     job_type,
     location,
     workplace_type,
-    hiring_manager,
-    recruiter,
-    recruiting_coordinator,
-    sourcer,
   } = {
     job_title: job.job_title,
     company: job.company,
@@ -58,14 +60,10 @@ const JobEdit = () => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
-    hiring_manager: job.hiring_manager,
-    recruiter: job.recruiter,
-    recruiting_coordinator: job.recruiting_coordinator,
-    sourcer: job.sourcer,
     ...(job.draft ?? {}),
   };
   const { push } = useRouter();
-  const [fields, setFields] = useState<Form>({
+  const [fields, setFields] = useState<JobDetailsForm>({
     job_title: {
       value: job_title,
       required: true,
@@ -122,38 +120,6 @@ const JobEdit = () => {
         helper: 'Job description must have more than 100 characters',
       },
     },
-    hiring_manager: {
-      value: hiring_manager,
-      required: true,
-      error: {
-        value: validateString(hiring_manager),
-        helper: 'Hiring manager must be selected',
-      },
-    },
-    recruiter: {
-      value: recruiter,
-      required: true,
-      error: {
-        value: validateString(recruiter),
-        helper: 'Recruiter must be selected',
-      },
-    },
-    recruiting_coordinator: {
-      value: recruiting_coordinator,
-      required: false,
-      error: {
-        value: false,
-        helper: 'Recruiter coordinator must be selected',
-      },
-    },
-    sourcer: {
-      value: sourcer,
-      required: false,
-      error: {
-        value: false,
-        helper: 'Sourcer must be selected',
-      },
-    },
   });
   const [saving, setSaving] = useState(false);
   const [show, setShow] = useState(false);
@@ -195,7 +161,7 @@ const JobEdit = () => {
   );
 };
 
-const validateForms = (fields: Form) => {
+const validateForms = (fields: JobDetailsForm) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
       value: value.value,
@@ -210,7 +176,7 @@ const validateForms = (fields: Form) => {
       },
     };
     return acc;
-  }, {} as Form);
+  }, {} as JobDetailsForm);
 };
 
 type Payload = Parameters<
@@ -222,8 +188,8 @@ const JobEditForm = ({
   setFields,
   setSaving,
 }: {
-  fields: Form;
-  setFields: Dispatch<SetStateAction<Form>>;
+  fields: JobDetailsForm;
+  setFields: Dispatch<SetStateAction<JobDetailsForm>>;
   setSaving: Dispatch<SetStateAction<boolean>>;
 }) => {
   const initialRef = useRef(false);
@@ -235,22 +201,10 @@ const JobEditForm = ({
     return acc;
   }, {} as Payload);
 
-  const {
-    hiring_manager,
-    recruiter,
-    recruiting_coordinator,
-    sourcer,
-    ...safeNewJob
-  } = newJob;
-
   const handleSave = async () => {
     setSaving(true);
     await handleJobAsyncUpdate(job.id, {
-      draft: { ...job.draft, ...safeNewJob },
-      hiring_manager,
-      recruiter,
-      recruiting_coordinator,
-      sourcer,
+      draft: { ...job.draft, ...newJob },
     });
     setSaving(false);
   };
@@ -275,4 +229,59 @@ const JobEditForm = ({
   return <JobForms fields={fields} handleChange={handleChange} />;
 };
 
-export default JobEditDashboard;
+const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
+  const {
+    company,
+    department,
+    description,
+    job_title,
+    job_type,
+    location,
+    workplace_type,
+  } = useJobForms(fields, handleChange);
+
+  const forms = (
+    <>
+      {company}
+      {department}
+      {job_title}
+      {job_type}
+      {location}
+      {workplace_type}
+    </>
+  );
+
+  return (
+    <JobDetailBlock
+      slotJobForm={forms}
+      slotHiringTeamForm={null}
+      slotRichtext={description}
+      textDescription={
+        'Update the job details here; changes will be saved automatically. Publish to make the updates live.'
+      }
+      isCreate={false}
+      onClickCreate={null}
+      styleBorder={{
+        style: {
+          borderColor: fields.description.error.value
+            ? palette.red['500']
+            : palette.grey['300'],
+        },
+      }}
+      slotRichtextWarning={
+        fields.description.error.value && (
+          <Stack
+            alignItems={'center'}
+            direction={'row'}
+            color={palette.red[500]}
+          >
+            <WarningSvg />
+            {fields.description.error.helper}
+          </Stack>
+        )
+      }
+    />
+  );
+};
+
+export default JobDetailsDashboard;

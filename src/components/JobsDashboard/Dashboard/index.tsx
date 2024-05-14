@@ -293,7 +293,7 @@ const Dashboard = () => {
             }
             slotPublishButton={publishButton}
             isPublish={job.status !== 'closed'}
-            isEditError={!settingsValidity}
+            isEditError={!settingsValidity.validity}
             onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
             slotCloseJobButton={
               <>
@@ -616,17 +616,22 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
         }}
       />,
     );
-  if (!publishStatus.settingsValidity)
+  if (!publishStatus.settingsValidity.validity) {
+    const titles = publishStatus.settingsValidity.invalidFields.map((field) =>
+      capitalizeAll(field),
+    );
     banners.push(
       <DashboardAlert
-        textTitile={'Job details are incomplete'}
+        textTitile={`${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
+          titles.length === 1 ? 'field is' : 'fields are'
+        } incomplete`}
         textShortDescription={
           'Please ensure that valid job details are provided.'
         }
         onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
       />,
     );
-  else if (publishStatus.loading)
+  } else if (publishStatus.loading)
     banners.push(
       <BannerLoading
         slotLoader={

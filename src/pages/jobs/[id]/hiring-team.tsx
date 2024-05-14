@@ -1,20 +1,20 @@
 import Seo from '@components/Common/Seo';
 
-import JobEditDashboard from '@/src/components/JobDetails';
+import JobHiringTeamDashboard from '@/src/components/JobHiringTeam';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';
 import JobDashboardProvider from '@/src/context/JobDashboard';
 import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 
-const EditJobPage = () => {
+const JobHiringTeamPage = () => {
   return (
     <>
       <Seo title={`Jobs`} description='AI for People Products' />
-      <JobEditDashboard />
+      <JobHiringTeamDashboard />
     </>
   );
 };
 
-EditJobPage.privateProvider = function privateProvider(page) {
+JobHiringTeamPage.privateProvider = (page) => {
   return (
     <JobDashboardProvider>
       <JobInterviewPlanProvider>
@@ -24,4 +24,4 @@ EditJobPage.privateProvider = function privateProvider(page) {
   );
 };
 
-export default EditJobPage;
+export default JobHiringTeamPage;
