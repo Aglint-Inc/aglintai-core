@@ -19,5 +19,8 @@
   "packageManager": "npm@8.19.4",
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.11"
   }
 }
