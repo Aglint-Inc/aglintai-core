@@ -55,6 +55,10 @@
   grid-row-gap: 8px;
 }
 
+.div-block-787.pl-16 {
+  padding-left: 16px;
+}
+
 .cvs-intro-profile-image {
   overflow: hidden;
   width: 20px;
@@ -684,6 +688,10 @@
   border-bottom: 1px solid #e9ebed;
 }
 
+.cv-sidebar-intro-wrapper.no-border-bottom {
+  border-bottom-style: none;
+}
+
 .cvs-intro-profile-block {
   display: flex;
   flex-direction: column;
@@ -704,8 +712,8 @@
 .div-block-970 {
   display: flex;
   width: 100%;
-  padding-right: 20px;
-  padding-left: 20px;
+  padding-right: 16px;
+  padding-left: 16px;
 }
 
 .div-block-789 {
@@ -960,6 +968,7 @@
 .div-block-673 {
   display: flex;
   width: 390px;
+  padding-left: 16px;
   flex-direction: column;
   grid-column-gap: 18px;
   grid-row-gap: 18px;
@@ -967,6 +976,10 @@
 
 .div-block-673.width-600 {
   width: 600px;
+}
+
+.div-block-673.width-615 {
+  width: 615px;
 }
 
 .div-block-958 {
