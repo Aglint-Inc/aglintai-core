@@ -13,24 +13,18 @@ export const capitalizeAll = (str: string) => {
     .map((item) => cap(item))
     .join(' ');
 };
-export const capitalizeFirstLetter = (text: string) => {
-  if (!text) return '';
-  let capitalizeText = '';
-  const words = text.replaceAll('_', ' ').split(' ');
-  words.forEach((word) => {
-    if (
-      word != 'and' &&
-      word != 'of' &&
-      word &&
-      word[0] === word[0].toLocaleLowerCase()
-    ) {
-      capitalizeText += capitalize(word) + ' ';
-    } else {
-      capitalizeText += word + ' ';
-    }
-  });
-  return capitalizeText;
-};
+// export const capitalizeFirstLatter = (text: string) => {
+//   let capitalizeText = '';
+//   const words = text.split(' ');
+//   words.forEach((word) => {
+//     if (word && word[0] === word[0].toLocaleLowerCase()) {
+//       capitalizeText += capitalize(word) + ' ';
+//     } else {
+//       capitalizeText += word + ' ';
+//     }
+//   });
+//   return capitalizeText;
+// };
 export const getRandomColor = (): string => {
   const colors = [
     'black',
@@ -57,12 +51,22 @@ export const getRandomColor = (): string => {
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
   return palette[String(randomColor)][400] || palette[String(randomColor)][500];
 };
+export const capitalizeFirstLetter = (text: string) => {
+  if (!text) return '';
 
-// export const capitalizeFirstLetter = (str) => {
-//   if (!str) return '';
-//   return str
-//     .replaceAll('_', ' ')
-//     .split(' ')
-//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-//     .join(' ');
-// };
+  return text
+    .replaceAll('_', ' ')
+    .split(' ')
+    .map((word) => {
+      if (
+        word &&
+        word.toLowerCase() !== 'and' &&
+        word[0] === word[0].toLowerCase()
+      ) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      } else {
+        return word;
+      }
+    })
+    .join(' ');
+};
