@@ -230,6 +230,7 @@ interface recruiter_scheduling_settings {
   totalDaysOff: {
     date: string;
     event_name: string;
+    locations: string[];
   }[];
   schedulingKeyWords: {
     free: any[];
