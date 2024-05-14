@@ -1,4 +1,5 @@
 {
+  "root": true,
   "plugins": ["simple-import-sort", "jsx-a11y"],
   "env": {
     "es6": true
@@ -15,8 +16,7 @@
     "devlink_queries",
     "devlink",
     "src/components/Icons",
-    "src/components/JobTracker/Activities/devlink",
-    "src/types/schema.ts"
+    "src/components/JobTracker/Activities/devlink"
   ],
   "rules": {
     "no-unused-vars": "error",
