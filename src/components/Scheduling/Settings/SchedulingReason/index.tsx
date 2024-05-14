@@ -8,7 +8,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import {
