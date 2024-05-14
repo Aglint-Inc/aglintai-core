@@ -448,7 +448,9 @@ const ProfileDashboard = () => {
                       }}
                     />
                   }
-                  textName={`${recruiterUser.first_name || ''} ${recruiterUser.first_name || ''}`.trim()}
+                  textName={`${recruiterUser?.first_name ?? ''} ${
+                    recruiterUser?.last_name ?? ''
+                  }`.trim()}
                   textDepartment={recruiterUser.department}
                   textEmail={recruiterUser.email}
                   textJobTitle={recruiterUser.position}

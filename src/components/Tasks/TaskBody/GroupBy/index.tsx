@@ -25,16 +25,14 @@ function GroupBy() {
   return (
     <>
       <ButtonFilter
+        slotLeftIcon={<Stack>{selectedGroupBy.icon}</Stack>}
         isActive={false}
         isDotVisible={false}
         onClickStatus={{
           onClick: handleClick,
         }}
         textLabel={
-          <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-            <Stack>{selectedGroupBy.icon}</Stack>
-            <FilterPill textFilterName={capitalize(selectedGroupBy.label)} />
-          </Stack>
+          <FilterPill textFilterName={capitalize(selectedGroupBy.label)} />
         }
         slotRightIcon={
           <Stack>

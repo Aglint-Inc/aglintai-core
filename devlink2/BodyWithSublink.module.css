@@ -21,10 +21,12 @@
 
 .slot_tabcontent {
   display: flex;
+  overflow: auto;
   flex-direction: column;
   justify-content: flex-start;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+  height: calc(100vh - 60px);
 }
 
 #w-node-c3ee8b68-e4f4-2b0d-c4c8-e3cf4daf9a46-4daf9a45 {

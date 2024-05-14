@@ -97,6 +97,7 @@ export * from "./CsvListItem";
 export * from "./DateList";
 export * from "./DatePill";
 export * from "./DayOff";
+export * from "./DayoffList";
 export * from "./DaysPill";
 export * from "./DelJobBtn";
 export * from "./DeleteAssessmentPopup";

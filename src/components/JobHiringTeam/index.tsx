@@ -4,22 +4,25 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { SavedChanges } from '@/devlink';
-import { PageLayout } from '@/devlink2';
-import { EditJobTopbarLeft } from '@/devlink3';
+import { Breadcrum, PageLayout } from '@/devlink2';
+import { JobDetailBlock } from '@/devlink3';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import {
-  validateDescription,
-  validateString,
-} from '@/src/context/JobDashboard/hooks';
+import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import { Job } from '@/src/queries/job/types';
+import { pages } from '@/src/utils/pageRouting';
 
 import Loader from '../Common/Loader';
-import { Form, JobForms } from '../JobCreate/form';
+import { capitalize } from '../JobApplicationsDashboard/utils';
+import {
+  JobHiringTeamForm,
+  JobMetaFormProps,
+  useJobForms,
+} from '../JobCreate/form';
 
-const JobEditDashboard = () => {
+const JobHiringTeamDashboard = () => {
   const { initialLoad, job } = useJobDetails();
 
   return initialLoad ? (
@@ -38,90 +41,13 @@ const JobEditDashboard = () => {
 const JobEdit = () => {
   const { job } = useJobDetails();
   //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
-  const {
-    job_title,
-    company,
-    department,
-    description,
-    job_type,
-    location,
-    workplace_type,
-    hiring_manager,
-    recruiter,
-    recruiting_coordinator,
-    sourcer,
-  } = {
-    job_title: job.job_title,
-    company: job.company,
-    department: job.department,
-    description: job.description,
-    job_type: job.job_type,
-    location: job.location,
-    workplace_type: job.workplace_type,
+  const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = {
     hiring_manager: job.hiring_manager,
     recruiter: job.recruiter,
     recruiting_coordinator: job.recruiting_coordinator,
     sourcer: job.sourcer,
-    ...(job.draft ?? {}),
   };
-  const { push } = useRouter();
-  const [fields, setFields] = useState<Form>({
-    job_title: {
-      value: job_title,
-      required: true,
-      error: {
-        value: validateString(job_title),
-        helper: `Job title can't be empty`,
-      },
-    },
-    company: {
-      value: company,
-      required: true,
-      error: {
-        value: validateString(company),
-        helper: `Company name can't be empty`,
-      },
-    },
-    department: {
-      value: department,
-      required: true,
-      error: {
-        value: validateString(department),
-        helper: `Department name can't be empty`,
-      },
-    },
-    job_type: {
-      value: job_type,
-      required: true,
-      error: {
-        value: validateString(job_type),
-        helper: `Job type can't be empty`,
-      },
-    },
-    location: {
-      value: location,
-      required: true,
-      error: {
-        value: validateString(location),
-        helper: `Job location can't be empty`,
-      },
-    },
-    workplace_type: {
-      value: workplace_type,
-      required: true,
-      error: {
-        value: validateString(workplace_type),
-        helper: `Workplace type can't be empty`,
-      },
-    },
-    description: {
-      value: description,
-      required: true,
-      error: {
-        value: validateDescription(description),
-        helper: 'Job description must have more than 100 characters',
-      },
-    },
+  const [fields, setFields] = useState<JobHiringTeamForm>({
     hiring_manager: {
       value: hiring_manager,
       required: true,
@@ -166,9 +92,7 @@ const JobEdit = () => {
 
   return (
     <PageLayout
-      isBackButton
-      onClickBack={{ onClick: () => push(`${pageRoutes.JOBS}/${job.id}`) }}
-      slotTopbarLeft={<EditJobTopbarLeft textName={'Edit Job'} />}
+      slotTopbarLeft={<BreadCrumbs job={job} />}
       slotBody={
         <JobEditForm
           fields={fields}
@@ -195,7 +119,37 @@ const JobEdit = () => {
   );
 };
 
-const validateForms = (fields: Form) => {
+const BreadCrumbs = ({ job }: { job: Job }) => {
+  const { push } = useRouter();
+  return (
+    <>
+      <Breadcrum
+        isLink
+        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        onClickLink={{
+          onClick: () => {
+            push(`${pages['/jobs']()}?status=${job?.status ?? 'all'}`);
+          },
+          style: { cursor: 'pointer' },
+        }}
+      />
+      <Breadcrum
+        isLink
+        textName={capitalize(job?.job_title ?? 'Job')}
+        onClickLink={{
+          onClick: () => {
+            push(pages['/jobs/[id]']({ id: job?.id }));
+          },
+          style: { cursor: 'pointer' },
+        }}
+        showArrow
+      />
+      <Breadcrum textName={`Hiring Team`} showArrow />
+    </>
+  );
+};
+
+const validateForms = (fields: JobHiringTeamForm) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
       value: value.value,
@@ -210,7 +164,7 @@ const validateForms = (fields: Form) => {
       },
     };
     return acc;
-  }, {} as Form);
+  }, {} as JobHiringTeamForm);
 };
 
 type Payload = Parameters<
@@ -222,8 +176,8 @@ const JobEditForm = ({
   setFields,
   setSaving,
 }: {
-  fields: Form;
-  setFields: Dispatch<SetStateAction<Form>>;
+  fields: JobHiringTeamForm;
+  setFields: Dispatch<SetStateAction<JobHiringTeamForm>>;
   setSaving: Dispatch<SetStateAction<boolean>>;
 }) => {
   const initialRef = useRef(false);
@@ -235,27 +189,16 @@ const JobEditForm = ({
     return acc;
   }, {} as Payload);
 
-  const {
-    hiring_manager,
-    recruiter,
-    recruiting_coordinator,
-    sourcer,
-    ...safeNewJob
-  } = newJob;
-
   const handleSave = async () => {
     setSaving(true);
-    await handleJobAsyncUpdate(job.id, {
-      draft: { ...job.draft, ...safeNewJob },
-      hiring_manager,
-      recruiter,
-      recruiting_coordinator,
-      sourcer,
-    });
+    await handleJobAsyncUpdate(job.id, newJob);
     setSaving(false);
   };
 
-  const handleChange = (name: keyof Form, value: string | number) => {
+  const handleChange = (
+    name: keyof JobHiringTeamForm,
+    value: string | number,
+  ) => {
     const newFields = validateForms({
       ...fields,
       [name]: { ...fields[name], value },
@@ -275,4 +218,33 @@ const JobEditForm = ({
   return <JobForms fields={fields} handleChange={handleChange} />;
 };
 
-export default JobEditDashboard;
+const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
+  const { hiring_manager, recruiter, recruiting_coordinator, sourcer } =
+    useJobForms(fields, handleChange);
+
+  const forms = (
+    <>
+      {hiring_manager}
+      {recruiter}
+      {recruiting_coordinator}
+      {sourcer}
+    </>
+  );
+
+  return (
+    <JobDetailBlock
+      isJobDetailVisible={false}
+      slotJobForm={null}
+      isHiringTeamVisible={true}
+      slotHiringTeamForm={forms}
+      slotRichtext={null}
+      textDescription={null}
+      isCreate={false}
+      onClickCreate={null}
+      styleBorder={null}
+      slotRichtextWarning={null}
+    />
+  );
+};
+
+export default JobHiringTeamDashboard;

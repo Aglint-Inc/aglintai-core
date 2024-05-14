@@ -21,7 +21,7 @@
 
 .div-block-1434.height-40.job-cand {
   padding-left: 1%;
-  grid-template-columns: 20px 1fr 130px 110px 160px;
+  grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
 }
 
 .div-block-1434.height-53 {
@@ -32,7 +32,7 @@
 
 .div-block-1434.height-53.job-cand {
   padding-left: 1%;
-  grid-template-columns: 20px 1fr 130px 110px 160px;
+  grid-template-columns: 20px 1fr 130px 110px 160px 160px 130px;
   cursor: pointer;
 }
 
@@ -128,6 +128,10 @@
   bottom: auto;
 }
 
+.icons.pointer {
+  cursor: pointer;
+}
+
 .text-block-31 {
   color: #ff6224;
 }
@@ -155,4 +159,8 @@
 #w-node-f9fb816c-f256-bc7d-a704-0fc71d499d74-1d499d6e {
 }
 #w-node-f9fb816c-f256-bc7d-a704-0fc71d499d7e-1d499d6e {
+}
+#w-node-_5f0d21cb-c241-e5a7-54af-22d4e63b1af0-1d499d6e {
+}
+#w-node-_20bac36b-272e-4219-72cc-f14b1b9a7193-1d499d6e {
 }

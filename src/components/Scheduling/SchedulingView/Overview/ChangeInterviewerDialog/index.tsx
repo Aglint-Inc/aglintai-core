@@ -128,6 +128,11 @@ function ChangeInterviewerDialog({
               cancelInterviewer.interview_session_relation.id,
             );
 
+          await supabase
+            .from('interview_session_relation')
+            .update({ accepted_status: 'waiting' })
+            .eq('session_id', schedule.interview_session.id);
+
           queryClient.invalidateQueries({
             queryKey: ['schedule_details', schedule.interview_meeting.id],
           });

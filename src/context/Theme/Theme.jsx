@@ -308,6 +308,10 @@ function Theme({ children }) {
             border: 'none',
             boxShadow: '0px 0px 0px 1px #d8dcde inset',
           },
+          option: {
+            fontSize: '14px',
+            // fontWeight: 'normal'
+          }
         },
       },
       MuiDialog: {
@@ -405,8 +409,16 @@ function Theme({ children }) {
         styleOverrides: {
           select: {
             borderRadius: '0.25rem',
+            fontSize: '14px'
           },
         },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            fontSize: '14px'
+          }
+        }
       },
       MuiAppBar: {
         defaultProps: {

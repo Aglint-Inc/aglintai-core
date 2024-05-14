@@ -12,4 +12,7 @@ declare function TaskTableJobSubCard(props: {
   slotPriorityPill?: Types.Devlink.Slot;
   isOverdueVisible?: Types.Visibility.VisibilityConditions;
   textOverdue?: React.ReactNode;
+  gridProps?: Types.Devlink.RuntimeProps;
+  slotCandidate?: Types.Devlink.Slot;
+  slotJob?: Types.Devlink.Slot;
 }): React.JSX.Element;

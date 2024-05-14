@@ -3,14 +3,11 @@
 //   margin: 0;
 // }
 
-// a {
-//   margin: 0;
-//   font-weight: 400;
-//   font-family: 'DM Sans', sans-serif;
-//   font-size: 0.875rem;
-//   line-height: 1.43;
-//   text-decoration: none;
-// }
+a {
+  margin: 0;
+  text-decoration: none;
+  color: inherit;
+}
 
 //  Fix additional scroll on page
 div#__next {

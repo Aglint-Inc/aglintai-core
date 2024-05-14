@@ -14,7 +14,7 @@ import { PHProvider } from '../components/PostHog/postHog';
 import { AuthProvider } from '../context/AuthContext/AuthContext';
 import JobsProvider from '../context/JobsContext';
 import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
-import { SupportProvider } from '../context/SupportContext/SupportContext';
+// import { SupportProvider } from '../context/SupportContext/SupportContext';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
 
@@ -49,11 +49,11 @@ const MyApp = ({ Component, pageProps }) => {
                   <AuthProvider>
                     <QueryProvider>
                       <JobsProvider>
-                        <SupportProvider>
-                          <AppLayout>
-                            {provider(<Component {...pageProps} />)}
-                          </AppLayout>
-                        </SupportProvider>
+                        {/* <SupportProvider> */}
+                        <AppLayout>
+                          {provider(<Component {...pageProps} />)}
+                        </AppLayout>
+                        {/* </SupportProvider> */}
                       </JobsProvider>
                     </QueryProvider>
                   </AuthProvider>

@@ -208,7 +208,7 @@ const AnalysisSection: React.FC<{ score_json: ScoreJson }> = ({
 
 const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
   application,
-}) => { 
+}) => {
   const {
     emailValidity: { isFetching, isValidEmail },
   } = application;
