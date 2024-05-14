@@ -49,6 +49,8 @@ import toast from '@/src/utils/toast';
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
 import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
+import HiringTeamIcon from '../../Common/ModuleIcons/hiringTeamIcon';
+import JobDetailsIcon from '../../Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
 // import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
@@ -822,7 +824,7 @@ const HiringTeamModule = () => {
       isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Hiring Team'}
-      slotIcon={<AssessmentIcon />}
+      slotIcon={<HiringTeamIcon />}
     />
   );
 };
@@ -843,7 +845,7 @@ const JobDetailsModule = () => {
       isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Job Details'}
-      slotIcon={<AssessmentIcon />}
+      slotIcon={<JobDetailsIcon />}
     />
   );
 };
