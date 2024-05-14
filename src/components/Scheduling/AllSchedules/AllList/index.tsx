@@ -1,9 +1,9 @@
 import { Stack } from '@mui/material';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { AllInterviewEmpty } from '@/devlink2';
 import Loader from '@/src/components/Common/Loader';
-import { pages } from '@/src/utils/pageRouting';
+import { pageRoutes } from '@/src/utils/pageRouting';
 
 import ListCardInterviewSchedule from '../ListCard';
 import { ApplicationList } from '../store';
@@ -19,8 +19,19 @@ function AllList({
   isError: boolean;
   applicationList: ApplicationList[];
   isFetching: boolean;
-  isLoading: boolean;
+  isLoading;
 }) {
+  const router = useRouter();
+  const onClickCard = (app: ApplicationList) => {
+    router.push(
+      `${pageRoutes.SCHEDULING}/application/${app.applications.id}`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
+  };
+
   return (
     <Stack
       style={{
@@ -53,14 +64,11 @@ function AllList({
           )}
           {applicationList.map((app) => {
             return (
-              <Link
+              <ListCardInterviewSchedule
                 key={app.applications.id}
-                href={pages['/scheduling/application/[application_id]']({
-                  application_id: app.applications.id,
-                })}
-              >
-                <ListCardInterviewSchedule app={app} />
-              </Link>
+                app={app}
+                onClickCard={onClickCard}
+              />
             );
           })}
         </>
