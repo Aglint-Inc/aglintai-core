@@ -26,12 +26,14 @@ function SelectTime({
         onAccept={(value) => {
           onSelect(value, i);
         }}
+        format='hh:mm A'
         disabled={disable}
         minTime={minTime}
         maxTime={maxTime}
         disableIgnoringDatePartForTimeValidation={
           disableIgnoringDatePartForTimeValidation
         }
+        ampm={false}
       />
     </LocalizationProvider>
   );
