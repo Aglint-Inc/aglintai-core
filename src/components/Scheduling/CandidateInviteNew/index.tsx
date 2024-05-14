@@ -246,7 +246,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           }}
           options={
             (cancelReschedule === 'cancel'
-              ? scheduling_reason?.candidate?.cancelation
+              ? scheduling_reason?.candidate?.cancellation
               : scheduling_reason?.candidate?.rescheduling) || ['other']
           }
           title={
