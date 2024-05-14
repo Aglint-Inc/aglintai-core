@@ -246,10 +246,10 @@ interface recruiter_scheduling_settings {
 type recruiter_scheduling_reason = {
   company?: {
     rescheduling?: string[];
-    cancelation?: string[];
+    cancellation?: string[];
     decline?: string[];
   };
-  candidate?: { rescheduling?: string[]; cancelation?: string[] };
+  candidate?: { rescheduling?: string[]; cancellation?: string[] };
 };
 
 type interview_session_cancel_other_details = {
