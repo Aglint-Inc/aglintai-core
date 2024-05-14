@@ -7,7 +7,7 @@
     "start:prod": "set NODE_ENV=production&& npm run build && node dist/src/index.js",
     "start:development": "set NODE_ENV=development&& npm run build && node dist/src/index.js",
     "build": "npx tsc",
-    "lint": "gts lint",
+    "lint": "gts lint && npx tsc",
     "compile": "tsc",
     "fix": "gts fix"
   },
