@@ -40,5 +40,6 @@ app.use(errorHandler);
 mountScheduleAgentWs();
 
 app.listen(PORT, () => {
+  console.log('fnekjwnkewj');
   appLogger.info(`server started on port ${PORT}`);
 });

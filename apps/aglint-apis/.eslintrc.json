@@ -1,7 +1,7 @@
 {
-  "extends": "./node_modules/gts",
+  "extends": ["eslint:recommended", "prettier"],
   "rules": {
-    "allowTemplateLiterals": true,
+    "allowTemplateLiterals": 1,
     "prettier/prettier": [
       "error",
       {
@@ -10,5 +10,18 @@
     ],
     "quotes": ["error", "double", {"allowTemplateLiterals": true}],
     "no-console": ["error", {"allow": ["error"]}]
-  }
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
+  },
+  "ignorePatterns": [
+    // Ignore dotfiles
+    ".*.js",
+    "node_modules/",
+    "dist/"
+  ]
 }
