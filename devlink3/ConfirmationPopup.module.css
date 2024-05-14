@@ -25,6 +25,11 @@
   width: 463px;
 }
 
+.assessment_duplicate_popup.width-550 {
+  width: 550px;
+  padding: 20px;
+}
+
 .popup_header {
   display: flex;
   justify-content: space-between;
@@ -102,6 +107,11 @@
   padding-left: 16px;
 }
 
+.plr-16 {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
 .text-lg {
   font-size: 18px;
   line-height: 24px;
@@ -114,6 +124,22 @@
 .fw-semibold.p-lr-16 {
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.text-grey-500 {
+  color: #87929d;
+}
+
+.text-grey_400 {
+  color: #c2c8cc;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.fw-semibold.name-text {
+  color: #467b7c;
 }
 
 .po-up_close {
@@ -160,6 +186,8 @@
 
 .slot_widget {
   display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
@@ -192,7 +220,7 @@
 
 .button_primary {
   display: flex;
-  padding: 6px 16px;
+  padding: 8px 16px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 10px;
@@ -373,4 +401,11 @@
 
 .button-yellow.greay_btn-copy:hover {
   background-color: #d8dcde;
+}
+
+#w-node-b6b410b8-e77b-d481-432a-efbe4e0bdc2d-4e0bdc1d {
+  grid-column-end: 3;
+  grid-column-start: 2;
+  grid-row-end: 2;
+  grid-row-start: 1;
 }
