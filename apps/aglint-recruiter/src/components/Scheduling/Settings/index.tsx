@@ -16,6 +16,12 @@ import timeZones from '@/src/utils/timeZone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+import {
+  DailyLimitType,
+  holidayType,
+  schedulingSettingType,
+  WeeklyLimitType,
+} from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
 import {
@@ -32,12 +38,6 @@ import {
   WorkingHours,
 } from '@/devlink2';
 import { ConfirmationPopup } from '@/devlink3';
-import {
-  DailyLimitType,
-  holidayType,
-  schedulingSettingType,
-  WeeklyLimitType,
-} from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 

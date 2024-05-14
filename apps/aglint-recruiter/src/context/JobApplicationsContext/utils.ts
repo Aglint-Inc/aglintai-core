@@ -2,14 +2,14 @@
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
 import { Database } from '@aglint/shared-types';
-
-import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
-import { Job } from '@/src/queries/job/types';
 import {
   Applications,
   ApplicationsInsert,
   ApplicationsUpdate,
 } from '@aglint/shared-types';
+
+import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
+import { Job } from '@/src/queries/job/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {

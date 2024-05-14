@@ -1,6 +1,5 @@
-import { create } from 'zustand';
-
 import { CandidateListTypeDB } from '@aglint/shared-types';
+import { create } from 'zustand';
 
 import {
   Candidate,

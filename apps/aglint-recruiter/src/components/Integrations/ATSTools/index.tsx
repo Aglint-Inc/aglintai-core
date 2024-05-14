@@ -1,3 +1,4 @@
+import { RecruiterType } from '@aglint/shared-types';
 import { IconButton, TextField } from '@mui/material';
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import axios from 'axios';
@@ -12,7 +13,6 @@ import {
   ButtonPrimaryOutlinedRegular,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@aglint/shared-types';
 import toast from '@/src/utils/toast';
 
 import ATSPopUps from '../ATSPopUps';

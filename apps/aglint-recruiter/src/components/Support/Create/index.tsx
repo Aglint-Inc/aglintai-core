@@ -1,4 +1,9 @@
 import {
+  CandidateType,
+  JobApplicationType,
+  SupportTicketType,
+} from '@aglint/shared-types';
+import {
   Autocomplete,
   AutocompleteProps,
   Avatar,
@@ -16,11 +21,6 @@ import { useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink';
 import { InboxContactSupport } from '@/devlink/InboxContactSupport';
 import { palette } from '@/src/context/Theme/Theme';
-import {
-  CandidateType,
-  JobApplicationType,
-  SupportTicketType,
-} from '@aglint/shared-types';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalize } from '@/src/utils/text/textUtils';

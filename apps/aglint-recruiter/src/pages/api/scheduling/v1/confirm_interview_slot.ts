@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
+import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import {
   bookCandidatePlan,
   saveEventsStatusInSchedule,

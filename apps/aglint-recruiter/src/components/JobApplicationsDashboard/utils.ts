@@ -2,12 +2,13 @@
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
 
+import { EmailTemplateType } from '@aglint/shared-types';
+
 import {
   JobApplication,
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { Job } from '@/src/queries/job/types';
-import { EmailTemplateType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

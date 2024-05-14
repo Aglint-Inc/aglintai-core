@@ -8,6 +8,10 @@ import {
   SupabaseType,
 } from '@aglint/shared-types';
 import { Database } from '@aglint/shared-types';
+import {
+  APICandidateConfirmSlot,
+  ApiFindAvailability,
+} from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -20,10 +24,6 @@ import {
   EmailAgentId,
   PhoneAgentId,
 } from '@/src/components/Tasks/utils';
-import {
-  APICandidateConfirmSlot,
-  ApiFindAvailability,
-} from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
   geoCodeLocation,

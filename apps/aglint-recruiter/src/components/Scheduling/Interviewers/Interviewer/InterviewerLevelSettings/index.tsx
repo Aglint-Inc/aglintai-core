@@ -1,4 +1,10 @@
 import {
+  DailyLimitType,
+  holidayType,
+  schedulingSettingType,
+  WeeklyLimitType,
+} from '@aglint/shared-types';
+import {
   Autocomplete,
   Chip,
   IconButton,
@@ -30,12 +36,6 @@ import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
 import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
-import {
-  DailyLimitType,
-  holidayType,
-  schedulingSettingType,
-  WeeklyLimitType,
-} from '@aglint/shared-types';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 

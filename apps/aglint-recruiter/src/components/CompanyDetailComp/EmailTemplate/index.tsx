@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-non-literal-regexp */
 /* eslint-disable security/detect-object-injection */
+import { RecruiterType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
@@ -14,7 +15,6 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
-import { RecruiterType } from '@aglint/shared-types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import TipTapAIEditor from '../../Common/TipTapAIEditor';

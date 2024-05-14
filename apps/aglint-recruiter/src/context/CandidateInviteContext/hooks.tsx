@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import dayjs from '@utils/dayjs';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
@@ -10,7 +11,6 @@ import {
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';

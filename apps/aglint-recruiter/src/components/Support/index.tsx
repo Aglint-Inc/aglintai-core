@@ -1,3 +1,4 @@
+import { Public_jobsType, Support_ticketType } from '@aglint/shared-types';
 import {
   Avatar,
   AvatarProps,
@@ -25,7 +26,6 @@ import {
   useSupportContext,
 } from '@/src/context/SupportContext/SupportContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { Public_jobsType, Support_ticketType } from '@aglint/shared-types';
 // import { Public_jobsType, Support_ticketType } from '@aglint/shared-types';
 import {
   // allPriority,

@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { EmailTemplateType } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
@@ -18,7 +19,6 @@ import { POSTED_BY } from '@/src/components/JobsDashboard/AddJobWithIntegrations
 import { JobApplicationDelete } from '@/src/pages/api/job/jobApplications/candidateDelete';
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
-import { EmailTemplateType } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

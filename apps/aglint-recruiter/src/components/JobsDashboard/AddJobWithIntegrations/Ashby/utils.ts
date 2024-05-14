@@ -1,12 +1,12 @@
-import axios from 'axios';
-
-import { hashCode } from '@/src/context/JobDashboard/hooks';
-import { JobInsert } from '@/src/queries/job/types';
 import {
   GreenhouseRefDbType,
   GreenhouseType,
   RecruiterDB,
 } from '@aglint/shared-types';
+import axios from 'axios';
+
+import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { JobInsert } from '@/src/queries/job/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

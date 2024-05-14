@@ -1,9 +1,9 @@
+import { RecruiterUserType } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterUserType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 

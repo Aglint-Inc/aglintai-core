@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { StatusJobs } from '@aglint/shared-types';
 import CloseIcon from '@mui/icons-material/Close';
 import { Collapse, Stack } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +17,6 @@ import {
 import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { StatusJobs } from '@aglint/shared-types';
 
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';

@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+import { RecruiterType } from '@aglint/shared-types';
 import { Avatar, FormControlLabel, Stack, Switch } from '@mui/material';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useRef, useState } from 'react';
@@ -11,7 +12,6 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateRecruiter } from '@/src/context/InterviewContext/utils';
-import { RecruiterType } from '@aglint/shared-types';
 import { avatar_list } from '@/src/utils/avatarlist';
 import interviewerList from '@/src/utils/interviewer_list';
 import { supabase } from '@/src/utils/supabase/client';

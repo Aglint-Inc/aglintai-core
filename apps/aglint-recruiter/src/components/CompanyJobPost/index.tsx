@@ -1,3 +1,4 @@
+import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { Avatar, Stack } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -10,7 +11,6 @@ import {
   OpenJobListingCard,
 } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import Icon from '../Common/Icons/Icon';

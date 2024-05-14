@@ -1,3 +1,4 @@
+import { SocialsType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,7 +13,6 @@ import {
 } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
-import { SocialsType } from '@aglint/shared-types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';
 

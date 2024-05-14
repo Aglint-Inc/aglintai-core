@@ -1,3 +1,4 @@
+import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -7,7 +8,6 @@ import {
   ApiResponseAllSlots,
   ApiResponseCandidateInvite,
 } from '@/src/pages/api/scheduling/invite';
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import toast from '@/src/utils/toast';
 
 import { candidateInviteKeys } from './keys';

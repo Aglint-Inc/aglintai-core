@@ -14,7 +14,7 @@
   ],
   "ignorePatterns": [
     "devlink_queries",
-    "devlink",
+    "devlink*",
     "src/components/Icons",
     "src/components/JobTracker/Activities/devlink"
   ],
@@ -25,5 +25,10 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error"
+  },
+  "settings": {
+    "next": {
+      "rootDir": "apps/aglint-recruiter"
+    }
   }
 }

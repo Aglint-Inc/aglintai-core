@@ -7,10 +7,9 @@ const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import { ApiFindAvailability } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { ApiFindAvailability } from '@aglint/shared-types';
 
 const required_fields = ['recruiter_id', 'start_date', 'end_date'];
 

@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
+import { APIFindInterviewSlot } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
-import { APIFindInterviewSlot } from '@aglint/shared-types';
 import { combineSlots } from '@/src/utils/scheduling_v2/utils';
 
 const required_fields = ['recruiter_id', 'start_date', 'user_tz'];

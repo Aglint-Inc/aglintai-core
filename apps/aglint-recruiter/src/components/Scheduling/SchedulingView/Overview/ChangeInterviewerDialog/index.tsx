@@ -1,3 +1,8 @@
+import {
+  APIFindAltenativeTimeSlot,
+  APIFindAltenativeTimeSlotResponse,
+  APIUpdateMeetingInterviewers,
+} from '@aglint/shared-types';
 import { Dialog, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -8,11 +13,6 @@ import { ChangeInterviewer, InterviewerList } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  APIFindAltenativeTimeSlot,
-  APIFindAltenativeTimeSlotResponse,
-  APIUpdateMeetingInterviewers,
-} from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

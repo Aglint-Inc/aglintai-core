@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
+import { RecruiterUserType } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterUserType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';

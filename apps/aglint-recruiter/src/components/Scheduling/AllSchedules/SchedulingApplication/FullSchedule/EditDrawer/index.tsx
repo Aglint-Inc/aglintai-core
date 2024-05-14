@@ -1,3 +1,4 @@
+import { InterviewSession } from '@aglint/shared-types';
 import { Drawer, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { capitalize } from 'lodash';
@@ -28,7 +29,6 @@ import {
   UpdateDebriefSession,
   updateDebriefSession,
 } from '@/src/queries/interview-plans';
-import { InterviewSession } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

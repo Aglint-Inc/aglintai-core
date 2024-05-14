@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { PostgrestError } from '@supabase/supabase-js';
-
 import {
   CandidateFiles,
   CandidateFilesInsert,
   CandidateFilesUpdate,
 } from '@aglint/shared-types';
+import { PostgrestError } from '@supabase/supabase-js';
 
 export type CandidateFilesContext = {
   handleCandidateFilesCreate: (

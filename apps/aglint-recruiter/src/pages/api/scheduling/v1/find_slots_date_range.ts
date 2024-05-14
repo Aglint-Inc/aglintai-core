@@ -6,10 +6,9 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import { APIFindSlotsDateRange } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { APIFindSlotsDateRange } from '@aglint/shared-types';
 
 const required_fields = ['recruiter_id', 'date_range_start', 'date_range_end'];
 

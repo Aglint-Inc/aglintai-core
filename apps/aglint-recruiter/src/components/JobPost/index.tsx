@@ -1,4 +1,11 @@
 /* eslint-disable security/detect-object-injection */
+import {
+  CandidateType,
+  JobApplcationDB,
+  JobTypeDB,
+  RecruiterDB,
+  RecruiterType,
+} from '@aglint/shared-types';
 import { Avatar, Stack, TextField, Typography } from '@mui/material';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -23,13 +30,6 @@ import {
   OpenJobListingCard,
 } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import {
-  CandidateType,
-  JobApplcationDB,
-  JobTypeDB,
-  RecruiterDB,
-  RecruiterType,
-} from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

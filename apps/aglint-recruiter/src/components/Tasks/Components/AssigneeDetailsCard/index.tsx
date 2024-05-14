@@ -1,3 +1,4 @@
+import { RecruiterUserType } from '@aglint/shared-types';
 import {
   Stack,
   styled,
@@ -14,7 +15,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { ScheduleListType } from '@/src/components/Scheduling/Common/ModuleSchedules/hooks';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { RecruiterUserType } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

@@ -1,7 +1,7 @@
+import { JobApplcationDB } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 
 import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
-import { JobApplcationDB } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { JobType, Status } from './types';

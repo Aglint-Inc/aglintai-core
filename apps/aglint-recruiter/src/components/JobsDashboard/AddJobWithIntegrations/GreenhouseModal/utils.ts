@@ -1,8 +1,3 @@
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-
-import { hashCode } from '@/src/context/JobDashboard/hooks';
-import { JobInsert } from '@/src/queries/job/types';
 import {
   CandidateType,
   GreenhouseRefDbType,
@@ -10,6 +5,11 @@ import {
   NewCandidateType,
   RecruiterDB,
 } from '@aglint/shared-types';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+
+import { hashCode } from '@/src/context/JobDashboard/hooks';
+import { JobInsert } from '@/src/queries/job/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

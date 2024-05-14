@@ -1,3 +1,4 @@
+import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,7 +9,6 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

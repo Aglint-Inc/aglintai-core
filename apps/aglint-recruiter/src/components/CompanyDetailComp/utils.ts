@@ -1,6 +1,6 @@
+import { RecruiterDB } from '@aglint/shared-types';
 import debounce from 'lodash/debounce';
 
-import { RecruiterDB } from '@aglint/shared-types';
 import { getAIResponse } from '@/src/utils/prompts/addNewJob';
 import { MessageType } from '@/src/utils/prompts/types';
 import { requestJson } from '@/src/utils/prompts/utils';

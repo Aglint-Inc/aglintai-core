@@ -17,8 +17,6 @@ type GeoPoint = {
 };
 
 // import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
-import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import {
   CandidateType,
   EmailTemplateFields,
@@ -29,6 +27,9 @@ import {
   RecruiterType,
 } from '@aglint/shared-types';
 import { schedulingSettingType } from '@aglint/shared-types';
+
+import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';

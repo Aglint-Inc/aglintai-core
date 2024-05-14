@@ -1,3 +1,4 @@
+import { RecruiterUserType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -11,7 +12,6 @@ import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import { ContextValue } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
-import { RecruiterUserType } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

@@ -1,3 +1,9 @@
+import {
+  CandidateType,
+  JobApplcationDB,
+  JobTypeDB,
+  RecruiterType,
+} from '@aglint/shared-types';
 import { Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -7,12 +13,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import {
-  CandidateType,
-  JobApplcationDB,
-  JobTypeDB,
-  RecruiterType,
-} from '@aglint/shared-types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

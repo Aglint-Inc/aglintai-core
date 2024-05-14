@@ -1,3 +1,4 @@
+import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { Dispatch, useEffect, useState } from 'react';
@@ -5,7 +6,6 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { Checkbox } from '@/devlink';
 import { DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

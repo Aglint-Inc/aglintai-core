@@ -1,4 +1,12 @@
 import {
+  CandidateType,
+  // EmailTemplateType,
+  JobApplicationType,
+  Public_jobsType,
+  Support_ticketType,
+  // SupportEmailAPIType,
+} from '@aglint/shared-types';
+import {
   Autocomplete,
   Avatar,
   AvatarProps,
@@ -31,14 +39,6 @@ import {
   useSupportContext,
 } from '@/src/context/SupportContext/SupportContext';
 import { palette } from '@/src/context/Theme/Theme';
-import {
-  CandidateType,
-  // EmailTemplateType,
-  JobApplicationType,
-  Public_jobsType,
-  Support_ticketType,
-  // SupportEmailAPIType,
-} from '@aglint/shared-types';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

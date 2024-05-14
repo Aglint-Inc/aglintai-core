@@ -1,10 +1,10 @@
+import { RecruiterType } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import posthog from 'posthog-js';
 
 import { Checkbox } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { RecruiterType } from '@aglint/shared-types';
 
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';

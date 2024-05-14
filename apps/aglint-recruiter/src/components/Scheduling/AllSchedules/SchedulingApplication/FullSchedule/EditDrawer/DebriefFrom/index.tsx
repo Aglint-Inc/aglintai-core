@@ -1,3 +1,4 @@
+import { InterviewSession } from '@aglint/shared-types';
 import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect } from 'react';
@@ -9,7 +10,6 @@ import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { MemberType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { InterviewSession } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../../../ListCard/Icon';

@@ -1,3 +1,4 @@
+import { RecruiterType } from '@aglint/shared-types';
 import { Autocomplete, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -6,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { BasicInfo, CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
 import { DeletePopup } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@aglint/shared-types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import ImageUpload from '../../Common/ImageUpload';

@@ -1,3 +1,4 @@
+import { RecruiterType } from '@aglint/shared-types';
 import {
   Autocomplete,
   Dialog,
@@ -9,7 +10,6 @@ import React, { useEffect, useState } from 'react';
 
 import { AddDepartmentPop, RolesPill } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@aglint/shared-types';
 
 interface DepartmentsProps {
   handleClose: () => void;

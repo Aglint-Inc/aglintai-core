@@ -1,6 +1,3 @@
-import { create } from 'zustand';
-
-import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import {
   type CandidateType,
   type InterviewMeetingTypeDb,
@@ -8,6 +5,9 @@ import {
   type InterviewSession,
   type JobApplcationDB,
 } from '@aglint/shared-types';
+import { create } from 'zustand';
+
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 
 export interface InterviewSlice {
   fetching: boolean;

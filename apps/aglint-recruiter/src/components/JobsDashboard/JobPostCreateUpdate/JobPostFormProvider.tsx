@@ -1,7 +1,3 @@
-import { cloneDeep, debounce, get, isNull, set } from 'lodash';
-import React, { createContext, useContext, useReducer } from 'react';
-
-import { useJobs } from '@/src/context/JobsContext';
 // import { Job } from '@/src/context/JobsContext/types';
 import {
   JobTypeDB,
@@ -9,6 +5,10 @@ import {
   RecruiterDB,
   RecruiterUserType,
 } from '@aglint/shared-types';
+import { cloneDeep, debounce, get, isNull, set } from 'lodash';
+import React, { createContext, useContext, useReducer } from 'react';
+
+import { useJobs } from '@/src/context/JobsContext';
 import toast from '@/src/utils/toast';
 
 import { ScoreWheelParams } from '../../Common/ScoreWheel';

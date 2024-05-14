@@ -1,4 +1,5 @@
 import { RecruiterDB } from '@aglint/shared-types';
+
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

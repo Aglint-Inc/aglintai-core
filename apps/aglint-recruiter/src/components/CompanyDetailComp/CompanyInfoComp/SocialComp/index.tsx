@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { RecruiterType } from '@aglint/shared-types';
 import PublicIcon from '@mui/icons-material/Public';
 import { Dialog, Stack, TextField } from '@mui/material';
 import { Avatar } from '@mui/material';
@@ -10,7 +11,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { RecruiterType } from '@aglint/shared-types';
 
 import { debouncedSave } from '../../utils';
 

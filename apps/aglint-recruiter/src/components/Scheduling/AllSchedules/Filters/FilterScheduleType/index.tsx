@@ -1,9 +1,9 @@
+import { InterviewSession } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { InterviewSession } from '@aglint/shared-types';
 
 import {
   setFilter,

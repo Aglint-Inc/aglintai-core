@@ -5,10 +5,10 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import { APIEventAttendeeStatus } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { APIEventAttendeeStatus } from '@aglint/shared-types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { event_id, attendee_interv_id } = req.body as APIEventAttendeeStatus;

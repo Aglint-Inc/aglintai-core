@@ -1,3 +1,4 @@
+import { RecruiterType } from '@aglint/shared-types';
 import { Avatar, Popover, Stack } from '@mui/material';
 // import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -5,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { LoaderSvg } from '@/devlink';
 import { CompanyProfileHeader, SwitchComp } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@aglint/shared-types';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
