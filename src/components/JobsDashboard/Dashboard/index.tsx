@@ -42,7 +42,7 @@ import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import { pageRoutes, pages } from '@/src/utils/pageRouting';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -766,13 +766,44 @@ const Modules = () => {
     useAuthDetails();
   return (
     <>
+      <JobDetailsModule />
       <ProfileScoreModule />
       {isSchedulingEnabled && <InterviewModule />}
       {isAssessmentEnabled && <AssessmentModule />}
       {isScreeningEnabled && <ScreeningModule />}
-
+      <HiringTeamModule />
       <EmailTemplatesModule />
     </>
+  );
+};
+
+const HiringTeamModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(pages['/jobs/[id]/hiring-team']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Hiring Team'}
+      slotIcon={<AssessmentIcon />}
+    />
+  );
+};
+
+const JobDetailsModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(pages['/jobs/[id]/job-details']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Job Details'}
+      slotIcon={<AssessmentIcon />}
+    />
   );
 };
 
