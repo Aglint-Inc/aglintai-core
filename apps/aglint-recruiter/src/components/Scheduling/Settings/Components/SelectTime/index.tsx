@@ -1,8 +1,6 @@
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
-
-import SpecializedTimePicker from '@/src/components/Common/SpecializedTimePicker';
 
 function SelectTime({
   i,
@@ -23,18 +21,19 @@ function SelectTime({
 }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <SpecializedTimePicker
+      <DesktopTimePicker
         defaultValue={value}
-        //   label=''
-        onChange={(value) => {
+        onAccept={(value) => {
           onSelect(value, i);
         }}
-        disable={disable}
+        format='hh:mm A'
+        disabled={disable}
         minTime={minTime}
         maxTime={maxTime}
         disableIgnoringDatePartForTimeValidation={
           disableIgnoringDatePartForTimeValidation
         }
+        ampm={false}
       />
     </LocalizationProvider>
   );

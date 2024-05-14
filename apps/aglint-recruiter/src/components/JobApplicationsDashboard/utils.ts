@@ -360,11 +360,19 @@ export const getCandidateDetails = (
     | 'linkedin'
     | 'phone'
     | 'overview'
-    | 'duration',
+    | 'duration'
+    | 'email',
 ) => {
   const fallback = '---';
   let value = fallback;
   switch (type) {
+    case 'email':
+      {
+        value = application?.emailValidity?.isValidEmail
+          ? application?.candidates?.email
+          : fallback;
+      }
+      break;
     case 'job_title':
       {
         value = (application.candidate_files?.resume_json as any)?.basics

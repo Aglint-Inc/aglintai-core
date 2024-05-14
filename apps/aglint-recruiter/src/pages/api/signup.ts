@@ -31,7 +31,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email: email,
         first_name: first_name,
         last_name: last_name || '',
-        role: role,
       })
       .select();
     if (errUser) throw new Error(errUser.message);
@@ -49,7 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (errRec) throw new Error(errRec.message);
 
     const { error: errRel } = await supabase.from('recruiter_relation').insert({
-      role: 'admin',
+      role: role,
       recruiter_id: rec_id,
       user_id: user_id,
       is_active: true,

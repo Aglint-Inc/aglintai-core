@@ -1,5 +1,5 @@
 // code has to rewritten not understandable and not maintainable
-
+'use client';
 import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import axios from 'axios';
@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 
 import { SignupSlider } from '@/devlink';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import { errorMessages } from '@/src/utils/errorMessages';
@@ -22,15 +21,17 @@ import { handleEmail, handlePassword, stepObj } from './utils';
 
 const SlideTwoSignUp = () => {
   const router = useRouter();
-  const { setStep, flow } = useSignupDetails();
   const {
-    setUserDetails,
-    setRecruiter,
-    userDetails,
-    recruiter,
+    setStep,
+    flow,
     setRecruiterUser,
+    setRecruiter,
+    setUserDetails,
     recruiterUser,
-  } = useAuthDetails();
+    recruiter,
+    userDetails,
+  } = useSignupDetails();
+
   const [details, setDetails] = useState<Details>({
     first_name: '',
     last_name: '',

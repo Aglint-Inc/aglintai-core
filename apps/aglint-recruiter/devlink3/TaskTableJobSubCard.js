@@ -16,11 +16,15 @@ export function TaskTableJobSubCard({
   slotPriorityPill,
   isOverdueVisible = false,
   textOverdue = "Today 07 Apr",
+  gridProps = {},
+  slotCandidate,
+  slotJob,
 }) {
   return (
     <_Component
       className={_utils.cx(_styles, "div-block-1434", "height-53", "job-cand")}
       tag="div"
+      {...gridProps}
     >
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1536")}
@@ -115,6 +119,26 @@ export function TaskTableJobSubCard({
           tag="div"
         />
       ) : null}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1435")}
+        id={_utils.cx(
+          _styles,
+          "w-node-_5f0d21cb-c241-e5a7-54af-22d4e63b1af0-1d499d6e"
+        )}
+        tag="div"
+      >
+        {slotCandidate}
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1435")}
+        id={_utils.cx(
+          _styles,
+          "w-node-_20bac36b-272e-4219-72cc-f14b1b9a7193-1d499d6e"
+        )}
+        tag="div"
+      >
+        {slotJob}
+      </_Builtin.Block>
     </_Component>
   );
 }

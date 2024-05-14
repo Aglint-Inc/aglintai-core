@@ -10,6 +10,12 @@ export function TaskTableJobCand({
   slotFilter,
   slotTaskJobCard,
   slotCheckbox,
+  textStatusHeader = "Status",
+  textPriorityHeader = "Priority",
+  textAssigneeHeader = "Assignee",
+  gridProps = {},
+  textCandidateHeader = "Candidate",
+  textJobHeader = "Job",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1433")} tag="div">
@@ -31,6 +37,7 @@ export function TaskTableJobCand({
             "job-cand"
           )}
           tag="div"
+          {...gridProps}
         >
           <_Builtin.Block
             className={_utils.cx(_styles, "div-block-1537")}
@@ -78,7 +85,7 @@ export function TaskTableJobCand({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Status"}
+              {textStatusHeader}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -93,7 +100,7 @@ export function TaskTableJobCand({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Priority"}
+              {textPriorityHeader}
             </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
@@ -108,7 +115,37 @@ export function TaskTableJobCand({
               className={_utils.cx(_styles, "text-grey-500")}
               tag="div"
             >
-              {"Assignee"}
+              {textAssigneeHeader}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1435")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_430a6ab2-8864-faea-9e6c-d2de1e9414d2-79bd2c91"
+            )}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-500")}
+              tag="div"
+            >
+              {textCandidateHeader}
+            </_Builtin.Block>
+          </_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1435")}
+            id={_utils.cx(
+              _styles,
+              "w-node-_7183a5b7-2ac4-fc35-bd91-61b79d6499d3-79bd2c91"
+            )}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "text-grey-500")}
+              tag="div"
+            >
+              {textJobHeader}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

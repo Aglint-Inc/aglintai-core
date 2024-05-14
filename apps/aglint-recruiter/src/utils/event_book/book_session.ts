@@ -27,7 +27,7 @@ export const getUserCalAuth = async ({
       const oAuth2Client = new OAuth2Client(
         process.env.GOOGLE_SCHEDULE_CLIENT_ID,
         process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-        process.env.GOOGLE_SCHEDULE_REDIRECT_URI,
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
       );
       const schedule_auth = recruiter.schedule_auth as any;
       oAuth2Client.setCredentials({

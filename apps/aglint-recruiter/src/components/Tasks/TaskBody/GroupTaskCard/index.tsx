@@ -5,14 +5,17 @@ import {
   Tooltip,
   tooltipClasses,
   TooltipProps,
+  Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { PriorityPill, TaskTableJobSubCard } from '@/devlink3';
+import { AvatarWithName, PriorityPill, TaskTableJobSubCard } from '@/devlink3';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
 import StatusChip from '../../Components/StatusChip';
@@ -24,7 +27,7 @@ function GroupTaskCard({
   task: TasksAgentContextType['tasks'][number];
 }) {
   const route = useRouter();
-  const { setTaskId, selectedTasksIds, setSelectedTasksIds } =
+  const { setTaskId, selectedTasksIds, setSelectedTasksIds, selectedGroupBy } =
     useTaskStatesContext();
   let toDayDateTime = dayjs();
   const tomorrowDate = toDayDateTime.add(1, 'day');
@@ -40,6 +43,7 @@ function GroupTaskCard({
       fontSize: 11,
     },
   }));
+
   return (
     <Stack
       sx={{
@@ -53,6 +57,23 @@ function GroupTaskCard({
       }}
     >
       <TaskTableJobSubCard
+        gridProps={{
+          style: {
+            padding: '1%',
+            gridTemplateColumns:
+              selectedGroupBy.label === 'job'
+                ? `20px 1fr 130px 110px 160px 160px 1px`
+                : selectedGroupBy.label === 'candidate'
+                  ? `20px 1fr 130px 110px 160px 1px 160px`
+                  : selectedGroupBy.label === 'assignee'
+                    ? `20px 1fr 130px 110px 1px 160px 160px`
+                    : selectedGroupBy.label === 'priority'
+                      ? `20px 1fr 130px 1px 160px 160px 160px`
+                      : selectedGroupBy.label === 'status'
+                        ? `20px 1fr 1px 160px 160px 160px 160px`
+                        : null,
+          },
+        }}
         isOverdueVisible={
           (task.status === 'in_progress' &&
             (dueDateTime.isSame(tomorrowDate) ||
@@ -101,8 +122,26 @@ function GroupTaskCard({
             setTaskId(task.id);
           },
         }}
-        slotAssignedTo={<AssigneeChip assigneeId={task.assignee[0]} />}
-        slotStatus={<StatusChip status={task.status} />}
+        slotAssignedTo={
+          <ShowCode>
+            <ShowCode.When isTrue={selectedGroupBy.label === 'assignee'}>
+              {''}
+            </ShowCode.When>
+            <ShowCode.Else>
+              <AssigneeChip assigneeId={task.assignee[0]} />
+            </ShowCode.Else>
+          </ShowCode>
+        }
+        slotStatus={
+          <ShowCode>
+            <ShowCode.When isTrue={selectedGroupBy.label === 'status'}>
+              {''}
+            </ShowCode.When>
+            <ShowCode.Else>
+              <StatusChip status={task.status} />
+            </ShowCode.Else>
+          </ShowCode>
+        }
         textTask={
           <LightTooltip
             enterDelay={1000}
@@ -161,11 +200,54 @@ function GroupTaskCard({
           </Stack>
         }
         slotPriorityPill={
-          <PriorityPill
-            isHighVisible={task.priority === 'high'}
-            isLowVisible={task.priority === 'low'}
-            isMediumVisible={task.priority === 'medium'}
-          />
+          <ShowCode>
+            <ShowCode.When isTrue={selectedGroupBy.label === 'priority'}>
+              {''}
+            </ShowCode.When>
+            <ShowCode.Else>
+              <PriorityPill
+                isHighVisible={task.priority === 'high'}
+                isLowVisible={task.priority === 'low'}
+                isMediumVisible={task.priority === 'medium'}
+              />
+            </ShowCode.Else>
+          </ShowCode>
+        }
+        slotCandidate={
+          <ShowCode>
+            <ShowCode.When isTrue={selectedGroupBy.label === 'candidate'}>
+              {''}
+            </ShowCode.When>
+            <ShowCode.Else>
+              <AvatarWithName
+                isAvatarVisible={false}
+                isCandidateIconVisible={true}
+                textName={getFullName(
+                  task?.applications?.candidates?.first_name,
+                  task?.applications?.candidates?.last_name,
+                )}
+              />
+            </ShowCode.Else>
+          </ShowCode>
+        }
+        slotJob={
+          <ShowCode>
+            <ShowCode.When isTrue={selectedGroupBy.label === 'job'}>
+              {''}
+            </ShowCode.When>
+            <ShowCode.Else>
+              <Typography
+                sx={{
+                  cursor: 'pointer',
+                }}
+                fontSize={'14px'}
+              >
+                {capitalizeFirstLetter(
+                  task.applications?.public_jobs?.job_title,
+                )}
+              </Typography>
+            </ShowCode.Else>
+          </ShowCode>
         }
       />
     </Stack>

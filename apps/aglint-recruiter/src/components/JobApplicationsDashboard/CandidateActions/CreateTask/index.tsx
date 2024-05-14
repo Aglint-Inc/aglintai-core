@@ -145,8 +145,8 @@ function CreateTask({
           <SessionList
             selectedSession={selectedSession}
             setSelectedSession={setSelectedSession}
-            application_id={applications[0].id}
-            job_id={applications[0].job_id}
+            application_id={applications[0]?.id}
+            job_id={applications[0]?.job_id}
             onChange={(sessions: any) => {
               setTask((pre) => {
                 const preTask = { ...pre };
