@@ -969,11 +969,7 @@ const EmptyList = ({ section }: { section: JobApplicationSections }) => {
     <Stack height={'50vh'} justifyContent={'center'}>
       <Stack>
         <ApplicantsListEmpty
-          textEmpty={
-            section === JobApplicationSections.ASSESSMENT
-              ? 'assessment'
-              : section
-          }
+          textEmpty={section}
           slotLottie={<NoApplicants />}
         />
       </Stack>

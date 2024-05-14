@@ -77,10 +77,6 @@ export default function Loading() {
         user_id: userDetails.user.id,
       });
       if (relationData?.recruiter_user) {
-        if (!userDetails?.user.user_metadata?.role) {
-          router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
-          return;
-        }
         if (userDetails?.user.user_metadata?.is_invite === 'true') {
           await supabase.auth.updateUser({
             data: { is_invite: 'false' }, // for invite user flow this is needed
@@ -96,14 +92,6 @@ export default function Loading() {
               })
               .eq('user_id', userDetails?.user?.id);
           }
-          // // last login time stamp Update
-          // const temp_time = new Date().toISOString();
-          // supabase
-          //   .from('recruiter_user')
-          //   .update({ last_login: temp_time })
-          //   .eq('user_id', userDetails.user.id)
-          //   .then(() => {});
-          // //last login END
 
           if (recruiterRel.role === 'interviewer') {
             router.push(
@@ -170,139 +158,12 @@ export default function Loading() {
             throw new Error(error.message);
           }
 
-          // await supabase
-          //   .from('recruiter_user')
-          //   .update({ recruiter_id: rec_id })
-          //   .eq('user_id', userDetails.user.id);
-
           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
         }
       }
     } catch {
       router.push(pageRoutes.LOGIN);
     }
-
-    // supabase
-    //   .from('recruiter_relation')
-    //   .select('*')
-    //   .eq('user_id', userDetails?.user?.id)
-    //   .eq('is_active', true)
-    //   .then(async ({ data, error }) => {
-    //     if (!error) {
-    //       if (data.length === 0) {
-    //         const { error: erroruser } = await supabase
-    //           .from('recruiter_user')
-    //           .insert({
-    //             user_id: userDetails.user.id,
-    //             email: userDetails.user.user_metadata.email,
-    //             first_name: splitFullName(
-    //               userDetails.user.user_metadata.full_name,
-    //             ).firstName,
-    //             last_name: !userDetails.user.user_metadata.first_name
-    //               ? splitFullName(userDetails.user.user_metadata.full_name)
-    //                   .lastName
-    //               : userDetails.user.user_metadata.last_name,
-    //             role: 'admin',
-    //             profile_image: !userDetails.user.user_metadata.image_url
-    //               ? null
-    //               : userDetails.user.user_metadata.image_url,
-    //             phone: !userDetails.user.user_metadata.phone
-    //               ? ''
-    //               : userDetails.user.user_metadata.phone,
-    //           })
-    //           .select();
-
-    //         if (!erroruser) {
-    //           const rec_id = uuidv4();
-
-    //           await supabase.from('recruiter').insert({
-    //             email: userDetails.user.email,
-    //             name:
-    //               userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-    //                 '.com',
-    //                 '',
-    //               ) || '',
-    //             id: rec_id,
-    //           });
-
-    //           const { error } = await supabase.rpc('createrecuriterrelation', {
-    //             in_recruiter_id: rec_id,
-    //             in_user_id: userDetails.user.id,
-    //             in_is_active: true,
-    //           });
-
-    //           if (error) {
-    //             throw new Error(error.message);
-    //           }
-
-    //           // await supabase
-    //           //   .from('recruiter_user')
-    //           //   .update({ recruiter_id: rec_id })
-    //           //   .eq('user_id', userDetails.user.id);
-
-    //           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
-    //         }
-    //       } else {
-    //         if (!userDetails?.user.user_metadata?.role) {
-    //           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
-    //           return;
-    //         }
-    //         if (userDetails?.user.user_metadata?.is_invite === 'true') {
-    //           await supabase.auth.updateUser({
-    //             data: { is_invite: 'false' }, // for invite user flow this is needed
-    //           });
-    //         }
-    //         try {
-    //           const recruiterRel = await getRelationsDetails(data[0].user_id);
-    //           if (
-    //             userDetails.user.email !== recruiterRel.recruiter_user.email
-    //           ) {
-    //             await supabase
-    //               .from('recruiter_user')
-    //               .update({
-    //                 email: userDetails.user.email,
-    //               })
-    //               .eq('user_id', userDetails?.user?.id);
-    //           }
-    //           // // last login time stamp Update
-    //           // const temp_time = new Date().toISOString();
-    //           // supabase
-    //           //   .from('recruiter_user')
-    //           //   .update({ last_login: temp_time })
-    //           //   .eq('user_id', userDetails.user.id)
-    //           //   .then(() => {});
-    //           // //last login END
-
-    //           if (recruiterRel.role === 'interviewer') {
-    //             router.push(
-    //               localStorage.getItem('redirectURL') ||
-    //                 `${pageRoutes.SCHEDULING}?tab=mySchedules`,
-    //             );
-    //             localStorage.removeItem('redirectURL');
-    //           } else if (recruiterRel.role === 'recruiter') {
-    //             router.push(
-    //               localStorage.getItem('redirectURL') || pageRoutes.JOBS,
-    //             );
-    //             localStorage.removeItem('redirectURL');
-    //           } else if (recruiterRel.role === 'recruiting_coordinator') {
-    //             router.push(
-    //               localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
-    //             );
-    //             localStorage.removeItem('redirectURL');
-    //           } else {
-    //             router.push(
-    //               localStorage.getItem('redirectURL') || pageRoutes.JOBS,
-    //             );
-    //             localStorage.removeItem('redirectURL');
-    //           }
-    //         } catch {
-    //           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
-    //         }
-    //       }
-    //     } else {
-    //       router.push(pageRoutes.LOGIN);
-    //     }
-    //   });
   };
 
   return (

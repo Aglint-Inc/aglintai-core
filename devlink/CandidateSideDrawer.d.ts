@@ -30,4 +30,15 @@ declare function CandidateSideDrawer(props: {
   isSmallWidthVisible?: Types.Visibility.VisibilityConditions;
   onClickPhoneScreening?: Types.Devlink.RuntimeProps;
   isPhoneScreeningVisible?: Types.Visibility.VisibilityConditions;
+  isBookMarkIconVisible?: Types.Visibility.VisibilityConditions;
+  onClickBookmark?: Types.Devlink.RuntimeProps;
+  isBookMarked?: Types.Visibility.VisibilityConditions;
+  onClickUnBook?: Types.Devlink.RuntimeProps;
+  slotViewTask?: Types.Devlink.Slot;
+  isViewTaskVisible?: Types.Visibility.VisibilityConditions;
+  onClickLinkedin?: Types.Devlink.RuntimeProps;
+  isLinkedInVisible?: Types.Visibility.VisibilityConditions;
+  slotNewTabPill?: Types.Devlink.Slot;
+  textMail?: React.ReactNode;
+  textPhone?: React.ReactNode;
 }): React.JSX.Element;

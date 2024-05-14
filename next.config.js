@@ -8,6 +8,14 @@ const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/python_api/:path*',
+        destination: 'http://127.0.0.1:5328/:path*', // Proxy to Backend
+      },
+    ]
+  },
   async redirects() {
     return [
       {

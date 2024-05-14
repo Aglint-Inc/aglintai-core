@@ -6,6 +6,7 @@ import {
   FilterParameter,
   SortParameter,
 } from '@/src/components/JobApplicationsDashboard/utils';
+import { ApplicationList } from '@/src/components/Scheduling/AllSchedules/store';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';
@@ -13,7 +14,9 @@ import { Applications } from '@/src/types/applications.types';
 import { CandidateFiles } from '@/src/types/candidate_files.types';
 import { Candidate } from '@/src/types/candidates.types';
 import { InterviewScheduleTypeDB } from '@/src/types/data.types';
+import { Database } from '@/src/types/schema';
 
+import { TasksAgentContextType } from '../TasksContextProvider/TasksContextProvider';
 import useProviderJobApplicationActions from './hooks';
 
 export enum JobApplicationSections {
@@ -43,12 +46,13 @@ export type JobApplication = Applications & {
     id: AssessmentResult['id'];
   })[];
   schedule: Partial<InterviewScheduleTypeDB>;
-  interview_session_meetings: Partial<InterviewScheduleTypeDB>;
+  interview_session_meetings: ApplicationList['interview_session_meetings'];
   emailValidity?: {
     isFetching: boolean;
     isValidEmail: boolean;
   };
   status_emails_sent: Partial<{ [key in keyof Job['email_template']]: string }>;
+  tasks: TasksAgentContextType['tasks'];
 };
 
 export type Parameters = {
