@@ -255,7 +255,6 @@ const InterviewerModule = ({
   const filteredData = data.filter(
     (item) => !item.interview_modules.is_archived,
   );
-
   return (
     <InterviewModuleTable
       isFilterVisible={false}

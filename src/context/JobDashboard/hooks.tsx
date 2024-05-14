@@ -220,6 +220,8 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
+    hiring_manager: job.hiring_manager,
+    recrtuiter: job.recruiter,
     ...(job.draft ?? {}),
   };
   const result = Object.entries(draft).reduce(
