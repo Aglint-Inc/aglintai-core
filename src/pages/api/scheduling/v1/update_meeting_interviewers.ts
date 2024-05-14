@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       updated_db_sess_reln = [
         {
           session_relation_id: confirmed_inters.find(
-            (i) => i.email === curr_org_email,
+            (i) => i.user_id === curr_organizer.recruiter_user.user_id,
           ).session_relation_id,
           is_confirmed: false,
         },
@@ -240,7 +240,9 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
     (i) => i.recruiter_user.email === meeting_event.organizer.email,
   );
   const curr_organizer = curr_ints_auth.find(
-    (i) => i.recruiter_user.email === meeting_event.organizer.email,
+    (i) =>
+      ((i.recruiter_user?.schedule_auth as any)?.email ??
+        i.recruiter_user.email) === meeting_event.organizer.email,
   );
 
   return {
