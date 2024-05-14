@@ -46,6 +46,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_relation_id: string;
       is_confirmed: boolean;
     }[] = [];
+
     if (is_organiser_changed) {
       const google_cal = new GoogleCalender(null, null);
       await google_cal.authSuperAdmin(confirmed_inter.recruiter.id);
@@ -65,10 +66,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       ];
 
+      const new_organizer_auth = curr_ints_auth.find(
+        (i) => i.recruiter_user.user_id === new_organiser.user_id,
+      );
+      let new_organiser_email = new_organiser.email;
+      if (new_organizer_auth.recruiter_user.schedule_auth) {
+        new_organiser_email = (
+          new_organizer_auth.recruiter_user.schedule_auth as any
+        ).email;
+      }
       updated_event = await google_cal.changeMeetingOrganizer(
         curr_org_email,
         curr_cal_event.id,
-        new_organiser.email,
+        new_organiser_email,
       );
     } else {
       const organizer_auth = curr_organizer;
@@ -242,16 +252,14 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   };
 };
 const updateInterviewers = async ({ id, is_confirmed }) => {
-  console.log(
-    supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session_relation')
-        .update({
-          is_confirmed,
-        })
-        .eq('id', id)
-        .select(),
-    ),
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session_relation')
+      .update({
+        is_confirmed,
+      })
+      .eq('id', id)
+      .select(),
   );
 };
 // fetch current meeting interviewers
