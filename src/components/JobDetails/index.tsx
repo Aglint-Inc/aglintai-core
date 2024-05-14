@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { SavedChanges } from '@/devlink';
-import { PageLayout } from '@/devlink2';
-import { EditJobTopbarLeft, JobDetailBlock } from '@/devlink3';
+import { Breadcrum, PageLayout } from '@/devlink2';
+import { JobDetailBlock } from '@/devlink3';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import {
   validateDescription,
@@ -14,9 +14,11 @@ import {
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import { Job } from '@/src/queries/job/types';
+import { pages } from '@/src/utils/pageRouting';
 
 import Loader from '../Common/Loader';
+import { capitalize } from '../JobApplicationsDashboard/utils';
 import {
   Form,
   JobDetailsForm,
@@ -62,7 +64,6 @@ const JobEdit = () => {
     workplace_type: job.workplace_type,
     ...(job.draft ?? {}),
   };
-  const { push } = useRouter();
   const [fields, setFields] = useState<JobDetailsForm>({
     job_title: {
       value: job_title,
@@ -132,9 +133,7 @@ const JobEdit = () => {
 
   return (
     <PageLayout
-      isBackButton
-      onClickBack={{ onClick: () => push(`${pageRoutes.JOBS}/${job.id}`) }}
-      slotTopbarLeft={<EditJobTopbarLeft textName={'Edit Job'} />}
+      slotTopbarLeft={<BreadCrumbs job={job} />}
       slotBody={
         <JobEditForm
           fields={fields}
@@ -158,6 +157,36 @@ const JobEdit = () => {
         </Stack>
       }
     />
+  );
+};
+
+const BreadCrumbs = ({ job }: { job: Job }) => {
+  const { push } = useRouter();
+  return (
+    <>
+      <Breadcrum
+        isLink
+        textName={`${capitalize(job?.status ?? 'all')} jobs`}
+        onClickLink={{
+          onClick: () => {
+            push(`${pages['/jobs']()}?status=${job?.status ?? 'all'}`);
+          },
+          style: { cursor: 'pointer' },
+        }}
+      />
+      <Breadcrum
+        isLink
+        textName={capitalize(job?.job_title ?? 'Job')}
+        onClickLink={{
+          onClick: () => {
+            push(pages['/jobs/[id]']({ id: job?.id }));
+          },
+          style: { cursor: 'pointer' },
+        }}
+        showArrow
+      />
+      <Breadcrum textName={`Job Details`} showArrow />
+    </>
   );
 };
 
@@ -253,7 +282,9 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <JobDetailBlock
+      isJobDetailVisible={true}
       slotJobForm={forms}
+      isHiringTeamVisible={false}
       slotHiringTeamForm={null}
       slotRichtext={description}
       textDescription={

@@ -265,7 +265,9 @@ const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
 
   return (
     <JobDetailBlock
+      isJobDetailVisible={true}
       slotJobForm={forms}
+      isHiringTeamVisible={true}
       slotHiringTeamForm={roleForms}
       slotRichtext={description}
       textDescription={'Enter the basic job details below.'}
