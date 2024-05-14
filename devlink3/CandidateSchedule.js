@@ -32,7 +32,7 @@ export function CandidateSchedule({
         tag="div"
       >
         <_Builtin.Block
-          className={_utils.cx(_styles, "cd-schedule-header")}
+          className={_utils.cx(_styles, "cd-schedule-header", "new-header")}
           tag="div"
         >
           {slotDarkPill}
