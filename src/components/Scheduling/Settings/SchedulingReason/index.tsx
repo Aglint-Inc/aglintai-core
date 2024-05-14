@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import {
@@ -130,7 +129,7 @@ const ScheduleReasonSectionCard = <
   }>({ state: false, index: null });
   return (
     <ScheduleReasonSection
-      textHeading={`Session ${capitalize(scheduleReason)} Reason`}
+      textHeading={`Session ${capitalizeFirstLetter(scheduleReason)} Reason`}
       textDesc={description}
       onClickAdd={{
         onClick: () => {
@@ -159,7 +158,8 @@ const ScheduleReasonSectionCard = <
           ))}
           {edit.state && (
             <AddEditReasonsDialogs
-              title={`${edit.index === null ? 'Add' : 'Update'} ${capitalize(scheduleReason)} Reasons`}
+              type={edit.index === null ? 'add' : 'update'}
+              title={`${capitalizeFirstLetter(scheduleReason)} Reasons`}
               item={
                 edit.index !== null
                   ? {
@@ -178,7 +178,7 @@ const ScheduleReasonSectionCard = <
                 }
                 updateReasons(temp).then(() => {
                   toast.success(
-                    `${index === null ? 'Added' : 'Update'} Successfully.`,
+                    `${index === null ? 'Added' : 'Updated'} Successfully.`,
                   );
                   setEdit({ state: false, index: null });
                 });
@@ -218,11 +218,13 @@ const ReasonListItem = ({
 };
 
 const AddEditReasonsDialogs = ({
+  type,
   title,
   item,
   onSubmit,
   onClose,
 }: {
+  type: 'add' | 'update';
   title: string;
   item: { text: string; index: number } | null;
   // eslint-disable-next-line no-unused-vars
@@ -243,7 +245,7 @@ const AddEditReasonsDialogs = ({
           justifyContent={'space-between'}
         >
           <Typography fontSize={'14px'} fontWeight={600}>
-            {title}{' '}
+            {capitalizeFirstLetter(type) + ' ' + title}
           </Typography>
           <Box onClick={onClose} sx={{ cursor: 'pointer' }}>
             <svg
@@ -280,7 +282,7 @@ const AddEditReasonsDialogs = ({
               });
           }}
         >
-          Add
+          {capitalizeFirstLetter(type)}
         </Button>
       </Stack>
     </Dialog>
