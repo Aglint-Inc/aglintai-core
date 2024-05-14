@@ -4,6 +4,7 @@ import React from 'react';
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import { setDepartments, useFilterModuleStore } from '../../filter-store';
 
@@ -53,7 +54,7 @@ function FilterDepartment() {
           }}
           onClick={() => handleFilterClick(label)}
         >
-          {label}
+          {capitalizeFirstLetter(label)}
         </Typography>
       </Stack>
     );
