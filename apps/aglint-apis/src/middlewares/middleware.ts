@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction, ErrorRequestHandler} from 'express';
+import {Request, Response, ErrorRequestHandler} from 'express';
 import {appLogger} from '../services/logger';
 
 function errorHandler(err: ErrorRequestHandler, req: Request, res: Response) {

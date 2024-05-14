@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response} from 'express';
 import {emailAgentHandler} from '../../agents/emailAgent/emailAgent';
 import {z} from 'zod';
 import {fetchEmailAgentCandDetails} from '../../agents/emailAgent/tools/utils/fetchEmailAgentCandDetails';
@@ -16,11 +16,7 @@ const email_agent_payload = z.object({
   mail_header: z.string(),
 });
 
-export const composeEmail = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const composeEmail = async (req: Request, res: Response) => {
   try {
     const api_body = req.body as z.infer<typeof email_agent_payload>;
     const agent_payload = await fetchEmailAgentCandDetails(
