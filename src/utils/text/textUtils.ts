@@ -14,6 +14,7 @@ export const capitalizeAll = (str: string) => {
     .join(' ');
 };
 export const capitalizeFirstLetter = (text: string) => {
+  if (!text) return '';
   let capitalizeText = '';
   const words = text.split(' ');
   words.forEach((word) => {
