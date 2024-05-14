@@ -51,12 +51,22 @@ export const getRandomColor = (): string => {
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
   return palette[String(randomColor)][400] || palette[String(randomColor)][500];
 };
+export const capitalizeFirstLetter = (text: string) => {
+  if (!text) return '';
 
-export const capitalizeFirstLetter = (str) => {
-  if (!str) return '';
-  return str
+  return text
     .replaceAll('_', ' ')
     .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => {
+      if (
+        word &&
+        word.toLowerCase() !== 'and' &&
+        word[0] === word[0].toLowerCase()
+      ) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      } else {
+        return word;
+      }
+    })
     .join(' ');
 };

@@ -10,7 +10,7 @@ export function ConfirmationPopup({
   textPopupTitle = "Send Reminder",
   textPopupButton = "Send Reminder ",
   slotWidget,
-  isWidget = false,
+  isWidget = true,
   onClickCancel = {},
   onClickAction = {},
   isIcon = true,
@@ -90,7 +90,11 @@ export function ConfirmationPopup({
         ) : null}
         {isBlueButtonVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "wide_button", "width-100")}
+            className={_utils.cx(_styles, "wide_button", "width-100", "pos-2")}
+            id={_utils.cx(
+              _styles,
+              "w-node-b6b410b8-e77b-d481-432a-efbe4e0bdc2d-4e0bdc1d"
+            )}
             tag="div"
           >
             <_Builtin.Block
