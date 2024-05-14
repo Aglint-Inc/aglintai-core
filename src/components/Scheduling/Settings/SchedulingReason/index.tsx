@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import {
@@ -104,7 +105,15 @@ const SchedulingRegions = () => {
                   key={item}
                   scheduleReason={typedItem}
                   updateReasons={handelUpdateReasons}
-                  description={`Add reasons for ${capitalizeFirstLetter(item)}. These options will be available when the ${capitalizeFirstLetter(tab === 'company' ? 'Internal user' : tab)} ${item === 'decline' ? 'decline the Session' : 'request for session ' + capitalizeFirstLetter(item)}.`}
+                  description={`Add reasons for ${capitalizeFirstLetter(
+                    item,
+                  )}. These options will be available when the ${capitalizeFirstLetter(
+                    tab === 'company' ? 'Internal user' : tab,
+                  )} ${
+                    item === 'decline'
+                      ? 'decline the Session'
+                      : 'request for session ' + capitalizeFirstLetter(item)
+                  }.`}
                   scheduleReasonItems={reason[tab][item] || []}
                 />
               );
