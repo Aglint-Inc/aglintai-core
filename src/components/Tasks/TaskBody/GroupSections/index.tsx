@@ -1,4 +1,5 @@
 import { Collapse, Stack, Tooltip, Typography } from '@mui/material';
+import { IconCaretDownFilled, IconCaretRightFilled } from '@tabler/icons-react';
 import { useState } from 'react';
 
 import {
@@ -34,12 +35,32 @@ function GroupSections({
   return (
     <Collapse in={index === sectionIndex || sectionIndex} collapsedSize={41}>
       <TaskTableJobCard
-        onClickDropIcon={{
-          onClick: () => {
-            if (sectionIndex) setSectionIndex(false);
-            else setSectionIndex(true);
-          },
-        }}
+        slotDropIcon={
+          <ShowCode>
+            <ShowCode.When isTrue={sectionIndex}>
+              <IconCaretDownFilled
+                style={{
+                  cursor: 'pointer',
+                }}
+                size={'20px'}
+                onClick={() => {
+                  setSectionIndex(false);
+                }}
+              />
+            </ShowCode.When>
+            <ShowCode.Else>
+              <IconCaretRightFilled
+                style={{
+                  cursor: 'pointer',
+                }}
+                size={'20px'}
+                onClick={() => {
+                  setSectionIndex(true);
+                }}
+              />
+            </ShowCode.Else>
+          </ShowCode>
+        }
         slotAvatarWithName={
           <ShowCode>
             <ShowCode.When isTrue={selectedGroupBy.label === 'job'}>
