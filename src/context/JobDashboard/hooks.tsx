@@ -2,7 +2,10 @@
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
-import { Form } from '@/src/components/JobCreate/form';
+import {
+  JobDetailsForm,
+  JobHiringTeamForm,
+} from '@/src/components/JobCreate/form';
 import { getHelper } from '@/src/components/JobEmailTemplates';
 import { templateObj } from '@/src/components/JobEmailTemplates/utils';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
@@ -82,18 +85,22 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     (isInterviewPlanDisabled ||
       interviewPlans?.data?.interview_session?.length === 0);
 
-  const settingsValidity = getSettingsValidity(job);
+  const detailsValidity = getDetailsValidity(job);
+  const hiringTeamValidity = getHiringTeamValidity(job);
 
   const jdValidity = !validateJd(job?.draft?.jd_json);
 
   const publishStatus = {
-    settingsValidity,
+    detailsValidity,
+    hiringTeamValidity,
     jdValidity,
     loading: job?.scoring_criteria_loading,
     publishable:
-      settingsValidity.validity && jdValidity && !job?.scoring_criteria_loading,
+      detailsValidity.validity &&
+      hiringTeamValidity.validity &&
+      jdValidity &&
+      !job?.scoring_criteria_loading,
   };
-  settingsValidity.validity && jdValidity && !job.scoring_criteria_loading;
   const { dismissWarnings } = useJobDashboardStore(({ dismissWarnings }) => ({
     dismissWarnings,
   }));
@@ -179,12 +186,12 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   return value;
 };
 
-type SettingsValidity = {
+type DetailsValidity = {
   validity: boolean;
-  invalidFields: (keyof Omit<Form, 'recruiting_coordinator' | 'sourcer'>)[];
+  invalidFields: (keyof JobDetailsForm)[];
 };
 
-export const getSettingsValidity = (job: Job): SettingsValidity => {
+export const getDetailsValidity = (job: Job): DetailsValidity => {
   if (!job)
     return {
       validity: false,
@@ -192,11 +199,9 @@ export const getSettingsValidity = (job: Job): SettingsValidity => {
         'company',
         'department',
         'description',
-        'hiring_manager',
         'job_title',
         'job_type',
         'location',
-        'recruiter',
         'workplace_type',
       ],
     };
@@ -209,8 +214,6 @@ export const getSettingsValidity = (job: Job): SettingsValidity => {
     job_type: job.job_type,
     location: job.location,
     workplace_type: job.workplace_type,
-    hiring_manager: job.hiring_manager,
-    recruiter: job.recruiter,
     ...(job.draft ?? {}),
   };
   return Object.entries(draft).reduce(
@@ -231,6 +234,43 @@ export const getSettingsValidity = (job: Job): SettingsValidity => {
         case 'job_type':
         case 'location':
         case 'workplace_type':
+          {
+            const valid = !validateString(value as string);
+            if (acc.validity && !valid) acc.validity = valid;
+            if (!valid) acc.invalidFields.push(safeKey);
+          }
+          break;
+      }
+      return acc;
+    },
+    { validity: true, invalidFields: [] } as DetailsValidity,
+  );
+};
+
+type HiringTeamValidity = {
+  validity: boolean;
+  invalidFields: (keyof Pick<
+    JobHiringTeamForm,
+    'hiring_manager' | 'recruiter'
+  >)[];
+};
+
+export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
+  if (!job)
+    return {
+      validity: false,
+      invalidFields: ['hiring_manager', 'recruiter'],
+    };
+  //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
+  const draft = {
+    hiring_manager: job.hiring_manager,
+    recruiter: job.recruiter,
+  };
+  return Object.entries(draft).reduce(
+    (acc, [key, value]) => {
+      const safeKey = key as keyof typeof draft;
+      switch (safeKey) {
+        //TODO: HACK HERE AGAIN
         case 'hiring_manager':
         case 'recruiter':
           {
@@ -242,7 +282,7 @@ export const getSettingsValidity = (job: Job): SettingsValidity => {
       }
       return acc;
     },
-    { validity: true, invalidFields: [] } as SettingsValidity,
+    { validity: true, invalidFields: [] } as HiringTeamValidity,
   );
 };
 

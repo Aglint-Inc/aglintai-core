@@ -108,7 +108,7 @@ const Dashboard = () => {
     matches: { data: counts },
     schedules: { data: schedule },
     status: { description_changed, scoring_criteria_changed },
-    publishStatus: { settingsValidity, publishable, loading },
+    publishStatus: { publishable, loading },
     jobPolling,
   } = useJobDetails();
   const { push } = useRouter();
@@ -293,8 +293,8 @@ const Dashboard = () => {
             }
             slotPublishButton={publishButton}
             isPublish={job.status !== 'closed'}
-            isEditError={!settingsValidity.validity}
-            onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
+            // isEditError={!settingsValidity.validity}
+            // onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
             slotCloseJobButton={
               <>
                 <CloseJobButton
@@ -616,21 +616,48 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
         }}
       />,
     );
-  if (!publishStatus.settingsValidity.validity) {
-    const titles = publishStatus.settingsValidity.invalidFields.map((field) =>
-      capitalizeAll(field),
-    );
-    banners.push(
-      <DashboardAlert
-        textTitile={`${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
-          titles.length === 1 ? 'field is' : 'fields are'
-        } incomplete`}
-        textShortDescription={
-          'Please ensure that valid job details are provided.'
-        }
-        onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
-      />,
-    );
+  if (
+    !publishStatus.detailsValidity.validity ||
+    !publishStatus.hiringTeamValidity.validity
+  ) {
+    if (!publishStatus.detailsValidity.validity) {
+      const titles = publishStatus.detailsValidity.invalidFields.map((field) =>
+        capitalizeAll(field),
+      );
+      banners.push(
+        <DashboardAlert
+          textTitile={`${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
+            titles.length === 1 ? 'field is' : 'fields are'
+          } incomplete`}
+          textShortDescription={
+            'Please ensure that valid job details are provided.'
+          }
+          onClickBanner={{
+            onClick: () =>
+              push(pages['/jobs/[id]/job-details']({ id: job?.id })),
+          }}
+        />,
+      );
+    }
+    if (!publishStatus.hiringTeamValidity.validity) {
+      const titles = publishStatus.hiringTeamValidity.invalidFields.map(
+        (field) => capitalizeAll(field),
+      );
+      banners.push(
+        <DashboardAlert
+          textTitile={`${titles.join(', ').replace(/(,)(?!.*\1)/, ' and')} ${
+            titles.length === 1 ? 'field is' : 'fields are'
+          } incomplete`}
+          textShortDescription={
+            'Please ensure that necessary hiring members are selected.'
+          }
+          onClickBanner={{
+            onClick: () =>
+              push(pages['/jobs/[id]/hiring-team']({ id: job?.id })),
+          }}
+        />,
+      );
+    }
   } else if (publishStatus.loading)
     banners.push(
       <BannerLoading
@@ -658,7 +685,7 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
   else if (status.description_changed)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Job description is changed'}
+        textWarningTitle={'Job description has changed'}
         textDesc={'You may need to adjust the criteria for profile scoring.'}
         onClickDismiss={{
           onClick: () => setDismissWarnings({ job_description: true }),
@@ -778,13 +805,19 @@ const Modules = () => {
 };
 
 const HiringTeamModule = () => {
-  const { job } = useJobDetails();
+  const {
+    job,
+    publishStatus: {
+      hiringTeamValidity: { validity },
+    },
+  } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
     push(pages['/jobs/[id]/hiring-team']({ id: job?.id }));
   };
   return (
     <ModuleCard
+      isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Hiring Team'}
       slotIcon={<AssessmentIcon />}
@@ -793,13 +826,19 @@ const HiringTeamModule = () => {
 };
 
 const JobDetailsModule = () => {
-  const { job } = useJobDetails();
+  const {
+    job,
+    publishStatus: {
+      detailsValidity: { validity },
+    },
+  } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
     push(pages['/jobs/[id]/job-details']({ id: job?.id }));
   };
   return (
     <ModuleCard
+      isAlert={!validity}
       onClickCard={{ onClick: () => handleClick() }}
       textName={'Job Details'}
       slotIcon={<AssessmentIcon />}
