@@ -6,4 +6,7 @@ declare function ScheduleReason(props: {
   slotReasonList?: Types.Devlink.Slot;
   slotScheduleReasonSection?: Types.Devlink.Slot;
   sloNewTabPill?: Types.Devlink.Slot;
+  textMainHeading?: React.ReactNode;
+  textMainHelperText?: React.ReactNode;
+  isMainHeadingVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

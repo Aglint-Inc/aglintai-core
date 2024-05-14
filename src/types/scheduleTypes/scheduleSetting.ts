@@ -26,6 +26,7 @@ export type schedulingSettingType = {
 export type holidayType = {
   date: string;
   event_name: string;
+  locations: string[];
 };
 export type DailyLimitType = {
   value: number;
