@@ -36,7 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = await fetch_details(req.body);
 
     const curr_meeting_ints = [...confirmed_inters, ...not_confirmed_inters];
-    const curr_org_email = curr_organizer.recruiter_user.email;
+    const curr_org_email =
+      (curr_organizer.recruiter_user.schedule_auth as any)?.email ??
+      curr_organizer.recruiter_user.email;
     let is_organiser_changed = Boolean(
       !replaced_inters.find((i) => i.email === curr_org_email),
     );
