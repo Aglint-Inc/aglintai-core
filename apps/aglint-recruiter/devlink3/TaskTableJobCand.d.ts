@@ -6,4 +6,10 @@ declare function TaskTableJobCand(props: {
   slotFilter?: Types.Devlink.Slot;
   slotTaskJobCard?: Types.Devlink.Slot;
   slotCheckbox?: Types.Devlink.Slot;
+  textStatusHeader?: React.ReactNode;
+  textPriorityHeader?: React.ReactNode;
+  textAssigneeHeader?: React.ReactNode;
+  gridProps?: Types.Devlink.RuntimeProps;
+  textCandidateHeader?: React.ReactNode;
+  textJobHeader?: React.ReactNode;
 }): React.JSX.Element;

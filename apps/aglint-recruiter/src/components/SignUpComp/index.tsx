@@ -1,10 +1,10 @@
-import { Stack } from '@mui/material';
+'use client';
+
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 
 import { OnboardingFinalState, SignupSlider } from '@/devlink';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { RecruiterOnboardingEmailApi } from '@/src/pages/api/emails/recruiterOnboarding';
 import { handleEmailApi } from '@/src/pages/api/emails/utils';
@@ -13,7 +13,6 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import { companyType } from '@/src/utils/userRoles';
 
-import Loader from '../Common/Loader';
 import SelectAtsSystem from './SelectAtsSystem';
 import SlideDetailsOne from './SlideDetailsOne';
 import SlideDetailsTwo from './SlideDetailsTwo';
@@ -22,13 +21,10 @@ import { stepObj } from './SlideSignup/utils';
 
 const SignUpComp = () => {
   const router = useRouter();
-  const { step, setStep, setFlow } = useSignupDetails();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { step, setStep, setFlow, recruiter, recruiterUser } =
+    useSignupDetails();
 
   async function updateAuthDetails(type: string) {
-    await supabase.auth.updateUser({
-      data: { role: type },
-    });
     await supabase
       .from('recruiter')
       .update({
@@ -104,21 +100,24 @@ const SignUpComp = () => {
           }
         />
       )}
-      {step == stepObj.detailsOne ? (
+      {step == stepObj.detailsOne && (
         <YTransform uniqueKey={step}>
           <SlideDetailsOne />
         </YTransform>
-      ) : step == stepObj.detailsTwo ? (
+      )}
+      {step == stepObj.detailsTwo && (
         <YTransform uniqueKey={step}>
           <SlideDetailsTwo />
         </YTransform>
-      ) : step == stepObj.atsSystem ? (
+      )}
+      {step == stepObj.atsSystem && (
         <YTransform uniqueKey={step}>
           <YTransform uniqueKey={step}>
             <SelectAtsSystem />
           </YTransform>
         </YTransform>
-      ) : step == stepObj.allSet ? (
+      )}
+      {step == stepObj.allSet && (
         <YTransform uniqueKey={step}>
           <OnboardingFinalState
             onClickImportJob={{
@@ -141,17 +140,6 @@ const SignUpComp = () => {
               },
             }}
           />
-        </YTransform>
-      ) : (
-        <YTransform uniqueKey={'loader-signup'}>
-          <Stack
-            justifyContent={'center'}
-            alignItems={'center'}
-            height={'100vh'}
-            width={'100vw'}
-          >
-            <Loader />
-          </Stack>
         </YTransform>
       )}
     </>

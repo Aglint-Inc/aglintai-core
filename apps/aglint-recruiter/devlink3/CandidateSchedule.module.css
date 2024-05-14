@@ -13,12 +13,20 @@
 
 .cd-schedule-header {
   display: flex;
-  height: 52px;
   padding: 10px 20px;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-
   border-bottom: 1px solid #e9ebed;
+}
+
+.cd-schedule-header.new-header {
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .new-schedule-cd-card-wrap {
@@ -124,6 +132,10 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
 
 .candidate-schedule-right-wrap {
