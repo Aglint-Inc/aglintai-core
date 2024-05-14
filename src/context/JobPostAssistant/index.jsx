@@ -236,10 +236,10 @@ function JobPostAssistantProvider({ children }) {
       }
 
       if (JSON.parse(output).linkedin_url) {
-        const { data: resumeData } = await axios.post('/api/linkedInProfile', {
-          linkedInURL: JSON.parse(output).linkedin_url,
-        });
-        output = JSON.stringify(resumeData);
+        // const { data: resumeData } = await axios.post('/api/linkedInProfile', {
+        //   linkedInURL: JSON.parse(output).linkedin_url,
+        // });
+        output = JSON.stringify({ name: '', potion: '' });
       }
       const { data: submitRun } = await axios.post('/api/assistant/submitRun', {
         thread_id: localStorage.getItem('thread_id'),

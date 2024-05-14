@@ -273,7 +273,10 @@ export function getFormattedTask({
       }
       acc[applications.public_jobs.job_title].job =
         task.applications.public_jobs.job_title;
-      acc[applications.public_jobs.job_title].tasklist.push(taskDetails);
+      acc[applications.public_jobs.job_title].tasklist.push({
+        applications,
+        ...taskDetails,
+      });
       return acc;
     }, {});
   const groupedTasksByCandidate = tasks
