@@ -4,10 +4,8 @@ import { capitalize } from 'lodash';
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
-import { JobDetailBlock } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
-import { palette } from '@/src/context/Theme/Theme';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { JobCreate } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -19,7 +17,14 @@ import TipTapAIEditor from '../Common/TipTapAIEditor';
 import UISelect from '../Common/Uiselect';
 import UITextField from '../Common/UITextField';
 
-export type Form = {
+export type JobHiringTeamForm = Pick<
+  Required<Form>,
+  'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
+>;
+
+export type JobDetailsForm = Required<Omit<Form, keyof JobHiringTeamForm>>;
+
+export type Form = Partial<{
   [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
     value: JobCreate[id];
     required: boolean;
@@ -28,136 +33,125 @@ export type Form = {
       helper: string;
     };
   };
+}>;
+
+export const useJobForms = (
+  fields: JobMetaFormProps['fields'],
+  handleChange: JobMetaFormProps['handleChange'],
+) => {
+  return Object.entries(fields).reduce(
+    (acc, [key, value]) => {
+      const safeKey = key as keyof Form;
+      switch (safeKey) {
+        case 'company':
+          acc[safeKey] = (
+            <JobCompany name={safeKey} value={value} onChange={handleChange} />
+          );
+          break;
+        case 'department':
+          acc[safeKey] = (
+            <JobDepartment
+              name={safeKey}
+              value={value}
+              onChange={handleChange}
+            />
+          );
+          break;
+        case 'description':
+          acc[safeKey] = (
+            <JobDescription
+              name={safeKey}
+              value={value}
+              onChange={handleChange}
+            />
+          );
+          break;
+        case 'job_title':
+          acc[safeKey] = (
+            <JobTitle name={safeKey} value={value} onChange={handleChange} />
+          );
+          break;
+        case 'job_type':
+          acc[safeKey] = (
+            <JobType name={safeKey} value={value} onChange={handleChange} />
+          );
+          break;
+        case 'location':
+          acc[safeKey] = (
+            <JobLocation name={safeKey} value={value} onChange={handleChange} />
+          );
+          break;
+        case 'workplace_type':
+          acc[safeKey] = (
+            <JobWorkPlace
+              name={safeKey}
+              value={value}
+              onChange={handleChange}
+            />
+          );
+          break;
+        case 'hiring_manager':
+        case 'recruiter':
+        case 'recruiting_coordinator':
+        case 'sourcer':
+          acc[safeKey] = (
+            <JobCoordinator
+              name={safeKey}
+              value={value}
+              onChange={handleChange}
+            />
+          );
+          break;
+      }
+      return acc;
+    },
+    // eslint-disable-next-line no-unused-vars
+    {} as { [id in keyof typeof fields]: React.JSX.Element },
+  );
 };
 
-export const JobForms: FC<JobMetaFormProps> = ({
-  fields,
-  handleChange,
-  handleCreate = null,
-}) => {
-  const job_title = (
-    <JobTitle
-      name='job_title'
-      value={fields.job_title}
-      onChange={handleChange}
-    />
-  );
-  const company = (
-    <JobCompany name='company' value={fields.company} onChange={handleChange} />
-  );
-  const location = (
-    <JobLocation
-      name='location'
-      value={fields.location}
-      onChange={handleChange}
-    />
-  );
-  const department = (
-    <JobDepartment
-      name='department'
-      value={fields.department}
-      onChange={handleChange}
-    />
-  );
-  const job_type = (
-    <JobType name='job_type' value={fields.job_type} onChange={handleChange} />
-  );
-  const workplace_type = (
-    <JobWorkPlace
-      name='workplace_type'
-      value={fields.workplace_type}
-      onChange={handleChange}
-    />
-  );
-  const hiringManager = (
-    <JobCoordinator
-      name='hiring_manager'
-      value={fields.hiring_manager}
-      onChange={handleChange}
-    />
-  );
-  const recruiter = (
-    <JobCoordinator
-      name='recruiter'
-      value={fields.recruiter}
-      onChange={handleChange}
-    />
-  );
-  const recruiting_coordinator = (
-    <JobCoordinator
-      name='recruiting_coordinator'
-      value={fields.recruiting_coordinator}
-      onChange={handleChange}
-    />
-  );
-  const sourcer = (
-    <JobCoordinator
-      name='sourcer'
-      value={fields.sourcer}
-      onChange={handleChange}
-    />
-  );
-  const description = (
-    <JobDescription
-      name='description'
-      value={fields.description}
-      onChange={handleChange}
-    />
-  );
-  const forms = (
-    <>
-      {job_title}
-      {company}
-      {workplace_type}
-      {department}
-      {location}
-      {job_type}
-    </>
-  );
+// export const JobForms: FC<JobMetaFormProps> = ({
+//   fields,
+//   handleChange,
+//   handleCreate = null,
+// }) => {
 
-  const roleForms = (
-    <>
-      {hiringManager}
-      {recruiter}
-      {recruiting_coordinator}
-      {sourcer}
-    </>
-  );
+//   const forms =
 
-  return (
-    <JobDetailBlock
-      slotJobForm={forms}
-      slotHiringTeamForm={roleForms}
-      slotRichtext={description}
-      textDescription={
-        !handleCreate
-          ? 'Update the job details here; changes will be saved automatically. Publish to make the updates live.'
-          : 'Enter the basic job details below.'
-      }
-      isCreate={!!handleCreate}
-      onClickCreate={{ onClick: () => !!handleCreate && handleCreate() }}
-      styleBorder={{
-        style: {
-          borderColor: fields.description.error.value
-            ? palette.red['500']
-            : palette.grey['300'],
-        },
-      }}
-      slotRichtextWarning={
-        fields.description.error.value && (
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            color={palette.red[500]}
-          >
-            <WarningSvg />
-            {fields.description.error.helper}
-          </Stack>
-        )
-      }
-    />
-  );
-};
+//   return (
+//     <JobDetailBlock
+//       slotJobForm={forms}
+//       slotHiringTeamForm={roleForms}
+//       slotRichtext={description}
+//       textDescription={
+//         !handleCreate
+//           ? 'Update the job details here; changes will be saved automatically. Publish to make the updates live.'
+//           : 'Enter the basic job details below.'
+//       }
+//       isCreate={!!handleCreate}
+//       onClickCreate={{ onClick: () => !!handleCreate && handleCreate() }}
+//       styleBorder={{
+//         style: {
+//           borderColor: fields.description.error.value
+//             ? palette.red['500']
+//             : palette.grey['300'],
+//         },
+//       }}
+//       slotRichtextWarning={
+//         fields.description.error.value && (
+//           <Stack
+//             alignItems={'center'}
+//             direction={'row'}
+//             color={palette.red[500]}
+//           >
+//             <WarningSvg />
+//             {fields.description.error.helper}
+//           </Stack>
+//         )
+//       }
+//     />
+//   );
+// };
 
 const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
   return (
@@ -379,7 +373,7 @@ type MetaForms = {
   onChange: (name: keyof Form, value: any) => void;
 };
 
-type JobMetaFormProps = {
+export type JobMetaFormProps = {
   fields: Form;
   // eslint-disable-next-line no-unused-vars
   handleChange: (name: keyof Form, value: string | number) => void;

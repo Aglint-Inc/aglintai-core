@@ -42,13 +42,15 @@ import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import { pageRoutes, pages } from '@/src/utils/pageRouting';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import Loader from '../../Common/Loader';
 import AssessmentIcon from '../../Common/ModuleIcons/assessmentIcon';
 import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
+import HiringTeamIcon from '../../Common/ModuleIcons/hiringTeamIcon';
+import JobDetailsIcon from '../../Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
 // import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
@@ -108,7 +110,12 @@ const Dashboard = () => {
     matches: { data: counts },
     schedules: { data: schedule },
     status: { description_changed, scoring_criteria_changed },
-    publishStatus: { settingsValidity, publishable, loading },
+    publishStatus: {
+      publishable,
+      loading,
+      detailsValidity,
+      hiringTeamValidity,
+    },
     jobPolling,
   } = useJobDetails();
   const { push } = useRouter();
@@ -162,7 +169,15 @@ const Dashboard = () => {
         toast.warning(
           'Generating profile score criteria. Please wait before publishing.',
         );
-      else toast.error('Unable to publish. Please verify the job details.');
+      else {
+        if (!detailsValidity.validity || !hiringTeamValidity.validity) {
+          if (!detailsValidity.validity) toast.error(detailsValidity.message);
+          if (!hiringTeamValidity.validity)
+            toast.error(hiringTeamValidity.message);
+        } else {
+          toast.error('Unable to publish. Please verify the job details.');
+        }
+      }
     }
   };
 
@@ -293,8 +308,8 @@ const Dashboard = () => {
             }
             slotPublishButton={publishButton}
             isPublish={job.status !== 'closed'}
-            isEditError={!settingsValidity}
-            onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
+            // isEditError={!settingsValidity.validity}
+            // onClickEdit={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
             slotCloseJobButton={
               <>
                 <CloseJobButton
@@ -337,7 +352,7 @@ const Roles = () => {
         // eslint-disable-next-line no-unused-vars
         .filter(([_, value]) => value)
         .reduce((acc, [key, value]) => {
-          const user = data.find(({ user_id }) => user_id === value);
+          const user = (data ?? []).find(({ user_id }) => user_id === value);
           if (user) {
             const name = getFullName(
               user?.first_name ?? null,
@@ -374,7 +389,9 @@ const Roles = () => {
   if (status !== 'success' || coordinators.length === 0) return <></>;
   return (
     <JobRole
-      onClickEdit={{ onClick: () => push(`/jobs/${job?.id}/edit`) }}
+      onClickEdit={{
+        onClick: () => push(pages['/jobs/[id]/hiring-team']({ id: job?.id })),
+      }}
       slotRoleList={coordinators}
     />
   );
@@ -616,17 +633,39 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
         }}
       />,
     );
-  if (!publishStatus.settingsValidity)
-    banners.push(
-      <DashboardAlert
-        textTitile={'Job details are incomplete'}
-        textShortDescription={
-          'Please ensure that valid job details are provided.'
-        }
-        onClickBanner={{ onClick: () => push(`/jobs/${job.id}/edit`) }}
-      />,
-    );
-  else if (publishStatus.loading)
+  if (
+    !publishStatus.detailsValidity.validity ||
+    !publishStatus.hiringTeamValidity.validity
+  ) {
+    if (!publishStatus.detailsValidity.validity) {
+      banners.push(
+        <DashboardAlert
+          textTitile={publishStatus.detailsValidity.message}
+          textShortDescription={
+            'Please ensure that valid job details are provided.'
+          }
+          onClickBanner={{
+            onClick: () =>
+              push(pages['/jobs/[id]/job-details']({ id: job?.id })),
+          }}
+        />,
+      );
+    }
+    if (!publishStatus.hiringTeamValidity.validity) {
+      banners.push(
+        <DashboardAlert
+          textTitile={publishStatus.hiringTeamValidity.message}
+          textShortDescription={
+            'Please ensure that necessary hiring members are selected.'
+          }
+          onClickBanner={{
+            onClick: () =>
+              push(pages['/jobs/[id]/hiring-team']({ id: job?.id })),
+          }}
+        />,
+      );
+    }
+  } else if (publishStatus.loading)
     banners.push(
       <BannerLoading
         slotLoader={
@@ -653,7 +692,7 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
   else if (status.description_changed)
     banners.push(
       <DashboardWarning
-        textWarningTitle={'Job description is changed'}
+        textWarningTitle={'Job description has changed'}
         textDesc={'You may need to adjust the criteria for profile scoring.'}
         onClickDismiss={{
           onClick: () => setDismissWarnings({ job_description: true }),
@@ -761,13 +800,56 @@ const Modules = () => {
     useAuthDetails();
   return (
     <>
+      <JobDetailsModule />
       <ProfileScoreModule />
       {isSchedulingEnabled && <InterviewModule />}
       {isAssessmentEnabled && <AssessmentModule />}
       {isScreeningEnabled && <ScreeningModule />}
-
+      <HiringTeamModule />
       <EmailTemplatesModule />
     </>
+  );
+};
+
+const HiringTeamModule = () => {
+  const {
+    job,
+    publishStatus: {
+      hiringTeamValidity: { validity },
+    },
+  } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(pages['/jobs/[id]/hiring-team']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      isAlert={!validity}
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Hiring Team'}
+      slotIcon={<HiringTeamIcon />}
+    />
+  );
+};
+
+const JobDetailsModule = () => {
+  const {
+    job,
+    publishStatus: {
+      detailsValidity: { validity },
+    },
+  } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(pages['/jobs/[id]/job-details']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      isAlert={!validity}
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Job Details'}
+      slotIcon={<JobDetailsIcon />}
+    />
   );
 };
 

@@ -2,8 +2,13 @@ import {
   Autocomplete,
   Chip,
   Dialog,
+  FormControl,
+  FormControlLabel,
   IconButton,
+  Radio,
+  RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';
@@ -21,17 +26,19 @@ import { useRouter } from 'next/router';
 import {
   BodyWithSublink,
   CompanyDayOff,
-  DayOff,
+  DayoffList,
   InterviewLoad,
   KeywordCard,
   Keywords,
   RcCheckbox,
   SublinkTab,
+  TextWithBg,
   TimeRangeInput,
   WorkingHourDay,
   WorkingHours,
 } from '@/devlink2';
 import { ConfirmationPopup } from '@/devlink3';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   DailyLimitType,
   holidayType,
@@ -45,6 +52,7 @@ import FilterInput from '../../CandidateDatabase/Search/FilterInput';
 import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
+import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import SchedulingEmailTemplates from '../SchedulingEmailTemplates';
 import { settingSubNavItem } from '../SubNav/utils';
 import DateSelect from './Components/DateSelector';
@@ -55,12 +63,14 @@ import SchedulingRegions from './SchedulingReason';
 import { hoursList } from './utils';
 let schedulingSettingObj = {};
 let changeValue = null;
+type specificLocationType = 'all_locations' | 'specific_locations';
 
 function SchedulingSettings({
   updateSettings,
   initialData,
   isOverflow = true,
 }) {
+  const { recruiter } = useAuthDetails();
   const eventRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const [selectedDailyLimit, setSelectedDailyLimit] = useState<DailyLimitType>({
@@ -83,6 +93,9 @@ function SchedulingSettings({
 
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
   const [isTimeZone, setIsTimeZone] = useState(true);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [specificLocationOn, setSpecificLocationOn] =
+    useState<specificLocationType>('all_locations');
 
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
     start_time: string;
@@ -549,18 +562,31 @@ function SchedulingSettings({
                 isTrue={router.query.subtab == settingSubNavItem.DAYOFF}
               >
                 <CompanyDayOff
-                  slotDayOff={
+                  onClickAddDayoff={{
+                    onClick: openAddCompany,
+                  }}
+                  slotDayoffList={
                     <>
                       {daysOff.sort(compareDates).map((item, i) => {
                         return (
-                          <DayOff
-                            isEditVisible={false}
-                            onClickRemove={{
+                          <DayoffList
+                            key={i}
+                            slotTextWithBg={
+                              item?.locations ? (
+                                item.locations.map((location, index) => {
+                                  return (
+                                    <TextWithBg key={index} text={location} />
+                                  );
+                                })
+                              ) : (
+                                <TextWithBg text={'--'} />
+                              )
+                            }
+                            textDate={item.date}
+                            textDayoff={item.event_name}
+                            onClickDelete={{
                               onClick: () => removeDayOff(item.date),
                             }}
-                            key={i}
-                            textDate={item.date}
-                            textDaysOffName={item.event_name}
                           />
                         );
                       })}
@@ -583,15 +609,7 @@ function SchedulingSettings({
                           textPopupTitle='Add Holiday'
                           textPopupDescription={
                             <Stack gap={1}>
-                              <Typography variant='body2'>Date</Typography>
-                              <DateSelect
-                                selectedDates={daysOff}
-                                dateRef={dateRef}
-                                getDate={getDate}
-                              />
-                              <Typography variant='body2'>
-                                Holiday Name
-                              </Typography>
+                              <Typography variant='body2'>Day off</Typography>
                               <Stack>
                                 <UITextField
                                   placeholder='Enter the name of the holiday'
@@ -599,46 +617,141 @@ function SchedulingSettings({
                                   ref={eventRef}
                                 />
                               </Stack>
+                              <Typography variant='body2'>Date</Typography>
+                              <DateSelect
+                                selectedDates={daysOff}
+                                dateRef={dateRef}
+                                getDate={getDate}
+                              />
+
+                              <Typography variant='body2'>Location</Typography>
+                              <Stack
+                                fontSize={'12px'}
+                                direction={'row'}
+                                spacing={'10px'}
+                              >
+                                <FormControl>
+                                  <RadioGroup
+                                    row
+                                    aria-labelledby='demo-row-radio-buttons-group-label'
+                                    name='row-radio-buttons-group'
+                                  >
+                                    {[
+                                      'all_locations',
+                                      'specific_locations',
+                                    ].map((ele, i) => {
+                                      return (
+                                        <FormControlLabel
+                                          checked={specificLocationOn === ele}
+                                          key={i}
+                                          onChange={(e: any) => {
+                                            setSpecificLocationOn(
+                                              e.target.value,
+                                            );
+                                          }}
+                                          sx={{
+                                            '& span': {
+                                              fontSize: '14px !important',
+                                            },
+                                          }}
+                                          value={ele}
+                                          control={<Radio />}
+                                          label={capitalize(
+                                            ele.replaceAll('_', ' '),
+                                          )}
+                                        />
+                                      );
+                                    })}
+                                  </RadioGroup>
+                                </FormControl>
+                              </Stack>
+
+                              <ShowCode>
+                                <ShowCode.When
+                                  isTrue={
+                                    specificLocationOn === 'specific_locations'
+                                  }
+                                >
+                                  <Typography variant='body2'>
+                                    Pick locations
+                                  </Typography>
+
+                                  <Autocomplete
+                                    multiple
+                                    fullWidth
+                                    onChange={(_, value) => {
+                                      setSelectedLocations(value);
+                                    }}
+                                    options={recruiter?.office_locations.map(
+                                      (item: interviewLocationType) => {
+                                        return `${item.city}, ${item.region}, ${item.country}`;
+                                      },
+                                    )}
+                                    renderInput={(params) => (
+                                      <TextField
+                                        placeholder='Select Locations'
+                                        {...params}
+                                      />
+                                    )}
+                                  />
+                                </ShowCode.When>
+                              </ShowCode>
                             </Stack>
                           }
-                          isGreyButtonVisible={false}
+                          isGreyButtonVisible={true}
                           textPopupButton='Add'
                           onClickCancel={{
                             onClick: handleClose,
                           }}
                           onClickAction={{
                             onClick: () => {
-                              if (selectedDate) {
-                                setDaysOff(
-                                  (pre) =>
-                                    [
-                                      ...pre,
-                                      {
-                                        date: selectedDate,
-                                        event_name: eventRef.current.value,
-                                      },
-                                    ] as holidayType[],
-                                );
-                                handleClose();
-                                toast.success(
-                                  `Holiday added on ${dayjs(
-                                    selectedDate,
-                                  ).format('DD-MMM-YYYY')} ${
-                                    eventRef.current.value ? 'for' : ''
-                                  } ${eventRef.current.value}`,
-                                );
-                              } else {
-                                toast.message('Please select a date.');
+                              if (!eventRef.current.value) {
+                                toast.message('Please enter event name.');
+                                return;
                               }
+                              if (!selectedDate) {
+                                toast.message('Please select a date.');
+                                return;
+                              }
+                              if (
+                                specificLocationOn === 'specific_locations' &&
+                                selectedLocations.length === 0
+                              ) {
+                                toast.message('Please select a locations.');
+                                return;
+                              }
+                              setDaysOff(
+                                (pre) =>
+                                  [
+                                    ...pre,
+                                    {
+                                      date: selectedDate,
+                                      event_name: eventRef.current.value,
+                                      locations:
+                                        specificLocationOn ===
+                                        'specific_locations'
+                                          ? selectedLocations
+                                          : recruiter?.office_locations.map(
+                                              (item: interviewLocationType) =>
+                                                `${item.city}, ${item.region}, ${item.country}`,
+                                            ),
+                                    },
+                                  ] as holidayType[],
+                              );
+                              handleClose();
+                              toast.success(
+                                `Holiday added on ${dayjs(selectedDate).format(
+                                  'DD-MMM-YYYY',
+                                )} ${
+                                  eventRef.current.value ? 'for' : ''
+                                } ${eventRef.current.value}`,
+                              );
                             },
                           }}
                         />
                       </Dialog>
                     </>
                   }
-                  onClickAddDate={{
-                    onClick: openAddCompany,
-                  }}
                 />
               </ShowCode.When>
               <ShowCode.When

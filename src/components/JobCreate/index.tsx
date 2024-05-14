@@ -8,15 +8,17 @@ import {
   ConfirmationPopup,
   CreateJobLoader,
   EditJobTopbarLeft,
+  JobDetailBlock,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import Loader from '../Common/Loader';
-import { Form, JobForms } from './form';
+import { Form, JobMetaFormProps, useJobForms, WarningSvg } from './form';
 
 const JobCreateComponent = () => {
   const { status } = useCompanyMembers();
@@ -223,6 +225,74 @@ const JobCreateForm = ({
         <CreateJobLoader slotLottie={<Loader />} />
       </Dialog>
     </>
+  );
+};
+
+const JobForms = ({ fields, handleChange, handleCreate }: JobMetaFormProps) => {
+  const {
+    company,
+    department,
+    description,
+    job_title,
+    job_type,
+    location,
+    workplace_type,
+    hiring_manager,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
+  } = useJobForms(fields, handleChange);
+
+  const forms = (
+    <>
+      {company}
+      {department}
+      {job_title}
+      {job_type}
+      {location}
+      {workplace_type}
+    </>
+  );
+
+  const roleForms = (
+    <>
+      {hiring_manager}
+      {recruiter}
+      {recruiting_coordinator}
+      {sourcer}
+    </>
+  );
+
+  return (
+    <JobDetailBlock
+      isJobDetailVisible={true}
+      slotJobForm={forms}
+      isHiringTeamVisible={true}
+      slotHiringTeamForm={roleForms}
+      slotRichtext={description}
+      textDescription={'Enter the basic job details below.'}
+      isCreate={true}
+      onClickCreate={{ onClick: () => handleCreate() }}
+      styleBorder={{
+        style: {
+          borderColor: fields.description.error.value
+            ? palette.red['500']
+            : palette.grey['300'],
+        },
+      }}
+      slotRichtextWarning={
+        fields.description.error.value && (
+          <Stack
+            alignItems={'center'}
+            direction={'row'}
+            color={palette.red[500]}
+          >
+            <WarningSvg />
+            {fields.description.error.helper}
+          </Stack>
+        )
+      }
+    />
   );
 };
 

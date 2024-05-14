@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "tslint": "npx tsc --noEmit",
-    "lint": "next lint",
+    "lint": "next lint && npx tsc --noEmit",
     "format": "prettier --write \"{,!(.next)/**/,!(.devlink)/**/}*.{js,jsx}\"",
     "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/types/schema.ts",
     "devlink": "npx webflow devlink sync"
