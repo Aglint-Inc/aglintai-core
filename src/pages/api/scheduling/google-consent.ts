@@ -7,9 +7,8 @@ const { OAuth2Client } = require('google-auth-library');
 const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_SCHEDULE_CLIENT_ID,
   process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
-  process.env.GOOGLE_SCHEDULE_REDIRECT_URI,
+  `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
 );
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const authUrl = oAuth2Client.generateAuthUrl({
