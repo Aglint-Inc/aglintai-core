@@ -215,7 +215,7 @@ VALUES
     '',
     '2024-04-26 14:02:33.636723+00',
     FALSE
-  )
+  );
 
 INSERT INTO
   auth.identities (
@@ -278,7 +278,7 @@ VALUES
     '2024-04-26 14:02:33.632493+00',
     '2024-04-26 14:02:33.632493+00',
     '5d2bb73b-0e3b-4c63-bc60-920554345950'
-  )
+  );
 
 INSERT INTO recruiter (
     ats_familiar,
