@@ -409,8 +409,16 @@ function Theme({ children }) {
         styleOverrides: {
           select: {
             borderRadius: '0.25rem',
+            fontSize: '14px'
           },
         },
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            fontSize: '14px'
+          }
+        }
       },
       MuiAppBar: {
         defaultProps: {
