@@ -308,6 +308,9 @@ function Theme({ children }) {
             border: 'none',
             boxShadow: '0px 0px 0px 1px #d8dcde inset',
           },
+          option: {
+            fontSize: '14px'
+          }
         },
       },
       MuiDialog: {
