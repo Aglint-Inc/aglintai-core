@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -7,8 +8,6 @@ import {
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
-
-import { Database } from '@/src/types/schema';
 
 import {
   ResumeUploadApi,

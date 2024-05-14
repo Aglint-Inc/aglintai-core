@@ -1,8 +1,7 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
-
-import { Database } from '@/src/types/schema';
 
 import { JobDashboardApi } from '../../../../pages/api/job/jobDashboard/read';
 

@@ -25,7 +25,7 @@ import Loader from '@/src/components/SignUpComp/Loader/Index';
 import { Error1 } from '@/src/components/SignUpComp/SlideDetailsOne';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';

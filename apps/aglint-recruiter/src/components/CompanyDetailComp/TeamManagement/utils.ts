@@ -1,8 +1,11 @@
+import {
+  DatabaseEnums,
+  employmentTypeEnum,
+  RecruiterUserType,
+  schedulingSettingType,
+} from '@aglint/shared-types';
 import axios from 'axios';
 
-import { DatabaseEnums } from '@/src/types/customSchema';
-import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { supabase } from '@/src/utils/supabase/client';
 
 export const setMemberInDb = async (

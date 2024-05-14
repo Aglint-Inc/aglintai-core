@@ -1,4 +1,4 @@
-import { DatabaseEnums, DatabaseTable } from '@/src/types/customSchema';
+import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 
 export type API_getMembersWithRole = {
   request: {

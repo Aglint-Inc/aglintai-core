@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { TaskTypeDb } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
-import { TaskTypeDb } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { ApiBodyParamsScheduleAgent } from '../application/schedulewithagent';

@@ -9,7 +9,7 @@ import {
   GreenhouseType,
   NewCandidateType,
   RecruiterDB,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-
-import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
-} from '@/src/types/data.types';
-import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
+} from '@aglint/shared-types';
+import { PlanCombinationRespType } from '@aglint/shared-types';
+import { create } from 'zustand';
+
+import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import { SelectedApplicationTypeDB, SessionsType } from './types';
 

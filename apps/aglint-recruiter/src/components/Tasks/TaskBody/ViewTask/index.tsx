@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { DatabaseEnums } from '@aglint/shared-types';
 import { Button, Drawer, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -9,7 +10,6 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { DatabaseEnums } from '@/src/types/customSchema';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 

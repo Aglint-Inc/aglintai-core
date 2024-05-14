@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable, DatabaseTableUpdate } from '@aglint/shared-types';
 import {
   Box,
   Button,
@@ -17,7 +18,6 @@ import {
   ScheduleReasonSection,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { DatabaseTable, DatabaseTableUpdate } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

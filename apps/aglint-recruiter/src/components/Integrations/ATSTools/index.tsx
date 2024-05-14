@@ -12,7 +12,7 @@ import {
   ButtonPrimaryOutlinedRegular,
 } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 import toast from '@/src/utils/toast';
 
 import ATSPopUps from '../ATSPopUps';

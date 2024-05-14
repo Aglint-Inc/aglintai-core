@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { GreenhouseType } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,8 +11,6 @@ import {
   extractLinkedInURLGreenhouse,
   processEmailsInBatches,
 } from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal/utils';
-import { GreenhouseType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 const crypto = require('crypto');
 

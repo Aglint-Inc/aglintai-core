@@ -1,4 +1,4 @@
-import { Database } from '@/src/types/schema';
+import { Database } from '@aglint/shared-types';
 
 import { getInterviewPlansAPI } from '.';
 

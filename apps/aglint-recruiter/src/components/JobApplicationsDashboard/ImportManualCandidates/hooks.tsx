@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { CandidateInsert } from '@aglint/shared-types';
+
 import { createBatches } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import {
   CsvUploadApi,
@@ -7,7 +9,6 @@ import {
 import { handleJobApplicationApi } from '@/src/apiUtils/job/jobApplications/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
-import { CandidateInsert } from '@/src/types/candidates.types';
 import toast from '@/src/utils/toast';
 
 const useUploadCandidate = () => {

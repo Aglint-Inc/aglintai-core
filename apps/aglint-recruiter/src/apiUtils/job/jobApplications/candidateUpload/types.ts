@@ -1,6 +1,5 @@
+import { Database } from '@aglint/shared-types';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
-
-import { Database } from '@/src/types/schema';
 
 export type Supabase = SupabaseClient<Database>;
 

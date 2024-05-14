@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -16,7 +17,6 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { Database } from '@/src/types/schema';
 
 import { handleRead } from '../../../../../apiUtils/job/jobApplications/read/utils';
 

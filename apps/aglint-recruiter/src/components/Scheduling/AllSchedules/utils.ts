@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { InterviewMeetingTypeDb } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
-import { InterviewMeetingTypeDb } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 

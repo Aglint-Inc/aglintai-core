@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 
 import { AddTechStack, RolesPill } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 
 interface StacksProps {
   handleClose: () => void;

@@ -1,5 +1,10 @@
 /* eslint-disable no-unused-vars */
 
+import { Applications } from '@aglint/shared-types';
+import { CandidateFiles } from '@aglint/shared-types';
+import { InterviewScheduleTypeDB } from '@aglint/shared-types';
+import { Candidate } from '@aglint/shared-types';
+
 import { PromptEnum } from '@/src/apiUtils/resumeScoring/types';
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import {
@@ -9,10 +14,6 @@ import {
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { AssessmentResult } from '@/src/queries/assessment/types';
 import { Job } from '@/src/queries/job/types';
-import { Applications } from '@/src/types/applications.types';
-import { CandidateFiles } from '@/src/types/candidate_files.types';
-import { Candidate } from '@/src/types/candidates.types';
-import { InterviewScheduleTypeDB } from '@/src/types/data.types';
 
 import useProviderJobApplicationActions from './hooks';
 

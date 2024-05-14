@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { AllInterviewers, AllInterviewersCard, TextWithBg } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterUserType } from '@/src/types/data.types';
+import { RecruiterUserType } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 

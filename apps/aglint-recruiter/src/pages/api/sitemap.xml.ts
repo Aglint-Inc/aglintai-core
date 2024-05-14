@@ -1,8 +1,7 @@
+import { JobType } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { JobType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey: string = process.env.SUPABASE_SERVICE_KEY || '';

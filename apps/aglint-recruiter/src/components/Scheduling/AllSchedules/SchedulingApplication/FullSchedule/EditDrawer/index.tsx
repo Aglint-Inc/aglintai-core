@@ -28,7 +28,7 @@ import {
   UpdateDebriefSession,
   updateDebriefSession,
 } from '@/src/queries/interview-plans';
-import { InterviewSession } from '@/src/types/data.types';
+import { InterviewSession } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

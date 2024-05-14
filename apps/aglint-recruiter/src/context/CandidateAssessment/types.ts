@@ -1,4 +1,4 @@
-import { Database } from '@/src/types/schema';
+import { Database } from '@aglint/shared-types';
 
 export type ApplicationType =
   Database['public']['Tables']['applications']['Row'];

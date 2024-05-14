@@ -1,6 +1,5 @@
+import { DateInfoType } from '@aglint/shared-types';
 import { capitalize } from '@mui/material';
-
-import { DateInfoType } from '../types/resume_json.types';
 
 export const getFullName = (firstName, lastName) => {
   return capitalize(

@@ -1,8 +1,11 @@
 const { v4: uuidv4 } = require('uuid');
 
-import { InterviewSession, RecruiterUserType } from '@/src/types/data.types';
-import { NewCalenderEvent } from '@/src/types/scheduleTypes/calEvent.types';
-import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
+import {
+  CompServiceKeyCred,
+  InterviewSession,
+  NewCalenderEvent,
+  RecruiterUserType,
+} from '@aglint/shared-types';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';

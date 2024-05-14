@@ -1,7 +1,7 @@
+import { Database } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { Database } from '@/src/types/schema';
 
 function IconScheduleType({
   type,

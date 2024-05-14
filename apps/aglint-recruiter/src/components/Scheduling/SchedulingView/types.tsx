@@ -3,8 +3,8 @@ import {
   InterviewModuleType,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
-} from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
+} from '@aglint/shared-types';
+import { schedulingSettingType } from '@aglint/shared-types';
 
 import { ScheduleType } from '../Modules/types';
 

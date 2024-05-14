@@ -1,15 +1,17 @@
+import {
+  InterviewerMeetingScheduled,
+  InterviewModuleType,
+  InterviewSession,
+  InterviewSessionApiType,
+  SessionInterviewerType,
+} from '@aglint/shared-types';
+import { schedulingSettingType } from '@aglint/shared-types';
+import { CompServiceKeyCred } from '@aglint/shared-types';
+
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { InterviewModuleType, InterviewSession } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
-import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
-import {
-  InterviewerMeetingScheduled,
-  InterviewSessionApiType,
-  SessionInterviewerType,
-} from '../../../types/scheduleTypes/types';
 import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {

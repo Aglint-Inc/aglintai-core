@@ -1,3 +1,4 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -8,7 +9,6 @@ import { TaskUpdateButton } from '@/devlink3/TaskUpdateButton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { DatabaseEnums } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

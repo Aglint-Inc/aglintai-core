@@ -1,3 +1,8 @@
+import {
+  CustomDatabase,
+  DatabaseEnums,
+  DatabaseTableUpdate,
+} from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -16,11 +21,9 @@ import {
   useTasksContext,
 } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import {
-  CustomDatabase,
-  DatabaseEnums,
-  DatabaseTableUpdate,
-} from '@/src/types/customSchema';
-import { capitalizeAll, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
@@ -97,7 +100,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotType={
           <InterviewTaskPill textInterviewName={capitalize(task.type)} />
         }
-        slotJob={capitalizeFirstLetter(task?.applications?.public_jobs?.job_title)}
+        slotJob={capitalizeFirstLetter(
+          task?.applications?.public_jobs?.job_title,
+        )}
         slotCandidate={
           task.application_id && (
             <ListCard

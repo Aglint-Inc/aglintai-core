@@ -16,11 +16,11 @@
 //   }
 // }
 
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { Database } from '@/src/types/schema';
 import { addHttps, getUrlHost } from '@/src/utils/fetchCompDetails';
 
 export const supabaseAdmin = createClient<Database>(

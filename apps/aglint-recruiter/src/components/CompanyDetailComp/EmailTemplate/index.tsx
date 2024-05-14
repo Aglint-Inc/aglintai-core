@@ -14,7 +14,7 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import TipTapAIEditor from '../../Common/TipTapAIEditor';

@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { EmailTemplateType } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { MailService } from '@sendgrid/mail';
 import { createServerClient } from '@supabase/ssr';
 
@@ -15,8 +17,6 @@ import {
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
 import { AssessmentResult } from '@/src/queries/assessment/types';
-import { EmailTemplateType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 

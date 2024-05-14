@@ -1,7 +1,6 @@
+import { CustomDatabase } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { CustomDatabase } from '@/src/types/customSchema';
 
 import { API_getMembersWithRole } from './type';
 
@@ -36,7 +35,9 @@ const getResponse = (data: Partial<API_getMembersWithRole['response']>) => {
 const getMembers = (id: string) => {
   return supabase
     .from('recruiter_relation')
-    .select('role, manager_id, recruiter_user!public_recruiter_relation_user_id_fkey(*)')
+    .select(
+      'role, manager_id, recruiter_user!public_recruiter_relation_user_id_fkey(*)',
+    )
     .eq('recruiter_id', id)
     .then(({ data, error }) => {
       if (error) throw new Error(error.message);
@@ -45,5 +46,5 @@ const getMembers = (id: string) => {
         role: item.role,
         manager_id: item.manager_id,
       }));
-    }); 
+    });
 };

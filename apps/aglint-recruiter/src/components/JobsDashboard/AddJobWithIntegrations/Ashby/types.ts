@@ -1,4 +1,4 @@
-import { Json } from '@/src/types/schema';
+import { Json } from '@aglint/shared-types';
 
 export interface JobAshby {
   id: string;

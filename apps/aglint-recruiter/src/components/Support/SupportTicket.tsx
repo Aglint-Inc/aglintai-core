@@ -38,7 +38,7 @@ import {
   Public_jobsType,
   Support_ticketType,
   // SupportEmailAPIType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

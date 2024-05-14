@@ -1,3 +1,4 @@
+import { type Database } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Ref, forwardRef, memo } from 'react';
@@ -5,7 +6,6 @@ import { type Ref, forwardRef, memo } from 'react';
 import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink';
 import { StatusBadge } from '@/devlink2';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-import { type Database } from '@/src/types/schema';
 
 import IconScheduleType from '../../AllSchedules/ListCard/Icon';
 import { getScheduleType } from '../../AllSchedules/utils';

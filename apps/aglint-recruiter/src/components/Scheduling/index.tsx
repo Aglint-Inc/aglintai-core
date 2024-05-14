@@ -1,3 +1,4 @@
+import { schedulingSettingType, SocialsType } from '@aglint/shared-types';
 import { AvatarGroup, Stack } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -13,8 +14,6 @@ import {
 } from '@/devlink2';
 import { ButtonPrimaryDefaultRegular, TaskSwitchButton } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { SocialsType } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

@@ -1,11 +1,10 @@
 /* eslint-disable security/detect-object-injection */
+import { JobTypeDB } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
-import { JobTypeDB } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 export const config = {
   runtime: 'edge',

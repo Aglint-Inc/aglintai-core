@@ -12,7 +12,7 @@ import {
   APIFindAltenativeTimeSlot,
   APIFindAltenativeTimeSlotResponse,
   APIUpdateMeetingInterviewers,
-} from '@/src/types/aglintApi/schedulingApi';
+} from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

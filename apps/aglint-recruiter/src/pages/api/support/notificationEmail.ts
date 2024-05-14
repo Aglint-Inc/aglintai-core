@@ -4,7 +4,7 @@ import {
   getNotificationMailBodyType,
   NotificationsEmailAPIType,
   Support_ticketType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 const sgMail = require('@sendgrid/mail');

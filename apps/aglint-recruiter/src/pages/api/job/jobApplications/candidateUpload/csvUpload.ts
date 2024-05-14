@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -9,7 +10,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CandidateFilesBulkCreateAction } from '@/src/context/CandidatesContext/types';
-import { Database } from '@/src/types/schema';
 
 import {
   CsvUploadApi,

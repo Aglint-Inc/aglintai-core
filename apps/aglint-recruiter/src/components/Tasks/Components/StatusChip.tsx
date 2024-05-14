@@ -1,8 +1,8 @@
+import { CustomDatabase } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { TaskStatus } from '@/devlink3';
 import { palette } from '@/src/context/Theme/Theme';
-import { CustomDatabase } from '@/src/types/customSchema';
 
 function StatusChip({
   status,

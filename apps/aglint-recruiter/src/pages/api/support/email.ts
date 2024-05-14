@@ -1,10 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
 import {
   getMailBodyType,
   // Support_ticketType,
   SupportEmailAPIType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
+import { NextApiRequest, NextApiResponse } from 'next';
 // import { supabase } from '@/src/utils/supabaseClient';
 
 const sgMail = require('@sendgrid/mail');

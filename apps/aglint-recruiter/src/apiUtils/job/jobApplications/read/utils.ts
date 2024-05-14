@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
@@ -12,7 +13,6 @@ import {
   JobApplication,
   JobApplicationSections,
 } from '@/src/context/JobApplicationsContext/types';
-import { Database } from '@/src/types/schema';
 
 import { ReadJobApplicationApi } from '../../../../pages/api/job/jobApplications/read';
 

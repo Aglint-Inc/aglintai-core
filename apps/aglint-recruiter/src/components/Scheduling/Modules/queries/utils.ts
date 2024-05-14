@@ -1,8 +1,8 @@
+import { SupabaseType } from '@aglint/shared-types';
+import { PauseJson } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import { SupabaseType } from '@/src/types/data.types';
-import { PauseJson } from '@/src/types/scheduleTypes/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

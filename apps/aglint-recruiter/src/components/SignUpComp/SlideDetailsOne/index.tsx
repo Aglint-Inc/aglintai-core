@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { RcInfoStep1, RecCompanyDetails } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { SocialsType } from '@/src/types/data.types';
+import { SocialsType } from '@aglint/shared-types';
 import { addHttps } from '@/src/utils/fetchCompDetails';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

@@ -1,3 +1,4 @@
+import { Database } from '@aglint/shared-types';
 import { capitalize } from 'lodash';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -5,7 +6,6 @@ import React, { useEffect } from 'react';
 
 import { SubLinkSubMenu, SublinkTab } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { Database } from '@/src/types/schema';
 import { featureFlag } from '@/src/utils/Constants';
 import { pageRoutes } from '@/src/utils/pageRouting';
 // import toast from '@/src/utils/toast';

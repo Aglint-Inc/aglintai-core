@@ -1,8 +1,8 @@
+import { CustomDatabase } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { SchedulingDashboardTypes } from '@/src/queries/scheduling-dashboard/types';
-import { CustomDatabase } from '@/src/types/customSchema';
 import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 
 const supabase = createClient<CustomDatabase>(

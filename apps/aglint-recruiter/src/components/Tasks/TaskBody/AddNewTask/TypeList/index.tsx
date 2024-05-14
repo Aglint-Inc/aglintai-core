@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
+import { CustomDatabase } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
 import { InterviewTaskPill } from '@/devlink3';
-import { CustomDatabase } from '@/src/types/customSchema';
 
 function TypeList({
   selectedType,

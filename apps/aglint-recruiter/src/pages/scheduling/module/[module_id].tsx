@@ -1,3 +1,7 @@
+// import SchedulingProvider, {
+//   useSchedulingContext,
+// } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { DatabaseTableUpdate } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
@@ -36,10 +40,6 @@ import {
 } from '@/src/components/Scheduling/Modules/types';
 import { useAllInterviewersDetails } from '@/src/components/Scheduling/SchedulingView/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import SchedulingProvider, {
-//   useSchedulingContext,
-// } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { DatabaseTableUpdate } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
 import { supabase } from '@/src/utils/supabase/client';
@@ -105,17 +105,16 @@ function ModuleMembersComp() {
           return item;
         });
         setModule({ ...module, relations });
-        toast.success('Candidate qualified as interviewer for this interview type.');
+        toast.success(
+          'Candidate qualified as interviewer for this interview type.',
+        );
       },
     );
   };
 
   return (
     <>
-      <Seo
-        title={`Scheduling`}
-        description='AI for People Products'
-      />
+      <Seo title={`Scheduling`} description='AI for People Products' />
       <PageLayout
         onClickBack={{
           onClick: () => {

@@ -8,7 +8,7 @@ import { TicketChatBubble } from '@/devlink/TicketChatBubble';
 import { TicketStatusDivider } from '@/devlink/TicketStatusDivider';
 import { TicketTimeDivider } from '@/devlink/TicketTimeDivider';
 import { palette } from '@/src/context/Theme/Theme';
-import { PublicJobsType, SupportTicketType } from '@/src/types/data.types';
+import { PublicJobsType, SupportTicketType } from '@aglint/shared-types';
 import { getDayFormate } from '@/src/utils/dayUtils/dayUtils';
 import { getCompanyIcon } from '@/src/utils/icon/iconUtils';
 import { supabase } from '@/src/utils/supabase/client';

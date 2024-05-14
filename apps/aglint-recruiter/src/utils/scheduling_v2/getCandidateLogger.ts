@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { EmailAgentId, PhoneAgentId } from '@/src/components/Tasks/utils';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
-import { SubTaskProgress } from '@/src/types/data.types';
+import { SubTaskProgress } from '@aglint/shared-types';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 

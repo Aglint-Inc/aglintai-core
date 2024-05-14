@@ -8,7 +8,7 @@ import { ButtonPrimaryRegular } from '@/devlink';
 import { IntegrationCard, IntegrationUpload, ToggleButton } from '@/devlink2';
 import { ButtonGrey, ButtonPrimaryOutlinedRegular } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

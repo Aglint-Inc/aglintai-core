@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -9,7 +10,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { Assessment } from '@/src/queries/assessment/types';
-import { Database } from '@/src/types/schema';
 
 import {
   createInvalidResponse,

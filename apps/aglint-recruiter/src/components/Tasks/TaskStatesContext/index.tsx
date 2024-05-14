@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { RecruiterUserType } from '@/src/types/data.types';
+import { RecruiterUserType } from '@aglint/shared-types';
 
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { useInterviewerList } from '../Components/AssigneeChip';

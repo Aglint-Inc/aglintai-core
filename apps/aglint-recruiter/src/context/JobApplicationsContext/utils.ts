@@ -1,14 +1,15 @@
 /* eslint-disable security/detect-object-injection */
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
+import { Database } from '@aglint/shared-types';
+
 import { selectJobApplicationQuery } from '@/src/apiUtils/job/jobApplications/read/utils';
 import { Job } from '@/src/queries/job/types';
 import {
   Applications,
   ApplicationsInsert,
   ApplicationsUpdate,
-} from '@/src/types/applications.types';
-import { Database } from '@/src/types/schema';
+} from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {

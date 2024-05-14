@@ -1,10 +1,10 @@
+import { JsonResume } from '@aglint/shared-types';
 import { isArray } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import set from 'lodash/set';
 import router from 'next/router';
 import React, { createContext, useContext, useReducer } from 'react';
 
-import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

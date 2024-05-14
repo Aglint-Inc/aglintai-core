@@ -10,7 +10,7 @@ import {
   useInviteMeta,
   useInviteSlots,
 } from '@/src/queries/candidate-invite';
-import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
+import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';

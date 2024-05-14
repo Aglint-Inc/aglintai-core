@@ -1,3 +1,4 @@
+import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import Seo from '@components/Common/Seo';
 import { Stack, Typography } from '@mui/material';
 import axios from 'axios';
@@ -6,7 +7,6 @@ import { useEffect, useState } from 'react';
 
 import Loader from '@/src/components/Common/Loader';
 import CompanyJobPost from '@/src/components/CompanyJobPost';
-import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 
 function JobPost() {
   const router = useRouter();

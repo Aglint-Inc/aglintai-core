@@ -1,8 +1,7 @@
+import { DatabaseEnums, schedulingSettingType } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 
-import { DatabaseEnums } from '@/src/types/customSchema';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
 import { supabase } from '@/src/utils/supabase/client';
 
 const today = dayjs().startOf('day');

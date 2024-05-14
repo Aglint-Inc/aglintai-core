@@ -1,3 +1,5 @@
+import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import {
   Autocomplete,
   Drawer,
@@ -12,8 +14,6 @@ import { InviteTeamCard, TeamInvite } from '@/devlink';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 

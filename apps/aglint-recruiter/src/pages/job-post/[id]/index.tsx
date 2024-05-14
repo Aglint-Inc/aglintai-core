@@ -1,3 +1,4 @@
+import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -7,7 +8,6 @@ import { InvalidJob, LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
 import JobPostPublic from '@/src/components/JobPost';
 import InvalidJobPostLottie from '@/src/components/JobPost/InvalidJobPostLottie';
-import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 
 function JobPost() {
   const router = useRouter();

@@ -4,13 +4,16 @@ var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+import {
+  APICandidateConfirmSlot,
+  CalendarEvent,
+  SessionInterviewerType,
+} from '@aglint/shared-types';
+
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
-import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
-import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
 
-import { SessionInterviewerType } from '../../types/scheduleTypes/types';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';

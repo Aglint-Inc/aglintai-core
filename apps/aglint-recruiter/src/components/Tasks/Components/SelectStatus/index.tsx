@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
+import { CustomDatabase } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { CustomDatabase } from '@/src/types/customSchema';
 
 import StatusChip, { statusList } from '../StatusChip';
 

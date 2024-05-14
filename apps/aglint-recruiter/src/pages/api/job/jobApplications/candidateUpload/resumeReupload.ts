@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -6,9 +7,6 @@ import {
 } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { v4 as uuidv4 } from 'uuid';
-
-import { Database } from '@/src/types/schema';
 
 import {
   ResumeReuploadApi,
@@ -60,13 +58,7 @@ const handler = async (
     },
   );
 
-  const candidate_file_id = uuidv4();
-  const result = await uploadResume(
-    supabase,
-    readStream,
-    contentType,
-    candidate_file_id,
-  )
+  const result = await uploadResume(supabase, readStream, contentType)
     .then(({ file_url, candidate_file_id }) =>
       reCreateFile(
         supabase,

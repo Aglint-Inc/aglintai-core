@@ -1,7 +1,7 @@
+import { JsonResume } from '@aglint/shared-types';
 import axios from 'axios';
 import { isArray } from 'lodash';
 
-import { JsonResume } from '@/src/types/resume_json.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import {

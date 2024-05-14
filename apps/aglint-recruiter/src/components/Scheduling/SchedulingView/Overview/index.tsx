@@ -1,3 +1,5 @@
+import { InterviewFilterJsonType } from '@aglint/shared-types';
+import { APIEventAttendeeStatus } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -18,8 +20,6 @@ import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
-import { APIEventAttendeeStatus } from '@/src/types/aglintApi/schedulingApi';
-import { InterviewFilterJsonType } from '@/src/types/data.types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

@@ -1,8 +1,8 @@
+import { CustomDatabase } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { InviteUserAPIType } from '@/src/components/CompanyDetailComp/TeamManagement/utils';
-import { CustomDatabase } from '@/src/types/customSchema';
 import { companyType } from '@/src/utils/userRoles';
 
 import { server_getUserRoleAndId } from '../reset_password';

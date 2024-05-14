@@ -1,9 +1,8 @@
+import { CandidateType, JobApplicationType } from '@aglint/shared-types';
+// import axios from 'axios';
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-import { CandidateType, JobApplicationType } from '@/src/types/data.types';
-// import axios from 'axios';
-import { Database } from '@/src/types/schema';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
@@ -89,7 +88,6 @@ const getCompanyDetails = async (id: string) => {
     .select('name,logo')
     .eq('id', id);
   if (!error && data.length) {
-    
     return data[0] as {
       name: string;
       logo: string;
@@ -103,13 +101,12 @@ const getJobTitle = async (jobId: string) => {
     .select(' job_title, company, recruiter_id ')
     .eq('id', jobId);
   if (!error && data.length) {
-    
     return data[0] as {
       company: string;
       job_title: string;
       recruiter_id: string;
     };
   }
-  
+
   return null;
 };

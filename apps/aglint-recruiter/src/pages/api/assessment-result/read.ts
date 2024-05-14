@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { AssessmentResult } from '@/src/queries/assessment/types';
-import { Database } from '@/src/types/schema';
 
 // export const config = {
 //   runtime: 'edge',

@@ -1,4 +1,4 @@
-import { DatabaseTable } from '@/src/types/customSchema';
+import { DatabaseTable } from '@aglint/shared-types';
 
 export type API_get_interview_feedback_details = {
   request: {

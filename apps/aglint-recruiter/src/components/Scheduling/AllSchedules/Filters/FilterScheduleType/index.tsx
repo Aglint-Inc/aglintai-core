@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { InterviewSession } from '@/src/types/data.types';
+import { InterviewSession } from '@aglint/shared-types';
 
 import {
   setFilter,

@@ -35,7 +35,7 @@ import {
   holidayType,
   schedulingSettingType,
   WeeklyLimitType,
-} from '@/src/types/scheduleTypes/scheduleSetting';
+} from '@aglint/shared-types';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
 

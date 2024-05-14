@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { InterviewSession } from '@/src/types/data.types';
+import { InterviewSession } from '@aglint/shared-types';
 
 export interface FilterCandidateState {
   filter: {

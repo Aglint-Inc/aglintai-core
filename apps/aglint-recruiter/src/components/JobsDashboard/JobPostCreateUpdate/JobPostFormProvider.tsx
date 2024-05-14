@@ -8,7 +8,7 @@ import {
   PublicJobsType,
   RecruiterDB,
   RecruiterUserType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 import toast from '@/src/utils/toast';
 
 import { ScoreWheelParams } from '../../Common/ScoreWheel';

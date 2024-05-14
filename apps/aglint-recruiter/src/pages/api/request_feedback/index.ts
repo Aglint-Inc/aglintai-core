@@ -69,9 +69,8 @@ const getResponse = (data: { emailSent?: boolean; error?: string }) => {
   return { emailSent: false, error: null, ...data };
 };
 
+import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
-
-import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
 
 import { API_request_feedback } from './type';
 

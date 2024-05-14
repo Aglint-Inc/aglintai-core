@@ -1,3 +1,4 @@
+import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { Avatar, Dialog, Stack } from '@mui/material';
 // import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -34,7 +35,6 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
-import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

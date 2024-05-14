@@ -7,7 +7,7 @@ import {
   ApiResponseAllSlots,
   ApiResponseCandidateInvite,
 } from '@/src/pages/api/scheduling/invite';
-import { APICandidateConfirmSlot } from '@/src/types/aglintApi/schedulingApi';
+import { APICandidateConfirmSlot } from '@aglint/shared-types';
 import toast from '@/src/utils/toast';
 
 import { candidateInviteKeys } from './keys';

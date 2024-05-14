@@ -9,7 +9,7 @@ import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { MemberType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { InterviewSession } from '@/src/types/data.types';
+import { InterviewSession } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import IconScheduleType from '../../../../ListCard/Icon';

@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
 import { Dialog, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 // import axios from 'axios';
@@ -21,7 +22,6 @@ import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { API_request_feedback } from '@/src/pages/api/request_feedback/type';
-import { DatabaseTable } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

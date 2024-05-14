@@ -3,8 +3,8 @@
 // import {
 //   CalendarEvent,
 //   ScheduleAuthType,
-// } from '@/src/types/scheduleTypes/calEvent.types';
-// import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
+// } from '@aglint/shared-types';
+// import { schedulingSettingType } from '@aglint/shared-types';
 
 // export type InterDetailsType = {
 //   tokens: ScheduleAuthType | null;

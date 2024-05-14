@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 // pages/api/apolloSearch.ts
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -8,7 +9,6 @@ import {
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { handleGenEmail } from '@/src/components/CandidateDatabase/Database/EmailOutReach/OutReachCtx';
-import { Database } from '@/src/types/schema';
 import { resolveAiCmd } from '@/src/utils/prompts/candidateDb/email';
 const { schema } = require('prosemirror-schema-basic');
 const { Node, DOMSerializer } = require('prosemirror-model');

@@ -1,7 +1,6 @@
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { Database } from '@/src/types/schema';
 
 import { server_checkUserRolePermissions } from '../reset_password';
 import { API_get_last_login } from './types';
@@ -66,7 +65,7 @@ const getResponse = (data: Partial<API_get_last_login['response']>) => {
 
 // import { createServerClient } from '@supabase/ssr';
 
-// import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
+// import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
 
 // const checkPermissions = async ({
 //   getVal,

@@ -1,5 +1,6 @@
+import { type Database } from '@aglint/shared-types';
+
 import { type AssessmentQuestion } from '@/src/queries/assessment/types';
-import { type Database } from '@/src/types/schema';
 
 type Type = Database['public']['Tables']['assessment_question']['Row']['type'];
 

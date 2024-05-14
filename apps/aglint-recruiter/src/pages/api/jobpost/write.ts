@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Database } from '@/src/types/schema';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -74,12 +74,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     await mailHandler(response.application.id, profile, post);
-    return res
-      .status(200)
-      .send({
-        application: response.application,
-        candidate: response.candidate,
-      });
+    return res.status(200).send({
+      application: response.application,
+      candidate: response.candidate,
+    });
   } else {
     const { data: checkApplication, error: errorCheck } = await supabase
       .from('applications')

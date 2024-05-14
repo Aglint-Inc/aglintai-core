@@ -1,6 +1,6 @@
+import { Database } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { Job } from '../job/types';

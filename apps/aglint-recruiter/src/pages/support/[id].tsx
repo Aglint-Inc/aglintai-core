@@ -1,10 +1,10 @@
+import { PublicJobsType, SupportTicketType } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import TicketChat from '@/src/components/Support/Create/TicketChat';
-import { PublicJobsType, SupportTicketType } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 dayjs.extend(relativeTime);
 

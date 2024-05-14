@@ -37,7 +37,7 @@ import {
   holidayType,
   schedulingSettingType,
   WeeklyLimitType,
-} from '@/src/types/scheduleTypes/scheduleSetting';
+} from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 

@@ -1,3 +1,6 @@
+import { DatabaseTable } from '@aglint/shared-types';
+import { ApiFindAvailability } from '@aglint/shared-types';
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Dialog, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,9 +14,6 @@ import { ButtonGrey, ButtonPrimaryDefaultRegular } from '@/devlink3';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { ApiFindAvailability } from '@/src/types/aglintApi/schedulingApi';
-import { DatabaseTable } from '@/src/types/customSchema';
-import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

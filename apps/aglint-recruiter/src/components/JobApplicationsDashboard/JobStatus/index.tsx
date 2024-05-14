@@ -16,7 +16,7 @@ import {
 import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
-import { StatusJobs } from '@/src/types/data.types';
+import { StatusJobs } from '@aglint/shared-types';
 
 import MuiPopup from '../../Common/MuiPopup';
 import SidePanelDrawer from '../../Common/SidePanelDrawer';

@@ -7,7 +7,7 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { Job } from '@/src/queries/job/types';
-import { EmailTemplateType } from '@/src/types/data.types';
+import { EmailTemplateType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

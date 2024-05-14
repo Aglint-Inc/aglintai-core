@@ -1,7 +1,6 @@
+import { InterviewModuleRelationType } from '@aglint/shared-types';
+import { PauseJson } from '@aglint/shared-types';
 import { create } from 'zustand';
-
-import { InterviewModuleRelationType } from '@/src/types/data.types';
-import { PauseJson } from '@/src/types/scheduleTypes/types';
 
 import {
   MemberType,

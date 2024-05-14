@@ -21,7 +21,7 @@ import {
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
-import { CandidateListTypeDB, SearchHistoryType } from '@/src/types/data.types';
+import { CandidateListTypeDB, SearchHistoryType } from '@aglint/shared-types';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { getTimeDifference } from '@/src/utils/jsonResume';
 import { searchJdToJson } from '@/src/utils/prompts/candidateDb/jdToJson';
@@ -813,9 +813,9 @@ function CandidateSearchHistory() {
       >
         <ClearHistory
           textDesc={`By clicking 'Delete,' you're confirming that you want to remove this search history, and it cannot be undone.`}
-          textHeader={`Delete ${history.filter(
-            (h) => h.id === deleteHistoryId,
-          )[0]?.search_query}`}
+          textHeader={`Delete ${
+            history.filter((h) => h.id === deleteHistoryId)[0]?.search_query
+          }`}
           onClickCancel={{
             onClick: () => {
               setDeleteHistory(false);

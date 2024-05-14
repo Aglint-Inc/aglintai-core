@@ -1,6 +1,8 @@
-import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
-import { TimeDurationDayjsType } from '@/src/types/scheduleTypes/types2';
+import {
+  CalendarEvent,
+  schedulingSettingType,
+  TimeDurationDayjsType,
+} from '@aglint/shared-types';
 
 import { isTimeChunksEnclosed } from './time_range_utils';
 import { userTzDayjs } from './userTzDayjs';

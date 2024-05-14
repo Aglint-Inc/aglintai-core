@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 // import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { AssessmentResult } from '@/src/queries/assessment/types';
-import { Database } from '@/src/types/schema';
 
 import { getAssessmentAnalyses } from '../../../apiUtils/assessment-result/assessment-result-prompt-builder';
 

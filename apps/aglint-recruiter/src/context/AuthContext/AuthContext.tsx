@@ -1,4 +1,11 @@
 /* eslint-disable no-unused-vars */
+import { DatabaseEnums, DatabaseTableUpdate } from '@aglint/shared-types';
+import {
+  RecruiterRelationsType,
+  RecruiterType,
+  RecruiterUserType,
+  SocialsType,
+} from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { pageRoutes } from '@utils/pageRouting';
 import axios from 'axios';
@@ -18,13 +25,6 @@ import {
 import { LoaderSvg } from '@/devlink';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
-import { DatabaseEnums, DatabaseTableUpdate } from '@/src/types/customSchema';
-import {
-  RecruiterRelationsType,
-  RecruiterType,
-  RecruiterUserType,
-  SocialsType,
-} from '@/src/types/data.types';
 import { featureFlag } from '@/src/utils/Constants';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

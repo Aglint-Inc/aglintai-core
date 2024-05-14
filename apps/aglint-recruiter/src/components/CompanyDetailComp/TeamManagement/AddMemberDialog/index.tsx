@@ -1,4 +1,10 @@
 import {
+  Database,
+  employmentTypeEnum,
+  RecruiterUserType,
+  schedulingSettingType,
+} from '@aglint/shared-types';
+import {
   Autocomplete,
   Drawer,
   Stack,
@@ -20,9 +26,6 @@ import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { employmentTypeEnum, RecruiterUserType } from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
-import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

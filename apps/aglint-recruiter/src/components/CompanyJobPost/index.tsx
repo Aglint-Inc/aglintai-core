@@ -10,7 +10,7 @@ import {
   OpenJobListingCard,
 } from '@/devlink';
 import { palette } from '@/src/context/Theme/Theme';
-import { JobTypeDB, RecruiterDB } from '@/src/types/data.types';
+import { JobTypeDB, RecruiterDB } from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import Icon from '../Common/Icons/Icon';
@@ -111,9 +111,10 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                 }
                 textCountry={loc.country}
                 textHeadquater={'asda'}
-                textJobPostCount={`${jobs?.filter(
-                  (job) => job?.location?.includes(loc.city),
-                ).length} Jobs`}
+                textJobPostCount={`${
+                  jobs?.filter((job) => job?.location?.includes(loc.city))
+                    .length
+                } Jobs`}
               />
             );
           },

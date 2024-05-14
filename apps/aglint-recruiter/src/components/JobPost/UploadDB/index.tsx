@@ -12,7 +12,7 @@ import {
   JobApplcationDB,
   JobTypeDB,
   RecruiterType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

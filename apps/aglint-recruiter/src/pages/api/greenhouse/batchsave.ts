@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { Database } from '@/src/types/schema';
 
 const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/greenhouse/saveResume`;
 

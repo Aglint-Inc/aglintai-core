@@ -1,5 +1,4 @@
-import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
-import { Candidate } from '@/src/types/candidates.types';
+import { Candidate } from '@aglint/shared-types';
 import {
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
@@ -7,7 +6,9 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
+
+import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { fetchInterviewDataJob } from './hooks';
@@ -36,13 +37,12 @@ export type SelectedApplicationTypeDB = ResultType & {
   };
 };
 
-export type SessionsType = ReturnType<
-  typeof fetchInterviewDataJob
-> extends Promise<infer T>
-  ? T extends { sessions: infer S }
-    ? S
-    : never
-  : never;
+export type SessionsType =
+  ReturnType<typeof fetchInterviewDataJob> extends Promise<infer T>
+    ? T extends { sessions: infer S }
+      ? S
+      : never
+    : never;
 
 export type ApplicationDataResponseType = {
   application: JobApplcationDB;

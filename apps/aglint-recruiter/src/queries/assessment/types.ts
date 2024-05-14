@@ -1,5 +1,5 @@
-import { JobTypeDB } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
+import { JobTypeDB } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 
 type QuestionBankTable = Database['public']['Tables']['question_bank'];
 type QuestionBankRow = Omit<QuestionBankTable['Row'], 'embeddings'>;

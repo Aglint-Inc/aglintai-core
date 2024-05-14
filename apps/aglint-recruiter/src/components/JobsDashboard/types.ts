@@ -1,4 +1,4 @@
-import { JobTypeDB } from '@/src/types/data.types';
+import { JobTypeDB } from '@aglint/shared-types';
 
 export type JobType = Omit<JobTypeDB, 'active_status'> & {
   status: Status | null;

@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { Database } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { SchedulingApplication } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/store';
 import { createCloneSession } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
-import { Database } from '@/src/types/schema';
 
 export interface ApiBodyParamsSessionCache {
   is_get_more_option: boolean;

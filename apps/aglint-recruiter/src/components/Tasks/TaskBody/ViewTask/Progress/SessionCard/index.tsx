@@ -1,10 +1,10 @@
+import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { AvailableOptionCardDate, OptionAvailable } from '@/devlink2';
 import { AvatarWithName } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import { DatabaseEnums } from '@/src/types/customSchema';
 import { getFullName } from '@/src/utils/jsonResume';
 
 export type meetingCardType = {

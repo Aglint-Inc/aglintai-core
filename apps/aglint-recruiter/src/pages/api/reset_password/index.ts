@@ -1,7 +1,6 @@
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { Database } from '@/src/types/schema';
 
 import { API_reset_password } from './type';
 
@@ -61,9 +60,8 @@ const getResponse = (data: { passwordReset?: boolean; error?: string }) => {
   return { passwordReset: false, error: null, ...data };
 };
 
+import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
-
-import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
 
 /**
  * Checks if a user has certain roles based on their authentication.

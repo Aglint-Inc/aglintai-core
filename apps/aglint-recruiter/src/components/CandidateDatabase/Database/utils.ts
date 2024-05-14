@@ -1,4 +1,4 @@
-import { JsonResume } from '@/src/types/resume_json.types';
+import { JsonResume } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { supabaseWrap } from '../../JobsDashboard/JobPostCreateUpdate/utils';

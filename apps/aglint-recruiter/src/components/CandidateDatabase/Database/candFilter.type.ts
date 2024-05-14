@@ -1,4 +1,4 @@
-import { JsonResume } from '@/src/types/resume_json.types';
+import { JsonResume } from '@aglint/shared-types';
 
 import { CandJobPost } from '../../../context/CandidateSearchProvider/CandidateSearchProvider';
 

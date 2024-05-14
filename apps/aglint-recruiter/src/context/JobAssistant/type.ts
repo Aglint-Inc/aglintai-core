@@ -8,7 +8,7 @@ import {
   CandidateType,
   JobApplicationType,
   JobAssistantChatMessages,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 
 import { JobApplication } from '../JobApplicationsContext/types';
 

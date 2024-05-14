@@ -27,8 +27,8 @@ import {
   JobApplcationDB,
   PublicJobsType,
   RecruiterType,
-} from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
+} from '@aglint/shared-types';
+import { schedulingSettingType } from '@aglint/shared-types';
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';

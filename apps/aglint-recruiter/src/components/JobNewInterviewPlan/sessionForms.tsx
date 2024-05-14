@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Database } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, {
   ChangeEventHandler,
@@ -20,7 +21,6 @@ import { palette } from '@/src/context/Theme/Theme';
 import { CompanyMember } from '@/src/queries/company-members';
 import { CreateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
-import { Database } from '@/src/types/schema';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';

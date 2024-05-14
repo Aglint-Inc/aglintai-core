@@ -8,12 +8,12 @@ import {
   ButtonPrimarySmall,
   CdSavedList,
   SavedList,
-  SavedListMenu
+  SavedListMenu,
 } from '@/devlink';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { CandidateListTypeDB } from '@/src/types/data.types';
+import { CandidateListTypeDB } from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

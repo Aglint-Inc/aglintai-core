@@ -1,4 +1,4 @@
-import { Database } from '@/src/types/schema';
+import { Database } from '@aglint/shared-types';
 
 import { type useCompanyMembers } from '../company-members';
 import { type InterviewModulesType } from '../interview-modules/types';

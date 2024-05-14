@@ -1,6 +1,6 @@
+import { JobTypeDB } from '@aglint/shared-types';
 import { get, isEmpty } from 'lodash';
 
-import { JobTypeDB } from '@/src/types/data.types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { templateObj } from '../../CompanyDetailComp/EmailTemplate';

@@ -1,4 +1,7 @@
 /* eslint-disable security/detect-object-injection */
+import { Applications, CustomDatabase } from '@aglint/shared-types';
+import { CandidateFiles } from '@aglint/shared-types';
+import { Candidate } from '@aglint/shared-types';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import formidable from 'formidable';
 import * as fs from 'fs';
@@ -13,10 +16,6 @@ import {
   CandidateDuplicationCheckAction,
   CandidateFilesBulkCreateAction,
 } from '@/src/context/CandidatesContext/types';
-import { Applications } from '@/src/types/applications.types';
-import { CandidateFiles } from '@/src/types/candidate_files.types';
-import { Candidate } from '@/src/types/candidates.types';
-import { CustomDatabase } from '@/src/types/customSchema';
 
 import { Supabase, UploadApiFormData } from './types';
 

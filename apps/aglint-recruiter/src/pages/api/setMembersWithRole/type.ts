@@ -2,7 +2,7 @@ import {
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableUpdate,
-} from '@/src/types/customSchema';
+} from '@aglint/shared-types';
 
 export type API_setMembersWithRole = {
   request: {

@@ -1,4 +1,3 @@
-import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 import {
   CandidateType,
   InterviewMeetingTypeDb,
@@ -9,10 +8,12 @@ import {
   InterviewSessionTypeDB,
   JobApplcationDB,
   RecruiterUserType,
-} from '@/src/types/data.types';
-import { schedulingSettingType } from '@/src/types/scheduleTypes/scheduleSetting';
-import { PauseJson } from '@/src/types/scheduleTypes/types';
-import { Database } from '@/src/types/schema';
+} from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
+import { schedulingSettingType } from '@aglint/shared-types';
+import { PauseJson } from '@aglint/shared-types';
+
+import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 
 import { ApplicationList } from '../AllSchedules/store';
 

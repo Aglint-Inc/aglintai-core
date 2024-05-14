@@ -7,8 +7,8 @@ import {
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { Candidate } from '@/src/types/candidates.types';
-import { AglintCandidatesTypeDB } from '@/src/types/data.types';
+import { Candidate } from '@aglint/shared-types';
+import { AglintCandidatesTypeDB } from '@aglint/shared-types';
 
 export default async function handler(
   req: NextApiRequest,

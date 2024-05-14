@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+import { type EmailTemplateType, type JobType } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -9,8 +11,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { TaskType } from '@/src/components/JobApplicationsDashboard/CandidateActions/CreateTask';
 import { capitalize } from '@/src/components/JobApplicationsDashboard/utils';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
-import { type EmailTemplateType, type JobType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 import {
   createTasks,

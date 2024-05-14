@@ -4,7 +4,7 @@ import {
   InterviewModuleType,
   InterviewSession,
   RecruiterUserType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 
 export type PauseJson = {
   start_date: string;

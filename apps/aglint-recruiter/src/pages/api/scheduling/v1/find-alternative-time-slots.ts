@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
+import {
+  APIFindAltenativeTimeSlot,
+  APIFindAltenativeTimeSlotResponse,
+} from '@aglint/shared-types';
+import { SessionCombinationType } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
-import {
-  APIFindAltenativeTimeSlot,
-  APIFindAltenativeTimeSlotResponse,
-} from '@/src/types/aglintApi/schedulingApi';
-import { SessionCombinationType } from '@/src/types/scheduleTypes/types';
 
 const required_fields = [
   'recruiter_id',

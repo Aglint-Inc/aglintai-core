@@ -1,9 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { Database } from '@/src/types/schema';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
@@ -54,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: rec } = await supabase
       .from('recruiter')
       .select(
-        'id, logo, name, office_locations,company_overview,employee_size,socials,company_website,industry'
+        'id, logo, name, office_locations,company_overview,employee_size,socials,company_website,industry',
       )
       .eq('id', data[0].recruiter_id);
 

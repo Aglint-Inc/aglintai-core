@@ -1,4 +1,4 @@
-import { Database } from '../types/schema';
+import { Database } from '@aglint/shared-types';
 
 export type SupabaseQuery<T extends keyof Database['public']['Tables']> =
   readonly (keyof Database['public']['Tables'][T]['Row'])[];

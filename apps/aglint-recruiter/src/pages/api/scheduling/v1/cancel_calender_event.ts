@@ -1,8 +1,8 @@
+import { CalendarEvent } from '@aglint/shared-types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
 import { Interviewer } from '@/src/utils/event_book/book_session';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';

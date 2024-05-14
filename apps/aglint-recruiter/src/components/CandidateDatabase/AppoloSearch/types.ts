@@ -1,6 +1,5 @@
+import { Database } from '@aglint/shared-types';
 import { Json } from '@trigger.dev/sdk';
-
-import { Database } from '@/src/types/schema';
 
 export type Candidate = Omit<
   Database['public']['Tables']['aglint_candidates']['Row'],

@@ -1,7 +1,7 @@
+import { ApplicationLogsTypeDb } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
-import { ApplicationLogsTypeDb } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

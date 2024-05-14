@@ -1,6 +1,5 @@
+import { PlanCombinationType } from '@aglint/shared-types';
 import dayjs, { Dayjs } from 'dayjs';
-
-import { PlanCombinationType } from '../../types/scheduleTypes/types';
 
 export const assignCandidateSlot = (
   curr_day_slots: PlanCombinationType[],

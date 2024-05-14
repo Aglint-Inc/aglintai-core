@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
+import { RecruiterUserType } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
-
-import { RecruiterUserType } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

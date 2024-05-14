@@ -8,7 +8,7 @@ dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { APIEventAttendeeStatus } from '@/src/types/aglintApi/schedulingApi';
+import { APIEventAttendeeStatus } from '@aglint/shared-types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { event_id, attendee_interv_id } = req.body as APIEventAttendeeStatus;

@@ -1,3 +1,13 @@
+import {
+  holidayType,
+  PlanCombinationType,
+  schedulingSettingType,
+  SessionCombinationType,
+  SessionInterviewerApiRespType,
+  SessionInterviewerType,
+  SessionsCombType,
+  SessionSlotType,
+} from '@aglint/shared-types/src';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -8,19 +18,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
-import {
-  holidayType,
-  schedulingSettingType,
-} from '@/src/types/scheduleTypes/scheduleSetting';
-
-import {
-  PlanCombinationType,
-  SessionCombinationType,
-  SessionInterviewerApiRespType,
-  SessionInterviewerType,
-  SessionsCombType,
-  SessionSlotType,
-} from '../../types/scheduleTypes/types';
 
 export const combineSlots = (plan_combs: PlanCombinationType[][]) => {
   const convertCombsToTimeSlot = (all_plan_combs: PlanCombinationType[]) => {

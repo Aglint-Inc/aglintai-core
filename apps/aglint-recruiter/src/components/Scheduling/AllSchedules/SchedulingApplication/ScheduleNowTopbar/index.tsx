@@ -1,3 +1,5 @@
+import { ApiFindAvailability } from '@aglint/shared-types';
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,8 +11,6 @@ import { ScheduleNowButton } from '@/devlink3';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';
-import { ApiFindAvailability } from '@/src/types/aglintApi/schedulingApi';
-import { PlanCombinationRespType } from '@/src/types/scheduleTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

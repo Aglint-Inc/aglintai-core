@@ -1,9 +1,10 @@
+import { StatusJobs } from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
+
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
-import { StatusJobs } from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
 
 type JobTableRPC = Database['public']['Functions']['getjob']['Returns'][number];
 type JobTable = Database['public']['Tables']['public_jobs'];

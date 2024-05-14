@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
+import { CustomDatabase } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
 import { InterviewTaskPill, PriorityOption, PriorityPill } from '@/devlink3';
-import { CustomDatabase } from '@/src/types/customSchema';
 
 function PriorityList({
   selectedPriority,

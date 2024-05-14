@@ -29,7 +29,7 @@ import {
   JobTypeDB,
   RecruiterDB,
   RecruiterType,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

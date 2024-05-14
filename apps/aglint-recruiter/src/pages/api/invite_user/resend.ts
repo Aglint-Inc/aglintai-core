@@ -1,7 +1,6 @@
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { Database } from '@/src/types/schema';
 
 import { server_getUserRoleAndId } from '../reset_password';
 export const supabase = createClient<Database>(

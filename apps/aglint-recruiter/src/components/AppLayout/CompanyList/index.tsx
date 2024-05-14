@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { LoaderSvg } from '@/devlink';
 import { CompanyProfileHeader, SwitchComp } from '@/devlink2';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 // import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

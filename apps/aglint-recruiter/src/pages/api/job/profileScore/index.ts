@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 
+import { Database } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -13,7 +14,6 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 import { distributeScoreWeights } from '@/src/components/JobProfileScore';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { hashCode } from '@/src/context/JobDashboard/hooks';
-import { Database } from '@/src/types/schema';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,

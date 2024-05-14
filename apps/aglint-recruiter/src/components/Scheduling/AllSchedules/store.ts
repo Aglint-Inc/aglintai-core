@@ -7,7 +7,7 @@ import {
   type InterviewScheduleTypeDB,
   type InterviewSession,
   type JobApplcationDB,
-} from '@/src/types/data.types';
+} from '@aglint/shared-types';
 
 export interface InterviewSlice {
   fetching: boolean;

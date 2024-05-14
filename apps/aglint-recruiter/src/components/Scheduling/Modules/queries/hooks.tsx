@@ -1,10 +1,10 @@
+import { PauseJson } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiResponseInterviewModuleById } from '@/src/pages/api/scheduling/fetch_interview_module_by_id';
-import { PauseJson } from '@/src/types/scheduleTypes/types';
 import toast from '@/src/utils/toast';
 
 import { PauseType } from '../ModuleMembers/type';

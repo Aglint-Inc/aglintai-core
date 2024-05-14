@@ -10,7 +10,7 @@ import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
-import { RecruiterType, RecruiterUserType } from '@/src/types/data.types';
+import { RecruiterType, RecruiterUserType } from '@aglint/shared-types';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

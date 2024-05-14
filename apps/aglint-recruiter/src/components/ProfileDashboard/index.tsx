@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
+import { DatabaseEnums } from '@aglint/shared-types';
+import { RecruiterUserType } from '@aglint/shared-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Autocomplete, Avatar, Dialog, Stack, Typography } from '@mui/material';
@@ -21,8 +23,6 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
-import { DatabaseEnums } from '@/src/types/customSchema';
-import { RecruiterUserType } from '@/src/types/data.types';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';

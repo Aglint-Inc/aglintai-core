@@ -11,7 +11,7 @@ import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import { ContextValue } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { API_reset_password } from '@/src/pages/api/reset_password/type';
-import { RecruiterUserType } from '@/src/types/data.types';
+import { RecruiterUserType } from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';

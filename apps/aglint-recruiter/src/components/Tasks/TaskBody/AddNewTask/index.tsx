@@ -1,13 +1,10 @@
+import { CustomDatabase } from '@aglint/shared-types';
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  CreateTask,
-  InterviewTaskPill,
-  ViewTaskCard
-} from '@/devlink3';
+import { CreateTask, InterviewTaskPill, ViewTaskCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -18,7 +15,6 @@ import {
   ApiRequestInterviewSessionTask,
   ApiResponseInterviewSessionTask,
 } from '@/src/pages/api/scheduling/fetch_interview_session_task';
-import { CustomDatabase } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

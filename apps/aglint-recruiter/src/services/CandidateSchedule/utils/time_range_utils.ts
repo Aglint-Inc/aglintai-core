@@ -1,6 +1,5 @@
+import { TimeDurationDayjsType } from '@aglint/shared-types';
 import { Dayjs } from 'dayjs';
-
-import { TimeDurationDayjsType } from '@/src/types/scheduleTypes/types2';
 
 import { userTzDayjs } from './userTzDayjs';
 const precission = 'minutes';

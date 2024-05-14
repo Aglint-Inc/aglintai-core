@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
+import {
+  APIUpdateMeetingInterviewers,
+  CalendarEvent,
+  CompServiceKeyCred,
+} from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { APIUpdateMeetingInterviewers } from '@/src/types/aglintApi/schedulingApi';
-import { CalendarEvent } from '@/src/types/scheduleTypes/calEvent.types';
-import { CompServiceKeyCred } from '@/src/types/scheduleTypes/types2';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 

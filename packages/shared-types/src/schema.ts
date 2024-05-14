@@ -3120,6 +3120,18 @@ export type Database = {
         }
         Relationships: []
       }
+      schedule_data: {
+        Row: {
+          jsonb_agg: Json | null
+        }
+        Insert: {
+          jsonb_agg?: Json | null
+        }
+        Update: {
+          jsonb_agg?: Json | null
+        }
+        Relationships: []
+      }
       "scheduling-agent-chat-history": {
         Row: {
           agent_processing: boolean
@@ -4184,8 +4196,6 @@ export type Database = {
         }
         Returns: {
           interview_meeting: Json
-          interview_session: Json
-          schedule: Json
           users: Json
         }[]
       }

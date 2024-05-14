@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
-import { JobAssistantChats, JobTypeDB } from '@/src/types/data.types';
+import { JobAssistantChats, JobTypeDB } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';

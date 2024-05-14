@@ -1,4 +1,4 @@
-import { RecruiterType } from '@/src/types/data.types';
+import { RecruiterType } from '@aglint/shared-types';
 import { supabase } from '@/src/utils/supabase/client';
 
 export async function updateRecruiter(id: string, obj: RecruiterType) {

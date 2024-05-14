@@ -1,7 +1,6 @@
+import { CustomDatabase, DatabaseTableUpdate } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { CustomDatabase, DatabaseTableUpdate } from '@/src/types/customSchema';
 
 import { server_getUserRoleAndId } from '../reset_password';
 import { API_setMembersWithRole } from './type';

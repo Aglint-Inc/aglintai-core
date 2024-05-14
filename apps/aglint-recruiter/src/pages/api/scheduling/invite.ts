@@ -10,8 +10,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import { SessionsCombType } from '@/src/types/scheduleTypes/types';
-import { Database } from '@/src/types/schema';
+import { Database } from '@aglint/shared-types';
+import { SessionsCombType } from '@aglint/shared-types';
 
 import { TFilterJSON } from './mail-agent/init-agent';
 

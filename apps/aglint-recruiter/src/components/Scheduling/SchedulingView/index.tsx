@@ -5,7 +5,7 @@ import { Breadcrum, PageLayout } from '@/devlink2';
 import { NewTabPill, ScheduleButton, ScheduleDetailTabs } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 // import Feedback from './Feedback';
-import { InterviewSessionRelationTypeDB } from '@/src/types/data.types';
+import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 
 import Loader from '../../Common/Loader';
 import { ShowCode } from '../../Common/ShowCode';

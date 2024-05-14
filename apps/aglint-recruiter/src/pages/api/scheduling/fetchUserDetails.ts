@@ -1,7 +1,7 @@
+import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { Database } from '@/src/types/schema';
 import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 
 const supabase = createClient<Database>(

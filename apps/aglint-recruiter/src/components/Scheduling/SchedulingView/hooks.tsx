@@ -1,9 +1,9 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { DatabaseTable } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { MemberType } from '../Modules/types';

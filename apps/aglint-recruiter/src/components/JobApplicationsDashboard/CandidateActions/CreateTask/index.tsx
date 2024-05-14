@@ -1,3 +1,5 @@
+import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
+import { JobApplcationDB } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -18,8 +20,6 @@ import {
 } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
-import { CustomDatabase, DatabaseEnums } from '@/src/types/customSchema';
-import { JobApplcationDB } from '@/src/types/data.types';
 
 import SelectDateTime from './SelectDateTime';
 import TaskOwners from './TaskOwners';

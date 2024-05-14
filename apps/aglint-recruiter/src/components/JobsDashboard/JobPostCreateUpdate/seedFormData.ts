@@ -1,9 +1,8 @@
+import { DatabaseTable } from '@aglint/shared-types';
+import { JobTypeDB, RecruiterUserType } from '@aglint/shared-types';
 import { get, isEmpty, isUndefined } from 'lodash';
 import { nanoid } from 'nanoid';
 import { v4 as uuidv4 } from 'uuid';
-
-import { DatabaseTable } from '@/src/types/customSchema';
-import { JobTypeDB, RecruiterUserType } from '@/src/types/data.types';
 
 import { JobFormState } from './JobPostFormProvider';
 

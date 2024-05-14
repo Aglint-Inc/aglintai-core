@@ -1,4 +1,13 @@
 /* eslint-disable no-console */
+import {
+  InterviewMeetingTypeDb,
+  InterviewSessionRelationTypeDB,
+  InterviewSessionTypeDB,
+  JobApplcationDB,
+  RecruiterUserType,
+  SupabaseType,
+} from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -14,16 +23,7 @@ import {
 import {
   APICandidateConfirmSlot,
   ApiFindAvailability,
-} from '@/src/types/aglintApi/schedulingApi';
-import {
-  InterviewMeetingTypeDb,
-  InterviewSessionRelationTypeDB,
-  InterviewSessionTypeDB,
-  JobApplcationDB,
-  RecruiterUserType,
-  SupabaseType,
-} from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
+} from '@aglint/shared-types';
 import { getFullName } from '@/src/utils/jsonResume';
 import {
   geoCodeLocation,

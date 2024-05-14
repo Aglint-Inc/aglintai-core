@@ -7,7 +7,7 @@ import axios from 'axios';
 import { htmlToText } from 'html-to-text';
 import OpenAI from 'openai';
 
-import { PublicJobsType } from '@/src/types/data.types';
+import { PublicJobsType } from '@aglint/shared-types';
 import { tokenMeter } from '@/src/utils/tokenCounter';
 
 const openai = new OpenAI({

@@ -5,18 +5,18 @@ import { useRouter } from 'next/router';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-import { createServerClient } from '@supabase/ssr';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
-
-import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import {
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   InterviewScheduleActivityTypeDb,
   SupabaseType,
-} from '@/src/types/data.types';
-import { Database } from '@/src/types/schema';
+} from '@aglint/shared-types';
+import { Database } from '@aglint/shared-types';
+import { createServerClient } from '@supabase/ssr';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
+
+import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activities';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

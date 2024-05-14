@@ -9,7 +9,7 @@ dayjs.extend(timezone);
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { APIFindSlotsDateRange } from '@/src/types/aglintApi/schedulingApi';
+import { APIFindSlotsDateRange } from '@aglint/shared-types';
 
 const required_fields = ['recruiter_id', 'date_range_start', 'date_range_end'];
 

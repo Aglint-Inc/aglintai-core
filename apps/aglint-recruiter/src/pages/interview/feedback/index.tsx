@@ -1,3 +1,4 @@
+import { DatabaseTable } from '@aglint/shared-types';
 import { Avatar, TextField } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -6,7 +7,6 @@ import React from 'react';
 
 import { FeedbackCandidate } from '@/devlink3';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
-import { DatabaseTable } from '@/src/types/customSchema';
 import toast from '@/src/utils/toast';
 
 import { API_get_interview_feedback_details } from '../../api/get_interview_feedback_details/types';

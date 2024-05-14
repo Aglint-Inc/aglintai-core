@@ -1,7 +1,6 @@
+import { CustomDatabase } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-import { CustomDatabase } from '@/src/types/customSchema';
 
 import { API_get_interview_feedback_details } from './types';
 
