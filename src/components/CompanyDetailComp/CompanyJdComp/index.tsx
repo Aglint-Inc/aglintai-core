@@ -243,8 +243,8 @@ const CompanyJdComp = ({ setIsSaving }) => {
 export default CompanyJdComp;
 
 const employmentType = {
-  fulltime: 'Full Time',
-  parttime: 'Part Time',
+  fulltime: 'Full-time',
+  parttime: 'Part-time',
   contract: 'Contract',
   temporary: 'Temporary',
   volunteer: 'Volunteer',
@@ -252,7 +252,7 @@ const employmentType = {
 };
 
 const workplaceType = {
-  onsite: ['On Site', '(Employees come to work in person)'],
+  onsite: ['On-site', '(Employees come to work in person)'],
   hybrid: ['Hybrid', '(Employees work on-site and off-site)'],
-  offsite: ['Off Site', '(Employees work off-site)'],
+  offsite: ['Off-site', '(Employees work off-site)'],
 };
