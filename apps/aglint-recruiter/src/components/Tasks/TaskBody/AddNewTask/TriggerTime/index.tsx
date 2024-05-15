@@ -54,7 +54,7 @@ function TriggerTime({
 
   return (
     <>
-      <Stack onClick={handleClick}>
+      <Stack width={'100%'} onClick={handleClick}>
         <ShowCode>
           <ShowCode.When isTrue={!!selectTriggerTime}>
             <ShowCode>
@@ -94,7 +94,7 @@ function TriggerTime({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',

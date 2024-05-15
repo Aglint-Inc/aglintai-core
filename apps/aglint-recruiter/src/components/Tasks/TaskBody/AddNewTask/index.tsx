@@ -19,6 +19,7 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import AssigneeChip from '../../Components/AssigneeChip';
 import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
@@ -491,13 +492,10 @@ function AddNewTask() {
                 />
               }
               slotCreatedBy={
-                <>
-                  <AssigneeList
-                    isOptionList={false}
-                    setSelectedAssignee={setSelectedAssignee}
-                    selectedAssignee={recruiterUser as any}
-                  />
-                </>
+                <AssigneeChip
+                  disableHoverListener={false}
+                  assigneeId={recruiterUser.user_id}
+                />
               }
               slotDueDate={
                 <SelectDueDate
@@ -506,7 +504,7 @@ function AddNewTask() {
                 />
               }
               slotAssignedTo={
-                <Stack direction={'column'}>
+                <Stack width={'100%'} direction={'column'}>
                   <AssigneeList
                     selectedAssignee={selectedAssignee}
                     setSelectedAssignee={setSelectedAssignee}
