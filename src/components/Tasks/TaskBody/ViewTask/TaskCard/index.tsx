@@ -20,8 +20,12 @@ import {
   DatabaseEnums,
   DatabaseTableUpdate,
 } from '@/src/types/customSchema';
-import { capitalizeAll, capitalizeFirstLetter } from '@/src/utils/text/textUtils';
+import {
+  capitalizeAll,
+  capitalizeFirstLetter,
+} from '@/src/utils/text/textUtils';
 
+import AssigneeChip from '../../../Components/AssigneeChip';
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
 import {
@@ -97,7 +101,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         slotType={
           <InterviewTaskPill textInterviewName={capitalize(task.type)} />
         }
-        slotJob={capitalizeFirstLetter(task?.applications?.public_jobs?.job_title)}
+        slotJob={capitalizeFirstLetter(
+          task?.applications?.public_jobs?.job_title,
+        )}
         slotCandidate={
           task.application_id && (
             <ListCard
@@ -231,10 +237,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }
         slotCreatedBy={
           createdBy && (
-            <AssigneeList
-              isOptionList={false}
-              setSelectedAssignee={setSelectedAssignee}
-              selectedAssignee={createdBy as any}
+            <AssigneeChip
+              disableHoverListener={false}
+              assigneeId={createdBy.user_id}
             />
           )
         }

@@ -3,11 +3,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  CreateTask,
-  InterviewTaskPill,
-  ViewTaskCard
-} from '@/devlink3';
+import { CreateTask, InterviewTaskPill, ViewTaskCard } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -22,6 +18,7 @@ import { CustomDatabase } from '@/src/types/customSchema';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import AssigneeChip from '../../Components/AssigneeChip';
 import SelectStatus from '../../Components/SelectStatus';
 import { useTaskStatesContext } from '../../TaskStatesContext';
 import {
@@ -497,10 +494,9 @@ function AddNewTask() {
               }
               slotCreatedBy={
                 <>
-                  <AssigneeList
-                    isOptionList={false}
-                    setSelectedAssignee={setSelectedAssignee}
-                    selectedAssignee={recruiterUser as any}
+                  <AssigneeChip
+                    disableHoverListener={false}
+                    assigneeId={recruiterUser.user_id}
                   />
                 </>
               }

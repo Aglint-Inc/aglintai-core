@@ -39,6 +39,7 @@ function JobList({
   return (
     <>
       <Stack
+        width={'100%'}
         sx={{
           cursor: 'pointer',
         }}
@@ -62,7 +63,7 @@ function JobList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',

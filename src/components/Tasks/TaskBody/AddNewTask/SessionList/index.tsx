@@ -73,6 +73,7 @@ function SessionList({
         minHeight={'30px'}
         gap={'8px'}
         alignItems={'center'}
+        width={'100%'}
       >
         <ShowCode>
           <ShowCode.When isTrue={!!selectedSession.length}>
@@ -95,7 +96,7 @@ function SessionList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
