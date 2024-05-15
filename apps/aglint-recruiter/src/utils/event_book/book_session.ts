@@ -9,7 +9,6 @@ import {
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
-import { getOutboundEmail } from '../scheduling_v2/get-outbound-email';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
 
@@ -77,7 +76,6 @@ export type Organizer = Pick<
 > & { timezone: string };
 
 export const bookSession = async ({
-  candidate_email,
   end_time,
   interviewers,
   organizer,
@@ -94,7 +92,6 @@ export const bookSession = async ({
   start_time: string;
   end_time: string;
   interviewers: Interviewer[];
-  candidate_email: string | null;
   organizer: Organizer;
   company_cred: CompServiceKeyCred;
   session_id: string;
@@ -142,7 +139,7 @@ export const bookSession = async ({
         default_password: false,
         duration: duration,
         start_time: start_time,
-        timezone: organizer.timezone ?? 'Asia/columbo',
+        timezone: organizer.timezone,
         type: 2,
         settings: {
           host_video: false,
@@ -169,12 +166,6 @@ export const bookSession = async ({
         requestId: uuidv4(),
       };
     }
-  }
-
-  if (candidate_email) {
-    calendar_event.attendees.push({
-      email: (await getOutboundEmail(candidate_email)) as string,
-    });
   }
 
   const google_cal = new GoogleCalender({
