@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
@@ -29,7 +30,7 @@ export function MyScheduleLanding({
             tag="div"
           >
             {
-              "You haven’t connected your calender year. Connect your calender to get access to your scheduled events."
+              "You haven’t connected your calendar yet. Connect your calendar to share your availability and allow the recruiting team to send interview invites."
             }
           </_Builtin.Block>
           <_Builtin.Block
@@ -37,7 +38,7 @@ export function MyScheduleLanding({
             tag="div"
             {...onClickConnectCalender}
           >
-            <_Builtin.Block tag="div">{"Connect Calender"}</_Builtin.Block>
+            <_Builtin.Block tag="div">{"Connect"}</_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>
       ) : null}

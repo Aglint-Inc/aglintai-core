@@ -12,6 +12,10 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import {
+  CompanyEmailsType,
+  EmailTempPath,
+} from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
@@ -186,7 +190,7 @@ function SchedulingEmailTemplates() {
 
 export default SchedulingEmailTemplates;
 
-export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
+export const tempObj: CompanyEmailsType = {
   candidate_availability_request: {
     listing: 'Candidate Booking Link Email Template',
     heading: 'Candidate Booking Link Email Template',
@@ -276,14 +280,113 @@ Cheers,
     subjectPlaceHolder: '',
     trigger: "Used When Email Agent is assigned for Scheduling Interview'",
   },
-};
+  confirmation_mail_to_organizer: {
+    listing: 'Interview Confirmation to Organizer',
+    heading: 'Interview Confirmation to Organizer',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo:
+      'Sent to the interview organizer when an interview is successfully scheduled.',
+    description:
+      'This template is used for sending mail to organizer that candidate has confirmend the interview. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Interview Confirmation for [firstName] [lastName]',
+    bodyPlaceHolder: `Hi [recruiterName],
 
-export type EmailTempPath =
-  | 'candidate_availability_request'
-  | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite'
-  | 'cancel_interview_session'
-  | 'init_email_agent';
+Please find the interview details for Candidate [firstName] [lastName]:
+
+Meeting Link: [meetingLink]
+
+Thank you,
+Aglint AI`,
+    trigger: 'Sending organizer interview confirmation link',
+  },
+  candidate_reschedule_request: {
+    listing: 'Reschedule Request Notification to Organizer',
+    heading: 'Reschedule Request Notification to Organizer',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo:
+      'Sent to the interview organizer when a candidate requests to reschedule their interview.',
+    description:
+      'This template is used for sending mail to recruiter requesting a reschedule. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder:
+      'Reschedule Request for [firstName] [lastName] Interview',
+    bodyPlaceHolder: `Dear [recruiterName],
+
+Candidate [firstName] [lastName], currently interviewing for [jobTitle], is requesting to reschedule their interview between [dateRange].
+
+
+Reason for Reschedule: [rescheduleReason]
+
+    Here are additional notes from the candidate:
+    [additionalRescheduleNotes]
+
+Please take the necessary action.
+
+Thank you,
+Aglint AI`,
+    trigger:
+      'Sent to the interview organizer when a candidate requests to reschedule their interview.',
+  },
+  candidate_cancle_request: {
+    listing: 'Interview Cancellation Notification to Organizer',
+    heading: 'Interview Cancellation Notification to Organizer',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo:
+      'Sent to the interview organizer when a candidate cancels their interview.',
+    description:
+      'This template is used for sending mail to recruiter requesting Cancellation. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Interview Cancellation for [firstName] [lastName]',
+    bodyPlaceHolder: `Dear [recruiterName],
+
+Candidate [firstName] [lastName], currently interviewing for [jobTitle], has canceled their interview.
+
+Reason for Cancellation: [rescheduleReason]
+
+Here are additional notes from the candidate, [firstName] [lastName]:
+[additionalRescheduleNotes]
+
+Please take the necessary action.
+
+Thank you,
+Aglint AI
+`,
+    trigger:
+      'Sent to the interview organizer when a candidate cancels their interview.',
+  },
+  recruiter_rescheduling_email: {
+    listing: 'Recruiter Reschedule Email Template',
+    heading: 'Recruiter Reschedule Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo: 'Recruiter sending mail to candidate for rescheduling',
+    description:
+      'This template is used for sending mail to candidate about rescheduling. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
+    bodyPlaceHolder: `Dear [firstName],
+    We have to reschedule the interview due to [recruiterRescheduleReason]
+
+Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!
+
+[scheduleName]
+
+[pickYourSlotLink]
+
+Best regards,
+
+[companyName] Recruitment Team`,
+    trigger: 'Used to send mail to candidate about rescheduling',
+  },
+};
 
 export const emailTempKeys: EmailTempPath[] = [
   'candidate_invite_confirmation',
@@ -291,16 +394,8 @@ export const emailTempKeys: EmailTempPath[] = [
   'debrief_calendar_invite',
   'cancel_interview_session',
   'init_email_agent',
+  'confirmation_mail_to_organizer',
+  'candidate_reschedule_request',
+  'candidate_cancle_request',
+  'recruiter_rescheduling_email',
 ];
-
-type EmailTemplatType = {
-  listing: string;
-  heading: string;
-  triggerInfo: string;
-  description: string;
-  descriptionInJob: string; // Note: You might want to specify the type for this property
-  subjectPlaceHolder: string;
-  bodyPlaceHolder: string;
-  trigger: string;
-  dynamicContent: string;
-};

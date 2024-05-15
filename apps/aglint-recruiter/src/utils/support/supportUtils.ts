@@ -78,6 +78,11 @@ export function fillEmailTemplate(
     view_details?: string;
     pick_your_slot_link?: string;
     session_name?: string;
+    meeting_link?: string;
+    date_range?: string;
+    reschedule_reason?: string;
+    additional_reschedule_notes?: string;
+    cancle_reason?:string;
   },
 ) {
   let filledTemplate = template;
@@ -95,6 +100,11 @@ export function fillEmailTemplate(
     '[teamMemberName]': email.team_member_name,
     '[pickYourSlotLink]': email.pick_your_slot_link,
     '[sessionName]': email.session_name,
+    '[meetingLink]': email.meeting_link,
+    '[dateRange]': email.date_range,
+    '[rescheduleReason]': email.reschedule_reason,
+    '[additionalRescheduleNotes]': email.additional_reschedule_notes,
+    '[cancleReason]':email.cancle_reason
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {
