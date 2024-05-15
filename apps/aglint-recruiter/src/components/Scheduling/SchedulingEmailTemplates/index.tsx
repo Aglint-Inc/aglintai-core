@@ -281,62 +281,85 @@ Cheers,
     trigger: "Used When Email Agent is assigned for Scheduling Interview'",
   },
   confirmation_mail_to_organizer: {
-    listing: 'Confirmation Mail To Organizer Email Template',
-    heading: 'Confirmation Mail to Organizer Email Template',
+    listing: 'Interview Confirmation to Organizer',
+    heading: 'Interview Confirmation to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
     and [pickYourSlotLink].`,
-    triggerInfo: 'Sending confirmation mail to organizer',
+    triggerInfo:
+      'Sent to the interview organizer when an interview is successfully scheduled.',
     description:
       'This template is used for sending mail to organizer that candidate has confirmend the interview. Ensure to include clear instructions and personalize the email for better engagement.',
     descriptionInJob: '',
-    subjectPlaceHolder: 'Interview Details',
-    bodyPlaceHolder: `Dear [recruiterName],
+    subjectPlaceHolder: 'Interview Confirmation for [firstName] [lastName]',
+    bodyPlaceHolder: `Hi [recruiterName],
 
-    Please find the details for the interview below
-    Candidate name : [firstName]
-    Meeting Link : [meetingLink]
+Please find the interview details for Candidate [firstName] [lastName]:
 
-    Thank you`,
+Meeting Link: [meetingLink]
+
+Thank you,
+Aglint AI`,
     trigger: 'Sending organizer interview confirmation link',
   },
   candidate_reschedule_request: {
-    listing: 'Candidate Reschedule Request Email Template',
-    heading: 'Candidate Reschedule Request Email Template',
+    listing: 'Reschedule Request Notification to Organizer',
+    heading: 'Reschedule Request Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
     and [pickYourSlotLink].`,
-    triggerInfo: 'Candidate sednding mail to recrutier for rescheduling',
+    triggerInfo:
+      'Sent to the interview organizer when a candidate requests to reschedule their interview.',
     description:
       'This template is used for sending mail to recruiter requesting a reschedule. Ensure to include clear instructions and personalize the email for better engagement.',
     descriptionInJob: '',
-    subjectPlaceHolder: 'Meeting Reschedule Request From Candidate]',
+    subjectPlaceHolder:
+      'Reschedule Request for [firstName] [lastName] Interview',
     bodyPlaceHolder: `Dear [recruiterName],
 
-   [firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason] 
-   Additional Notes from [firstName] : [additionalRescheduleNotes]
-    
-    Thank you`,
-    trigger: 'Used to send mail to recruiter requesting to reschedule meeting',
+Candidate [firstName] [lastName], currently interviewing for [jobTitle], is requesting to reschedule their interview between [dateRange].
+
+
+Reason for Reschedule: [rescheduleReason]
+
+    Here are additional notes from the candidate:
+    [additionalRescheduleNotes]
+
+Please take the necessary action.
+
+Thank you,
+Aglint AI`,
+    trigger:
+      'Sent to the interview organizer when a candidate requests to reschedule their interview.',
   },
   candidate_cancle_request: {
-    listing: 'Candidate Cancle Request Email Template',
-    heading: 'Candidate Cancle Request Email Template',
+    listing: 'Interview Cancellation Notification to Organizer',
+    heading: 'Interview Cancellation Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
     [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
     and [pickYourSlotLink].`,
-    triggerInfo: 'Candidate sednding mail to recrutier for rescheduling',
+    triggerInfo:
+      'Sent to the interview organizer when a candidate cancels their interview.',
     description:
       'This template is used for sending mail to recruiter requesting Cancellation. Ensure to include clear instructions and personalize the email for better engagement.',
     descriptionInJob: '',
-    subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
+    subjectPlaceHolder: 'Interview Cancellation for [firstName] [lastName]',
     bodyPlaceHolder: `Dear [recruiterName],
 
-   [firstName] is requesting to Cancle interview stating reason [cancleReason] 
-   Additional Notes from [firstName] : [additionalRescheduleNotes]
-    
-    Thank you`,
-    trigger: 'Used to send mail to recruiter requesting to cancle meeting',
+Candidate [firstName] [lastName], currently interviewing for [jobTitle], has canceled their interview.
+
+Reason for Cancellation: [rescheduleReason]
+
+Here are additional notes from the candidate, [firstName] [lastName]:
+[additionalRescheduleNotes]
+
+Please take the necessary action.
+
+Thank you,
+Aglint AI
+`,
+    trigger:
+      'Sent to the interview organizer when a candidate cancels their interview.',
   },
   recruiter_rescheduling_email: {
     listing: 'Recruiter Reschedule Email Template',
