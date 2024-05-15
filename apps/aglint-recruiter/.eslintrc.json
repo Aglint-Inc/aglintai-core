@@ -1,0 +1,36 @@
+{
+  "root": true,
+  "plugins": ["simple-import-sort", "jsx-a11y"],
+  "env": {
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "next",
+    "next/core-web-vitals",
+    "prettier",
+    "plugin:jsx-a11y/recommended",
+    "plugin:security/recommended"
+  ],
+  "ignorePatterns": [
+    "devlink_queries",
+    "devlink*",
+    "src/components/Icons",
+    "src/components/JobTracker/Activities/devlink",
+    "src/types/*",
+    ".github"
+  ],
+  "rules": {
+    "no-unused-vars": "error",
+    "no-console": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error"
+  },
+  "settings": {
+    "next": {
+      "rootDir": "apps/aglint-recruiter"
+    }
+  }
+}

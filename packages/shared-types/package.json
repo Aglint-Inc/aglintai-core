@@ -1,0 +1,12 @@
+{
+  "name": "@aglint/shared-types",
+  "scripts": {
+    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/schema.ts"
+  },
+  "version": "0.0.1",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "dependencies": {
+    "typescript": "latest"
+  }
+}

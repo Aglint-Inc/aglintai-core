@@ -10,6 +10,7 @@ First, clone the repository from Bitbucket:
 git clone [repository-url]
 ``
 ## Install Dependencies
+
 Before you start, make sure you have Node.js installed on your machine. Then, install all necessary npm packages:
 ```bash
 npm install
