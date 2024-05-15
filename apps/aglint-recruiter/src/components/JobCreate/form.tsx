@@ -245,7 +245,7 @@ type Defaults = {
 
 const defaults: Defaults = {
   job_type: [
-    { value: 'contract', label: 'Contact' },
+    { value: 'contract', label: 'Contract' },
     { value: 'full time', label: 'Full-time' },
     { value: 'internship', label: 'Internship' },
     { value: 'part time', label: 'Part-time' },
