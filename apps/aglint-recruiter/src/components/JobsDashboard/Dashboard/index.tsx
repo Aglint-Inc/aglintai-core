@@ -3,7 +3,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
 import {
   AssistStatus,
@@ -220,6 +220,8 @@ const Dashboard = () => {
     push(`/jobs/${job.id}/candidate-list`);
   };
 
+  const banners = useBanners({ publishButton });
+
   return (
     <>
       <AddCandidates
@@ -229,7 +231,14 @@ const Dashboard = () => {
       <PageLayout
         slotBody={
           <JobDashboardDev
-            slotBanner={<Banners publishButton={publishButton} />}
+            isBanner={banners.length !== 0}
+            slotBanner={
+              <Stack gap={1}>
+                {banners.map((banner, i) => (
+                  <Fragment key={i}>{banner}</Fragment>
+                ))}
+              </Stack>
+            }
             onClickTopMatch={{
               style: { cursor: 'pointer' },
               onClick: () => handleFilter({ max: 100, min: 80 }),
@@ -587,7 +596,11 @@ const Schedules = () => {
   );
 };
 
-const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
+const useBanners = ({
+  publishButton,
+}: {
+  publishButton: React.JSX.Element;
+}) => {
   const { push } = useRouter();
   const {
     publishStatus,
@@ -709,13 +722,7 @@ const Banners = ({ publishButton }: { publishButton: React.JSX.Element }) => {
   //       onClickView={{ onClick: () => push(`/jobs/${job.id}/profile-score`) }}
   //     />
   //   );
-  return (
-    <Stack gap={1}>
-      {banners.map((banner, i) => (
-        <Stack key={i}>{banner}</Stack>
-      ))}
-    </Stack>
-  );
+  return banners;
 };
 
 const JobClose = ({
