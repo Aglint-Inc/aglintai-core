@@ -66,6 +66,7 @@ function SessionList({
   return (
     <>
       <Stack
+        width={'100%'}
         flexWrap={'wrap'}
         onClick={handleClick}
         direction={'row'}
@@ -95,7 +96,7 @@ function SessionList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
