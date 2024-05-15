@@ -30,7 +30,8 @@ export function JobDashboardTopRight({
           className={_utils.cx(
             _styles,
             "button_primary",
-            "greay_btn-copy-copy"
+            "greay_btn-copy-copy",
+            "hide"
           )}
           tag="div"
           {...onClickEdit}

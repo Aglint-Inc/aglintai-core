@@ -3,12 +3,12 @@ import { DatabaseTable, DatabaseTableUpdate } from '@aglint/shared-types';
 import {
   Box,
   Button,
+  capitalize,
   Dialog,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import {
@@ -25,11 +25,11 @@ import toast from '@/src/utils/toast';
 const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   candidate: {
     rescheduling: ['other'],
-    cancelation: ['other'],
+    cancellation: ['other'],
   },
   company: {
     rescheduling: ['other'],
-    cancelation: ['other'],
+    cancellation: ['other'],
     decline: ['other'],
   },
 };
@@ -83,6 +83,17 @@ const SchedulingRegions = () => {
             ))}
           </>
         }
+        isMainHeadingVisible={true}
+        textMainHeading={
+          tab === 'candidate'
+            ? 'Interview Scheduling Options'
+            : 'Interview Management Options'
+        }
+        textMainHelperText={
+          tab === 'candidate'
+            ? 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.'
+            : 'Set predefined reasons for interviewers to decline or request rescheduling, and for canceling interviews. These reasons will be available as options for interviewers when they need to modify their scheduled interviews.'
+        }
         slotScheduleReasonSection={
           <>
             {Object.keys(reason[tab]).map(<T extends typeof tab>(item) => {
@@ -94,7 +105,15 @@ const SchedulingRegions = () => {
                   key={item}
                   scheduleReason={typedItem}
                   updateReasons={handelUpdateReasons}
-                  description={`Add reasons for ${capitalizeFirstLetter(item)}. These options will be available when the ${capitalizeFirstLetter(tab === 'company' ? 'Internal user' : tab)} ${item === 'decline' ? 'decline the Session' : 'request for session ' + capitalizeFirstLetter(item)}.`}
+                  description={`Add reasons for ${capitalizeFirstLetter(
+                    item,
+                  )}. These options will be available when the ${capitalizeFirstLetter(
+                    tab === 'company' ? 'Internal user' : tab,
+                  )} ${
+                    item === 'decline'
+                      ? 'decline the Session'
+                      : 'request for session ' + capitalizeFirstLetter(item)
+                  }.`}
                   scheduleReasonItems={reason[tab][item] || []}
                 />
               );
@@ -130,7 +149,7 @@ const ScheduleReasonSectionCard = <
   }>({ state: false, index: null });
   return (
     <ScheduleReasonSection
-      textHeading={`Session ${capitalize(scheduleReason)} Reason`}
+      textHeading={`${capitalize(scheduleReason)} Reason`}
       textDesc={description}
       onClickAdd={{
         onClick: () => {
@@ -159,7 +178,8 @@ const ScheduleReasonSectionCard = <
           ))}
           {edit.state && (
             <AddEditReasonsDialogs
-              title={`${edit.index === null ? 'Add' : 'Update'} ${capitalize(scheduleReason)} Reasons`}
+              type={edit.index === null ? 'add' : 'update'}
+              title={`${capitalizeFirstLetter(scheduleReason)} Reasons`}
               item={
                 edit.index !== null
                   ? {
@@ -178,7 +198,7 @@ const ScheduleReasonSectionCard = <
                 }
                 updateReasons(temp).then(() => {
                   toast.success(
-                    `${index === null ? 'Added' : 'Update'} Successfully.`,
+                    `${index === null ? 'Added' : 'Updated'} Successfully.`,
                   );
                   setEdit({ state: false, index: null });
                 });
@@ -218,11 +238,13 @@ const ReasonListItem = ({
 };
 
 const AddEditReasonsDialogs = ({
+  type,
   title,
   item,
   onSubmit,
   onClose,
 }: {
+  type: 'add' | 'update';
   title: string;
   item: { text: string; index: number } | null;
   // eslint-disable-next-line no-unused-vars
@@ -243,7 +265,7 @@ const AddEditReasonsDialogs = ({
           justifyContent={'space-between'}
         >
           <Typography fontSize={'14px'} fontWeight={600}>
-            {title}{' '}
+            {capitalizeFirstLetter(type) + ' ' + title}
           </Typography>
           <Box onClick={onClose} sx={{ cursor: 'pointer' }}>
             <svg
@@ -280,7 +302,7 @@ const AddEditReasonsDialogs = ({
               });
           }}
         >
-          Add
+          {capitalizeFirstLetter(type)}
         </Button>
       </Stack>
     </Dialog>

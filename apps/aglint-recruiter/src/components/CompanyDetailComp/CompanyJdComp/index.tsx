@@ -1,5 +1,6 @@
 import { RecruiterType } from '@aglint/shared-types';
 import { Stack, Typography } from '@mui/material';
+import { capitalize } from 'lodash';
 import posthog from 'posthog-js';
 
 import { Checkbox } from '@/devlink';
@@ -168,7 +169,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                     handleChange({ ...recruiter });
                   }}
                 >
-                  {employmentType[type[0]]}
+                  {capitalize(employmentType[type[0]]).replaceAll(' ', '-')}
                 </Typography>
               </Stack>
             );
@@ -218,7 +219,7 @@ const CompanyJdComp = ({ setIsSaving }) => {
                       handleChange({ ...recruiter });
                     }}
                   >
-                    {workplaceType[type[0]][0]}
+                    {capitalize(workplaceType[type[0]][0]).replaceAll(' ', '-')}
                   </Typography>
                   <Typography
                     variant='body2'

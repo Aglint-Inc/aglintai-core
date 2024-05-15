@@ -16,7 +16,9 @@
     "devlink_queries",
     "devlink*",
     "src/components/Icons",
-    "src/components/JobTracker/Activities/devlink"
+    "src/components/JobTracker/Activities/devlink",
+    "src/types/*",
+    ".github"
   ],
   "rules": {
     "no-unused-vars": "error",

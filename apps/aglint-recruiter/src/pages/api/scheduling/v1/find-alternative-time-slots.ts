@@ -31,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(400).send(`missing field ${req_field}`);
       }
     });
+    let slot_ints: APIFindAltenativeTimeSlotResponse = [];
     const slot_date = userTzDayjs(slot_start_time).tz(user_tz);
     const cand_schedule = new CandidatesScheduling(
       {
@@ -43,17 +44,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         end_date_js: slot_date.endOf('day'),
       },
     );
-
     await cand_schedule.fetchDetails();
     cand_schedule.ignoreTrainee();
     await cand_schedule.fetchInterviewrsCalEvents();
+    replacement_ints.forEach((int_id) => {
+      slot_ints.push({
+        user_id: int_id,
+        is_exist: false,
+      });
+    });
     const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
+    if (!single_day_slots) {
+      return res.status(200).json(slot_ints);
+    }
     const slot_combs = single_day_slots.map((comb) => comb.sessions[0]);
     const time_filtered_slots = slot_combs.filter((comb) =>
       filter_slots(comb, slot_start_time),
     );
 
-    const slot_ints: APIFindAltenativeTimeSlotResponse = [];
+    slot_ints = [];
     replacement_ints.forEach((int_id) => {
       if (
         time_filtered_slots.some((slot) =>
@@ -83,44 +92,3 @@ export default handler;
 const filter_slots = (sess_comb: SessionCombinationType, slot_time: string) => {
   return userTzDayjs(sess_comb.start_time).isSame(slot_time, 'minutes');
 };
-
-// // TODO: this is redundant type refactor later
-// const getRespInterviewer = (r: SessionInterviewerType) => {
-//   let int: SlotInterviwerType = {
-//     interview_module_relation_id: r.interview_module_relation_id,
-//     interviewer_type: r.interviewer_type,
-//     user_id: r.user_id,
-//     first_name: r.first_name,
-//     last_name: r.last_name,
-//     profile_image: r.profile_image,
-//     training_type: r.training_type,
-//     email: r.email,
-//   };
-//   return int;
-// };
-
-// const mapSessionComb = (session_comb: SessionCombinationType) => {
-//   const t = {
-//     session_id: session_comb.session_id,
-//     module_id: session_comb.module_id,
-//     session_name: session_comb.session_name,
-//     duration: session_comb.duration,
-//     location: session_comb.location,
-//     schedule_type: session_comb.schedule_type,
-//     session_type: session_comb.session_type,
-//     break_duration: session_comb.break_duration,
-//     session_order: session_comb.session_order,
-//     interviewer_cnt: session_comb.interviewer_cnt,
-//     module_name: session_comb.module_name,
-//     start_time: session_comb.start_time,
-//     end_time: session_comb.end_time,
-//     qualified_intervs: session_comb.qualifiedIntervs.map((i) =>
-//       getRespInterviewer(i),
-//     ),
-//     training_intervs: session_comb.trainingIntervs.map((i) =>
-//       getRespInterviewer(i),
-//     ),
-//   };
-
-//   return t;
-// };

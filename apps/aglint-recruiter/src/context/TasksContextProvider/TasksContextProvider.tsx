@@ -221,57 +221,9 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const { members, loading: isFetching } = useAuthDetails();
 
   const router = useRouter();
-  const init = (data: TasksReducerType) => {
-    data.filter.assignee.options = [
-      ...new Set(data.tasks.map((task) => task.assignee).flat(2)),
-    ]
-      .map((item) => {
-        const temp = members.find((mem) => mem.user_id === item);
-        return temp;
-      })
-      .filter((item) => Boolean(item))
-      .map((temp) => {
-        return {
-          id: temp.user_id,
-          label: `${temp.first_name} ${temp.last_name}`.trim(),
-        };
-      });
-
-    data.filter.jobTitle.options = [
-      ...new Set(
-        data.tasks
-          .filter((task) => Boolean(task.application_id))
-          .map((task) => ({
-            id: task.applications.public_jobs.id,
-            label: task.applications.public_jobs.job_title,
-          }))
-          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
-      ),
-    ];
-    const application_id = router.query.application_id as string;
-    data.filter.candidate.values = application_id ? [application_id] : [];
-    data.filter.candidate.options = [
-      ...new Set(
-        data.tasks
-          .filter((task) => Boolean(task.application_id))
-          .map((task) => ({
-            id: task.application_id,
-            label: getFullName(
-              task.applications.candidates.first_name,
-              task.applications.candidates.last_name,
-            ),
-          }))
-          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
-      ),
-    ];
-    dispatch({ type: TasksReducerAction.INIT, payload: data });
-  };
-  const handelTaskChanges = (
-    tasks: TasksAgentContextType['tasks'],
-    type?: 'add' | 'update' | 'delete' | 'set',
-  ) => {
-    const filterOption = cloneDeep(tasksReducer.filter);
-    filterOption.assignee.options = [
+  const updateFilterOptions = (tasks: TasksReducerType['tasks']) => {
+    const filter: TasksReducerType['filter'] = { ...tasksReducer.filter };
+    filter.assignee.options = [
       ...new Set(tasks.map((task) => task.assignee).flat(2)),
     ]
       .map((item) => {
@@ -285,16 +237,52 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
           label: `${temp.first_name} ${temp.last_name}`.trim(),
         };
       });
-    filterOption.jobTitle.options = tasks
-      .filter((task) => Boolean(task.application_id))
-      .map((task) => ({
-        id: task.applications.public_jobs.id,
-        label: task.applications.public_jobs.job_title,
-      }))
-      .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
+
+    if (!filter.jobTitle.values.length) {
+      filter.jobTitle.options = [
+        ...new Set(
+          tasks
+            .filter((task) => Boolean(task.application_id))
+            .map((task) => ({
+              id: task.applications.public_jobs.id,
+              label: task.applications.public_jobs.job_title,
+            }))
+            .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
+        ),
+      ];
+    }
+    filter.candidate.options = [
+      ...new Set(
+        tasks
+          .filter((task) => Boolean(task.application_id))
+          .map((task) => ({
+            id: task.application_id,
+            label: getFullName(
+              task.applications.candidates.first_name,
+              task.applications.candidates.last_name,
+            ),
+          }))
+          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
+      ),
+    ];
+    return filter;
+  };
+
+  const init = (data: TasksReducerType) => {
+    const application_id = router.query.application_id as string;
+    data.filter.candidate.values = application_id ? [application_id] : [];
+    dispatch({ type: TasksReducerAction.INIT, payload: data });
+  };
+  const handelTaskChanges = (
+    tasks: TasksAgentContextType['tasks'],
+    type?: 'add' | 'update' | 'delete' | 'set',
+  ) => {
+    const filterOption = cloneDeep(tasksReducer.filter);
     let totalRows = tasksReducer.pagination.totalRows;
+
     if (type === 'add') totalRows = totalRows + 1;
     else if (type === 'delete') totalRows = totalRows - 1;
+
     dispatch({
       type: TasksReducerAction.ADD_TASK,
       payload: { tasks, filterOption, totalRows },
@@ -544,7 +532,6 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         channel.unsubscribe();
       };
   }, [tasksReducer.tasks]);
-
   return (
     <>
       {isFetching || loadingTasks ? (
@@ -556,7 +543,7 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
             pagination: tasksReducer.pagination,
             taskProgress: tasksReducer.taskProgress,
             search: tasksReducer.search,
-            filter: tasksReducer.filter,
+            filter: updateFilterOptions(searchedTask),
             sort: tasksReducer.sort,
             handelAddTask,
             handelUpdateTask,
@@ -583,26 +570,6 @@ export const useTasksContext = () => {
   }
   return context;
 };
-
-// const getAllTasks = (id: string) => {
-//   return supabase
-//     .from('new_tasks')
-//     .select('*, applications(* , candidates( * ), public_jobs( * ))')
-//     .eq('recruiter_id', id)
-//     .order('created_at', {
-//       ascending: false,
-//     })
-//     .then(({ data, error }) => {
-//       const temp = data as unknown as (Omit<
-//         (typeof data)[number],
-//         'applications, recruiter_user'
-//       > & {
-//         applications: (typeof data)[number]['applications'];
-//       })[];
-//       if (error) throw new Error(error.message);
-//       return temp;
-//     });
-// };
 
 const getTasks = ({
   id,
@@ -642,13 +609,6 @@ const getTasks = ({
       pagination.page * pagination.rows + pagination.rows - 1,
     )
     .then(({ data, count, error }) => {
-      // const temp = data as unknown as (Omit<
-      //   (typeof data)[number],
-      //   'applications, recruiter_user'
-      // > & {
-      //   applications: (typeof data)[number]['applications'];
-      //   recruiter_user: (typeof data)[number]['recruiter_user'];
-      // })[];
       if (error) throw new Error(error.message);
       return { data, count };
     });

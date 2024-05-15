@@ -10,7 +10,7 @@ import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IconReload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Checkbox } from '@/devlink';
 import { ButtonFilter, FilterDropdown } from '@/devlink2';
@@ -74,7 +74,6 @@ export const FilterHeader = ({
   };
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
   return (
     <Stack
       direction={'row'}
@@ -302,26 +301,22 @@ function FilterDropDown({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const [filteredOptions, setFilteredOptions] = useState([]);
   const [searchText, setSearchText] = useState('');
-
-  useEffect(() => {
-    setFilteredOptions(
-      (typeof itemList[0] === 'object'
-        ? 'header' in itemList[0]
-          ? itemList
-          : [{ header: null, options: itemList }]
-        : [
-            {
-              header: null,
-              options: itemList.map((item) => ({ id: item, label: item })),
-            },
-          ]) as {
-        header: string | null;
-        options: { id: string; label: string }[];
-      }[],
-    );
-  }, [searchText]);
+  const filteredOptions = (
+    typeof itemList[0] === 'object'
+      ? 'header' in itemList[0]
+        ? itemList
+        : [{ header: null, options: itemList }]
+      : [
+          {
+            header: null,
+            options: itemList.map((item) => ({ id: item, label: item })),
+          },
+        ]
+  ) as {
+    header: string | null;
+    options: { id: string; label: string }[];
+  }[];
   return (
     <>
       <ButtonFilter
@@ -392,7 +387,6 @@ function FilterDropDown({
         <FilterDropdown
           isRemoveVisible={false}
           slotOption={filteredOptions?.map((optionList) => {
-
             return (
               <>
                 {optionList.header && (

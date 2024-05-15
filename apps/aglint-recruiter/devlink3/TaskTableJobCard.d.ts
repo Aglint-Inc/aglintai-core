@@ -9,5 +9,5 @@ declare function TaskTableJobCard(props: {
   isNewTaskInputVisible?: Types.Visibility.VisibilityConditions;
   slotNewTaskCard?: Types.Devlink.Slot;
   slotTaskTableJobCard?: Types.Devlink.Slot;
-  onClickDropIcon?: Types.Devlink.RuntimeProps;
+  slotDropIcon?: Types.Devlink.Slot;
 }): React.JSX.Element;
