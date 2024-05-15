@@ -14,14 +14,12 @@ import { ModuleType } from '../../types';
 import { unArchiveModuleById } from '../../utils';
 import ArchiveModuleDialog from './ArchiveModuleDialog';
 import DeleteModuleDialog from './DeleteModuleDialog';
-import ModuleSettingsButton from './ModuleSettingsButton';
 
 function TopRightButtons({ editModule }: { editModule: ModuleType }) {
   const queryClient = useQueryClient();
   return (
     <Stack direction={'row'} alignItems={'center'} spacing={1}>
       <DeleteModuleDialog editModule={editModule} />
-      <ModuleSettingsButton editModule={editModule} />
       <ArchiveModuleDialog editModule={editModule} />
       <MoreButton
         onClickDelete={{

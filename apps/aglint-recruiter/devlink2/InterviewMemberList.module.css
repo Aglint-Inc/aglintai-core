@@ -1,7 +1,6 @@
 .interview-sub-table {
   display: flex;
   width: 100%;
-  height: calc(100vh - 60px);
 }
 
 .interview-sub-table-left {
@@ -161,8 +160,10 @@
 }
 
 .div-block-1500 {
+  overflow: auto;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
+  height: calc(100vh - 190px);
 }

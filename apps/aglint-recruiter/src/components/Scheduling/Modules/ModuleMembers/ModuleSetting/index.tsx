@@ -1,7 +1,6 @@
 import {
   Autocomplete,
   capitalize,
-  Drawer,
   MenuItem,
   Stack,
   TextField,
@@ -20,17 +19,15 @@ import toast from '@/src/utils/toast';
 
 import MembersAutoComplete, {
   MemberTypeAutoComplete,
-} from '../../../../Common/MembersTextField';
-import { QueryKeysInteviewModules } from '../../../queries/type';
-import { setIsModuleSettingsDialogOpen, useModulesStore } from '../../../store';
-import { ModuleType } from '../../../types';
+} from '../../../Common/MembersTextField';
+import { QueryKeysInteviewModules } from '../../queries/type';
+import { setIsModuleSettingsDialogOpen } from '../../store';
+import { ModuleType } from '../../types';
 
-function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
+function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
   const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
-  const isModuleSettingsDialogOpen = useModulesStore(
-    (state) => state.isModuleSettingsDialogOpen,
-  );
+
   const { members } = useSchedulingContext();
   const [localModule, setEditLocalModule] = useState<ModuleType | null>(null);
   const [errorApproval, setErrorApproval] = useState(false);
@@ -95,13 +92,7 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
   );
 
   return (
-    <Drawer
-      anchor={'right'}
-      open={isModuleSettingsDialogOpen}
-      onClose={() => {
-        setIsModuleSettingsDialogOpen(false);
-      }}
-    >
+    <>
       {localModule && (
         <ModuleSetting
           onClickClose={{
@@ -222,14 +213,12 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
             />
           }
           slotButtonPrimary={
-            <Stack width={'100%'}>
-              <ButtonPrimaryRegular
-                textLabel={'Update'}
-                onClickButton={{
-                  onClick: updateModule,
-                }}
-              />
-            </Stack>
+            <ButtonPrimaryRegular
+              textLabel={'Update'}
+              onClickButton={{
+                onClick: updateModule,
+              }}
+            />
           }
           slotApprovalDoneInput={
             <MembersAutoComplete
@@ -290,8 +279,8 @@ function ModuleSettingDrawer({ editModule }: { editModule: ModuleType }) {
           }
         />
       )}
-    </Drawer>
+    </>
   );
 }
 
-export default ModuleSettingDrawer;
+export default ModuleSettingComp;
