@@ -26,7 +26,10 @@ import {
   LoadingGenerate,
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { generateJobDescription,JDGenParams } from '@/src/utils/prompts/addNewJob/generateJobDescription';
+import {
+  generateJobDescription,
+  JDGenParams,
+} from '@/src/utils/prompts/addNewJob/generateJobDescription';
 // import {
 //   generateJobDescription,
 //   JDGenParams,
@@ -102,7 +105,7 @@ const TipTapMenus = () => {
         }
         onClick={handleOpenMenu}
       >
-        <UITypography type='medium'>{typography}</UITypography>
+        <UITypography type='small'>{typography}</UITypography>
       </Button>
       <Tooltip title={'Bold'} placement='top-start'>
         <MenuBtn
