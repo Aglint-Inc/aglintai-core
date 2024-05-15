@@ -12,6 +12,10 @@ import {
 } from '@/devlink';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
+import {
+  CompanyEmailsType,
+  EmailTempPath,
+} from '@/src/types/companyEmailTypes';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import TipTapAIEditor from '../../Common/TipTapAIEditor';
@@ -186,7 +190,7 @@ function SchedulingEmailTemplates() {
 
 export default SchedulingEmailTemplates;
 
-export const tempObj: Record<EmailTempPath, EmailTemplatType> = {
+export const tempObj: CompanyEmailsType = {
   candidate_availability_request: {
     listing: 'Candidate Booking Link Email Template',
     heading: 'Candidate Booking Link Email Template',
@@ -276,14 +280,90 @@ Cheers,
     subjectPlaceHolder: '',
     trigger: "Used When Email Agent is assigned for Scheduling Interview'",
   },
-};
+  confirmation_mail_to_organizer: {
+    listing: 'Confirmation Mail To Organizer Email Template',
+    heading: 'Confirmation Mail to Organizer Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo: 'Sending confirmation mail to organizer',
+    description:
+      'This template is used for sending mail to organizer that candidate has confirmend the interview. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Interview Details',
+    bodyPlaceHolder: `Dear [recruiterName],
 
-export type EmailTempPath =
-  | 'candidate_availability_request'
-  | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite'
-  | 'cancel_interview_session'
-  | 'init_email_agent';
+    Please find the details for the interview below
+    Candidate name : [firstName]
+    Meeting Link : [meetingLink]
+
+    Thank you`,
+    trigger: 'Sending organizer interview confirmation link',
+  },
+  candidate_reschedule_request: {
+    listing: 'Candidate Reschedule Request Email Template',
+    heading: 'Candidate Reschedule Request Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo: 'Candidate sednding mail to recrutier for rescheduling',
+    description:
+      'This template is used for sending mail to recruiter requesting a reschedule. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Meeting Reschedule Request From Candidate]',
+    bodyPlaceHolder: `Dear [recruiterName],
+
+   [firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason] 
+   Additional Notes from [firstName] : [additionalRescheduleNotes]
+    
+    Thank you`,
+    trigger: 'Used to send mail to recruiter requesting to reschedule meeting',
+  },
+  candidate_cancle_request: {
+    listing: 'Candidate Cancle Request Email Template',
+    heading: 'Candidate Cancle Request Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo: 'Candidate sednding mail to recrutier for rescheduling',
+    description:
+      'This template is used for sending mail to recruiter requesting Cancellation. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
+    bodyPlaceHolder: `Dear [recruiterName],
+
+   [firstName] is requesting to Cancle interview stating reason [cancleReason] 
+   Additional Notes from [firstName] : [additionalRescheduleNotes]
+    
+    Thank you`,
+    trigger: 'Used to send mail to recruiter requesting to cancle meeting',
+  },
+  recruiter_rescheduling_email: {
+    listing: 'Recruiter Reschedule Email Template',
+    heading: 'Recruiter Reschedule Email Template',
+    dynamicContent: `For dynamic content, utilize placeholders like
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
+    and [pickYourSlotLink].`,
+    triggerInfo: 'Recruiter sending mail to candidate for rescheduling',
+    description:
+      'This template is used for sending mail to candidate about rescheduling. Ensure to include clear instructions and personalize the email for better engagement.',
+    descriptionInJob: '',
+    subjectPlaceHolder: 'Schedule Your Interview for [jobTitle]',
+    bodyPlaceHolder: `Dear [firstName],
+    We have to reschedule the interview due to [recruiterRescheduleReason]
+
+Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!
+
+[scheduleName]
+
+[pickYourSlotLink]
+
+Best regards,
+
+[companyName] Recruitment Team`,
+    trigger: 'Used to send mail to candidate about rescheduling',
+  },
+};
 
 export const emailTempKeys: EmailTempPath[] = [
   'candidate_invite_confirmation',
@@ -291,16 +371,8 @@ export const emailTempKeys: EmailTempPath[] = [
   'debrief_calendar_invite',
   'cancel_interview_session',
   'init_email_agent',
+  'confirmation_mail_to_organizer',
+  'candidate_reschedule_request',
+  'candidate_cancle_request',
+  'recruiter_rescheduling_email',
 ];
-
-type EmailTemplatType = {
-  listing: string;
-  heading: string;
-  triggerInfo: string;
-  description: string;
-  descriptionInJob: string; // Note: You might want to specify the type for this property
-  subjectPlaceHolder: string;
-  bodyPlaceHolder: string;
-  trigger: string;
-  dynamicContent: string;
-};
