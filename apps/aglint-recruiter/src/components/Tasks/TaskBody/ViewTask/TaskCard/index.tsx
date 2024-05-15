@@ -26,6 +26,7 @@ import {
   capitalizeFirstLetter,
 } from '@/src/utils/text/textUtils';
 
+import AssigneeChip from '../../../Components/AssigneeChip';
 import SelectStatus from '../../../Components/SelectStatus';
 import { AssignerType, useTaskStatesContext } from '../../../TaskStatesContext';
 import { assigneeType, createTaskProgress } from '../../../utils';
@@ -232,10 +233,9 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }
         slotCreatedBy={
           createdBy && (
-            <AssigneeList
-              isOptionList={false}
-              setSelectedAssignee={setSelectedAssignee}
-              selectedAssignee={createdBy as any}
+            <AssigneeChip
+              disableHoverListener={false}
+              assigneeId={createdBy.user_id}
             />
           )
         }
@@ -267,7 +267,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
           />
         }
         slotAssignedTo={
-          <Stack direction={'column'}>
+          <Stack width={'100%'} direction={'column'}>
             <AssigneeList
               selectedAssignee={selectedAssignee}
               setSelectedAssignee={setSelectedAssignee}

@@ -37,7 +37,7 @@ function SelectScheduleDate({
   const id = open ? 'simple-popover' : undefined;
   return (
     <>
-      <Stack onClick={handleClick}>
+      <Stack width={'100%'} onClick={handleClick}>
         <ShowCode>
           <ShowCode.When isTrue={!!scheduleDate.end_date}>
             {scheduleDate.start_date ? (
@@ -63,7 +63,7 @@ function SelectScheduleDate({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
