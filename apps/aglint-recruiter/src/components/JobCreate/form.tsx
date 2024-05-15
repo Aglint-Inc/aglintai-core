@@ -293,10 +293,29 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
 });
 JobDepartment.displayName = 'JobDepartment';
 
+type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
+
+const roles = {
+  hiring_manager: () => [...new Set<Roles>(['admin', 'hiring_manager'])],
+  recruiter: () => [
+    ...new Set<Roles>([
+      ...roles.hiring_manager(),
+      'recruiting_coordinator',
+      'recruiter',
+      'sourcer',
+    ]),
+  ],
+  recruiting_coordinator: () => [...new Set<Roles>([...roles.recruiter()])],
+  sourcer: () => [...new Set<Roles>([...roles.recruiter()])],
+} as const as {
+  // eslint-disable-next-line no-unused-vars
+  [id in Roles]: () => Roles[];
+};
+
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
   const options = data
-    .filter(({ role }) => role === name)
+    .filter(({ role }) => (roles[name] ?? (() => []))().includes(role))
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),
       value: c.user_id,
