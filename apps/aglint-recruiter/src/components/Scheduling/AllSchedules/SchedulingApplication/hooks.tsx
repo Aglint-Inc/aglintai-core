@@ -6,12 +6,12 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
+  Database,
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   InterviewScheduleActivityTypeDb,
   SupabaseType,
 } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -20,6 +20,7 @@ import { ApiResponseActivities } from '@/src/pages/api/scheduling/fetch_activiti
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { getScheduleName } from '../../utils';
 import {
   SchedulingApplication,
   setFetchingSchedule,
@@ -100,7 +101,11 @@ export const useGetScheduleApplication = () => {
 
           setSelectedApplication(sessionsWithPlan.application);
           setScheduleName(
-            `Interview for ${sessionsWithPlan.application?.public_jobs?.job_title} - ${sessionsWithPlan.application?.candidates?.first_name}`,
+            getScheduleName({
+              job_title: sessionsWithPlan.application?.public_jobs?.job_title,
+              first_name: sessionsWithPlan.application?.candidates?.first_name,
+              last_name: sessionsWithPlan.application?.candidates?.last_name,
+            }),
           );
           if (sessionsWithPlan?.sessions?.length > 0) {
             setinitialSessions(

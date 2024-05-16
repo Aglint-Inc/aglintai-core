@@ -1,6 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import dayjs from 'dayjs';
 
+import { getFullName } from '@/src/utils/jsonResume';
+
 export function getLastDayOfMonth(date: string) {
   return dayjs(date).endOf('month').date();
 }
@@ -22,3 +24,15 @@ export function convertTimeZoneToAbbreviation(sourceTimeZone) {
 
   return abbreviationMapping[timeZoneAbbreviation] || timeZoneAbbreviation;
 }
+
+export const getScheduleName = ({
+  job_title,
+  first_name,
+  last_name,
+}: {
+  job_title: string;
+  first_name: string;
+  last_name: string;
+}) => {
+  return `Interview for ${job_title} - ${getFullName(first_name, last_name)}`;
+};
