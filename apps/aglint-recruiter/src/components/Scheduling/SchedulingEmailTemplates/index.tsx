@@ -347,7 +347,6 @@ Aglint AI`,
     bodyPlaceHolder: `Dear [recruiterName],
 
 Candidate [firstName] [lastName], currently interviewing for [jobTitle], has canceled their interview.
-
 Reason for Cancellation: [rescheduleReason]
 
 Here are additional notes from the candidate, [firstName] [lastName]:
