@@ -1,0 +1,1 @@
+gcloud functions deploy jobs-interview-schedule --gen2 --runtime=nodejs18 --region=northamerica-northeast2 --source=. --entry-point=helloHttp --trigger-http --allow-unauthenticated

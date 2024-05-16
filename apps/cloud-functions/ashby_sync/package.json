@@ -1,0 +1,33 @@
+{
+    "name": "ashby_sync",
+    "version": "1.0.0",
+    "description": "parser function for jd to jd json",
+    "packageManager": "yarn@1.22.19",
+    "engines": {
+        "yarn": "^1.22.19"
+    },
+    "main": "lib/index.js",
+    "author": "Vivekß",
+    "license": "",
+    "private": true,
+    "scripts": {
+        "tsconfig": "tsc --init",
+        "gcp-build": "tsc",
+        "start": "tsc && functions-framework --target hello --port 8087",
+        "dev": "nodemon --ext ts --exec 'yarn start'",
+        "deploy_dev": "gcloud functions deploy ashby_sync --gen2 --runtime=nodejs18 --region=northamerica-northeast1 --source=. --entry-point=hello --trigger-http --allow-unauthenticated",
+        "deploy_prod": "gcloud functions deploy ashby_sync --gen2 --runtime=nodejs18 --region=us-central1 --source=. --entry-point=hello --trigger-http --allow-unauthenticated"
+    },
+    "dependencies": {
+        "@google-cloud/functions-framework": "^3.3.0",
+        "@google-cloud/logging": "^11.0.0",
+        "@supabase/supabase-js": "^2.38.4",
+        "axios": "^1.6.0",
+        "dlx": "^0.2.1",
+        "dotenv": "^16.3.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15",
+        "typescript": "^5.2.2"
+    }
+}

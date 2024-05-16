@@ -1,0 +1,40 @@
+{
+    "name": "job_assistant_v1",
+    "version": "1.0.0",
+    "description": "",
+    "packageManager": "yarn@1.22.19",
+    "engines": {
+        "yarn": "^1.22.19"
+    },
+    "main": "lib/index.js",
+    "author": "Vivekß",
+    "license": "",
+    "private": true,
+    "scripts": {
+        "tsconfig": "tsc --init",
+        "gcp-build": "tsc",
+        "start": "tsc && functions-framework --target hello --port 8032",
+        "dev": "nodemon --ext ts --exec 'yarn start'",
+        "deploy_dev": "gcloud functions deploy job_assistant_v1 --gen2 --runtime=nodejs18 --region=asia-south1 --source=. --entry-point=hello --trigger-http --allow-unauthenticated",
+        "deploy_prod": "gcloud functions deploy job_assistant_v1 --gen2 --runtime=nodejs18 --region=us-central1 --source=. --entry-point=hello --trigger-http --allow-unauthenticated"
+    },
+    "dependencies": {
+        "@google-cloud/functions-framework": "^3.3.0",
+        "axios": "^1.6.0",
+        "cities": "^2.0.0",
+        "country-state-city": "^3.2.1",
+        "dotenv": "^16.3.1",
+        "drizzle-orm": "^0.29.3",
+        "geolib": "^3.3.4",
+        "html-to-text": "^9.0.5",
+        "openai": "^4.24.7",
+        "pg": "^8.11.3",
+        "postgres": "^3.4.3"
+    },
+    "devDependencies": {
+        "@types/html-to-text": "^9.0.4",
+        "@types/pg": "^8.10.9",
+        "nodemon": "^2.0.15",
+        "typescript": "^5.2.2"
+    }
+}

@@ -1,0 +1,25 @@
+image: google/cloud-sdk:latest
+
+pipelines:
+  branches:
+    production:
+      - step:
+          name: Check for Changed Functions and Deploy
+          deployment: production  # This line adds the deployment environment
+          caches:
+            - node
+            - pip
+          script:
+            - |
+              echo $GCLOUD_SERVICE_KEY > ./gcloud-service-key.json
+              gcloud auth activate-service-account --key-file=gcloud-service-key.json
+              gcloud config set project $PROJECT_NAME
+              apt-get update && apt-get install -y jq
+              git diff --name-only HEAD~1...HEAD | while read line; do
+                FUNCTION_DIR=$(dirname "$line")
+                if [ -f "$FUNCTION_DIR/deploy.sh" ]; then
+                  echo "Deploying function in directory: $FUNCTION_DIR"
+                  chmod +x $FUNCTION_DIR/deploy.sh
+                  ./$FUNCTION_DIR/deploy.sh
+                fi
+              done

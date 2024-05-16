@@ -1,0 +1,39 @@
+{
+  "resume_text":"Jagruti Jadhav UI/UX Designer I am Jagruti Jadhav, a UI/UX Designer focused on bringing art to life in ingredients of design prints and online platforms with elements. I aim to achieve high career growth through a continuous learning process, keep myself dynamic, and visionary, and contribute to the growth of the organization. innovative EDUCATION Government Polytechnic, Nashik (Autonomous Institute) Diploma in Computer Science 2016 - 2019 Parvati Genba Moze College of Engineering, Wagholi ( Savitribai Phule Pune University ) 2019-2022 Bachelor of Engineering in Computer Science SKILLS UX Design Conversational Design Wireframing Prototyping  User Research Chat-bot Design.  EXPERIENCE Emplay Inc, Banglore Conversational UX Designer (Internship) 2021 Sept - 2022 June Designed and implemented conversational interfaces for various projects to improve user engagement and satisfaction. Collaborated with UX designers and developers to create wireframes and prototypes for chatbots, voice assistants, and other Flow designs. Emplay Inc, Banglore Conversational UX Designer 2022 Aug - 2023 June Assisted in the development and maintenance of design guidelines and best practices for conversational design. Built and maintained design systems, and style guides, and designed bot flow. Created detailed documentation and specifications to ensure accurate development and implementation of conversational interfaces. Ether Clouds, Pune UI-UX Designer [contract] 2023 June- 2023 July Seeking freelance projects to create innovative and user-friendly websites for cloud-based companies, with a strong understanding of modern design principles. PROJECT Bot EMI Designed a chatbot for training employees. EMI is a bot name of an AI Robot i.e. Employee Managing Instructor (EMI). Cakery UI project for an online cake order. The idea was to design an interactive cake-ordering app that can deliver cake anytime and anywhere.  Think Like a Monk (Cover Page) redesigning the cover page to give a touch of the author’s (Jay Shetty) past and present life. DESIGNING TOOLS & SOCIAL MEDIA CONTACT +91 90221 50429 jagrutijadhav137@gmail.com https://www.linkedin.com/in/jagruti-jadhav-ux/ https://www.behance.net/jagrutijadhav137",
+  "jd_json": {
+  "title": "Software Developer",
+  "requirements": {
+    "education": {
+      "isRequired": true,
+      "requirements": [
+        {
+          "degree": "Bachelor's degree in Computer Science or related field"
+        }
+      ]
+    },
+    "certifications": {
+      "isRequired": false,
+      "list": []
+    },
+    "experience": {
+      "isTotalExperienceRequired": false,
+      "isRelevantExperienceRequired": false,
+      "totalExperience": {
+        "years": 0,
+        "months": 0
+      },
+      "relevantExperience": {
+        "years": 0,
+        "months": 0
+      }
+    }
+  },
+  "fresher": false,
+  "skills": {
+    "keySkills": ["Java", "C++", ".NET"],
+    "allSkills": ["Java", "C++", ".NET"]
+  }
+},
+"application_id":null,
+"error":null
+}

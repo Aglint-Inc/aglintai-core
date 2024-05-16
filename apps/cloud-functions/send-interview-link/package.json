@@ -1,0 +1,27 @@
+{
+  "name": "jobs-interview-schedule",
+  "version": "1.0.0",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.19",
+  "engines": {
+    "yarn": "^1.22.19"
+  },
+  "scripts": {
+    "dev": "tsc && functions-framework --target helloHttp --port 8080",
+    "gcp-build": "tsc",
+    "start": "functions-framework --target helloHttp --port 8080",
+    "tsconfig": "tsc --init",
+    "deploy_dev": "gcloud functions deploy jobs-interview-schedule --gen2 --runtime=nodejs18 --region=northamerica-northeast2 --source=. --entry-point=helloHttp --trigger-http --allow-unauthenticated",
+    "deploy_prod": "gcloud functions deploy jobs-interview-schedule --gen2 --runtime=nodejs18 --region=us-central1 --source=. --entry-point=helloHttp --trigger-http --allow-unauthenticated"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "@supabase/supabase-js": "2.0.5",
+    "axios": "^1.5.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
