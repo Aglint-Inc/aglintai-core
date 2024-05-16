@@ -65,7 +65,7 @@ function CancelScheduleDialog({
         refetch();
         setIsCancelOpen(false);
         if (data[0].meeting_json)
-          axios.post('/api/scheduling/v2/cancel_calender_event', {
+          axios.post('/api/scheduling/v1/cancel_calender_event', {
             calender_event: data[0].meeting_json,
           });
       }
