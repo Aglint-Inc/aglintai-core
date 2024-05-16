@@ -306,7 +306,7 @@ Aglint AI`,
     listing: 'Reschedule Request Notification to Organizer',
     heading: 'Reschedule Request Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [additionalRescheduleNotes]
+    [firstName], [lastName], [companyName], [jobTitle], [additionalRescheduleNotes], [dateRange]
     and [rescheduleReason].`,
     triggerInfo:
       'Sent to the interview organizer when a candidate requests to reschedule their interview.',
@@ -336,7 +336,7 @@ Aglint AI`,
     listing: 'Interview Cancellation Notification to Organizer',
     heading: 'Interview Cancellation Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [recruiterName], [jobTitle], [additionalRescheduleNotes]
+    [firstName], [lastName], [recruiterName], [jobTitle], [additionalRescheduleNotes], [companyName]
     and [rescheduleReason].`,
     triggerInfo:
       'Sent to the interview organizer when a candidate cancels their interview.',
