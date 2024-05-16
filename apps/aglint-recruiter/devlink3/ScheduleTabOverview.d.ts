@@ -11,8 +11,6 @@ declare function ScheduleTabOverview(props: {
   slotStatus?: Types.Devlink.Slot;
   textSchedule?: React.ReactNode;
   onClickInterviewModuleLink?: Types.Devlink.RuntimeProps;
-  slotCoordinators?: Types.Devlink.Slot;
-  isCoordinatorVisible?: Types.Visibility.VisibilityConditions;
   isInterviewersVisible?: Types.Visibility.VisibilityConditions;
   textInterviewModuleLink?: React.ReactNode;
   onClickReschedule?: Types.Devlink.RuntimeProps;
@@ -23,4 +21,6 @@ declare function ScheduleTabOverview(props: {
   slotMembers?: Types.Devlink.Slot;
   isMembersVisible?: Types.Visibility.VisibilityConditions;
   isScheduleCardVisible?: Types.Visibility.VisibilityConditions;
+  isMeetingLinkVisible?: Types.Visibility.VisibilityConditions;
+  slotHeaderWithSlot?: Types.Devlink.Slot;
 }): React.JSX.Element;

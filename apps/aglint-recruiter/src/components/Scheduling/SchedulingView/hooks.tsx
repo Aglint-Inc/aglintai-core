@@ -10,13 +10,19 @@ import { MemberType } from '../Modules/types';
 import { ScheduleMeeting } from './types';
 
 export const useScheduleDetails = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const query = useQuery({
     queryKey: ['schedule_details', router?.query?.meeting_id],
     queryFn: () => getSchedule(router?.query?.meeting_id as string),
     enabled: !!router?.query?.meeting_id,
   });
-  return query;
+  const refetch = () => {
+    queryClient.invalidateQueries({
+      queryKey: ['schedule_details', router?.query?.meeting_id],
+    });
+  };
+  return { ...query, refetch };
 };
 
 async function getSchedule(meeting_id: string) {

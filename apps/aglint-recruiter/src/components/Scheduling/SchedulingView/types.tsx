@@ -28,12 +28,18 @@ export type ScheduleMeeting = ScheduleType & {
       end_time: string;
     }[];
   }[];
-  coordinator: {
-    id: string;
-    first_name: string;
-    last_name: string;
-    email: string;
-    profile_image: string;
-    position: string;
-  };
+  hiring_manager: UserType;
+  interview_coordinator: UserType;
+  recruiter: UserType;
+  recruiting_coordinator: UserType;
+  sourcer: UserType;
+};
+
+type UserType = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_image: string;
+  position: string;
 };
