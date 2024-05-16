@@ -256,6 +256,7 @@ const NewJobApplicationSideDrawer = ({
   const creationDate = formatTimeStamp(application.applied_at);
 
   const jobTitle = getCandidateDetails(application, 'job_title');
+  const linkedin = getCandidateDetails(application, 'linkedin');
   const location = getCandidateDetails(application, 'location');
   const firstName = getCandidateDetails(application, 'name');
   const phone = getCandidateDetails(application, 'phone');
@@ -334,6 +335,14 @@ const NewJobApplicationSideDrawer = ({
   return (
     <>
       <CandidateSideDrawer
+        isLinkedInVisible={linkedin.valid}
+        onClickLinkedin={{
+          style: { cursor: 'pointer' },
+          onClick: () => {
+            navigator.clipboard.writeText(linkedin.value);
+            toast.success('LinkedIn URL copied');
+          },
+        }}
         isPhoneScreeningVisible={
           isPhoneScreeningEnabled && isPhoneScreeningPhoneCallEnabled
         }
