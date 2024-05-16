@@ -221,22 +221,25 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
   const { members, loading: isFetching } = useAuthDetails();
 
   const router = useRouter();
+
   const updateFilterOptions = (tasks: TasksReducerType['tasks']) => {
     const filter: TasksReducerType['filter'] = { ...tasksReducer.filter };
-    filter.assignee.options = [
-      ...new Set(tasks.map((task) => task.assignee).flat(2)),
-    ]
-      .map((item) => {
-        const temp = members.find((mem) => mem.user_id === item);
-        return temp;
-      })
-      .filter((item) => Boolean(item))
-      .map((temp) => {
-        return {
-          id: temp.user_id,
-          label: `${temp.first_name} ${temp.last_name}`.trim(),
-        };
-      });
+    if (!filter.assignee.values.length) {
+      filter.assignee.options = [
+        ...new Set(tasks.map((task) => task.assignee).flat(2)),
+      ]
+        .map((item) => {
+          const temp = members.find((mem) => mem.user_id === item);
+          return temp;
+        })
+        .filter((item) => Boolean(item))
+        .map((temp) => {
+          return {
+            id: temp.user_id,
+            label: `${temp.first_name} ${temp.last_name}`.trim(),
+          };
+        });
+    }
 
     if (!filter.jobTitle.values.length) {
       filter.jobTitle.options = [
@@ -251,20 +254,22 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
         ),
       ];
     }
-    filter.candidate.options = [
-      ...new Set(
-        tasks
-          .filter((task) => Boolean(task.application_id))
-          .map((task) => ({
-            id: task.application_id,
-            label: getFullName(
-              task.applications.candidates.first_name,
-              task.applications.candidates.last_name,
-            ),
-          }))
-          .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
-      ),
-    ];
+    if (!filter.candidate.values.length) {
+      filter.candidate.options = [
+        ...new Set(
+          tasks
+            .filter((task) => Boolean(task.application_id))
+            .map((task) => ({
+              id: task.application_id,
+              label: getFullName(
+                task.applications.candidates.first_name,
+                task.applications.candidates.last_name,
+              ),
+            }))
+            .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i),
+        ),
+      ];
+    }
     return filter;
   };
 

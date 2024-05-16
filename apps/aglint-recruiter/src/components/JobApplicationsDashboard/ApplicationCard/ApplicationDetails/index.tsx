@@ -180,7 +180,7 @@ const ApplicationDetails = ({
     <Drawer open={drawerOpen} anchor='right' onClose={() => handleClose()}>
       <Stack
         style={{
-          width: '1000px',
+          width: '700px',
           height: '100%',
           pointerEvents: drawerOpen ? 'auto' : 'none',
           overflow: drawerOpen ? 'visible' : 'auto',
