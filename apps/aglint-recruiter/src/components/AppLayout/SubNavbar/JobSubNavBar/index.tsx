@@ -14,7 +14,7 @@ import {
   STATE_LEVER_DIALOG,
 } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import { pageRoutes, pages } from '@/src/utils/pageRouting';
 
 function JobSubNavbar() {
   const router = useRouter();
@@ -103,36 +103,21 @@ function AddJob() {
         }}
       >
         <CreateJob
-          isGreenhouseConnected={recruiter.greenhouse_key ? true : false}
-          isAshbyConnected={recruiter.ashby_key ? true : false}
-          isLeverConnected={recruiter.lever_key ? true : false}
-          isAshbyVisible={
+          isAshbyVisible={!!recruiter.ashby_key}
+          isGreenhouseVisible={!!recruiter.greenhouse_key}
+          isLeverVisible={!!recruiter.lever_key}
+          isEmpty={
             !(
               recruiter.ashby_key ||
               recruiter.greenhouse_key ||
               recruiter.lever_key
-            ) || recruiter.ashby_key
-              ? true
-              : false
+            )
           }
-          isGreenhouseVisible={
-            !(
-              recruiter.ashby_key ||
-              recruiter.greenhouse_key ||
-              recruiter.lever_key
-            ) || recruiter.greenhouse_key
-              ? true
-              : false
-          }
-          isLeverVisible={
-            !(
-              recruiter.ashby_key ||
-              recruiter.greenhouse_key ||
-              recruiter.lever_key
-            ) || recruiter.lever_key
-              ? true
-              : false
-          }
+          onClickLinktoIntegration={{
+            onClick: () => {
+              router.push(pages['/intergrations']());
+            },
+          }}
           onClickAshby={{
             onClick: () => {
               if (!recruiter.ashby_key) {

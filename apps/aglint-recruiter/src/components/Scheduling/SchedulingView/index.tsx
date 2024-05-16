@@ -27,7 +27,9 @@ function SchedulingViewComp() {
   const [isDeclineOpen, setIsDeclineOpen] = useState(false);
   const { data, isLoading } = useScheduleDetails();
   const schedule = data?.schedule_data;
-  const cancelReasons = data?.cancel_data;
+  const cancelReasons = data?.cancel_data?.filter(
+    (item) => !item.interview_session_cancel.cancel_user_id,
+  );
 
   const [sessionRelation, setSessionRelation] =
     useState<InterviewSessionRelationTypeDB>();
@@ -62,7 +64,7 @@ function SchedulingViewComp() {
       recruiterUser.role === 'recruiter' ||
       recruiterUser.role === 'hiring_manager' ||
       recruiterUser.role === 'recruiting_coordinator' ||
-      recruiterUser.user_id === schedule?.coordinator.id) &&
+      recruiterUser.user_id === schedule?.interview_coordinator?.id) &&
     schedule?.interview_meeting?.status === 'confirmed';
 
   useEffect(() => {
@@ -90,9 +92,11 @@ function SchedulingViewComp() {
               session_id={schedule.interview_session.id}
             />
             <CancelScheduleDialog
-              schedule={schedule}
-              isCancelOpen={isCancelOpen}
-              setIsCancelOpen={setIsCancelOpen}
+              meeting_id={schedule.interview_meeting.id}
+              sessionRelation={sessionRelation}
+              session_id={schedule.interview_session.id}
+              isDeclineOpen={isCancelOpen}
+              setIsDeclineOpen={setIsCancelOpen}
             />
             <RequestRescheduleDialog
               meeting_id={schedule.interview_meeting.id}

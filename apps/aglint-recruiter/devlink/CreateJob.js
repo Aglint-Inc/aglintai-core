@@ -22,6 +22,8 @@ export function CreateJob({
   isLeverVisible = true,
   isGreenhouseConnected = false,
   isAshbyConnected = false,
+  onClickLinktoIntegration = {},
+  isEmpty = false,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -78,7 +80,7 @@ export function CreateJob({
             </_Builtin.Block>
             {isLeverConnected ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-551")}
+                className={_utils.cx(_styles, "div-block-551", "hide")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -120,7 +122,7 @@ export function CreateJob({
             </_Builtin.Block>
             {isGreenhouseConnected ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-551")}
+                className={_utils.cx(_styles, "div-block-551", "hide")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -165,7 +167,7 @@ export function CreateJob({
             </_Builtin.Block>
             {isAshbyConnected ? (
               <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-551")}
+                className={_utils.cx(_styles, "div-block-551", "hide")}
                 tag="div"
               >
                 <_Builtin.HtmlEmbed
@@ -212,6 +214,28 @@ export function CreateJob({
           </_Builtin.Block>
         </_Builtin.Link>
       </_Builtin.Block>
+      {isEmpty ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "div-block-983")}
+          tag="div"
+        >
+          <_Builtin.Block tag="div">
+            {"To connect with your ATS, go to "}
+            <_Builtin.Span
+              className={_utils.cx(
+                _styles,
+                "text-blue-500",
+                "text-underline",
+                "cursor-pointer"
+              )}
+              {...onClickLinktoIntegration}
+            >
+              {"Integration"}
+            </_Builtin.Span>
+            {" app."}
+          </_Builtin.Block>
+        </_Builtin.Block>
+      ) : null}
     </_Component>
   );
 }

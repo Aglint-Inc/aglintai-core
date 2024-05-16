@@ -168,6 +168,19 @@
   margin-top: 2px;
 }
 
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .fw-semibold {
   font-weight: 600;
 }
@@ -434,6 +447,10 @@
   grid-row-gap: 7px;
 }
 
+.div-block-551.hide {
+  display: none;
+}
+
 .text-white {
   color: white;
 }
@@ -553,4 +570,11 @@
 
 .text-blue-600.ml-8 {
   margin-left: 8px;
+}
+
+.div-block-983 {
+  display: flex;
+  height: 8vh;
+  justify-content: center;
+  align-items: center;
 }
