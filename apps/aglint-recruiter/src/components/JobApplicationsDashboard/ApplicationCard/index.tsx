@@ -89,7 +89,7 @@ const ApplicationCard = ({
     (application?.candidate_files?.resume_json as any)?.overview ?? '---';
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
-    [list.has(application.id)],
+    [isChecked],
   );
 
   const name = getCandidateDetails(application, 'name');
