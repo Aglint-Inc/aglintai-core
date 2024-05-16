@@ -12,6 +12,8 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { DateIcon } from '../../Settings/Components/DateSelector';
+
 function RequestRescheduleDialog({
   isRequestRescheduleOpen,
   setIsRequestRescheduleOpen,
@@ -144,6 +146,9 @@ function RequestRescheduleDialog({
                       placeholder: 'Start Date',
                     },
                   }}
+                  slots={{
+                    openPickerIcon: DateIcon,
+                  }}
                 />
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -164,6 +169,9 @@ function RequestRescheduleDialog({
                       margin: 'none',
                       placeholder: 'End Date',
                     },
+                  }}
+                  slots={{
+                    openPickerIcon: DateIcon,
                   }}
                 />
               </LocalizationProvider>

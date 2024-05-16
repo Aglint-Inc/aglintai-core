@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 import { Checkbox } from '@/devlink';
 import { ConfirmationPopup } from '@/devlink3';
 
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { usePauseHandler } from '../../queries/hooks';
 import {
   setIsPauseDialogOpen,
@@ -186,6 +187,9 @@ function PauseDialog() {
                       }
                     }}
                     minDate={currentDate}
+                    slots={{
+                      openPickerIcon: DateIcon,
+                    }}
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -197,6 +201,9 @@ function PauseDialog() {
                         ...pause_json,
                         end_date: newValue.toISOString(),
                       });
+                    }}
+                    slots={{
+                      openPickerIcon: DateIcon,
                     }}
                   />
                 </LocalizationProvider>
