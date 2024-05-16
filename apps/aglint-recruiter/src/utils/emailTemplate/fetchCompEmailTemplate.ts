@@ -12,6 +12,9 @@ export const fetchScheduleDetails = async (schedule_id: string) => {
       )
       .eq('id', schedule_id),
   );
+  if (!schedule_id) {
+    throw new Error('Schedule doesnot exist');
+  }
 
   return {
     template: schedule_details.recruiter.email_template as CompanyEmailsTypeDB,

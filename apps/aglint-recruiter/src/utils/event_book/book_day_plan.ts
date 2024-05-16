@@ -55,8 +55,8 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
   const meetings_info = await fetchMeetingsInfo(
     ses_with_ints.map((s) => s.meeting_id),
   );
-  const comp_details = await fetchScheduleDetails(recruiter_id);
-  const temp_filler = new EmailTemplateFiller(comp_details.template);
+  const schedule_details = await fetchScheduleDetails(req_body.schedule_id);
+  const temp_filler = new EmailTemplateFiller(schedule_details.template);
   const bookDayPlan = async ({
     day_plan,
   }: {
@@ -135,7 +135,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
         recruiter_id,
         meeting_info.meeting_id,
         req_body.candidate_name,
-        'job_name',
+        schedule_details.job_title,
         meeting_organizer,
         meeting_attendees,
         company_cred,
@@ -153,7 +153,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
 
       await confirmInterviewers(all_inters);
       const temp = temp_filler.fillEmail('confirmation_mail_to_organizer', {
-        '[companyName]': comp_details.company_name,
+        '[companyName]': schedule_details.company_name,
         '[firstName]': req_body.candidate_name,
         '[meetingLink]': `${process.env.NEXT_PUBLIC_HOST_NAME}/view?meeting_id=${session.meeting_id}&tab=candidate_details`,
         '[recruiterName]': meeting_info.meeting_organizer_email,
