@@ -213,12 +213,10 @@ const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
     emailValidity: { isFetching, isValidEmail },
   } = application;
   const { views } = useJobApplications();
+  const memoDependency = JSON.stringify(application?.status_emails_sent ?? {});
   const { isNotInvited, timeInfo, disqualificationStatus } = useMemo(
     () => getDisqualificationStatus(application.status_emails_sent),
-    [
-      ...Object.values(application?.status_emails_sent ?? {}),
-      application.phone_screening,
-    ],
+    [memoDependency, application?.phone_screening],
   );
   if (!views.disqualified) return <></>;
   if (isFetching) return <FetchingEmail />;
