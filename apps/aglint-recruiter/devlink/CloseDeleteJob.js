@@ -33,14 +33,25 @@ export function CloseDeleteJob({
         </_Builtin.Block>
       ) : null}
       {isCloseJobVisible ? (
-        <_Builtin.Block
-          className={_utils.cx(_styles, "text-grey-600", "mt-9")}
-          tag="div"
+        <_Builtin.List
+          className={_utils.cx(_styles, "list-8")}
+          tag="ul"
+          unstyled={false}
         >
-          {
-            "Closing this job will permanently end all associated activities, including tasks and scheduled interviews. Once closed, this position will no longer accept applications and cannot be reactivated. The job will also be removed from the company page."
-          }
-        </_Builtin.Block>
+          <_Builtin.ListItem>
+            {
+              "Closing this job will permanently end all associated activities, including tasks and scheduled interviews."
+            }
+          </_Builtin.ListItem>
+          <_Builtin.ListItem>
+            {
+              "Once closed, this position will no longer accept applications and cannot be reactivated. "
+            }
+          </_Builtin.ListItem>
+          <_Builtin.ListItem>
+            {"The job will also be removed from the company page."}
+          </_Builtin.ListItem>
+        </_Builtin.List>
       ) : null}
       {isDeleteJobVisible ? (
         <_Builtin.Block
