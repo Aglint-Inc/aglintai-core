@@ -1,16 +1,14 @@
 /* eslint-disable no-console */
 import {
+  APICandidateConfirmSlot,
+  ApiFindAvailability,
+  Database,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
   RecruiterUserType,
   SupabaseType,
-} from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
-import {
-  APICandidateConfirmSlot,
-  ApiFindAvailability,
 } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -127,7 +125,6 @@ export const createCloneSession = async ({
       .select();
 
     if (error) throw new Error(error.message);
-
     const refSessions = allSessions.map((session) => ({
       ...session,
       newId: uuidv4(),
@@ -135,6 +132,8 @@ export const createCloneSession = async ({
       new_meeting_id: uuidv4(),
       new_schedule_id: new_schedule_id,
     }));
+
+    const organizer_id = await getOrganizerId(application_id, supabase);
 
     const { error: errorInsertedMeetings } = await supabase
       .from('interview_meeting')
@@ -146,6 +145,7 @@ export const createCloneSession = async ({
             instructions: refSessions.find((s) => s.id === ses.id)
               ?.interview_module?.instructions,
             id: ses.new_meeting_id,
+            organizer_id,
           } as InterviewMeetingTypeDb;
         }),
       );
@@ -350,6 +350,10 @@ export const sendToCandidate = async ({
         }
       }
     } else {
+      const organizer_id = await getOrganizerId(
+        selectedApplication.id,
+        supabase,
+      );
       const { error: errorUpdatedMeetings } = await supabase
         .from('interview_meeting')
         .upsert(
@@ -360,6 +364,7 @@ export const sendToCandidate = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
+              organizer_id,
             })) as InterviewMeetingTypeDb[],
         );
 
@@ -612,7 +617,7 @@ export const scheduleWithAgent = async ({
         const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
           session_ids.includes(ses.id),
         );
-
+        const organizer_id = await getOrganizerId(application_id, supabase);
         const { error: errorUpdatedMeetings } = await supabase
           .from('interview_meeting')
           .upsert(
@@ -621,6 +626,7 @@ export const scheduleWithAgent = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
+              organizer_id,
             })) as InterviewMeetingTypeDb[],
           );
 
@@ -843,7 +849,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
         const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
           session_ids.includes(ses.id),
         );
-
+        const organizer_id = await getOrganizerId(application_id, supabase);
         const { error: errorUpdatedMeetings } = await supabase
           .from('interview_meeting')
           .upsert(
@@ -852,6 +858,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
+              organizer_id,
             })) as InterviewMeetingTypeDb[],
           );
 
@@ -1361,4 +1368,27 @@ export const onClickResendInvite = async ({
   } catch (e) {
     toast.error(e.message);
   }
+};
+
+export const getOrganizerId = async (
+  application_id: string,
+  supabase: SupabaseType,
+) => {
+  const { data: app } = await supabase
+    .from('applications')
+    .select(
+      'public_jobs(interview_coordinator,recruiter,recruiting_coordinator,hiring_manager,sourcer)',
+    )
+    .eq('id', application_id)
+    .single();
+
+  console.log(app);
+
+  const organizer_id =
+    app.public_jobs.recruiting_coordinator ||
+    app.public_jobs.interview_coordinator ||
+    app.public_jobs.hiring_manager ||
+    app.public_jobs.recruiter;
+
+  return organizer_id;
 };
