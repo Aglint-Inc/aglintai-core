@@ -17,16 +17,17 @@ import { CandidatesScheduling } from '@/src/services/CandidateSchedule/Candidate
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
-import { fetchCompEmailTemplate } from '../emailTemplate/fetchCompEmailTemplate';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
-import { bookSession, Interviewer } from './book_session';
+import { CalEventAttendeesAuthDetails, bookSession } from './book_session';
 import { fetchMeetingsInfo } from './fetchMeetingsInfo';
 import { getCalEventDescription } from './getCalEventDescription';
+import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
 
 export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
-  let { candidate_plan, recruiter_id, user_tz, is_debreif } = req_body;
+  let { candidate_plan, recruiter_id, user_tz, is_debreif, schedule_id } =
+    req_body;
   const all_sess_ids: string[] = candidate_plan.reduce((tot, curr) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
@@ -54,7 +55,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
   const meetings_info = await fetchMeetingsInfo(
     ses_with_ints.map((s) => s.meeting_id),
   );
-  const comp_details = await fetchCompEmailTemplate(recruiter_id);
+  const comp_details = await fetchScheduleDetails(recruiter_id);
   const temp_filler = new EmailTemplateFiller(comp_details.template);
   const bookDayPlan = async ({
     day_plan,
@@ -106,39 +107,39 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
     const plan_combs = cand_scheduling.findCandSlotForTheDay();
     const assisgned_slot = assignCandidateSlot(plan_combs[0], curr_date);
     const meet_promises = assisgned_slot.sessions.map(async (session) => {
-      const organizer = meetings_info.find(
+      const meeting_info = meetings_info.find(
         (m) => m.meeting_id === session.meeting_id,
       );
       const all_inters = [
         ...session.qualifiedIntervs,
         ...session.trainingIntervs,
-      ].filter((int) => int.user_id !== organizer.organizer_id);
+      ].filter((int) => int.user_id !== meeting_info.organizer_id);
 
-      let meeting_attendees: Interviewer[] = all_inters.map((attendee) => ({
-        email: attendee.email,
-        schedule_auth: attendee.schedule_auth,
-        user_id: attendee.user_id,
-      }));
+      let meeting_attendees: CalEventAttendeesAuthDetails[] = all_inters.map(
+        (attendee) => ({
+          email: attendee.email,
+          schedule_auth: attendee.schedule_auth,
+          user_id: attendee.user_id,
+        }),
+      );
+      const meeting_organizer = {
+        email: meeting_info.meeting_organizer_email,
+        schedule_auth: meeting_info.meeting_organizer_auth,
+        timezone: meeting_info.scheduling_settings.timeZone.tzCode,
+        user_id: meeting_info.organizer_id,
+      };
 
       const training_ints = session.trainingIntervs;
-      const booked_sessions = await bookSession({
+      const booked_sessions = await bookSession(
+        session,
+        recruiter_id,
+        meeting_info.meeting_id,
+        req_body.candidate_name,
+        'job_name',
+        meeting_organizer,
+        meeting_attendees,
         company_cred,
-        company_id: recruiter_id,
-        duration: session.duration,
-        start_time: session.start_time,
-        end_time: session.end_time,
-        interviewers: meeting_attendees,
-        meet_type: session.schedule_type,
-        organizer: {
-          email: organizer.meeting_organizer_email,
-          schedule_auth: organizer.meeting_organizer_auth,
-          timezone: organizer.scheduling_settings.timeZone.tzCode,
-          user_id: organizer.organizer_id,
-        },
-        schedule_name: session.session_name,
-        session_id: session.session_id,
-        description: getCalEventDescription(session.meeting_id),
-      });
+      );
 
       // assisgn training status shadow or rShadow to ints
       if (training_ints.length > 0) {
@@ -155,10 +156,10 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
         '[companyName]': comp_details.company_name,
         '[firstName]': req_body.candidate_name,
         '[meetingLink]': `${process.env.NEXT_PUBLIC_HOST_NAME}/view?meeting_id=${session.meeting_id}&tab=candidate_details`,
-        '[recruiterName]': organizer.meeting_organizer_email,
+        '[recruiterName]': meeting_info.meeting_organizer_email,
       });
       const payload: APISendgridPayload = {
-        email: organizer.meeting_organizer_email,
+        email: meeting_info.meeting_organizer_email,
         fromEmail: undefined,
         fromName: temp.fromName,
         headers: undefined,

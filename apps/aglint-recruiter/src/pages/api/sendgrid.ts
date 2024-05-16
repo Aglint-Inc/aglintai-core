@@ -8,18 +8,19 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export default async function handler(req, res) {
-  let details = req.body as APISendgridPayload;
+  let { email, fromEmail, fromName, headers, subject, text } =
+    req.body as APISendgridPayload;
 
   try {
     const msg: any = {
-      to: details.email, // Change to your recipient
+      to: email, // Change to your recipient
       from: {
-        email: details.fromEmail ?? 'admin@aglinthq.com',
-        name: details.fromName ?? 'Aglint Admin',
+        email: fromEmail ?? 'admin@aglinthq.com',
+        name: fromName ?? 'Aglint Admin',
       }, // Change to your verified sender
-      subject: details.subject,
-      html: details.text,
-      headers: details.headers,
+      subject: subject,
+      html: text,
+      headers: headers,
     };
 
     console.log(msg.to);

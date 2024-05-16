@@ -3,16 +3,19 @@ import { CompanyEmailsTypeDB } from '@/src/types/companyEmailTypes';
 
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 
-export const fetchCompEmailTemplate = async (company_id: string) => {
-  const [company] = supabaseWrap(
+export const fetchScheduleDetails = async (schedule_id: string) => {
+  const [schedule_details] = supabaseWrap(
     await supabaseAdmin
-      .from('recruiter')
-      .select('email_template,name')
-      .eq('id', company_id),
+      .from('interview_schedule')
+      .select(
+        'recruiter(email_template,name),applications(public_jobs(job_title))',
+      )
+      .eq('id', schedule_id),
   );
 
   return {
-    template: company.email_template as CompanyEmailsTypeDB,
-    company_name: company.name,
+    template: schedule_details.recruiter.email_template as CompanyEmailsTypeDB,
+    company_name: schedule_details.recruiter.name,
+    job_title: schedule_details.applications.public_jobs.job_title,
   };
 };
