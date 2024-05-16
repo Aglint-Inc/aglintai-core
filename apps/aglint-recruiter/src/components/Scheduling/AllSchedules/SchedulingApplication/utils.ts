@@ -132,7 +132,6 @@ export const createCloneSession = async ({
       new_meeting_id: uuidv4(),
       new_schedule_id: new_schedule_id,
     }));
-    console.log('asdasd');
 
     const organizer_id = await getOrganizerId(application_id, supabase);
 
