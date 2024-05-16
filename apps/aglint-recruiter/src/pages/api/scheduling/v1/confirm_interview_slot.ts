@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
-import { APICandidateConfirmSlot } from '@aglint/shared-types';
+import {
+  APICandidateConfirmSlot,
+  APICandScheduleMailThankYou,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { has } from 'lodash';
@@ -45,11 +48,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (req_body.filter_id) {
+      const payload: APICandScheduleMailThankYou = {
+        cand_tz: req_body.user_tz,
+        filter_id: req_body.filter_id,
+      };
       axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-        {
-          filter_id: req_body.filter_id,
-        },
+        payload,
       );
     }
 
