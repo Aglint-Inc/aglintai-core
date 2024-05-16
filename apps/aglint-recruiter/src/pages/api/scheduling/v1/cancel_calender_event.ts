@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { GoogleCalender } from '@/src/services/GoogleCalender/google-calender';
-import { Interviewer } from '@/src/utils/event_book/book_session';
+import { CalEventAttendeesAuthDetails } from '@/src/utils/event_book/book_session';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
@@ -64,7 +64,7 @@ const getRecruiterCredentials = async ({ email }) => {
   ];
 
   const [comp_cred, user_schedule_auth] = await Promise.all(promises);
-  const r: Interviewer = {
+  const r: CalEventAttendeesAuthDetails = {
     email,
     schedule_auth: user_schedule_auth,
     user_id,
