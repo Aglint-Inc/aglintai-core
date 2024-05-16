@@ -119,8 +119,10 @@ const AuthProvider = ({ children }) => {
   async function getSupabaseSession() {
     try {
       const { data, error } = await supabase.auth.getSession();
-      if (!data?.session) {
-        throw new Error();
+      if (!data?.session || error) {
+        toast.error('Session not found');
+        handleLogout();
+        return;
       }
       if (data?.session?.user?.new_email) {
         const { data: newData, error } = await supabase.auth.refreshSession();
@@ -136,23 +138,10 @@ const AuthProvider = ({ children }) => {
     } catch (err) {
       router.push(pageRoutes.LOGIN);
       handleLogout();
-    } finally {
-      setLoading(false);
     }
   }
 
   const getRecruiterDetails = async (userDetails: Session) => {
-    // const { data: recruiterUser, error: errorUser } = await supabase
-    //   .from('recruiter_user')
-    //   .select('*')
-    //   .eq('user_id', userDetails.user.id);
-    // if (!errorUser && recruiterUser.length > 0) {
-    //   if (recruiterUser[0].is_suspended) {
-    //     toast.error('Your account is suspended.');
-    //     return setTimeout(() => {
-    //       handleLogout();
-    //     }, 300);
-    //   }
     const { data: recruiterRel, error: errorRel } = await supabase
       .from('recruiter_relation')
       .select(
@@ -161,7 +150,7 @@ const AuthProvider = ({ children }) => {
       .match({ user_id: userDetails.user.id, is_active: true })
       .single();
 
-    if (!errorRel) {
+    if (!errorRel && recruiterRel?.recruiter_user) {
       posthog.identify(userDetails.user.email, {
         Email: userDetails.user.email,
         CompanyId: recruiterRel.recruiter.id,
@@ -178,15 +167,13 @@ const AuthProvider = ({ children }) => {
         ...recruiterRel.recruiter,
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
+      setLoading(false);
       if (recruiterRel.role === 'admin' || recruiterRel.role === 'recruiter') {
         await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
       }
     } else {
       toast.error('Something went wrong! Please try logging in again.');
     }
-    // } else {
-    //   toast.error('Something went wrong! Please try logging in again.');
-    // }
   };
 
   const handleLogout = async () => {
