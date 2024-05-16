@@ -9,8 +9,10 @@ import {
 
 export class EmailTemplateFiller {
   private all_company_temps: CompanyEmailsTypeDB;
-  constructor(_all_company_temps: CompanyEmailsTypeDB) {
-    this.all_company_temps = _all_company_temps;
+  constructor(_all_company_temps?: CompanyEmailsTypeDB | null) {
+    if (_all_company_temps) {
+      this.all_company_temps = _all_company_temps;
+    }
   }
   public fillEmail<T extends EmailTempPath>(
     templatePath: T,

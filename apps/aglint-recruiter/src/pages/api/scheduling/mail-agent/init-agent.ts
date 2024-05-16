@@ -19,7 +19,6 @@ type GeoPoint = {
 // import { SchedulingProgressStatusType } from '@/src/utils/scheduling_v2/mailagent/types';
 import {
   CandidateType,
-  EmailTemplateFields,
   InterviewFilterJsonType,
   InterviewScheduleTypeDB,
   JobApplcationDB,
@@ -30,6 +29,8 @@ import { schedulingSettingType } from '@aglint/shared-types';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
+import { EmailDynamicParams } from '@/src/types/companyEmailTypes';
+import { EmailTemplateFiller } from '@/src/utils/emailTemplate/EmailTemplateFiller';
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
 import { getTimeZoneOfGeo } from '@/src/utils/location-to-time-zone';
@@ -58,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const getInitialEmailTemplate = () => {
-      const email_details = {
+      const email_details: EmailDynamicParams<'init_email_agent'> = {
         '[candidateFirstName]': cand_details.candidate_name.split(' ')[0],
         '[companyName]': cand_details.company_name,
         '[jobRole]': cand_details.job_role,
@@ -74,8 +75,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '[candidateTimeZone]': cand_details.time_zone,
         '[selfScheduleLink]': `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}&task_id=${task_id}'>link</a>`,
       };
-
-      return fillEmailTemplate(cand_details.email_template, email_details);
+      const temp_filler = new EmailTemplateFiller(null);
+      const filled_temp = temp_filler.fillEmail(
+        'init_email_agent',
+        email_details,
+      );
+      return filled_temp;
     };
 
     const email_details = getInitialEmailTemplate();
@@ -267,21 +272,21 @@ type CandidateScheduleDetails = InterviewFilterJsonType & {
   };
 };
 
-const fillEmailTemplate = (
-  email_template: EmailTemplateFields,
-  dynamic_fields: Record<string, string>,
-): EmailTemplateFields => {
-  let updated_template = { ...email_template };
-  for (let key of Object.keys(dynamic_fields)) {
-    updated_template.subject = updated_template.subject.replaceAll(
-      key,
-      dynamic_fields[String(key)],
-    );
-    updated_template.body = updated_template.body.replaceAll(
-      key,
-      dynamic_fields[String(key)],
-    );
-  }
+// const fillEmailTemplate = (
+//   email_template: EmailTemplateFields,
+//   dynamic_fields: Record<string, string>,
+// ): EmailTemplateFields => {
+//   let updated_template = { ...email_template };
+//   for (let key of Object.keys(dynamic_fields)) {
+//     updated_template.subject = updated_template.subject.replaceAll(
+//       key,
+//       dynamic_fields[String(key)],
+//     );
+//     updated_template.body = updated_template.body.replaceAll(
+//       key,
+//       dynamic_fields[String(key)],
+//     );
+//   }
 
-  return updated_template;
-};
+//   return updated_template;
+// };

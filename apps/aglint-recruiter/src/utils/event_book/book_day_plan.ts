@@ -6,19 +6,22 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import {
   APICandidateConfirmSlot,
+  APISendgridPayload,
   CalendarEvent,
   SessionInterviewerType,
 } from '@aglint/shared-types';
+import axios from 'axios';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 
+import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
+import { fetchCompEmailTemplate } from '../emailTemplate/fetchCompEmailTemplate';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
 import { bookSession, Interviewer } from './book_session';
-// import { fetchCompEmailTemplate } from './fetchCompEmailTemplate';
 import { fetchMeetingsInfo } from './fetchMeetingsInfo';
 import { getCalEventDescription } from './getCalEventDescription';
 
@@ -51,8 +54,8 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
   const meetings_info = await fetchMeetingsInfo(
     ses_with_ints.map((s) => s.meeting_id),
   );
-  // const comp_email_templates = await fetchCompEmailTemplate(recruiter_id);
-  //
+  const comp_details = await fetchCompEmailTemplate(recruiter_id);
+  const temp_filler = new EmailTemplateFiller(comp_details.template);
   const bookDayPlan = async ({
     day_plan,
   }: {
@@ -148,6 +151,21 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
       }
 
       await confirmInterviewers(all_inters);
+      const temp = temp_filler.fillEmail('confirmation_mail_to_organizer', {
+        '[companyName]': comp_details.company_name,
+        '[firstName]': req_body.candidate_name,
+        '[meetingLink]': `${process.env.NEXT_PUBLIC_HOST_NAME}/view?meeting_id=${session.meeting_id}&tab=candidate_details`,
+        '[recruiterName]': organizer.meeting_organizer_email,
+      });
+      const payload: APISendgridPayload = {
+        email: organizer.meeting_organizer_email,
+        fromEmail: undefined,
+        fromName: temp.fromName,
+        headers: undefined,
+        subject: temp.subject,
+        text: temp.body,
+      };
+      axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, payload);
       return booked_sessions;
     });
     const meeting_events = await Promise.all(meet_promises);

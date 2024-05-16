@@ -7,9 +7,12 @@ export const fetchCompEmailTemplate = async (company_id: string) => {
   const [company] = supabaseWrap(
     await supabaseAdmin
       .from('recruiter')
-      .select('email_template')
+      .select('email_template,name')
       .eq('id', company_id),
   );
 
-  return company.email_template as CompanyEmailsTypeDB;
+  return {
+    template: company.email_template as CompanyEmailsTypeDB,
+    company_name: company.name,
+  };
 };

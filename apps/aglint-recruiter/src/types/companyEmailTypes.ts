@@ -12,9 +12,14 @@ export type EmailTempPath =
 
 export type EmailDynamicParams<T extends EmailTempPath> = {
   init_email_agent: {
-    '[recruiterEmail]': string;
-    '[firstName]': string;
-    '[confirmationLink]': string;
+    '[candidateFirstName]': string;
+    '[companyName]': string;
+    '[jobRole]': string;
+    '[endDate]': string;
+    '[startDate]': string;
+    '[companyTimeZone]': string;
+    '[candidateTimeZone]': string;
+    '[selfScheduleLink]': string;
   };
   confirmation_mail_to_organizer: {
     '[recruiterName]': string;

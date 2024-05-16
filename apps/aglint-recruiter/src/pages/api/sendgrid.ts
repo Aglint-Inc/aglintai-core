@@ -1,21 +1,14 @@
 /* eslint-disable no-console */
 
+import { APISendgridPayload } from '@aglint/shared-types';
+
 import { getOutboundEmail } from '@/src/utils/scheduling_v2/get-outbound-email';
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export type BodyParmsSendgrid = {
-  fromEmail: string;
-  fromName: string;
-  subject: string;
-  text: string;
-  email: string;
-  headers: Record<string, any>;
-};
-
 export default async function handler(req, res) {
-  let details = req.body as BodyParmsSendgrid;
+  let details = req.body as APISendgridPayload;
 
   try {
     const msg: any = {
