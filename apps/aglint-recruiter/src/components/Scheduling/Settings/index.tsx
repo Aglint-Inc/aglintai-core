@@ -579,7 +579,13 @@ function SchedulingSettings({
                                   );
                                 })
                               ) : (
-                                <TextWithBg text={'--'} />
+                                <Typography
+                                  px={'10px'}
+                                  variant='caption'
+                                  fontSize={'14px'}
+                                >
+                                  All locations
+                                </Typography>
                               )
                             }
                             textDate={item.date}
