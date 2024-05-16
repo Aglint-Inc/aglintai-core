@@ -20,6 +20,7 @@ import { JobApplicationDelete } from '@/src/pages/api/job/jobApplications/candid
 import { JobApplicationEmails } from '@/src/pages/api/job/jobApplications/candidateEmail';
 import { ReadJobApplicationApi } from '@/src/pages/api/job/jobApplications/read';
 import { getFullName } from '@/src/utils/jsonResume';
+import { pages } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
 
 import { useJobDetails } from '../JobDashboard';
@@ -509,6 +510,8 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
 
   //TERTIARY
   const handleJobApplicationError = (error) => {
+    if (router.pathname !== ('/jobs/[id]/candidate-list' as keyof typeof pages))
+      return;
     if (typeof error === 'string') {
       toast.error(`Oops! Something went wrong.\n (${error})`);
     } else if (typeof error === 'object') {
