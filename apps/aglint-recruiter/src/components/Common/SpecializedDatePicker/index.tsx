@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
 
+import { DateIcon } from '../../Scheduling/Settings/Components/DateSelector';
 import UITextField from '../UITextField';
 
 export default function SpecializedDatePicker({
@@ -14,7 +15,7 @@ export default function SpecializedDatePicker({
   disabled = false,
   disableFuture = false,
   monthView,
-  onChange
+  onChange,
 }: {
   maxDate?: Dayjs;
   minDate?: Dayjs;
@@ -50,7 +51,8 @@ export default function SpecializedDatePicker({
                 InputProps={{ sx: { width: '150px' }, ...params.InputProps }}
               />
             );
-          }
+          },
+          openPickerIcon: DateIcon,
         }}
       />
     </LocalizationProvider>

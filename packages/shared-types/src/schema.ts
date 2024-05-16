@@ -1221,6 +1221,7 @@ export type Database = {
           interview_schedule_id: string
           meeting_json: Json | null
           meeting_link: string | null
+          organizer_id: string | null
           start_time: string | null
           status: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1235,6 +1236,7 @@ export type Database = {
           interview_schedule_id: string
           meeting_json?: Json | null
           meeting_link?: string | null
+          organizer_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
@@ -1249,10 +1251,32 @@ export type Database = {
           interview_schedule_id?: string
           meeting_json?: Json | null
           meeting_link?: string | null
+          organizer_id?: string | null
           start_time?: string | null
           status?: Database["public"]["Enums"]["interview_schedule_status"]
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
             columns: ["interview_schedule_id"]

@@ -5,17 +5,128 @@ import {
   InterviewSession,
   NewCalenderEvent,
   RecruiterUserType,
+  SessionCombinationRespType,
 } from '@aglint/shared-types';
 
 import { GoogleCalender } from '../../services/GoogleCalender/google-calender';
 import { ZoomMeet } from '../integrations/zoom-meet';
-import { getOutboundEmail } from '../scheduling_v2/get-outbound-email';
+import { getCalEventDescription } from './getCalEventDescription';
 const { google } = require('googleapis');
 const { OAuth2Client } = require('google-auth-library');
-
 export type GetAuthParams = {
   company_cred: CompServiceKeyCred;
-  recruiter: Interviewer;
+  recruiter: CalEventAttendeesAuthDetails;
+};
+
+export type CalEventAttendeesAuthDetails = Pick<
+  RecruiterUserType,
+  'user_id' | 'schedule_auth' | 'email'
+>;
+
+export type CalEventOrganizerAuthDetails = CalEventAttendeesAuthDetails & {
+  timezone: string;
+};
+
+export const bookSession = async (
+  session: SessionCombinationRespType,
+  company_id: string,
+  meeting_id: string,
+  candidate_name: string,
+  job_title: string,
+  cal_event_organizer: CalEventOrganizerAuthDetails,
+  cal_event_attendees: CalEventAttendeesAuthDetails[],
+  company_cred: CompServiceKeyCred,
+) => {
+  const event_name = `${session.module_name} : ${candidate_name} for ${job_title}`;
+  const event_description = getCalEventDescription(meeting_id);
+  const calendar_event: NewCalenderEvent = {
+    summary: event_name,
+    start: {
+      dateTime: session.start_time,
+      timeZone: cal_event_organizer.timezone,
+    },
+    end: {
+      dateTime: session.end_time,
+      timeZone: cal_event_organizer.timezone,
+    },
+    attendees: cal_event_attendees.map((int) => ({
+      email: (int.schedule_auth as any)?.email ?? int.email,
+    })),
+    reminders: {
+      useDefault: false,
+      overrides: [
+        { method: 'email', minutes: 24 * 60 },
+        { method: 'popup', minutes: 10 },
+      ],
+    },
+    conferenceData: {
+      createRequest: null,
+    },
+    description: event_description,
+  };
+  if (session.schedule_type === 'google_meet') {
+    calendar_event.conferenceData.createRequest = {
+      requestId: uuidv4(),
+    };
+  } else if (session.schedule_type === 'zoom') {
+    try {
+      const zoom_meet = new ZoomMeet(company_id);
+      await zoom_meet.authorizeUser();
+      const schd_meet = await zoom_meet.createMeeting({
+        topic: event_name,
+        agenda: event_name,
+        default_password: false,
+        duration: session.duration,
+        start_time: session.start_time,
+        timezone: cal_event_organizer.timezone,
+        type: 2,
+        settings: {
+          host_video: false,
+          join_before_host: true,
+          participant_video: false,
+        },
+      });
+      calendar_event.conferenceData.conferenceSolution = {
+        key: {
+          type: 'addOn',
+        },
+        name: 'zoom',
+      };
+      calendar_event.conferenceData.entryPoints = [
+        {
+          entryPointType: 'video',
+          uri: schd_meet.join_url,
+          passcode: schd_meet.password,
+          label: schd_meet.topic,
+        },
+      ];
+    } catch (err) {
+      calendar_event.conferenceData.createRequest = {
+        requestId: uuidv4(),
+      };
+    }
+  }
+  const google_cal = new GoogleCalender({
+    recruiter: cal_event_organizer,
+    company_cred,
+  });
+  await google_cal.authorizeUser();
+  const cal_event = await google_cal.createCalenderEvent(calendar_event);
+  const attendees_promises = cal_event_attendees.map(async (int) => {
+    try {
+      const email = (int.schedule_auth as any)?.email ?? int.email;
+      const int_cal = new GoogleCalender({
+        company_cred,
+        recruiter: int,
+      });
+      await int_cal.authorizeUser();
+      await int_cal.importEvent(cal_event, email);
+    } catch (err) {
+      //ignore if importing the event is failed
+    }
+  });
+  await Promise.all(attendees_promises);
+  return { session_id: session.session_id, cal_event };
 };
 
 export const getUserCalAuth = async ({
@@ -64,138 +175,4 @@ export const getSuperAdminAuth = async (
 
   await jwtClient.authorize();
   return jwtClient;
-};
-
-export type Interviewer = Pick<
-  RecruiterUserType,
-  'user_id' | 'schedule_auth' | 'email'
->;
-
-export type Organizer = Pick<
-  RecruiterUserType,
-  'user_id' | 'schedule_auth' | 'email'
-> & { timezone: string };
-
-export const bookSession = async ({
-  candidate_email,
-  end_time,
-  interviewers,
-  organizer,
-  schedule_name,
-  start_time,
-  company_cred,
-  session_id,
-  meet_type,
-  company_id,
-  duration,
-  description,
-}: {
-  schedule_name: string;
-  start_time: string;
-  end_time: string;
-  interviewers: Interviewer[];
-  candidate_email: string | null;
-  organizer: Organizer;
-  company_cred: CompServiceKeyCred;
-  session_id: string;
-  meet_type: InterviewSession['schedule_type'];
-  company_id: string;
-  duration: number;
-  description: string;
-}) => {
-  const calendar_event: NewCalenderEvent = {
-    summary: schedule_name,
-    start: {
-      dateTime: start_time,
-      timeZone: organizer.timezone,
-    },
-    end: {
-      dateTime: end_time,
-      timeZone: organizer.timezone,
-    },
-    attendees: interviewers.map((int) => ({
-      email: (int.schedule_auth as any)?.email ?? int.email,
-    })),
-    reminders: {
-      useDefault: false,
-      overrides: [
-        { method: 'email', minutes: 24 * 60 },
-        { method: 'popup', minutes: 10 },
-      ],
-    },
-    conferenceData: {
-      createRequest: null,
-    },
-    description: description,
-  };
-  if (meet_type === 'google_meet') {
-    calendar_event.conferenceData.createRequest = {
-      requestId: uuidv4(),
-    };
-  } else if (meet_type === 'zoom') {
-    try {
-      const zoom_meet = new ZoomMeet(company_id);
-      await zoom_meet.authorizeUser();
-      const schd_meet = await zoom_meet.createMeeting({
-        topic: schedule_name,
-        agenda: schedule_name,
-        default_password: false,
-        duration: duration,
-        start_time: start_time,
-        timezone: organizer.timezone ?? 'Asia/columbo',
-        type: 2,
-        settings: {
-          host_video: false,
-          join_before_host: true,
-          participant_video: false,
-        },
-      });
-      calendar_event.conferenceData.conferenceSolution = {
-        key: {
-          type: 'addOn',
-        },
-        name: 'zoom',
-      };
-      calendar_event.conferenceData.entryPoints = [
-        {
-          entryPointType: 'video',
-          uri: schd_meet.join_url,
-          passcode: schd_meet.password,
-          label: schd_meet.topic,
-        },
-      ];
-    } catch (err) {
-      calendar_event.conferenceData.createRequest = {
-        requestId: uuidv4(),
-      };
-    }
-  }
-
-  if (candidate_email) {
-    calendar_event.attendees.push({
-      email: (await getOutboundEmail(candidate_email)) as string,
-    });
-  }
-
-  const google_cal = new GoogleCalender({
-    recruiter: organizer,
-    company_cred,
-  });
-  await google_cal.authorizeUser();
-  const cal_event = await google_cal.createCalenderEvent(calendar_event);
-  const attendees_promises = interviewers.map(async (int) => {
-    try {
-      const email = (int.schedule_auth as any)?.email ?? int.email;
-      const int_cal = new GoogleCalender({
-        company_cred,
-        recruiter: int,
-      });
-      await int_cal.authorizeUser();
-      await int_cal.importEvent(cal_event, email);
-    } catch (err) {
-      //ignore if importing the event is failed
-    }
-  });
-  await Promise.all(attendees_promises);
-  return { session_id, cal_event };
 };

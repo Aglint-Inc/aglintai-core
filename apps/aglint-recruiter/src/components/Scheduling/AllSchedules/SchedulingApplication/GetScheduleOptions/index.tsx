@@ -14,6 +14,7 @@ import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/applica
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 import SchedulingOptionComp from '../Common/ScheduleOption';
 import {
   setDateRange,
@@ -223,6 +224,9 @@ function GetScheduleOptionsDialog() {
                       placeholder: 'Start Date',
                     },
                   }}
+                  slots={{
+                    openPickerIcon: DateIcon,
+                  }}
                 />
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -242,6 +246,9 @@ function GetScheduleOptionsDialog() {
                       variant: 'outlined',
                       placeholder: 'End Date',
                     },
+                  }}
+                  slots={{
+                    openPickerIcon: DateIcon,
                   }}
                 />
               </LocalizationProvider>

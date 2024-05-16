@@ -14,6 +14,7 @@ import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMai
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { DateIcon } from '../../Settings/Components/DateSelector';
 import { useImrQuery } from '../Interviewer/hooks';
 
 export type ModuleType = {
@@ -68,7 +69,9 @@ function PauseResumeDialog({
   // });
   const router = useRouter();
   const { allModules: modules } = useSchedulingContext();
-  const { data, refetch } = useImrQuery({user_id: router.query.member_id as string});
+  const { data, refetch } = useImrQuery({
+    user_id: router.query.member_id as string,
+  });
 
   const existingModule = data?.modules.map((item) => item.module_id);
   const allModules = modules.filter(
@@ -258,6 +261,9 @@ function PauseResumeDialog({
                                 }
                               }}
                               minDate={currentDate}
+                              slots={{
+                                openPickerIcon: DateIcon,
+                              }}
                             />
                           </LocalizationProvider>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -270,6 +276,9 @@ function PauseResumeDialog({
                                   ...pause_json,
                                   end_date: newValue.toISOString(),
                                 });
+                              }}
+                              slots={{
+                                openPickerIcon: DateIcon,
                               }}
                             />
                           </LocalizationProvider>

@@ -13,7 +13,7 @@ function PriorityList({
   onChange,
 }: {
   selectedPriority: CustomDatabase['public']['Enums']['task_priority'];
-  setSelectedPriority: (
+  setSelectedPriority?: (
     x: CustomDatabase['public']['Enums']['task_priority'],
   ) => void;
   isOptionList?: boolean;

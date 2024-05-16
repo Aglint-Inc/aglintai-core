@@ -23,6 +23,7 @@ import { EmailAgentIcon } from '../../../Components/EmailAgentIcon';
 import { PhoneAgentIcon } from '../../../Components/PhoneAgentIcon';
 import { useTaskStatesContext } from '../../../TaskStatesContext';
 import PhoneTranscript from './PhoneTrancript';
+import ProgressTitle from './ProgressTitle';
 import SessionCard, { meetingCardType } from './SessionCard';
 
 function SubTaskProgress() {
@@ -32,7 +33,6 @@ function SubTaskProgress() {
   const { data: progressList, isFetchedAfterMount } = useProgress();
 
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
-  const candidateDetails = selectedTask?.applications?.candidates;
   const { data: sessionList } = useSessionsList();
 
   return (
@@ -53,33 +53,6 @@ function SubTaskProgress() {
                 (ele) => ele.user_id === (item.created_by as any).id,
               );
 
-              // console.log(CandidateCreator);
-              const currentTimeZone = dayjs.tz.guess();
-
-              // console.log(item.title_meta);
-              const bookingDate = item.title_meta['{date_format}']
-                ? `<span class="progress_date_section">${dayjs(
-                    item.title_meta['{date_format}'],
-                  )
-                    .tz(candidateDetails?.timezone || currentTimeZone)
-                    .format(
-                      'MMM DD',
-                    )} (${candidateDetails?.timezone || currentTimeZone})</span>`
-                : '';
-              const bookingTime = item.title_meta['{time_format}']
-                ? `<span class="progress_date_section">${dayjs(
-                    item.title_meta['{time_format}'],
-                  )
-                    .tz(candidateDetails?.timezone || currentTimeZone)
-                    .format(
-                      'MMM DD, hh:mm A',
-                    )} (${candidateDetails?.timezone || currentTimeZone})</span>`
-                : '';
-              const candidateName = item.title_meta['{candidate}']
-                ? `<span class='mention'>@${item.title_meta['{candidate}'] || 'unknown'}</span>`
-                : '';
-              const location = item.title_meta['{location}'];
-              const errorMessage = item.title_meta['{err_msg}'];
               let callDetails = item.jsonb_data as {
                 audio_url: string;
                 transcript: {
@@ -113,18 +86,11 @@ function SubTaskProgress() {
                   key={i}
                   isTaskProgressVisible={true}
                   textTask={
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: String(item.title)
-                          .trim()
-                          .replaceAll('Pm', 'PM')
-                          .replaceAll('{candidate}', candidateName)
-                          .replaceAll('{date_format}', bookingDate)
-                          .replaceAll('{time_format}', bookingTime)
-                          .replaceAll('{location}', location)
-                          .replaceAll('{err_msg}', errorMessage),
-                      }}
-                    ></span>
+                    <ProgressTitle
+                      title={item.title}
+                      titleMetaData={item.title_meta}
+                      selectedTask={selectedTask}
+                    />
                   }
                   slotImage={
                     <ShowCode>

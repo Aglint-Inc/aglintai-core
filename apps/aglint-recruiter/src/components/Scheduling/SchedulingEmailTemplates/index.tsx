@@ -306,7 +306,7 @@ Aglint AI`,
     listing: 'Reschedule Request Notification to Organizer',
     heading: 'Reschedule Request Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [additionalRescheduleNotes]
+    [firstName], [lastName], [companyName], [jobTitle], [additionalRescheduleNotes], [dateRange]
     and [rescheduleReason].`,
     triggerInfo:
       'Sent to the interview organizer when a candidate requests to reschedule their interview.',
@@ -332,11 +332,11 @@ Aglint AI`,
     trigger:
       'Sent to the interview organizer when a candidate requests to reschedule their interview.',
   },
-  candidate_cancle_request: {
+  candidate_cancel_request: {
     listing: 'Interview Cancellation Notification to Organizer',
     heading: 'Interview Cancellation Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [recruiterName], [jobTitle], [additionalRescheduleNotes]
+    [firstName], [lastName], [recruiterName], [jobTitle], [additionalRescheduleNotes], [companyName]
     and [rescheduleReason].`,
     triggerInfo:
       'Sent to the interview organizer when a candidate cancels their interview.',
@@ -396,6 +396,6 @@ export const emailTempKeys: EmailTempPath[] = [
   'init_email_agent',
   'confirmation_mail_to_organizer',
   'candidate_reschedule_request',
-  'candidate_cancle_request',
+  'candidate_cancel_request',
   'recruiter_rescheduling_email',
 ];
