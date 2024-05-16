@@ -4,3 +4,8 @@ export type PauseType =
   | 'oneMonth'
   | 'threeMonth'
   | 'custom';
+
+export type TabsModuleMembers = {
+  name: string;
+  queryParams: 'members' | 'schedules' | 'instructions' | 'settings';
+};
