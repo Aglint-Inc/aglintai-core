@@ -122,7 +122,7 @@ import {
   mapScoreToAnalysis,
 } from '../../utils';
 // import ConversationCard from './ConversationCard';
-import { AnalysisPillComponent, ScreeningStatusComponent } from '..';
+import { AnalysisPillComponent, Insights, ScreeningStatusComponent } from '..';
 import ResumePreviewer from './ResumePreviewer';
 
 const ApplicationDetails = ({
@@ -522,6 +522,7 @@ export const NewCandidateDetails: React.FC<{
     <CandidateDetails
       slotInterviewScore={
         <>
+          <InsightsBlock application={application} />
           {overview.valid && (
             <OverviewBlock title={'Overview'} description={overview.value} />
           )}
@@ -556,6 +557,14 @@ export const NewCandidateDetails: React.FC<{
         </>
       }
     />
+  );
+};
+
+const InsightsBlock = ({ application }: { application: JobApplication }) => {
+  return (
+    <Stack direction={'row'} gap={1}>
+      <Insights application={application} />
+    </Stack>
   );
 };
 
