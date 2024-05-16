@@ -136,6 +136,7 @@ export const createCloneSession = async ({
       new_schedule_id: new_schedule_id,
     }));
 
+    const orgranizer_id = await getOrganizerId(application_id);
     const { error: errorInsertedMeetings } = await supabase
       .from('interview_meeting')
       .insert(
@@ -146,6 +147,7 @@ export const createCloneSession = async ({
             instructions: refSessions.find((s) => s.id === ses.id)
               ?.interview_module?.instructions,
             id: ses.new_meeting_id,
+            orgranizer_id,
           } as InterviewMeetingTypeDb;
         }),
       );
@@ -350,6 +352,7 @@ export const sendToCandidate = async ({
         }
       }
     } else {
+      const orgranizer_id = await getOrganizerId(selectedApplication.id);
       const { error: errorUpdatedMeetings } = await supabase
         .from('interview_meeting')
         .upsert(
@@ -360,6 +363,7 @@ export const sendToCandidate = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
+              orgranizer_id,
             })) as InterviewMeetingTypeDb[],
         );
 
@@ -612,7 +616,7 @@ export const scheduleWithAgent = async ({
         const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
           session_ids.includes(ses.id),
         );
-
+        const orgranizer_id = await getOrganizerId(application_id);
         const { error: errorUpdatedMeetings } = await supabase
           .from('interview_meeting')
           .upsert(
@@ -621,6 +625,7 @@ export const scheduleWithAgent = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
+              orgranizer_id,
             })) as InterviewMeetingTypeDb[],
           );
 
@@ -843,7 +848,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
         const selectedSessions = sessionsWithPlan.sessions.filter((ses) =>
           session_ids.includes(ses.id),
         );
-
+        const orgranizer_id = await getOrganizerId(application_id);
         const { error: errorUpdatedMeetings } = await supabase
           .from('interview_meeting')
           .upsert(
@@ -852,6 +857,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
               id: ses.interview_meeting.id,
               interview_schedule_id:
                 ses.interview_meeting.interview_schedule_id,
+              orgranizer_id,
             })) as InterviewMeetingTypeDb[],
           );
 
@@ -1361,4 +1367,22 @@ export const onClickResendInvite = async ({
   } catch (e) {
     toast.error(e.message);
   }
+};
+
+export const getOrganizerId = async (application_id: string) => {
+  const { data: app } = await supabase
+    .from('applications')
+    .select(
+      'public_jobs(interview_coordinator,recruiter,recruiting_coordinator,hiring_manager,sourcer)',
+    )
+    .eq('id', application_id)
+    .single();
+
+  const orgranizer_id =
+    app.public_jobs.recruiting_coordinator ||
+    app.public_jobs.interview_coordinator ||
+    app.public_jobs.hiring_manager ||
+    app.public_jobs.recruiter;
+
+  return orgranizer_id;
 };
