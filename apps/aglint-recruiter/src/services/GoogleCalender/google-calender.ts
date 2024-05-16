@@ -152,7 +152,7 @@ export class GoogleCalender {
       },
       sendNotifications: true,
     });
-    return response.data;
+    return response.data as CalendarEvent;
   }
   public async changeMeetingOrganizer(
     from_calender: string,

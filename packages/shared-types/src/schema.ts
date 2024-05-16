@@ -3757,6 +3757,8 @@ export type Database = {
       meeting_details: {
         Row: {
           break_duration: number | null
+          cal_event_id: string | null
+          candidate_feedback: Json | null
           confirmed_date: string | null
           created_at: string | null
           end_time: string | null
@@ -3765,6 +3767,7 @@ export type Database = {
           interview_schedule_id: string | null
           meeting_json: Json | null
           meeting_link: string | null
+          organizer_id: string | null
           session_duration: number | null
           session_id: string | null
           session_name: string | null
@@ -3776,6 +3779,27 @@ export type Database = {
             | null
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "public_interview_meeting_interview_schedule_id_fkey"
             columns: ["interview_schedule_id"]
