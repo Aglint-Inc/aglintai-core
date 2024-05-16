@@ -14,6 +14,7 @@ import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/applicati
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import {
   setDateRange,
@@ -180,6 +181,9 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
               placeholder: 'Start Date',
             },
           }}
+          slots={{
+            openPickerIcon: DateIcon,
+          }}
         />
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -201,6 +205,9 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
               margin: 'none',
               placeholder: 'End Date',
             },
+          }}
+          slots={{
+            openPickerIcon: DateIcon,
           }}
         />
       </LocalizationProvider>

@@ -21,6 +21,7 @@ import toast from '@/src/utils/toast';
 import { addScheduleActivity } from '../../../AllSchedules/queries/utils';
 import SchedulingOptionComp from '../../../AllSchedules/SchedulingApplication/Common/ScheduleOption';
 import { mailHandler } from '../../../AllSchedules/utils';
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { useScheduleDetails } from '../../hooks';
 import { ScheduleMeeting } from '../../types';
 
@@ -353,6 +354,9 @@ function RescheduleDialog({
                     placeholder: 'Start Date',
                   },
                 }}
+                slots={{
+                  openPickerIcon: DateIcon,
+                }}
               />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -372,6 +376,9 @@ function RescheduleDialog({
                     variant: 'outlined',
                     placeholder: 'End Date',
                   },
+                }}
+                slots={{
+                  openPickerIcon: DateIcon,
                 }}
               />
             </LocalizationProvider>
