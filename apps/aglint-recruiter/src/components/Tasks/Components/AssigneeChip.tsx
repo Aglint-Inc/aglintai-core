@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -16,9 +17,11 @@ import AssigneeDetailsCard, { LightTooltip } from './AssigneeDetailsCard';
 function AssigneeChip({
   assigneeId,
   disableHoverListener = false,
+  isOnlyName = false,
 }: {
   assigneeId: string;
   disableHoverListener?: boolean;
+  isOnlyName?: boolean;
 }) {
   const { members } = useAuthDetails();
   // const { data: members } = useInterviewerList();
@@ -46,12 +49,20 @@ function AssigneeChip({
           // TransitionComponent={Zoom}
           title={<AssigneeDetailsCard assigneeDetails={assigneeDetails} />}
         >
-          <Stack>
+          <Stack sx={{ cursor: 'pointer' }}>
             <ListCard
               isAvatarWithNameVisible={true}
               isListVisible={false}
               slotAvatarWithName={
-                assigneeDetails && (
+                assigneeDetails &&
+                (isOnlyName ? (
+                  <b>
+                    {getFullName(
+                      assigneeDetails.first_name,
+                      assigneeDetails.last_name,
+                    )}
+                  </b>
+                ) : (
                   <AvatarWithName
                     slotAvatar={
                       <MuiAvatar
@@ -82,7 +93,7 @@ function AssigneeChip({
                       </Stack>
                     }
                   />
-                )
+                ))
               }
             />
           </Stack>
