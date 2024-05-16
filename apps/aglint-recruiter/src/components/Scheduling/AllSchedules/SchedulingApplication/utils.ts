@@ -29,6 +29,7 @@ import {
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { getScheduleName } from '../../utils';
 import { addScheduleActivity } from '../queries/utils';
 import { mailHandler } from '../utils';
 import { fetchInterviewDataJob, fetchInterviewDataSchedule } from './hooks';
@@ -245,7 +246,11 @@ export const sendToCandidate = async ({
   user_tz: string;
 }) => {
   try {
-    const scheduleName = `Interview for ${selectedApplication.public_jobs.job_title} - ${selectedApplication.candidates.first_name}`;
+    const scheduleName = getScheduleName({
+      job_title: selectedApplication.public_jobs.job_title,
+      first_name: selectedApplication.candidates.first_name,
+      last_name: selectedApplication.candidates.last_name,
+    });
     const { data: checkSch, error: errorCheckSch } = await supabase
       .from('interview_schedule')
       .select('id')
@@ -500,7 +505,11 @@ export const scheduleWithAgent = async ({
           supabase,
         });
 
-        const scheduleName = `Interview for ${sessionsWithPlan.application.public_jobs.job_title} - ${sessionsWithPlan.application.candidates.first_name}`;
+        const scheduleName = getScheduleName({
+          job_title: sessionsWithPlan.application.public_jobs.job_title,
+          first_name: sessionsWithPlan.application.candidates.first_name,
+          last_name: sessionsWithPlan.application.candidates.last_name,
+        });
 
         const createCloneRes = await createCloneSession({
           is_get_more_option: false,
@@ -740,7 +749,11 @@ export const scheduleWithAgentWithoutTaskId = async ({
           supabase,
         });
 
-        const scheduleName = `Interview for ${sessionsWithPlan.application.public_jobs.job_title} - ${sessionsWithPlan.application.candidates.first_name}`;
+        const scheduleName = getScheduleName({
+          job_title: sessionsWithPlan.application.public_jobs.job_title,
+          first_name: sessionsWithPlan.application.candidates.first_name,
+          last_name: sessionsWithPlan.application.candidates.last_name,
+        });
 
         const createCloneRes = await createCloneSession({
           is_get_more_option: false,
