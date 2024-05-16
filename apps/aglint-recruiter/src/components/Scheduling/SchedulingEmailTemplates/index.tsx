@@ -284,8 +284,8 @@ Cheers,
     listing: 'Interview Confirmation to Organizer',
     heading: 'Interview Confirmation to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
-    and [pickYourSlotLink].`,
+    [firstName], [lastName], [companyName], [recruiterName]
+    and [meetingLink].`,
     triggerInfo:
       'Sent to the interview organizer when an interview is successfully scheduled.',
     description:
@@ -306,8 +306,8 @@ Aglint AI`,
     listing: 'Reschedule Request Notification to Organizer',
     heading: 'Reschedule Request Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
-    and [pickYourSlotLink].`,
+    [firstName], [lastName], [companyName], [jobTitle], [additionalRescheduleNotes]
+    and [rescheduleReason].`,
     triggerInfo:
       'Sent to the interview organizer when a candidate requests to reschedule their interview.',
     description:
@@ -336,8 +336,8 @@ Aglint AI`,
     listing: 'Interview Cancellation Notification to Organizer',
     heading: 'Interview Cancellation Notification to Organizer',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
-    and [pickYourSlotLink].`,
+    [firstName], [lastName], [recruiterName], [jobTitle], [additionalRescheduleNotes]
+    and [rescheduleReason].`,
     triggerInfo:
       'Sent to the interview organizer when a candidate cancels their interview.',
     description:
@@ -365,8 +365,8 @@ Aglint AI
     listing: 'Recruiter Reschedule Email Template',
     heading: 'Recruiter Reschedule Email Template',
     dynamicContent: `For dynamic content, utilize placeholders like
-    [firstName], [lastName], [companyName], [jobTitle], [scheduleName]
-    and [pickYourSlotLink].`,
+    [firstName], [lastName], [companyName], [jobTitle], [scheduleName],[pickYourSlotLink]
+    and [recruiterRescheduleReason].`,
     triggerInfo: 'Recruiter sending mail to candidate for rescheduling',
     description:
       'This template is used for sending mail to candidate about rescheduling. Ensure to include clear instructions and personalize the email for better engagement.',
