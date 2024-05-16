@@ -264,7 +264,7 @@ const getOptions = (type: keyof Defaults) => {
       acc.push({ name: label, value });
       return acc;
     },
-    [] as { name: string; value: string | number }[],
+    [] as { name: string; value: string }[],
   );
 };
 
