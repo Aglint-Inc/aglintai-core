@@ -20,7 +20,9 @@ export const getPaginationDB = async ({
       text_search_filter: filter.textSearch,
       job_id_filter: filter.job_ids?.length > 0 ? filter.job_ids : null,
       cord_ids:
-        filter.coordinator_ids?.length > 0 ? filter.coordinator_ids : null,
+        filter.coordinator_ids?.length > 0
+          ? filter.coordinator_ids.map((user) => user.user_id)
+          : null,
       status_filter: filter.status.length > 0 ? filter.status : null,
       schedule_type_filter:
         filter.scheduleType.length > 0 ? filter.scheduleType : null,

@@ -2,6 +2,8 @@ import { InterviewSession } from '@aglint/shared-types';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { UserType } from './Filters/FilterCordinator';
+
 export interface FilterCandidateState {
   filter: {
     status?: ('not_scheduled' | 'ongoing' | 'completed')[];
@@ -10,7 +12,7 @@ export interface FilterCandidateState {
     dateRange?: string;
     textSearch?: string;
     sortBy?: 'asc' | 'desc';
-    coordinator_ids?: string[];
+    coordinator_ids?: UserType[];
     scheduleType?: InterviewSession['schedule_type'][];
   };
   pagination: {
