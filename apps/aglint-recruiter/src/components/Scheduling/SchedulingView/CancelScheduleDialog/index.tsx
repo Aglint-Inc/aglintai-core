@@ -1,76 +1,64 @@
-import { Dialog } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
+import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
+import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 
+import { Checkbox } from '@/devlink';
 import { DeletePopup } from '@/devlink3';
-import { supabase } from '@/src/utils/supabase/client';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
+import toast from '@/src/utils/toast';
 
-import { ScheduleMeeting } from '../types';
+import { useScheduleDetails } from '../hooks';
 
 function CancelScheduleDialog({
-  isCancelOpen,
-  setIsCancelOpen,
-  schedule,
+  isDeclineOpen,
+  setIsDeclineOpen,
+  sessionRelation,
+  meeting_id,
+  session_id,
 }: {
-  isCancelOpen: boolean;
-  setIsCancelOpen: Dispatch<React.SetStateAction<boolean>>;
-  schedule: ScheduleMeeting;
+  isDeclineOpen: boolean;
+  setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
+  sessionRelation: InterviewSessionRelationTypeDB;
+  meeting_id: string;
+  session_id: string;
 }) {
-  const meeting_id = schedule?.interview_meeting?.id;
-  const session_id = schedule?.interview_session?.id;
-  const queryClient = useQueryClient();
-  const refetch = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['schedule_details', meeting_id],
-    });
-  };
+  const { recruiter, recruiterUser } = useAuthDetails();
 
-  const onClickCancel = async () => {
+  const [reason, setReason] = useState('');
+  const [notes, setNotes] = useState('');
+  const { refetch } = useScheduleDetails();
+  const reasons = recruiter.scheduling_reason.company.cancellation || [
+    'Too Many Interviews',
+    'Out of the office',
+    'Scheduling conflicts',
+    'Illness or emergency',
+  ];
+
+  useEffect(() => {
+    setReason('Too Many Interviews');
+  }, []);
+
+  const onClickConfirm = async () => {
     try {
-      if (meeting_id && session_id) {
-        const { data: checkFilterJson, error: errMeetFilterJson } =
-          await supabase
-            .from('interview_filter_json')
-            .select('*')
-            .contains('session_ids', [session_id]);
-
-        if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
-
-        if (checkFilterJson.length > 0) {
-          const updateDbArray = checkFilterJson.map((filterJson) => ({
-            ...filterJson,
-            session_ids: filterJson.session_ids.filter(
-              (id) => id !== schedule.interview_session.id,
-            ),
-          }));
-
-          const { error: errFilterJson } = await supabase
-            .from('interview_filter_json')
-            .upsert(updateDbArray);
-
-          if (errFilterJson) throw new Error(errFilterJson.message);
-        }
-
-        const { data, error: errMeet } = await supabase
-          .from('interview_meeting')
-          .update({
-            status: 'cancelled',
-          })
-          .eq('id', meeting_id)
-          .select();
-        if (errMeet) {
-          throw new Error(errMeet.message);
-        }
+      if (sessionRelation?.id) {
+        const req_body: ApiBodyParamsCancelSchedule = {
+          cancel_user_id: recruiterUser.user_id,
+          meeting_id,
+          session_id,
+          notes,
+          reason,
+        };
+        await axios.post('/api/scheduling/application/cancelschedule', {
+          ...req_body,
+        });
         refetch();
-        setIsCancelOpen(false);
-        if (data[0].meeting_json)
-          axios.post('/api/scheduling/v1/cancel_calender_event', {
-            calender_event: data[0].meeting_json,
-          });
       }
     } catch {
-      //
+      toast.error('Unable to save cancel reason');
+    } finally {
+      setIsDeclineOpen(false);
     }
   };
 
@@ -83,28 +71,64 @@ function CancelScheduleDialog({
           borderRadius: '10px',
         },
       }}
-      open={isCancelOpen}
+      open={isDeclineOpen}
       onClose={() => {
-        setIsCancelOpen(false);
+        setIsDeclineOpen(false);
       }}
     >
       <DeletePopup
-        textTitle={'Cancel Schedule'}
-        textDescription={
-          'Are you sure you want to cancel this schedule? This action cannot be undone. Please note, canceling will automatically send an email notification to the candidate.'
-        }
+        textTitle={'Decline Schedule'}
         isIcon={false}
+        isWidget={true}
+        slotWidget={
+          <Stack spacing={2} width={'100%'}>
+            <Typography variant='body2'>
+              Please provide a reason for reschedule.
+            </Typography>
+            <Stack spacing={1}>
+              {reasons.map((rea) => {
+                return (
+                  <Stack
+                    direction={'row'}
+                    key={rea}
+                    onClick={() => {
+                      setReason(rea);
+                    }}
+                    alignItems={'center'}
+                    spacing={1}
+                  >
+                    <Checkbox isChecked={rea === reason} />
+                    <Typography variant='body2' color={'#000'}>
+                      {rea}
+                    </Typography>
+                  </Stack>
+                );
+              })}
+            </Stack>
+
+            <Typography variant='body2'>Additional Notes</Typography>
+            <TextField
+              multiline
+              value={notes}
+              minRows={3}
+              placeholder='Add additional notes.'
+              onChange={(e) => {
+                setNotes(e.target.value);
+              }}
+            />
+          </Stack>
+        }
         onClickCancel={{
           onClick: () => {
-            setIsCancelOpen(false);
+            setIsDeclineOpen(false);
           },
         }}
         onClickDelete={{
           onClick: () => {
-            onClickCancel();
+            onClickConfirm();
           },
         }}
-        buttonText={'Cancel Schedule'}
+        buttonText={'Decline'}
       />
     </Dialog>
   );

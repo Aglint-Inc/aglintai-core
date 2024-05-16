@@ -100,6 +100,7 @@ export * from "./GeneralScheduleCard";
 export * from "./GraphBlock";
 export * from "./GraphButtonOption";
 export * from "./GroupFeedback";
+export * from "./HeaderWithSlot";
 export * from "./HistoryPill";
 export * from "./HistoryTrainingCard";
 export * from "./IconRegular";

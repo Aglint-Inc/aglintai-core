@@ -39,7 +39,7 @@ export default async function handler(
       const email = getEmail({
         candidateName: candidate.name,
         deadline: 'lol hour',
-        feedbackFormLink: 'link',
+        feedbackFormLink: `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/view?meeting_id=&tab=feedback`,
         interviewerName: receiver.name,
         jobTitle: job_title,
         sender: {
