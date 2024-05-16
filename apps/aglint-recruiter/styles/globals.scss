@@ -203,7 +203,7 @@ textarea::placeholder {
   display: -webkit-box !important;
   -webkit-box-orient: vertical;
   transition: 0.25s;
-  min-height: 80px;
+  min-height: auto;
   max-height: 1000px;
   word-wrap: break-word;
 }
