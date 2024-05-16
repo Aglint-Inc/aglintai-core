@@ -22,11 +22,12 @@
 }
 
 .allinterview_row_-candidate.new {
-  grid-template-columns: 50px 300px 500px 250px;
+  grid-template-columns: 0px 300px 500px 1fr;
 }
 
 .div-block-1704 {
   display: flex;
+  padding: 10px;
   justify-content: flex-start;
   align-items: center;
   grid-column-gap: 4px;

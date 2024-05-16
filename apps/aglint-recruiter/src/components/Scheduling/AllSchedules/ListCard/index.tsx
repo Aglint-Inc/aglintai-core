@@ -56,7 +56,7 @@ function ListCardInterviewSchedule({
       isSelected={isSelected}
       propsGrid={{
         style: {
-          gridTemplateColumns: isJobDasboard && '25% 25% 15% 20% 25%',
+          gridTemplateColumns: isJobDasboard && '60px 300px 250px 1fr',
         },
       }}
       isSchedulerTable={!isJobDasboard}

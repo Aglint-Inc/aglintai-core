@@ -76,7 +76,11 @@ export function AllInterview({
               {...propsGrid}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "allinterview_header_cell")}
+                className={_utils.cx(_styles, "div-block-1705")}
+                id={_utils.cx(
+                  _styles,
+                  "w-node-ca9e7092-a626-5182-aaa3-2cdcebc60fe2-c14c1a99"
+                )}
                 tag="div"
               >
                 <_Builtin.Block
@@ -91,6 +95,11 @@ export function AllInterview({
                     {slotCheckbox}
                   </_Builtin.Block>
                 ) : null}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "allinterview_header_cell")}
+                tag="div"
+              >
                 <_Builtin.Block tag="div">{"Candidates"}</_Builtin.Block>
               </_Builtin.Block>
               <_Builtin.Block
