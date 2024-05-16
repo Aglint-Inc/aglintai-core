@@ -184,7 +184,12 @@ function SchedulingViewComp() {
                 />
               }
               slotDarkPills={viewScheduleTabs
-                .filter((item) => !item.hide)
+                .filter(
+                  (item) =>
+                    !item.hide &&
+                    (item.tab !== 'feedback' ||
+                      schedule?.interview_meeting?.status === 'completed'),
+                )
                 .map((item, i: number) => {
                   return (
                     <NewTabPill
