@@ -74,3 +74,8 @@ export type APIFindAltenativeTimeSlotResponse = {
   user_id: string;
   is_exist: boolean;
 }[];
+
+export type APICandScheduleMailThankYou = {
+  filter_id: string;
+  cand_tz: string;
+};

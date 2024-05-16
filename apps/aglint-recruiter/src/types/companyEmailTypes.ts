@@ -31,7 +31,13 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
   candidate_cancel_request: never;
   recruiter_rescheduling_email: never;
   candidate_availability_request: never;
-  candidate_invite_confirmation: never;
+  candidate_invite_confirmation: {
+    '[companyName]': string;
+    '[schedule_name]': string;
+    '[firstName]': string;
+    '[jobTitle]': string;
+    '[viewDetailsLink]': string;
+  };
   debrief_calendar_invite: never;
   cancel_interview_session: never;
 }[T];
