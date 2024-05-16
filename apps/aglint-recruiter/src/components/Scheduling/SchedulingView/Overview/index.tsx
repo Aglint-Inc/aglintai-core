@@ -1,5 +1,7 @@
-import { InterviewFilterJsonType } from '@aglint/shared-types';
-import { APIEventAttendeeStatus } from '@aglint/shared-types';
+import {
+  APIEventAttendeeStatus,
+  InterviewFilterJsonType,
+} from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -10,7 +12,6 @@ import React, { Dispatch, useEffect, useState } from 'react';
 import { ButtonPrimaryRegular } from '@/devlink';
 import { StatusBadge } from '@/devlink2';
 import {
-  AvatarWithName,
   MembersList,
   RescheduleCard,
   ScheduleCard,
@@ -28,9 +29,10 @@ import IconScheduleType from '../../AllSchedules/ListCard/Icon';
 import { onClickResendInvite } from '../../AllSchedules/SchedulingApplication/utils';
 import { getScheduleType } from '../../AllSchedules/utils';
 import { getColorStatusSchedule } from '../../Modules/utils';
-import { convertTimeZoneToAbbreviation } from '../../utils';
+import { formatTimeWithTimeZone } from '../../utils';
 import { useScheduleDetails } from '../hooks';
 import { ScheduleMeeting } from '../types';
+import AllRolesMeetings from './AllRolesMeetings';
 import ChangeInterviewerDialog from './ChangeInterviewerDialog';
 import InterviewerListCard from './InterviewerListCard';
 import RescheduleDialog from './RescheduleDialog';
@@ -79,10 +81,9 @@ function Overview({
     const { data } = await supabase
       .from('interview_filter_json')
       .select('*')
-      .contains('session_ids', [schedule.interview_session.id])
-      .single();
+      .contains('session_ids', [schedule.interview_session.id]);
 
-    setFilterJson(data);
+    setFilterJson(data[0]);
   };
 
   const fetchCalendarStatus = async () => {
@@ -112,7 +113,7 @@ function Overview({
     recruiterUser.role === 'recruiter' ||
     recruiterUser.role === 'hiring_manager' ||
     recruiterUser.role === 'recruiting_coordinator' ||
-    recruiterUser.user_id === schedule.coordinator.id;
+    recruiterUser.user_id === schedule.interview_coordinator?.id;
 
   const confirmedUsers = users?.filter(
     (item) => item.interview_session_relation.is_confirmed,
@@ -144,6 +145,7 @@ function Overview({
         isScheduleCardVisible={
           isRescheduleCardVisible && cancelReasons?.length > 0
         }
+        isMeetingLinkVisible={schedule.interview_meeting.status == 'confirmed'}
         slotRescheduleCard={
           isRescheduleCardVisible &&
           cancelReasons?.length > 0 && (
@@ -174,8 +176,8 @@ function Overview({
                             item.recruiter_user.last_name,
                           )
                         : getFullName(
-                            item.candidate.first_name,
-                            item.candidate.last_name,
+                            item.candidate?.first_name,
+                            item.candidate?.last_name,
                           )
                     }
                     key={item.interview_session_cancel.id}
@@ -322,7 +324,6 @@ function Overview({
             </Stack>
           )
         }
-        isCoordinatorVisible={Boolean(schedule?.coordinator?.first_name)}
         textInterviewModuleLink={schedule.interview_session.name}
         isMembersVisible={confirmedUsers?.length > 0}
         slotMembers={confirmedUsers?.map((item) => {
@@ -336,30 +337,7 @@ function Overview({
             </>
           );
         })}
-        slotCoordinators={
-          schedule?.coordinator?.first_name && (
-            <AvatarWithName
-              isRoleVisible={false}
-              textName={getFullName(
-                schedule.coordinator.first_name,
-                schedule.coordinator.last_name,
-              )}
-              slotAvatar={
-                <MuiAvatar
-                  level={getFullName(
-                    schedule.coordinator.first_name,
-                    schedule.coordinator.last_name,
-                  )}
-                  src={schedule.coordinator.profile_image}
-                  variant={'circular'}
-                  width={'100%'}
-                  height={'100%'}
-                  fontSize={'14px'}
-                />
-              }
-            />
-          )
-        }
+        slotHeaderWithSlot={<AllRolesMeetings schedule={schedule} />}
         onClickCancelSchedule={{
           onClick: () => {
             setIsCancelOpen(true);
@@ -399,11 +377,11 @@ function Overview({
             textPlatformName={getScheduleType(
               schedule.interview_session.schedule_type,
             )}
-            textDuration={`${dayjs(
-              schedule.interview_meeting.start_time,
-            ).format(
-              'hh:mm A',
-            )} - ${dayjs(schedule.interview_meeting.end_time).format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`}
+            textDuration={formatTimeWithTimeZone({
+              start_time: schedule.interview_meeting.start_time,
+              end_time: schedule.interview_meeting.end_time,
+              timeZone: userTzDayjs.tz.guess(),
+            })}
             slotPlatformIcon={
               <IconScheduleType
                 type={schedule.interview_session.schedule_type}
@@ -467,8 +445,8 @@ function Overview({
                       application_id: schedule.applications.id,
                       candidate_email: schedule.candidates.email,
                       candidate_name: getFullName(
-                        schedule.coordinator.first_name,
-                        schedule.coordinator.last_name,
+                        schedule.candidates.first_name,
+                        schedule.candidates.last_name,
                       ),
                       job_title: schedule.job.job_title,
                       rec_email: recruiterUser.email,
@@ -494,9 +472,20 @@ function Overview({
               }
               isShadow={false}
               isReverseShadow={false}
-              textTime={''}
-              isButtonVisible={true}
+              textTime={formatTimeWithTimeZone({
+                start_time: schedule.interview_meeting.start_time,
+                end_time: schedule.interview_meeting.end_time,
+                timeZone: schedule.candidates.timezone,
+              })}
+              isButtonVisible={
+                schedule.interview_meeting.status === 'confirmed'
+              }
               isDesignationVisible={false}
+              isAcceptVisible={false}
+              isAcceptDeclineVisibe={false}
+              isDeclineVisible={false}
+              isWrongVisible={false}
+              isDetailVisible={false}
             />
           </>
         }

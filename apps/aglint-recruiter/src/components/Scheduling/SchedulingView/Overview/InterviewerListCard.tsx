@@ -8,11 +8,12 @@ import { MemberDetail, MembersList } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { calculateHourDifference } from '../../Modules/utils';
-import { convertTimeZoneToAbbreviation } from '../../utils';
+import { formatTimeWithTimeZone } from '../../utils';
 import { ScheduleMeeting } from '../types';
 
 function InterviewerListCard({
@@ -66,7 +67,6 @@ function InterviewerListCard({
   }, 0);
   const weeklyNumber = allMeetings.length;
   const dailyNumber = dailyMeetings.length;
-  const timeZone = item.scheduling_settings.timeZone.tzCode;
   const fullName =
     getFullName(item.first_name, item.last_name) +
     `${item.email === recruiterUser.email ? ' ( You )' : ''}`;
@@ -155,11 +155,11 @@ function InterviewerListCard({
             isShadow={
               item.interview_session_relation.training_type === 'shadow'
             }
-            textTime={`${dayjs(schedule.interview_meeting.start_time)
-              .tz(timeZone)
-              .format(
-                'hh:mm A',
-              )} - ${dayjs(schedule.interview_meeting.end_time).tz(timeZone).format('hh:mm A')} ${convertTimeZoneToAbbreviation(timeZone)}`}
+            textTime={formatTimeWithTimeZone({
+              start_time: schedule.interview_meeting.start_time,
+              end_time: schedule.interview_meeting.end_time,
+              timeZone: userTzDayjs.tz.guess(),
+            })}
           />
         </Stack>
       </CustomTooltip>

@@ -14,4 +14,6 @@ declare function CreateJob(props: {
   isLeverVisible?: Types.Visibility.VisibilityConditions;
   isGreenhouseConnected?: Types.Visibility.VisibilityConditions;
   isAshbyConnected?: Types.Visibility.VisibilityConditions;
+  onClickLinktoIntegration?: Types.Devlink.RuntimeProps;
+  isEmpty?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

@@ -6,11 +6,20 @@
 }
 
 .div-block-757 {
+  overflow: auto;
   width: 440px;
   padding-top: 20px;
   padding-right: 20px;
-  flex: 0 0 auto;
-  border-right: 1px solid #e9ebed;
+  padding-bottom: 30px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: #e9ebed;
+
+  height: calc(100vh - 60px);
 }
 
 .div-block-507 {
@@ -288,6 +297,21 @@
 
 .mt-20 {
   margin-top: 20px;
+}
+
+.fw-semibold.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .color-grey-600.max-width-350 {

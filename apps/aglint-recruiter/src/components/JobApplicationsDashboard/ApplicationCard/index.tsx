@@ -89,7 +89,7 @@ const ApplicationCard = ({
     (application?.candidate_files?.resume_json as any)?.overview ?? '---';
   const [key1, key2] = useMemo(
     () => [Math.random(), Math.random()],
-    [list.has(application.id)],
+    [isChecked],
   );
 
   const name = getCandidateDetails(application, 'name');
@@ -213,12 +213,10 @@ const DisqualificationComponent: React.FC<{ application: JobApplication }> = ({
     emailValidity: { isFetching, isValidEmail },
   } = application;
   const { views } = useJobApplications();
+  const memoDependency = JSON.stringify(application?.status_emails_sent ?? {});
   const { isNotInvited, timeInfo, disqualificationStatus } = useMemo(
     () => getDisqualificationStatus(application.status_emails_sent),
-    [
-      ...Object.values(application?.status_emails_sent ?? {}),
-      application.phone_screening,
-    ],
+    [memoDependency, application?.phone_screening],
   );
   if (!views.disqualified) return <></>;
   if (isFetching) return <FetchingEmail />;
@@ -291,7 +289,7 @@ export const ScreeningStatusComponent: React.FC<{
   );
 };
 
-const Insights = ({ application }: { application: JobApplication }) => {
+export const Insights = ({ application }: { application: JobApplication }) => {
   const jdScore = application.score_json as ScoreJson;
   if (jdScore?.badges) {
     const badgeList = badgePriority

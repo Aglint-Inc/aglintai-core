@@ -1713,6 +1713,7 @@ export type Database = {
       }
       interview_session_cancel: {
         Row: {
+          cancel_user_id: string | null
           created_at: string
           id: string
           is_resolved: boolean
@@ -1724,6 +1725,7 @@ export type Database = {
           type: Database["public"]["Enums"]["cancel_type"]
         }
         Insert: {
+          cancel_user_id?: string | null
           created_at?: string
           id?: string
           is_resolved?: boolean
@@ -1735,6 +1737,7 @@ export type Database = {
           type?: Database["public"]["Enums"]["cancel_type"]
         }
         Update: {
+          cancel_user_id?: string | null
           created_at?: string
           id?: string
           is_resolved?: boolean
@@ -1746,6 +1749,27 @@ export type Database = {
           type?: Database["public"]["Enums"]["cancel_type"]
         }
         Relationships: [
+          {
+            foreignKeyName: "interview_session_cancel_cancel_user_id_fkey"
+            columns: ["cancel_user_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_cancel_user_id_fkey"
+            columns: ["cancel_user_id"]
+            isOneToOne: false
+            referencedRelation: "meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_session_cancel_cancel_user_id_fkey"
+            columns: ["cancel_user_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "interview_session_cancel_schedule_id_fkey"
             columns: ["schedule_id"]

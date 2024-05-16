@@ -111,7 +111,7 @@ export function MembersList({
                     className={_utils.cx(_styles, "text-sm", "text-blue-500")}
                     tag="div"
                   >
-                    {"Resend Invite"}
+                    {"Resend Booking Link"}
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
@@ -131,7 +131,7 @@ export function MembersList({
                     className={_utils.cx(_styles, "text-sm", "text-blue-500")}
                     tag="div"
                   >
-                    {"Copy Invite"}
+                    {"Booking Link"}
                   </_Builtin.Block>
                 </_Builtin.Block>
               </_Builtin.Block>
