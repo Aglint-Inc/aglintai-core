@@ -24,4 +24,5 @@ declare function AllInterviewCard(props: {
   slotInterviewProgress?: Types.Devlink.Slot;
   isResumeScoreVisible?: Types.Visibility.VisibilityConditions;
   slotResumeScore?: Types.Devlink.Slot;
+  onClickCard?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

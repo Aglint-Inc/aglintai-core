@@ -291,7 +291,7 @@ export const ScreeningStatusComponent: React.FC<{
   );
 };
 
-const Insights = ({ application }: { application: JobApplication }) => {
+export const Insights = ({ application }: { application: JobApplication }) => {
   const jdScore = application.score_json as ScoreJson;
   if (jdScore?.badges) {
     const badgeList = badgePriority

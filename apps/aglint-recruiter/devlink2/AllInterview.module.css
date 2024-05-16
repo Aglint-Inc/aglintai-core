@@ -97,13 +97,32 @@
   grid-auto-columns: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
-  grid-template-columns: 350px 500px 250px;
+  grid-template-columns: 0px 300px 500px 1fr;
   grid-template-rows: auto;
 
   border-top: 1px solid #e9ebed;
   border-bottom: 1px solid #e9ebed;
 
   background-color: #f8f9f9;
+}
+
+.div-block-1705 {
+  display: flex;
+  padding: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+}
+
+.div-block-1312 {
+  width: 14px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.div-block-958 {
+  margin-right: 4px;
 }
 
 .allinterview_header_cell {
@@ -136,16 +155,6 @@
   display: none;
 }
 
-.div-block-1312 {
-  width: 14px;
-  height: 16px;
-  flex: 0 0 auto;
-}
-
-.div-block-958 {
-  margin-right: 4px;
-}
-
 .div-block-1281 {
   display: flex;
   width: 100%;
@@ -156,6 +165,12 @@
   width: 100%;
   padding-bottom: 60px;
   flex-direction: column;
+}
+
+.slot_sidebar {
+  overflow: auto;
+  height: 100%;
+  border-left: 1px solid #e9ebed;
 }
 
 .job-page-nav-bar {
@@ -183,6 +198,8 @@
   pointer-events: none;
 }
 
+#w-node-ca9e7092-a626-5182-aaa3-2cdcebc60fe2-c14c1a99 {
+}
 #w-node-_1206b53c-3245-8e51-7784-7c98c4fc8df1-c14c1a99 {
 }
 #w-node-a2101a74-75c9-d4a3-527f-b366428e8058-c14c1a99 {
