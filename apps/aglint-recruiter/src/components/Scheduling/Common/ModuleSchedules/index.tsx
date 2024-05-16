@@ -83,7 +83,9 @@ function ModuleSchedules({
       }}
       slotInterviewCard={
         <ShowCode>
-          <ShowCode.When isTrue={isFetched && newScheduleList?.length === 0}>
+          <ShowCode.When
+            isTrue={isFetched && newFilterSchedules()?.length === 0}
+          >
             <AllInterviewEmpty textDynamic='No schedule found' />
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
