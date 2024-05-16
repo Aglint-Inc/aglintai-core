@@ -5,6 +5,7 @@ import { InterviewMemberList, ModuleMembers } from '@/devlink2';
 import { NewTabPill } from '@/devlink3';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
+import { pages } from '@/src/utils/pageRouting';
 
 import ModuleSchedules from '../../../Common/ModuleSchedules';
 import {
@@ -16,10 +17,13 @@ import { ModuleType } from '../../types';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
 import InstructionsComp from '../Instructions';
+import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
+import { TabsModuleMembers } from '../type';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
+import { tabsModuleMembers } from './utils';
 
 interface SlotBodyCompProps {
   editModule: ModuleType;
@@ -45,10 +49,7 @@ function SlotBodyComp({
     user_ids: editModule?.relations?.map((user) => user.user_id) || [],
   });
 
-  const tab = (router.query.tab || 'members') as
-    | 'members'
-    | 'schedules'
-    | 'intructions';
+  const currentTab = router.query.tab as TabsModuleMembers['queryParams'];
 
   return (
     <>
@@ -66,58 +67,38 @@ function SlotBodyComp({
           <InterviewMemberList
             slotNewTabPill={
               <Stack direction={'row'}>
-                <NewTabPill
-                  textLabel={'Members'}
-                  isPillActive={tab === 'members'}
-                  onClickPill={{
-                    onClick: () => {
-                      router.push(
-                        `/scheduling/module/members/${editModule.id}?tab=members`,
-                        undefined,
-                        {
-                          shallow: true,
+                {tabsModuleMembers.map((tab) => {
+                  return (
+                    <NewTabPill
+                      key={tab.queryParams}
+                      textLabel={tab.name}
+                      isPillActive={
+                        currentTab === tab.queryParams ||
+                        (!currentTab && tab.queryParams == 'members')
+                      }
+                      onClickPill={{
+                        onClick: () => {
+                          router.push(
+                            pages['/scheduling/module/members/[module_id]']({
+                              module_id: editModule.id,
+                            }) + `?tab=${tab.queryParams}`,
+                            undefined,
+                            {
+                              shallow: true,
+                            },
+                          );
                         },
-                      );
-                    },
-                  }}
-                />
-                <NewTabPill
-                  textLabel={'Schedules'}
-                  isPillActive={tab === 'schedules'}
-                  onClickPill={{
-                    onClick: () => {
-                      router.push(
-                        `/scheduling/module/members/${editModule.id}?tab=schedules`,
-                        undefined,
-                        {
-                          shallow: true,
-                        },
-                      );
-                    },
-                  }}
-                />
-                <NewTabPill
-                  textLabel={'Instructions'}
-                  isPillActive={tab === 'intructions'}
-                  onClickPill={{
-                    onClick: () => {
-                      router.push(
-                        `/scheduling/module/members/${editModule.id}?tab=intructions`,
-                        undefined,
-                        {
-                          shallow: true,
-                        },
-                      );
-                    },
-                  }}
-                />
+                      }}
+                    />
+                  );
+                })}
               </Stack>
             }
             textDepartment={editModule.department || '--'}
             textObjective={editModule.description || 'No description'}
             slotModuleContent={
               <>
-                {tab === 'members' && (
+                {(currentTab === 'members' || !currentTab) && (
                   <ModuleMembers
                     isMembersTrainingVisible={
                       editModule.settings?.require_training
@@ -150,17 +131,19 @@ function SlotBodyComp({
                     }}
                   />
                 )}
-                {tab === 'schedules' && (
-                  <Stack height={'calc(100vh - 232px)'}>
-                    <ModuleSchedules
-                      newScheduleList={scheduleList}
-                      isFetched={isFetched}
-                    />
-                  </Stack>
+                {currentTab === 'schedules' && (
+                  <ModuleSchedules
+                    newScheduleList={scheduleList}
+                    isFetched={isFetched}
+                  />
                 )}
 
-                {tab === 'intructions' && (
+                {currentTab === 'instructions' && (
                   <InstructionsComp editModule={editModule} />
+                )}
+
+                {currentTab === 'settings' && (
+                  <ModuleSettingComp editModule={editModule} />
                 )}
               </>
             }

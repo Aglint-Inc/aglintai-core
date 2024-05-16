@@ -36,6 +36,7 @@ function PriorityList({
       <Stack
         sx={{
           cursor: 'pointer',
+          width: '100%',
         }}
         onClick={handleClick}
       >
@@ -58,7 +59,7 @@ function PriorityList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',

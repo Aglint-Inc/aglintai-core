@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { Autocomplete, InputAdornment, Stack } from '@mui/material';
-import { capitalize } from 'lodash';
 import Image from 'next/image';
 import React, { FC, memo } from 'react';
 
@@ -238,24 +237,31 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobLocation.displayName = 'JobLocation';
 
 type Defaults = {
-  [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: Form[id]['value'][];
+  [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: {
+    value: Form[id]['value'];
+    label: string;
+  }[];
 };
 
 const defaults: Defaults = {
   job_type: [
-    'contract',
-    'full time',
-    'internship',
-    'part time',
-    'temporary',
-    'volunteer',
+    { value: 'contract', label: 'Contract' },
+    { value: 'full time', label: 'Full-time' },
+    { value: 'internship', label: 'Internship' },
+    { value: 'part time', label: 'Part-time' },
+    { value: 'temporary', label: 'Temporary' },
+    { value: 'volunteer', label: 'Volunteer' },
   ],
-  workplace_type: ['hybrid', 'off site', 'on site'],
+  workplace_type: [
+    { value: 'hybrid', label: 'Hybrid' },
+    { value: 'off site', label: 'Off-site' },
+    { value: 'on site', label: 'On-site' },
+  ],
 };
 const getOptions = (type: keyof Defaults) => {
   return defaults[type].reduce(
-    (acc, curr) => {
-      acc.push({ name: capitalize(curr), value: curr });
+    (acc, { label, value }) => {
+      acc.push({ name: label, value });
       return acc;
     },
     [] as { name: string; value: string | number }[],
@@ -293,10 +299,29 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
 });
 JobDepartment.displayName = 'JobDepartment';
 
+type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
+
+const roles = {
+  hiring_manager: () => [...new Set<Roles>(['admin', 'hiring_manager'])],
+  recruiter: () => [
+    ...new Set<Roles>([
+      ...roles.hiring_manager(),
+      'recruiting_coordinator',
+      'recruiter',
+      'sourcer',
+    ]),
+  ],
+  recruiting_coordinator: () => [...new Set<Roles>([...roles.recruiter()])],
+  sourcer: () => [...new Set<Roles>([...roles.recruiter()])],
+} as const as {
+  // eslint-disable-next-line no-unused-vars
+  [id in Roles]: () => Roles[];
+};
+
 const JobCoordinator: FC<MetaForms> = memo(({ name, onChange, value }) => {
   const { data } = useCompanyMembers();
   const options = data
-    .filter(({ role }) => role === name)
+    .filter(({ role }) => (roles[name] ?? (() => []))().includes(role))
     .map((c) => ({
       name: getFullName(c.first_name, c.last_name),
       value: c.user_id,

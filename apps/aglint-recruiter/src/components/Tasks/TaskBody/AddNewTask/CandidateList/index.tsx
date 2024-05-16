@@ -40,6 +40,7 @@ function CandidateList({
       <Stack
         sx={{
           cursor: 'pointer',
+          width: '100%',
         }}
         onClick={handleClick}
       >
@@ -82,7 +83,7 @@ function CandidateList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',

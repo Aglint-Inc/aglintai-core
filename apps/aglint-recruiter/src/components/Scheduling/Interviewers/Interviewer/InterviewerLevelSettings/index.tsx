@@ -564,7 +564,7 @@ function InterviewerLevelSettings({
                         }
                       });
                     }}
-                    path='softConflictsKeywords'
+                    path='outOfOfficekeywords'
                     type='string'
                   />
                 }
@@ -618,7 +618,7 @@ function InterviewerLevelSettings({
                         }
                       });
                     }}
-                    path='softConflictsKeywords'
+                    path='recruitingBlocksKeywords'
                     type='string'
                   />
                 }

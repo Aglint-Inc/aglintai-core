@@ -34,13 +34,18 @@ function AssigneeList({
   return (
     <>
       <Stack
+        direction={'row'}
         sx={{
           cursor: 'pointer',
+          width: '100%',
         }}
         onClick={handleClick}
       >
         {selectedAssignee ? (
-          <AssigneeChip assigneeId={selectedAssignee.user_id} />
+          <AssigneeChip
+            disableHoverListener={true}
+            assigneeId={selectedAssignee.user_id}
+          />
         ) : (
           <Typography variant='caption' fontSize={'14px'}>
             Select an agent or member
@@ -54,7 +59,7 @@ function AssigneeList({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',

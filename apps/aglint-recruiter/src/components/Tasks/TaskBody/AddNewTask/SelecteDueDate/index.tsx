@@ -33,7 +33,7 @@ function SelectDueDate({
 
   return (
     <>
-      <Stack onClick={handleClick}>
+      <Stack width={'100%'} onClick={handleClick}>
         {selectedDueDate ? (
           <>{`${dayjs(selectedDueDate).format('MMM DD, YYYY')}`}</>
         ) : (
@@ -47,7 +47,7 @@ function SelectDueDate({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
