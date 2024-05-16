@@ -3,44 +3,67 @@ import { pageRoutes } from '@utils/pageRouting';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { LoaderSvg } from '@/devlink';
 import Seo from '@/src/components/Common/Seo';
-import {
-  handleEmail,
-  stepObj,
-} from '@/src/components/SignUpComp/SlideSignup/utils';
-import {
-  AuthProvider,
-  useAuthDetails,
-} from '@/src/context/AuthContext/AuthContext';
+import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
+import { Session } from '@/src/context/AuthContext/types';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 export default function Loading() {
-  const { userDetails, handleLogout } = useAuthDetails();
   const router = useRouter();
 
   useEffect(() => {
-    handleUser();
-  }, [userDetails]);
+    getSupabaseSession();
+  }, []);
 
-  const handleUser = async () => {
+  async function getSupabaseSession() {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+      toast.error('Unable to login. Please try again later.');
+      handleLogout();
+    }
+    if (data?.session) {
+      handleUser({
+        userDetails: data?.session,
+      });
+    } else {
+      toast.error('Session not found');
+      handleLogout();
+    }
+  }
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut({
+      scope: 'local',
+    });
+    if (!error) {
+      router.push(pageRoutes.LOGIN);
+    }
+  };
+
+  const handleUser = async ({ userDetails }: { userDetails: Session }) => {
     try {
       if (userDetails?.user?.id) {
         if (
-          handleEmail(userDetails.user.email).error &&
-          (await checkRelation())
-        ) {
-          await axios.post('/api/supabase/deleteuser', {
+          await checkRelation({
             user_id: userDetails?.user?.id,
+          })
+        ) {
+          await handleAuthRoute({
+            userDetails: userDetails,
           });
-          toast.error('Please signup with company email.');
+        } else {
+          await axios.post('/api/supabase/deleteuser', {
+            user_id: userDetails.user.id,
+          });
+          toast.error(
+            'Please reach out to your admin or the Aglint support team.',
+          );
           await handleLogout();
           return;
-        } else {
-          await createUser();
         }
       } else {
         toast.error('Unable to login. Please try again.');
@@ -54,28 +77,28 @@ export default function Loading() {
     }
   };
 
-  const checkRelation = async () => {
+  const checkRelation = async ({ user_id }: { user_id: string }) => {
     const { data, error } = await supabase
       .from('recruiter_relation')
       .select('*')
-      .eq('user_id', userDetails?.user?.id);
+      .eq('user_id', user_id);
     if (error) {
       throw new Error(error.message);
     } else {
       if (data.length == 0) {
-        return true;
-      } else {
         return false;
+      } else {
+        return true;
       }
     }
   };
 
-  const createUser = async () => {
-    if (!userDetails?.user?.id) return;
+  const handleAuthRoute = async ({ userDetails }: { userDetails: Session }) => {
     try {
       const relationData = await getRelationsDetails({
         user_id: userDetails.user.id,
       });
+
       if (relationData?.recruiter_user) {
         if (userDetails?.user.user_metadata?.is_invite === 'true') {
           await supabase.auth.updateUser({
@@ -114,52 +137,6 @@ export default function Loading() {
         } catch {
           router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
         }
-      } else {
-        const { error: erroruser } = await supabase
-          .from('recruiter_user')
-          .insert({
-            user_id: userDetails.user.id,
-            email: userDetails.user.user_metadata.email,
-            first_name: splitFullName(userDetails.user.user_metadata.full_name)
-              .firstName,
-            last_name: !userDetails.user.user_metadata.first_name
-              ? splitFullName(userDetails.user.user_metadata.full_name).lastName
-              : userDetails.user.user_metadata.last_name,
-            role: 'admin',
-            profile_image: !userDetails.user.user_metadata.image_url
-              ? null
-              : userDetails.user.user_metadata.image_url,
-            phone: !userDetails.user.user_metadata.phone
-              ? ''
-              : userDetails.user.user_metadata.phone,
-          })
-          .select();
-
-        if (!erroruser) {
-          const rec_id = uuidv4();
-
-          await supabase.from('recruiter').insert({
-            email: userDetails.user.email,
-            name:
-              userDetails?.user.user_metadata?.custom_claims?.hd?.replace(
-                '.com',
-                '',
-              ) || '',
-            id: rec_id,
-          });
-
-          const { error } = await supabase.rpc('createrecuriterrelation', {
-            in_recruiter_id: rec_id,
-            in_user_id: userDetails.user.id,
-            in_is_active: true,
-          });
-
-          if (error) {
-            throw new Error(error.message);
-          }
-
-          router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
-        }
       }
     } catch {
       router.push(pageRoutes.LOGIN);
@@ -180,10 +157,6 @@ export default function Loading() {
     </Box>
   );
 }
-
-Loading.privateProvider = function privateProvider(page) {
-  return <AuthProvider>{page}</AuthProvider>;
-};
 
 Loading.publicProvider = (page) => {
   return <>{page}</>;
