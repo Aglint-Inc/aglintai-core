@@ -2,7 +2,6 @@ const { v4: uuidv4 } = require('uuid');
 
 import {
   CompServiceKeyCred,
-  InterviewSession,
   NewCalenderEvent,
   RecruiterUserType,
   SessionCombinationRespType,

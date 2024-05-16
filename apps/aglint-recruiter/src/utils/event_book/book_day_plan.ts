@@ -17,17 +17,15 @@ import { CandidatesScheduling } from '@/src/services/CandidateSchedule/Candidate
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
+import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
 import { assignCandidateSlot } from '../scheduling_v2/assignCandidateSlot';
 import { updateTrainingStatus } from '../scheduling_v2/update_training_status';
 import { supabaseAdmin } from '../supabase/supabaseAdmin';
-import { CalEventAttendeesAuthDetails, bookSession } from './book_session';
+import { bookSession, CalEventAttendeesAuthDetails } from './book_session';
 import { fetchMeetingsInfo } from './fetchMeetingsInfo';
-import { getCalEventDescription } from './getCalEventDescription';
-import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
 
 export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
-  let { candidate_plan, recruiter_id, user_tz, is_debreif, schedule_id } =
-    req_body;
+  let { candidate_plan, recruiter_id, user_tz, is_debreif } = req_body;
   const all_sess_ids: string[] = candidate_plan.reduce((tot, curr) => {
     return [...tot, ...curr.sessions.map((s) => s.session_id)];
   }, []);
