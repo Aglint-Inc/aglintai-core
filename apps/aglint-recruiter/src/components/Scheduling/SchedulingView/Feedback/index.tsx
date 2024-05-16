@@ -72,6 +72,7 @@ const FeedbackWindow = ({
   interview_sessions: FeedbackWindowInterviewersType[string][number]['session'][];
   candidate: { name: string; email: string; job_id: string };
 }) => {
+
   const {
     data: relationsData,
     isLoading,
@@ -82,7 +83,7 @@ const FeedbackWindow = ({
 
   const { isAllowed, userDetails } = useAuthDetails();
   const user_id = userDetails?.user.id;
-  const { data: members, isFetching } = useAllInterviewersDetails();
+  const { data: members, isLoading: isFetching } = useAllInterviewersDetails();
 
   const tempRelations = useMemo(() => {
     const tempData = (
@@ -181,7 +182,14 @@ const FeedbackWindow = ({
             <DynamicLoader />
           </Stack>
         </ShowCode.When>
-        <ShowCode.When isTrue={isAllowed(['admin'])}>
+        <ShowCode.When
+          isTrue={isAllowed([
+            'admin',
+            'recruiter',
+            'recruiting_coordinator',
+            'hiring_manager',
+          ])}
+        >
           <></>
           <AdminFeedback
             {...{
