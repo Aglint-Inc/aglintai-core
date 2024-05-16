@@ -1,6 +1,6 @@
 {
   "root": true,
-  "plugins": ["simple-import-sort", "jsx-a11y"],
+  "plugins": ["simple-import-sort", "eslint-plugin-react-compiler", "jsx-a11y"],
   "env": {
     "es6": true
   },
@@ -26,7 +26,8 @@
     "react-hooks/exhaustive-deps": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": "error"
+    "simple-import-sort/imports": "error",
+    "react-compiler/react-compiler": 2
   },
   "settings": {
     "next": {
