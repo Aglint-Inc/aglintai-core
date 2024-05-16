@@ -294,6 +294,7 @@ const NewJobApplicationSideDrawer = ({
   const interviewEnabled =
     (interviewPlanEnabled?.data ?? false) &&
     (application?.emailValidity?.isValidEmail ?? false);
+  const memoDependency = JSON.stringify(views);
   const tabs = useMemo(
     () =>
       (
@@ -330,7 +331,7 @@ const NewJobApplicationSideDrawer = ({
             isPillActive={tab === t}
           />
         )),
-    [tab, JSON.stringify(views), interviewEnabled],
+    [tab, memoDependency, interviewEnabled],
   );
   return (
     <>
