@@ -19,9 +19,12 @@
   flex-direction: column;
 }
 
+.div-block-981 {
+  z-index: 2;
+  background-color: white;
+}
+
 .cv-sidebar-header-block {
-  position: sticky;
-  top: 0px;
   z-index: 2;
 
   display: flex;
@@ -986,6 +989,11 @@
   margin-bottom: 20px;
   padding-right: 16px;
   padding-left: 16px;
+}
+
+.div-block-982 {
+  overflow: auto;
+  height: calc(100vh - 143px);
 }
 
 .slot-candidate-details {
