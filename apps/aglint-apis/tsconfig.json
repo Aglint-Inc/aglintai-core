@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "rootDir": ".",
     "outDir": "dist",
     "target": "es2021",
     "esModuleInterop": true,
@@ -11,6 +10,7 @@
     "noImplicitReturns": false,
     "lib": ["ES2021.String"],
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "@routes/*": ["./src/routes/*"],
       "@/*": ["./src/*"],

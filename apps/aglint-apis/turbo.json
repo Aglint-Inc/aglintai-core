@@ -20,6 +20,9 @@
     },
     "test": {
       "dotEnv": [".env.test.local", ".env.test", ".env"]
+    },
+    "start:development": {
+      "dotEnv": [".env.test.local", ".env.test", ".env"]
     }
   }
 }
