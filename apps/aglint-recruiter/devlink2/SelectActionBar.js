@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
@@ -24,6 +25,7 @@ export function SelectActionBar({
   isDisqualifyVisible = false,
   onclickDisqualify = {},
   onClickDelete = {},
+  onClickNew = {},
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -38,15 +40,10 @@ export function SelectActionBar({
           tag="div"
           {...onClickClear}
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "icon-block", "_30x30")}
-            tag="div"
-          >
-            <_Builtin.HtmlEmbed
-              className={_utils.cx(_styles, "svg-icon")}
-              value="%3Csvg%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M10.1562%2010.8438L6%206.71875L1.875%2010.8438C1.625%2011.0312%201.38542%2011.0312%201.15625%2010.8438C0.96875%2010.6146%200.96875%2010.3854%201.15625%2010.1562L5.28125%206L1.15625%201.875C0.96875%201.625%200.96875%201.38542%201.15625%201.15625C1.38542%200.96875%201.625%200.96875%201.875%201.15625L6%205.28125L10.1562%201.15625C10.3854%200.96875%2010.6146%200.96875%2010.8438%201.15625C11.0312%201.38542%2011.0312%201.625%2010.8438%201.875L6.71875%206L10.8438%2010.1562C11.0312%2010.3854%2011.0312%2010.6146%2010.8438%2010.8438C10.6146%2011.0312%2010.3854%2011.0312%2010.1562%2010.8438Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
-            />
-          </_Builtin.Block>
+          <_Builtin.HtmlEmbed
+            className={_utils.cx(_styles, "svg-icon")}
+            value="%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%23D93F4C%22%2F%3E%0A%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5%209C4.44772%209%204%208.55228%204%208C4%207.44772%204.44772%207%205%207H11C11.5523%207%2012%207.44772%2012%208C12%208.55228%2011.5523%209%2011%209H5Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E"
+          />
         </_Builtin.Block>
         <_Builtin.Block tag="div">{textSelected}</_Builtin.Block>
         {isSelectAllVisible ? (
@@ -59,9 +56,23 @@ export function SelectActionBar({
           </_Builtin.Block>
         ) : null}
       </_Builtin.Block>
-      <_Builtin.Block tag="div">
-        {slotDropdown ?? <SelectActionsDropdown />}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1696")}
+        tag="div"
+      />
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1697")}
+        tag="div"
+      >
+        <_Builtin.Block tag="div">{"Move to :"}</_Builtin.Block>
+        <_Builtin.Block tag="div">
+          {slotDropdown ?? <SelectActionsDropdown />}
+        </_Builtin.Block>
       </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "div-block-1696")}
+        tag="div"
+      />
       {isSendScreeningVisible ? (
         <_Builtin.Block
           className={_utils.cx(_styles, "send-screening-btn", "clickable")}

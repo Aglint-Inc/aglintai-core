@@ -287,6 +287,7 @@ export * from "./SessionList";
 export * from "./ShadowSession";
 export * from "./ShadowSessionCard";
 export * from "./ShortAnswerQuestion";
+export * from "./ShowFilterButton";
 export * from "./SideDrawerBlock";
 export * from "./SidebarAnalysisBlock";
 export * from "./SidebarBlockConfirmed";
