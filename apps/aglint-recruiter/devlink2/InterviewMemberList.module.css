@@ -77,6 +77,10 @@
   transition-property: none;
 }
 
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -153,6 +157,15 @@
 
 .text-underline:hover {
   opacity: 0.7;
+}
+
+.div-block-1708 {
+  display: flex;
+  max-width: 700px;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .max-width-700 {

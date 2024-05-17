@@ -1,18 +1,9 @@
-import {
-  Autocomplete,
-  capitalize,
-  MenuItem,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
-import { ModuleSetting } from '@/devlink2';
-import UITextField from '@/src/components/Common/UITextField';
-import UITypography from '@/src/components/Common/UITypography';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { ModuleSetting, ToggleButton } from '@/devlink2';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
@@ -25,7 +16,6 @@ import { setIsModuleSettingsDialogOpen } from '../../store';
 import { ModuleType } from '../../types';
 
 function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
-  const { recruiter } = useAuthDetails();
   const queryClient = useQueryClient();
 
   const { members } = useSchedulingContext();
@@ -98,65 +88,12 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
           onClickClose={{
             onClick: () => setIsModuleSettingsDialogOpen(false),
           }}
-          slotModuleNameInput={
-            <Stack spacing={2}>
-              <TextField
-                fullWidth
-                placeholder='Ex: Initial Screening'
-                value={localModule.name}
-                onChange={(e) =>
-                  setEditLocalModule((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }))
-                }
-              />
-              <Stack gap={'5px'}>
-                <UITypography type={'small'} fontBold={'default'}>
-                  Department
-                </UITypography>
-                <Autocomplete
-                  fullWidth
-                  value={localModule.department}
-                  onChange={(event: any, newValue: string | null) => {
-                    setEditLocalModule((prev) => ({
-                      ...prev,
-                      department: newValue,
-                    }));
-                  }}
-                  options={recruiter?.departments?.map((departments) =>
-                    capitalize(departments),
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      margin='none'
-                      {...params}
-                      name='department'
-                      placeholder='Select Department'
-                    />
-                  )}
-                />
-              </Stack>
-              <UITextField
-                label='Objective'
-                multiline
-                placeholder='Add a brief description of the interview'
-                fullWidth
-                value={localModule.description}
-                onChange={(e) => {
-                  setEditLocalModule((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }));
-                }}
-              />
-            </Stack>
-          }
-          isRequireTrainingVisible={localModule?.settings?.require_training}
+          isDisable={!localModule?.settings?.require_training}
           slotRequiresTrainingToggle={
-            <Checkbox
-              isChecked={localModule?.settings?.require_training}
-              onClickCheck={{
+            <ToggleButton
+              isActive={localModule?.settings?.require_training}
+              isInactive={!localModule?.settings?.require_training}
+              onclickToggle={{
                 onClick: () => {
                   if (
                     localModule.relations.filter(
@@ -195,6 +132,7 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
               }}
             />
           }
+          isRequireTrainingVisible={true}
           isApprovalDoneVisible={localModule?.settings?.reqruire_approval}
           slotCheckbox={
             <Checkbox
@@ -213,12 +151,14 @@ function ModuleSettingComp({ editModule }: { editModule: ModuleType }) {
             />
           }
           slotButtonPrimary={
-            <ButtonPrimaryRegular
-              textLabel={'Update'}
-              onClickButton={{
-                onClick: updateModule,
-              }}
-            />
+            localModule?.settings?.require_training && (
+              <ButtonPrimaryRegular
+                textLabel={'Update'}
+                onClickButton={{
+                  onClick: updateModule,
+                }}
+              />
+            )
           }
           slotApprovalDoneInput={
             <MembersAutoComplete

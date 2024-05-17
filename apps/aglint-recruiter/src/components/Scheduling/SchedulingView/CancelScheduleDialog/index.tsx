@@ -29,7 +29,7 @@ function CancelScheduleDialog({
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
   const { refetch } = useScheduleDetails();
-  const reasons = recruiter.scheduling_reason.internal.cancellation || [
+  const reasons = recruiter.scheduling_reason?.internal?.cancellation || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',

@@ -19,6 +19,7 @@ import { ApplicationList } from '../AllSchedules/store';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;
+  isSettingDialogOpen: boolean;
   isDeleteMemberDialogOpen: boolean;
   isDeleteModuleDialogOpen: boolean;
   isPauseDialogOpen: boolean;
