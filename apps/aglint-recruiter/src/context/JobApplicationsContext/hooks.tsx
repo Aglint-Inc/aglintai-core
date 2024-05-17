@@ -71,7 +71,11 @@ type Action =
     }
   | {
       type: ActionType.UPDATE;
-      payload: Partial<JobApplication>;
+      payload: {
+        applicationId: string;
+        application: Partial<JobApplication>;
+        section: JobApplicationSections;
+      };
     };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
@@ -107,21 +111,18 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const applicationState = Object.assign(
         {},
         ...Object.entries(state).map(([key, value]) => {
-          return {
-            [key]: value.map((v) => {
-              if (v.id === action.payload.id) {
-                return Object.entries(action.payload).reduce(
-                  (acc, [key, value]) => {
-                    if (typeof value === 'object')
-                      return { ...acc, [key]: { ...v[key], ...value } };
-                    else return { ...acc, [key]: value };
-                  },
-                  { ...v },
-                );
-              }
-              return v;
-            }),
-          };
+          if (key === action.payload.section)
+            return {
+              [key]: value.map((application) => {
+                if (application.id === action.payload.applicationId)
+                  return {
+                    ...structuredClone(application),
+                    ...structuredClone(action.payload.application),
+                  };
+                return application;
+              }),
+            };
+          return { [key]: value };
         }),
       );
       return applicationState as JobApplicationsData;
@@ -287,7 +288,15 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
       handleJobApplicationError(error);
       return;
     }
-    await handleJobApplicationRefresh();
+    const action: Action = {
+      type: ActionType.UPDATE,
+      payload: {
+        applicationId,
+        application,
+        section,
+      },
+    };
+    dispatch(action);
   };
 
   const showDisqualificationEmailComponent = applications
