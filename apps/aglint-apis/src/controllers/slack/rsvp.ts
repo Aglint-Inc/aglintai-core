@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {slackWeb} from '@/services/slack/slackWeb';
+import {slackWeb} from 'src/services/slack/slackWeb';
 
 export const rsvp = async (req: Request, res: Response) => {
   const {email, message} = req.body;
