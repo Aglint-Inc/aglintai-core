@@ -10,6 +10,7 @@ import {appLogger} from '@services/logger';
 import errorHandler from '@/middlewares/middleware';
 import retellRoutes from '@/routes/retell';
 import {envConfig} from '@/config';
+import slackRoutes from '@routes/slack';
 
 const PORT = envConfig.PORT;
 
@@ -36,6 +37,7 @@ app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
+app.use('/api/slack', slackRoutes);
 app.use(errorHandler);
 mountScheduleAgentWs();
 
