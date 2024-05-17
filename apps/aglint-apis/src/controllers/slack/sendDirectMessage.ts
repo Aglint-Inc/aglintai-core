@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {slackWeb} from 'src/services/slack/slackWeb';
+import {slackWeb} from '@/services/slack/slackWeb';
 
 export const sendDirectMessage = async (req: Request, res: Response) => {
   const {recipients, text} = req.body;
