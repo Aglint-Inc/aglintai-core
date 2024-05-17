@@ -168,6 +168,7 @@ export * from "./ReasonList";
 export * from "./RelatedJobCard";
 export * from "./RescheduleCard";
 export * from "./ResumePop";
+export * from "./ResumeWrap";
 export * from "./RoleList";
 export * from "./RoundedNumber";
 export * from "./SamplePanel";
