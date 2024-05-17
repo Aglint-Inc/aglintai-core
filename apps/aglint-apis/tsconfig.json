@@ -21,9 +21,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
-    "paths": {
-      "tslib/*": ["package/tslib/src/*"]
-    }
+    "paths": {}
   },
   "exclude": ["node_modules"],
   "include": ["src"]
