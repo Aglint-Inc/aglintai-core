@@ -34,7 +34,6 @@ import UITextField from '@/src/components/Common/UITextField';
 import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
-import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
