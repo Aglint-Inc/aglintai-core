@@ -442,6 +442,7 @@ export type Database = {
           created_at: string
           feedback: Json | null
           id: string
+          is_new: boolean
           is_resume_fetching: boolean
           job_id: string
           overall_interview_score: number
@@ -463,6 +464,7 @@ export type Database = {
           created_at?: string
           feedback?: Json | null
           id?: string
+          is_new?: boolean
           is_resume_fetching?: boolean
           job_id: string
           overall_interview_score?: number
@@ -484,6 +486,7 @@ export type Database = {
           created_at?: string
           feedback?: Json | null
           id?: string
+          is_new?: boolean
           is_resume_fetching?: boolean
           job_id?: string
           overall_interview_score?: number
@@ -3771,6 +3774,9 @@ export type Database = {
           meeting_json: Json | null
           meeting_link: string | null
           organizer_id: string | null
+          schedule_type:
+            | Database["public"]["Enums"]["interview_schedule_type"]
+            | null
           session_duration: number | null
           session_id: string | null
           session_name: string | null

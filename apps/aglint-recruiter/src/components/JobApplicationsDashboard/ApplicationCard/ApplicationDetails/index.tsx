@@ -141,6 +141,7 @@ const ApplicationDetails = ({
   handleSelectPrevApplication?: () => void;
   hideNextPrev: boolean;
 }) => {
+  const { handleJobApplicationUpdate } = useJobApplications();
   const [drawerOpen, setDrawerOpen] = useState(open);
 
   const candidateImage = application ? (
@@ -160,6 +161,8 @@ const ApplicationDetails = ({
   useEffect(() => {
     if (open) {
       setDrawerOpen(true);
+      if (application.is_new)
+        handleJobApplicationUpdate({ is_new: false }, application.id, true);
     }
   }, [open]);
 
