@@ -54,6 +54,7 @@ import {
   DangerMessage,
   NewInterviewPlanCard,
   NewTabPill,
+  ResumeWrap,
 } from '@/devlink3';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -394,6 +395,8 @@ const NewJobApplicationSideDrawer = ({
             openResume={openResume}
             setOpenResume={setOpenResume}
             tab={tab}
+            handleSelectNextApplication={handleSelectNextApplication}
+            handleSelectPrevApplication={handleSelectPrevApplication}
           />
         }
         isAppliedOnVisible={true}
@@ -496,7 +499,7 @@ const Bookmark = ({ application }: { application: JobApplication }) => {
     >
       <BookMark
         isBookMarked={!!application?.bookmarked}
-        onClickBookmark={{ onClick: () => handleBookmark() }}
+        onClickBookmark={{ onClick: () => handleBookmark(), color: 'red' }}
       />
     </Stack>
   );
@@ -542,8 +545,17 @@ const Sections: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
   tab: TabType;
-}> = ({ application, openResume, setOpenResume, tab }) => {
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  tab,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
   switch (tab) {
     case 'Details':
       return (
@@ -551,6 +563,8 @@ const Sections: React.FC<{
           application={application}
           openResume={openResume}
           setOpenResume={setOpenResume}
+          handleSelectNextApplication={handleSelectNextApplication}
+          handleSelectPrevApplication={handleSelectPrevApplication}
         />
       );
     case 'Screening':
@@ -570,7 +584,15 @@ export const NewCandidateDetails: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
   const overview = getCandidateDetails(application, 'overview');
   const resume = application.candidate_files?.resume_json as any;
   const validity = getApplicationProcessState(application);
@@ -588,6 +610,8 @@ export const NewCandidateDetails: React.FC<{
             application={application}
             openResume={openResume}
             setOpenResume={setOpenResume}
+            handleSelectNextApplication={handleSelectNextApplication}
+            handleSelectPrevApplication={handleSelectPrevApplication}
           />
           {validApplication && (
             <>
@@ -1089,7 +1113,15 @@ const NewResumeSection: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
   const { job } = useJobApplications();
   const [upload, setUpload] = useState(false);
   return (
@@ -1098,6 +1130,8 @@ const NewResumeSection: React.FC<{
         application={application}
         openResume={openResume}
         setOpenResume={setOpenResume}
+        handleSelectNextApplication={handleSelectNextApplication}
+        handleSelectPrevApplication={handleSelectPrevApplication}
       />
       <ResumeBlock
         application={application}
@@ -1198,7 +1232,16 @@ const ResumeViewer: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
+  const name = getCandidateDetails(application, 'name');
   return (
     <Dialog
       sx={{
@@ -1215,9 +1258,19 @@ const ResumeViewer: React.FC<{
       open={openResume}
       onClose={() => setOpenResume(false)}
     >
-      <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-        <ResumePreviewer url={application.candidate_files?.file_url} />
-      </Stack>
+      <ResumeWrap
+        key={application?.id}
+        textName={name.value}
+        onClickDown={{ onClick: () => handleSelectNextApplication() }}
+        slotBookmark={<Bookmark application={application} />}
+        onClickUp={{ onClick: () => handleSelectPrevApplication() }}
+        onClickClose={{ onClick: () => setOpenResume(false) }}
+        slotResume={
+          <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
+            <ResumePreviewer url={application.candidate_files?.file_url} />
+          </Stack>
+        }
+      />
     </Dialog>
   );
 };
