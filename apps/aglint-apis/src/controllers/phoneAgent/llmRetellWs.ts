@@ -9,7 +9,7 @@ import {CustomLlmRequest, CustomLlmResponse} from '../../types/retell.types';
 import {getCandidateLogger} from '../../utils/scheduling_utils/getCandidateLogger';
 import {ScheduleAgent} from '../../agents/schedule_agent/schedule_agent';
 import {transcript_update} from '../../utils/transcript_update';
-import {appLogger} from '@/services/logger';
+import {appLogger} from 'services/logger';
 
 export const llmRetellWs = async (ws: WebSocket, req: Request) => {
   const call_id = req.params.call_id;

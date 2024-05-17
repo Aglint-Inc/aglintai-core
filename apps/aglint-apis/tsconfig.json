@@ -9,17 +9,17 @@
     "strictNullChecks": false,
     "noImplicitReturns": false,
     "lib": ["ES2021.String"],
-    "baseUrl": ".",
+    "baseUrl": "./src/",
     "rootDir": ".",
     "paths": {
-      "@routes/*": ["./src/routes/*"],
-      "@/*": ["./src/*"],
-      "@services/*": ["./src/services/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@utils/*": ["./src/utils/*"]
+      // "@routes/*": ["./routes/*"],
+      // "@/*": ["./*"],
+      // "@services/*": ["./services/*"],
+      // "@controllers/*": ["./controllers/*"],
+      // "@utils/*": ["./utils/*"]
     }
   },
 
-  "include": ["./src/**/*.ts", "test/**/*.ts"],
+  "include": ["./**/*.ts", "test/**/*.ts", "src/config.ts", "src/index.ts"],
   "exclude": ["node_modules", "dist"]
 }

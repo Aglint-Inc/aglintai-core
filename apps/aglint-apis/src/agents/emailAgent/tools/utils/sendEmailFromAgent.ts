@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {envConfig} from '../../../../config';
-import {appLogger} from '@/services/logger';
+import {appLogger} from 'services/logger';
 
 export type EmailSenderType = {
   candidate_email: string;

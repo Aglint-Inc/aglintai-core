@@ -21,7 +21,7 @@ import {
 } from '../../utils/scheduling_utils/tool_utils';
 import {scheduleTheCall} from './tools/schedule-call';
 import {findCandTimeZone} from './tools/find-time-zone';
-import {appLogger} from '@/services/logger';
+import {appLogger} from 'services/logger';
 
 export class ScheduleAgent {
   // private candidate: CandidateInfoType;
