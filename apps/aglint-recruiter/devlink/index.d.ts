@@ -62,6 +62,7 @@ export * from "./AvatarCard";
 export * from "./AvatarModal";
 export * from "./BasicInfo";
 export * from "./BetaComp";
+export * from "./BookMark";
 export * from "./BookmarkEmpty";
 export * from "./ButtonAiLarge";
 export * from "./ButtonAiRegular";

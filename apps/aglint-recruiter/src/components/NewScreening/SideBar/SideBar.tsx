@@ -289,7 +289,6 @@ const SideBar = ({ appId, openDrawer }) => {
               />
             );
           })}
-        slotMoveTo={<></>}
         slotOverview={<></>}
         slotSocialLink={<></>}
       />
