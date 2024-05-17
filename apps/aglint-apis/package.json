@@ -3,6 +3,7 @@
   "type": "commonjs",
   "version": "1.0.0",
   "scripts": {
+    "dev": "set NODE_ENV=development.local && nodemon src/index.ts",
     "dev:local": "set NODE_ENV=development.local&& console-ninja nodemon src/index.ts",
     "start:prod": "set NODE_ENV=production&& npm run build && node dist/src/index.js",
     "start:development": "set NODE_ENV=development&& npm run build && node dist/src/index.js",
