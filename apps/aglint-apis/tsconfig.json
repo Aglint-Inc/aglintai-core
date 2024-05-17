@@ -1,17 +1,30 @@
 {
+  "display": "Default",
+
   "compilerOptions": {
-    "strict": true,
-    "rootDir": ".",
-    "outDir": "dist",
-    "target": "ES6",
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
-    "module": "CommonJS", // Change this line
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
     "skipLibCheck": true,
+    "strict": true,
     "strictNullChecks": false,
-    "noImplicitReturns": false,
-    "lib": ["ES2021.String"],
-    "paths": {}
+    "lib": ["ES2021"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "tslib/*": ["package/tslib/src/*"]
+    }
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["src"]
 }
