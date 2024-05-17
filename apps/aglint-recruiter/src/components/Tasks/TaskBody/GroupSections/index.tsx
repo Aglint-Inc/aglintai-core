@@ -187,7 +187,6 @@ function GroupSections({
         }
         onClickNewTask={{
           onClick: () => {
-            console.log(item);
             setShowAddNew(true);
             setSelectedGroupTask(item.tasklist[0]);
           },
