@@ -1,9 +1,11 @@
 {
   "name": "@aglint/shared-utils",
   "scripts": {},
+  "type": "commonjs",
   "version": "0.0.1",
   "main": "./index.ts",
   "types": "./index.ts",
+  "exports": "./index.ts",
   "dependencies": {
     "dayjs": "^1.11.11",
     "typescript": "latest"

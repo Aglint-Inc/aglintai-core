@@ -4,6 +4,10 @@ import {notifyInterviewConfirmation} from '@/controllers/slack/notifyInterviewCo
 import {rsvp} from '@/controllers/slack/rsvp';
 import {sendDirectMessage} from '@/controllers/slack/sendDirectMessage';
 import express from 'express';
+import {getSession} from 'src/controllers/slack/getSessions';
+import {groupMessage} from 'src/controllers/slack/groupMessage';
+import {rsvp} from 'src/controllers/slack/rsvp';
+import {sendDirectMessage} from 'src/controllers/slack/sendDirectMessage';
 
 const slackRoutes = express.Router();
 

@@ -58,16 +58,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
 
+    const session_ids: string[] = req_body.candidate_plan.reduce(
+      (s_ids, curr) => {
+        s_ids = [...s_ids, ...curr.sessions.map((s) => s.session_id)];
+        return s_ids;
+      },
+      [],
+    );
+
+    for (let session_id of session_ids) {
+      try {
+        axios.post(
+          `${process.env.NEXT_PUBLIC_AGENT_API}/api/slack/notify-interview-confirmation`,
+          {
+            session_id,
+          },
+        );
+      } catch {
+        //
+      }
+    }
+
     // save snapshot of interview meeting details to tasks
     if (req_body.task_id) {
-      const session_ids: string[] = req_body.candidate_plan.reduce(
-        (s_ids, curr) => {
-          s_ids = [...s_ids, ...curr.sessions.map((s) => s.session_id)];
-          return s_ids;
-        },
-        [],
-      );
-
       axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/save_meeting_to_task`,
         {
