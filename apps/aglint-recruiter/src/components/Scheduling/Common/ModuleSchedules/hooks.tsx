@@ -96,6 +96,7 @@ export type ScheduleListType = {
     start_time: string;
     status: DatabaseEnums['interview_schedule_status'];
     meeting_id: string;
+    module_id: string;
   };
   users: {
     email: string;
