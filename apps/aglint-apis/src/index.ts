@@ -9,9 +9,10 @@ import errorHandler from './middlewares/middleware';
 import emailAgentRouter from './routes/emailAgent';
 import retellRoutes from './routes/retell';
 import twilioRouter from './routes/twilio';
-import {appLogger} from './services/logger';
-import {twilioClient} from './services/twilio';
+
 import {envConfig} from './config';
+import {twilioClient} from './services/twilio/index';
+import {appLogger} from './services/logger/index';
 
 const PORT = envConfig.PORT;
 

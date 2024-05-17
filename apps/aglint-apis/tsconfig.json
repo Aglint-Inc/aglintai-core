@@ -3,16 +3,15 @@
     "strict": true,
     "rootDir": ".",
     "outDir": "dist",
-    "target": "es2021",
+    "target": "ES6",
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "CommonJS", // Change this line
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitReturns": false,
     "lib": ["ES2021.String"],
     "paths": {}
   },
-
-  "include": ["./src/**/*.ts", "test/**/*.ts"],
+  "include": ["./src/**/*.ts"],
   "exclude": ["node_modules"]
 }
