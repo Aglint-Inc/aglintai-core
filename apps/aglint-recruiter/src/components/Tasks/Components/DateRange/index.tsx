@@ -20,10 +20,29 @@ function DateRange({
     <Stack
       sx={{
         '.MuiDateRangeCalendar-root > div:first-child': {
-          //   bgcolor: 'red.400',
           display: 'none',
         },
+        '&>div': {
+          height: 334,
+        },
+        '& .MuiDayCalendar-weekContainer': {
+          gap: '7px',
+          py: '1px',
+        },
+        '& .MuiDateRangePickerDay-rangeIntervalPreview': {
+          border: 'none',
+        },
+        '& .MuiButtonBase-root': {
+          border: 'none',
+          fontWeight: 400,
+          height: '32.8px',
+          width: '32.8px',
+          fontSize: '0.72rem',
+        },
       }}
+      direction={'column'}
+      justifyContent={'center'}
+      alignItems={'center'}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateRangeCalendar
