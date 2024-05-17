@@ -21,4 +21,5 @@ declare function JobDetails(props: {
   isEditJob?: Types.Visibility.VisibilityConditions;
   onClickEditJob?: Types.Devlink.RuntimeProps;
   slotShowFilterButton?: Types.Devlink.Slot;
+  isFilterVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

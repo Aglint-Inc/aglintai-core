@@ -643,6 +643,12 @@
   }
 }
 
+.div-block-1713 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .div-block-1694 {
   padding-right: 20px;
 }

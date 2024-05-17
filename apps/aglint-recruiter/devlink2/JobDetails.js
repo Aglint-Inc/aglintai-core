@@ -38,6 +38,7 @@ export function JobDetails({
   isEditJob = true,
   onClickEditJob = {},
   slotShowFilterButton,
+  isFilterVisible = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -198,7 +199,12 @@ export function JobDetails({
           tag="div"
         >
           <_Builtin.Block className={_utils.cx(_styles, "jdet-tabs")} tag="div">
-            <_Builtin.Block tag="div">{slotTabs}</_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "div-block-1713")}
+              tag="div"
+            >
+              {slotTabs}
+            </_Builtin.Block>
             <_Builtin.Block
               className={_utils.cx(_styles, "div-block-1694")}
               tag="div"
@@ -214,20 +220,22 @@ export function JobDetails({
               className={_utils.cx(_styles, "cv-tab-content-wrapper")}
               tag="div"
             >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "jdet-actions-bar")}
-                tag="div"
-              >
-                {slotFilters ?? (
-                  <>
-                    <SelectActionBar />
-                    <JobDetailsFilterBlock
-                      isAllApplicants={true}
-                      isTopApplicants={false}
-                    />
-                  </>
-                )}
-              </_Builtin.Block>
+              {isFilterVisible ? (
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "jdet-actions-bar")}
+                  tag="div"
+                >
+                  {slotFilters ?? (
+                    <>
+                      <SelectActionBar />
+                      <JobDetailsFilterBlock
+                        isAllApplicants={true}
+                        isTopApplicants={false}
+                      />
+                    </>
+                  )}
+                </_Builtin.Block>
+              ) : null}
               <_Builtin.Block
                 className={_utils.cx(_styles, "jdet-table")}
                 tag="div"
