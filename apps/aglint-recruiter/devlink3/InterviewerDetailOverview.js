@@ -11,9 +11,9 @@ export function InterviewerDetailOverview({
   onClickViewAllModule = {},
   slotTrainingModules,
   textHeader1 = "Upcoming Schedules",
-  textHeader2 = "Training Modules",
-  textButton1 = "View all schedules",
-  textButton2 = "View all modules",
+  textHeader2 = "Training",
+  textButton1 = "View all",
+  textButton2 = "View all",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1704")} tag="div">

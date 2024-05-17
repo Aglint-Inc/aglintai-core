@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -56,8 +52,8 @@ export * from "./CandidateCards";
 export * from "./CandidateFeedback";
 export * from "./CandidateInterviewButton";
 export * from "./CandidateInterviewOption";
-export * from "./CandidatesCard";
 export * from "./CandidateSchedule";
+export * from "./CandidatesCard";
 export * from "./CardWithNumber";
 export * from "./ChangeInterviewer";
 export * from "./ChatBlock";
@@ -86,8 +82,8 @@ export * from "./DummyChatOne";
 export * from "./DummyChatThree";
 export * from "./DummyChatTwo";
 export * from "./DummyNavigation";
-export * from "./EditJobTopbarLeft";
 export * from "./EditJobTopBarRight";
+export * from "./EditJobTopbarLeft";
 export * from "./EditOptionModule";
 export * from "./EnableDisable";
 export * from "./EnableInterviewPlan";
@@ -110,11 +106,6 @@ export * from "./Instructions";
 export * from "./InstructionsButton";
 export * from "./InterviewBreakCard";
 export * from "./InterviewDetailPill";
-export * from "./InterviewerDetail";
-export * from "./InterviewerDetailOverview";
-export * from "./InterviewerDetailTopRight";
-export * from "./InterviewerList";
-export * from "./InterviewerPage";
 export * from "./InterviewModuleCard";
 export * from "./InterviewModuleEmpty";
 export * from "./InterviewModuleStats";
@@ -125,8 +116,13 @@ export * from "./InterviewRatio";
 export * from "./InterviewStatic";
 export * from "./InterviewStatsLoader";
 export * from "./InterviewTaskPill";
-export * from "./JobCards";
+export * from "./InterviewerDetail";
+export * from "./InterviewerDetailOverview";
+export * from "./InterviewerDetailTopRight";
+export * from "./InterviewerList";
+export * from "./InterviewerPage";
 export * from "./JobCardSkeleton";
+export * from "./JobCards";
 export * from "./JobDashboard";
 export * from "./JobDashboardTopRight";
 export * from "./JobDetailBlock";

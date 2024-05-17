@@ -57,6 +57,10 @@
   grid-row-gap: 24px;
 }
 
+.profile-block.width-auto {
+  width: auto;
+}
+
 .cs-info-header {
   display: flex;
   flex-direction: column;
@@ -345,6 +349,10 @@
   max-width: 500px;
 }
 
+.text-grey-600.one-line-clamp.ml-32 {
+  margin-left: 32px;
+}
+
 .text-grey-600.width-90 {
   width: 90%;
 }
@@ -427,6 +435,22 @@
 @media screen and (max-width: 479px) {
   .text-grey-600.mob {
     font-size: 12px;
+  }
+}
+
+.text-grey-600.max-width-650 {
+  max-width: 650px;
+}
+
+@media screen and (max-width: 991px) {
+  .text-grey-600.max-width-650 {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .text-grey-600.max-width-650 {
+    max-width: none;
   }
 }
 

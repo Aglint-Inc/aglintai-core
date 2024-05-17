@@ -30,7 +30,10 @@ export function CompanyInfo({
       )}
       tag="div"
     >
-      <_Builtin.Block className={_utils.cx(_styles, "profile-block")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "profile-block", "width-auto")}
+        tag="div"
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "cs-info-header")}
           tag="div"

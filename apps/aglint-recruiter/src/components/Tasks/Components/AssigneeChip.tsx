@@ -48,6 +48,12 @@ function AssigneeChip({
           disableHoverListener={disableHoverListener}
           // TransitionComponent={Zoom}
           title={<AssigneeDetailsCard assigneeDetails={assigneeDetails} />}
+          sx={{
+            '& .MuiTooltip-tooltip': {
+              p: '0px !important',
+              fontWeight: 400,
+            },
+          }}
         >
           <Stack sx={{ cursor: 'pointer' }}>
             <ListCard

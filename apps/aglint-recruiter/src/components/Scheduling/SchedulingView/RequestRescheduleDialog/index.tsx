@@ -37,7 +37,7 @@ function RequestRescheduleDialog({
     end_date: string;
   }>();
 
-  const reasons = recruiter.scheduling_reason.company.rescheduling || [
+  const reasons = recruiter.scheduling_reason.internal.rescheduling || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',

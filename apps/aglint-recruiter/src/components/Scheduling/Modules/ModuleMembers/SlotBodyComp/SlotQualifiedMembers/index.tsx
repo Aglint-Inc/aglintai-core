@@ -1,10 +1,7 @@
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import {
-  EmptyGeneral,
-  MemberListCard
-} from '@/devlink2';
+import { EmptyGeneral, MemberListCard } from '@/devlink2';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -124,9 +121,9 @@ function SlotQualifiedMembers({
                 src={member.profile_image}
                 level={getFullName(member.first_name, member.last_name) || ''}
                 variant='circular'
-                height='60px'
-                width='60px'
-                fontSize='24px'
+                height='40px'
+                width='40px'
+                fontSize='16px'
               />
             }
             textName={getFullName(member.first_name, member.last_name) || ''}

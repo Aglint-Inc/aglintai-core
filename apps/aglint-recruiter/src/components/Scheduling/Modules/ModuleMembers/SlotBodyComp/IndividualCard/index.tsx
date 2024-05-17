@@ -240,9 +240,9 @@ function IndividualCard({
             src={member.profile_image}
             level={getFullName(member.first_name, member.last_name) || ''}
             variant='circular'
-            height='60px'
-            width='60px'
-            fontSize='24px'
+            height='40px'
+            width='40px'
+            fontSize='16px'
           />
         }
         textName={getFullName(member.first_name, member.last_name) || ''}
