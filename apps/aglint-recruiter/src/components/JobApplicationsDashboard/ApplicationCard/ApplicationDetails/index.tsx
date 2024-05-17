@@ -17,6 +17,7 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import {
   AssessmentInvite,
+  BookMark,
   CandidateDetails,
   CandidateEducation,
   CandidateEducationCard,
@@ -382,7 +383,7 @@ const NewJobApplicationSideDrawer = ({
           processState !== 'unavailable' && processState !== 'fetching'
         }
         onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
-        slotMoveTo={<></>}
+        slotBookmark={<Bookmark application={application} />}
         slotOverview={<></>}
         slotCandidateDetails={
           <Sections
@@ -443,6 +444,58 @@ const NewJobApplicationSideDrawer = ({
         />
       </MuiPopup>
     </>
+  );
+};
+
+const Bookmark = ({ application }: { application: JobApplication }) => {
+  const {
+    setCardStates,
+    cardStates: {
+      checkList: { disabled, list },
+      disabledList,
+    },
+    handleJobApplicationUpdate,
+  } = useJobApplications();
+  const disable =
+    disabledList.has(application.id) || (disabled && list.has(application.id));
+  const handleBookmark = async () => {
+    if (!disable) {
+      setCardStates((prev) => ({
+        ...prev,
+        disabledList: new Set([...prev.disabledList, application.id]),
+      }));
+      await handleJobApplicationUpdate(
+        {
+          bookmarked: !application.bookmarked,
+        },
+        application.id,
+      );
+      setCardStates((prev) => {
+        return {
+          ...prev,
+          disabledList: new Set(
+            [...prev.disabledList].filter((e) => e === application.id),
+          ),
+        };
+      });
+    } else {
+      handleOngoingWarning();
+    }
+  };
+  return (
+    <Stack
+      key={application.id}
+      style={{
+        opacity: disable ? 0.4 : 1,
+        transition: '0.5s',
+        pointerEvents: disable ? 'none' : 'auto',
+      }}
+    >
+      <BookMark
+        isBookMarked={!!application?.bookmarked}
+        onClickBookmark={{ onClick: () => handleBookmark() }}
+      />
+    </Stack>
   );
 };
 
