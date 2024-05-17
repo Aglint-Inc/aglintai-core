@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { EmailTemplateType } from '@aglint/shared-types';
+import { ApplicationsUpdate, EmailTemplateType } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
@@ -34,7 +34,12 @@ import {
   JobApplicationSections,
   Parameters,
 } from './types';
-import { getRange, recalculateDbAction, rescoreDbAction } from './utils';
+import {
+  getRange,
+  recalculateDbAction,
+  rescoreDbAction,
+  updateJobApplicationDbAction,
+} from './utils';
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
   // eslint-disable-next-line no-unused-vars
@@ -269,6 +274,20 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         unFilteredCount: null as CountJobs,
       };
     }
+  };
+
+  const handleJobApplicationUpdate = async (
+    application: Partial<ApplicationsUpdate>,
+    applicationId: string,
+  ) => {
+    const { error } = await updateJobApplicationDbAction(applicationId, {
+      ...structuredClone(application),
+    });
+    if (error) {
+      handleJobApplicationError(error);
+      return;
+    }
+    await handleJobApplicationRefresh();
   };
 
   const showDisqualificationEmailComponent = applications
@@ -803,6 +822,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     handleJobApplicationRefresh,
     handleJobApplicationDelete,
     handleJobApplicationSectionUpdate,
+    handleJobApplicationUpdate,
     handleJobApplicationFilter,
     handleManualRefresh,
     handleSelectPrevSection,
