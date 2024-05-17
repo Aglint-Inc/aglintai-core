@@ -26,17 +26,17 @@ function DateRange({
           height: 334,
         },
         '& .MuiDayCalendar-weekContainer': {
-          gap: '7px',
+          columnGap: '6.5px',
           py: '1px',
         },
         '& .MuiDateRangePickerDay-rangeIntervalPreview': {
           border: 'none',
         },
-        '& .MuiButtonBase-root': {
+        '& .MuiDayCalendar-weekContainer .MuiButtonBase-root': {
           border: 'none',
           fontWeight: 400,
-          height: '32.8px',
-          width: '32.8px',
+          height: '32.7px',
+          width: '32.7px',
           fontSize: '0.72rem',
         },
       }}
