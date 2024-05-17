@@ -31,6 +31,7 @@
     "retell-client-js-sdk": "^1.3.2",
     "retell-sdk": "2.4.0",
     "supabase": "^1.150.0",
+    "tsconfig-paths": "^4.2.0",
     "twilio": "^4.21.0",
     "winston": "^3.13.0",
     "ws": "^8.16.0",

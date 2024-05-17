@@ -1,4 +1,3 @@
-import {envConfig} from '@/config';
 import express from 'express';
 import expressWs from 'express-ws';
 import cors from 'cors';
@@ -10,6 +9,7 @@ import twilioRouter from '@routes/twilio';
 import {appLogger} from '@services/logger';
 import errorHandler from '@/middlewares/middleware';
 import retellRoutes from '@/routes/retell';
+import {envConfig} from '@/config';
 
 const PORT = envConfig.PORT;
 
