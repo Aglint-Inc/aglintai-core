@@ -121,7 +121,7 @@ const EditMember = ({
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '500px' }}>
+      <Stack sx={{ width: '600px' }}>
         <TeamInvite
           textTitle={'Update Details'}
           isInviteSentVisible={false}

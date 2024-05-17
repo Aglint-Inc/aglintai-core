@@ -230,7 +230,7 @@ const AddMember = ({
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '500px', height: '100%' }}>
+      <Stack sx={{ width: '600px', height: '100%' }}>
         {menu === 'addMember' ? (
           <>
             <TeamInvite

@@ -1,5 +1,6 @@
 .div-block-1704 {
   display: flex;
+  width: 900px;
   padding: 20px;
   flex-direction: column;
   flex-wrap: nowrap;

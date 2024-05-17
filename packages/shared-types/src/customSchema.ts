@@ -239,7 +239,7 @@ interface recruiter_scheduling_settings {
 }
 
 type recruiter_scheduling_reason = {
-  company?: {
+  internal?: {
     rescheduling?: string[];
     cancellation?: string[];
     decline?: string[];

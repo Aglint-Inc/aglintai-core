@@ -234,7 +234,7 @@ function InterviewerLevelSettings({
               flexDirection={'column-reverse'}
               gap={'10px'}
             >
-              <Stack
+              {/* <Stack
                 alignItems={'center'}
                 direction={'row'}
                 marginLeft={'-10px !important'}
@@ -255,7 +255,7 @@ function InterviewerLevelSettings({
                 <Typography fontSize={'14px'} variant='caption'>
                   Get timezone automatically
                 </Typography>
-              </Stack>
+              </Stack> */}
 
               <Autocomplete
                 disabled={isTimeZone}
@@ -493,7 +493,7 @@ function InterviewerLevelSettings({
                 })}
               />
               <KeywordCard
-                textTitle={'Soft conflicts'}
+                textTitle={'Soft Conflicts'}
                 textWarning={
                   'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation'
                 }

@@ -136,6 +136,23 @@
   margin-right: -8px;
 }
 
+.icons.mt-2 {
+  margin-top: 2px;
+}
+
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .text-color-black {
   color: hsla(0, 0.00%, 0.00%, 1.00);
 }

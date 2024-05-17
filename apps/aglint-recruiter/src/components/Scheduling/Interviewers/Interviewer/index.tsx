@@ -130,7 +130,7 @@ function Interviewer() {
                       }}
                     />
                     <NewTabPill
-                      textLabel={'All Schedules'}
+                      textLabel={'Schedules'}
                       isPillActive={tab === 'allschedules'}
                       onClickPill={{
                         onClick: () => {
