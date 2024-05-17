@@ -98,6 +98,7 @@ const ApplicationCard = ({
   return !detailedView ? (
     views.interview ? (
       <ListCardInterviewSchedule
+        slotBookmark={<Banners application={application} />}
         isSelected={isSelected}
         app={
           {
@@ -123,6 +124,7 @@ const ApplicationCard = ({
     ) : (
       <CandidateListItem
         key={key1}
+        slotBookmark={<Banners application={application} />}
         isDragVisible={isChecked}
         onClickSelect={{ onClick: handleCheck }}
         isChecked={isChecked}
@@ -152,6 +154,7 @@ const ApplicationCard = ({
   ) : (
     <TopCandidateListItem
       key={key2}
+      slotBookmark={<Banners application={application} />}
       isDragVisible={isChecked}
       slotProfileImage={profile}
       onclickSelect={{ onClick: handleCheck }}
