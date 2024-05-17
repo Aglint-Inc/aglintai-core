@@ -28,7 +28,7 @@ function GroupSections({
   };
   index: any;
 }) {
-  const { setShowAddNew, setSelectedApplication, selectedGroupBy } =
+  const { setShowAddNew, setSelectedGroupTask, selectedGroupBy } =
     useTaskStatesContext();
   const [sectionIndex, setSectionIndex] = useState(false);
 
@@ -166,37 +166,6 @@ function GroupSections({
             </ShowCode.When>
           </ShowCode>
         }
-        // slotAvatarWithName={
-        //   <Stack alignItems={'center'} direction={'row'} spacing={'10px'}>
-        //     <Typography fontSize={'14px'}>
-        //       {capitalizeFirstLetter(item.applications.public_jobs.job_title)}
-        //     </Typography>
-        //     <Typography
-        //       alignItems={'center'}
-        //       display={'flex'}
-        //       fontSize={'14px'}
-        //     >
-        //       (
-        //       {capitalizeAll(
-        //         item.applications.candidates.first_name +
-        //           ' ' +
-        //           (item.applications.candidates.last_name ?? ''),
-        //       )}
-        //       )
-        //     </Typography>
-        //     <Tooltip title='Task count'>
-        //       <Typography
-        //         sx={{
-        //           cursor: 'pointer',
-        //         }}
-        //         variant='caption'
-        //         fontSize={'16px'}
-        //       >
-        //         {item.tasklist.length}
-        //       </Typography>
-        //     </Tooltip>
-        //   </Stack>
-        // }
         key={index}
         slotTaskTableJobCard={
           <>
@@ -218,9 +187,9 @@ function GroupSections({
         }
         onClickNewTask={{
           onClick: () => {
+            console.log(item);
             setShowAddNew(true);
-            setSelectedApplication(item.applications);
-            setSectionIndex(true);
+            setSelectedGroupTask(item.tasklist[0]);
           },
         }}
       />
