@@ -49,7 +49,7 @@ import NotFoundPage from '@/src/pages/404';
 import { API_get_scheduling_reason } from '@/src/pages/api/get_scheduling_reason/types';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
 import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../../Common/AUIButton';
@@ -65,7 +65,7 @@ import { TimezoneSelector } from '../Settings';
 import CandidateInviteCalendar, {
   CandidateInviteCalendarProps,
 } from './calender';
-import { dayJS, getDurationText } from './utils';
+import { dayJS, getCalenderEventUrl, getDurationText } from './utils';
 
 const CandidateInviteNew = () => {
   const load = useCandidateInvite();
@@ -182,6 +182,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
       }));
     return saveCancelReschedule({ details });
   };
+
   return (
     <>
       <InterviewConfirmed
@@ -368,7 +369,9 @@ const CancelRescheduleDialog = ({
         note: formData.additionalNote,
       },
     }).then(() => {
-      toast.success(`${capitalizeAll(type)} request submitted successfully`);
+      toast.success(
+        `${capitalizeFirstLetter(type)} request submitted successfully`,
+      );
       onClose();
     });
   };
@@ -477,7 +480,7 @@ const CancelRescheduleDialog = ({
                 key={item}
                 value={item}
                 control={<Radio />}
-                label={capitalizeAll(item)}
+                label={capitalizeFirstLetter(item)}
                 sx={{
                   ml: 0,
                   '& .MuiRadio-root': {
@@ -728,10 +731,25 @@ const ConfirmedScheduleCard = (props: ScheduleCardProps) => {
         slotMeetingIcon={
           <IconScheduleType type={session.interview_session.schedule_type} />
         }
+        onClickAddCalendar={{
+          onClick: () =>
+            window.open(
+              getCalenderEventUrl({
+                start_time: session.interview_meeting.start_time,
+                end_time: session.interview_meeting.end_time,
+                title: session.interview_session.name,
+                description: `Meeting ${session.interview_session.schedule_type != 'in_person_meeting' ? 'Link' : 'Address'}: ${session.interview_meeting.meeting_link}`,
+                location: capitalizeFirstLetter(
+                  session.interview_session.schedule_type,
+                ),
+              }),
+              '_blank',
+            ),
+        }}
         textDate={`${day}, ${month} ${date}, ${year}`}
         textDuration={getBreakLabel(session.interview_session.session_duration)}
         textPanel={name}
-        textPlatformName={capitalizeAll(
+        textPlatformName={capitalizeFirstLetter(
           session.interview_session.schedule_type,
         )}
         onClickJoinGoogleMeet={{

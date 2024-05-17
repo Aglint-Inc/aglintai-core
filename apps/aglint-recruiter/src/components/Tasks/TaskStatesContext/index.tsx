@@ -59,11 +59,9 @@ interface ContextValue {
   showAddNew: boolean;
   setShowAddNew: (x: boolean) => void;
 
-  selectedApplication:
-    | TasksAgentContextType['tasks'][number]['applications']
-    | null;
-  setSelectedApplication: (
-    x: TasksAgentContextType['tasks'][number]['applications'] | null,
+  selectedGroupTask: TasksAgentContextType['tasks'][number] | null;
+  setSelectedGroupTask: (
+    x: TasksAgentContextType['tasks'][number] | null,
   ) => void;
 
   isImmediate: boolean;
@@ -90,8 +88,8 @@ const defaultProvider: ContextValue = {
 
   showAddNew: false,
   setShowAddNew: () => {},
-  selectedApplication: null,
-  setSelectedApplication: () => {},
+  selectedGroupTask: null,
+  setSelectedGroupTask: () => {},
   isImmediate: false,
   setIsImmediate: () => {},
   selectedTasksIds: [],
@@ -117,8 +115,8 @@ function TaskStatesProvider({ children }) {
   const [showAddNew, setShowAddNew] = useState(false);
   // for textInput while creating subTask
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
-  const [selectedApplication, setSelectedApplication] = useState<
-    TasksAgentContextType['tasks'][number]['applications'] | null
+  const [selectedGroupTask, setSelectedGroupTask] = useState<
+    TasksAgentContextType['tasks'][number] | null
   >(null);
 
   const [isImmediate, setIsImmediate] = useState(true);
@@ -150,8 +148,8 @@ function TaskStatesProvider({ children }) {
         setAssignerList,
         showAddNew,
         setShowAddNew,
-        selectedApplication,
-        setSelectedApplication,
+        selectedGroupTask,
+        setSelectedGroupTask,
         isImmediate,
         setIsImmediate,
         selectedTasksIds,

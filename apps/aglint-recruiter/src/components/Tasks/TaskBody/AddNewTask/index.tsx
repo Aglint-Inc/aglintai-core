@@ -45,9 +45,10 @@ function AddNewTask() {
     showAddNew,
     setShowAddNew,
     assignerList,
-    selectedApplication,
-    setSelectedApplication,
+    selectedGroupTask,
+    setSelectedGroupTask,
     isImmediate,
+    selectedGroupBy,
   } = useTaskStatesContext();
   const { handelAddTask } = useTasksContext();
   const {
@@ -228,21 +229,49 @@ function AddNewTask() {
     }
   }
   useEffect(() => {
-    if (selectedJob) {
+    if (selectedJob?.id) {
       getCandidates();
       setSelectedSession([]);
-      //   setSelectedCandidate(null);
     }
   }, [selectedJob, jobs]);
   useEffect(() => {
-    if (selectedApplication?.id) {
-      setSelectedJob({
-        name: selectedApplication.public_jobs.job_title,
-        id: selectedApplication.public_jobs.id,
-      });
-      setSelectedCandidate(selectedApplication);
+    setSelectedStatus('not_started');
+    setSelectedPriority('medium');
+    defaultValueSet();
+  }, [selectedGroupBy, selectedGroupTask]);
+
+  function defaultValueSet() {
+    switch (selectedGroupBy.label) {
+      case 'candidate':
+        setSelectedJob({
+          name: selectedGroupTask?.applications.public_jobs.job_title,
+          id: selectedGroupTask?.applications.public_jobs.id,
+        });
+        setSelectedCandidate(selectedGroupTask?.applications);
+        break;
+      case 'job':
+        setSelectedJob({
+          name: selectedGroupTask?.applications.public_jobs.job_title,
+          id: selectedGroupTask?.applications.public_jobs.id,
+        });
+        break;
+      case 'priority':
+        setSelectedPriority(selectedGroupTask?.priority);
+        break;
+      case 'status':
+        setSelectedStatus(selectedGroupTask?.status);
+        break;
+      case 'assignee':
+        setSelectedAssignee(
+          assignerList.find(
+            (assignee) => assignee.user_id === selectedGroupTask?.assignee[0],
+          ),
+        );
+        break;
+      default:
+        break;
     }
-  }, [selectedApplication]);
+  }
   const handleClose = () => {
     setShowAddNew(false);
     setSelectedAssignee(null);
@@ -251,7 +280,7 @@ function AddNewTask() {
     setSelectedSession([]);
     setSessionList(null);
     setCandidates([]);
-    setSelectedApplication(null);
+    setSelectedGroupTask(null);
     setInputData('');
     setSelectedPriority('medium');
   };
@@ -456,7 +485,10 @@ function AddNewTask() {
                 <JobList
                   selectedJob={selectedJob}
                   setSelectedJob={setSelectedJob}
-                  isOptionList={!selectedApplication?.id}
+                  isOptionList={
+                    selectedGroupBy.label !== 'candidate' &&
+                    selectedGroupBy.label !== 'job'
+                  }
                 />
               }
               isCandidateVisible={!!selectedJob?.id}
@@ -466,7 +498,7 @@ function AddNewTask() {
                   selectedCandidate={selectedCandidate}
                   setSelectedCandidate={setSelectedCandidate}
                   candidates={candidates}
-                  isOptionList={!selectedApplication?.id}
+                  isOptionList={selectedGroupBy.label !== 'candidate'}
                 />
               }
               slotInterviewTaskPill={
