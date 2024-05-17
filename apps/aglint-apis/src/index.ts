@@ -1,16 +1,16 @@
 import express from 'express';
 import expressWs from 'express-ws';
 import cors from 'cors';
-import phoneAgentRoutes, {mountScheduleAgentWs} from 'routes/scheduleAgent';
-import screenignAgentRouter from 'routes/screeningAgent';
+import phoneAgentRoutes, {mountScheduleAgentWs} from './routes/scheduleAgent';
+import screenignAgentRouter from './routes/screeningAgent';
 
-import slackRoutes from 'routes/slack';
-import errorHandler from 'middlewares/middleware';
-import emailAgentRouter from 'routes/emailAgent';
-import retellRoutes from 'routes/retell';
-import twilioRouter from 'routes/twilio';
-import {appLogger} from 'services/logger';
-import {twilioClient} from 'services/twilio';
+import slackRoutes from './routes/slack';
+import errorHandler from './middlewares/middleware';
+import emailAgentRouter from './routes/emailAgent';
+import retellRoutes from './routes/retell';
+import twilioRouter from './routes/twilio';
+import {appLogger} from './services/logger';
+import {twilioClient} from './services/twilio';
 import {envConfig} from './config';
 
 const PORT = envConfig.PORT;
