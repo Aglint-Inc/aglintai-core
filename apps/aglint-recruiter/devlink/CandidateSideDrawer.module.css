@@ -581,11 +581,6 @@
   grid-row-gap: 8px;
 }
 
-.div-block-968 {
-  position: relative;
-  cursor: pointer;
-}
-
 .cvs-header-nav-wrapper {
   display: flex;
   align-items: center;
@@ -993,7 +988,7 @@
 
 .div-block-982 {
   overflow: auto;
-  height: calc(100vh - 143px);
+  height: calc(100vh - 171px);
 }
 
 .slot-candidate-details {

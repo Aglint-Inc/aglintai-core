@@ -435,6 +435,7 @@ export type Database = {
         Row: {
           applied_at: string
           assessment_id: string | null
+          bookmarked: boolean
           candidate_file_id: string | null
           candidate_id: string | null
           converted_at: string | null
@@ -455,6 +456,7 @@ export type Database = {
         Insert: {
           applied_at?: string
           assessment_id?: string | null
+          bookmarked?: boolean
           candidate_file_id?: string | null
           candidate_id?: string | null
           converted_at?: string | null
@@ -475,6 +477,7 @@ export type Database = {
         Update: {
           applied_at?: string
           assessment_id?: string | null
+          bookmarked?: boolean
           candidate_file_id?: string | null
           candidate_id?: string | null
           converted_at?: string | null

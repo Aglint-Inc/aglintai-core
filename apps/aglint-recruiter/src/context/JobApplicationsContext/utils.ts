@@ -132,14 +132,13 @@ export const updateJobApplicationDbAction = async (
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('applications')
     .update(inputData)
-    .eq('application_id', application_id)
-    .select(`${selectJobApplicationQuery}`)
+    .eq('id', application_id)
     .abortSignal(signal);
   clearTimeout(timeout);
-  return { data, error };
+  return { error };
 };
 
 export const bulkUpdateJobApplicationDbAction = async (

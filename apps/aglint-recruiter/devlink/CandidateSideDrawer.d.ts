@@ -9,7 +9,6 @@ declare function CandidateSideDrawer(props: {
   slotCandidateImage?: Types.Devlink.Slot;
   textName?: React.ReactNode;
   slotCandidateDetails?: Types.Devlink.Slot;
-  slotMoveTo?: Types.Devlink.Slot;
   textAppliedOn?: React.ReactNode;
   isAppliedOnVisible?: Types.Visibility.VisibilityConditions;
   slotOverview?: Types.Devlink.Slot;
@@ -30,10 +29,6 @@ declare function CandidateSideDrawer(props: {
   isSmallWidthVisible?: Types.Visibility.VisibilityConditions;
   onClickPhoneScreening?: Types.Devlink.RuntimeProps;
   isPhoneScreeningVisible?: Types.Visibility.VisibilityConditions;
-  isBookMarkIconVisible?: Types.Visibility.VisibilityConditions;
-  onClickBookmark?: Types.Devlink.RuntimeProps;
-  isBookMarked?: Types.Visibility.VisibilityConditions;
-  onClickUnBook?: Types.Devlink.RuntimeProps;
   slotViewTask?: Types.Devlink.Slot;
   isViewTaskVisible?: Types.Visibility.VisibilityConditions;
   onClickLinkedin?: Types.Devlink.RuntimeProps;
@@ -41,4 +36,6 @@ declare function CandidateSideDrawer(props: {
   slotNewTabPill?: Types.Devlink.Slot;
   textMail?: React.ReactNode;
   textPhone?: React.ReactNode;
+  propsStyle?: Types.Devlink.RuntimeProps;
+  slotBookmark?: Types.Devlink.Slot;
 }): React.JSX.Element;
