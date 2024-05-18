@@ -4,12 +4,12 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
-    "dev:local": "set NODE_ENV=development.local&& console-ninja nodemon",
-    "start": "set NODE_ENV=development&& npm run build && node dist/index.js",
-    "start:prod": "set NODE_ENV=production&& npm run build && node dist/index.js",
-    "start:development": "set NODE_ENV=development&& npm run build && node  dist/index.js",
-    "build": "npx tsc",
+    "build": "tsup",
     "lint": "gts lint && npm run build",
+    "start": "set NODE_ENV=development&& npm run build && node dist/index.js",
+    "start:production": "set NODE_ENV=production&& npm run build && node dist/index.js",
+    "start:staging": "set NODE_ENV=staging&& npm run build && node dist/index.js",
+    "start:development": "set NODE_ENV=development&& npm run build && node  dist/index.js",
     "compile": "tsc",
     "fix": "gts fix"
   },
