@@ -12,7 +12,11 @@ import {
   useAllSchedulesByModuleId,
   useGetMeetingsByModuleId,
 } from '../../queries/hooks';
-import { setIsAddMemberDialogOpen, setTrainingStatus } from '../../store';
+import {
+  setIsAddMemberDialogOpen,
+  setIsSettingsDialogOpen,
+  setTrainingStatus,
+} from '../../store';
 import { ModuleType } from '../../types';
 import AddMemberDialog from '../AddMemberDialog';
 import DeleteMemberDialog from '../DeleteMemberDialog';
@@ -21,6 +25,7 @@ import ModuleSettingComp from '../ModuleSetting';
 import PauseDialog from '../PauseDialog';
 import ResumeMemberDialog from '../ResumeMemberDialog';
 import { TabsModuleMembers } from '../type';
+import SettingsDialog from './AddMemberDialog';
 import SlotQualifiedMembers from './SlotQualifiedMembers';
 import SlotTrainingMembers from './SlotTrainingMembers';
 import { tabsModuleMembers } from './utils';
@@ -53,6 +58,7 @@ function SlotBodyComp({
 
   return (
     <>
+      <SettingsDialog editModule={editModule} />
       <AddMemberDialog editModule={editModule} />
       <DeleteMemberDialog />
       <PauseDialog />
@@ -65,6 +71,11 @@ function SlotBodyComp({
       ) : (
         editModule && (
           <InterviewMemberList
+            onClickEdit={{
+              onClick: () => {
+                setIsSettingsDialogOpen(true);
+              },
+            }}
             slotNewTabPill={
               <Stack direction={'row'}>
                 {tabsModuleMembers.map((tab) => {
@@ -142,7 +153,7 @@ function SlotBodyComp({
                   <InstructionsComp editModule={editModule} />
                 )}
 
-                {currentTab === 'settings' && (
+                {currentTab === 'training' && (
                   <ModuleSettingComp editModule={editModule} />
                 )}
               </>

@@ -7,5 +7,5 @@ export type PauseType =
 
 export type TabsModuleMembers = {
   name: string;
-  queryParams: 'members' | 'schedules' | 'instructions' | 'settings';
+  queryParams: 'members' | 'schedules' | 'instructions' | 'training';
 };

@@ -14,7 +14,7 @@ export const tabsModuleMembers: TabsModuleMembers[] = [
     queryParams: 'instructions',
   },
   {
-    name: 'Settings',
-    queryParams: 'settings',
+    name: 'Training',
+    queryParams: 'training',
   },
 ];

@@ -32,6 +32,7 @@ export const initialEditModule: ModuleType = {
 
 export const initialStateSchedulingStore: SchedulingSlice = {
   isCreateDialogOpen: null,
+  isSettingDialogOpen: false,
   isDeleteMemberDialogOpen: false,
   isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
@@ -56,6 +57,9 @@ export const setIsCreateDialogOpen = (isCreateDialogOpen: boolean) =>
 
 export const setIsArchiveDialogOpen = (isArchiveDialogOpen: boolean) =>
   useModulesStore.setState({ isArchiveDialogOpen });
+
+export const setIsSettingsDialogOpen = (isSettingDialogOpen: boolean) =>
+  useModulesStore.setState({ isSettingDialogOpen });
 
 export const setIsMovedToQualifiedDialogOpen = (
   isMovedToQualifiedDialogOpen: boolean,

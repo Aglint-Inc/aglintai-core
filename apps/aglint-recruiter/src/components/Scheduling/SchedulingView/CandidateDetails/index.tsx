@@ -39,6 +39,12 @@ function CandidateInfo({ applications, candidate, file }) {
           isLeftRightVisible={false}
           isSmallWidthVisible={false}
           isFullWidthVisible={true}
+          propsStyle={{
+            style: {
+              oveflow: 'visible',
+              height: 'auto',
+            },
+          }}
           slotSocialLink={
             <>
               {candidate.linkedin && (
@@ -122,7 +128,7 @@ function CandidateInfo({ applications, candidate, file }) {
               isFullWidthVisible={true}
               isSmallWidthVisible={false}
               slotInterviewScore={
-                <Stack spacing={2}>
+                <Stack spacing={2} overflow={'hidden'}>
                   <AnalysisBlockSection
                     application={application}
                     noCollapse={true}

@@ -13,4 +13,6 @@ declare function ModuleSetting(props: {
   slotApprovalDoneInput?: Types.Devlink.Slot;
   isRequireTrainingVisible?: Types.Visibility.VisibilityConditions;
   slotButtonPrimary?: Types.Devlink.Slot;
+  slotToggleRequireTraining?: Types.Devlink.Slot;
+  isDisable?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
