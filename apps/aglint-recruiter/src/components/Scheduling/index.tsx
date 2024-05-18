@@ -22,17 +22,17 @@ import Icon from '../Common/Icons/Icon';
 import MuiAvatar from '../Common/MuiAvatar';
 import { ShowCode } from '../Common/ShowCode';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
-import AllSchedules from './AllSchedules';
+import AllSchedules from './Candidates';
+import SchedulingDashboard from './Dashboard';
 import AllInterviewersComp from './Interviewers';
 import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
-import { Modules } from './Modules/Modules';
-import { fetchInterviewModules } from './Modules/queries/utils';
-import { setIsCreateDialogOpen } from './Modules/store';
-import MySchedule from './MySchedule';
+import { Modules } from './InterviewTypes/Modules';
+import { fetchInterviewModules } from './InterviewTypes/queries/utils';
+import { setIsCreateDialogOpen } from './InterviewTypes/store';
+import MySchedule from './MySchedules';
 import Schedules from './Schedules';
-import SchedulingDashboard from './SchedulingDashboard';
 import SchedulingSettings from './Settings';
-import SubNav from './SubNav';
+import SubNav from './Settings/SubNav';
 import { SchedulingTab } from './types';
 
 function SchedulingMainComp() {

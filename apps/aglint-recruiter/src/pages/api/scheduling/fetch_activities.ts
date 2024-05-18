@@ -2,7 +2,7 @@ import { CustomDatabase } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { fetchAllActivities } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
+import { fetchAllActivities } from '@/src/components/Scheduling/CandidateDetails/hooks';
 
 const supabase = createClient<CustomDatabase>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

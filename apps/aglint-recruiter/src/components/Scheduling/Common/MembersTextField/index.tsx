@@ -15,7 +15,7 @@ import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/Sched
 import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { MemberType } from '../../Modules/types';
+import { MemberType } from '../../InterviewTypes/types';
 
 export type MemberTypeAutoComplete = Omit<MemberType, 'schedule_auth'> & {
   schedule_auth?: JSON | null;

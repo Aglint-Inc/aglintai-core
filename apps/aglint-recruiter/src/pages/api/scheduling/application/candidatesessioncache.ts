@@ -4,8 +4,8 @@ import { Database } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { SchedulingApplication } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/store';
-import { createCloneSession } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import { SchedulingApplication } from '@/src/components/Scheduling/CandidateDetails/store';
+import { createCloneSession } from '@/src/components/Scheduling/CandidateDetails/utils';
 
 export interface ApiBodyParamsSessionCache {
   is_get_more_option: boolean;

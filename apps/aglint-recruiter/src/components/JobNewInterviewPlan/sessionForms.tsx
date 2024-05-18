@@ -27,7 +27,7 @@ import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '../Common/MuiAvatar';
 import UITextField from '../Common/UITextField';
 import { AntSwitch } from '../NewAssessment/AssessmentPage/editor';
-import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
 

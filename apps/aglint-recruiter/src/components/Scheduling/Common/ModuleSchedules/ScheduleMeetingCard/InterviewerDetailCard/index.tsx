@@ -7,7 +7,7 @@ import { MemberDetail } from '@/devlink3';
 import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';
-import { calculateHourDifference } from '@/src/components/Scheduling/Modules/utils';
+import { calculateHourDifference } from '@/src/components/Scheduling/InterviewTypes/utils';
 import { convertTimeZoneToAbbreviation } from '@/src/components/Scheduling/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';

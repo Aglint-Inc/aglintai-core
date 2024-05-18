@@ -7,12 +7,12 @@ import { StatusBadge } from '@/devlink2';
 import { MyScheduleSubCard } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
-import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
+import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../AllSchedules/utils';
+} from '../../../Candidates/utils';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import { ScheduleListType } from '../hooks';
 import InterviewerDetailsCard from './InterviewerDetailCard';

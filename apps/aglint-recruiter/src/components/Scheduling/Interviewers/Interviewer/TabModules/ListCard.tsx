@@ -8,8 +8,8 @@ import { HistoryPill, HistoryTrainingCard } from '@/devlink3';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { pages } from '@/src/utils/pageRouting';
 
-import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../../../AllSchedules/utils';
+import IconScheduleType from '../../../Candidates/ListCard/Icon';
+import { getScheduleType } from '../../../Candidates/utils';
 import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
 import { DetailsWithCount, PauseDialog } from '../../type';
 
