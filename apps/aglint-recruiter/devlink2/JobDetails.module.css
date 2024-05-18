@@ -627,12 +627,9 @@
 
 .jdet-tabs {
   position: relative;
-  top: -1px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   border-bottom: 1px none hsla(210.00000000000023, 10.00%, 92.16%, 1.00);
 }
 
@@ -693,7 +690,6 @@
   position: relative;
   overflow: hidden;
   height: 100%;
-  margin-top: 6px;
   border-top: 1px solid #e9ebed;
 }
 
