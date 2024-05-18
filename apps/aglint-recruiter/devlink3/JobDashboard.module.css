@@ -33,6 +33,15 @@
   padding-top: 0px;
 }
 
+.div-block-1735 {
+  display: flex;
+  padding-top: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
 .jd_titleblock {
   display: flex;
   flex-direction: column;
