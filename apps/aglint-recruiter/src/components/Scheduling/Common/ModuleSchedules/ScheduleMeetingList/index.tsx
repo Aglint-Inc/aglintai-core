@@ -8,13 +8,13 @@ import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({
-  FilterSchedules,
+  filterSchedules,
 }: {
-  FilterSchedules: ScheduleListType;
+  filterSchedules: ScheduleListType;
 }) {
   return (
-    <Stack height={'calc(100vh - 154px)'}>
-      {transformData(FilterSchedules).map((sch, ind) => {
+    <Stack height={'calc(100vh - 120px)'}>
+      {transformData(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
         const schedules = sch[String(date)] as ScheduleListType;
         return (

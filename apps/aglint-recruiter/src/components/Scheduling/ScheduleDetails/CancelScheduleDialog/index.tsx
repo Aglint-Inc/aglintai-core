@@ -77,7 +77,7 @@ function CancelScheduleDialog({
       }}
     >
       <DeletePopup
-        textTitle={'Decline Schedule'}
+        textTitle={'Cancel Schedule'}
         isIcon={false}
         isWidget={true}
         slotWidget={
