@@ -280,12 +280,39 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
   const handleJobApplicationUpdate = async (
     application: Partial<ApplicationsUpdate>,
     applicationId: string,
+    optimistic: boolean = false,
   ) => {
+    const safeApplication = structuredClone(
+      applications[section].find(({ id }) => id === applicationId),
+    );
+    if (!safeApplication) return;
+    if (optimistic) {
+      const action: Action = {
+        type: ActionType.UPDATE,
+        payload: {
+          applicationId,
+          application,
+          section,
+        },
+      };
+      dispatch(action);
+    }
     const { error } = await updateJobApplicationDbAction(applicationId, {
       ...structuredClone(application),
     });
     if (error) {
       handleJobApplicationError(error);
+      if (optimistic) {
+        const action: Action = {
+          type: ActionType.UPDATE,
+          payload: {
+            applicationId,
+            application: safeApplication,
+            section,
+          },
+        };
+        dispatch(action);
+      }
       return;
     }
     const action: Action = {

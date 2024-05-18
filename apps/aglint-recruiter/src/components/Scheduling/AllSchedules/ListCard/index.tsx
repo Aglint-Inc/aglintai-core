@@ -17,6 +17,7 @@ import { ApplicationList } from '../store';
 function ListCardInterviewSchedule({
   app,
   onClickCard,
+  slotBookmark = <></>,
   slotCheckbox = <></>,
   slotResumeScore = <></>,
   isJobDasboard = false,
@@ -26,6 +27,7 @@ function ListCardInterviewSchedule({
   app: ApplicationList;
   // eslint-disable-next-line no-unused-vars
   onClickCard: (app: ApplicationList) => void;
+  slotBookmark?: ReactNode;
   slotResumeScore?: ReactNode;
   isJobDasboard?: boolean;
   slotCheckbox?: ReactNode;
@@ -59,6 +61,7 @@ function ListCardInterviewSchedule({
           gridTemplateColumns: isJobDasboard && '60px 300px 250px 1fr',
         },
       }}
+      slotBookmark={slotBookmark}
       isSchedulerTable={!isJobDasboard}
       isCheckBoxVisible={isJobDasboard}
       slotCheckbox={slotCheckbox}

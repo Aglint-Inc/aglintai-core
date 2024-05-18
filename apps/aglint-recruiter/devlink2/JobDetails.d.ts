@@ -18,4 +18,8 @@ declare function JobDetails(props: {
   isWarningVisible?: Types.Visibility.VisibilityConditions;
   isImportCandidates?: Types.Visibility.VisibilityConditions;
   slotBreadcrumb?: Types.Devlink.Slot;
+  isEditJob?: Types.Visibility.VisibilityConditions;
+  onClickEditJob?: Types.Devlink.RuntimeProps;
+  slotShowFilterButton?: Types.Devlink.Slot;
+  isFilterVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

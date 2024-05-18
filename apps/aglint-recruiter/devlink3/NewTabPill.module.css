@@ -29,6 +29,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
 
   border-bottom: 3px solid #1f73b7;
 
