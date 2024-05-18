@@ -10,7 +10,7 @@ import { EmptyState } from '@/devlink2';
 import { AvatarWithName, TaskProgress } from '@/devlink3';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
-import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 // import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/hooks';
 import {

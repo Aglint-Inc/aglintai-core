@@ -25,20 +25,20 @@ import {
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
-import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
-import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
-import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
-import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
+import SessionCard from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/ProgressDrawer/SessionCard';
+import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import {
   // useGetMeetingsByModuleId,
   useModuleAndUsers,
   useProgressModuleUsers,
-} from '@/src/components/Scheduling/Modules/queries/hooks';
+} from '@/src/components/Scheduling/InterviewTypes/queries/hooks';
 import {
   MemberType,
   ModuleType,
-} from '@/src/components/Scheduling/Modules/types';
-import { useAllInterviewersDetails } from '@/src/components/Scheduling/SchedulingView/hooks';
+} from '@/src/components/Scheduling/InterviewTypes/types';
+import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
@@ -447,6 +447,7 @@ function SlotQualifiedMembers({
 
         trainingStatusArray = trainingStatusArray.map((item) => {
           if (tempMeetingData[item.text]?.length) {
+            // @ts-ignore
             const temp = tempMeetingData[item.text].reverse().pop();
             return { ...item, state: Boolean(temp), meeting: temp };
           }

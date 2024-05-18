@@ -35,7 +35,7 @@ import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
-import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';

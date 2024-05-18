@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { scheduleWithAgentWithoutTaskId } from '@/src/components/Scheduling/AllSchedules/SchedulingApplication/utils';
+import { scheduleWithAgentWithoutTaskId } from '@/src/components/Scheduling/CandidateDetails/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsScheduleAgent {

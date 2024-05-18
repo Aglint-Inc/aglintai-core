@@ -17,7 +17,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../Common/MuiAvatar';
 import UITextField from '../Common/UITextField';
-import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { DropDown } from './sessionForms';
 import { getBreakLabel } from './utils';

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { MemberType } from '@/src/components/Scheduling/InterviewTypes/types';
 // import { resetInterviewState } from '@/src/components/Scheduling/Agent/store';
-import { MemberType } from '@/src/components/Scheduling/Modules/types';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 

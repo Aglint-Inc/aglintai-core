@@ -1,5 +1,5 @@
 import Seo from '@/src/components/Common/Seo';
-import SchedulingViewComp from '@/src/components/Scheduling/SchedulingView';
+import SchedulingViewComp from '@/src/components/Scheduling/ScheduleDetails';
 
 function SchedulingViewPage() {
   return (

@@ -1,8 +1,7 @@
 import { InterviewModuleType, RecruiterUserType } from '@aglint/shared-types';
 
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
-
 import { ScheduleListType } from '../Common/ModuleSchedules/hooks';
+import { ModuleType } from '../InterviewTypes/types';
 
 export interface InterviewerDetailsType {
   modules: {

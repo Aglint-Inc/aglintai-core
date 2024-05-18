@@ -69,11 +69,11 @@ import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore'
 import UITextField from '@/src/components/Common/UITextField';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
-import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import {
   getScheduleBgcolor,
   getScheduleType,
-} from '@/src/components/Scheduling/AllSchedules/utils';
+} from '@/src/components/Scheduling/Candidates/utils';
 import {
   getScheduleDate,
   ScheduleProgressPillProps,

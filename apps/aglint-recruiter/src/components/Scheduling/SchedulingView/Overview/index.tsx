@@ -25,17 +25,17 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import IconScheduleType from '../../AllSchedules/ListCard/Icon';
-import { onClickResendInvite } from '../../AllSchedules/SchedulingApplication/utils';
-import { getScheduleType } from '../../AllSchedules/utils';
-import { getColorStatusSchedule } from '../../Modules/utils';
+import { onClickResendInvite } from '../../CandidateDetails/utils';
+import IconScheduleType from '../../Candidates/ListCard/Icon';
+import { getScheduleType } from '../../Candidates/utils';
+import { getColorStatusSchedule } from '../../InterviewTypes/utils';
+import { useScheduleDetails } from '../../ScheduleDetails/hooks';
+import AllRolesMeetings from '../../ScheduleDetails/Overview/AllRolesMeetings';
+import ChangeInterviewerDialog from '../../ScheduleDetails/Overview/ChangeInterviewerDialog';
+import InterviewerListCard from '../../ScheduleDetails/Overview/InterviewerListCard';
+import RescheduleDialog from '../../ScheduleDetails/Overview/RescheduleDialog';
+import { ScheduleMeeting } from '../../ScheduleDetails/types';
 import { formatTimeWithTimeZone } from '../../utils';
-import { useScheduleDetails } from '../hooks';
-import { ScheduleMeeting } from '../types';
-import AllRolesMeetings from './AllRolesMeetings';
-import ChangeInterviewerDialog from './ChangeInterviewerDialog';
-import InterviewerListCard from './InterviewerListCard';
-import RescheduleDialog from './RescheduleDialog';
 
 function Overview({
   cancelReasons,
