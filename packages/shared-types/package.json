@@ -1,6 +1,9 @@
 {
   "name": "@aglint/shared-types",
   "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/",
     "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/schema.ts"
   },
   "version": "0.0.1",
@@ -8,5 +11,9 @@
   "types": "./index.ts",
   "dependencies": {
     "typescript": "latest"
+  },
+  "devDependencies": {
+    "@aglint/typescript-config": "*",
+    "tsup": "^8.0.2"
   }
 }

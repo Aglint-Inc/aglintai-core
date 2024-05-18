@@ -1,5 +1,5 @@
-import {slackWeb} from '@/services/slack/slackWeb';
 import {Request, Response} from 'express';
+import {slackWeb} from 'src/services/slack/slackWeb';
 
 async function getUserIdByEmail(email: string) {
   try {

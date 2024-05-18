@@ -5,17 +5,18 @@ export const listForInteractions = async (req: Request, res: Response) => {
   try {
     const {payload} = req.body;
     const interaction_data = JSON.parse(payload);
+    console.log(interaction_data);
+    const action = interaction_data.actions[0];
     const user_id = interaction_data.user.id;
-    const action = JSON.parse(interaction_data).actions[0];
-
-    // console.log(action);
-    // console.log(user_id);
-    if (action.action_id === 'available') {
+    console.log(interaction_data);
+    console.log(action);
+    console.log(user_id);
+    if (action.value === 'available') {
       await slackWeb.chat.postMessage({
         channel: user_id,
         text: 'Thank you for RSVPing Yes!',
       });
-    } else if (action.action_id === 'not_available') {
+    } else if (action.value === 'not_available') {
       await slackWeb.chat.postMessage({
         channel: user_id,
         text: 'Thank you for RSVPing Yes!',

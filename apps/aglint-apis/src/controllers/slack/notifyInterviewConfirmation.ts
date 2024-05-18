@@ -1,7 +1,7 @@
-import {slackWeb} from '@/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from '@/services/supabase/SupabaseAdmin';
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
+import {slackWeb} from 'src/services/slack/slackWeb';
+import {supabaseWrap, supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
 export async function notifyInterviewConfirmation(req: Request, res: Response) {
   const {session_id} = req.body;
