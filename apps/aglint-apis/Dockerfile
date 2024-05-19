@@ -56,6 +56,6 @@ RUN adduser --system --uid 1001 expressjs
 USER expressjs
 COPY --from=installer /app .
 WORKDIR /app/apps/aglint-apis
-
+EXPOSE 8080
 CMD ["node", "dist/index.js"]
 
