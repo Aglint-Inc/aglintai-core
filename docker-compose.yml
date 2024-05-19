@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./apps/aglint-apis/Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+
