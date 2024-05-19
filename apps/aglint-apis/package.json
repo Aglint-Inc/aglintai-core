@@ -6,10 +6,10 @@
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
     "build": "tsup",
     "lint": "gts lint && npm run build",
-    "start": "set NODE_ENV=development&& npm run build && node dist/index.js",
-    "start:production": "set NODE_ENV=production&& npm run build && node dist/index.js",
-    "start:staging": "set NODE_ENV=staging&& npm run build && node dist/index.js",
-    "start:development": "set NODE_ENV=development&& npm run build && node  dist/index.js",
+    "start": "set NODE_ENV=development&& node dist/index.js",
+    "start:production": "set NODE_ENV=production&& node dist/index.js",
+    "start:staging": "set NODE_ENV=staging&& node dist/index.js",
+    "start:development": "set NODE_ENV=development&& node  dist/index.js",
     "compile": "tsc",
     "fix": "gts fix"
   },
@@ -51,5 +51,6 @@
     "typescript": "^5.4.3",
     "@aglint/shared-types": "*",
     "tsup": "^8.0.2"
-  }
+  },
+  "packageManager": "npm@8.19.4"
 }
