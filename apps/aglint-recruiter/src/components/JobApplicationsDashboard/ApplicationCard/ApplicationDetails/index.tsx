@@ -1242,6 +1242,7 @@ const ResumeViewer: React.FC<{
         '& .MuiDialog-paper': {
           borderRadius: '0px !important',
           border: 'none !important',
+          backgroundColor: 'transparent',
         },
         '.MuiDialog-container': {
           height: 'auto',
