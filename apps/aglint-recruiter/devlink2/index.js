@@ -62,6 +62,7 @@ export * from "./AvailableOptionCardDate";
 export * from "./AvailableSlots";
 export * from "./BackButton";
 export * from "./BodyWithSublink";
+export * from "./BookmarkDark";
 export * from "./Breadcrum";
 export * from "./BrowseAssessment";
 export * from "./BrowseScreeningPop";
