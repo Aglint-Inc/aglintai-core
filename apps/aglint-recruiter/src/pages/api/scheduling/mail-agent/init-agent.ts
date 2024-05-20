@@ -136,7 +136,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
 
-    console.log('name', cand_details.candidate_name);
     await candLogger(
       `Sent interview schedule email to {candidate}`,
       {
