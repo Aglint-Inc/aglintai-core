@@ -372,10 +372,10 @@ const NewJobApplicationSideDrawer = ({
         }}
         slotSocialLink={<SocialsBlock application={application} />}
         // isOverviewVisible={overview.valid}
-        isLocationRoleVisible={jobTitle.valid || location.valid}
-        isRoleVisible={jobTitle.valid}
+        // isLocationRoleVisible={jobTitle.valid || location.valid}
+        // isRoleVisible={jobTitle.valid}
         textRole={jobTitle.value}
-        isLocationVisible={location.valid}
+        // isLocationVisible={location.valid}
         textLocation={location.value}
         isResumeVisible={
           processState !== 'unavailable' && processState !== 'fetching'
