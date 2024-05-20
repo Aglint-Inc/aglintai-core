@@ -9,26 +9,41 @@ import {
   InterviewSession,
   RecruiterUserType,
 } from '../data.types';
+import { InterviewSessionApiType } from './types';
 
-export type InterviewSessionApiRespType = {
-  session_id: InterviewSession['id'];
-  meeting_id: InterviewSession['meeting_id'];
-  session_name: InterviewSession['name'];
-  duration: InterviewSession['session_duration'];
-  schedule_type: InterviewSession['schedule_type'];
-  session_type: InterviewSession['session_type'];
+export type ConflictReason = 'interviewer_paused' | 'out_of_office';
+export type InterviwerConflicts = {
+  interviewer: Pick<SessionInterviewerApiRespType, 'user_id'>;
+  conflict_reason: ConflictReason[];
+};
+
+export type SlotConflictType = {
+  isSlotConflicted: boolean;
+  interviewersConflicts: InterviwerConflicts[];
+};
+
+export type InterviewSessionApiRespType = Pick<
+  InterviewSessionApiType,
+  | 'session_id'
+  | 'meeting_id'
+  | 'session_name'
+  | 'duration'
+  | 'schedule_type'
+  | 'break_duration'
+  | 'session_type'
+  | 'session_order'
+  | 'interviewer_cnt'
+  | 'location'
+  | 'module_name'
+> & {
   qualifiedIntervs: SessionInterviewerApiRespType[];
   trainingIntervs: SessionInterviewerApiRespType[];
-  break_duration: InterviewSession['break_duration'];
-  session_order: InterviewSession['session_order'];
-  interviewer_cnt: InterviewSession['interviewer_cnt'];
-  location: InterviewSession['location'];
-  module_name: InterviewModuleType['name'];
 };
 
 export type SessionCombinationRespType = InterviewSessionApiRespType & {
   start_time: string;
   end_time: string;
+  slot_conflict_info: SlotConflictType;
 };
 
 export type SessionInterviewerApiRespType = Pick<

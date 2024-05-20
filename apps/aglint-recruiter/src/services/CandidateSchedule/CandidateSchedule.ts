@@ -7,7 +7,7 @@ import {
   IntervCntApp,
   InterviewerMeetingScheduled,
   InterviewModuleRelationType,
-  InterviewSessionApiType,
+  InterviewSessionApiRespType,
   PlanCombinationRespType,
   schedulingSettingType,
   SessionCombinationRespType,
@@ -62,7 +62,7 @@ type DayjsTimeRange = {
 export class CandidatesScheduling {
   public db_details: {
     company_cred: CompServiceKeyCred;
-    ses_with_ints: InterviewSessionApiType[];
+    ses_with_ints: InterviewSessionApiRespType[];
     all_inters: SessionInterviewerType[];
     comp_schedule_setting: schedulingSettingType;
     int_meetings: InterviewerMeetingScheduled[];
@@ -100,13 +100,15 @@ export class CandidatesScheduling {
     };
   }
 
-  // fetches required details from DB
-  //   start of api funcs
+  /**
+   * fetches necessay details from supabse db for finding the slots
+   */
   async fetchDetails() {
     const meeting_date = {
       start: null,
       end: null,
     };
+    // per week load balancer
     if (this.schedule_dates) {
       const meet_start_date = this.schedule_dates.user_start_date_js.subtract(
         7,
@@ -120,10 +122,11 @@ export class CandidatesScheduling {
       all_inters,
       comp_schedule_setting,
       company_cred,
-      ses_with_ints,
+
       int_meetings,
       ints_schd_meetings,
       all_session_int_details,
+      api_sess_ints,
     } = await fetch_details_from_db(
       this.api_payload.session_ids,
       this.api_payload.company_id,
@@ -136,7 +139,7 @@ export class CandidatesScheduling {
       all_inters,
       comp_schedule_setting,
       company_cred,
-      ses_with_ints,
+      ses_with_ints: api_sess_ints,
       int_meetings,
       ints_schd_meetings,
       all_session_int_details,
@@ -158,7 +161,10 @@ export class CandidatesScheduling {
     //
   }
 
-  // start_date and end date format DD/MM/YYYY
+  /**
+   * find calender events for each interviewers
+   *
+   */
   public async fetchInterviewrsCalEvents() {
     const ints_meta: InterDetailsType[] = this.db_details.all_inters.map(
       (i) => ({
@@ -298,6 +304,10 @@ export class CandidatesScheduling {
             start_time: s.start_time,
             location: s.location,
             meeting_id: s.meeting_id,
+            slot_conflict_info: {
+              interviewersConflicts: [],
+              isSlotConflicted: false,
+            },
           };
 
           return sess;
@@ -324,22 +334,13 @@ export class CandidatesScheduling {
     return findAllDayPlans();
   }
 
-  public test() {
-    const s = this.findEachInterviewerFreeTimes(
-      this.intervs_details_with_events.slice(0, 1),
-      this.schedule_dates.user_start_date_js.format(),
-      this.schedule_dates.user_end_date_js.format(),
-      [],
-    );
-    return { email: s[0].email, free_times: s[0].freeTimes };
-  }
-  //   end of api funcs
-
   // private util functions
-
-  //
+  /**
+   * organize sessions according to their order of days
+   * @returns
+   */
   private getSessionRounds() {
-    let session_rounds: InterviewSessionApiType[][] = [[]];
+    let session_rounds: InterviewSessionApiRespType[][] = [[]];
     let curr_round = 0;
     for (let sess of this.db_details.ses_with_ints) {
       session_rounds[curr_round].push({ ...sess });
@@ -352,11 +353,18 @@ export class CandidatesScheduling {
     return session_rounds;
   }
 
+  /**
+   * @param ints_details
+   * @param start_date
+   * @param end_date
+   * @param current_int_slot
+   * @returns returns array of free time chunks for each interviewer for every given date bw the daterange
+   */
   private findEachInterviewerFreeTimes = (
     ints_details: InterDetailsType[],
     start_date: string,
     end_date: string,
-    current_int_slot: InterviewSessionApiType[],
+    current_int_slot: InterviewSessionApiRespType[],
   ) => {
     // one interview free time
     const findInterviewerFreeTime = (
@@ -764,11 +772,11 @@ export class CandidatesScheduling {
 
   /**
   @returns combination of slots in a paricular day
-  @param interview_sessions - interview sessions of a particaulr day with fixed time break ( like 30, 45, 60 minutes)
+  @param interview_sessions - particualar day session with fixed breaks and assigned interviewers
   @param interv_free_time - free time of interviewers of given session in a particalar day
 **/
   private findFixedTimeCombs = (
-    interview_sessions: InterviewSessionApiType[],
+    interview_sessions: InterviewSessionApiRespType[],
     interv_free_time: InterDetailsType[],
   ) => {
     const cached_free_time = new Map<string, TimeDurationType[]>();
@@ -776,7 +784,7 @@ export class CandidatesScheduling {
 
     const module_combs = this.calcIntervCombsForModule(interview_sessions);
     const exploreSessionCombs = (
-      current_comb: InterviewSessionApiType[],
+      current_comb: InterviewSessionApiRespType[],
       module_idx,
     ) => {
       if (module_idx === module_combs.length) {
@@ -797,11 +805,11 @@ export class CandidatesScheduling {
      * @returns given one combination of plan find all possible times for that plan
      */
     const calcMeetingCombinsForPlan = (
-      plan_comb: InterviewSessionApiType[],
+      plan_comb: InterviewSessionApiRespType[],
     ) => {
       const schedule_combs: PlanCombinationRespType[] = [];
       const getInterviewersCommonTime = (
-        curr_session: InterviewSessionApiType,
+        curr_session: InterviewSessionApiRespType,
       ) => {
         const all_int_attendees = [
           ...curr_session.qualifiedIntervs,
@@ -822,7 +830,9 @@ export class CandidatesScheduling {
             time_ranges: interv_free_time.find(
               (i) => i.interviewer_id === s.user_id,
             ).freeTimes,
-            interviewer_pause: s.pause_json,
+            interviewer_pause:
+              this.db_details.all_session_int_details[curr_session.session_id]
+                .interviewers[s.user_id].pause_json,
           })),
         );
         cached_free_time.set(map_key.join('_'), common_time_range);
@@ -865,6 +875,10 @@ export class CandidatesScheduling {
               ...plan_session,
               start_time: required_time.startTime,
               end_time: required_time.endTime,
+              slot_conflict_info: {
+                interviewersConflicts: [],
+                isSlotConflicted: false,
+              },
             });
             return findIsSessionAvailable(
               module_idx + 1,
@@ -918,6 +932,7 @@ export class CandidatesScheduling {
 
       // check for load balance setting
       if (!isPlanPossible()) return schedule_combs;
+
       const first_session = plan_comb[0];
       const first_sesn_comon_time = getInterviewersCommonTime(first_session);
       for (let time_range of first_sesn_comon_time) {
@@ -944,6 +959,10 @@ export class CandidatesScheduling {
                 ...first_session,
                 start_time: curr_time_range.startTime,
                 end_time: curr_time_range.endTime,
+                slot_conflict_info: {
+                  interviewersConflicts: [],
+                  isSlotConflicted: false,
+                },
               },
             ],
           };
@@ -1143,7 +1162,9 @@ export class CandidatesScheduling {
    * @returns all combination of interviewers for the sessions
    */
 
-  private calcIntervCombsForModule = (sessions: InterviewSessionApiType[]) => {
+  private calcIntervCombsForModule = (
+    sessions: InterviewSessionApiRespType[],
+  ) => {
     const findCombinationOfStrings = (str_arr: string[], comb: number) => {
       let total_combs: string[][] = [];
 
@@ -1178,10 +1199,10 @@ export class CandidatesScheduling {
      * @returns combination of sessions with possible interviewers
      */
     const calcSingleSessionCombinations = (
-      session: InterviewSessionApiType,
+      session: InterviewSessionApiRespType,
       comb: number,
     ) => {
-      let session_combs: InterviewSessionApiType[] = [];
+      let session_combs: InterviewSessionApiRespType[] = [];
       const combs = findCombinationOfStrings(
         [...session.qualifiedIntervs.map((int) => int.user_id)],
         comb,
@@ -1202,7 +1223,7 @@ export class CandidatesScheduling {
       return session_combs;
     };
 
-    let total_combs: InterviewSessionApiType[][] = [];
+    let total_combs: InterviewSessionApiRespType[][] = [];
 
     for (const session of sessions) {
       const combs = calcSingleSessionCombinations(

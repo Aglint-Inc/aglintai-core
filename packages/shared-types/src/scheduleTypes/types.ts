@@ -69,19 +69,21 @@ export type SessionSlotType = SessionSlotApiRespType & {
   end_time: string;
 };
 
-export type SessionSlotApiRespType = {
-  session_id: InterviewSession['id'];
-  meeting_id: InterviewSession['meeting_id'];
-  session_name: InterviewSession['name'];
-  duration: InterviewSession['session_duration'];
-  schedule_type: InterviewSession['schedule_type'];
-  session_type: InterviewSession['session_type'];
-  break_duration: InterviewSession['break_duration'];
-  session_order: InterviewSession['session_order'];
-  interviewer_cnt: InterviewSession['interviewer_cnt'];
-  location: InterviewSession['location'];
-  module_name: InterviewModuleType['name'];
-};
+export type SessionSlotApiRespType = Pick<
+  InterviewSessionApiType,
+  | 'session_id'
+  | 'meeting_id'
+  | 'session_name'
+  | 'duration'
+  | 'schedule_type'
+  | 'session_type'
+  | 'break_duration'
+  | 'break_duration'
+  | 'session_order'
+  | 'interviewer_cnt'
+  | 'location'
+  | 'module_name'
+>;
 
 export type InterviewerMeetingScheduled = {
   meeting_start_time: InterviewMeetingTypeDb['start_time'];
