@@ -71,7 +71,9 @@ function ListCardInterviewerModules({
         textConfirmed={confirmedCount}
         textCancel={cancelledCount}
         countCompletedSchedule={completedCount}
-        textPause={'Paused from assigning to new interviews with this module'}
+        textPause={
+          'Paused from assigning to new interviews with this interview type'
+        }
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
@@ -174,7 +176,9 @@ function ListCardInterviewerModules({
             setCollapseOpen((pre) => !pre);
           },
         }}
-        textPause={'Paused from assigning to new interviews with this module'}
+        textPause={
+          'Paused from assigning to new interviews with this interview type'
+        }
         isMoveToQualifierVisible={false}
         isTrainingProgessVisible={true}
         isRemoveVisible={false}
