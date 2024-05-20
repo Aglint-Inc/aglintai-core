@@ -1,7 +1,9 @@
 import { Stack, useMediaQuery } from '@mui/material';
 import { useState } from 'react';
 
-import { AvailableTimeRange, CandidateCalender, DayColumn } from '@/devlink';
+import { AvailableTimeRange } from '@/devlink/AvailableTimeRange';
+import { CandidateCalender } from '@/devlink/CandidateCalender';
+import { DayColumn } from '@/devlink/DayColumn';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import { useInviteSlots } from '@/src/queries/candidate-invite';
 

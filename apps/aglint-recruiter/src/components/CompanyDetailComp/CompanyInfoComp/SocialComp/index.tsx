@@ -6,7 +6,8 @@ import { Avatar } from '@mui/material';
 import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import { AddSocialLink, NewSocialLinkPop } from '@/devlink';
+import { AddSocialLink } from '@/devlink/AddSocialLink';
+import { NewSocialLinkPop } from '@/devlink/NewSocialLinkPop';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

@@ -20,11 +20,9 @@ const MenuBtn = styled(IconButton)({
   },
 });
 
-import {
-  CreateJobCheckItem,
-  GenerateJobDescAi,
-  LoadingGenerate,
-} from '@/devlink';
+import { CreateJobCheckItem } from '@/devlink/CreateJobCheckItem';
+import { GenerateJobDescAi } from '@/devlink/GenerateJobDescAi';
+import { LoadingGenerate } from '@/devlink/LoadingGenerate';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   generateJobDescription,

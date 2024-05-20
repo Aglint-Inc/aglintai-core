@@ -3,12 +3,10 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
-import {
-  CandidateDialog,
-  CandidateExperience,
-  CdExperienceCard,
-  EmailOutReach,
-} from '@/devlink';
+import { CandidateDialog } from '@/devlink/CandidateDialog';
+import { CandidateExperience } from '@/devlink/CandidateExperience';
+import { CdExperienceCard } from '@/devlink/CdExperienceCard';
+import { EmailOutReach } from '@/devlink/EmailOutReach';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { palette } from '@/src/context/Theme/Theme';
 import { getFullName } from '@/src/utils/jsonResume';

@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { JobUnpublishDisclaimer } from '@/devlink';
+import { JobUnpublishDisclaimer } from '@/devlink/JobUnpublishDisclaimer';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

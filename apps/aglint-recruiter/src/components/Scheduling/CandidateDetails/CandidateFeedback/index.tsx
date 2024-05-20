@@ -2,7 +2,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { CandidateFeedback as CandidateFeedbackDev } from '@/devlink3';
+import { CandidateFeedback as CandidateFeedbackDev } from '@/devlink3/CandidateFeedback';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';
 

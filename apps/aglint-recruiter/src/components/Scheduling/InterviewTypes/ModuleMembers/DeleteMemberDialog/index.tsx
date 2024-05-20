@@ -1,6 +1,6 @@
 import { Dialog } from '@mui/material';
 
-import { DeletePopup } from '@/devlink3';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 
 import { useDeleteRelationHandler } from '../../queries/hooks';
 import { setIsDeleteMemberDialogOpen, useModulesStore } from '../../store';

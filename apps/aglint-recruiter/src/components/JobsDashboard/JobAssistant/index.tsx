@@ -11,7 +11,9 @@ import { Editor } from '@tiptap/react';
 import { marked } from 'marked';
 import { useEffect, useState } from 'react';
 
-import { ChatMessage, JobAssist, JobAssistCardSmall } from '@/devlink';
+import { ChatMessage } from '@/devlink/ChatMessage';
+import { JobAssist } from '@/devlink/JobAssist';
+import { JobAssistCardSmall } from '@/devlink/JobAssistCardSmall';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';

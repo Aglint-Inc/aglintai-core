@@ -4,13 +4,11 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { createToast } from 'vercel-toast';
 
-import {
-  AddToList,
-  ButtonPrimarySmall,
-  CdSavedList,
-  SavedList,
-  SavedListMenu,
-} from '@/devlink';
+import { AddToList } from '@/devlink/AddToList';
+import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { CdSavedList } from '@/devlink/CdSavedList';
+import { SavedList } from '@/devlink/SavedList';
+import { SavedListMenu } from '@/devlink/SavedListMenu';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

@@ -2,12 +2,10 @@ import { AvatarGroup, InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import {
-  EmptyState,
-  InterviewModuleCard,
-  InterviewModuleTable,
-} from '@/devlink2';
-import { ArchivedButton } from '@/devlink3';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
+import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
+import { ArchivedButton } from '@/devlink3/ArchivedButton';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
 

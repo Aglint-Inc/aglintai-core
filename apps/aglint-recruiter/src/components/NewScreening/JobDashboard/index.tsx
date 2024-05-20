@@ -3,21 +3,17 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import {
-  AssessmentSide,
-  ButtonPrimaryRegular,
-  CreateNewJob,
-  EnableAssessment,
-  LoaderSvg,
-} from '@/devlink';
-import {
-  Breadcrum,
-  BrowseScreeningPop,
-  ChooseScreeningCard,
-  PageLayout,
-  PhoneScreening,
-  ScreeningLandingCard,
-} from '@/devlink2';
+import { AssessmentSide } from '@/devlink/AssessmentSide';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { CreateNewJob } from '@/devlink/CreateNewJob';
+import { EnableAssessment } from '@/devlink/EnableAssessment';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { BrowseScreeningPop } from '@/devlink2/BrowseScreeningPop';
+import { ChooseScreeningCard } from '@/devlink2/ChooseScreeningCard';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { PhoneScreening } from '@/devlink2/PhoneScreening';
+import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';

@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import React, { Dispatch } from 'react';
 
-import { InterviewerDetailOverview } from '@/devlink3';
+import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import { DetailsWithCount, PauseDialog } from '../../type';
 import ListCardInterviewerModules from './ListCard';

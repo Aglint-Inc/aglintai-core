@@ -6,18 +6,16 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  AshbyApiKey,
-  AshbyAtsJob,
-  AtsCard,
-  IntegrationFetching,
-  IntegrationModal,
-  LeverApiKey,
-  LoadingJobsAts,
-  NoResultAts,
-  SkeletonLoaderAtsCard,
-} from '@/devlink';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { AshbyApiKey } from '@/devlink/AshbyApiKey';
+import { AshbyAtsJob } from '@/devlink/AshbyAtsJob';
+import { AtsCard } from '@/devlink/AtsCard';
+import { IntegrationFetching } from '@/devlink/IntegrationFetching';
+import { IntegrationModal } from '@/devlink/IntegrationModal';
+import { LeverApiKey } from '@/devlink/LeverApiKey';
+import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
+import { NoResultAts } from '@/devlink/NoResultAts';
+import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';

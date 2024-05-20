@@ -3,8 +3,8 @@ import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { DeletePopup } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
 import toast from '@/src/utils/toast';

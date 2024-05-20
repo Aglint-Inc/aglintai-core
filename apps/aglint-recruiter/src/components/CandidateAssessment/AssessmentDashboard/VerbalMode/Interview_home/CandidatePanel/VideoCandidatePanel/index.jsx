@@ -1,7 +1,7 @@
 import { Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { InterviewCandidateScreen } from '@/devlink';
+import { InterviewCandidateScreen } from '@/devlink/InterviewCandidateScreen';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 
 import { ActiveVoice } from '../../../Components/ActiveVoice';

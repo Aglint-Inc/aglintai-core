@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 
-import { PageLayout } from '@/devlink2';
+import { PageLayout } from '@/devlink2/PageLayout';
 
 import TaskBody from './TaskBody';
 import GroupBy from './TaskBody/GroupBy';

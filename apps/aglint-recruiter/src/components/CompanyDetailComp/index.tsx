@@ -3,7 +3,9 @@ import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
-import { CompanySetting, NavSublink, SavedChanges } from '@/devlink';
+import { CompanySetting } from '@/devlink/CompanySetting';
+import { NavSublink } from '@/devlink/NavSublink';
+import { SavedChanges } from '@/devlink/SavedChanges';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 

@@ -3,7 +3,8 @@ import axios from 'axios';
 import { get } from 'lodash';
 import { useState } from 'react';
 
-import { Checkbox, PhoneScreeningQ } from '@/devlink';
+import { Checkbox } from '@/devlink/Checkbox';
+import { PhoneScreeningQ } from '@/devlink/PhoneScreeningQ';
 import { palette } from '@/src/context/Theme/Theme';
 import toast from '@/src/utils/toast';
 

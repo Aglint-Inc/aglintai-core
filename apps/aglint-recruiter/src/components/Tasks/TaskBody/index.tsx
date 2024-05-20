@@ -2,7 +2,9 @@
 
 import { Checkbox, Stack } from '@mui/material';
 
-import { TaskEmpty, TaskTable, TaskTableJobCand } from '@/devlink3';
+import { TaskEmpty } from '@/devlink3/TaskEmpty';
+import { TaskTable } from '@/devlink3/TaskTable';
+import { TaskTableJobCand } from '@/devlink3/TaskTableJobCand';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 import { ShowCode } from '../../Common/ShowCode';

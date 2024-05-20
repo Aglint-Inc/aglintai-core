@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { AllInterviewEmpty } from '@/devlink2';
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 
 import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
 import DynamicLoader from '../../Interviewers/DynamicLoader';

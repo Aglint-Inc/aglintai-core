@@ -1,7 +1,7 @@
 import { SuggestionProps } from '@tiptap/suggestion';
 import React, { Component } from 'react';
 
-import { AiCommand } from '@/devlink';
+import { AiCommand } from '@/devlink/AiCommand';
 
 class CommandList extends Component<SuggestionProps> {
   state = {

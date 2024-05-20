@@ -3,7 +3,8 @@ import { capitalize } from 'lodash';
 import type React from 'react';
 import { useDrag } from 'react-dnd';
 
-import { RecommendedCardLoader, RecommendedQuestionCard } from '@/devlink2';
+import { RecommendedCardLoader } from '@/devlink2/RecommendedCardLoader';
+import { RecommendedQuestionCard } from '@/devlink2/RecommendedQuestionCard';
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
 import { type RecommendationQuestion } from '@/src/queries/assessment/types';
 

@@ -11,7 +11,7 @@ import { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useState } from 'react';
 
-import { SkeletonParagraph } from '@/devlink2';
+import { SkeletonParagraph } from '@/devlink2/SkeletonParagraph';
 import { palette } from '@/src/context/Theme/Theme';
 
 import { TipTapAIEditorCtxType, TipTapCtx } from './context';

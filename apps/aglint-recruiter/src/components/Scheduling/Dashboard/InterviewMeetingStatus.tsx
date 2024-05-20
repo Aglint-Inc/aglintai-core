@@ -10,7 +10,8 @@ import {
 import React, { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { NewInterviewDetail, NoData } from '@/devlink3';
+import { NewInterviewDetail } from '@/devlink3/NewInterviewDetail';
+import { NoData } from '@/devlink3/NoData';
 import { useInterviewMeetingStatus } from '@/src/queries/scheduling-dashboard';
 
 import Loader from '../../Common/Loader';

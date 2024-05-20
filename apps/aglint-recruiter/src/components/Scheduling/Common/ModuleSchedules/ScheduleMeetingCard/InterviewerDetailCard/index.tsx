@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { MemberDetail } from '@/devlink3';
+import { MemberDetail } from '@/devlink3/MemberDetail';
 import { MembersList } from '@/devlink3/MembersList';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { CustomTooltip } from '@/src/components/Common/Tooltip';

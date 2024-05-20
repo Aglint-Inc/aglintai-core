@@ -1,16 +1,14 @@
 import { Stack, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import {
-  AssistantChat,
-  ChatBox,
-  ChatIcon,
-  ChatInput,
-  ChatWelcome,
-  PdfSelected,
-  UserChat,
-  UserChatIcon,
-} from '@/devlink';
+import { AssistantChat } from '@/devlink/AssistantChat';
+import { ChatBox } from '@/devlink/ChatBox';
+import { ChatIcon } from '@/devlink/ChatIcon';
+import { ChatInput } from '@/devlink/ChatInput';
+import { ChatWelcome } from '@/devlink/ChatWelcome';
+import { PdfSelected } from '@/devlink/PdfSelected';
+import { UserChat } from '@/devlink/UserChat';
+import { UserChatIcon } from '@/devlink/UserChatIcon';
 import { useJobPostAssistantContext } from '@/src/context/JobPostAssistant';
 
 import MuiAvatar from '../Common/MuiAvatar';

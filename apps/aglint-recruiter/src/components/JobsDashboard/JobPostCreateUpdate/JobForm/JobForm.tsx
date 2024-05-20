@@ -4,19 +4,17 @@ import { useRouter } from 'next/dist/client/router';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
-import {
-  AssessmentSide,
-  CloseDeleteJob,
-  CloseJobButton,
-  CreateNewJob,
-  JobDiscardChanges,
-  JobEditWarning,
-  JobWarningList,
-  NavSublink,
-  ScorePercentage,
-  ScoreWeightage,
-} from '@/devlink';
+import { AssessmentSide } from '@/devlink/AssessmentSide';
+import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
+import { CloseJobButton } from '@/devlink/CloseJobButton';
+import { CreateNewJob } from '@/devlink/CreateNewJob';
 import { DeleteDraft } from '@/devlink/DeleteDraft';
+import { JobDiscardChanges } from '@/devlink/JobDiscardChanges';
+import { JobEditWarning } from '@/devlink/JobEditWarning';
+import { JobWarningList } from '@/devlink/JobWarningList';
+import { NavSublink } from '@/devlink/NavSublink';
+import { ScorePercentage } from '@/devlink/ScorePercentage';
+import { ScoreWeightage } from '@/devlink/ScoreWeightage';
 import Loader from '@/src/components/Common/Loader';
 import ScoreWheel from '@/src/components/Common/ScoreWheel';
 import UITextField from '@/src/components/Common/UITextField';

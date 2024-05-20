@@ -8,7 +8,8 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { AddDepartmentPop, RolesPill } from '@/devlink';
+import { AddDepartmentPop } from '@/devlink/AddDepartmentPop';
+import { RolesPill } from '@/devlink/RolesPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 interface DepartmentsProps {

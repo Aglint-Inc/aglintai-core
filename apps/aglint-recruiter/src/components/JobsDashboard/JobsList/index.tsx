@@ -5,7 +5,9 @@ import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React from 'react';
 
-import { AtsBadge, JobEmptyState, JobsListingCard } from '@/devlink';
+import { AtsBadge } from '@/devlink/AtsBadge';
+import { JobEmptyState } from '@/devlink/JobEmptyState';
+import { JobsListingCard } from '@/devlink/JobsListingCard';
 import { Job } from '@/src/queries/job/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
 import { pageRoutes } from '@/src/utils/pageRouting';

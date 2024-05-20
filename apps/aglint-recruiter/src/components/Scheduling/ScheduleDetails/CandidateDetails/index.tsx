@@ -2,8 +2,9 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import { CandidateDetails, CandidateSideDrawer } from '@/devlink';
-import { SummaryBlock } from '@/devlink2';
+import { CandidateDetails } from '@/devlink/CandidateDetails';
+import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
+import { SummaryBlock } from '@/devlink2/SummaryBlock';
 import {
   AnalysisBlockSection,
   NewEducationDetails,

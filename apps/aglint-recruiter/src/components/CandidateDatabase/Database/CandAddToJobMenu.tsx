@@ -1,7 +1,8 @@
 import { CircularProgress, Popover } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { AddJob, AddJobButton } from '@/devlink';
+import { AddJob } from '@/devlink/AddJob';
+import { AddJobButton } from '@/devlink/AddJobButton';
 import { AddJobList } from '@/devlink/AddJobList';
 import { palette } from '@/src/context/Theme/Theme';
 

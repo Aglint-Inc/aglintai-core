@@ -10,14 +10,12 @@ import {
 } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import {
-  AssessmentQuestionDetail as AssessmentQuestionDetailDev,
-  LinkButton,
-  McqQuestion,
-  OptionInput as OptionInputDev,
-  RcCheckbox,
-  ShortAnswerQuestion,
-} from '@/devlink2';
+import { AssessmentQuestionDetail as AssessmentQuestionDetailDev } from '@/devlink2/AssessmentQuestionDetail';
+import { LinkButton } from '@/devlink2/LinkButton';
+import { McqQuestion } from '@/devlink2/McqQuestion';
+import { OptionInput as OptionInputDev } from '@/devlink2/OptionInput';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { ShortAnswerQuestion } from '@/devlink2/ShortAnswerQuestion';
 import {
   useAssessmentQuestionDelete,
   useAssessmentQuestionUpdate,

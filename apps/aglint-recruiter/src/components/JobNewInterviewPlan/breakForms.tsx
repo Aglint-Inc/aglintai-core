@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 
-import { SidedrawerBodyBreak } from '@/devlink2';
+import { SidedrawerBodyBreak } from '@/devlink2/SidedrawerBodyBreak';
 import { UpdateInterviewSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
 

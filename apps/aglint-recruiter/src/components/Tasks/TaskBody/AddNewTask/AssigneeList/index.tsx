@@ -2,7 +2,7 @@
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { ListPop } from '@/devlink3';
+import { ListPop } from '@/devlink3/ListPop';
 
 import AssigneeChip from '../../../Components/AssigneeChip';
 import { useTaskStatesContext } from '../../../TaskStatesContext';

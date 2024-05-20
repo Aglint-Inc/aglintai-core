@@ -1,4 +1,4 @@
-import { NewJobSelect } from '@/devlink';
+import { NewJobSelect } from '@/devlink/NewJobSelect';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { useJobForm } from '../JobPostFormProvider';

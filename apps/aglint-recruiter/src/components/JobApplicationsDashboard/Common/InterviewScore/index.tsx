@@ -1,6 +1,7 @@
 import { Stack, Tooltip } from '@mui/material';
 
-import { AssessmentScore, ScreeningStatus } from '@/devlink2';
+import { AssessmentScore } from '@/devlink2/AssessmentScore';
+import { ScreeningStatus } from '@/devlink2/ScreeningStatus';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';

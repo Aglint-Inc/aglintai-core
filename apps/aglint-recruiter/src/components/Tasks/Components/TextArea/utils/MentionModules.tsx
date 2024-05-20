@@ -5,7 +5,7 @@ import { Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
-import { AgentPill } from '@/devlink3';
+import { AgentPill } from '@/devlink3/AgentPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 

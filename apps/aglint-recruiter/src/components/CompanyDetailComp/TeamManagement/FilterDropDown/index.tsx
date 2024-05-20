@@ -1,8 +1,9 @@
 import { Popover, Stack, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ButtonFilter, FilterDropdown } from '@/devlink2';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 type ItemType = string;
 

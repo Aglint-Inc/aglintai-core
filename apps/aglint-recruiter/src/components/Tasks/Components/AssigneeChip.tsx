@@ -3,7 +3,9 @@ import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { AgentPill, AvatarWithName, ListCard } from '@/devlink3';
+import { AgentPill } from '@/devlink3/AgentPill';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { ListCard } from '@/devlink3/ListCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';

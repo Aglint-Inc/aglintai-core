@@ -2,7 +2,9 @@ import { Popover, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useState } from 'react';
 
-import { ButtonFilter, FilterList, FilterPill } from '@/devlink2';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterList } from '@/devlink2/FilterList';
+import { FilterPill } from '@/devlink2/FilterPill';
 
 import {
   groupByText,

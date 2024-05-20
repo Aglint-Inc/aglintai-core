@@ -3,12 +3,10 @@ import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 
-import {
-  ScrDropdown,
-  ScrQuestionEdit,
-  ScrQuestionOptionEdit,
-  ToggleButton,
-} from '@/devlink2';
+import { ScrDropdown } from '@/devlink2/ScrDropdown';
+import { ScrQuestionEdit } from '@/devlink2/ScrQuestionEdit';
+import { ScrQuestionOptionEdit } from '@/devlink2/ScrQuestionOptionEdit';
+import { ToggleButton } from '@/devlink2/ToggleButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 

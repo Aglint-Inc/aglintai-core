@@ -11,7 +11,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CdEditQuerry, JobPills } from '@/devlink';
+import { CdEditQuerry } from '@/devlink/CdEditQuerry';
+import { JobPills } from '@/devlink/JobPills';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { palette } from '@/src/context/Theme/Theme';
 import { supabase } from '@/src/utils/supabase/client';

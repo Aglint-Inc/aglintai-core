@@ -8,14 +8,12 @@ import { get } from 'lodash';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useState } from 'react';
 
-import {
-  EditEmail,
-  EmailTemplateCards,
-  EmailTemplatesStart,
-  JobEditWarning,
-  JobWarningList,
-  LoaderSvg,
-} from '@/devlink';
+import { EditEmail } from '@/devlink/EditEmail';
+import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
+import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
+import { JobEditWarning } from '@/devlink/JobEditWarning';
+import { JobWarningList } from '@/devlink/JobWarningList';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import AUIButton from '@/src/components/Common/AUIButton';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UITextField from '@/src/components/Common/UITextField';

@@ -3,8 +3,9 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { EnableAssessment as EnableAssessmentDev } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { EnableAssessment as EnableAssessmentDev } from '@/devlink/EnableAssessment';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';

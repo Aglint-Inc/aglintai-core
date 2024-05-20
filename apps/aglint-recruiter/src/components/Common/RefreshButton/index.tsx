@@ -1,4 +1,4 @@
-import { RefreshButton } from '@/devlink2';
+import { RefreshButton } from '@/devlink2/RefreshButton';
 
 const RefreshBtn = ({ text, isDisabled, onClick, animatedDisable = true }) => {
   const style = {

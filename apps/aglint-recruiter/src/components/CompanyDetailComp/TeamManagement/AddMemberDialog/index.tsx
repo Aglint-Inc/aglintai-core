@@ -15,13 +15,11 @@ import {
 import converter from 'number-to-words';
 import { useState } from 'react';
 
-import {
-  ButtonPrimaryRegular,
-  InviteTeamCard,
-  TeamInvite,
-  TeamInvitesBlock,
-  TeamPendingInvites,
-} from '@/devlink';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { InviteTeamCard } from '@/devlink/InviteTeamCard';
+import { TeamInvite } from '@/devlink/TeamInvite';
+import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
+import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';

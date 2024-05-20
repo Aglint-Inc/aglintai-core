@@ -6,8 +6,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ConfirmationPopup } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

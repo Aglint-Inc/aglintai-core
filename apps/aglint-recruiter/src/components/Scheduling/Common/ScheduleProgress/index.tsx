@@ -1,7 +1,7 @@
 import { Stack } from '@mui/system';
 import { type Ref, forwardRef } from 'react';
 
-import { ScheduleProgress as ScheduleProgressDev } from '@/devlink';
+import { ScheduleProgress as ScheduleProgressDev } from '@/devlink/ScheduleProgress';
 
 import ScheduleProgressPill, {
   type ScheduleProgressPillProps,

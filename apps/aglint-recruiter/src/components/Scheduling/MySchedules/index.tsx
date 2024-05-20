@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-import { MyScheduleLanding } from '@/devlink';
+import { MyScheduleLanding } from '@/devlink/MyScheduleLanding';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 

@@ -9,8 +9,8 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ConfirmationPopup } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

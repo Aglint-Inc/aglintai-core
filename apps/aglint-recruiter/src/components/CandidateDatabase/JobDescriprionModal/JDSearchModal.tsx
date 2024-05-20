@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import router from 'next/router';
 import React, { useState } from 'react';
 
-import { JobDescriptionModal } from '@/devlink';
+import { JobDescriptionModal } from '@/devlink/JobDescriptionModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';

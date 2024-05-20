@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { AvatarWithName, HeaderWithSlot } from '@/devlink3';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { HeaderWithSlot } from '@/devlink3/HeaderWithSlot';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 

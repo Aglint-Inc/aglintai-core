@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { AllInterviewEmpty } from '@/devlink2';
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import Loader from '@/src/components/Common/Loader';
 import { pageRoutes } from '@/src/utils/pageRouting';
 

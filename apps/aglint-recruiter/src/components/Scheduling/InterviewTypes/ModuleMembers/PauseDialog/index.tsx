@@ -5,8 +5,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ConfirmationPopup } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 
 import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { usePauseHandler } from '../../queries/hooks';

@@ -5,7 +5,9 @@ import { CSVLink } from 'react-csv';
 import { useDropzone } from 'react-dropzone';
 import * as XLSX from 'xlsx';
 
-import { ImportCandidatesCsv, ImportCsv, LoaderSvg } from '@/devlink';
+import { ImportCandidatesCsv } from '@/devlink/ImportCandidatesCsv';
+import { ImportCsv } from '@/devlink/ImportCsv';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CsvUploadApi } from '@/src/apiUtils/job/jobApplications/candidateUpload/types';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';

@@ -3,8 +3,11 @@ import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
-import { NewTabPill, ScheduleButton, ScheduleDetailTabs } from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ScheduleButton } from '@/devlink3/ScheduleButton';
+import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import Loader from '../../Common/Loader';

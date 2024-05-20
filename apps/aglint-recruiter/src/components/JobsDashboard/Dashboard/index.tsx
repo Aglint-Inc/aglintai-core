@@ -5,32 +5,29 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
 
-import {
-  AssistStatus,
-  CloseDeleteJob,
-  CloseJobButton,
-  CloseJobModal,
-} from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
-import {
-  AddCandidateButton,
-  BannerLoading,
-  DarkPill,
-  DashboardAlert,
-  DashboardWarning,
-  EnableDisable,
-  GraphBlock,
-  JobDashboard as JobDashboardDev,
-  JobDashboardTopRight,
-  JobRole,
-  JobsBanner,
-  ModuleCard,
-  NoData,
-  PipeLine,
-  RoleList,
-  ScheduleCardSmall,
-  ScoreSetting,
-} from '@/devlink3';
+import { AssistStatus } from '@/devlink/AssistStatus';
+import { CloseDeleteJob } from '@/devlink/CloseDeleteJob';
+import { CloseJobButton } from '@/devlink/CloseJobButton';
+import { CloseJobModal } from '@/devlink/CloseJobModal';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { AddCandidateButton } from '@/devlink3/AddCandidateButton';
+import { BannerLoading } from '@/devlink3/BannerLoading';
+import { DarkPill } from '@/devlink3/DarkPill';
+import { DashboardAlert } from '@/devlink3/DashboardAlert';
+import { DashboardWarning } from '@/devlink3/DashboardWarning';
+import { EnableDisable } from '@/devlink3/EnableDisable';
+import { GraphBlock } from '@/devlink3/GraphBlock';
+import { JobDashboard as JobDashboardDev } from '@/devlink3/JobDashboard';
+import { JobDashboardTopRight } from '@/devlink3/JobDashboardTopRight';
+import { JobRole } from '@/devlink3/JobRole';
+import { JobsBanner } from '@/devlink3/JobsBanner';
+import { ModuleCard } from '@/devlink3/ModuleCard';
+import { NoData } from '@/devlink3/NoData';
+import { PipeLine } from '@/devlink3/PipeLine';
+import { RoleList } from '@/devlink3/RoleList';
+import { ScheduleCardSmall } from '@/devlink3/ScheduleCardSmall';
+import { ScoreSetting } from '@/devlink3/ScoreSetting';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';

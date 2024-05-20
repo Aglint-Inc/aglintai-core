@@ -3,13 +3,11 @@ import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
-import { PageLayout } from '@/devlink2';
-import {
-  ConfirmationPopup,
-  CreateJobLoader,
-  EditJobTopbarLeft,
-  JobDetailBlock,
-} from '@/devlink3';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { CreateJobLoader } from '@/devlink3/CreateJobLoader';
+import { EditJobTopbarLeft } from '@/devlink3/EditJobTopbarLeft';
+import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';

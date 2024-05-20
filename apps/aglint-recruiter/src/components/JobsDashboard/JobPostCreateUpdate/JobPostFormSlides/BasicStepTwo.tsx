@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { NewJobStep2 } from '@/devlink';
+import { NewJobStep2 } from '@/devlink/NewJobStep2';
 
 import TipTapAIEditor from '../../../Common/TipTapAIEditor';
 import { useJobForm } from '../JobPostFormProvider';

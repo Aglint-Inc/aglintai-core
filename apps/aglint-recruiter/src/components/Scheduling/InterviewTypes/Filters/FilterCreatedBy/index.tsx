@@ -8,8 +8,9 @@ import {
 import { capitalize, debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ButtonFilter, FilterDropdown } from '@/devlink2';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';

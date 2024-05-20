@@ -4,13 +4,11 @@ import axios from 'axios';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 
-import {
-  InterviewMode,
-  InterviewModePill,
-  SelectedMemberPill,
-  SideDrawerBlock,
-  SidedrawerBodySession,
-} from '@/devlink2';
+import { InterviewMode } from '@/devlink2/InterviewMode';
+import { InterviewModePill } from '@/devlink2/InterviewModePill';
+import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
+import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
+import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import {

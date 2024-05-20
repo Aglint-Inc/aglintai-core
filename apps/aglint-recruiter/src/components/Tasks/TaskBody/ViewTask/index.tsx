@@ -5,7 +5,7 @@ import { Button, Drawer, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { ViewTask } from '@/devlink3';
+import { ViewTask } from '@/devlink3/ViewTask';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';

@@ -6,7 +6,8 @@ import { errorMessages } from '@utils/errorMessages';
 import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
-import { PwResetConfirm, PwResetForm } from '@/devlink2';
+import { PwResetConfirm } from '@/devlink2/PwResetConfirm';
+import { PwResetForm } from '@/devlink2/PwResetForm';
 let tempEmail = '';
 
 import { useRouter } from 'next/router';

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
-import { AgentTask } from '@/devlink3';
+import { AgentTask } from '@/devlink3/AgentTask';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 
 import LogoIcon from '../LogoIcon';

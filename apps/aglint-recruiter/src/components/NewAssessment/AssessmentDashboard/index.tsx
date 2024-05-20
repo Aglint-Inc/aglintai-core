@@ -1,4 +1,5 @@
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
 
 import AssessmentResetWrapper from '../Common/wrapper/resetWrapper';
 import AssessmentDashboardActions from './actions';

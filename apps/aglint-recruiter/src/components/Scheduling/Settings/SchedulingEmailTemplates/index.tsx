@@ -4,12 +4,10 @@
 import { Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import {
-  EditEmail,
-  EmailTemplateCards,
-  EmailTemplatesStart,
-  LoaderSvg,
-} from '@/devlink';
+import { EditEmail } from '@/devlink/EditEmail';
+import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
+import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import {

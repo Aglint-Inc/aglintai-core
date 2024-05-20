@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { CreateNewJob } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { CreateNewJob } from '@/devlink/CreateNewJob';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';

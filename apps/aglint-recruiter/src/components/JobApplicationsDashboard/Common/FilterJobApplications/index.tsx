@@ -3,8 +3,9 @@ import { Slider, Stack } from '@mui/material';
 import { ValueOf } from 'next/dist/shared/lib/constants';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { ButtonOutlinedRegular } from '@/devlink';
-import { CandidateFilter, CandidateFilterBody } from '@/devlink2';
+import { ButtonOutlinedRegular } from '@/devlink/ButtonOutlinedRegular';
+import { CandidateFilter } from '@/devlink2/CandidateFilter';
+import { CandidateFilterBody } from '@/devlink2/CandidateFilterBody';
 import AUIButton from '@/src/components/Common/AUIButton';
 import RefreshBtn from '@/src/components/Common/RefreshButton';
 import UITextField from '@/src/components/Common/UITextField';

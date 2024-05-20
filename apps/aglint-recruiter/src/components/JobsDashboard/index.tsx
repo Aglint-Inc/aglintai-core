@@ -2,7 +2,7 @@ import { InputAdornment, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { JobsDashboard } from '@/devlink';
+import { JobsDashboard } from '@/devlink/JobsDashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { Job } from '@/src/queries/job/types';

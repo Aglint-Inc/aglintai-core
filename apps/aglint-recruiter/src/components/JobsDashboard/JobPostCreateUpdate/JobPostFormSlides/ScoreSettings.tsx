@@ -3,16 +3,14 @@ import { get } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
 
-import {
-  Checkbox,
-  ScoreCard,
-  ScorePillMust,
-  ScorePillNice,
-  ScoreSetting,
-  SettingSkeleton
-} from '@/devlink';
 import { AddButton } from '@/devlink/AddButton';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ScoreCard } from '@/devlink/ScoreCard';
 import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
+import { ScorePillMust } from '@/devlink/ScorePillMust';
+import { ScorePillNice } from '@/devlink/ScorePillNice';
+import { ScoreSetting } from '@/devlink/ScoreSetting';
+import { SettingSkeleton } from '@/devlink/SettingSkeleton';
 import AUIButton from '@/src/components/Common/AUIButton';
 import UITypography from '@/src/components/Common/UITypography';
 import { generatejdToScoreJson } from '@/src/utils/prompts/addNewJob/jd_scoreJson';

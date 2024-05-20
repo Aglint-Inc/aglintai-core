@@ -9,7 +9,9 @@ import {
 import { debounce } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonFilter, FilterDropdown, PanelMemberPill } from '@/devlink2';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { PanelMemberPill } from '@/devlink2/PanelMemberPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';

@@ -2,7 +2,7 @@ import { Grid, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { NewMyScheduleCard } from '@/devlink3';
+import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
 import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';

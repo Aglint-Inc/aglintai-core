@@ -3,19 +3,17 @@ import { Dialog, Stack } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { AssessmentSide } from '@/devlink';
-import {
-  AssesmentCardLoader,
-  AssessmentCard,
-  AssessmentEmpty,
-  AssessmentError,
-  AssessmentJob,
-  AssessmentListCard as AssessmentListCardDev,
-  AssessmentListCardLoader,
-  BrowseAssessment,
-  EmptyAssessmentList,
-  SelectButton,
-} from '@/devlink2';
+import { AssessmentSide } from '@/devlink/AssessmentSide';
+import { AssesmentCardLoader } from '@/devlink2/AssesmentCardLoader';
+import { AssessmentCard } from '@/devlink2/AssessmentCard';
+import { AssessmentEmpty } from '@/devlink2/AssessmentEmpty';
+import { AssessmentError } from '@/devlink2/AssessmentError';
+import { AssessmentJob } from '@/devlink2/AssessmentJob';
+import { AssessmentListCard as AssessmentListCardDev } from '@/devlink2/AssessmentListCard';
+import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
+import { BrowseAssessment } from '@/devlink2/BrowseAssessment';
+import { EmptyAssessmentList } from '@/devlink2/EmptyAssessmentList';
+import { SelectButton } from '@/devlink2/SelectButton';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobs } from '@/src/context/JobsContext';
 import { Assessment, AssessmentTemplate } from '@/src/queries/assessment/types';

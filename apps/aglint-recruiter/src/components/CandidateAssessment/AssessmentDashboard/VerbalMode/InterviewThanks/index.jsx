@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { InterviewCompleted } from '@/devlink';
+import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import Loader from '../../Common/Loader';

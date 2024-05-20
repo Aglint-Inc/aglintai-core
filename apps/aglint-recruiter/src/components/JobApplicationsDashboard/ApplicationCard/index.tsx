@@ -5,27 +5,25 @@ import React, { useEffect, useMemo } from 'react';
 import { useDrag, useDragLayer, XYCoord } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { CandidateSkillPills } from '@/devlink';
-import {
-  // AllCandidateListItem,
-  AnalysisBlock,
-  AnalysisPill,
-  CandidateListItem,
-  InsightTagAmbitious,
-  InsightTagEmpty,
-  // InsightTagAmbitious,
-  InsightTagExperienced,
-  InsightTagKnowledgeable,
-  InsightTagLeader,
-  InsightTagReliable,
-  // InsightTagReliable,
-  InsightTagSkilled,
-  JobHopper,
-  RcCheckbox,
-  ScreeningStatus,
-} from '@/devlink2';
+import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+// import { // AllCandidateListItem } from '@/devlink2/// AllCandidateListItem';
+import { AnalysisBlock } from '@/devlink2/AnalysisBlock';
+import { AnalysisPill } from '@/devlink2/AnalysisPill';
+import { CandidateListItem } from '@/devlink2/CandidateListItem';
+import { InsightTagAmbitious } from '@/devlink2/InsightTagAmbitious';
+import { InsightTagEmpty } from '@/devlink2/InsightTagEmpty';
+// import { // InsightTagAmbitious } from '@/devlink2/// InsightTagAmbitious';
+import { InsightTagExperienced } from '@/devlink2/InsightTagExperienced';
+import { InsightTagKnowledgeable } from '@/devlink2/InsightTagKnowledgeable';
+import { InsightTagLeader } from '@/devlink2/InsightTagLeader';
+import { InsightTagReliable } from '@/devlink2/InsightTagReliable';
+// import { // InsightTagReliable } from '@/devlink2/// InsightTagReliable';
+import { InsightTagSkilled } from '@/devlink2/InsightTagSkilled';
+import { JobHopper } from '@/devlink2/JobHopper';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { ScreeningStatus } from '@/devlink2/ScreeningStatus';
 import { TopCandidateListItem } from '@/devlink2/TopCandidateListItem';
-import { DragPill } from '@/devlink3';
+import { DragPill } from '@/devlink3/DragPill';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   JobApplication,

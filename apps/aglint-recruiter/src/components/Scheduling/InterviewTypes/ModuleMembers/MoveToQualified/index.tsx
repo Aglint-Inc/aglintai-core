@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { ConfirmationPopup } from '@/devlink3';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

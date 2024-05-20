@@ -4,19 +4,17 @@ import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { ReactNode, useEffect } from 'react';
 
-import {
-  NavAssessment,
-  NavAssistant,
-  NavCd,
-  NavCompanySetting,
-  NavIntegration,
-  NavJobs,
-  NavPhoneScreening,
-  NavScheduler,
-  NavTask,
-  NavTickets,
-} from '@/devlink';
-import { AssistantLogo } from '@/devlink2';
+import { NavAssessment } from '@/devlink/NavAssessment';
+import { NavAssistant } from '@/devlink/NavAssistant';
+import { NavCd } from '@/devlink/NavCd';
+import { NavCompanySetting } from '@/devlink/NavCompanySetting';
+import { NavIntegration } from '@/devlink/NavIntegration';
+import { NavJobs } from '@/devlink/NavJobs';
+import { NavPhoneScreening } from '@/devlink/NavPhoneScreening';
+import { NavScheduler } from '@/devlink/NavScheduler';
+import { NavTask } from '@/devlink/NavTask';
+import { NavTickets } from '@/devlink/NavTickets';
+import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';

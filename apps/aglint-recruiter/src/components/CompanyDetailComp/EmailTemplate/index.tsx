@@ -6,12 +6,10 @@ import posthog from 'posthog-js';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useState } from 'react';
 
-import {
-  EditEmail,
-  EmailTemplateCards,
-  EmailTemplatesStart,
-  LoaderSvg,
-} from '@/devlink';
+import { EditEmail } from '@/devlink/EditEmail';
+import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
+import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
