@@ -90,7 +90,7 @@ function ModuleSchedules({
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <Stack height={'calc(100vh - 154px)'}>
-              <ScheduleMeetingList FilterSchedules={newFilterSchedules()} />
+              <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
             </Stack>
           </ShowCode.When>
         </ShowCode>
