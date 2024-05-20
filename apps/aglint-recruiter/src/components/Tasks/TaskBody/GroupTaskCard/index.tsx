@@ -10,7 +10,9 @@ import {
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { AvatarWithName, PriorityPill, TaskTableJobSubCard } from '@/devlink3';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { PriorityPill } from '@/devlink3/PriorityPill';
+import { TaskTableJobSubCard } from '@/devlink3/TaskTableJobSubCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { getFullName } from '@/src/utils/jsonResume';

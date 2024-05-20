@@ -9,14 +9,12 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink';
-import { StatusBadge } from '@/devlink2';
-import {
-  MembersList,
-  RescheduleCard,
-  ScheduleCard,
-  ScheduleTabOverview,
-} from '@/devlink3';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { MembersList } from '@/devlink3/MembersList';
+import { RescheduleCard } from '@/devlink3/RescheduleCard';
+import { ScheduleCard } from '@/devlink3/ScheduleCard';
+import { ScheduleTabOverview } from '@/devlink3/ScheduleTabOverview';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -442,6 +440,7 @@ function Overview({
                     schedule.interview_meeting.status === 'confirmed'
                   ) {
                     onClickResendInvite({
+                      session_name: schedule.interview_session.name,
                       application_id: schedule.applications.id,
                       candidate_email: schedule.candidates.email,
                       candidate_name: getFullName(

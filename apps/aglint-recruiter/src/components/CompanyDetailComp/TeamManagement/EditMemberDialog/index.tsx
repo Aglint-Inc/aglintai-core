@@ -10,7 +10,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { InviteTeamCard, TeamInvite } from '@/devlink';
+import { InviteTeamCard } from '@/devlink/InviteTeamCard';
+import { TeamInvite } from '@/devlink/TeamInvite';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

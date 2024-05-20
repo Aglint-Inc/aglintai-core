@@ -9,12 +9,10 @@ import React, {
   useMemo,
 } from 'react';
 
-import {
-  InterviewMode,
-  InterviewModePill,
-  SelectedMemberPill,
-  SidedrawerBodySession,
-} from '@/devlink2';
+import { InterviewMode } from '@/devlink2/InterviewMode';
+import { InterviewModePill } from '@/devlink2/InterviewModePill';
+import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
+import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';

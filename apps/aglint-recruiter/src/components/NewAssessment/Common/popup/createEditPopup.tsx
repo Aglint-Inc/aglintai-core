@@ -2,10 +2,8 @@ import { Dialog, MenuItem, Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-import {
-  AssessmentPopup as AssessmentPopupDev,
-  SelectionPill,
-} from '@/devlink2';
+import { AssessmentPopup as AssessmentPopupDev } from '@/devlink2/AssessmentPopup';
+import { SelectionPill } from '@/devlink2/SelectionPill';
 import AUIButton from '@/src/components/Common/AUIButton';
 import UITextField from '@/src/components/Common/UITextField';
 import { useCreateAssessment } from '@/src/queries/assessment';

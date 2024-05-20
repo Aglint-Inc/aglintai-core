@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
 
-import { InterviewerDetailOverview } from '@/devlink3';
+import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';

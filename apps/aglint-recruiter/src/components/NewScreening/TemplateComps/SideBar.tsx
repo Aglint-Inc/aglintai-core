@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AssessmentSide } from '@/devlink';
+import { AssessmentSide } from '@/devlink/AssessmentSide';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 

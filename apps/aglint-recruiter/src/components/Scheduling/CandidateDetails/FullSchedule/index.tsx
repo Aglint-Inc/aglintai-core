@@ -2,14 +2,12 @@ import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { Checkbox } from '@/devlink';
-import { StatusBadge } from '@/devlink2';
-import {
-  EditOptionModule,
-  InterviewBreakCard,
-  NewInterviewPlan,
-  NewInterviewPlanCard,
-} from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { EditOptionModule } from '@/devlink3/EditOptionModule';
+import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
+import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
+import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';

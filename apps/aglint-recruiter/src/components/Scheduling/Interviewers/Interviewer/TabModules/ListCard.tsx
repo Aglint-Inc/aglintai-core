@@ -3,8 +3,10 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch, useState } from 'react';
 
-import { MemberListCard, StatusBadge } from '@/devlink2';
-import { HistoryPill, HistoryTrainingCard } from '@/devlink3';
+import { MemberListCard } from '@/devlink2/MemberListCard';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { HistoryPill } from '@/devlink3/HistoryPill';
+import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { pages } from '@/src/utils/pageRouting';
 
@@ -71,7 +73,9 @@ function ListCardInterviewerModules({
         textConfirmed={confirmedCount}
         textCancel={cancelledCount}
         countCompletedSchedule={completedCount}
-        textPause={'Paused from assigning to new interviews with this module'}
+        textPause={
+          'Paused from assigning to new interviews with this interview type'
+        }
         textPauseResumeDate={
           pause_json
             ? pause_json.isManual
@@ -174,7 +178,9 @@ function ListCardInterviewerModules({
             setCollapseOpen((pre) => !pre);
           },
         }}
-        textPause={'Paused from assigning to new interviews with this module'}
+        textPause={
+          'Paused from assigning to new interviews with this interview type'
+        }
         isMoveToQualifierVisible={false}
         isTrainingProgessVisible={true}
         isRemoveVisible={false}

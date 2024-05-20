@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import { Checkbox } from '@/devlink';
+import { Checkbox } from '@/devlink/Checkbox';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 

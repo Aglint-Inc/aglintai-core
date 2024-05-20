@@ -3,8 +3,8 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { StatusBadge } from '@/devlink2';
-import { MyScheduleSubCard } from '@/devlink3';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
 import IconScheduleType from '../../../Candidates/ListCard/Icon';

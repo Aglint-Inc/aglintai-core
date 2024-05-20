@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import { useState } from 'react';
 
-import { ConfirmationPopup } from '@/devlink3';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import MembersAutoComplete from '../../../Common/MembersTextField';

@@ -13,7 +13,7 @@
 // import { useRouter } from 'next/router';
 // import { useEffect, useState } from 'react';
 
-// import { Checkbox } from '@/devlink';
+// import { Checkbox } from '@/devlink/Checkbox';
 // import { InboxContactSupport } from '@/devlink/InboxContactSupport';
 // import { palette } from '@/src/context/Theme/Theme';
 // import {

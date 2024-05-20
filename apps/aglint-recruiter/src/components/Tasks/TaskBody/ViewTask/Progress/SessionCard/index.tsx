@@ -2,8 +2,9 @@ import { DatabaseEnums } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { AvailableOptionCardDate, OptionAvailable } from '@/devlink2';
-import { AvatarWithName } from '@/devlink3';
+import { AvailableOptionCardDate } from '@/devlink2/AvailableOptionCardDate';
+import { OptionAvailable } from '@/devlink2/OptionAvailable';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 

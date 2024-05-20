@@ -1,7 +1,8 @@
 import { capitalize, Popover } from '@mui/material';
 import React from 'react';
 
-import { CandidateInterviewButton, CandidateInterviewOption } from '@/devlink3';
+import { CandidateInterviewButton } from '@/devlink3/CandidateInterviewButton';
+import { CandidateInterviewOption } from '@/devlink3/CandidateInterviewOption';
 import SectionIcons from '@/src/components/JobApplicationsDashboard/Common/SectionIcons';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';

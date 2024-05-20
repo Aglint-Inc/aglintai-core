@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { InterviewInterviewerScreen } from '@/devlink';
+import { InterviewInterviewerScreen } from '@/devlink/InterviewInterviewerScreen';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 import { supabase } from '@/src/utils/supabase/client';

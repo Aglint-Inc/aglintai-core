@@ -4,7 +4,9 @@ import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
-import { InterviewTaskPill, PriorityOption, PriorityPill } from '@/devlink3';
+import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { PriorityOption } from '@/devlink3/PriorityOption';
+import { PriorityPill } from '@/devlink3/PriorityPill';
 
 function PriorityList({
   selectedPriority,

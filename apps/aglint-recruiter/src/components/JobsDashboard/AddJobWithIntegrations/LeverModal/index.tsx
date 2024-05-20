@@ -5,17 +5,15 @@ import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  AtsCard,
-  AtsJobs,
-  IntegrationFetching,
-  IntegrationModal,
-  LeverApiKey,
-  LoadingJobsAts,
-  NoResultAts,
-  SkeletonLoaderAtsCard,
-} from '@/devlink';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { AtsCard } from '@/devlink/AtsCard';
+import { AtsJobs } from '@/devlink/AtsJobs';
+import { IntegrationFetching } from '@/devlink/IntegrationFetching';
+import { IntegrationModal } from '@/devlink/IntegrationModal';
+import { LeverApiKey } from '@/devlink/LeverApiKey';
+import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
+import { NoResultAts } from '@/devlink/NoResultAts';
+import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';

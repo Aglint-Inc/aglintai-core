@@ -5,8 +5,8 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
-import { ScheduleOptions } from '@/devlink2';
-import { ButtonPrimaryDefaultRegular } from '@/devlink3';
+import { ScheduleOptions } from '@/devlink2/ScheduleOptions';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

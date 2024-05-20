@@ -2,11 +2,9 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 
-import {
-  AllInterviewCard,
-  EmptyInterviewProgress,
-  ScheduleWithAgent,
-} from '@/devlink2';
+import { AllInterviewCard } from '@/devlink2/AllInterviewCard';
+import { EmptyInterviewProgress } from '@/devlink2/EmptyInterviewProgress';
+import { ScheduleWithAgent } from '@/devlink2/ScheduleWithAgent';
 import { ResumeJson } from '@/src/apiUtils/resumeScoring/types';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';

@@ -1,7 +1,8 @@
 import { MenuItem, Select, Stack } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { CandidateSort, CandidateSortBody } from '@/devlink2';
+import { CandidateSort } from '@/devlink2/CandidateSort';
+import { CandidateSortBody } from '@/devlink2/CandidateSortBody';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CountJobs } from '@/src/context/JobsContext/types';

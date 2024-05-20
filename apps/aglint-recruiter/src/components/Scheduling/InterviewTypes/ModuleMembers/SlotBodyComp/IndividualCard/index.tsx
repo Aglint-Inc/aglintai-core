@@ -3,13 +3,11 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import {
-  MemberListCard,
-  PanelBlock,
-  TrainingDetailList,
-  TrainingProgressDetail,
-  TrainingStatus,
-} from '@/devlink2';
+import { MemberListCard } from '@/devlink2/MemberListCard';
+import { PanelBlock } from '@/devlink2/PanelBlock';
+import { TrainingDetailList } from '@/devlink2/TrainingDetailList';
+import { TrainingProgressDetail } from '@/devlink2/TrainingProgressDetail';
+import { TrainingStatus } from '@/devlink2/TrainingStatus';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress/scheduleProgressPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

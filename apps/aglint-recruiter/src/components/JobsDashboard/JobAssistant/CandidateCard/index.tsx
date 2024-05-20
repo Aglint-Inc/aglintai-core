@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-import { AssistantCandidateDetails } from '@/devlink';
+import { AssistantCandidateDetails } from '@/devlink/AssistantCandidateDetails';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';

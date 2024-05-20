@@ -2,11 +2,9 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import { type FC, type ReactNode } from 'react';
 
-import {
-  QuestionCard as QuestionCardDev,
-  QuestionCardLoader,
-  QuestionsEmpty,
-} from '@/devlink2';
+import { QuestionCard as QuestionCardDev } from '@/devlink2/QuestionCard';
+import { QuestionCardLoader } from '@/devlink2/QuestionCardLoader';
+import { QuestionsEmpty } from '@/devlink2/QuestionsEmpty';
 import { palette } from '@/src/context/Theme/Theme';
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
 

@@ -2,27 +2,24 @@
 
 import React, { ReactNode } from 'react';
 
-import {
-  ButtonAiLarge,
-  ButtonAiRegular,
-  ButtonAiSmall,
-  ButtonDangerLarge,
-  ButtonDangerRegular,
-  ButtonDangerSmall,
-  ButtonOutlinedLarge,
-  ButtonOutlinedRegular,
-  ButtonOutlinedSmall,
-  ButtonPrimaryLarge,
-  ButtonPrimaryRegular,
-  ButtonPrimarySmall,
-  ButtonSuccessLarge,
-  ButtonSuccessRegular,
-  ButtonSuccessSmall,
-  ButtonTextLarge,
-  ButtonTextRegular,
-  ButtonTextSmall,
-  // @ts-ignore
-} from '@/devlink';
+import { ButtonAiLarge } from '@/devlink/ButtonAiLarge';
+import { ButtonAiRegular } from '@/devlink/ButtonAiRegular';
+import { ButtonAiSmall } from '@/devlink/ButtonAiSmall';
+import { ButtonDangerLarge } from '@/devlink/ButtonDangerLarge';
+import { ButtonDangerRegular } from '@/devlink/ButtonDangerRegular';
+import { ButtonDangerSmall } from '@/devlink/ButtonDangerSmall';
+import { ButtonOutlinedLarge } from '@/devlink/ButtonOutlinedLarge';
+import { ButtonOutlinedRegular } from '@/devlink/ButtonOutlinedRegular';
+import { ButtonOutlinedSmall } from '@/devlink/ButtonOutlinedSmall';
+import { ButtonPrimaryLarge } from '@/devlink/ButtonPrimaryLarge';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { ButtonSuccessLarge } from '@/devlink/ButtonSuccessLarge';
+import { ButtonSuccessRegular } from '@/devlink/ButtonSuccessRegular';
+import { ButtonSuccessSmall } from '@/devlink/ButtonSuccessSmall';
+import { ButtonTextLarge } from '@/devlink/ButtonTextLarge';
+import { ButtonTextRegular } from '@/devlink/ButtonTextRegular';
+import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 
 type Variant = 'primary' | 'outlined' | 'success' | 'text' | 'error' | 'ai';
 type Size = 'large' | 'medium' | 'small';

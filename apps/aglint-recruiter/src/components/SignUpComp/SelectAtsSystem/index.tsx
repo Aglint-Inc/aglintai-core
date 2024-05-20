@@ -3,14 +3,12 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  BackButton,
-  LoginAtsInfo,
-  RcCheckbox,
-  RcFormRadio,
-  RcGoalsBlock,
-  RecCompanyDetails,
-} from '@/devlink2';
+import { BackButton } from '@/devlink2/BackButton';
+import { LoginAtsInfo } from '@/devlink2/LoginAtsInfo';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { RcFormRadio } from '@/devlink2/RcFormRadio';
+import { RcGoalsBlock } from '@/devlink2/RcGoalsBlock';
+import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 import { supabase } from '@/src/utils/supabase/client';

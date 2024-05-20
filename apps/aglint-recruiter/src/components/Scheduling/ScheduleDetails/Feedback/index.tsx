@@ -6,16 +6,14 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { useMemo, useState } from 'react';
 
-import { StatusBadge } from '@/devlink2';
-import {
-  AvatarWithName,
-  FeedbackTableRow,
-  FeedbackViewPopup,
-  GroupFeedback,
-  MyFeedbackPopup,
-  RoundedNumber,
-  ScheduleTabFeedback,
-} from '@/devlink3';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { FeedbackTableRow } from '@/devlink3/FeedbackTableRow';
+import { FeedbackViewPopup } from '@/devlink3/FeedbackViewPopup';
+import { GroupFeedback } from '@/devlink3/GroupFeedback';
+import { MyFeedbackPopup } from '@/devlink3/MyFeedbackPopup';
+import { RoundedNumber } from '@/devlink3/RoundedNumber';
+import { ScheduleTabFeedback } from '@/devlink3/ScheduleTabFeedback';
 import Avatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';

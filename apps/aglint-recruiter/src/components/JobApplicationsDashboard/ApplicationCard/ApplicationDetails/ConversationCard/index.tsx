@@ -2,11 +2,9 @@
 import { Stack } from '@mui/material';
 import React, { useRef, useState } from 'react';
 
-import {
-  AiTranscript,
-  InterviewTranscriptCard,
-  UserTranscript,
-} from '@/devlink';
+import { AiTranscript } from '@/devlink/AiTranscript';
+import { InterviewTranscriptCard } from '@/devlink/InterviewTranscriptCard';
+import { UserTranscript } from '@/devlink/UserTranscript';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
 import PlayStop from '../../../Common/PlayStop';

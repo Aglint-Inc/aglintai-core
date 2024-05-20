@@ -4,12 +4,10 @@ import { Avatar, FormControlLabel, Stack, Switch } from '@mui/material';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  AssesmentSetting,
-  AudioAvatarCard,
-  AvatarCard,
-  AvatarModal,
-} from '@/devlink';
+import { AssesmentSetting } from '@/devlink/AssesmentSetting';
+import { AudioAvatarCard } from '@/devlink/AudioAvatarCard';
+import { AvatarCard } from '@/devlink/AvatarCard';
+import { AvatarModal } from '@/devlink/AvatarModal';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { updateRecruiter } from '@/src/context/InterviewContext/utils';
 import { avatar_list } from '@/src/utils/avatarlist';

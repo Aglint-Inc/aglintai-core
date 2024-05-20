@@ -6,8 +6,9 @@ import { addDays } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 
-import { ButtonPrimarySmall, ButtonTextSmall } from '@/devlink';
-import { ButtonFilter } from '@/devlink2';
+import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
 
 import { setFilter, useFilterCandidateStore } from '../../filter-store';
 import {} from // FilterType,

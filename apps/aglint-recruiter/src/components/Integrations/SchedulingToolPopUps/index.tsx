@@ -2,7 +2,8 @@
 import { Dialog } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { ConfirmationPopup, DeletePopup } from '@/devlink3';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 
 import { ShowCode } from '../../Common/ShowCode';
 import Loader from '../Loader';

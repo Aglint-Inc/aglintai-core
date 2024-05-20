@@ -4,7 +4,7 @@ import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { MoveAssessment } from '@/devlink2';
+import { MoveAssessment } from '@/devlink2/MoveAssessment';
 import {
   CallIcon,
   EmailIcon,

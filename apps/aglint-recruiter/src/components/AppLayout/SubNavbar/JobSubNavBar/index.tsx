@@ -2,7 +2,9 @@ import { Dialog, Popover, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { AddNewJob, CreateJob, NavJobSubLink } from '@/devlink';
+import { AddNewJob } from '@/devlink/AddNewJob';
+import { CreateJob } from '@/devlink/CreateJob';
+import { NavJobSubLink } from '@/devlink/NavJobSubLink';
 import { AshbyModalComp } from '@/src/components/JobsDashboard/AddJobWithIntegrations/Ashby';
 import { GreenhouseModal } from '@/src/components/JobsDashboard/AddJobWithIntegrations/GreenhouseModal';
 import { LeverModalComp } from '@/src/components/JobsDashboard/AddJobWithIntegrations/LeverModal';

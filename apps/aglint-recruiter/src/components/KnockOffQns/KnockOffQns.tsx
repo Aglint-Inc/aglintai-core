@@ -1,4 +1,6 @@
-import { CandidateStart, PhoneScreenings, PhoneScreenSuccess } from '@/devlink';
+import { CandidateStart } from '@/devlink/CandidateStart';
+import { PhoneScreenings } from '@/devlink/PhoneScreenings';
+import { PhoneScreenSuccess } from '@/devlink/PhoneScreenSuccess';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import AUIButton from '../Common/AUIButton';

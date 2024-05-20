@@ -6,14 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import {
-  DeleteJobPopup,
-  DelJobBtn,
-  JobStatus,
-  JobStatusSelectBlock,
-  RecPrimaryBtn,
-  ToggleSelectDropdown,
-} from '@/devlink2';
+import { DeleteJobPopup } from '@/devlink2/DeleteJobPopup';
+import { DelJobBtn } from '@/devlink2/DelJobBtn';
+import { JobStatus } from '@/devlink2/JobStatus';
+import { JobStatusSelectBlock } from '@/devlink2/JobStatusSelectBlock';
+import { RecPrimaryBtn } from '@/devlink2/RecPrimaryBtn';
+import { ToggleSelectDropdown } from '@/devlink2/ToggleSelectDropdown';
 import { ButtonDangerOutlinedRegular } from '@/devlink3/ButtonDangerOutlinedRegular';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobs } from '@/src/context/JobsContext';

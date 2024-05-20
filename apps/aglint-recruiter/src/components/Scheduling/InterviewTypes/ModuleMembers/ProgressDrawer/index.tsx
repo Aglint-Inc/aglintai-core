@@ -1,6 +1,8 @@
 import { Drawer } from '@mui/material';
 
-import { MutedShadowSession, ShadowSession, StatusBadge } from '@/devlink2';
+import { MutedShadowSession } from '@/devlink2/MutedShadowSession';
+import { ShadowSession } from '@/devlink2/ShadowSession';
+import { StatusBadge } from '@/devlink2/StatusBadge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';

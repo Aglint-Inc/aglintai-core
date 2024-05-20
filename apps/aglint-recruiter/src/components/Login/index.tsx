@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { RecLoginPage } from '@/devlink2';
+import { RecLoginPage } from '@/devlink2/RecLoginPage';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

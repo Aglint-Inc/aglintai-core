@@ -12,9 +12,10 @@ import { IconReload } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import React, { ReactNode, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ButtonFilter, FilterDropdown } from '@/devlink2';
-import { TaskDate } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { TaskDate } from '@/devlink3/TaskDate';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';

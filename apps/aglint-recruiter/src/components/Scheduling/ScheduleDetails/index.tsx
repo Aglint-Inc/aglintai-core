@@ -3,8 +3,11 @@ import { InterviewSessionRelationTypeDB } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
-import { NewTabPill, ScheduleButton, ScheduleDetailTabs } from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ScheduleButton } from '@/devlink3/ScheduleButton';
+import { ScheduleDetailTabs } from '@/devlink3/ScheduleDetailTabs';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import Loader from '../../Common/Loader';
@@ -85,25 +88,22 @@ function SchedulingViewComp() {
         {schedule && (
           <>
             <DeclineScheduleDialog
-              meeting_id={schedule.interview_meeting.id}
               sessionRelation={sessionRelation}
               isDeclineOpen={isDeclineOpen}
               setIsDeclineOpen={setIsDeclineOpen}
-              session_id={schedule.interview_session.id}
+              schedule={schedule}
             />
             <CancelScheduleDialog
-              meeting_id={schedule.interview_meeting.id}
               sessionRelation={sessionRelation}
-              session_id={schedule.interview_session.id}
               isDeclineOpen={isCancelOpen}
               setIsDeclineOpen={setIsCancelOpen}
+              schedule={schedule}
             />
             <RequestRescheduleDialog
-              meeting_id={schedule.interview_meeting.id}
               isRequestRescheduleOpen={isRequestRescheduleOpen}
               setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
               sessionRelation={sessionRelation}
-              session_id={schedule.interview_session.id}
+              schedule={schedule}
             />
           </>
         )}

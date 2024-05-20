@@ -2,7 +2,8 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { CdAglintDb, Checkbox } from '@/devlink';
+import { CdAglintDb } from '@/devlink/CdAglintDb';
+import { Checkbox } from '@/devlink/Checkbox';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

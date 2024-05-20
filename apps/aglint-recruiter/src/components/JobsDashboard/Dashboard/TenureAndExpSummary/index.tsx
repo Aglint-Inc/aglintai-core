@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
-import { CardWithNumber, NoData } from '@/devlink3';
+import { CardWithNumber } from '@/devlink3/CardWithNumber';
+import { NoData } from '@/devlink3/NoData';
 import { useJobDetails } from '@/src/context/JobDashboard';
 
 const TenureAndExpSummary = () => {

@@ -3,8 +3,10 @@ import { Popover, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { EmptyState } from '@/devlink2';
-import { InterviewTaskPill, ListCard, ListPop } from '@/devlink3';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { ListCard } from '@/devlink3/ListCard';
+import { ListPop } from '@/devlink3/ListPop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import {
   ApiRequestInterviewSessionTask,

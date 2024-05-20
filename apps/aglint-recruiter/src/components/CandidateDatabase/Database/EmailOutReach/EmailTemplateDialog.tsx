@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { EmailTemplateModal } from '@/devlink';
+import { EmailTemplateModal } from '@/devlink/EmailTemplateModal';
 import EmailAiEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';

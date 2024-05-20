@@ -5,9 +5,12 @@ import { capitalize } from 'lodash';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-import { ButtonPrimaryRegular } from '@/devlink';
-import { IntegrationCard, IntegrationUpload, ToggleButton } from '@/devlink2';
-import { ButtonGrey, ButtonPrimaryOutlinedRegular } from '@/devlink3';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { IntegrationCard } from '@/devlink2/IntegrationCard';
+import { IntegrationUpload } from '@/devlink2/IntegrationUpload';
+import { ToggleButton } from '@/devlink2/ToggleButton';
+import { ButtonGrey } from '@/devlink3/ButtonGrey';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

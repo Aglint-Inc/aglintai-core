@@ -4,12 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import {
-  CompanyListing,
-  CompanyListingLinks,
-  OfficeLocationCard,
-  OpenJobListingCard,
-} from '@/devlink';
+import { CompanyListing } from '@/devlink/CompanyListing';
+import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
+import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
+import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import { palette } from '@/src/context/Theme/Theme';
 import { pageRoutes } from '@/src/utils/pageRouting';
 

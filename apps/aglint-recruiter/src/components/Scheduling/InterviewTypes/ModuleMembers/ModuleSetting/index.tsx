@@ -2,8 +2,10 @@ import { MenuItem, TextField } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
-import { ModuleSetting, ToggleButton } from '@/devlink2';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ModuleSetting } from '@/devlink2/ModuleSetting';
+import { ToggleButton } from '@/devlink2/ToggleButton';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

@@ -16,7 +16,7 @@ import {
   UseFormRegisterReturn,
 } from 'react-hook-form';
 
-import { ResetPassword } from '@/devlink';
+import { ResetPassword } from '@/devlink/ResetPassword';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 

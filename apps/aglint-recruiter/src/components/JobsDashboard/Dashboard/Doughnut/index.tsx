@@ -12,7 +12,7 @@ import { capitalize } from 'lodash';
 import React, { FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-import { NoData } from '@/devlink3';
+import { NoData } from '@/devlink3/NoData';
 import { useJobDetails } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '..';

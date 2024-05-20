@@ -3,7 +3,9 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Close, Filter, FilterButton } from '@/devlink';
+import { Close } from '@/devlink/Close';
+import { Filter } from '@/devlink/Filter';
+import { FilterButton } from '@/devlink/FilterButton';
 
 import UISelect from '../../Common/Uiselect';
 import UITextField from '../../Common/UITextField';

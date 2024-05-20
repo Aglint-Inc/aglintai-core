@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
-import { AssisstantSettings } from '@/devlink';
+import { AssisstantSettings } from '@/devlink/AssisstantSettings';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

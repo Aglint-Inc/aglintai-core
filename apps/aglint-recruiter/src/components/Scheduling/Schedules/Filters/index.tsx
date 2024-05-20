@@ -2,7 +2,9 @@ import { InputAdornment, Popover, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { MouseEvent, useEffect, useState } from 'react';
 
-import { AddFilter, FilterList, FilterPill } from '@/devlink2';
+import { AddFilter } from '@/devlink2/AddFilter';
+import { FilterList } from '@/devlink2/FilterList';
+import { FilterPill } from '@/devlink2/FilterPill';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';

@@ -3,12 +3,10 @@ import { Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import {
-  AvailableOptionCardDate,
-  OptionAvailable,
-  OptionAvailableCard,
-} from '@/devlink2';
-import { AvatarWithName } from '@/devlink3';
+import { AvailableOptionCardDate } from '@/devlink2/AvailableOptionCardDate';
+import { OptionAvailable } from '@/devlink2/OptionAvailable';
+import { OptionAvailableCard } from '@/devlink2/OptionAvailableCard';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';

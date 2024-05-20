@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 
-import { Checkbox as DevCheckbox } from '@/devlink';
+import { Checkbox as DevCheckbox } from '@/devlink/Checkbox';
 
 import Icon from '../Icons/Icon';
 

@@ -3,26 +3,27 @@ import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { DeletePopup } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
+
+import { addScheduleActivity } from '../../../Candidates/queries/utils';
+import { ScheduleMeeting } from '../../types';
 
 function DeclineScheduleDialog({
   isDeclineOpen,
   setIsDeclineOpen,
   sessionRelation,
-  meeting_id,
-  session_id,
+  schedule,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
-  meeting_id: string;
-  session_id: string;
+  schedule: ScheduleMeeting;
 }) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const queryClient = useQueryClient();
 
   const [reason, setReason] = useState('');
@@ -46,21 +47,32 @@ function DeclineScheduleDialog({
           .from('interview_session_relation')
           .update({ accepted_status: 'declined' })
           .eq('id', sessionRelation.id);
+
         const { error } = await supabase
           .from('interview_session_cancel')
           .insert({
             reason,
             session_relation_id: sessionRelation.id,
             type: 'declined',
-            session_id,
+            session_id: schedule.interview_session.id,
             other_details: {
               dateRange: null,
               note: notes,
             },
           });
         if (error) throw new Error();
+
+        addScheduleActivity({
+          title: `Declined ${schedule.interview_session.name}. Reason: ${reason} `,
+          application_id: schedule.applications.id,
+          logger: recruiterUser.user_id,
+          type: 'schedule',
+          supabase: supabase,
+          created_by: recruiterUser.user_id,
+        });
+
         queryClient.invalidateQueries({
-          queryKey: ['schedule_details', meeting_id],
+          queryKey: ['schedule_details', schedule.interview_meeting.id],
         });
       }
     } catch {

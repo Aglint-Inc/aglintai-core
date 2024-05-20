@@ -6,28 +6,28 @@ import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ConfirmationPopup } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { DateIcon } from '../../Settings/Components/DateSelector';
+import { ScheduleMeeting } from '../types';
 
 function RequestRescheduleDialog({
   isRequestRescheduleOpen,
   setIsRequestRescheduleOpen,
   sessionRelation,
-  meeting_id,
-  session_id,
+  schedule,
 }: {
   isRequestRescheduleOpen: boolean;
   setIsRequestRescheduleOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
-  meeting_id: string;
-  session_id: string;
+  schedule: ScheduleMeeting;
 }) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter, recruiterUser } = useAuthDetails();
   const queryClient = useQueryClient();
   const currentDate = dayjs();
   const [reason, setReason] = useState('');
@@ -64,7 +64,7 @@ function RequestRescheduleDialog({
           .insert({
             reason,
             session_relation_id: sessionRelation.id,
-            session_id,
+            session_id: schedule.interview_session.id,
             type: 'reschedule',
             other_details: {
               dateRange: {
@@ -75,8 +75,17 @@ function RequestRescheduleDialog({
             },
           });
         if (error) throw new Error();
+
+        addScheduleActivity({
+          title: `Requested reschedule for ${schedule.interview_session.name}. Reason: ${reason} `,
+          application_id: schedule.applications.id,
+          logger: recruiterUser.user_id,
+          type: 'schedule',
+          supabase: supabase,
+          created_by: recruiterUser.user_id,
+        });
         queryClient.invalidateQueries({
-          queryKey: ['schedule_details', meeting_id],
+          queryKey: ['schedule_details', schedule.interview_meeting.id],
         });
       }
     } catch {

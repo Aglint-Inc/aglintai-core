@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { InvalidJob, LoaderSvg } from '@/devlink';
+import { InvalidJob } from '@/devlink/InvalidJob';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Seo from '@/src/components/Common/Seo';
 import JobPostPublic from '@/src/components/JobPost';
 import InvalidJobPostLottie from '@/src/components/JobPost/InvalidJobPostLottie';

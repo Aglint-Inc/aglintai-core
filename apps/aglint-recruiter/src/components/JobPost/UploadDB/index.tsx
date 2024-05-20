@@ -11,7 +11,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ButtonPrimaryRegular, Checkbox } from '@/devlink';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { Checkbox } from '@/devlink/Checkbox';
 import { palette } from '@/src/context/Theme/Theme';
 import { errorMessages } from '@/src/utils/errorMessages';
 import { supabase } from '@/src/utils/supabase/client';

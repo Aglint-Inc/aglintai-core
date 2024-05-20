@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { EmptyGeneral } from '@/devlink2';
+import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 
 import {

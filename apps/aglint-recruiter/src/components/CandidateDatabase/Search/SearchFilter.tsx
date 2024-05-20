@@ -5,14 +5,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-import {
-  AddSkillPIll,
-  AiIcon,
-  ButtonGenerate,
-  CandidateFilter,
-  JobPills,
-  SkillsGenerate,
-} from '@/devlink';
+import { AddSkillPIll } from '@/devlink/AddSkillPIll';
+import { AiIcon } from '@/devlink/AiIcon';
+import { ButtonGenerate } from '@/devlink/ButtonGenerate';
+import { CandidateFilter } from '@/devlink/CandidateFilter';
+import { JobPills } from '@/devlink/JobPills';
+import { SkillsGenerate } from '@/devlink/SkillsGenerate';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { similarJobs } from '@/src/utils/prompts/candidateDb/similarJobs';

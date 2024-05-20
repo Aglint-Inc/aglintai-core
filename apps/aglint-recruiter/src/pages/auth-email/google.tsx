@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-import { LoaderSvg } from '@/devlink';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import {
   API_FAIL_MSG,
   supabaseWrap,

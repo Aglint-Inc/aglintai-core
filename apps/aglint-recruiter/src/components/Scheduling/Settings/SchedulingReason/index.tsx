@@ -11,12 +11,10 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import {
-  NewTabPill,
-  ReasonList,
-  ScheduleReason,
-  ScheduleReasonSection,
-} from '@/devlink3';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ReasonList } from '@/devlink3/ReasonList';
+import { ScheduleReason } from '@/devlink3/ScheduleReason';
+import { ScheduleReasonSection } from '@/devlink3/ScheduleReasonSection';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';

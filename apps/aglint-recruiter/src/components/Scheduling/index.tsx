@@ -4,15 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import {
-  BodyWithSublink,
-  Breadcrum,
-  EmptyState,
-  InterviewModuleCard,
-  InterviewModuleTable,
-  PageLayout,
-} from '@/devlink2';
-import { ButtonPrimaryDefaultRegular, TaskSwitchButton } from '@/devlink3';
+import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
+import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';

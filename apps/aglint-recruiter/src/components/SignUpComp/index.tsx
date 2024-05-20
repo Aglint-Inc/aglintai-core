@@ -3,7 +3,8 @@
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 
-import { OnboardingFinalState, SignupSlider } from '@/devlink';
+import { OnboardingFinalState } from '@/devlink/OnboardingFinalState';
+import { SignupSlider } from '@/devlink/SignupSlider';
 import { WelcomeSlider1 } from '@/devlink/WelcomeSlider1';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { RecruiterOnboardingEmailApi } from '@/src/pages/api/emails/recruiterOnboarding';

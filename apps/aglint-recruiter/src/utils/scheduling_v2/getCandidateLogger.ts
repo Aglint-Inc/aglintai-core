@@ -55,7 +55,10 @@ export const getCandidateLogger = (
         name: 'Email Agent',
       };
     }
-    if (Object.keys(title_attr).includes('{candidate}')) {
+    if (
+      title_attr['{candidate}'].length === 0 &&
+      Object.keys(title_attr).includes('{candidate}')
+    ) {
       title_attr['{candidate}'] = candidate_name;
     }
 

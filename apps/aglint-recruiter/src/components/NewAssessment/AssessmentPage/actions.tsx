@@ -2,11 +2,9 @@ import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
-import {
-  AssessmentDetailTopRight,
-  DeleteAssessmentPopup,
-  DuplicateAssessmentPopup,
-} from '@/devlink2';
+import { AssessmentDetailTopRight } from '@/devlink2/AssessmentDetailTopRight';
+import { DeleteAssessmentPopup } from '@/devlink2/DeleteAssessmentPopup';
+import { DuplicateAssessmentPopup } from '@/devlink2/DuplicateAssessmentPopup';
 import {
   useDeleteAssessment,
   useDuplicateAssessment,

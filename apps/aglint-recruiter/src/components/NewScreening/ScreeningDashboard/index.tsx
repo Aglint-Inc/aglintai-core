@@ -2,14 +2,12 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { LoaderSvg } from '@/devlink';
-import {
-  Breadcrum,
-  ButtonWide,
-  EmptyPhoneScreening,
-  PageLayout,
-  PhoneScreeningTopRight,
-} from '@/devlink2';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { ButtonWide } from '@/devlink2/ButtonWide';
+import { EmptyPhoneScreening } from '@/devlink2/EmptyPhoneScreening';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { PhoneScreeningTopRight } from '@/devlink2/PhoneScreeningTopRight';
 import { ScreeningLanding } from '@/devlink2/ScreeningLanding';
 import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
 import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';

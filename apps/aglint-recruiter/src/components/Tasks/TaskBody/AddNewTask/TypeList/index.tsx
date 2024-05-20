@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
-import { InterviewTaskPill } from '@/devlink3';
+import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
 
 function TypeList({
   selectedType,

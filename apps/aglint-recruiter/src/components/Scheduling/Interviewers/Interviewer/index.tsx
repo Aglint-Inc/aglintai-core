@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
-import { InterviewerDetail, NewTabPill } from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

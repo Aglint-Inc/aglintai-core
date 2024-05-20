@@ -4,7 +4,8 @@ import { marked } from 'marked';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CandidateAssesmentCard, CandidateLanding } from '@/devlink2';
+import { CandidateAssesmentCard } from '@/devlink2/CandidateAssesmentCard';
+import { CandidateLanding } from '@/devlink2/CandidateLanding';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { AssessmentDetailsType } from '@/src/context/CandidateAssessment/types';
 

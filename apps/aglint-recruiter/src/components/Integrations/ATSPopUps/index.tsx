@@ -2,14 +2,12 @@
 import { Dialog, Stack, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { IntegrationLoading } from '@/devlink2';
-import {
-  ConfirmationPopup,
-  DeletePopup,
-  LearnHowAshby,
-  LearnHowGreenhouse,
-  LearnHowLever,
-} from '@/devlink3';
+import { IntegrationLoading } from '@/devlink2/IntegrationLoading';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { DeletePopup } from '@/devlink3/DeletePopup';
+import { LearnHowAshby } from '@/devlink3/LearnHowAshby';
+import { LearnHowGreenhouse } from '@/devlink3/LearnHowGreenhouse';
+import { LearnHowLever } from '@/devlink3/LearnHowLever';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';

@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular, EnableAssessment } from '@/devlink';
-import {
-  BrowseScreeningPop,
-  ChooseScreeningCard,
-  PhoneScreening,
-  ScrCheckmarkIcon,
-  ScrRadioIcon,
-  ScrShortTextIcon,
-} from '@/devlink2';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { EnableAssessment } from '@/devlink/EnableAssessment';
+import { BrowseScreeningPop } from '@/devlink2/BrowseScreeningPop';
+import { ChooseScreeningCard } from '@/devlink2/ChooseScreeningCard';
+import { PhoneScreening } from '@/devlink2/PhoneScreening';
+import { ScrCheckmarkIcon } from '@/devlink2/ScrCheckmarkIcon';
 import { ScreeningLandingCard } from '@/devlink2/ScreeningLandingCard';
+import { ScrRadioIcon } from '@/devlink2/ScrRadioIcon';
+import { ScrShortTextIcon } from '@/devlink2/ScrShortTextIcon';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';

@@ -7,7 +7,8 @@ import React, {
   useMemo,
 } from 'react';
 
-import { SelectedMemberPill, SidedrawerBodyDebrief } from '@/devlink2';
+import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
+import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';

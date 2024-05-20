@@ -3,8 +3,9 @@ import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
 
-import { EmptyState } from '@/devlink2';
-import { ListCard, ListPop } from '@/devlink3';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { ListCard } from '@/devlink3/ListCard';
+import { ListPop } from '@/devlink3/ListPop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useJobs } from '@/src/context/JobsContext';
 import {

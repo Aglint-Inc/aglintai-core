@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 
-import { WelcomeAssistant } from '@/devlink3';
+import { WelcomeAssistant } from '@/devlink3/WelcomeAssistant';
 import Seo from '@/src/components/Common/Seo';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 

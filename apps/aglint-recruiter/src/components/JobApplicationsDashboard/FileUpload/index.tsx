@@ -4,13 +4,11 @@ import posthog from 'posthog-js';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import {
-  AddMoreResumeButton,
-  ImportResume,
-  LoaderSvg,
-  UploadedResume,
-  UploadedResumeList,
-} from '@/devlink';
+import { AddMoreResumeButton } from '@/devlink/AddMoreResumeButton';
+import { ImportResume } from '@/devlink/ImportResume';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { UploadedResume } from '@/devlink/UploadedResume';
+import { UploadedResumeList } from '@/devlink/UploadedResumeList';
 import AUIButton from '@/src/components/Common/AUIButton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import toast from '@/src/utils/toast';

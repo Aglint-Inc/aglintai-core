@@ -2,8 +2,10 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { Breadcrum, InterviewPlanEmpty, PageLayout } from '@/devlink2';
-import { CandidateSchedule } from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
 import Loader from '@/src/components/Common/Loader';
 
 import ScheduleProgress from '../Common/ScheduleProgress';

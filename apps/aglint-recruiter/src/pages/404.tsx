@@ -1,4 +1,4 @@
-import { Page404 } from '@/devlink';
+import { Page404 } from '@/devlink/Page404';
 
 import Seo from '../components/Common/Seo';
 

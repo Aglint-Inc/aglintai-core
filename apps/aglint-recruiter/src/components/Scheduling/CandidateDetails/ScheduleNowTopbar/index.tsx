@@ -7,7 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-import { ScheduleNowButton } from '@/devlink3';
+import { ScheduleNowButton } from '@/devlink3/ScheduleNowButton';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsScheduleAgent } from '@/src/pages/api/scheduling/application/schedulewithagent';

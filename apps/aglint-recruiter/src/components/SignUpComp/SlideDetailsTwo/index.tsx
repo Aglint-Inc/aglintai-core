@@ -3,7 +3,9 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { BackButton, RcInfoForm, RecCompanyDetails } from '@/devlink2';
+import { BackButton } from '@/devlink2/BackButton';
+import { RcInfoForm } from '@/devlink2/RcInfoForm';
+import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { industries } from '@/src/utils/industries';
 import { pageRoutes } from '@/src/utils/pageRouting';

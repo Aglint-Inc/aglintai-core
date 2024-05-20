@@ -4,15 +4,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import {
-  ButtonGenerate,
-  CdEmailOutreach,
-  ConnectedMail,
-  ConnectMailModal,
-  EmailSuccessCard,
-  LoaderSvg,
-  MailLink,
-} from '@/devlink';
+import { ButtonGenerate } from '@/devlink/ButtonGenerate';
+import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
+import { ConnectedMail } from '@/devlink/ConnectedMail';
+import { ConnectMailModal } from '@/devlink/ConnectMailModal';
+import { EmailSuccessCard } from '@/devlink/EmailSuccessCard';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { MailLink } from '@/devlink/MailLink';
 import EmailGenerating from '@/src/components/Common/Lotties/EmailGenerating';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';

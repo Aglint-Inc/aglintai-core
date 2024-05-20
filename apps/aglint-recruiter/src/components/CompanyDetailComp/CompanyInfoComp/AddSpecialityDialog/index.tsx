@@ -8,7 +8,8 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { AddTechStack, RolesPill } from '@/devlink';
+import { AddTechStack } from '@/devlink/AddTechStack';
+import { RolesPill } from '@/devlink/RolesPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 interface StacksProps {

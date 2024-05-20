@@ -3,9 +3,10 @@ import { CircularProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { SavedChanges } from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
-import { JobDetailBlock } from '@/devlink3';
+import { SavedChanges } from '@/devlink/SavedChanges';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { JobDetailBlock } from '@/devlink3/JobDetailBlock';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import {
   validateDescription,

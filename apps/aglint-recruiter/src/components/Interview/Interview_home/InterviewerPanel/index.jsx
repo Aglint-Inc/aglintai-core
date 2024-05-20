@@ -1,6 +1,6 @@
 import { Avatar } from '@mui/material';
 
-import { InterviewInterviewerScreen } from '@/devlink';
+import { InterviewInterviewerScreen } from '@/devlink/InterviewInterviewerScreen';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 import interviewerList from '@/src/utils/interviewer_list';
 function InterviewerPanel() {

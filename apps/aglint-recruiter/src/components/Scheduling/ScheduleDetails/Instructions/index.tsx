@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { marked } from 'marked';
 import { useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

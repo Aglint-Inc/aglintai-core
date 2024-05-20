@@ -22,27 +22,23 @@ import React, {
   useState,
 } from 'react';
 
-import {
-  ButtonPrimaryRegular,
-  // AvailableTimerangeEmpty,
-  // AvailableTimeRangeLoader,
-  CandidateConfirmationPage,
-  CandidateScheduleCard,
-  ChangeButton,
-  SelectButton,
-  SelectedDateAndTime,
-  SessionAndTime,
-  SessionInfo,
-} from '@/devlink';
-import {
-  ButtonDanger,
-  ButtonPrimary,
-  CancelButton,
-  InterviewConfirmed,
-  InterviewConfirmedCard,
-  RequestReschedule,
-} from '@/devlink2';
-import { ConfirmationPopup } from '@/devlink3';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+// import { // AvailableTimerangeEmpty } from '@/devlink/// AvailableTimerangeEmpty';
+// import { // AvailableTimeRangeLoader } from '@/devlink/// AvailableTimeRangeLoader';
+import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
+import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
+import { ChangeButton } from '@/devlink/ChangeButton';
+import { SelectButton } from '@/devlink/SelectButton';
+import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
+import { SessionAndTime } from '@/devlink/SessionAndTime';
+import { SessionInfo } from '@/devlink/SessionInfo';
+import { ButtonDanger } from '@/devlink2/ButtonDanger';
+import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
+import { CancelButton } from '@/devlink2/CancelButton';
+import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
+import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
+import { RequestReschedule } from '@/devlink2/RequestReschedule';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';
@@ -59,6 +55,7 @@ import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
 import { getBreakLabel } from '../../JobNewInterviewPlan/utils';
 import DateRange from '../../Tasks/Components/DateRange';
 import IconScheduleType from '../Candidates/ListCard/Icon';
+import { addScheduleActivity } from '../Candidates/queries/utils';
 import { getScheduleType } from '../Candidates/utils';
 import { SessionIcon } from '../Common/ScheduleProgress/scheduleProgressPill';
 import { TimezoneSelector } from '../Settings';
@@ -151,7 +148,7 @@ const CandidateInvitePlanPage = () => {
 const ConfirmedPage = (props: ScheduleCardsProps) => {
   const {
     meta: {
-      data: { candidate },
+      data: { candidate, schedule, meetings },
     },
   } = useCandidateInvite();
   const [cancelReschedule, setCancelReschedule] = useState<
@@ -169,6 +166,18 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
     detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
   ) => {
     // return true;
+
+    addScheduleActivity({
+      title:
+        detail.type === 'declined'
+          ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
+          : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
+      application_id: schedule.application_id,
+      logger: schedule.application_id,
+      type: 'schedule',
+      supabase: supabase,
+      created_by: null,
+    });
 
     const details = props.rounds
       .reduce(

@@ -2,13 +2,11 @@ import { PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Stack } from '@mui/material';
 import { useState } from 'react';
 
-import {
-  AgentPill,
-  AvatarWithName,
-  ListCard,
-  SoundTask,
-  TranscriptCard,
-} from '@/devlink3';
+import { AgentPill } from '@/devlink3/AgentPill';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { ListCard } from '@/devlink3/ListCard';
+import { SoundTask } from '@/devlink3/SoundTask';
+import { TranscriptCard } from '@/devlink3/TranscriptCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import TranscriptPlayer from '@/src/components/Tasks/TaskBody/ViewTask/Progress/PhoneTrancript/TranscriptPlayer';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';

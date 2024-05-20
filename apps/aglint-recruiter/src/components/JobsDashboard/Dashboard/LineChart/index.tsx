@@ -10,7 +10,7 @@ import {
 import React, { FC } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { NoData } from '@/devlink3';
+import { NoData } from '@/devlink3/NoData';
 import { useJobDetails } from '@/src/context/JobDashboard';
 
 import { DashboardGraphOptions } from '..';
