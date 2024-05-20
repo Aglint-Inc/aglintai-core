@@ -77,7 +77,7 @@ const useInviteActions = () => {
         toast.warning('Confirming slots. Please wait.');
       }
     } catch {
-      //
+      toast.error('Unable to book slots.');
     }
   };
 
