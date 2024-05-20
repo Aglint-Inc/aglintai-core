@@ -290,7 +290,7 @@ export const sendToCandidate = async ({
       if (errorFilterJson) throw new Error(errorFilterJson.message);
 
       addScheduleActivity({
-        title: `Candidate invited for session ${createCloneRes.refSessions
+        title: `Sent booking link to ${getFullName(selectedApplication.candidates.first_name, selectedApplication.candidates.first_name)} for ${createCloneRes.refSessions
           .filter((ses) => ses.isSelected)
           .map((ses) => ses.name)
           .join(' , ')}`,
@@ -1324,6 +1324,7 @@ const checkAvailibility = async ({
 export const onClickResendInvite = async ({
   session_id,
   candidate_name,
+  session_name,
   candidate_email,
   job_title,
   recruiter_id,
@@ -1355,7 +1356,7 @@ export const onClickResendInvite = async ({
 
       if (res) {
         addScheduleActivity({
-          title: `Interview link resent`,
+          title: `Resent booking link to ${candidate_name} for ${session_name}`,
           application_id: application_id,
           logger: rec_user_id,
           type: 'schedule',

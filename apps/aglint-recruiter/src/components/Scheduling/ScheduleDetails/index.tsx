@@ -85,25 +85,22 @@ function SchedulingViewComp() {
         {schedule && (
           <>
             <DeclineScheduleDialog
-              meeting_id={schedule.interview_meeting.id}
               sessionRelation={sessionRelation}
               isDeclineOpen={isDeclineOpen}
               setIsDeclineOpen={setIsDeclineOpen}
-              session_id={schedule.interview_session.id}
+              schedule={schedule}
             />
             <CancelScheduleDialog
-              meeting_id={schedule.interview_meeting.id}
               sessionRelation={sessionRelation}
-              session_id={schedule.interview_session.id}
               isDeclineOpen={isCancelOpen}
               setIsDeclineOpen={setIsCancelOpen}
+              schedule={schedule}
             />
             <RequestRescheduleDialog
-              meeting_id={schedule.interview_meeting.id}
               isRequestRescheduleOpen={isRequestRescheduleOpen}
               setIsRequestRescheduleOpen={setIsRequestRescheduleOpen}
               sessionRelation={sessionRelation}
-              session_id={schedule.interview_session.id}
+              schedule={schedule}
             />
           </>
         )}
