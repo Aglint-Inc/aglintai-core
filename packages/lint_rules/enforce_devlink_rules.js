@@ -20,12 +20,19 @@ module.exports = {
         ) {
           context.report({
             node,
-            message: `⚠️ Avoid importing components from '${node.source.value}' for better performance. Instead use import ${node.specifiers.map((specifier) => specifier.local.name).join(", ")} from '${node.source.value}'`,
+            message:
+              `⚠️ Avoid importing components from '${node.source.value}' for better performance. Instead use \n` +
+              node.specifiers
+                .map(
+                  (specifier) =>
+                    `import { ${specifier.local.name} } from '${node.source.value}/${specifier.local.name}';`
+                )
+                .join("\n"),
             fix(fixer) {
               const newImports = node.specifiers
                 .map(
                   (specifier) =>
-                    `import ${specifier.local.name} from '${node.source.value}/${specifier.local.name}';`
+                    `import { ${specifier.local.name} } from '${node.source.value}/${specifier.local.name}';`
                 )
                 .join("\n");
               return fixer.replaceText(node, newImports);
