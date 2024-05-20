@@ -21,6 +21,7 @@ import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
@@ -28,7 +29,6 @@ import ImageUpload from '../Common/ImageUpload';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
 import { capitalize } from '../JobApplicationsDashboard/utils';
-import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 type FormValues = {
   value: string;
   label: string;
