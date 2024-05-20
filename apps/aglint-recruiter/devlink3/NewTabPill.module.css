@@ -32,10 +32,22 @@
   grid-column-gap: 6px;
   grid-row-gap: 6px;
 
-  border-bottom: 3px solid #1f73b7;
+  border-bottom: 0px none #1f73b7;
 
   background-color: white;
 
   color: #1f73b7;
   font-weight: 600;
+}
+
+.div-block-1736 {
+  position: absolute;
+  left: 0%;
+  top: auto;
+  right: 0%;
+  bottom: 0%;
+
+  height: 2px;
+
+  background-color: #1f73b7;
 }
