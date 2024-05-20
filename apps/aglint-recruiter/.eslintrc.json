@@ -8,7 +8,8 @@
     "@typescript-eslint",
     "simple-import-sort",
     "eslint-plugin-react-compiler",
-    "jsx-a11y"
+    "jsx-a11y",
+    "@aglint/linter"
   ],
   "env": {
     "es6": true
@@ -36,8 +37,18 @@
     "jsx-a11y/click-events-have-key-events": "off",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
-    "react-compiler/react-compiler": "warn"
+    "react-compiler/react-compiler": "warn",
+    "@aglint/linter/enforce-devlink_import_rules": "error"
   },
+  "overrides": [
+    {
+      "files": ["**/*.js"],
+      "plugins": ["@aglint/linter"],
+      "rules": {
+        "custom/enforce-devlink-rules": "error"
+      }
+    }
+  ],
   "settings": {
     "next": {
       "rootDir": "apps/aglint-recruiter"
