@@ -1,0 +1,9 @@
+{
+    "name": "@aglint/eslint-plugin-linter",
+    "author": "Vß",
+    "version": "1.0.0",
+    "main": "index.js",
+    "peerDependencies": {
+        "eslint": "^8.57.0"
+    }
+}
