@@ -44,6 +44,10 @@ export function NewTabPill({
           {isEndIconVisible ? (
             <_Builtin.Block tag="div">{slotEndIcon}</_Builtin.Block>
           ) : null}
+          <_Builtin.Block
+            className={_utils.cx(_styles, "div-block-1736")}
+            tag="div"
+          />
         </_Builtin.Block>
       ) : null}
     </_Component>
