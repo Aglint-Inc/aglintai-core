@@ -249,6 +249,7 @@ function FullSchedule() {
                       onClickResendInvite={{
                         onClick: () => {
                           onClickResendInvite({
+                            session_name: session.name,
                             session_id: session.id,
                             application_id: selectedApplication.id,
                             candidate_email:

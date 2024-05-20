@@ -28,6 +28,7 @@ import ImageUpload from '../Common/ImageUpload';
 import UIPhoneInput from '../Common/UIPhoneInput';
 import UITextField from '../Common/UITextField';
 import { capitalize } from '../JobApplicationsDashboard/utils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 type FormValues = {
   value: string;
   label: string;
@@ -453,7 +454,7 @@ const ProfileDashboard = () => {
                   textEmail={recruiterUser.email}
                   textJobTitle={recruiterUser.position}
                   textLocation={recruiterUser.interview_location}
-                  textRole={recruiterUser.role}
+                  textRole={capitalizeFirstLetter(recruiterUser.role)}
                   textNumber={recruiterUser.phone}
                   onClickEdit={{
                     onClick: () => {
