@@ -52,13 +52,13 @@ import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
 import DateSelect from './Components/DateSelector';
+import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
 import { settingSubNavItem } from './SubNav/utils';
-import { hoursList } from './utils';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -108,7 +108,8 @@ function SchedulingSettings({
   };
   const handleSelectWeeklyValue = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
-      pre.value = value.target.value as number;
+      pre.value = value as number;
+      // pre.value = value.target.value as number;
       return { ...pre } as WeeklyLimitType;
     });
   };
@@ -121,7 +122,8 @@ function SchedulingSettings({
 
   const handleSelectDailyValue = (value: any) => {
     setSelectedDailyLimit((pre) => {
-      pre.value = value.target.value as number;
+      pre.value = value as number;
+      // pre.value = value.target.value as number;
       return { ...pre } as DailyLimitType;
     });
   };
@@ -764,8 +766,7 @@ function SchedulingSettings({
                 <InterviewLoad
                   slotDailyLimit={
                     <>
-                      <MuiSelect
-                        dataset={hoursList}
+                      <MuiNumberfield
                         handleSelect={handleSelectDailyValue}
                         value={selectedDailyLimit.value}
                       />
@@ -779,8 +780,7 @@ function SchedulingSettings({
                   }
                   slotWeeklyLimit={
                     <>
-                      <MuiSelect
-                        dataset={hoursList}
+                      <MuiNumberfield
                         handleSelect={handleSelectWeeklyValue}
                         value={selectedWeeklyLimit.value}
                       />
