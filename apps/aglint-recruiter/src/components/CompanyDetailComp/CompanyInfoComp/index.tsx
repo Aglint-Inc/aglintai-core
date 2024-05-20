@@ -69,7 +69,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       return newRecruiter;
     });
   };
-  console.log(recruiter.office_locations);
 
   useEffect(() => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
@@ -109,7 +108,6 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <Stack p={'4px'}>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
-                      console.log(loc);
 
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
