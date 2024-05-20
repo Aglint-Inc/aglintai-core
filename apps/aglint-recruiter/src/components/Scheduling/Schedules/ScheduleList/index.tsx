@@ -17,7 +17,7 @@ function ScheduleList() {
   }
   return (
     <Stack pl={'20px'} overflow={'auto'}>
-      <ScheduleMeetingList FilterSchedules={filterSchedules} />
+      <ScheduleMeetingList filterSchedules={filterSchedules} />
     </Stack>
   );
 }
