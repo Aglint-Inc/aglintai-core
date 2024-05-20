@@ -1,7 +1,7 @@
-import {slackWeb} from '@/services/slack/slackWeb';
-import {supabaseAdmin, supabaseWrap} from '@/services/supabase/SupabaseAdmin';
 import dayjs from 'dayjs';
 import {Request, Response} from 'express';
+import {slackWeb} from 'src/services/slack/slackWeb';
+import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
 
 export async function notifyInterviewConfirmation(req: Request, res: Response) {
   const {session_id} = req.body;
@@ -10,6 +10,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
     return res.status(400).json({error: 'Session id required'});
   }
   try {
+    // get metting details by session_id
     const [data] = supabaseWrap(
       await supabaseAdmin
         .from('meeting_details')
@@ -26,6 +27,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
       interview_schedule_id,
     } = data;
 
+    // get job title and candidate details using interview_schedule_id
     const [can_app] = supabaseWrap(
       await supabaseAdmin
         .from('interview_schedule')
@@ -42,8 +44,9 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
 
     const emails = [
       {email: 'chandra@aglinthq.com'},
-      {email: 'dileep@aglinthq.com'},
+      // {email: 'dileep@aglinthq.com'},
     ];
+
     const job_title = can_app.applications.public_jobs.job_title;
     const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;
 
@@ -89,6 +92,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
                 },
                 style: 'primary',
                 value: 'available',
+                action_id: 'accept',
               },
               {
                 type: 'button',
@@ -99,6 +103,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
                 },
                 style: 'danger',
                 value: 'not_available',
+                action_id: 'decline',
               },
             ],
           },
