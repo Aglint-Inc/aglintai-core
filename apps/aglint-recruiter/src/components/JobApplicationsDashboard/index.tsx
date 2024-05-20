@@ -797,7 +797,8 @@ const SectionCard = forwardRef(
             textLabel={`${capitalize(section)} (${job.count[section]})`}
             onClickPill={{
               style: {
-                minWidth: '180px',
+                minWidth: '200px',
+                minHeight: '60px',
                 backgroundColor:
                   normalize && !isOver
                     ? 'inherit'

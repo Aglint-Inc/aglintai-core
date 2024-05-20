@@ -1,6 +1,12 @@
 .div-block-1681 {
   position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   transition: opacity 200ms ease;
+
   cursor: pointer;
 }
 
@@ -10,6 +16,7 @@
 
 .div-block-1680 {
   display: flex;
+  height: 100%;
   padding: 10px 28px;
   justify-content: center;
   align-items: center;
@@ -27,6 +34,7 @@
   bottom: 0%;
 
   display: flex;
+  padding: 10px 28px;
   justify-content: center;
   align-items: center;
   grid-column-gap: 6px;
