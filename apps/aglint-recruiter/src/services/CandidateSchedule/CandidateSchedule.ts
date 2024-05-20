@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  AllSessionIntDetails,
   CompServiceKeyCred,
   holidayType,
   InterDetailsType,
@@ -7,13 +8,9 @@ import {
   InterviewerMeetingScheduled,
   InterviewModuleRelationType,
   InterviewSessionApiType,
-  IntervMeta,
   PlanCombinationRespType,
-  PlanCombinationType,
   schedulingSettingType,
   SessionCombinationRespType,
-  SessionCombinationType,
-  SessionInterviewerApiRespType,
   SessionInterviewerType,
   SessionsCombType,
   SessionSlotType,
@@ -70,6 +67,7 @@ export class CandidatesScheduling {
     comp_schedule_setting: schedulingSettingType;
     int_meetings: InterviewerMeetingScheduled[];
     ints_schd_meetings: Map<string, UserMeetingDetails[]>;
+    all_session_int_details: AllSessionIntDetails;
   };
   private api_payload: ApiPayload;
   public intervs_details_with_events: InterDetailsType[];
@@ -125,6 +123,7 @@ export class CandidatesScheduling {
       ses_with_ints,
       int_meetings,
       ints_schd_meetings,
+      all_session_int_details,
     } = await fetch_details_from_db(
       this.api_payload.session_ids,
       this.api_payload.company_id,
@@ -140,6 +139,7 @@ export class CandidatesScheduling {
       ses_with_ints,
       int_meetings,
       ints_schd_meetings,
+      all_session_int_details,
     };
   }
 
@@ -160,14 +160,20 @@ export class CandidatesScheduling {
 
   // start_date and end date format DD/MM/YYYY
   public async fetchInterviewrsCalEvents() {
-    const ints_meta: IntervMeta[] = this.db_details.all_inters.map((i) => ({
-      email: i.email,
-      interviewer_id: i.user_id,
-      name: getFullName(i.first_name, i.last_name),
-      profile_img: i.profile_image,
-      shedule_settings: i.scheduling_settings,
-      tokens: i.schedule_auth as any,
-    }));
+    const ints_meta: InterDetailsType[] = this.db_details.all_inters.map(
+      (i) => ({
+        email: i.email,
+        interviewer_id: i.user_id,
+        name: getFullName(i.first_name, i.last_name),
+        profile_img: i.profile_image,
+        shedule_settings: i.scheduling_settings,
+        tokens: i.schedule_auth as any,
+        events: [],
+        freeTimes: [],
+        int_schedule_setting: i.scheduling_settings,
+        isCalenderConnected: false,
+      }),
+    );
     const promiseArr = ints_meta.map(async (int) => {
       let newInt: InterDetailsType = {
         ...int,
@@ -209,24 +215,11 @@ export class CandidatesScheduling {
     let dayjs_start_date: Dayjs = this.schedule_dates.user_start_date_js;
     let dayjs_end_date: Dayjs = this.schedule_dates.user_end_date_js;
 
-    const convertIntToResp = (inters: SessionInterviewerType[]) => {
-      const r: SessionInterviewerApiRespType[] = inters.map((i) => ({
-        email: i.email,
-        first_name: i.first_name,
-        last_name: i.last_name,
-        profile_image: i.profile_image,
-        training_type: i.training_type,
-        interviewer_type: i.interviewer_type,
-        interview_module_relation_id: i.interview_module_relation_id,
-      }));
-
-      return r;
-    };
     const findMultiDayPlanUtil = (
-      final_combs: PlanCombinationType[],
+      final_combs: PlanCombinationRespType[],
       curr_date: Dayjs,
       curr_day_idx: number,
-    ): PlanCombinationType[] => {
+    ): PlanCombinationRespType[] => {
       if (curr_day_idx === session_rounds.length) {
         return final_combs;
       }
@@ -261,8 +254,8 @@ export class CandidatesScheduling {
       if (final_combs.length === 0) {
         final_combs = cloneDeep(combs);
       } else {
-        const temp_combs: PlanCombinationType[] = [];
-        const next_day_combs: PlanCombinationType[] = cloneDeep(combs);
+        const temp_combs: PlanCombinationRespType[] = [];
+        const next_day_combs: PlanCombinationRespType[] = cloneDeep(combs);
         for (let final_slot of final_combs) {
           for (let nextdaySlot of next_day_combs) {
             temp_combs.push({
@@ -299,10 +292,12 @@ export class CandidatesScheduling {
             session_name: s.session_name,
             session_order: s.session_order,
             session_type: s.session_type,
-            qualifiedIntervs: convertIntToResp(s.qualifiedIntervs),
-            trainingIntervs: convertIntToResp(s.trainingIntervs),
+            qualifiedIntervs: s.qualifiedIntervs,
+            trainingIntervs: s.trainingIntervs,
             end_time: s.end_time,
             start_time: s.start_time,
+            location: s.location,
+            meeting_id: s.meeting_id,
           };
 
           return sess;
@@ -407,8 +402,10 @@ export class CandidatesScheduling {
       current_day: Dayjs,
       interv: InterDetailsType,
     ): TimeDurationType => {
-      const { shedule_settings, email } = interv;
-      let curr_user_time = userTzDayjs().tz(shedule_settings.timeZone.tzCode);
+      const { int_schedule_setting, email } = interv;
+      let curr_user_time = userTzDayjs().tz(
+        int_schedule_setting.timeZone.tzCode,
+      );
       // current day is before actual curr day
       if (current_day.isBefore(curr_user_time, 'day')) {
         return null;
@@ -425,7 +422,7 @@ export class CandidatesScheduling {
         );
 
       if (is_holiday) return null;
-      const work_day = shedule_settings.workingHours.find(
+      const work_day = int_schedule_setting.workingHours.find(
         (day) => current_day.format('dddd').toLowerCase() === day.day,
       );
       // is day week off
@@ -439,7 +436,7 @@ export class CandidatesScheduling {
         const int_meetings = this.db_details.ints_schd_meetings.get(email);
         const curr_week_meetings = int_meetings.filter((meet) => {
           const meet_date = userTzDayjs(meet.meeting_date).tz(
-            shedule_settings.timeZone.tzCode,
+            int_schedule_setting.timeZone.tzCode,
           );
           return (
             meet_date.isSameOrAfter(curr_week_start_day, 'date') &&
@@ -466,7 +463,7 @@ export class CandidatesScheduling {
         };
         const curr_day_meetings = int_meetings.filter((meet) => {
           const meet_date = userTzDayjs(meet.meeting_date).tz(
-            shedule_settings.timeZone.tzCode,
+            int_schedule_setting.timeZone.tzCode,
           );
           return meet_date.isSame(current_day, 'day');
         });
@@ -484,8 +481,8 @@ export class CandidatesScheduling {
         weekly_load.total_duration += curr_slot_load.total_duration;
         day_load.total_interview += curr_slot_load.total_interview;
         day_load.total_duration += curr_slot_load.total_duration;
-        const week_limit = shedule_settings.interviewLoad.weeklyLimit;
-        const day_limit = shedule_settings.interviewLoad.dailyLimit;
+        const week_limit = int_schedule_setting.interviewLoad.weeklyLimit;
+        const day_limit = int_schedule_setting.interviewLoad.dailyLimit;
         if (week_limit.type === 'Hours') {
           if (week_limit.value * 60 >= weekly_load.total_duration) {
             if (day_limit.type === 'Hours') {
@@ -517,12 +514,12 @@ export class CandidatesScheduling {
         startTime: chageTimeInDay(
           current_day,
           work_day.timeRange.startTime,
-          shedule_settings.timeZone.tzCode,
+          int_schedule_setting.timeZone.tzCode,
         ),
         endTime: chageTimeInDay(
           current_day,
           work_day.timeRange.endTime,
-          shedule_settings.timeZone.tzCode,
+          int_schedule_setting.timeZone.tzCode,
         ),
       };
 
@@ -556,7 +553,7 @@ export class CandidatesScheduling {
       interviewer: InterDetailsType,
       current_day: Dayjs,
     ): TimeDurationType[] => {
-      const int_timezone = interviewer.shedule_settings.timeZone.tzCode;
+      const int_timezone = interviewer.int_schedule_setting.timeZone.tzCode;
       const day1_interviewer_time: TimeDurationDayjsType & { day: string } = {
         startTime: userTzDayjs(current_day.startOf('day').toISOString()).tz(
           int_timezone,
@@ -632,7 +629,7 @@ export class CandidatesScheduling {
         this.api_payload.user_tz,
       );
       let curr_user_time = userTzDayjs().tz(
-        interviewer.shedule_settings.timeZone.tzCode,
+        interviewer.int_schedule_setting.timeZone.tzCode,
       );
       const stepped_time = stepToMinute(curr_user_time);
       if (current_day.isSame(stepped_time, 'day')) {
@@ -775,7 +772,7 @@ export class CandidatesScheduling {
     interv_free_time: InterDetailsType[],
   ) => {
     const cached_free_time = new Map<string, TimeDurationType[]>();
-    let all_schedule_combs: PlanCombinationType[] = [];
+    let all_schedule_combs: PlanCombinationRespType[] = [];
 
     const module_combs = this.calcIntervCombsForModule(interview_sessions);
     const exploreSessionCombs = (
@@ -802,7 +799,7 @@ export class CandidatesScheduling {
     const calcMeetingCombinsForPlan = (
       plan_comb: InterviewSessionApiType[],
     ) => {
-      const schedule_combs: PlanCombinationType[] = [];
+      const schedule_combs: PlanCombinationRespType[] = [];
       const getInterviewersCommonTime = (
         curr_session: InterviewSessionApiType,
       ) => {
@@ -835,7 +832,7 @@ export class CandidatesScheduling {
       const findIsSessionAvailable = (
         module_idx: number,
         prev_time_range: TimeDurationType,
-        shedule_comb: PlanCombinationType,
+        shedule_comb: PlanCombinationRespType,
       ) => {
         if (module_idx === plan_comb.length) {
           return true;
@@ -905,7 +902,7 @@ export class CandidatesScheduling {
           const int_setting = interv_free_time.find(
             (i) => i.interviewer_id === int_id,
           );
-          let load = int_setting.shedule_settings.interviewLoad.dailyLimit;
+          let load = int_setting.int_schedule_setting.interviewLoad.dailyLimit;
           if (load.type === 'Interviews' && load.value < int_cnt.meet_cnt) {
             flag = false;
           } else if (
@@ -940,7 +937,7 @@ export class CandidatesScheduling {
           userTzDayjs(curr_time_range.endTime).unix() <=
             userTzDayjs(time_range.endTime).unix()
         ) {
-          let session_comb: PlanCombinationType = {
+          let session_comb: PlanCombinationRespType = {
             plan_comb_id: nanoid(),
             sessions: [
               {
@@ -1249,10 +1246,10 @@ export class CandidatesScheduling {
   private findMultiDaySlots = () => {
     let session_rounds = this.getSessionRounds();
     const findMultiDaySlotsUtil = (
-      final_combs: PlanCombinationType[][],
+      final_combs: PlanCombinationRespType[][],
       curr_date: Dayjs,
       curr_day_idx: number,
-    ): PlanCombinationType[][] => {
+    ): PlanCombinationRespType[][] => {
       if (curr_day_idx === session_rounds.length) {
         return final_combs;
       }
@@ -1294,12 +1291,12 @@ export class CandidatesScheduling {
       return plan_combs;
     };
 
-    const combineSlots = (plan_combs: PlanCombinationType[][]) => {
+    const combineSlots = (plan_combs: PlanCombinationRespType[][]) => {
       const convertCombsToTimeSlot = (
-        all_plan_combs: PlanCombinationType[],
+        all_plan_combs: PlanCombinationRespType[],
       ) => {
         const convertSessionCombToSlot = (
-          session_comb: SessionCombinationType,
+          session_comb: SessionCombinationRespType,
         ) => {
           const session_slot: SessionSlotType = {
             break_duration: session_comb.break_duration,
