@@ -69,6 +69,7 @@ export class CandidatesScheduling {
     ints_schd_meetings: Map<string, UserMeetingDetails[]>;
     all_session_int_details: AllSessionIntDetails;
   };
+  private check_next_minutes = 30;
   private api_payload: ApiPayload;
   public intervs_details_with_events: InterDetailsType[];
   private schedule_dates: {
@@ -250,9 +251,10 @@ export class CandidatesScheduling {
         cloneDeep(session_rounds[curr_day_idx]),
       );
 
-      const combs = this.findFixedTimeCombs(
+      const combs = this.findFixedBreakSessionCombs(
         cloneDeep(session_rounds[curr_day_idx]),
         interv_curr_day_free_time,
+        curr_date,
       );
       if (combs.length === 0) {
         return [];
@@ -305,8 +307,8 @@ export class CandidatesScheduling {
             location: s.location,
             meeting_id: s.meeting_id,
             slot_conflict_info: {
-              interviewersConflicts: [],
-              isSlotConflicted: false,
+              is_conflict_free: true,
+              ints_conflicts: [],
             },
           };
 
@@ -772,17 +774,18 @@ export class CandidatesScheduling {
 
   /**
   @returns combination of slots in a paricular day
-  @param interview_sessions - particualar day session with fixed breaks and assigned interviewers
+  @param interview_sessions - particualar day sessions with fixed breaks
   @param interv_free_time - free time of interviewers of given session in a particalar day
 **/
-  private findFixedTimeCombs = (
+  private findFixedBreakSessionCombs = (
     interview_sessions: InterviewSessionApiRespType[],
     interv_free_time: InterDetailsType[],
+    currDay: Dayjs,
   ) => {
     const cached_free_time = new Map<string, TimeDurationType[]>();
     let all_schedule_combs: PlanCombinationRespType[] = [];
 
-    const module_combs = this.calcIntervCombsForModule(interview_sessions);
+    const module_combs = this.calcInterversCombsForSesson(interview_sessions);
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
       module_idx,
@@ -801,13 +804,19 @@ export class CandidatesScheduling {
     };
 
     /**
-     * @param plan_comb single interview plan
-     * @returns given one combination of plan find all possible times for that plan
+     * @param plan_comb single interview plan with assigned interviewers
+     * @returns all possible slots for that day
      */
     const calcMeetingCombinsForPlan = (
       plan_comb: InterviewSessionApiRespType[],
     ) => {
       const schedule_combs: PlanCombinationRespType[] = [];
+
+      /**
+       *
+       * @param curr_session
+       * @returns merges the session interviewers free times
+       */
       const getInterviewersCommonTime = (
         curr_session: InterviewSessionApiRespType,
       ) => {
@@ -837,59 +846,6 @@ export class CandidatesScheduling {
         );
         cached_free_time.set(map_key.join('_'), common_time_range);
         return common_time_range;
-      };
-
-      const findIsSessionAvailable = (
-        module_idx: number,
-        prev_time_range: TimeDurationType,
-        shedule_comb: PlanCombinationRespType,
-      ) => {
-        if (module_idx === plan_comb.length) {
-          return true;
-        }
-        const prev_session = plan_comb[Number(module_idx - 1)];
-        const curr_session = plan_comb[Number(module_idx)];
-
-        const break_duration = prev_session.break_duration;
-        let required_time: TimeDurationType = {
-          startTime: userTzDayjs(prev_time_range.endTime)
-            .add(break_duration, 'minutes')
-            .tz(this.api_payload.user_tz)
-            .format(),
-          endTime: userTzDayjs(prev_time_range.endTime)
-            .add(curr_session.duration + break_duration, 'minutes')
-            .tz(this.api_payload.user_tz)
-            .format(),
-        };
-        const plan_session = plan_comb[Number(module_idx)];
-        const common_time = getInterviewersCommonTime(plan_session);
-
-        for (let free_time of common_time) {
-          if (
-            userTzDayjs(free_time.startTime).unix() <=
-              userTzDayjs(required_time.startTime).unix() &&
-            userTzDayjs(free_time.endTime).unix() >=
-              userTzDayjs(required_time.endTime).unix()
-          ) {
-            shedule_comb.sessions.push({
-              ...plan_session,
-              start_time: required_time.startTime,
-              end_time: required_time.endTime,
-              slot_conflict_info: {
-                interviewersConflicts: [],
-                isSlotConflicted: false,
-              },
-            });
-            return findIsSessionAvailable(
-              module_idx + 1,
-              required_time,
-              shedule_comb,
-            );
-          }
-        }
-
-        return false;
-        // const required_time_range = userTzDayjs
       };
 
       const isPlanPossible = () => {
@@ -933,55 +889,80 @@ export class CandidatesScheduling {
       // check for load balance setting
       if (!isPlanPossible()) return schedule_combs;
 
-      const first_session = plan_comb[0];
-      const first_sesn_comon_time = getInterviewersCommonTime(first_session);
-      for (let time_range of first_sesn_comon_time) {
-        const curr_time_range: TimeDurationType = {
-          startTime: this.getTimeInCandTimeZone(time_range.startTime).format(),
-          endTime: this.getTimeInCandTimeZone(
-            userTzDayjs(time_range.startTime).add(
-              first_session.duration,
-              'minutes',
-            ),
-          ).format(),
-        };
+      const getSessionsAvailability = (
+        session_idx: number,
+        session_start_time: Dayjs,
+        curr_shedule_comb: PlanCombinationRespType,
+      ): PlanCombinationRespType => {
+        const curr_session = plan_comb[session_idx];
 
-        while (
-          userTzDayjs(curr_time_range.startTime).unix() <
-            userTzDayjs(time_range.endTime).unix() &&
-          userTzDayjs(curr_time_range.endTime).unix() <=
-            userTzDayjs(time_range.endTime).unix()
-        ) {
-          let session_comb: PlanCombinationRespType = {
-            plan_comb_id: nanoid(),
-            sessions: [
-              {
-                ...first_session,
-                start_time: curr_time_range.startTime,
-                end_time: curr_time_range.endTime,
-                slot_conflict_info: {
-                  interviewersConflicts: [],
-                  isSlotConflicted: false,
-                },
-              },
-            ],
+        const curr_sess_start_time = session_start_time;
+        const curr_sess_end_time = userTzDayjs(curr_sess_start_time)
+          .add(curr_session.duration, 'minutes')
+          .tz(this.api_payload.user_tz);
+        // find commontime
+        const common_time = getInterviewersCommonTime(curr_session);
+        const is_conflict_free = common_time.find((free_time_chunk) => {
+          return isTimeChunksEnclosed(
+            {
+              startTime: userTzDayjs(free_time_chunk.startTime),
+              endTime: userTzDayjs(free_time_chunk.endTime),
+            },
+            {
+              startTime: userTzDayjs(curr_sess_start_time),
+              endTime: userTzDayjs(curr_sess_end_time),
+            },
+          );
+        });
+        if (is_conflict_free) {
+          const session_comb: SessionCombinationRespType = {
+            ...curr_session,
+            start_time: curr_sess_start_time.format(),
+            end_time: curr_sess_end_time.format(),
+            slot_conflict_info: {
+              is_conflict_free: true,
+              ints_conflicts: [],
+            },
           };
-
-          if (findIsSessionAvailable(1, curr_time_range, session_comb)) {
-            schedule_combs.push(session_comb);
+          if (!curr_shedule_comb) {
+            curr_shedule_comb = {
+              plan_comb_id: nanoid(),
+              sessions: [session_comb],
+            };
+          } else {
+            curr_shedule_comb.sessions.push({
+              ...session_comb,
+            });
           }
-
-          // check for next 30 minutes
-          curr_time_range.startTime = userTzDayjs(curr_time_range.startTime)
-            .add(30, 'minutes')
-            .tz(this.api_payload.user_tz)
-            .format();
-          curr_time_range.endTime = userTzDayjs(curr_time_range.endTime)
-            .add(30, 'minutes')
-            .tz(this.api_payload.user_tz)
-            .format();
+        } else {
+          return null;
         }
+
+        // check whether session is conflict free
+        // if not find conflict for each reason
+        // go throught next session
+
+        if (session_idx + 1 === plan_comb.length) {
+          return curr_shedule_comb;
+        }
+        return getSessionsAvailability(
+          session_idx + 1,
+          curr_sess_end_time.add(curr_session.break_duration),
+          curr_shedule_comb,
+        );
+      };
+      const day_start = currDay.startOf('day');
+      const day_end = currDay.add(1, 'day').startOf('day');
+
+      let curr_time = day_start;
+      while (curr_time.isSameOrBefore(day_end)) {
+        const schedule_comb = getSessionsAvailability(0, curr_time, null);
+        if (schedule_comb) {
+          schedule_combs.push({ ...schedule_comb });
+        }
+        curr_time = curr_time.add(this.check_next_minutes, 'minutes');
       }
+
       return schedule_combs;
     };
 
@@ -1159,10 +1140,10 @@ export class CandidatesScheduling {
   /**
    *
    * @param sessions interview session full details
-   * @returns all combination of interviewers for the sessions
+   * @returns all combination of session with all possible interviewers
    */
 
-  private calcIntervCombsForModule = (
+  private calcInterversCombsForSesson = (
     sessions: InterviewSessionApiRespType[],
   ) => {
     const findCombinationOfStrings = (str_arr: string[], comb: number) => {
@@ -1285,9 +1266,10 @@ export class CandidatesScheduling {
         cloneDeep(session_rounds[curr_day_idx]),
       );
 
-      const combs = this.findFixedTimeCombs(
+      const combs = this.findFixedBreakSessionCombs(
         cloneDeep(session_rounds[curr_day_idx]),
         interv_curr_day_free_time,
+        curr_date,
       );
 
       if (combs.length === 0) {

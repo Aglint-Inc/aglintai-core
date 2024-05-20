@@ -14,12 +14,12 @@ import { InterviewSessionApiType } from './types';
 export type ConflictReason = 'interviewer_paused' | 'out_of_office';
 export type InterviwerConflicts = {
   interviewer: Pick<SessionInterviewerApiRespType, 'user_id'>;
-  conflict_reason: ConflictReason[];
+  conflict_reasons: ConflictReason[];
 };
 
 export type SlotConflictType = {
-  isSlotConflicted: boolean;
-  interviewersConflicts: InterviwerConflicts[];
+  is_conflict_free: boolean;
+  ints_conflicts: InterviwerConflicts[];
 };
 
 export type InterviewSessionApiRespType = Pick<
