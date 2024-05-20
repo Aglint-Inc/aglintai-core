@@ -115,7 +115,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                         .filter(Boolean)
                         .join(', ');
                       const address = [loc.full_address];
-                      const timeZone = [loc.time_zone];
+                      const timeZone = [loc.timezone];
 
                       return (
                         <>

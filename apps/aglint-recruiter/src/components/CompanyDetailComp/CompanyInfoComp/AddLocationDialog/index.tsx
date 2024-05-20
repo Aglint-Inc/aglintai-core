@@ -49,19 +49,19 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       value: initialValue?.city ?? '',
       error: false,
       validation: 'string',
-      required: false,
+      required: true,
     },
     region: {
       value: initialValue?.region ?? '',
       error: false,
       validation: 'string',
-      required: false,
+      required: true,
     },
     country: {
       value: initialValue?.country ?? '',
       error: false,
       validation: 'string',
-      required: false,
+      required: true,
     },
     zipcode: {
       value: initialValue?.zipcode ?? '',
@@ -94,12 +94,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       setRecruiter((recruiter) => {
         const textLocationHeader = `${location.city.value},${location.region.value},${location.country.value}`;
         const fullAddress = `${location.addressLine1.value},${location.addressLine2.value},${location.zipcode.value}`;
-        const timeZone = `${location.timezone.value}`;
         const newLocation = Object.assign(
           {
             full_address: fullAddress,
             location_header: textLocationHeader,
-            time_zone: timeZone,
           },
           ...Object.entries(location).reduce((acc, [key, val]) => {
             acc.push({ [key]: val.value });
@@ -214,6 +212,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   // }}
                   name='city'
                   placeholder='Enter City'
+                  error={!location.city.value}
+                  helperText={
+                    !location.city.value ? 'This field is required' : ''
+                  }
                   label='City'
                   onChange={(e) => handleChange(e, 'city')}
                 />
@@ -226,6 +228,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   //   });
                   // }}
                   name='region'
+                  error={!location.region.value}
+                  helperText={
+                    !location.region.value ? 'This field is required' : ''
+                  }
                   placeholder='Enter Region'
                   label='Region'
                   onChange={(e) => handleChange(e, 'region')}
@@ -240,6 +246,11 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   //   });
                   // }}
                   sx={{ width: '225px' }}
+                  required={true}
+                  helperText={
+                    !location.country.value ? 'This field is required' : ''
+                  }
+                  error={!location.country.value}
                   name='country'
                   placeholder='Enter Country'
                   label='Country'
