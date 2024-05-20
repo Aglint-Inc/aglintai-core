@@ -29,7 +29,10 @@ import { schedulingSettingType } from '@aglint/shared-types';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { EmailWebHook } from '@/src/services/EmailWebhook/EmailWebhook';
-import { EmailDynamicParams } from '@/src/types/companyEmailTypes';
+import {
+  CompanyEmailsTypeDB,
+  EmailDynamicParams,
+} from '@/src/types/companyEmailTypes';
 import { EmailTemplateFiller } from '@/src/utils/emailTemplate/EmailTemplateFiller';
 import { BookingDateFormat } from '@/src/utils/integrations/constants';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -75,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         '[candidateTimeZone]': cand_details.time_zone,
         '[selfScheduleLink]': `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${cand_details.schedule_id}?filter_id=${filter_json_id}&task_id=${task_id}'>link</a>`,
       };
-      const temp_filler = new EmailTemplateFiller(null);
+      const temp_filler = new EmailTemplateFiller(cand_details.email_template);
       const filled_temp = temp_filler.fillEmail(
         'init_email_agent',
         email_details,
@@ -133,6 +136,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
 
+    console.log('name', cand_details.candidate_name);
     await candLogger(
       `Sent interview schedule email to {candidate}`,
       {
@@ -147,11 +151,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).send('ok');
   } catch (error) {
+    console.error(error.message);
     await candLogger(
       agent_activities.email_agent.init_agent.failed_to_init,
       {},
     );
-    console.error(error.message);
     return res.status(500).send(error.message);
   }
 };
@@ -229,7 +233,7 @@ const fetchCandDetails = async ({ filter_json_id, candidate_email }) => {
     )}`,
     interview_sessions: int_sessions,
     schedule_id: rec.schedule_id,
-    email_template: job.recruiter.email_template['init_email_agent'],
+    email_template: job.recruiter.email_template as CompanyEmailsTypeDB,
     candidate_id: cand_basic_info.id,
   };
   if (geo) {
