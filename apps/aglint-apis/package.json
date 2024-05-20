@@ -3,18 +3,17 @@
   "type": "commonjs",
   "version": "1.0.0",
   "scripts": {
-    "dev": "set NODE_ENV=development.local&& nodemon",
-    "dev:local": "set NODE_ENV=development.local&& console-ninja nodemon",
-    "start": "set NODE_ENV=development&& npm run build && node dist/index.js",
-    "start:prod": "set NODE_ENV=production&& npm run build && node dist/index.js",
-    "start:development": "set NODE_ENV=development&& npm run build && node  dist/index.js",
-    "build": "npx tsc",
+    "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
+    "build": "tsup",
     "lint": "gts lint && npm run build",
+    "start": "set NODE_ENV=development&& node dist/index.js",
+    "start:production": "set NODE_ENV=production&& node dist/index.js",
+    "start:staging": "set NODE_ENV=staging&& node dist/index.js",
+    "start:development": "set NODE_ENV=development&& node  dist/index.js",
     "compile": "tsc",
     "fix": "gts fix"
   },
   "dependencies": {
-    "@aglint/shared-types": "*",
     "@aglint/shared-utils": "*",
     "@langchain/community": "^0.0.41",
     "@langchain/core": "^0.1.63",
@@ -36,7 +35,6 @@
     "retell-sdk": "2.4.0",
     "supabase": "^1.150.0",
     "twilio": "^4.21.0",
-    "uninstall": "^0.0.0",
     "winston": "^3.13.0",
     "ws": "^8.16.0",
     "zod": "^3.22.4",
@@ -51,9 +49,9 @@
     "@typescript-eslint/eslint-plugin": "^5.7.1-alpha.25",
     "eslint": "8.26.0",
     "eslint-plugin-no-relative-import-paths": "^1.5.4",
-    "nodemon": "^3.0.3",
-    "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.10",
-    "typescript": "^5.4.3"
-  }
+    "typescript": "^5.4.3",
+    "@aglint/shared-types": "*",
+    "tsup": "^8.0.2"
+  },
+  "packageManager": "npm@8.19.4"
 }
