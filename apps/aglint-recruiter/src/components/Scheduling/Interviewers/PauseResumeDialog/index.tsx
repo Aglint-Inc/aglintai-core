@@ -241,7 +241,6 @@ function PauseResumeDialog({
                         <Stack direction={'row'} width={'100%'} spacing={1}>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              label={'From'}
                               value={dayjs(pause_json?.start_date)}
                               onChange={(newValue) => {
                                 if (
@@ -268,7 +267,6 @@ function PauseResumeDialog({
                           </LocalizationProvider>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              label={'To'}
                               value={dayjs(pause_json?.end_date)}
                               minDate={dayjs(pause_json?.start_date)}
                               onChange={(newValue) => {
