@@ -38,14 +38,14 @@
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
     "react-compiler/react-compiler": "warn",
-    "@aglint/linter/enforce-devlink_import_rules": "error"
+    "@aglint/linter/enforce-devlink-rules": "error"
   },
   "overrides": [
     {
-      "files": ["**/*.js"],
+      "files": ["**/*.tsx"],
       "plugins": ["@aglint/linter"],
       "rules": {
-        "custom/enforce-devlink-rules": "error"
+        "@aglint/linter/enforce-devlink-rules": "error"
       }
     }
   ],
