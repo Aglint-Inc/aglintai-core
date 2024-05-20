@@ -69,6 +69,7 @@ const CompanyInfoComp = ({ setIsSaving }) => {
       return newRecruiter;
     });
   };
+  console.log(recruiter.office_locations);
 
   useEffect(() => {
     if (recruiter) setIsVideoAssessment(recruiter?.video_assessment);
@@ -108,14 +109,19 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <Stack p={'4px'}>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
+                      console.log(loc);
+
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
+                      const address = [loc.full_address];
+                      const timeZone = [loc.time_zone];
 
                       return (
                         <>
                           <Stack p={'4px'}>
                             <CompanyLocation
+                              isHeadQuaterVisible={false}
                               onClickEdit={{
                                 onClick: () => {
                                   setDialog({
@@ -124,7 +130,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                   });
                                 },
                               }}
-                              textLocation={location}
+                              textFullAddress={address}
+                              textLocationHeader={location}
+                              textTimeZone={timeZone}
                               // onClickDelete={{
                               //   onClick: () => handleDeleteLocation(i),
                               // }}
