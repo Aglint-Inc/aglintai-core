@@ -4,7 +4,7 @@ import Slider from '@mui/material/Slider';
 import { capitalize } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 
-import { ButtonPrimaryOutlinedRegular } from '@/devlink3';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 
 import { scoreWheelDependencies, ScoreWheelParams } from '.';
 

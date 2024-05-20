@@ -1,7 +1,8 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
 
 import { useModuleAndUsers } from '../queries/hooks';
 import SlotBodyComp from './SlotBodyComp';

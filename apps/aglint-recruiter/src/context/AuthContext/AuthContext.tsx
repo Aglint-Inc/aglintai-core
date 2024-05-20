@@ -22,7 +22,7 @@ import {
   useState,
 } from 'react';
 
-import { LoaderSvg } from '@/devlink';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { featureFlag } from '@/src/utils/Constants';

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-import { FeedbackCandidate } from '@/devlink3';
+import { FeedbackCandidate } from '@/devlink3/FeedbackCandidate';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import toast from '@/src/utils/toast';
 

@@ -1,11 +1,9 @@
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import {
-  InterviewScreenCard,
-  ShadowSessionCard,
-  StatusBadge,
-} from '@/devlink2';
+import { InterviewScreenCard } from '@/devlink2/InterviewScreenCard';
+import { ShadowSessionCard } from '@/devlink2/ShadowSessionCard';
+import { StatusBadge } from '@/devlink2/StatusBadge';
 import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import {
   getScheduleTextcolor,

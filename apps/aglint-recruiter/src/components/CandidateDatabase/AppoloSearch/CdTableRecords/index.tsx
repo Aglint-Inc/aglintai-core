@@ -4,14 +4,12 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import {
-  CdAglintEmptyTable,
-  CdExperienceCard,
-  CdLoadMore,
-  CdTableAglint,
-  CdTableLoader,
-  Checkbox,
-} from '@/devlink';
+import { CdAglintEmptyTable } from '@/devlink/CdAglintEmptyTable';
+import { CdExperienceCard } from '@/devlink/CdExperienceCard';
+import { CdLoadMore } from '@/devlink/CdLoadMore';
+import { CdTableAglint } from '@/devlink/CdTableAglint';
+import { CdTableLoader } from '@/devlink/CdTableLoader';
+import { Checkbox } from '@/devlink/Checkbox';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getFullName } from '@/src/utils/jsonResume';

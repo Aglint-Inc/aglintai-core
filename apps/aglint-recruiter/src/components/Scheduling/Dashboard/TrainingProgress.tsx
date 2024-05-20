@@ -2,14 +2,12 @@ import { Avatar } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { Skeleton } from '@/devlink2';
-import {
-  HistoryPill as HistoryPillDev,
-  NoData,
-  TrainingProgress as TrainingProgressDev,
-  TrainingProgressList,
-  TrainingProgressLoader,
-} from '@/devlink3';
+import { Skeleton } from '@/devlink2/Skeleton';
+import { HistoryPill as HistoryPillDev } from '@/devlink3/HistoryPill';
+import { NoData } from '@/devlink3/NoData';
+import { TrainingProgress as TrainingProgressDev } from '@/devlink3/TrainingProgress';
+import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
+import { TrainingProgressLoader } from '@/devlink3/TrainingProgressLoader';
 import { useInterviewTrainingProgress } from '@/src/queries/scheduling-dashboard';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { LoaderSvg } from '@/devlink';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Seo from '@/src/components/Common/Seo';
 import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
 import { Session } from '@/src/context/AuthContext/types';

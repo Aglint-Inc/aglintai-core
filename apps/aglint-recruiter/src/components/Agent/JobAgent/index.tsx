@@ -6,16 +6,14 @@ import { marked } from 'marked';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { AssistantLogo } from '@/devlink2';
-import {
-  AgentLayout,
-  ChatBlock,
-  ChatWindow,
-  NewChat,
-  NewChatButton,
-  SuggetionPill,
-  WidgetGrid3X3,
-} from '@/devlink3';
+import { AssistantLogo } from '@/devlink2/AssistantLogo';
+import { AgentLayout } from '@/devlink3/AgentLayout';
+import { ChatBlock } from '@/devlink3/ChatBlock';
+import { ChatWindow } from '@/devlink3/ChatWindow';
+import { NewChat } from '@/devlink3/NewChat';
+import { NewChatButton } from '@/devlink3/NewChatButton';
+import { SuggetionPill } from '@/devlink3/SuggetionPill';
+import { WidgetGrid3X3 } from '@/devlink3/WidgetGrid3X3';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';

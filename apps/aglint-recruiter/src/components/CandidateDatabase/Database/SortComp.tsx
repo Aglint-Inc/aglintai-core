@@ -2,7 +2,8 @@ import Popover from '@mui/material/Popover';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { Sort, SortButton } from '@/devlink';
+import { Sort } from '@/devlink/Sort';
+import { SortButton } from '@/devlink/SortButton';
 
 import UISelect from '../../Common/Uiselect';
 const sortdisplay = [

@@ -6,8 +6,9 @@ import dayjs from 'dayjs';
 import { marked } from 'marked';
 import { useRouter } from 'next/router';
 
-import { EmptyState } from '@/devlink2';
-import { AvatarWithName, TaskProgress } from '@/devlink3';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { TaskProgress } from '@/devlink3/TaskProgress';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { fetchInterviewMeetingProgresstask } from '@/src/components/Scheduling/CandidateDetails/utils';

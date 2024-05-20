@@ -1,7 +1,8 @@
 import { Popover } from '@mui/material';
 import React from 'react';
 
-import { AddFilter, AllInterviewFilter } from '@/devlink2';
+import { AddFilter } from '@/devlink2/AddFilter';
+import { AllInterviewFilter } from '@/devlink2/AllInterviewFilter';
 
 import { setFilterVisible, useFilterCandidateStore } from '../../filter-store';
 import { FilterType } from '../../store';

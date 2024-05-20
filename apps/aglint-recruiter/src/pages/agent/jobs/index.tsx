@@ -2,7 +2,8 @@ import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { WidgetGrid3X3, WidgetJobCard } from '@/devlink3';
+import { WidgetGrid3X3 } from '@/devlink3/WidgetGrid3X3';
+import { WidgetJobCard } from '@/devlink3/WidgetJobCard';
 import Loader from '@/src/components/Common/Loader';
 import Seo from '@/src/components/Common/Seo';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';

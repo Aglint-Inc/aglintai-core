@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { CandidatesListPagination } from '@/devlink2';
+import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
 
 import { setPagination, useFilterCandidateStore } from '../filter-store';
 import { ApplicationList } from '../store';

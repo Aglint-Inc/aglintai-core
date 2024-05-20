@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React, { Dispatch, useState } from 'react';
 
-import { PanelMemberPill } from '@/devlink2';
+import { PanelMemberPill } from '@/devlink2/PanelMemberPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';

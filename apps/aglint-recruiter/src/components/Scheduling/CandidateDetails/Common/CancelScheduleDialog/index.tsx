@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import axios from 'axios';
 
-import { DeletePopup } from '@/devlink3';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 

@@ -2,8 +2,9 @@ import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { EmptyState } from '@/devlink2';
-import { Activities, ActivitiesCard } from '@/devlink3';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { Activities } from '@/devlink3/Activities';
+import { ActivitiesCard } from '@/devlink3/ActivitiesCard';
 import Icon from '@/src/components/Common/Icons/Icon';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { EmailAgentIcon } from '@/src/components/Tasks/Components/EmailAgentIcon';

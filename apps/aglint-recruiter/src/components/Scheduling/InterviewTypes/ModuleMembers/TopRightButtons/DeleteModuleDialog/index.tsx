@@ -2,7 +2,7 @@ import { Dialog } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
-import { CloseJobModal } from '@/devlink';
+import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

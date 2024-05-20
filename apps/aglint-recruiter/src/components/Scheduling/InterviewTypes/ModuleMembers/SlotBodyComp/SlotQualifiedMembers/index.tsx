@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { EmptyGeneral, MemberListCard } from '@/devlink2';
+import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
+import { MemberListCard } from '@/devlink2/MemberListCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';

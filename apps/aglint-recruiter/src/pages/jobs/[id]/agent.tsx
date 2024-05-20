@@ -1,7 +1,8 @@
 import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
 import JobAgent from '@/src/components/Agent/JobAgent';
 import Seo from '@/src/components/Common/Seo';
 import JobApplicationProvider from '@/src/context/JobApplicationsContext';

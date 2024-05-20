@@ -2,8 +2,9 @@ import { Dialog, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRef, useState } from 'react';
 
-import { IntegrationThanks } from '@/devlink2';
-import { ButtonPrimaryDefaultRegular, ConfirmationPopup } from '@/devlink3';
+import { IntegrationThanks } from '@/devlink2/IntegrationThanks';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

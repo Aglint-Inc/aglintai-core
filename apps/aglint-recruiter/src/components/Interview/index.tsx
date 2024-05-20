@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { MicPermissionModal } from '@/devlink';
+import { MicPermissionModal } from '@/devlink/MicPermissionModal';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 
 import MuiPopup from '../Common/MuiPopup';

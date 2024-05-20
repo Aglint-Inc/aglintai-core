@@ -9,7 +9,8 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import React, { Dispatch, useEffect, useState } from 'react';
 
-import { ChangeInterviewer, InterviewerList } from '@/devlink3';
+import { ChangeInterviewer } from '@/devlink3/ChangeInterviewer';
+import { InterviewerList } from '@/devlink3/InterviewerList';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

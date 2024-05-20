@@ -2,8 +2,9 @@ import { Popover, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ButtonFilter, FilterDropdown } from '@/devlink2';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

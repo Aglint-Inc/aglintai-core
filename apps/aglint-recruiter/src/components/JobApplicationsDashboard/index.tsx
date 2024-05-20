@@ -20,21 +20,20 @@ import React, {
 import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
-import {
-  // AllApplicantsTable,
-  AllInterview,
-  ApplicantsListEmpty,
-  ApplicantsTable,
-  Breadcrum,
-  CandidatesListPagination,
-  JobDetails,
-  JobDetailsFilterBlock,
-  RcCheckbox,
-  SelectActionBar,
-  TopApplicantsTable,
-} from '@/devlink2';
-import { NewTabPill } from '@/devlink3';
+import { FetchingAshbyLoader } from '@/devlink/FetchingAshbyLoader';
+import { ImportCandidates } from '@/devlink/ImportCandidates';
+// import { // AllApplicantsTable } from '@/devlink2/// AllApplicantsTable';
+import { AllInterview } from '@/devlink2/AllInterview';
+import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
+import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
+import { JobDetails } from '@/devlink2/JobDetails';
+import { JobDetailsFilterBlock } from '@/devlink2/JobDetailsFilterBlock';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { SelectActionBar } from '@/devlink2/SelectActionBar';
+import { TopApplicantsTable } from '@/devlink2/TopApplicantsTable';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {

@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 
-import { AddLocationPop } from '@/devlink';
+import { AddLocationPop } from '@/devlink/AddLocationPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import { debouncedSave } from '../../utils';

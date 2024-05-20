@@ -2,7 +2,9 @@ import { Avatar, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { InterviewRatio, NewScheduleCard, YourSchedules } from '@/devlink3';
+import { InterviewRatio } from '@/devlink3/InterviewRatio';
+import { NewScheduleCard } from '@/devlink3/NewScheduleCard';
+import { YourSchedules } from '@/devlink3/YourSchedules';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 type YourScheduleMeetingsType = {

@@ -16,29 +16,28 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 dayjs.extend(relativeTime);
 
 // import { CdExperienceCard, CdTableAglint, SuggestedSkillPill } from '@/devlink';
-import {
-  AgentLayout,
-  AgentTask,
-  ChatBlockAglint,
-  ChatBlockUser,
-  ChatNotification,
-  ChatWindow,
-  DummyChatFour,
-  DummyChatOne,
-  DummyChatThree,
-  DummyChatTwo,
-  NewChat,
-  NewChatButton,
-  SamplePanel,
-  SuggetionPill,
-  Timeline,
-  TimelineBlock,
-  TimelineDummyOne,
-  TimelineDummyTwo,
-  TimelineEmpty,
-  WidgetGrid2X2,
-  WidgetUserCardWithCompany,
-} from '@/devlink3';
+
+import { AgentLayout } from '@/devlink3/AgentLayout';
+import { AgentTask } from '@/devlink3/AgentTask';
+import { ChatBlockAglint } from '@/devlink3/ChatBlockAglint';
+import { ChatBlockUser } from '@/devlink3/ChatBlockUser';
+import { ChatNotification } from '@/devlink3/ChatNotification';
+import { ChatWindow } from '@/devlink3/ChatWindow';
+import { DummyChatFour } from '@/devlink3/DummyChatFour';
+import { DummyChatOne } from '@/devlink3/DummyChatOne';
+import { DummyChatThree } from '@/devlink3/DummyChatThree';
+import { DummyChatTwo } from '@/devlink3/DummyChatTwo';
+import { NewChat } from '@/devlink3/NewChat';
+import { NewChatButton } from '@/devlink3/NewChatButton';
+import { SamplePanel } from '@/devlink3/SamplePanel';
+import { SuggetionPill } from '@/devlink3/SuggetionPill';
+import { Timeline } from '@/devlink3/Timeline';
+import { TimelineBlock } from '@/devlink3/TimelineBlock';
+import { TimelineDummyOne } from '@/devlink3/TimelineDummyOne';
+import { TimelineDummyTwo } from '@/devlink3/TimelineDummyTwo';
+import { TimelineEmpty } from '@/devlink3/TimelineEmpty';
+import { WidgetGrid2X2 } from '@/devlink3/WidgetGrid2X2';
+import { WidgetUserCardWithCompany } from '@/devlink3/WidgetUserCardWithCompany';
 import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';

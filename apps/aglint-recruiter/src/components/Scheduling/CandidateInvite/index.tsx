@@ -22,27 +22,23 @@ import React, {
   useState,
 } from 'react';
 
-import {
-  ButtonPrimaryRegular,
-  // AvailableTimerangeEmpty,
-  // AvailableTimeRangeLoader,
-  CandidateConfirmationPage,
-  CandidateScheduleCard,
-  ChangeButton,
-  SelectButton,
-  SelectedDateAndTime,
-  SessionAndTime,
-  SessionInfo,
-} from '@/devlink';
-import {
-  ButtonDanger,
-  ButtonPrimary,
-  CancelButton,
-  InterviewConfirmed,
-  InterviewConfirmedCard,
-  RequestReschedule,
-} from '@/devlink2';
-import { ConfirmationPopup } from '@/devlink3';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+// import { // AvailableTimerangeEmpty } from '@/devlink/// AvailableTimerangeEmpty';
+// import { // AvailableTimeRangeLoader } from '@/devlink/// AvailableTimeRangeLoader';
+import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
+import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
+import { ChangeButton } from '@/devlink/ChangeButton';
+import { SelectButton } from '@/devlink/SelectButton';
+import { SelectedDateAndTime } from '@/devlink/SelectedDateAndTime';
+import { SessionAndTime } from '@/devlink/SessionAndTime';
+import { SessionInfo } from '@/devlink/SessionInfo';
+import { ButtonDanger } from '@/devlink2/ButtonDanger';
+import { ButtonPrimary } from '@/devlink2/ButtonPrimary';
+import { CancelButton } from '@/devlink2/CancelButton';
+import { InterviewConfirmed } from '@/devlink2/InterviewConfirmed';
+import { InterviewConfirmedCard } from '@/devlink2/InterviewConfirmedCard';
+import { RequestReschedule } from '@/devlink2/RequestReschedule';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { ScheduleButton } from '@/devlink3/ScheduleButton';
 import { useCandidateInvite } from '@/src/context/CandidateInviteContext';
 import NotFoundPage from '@/src/pages/404';

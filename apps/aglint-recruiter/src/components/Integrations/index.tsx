@@ -1,4 +1,4 @@
-import { Integration } from '@/devlink2';
+import { Integration } from '@/devlink2/Integration';
 
 import ATSTools from './ATSTools';
 import MessagingTools from './MessagingTools';

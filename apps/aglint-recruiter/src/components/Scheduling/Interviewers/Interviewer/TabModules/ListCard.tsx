@@ -3,8 +3,10 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Dispatch, useState } from 'react';
 
-import { MemberListCard, StatusBadge } from '@/devlink2';
-import { HistoryPill, HistoryTrainingCard } from '@/devlink3';
+import { MemberListCard } from '@/devlink2/MemberListCard';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { HistoryPill } from '@/devlink3/HistoryPill';
+import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { pages } from '@/src/utils/pageRouting';
 

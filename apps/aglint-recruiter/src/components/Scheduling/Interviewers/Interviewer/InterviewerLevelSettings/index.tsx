@@ -19,15 +19,13 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
-import {
-  DayOff,
-  KeywordCard,
-  Keywords,
-  RcCheckbox,
-  ScheduleSettings,
-  TimeRangeInput,
-  WorkingHourDay,
-} from '@/devlink2';
+import { DayOff } from '@/devlink2/DayOff';
+import { KeywordCard } from '@/devlink2/KeywordCard';
+import { Keywords } from '@/devlink2/Keywords';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
+import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
+import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';

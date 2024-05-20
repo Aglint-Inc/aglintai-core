@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import interviewerList from '@utils/interviewer_list';
 import React, { useEffect } from 'react';
 
-import { TranscriptBlock } from '@/devlink';
+import { TranscriptBlock } from '@/devlink/TranscriptBlock';
 
 function ConversationChat() {
   const {

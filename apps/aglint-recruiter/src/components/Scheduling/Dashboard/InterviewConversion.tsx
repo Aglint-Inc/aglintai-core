@@ -10,7 +10,8 @@ import { capitalize } from 'lodash';
 import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { InterviewRatio, NoData } from '@/devlink3';
+import { InterviewRatio } from '@/devlink3/InterviewRatio';
+import { NoData } from '@/devlink3/NoData';
 import { useInterviewConversion } from '@/src/queries/scheduling-dashboard';
 
 import Loader from '../../Common/Loader';

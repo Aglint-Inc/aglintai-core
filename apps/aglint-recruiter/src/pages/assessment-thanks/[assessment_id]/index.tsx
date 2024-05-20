@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AssessmentSuccessfull } from '@/devlink2';
+import { AssessmentSuccessfull } from '@/devlink2/AssessmentSuccessfull';
 
 function AssessmentThanksPage() {
   return (

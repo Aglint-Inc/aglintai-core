@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { ResumePop } from '@/devlink3';
+import { ResumePop } from '@/devlink3/ResumePop';
 
 import { usePauseHandler } from '../../queries/hooks';
 import { setIsResumeDialogOpen, useModulesStore } from '../../store';

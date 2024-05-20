@@ -2,7 +2,7 @@ import { Dialog } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 
-import { CloseJobModal } from '@/devlink';
+import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

@@ -5,25 +5,23 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from 'react';
 
-import {
-  AddButton,
-  ButtonPrimarySmall,
-  Checkbox,
-  ScoreCard,
-  ScoreCardEdit,
-  ScorePercentage,
-  ScorePillMust,
-  ScorePillNice,
-  ScoreSetting,
-  ScoreWeightage,
-} from '@/devlink';
-import { Breadcrum, PageLayout, Skeleton } from '@/devlink2';
-import {
-  BannerAlert,
-  BannerWarning,
-  BodyWithSidePanel,
-  ProfileScoreSkeleton,
-} from '@/devlink3';
+import { AddButton } from '@/devlink/AddButton';
+import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ScoreCard } from '@/devlink/ScoreCard';
+import { ScoreCardEdit } from '@/devlink/ScoreCardEdit';
+import { ScorePercentage } from '@/devlink/ScorePercentage';
+import { ScorePillMust } from '@/devlink/ScorePillMust';
+import { ScorePillNice } from '@/devlink/ScorePillNice';
+import { ScoreSetting } from '@/devlink/ScoreSetting';
+import { ScoreWeightage } from '@/devlink/ScoreWeightage';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { Skeleton } from '@/devlink2/Skeleton';
+import { BannerAlert } from '@/devlink3/BannerAlert';
+import { BannerWarning } from '@/devlink3/BannerWarning';
+import { BodyWithSidePanel } from '@/devlink3/BodyWithSidePanel';
+import { ProfileScoreSkeleton } from '@/devlink3/ProfileScoreSkeleton';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';

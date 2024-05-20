@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NewTabPill } from '@/devlink3';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 
 import { setTab, useSchedulingApplicationStore } from '../store';
 

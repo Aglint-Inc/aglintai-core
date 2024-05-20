@@ -15,47 +15,41 @@ import React, {
 } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import {
-  AssessmentInvite,
-  BookMark,
-  CandidateDetails,
-  CandidateEducation,
-  CandidateEducationCard,
-  CandidateExperience,
-  CandidateExperienceCard,
-  CandidateInterviewScore,
-  CandidateResumeScore,
-  CandidateSideDrawer,
-  CandidateSkill,
-  CandidateSkillPills,
-  DetailedFeedbackCardSmall,
-  FeedbackScore,
-  InterviewResultStatus,
-  JobDetailInterview,
-  ResumeFeedbackScore,
-  TaskDetailBlock,
-  UnableFetchResume,
-} from '@/devlink';
-import {
-  AnalysisBlock,
-  ButtonWide,
-  ResAbsentError,
-  ResumeErrorBlock,
-  ScreeningLandingPop,
-  ScrQuestionListItem,
-  SidebarAnalysisBlock,
-  SidebarScreening,
-  StatusBadge,
-  SummaryBlock,
-  UploadCandidateResume,
-} from '@/devlink2';
-import {
-  ButtonPrimaryOutlinedRegular,
-  DangerMessage,
-  NewInterviewPlanCard,
-  NewTabPill,
-  ResumeWrap,
-} from '@/devlink3';
+import { AssessmentInvite } from '@/devlink/AssessmentInvite';
+import { BookMark } from '@/devlink/BookMark';
+import { CandidateDetails } from '@/devlink/CandidateDetails';
+import { CandidateEducation } from '@/devlink/CandidateEducation';
+import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
+import { CandidateExperience } from '@/devlink/CandidateExperience';
+import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
+import { CandidateInterviewScore } from '@/devlink/CandidateInterviewScore';
+import { CandidateResumeScore } from '@/devlink/CandidateResumeScore';
+import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
+import { CandidateSkill } from '@/devlink/CandidateSkill';
+import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+import { DetailedFeedbackCardSmall } from '@/devlink/DetailedFeedbackCardSmall';
+import { FeedbackScore } from '@/devlink/FeedbackScore';
+import { InterviewResultStatus } from '@/devlink/InterviewResultStatus';
+import { JobDetailInterview } from '@/devlink/JobDetailInterview';
+import { ResumeFeedbackScore } from '@/devlink/ResumeFeedbackScore';
+import { TaskDetailBlock } from '@/devlink/TaskDetailBlock';
+import { UnableFetchResume } from '@/devlink/UnableFetchResume';
+import { AnalysisBlock } from '@/devlink2/AnalysisBlock';
+import { ButtonWide } from '@/devlink2/ButtonWide';
+import { ResAbsentError } from '@/devlink2/ResAbsentError';
+import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
+import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
+import { ScrQuestionListItem } from '@/devlink2/ScrQuestionListItem';
+import { SidebarAnalysisBlock } from '@/devlink2/SidebarAnalysisBlock';
+import { SidebarScreening } from '@/devlink2/SidebarScreening';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { SummaryBlock } from '@/devlink2/SummaryBlock';
+import { UploadCandidateResume } from '@/devlink2/UploadCandidateResume';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
+import { DangerMessage } from '@/devlink3/DangerMessage';
+import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';

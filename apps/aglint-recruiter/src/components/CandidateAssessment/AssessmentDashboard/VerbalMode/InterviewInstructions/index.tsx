@@ -4,7 +4,7 @@ import { Avatar, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import { InterviewWelcome } from '@/devlink';
+import { InterviewWelcome } from '@/devlink/InterviewWelcome';
 import Loader from '@/src/components/Common/Loader';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';

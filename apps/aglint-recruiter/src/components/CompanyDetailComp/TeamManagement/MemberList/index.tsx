@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
-import { TeamListItem } from '@/devlink';
+import { TeamListItem } from '@/devlink/TeamListItem';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useInterviewerList } from '@/src/components/Scheduling/Interviewers';
 import {

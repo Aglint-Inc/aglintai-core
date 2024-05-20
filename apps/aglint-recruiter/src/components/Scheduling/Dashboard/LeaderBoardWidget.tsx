@@ -1,13 +1,11 @@
 import { Avatar } from '@mui/material';
 import React, { useState } from 'react';
 
-import { Skeleton } from '@/devlink2';
-import {
-  LeaderBoard,
-  LeaderBoardCard,
-  LeaderBoardLoader,
-  NoData,
-} from '@/devlink3';
+import { Skeleton } from '@/devlink2/Skeleton';
+import { LeaderBoard } from '@/devlink3/LeaderBoard';
+import { LeaderBoardCard } from '@/devlink3/LeaderBoardCard';
+import { LeaderBoardLoader } from '@/devlink3/LeaderBoardLoader';
+import { NoData } from '@/devlink3/NoData';
 import { useInterviewLeaderboard } from '@/src/queries/scheduling-dashboard';
 import { getFullName } from '@/src/utils/jsonResume';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

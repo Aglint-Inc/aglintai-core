@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { LoaderSvg } from '@/devlink';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';

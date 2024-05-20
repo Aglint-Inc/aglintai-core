@@ -3,15 +3,13 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import {
-  ButtonGenerate,
-  CdEmailOutreach,
-  ConnectedMail,
-  ConnectMailModal,
-  EmailSuccessCard,
-  LoaderSvg,
-  MailLink,
-} from '@/devlink';
+import { ButtonGenerate } from '@/devlink/ButtonGenerate';
+import { CdEmailOutreach } from '@/devlink/CdEmailOutreach';
+import { ConnectedMail } from '@/devlink/ConnectedMail';
+import { ConnectMailModal } from '@/devlink/ConnectMailModal';
+import { EmailSuccessCard } from '@/devlink/EmailSuccessCard';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { MailLink } from '@/devlink/MailLink';
 import EmailTemplateEditor from '@/src/components/Common/EmailTemplateEditor/EmailTemplateEditor';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import UISelect from '@/src/components/Common/Uiselect';

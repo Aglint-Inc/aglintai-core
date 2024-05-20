@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import { MoreButton } from '@/devlink3';
+import { MoreButton } from '@/devlink3/MoreButton';
 import toast from '@/src/utils/toast';
 
 import { QueryKeysInteviewModules } from '../../queries/type';

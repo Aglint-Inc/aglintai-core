@@ -7,21 +7,17 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
-import {
-  Breadcrum,
-  EmptyGeneral,
-  MemberListCard,
-  MutedShadowSession,
-  PageLayout,
-  ShadowSession,
-  StatusBadge,
-} from '@/devlink2';
-import {
-  DarkPill,
-  HistoryPill,
-  HistoryTrainingCard,
-  InterviewerPage,
-} from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
+import { MemberListCard } from '@/devlink2/MemberListCard';
+import { MutedShadowSession } from '@/devlink2/MutedShadowSession';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { ShadowSession } from '@/devlink2/ShadowSession';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { DarkPill } from '@/devlink3/DarkPill';
+import { HistoryPill } from '@/devlink3/HistoryPill';
+import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
+import { InterviewerPage } from '@/devlink3/InterviewerPage';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';

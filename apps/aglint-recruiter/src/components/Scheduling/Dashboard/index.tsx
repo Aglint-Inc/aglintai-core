@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3';
+import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3/SchedulingDashboard';
 import { pageRoutes } from '@/src/utils/pageRouting';
 
 import InterviewConversion from './InterviewConversion';

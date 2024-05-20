@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { SuggetionCard } from '@/devlink3';
+import { SuggetionCard } from '@/devlink3/SuggetionCard';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
 import { suggestions } from '@/src/context/JobAssistant/utils';
 

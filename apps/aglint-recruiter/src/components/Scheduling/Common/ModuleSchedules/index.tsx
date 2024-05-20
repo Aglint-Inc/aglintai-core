@@ -1,7 +1,8 @@
 import { InputAdornment, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
-import { AllInterviewEmpty, InterviewMemberSide } from '@/devlink2';
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';

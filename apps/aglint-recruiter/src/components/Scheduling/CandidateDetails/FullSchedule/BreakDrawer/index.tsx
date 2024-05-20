@@ -2,7 +2,7 @@ import { Drawer, Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { SideDrawerBlock } from '@/devlink2';
+import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

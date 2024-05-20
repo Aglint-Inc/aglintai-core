@@ -1,6 +1,6 @@
 import { Dialog } from '@mui/material';
 
-import { JobDashboardEmpty } from '@/devlink';
+import { JobDashboardEmpty } from '@/devlink/JobDashboardEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
 import {

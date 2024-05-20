@@ -2,7 +2,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import React, { useEffect, useState } from 'react';
 
-import { SavedChanges } from '@/devlink';
+import { SavedChanges } from '@/devlink/SavedChanges';
 import { palette } from '@/src/context/Theme/Theme';
 
 import { JobFormState } from '../JobPostFormProvider';

@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { NewJobSuccess } from '@/devlink';
+import { NewJobSuccess } from '@/devlink/NewJobSuccess';
 
 import { useJobForm } from '../JobPostFormProvider';
 

@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { MicPermissionModal } from '@/devlink';
+import { MicPermissionModal } from '@/devlink/MicPermissionModal';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import SidePanelDrawer from '@/src/components/Common/SidePanelDrawer';
 import { useInterviewContext } from '@/src/context/InterviewContext';

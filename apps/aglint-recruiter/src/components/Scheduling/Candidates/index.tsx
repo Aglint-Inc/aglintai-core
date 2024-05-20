@@ -1,4 +1,4 @@
-import { AllInterview } from '@/devlink2';
+import { AllInterview } from '@/devlink2/AllInterview';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 import AllList from './AllList';

@@ -3,7 +3,7 @@ import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 // import axios from 'axios';
-import { CandidateSelectionPopup } from '@/devlink2';
+import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {

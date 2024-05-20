@@ -2,17 +2,15 @@ import { Collapse, Stack } from '@mui/material';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
 
-import { LoaderSvg } from '@/devlink';
-import {
-  AddCustomQuestion,
-  PhoneScreening,
-  ScrCheckmarkIcon,
-  ScreeningWelcome,
-  ScrQuestionOption,
-  ScrQuestionsWrapper,
-  ScrRadioIcon,
-  ScrShortTextIcon,
-} from '@/devlink2';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { AddCustomQuestion } from '@/devlink2/AddCustomQuestion';
+import { PhoneScreening } from '@/devlink2/PhoneScreening';
+import { ScrCheckmarkIcon } from '@/devlink2/ScrCheckmarkIcon';
+import { ScreeningWelcome } from '@/devlink2/ScreeningWelcome';
+import { ScrQuestionOption } from '@/devlink2/ScrQuestionOption';
+import { ScrQuestionsWrapper } from '@/devlink2/ScrQuestionsWrapper';
+import { ScrRadioIcon } from '@/devlink2/ScrRadioIcon';
+import { ScrShortTextIcon } from '@/devlink2/ScrShortTextIcon';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';

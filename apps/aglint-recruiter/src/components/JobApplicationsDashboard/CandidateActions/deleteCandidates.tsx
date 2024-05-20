@@ -2,7 +2,7 @@
 import { Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import { CandidateSelectionPopup } from '@/devlink2';
+import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import { CountJobs } from '@/src/context/JobsContext/types';
 

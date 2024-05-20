@@ -10,12 +10,10 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  AvatarWithName,
-  InterviewTaskPill,
-  ListCard,
-  ViewTaskCard,
-} from '@/devlink3';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { ListCard } from '@/devlink3/ListCard';
+import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import {
   TasksAgentContextType,

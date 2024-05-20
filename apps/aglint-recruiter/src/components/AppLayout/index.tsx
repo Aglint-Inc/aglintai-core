@@ -6,12 +6,10 @@ import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { NavBottom } from '@/devlink';
-import {
-  CompanyProfileHeader,
-  NavProfileBlock,
-  ResponsiveBanner,
-} from '@/devlink2';
+import { NavBottom } from '@/devlink/NavBottom';
+import { CompanyProfileHeader } from '@/devlink2/CompanyProfileHeader';
+import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
+import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
 

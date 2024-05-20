@@ -22,13 +22,11 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
-import {
-  CompanyListingLinks,
-  InterviewCompleted,
-  JobListing,
-  LoaderSvg,
-  OpenJobListingCard,
-} from '@/devlink';
+import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
+import { InterviewCompleted } from '@/devlink/InterviewCompleted';
+import { JobListing } from '@/devlink/JobListing';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import { palette } from '@/src/context/Theme/Theme';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';

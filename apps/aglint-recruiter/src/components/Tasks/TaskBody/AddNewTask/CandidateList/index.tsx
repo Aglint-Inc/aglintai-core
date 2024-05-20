@@ -3,8 +3,10 @@ import { Popover, Stack, TextField, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React, { useState } from 'react';
 
-import { EmptyState } from '@/devlink2';
-import { AvatarWithName, ListCard, ListPop } from '@/devlink3';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { ListCard } from '@/devlink3/ListCard';
+import { ListPop } from '@/devlink3/ListPop';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { capitalizeAll } from '@/src/utils/text/textUtils';

@@ -3,7 +3,8 @@ import { MenuItem, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
-import { SelectedMemberPill, SidedrawerBodyDebrief } from '@/devlink2';
+import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
+import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import UITextField from '@/src/components/Common/UITextField';
 import { DropDown } from '@/src/components/JobNewInterviewPlan/sessionForms';

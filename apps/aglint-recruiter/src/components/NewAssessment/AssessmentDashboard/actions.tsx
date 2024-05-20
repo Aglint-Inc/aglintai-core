@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AssessmentLandingTopRight } from '@/devlink2';
+import { AssessmentLandingTopRight } from '@/devlink2/AssessmentLandingTopRight';
 import { useCreateAssessment } from '@/src/queries/assessment';
 
 import CreateEditPopup, {

@@ -1,8 +1,9 @@
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { InterviewMemberList, ModuleMembers } from '@/devlink2';
-import { NewTabPill } from '@/devlink3';
+import { InterviewMemberList } from '@/devlink2/InterviewMemberList';
+import { ModuleMembers } from '@/devlink2/ModuleMembers';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { pages } from '@/src/utils/pageRouting';

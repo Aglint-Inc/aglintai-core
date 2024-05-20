@@ -3,7 +3,8 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { DisconnectInterviewModal, NewInterviewScreen } from '@/devlink';
+import { DisconnectInterviewModal } from '@/devlink/DisconnectInterviewModal';
+import { NewInterviewScreen } from '@/devlink/NewInterviewScreen';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 

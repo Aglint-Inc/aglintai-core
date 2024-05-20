@@ -3,7 +3,7 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import React, { MouseEvent, useState } from 'react';
 
-import { IconChevronDown } from '@/devlink';
+import { IconChevronDown } from '@/devlink/IconChevronDown';
 import { useJobs } from '@/src/context/JobsContext';
 
 function JobsPopOver({ currecntJob }) {
