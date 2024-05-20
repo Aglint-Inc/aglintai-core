@@ -8,7 +8,6 @@ import {
   ApiResponseAllSlots,
   ApiResponseCandidateInvite,
 } from '@/src/pages/api/scheduling/invite';
-import toast from '@/src/utils/toast';
 
 import { candidateInviteKeys } from './keys';
 
@@ -44,9 +43,6 @@ export const useConfirmSlots = () => {
     mutationFn: async (bodyParams: APICandidateConfirmSlot) => {
       await confirmSlots(bodyParams);
       await queryClient.invalidateQueries({ queryKey });
-    },
-    onError: (error) => {
-      toast.error(error);
     },
   });
   return mutation;
