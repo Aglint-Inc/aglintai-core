@@ -1,8 +1,8 @@
-import { PlanCombinationType } from '@aglint/shared-types';
+import { PlanCombinationRespType } from '@aglint/shared-types';
 import dayjs, { Dayjs } from 'dayjs';
 
 export const assignCandidateSlot = (
-  curr_day_slots: PlanCombinationType[],
+  curr_day_slots: PlanCombinationRespType[],
   selected_start_time: Dayjs,
 ) => {
   // filter slots based on candidate preference

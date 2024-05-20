@@ -1311,6 +1311,7 @@ export class CandidatesScheduling {
             session_type: session_comb.session_type,
             start_time: session_comb.start_time,
             end_time: session_comb.end_time,
+            meeting_id: session_comb.meeting_id,
           };
           return session_slot;
         };

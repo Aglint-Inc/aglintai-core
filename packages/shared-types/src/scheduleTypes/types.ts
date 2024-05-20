@@ -5,15 +5,14 @@
 
 import { Dayjs } from 'dayjs';
 
-import {
-  InterviewerSessionRelation,
-  InterviewMeetingTypeDb,
-  InterviewModuleType,
-  InterviewSession,
-  RecruiterUserType,
-} from '@/src/types/data.types';
-
 import { CalendarEvent, ScheduleAuthType } from './calEvent.types';
+import {
+  RecruiterUserType,
+  InterviewerSessionRelation,
+  InterviewSession,
+  InterviewModuleType,
+  InterviewMeetingTypeDb,
+} from '../data.types';
 import { schedulingSettingType } from './scheduleSetting';
 
 export type PauseJson = {
@@ -72,6 +71,7 @@ export type SessionSlotType = SessionSlotApiRespType & {
 
 export type SessionSlotApiRespType = {
   session_id: InterviewSession['id'];
+  meeting_id: InterviewSession['meeting_id'];
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];
   schedule_type: InterviewSession['schedule_type'];

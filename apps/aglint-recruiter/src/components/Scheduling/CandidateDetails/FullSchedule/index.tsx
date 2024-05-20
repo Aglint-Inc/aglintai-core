@@ -263,6 +263,7 @@ function FullSchedule() {
                             rec_user_id: recruiterUser.user_id,
                             recruiter_id: recruiter.id,
                             schedule_id: selectedSchedule.id,
+                            session_name: session.name,
                           });
                         },
                       }}
