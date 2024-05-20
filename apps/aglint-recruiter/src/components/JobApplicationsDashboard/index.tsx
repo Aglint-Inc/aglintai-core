@@ -152,6 +152,7 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
+          isEditJob={false}
           isWarningVisible={
             job.status == 'published' && (!job.jd_json || !job.description)
               ? true
