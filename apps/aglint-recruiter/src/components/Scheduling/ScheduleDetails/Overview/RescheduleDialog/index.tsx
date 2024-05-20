@@ -166,7 +166,7 @@ function RescheduleDialog({
         if (errorFilterJson) throw new Error(errorFilterJson.message);
 
         addScheduleActivity({
-          title: `Candidate invited for session ${schedule.interview_session.name}`,
+          title: `Rescheduled interview with new booking link for ${schedule.interview_session.name}`,
           logger: recruiterUser.user_id,
           application_id: schedule.applications.id,
           type: 'schedule',

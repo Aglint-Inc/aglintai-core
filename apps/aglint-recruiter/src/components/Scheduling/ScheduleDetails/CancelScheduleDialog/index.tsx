@@ -7,22 +7,23 @@ import { Checkbox } from '@/devlink/Checkbox';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsCancelSchedule } from '@/src/pages/api/scheduling/application/cancelschedule';
+import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useScheduleDetails } from '../hooks';
+import { ScheduleMeeting } from '../types';
 
 function CancelScheduleDialog({
   isDeclineOpen,
   setIsDeclineOpen,
   sessionRelation,
-  meeting_id,
-  session_id,
+  schedule,
 }: {
   isDeclineOpen: boolean;
   setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
   sessionRelation: InterviewSessionRelationTypeDB;
-  meeting_id: string;
-  session_id: string;
+  schedule: ScheduleMeeting;
 }) {
   const { recruiter, recruiterUser } = useAuthDetails();
 
@@ -45,11 +46,21 @@ function CancelScheduleDialog({
       if (sessionRelation?.id) {
         const req_body: ApiBodyParamsCancelSchedule = {
           cancel_user_id: recruiterUser.user_id,
-          meeting_id,
-          session_id,
+          meeting_id: schedule.interview_meeting.id,
+          session_id: schedule.interview_session.id,
           notes,
           reason,
         };
+
+        addScheduleActivity({
+          title: `Canceled ${schedule.interview_session.name}. Reason: ${reason} `,
+          application_id: schedule.applications.id,
+          logger: recruiterUser.user_id,
+          type: 'schedule',
+          supabase: supabase,
+          created_by: recruiterUser.user_id,
+        });
+
         await axios.post('/api/scheduling/application/cancelschedule', {
           ...req_body,
         });

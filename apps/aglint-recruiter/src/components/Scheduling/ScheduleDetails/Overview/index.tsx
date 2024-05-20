@@ -440,6 +440,7 @@ function Overview({
                     schedule.interview_meeting.status === 'confirmed'
                   ) {
                     onClickResendInvite({
+                      session_name: schedule.interview_session.name,
                       application_id: schedule.applications.id,
                       candidate_email: schedule.candidates.email,
                       candidate_name: getFullName(

@@ -40,6 +40,8 @@ function CandidateInfo({ applications, candidate, file }) {
           isLeftRightVisible={false}
           isSmallWidthVisible={false}
           isFullWidthVisible={true}
+          textPhone={candidate.phone}
+          textMail={candidate.email}
           propsStyle={{
             style: {
               oveflow: 'visible',
