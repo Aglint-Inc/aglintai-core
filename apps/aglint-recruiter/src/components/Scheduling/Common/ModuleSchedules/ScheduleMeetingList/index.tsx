@@ -6,6 +6,7 @@ import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
 import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 
 function ScheduleMeetingList({
   filterSchedules,
@@ -17,12 +18,19 @@ function ScheduleMeetingList({
       {transformData(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
         const schedules = sch[String(date)] as ScheduleListType;
+        console.log(date);
         return (
           <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
             <NewMyScheduleCard
-              textDate={dayjs(date).format('DD')}
-              textDay={dayjs(date).format('ddd')}
-              textMonth={dayjs(date).format('MMM')}
+              textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
+              textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
+              textMonth={
+                date != 'undefined' ? (
+                  dayjs(date).format('MMM')
+                ) : (
+                  <DateIcon size={40} />
+                )
+              }
               slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
                 return (
                   <ScheduleMeetingCard

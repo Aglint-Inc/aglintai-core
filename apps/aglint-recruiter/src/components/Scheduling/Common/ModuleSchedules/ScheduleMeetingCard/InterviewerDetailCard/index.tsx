@@ -114,7 +114,11 @@ function InterviewerDetailsCard({
           textName={getFullName(user.first_name, user.last_name)}
           isDesignationVisible={true}
           textDesignation={user.position}
-          textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`}
+          textTime={
+            meetingTiming.startDate
+              ? `${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`
+              : null
+          }
           isShadow={user.training_type !== 'qualified'}
           isButtonVisible={false}
           isDetailVisible={true}
