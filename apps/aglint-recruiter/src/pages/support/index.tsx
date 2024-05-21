@@ -7,7 +7,7 @@ import Seo from '@/src/components/Common/Seo';
 function SupportPage() {
   return (
     <>
-      <Seo title='Support' description='AI for People Products' />
+      <Seo title='Support | Aglint AI' description='AI for People Products' />
       Coming Soon
       {/* <Support /> */}
     </>

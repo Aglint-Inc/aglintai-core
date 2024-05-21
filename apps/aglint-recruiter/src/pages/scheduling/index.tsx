@@ -1,4 +1,3 @@
-import Seo from '@/src/components/Common/Seo';
 import SchedulingMainComp from '@/src/components/Scheduling';
 import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
 import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -6,10 +5,6 @@ import SchedulingProvider from '@/src/context/SchedulingMain/SchedulingMainProvi
 function SchedulingMainPage() {
   return (
     <>
-      <Seo
-        title={`Scheduling`}
-        description='AI for People Products'
-      />
       <SchedulingMainComp />
     </>
   );

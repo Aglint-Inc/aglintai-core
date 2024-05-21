@@ -7,7 +7,7 @@ const AssessmentComponentPage = () => {
   return (
     <>
       <Seo
-        title='Aglint | Jobs'
+        title='Assessment | Aglint AI'
         description='AI for People Products'
       />
       <AssessmentComponent />

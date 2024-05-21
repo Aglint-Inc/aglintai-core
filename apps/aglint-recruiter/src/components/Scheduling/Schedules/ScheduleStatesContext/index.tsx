@@ -83,5 +83,5 @@ async function getAllScheduleList(recruiter_id: string) {
     },
   );
   if (error) throw new Error();
-  return data as ScheduleListType;
+  return data as unknown as ScheduleListType;
 }

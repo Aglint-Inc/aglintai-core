@@ -10,12 +10,12 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { SessionsCombType } from '@aglint/shared-types';
 
 import { TFilterJSON } from './mail-agent/init-agent';
 
-const supabase = createClient<Database>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );

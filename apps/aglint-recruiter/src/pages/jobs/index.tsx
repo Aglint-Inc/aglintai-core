@@ -16,7 +16,10 @@ const Dashboard = () => {
   // }, [recruiter]);
   return (
     <>
-      <Seo title={`Jobs`} description='AI for People Products' />
+      <Seo
+        title={`Job Listings - Job | Aglint AI`}
+        description='AI for People Products'
+      />
       <IntegrationProvider>
         <DashboardComp />
       </IntegrationProvider>

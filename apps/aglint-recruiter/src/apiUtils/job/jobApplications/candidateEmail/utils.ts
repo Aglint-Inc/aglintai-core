@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { EmailTemplateType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { MailService } from '@sendgrid/mail';
 import { createServerClient } from '@supabase/ssr';
 
@@ -27,7 +27,7 @@ import {
 } from '../read/utils';
 
 export const readSomeCandidates = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   applicationIds: JobApplicationEmails['request']['applicationIds'],
 ) => {
   const { data, error } = await supabase
@@ -63,7 +63,7 @@ export const readSomeCandidates = async (
 
 export const readCandidates = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   status: JobApplicationSections,
   sort: SortParameter,
   search?: string,
@@ -103,7 +103,7 @@ export const readCandidates = async (
 type Candidates = Awaited<ReturnType<typeof readCandidates>>;
 
 export const sendMails = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   job: JobApplicationEmails['request']['job'],
   purposes: JobApplicationEmails['request']['purposes'],
   candidates: Awaited<ReturnType<typeof readCandidates>>,
@@ -134,7 +134,7 @@ export const sendMails = async (
 };
 
 export const createTasks = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   job: JobApplicationEmails['request']['job'],
   candidates: Awaited<ReturnType<typeof readCandidates>>,
   task: TaskType,
@@ -184,7 +184,7 @@ export const createTasks = async (
 };
 
 const rerollEmailUpdates = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   job: JobApplicationEmails['request']['job'],
   candidates: Awaited<ReturnType<typeof readCandidates>>,
 ) => {
@@ -235,7 +235,7 @@ const sendMail = async (
 };
 
 export const updateApplication = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   job: JobApplicationEmails['request']['job'],
   candidates: Candidates,
   purposes?: JobApplicationEmails['request']['purposes'],

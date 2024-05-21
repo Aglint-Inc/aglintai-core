@@ -1,13 +1,13 @@
 import { StatusJobs } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 
 import { ScoreWheelParams } from '@/src/components/Common/ScoreWheel';
 import { JdJsonType } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { JobApplicationSections } from '@/src/context/JobApplicationsContext/types';
 import { CountJobs, InterviewPlan } from '@/src/context/JobsContext/types';
 
-type JobTableRPC = Database['public']['Functions']['getjob']['Returns'][number];
-type JobTable = Database['public']['Tables']['public_jobs'];
+type JobTableRPC = DB['public']['Functions']['getjob']['Returns'][number];
+type JobTable = DB['public']['Tables']['public_jobs'];
 
 // export type Job = Pick<
 //   Omit<JobTableRPC, keyof CustomJobType> & CustomJobType,
@@ -64,7 +64,7 @@ type CustomJobType = {
   email_template: { [key in EmailTemplateTypes]: EmailTemplate };
   processing_count: {
     // eslint-disable-next-line no-unused-vars
-    [id in Database['public']['Enums']['application_processing_status']]: number;
+    [id in DB['public']['Enums']['application_processing_status']]: number;
   };
   parameter_weights: ScoreWheelParams;
   interview_plan: InterviewPlan;

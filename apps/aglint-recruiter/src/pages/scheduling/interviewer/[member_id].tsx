@@ -1,13 +1,14 @@
-
 import Seo from '@/src/components/Common/Seo';
 import Interviewer from '@/src/components/Scheduling/Interviewers/Interviewer';
 import { InterviewerContextProvider } from '@/src/context/InterviewerContext/InterviewerContext';
 
-
 function InterviewerPage() {
   return (
     <>
-      <Seo title={`Interviewer`} description='AI for People Products' />
+      <Seo
+        title={`Interviewer - Scheduling | Aglint AI`}
+        description='AI for People Products'
+      />
       <Interviewer />
     </>
   );

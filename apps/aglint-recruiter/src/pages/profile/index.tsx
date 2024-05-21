@@ -1,14 +1,15 @@
-import Seo from '@components/Common/Seo';
+import { useRouter } from 'next/router';
 
 import ProfileDashboard from '@/src/components/ProfileDashboard';
+import SeoSettings from '@/src/components/ProfileDashboard/SeoSettings';
 
 const ProfilePage = () => {
+  const {
+    query: { tab },
+  } = useRouter();
   return (
     <>
-      <Seo
-        title={'Profile'}
-        description='AI for People Products'
-      />
+      <SeoSettings tab={tab} />
       <ProfileDashboard />
     </>
   );

@@ -9,7 +9,7 @@ import {
   JobApplcationDB,
   RecruiterUserType,
 } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { schedulingSettingType } from '@aglint/shared-types';
 import { PauseJson } from '@aglint/shared-types';
 
@@ -60,7 +60,7 @@ export interface TimeSlotsData {
   availabletimeSlots: number[];
 }
 
-export type StatusTraining = Database['public']['Enums']['status_training'];
+export type StatusTraining = DB['public']['Enums']['status_training'];
 
 export type ScheduleType = {
   applications: JobApplcationDB & {
