@@ -4,9 +4,9 @@ import React from 'react';
 
 import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
-import { DateIcon } from '../../../Settings/Components/DateSelector';
 
 function ScheduleMeetingList({
   filterSchedules,

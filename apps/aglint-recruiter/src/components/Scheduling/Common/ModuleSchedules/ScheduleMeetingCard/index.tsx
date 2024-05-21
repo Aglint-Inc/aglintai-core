@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { StatusBadge } from '@/devlink2/StatusBadge';
+import { MembersList } from '@/devlink3/MembersList';
 import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
-import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-
-import { MembersList } from '@/devlink3';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
+import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
+
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import {
   getScheduleBgcolor,
