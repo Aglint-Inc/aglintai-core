@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type EmailTemplateType, type JobType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -100,7 +100,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 };
 
 const updateSomeApplications = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   candidateIds: JobApplicationEmails['request']['applicationIds'],
   purposes: JobApplicationEmails['request']['purposes'],
   sections: JobApplicationEmails['request']['sections'],
@@ -132,7 +132,7 @@ const updateSomeApplications = async (
 };
 
 const updateAllApplications = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   purposes: JobApplicationEmails['request']['purposes'],
   sections: JobApplicationEmails['request']['sections'],
   job: JobApplicationEmails['request']['job'],

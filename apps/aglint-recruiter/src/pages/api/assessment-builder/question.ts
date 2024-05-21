@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { JobTypeDB } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -22,14 +22,14 @@ export type AssessmentBuilderQuestionApi = {
   };
 };
 
-type Supabase = ReturnType<typeof createServerClient<Database>>;
+type Supabase = ReturnType<typeof createServerClient<DB>>;
 
 export default async function handler(req: NextRequest) {
   try {
     const request: AssessmentBuilderQuestionApi['request'] = await req.json();
     requestSchema.parse(request);
     const { job_id } = request;
-    const supabase = createServerClient<Database>(
+    const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {

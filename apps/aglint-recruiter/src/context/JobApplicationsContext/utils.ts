@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   Applications,
   ApplicationsInsert,
@@ -60,7 +60,7 @@ export const deleteResumeDbAction = async (
 };
 
 export const updateCandidateDbAction = async (
-  candidate: Database['public']['Tables']['candidates']['Update'],
+  candidate: DB['public']['Tables']['candidates']['Update'],
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();
@@ -234,7 +234,7 @@ export const getRange = (
   };
 };
 
-export type Tables = Database['public']['Tables'];
+export type Tables = DB['public']['Tables'];
 
 export type Columns<T extends keyof Tables> = keyof Tables[T]['Row'];
 
