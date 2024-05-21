@@ -19,7 +19,6 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import Icon from '../Common/Icons/Icon';
 import MuiAvatar from '../Common/MuiAvatar';
-import Seo from '../Common/Seo';
 import { ShowCode } from '../Common/ShowCode';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import AllSchedules from './Candidates';
@@ -31,6 +30,7 @@ import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import { setIsCreateDialogOpen } from './InterviewTypes/store';
 import MySchedule from './MySchedules';
 import Schedules from './Schedules';
+import SeoSettings from './SEO/SeoSettings';
 import SchedulingSettings from './Settings';
 import SubNav from './Settings/SubNav';
 import { SchedulingTab } from './types';
@@ -60,48 +60,7 @@ function SchedulingMainComp() {
 
   return (
     <>
-      {tab === 'dashboard' && (
-        <Seo
-          title='Scheduling Dashboard - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
-      {tab === 'candidates' && (
-        <Seo
-          title='Candidates - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
-      {tab === 'schedules' && (
-        <Seo
-          title='Schedules - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
-      {tab === 'myschedules' && (
-        <Seo
-          title='Schedules - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
-      {tab === 'interviewtypes' && (
-        <Seo
-          title='Interview types - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
-      {tab === 'interviewers' && (
-        <Seo
-          title='Interviewers - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
-      {tab === 'settings' && (
-        <Seo
-          title='Settings - Scheduler | Aglint AI'
-          description='AI for People Products'
-        />
-      )}
+      <SeoSettings tab={tab} />
 
       <PageLayout
         slotTopbarLeft={
