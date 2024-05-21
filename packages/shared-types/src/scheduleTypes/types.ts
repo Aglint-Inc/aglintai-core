@@ -156,3 +156,12 @@ export type SessionIntDetails = {
     [user_id: string]: SessionInterviewerType;
   };
 };
+
+export type APIOverrideConfig = {
+  holiday: boolean;
+  dayoff: boolean; // sat and sunday
+  out_of_office: boolean;
+  interviewer_pause: boolean;
+  interviewer_load: boolean;
+  calender_not_connected: boolean;
+};
