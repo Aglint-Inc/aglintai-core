@@ -21,6 +21,7 @@ import { UserPasswordChange } from '@/devlink/UserPasswordChange';
 import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
@@ -453,7 +454,7 @@ const ProfileDashboard = () => {
                   textEmail={recruiterUser.email}
                   textJobTitle={recruiterUser.position}
                   textLocation={recruiterUser.interview_location}
-                  textRole={recruiterUser.role}
+                  textRole={capitalizeFirstLetter(recruiterUser.role)}
                   textNumber={recruiterUser.phone}
                   onClickEdit={{
                     onClick: () => {

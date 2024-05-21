@@ -152,6 +152,7 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
+          isEditJob={false}
           isWarningVisible={
             job.status == 'published' && (!job.jd_json || !job.description)
               ? true
@@ -796,7 +797,8 @@ const SectionCard = forwardRef(
             textLabel={`${capitalize(section)} (${job.count[section]})`}
             onClickPill={{
               style: {
-                minWidth: '180px',
+                minWidth: '200px',
+                minHeight: '60px',
                 backgroundColor:
                   normalize && !isOver
                     ? 'inherit'

@@ -168,7 +168,14 @@ const AuthProvider = ({ children }) => {
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
       setLoading(false);
-      if (recruiterRel.role === 'admin' || recruiterRel.role === 'recruiter') {
+      if (
+        [
+          'admin',
+          'recruiter',
+          'hiring_manager',
+          'recruiting_coordinator',
+        ].includes(recruiterRel.role)
+      ) {
         await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
       }
     } else {
