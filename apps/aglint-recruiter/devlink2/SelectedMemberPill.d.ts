@@ -8,4 +8,5 @@ declare function SelectedMemberPill(props: {
   slotMemberAvatar?: Types.Devlink.Slot;
   onClickRemove?: Types.Devlink.RuntimeProps;
   textMemberName?: React.ReactNode;
+  isCloseButton?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

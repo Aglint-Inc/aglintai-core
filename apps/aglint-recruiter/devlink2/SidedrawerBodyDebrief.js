@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import { Attendee } from "./Attendee";
 import { SelectedMemberPill } from "./SelectedMemberPill";
 import { InlineEmptyBlock } from "./InlineEmptyBlock";
 import * as _utils from "./utils";
@@ -14,6 +16,7 @@ export function SidedrawerBodyDebrief({
   isLocation = false,
   slotMemberAvatarSelectionPill,
   slotMembersDropdown,
+  slotAttendee,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "sidedrawer_session")} tag="div">
@@ -77,6 +80,26 @@ export function SidedrawerBodyDebrief({
             >
               <_Builtin.Block tag="div">{"Zoom, Meet"}</_Builtin.Block>
             </_Builtin.Block>
+          )}
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
+        className={_utils.cx(_styles, "input_and_label")}
+        tag="div"
+      >
+        <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
+          {"Attendees"}
+        </_Builtin.Block>
+        <_Builtin.Block
+          className={_utils.cx(_styles, "slot_attendee")}
+          tag="div"
+        >
+          {slotAttendee ?? (
+            <>
+              <Attendee />
+              <Attendee />
+              <Attendee isCheckBox={true} />
+            </>
           )}
         </_Builtin.Block>
       </_Builtin.Block>
