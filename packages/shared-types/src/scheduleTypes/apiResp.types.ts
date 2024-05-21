@@ -11,7 +11,12 @@ import {
 } from '../data.types';
 import { InterviewSessionApiType } from './types';
 
-export type ConflictReason = 'interviewer_paused' | 'out_of_office';
+export type ConflictReason = {
+  conflict_type: 'soft' | 'hard' | 'ooo';
+  conflict_event: string;
+  start_time: string;
+  end_time: string;
+};
 export type InterviwerConflicts = {
   interviewer: Pick<SessionInterviewerApiRespType, 'user_id'>;
   conflict_reasons: ConflictReason[];

@@ -2,7 +2,9 @@
 import {
   AllSessionIntDetails,
   APIOverrideConfig,
+  CalendarEvent,
   CompServiceKeyCred,
+  ConflictReason,
   holidayType,
   InterDetailsType,
   IntervCntApp,
@@ -943,18 +945,73 @@ export class CandidatesScheduling {
         // is interviewer out of office for the time
         // soft conflicts keywords
         // hard conflicts meetings other
+        const getCalEventType = (
+          scheduling_settings: schedulingSettingType,
+          cal_event: CalendarEvent,
+        ): ConflictReason['conflict_type'] => {
+          const soft_conf_key_words =
+            scheduling_settings.schedulingKeyWords.SoftConflicts.map((str) =>
+              str.toLowerCase(),
+            );
+          const out_of_office_key_words =
+            scheduling_settings.schedulingKeyWords.outOfOffice.map((str) =>
+              str.toLowerCase(),
+            );
 
+          const is_soft_conflict = soft_conf_key_words.some((key_word) =>
+            cal_event.summary.toLowerCase().includes(key_word),
+          );
+          if (is_soft_conflict) return 'soft';
+          const is_ooo_conflict = out_of_office_key_words.some((key_word) =>
+            cal_event.summary.toLowerCase().includes(key_word),
+          );
+          if (is_ooo_conflict) return 'ooo';
+
+          return 'hard';
+        };
         for (const attendee of session_attendees) {
-          //
-        }
-        upd_sess_slot.slot_conflict_info.ints_conflicts = [
-          {
-            interviewer: {
-              user_id: '',
+          const int_with_events = this.intervs_details_with_events.find(
+            (int) => int.interviewer_id === attendee.user_id,
+          );
+          const conflicting_events = int_with_events.events.filter(
+            (cal_event) => {
+              return isTimeChunksOverLapps(
+                {
+                  startTime: this.getTimeInCandTimeZone(
+                    cal_event.start.dateTime,
+                  ),
+                  endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
+                },
+                {
+                  startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
+                  endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
+                },
+              );
             },
-            conflict_reasons: ['out_of_office'],
-          },
-        ];
+          );
+          const conflict_reasons: ConflictReason[] = [];
+          conflicting_events.forEach((conf_ev) => {
+            const ev_type = getCalEventType(
+              this.db_details.comp_schedule_setting,
+              conf_ev,
+            );
+            conflict_reasons.push({
+              conflict_type: ev_type,
+              conflict_event: conf_ev.summary,
+              end_time: conf_ev.end.dateTime,
+              start_time: conf_ev.start.dateTime,
+            });
+          });
+          upd_sess_slot.slot_conflict_info.ints_conflicts = [
+            {
+              interviewer: {
+                user_id: attendee.user_id,
+              },
+              conflict_reasons: conflict_reasons,
+            },
+          ];
+        }
+
         return upd_sess_slot;
       };
 
