@@ -11,9 +11,10 @@ import React, { useState } from 'react';
 
 import { AddLocationPop } from '@/devlink/AddLocationPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import timeZone from '@/src/utils/timeZone';
 
 import { debouncedSave } from '../../utils';
-import timeZone from '@/src/utils/timeZone';
+
 interface LocationProps {
   handleClose: () => void;
   open: boolean;
@@ -104,7 +105,6 @@ const AddLocationDialog: React.FC<LocationProps> = ({
             return acc;
           }, []),
         );
-        console.log(newLocation);
         const newRecruiter = {
           ...recruiter,
           office_locations:
