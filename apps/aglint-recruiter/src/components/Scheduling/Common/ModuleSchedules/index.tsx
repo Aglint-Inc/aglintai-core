@@ -66,13 +66,9 @@ function ModuleSchedules({
           />
         </Stack>
       }
-      isAllActive={filter === 'all'}
       isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
-      onClickAll={{
-        onClick: () => setFilter('all'),
-      }}
       onClickUpcoming={{
         onClick: () => setFilter('confirmed'),
       }}
