@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 import axios from 'axios';
@@ -22,7 +22,7 @@ export const selectJobApplicationQuery =
 export const handleRead = async (
   sections: ReadJobApplicationApi['request']['sections'],
   job_id: ReadJobApplicationApi['request']['job_id'],
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   ranges?: ReadJobApplicationApi['request']['ranges'],
   sort?: ReadJobApplicationApi['request']['sort'],
   filter?: ReadJobApplicationApi['request']['filter'],
@@ -158,7 +158,7 @@ const handleMultiPromiseValidation = (
 
 export const deleteNewJobApplicationDbAction = async (
   application_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -172,7 +172,7 @@ export const deleteNewJobApplicationDbAction = async (
 
 export const newReadNewJobApplicationDbAction = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   status: JobApplicationSections,
   sort: SortParameter,
   range?: {
@@ -220,7 +220,7 @@ export const newReadNewJobApplicationDbAction = async (
 
 export const readNewJobApplicationDbAction = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   status: JobApplicationSections,
   sort: SortParameter,
   range?: {
@@ -271,7 +271,7 @@ export const readNewJobApplicationDbAction = async (
 };
 
 const rpcDataFormatter = (
-  unsafeData: Database['public']['Functions']['job_application_filter_sort']['Returns'],
+  unsafeData: DB['public']['Functions']['job_application_filter_sort']['Returns'],
 ) => {
   const data = unsafeData.reduce((acc, curr) => {
     (curr.job_app as unknown as JobApplication).interview_session_meetings =
@@ -378,7 +378,7 @@ export const getBoundingBox = async (name: string, range: number) => {
 
 export const upsertNewJobApplicationDbAction = async (
   inputData: Partial<JobApplication>[],
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);

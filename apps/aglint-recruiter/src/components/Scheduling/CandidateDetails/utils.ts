@@ -2,7 +2,7 @@
 import {
   APICandidateConfirmSlot,
   ApiFindAvailability,
-  Database,
+  DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
@@ -106,7 +106,7 @@ export const createCloneSession = async ({
   scheduleName: string;
   coordinator_id: string;
   recruiter_id: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
   rec_user_id: string;
 }) => {
   let new_schedule_id = uuidv4();
@@ -242,7 +242,7 @@ export const sendToCandidate = async ({
   };
   schedulingOptions: SchedulingApplication['schedulingOptions'];
   recruiterUser: RecruiterUserType;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
 }) => {
   try {
@@ -488,7 +488,7 @@ export const scheduleWithAgent = async ({
   company_name: string;
   rec_user_phone: string;
   rec_user_id: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
 }) => {
   try {
     console.log(application_id, 'application_id');
@@ -731,7 +731,7 @@ export const scheduleWithAgentWithoutTaskId = async ({
   company_name?: string;
   rec_user_phone: string;
   rec_user_id: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
 }) => {
   try {
@@ -941,7 +941,7 @@ export const createFilterJson = async ({
     start_date: string;
     end_date: string;
   };
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
   rec_user_id: string;
 }) => {
   const { data: filterJson, error: errorFilterJson } = await supabase
@@ -1171,7 +1171,7 @@ export const createTask = async ({
   type: 'phone_agent' | 'email_agent';
   recruiter_user_name: string;
   candidate_name: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
 }) => {
   const assignee = type == 'email_agent' ? EmailAgentId : PhoneAgentId;
 

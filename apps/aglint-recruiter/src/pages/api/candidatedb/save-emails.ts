@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // pages/api/apolloSearch.ts
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -47,7 +47,7 @@ export default async function handler(
     return res.status(400).json({ error: 'No subject' });
   }
 
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient<DB>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {

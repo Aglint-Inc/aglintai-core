@@ -1,11 +1,11 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { server_checkUserRolePermissions } from '../reset_password';
 import { API_get_last_login } from './types';
 
-const supabase = createClient<Database>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -65,7 +65,7 @@ const getResponse = (data: Partial<API_get_last_login['response']>) => {
 
 // import { createServerClient } from '@supabase/ssr';
 
-// import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
+// import { DB, DatabaseEnums } from '@aglint/shared-types';
 
 // const checkPermissions = async ({
 //   getVal,
@@ -78,7 +78,7 @@ const getResponse = (data: Partial<API_get_last_login['response']>) => {
 //   recruiter_id: string;
 // }) => {
 //   try {
-//     const supabase = createServerClient<CustomDatabase>(
+//     const supabase = createServerClient<DB>(
 //       process.env.NEXT_PUBLIC_SUPABASE_URL!,
 //       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 //       {

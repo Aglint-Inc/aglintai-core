@@ -1,7 +1,7 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 
-export type SupabaseQuery<T extends keyof Database['public']['Tables']> =
-  readonly (keyof Database['public']['Tables'][T]['Row'])[];
+export type SupabaseQuery<T extends keyof DB['public']['Tables']> =
+  readonly (keyof DB['public']['Tables'][T]['Row'])[];
 
 type SupabaseQueryString<T extends readonly any[]> = T extends readonly [
   infer Head extends string,
