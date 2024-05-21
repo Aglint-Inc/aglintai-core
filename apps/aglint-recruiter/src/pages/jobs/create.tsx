@@ -6,7 +6,10 @@ import JobsProvider from '@/src/context/JobsContext';
 const CreateJobPage = () => {
   return (
     <>
-      <Seo title={`Jobs`} description='AI for People Products' />
+      <Seo
+        title={`Create Job - Job | Aglint AI `}
+        description='AI for People Products'
+      />
       <JobCreate />
     </>
   );

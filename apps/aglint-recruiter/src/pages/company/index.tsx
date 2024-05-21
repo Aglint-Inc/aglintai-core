@@ -2,17 +2,29 @@ import { useSearchParams } from 'next/navigation';
 
 import Seo from '@/src/components/Common/Seo';
 import CompanyDetailComp from '@/src/components/CompanyDetailComp';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
-// import withRoleProtection from '@/src/HOC/RoleProtection';
 
 function CompanyPage() {
   const tab = useSearchParams().get('tab');
   return (
     <>
-      <Seo
-        title={`Company | ${capitalizeAll((tab || 'settings').replace('-', ' '))}`}
-        description='AI for People Products'
-      />
+      {tab === 'basic-info' && (
+        <Seo
+          title='Basic info - Company settings | Aglint AI'
+          description='AI for People Products'
+        />
+      )}
+      {tab === 'additional-info' && (
+        <Seo
+          title='Additional Info - Company settings | Aglint AI'
+          description='AI for People Products'
+        />
+      )}
+      {tab === 'team' && (
+        <Seo
+          title='Team - Company settings | Aglint AI'
+          description='AI for People Products'
+        />
+      )}
       <CompanyDetailComp />
     </>
   );

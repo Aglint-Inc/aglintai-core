@@ -6,7 +6,7 @@ export default function ForgotPasswordPage() {
   return (
     <div>
       <Seo
-        title='Aglint | Forgot Password'
+        title='Forgot Password | Aglint AI'
         description='AI for People Products'
       />
       <ForgotPasswordComponent />
