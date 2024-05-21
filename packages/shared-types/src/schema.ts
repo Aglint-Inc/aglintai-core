@@ -1649,6 +1649,7 @@ export type Database = {
           interviewer_cnt: number | null
           location: string | null
           meeting_id: string | null
+          members_meta: Json
           module_id: string | null
           name: string | null
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1664,6 +1665,7 @@ export type Database = {
           interviewer_cnt?: number | null
           location?: string | null
           meeting_id?: string | null
+          members_meta?: Json
           module_id?: string | null
           name?: string | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1679,6 +1681,7 @@ export type Database = {
           interviewer_cnt?: number | null
           location?: string | null
           meeting_id?: string | null
+          members_meta?: Json
           module_id?: string | null
           name?: string | null
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -4287,6 +4290,7 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           users: Json
+          candidate: Json
         }[]
       }
       get_interview_schedule_by_user_id: {

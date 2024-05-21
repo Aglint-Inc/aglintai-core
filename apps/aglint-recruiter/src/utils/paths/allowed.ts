@@ -66,6 +66,8 @@ export const allowedPaths = new Set([
   '/api/scheduling/v1/cancel_interview_scheduling',
   '/api/scheduling/v1/assign-interviewer-training-type',
   '/api/scheduling/v1/save_meeting_to_task',
+  '/api/scheduling/debrief/auto_debrief_handler',
+  '/api/scheduling/debrief/schedule_individual',
   '/api/scheduling/mail-agent/init-agent',
   '/api/scheduling/application/schedulewithagent',
   '/api/scheduling/application/mailthankyou',
