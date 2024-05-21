@@ -10,9 +10,6 @@ import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefault
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { MembersList } from '@/devlink3';
-import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
-import { getFullName } from '@/src/utils/jsonResume';
 import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import {
   getScheduleBgcolor,
