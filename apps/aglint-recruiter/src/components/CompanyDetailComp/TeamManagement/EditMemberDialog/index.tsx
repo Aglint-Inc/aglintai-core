@@ -1,5 +1,5 @@
 import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   Autocomplete,
   Drawer,
@@ -310,7 +310,7 @@ const EditMember = ({
                         'hiring_manager',
                         'recruiting_coordinator',
                         'sourcer',
-                      ] as Database['public']['Enums']['user_roles'][]
+                      ] as DB['public']['Enums']['user_roles'][]
                     }
                     renderOption={(props, op) => (
                       <li {...props}>{capitalizeFirstLetter(op)}</li>

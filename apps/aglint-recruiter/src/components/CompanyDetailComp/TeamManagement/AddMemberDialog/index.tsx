@@ -1,5 +1,5 @@
 import {
-  Database,
+  DB,
   employmentTypeEnum,
   RecruiterUserType,
   schedulingSettingType,
@@ -473,7 +473,7 @@ const AddMember = ({
                           'hiring_manager',
                           'recruiting_coordinator',
                           'sourcer',
-                        ] as Database['public']['Enums']['user_roles'][]
+                        ] as DB['public']['Enums']['user_roles'][]
                       }
                       renderOption={(props, op) => (
                         <li {...props}>{capitalizeFirstLetter(op)}</li>

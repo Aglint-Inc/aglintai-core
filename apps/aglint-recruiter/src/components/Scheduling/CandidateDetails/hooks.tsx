@@ -6,7 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
-  Database,
+  DB,
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
   InterviewScheduleActivityTypeDb,
@@ -151,7 +151,7 @@ export const fetchInterviewDataJob = async ({
   supabase,
 }: {
   application_id: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
 }) => {
   try {
     const { data, error } = (await supabase.rpc('get_interview_data_job', {
@@ -202,7 +202,7 @@ export const fetchInterviewDataJob = async ({
 export const fetchInterviewDataSchedule = async (
   schedule_id: string,
   application_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   try {
     const { data, error } = (await supabase.rpc('get_interview_data_schedule', {

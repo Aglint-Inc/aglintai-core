@@ -1,5 +1,5 @@
 import { ApplicationLogsTypeDb } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -55,7 +55,7 @@ export const addScheduleActivity = async ({
   task_id?: string;
   type: ApplicationLogsTypeDb['type'];
   logger: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
   created_by: string;
 }) => {
   const { error } = await supabase.from('application_logs').insert({
