@@ -6,6 +6,7 @@
     "./apps/aglint-recruiter",
   ],
   "cSpell.words": [
+    "asce",
     "nextjs",
     "posthog",
     "sendgrid",
