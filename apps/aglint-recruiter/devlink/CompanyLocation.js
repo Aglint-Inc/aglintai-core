@@ -1,13 +1,8 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
 import * as _utils from "./utils";
 import _styles from "./CompanyLocation.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-1279":{"id":"e-1279","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-437","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1280"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1695814661604},"e-1280":{"id":"e-1280","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-438","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1279"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"7f03ee71-98f6-b885-6c12-74504b4627a7","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1695814661607}},"actionLists":{"a-437":{"id":"a-437","title":"Company Location Hover In","actionItemGroups":[{"actionItems":[{"id":"a-437-n","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".location-saved-wrappers","selectorGuids":["be40181a-6c73-780d-f56a-9f13d567b57a"]},"rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-437-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"none"}},{"id":"a-437-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-437-n-2","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".location-saved-wrappers","selectorGuids":["be40181a-6c73-780d-f56a-9f13d567b57a"]},"rValue":248,"bValue":249,"gValue":249,"aValue":1}},{"id":"a-437-n-6","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"flex"}},{"id":"a-437-n-5","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1695814673509},"a-438":{"id":"a-438","title":"Company Location Hover Out","actionItemGroups":[{"actionItems":[{"id":"a-438-n-4","actionTypeId":"STYLE_BACKGROUND_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".location-saved-wrappers","selectorGuids":["be40181a-6c73-780d-f56a-9f13d567b57a"]},"rValue":255,"bValue":255,"gValue":255,"aValue":1}},{"id":"a-438-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"ease","duration":400,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":0,"unit":""}},{"id":"a-438-n-5","actionTypeId":"GENERAL_DISPLAY","config":{"delay":300,"easing":"","duration":0,"target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1695814673509}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function CompanyLocation({
   as: _Component = _Builtin.Block,
@@ -18,12 +13,9 @@ export function CompanyLocation({
   textTimeZone = "Asia Calcutta (GMT +05:30)",
   isHeadQuaterVisible = true,
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
     <_Component
       className={_utils.cx(_styles, "all-location-saved-wrappers")}
-      data-w-id="7f03ee71-98f6-b885-6c12-74504b4627a7"
       tag="div"
     >
       <_Builtin.Block
