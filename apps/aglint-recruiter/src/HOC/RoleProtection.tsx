@@ -1,4 +1,4 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
@@ -7,7 +7,7 @@ import toast from '../utils/toast';
 
 const withRoleProtection = (
   WrappedComponent,
-  allowedRoles: Database['public']['Enums']['user_roles'][],
+  allowedRoles: DB['public']['Enums']['user_roles'][],
 ) => {
   return function RoleProtection(props) {
     const { recruiterUser } = useAuthDetails();

@@ -16,7 +16,10 @@ function IntegrationsPage() {
   }
   return (
     <>
-      <Seo title={`Integrations`} description='AI for People Products' />
+      <Seo
+        title={`Integrations | Aglint AI`}
+        description='AI for People Products'
+      />
       <PageLayout
         slotTopbarLeft={'Integrations'}
         slotTopbarRight={

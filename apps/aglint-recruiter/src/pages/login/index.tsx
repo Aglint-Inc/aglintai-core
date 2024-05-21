@@ -6,10 +6,7 @@ import Login from '@/src/components/Login';
 function SignInPage() {
   return (
     <>
-      <Seo
-        title={`Login`}
-        description='AI for People Products'
-      />
+      <Seo title={`Login | Aglint AI`} description='AI for People Products' />
       <Login />
     </>
   );

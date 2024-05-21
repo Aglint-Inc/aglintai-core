@@ -4,6 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+import Seo from '@/src/components/Common/Seo';
 import TicketChat from '@/src/components/Support/Create/TicketChat';
 import { supabase } from '@/src/utils/supabase/client';
 dayjs.extend(relativeTime);
@@ -21,7 +22,12 @@ function SupportTicket() {
     }
   }, [router.isReady]);
 
-  return <>{ticket && <TicketChat {...{ ticket }} />}</>;
+  return (
+    <>
+      <Seo title='Support | Aglint AI' description='AI for People Products' />
+      {ticket && <TicketChat {...{ ticket }} />}
+    </>
+  );
 }
 
 export default SupportTicket;

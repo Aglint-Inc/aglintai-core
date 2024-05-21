@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -20,7 +20,7 @@ export interface ApiBodyParamsSessionCache {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createServerClient<Database>(
+    const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
