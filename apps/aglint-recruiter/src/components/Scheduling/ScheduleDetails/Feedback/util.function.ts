@@ -53,7 +53,7 @@ export const saveInterviewerFeedback = async ({
   // .single()
   // .then(({ data, error }) => {
   //   if (error) throw new Error(error.message);
-  //   return data as unknown as CustomDatabase['public']['Tables']['interview_meeting_user']['Row'];
+  //   return data as unknown as DB['public']['Tables']['interview_meeting_user']['Row'];
   // });
 };
 

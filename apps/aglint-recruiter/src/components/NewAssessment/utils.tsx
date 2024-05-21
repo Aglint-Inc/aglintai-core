@@ -1,8 +1,8 @@
-import { type Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 
 import { type AssessmentQuestion } from '@/src/queries/assessment/types';
 
-type Type = Database['public']['Tables']['assessment_question']['Row']['type'];
+type Type = DB['public']['Tables']['assessment_question']['Row']['type'];
 
 export const getSafeQuestionType = (type: Type) => {
   switch (type) {

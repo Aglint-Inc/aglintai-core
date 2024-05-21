@@ -1,4 +1,4 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -144,7 +144,7 @@ const getResumeMatch = async (job_id: string) => {
 };
 
 export const resumeMatchRPCFormatter = (
-  unsafeData: Database['public']['Functions']['getresumematches']['Returns'],
+  unsafeData: DB['public']['Functions']['getresumematches']['Returns'],
 ) => {
   const initialData = {
     matches: unsafeData,

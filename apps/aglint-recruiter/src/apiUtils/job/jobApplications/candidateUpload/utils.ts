@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Applications, CustomDatabase } from '@aglint/shared-types';
+import { Applications, DB } from '@aglint/shared-types';
 import { CandidateFiles } from '@aglint/shared-types';
 import { Candidate } from '@aglint/shared-types';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
@@ -164,7 +164,7 @@ export const bulkCreateFiles = async (
 };
 
 export const bulkCreateApplications = async (
-  supabase: SupabaseClient<CustomDatabase>,
+  supabase: SupabaseClient<DB>,
   applications: ApplicationsBulkCreateAction['request']['inputData'],
   tries: ApplicationsBulkCreateAction['request']['tries'] = 0,
   prev_error?: PostgrestError,
@@ -333,7 +333,7 @@ export const deleteFile = async (
 };
 
 export const createApplication = async (
-  supabase: SupabaseClient<CustomDatabase>,
+  supabase: SupabaseClient<DB>,
   job_id: string,
   candidate_id: string,
   candidate_file_id: string,
@@ -369,7 +369,7 @@ export const createApplication = async (
 };
 
 export const reProcessApplication = async (
-  supabase: SupabaseClient<CustomDatabase>,
+  supabase: SupabaseClient<DB>,
   application_id: string,
   candidate_file_id: string,
   tries: number = 0,

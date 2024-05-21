@@ -69,7 +69,7 @@ const getResponse = (data: { emailSent?: boolean; error?: string }) => {
   return { emailSent: false, error: null, ...data };
 };
 
-import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
 import { API_request_feedback } from './type';
@@ -85,7 +85,7 @@ const checkPermissionsAndGetDetails = async ({
   job_id: string;
 }) => {
   try {
-    const supabase = createServerClient<CustomDatabase>(
+    const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {

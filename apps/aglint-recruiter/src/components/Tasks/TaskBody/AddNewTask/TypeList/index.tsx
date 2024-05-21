@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CustomDatabase } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
@@ -10,10 +10,8 @@ function TypeList({
   selectedType,
   setSelectedType,
 }: {
-  selectedType: CustomDatabase['public']['Enums']['task_type_enum'];
-  setSelectedType: (
-    x: CustomDatabase['public']['Enums']['task_type_enum'],
-  ) => void;
+  selectedType: DB['public']['Enums']['task_type_enum'];
+  setSelectedType: (x: DB['public']['Enums']['task_type_enum']) => void;
 }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -71,7 +69,7 @@ function TypeList({
                 }}
                 onClick={() => {
                   setSelectedType(
-                    ele as CustomDatabase['public']['Enums']['task_type_enum'],
+                    ele as DB['public']['Enums']['task_type_enum'],
                   );
                   handleClose();
                 }}

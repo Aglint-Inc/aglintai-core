@@ -1,8 +1,8 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Json } from '@trigger.dev/sdk';
 
 export type Candidate = Omit<
-  Database['public']['Tables']['aglint_candidates']['Row'],
+  DB['public']['Tables']['aglint_candidates']['Row'],
   'phone_numbers' | 'employment_history' | 'organization'
 > & {
   phone_numbers: PhoneNumber[] | null;
@@ -11,7 +11,7 @@ export type Candidate = Omit<
 };
 
 export type CandidateSearchHistoryType = Omit<
-  Database['public']['Tables']['candidate_search_history']['Row'],
+  DB['public']['Tables']['candidate_search_history']['Row'],
   'used_credits' | 'query_json'
 > & {
   used_credits: UsedCredits;

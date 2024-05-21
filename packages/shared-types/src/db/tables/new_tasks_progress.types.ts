@@ -1,4 +1,4 @@
-import { Enums } from "../..";
+import { Enums } from "../schema.types";
 import { TableType } from "./index.types";
 
 export type CustomNewTaskProgress = TableType<
@@ -10,7 +10,7 @@ type CustomJsonbData = {
   [key: string]: any;
 };
 
-type CustomTitleMeta = {
+type CustomTitleMeta = Partial<{
   "{time_format}": string;
   "{candidate}": string;
   "{date_format}": string;
@@ -33,4 +33,4 @@ type CustomTitleMeta = {
   "{selectedSessions}": any[];
   "{addedSessions}": any[];
   "{removedSessions}": any[];
-};
+}>;

@@ -1,12 +1,11 @@
 import { JobTypeDB } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 
-type QuestionBankTable = Database['public']['Tables']['question_bank'];
+type QuestionBankTable = DB['public']['Tables']['question_bank'];
 type QuestionBankRow = Omit<QuestionBankTable['Row'], 'embeddings'>;
 export type RecommendationQuestion = QuestionBankRow & CustomQuestionType;
 
-type AssessmentQuestionTable =
-  Database['public']['Tables']['assessment_question'];
+type AssessmentQuestionTable = DB['public']['Tables']['assessment_question'];
 type AssessmentQuestionRow = AssessmentQuestionTable['Row'];
 type AssessmentQuestionRowInsert = AssessmentQuestionTable['Insert'];
 type AssessmentQuestionRowUpdate = AssessmentQuestionTable['Update'];
@@ -27,11 +26,10 @@ export type AssessmentQuestionUpdate = Omit<
   Partial<CustomQuestionType>;
 
 // eslint-disable-next-line no-unused-vars
-type AssessmentTemplateTable =
-  Database['public']['Tables']['assessment_template'];
+type AssessmentTemplateTable = DB['public']['Tables']['assessment_template'];
 
 type AssessmentTemplateRow =
-  Database['public']['Functions']['getassessmenttemplates']['Returns'][number];
+  DB['public']['Functions']['getassessmenttemplates']['Returns'][number];
 export type AssessmentTemplate = Omit<
   AssessmentTemplateRow,
   keyof CustomAssessmentTemplateType
@@ -43,9 +41,9 @@ type CustomAssessmentTemplateType = {
   duration: number;
 };
 
-type AssessmentTable = Database['public']['Tables']['assessment'];
+type AssessmentTable = DB['public']['Tables']['assessment'];
 type AssessmentRow =
-  Database['public']['Functions']['getassessments']['Returns'][number];
+  DB['public']['Functions']['getassessments']['Returns'][number];
 
 export type AssessmentRowInsert = AssessmentTable['Insert'];
 type AssessmentRowUpdate = AssessmentTable['Update'];
@@ -75,7 +73,7 @@ export type AssessmentUpdate = Partial<
   >
 >;
 
-type AssessmentResultTable = Database['public']['Tables']['assessment_results'];
+type AssessmentResultTable = DB['public']['Tables']['assessment_results'];
 type AssessmentResultRow = AssessmentResultTable['Row'];
 // type AssessmentResultInsert = AssessmentResultTable['Insert'];
 // type AssessmentResultUpdate = AssessmentResultTable['Update'];
@@ -99,7 +97,7 @@ type CustomResponseType = {
 };
 
 type QuestionEnum = Exclude<
-  Database['public']['Tables']['assessment_question']['Row']['type'],
+  DB['public']['Tables']['assessment_question']['Row']['type'],
   'scq' | 'code'
 >;
 

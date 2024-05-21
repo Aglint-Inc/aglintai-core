@@ -1,4 +1,4 @@
-import { task_title_metaDataType } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -15,7 +15,7 @@ function ProgressTitle({
   selectedTask,
 }: {
   title: string;
-  titleMetaData: task_title_metaDataType;
+  titleMetaData: DatabaseTable['new_tasks_progress']['title_meta'];
   selectedTask: TasksAgentContextType['tasks'][number];
 }) {
   const candidateDetails = selectedTask?.applications?.candidates;

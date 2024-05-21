@@ -1,4 +1,4 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 
 import { getInterviewPlansAPI } from '.';
 
@@ -16,4 +16,4 @@ export type AddCompanyMember = {
 };
 
 export type InterviewSessionUpdate =
-  Database['public']['Tables']['interview_session']['Update'];
+  DB['public']['Tables']['interview_session']['Update'];

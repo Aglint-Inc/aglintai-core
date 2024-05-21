@@ -1,4 +1,4 @@
-import { Tables } from "../..";
+import { Tables } from "../schema.types";
 import { TableType } from "./index.types";
 
 type Keys =

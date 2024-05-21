@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   type CookieOptions,
   createServerClient,
@@ -21,7 +21,7 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<JobDashboardApi['response']>,
 ) => {
-  const supabase = createServerClient<Database>(
+  const supabase = createServerClient<DB>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
