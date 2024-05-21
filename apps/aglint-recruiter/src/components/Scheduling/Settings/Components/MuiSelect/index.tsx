@@ -1,11 +1,11 @@
-import { FormControl, MenuItem, Select } from '@mui/material';
+import { FormControl, MenuItem, TextField } from '@mui/material';
 import React from 'react';
 
 function MuiSelect({
   value,
   handleSelect,
   dataset,
-  width = '100px'
+  width = '100px',
 }: {
   value: number | string;
   handleSelect: any;
@@ -14,16 +14,16 @@ function MuiSelect({
 }) {
   return (
     <FormControl>
-      <Select
+      <TextField
         sx={{
-          width: width
+          width: width,
         }}
         size='small'
-        labelId='demo-simple-select-label'
         id='demo-simple-select'
         value={String(value)}
         variant='outlined'
         onChange={handleSelect}
+        select
       >
         {dataset.map((item, i) => {
           return (
@@ -32,7 +32,7 @@ function MuiSelect({
             </MenuItem>
           );
         })}
-      </Select>
+      </TextField>
     </FormControl>
   );
 }

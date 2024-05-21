@@ -769,6 +769,7 @@ function SchedulingSettings({
                       <MuiNumberfield
                         handleSelect={handleSelectDailyValue}
                         value={selectedDailyLimit.value}
+                        max={50}
                       />
                       <MuiSelect
                         width='150px'
@@ -783,6 +784,7 @@ function SchedulingSettings({
                       <MuiNumberfield
                         handleSelect={handleSelectWeeklyValue}
                         value={selectedWeeklyLimit.value}
+                        max={50}
                       />
                       <MuiSelect
                         width='150px'

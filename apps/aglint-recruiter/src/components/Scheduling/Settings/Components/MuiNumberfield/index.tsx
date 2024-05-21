@@ -1,39 +1,47 @@
 import { FormControl, TextField } from '@mui/material';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 
 function MuiNumberfield({
   value,
   handleSelect,
-  min = 0,
+  max = 100,
 }: {
   value: number | string;
   handleSelect: any;
-  min?: number;
+  max?: number;
 }) {
-  function handlerMinMax(e) {
-    const newValue = +e.target.value;
+  const [tempValue, setTempValue] = useState(value);
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
 
-    if (newValue >= min) handleSelect(newValue);
-    else handleSelect(0);
+  function handlerMinMax(e) {
+    let newValue = +e.target.value;
+    if (!(newValue >= 0)) newValue = 0;
+    if (newValue > max) newValue = max;
+    setTempValue(newValue);
+    if (tempValue == newValue) return;
+    debouncedChange(newValue);
   }
+
+  const debouncedChange = useCallback(
+    // eslint-disable-next-line react-compiler/react-compiler
+    debounce((newValue) => {
+      handleSelect(newValue);
+    }, 500),
+    [],
+  );
+
   return (
     <FormControl>
       <TextField
-        value={value}
-        onChange={handlerMinMax}
         sx={{
-          width: '100px',
-          '& .MuiInputBase-root': {
-            borderColor: '#c4c4c4',
-            outline: 'none !important',
-
-            padding: '1px 1.3px',
-          },
-          '& .Mui-focused': {
-            border: '2px solid',
-            p: 0,
-          },
+          width: '70px',
         }}
-        type='tel'
+        value={Number(tempValue).toString()}
+        onChange={handlerMinMax}
+        type='number'
       />
     </FormControl>
   );
