@@ -50,11 +50,11 @@ function DateSelect({
 
 export default DateSelect;
 
-export function DateIcon() {
+export function DateIcon({ size = 20 }: { size?: number }) {
   return (
     <svg
-      width='14'
-      height='21'
+      width={size}
+      height={size}
       viewBox='0 0 14 21'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
