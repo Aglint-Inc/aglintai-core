@@ -275,14 +275,14 @@ export default JobsList;
 const useJobFilterAndSort = (jobs: Job[]) => {
   const { members } = useAuthDetails();
   const sortOptions = {
-    type: ['publics_date', 'name'] as const,
+    type: ['published_date', 'name'] as const,
     order: ['desc', 'asce'] as const,
   };
   const [sort, setSort] = useState<{
     type: (typeof sortOptions.type)[number];
     order: (typeof sortOptions.order)[number];
   }>({
-    type: 'publics_date',
+    type: 'published_date',
     order: 'desc',
   });
   const [filterValues, setFilterValues] = useState({
@@ -431,7 +431,7 @@ const useJobFilterAndSort = (jobs: Job[]) => {
   ]);
   const sortedJobs = useMemo(() => {
     return filteredJobs.sort((a, b) => {
-      if (sort.type === 'publics_date') {
+      if (sort.type === 'published_date') {
         // console.log(
         //   a.created_at,
         //   b.created_at,
