@@ -1,0 +1,36 @@
+import { Enums } from "../..";
+import { TableType } from "./index.types";
+
+export type CustomNewTaskProgress = TableType<
+  "new_tasks_progress",
+  { jsonb_data: CustomJsonbData; title_meta: CustomTitleMeta }
+>;
+
+type CustomJsonbData = {
+  [key: string]: any;
+};
+
+type CustomTitleMeta = {
+  "{time_format}": string;
+  "{candidate}": string;
+  "{date_format}": string;
+  "{location}": string;
+  "{err_msg}": string;
+  "{assigneeName}": string;
+  "{currentAssigneeName}": string;
+  "{assigneeId}": string;
+  "{currentAssigneeId}": string;
+  "{prevScheduleDateRange}": { start_date: string; end_date: string };
+  "{scheduleDateRange}": { start_date: string; end_date: string };
+  "{currentTriggerTime}": string;
+  "{previousTriggerTime}": string;
+  "{scheduleDateRangeNotFound}": { start_date: string; end_date: string };
+  "{status}": Enums<"task_status">;
+  "{currentStatus}": Enums<"task_status">;
+  "{dueDateRage}": { prev: string; selectedDate: string };
+  "{currentPriority}": Enums<"task_priority">;
+  "{priority}": Enums<"task_priority">;
+  "{selectedSessions}": any[];
+  "{addedSessions}": any[];
+  "{removedSessions}": any[];
+};
