@@ -6,6 +6,7 @@ import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 
+import Seo from '../Common/Seo';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
 import ScreeningComp from './TemplateComps/ScreeningComp';
 import ScreeningSideBar from './TemplateComps/SideBar';
@@ -33,6 +34,10 @@ const PhoneScreenTemplate = () => {
   const { phoneScreenignForm } = usePhoneScreening();
   return (
     <>
+      <Seo
+        title='Phone Screening | Aglint AI'
+        description='AI for People Products'
+      />
       <PageLayout
         slotTopbarLeft={<ScreeningDashboardBread />}
         slotBody={

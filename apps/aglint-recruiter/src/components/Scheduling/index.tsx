@@ -30,6 +30,7 @@ import { fetchInterviewModules } from './InterviewTypes/queries/utils';
 import { setIsCreateDialogOpen } from './InterviewTypes/store';
 import MySchedule from './MySchedules';
 import Schedules from './Schedules';
+import SeoSettings from './SEO/SeoSettings';
 import SchedulingSettings from './Settings';
 import SubNav from './Settings/SubNav';
 import { SchedulingTab } from './types';
@@ -59,6 +60,8 @@ function SchedulingMainComp() {
 
   return (
     <>
+      <SeoSettings tab={tab} />
+
       <PageLayout
         slotTopbarLeft={
           <>

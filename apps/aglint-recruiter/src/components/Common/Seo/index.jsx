@@ -2,8 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 const defaultMeta = {
-  title:
-    'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
+  title: 'Aglint AI – Accelerate Your Recruitment Process with Advanced AI',
   site_name: 'Aglint Inc',
   description:
     'Discover Aglint AI, the intelligent solution designed to enhance recruitment efficiency. Source, screen, rank, and schedule interviews with candidates faster than ever. Transform your hiring strategy with our AI-driven tools.',
@@ -26,7 +25,7 @@ export default function Seo(props) {
     <Head>
       <title>{meta.title}</title>
       <meta name='robots' content={meta.robots} />
-      <meta content={meta.description} name='description' />
+      <meta name='description' content={meta.description} />
       <link rel='canonical' href={`${meta.url}${router.asPath}`} />
       {meta?.jsonLd && (
         <script

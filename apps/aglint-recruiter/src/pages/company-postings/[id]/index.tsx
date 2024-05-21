@@ -41,7 +41,7 @@ function JobPost() {
   return (
     <Stack height={'100vh'}>
       <Seo
-        title={recruiter?.name || 'Company'}
+        title={recruiter?.name || 'Company | Aglint AI'}
         description='AI for People Products'
       />
       {loading ? (

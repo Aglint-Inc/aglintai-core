@@ -10,13 +10,9 @@ function AgentPage() {
   const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
   return (
     <>
-      <Seo
-        title='Aglint | Agents'
-        description='AI for People Products'
-      />
+      <Seo title='Agent | Aglint AI' description='AI for People Products' />
       <JobAssistantProvider>
         <WelcomeAssistant
-
           onClickJobAssistant={{
             onClick: () => {
               router.push(`/agent/jobs`);
