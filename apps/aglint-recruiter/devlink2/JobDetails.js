@@ -205,12 +205,6 @@ export function JobDetails({
             >
               {slotTabs}
             </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1694")}
-              tag="div"
-            >
-              {slotShowFilterButton ?? <ShowFilterButton />}
-            </_Builtin.Block>
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "candidates-view-main")}
