@@ -88,7 +88,8 @@ function InterviewerDetailsCard({
                   : `${weeklyNumber} / ${user.scheduling_settings.interviewLoad.weeklyLimit.value} Interviews`
               }
               onClickViewInterviewDetail={{
-                onClick: () => {
+                onClick: (e) => {
+                  e.stopPropagation();
                   router.replace(`/scheduling/interviewer/${user.id}`);
                 },
               }}
