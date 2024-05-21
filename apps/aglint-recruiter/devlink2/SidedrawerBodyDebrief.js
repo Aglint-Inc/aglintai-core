@@ -98,7 +98,8 @@ export function SidedrawerBodyDebrief({
             <>
               <Attendee />
               <Attendee />
-              <Attendee isCheckBox={true} />
+              <Attendee />
+              <Attendee />
             </>
           )}
         </_Builtin.Block>
@@ -134,7 +135,7 @@ export function SidedrawerBodyDebrief({
         tag="div"
       >
         <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-          {"Members"}
+          {"Add Additional Members"}
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot_avatarselectionpill")}

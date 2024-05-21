@@ -9,12 +9,8 @@ import _styles from "./Attendee.module.css";
 export function Attendee({
   as: _Component = _Builtin.Block,
   slotToggle,
-  isCheckBox = true,
   slotSelectedMemberPill,
-  slotRCheckbox,
   textRole = "Recruiter",
-  slotSearchInput,
-  isSearchInput = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "attendee")} tag="div">
@@ -43,50 +39,6 @@ export function Attendee({
           {slotSelectedMemberPill ?? (
             <SelectedMemberPill isCloseButton={false} />
           )}
-        </_Builtin.Block>
-      </_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "attendee_block")}
-        tag="div"
-      >
-        <_Builtin.Block
-          className={_utils.cx(_styles, "toggle_flexx-copy")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot_toggle", "is_fixed_wisth")}
-            tag="div"
-          />
-          <_Builtin.Block
-            className={_utils.cx(_styles, "attendee_right")}
-            tag="div"
-          >
-            {isCheckBox ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "check_box_wrap")}
-                tag="div"
-              >
-                {slotRCheckbox ?? <RcCheckbox />}
-              </_Builtin.Block>
-            ) : null}
-            {isSearchInput ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "slot_input_field-copy")}
-                tag="div"
-              >
-                {slotSearchInput ?? (
-                  <_Builtin.Block
-                    className={_utils.cx(_styles, "dummy_inputfield")}
-                    tag="div"
-                  >
-                    <_Builtin.Block tag="div">
-                      {"Search in previous interviewers"}
-                    </_Builtin.Block>
-                  </_Builtin.Block>
-                )}
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>
     </_Component>
