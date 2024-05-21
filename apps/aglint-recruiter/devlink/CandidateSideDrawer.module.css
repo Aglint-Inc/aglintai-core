@@ -987,7 +987,10 @@
 }
 
 .div-block-982 {
+  display: flex;
   overflow: auto;
+  flex-direction: column;
+  flex-wrap: nowrap;
   height: calc(100vh - 171px);
 }
 
@@ -1010,13 +1013,21 @@
 
 .div-block-645 {
   display: flex;
-  padding-right: 16px;
-  padding-bottom: 30px;
-  padding-left: 16px;
-  align-items: center;
+  height: 100%;
+  padding: 20px 16px;
+  justify-content: flex-start;
+  align-items: flex-end;
   order: 1;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
 
   color: #87929d;
+}
+
+.text-flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }

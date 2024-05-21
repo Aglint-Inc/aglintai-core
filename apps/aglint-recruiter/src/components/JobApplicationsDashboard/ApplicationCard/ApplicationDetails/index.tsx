@@ -35,6 +35,7 @@ import { ResumeFeedbackScore } from '@/devlink/ResumeFeedbackScore';
 import { TaskDetailBlock } from '@/devlink/TaskDetailBlock';
 import { UnableFetchResume } from '@/devlink/UnableFetchResume';
 import { AnalysisBlock } from '@/devlink2/AnalysisBlock';
+import { BookmarkDark } from '@/devlink2/BookmarkDark';
 import { ButtonWide } from '@/devlink2/ButtonWide';
 import { ResAbsentError } from '@/devlink2/ResAbsentError';
 import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
@@ -52,6 +53,7 @@ import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
+import Loader from '@/src/components/Common/Loader';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
@@ -372,10 +374,10 @@ const NewJobApplicationSideDrawer = ({
         }}
         slotSocialLink={<SocialsBlock application={application} />}
         // isOverviewVisible={overview.valid}
-        isLocationRoleVisible={jobTitle.valid || location.valid}
-        isRoleVisible={jobTitle.valid}
+        // isLocationRoleVisible={jobTitle.valid || location.valid}
+        // isRoleVisible={jobTitle.valid}
         textRole={jobTitle.value}
-        isLocationVisible={location.valid}
+        // isLocationVisible={location.valid}
         textLocation={location.value}
         isResumeVisible={
           processState !== 'unavailable' && processState !== 'fetching'
@@ -447,7 +449,13 @@ const NewJobApplicationSideDrawer = ({
   );
 };
 
-const Bookmark = ({ application }: { application: JobApplication }) => {
+const Bookmark = ({
+  application,
+  dark = false,
+}: {
+  application: JobApplication;
+  dark?: boolean;
+}) => {
   const {
     setCardStates,
     cardStates: {
@@ -491,10 +499,23 @@ const Bookmark = ({ application }: { application: JobApplication }) => {
         pointerEvents: disable ? 'none' : 'auto',
       }}
     >
-      <BookMark
-        isBookMarked={!!application?.bookmarked}
-        onClickBookmark={{ onClick: () => handleBookmark(), color: 'red' }}
-      />
+      {dark ? (
+        <BookmarkDark
+          isBookmarked={!!application?.bookmarked}
+          onClickBookmark={{
+            onClick: () => handleBookmark(),
+            style: { cursor: 'pointer' },
+          }}
+        />
+      ) : (
+        <BookMark
+          isBookMarked={!!application?.bookmarked}
+          onClickBookmark={{
+            onClick: () => handleBookmark(),
+            style: { cursor: 'pointer' },
+          }}
+        />
+      )}
     </Stack>
   );
 };
@@ -1242,6 +1263,7 @@ const ResumeViewer: React.FC<{
         '& .MuiDialog-paper': {
           borderRadius: '0px !important',
           border: 'none !important',
+          backgroundColor: '#343639',
         },
         '.MuiDialog-container': {
           height: 'auto',
@@ -1256,12 +1278,35 @@ const ResumeViewer: React.FC<{
         key={application?.id}
         textName={name.value}
         onClickDown={{ onClick: () => handleSelectNextApplication() }}
-        slotBookmark={<Bookmark application={application} />}
+        slotBookmark={<Bookmark application={application} dark={true} />}
         onClickUp={{ onClick: () => handleSelectPrevApplication() }}
         onClickClose={{ onClick: () => setOpenResume(false) }}
         slotResume={
-          <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-            <ResumePreviewer url={application.candidate_files?.file_url} />
+          <Stack
+            direction={'row'}
+            justifyContent={'center'}
+            height={'85vh'}
+            position={'relative'}
+          >
+            <Stack
+              width={'100%'}
+              height={'100%'}
+              position={'absolute'}
+              zIndex={1}
+            >
+              <ResumePreviewer url={application.candidate_files?.file_url} />
+            </Stack>
+            <Stack
+              position={'absolute'}
+              width={'100%'}
+              height={'100%'}
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
+              zIndex={0}
+            >
+              <Loader />
+            </Stack>
           </Stack>
         }
       />
