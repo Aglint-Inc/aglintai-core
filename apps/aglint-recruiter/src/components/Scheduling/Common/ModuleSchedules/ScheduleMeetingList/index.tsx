@@ -18,7 +18,6 @@ function ScheduleMeetingList({
       {transformData(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
         const schedules = sch[String(date)] as ScheduleListType;
-        console.log(date);
         return (
           <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
             <NewMyScheduleCard
