@@ -1,8 +1,13 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import * as _utils from "./utils";
 import _styles from "./CompanyLocation.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-1556":{"id":"e-1556","name":"","animationType":"custom","eventTypeId":"MOUSE_OVER","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-597","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1557"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"7f03ee71-98f6-b885-6c12-74504b4627a7"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716304090165},"e-1557":{"id":"e-1557","name":"","animationType":"custom","eventTypeId":"MOUSE_OUT","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-598","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-1556"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"7f03ee71-98f6-b885-6c12-74504b4627a7"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716304090167}},"actionLists":{"a-597":{"id":"a-597","title":"comapny_lcation","actionItemGroups":[{"actionItems":[{"id":"a-597-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]}}}]}],"createdOn":1716303907669,"useFirstGroupAsInitialState":false},"a-598":{"id":"a-598","title":"comapny_lcation 2","actionItemGroups":[{"actionItems":[{"id":"a-598-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"CHILDREN","selector":".location-delete-wrappers","selectorGuids":["9ec61334-e594-fee9-aacb-eaec52e40f69"]}}}]}],"createdOn":1716303907669,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function CompanyLocation({
   as: _Component = _Builtin.Block,
@@ -13,9 +18,12 @@ export function CompanyLocation({
   textTimeZone = "Asia Calcutta (GMT +05:30)",
   isHeadQuaterVisible = true,
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component
       className={_utils.cx(_styles, "all-location-saved-wrappers")}
+      data-w-id="7f03ee71-98f6-b885-6c12-74504b4627a7"
       tag="div"
     >
       <_Builtin.Block
