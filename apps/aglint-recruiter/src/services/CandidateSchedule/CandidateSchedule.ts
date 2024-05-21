@@ -935,11 +935,10 @@ export class CandidatesScheduling {
       };
 
       const getConflictsInSession = (sess_slot: SessionCombinationRespType) => {
-        const upd_sess_slot = { ...sess_slot };
-        upd_sess_slot.slot_conflict_info.is_conflict_free = false;
+        const upd_sess_slot: SessionCombinationRespType = { ...sess_slot };
         const session_attendees: SessionInterviewerApiRespType[] = [
-          ...sess_slot.qualifiedIntervs,
-          ...sess_slot.trainingIntervs,
+          ...upd_sess_slot.qualifiedIntervs,
+          ...upd_sess_slot.trainingIntervs,
         ];
 
         // is interviewer out of office for the time
@@ -983,8 +982,10 @@ export class CandidatesScheduling {
                   endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
                 },
                 {
-                  startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
-                  endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
+                  startTime: this.getTimeInCandTimeZone(
+                    upd_sess_slot.start_time,
+                  ),
+                  endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
                 },
               );
             },
@@ -1002,16 +1003,15 @@ export class CandidatesScheduling {
               start_time: conf_ev.start.dateTime,
             });
           });
-          upd_sess_slot.slot_conflict_info.ints_conflicts = [
-            {
+          if (conflicting_events.length > 0) {
+            upd_sess_slot.ints_conflicts.push({
               interviewer: {
                 user_id: attendee.user_id,
               },
               conflict_reasons: conflict_reasons,
-            },
-          ];
+            });
+          }
         }
-
         return upd_sess_slot;
       };
 
@@ -1038,7 +1038,6 @@ export class CandidatesScheduling {
         }
 
         const common_time = getInterviewersCommonTime(curr_session);
-
         const is_conflict_free = common_time.some((free_time_chunk) => {
           return isTimeChunksEnclosed(
             {
@@ -1056,10 +1055,7 @@ export class CandidatesScheduling {
           ...curr_session,
           start_time: curr_sess_start_time.format(),
           end_time: curr_sess_end_time.format(),
-          slot_conflict_info: {
-            is_conflict_free: true,
-            ints_conflicts: [],
-          },
+          ints_conflicts: [],
         };
 
         if (!is_conflict_free) {

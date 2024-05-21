@@ -22,11 +22,6 @@ export type InterviwerConflicts = {
   conflict_reasons: ConflictReason[];
 };
 
-export type SlotConflictType = {
-  is_conflict_free: boolean;
-  ints_conflicts: InterviwerConflicts[];
-};
-
 export type InterviewSessionApiRespType = Pick<
   InterviewSessionApiType,
   | 'session_id'
@@ -48,7 +43,7 @@ export type InterviewSessionApiRespType = Pick<
 export type SessionCombinationRespType = InterviewSessionApiRespType & {
   start_time: string;
   end_time: string;
-  slot_conflict_info: SlotConflictType;
+  ints_conflicts: InterviwerConflicts[];
 };
 
 export type SessionInterviewerApiRespType = Pick<

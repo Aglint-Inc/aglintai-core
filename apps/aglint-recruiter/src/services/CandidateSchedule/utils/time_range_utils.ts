@@ -76,8 +76,8 @@ export const isTimeChunksOverLapps = (
     return true;
   }
   return !(
-    chunk1.endTime.isBefore(chunk2.startTime, precission) ||
-    chunk1.startTime.isAfter(chunk2.endTime, precission)
+    chunk1.endTime.isSameOrBefore(chunk2.startTime, precission) ||
+    chunk1.startTime.isSameOrAfter(chunk2.endTime, precission)
   );
 };
 
