@@ -121,10 +121,11 @@ export class CandidatesScheduling {
     };
   }
 
+  // NOTE: start of the public apis
   /**
    * fetches necessay details from supabse db for finding the slots
    */
-  async fetchDetails() {
+  public async fetchDetails() {
     const meeting_date = {
       start: null,
       end: null,
@@ -183,8 +184,7 @@ export class CandidatesScheduling {
   }
 
   /**
-   * find calender events for each interviewers
-   *
+   * find calender events for each interviewer
    */
   public async fetchInterviewrsCalEvents() {
     const ints_meta: InterDetailsType[] = this.db_details.all_inters.map(
@@ -270,6 +270,7 @@ export class CandidatesScheduling {
         curr_day_end_time,
         cloneDeep(session_rounds[curr_day_idx]),
       );
+
       const combs = this.findFixedBreakSessionCombs(
         cloneDeep(session_rounds[curr_day_idx]),
         interv_curr_day_free_time,
@@ -313,17 +314,19 @@ export class CandidatesScheduling {
     return all_combs;
   }
 
-  public findCandSlotForTheDay() {
-    const { findCurrentDayPlan } = this.findMultiDaySlots();
-    return findCurrentDayPlan();
-  }
-
   public findCandSlotsForDateRange() {
     const { findAllDayPlans } = this.findMultiDaySlots();
     return findAllDayPlans();
   }
 
-  // private util functions
+  public findCandSlotForTheDay() {
+    const { findCurrentDayPlan } = this.findMultiDaySlots();
+    return findCurrentDayPlan();
+  }
+
+  //NOTE: end of the public apis
+
+  //NOTE: start of private functions
   /**
    * organize sessions according to their order of days
    * @returns
@@ -759,17 +762,18 @@ export class CandidatesScheduling {
     const cached_free_time = new Map<string, TimeDurationType[]>();
     let all_schedule_combs: PlanCombinationRespType[] = [];
 
-    const module_combs = this.calcInterversCombsForSesson(interview_sessions);
+    const interviewrs_sesn_comb =
+      this.calcInterversCombsForSesson(interview_sessions);
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
       session_idx,
     ) => {
-      if (session_idx === module_combs.length) {
+      if (session_idx === interviewrs_sesn_comb.length) {
         const combs = calcMeetingCombinsForPlan(current_comb);
         all_schedule_combs = [...all_schedule_combs, ...combs];
         return;
       }
-      for (let module_comb of module_combs[Number(session_idx)]) {
+      for (let module_comb of interviewrs_sesn_comb[Number(session_idx)]) {
         current_comb.push(module_comb);
         exploreSessionCombs(current_comb, session_idx + 1);
         current_comb.pop();
@@ -1032,7 +1036,7 @@ export class CandidatesScheduling {
           curr_sess_start_time.format(),
           curr_sess_end_time.format(),
         );
-        //TODO:
+        //TODO: why are they not available
         if (not_avail_ints.length > 0) {
           return [];
         }
@@ -1078,10 +1082,11 @@ export class CandidatesScheduling {
       //   return schedule_combs;
       // TODO: is company holiday
       // TODO: is company day_off
-      const day_start = currDay.startOf('day');
       const day_end = currDay.add(1, 'day').startOf('day');
-
-      let curr_time = day_start;
+      let curr_time = this.getFlooredNearestCurrentTime(); //NOTE: take current time 60 minutes later
+      if (curr_time.isAfter(day_end, 'minutes')) {
+        return [];
+      }
       while (curr_time.isBefore(day_end)) {
         const session_comb = getSessionsAvailability(0, curr_time.format());
         if (session_comb.length !== 0) {
@@ -1395,7 +1400,6 @@ export class CandidatesScheduling {
         curr_day_end_time,
         cloneDeep(session_rounds[curr_day_idx]),
       );
-
       const combs = this.findFixedBreakSessionCombs(
         cloneDeep(session_rounds[curr_day_idx]),
         interv_curr_day_free_time,
@@ -1513,7 +1517,23 @@ export class CandidatesScheduling {
     return userTime;
   };
 
-  // static util functions
+  private getFlooredNearestCurrentTime = () => {
+    const curr_time = userTzDayjs()
+      .add(60)
+      .set('second', 0)
+      .set('millisecond', 0);
+
+    let minutes_to_set = curr_time.get('minutes');
+    if (minutes_to_set % 5 !== 0) {
+      minutes_to_set += 5 - (minutes_to_set % 5);
+    }
+    minutes_to_set += 30;
+    return curr_time.set('minutes', minutes_to_set);
+  };
+
+  // NOTE: end of private functions
+
+  // NOTE:  static util functions
   static convertDateFormatToDayjs = (
     user_date,
     user_tz: string,
@@ -1533,5 +1553,7 @@ export class CandidatesScheduling {
   };
 }
 
-// TODO: check next working day
-// TODO: check next working day
+//TODO:
+/***check next working day
+ *
+ */
