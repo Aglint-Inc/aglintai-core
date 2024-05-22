@@ -237,7 +237,7 @@ const Attendees = ({
     <>
       {attendees}
       <Attendee
-        textRole={'Add all previous interviewers'}
+        textRole={'Previous interviewers'}
         slotToggle={
           <AntSwitch
             checked={value.previous_interviewers}
