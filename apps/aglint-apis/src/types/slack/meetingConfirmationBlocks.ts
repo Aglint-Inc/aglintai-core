@@ -26,6 +26,7 @@ export type SlackInteractionPayload = {
     name: string;
   };
   message: {
+    metadata: Record<string, any>;
     user: string;
     type: string;
     ts: string;
