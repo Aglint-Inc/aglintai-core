@@ -120,7 +120,8 @@ function InterviewerDetailsCard({
               ? `${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`
               : null
           }
-          isShadow={user.training_type !== 'qualified'}
+          isShadow={user.training_type === 'shadow'}
+          isReverseShadow={user.training_type === 'reverse_shadow'}
           isButtonVisible={false}
           isDetailVisible={true}
         />

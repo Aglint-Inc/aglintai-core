@@ -105,7 +105,7 @@ function Filters() {
   function getMeetingIdsForMembers() {
     const filteredMeetingIds = allSchedules
       .filter((schedule) =>
-        schedule.users.some((user) => selectedMembers.includes(user.id)),
+        schedule.users?.some((user) => selectedMembers.includes(user.id)),
       )
       .map((schedule) => schedule.interview_meeting.meeting_id);
     return filteredMeetingIds;

@@ -105,6 +105,7 @@ import InterviewScore, {
 // } from '../../Common/InterviewScore';
 import ResumeScore from '../../Common/ResumeScore';
 import CopyWrapper from '../../Common/Wrappers/copyWrapper';
+import { useKeyPress } from '../../hooks';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
@@ -291,12 +292,15 @@ const NewJobApplicationSideDrawer = ({
     JobApplicationSections.SCREENING,
   );
 
+  const { pressed: right } = useKeyPress('ArrowRight');
+  const { pressed: left } = useKeyPress('ArrowLeft');
+
   const [tab, setTab] = useState<TabType>('Details');
   const interviewEnabled =
     (interviewPlanEnabled?.data ?? false) &&
     (application?.emailValidity?.isValidEmail ?? false);
   const memoDependency = JSON.stringify(views);
-  const tabs = useMemo(
+  const tabsList = useMemo(
     () =>
       (
         [
@@ -307,33 +311,50 @@ const NewJobApplicationSideDrawer = ({
           'Tasks',
           'Activity',
         ] as (typeof tab)[]
-      )
-        .filter((tab) => {
-          switch (tab) {
-            case 'Details':
-              return true;
-            case 'Screening':
-              return views.screening;
-            case 'Assessment':
-              return views.assessment;
-            case 'Interview':
-              return views.interview && interviewEnabled;
-            case 'Tasks':
-              return views.interview && interviewEnabled;
-            case 'Activity':
-              return false;
-          }
-        })
-        .map((t) => (
-          <NewTabPill
-            key={t}
-            onClickPill={{ onClick: () => setTab(t) }}
-            textLabel={t}
-            isPillActive={tab === t}
-          />
-        )),
+      ).filter((tab) => {
+        switch (tab) {
+          case 'Details':
+            return true;
+          case 'Screening':
+            return views.screening;
+          case 'Assessment':
+            return views.assessment;
+          case 'Interview':
+            return views.interview && interviewEnabled;
+          case 'Tasks':
+            return views.interview && interviewEnabled;
+          case 'Activity':
+            return false;
+        }
+      }),
     [tab, memoDependency, interviewEnabled],
   );
+
+  const tabs = useMemo(
+    () =>
+      tabsList.map((t) => (
+        <NewTabPill
+          key={t}
+          onClickPill={{ onClick: () => setTab(t) }}
+          textLabel={t}
+          isPillActive={tab === t}
+        />
+      )),
+    [tabsList],
+  );
+
+  useEffect(() => {
+    if (left) {
+      setTab((prev) => {
+        const position = tabsList.indexOf(prev);
+        return tabsList[position === 0 ? tabsList.length - 1 : position - 1];
+      });
+    } else if (right) {
+      setTab((prev) => {
+        return tabsList[(tabsList.indexOf(prev) + 1) % tabsList.length];
+      });
+    }
+  }, [left, right]);
   return (
     <>
       <CandidateSideDrawer

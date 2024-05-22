@@ -13,7 +13,8 @@
     "start:api": "turbo run start:development --filter=aglint-apis",
     "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > packages/shared-types/src/schema.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "autofix": "eslint . --fix"
+    "autofix": "eslint . --fix",
+    "pull": "git pull origin development --no-rebase"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

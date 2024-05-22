@@ -13,8 +13,11 @@ export function RoleList({
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1716")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "fw-semibold")} tag="div">
-        {textRoleHeader}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "fw-semibold", "hide")}
+        tag="div"
+      >
+        {textDesignation}
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "div-block-1714")}
@@ -35,7 +38,7 @@ export function RoleList({
             className={_utils.cx(_styles, "text-grey-600")}
             tag="div"
           >
-            {textDesignation}
+            {textRoleHeader}
           </_Builtin.Block>
         </_Builtin.Block>
       </_Builtin.Block>

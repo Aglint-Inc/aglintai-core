@@ -226,5 +226,5 @@ const SelectedSessionList = ({
 }: {
   sessions: { name: string }[];
 }) => {
-  return <b>{sessions.map((ele: { name: any }) => ele.name).join(', ')}</b>;
+  return <b>{sessions?.map((ele: { name: any }) => ele.name).join(', ')}</b>;
 };

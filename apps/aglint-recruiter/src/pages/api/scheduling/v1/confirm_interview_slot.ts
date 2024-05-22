@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       schedule_id: req_body.schedule_id,
     });
 
-    if (req_body.filter_id) {
+    if (req_body.filter_id && !req_body.is_debreif) {
       const payload: APICandScheduleMailThankYou = {
         cand_tz: req_body.user_tz,
         filter_id: req_body.filter_id,

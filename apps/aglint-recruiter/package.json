@@ -10,8 +10,9 @@
     "lint": "next lint && npm run tslint",
     "autofix": "eslint . --fix",
     "format": "prettier --write \"{,!(.next)/**/,!(.devlink)/**/}*.{js,jsx}\"",
-    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/types/schema.ts",
-    "devlink": "npx webflow devlink sync"
+    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > ../../packages/shared-types/src/db/schema.types.ts",
+    "devlink": "npx webflow devlink sync",
+    "pull": "git pull origin development --no-rebase"
   },
   "dependencies": {
     "@aglint/shared-types": "*",

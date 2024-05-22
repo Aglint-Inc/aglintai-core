@@ -7,7 +7,6 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  RecruiterUserType,
   SupabaseType,
 } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
@@ -241,7 +240,12 @@ export const sendToCandidate = async ({
     end_date: string;
   };
   schedulingOptions: SchedulingApplication['schedulingOptions'];
-  recruiterUser: RecruiterUserType;
+  recruiterUser: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    user_id: string;
+  };
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
 }) => {
@@ -1332,19 +1336,37 @@ export const onClickResendInvite = async ({
   rec_user_id,
   schedule_id,
   application_id,
+  filter_id,
+}: {
+  session_id?: string;
+  candidate_name: string;
+  session_name: string;
+  candidate_email: string;
+  job_title: string;
+  recruiter_id: string;
+  rec_email: string;
+  rec_user_id: string;
+  schedule_id: string;
+  application_id: string;
+  filter_id?: string;
 }) => {
   try {
-    const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
-      .from('interview_filter_json')
-      .select('*')
-      .contains('session_ids', [session_id]);
+    let filterId = filter_id;
 
-    if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+    if (!filter_id) {
+      const { data: checkFilterJson, error: errMeetFilterJson } = await supabase
+        .from('interview_filter_json')
+        .select('*')
+        .contains('session_ids', [session_id])
+        .single();
+      if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
+      filterId = checkFilterJson.id;
+    }
 
-    if (checkFilterJson.length > 0) {
+    if (filterId) {
       const res = await mailHandler({
         candidate_name: candidate_name,
-        filter_id: checkFilterJson[0].id,
+        filter_id: filterId,
         mail: candidate_email,
         position: job_title,
         rec_id: recruiter_id,

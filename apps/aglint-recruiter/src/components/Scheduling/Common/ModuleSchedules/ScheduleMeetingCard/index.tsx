@@ -27,6 +27,15 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
+  let interviewers = meetingDetails.users || [];
+  if (
+    meetingDetails.interview_meeting.status === 'confirmed' ||
+    meetingDetails.interview_meeting.status === 'completed'
+  ) {
+    interviewers = meetingDetails.users.filter((user) => user.is_confirmed);
+  } else {
+    interviewers = [];
+  }
   return (
     <>
       <Stack
@@ -65,7 +74,7 @@ function ScheduleMeetingCard({
                     textTime={null}
                   />
                   {/* members profile */}
-                  {meetingDetails.users.map((user, i) => {
+                  {interviewers.map((user, i) => {
                     return (
                       <InterviewerDetailsCard
                         key={i}
