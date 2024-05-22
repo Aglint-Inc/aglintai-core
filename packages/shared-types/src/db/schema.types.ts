@@ -4667,6 +4667,7 @@ export type Database = {
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
           name: string
           members: Json
+          members_meta: Json
         }
         Returns: undefined
       }
@@ -4941,6 +4942,7 @@ export type Database = {
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
           name: string
           members: Json
+          members_meta: Json
         }
         Returns: undefined
       }

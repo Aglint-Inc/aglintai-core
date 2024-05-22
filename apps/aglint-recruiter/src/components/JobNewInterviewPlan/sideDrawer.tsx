@@ -280,6 +280,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     session_duration,
     session_type,
     interview_session_relation,
+    members_meta,
   } = data.interview_session.find((session) => id === session.id);
   const { members } = interview_session_relation.reduce(
     (acc, curr) => {
@@ -295,6 +296,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     session_type,
     interview_session_relation,
     members,
+    members_meta,
   };
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getDebriefFields(initialFields));
