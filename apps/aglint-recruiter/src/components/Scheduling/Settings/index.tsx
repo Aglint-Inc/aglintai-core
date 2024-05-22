@@ -84,7 +84,7 @@ function SchedulingSettings({
 
   const [workingHours, setWorkingHours] = useState([]);
   const [debriefDefaults, setDebriefDefaults] = useState<
-    Parameters<typeof DebriefDefaults>[0]['value']
+    schedulingSettingType['debrief_defaults']
   >({
     hiring_manager: false,
     recruiter: false,
@@ -211,6 +211,15 @@ function SchedulingSettings({
         start_time: schedulingSettingData.break_hour?.start_time,
         end_time: schedulingSettingData.break_hour?.end_time,
       });
+      setDebriefDefaults(
+        schedulingSettingData?.debrief_defaults ?? {
+          hiring_manager: false,
+          recruiter: false,
+          recruiting_coordinator: false,
+          sourcer: false,
+          previous_interviewers: false,
+        },
+      );
     }
   }
 
@@ -235,6 +244,7 @@ function SchedulingSettings({
           start_time: selectedHourBreak.start_time,
           end_time: selectedHourBreak.end_time,
         },
+        debrief_defaults: debriefDefaults,
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -255,6 +265,7 @@ function SchedulingSettings({
     recruitingBlocks,
     isTimeZone,
     selectedHourBreak,
+    debriefDefaults,
   ]);
 
   useEffect(() => {
