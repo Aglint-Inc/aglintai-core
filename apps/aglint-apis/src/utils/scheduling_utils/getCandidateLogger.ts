@@ -1,4 +1,4 @@
-import {SubTaskProgress} from '@aglint/shared-types';
+import {DatabaseEnums} from '@aglint/shared-types';
 import {
   supabaseWrap,
   supabaseAdmin,
@@ -18,7 +18,7 @@ export type LoggerType = (
   log_msg: string,
   title_attr: TitleAttrType,
   created?: 'candidate' | 'phone_agent' | 'email_agent',
-  progress_type?: SubTaskProgress['progress_type'],
+  progress_type?: DatabaseEnums['progress_type'],
   transcript?: Record<string, any> | Record<string, any>[]
 ) => Promise<void>;
 
