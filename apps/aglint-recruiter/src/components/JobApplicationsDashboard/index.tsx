@@ -101,15 +101,8 @@ const JobApplicationComponent = () => {
 
   const [openImportCandidates, setOpenImportCandidates] = useState(false);
 
-  const { pressed: shift } = useKeyPress('Shift');
-  const { pressed: right } = useKeyPress('ArrowRight');
-  const { pressed: left } = useKeyPress('ArrowLeft');
   const { pressed: up } = useKeyPress('ArrowUp');
   const { pressed: down } = useKeyPress('ArrowDown');
-  const upShift = shift && up;
-  const downShift = shift && down;
-  const leftShift = shift && left;
-  const rightShift = shift && right;
 
   const handleSelectCurrentApplication = (i: number) => {
     setCurrentApplication(i);
@@ -132,22 +125,15 @@ const JobApplicationComponent = () => {
 
   useEffect(() => {
     if (sectionApplications.length !== 0) {
-      if (upShift) {
+      if (up) {
         handleSelectPrevApplication();
         return;
-      } else if (downShift) {
+      } else if (down) {
         handleSelectNextApplication();
         return;
       }
     }
-    if (rightShift) {
-      handleSelectNextSection();
-      return;
-    }
-    if (leftShift) {
-      handleSelectPrevSection();
-    }
-  }, [upShift, downShift, rightShift, leftShift]);
+  }, [up, down]);
   return (
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
