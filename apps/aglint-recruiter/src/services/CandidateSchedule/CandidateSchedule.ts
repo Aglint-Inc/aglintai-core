@@ -7,7 +7,6 @@ import {
   ConflictReason,
   holidayType,
   InterDetailsType,
-  IntervCntApp,
   InterviewerMeetingScheduled,
   InterviewModuleRelationType,
   InterviewSessionApiRespType,
@@ -80,7 +79,7 @@ export class CandidatesScheduling {
     user_start_date_js: Dayjs;
     user_end_date_js: Dayjs;
   };
-  private overrides: APIOverrideConfig;
+  private disabled_overrides: APIOverrideConfig;
 
   constructor(
     _api_payload: ApiPayload,
@@ -98,17 +97,22 @@ export class CandidatesScheduling {
       };
     }
     if (_default_overrides) {
-      this.overrides = {
-        ..._default_overrides,
+      this.disabled_overrides = {
+        calender_not_connected: !_default_overrides.calender_not_connected,
+        dayoff: !_default_overrides.dayoff,
+        holiday: !_default_overrides.holiday,
+        interviewer_load: !_default_overrides.interviewer_load,
+        interviewer_pause: !_default_overrides.interviewer_pause,
+        out_of_office: !_default_overrides.out_of_office,
       };
     } else {
-      this.overrides = {
-        interviewer_load: false,
-        interviewer_pause: false,
-        calender_not_connected: false,
-        dayoff: false,
-        holiday: false,
-        out_of_office: false,
+      this.disabled_overrides = {
+        interviewer_load: true,
+        interviewer_pause: true,
+        calender_not_connected: true,
+        dayoff: true,
+        holiday: true,
+        out_of_office: true,
       };
     }
   }
@@ -389,7 +393,7 @@ export class CandidatesScheduling {
       current_day: Dayjs,
       interv: InterDetailsType,
     ): TimeDurationType => {
-      const { int_schedule_setting, email } = interv;
+      const { int_schedule_setting, email: interv_email } = interv;
       let curr_user_time = userTzDayjs().tz(
         int_schedule_setting.timeZone.tzCode,
       );
@@ -417,83 +421,14 @@ export class CandidatesScheduling {
         return null;
       }
 
-      const isIntervLoadPassed = () => {
-        const curr_week_start_day = current_day.startOf('week');
-        const curr_week_end_day = current_day.endOf('week');
-        const int_meetings = this.db_details.ints_schd_meetings.get(email);
-        const curr_week_meetings = int_meetings.filter((meet) => {
-          const meet_date = userTzDayjs(meet.meeting_date).tz(
-            int_schedule_setting.timeZone.tzCode,
-          );
-          return (
-            meet_date.isSameOrAfter(curr_week_start_day, 'date') &&
-            meet_date.isSameOrBefore(curr_week_end_day, 'date')
-          );
-        });
-
-        const slot_int_sessions = current_int_slot.filter((sess) =>
-          sess.qualifiedIntervs.find((int) => int.email === email),
-        );
-        const curr_slot_load = {
-          total_interview: slot_int_sessions.length,
-          total_duration: slot_int_sessions.reduce((sum, curr) => {
-            return sum + curr.duration;
-          }, 0),
-        };
-        const weekly_load = {
-          total_interview: curr_week_meetings.reduce((sum, curr) => {
-            return sum + curr.meeting_cnt;
-          }, 0),
-          total_duration: curr_week_meetings.reduce((sum, curr) => {
-            return sum + curr.meeting_duration;
-          }, 0),
-        };
-        const curr_day_meetings = int_meetings.filter((meet) => {
-          const meet_date = userTzDayjs(meet.meeting_date).tz(
-            int_schedule_setting.timeZone.tzCode,
-          );
-          return meet_date.isSame(current_day, 'day');
-        });
-        const day_load = {
-          total_interview: curr_day_meetings.reduce((sum, curr) => {
-            return sum + curr.meeting_cnt;
-          }, 0),
-          total_duration: curr_day_meetings.reduce((sum, curr) => {
-            return sum + curr.meeting_duration;
-          }, 0),
-        };
-
-        // add current slot slot to both weekly load and day load
-        weekly_load.total_interview += curr_slot_load.total_interview;
-        weekly_load.total_duration += curr_slot_load.total_duration;
-        day_load.total_interview += curr_slot_load.total_interview;
-        day_load.total_duration += curr_slot_load.total_duration;
-        const week_limit = int_schedule_setting.interviewLoad.weeklyLimit;
-        const day_limit = int_schedule_setting.interviewLoad.dailyLimit;
-        if (week_limit.type === 'Hours') {
-          if (week_limit.value * 60 >= weekly_load.total_duration) {
-            if (day_limit.type === 'Hours') {
-              return day_limit.value * 60 >= day_load.total_duration;
-            } else {
-              return day_limit.value >= day_load.total_interview;
-            }
-          } else {
-            return false;
-          }
-        } else if (week_limit.type === 'Interviews') {
-          if (week_limit.value >= weekly_load.total_interview) {
-            if (day_limit.type === 'Hours') {
-              return day_limit.value * 60 >= day_load.total_duration;
-            } else {
-              return day_limit.value >= day_load.total_interview;
-            }
-          } else {
-            return false;
-          }
-        }
-      };
-
-      if (!isIntervLoadPassed()) {
+      if (
+        !this.isIntervLoadPassed(
+          current_day.format(),
+          current_int_slot,
+          interv.int_schedule_setting,
+          interv_email,
+        )
+      ) {
         return null;
       }
 
@@ -825,66 +760,48 @@ export class CandidatesScheduling {
         return common_time_range;
       };
 
-      // TODO: Function Incomplete
-      const isPlanPossible = (): Boolean => {
-        const isSessIntsCalConnected = () => {
-          const all_inters: SessionInterviewerApiRespType[] = plan_comb.reduce(
-            (curr_ints, sess) => [
-              ...curr_ints,
-              ...sess.qualifiedIntervs,
-              ...sess.trainingIntervs,
-            ],
-            [],
+      const isAnySessIntsCalDisConnected = () => {
+        const all_inters: SessionInterviewerApiRespType[] = plan_comb.reduce(
+          (curr_ints, sess) => [
+            ...curr_ints,
+            ...sess.qualifiedIntervs,
+            ...sess.trainingIntervs,
+          ],
+          [],
+        );
+        return all_inters.some((int) => {
+          return (
+            interv_free_time.find((i) => i.interviewer_id === int.user_id)
+              .isCalenderConnected === false
           );
-          return all_inters.every((int) => {
-            return interv_free_time.find(
-              (i) => i.interviewer_id === int.user_id,
-            ).isCalenderConnected;
-          });
-        };
-        const isSessIntsNotPaused = () => {
-          //
-        };
-        const isSessIntsLoadNotReached = () => {
-          let flag = true;
-          let mp = new Map<string, IntervCntApp>();
-          for (let mod of plan_comb) {
-            let all_ints = [...mod.qualifiedIntervs, ...mod.trainingIntervs];
-            for (const int of all_ints) {
-              let int_cnt = mp.get(int.user_id);
-              if (int_cnt) {
-                int_cnt.meet_cnt += 1;
-                int_cnt.dur_cnt += mod.duration;
-              } else {
-                int_cnt = {
-                  meet_cnt: 1,
-                  dur_cnt: mod.duration,
-                };
-                mp.set(int.user_id, int_cnt);
-              }
-            }
-          }
-
-          for (let [int_id, int_cnt] of mp) {
-            const int_setting = interv_free_time.find(
-              (i) => i.interviewer_id === int_id,
-            );
-            let load =
-              int_setting.int_schedule_setting.interviewLoad.dailyLimit;
-            if (load.type === 'Interviews' && load.value < int_cnt.meet_cnt) {
-              flag = false;
-            } else if (
-              load.type === 'Hours' &&
-              load.value * 60 < int_cnt.dur_cnt
-            ) {
-              flag = false;
-            }
-            if (!flag) break;
-          }
-          return flag;
-        };
-        return false;
+        });
       };
+      const isAnySessIntsPausedManually = () => {
+        for (const sess of plan_comb) {
+          const inters = [...sess.qualifiedIntervs, ...sess.trainingIntervs];
+
+          for (const int of inters) {
+            const int_pause =
+              this.db_details.all_session_int_details[sess.session_id]
+                .interviewers[int.user_id].pause_json;
+            if (int_pause && int_pause.isManual) {
+              return false;
+            }
+          }
+        }
+      };
+
+      if (
+        this.disabled_overrides.calender_not_connected &&
+        isAnySessIntsCalDisConnected()
+      )
+        return [];
+      if (
+        this.disabled_overrides.interviewer_pause &&
+        isAnySessIntsPausedManually()
+      ) {
+        return [];
+      }
 
       const getIntsNotAvailableInSlotTime = (
         curr_sess: InterviewSessionApiRespType,
@@ -1036,7 +953,7 @@ export class CandidatesScheduling {
           curr_sess_start_time.format(),
           curr_sess_end_time.format(),
         );
-        //TODO: why are they not available
+        //TODO: reason why are they not available
         if (not_avail_ints.length > 0) {
           return [];
         }
@@ -1060,10 +977,12 @@ export class CandidatesScheduling {
           start_time: curr_sess_start_time.format(),
           end_time: curr_sess_end_time.format(),
           ints_conflicts: [],
+          is_conflict_free: true,
         };
 
         if (!is_conflict_free) {
           session_slot = getConflictsInSession(session_slot);
+          session_slot.is_conflict_free = false;
         }
 
         if (session_idx + 1 === plan_comb.length) {
@@ -1082,10 +1001,14 @@ export class CandidatesScheduling {
       //   return schedule_combs;
       // TODO: is company holiday
       // TODO: is company day_off
+      const day_start = currDay.startOf('day');
       const day_end = currDay.add(1, 'day').startOf('day');
       let curr_time = this.getFlooredNearestCurrentTime(); //NOTE: take current time 60 minutes later
       if (curr_time.isAfter(day_end, 'minutes')) {
         return [];
+      }
+      if (curr_time.isBefore(day_start, 'seconds')) {
+        curr_time = day_start;
       }
       while (curr_time.isBefore(day_end)) {
         const session_comb = getSessionsAvailability(0, curr_time.format());
@@ -1114,10 +1037,9 @@ export class CandidatesScheduling {
   };
 
   private findCommonTimeRange = (ints_meta: FuncParams): TimeDurationType[] => {
-    //pausing interviewers
-    // disjoint
+    //TODO: rewrite the merging function
 
-    // its a place we can do  optimize
+    //NOTE: its a place we can do  optimize
     const subtractpauseTimeFromFreeTimeRange = (inters: FuncParams) => {
       const updInters = cloneDeep(inters);
       for (const int of updInters) {
@@ -1531,6 +1453,92 @@ export class CandidatesScheduling {
     return curr_time.set('minutes', minutes_to_set);
   };
 
+  //TODO: should handle multi day slots
+  private isIntervLoadPassed = (
+    current_day_str: string,
+    current_int_slot: InterviewSessionApiRespType[],
+    int_schedule_setting: schedulingSettingType,
+    interviewer_email: string,
+  ) => {
+    const current_day = userTzDayjs(current_day_str).tz(
+      int_schedule_setting.timeZone.tzCode,
+    );
+    const curr_week_start_day = current_day.startOf('week');
+    const curr_week_end_day = current_day.endOf('week');
+    const int_meetings =
+      this.db_details.ints_schd_meetings.get(interviewer_email);
+    const curr_week_meetings = int_meetings.filter((meet) => {
+      const meet_date = userTzDayjs(meet.meeting_date).tz(
+        int_schedule_setting.timeZone.tzCode,
+      );
+      return (
+        meet_date.isSameOrAfter(curr_week_start_day, 'date') &&
+        meet_date.isSameOrBefore(curr_week_end_day, 'date')
+      );
+    });
+
+    const slot_int_sessions = current_int_slot.filter((sess) =>
+      sess.qualifiedIntervs.find((int) => int.email === interviewer_email),
+    );
+    const curr_slot_load = {
+      total_interview: slot_int_sessions.length,
+      total_duration: slot_int_sessions.reduce((sum, curr) => {
+        return sum + curr.duration;
+      }, 0),
+    };
+    const weekly_load = {
+      total_interview: curr_week_meetings.reduce((sum, curr) => {
+        return sum + curr.meeting_cnt;
+      }, 0),
+      total_duration: curr_week_meetings.reduce((sum, curr) => {
+        return sum + curr.meeting_duration;
+      }, 0),
+    };
+    const curr_day_meetings = int_meetings.filter((meet) => {
+      const meet_date = userTzDayjs(meet.meeting_date).tz(
+        int_schedule_setting.timeZone.tzCode,
+      );
+      return meet_date.isSame(current_day, 'day');
+    });
+    const day_load = {
+      total_interview: curr_day_meetings.reduce((sum, curr) => {
+        return sum + curr.meeting_cnt;
+      }, 0),
+      total_duration: curr_day_meetings.reduce((sum, curr) => {
+        return sum + curr.meeting_duration;
+      }, 0),
+    };
+
+    // add current slot slot to both weekly load and day load
+    weekly_load.total_interview += curr_slot_load.total_interview;
+    weekly_load.total_duration += curr_slot_load.total_duration;
+    day_load.total_interview += curr_slot_load.total_interview;
+    day_load.total_duration += curr_slot_load.total_duration;
+    const week_limit = int_schedule_setting.interviewLoad.weeklyLimit;
+    const day_limit = int_schedule_setting.interviewLoad.dailyLimit;
+    if (week_limit.type === 'Hours') {
+      if (week_limit.value * 60 >= weekly_load.total_duration) {
+        if (day_limit.type === 'Hours') {
+          return day_limit.value * 60 >= day_load.total_duration;
+        } else {
+          return day_limit.value >= day_load.total_interview;
+        }
+      } else {
+        return false;
+      }
+    } else if (week_limit.type === 'Interviews') {
+      if (week_limit.value >= weekly_load.total_interview) {
+        if (day_limit.type === 'Hours') {
+          return day_limit.value * 60 >= day_load.total_duration;
+        } else {
+          return day_limit.value >= day_load.total_interview;
+        }
+      } else {
+        return false;
+      }
+    }
+  };
+
   // NOTE: end of private functions
 
   // NOTE:  static util functions
@@ -1555,5 +1563,6 @@ export class CandidatesScheduling {
 
 //TODO:
 /***check next working day
- *
+ * training people optional
+ * pause and load check
  */

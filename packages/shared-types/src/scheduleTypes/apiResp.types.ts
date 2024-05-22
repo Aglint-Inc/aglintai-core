@@ -3,12 +3,7 @@
  *@author Dileep BC
  */
 
-import {
-  InterviewerSessionRelation,
-  InterviewModuleType,
-  InterviewSession,
-  RecruiterUserType,
-} from '../data.types';
+import { InterviewerSessionRelation, RecruiterUserType } from '../data.types';
 import { InterviewSessionApiType } from './types';
 
 export type ConflictReason = {
@@ -44,6 +39,7 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
   start_time: string;
   end_time: string;
   ints_conflicts: InterviwerConflicts[];
+  is_conflict_free: boolean;
 };
 
 export type SessionInterviewerApiRespType = Pick<
