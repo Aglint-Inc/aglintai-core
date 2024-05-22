@@ -2962,6 +2962,30 @@ export type Database = {
           },
         ]
       }
+      template_question_relation: {
+        Row: {
+          created_at: string
+          id: number
+          order: number | null
+          question_id: string
+          template_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          order?: number | null
+          question_id: string
+          template_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          order?: number | null
+          question_id?: string
+          template_id?: string
+        }
+        Relationships: []
+      }
       threads: {
         Row: {
           applied: boolean | null
