@@ -803,7 +803,6 @@ export class CandidatesScheduling {
         return [];
       }
 
-      //TODO:
       const getOutOfWorkHrsMeetAttendees = (
         curr_sess: InterviewSessionApiRespType,
         slot_start_time: string,
@@ -915,9 +914,7 @@ export class CandidatesScheduling {
           ...upd_sess_slot.qualifiedIntervs,
           ...upd_sess_slot.trainingIntervs,
         ];
-        // is interviewer out of office for the time
-        // soft conflicts keywords
-        // hard conflicts meetings other
+
         const getCalEventType = (
           scheduling_settings: schedulingSettingType,
           cal_event: CalendarEvent,
@@ -955,29 +952,30 @@ export class CandidatesScheduling {
                 end_time: null,
                 start_time: null,
               });
-            }
-            if (
-              isTimeChunksEnclosed(
-                {
-                  startTime: this.getTimeInCandTimeZone(
-                    attendee_pause_info.start_date,
-                  ),
-                  endTime: this.getTimeInCandTimeZone(
-                    attendee_pause_info.end_date,
-                  ),
-                },
-                {
-                  startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
-                  endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
-                },
-              )
-            ) {
-              conflict_reasons.push({
-                conflict_type: 'interviewer_paused',
-                conflict_event: null,
-                start_time: attendee_pause_info.start_date,
-                end_time: attendee_pause_info.end_date,
-              });
+            } else {
+              if (
+                isTimeChunksEnclosed(
+                  {
+                    startTime: this.getTimeInCandTimeZone(
+                      attendee_pause_info.start_date,
+                    ),
+                    endTime: this.getTimeInCandTimeZone(
+                      attendee_pause_info.end_date,
+                    ),
+                  },
+                  {
+                    startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
+                    endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
+                  },
+                )
+              ) {
+                conflict_reasons.push({
+                  conflict_type: 'interviewer_paused',
+                  conflict_event: null,
+                  start_time: attendee_pause_info.start_date,
+                  end_time: attendee_pause_info.end_date,
+                });
+              }
             }
           }
 
@@ -1022,7 +1020,7 @@ export class CandidatesScheduling {
               start_time: conf_ev.start.dateTime,
             });
           });
-          if (conflicting_events.length > 0) {
+          if (conflict_reasons.length > 0) {
             upd_sess_slot.ints_conflicts.push({
               interviewer: {
                 user_id: attendee.user_id,
@@ -1031,6 +1029,7 @@ export class CandidatesScheduling {
             });
           }
         }
+
         return upd_sess_slot;
       };
 
