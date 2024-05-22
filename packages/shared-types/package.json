@@ -3,7 +3,6 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint src/",
     "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > src/schema.ts"
   },
   "version": "0.0.1",
