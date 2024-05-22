@@ -1353,16 +1353,23 @@ export class CandidatesScheduling {
         comb,
       );
       for (let comb of combs) {
+        const qualifiedIntervs = comb.map((id) => {
+          const inter = session.qualifiedIntervs.find((i) => i.user_id === id);
+          return {
+            ...inter,
+          };
+        });
+        // NOTE: optional trining ints
+        if (session.trainingIntervs.length > 0) {
+          session_combs.push({
+            ...session,
+            trainingIntervs: [],
+            qualifiedIntervs: [...qualifiedIntervs],
+          });
+        }
         session_combs.push({
           ...session,
-          qualifiedIntervs: comb.map((id) => {
-            const inter = session.qualifiedIntervs.find(
-              (i) => i.user_id === id,
-            );
-            return {
-              ...inter,
-            };
-          }),
+          qualifiedIntervs: [...qualifiedIntervs],
         });
       }
       return session_combs;
