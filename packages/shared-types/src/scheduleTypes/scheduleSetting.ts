@@ -1,28 +1,8 @@
-export type schedulingSettingType = {
-  isAutomaticTimezone: boolean;
-  timeZone: {
-    label: string;
-    name: string;
-    tzCode: string;
-    utc: string;
-  };
-  interviewLoad: {
-    dailyLimit: DailyLimitType;
-    weeklyLimit: WeeklyLimitType;
-  };
-  workingHours: WorkingDaysType[];
-  totalDaysOff: holidayType[];
-  schedulingKeyWords: {
-    free: any[];
-    SoftConflicts: any[];
-    outOfOffice: string[];
-    recruitingBlocks: string[];
-  };
-  break_hour: {
-    start_time: string;
-    end_time: string;
-  };
-};
+import { DatabaseTable } from "..";
+
+export type schedulingSettingType =
+  DatabaseTable["recruiter"]["scheduling_settings"];
+
 export type holidayType = {
   date: string;
   event_name: string;
@@ -30,11 +10,11 @@ export type holidayType = {
 };
 export type DailyLimitType = {
   value: number;
-  type: 'Hours' | 'Interviews';
+  type: "Hours" | "Interviews";
 };
 export type WeeklyLimitType = {
   value: number;
-  type: 'Hours' | 'Interviews';
+  type: "Hours" | "Interviews";
 };
 export type WorkingDaysType = {
   day: string;

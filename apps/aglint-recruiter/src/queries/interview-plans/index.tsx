@@ -290,23 +290,17 @@ export const editInterviewSession = async (args: EditInterviewSession) => {
   if (error) throw new Error(error.message);
 };
 
-export type CreateDebriefSession = Omit<
-  DB['public']['Functions']['insert_debrief_session']['Args'],
-  'members'
-> & {
-  members: Pick<InterviewSessionRelationType[number], 'id'>[];
-};
+export type CreateDebriefSession =
+  DB['public']['Functions']['insert_debrief_session']['Args'];
+
 export const createDebriefSession = async (args: CreateDebriefSession) => {
   const { error } = await supabase.rpc('insert_debrief_session', args);
   if (error) throw new Error(error.message);
 };
 
-export type UpdateDebriefSession = Omit<
-  DB['public']['Functions']['update_debrief_session']['Args'],
-  'interview_module_relation_entries'
-> & {
-  members: Pick<InterviewSessionRelationType[number], 'id'>[];
-};
+export type UpdateDebriefSession =
+  DB['public']['Functions']['update_debrief_session']['Args'];
+
 export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   const { error } = await supabase.rpc('update_debrief_session', args);
   if (error) throw new Error(error.message);

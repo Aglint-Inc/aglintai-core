@@ -1,6 +1,9 @@
 {
   "name": "@aglint/shared-utils",
-  "scripts": {},
+  "scripts": {
+    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > ../shared-types/src/db/schema.types.ts",
+    "pull": "git pull origin development --no-rebase"
+  },
   "version": "0.0.1",
   "main": "./index.ts",
   "types": "./index.ts",

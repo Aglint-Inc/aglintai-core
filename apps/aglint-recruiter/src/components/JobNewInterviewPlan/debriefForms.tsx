@@ -51,8 +51,16 @@ type DebriefFormFields = {
 
 export const getDebriefFields = (
   props: DebriefFormProps,
+  defaults?: Partial<DebriefFormProps>,
 ): DebriefFormFields => {
-  return Object.entries(props).reduce((acc, [key, value]) => {
+  const safeFields = Object.entries(defaults ?? {}).reduce(
+    (acc, [key, value]) => {
+      if (value) acc[key] = structuredClone(value);
+      return acc;
+    },
+    structuredClone(props),
+  );
+  return Object.entries(safeFields).reduce((acc, [key, value]) => {
     acc[key] = {
       value,
       error: false,
