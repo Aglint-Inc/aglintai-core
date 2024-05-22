@@ -1,12 +1,15 @@
 import {
+  AllSessionIntDetails,
+  CompServiceKeyCred,
   InterviewerMeetingScheduled,
   InterviewModuleType,
   InterviewSession,
+  InterviewSessionApiRespType,
   InterviewSessionApiType,
+  schedulingSettingType,
+  SessionInterviewerApiRespType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
-import { schedulingSettingType } from '@aglint/shared-types';
-import { CompServiceKeyCred } from '@aglint/shared-types';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { decrypt_string } from '@/src/utils/integrations/crypt-funcs';
@@ -92,7 +95,7 @@ export const fetch_details_from_db = async (
       return [...tot, ...curr];
     }, []);
 
-  const ses_with_ints: InterviewSessionApiType[] = interview_sessions
+  const db_ses_with_ints: InterviewSessionApiType[] = interview_sessions
     .map((s) => {
       let session: InterviewSessionApiType = {
         duration: s.session_duration,
@@ -172,12 +175,83 @@ export const fetch_details_from_db = async (
 
   const ints_schd_meetings = getInterviewersMeetings();
 
+  const getAllSessionIntDetails = () => {
+    const all_session_int_detail: AllSessionIntDetails = {};
+    db_ses_with_ints.forEach((s) => {
+      all_session_int_detail[s.session_id] = {
+        break_duration: s.break_duration,
+        duration: s.duration,
+        interviewer_cnt: s.interviewer_cnt,
+        interviewers: {},
+        location: s.location,
+        meeting_id: s.meeting_id,
+        module_id: s.module_id,
+        module_name: s.module_name,
+        schedule_type: s.schedule_type,
+        session_id: s.session_id,
+        session_name: s.session_name,
+        session_order: s.session_order,
+        session_type: s.session_type,
+      };
+      const all_ints = [...s.qualifiedIntervs, ...s.trainingIntervs];
+      all_ints.forEach((int) => {
+        all_session_int_detail[s.session_id].interviewers[int.user_id] = {
+          email: int.email,
+          first_name: int.first_name,
+          interview_module_relation_id: int.interview_module_relation_id,
+          interviewer_type: int.interviewer_type,
+          last_name: int.last_name,
+          pause_json: int.pause_json,
+          profile_image: int.profile_image,
+          schedule_auth: int.schedule_auth,
+          scheduling_settings: int.scheduling_settings,
+          session_id: int.session_id,
+          training_type: int.training_type,
+          user_id: int.user_id,
+        };
+      });
+    });
+    return all_session_int_detail;
+  };
+  const api_sess_ints: InterviewSessionApiRespType[] = db_ses_with_ints.map(
+    (s) => ({
+      break_duration: s.break_duration,
+      duration: s.duration,
+      interviewer_cnt: s.interviewer_cnt,
+      location: s.location,
+      meeting_id: s.meeting_id,
+      module_name: s.module_name,
+      trainingIntervs: s.trainingIntervs.map(mapInt),
+      qualifiedIntervs: s.qualifiedIntervs.map(mapInt),
+      schedule_type: s.schedule_type,
+      session_id: s.session_id,
+      session_name: s.session_name,
+      session_order: s.session_order,
+      session_type: s.session_type,
+    }),
+  );
+
   return {
     company_cred,
-    ses_with_ints,
+    api_sess_ints,
     all_inters: getUniqueInts(interviewers),
     comp_schedule_setting,
     int_meetings,
     ints_schd_meetings,
+    all_session_int_details: getAllSessionIntDetails(),
   };
+};
+
+const mapInt = (i: SessionInterviewerType) => {
+  const int: SessionInterviewerApiRespType = {
+    email: i.email,
+    first_name: i.first_name,
+    interview_module_relation_id: i.interview_module_relation_id,
+    interviewer_type: i.interviewer_type,
+    last_name: i.last_name,
+    profile_image: i.profile_image,
+    training_type: i.training_type,
+    user_id: i.user_id,
+  };
+  return int;
 };

@@ -3,7 +3,7 @@ import {
   APIFindAltenativeTimeSlot,
   APIFindAltenativeTimeSlotResponse,
 } from '@aglint/shared-types';
-import { SessionCombinationType } from '@aglint/shared-types';
+import { SessionCombinationRespType } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -89,6 +89,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const filter_slots = (sess_comb: SessionCombinationType, slot_time: string) => {
+const filter_slots = (
+  sess_comb: SessionCombinationRespType,
+  slot_time: string,
+) => {
   return userTzDayjs(sess_comb.start_time).isSame(slot_time, 'minutes');
 };
