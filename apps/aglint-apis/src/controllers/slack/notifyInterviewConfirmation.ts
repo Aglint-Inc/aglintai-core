@@ -19,6 +19,7 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
     );
 
     const {
+      id: metting_id,
       session_name,
       session_duration,
       start_time,
@@ -36,46 +37,49 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
         .eq('id', interview_schedule_id)
     );
 
-    // const interviewer_emails = supabaseWrap(
-    //   await supabaseAdmin
-    //     .from('meeting_interviewers')
-    //     .select('email')
-    //     .eq('session_id', session_id)
-    // );
+    const interviewers = supabaseWrap(
+      await supabaseAdmin
+        .from('meeting_interviewers')
+        .select('email,session_relation_id')
+        .eq('session_id', session_id)
+    );
 
-    const [organizer_email] = supabaseWrap(
+    const [organizer] = supabaseWrap(
       await supabaseAdmin
         .from('recruiter_user')
         .select('email')
         .eq('user_id', organizer_id)
     );
-    // Unique emails
-    const interviewer_emails = [
-      {email: 'chandra@aglinthq.com'},
-      // {email: 'dileep@aglinthq.com'},
-    ];
-    const emails = [
-      ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
-    ];
+
+    const interviewersWithoutOrganizer = interviewers.filter(
+      interviewer => interviewer.email !== organizer.email
+    );
 
     const job_title = can_app.applications.public_jobs.job_title;
     const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;
 
-    for (const email of emails) {
+    for (const interviewer of interviewersWithoutOrganizer) {
       const userResponse = await slackWeb.users.lookupByEmail({
-        email: email,
+        email: interviewer.email,
       });
       const userId = userResponse.user.id;
 
       await slackWeb.chat.postMessage({
         channel: userId,
         // text: message,
+        metadata: {
+          event_type: 'candidate_confirm_slot',
+          event_payload: {
+            email: interviewer.email,
+            session_relation_id: interviewer.session_relation_id,
+          },
+        },
         blocks: [
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `<google.com | ${session_name}> sheduled with candidate :\n*<google.com|${candidate_name} - ${job_title}>*`,
+              text: `* ${session_name} sheduled with candidate :*\n*<https://dev.aglinthq.com/scheduling/view?meeting_id=${metting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
             },
           },
           {
