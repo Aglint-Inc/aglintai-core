@@ -1,31 +1,87 @@
 import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
+import {SlackInteractionPayload} from 'src/types/slack/meetingConfirmationBlocks';
+
+const {App} = require('@slack/bolt');
+
+const app = new App({
+  signingSecret: process.env.SLACK_CLIENT_SECRET,
+  token: process.env.SLACK_BOT_TOKEN,
+});
 
 export const listForInteractions = async (req: Request, res: Response) => {
   try {
     const {payload} = req.body;
-    const interaction_data = JSON.parse(payload);
-    console.log(interaction_data);
+    const interaction_data = JSON.parse(payload) as SlackInteractionPayload;
     const action = interaction_data.actions[0];
-    const user_id = interaction_data.user.id;
-    console.log(interaction_data);
-    console.log(action);
-    console.log(user_id);
+    const channel_id = interaction_data.channel.id;
     if (action.value === 'available') {
-      await slackWeb.chat.postMessage({
-        channel: user_id,
-        text: 'Thank you for RSVPing Yes!',
+      await slackWeb.chat.update({
+        channel: channel_id,
+        ts: interaction_data.message.ts,
+        text: 'Thanks for confirmation',
+        blocks: [
+          interaction_data.message.blocks[0],
+          interaction_data.message.blocks[1],
+          {
+            type: 'rich_text',
+            elements: [
+              {
+                type: 'rich_text_section',
+                elements: [
+                  {
+                    type: 'text',
+                    text: 'Thanks 🥰 for confirmation,\n ',
+                  },
+                  {
+                    type: 'text',
+                    text: 'You will clicked the 🟢 available',
+                    style: {
+                      bold: true,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       });
     } else if (action.value === 'not_available') {
-      await slackWeb.chat.postMessage({
-        channel: user_id,
-        text: 'Thank you for RSVPing Yes!',
+      await slackWeb.chat.update({
+        channel: channel_id,
+        ts: interaction_data.message.ts,
+        text: 'Thanks for confirmation',
+        blocks: [
+          interaction_data.message.blocks[0],
+          interaction_data.message.blocks[1],
+          {
+            type: 'rich_text',
+            elements: [
+              {
+                type: 'rich_text_section',
+                elements: [
+                  {
+                    type: 'text',
+                    text: 'Thanks 🥰 for confirmation,\n ',
+                  },
+                  {
+                    type: 'text',
+                    text: 'You will clicked the 🔴 Unavailable',
+                    style: {
+                      bold: true,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       });
     }
 
     return res.status(200).send('ok');
   } catch (error: any) {
-    console.error(error.message);
+    console.error('error : ', error.message);
   }
 };
 

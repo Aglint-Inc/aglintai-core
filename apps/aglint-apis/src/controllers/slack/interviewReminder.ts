@@ -3,7 +3,7 @@ import {Request, Response} from 'express';
 import {slackWeb} from 'src/services/slack/slackWeb';
 import {supabaseAdmin, supabaseWrap} from 'src/services/supabase/SupabaseAdmin';
 
-export async function notifyInterviewConfirmation(req: Request, res: Response) {
+export async function interviewReminder(req: Request, res: Response) {
   const {session_id} = req.body;
 
   if (!session_id) {
@@ -36,12 +36,12 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
         .eq('id', interview_schedule_id)
     );
 
-    const interviewer_emails = supabaseWrap(
-      await supabaseAdmin
-        .from('meeting_interviewers')
-        .select('email')
-        .eq('session_id', session_id)
-    );
+    // const interviewer_emails = supabaseWrap(
+    //   await supabaseAdmin
+    //     .from('meeting_interviewers')
+    //     .select('email')
+    //     .eq('session_id', session_id)
+    // );
 
     const [organizer_email] = supabaseWrap(
       await supabaseAdmin
@@ -49,15 +49,14 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
         .select('email')
         .eq('user_id', organizer_id)
     );
-    //Unique emails
+    // Unique emails
+    const interviewer_emails = [
+      {email: 'chandra@aglinthq.com'},
+      {email: 'dileep@aglinthq.com'},
+    ];
     const emails = [
       ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
     ];
-
-    // const interviewer_emails = [
-    //   {email: 'chandra@aglinthq.com'},
-    //   // {email: 'dileep@aglinthq.com'},
-    // ];
 
     const job_title = can_app.applications.public_jobs.job_title;
     const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;
@@ -76,20 +75,27 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `<google.com | ${session_name}> sheduled with candidate :\n*<google.com|${candidate_name} - ${job_title}>*`,
+              text: '*<www.goole.com|HR Meeting>* with candidate :\n*Dileep *- SDE 2',
             },
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Meeting Place :* ${schedule_type}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
+              text: '*Meeting Time :* Aug 10 10:00 AM - 10:30 AM IST',
             },
-            accessory: {
-              type: 'image',
-              image_url:
-                'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/google-calendar%201.png',
-              alt_text: 'google calender',
+          },
+          {
+            type: 'input',
+            element: {
+              type: 'plain_text_input',
+              multiline: true,
+              action_id: 'plain_text_input-action',
+            },
+            label: {
+              type: 'plain_text',
+              text: 'Please put your feedback',
+              emoji: true,
             },
           },
           {
@@ -100,22 +106,10 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
                 text: {
                   type: 'plain_text',
                   emoji: true,
-                  text: 'Available',
+                  text: 'Submit',
                 },
                 style: 'primary',
-                value: 'available',
-                action_id: 'accept',
-              },
-              {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  emoji: true,
-                  text: 'Not Available',
-                },
-                style: 'danger',
-                value: 'not_available',
-                action_id: 'decline',
+                value: 'submit',
               },
             ],
           },
