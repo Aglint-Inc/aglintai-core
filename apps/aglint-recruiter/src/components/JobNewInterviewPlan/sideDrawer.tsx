@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
 import toast from '@/src/utils/toast';
@@ -229,11 +230,16 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
 };
 
 const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
+  const { recruiter } = useAuthDetails();
   const {
     interviewPlans: { data },
     handleCreateDebriefSession,
   } = useJobInterviewPlan();
-  const [fields, setFields] = useState(getDebriefFields(initialDebriefFields));
+  const [fields, setFields] = useState(
+    getDebriefFields(initialDebriefFields, {
+      members_meta: recruiter?.scheduling_settings?.debrief_defaults,
+    }),
+  );
   const [debriefCreation, setDebriefCreation] = useState(false);
   const interview_plan_id = data.id;
   const handleAdd = async () => {

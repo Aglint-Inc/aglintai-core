@@ -4,6 +4,7 @@ export const settingsItems = [
   { label: 'Company Day Off', value: 'dayOff' },
   { label: 'Keywords', value: 'keywords' },
   { label: 'Email Template', value: 'emailTemplate' },
+  { label: 'Debrief Defaults', value: 'debriefDefaults' },
 ];
 export const settingSubNavItem = {
   INTERVIEWLOAD: 'interviewLoad',
@@ -12,4 +13,5 @@ export const settingSubNavItem = {
   KEYWORDS: 'keywords',
   EMAILTEMPLATE: 'emailTemplate',
   REASONS: 'reasons',
+  DEBRIEFDEFAULTS: 'debriefDefaults',
 };

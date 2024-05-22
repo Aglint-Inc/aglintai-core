@@ -105,6 +105,7 @@ const settingsItems = [
   { label: 'Company Day Off', value: 'dayOff' },
   { label: 'Keywords', value: 'keywords' },
   { label: 'Email Template', value: 'emailTemplate' },
+  { label: 'Debrief Defaults', value: 'debriefDefaults' },
 ];
 
 function SettingsSubNabItem({ tab }: { tab: string }) {
