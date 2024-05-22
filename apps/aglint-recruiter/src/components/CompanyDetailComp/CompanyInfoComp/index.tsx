@@ -108,14 +108,19 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <Stack p={'4px'}>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
+
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
+                      const address = [loc.full_address];
+                      const timeZone = [loc.timezone];
+                      const isHeadQuaterVisible = [loc.is_headquarter];
 
                       return (
                         <>
                           <Stack p={'4px'}>
                             <CompanyLocation
+                              isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               onClickEdit={{
                                 onClick: () => {
                                   setDialog({
@@ -124,7 +129,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                   });
                                 },
                               }}
-                              textLocation={location}
+                              textFullAddress={address}
+                              textLocationHeader={location}
+                              textTimeZone={timeZone}
                               // onClickDelete={{
                               //   onClick: () => handleDeleteLocation(i),
                               // }}

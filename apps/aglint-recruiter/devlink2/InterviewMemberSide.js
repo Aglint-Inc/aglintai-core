@@ -7,15 +7,13 @@ import _styles from "./InterviewMemberSide.module.css";
 
 export function InterviewMemberSide({
   as: _Component = _Builtin.Block,
-  isUpcomingActive = false,
+  isUpcomingActive = true,
   isCompletedActive = false,
   slotInterviewCard,
   onClickUpcoming = {},
   onClickCompleted = {},
   onClickCancelled = {},
   isCancelActive = false,
-  onClickAll = {},
-  isAllActive = false,
   propsGrids = {},
   slotInterview,
   onClickWaiting = {},
@@ -40,14 +38,14 @@ export function InterviewMemberSide({
               tag="div"
               {...onClickUpcoming}
             >
-              <_Builtin.Block tag="div">{"Confirmed"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
             </_Builtin.Block>
             {isUpcomingActive ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1076", "active")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Confirmed"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Upcoming"}</_Builtin.Block>
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
@@ -80,37 +78,21 @@ export function InterviewMemberSide({
               tag="div"
               {...onClickCompleted}
             >
-              <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{"Past"}</_Builtin.Block>
             </_Builtin.Block>
             {isCompletedActive ? (
               <_Builtin.Block
                 className={_utils.cx(_styles, "div-block-1076", "active")}
                 tag="div"
               >
-                <_Builtin.Block tag="div">{"Completed"}</_Builtin.Block>
+                <_Builtin.Block tag="div">{"Past"}</_Builtin.Block>
               </_Builtin.Block>
             ) : null}
           </_Builtin.Block>
           <_Builtin.Block
             className={_utils.cx(_styles, "all-wrap-navi")}
             tag="div"
-          >
-            <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1076")}
-              tag="div"
-              {...onClickAll}
-            >
-              <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
-            </_Builtin.Block>
-            {isAllActive ? (
-              <_Builtin.Block
-                className={_utils.cx(_styles, "div-block-1076", "active")}
-                tag="div"
-              >
-                <_Builtin.Block tag="div">{"All"}</_Builtin.Block>
-              </_Builtin.Block>
-            ) : null}
-          </_Builtin.Block>
+          />
         </_Builtin.Block>
         <_Builtin.Block
           className={_utils.cx(_styles, "slot-interview-mod")}

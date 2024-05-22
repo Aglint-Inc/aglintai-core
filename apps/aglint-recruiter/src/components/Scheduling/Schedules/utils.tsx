@@ -34,7 +34,13 @@ export function getListItems({
     ].forEach((status) => {
       itemList.push({
         id: status,
-        label: capitalizeAll(status),
+        label: capitalizeAll(
+          status === 'waiting'
+            ? 'Unconfirmed'
+            : status === 'completed'
+              ? 'Past'
+              : status,
+        ),
       });
     });
   }

@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
-import { CandidateType, RecruiterUserType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { CandidateType, DB, RecruiterUserType } from '@aglint/shared-types';
 import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -140,7 +139,7 @@ export async function createTaskProgress({
     progress_type: DatabaseEnums['progress_type'];
     jsonb_data?: null;
   };
-  supabaseCaller?: ReturnType<typeof createServerClient<Database>>;
+  supabaseCaller?: ReturnType<typeof createServerClient<DB>>;
 }) {
   var {
     assignerId,

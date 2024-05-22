@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 // import { PostgrestError } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -19,14 +19,14 @@ export type AssessmentResultApi = {
   response: any;
 };
 
-type Supabase = ReturnType<typeof createServerClient<Database>>;
+type Supabase = ReturnType<typeof createServerClient<DB>>;
 export type AssessmentResponse = AssessmentResult['responses'][number];
 
 export default async function handler(req: NextRequest) {
   try {
     const request: AssessmentResultApi['request'] = await req.json();
     const { result_id } = request;
-    const supabase = createServerClient<Database>(
+    const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {

@@ -1,8 +1,4 @@
-import {
-  CustomDatabase,
-  DatabaseEnums,
-  DatabaseTableUpdate,
-} from '@aglint/shared-types';
+import { DatabaseEnums, DatabaseTableUpdate, DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
@@ -55,7 +51,7 @@ function TaskCard({ task }: { task: TasksAgentContextType['tasks'][number] }) {
   const [selectedDueDate, setSelectedDueDate] = useState<string>(null);
   const [selectTriggerTime, setSelectTriggerTime] = useState<string>(null);
   const [selectedPriority, setSelectedPriority] =
-    useState<CustomDatabase['public']['Enums']['task_priority']>(null);
+    useState<DB['public']['Enums']['task_priority']>(null);
   const [selectedStatus, setSelectedStatus] =
     useState<DatabaseEnums['task_status']>(null);
 

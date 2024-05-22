@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { GreenhouseType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +17,7 @@ const crypto = require('crypto');
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
 
 export default async function handler(req, res) {
   const jobId = req.body.job_id;

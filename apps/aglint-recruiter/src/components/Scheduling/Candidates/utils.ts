@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { InterviewMeetingTypeDb } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
@@ -22,7 +22,7 @@ export type MailHandlerparam = {
   position: string;
   schedule_id: string;
   filter_id: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
   rec_mail: string;
 };
 
@@ -93,7 +93,7 @@ const TYPE_LABELS = {
 };
 
 export const getScheduleType = (
-  schedule_type: Database['public']['Enums']['interview_schedule_type'],
+  schedule_type: DB['public']['Enums']['interview_schedule_type'],
 ) => TYPE_LABELS[schedule_type] || 'Google Meet';
 
 export function convertNumberToWord(number) {

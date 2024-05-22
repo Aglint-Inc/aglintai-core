@@ -1,11 +1,11 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 
 import { type useCompanyMembers } from '../company-members';
 import { type InterviewModulesType } from '../interview-modules/types';
 import { getInterviewTrainingProgressAPI } from '.';
 
-type Enums = Database['public']['Enums'];
-export type Functions = Database['public']['Functions'];
+type Enums = DB['public']['Enums'];
+export type Functions = DB['public']['Functions'];
 
 export type SchedulingDashboardTypes = {
   interviewMeetingStatus: Functions['get_interview_meeting_status_count']['Returns'];

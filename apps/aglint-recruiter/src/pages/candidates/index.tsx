@@ -5,7 +5,10 @@ import Seo from '@/src/components/Common/Seo';
 const Candidates = () => {
   return (
     <>
-      <Seo title={`Candidate Search`} description='AI for People Products' />
+      <Seo
+        title={`Talent Directory - Sourcing Hub | Aglint AI`}
+        description='AI for People Products'
+      />
       <CandDbProvider>
         <CandDatabase />
       </CandDbProvider>
