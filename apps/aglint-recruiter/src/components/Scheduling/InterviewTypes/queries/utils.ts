@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
+import { onClickResendInvite } from '../../CandidateDetails/utils';
 import { ScheduleListType } from '../../Common/ModuleSchedules/hooks';
 import { initialEditModule } from '../store';
 import {
@@ -35,6 +36,7 @@ export const fetchProgress = async ({
   module_id: string;
   trainer_ids: string[]; // interview_module_relation_id
 }) => {
+  onClickResendInvite;
   const { data: intSesRel, error: errSelRel } = await supabase
     .from('interview_session_relation')
     .select('*,interview_session!inner(*,interview_plan(*))')
