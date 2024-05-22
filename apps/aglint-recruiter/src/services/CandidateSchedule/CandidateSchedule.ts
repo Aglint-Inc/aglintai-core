@@ -915,7 +915,6 @@ export class CandidatesScheduling {
           ...upd_sess_slot.qualifiedIntervs,
           ...upd_sess_slot.trainingIntervs,
         ];
-
         const getCalEventType = (
           scheduling_settings: schedulingSettingType,
           cal_event: CalendarEvent,
