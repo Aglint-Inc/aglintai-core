@@ -7,6 +7,7 @@ import React, {
   useMemo,
 } from 'react';
 
+import { Attendee } from '@/devlink2/Attendee';
 import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
 import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import { validateString } from '@/src/context/JobDashboard/hooks';
@@ -14,10 +15,13 @@ import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
 import { CreateDebriefSession } from '@/src/queries/interview-plans';
 import { InterviewSessionType } from '@/src/queries/interview-plans/types';
+import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../Common/MuiAvatar';
 import UITextField from '../Common/UITextField';
+import { capitalize } from '../JobApplicationsDashboard/utils';
+import { AntSwitch } from '../NewAssessment/AssessmentPage/editor';
 import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { DropDown } from './sessionForms';
@@ -25,7 +29,11 @@ import { getBreakLabel } from './utils';
 
 type DebriefFormProps = Pick<
   InterviewSessionType,
-  'name' | 'session_duration' | 'schedule_type' | 'session_type'
+  | 'name'
+  | 'session_duration'
+  | 'schedule_type'
+  | 'session_type'
+  | 'members_meta'
 > &
   CustomDebriefFormProps;
 
@@ -72,6 +80,13 @@ export const initialDebriefFields: DebriefFormProps = {
   session_duration: 30,
   session_type: 'debrief',
   members: [],
+  members_meta: {
+    hiring_manager: false,
+    recruiter: false,
+    recruiting_coordinator: false,
+    sourcer: false,
+    previous_interviewers: false,
+  },
 };
 
 type HandleChange = <T extends keyof DebriefFormProps>(
@@ -89,14 +104,23 @@ const DebriefForms = ({
   setFields: Dispatch<SetStateAction<DebriefFormFields>>;
 }) => {
   const {
+    job,
     companyMembers: { data },
   } = useJobInterviewPlan();
 
-  const { name, session_duration, schedule_type, members } = fields;
+  const { name, session_duration, schedule_type, members, members_meta } =
+    fields;
   const memberRecommendations =
     data.filter(
       ({ user_id }) =>
-        !(members?.value ?? []).map(({ user_id }) => user_id).includes(user_id),
+        ![
+          ...(members?.value ?? []),
+          ...Object.values(getAttendeesList(job)).map((user_id) => ({
+            user_id,
+          })),
+        ]
+          .map(({ user_id }) => user_id)
+          .includes(user_id),
     ) ?? [];
 
   const showMembers = memberRecommendations.length !== 0;
@@ -176,6 +200,113 @@ const DebriefForms = ({
             handleChange={handleChange}
           />
         )
+      }
+      slotAttendee={
+        <Attendees handleChange={handleChange} value={members_meta.value} />
+      }
+    />
+  );
+};
+
+const Attendees = ({
+  value,
+  handleChange,
+}: {
+  value: DebriefFormProps['members_meta'];
+  handleChange: HandleChange;
+}) => {
+  const { job } = useJobInterviewPlan();
+  const members = getAttendeesList(job);
+  const attendees = Object.entries(members).map(([k, v]) => {
+    return (
+      <Member
+        key={k}
+        checked={value[k]}
+        role={k as keyof typeof members}
+        memberId={v}
+        onClick={() =>
+          handleChange('members_meta', {
+            ...value,
+            [k]: !value[k],
+          })
+        }
+      />
+    );
+  });
+  return (
+    <>
+      {attendees}
+      <Attendee
+        textRole={'Add all previous interviewers'}
+        slotToggle={
+          <AntSwitch
+            checked={value.previous_interviewers}
+            onClick={() =>
+              handleChange('members_meta', {
+                ...value,
+                previous_interviewers: !value.previous_interviewers,
+              })
+            }
+          />
+        }
+        slotSelectedMemberPill={<></>}
+      />
+    </>
+  );
+};
+
+export const getAttendeesList = (job: Job) => {
+  const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = job;
+  const roles = { hiring_manager, recruiter, recruiting_coordinator, sourcer };
+  return Object.entries(roles).reduce(
+    (acc, [key, value]) => {
+      if (value) acc[key] = value;
+      return acc;
+    },
+    // eslint-disable-next-line no-unused-vars
+    {} as { [id in keyof DebriefFormProps['members_meta']]: string },
+  );
+};
+
+const Member = ({
+  checked,
+  memberId,
+  role,
+  onClick,
+}: {
+  memberId: string;
+  role: keyof DebriefFormProps['members_meta'];
+  checked: DebriefFormProps['members_meta']['hiring_manager'];
+  onClick: () => void;
+}) => {
+  const { companyMembers } = useJobInterviewPlan();
+  const member = companyMembers.data.find(
+    ({ user_id }) => user_id === memberId,
+  );
+  if (!member) return <></>;
+  const name = getFullName(member.first_name, member.last_name);
+  return (
+    <Attendee
+      textRole={capitalize(role)}
+      slotToggle={<AntSwitch checked={checked} onClick={onClick} />}
+      slotSelectedMemberPill={
+        <SelectedMemberPill
+          isCloseButton={false}
+          isReverseShadow={false}
+          isShadow={false}
+          onClickRemove={null}
+          textMemberName={name}
+          slotMemberAvatar={
+            <MuiAvatar
+              src={member.profile_image}
+              level={name}
+              variant='circular'
+              fontSize='10px'
+              height='100%'
+              width='100%'
+            />
+          }
+        />
       }
     />
   );
@@ -404,15 +535,16 @@ export const getDebriefSessionPayload = (
   session_order: number,
   interview_plan_id: string,
 ): CreateDebriefSession => {
-  const { name, schedule_type, session_duration, members } = Object.entries(
-    fields,
-  ).reduce(
-    (acc, [key, value]) => {
-      acc[key] = value.value;
-      return acc;
-    },
-    {} as { [key in keyof DebriefFormFields]: DebriefFormFields[key]['value'] },
-  );
+  const { name, schedule_type, session_duration, members, members_meta } =
+    Object.entries(fields).reduce(
+      (acc, [key, value]) => {
+        acc[key] = value.value;
+        return acc;
+      },
+      {} as {
+        [key in keyof DebriefFormFields]: DebriefFormFields[key]['value'];
+      },
+    );
   const safeMembers: CreateDebriefSession['members'] = members.map(
     ({ user_id }) => ({
       id: user_id,
@@ -421,6 +553,7 @@ export const getDebriefSessionPayload = (
   return {
     session_duration,
     name,
+    members_meta,
     schedule_type,
     location: null,
     break_duration: 0,

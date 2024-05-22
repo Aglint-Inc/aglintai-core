@@ -33,7 +33,9 @@ export function Attendee({
               />
             )}
           </_Builtin.Block>
-          <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
+          <_Builtin.Block className={_utils.cx(_styles, "slot_text")} tag="div">
+            <_Builtin.Block tag="div">{textRole}</_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block tag="div">
           {slotSelectedMemberPill ?? (

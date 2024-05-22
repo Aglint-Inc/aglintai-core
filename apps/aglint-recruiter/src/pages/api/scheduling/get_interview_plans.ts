@@ -2,9 +2,9 @@ import { CustomDatabase } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
-import { CustomType } from '@/src/queries/scheduling-dashboard/types';
 import { JobCreate } from '@/src/queries/job/types';
+import { CustomType } from '@/src/queries/scheduling-dashboard/types';
+import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 
 const supabase = createClient<CustomDatabase>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -41,6 +41,7 @@ export type GetInterviewPlansType = {
         Response['interview_session'],
         {
           members_meta: {
+            // eslint-disable-next-line no-unused-vars
             [id in
               | keyof Pick<
                   JobCreate,
@@ -49,7 +50,7 @@ export type GetInterviewPlansType = {
                   | 'recruiter'
                   | 'sourcer'
                 >
-              | 'previous_interviewers']: string;
+              | 'previous_interviewers']: boolean;
           };
         }
       >;
