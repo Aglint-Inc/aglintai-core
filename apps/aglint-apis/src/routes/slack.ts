@@ -12,6 +12,7 @@ const slackRoutes = express.Router();
 slackRoutes.post('/send-direct-message', sendDirectMessage);
 slackRoutes.post('/group-message', groupMessage);
 slackRoutes.post('/notify-interview-confirmation', notifyInterviewConfirmation);
+slackRoutes.post('/interview-reminder', notifyInterviewConfirmation);
 slackRoutes.post('/interactions', listForInteractions);
 
 export default slackRoutes;

@@ -1,16 +1,14 @@
-import {WebClient} from '@slack/web-api';
+import {Request, Response} from 'express';
+import {slackWeb} from 'src/services/slack/slackWeb';
 
-export default async (req, res) => {
-  const token = process.env.SLACK_BOT_TOKEN;
-  const web = new WebClient(token);
-
+export default async (req: Request, res: Response) => {
   const {email, message} = req.body;
 
   try {
-    const userResponse = await web.users.lookupByEmail({email});
+    const userResponse = await slackWeb.users.lookupByEmail({email});
     const userId = userResponse.user.id;
 
-    const result = await web.chat.postMessage({
+    const result = await slackWeb.chat.postMessage({
       channel: userId,
       text: message,
       blocks: [
