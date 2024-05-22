@@ -838,7 +838,6 @@ export class CandidatesScheduling {
             ) ||
             !working_hrs.isWorkDay
           ) {
-            console.log('nekjn');
             ints.push({
               ...int,
             });
