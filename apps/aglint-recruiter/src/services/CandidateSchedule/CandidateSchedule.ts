@@ -809,6 +809,7 @@ export class CandidatesScheduling {
         slot_start_time: string,
         slot_end_time: string,
       ) => {
+        const holidays = this.db_details.comp_schedule_setting.totalDaysOff;
         const all_ints: SessionInterviewerApiRespType[] = [
           ...curr_sess.qualifiedIntervs,
           ...curr_sess.trainingIntervs,
@@ -828,8 +829,22 @@ export class CandidatesScheduling {
             (day) => day.day.toLowerCase() === curr_day.toLowerCase(),
           );
 
+          // NOTE: condition for checking whether today is not working day
           if (
-            !isTimeChunksEnclosed(
+            holidays.find((holiday: holidayType) =>
+              userTzDayjs(slot_start_time)
+                .tz(int_tz)
+                .isSame(userTzDayjs(holiday.date, 'DD MMM YYYY'), 'date'),
+            ) ||
+            !working_hrs.isWorkDay
+          ) {
+            console.log('nekjn');
+            ints.push({
+              ...int,
+            });
+          }
+          if (
+            !isTimeChunksOverLapps(
               {
                 startTime: this.chageTimeInDay(
                   slot_start_time,
@@ -901,7 +916,6 @@ export class CandidatesScheduling {
           ...upd_sess_slot.qualifiedIntervs,
           ...upd_sess_slot.trainingIntervs,
         ];
-
         // is interviewer out of office for the time
         // soft conflicts keywords
         // hard conflicts meetings other
@@ -1290,7 +1304,6 @@ export class CandidatesScheduling {
   };
 
   /**
-   *
    * @param sessions interview session full details
    * @returns all combination of session with all possible interviewers
    */
