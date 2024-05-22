@@ -1,0 +1,78 @@
+
+.w-checkbox {
+    display: block;
+    margin-bottom: 5px;
+    padding-left: 20px
+}
+.w-checkbox::before {
+    content: ' ';
+    display: table;
+    grid-column-end: 2;
+    grid-column-start: 1;
+    grid-row-end: 2;
+    grid-row-start: 1
+}
+.w-checkbox::after {
+    content: ' ';
+    display: table;
+    grid-column-end: 2;
+    grid-column-start: 1;
+    grid-row-end: 2;
+    grid-row-start: 1;
+    clear: both
+}
+.w-checkbox-input {
+    float: left;
+    margin-bottom: 0px;
+    margin-left: -20px;
+    margin-right: 0px;
+    margin-top: 4px;
+    line-height: normal
+}
+.w-checkbox-input--inputType-custom {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-color: rgba(204, 204, 204, 1);
+    border-bottom-color: rgba(204, 204, 204, 1);
+    border-left-color: rgba(204, 204, 204, 1);
+    border-right-color: rgba(204, 204, 204, 1);
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-right-style: solid;
+    width: 12px;
+    height: 12px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px
+}
+.w-checkbox-input--inputType-custom.w--redirected-checked {
+    background-color: rgba(56, 152, 236, 1);
+    border-top-color: rgba(56, 152, 236, 1);
+    border-bottom-color: rgba(56, 152, 236, 1);
+    border-left-color: rgba(56, 152, 236, 1);
+    border-right-color: rgba(56, 152, 236, 1);
+    background-image: url(https://d3e54v103j8qbb.cloudfront.net/static/custom-checkbox-checkmark.589d534424.svg);
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat
+}
+.w-checkbox-input--inputType-custom.w--redirected-focus {
+    box-shadow: 0px 0px 3px 1px rgba(56, 152, 236, 1)
+}
+.w-layout-grid {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-row-gap: 16px;
+    grid-column-gap: 16px
+}
+.w-layout-hflex {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row
+}
