@@ -789,7 +789,7 @@ export class CandidatesScheduling {
             }
           }
         }
-        return true;
+        return false;
       };
 
       if (
