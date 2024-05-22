@@ -83,7 +83,9 @@ function SlotTrainingMembers({
         if (!member) return null; //this line added temporarily becasue of data inconsistency
 
         const progressDataUser = progress.filter(
-          (prog) => prog.interview_module_relation_id === user.id,
+          (prog) =>
+            prog.interview_module_relation_id === user.id &&
+            prog.interview_meeting.status === 'completed',
         );
 
         return (
