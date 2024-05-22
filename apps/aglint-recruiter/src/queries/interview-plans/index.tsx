@@ -1,9 +1,9 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -259,11 +259,11 @@ export const createInterviewPlan = async (job_id: string) => {
 export const getInterviewPlansAPI = async (job_id: string) => {
   return (
     await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`)
-  ).data as ReturnType<getInterviewPlansType>;
+  ).data as GetInterviewPlansType['respone'];
 };
 
 export type CreateInterviewSession = Omit<
-  Database['public']['Functions']['insert_interview_session']['Args'],
+  DB['public']['Functions']['insert_interview_session']['Args'],
   'interview_module_relation_entries'
 > & {
   interview_module_relation_entries: Pick<
@@ -277,7 +277,7 @@ export const createInterviewSession = async (args: CreateInterviewSession) => {
 };
 
 export type EditInterviewSession = Omit<
-  Database['public']['Functions']['update_interview_session']['Args'],
+  DB['public']['Functions']['update_interview_session']['Args'],
   'interview_module_relation_entries'
 > & {
   interview_module_relation_entries: Pick<
@@ -291,7 +291,7 @@ export const editInterviewSession = async (args: EditInterviewSession) => {
 };
 
 export type CreateDebriefSession = Omit<
-  Database['public']['Functions']['insert_debrief_session']['Args'],
+  DB['public']['Functions']['insert_debrief_session']['Args'],
   'members'
 > & {
   members: Pick<InterviewSessionRelationType[number], 'id'>[];
@@ -302,7 +302,7 @@ export const createDebriefSession = async (args: CreateDebriefSession) => {
 };
 
 export type UpdateDebriefSession = Omit<
-  Database['public']['Functions']['update_debrief_session']['Args'],
+  DB['public']['Functions']['update_debrief_session']['Args'],
   'interview_module_relation_entries'
 > & {
   members: Pick<InterviewSessionRelationType[number], 'id'>[];
@@ -313,7 +313,7 @@ export const updateDebriefSession = async (args: UpdateDebriefSession) => {
 };
 
 export type ReorderSessions = Omit<
-  Database['public']['Functions']['reorder_sessions']['Args'],
+  DB['public']['Functions']['reorder_sessions']['Args'],
   'sessions'
 > & {
   sessions: { id: string; session_order: number }[];

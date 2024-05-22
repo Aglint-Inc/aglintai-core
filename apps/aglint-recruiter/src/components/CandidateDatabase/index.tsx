@@ -346,6 +346,7 @@ function CandidateSearchHistory() {
 
   return (
     <>
+      {WelcomeMatDiscoverTalent}
       <CandidateDatabaseSearch
         slotSearchAglintCd={
           <>

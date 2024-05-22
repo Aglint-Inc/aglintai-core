@@ -546,22 +546,22 @@ export function JobDashboard({
           tag="div"
         >
           <_Builtin.Block
-            className={_utils.cx(_styles, "div-block-1710")}
+            className={_utils.cx(_styles, "div-block-1710-copy")}
             tag="div"
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1711")}
+              className={_utils.cx(_styles, "div-block-1711-copy")}
               tag="div"
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "fw-semibold")}
+                className={_utils.cx(_styles, "text-sm")}
                 tag="div"
               >
                 {"Settings"}
               </_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block
-              className={_utils.cx(_styles, "div-block-1712", "gap-20")}
+              className={_utils.cx(_styles, "module_card_wrapper")}
               tag="div"
             >
               {slotModuleCard ?? (

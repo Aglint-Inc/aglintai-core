@@ -1,11 +1,18 @@
-import React from 'react'
+import React from 'react';
 
-import CandidateDashboard from '@/src/components/NewScreening/CandidateDashboard'
+import Seo from '@/src/components/Common/Seo';
+import CandidateDashboard from '@/src/components/NewScreening/CandidateDashboard';
 
 const index = () => {
   return (
-    <CandidateDashboard/>
-  )
-}
+    <>
+      <Seo
+        title='Screening Dashboard - Screening | Aglint AI'
+        description='AI for People Products'
+      />
+      <CandidateDashboard />
+    </>
+  );
+};
 
-export default index
+export default index;

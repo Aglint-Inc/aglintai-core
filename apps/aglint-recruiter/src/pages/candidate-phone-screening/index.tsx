@@ -7,10 +7,7 @@ import { ScreeningCtxProvider } from '@/src/components/KnockOffQns/ScreeningCtxP
 const Screening = () => {
   return (
     <>
-      <Seo
-        title={'Aglint | Phone Screening'}
-        description='AI for People Products'
-      />
+      <Seo title={'Phone Screening | Aglint AI'} />
       <ScreeningCtxProvider>
         <KnockOffQns />
       </ScreeningCtxProvider>

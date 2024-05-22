@@ -1,16 +1,14 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 
-export type ApplicationType =
-  Database['public']['Tables']['applications']['Row'];
-export type PublicJobsType = Database['public']['Tables']['public_jobs']['Row'];
+export type ApplicationType = DB['public']['Tables']['applications']['Row'];
+export type PublicJobsType = DB['public']['Tables']['public_jobs']['Row'];
 export type AssessmentRelationJobType =
-  Database['public']['Tables']['assessment_job_relation']['Row'];
-export type AssessmentType =
-  Database['public']['Tables']['assessment']['Row'] & {
-    assessment_question: AssessmentQuestionType[];
-  };
+  DB['public']['Tables']['assessment_job_relation']['Row'];
+export type AssessmentType = DB['public']['Tables']['assessment']['Row'] & {
+  assessment_question: AssessmentQuestionType[];
+};
 type tempAssessmentQuestionType =
-  Database['public']['Tables']['assessment_question']['Row'];
+  DB['public']['Tables']['assessment_question']['Row'];
 export interface AssessmentQuestionType extends tempAssessmentQuestionType {
   question: {
     label: string;

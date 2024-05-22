@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CustomDatabase } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
 import React from 'react';
@@ -14,10 +14,8 @@ function PriorityList({
   isOptionList = true,
   onChange,
 }: {
-  selectedPriority: CustomDatabase['public']['Enums']['task_priority'];
-  setSelectedPriority?: (
-    x: CustomDatabase['public']['Enums']['task_priority'],
-  ) => void;
+  selectedPriority: DB['public']['Enums']['task_priority'];
+  setSelectedPriority?: (x: DB['public']['Enums']['task_priority']) => void;
   isOptionList?: boolean;
   onChange?: any;
 }) {

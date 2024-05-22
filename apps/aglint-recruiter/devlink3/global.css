@@ -2259,3 +2259,8 @@ figure {
   grid-row-gap: 16px;
   grid-column-gap: 16px;
 }
+.w-layout-hflex {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+}

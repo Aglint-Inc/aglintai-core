@@ -8,7 +8,10 @@ import JobInterviewPlanProvider from '@/src/context/JobInterviewPlanContext';
 const JobAssessmentPage = () => {
   return (
     <>
-      <Seo title={`Jobs`} description='AI for People Products' />
+      <Seo
+        title={`Assessments - Job | Aglint AI`}
+        description='AI for People Products'
+      />
       <JobAssessmentDashboard />
     </>
   );

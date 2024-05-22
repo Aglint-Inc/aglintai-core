@@ -1,7 +1,7 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 
-export type Supabase = SupabaseClient<Database>;
+export type Supabase = SupabaseClient<DB>;
 
 export type ManualUploadApi = {
   request: {

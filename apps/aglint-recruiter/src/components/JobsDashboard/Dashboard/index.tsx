@@ -372,6 +372,8 @@ const Roles = () => {
                     level={name}
                     variant='circular'
                     fontSize='16px'
+                    width='42px'
+                    height='42px'
                   />
                 }
                 textDesignation={user?.position ?? '--'}

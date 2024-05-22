@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { PostgrestError } from '@supabase/supabase-js';
 
@@ -8,7 +8,7 @@ import { JobDashboardApi } from '../../../../pages/api/job/jobDashboard/read';
 type Request = JobDashboardApi['request'];
 type ResponseData = JobDashboardApi['response']['data'];
 type ResponseError = JobDashboardApi['response']['error'];
-type Supabase = ReturnType<typeof createServerClient<Database>>;
+type Supabase = ReturnType<typeof createServerClient<DB>>;
 type Key = keyof ResponseData;
 
 export const handleJobAnalytics = async (
@@ -89,7 +89,7 @@ const handlePromises = async (
 
 const getSkillsPool = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   try {
     const controller = new AbortController();
@@ -107,7 +107,7 @@ const getSkillsPool = async (
 
 const getLocationPool = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   try {
     const controller = new AbortController();
@@ -127,7 +127,7 @@ const getLocationPool = async (
 
 const getTenureAndExperience = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   try {
     const controller = new AbortController();
@@ -147,7 +147,7 @@ const getTenureAndExperience = async (
 
 export const getJobAssessments = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -163,7 +163,7 @@ export const getJobAssessments = async (
 
 export const getResumeMatch = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -184,7 +184,7 @@ export const getResumeMatch = async (
 
 export const getJobAppStatus = async (
   job_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 60000);
@@ -199,7 +199,7 @@ export const getJobAppStatus = async (
 };
 
 export const resumeMatchRPCFormatter = (
-  unsafeData: Database['public']['Functions']['getresumematches']['Returns'],
+  unsafeData: DB['public']['Functions']['getresumematches']['Returns'],
 ) => {
   const initialData = {
     matches: unsafeData,

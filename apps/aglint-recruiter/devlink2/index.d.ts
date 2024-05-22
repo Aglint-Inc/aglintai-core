@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -56,6 +52,7 @@ export * from "./AssistantHelp";
 export * from "./AssistantLanding";
 export * from "./AssistantLogo";
 export * from "./AssistantTaskEmpty";
+export * from "./Attendee";
 export * from "./AvailabilitySlot";
 export * from "./AvailableOption";
 export * from "./AvailableOptionCardDate";
