@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { DatabaseTable } from '@aglint/shared-types';
+import { schedulingSettingType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -8,7 +8,7 @@ import { DebriefDefaults as DebriefDefaultsDev } from '@/devlink3/DebriefDefault
 import { AntSwitch } from '@/src/components/NewAssessment/AssessmentPage/editor';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
-type MembersMeta = DatabaseTable['interview_session']['members_meta'];
+type MembersMeta = schedulingSettingType['debrief_defaults'];
 
 type DebriefDefaultsProps = {
   value: MembersMeta;
