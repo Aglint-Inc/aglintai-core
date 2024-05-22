@@ -1105,10 +1105,7 @@ export class CandidatesScheduling {
 
         return [session_slot, ...upcoming_sessn_slots];
       };
-      // check for load balance setting
-      // TODO:
-      // if (!this.overrides.interviewer_load && !isPlanPossible())
-      //   return schedule_combs;
+
       const day_start = currDay.startOf('day');
       const day_end = currDay.add(1, 'day').startOf('day');
       let curr_time = this.getFlooredNearestCurrentTime(); //NOTE: take current time 60 minutes later
