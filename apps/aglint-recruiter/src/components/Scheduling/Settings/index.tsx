@@ -83,6 +83,15 @@ function SchedulingSettings({
     });
 
   const [workingHours, setWorkingHours] = useState([]);
+  const [debriefDefaults, setDebriefDefaults] = useState<
+    Parameters<typeof DebriefDefaults>[0]['value']
+  >({
+    hiring_manager: false,
+    recruiter: false,
+    recruiting_coordinator: false,
+    sourcer: false,
+    previous_interviewers: false,
+  });
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [freeKeyWords, setFreeKeywords] = useState([]);
@@ -1034,7 +1043,10 @@ function SchedulingSettings({
             <ShowCode.When
               isTrue={router.query.subtab == settingSubNavItem.DEBRIEFDEFAULTS}
             >
-              <DebriefDefaults />
+              <DebriefDefaults
+                value={debriefDefaults}
+                setValue={setDebriefDefaults}
+              />
             </ShowCode.When>
           </>
         }
