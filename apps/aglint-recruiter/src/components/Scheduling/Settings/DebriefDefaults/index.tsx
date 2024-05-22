@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { schedulingSettingType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Attendee } from '@/devlink2/Attendee';
 import { DebriefDefaults as DebriefDefaultsDev } from '@/devlink3/DebriefDefaults';
@@ -24,24 +24,45 @@ const DebriefDefaults = ({ value, setValue }: DebriefDefaultsProps) => {
 };
 
 const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
-  const toggles = Object.entries(value).map(([key, value]) => (
-    <Attendee
-      key={key}
-      textRole={capitalizeAll(key)}
-      slotToggle={
-        <AntSwitch
-          checked={value}
-          onClick={() =>
-            setValue((prev) => ({
-              ...prev,
-              [key]: !prev[key],
-            }))
+  const {
+    hiring_manager,
+    previous_interviewers,
+    recruiter,
+    recruiting_coordinator,
+    sourcer,
+  } = Object.entries(value).reduce(
+    (acc, [key, value]) => {
+      acc[key] = (
+        <Attendee
+          key={key}
+          textRole={capitalizeAll(key)}
+          slotToggle={
+            <AntSwitch
+              checked={value}
+              onClick={() =>
+                setValue((prev) => ({
+                  ...prev,
+                  [key]: !prev[key],
+                }))
+              }
+            />
           }
+          slotSelectedMemberPill={<></>}
         />
-      }
-      slotSelectedMemberPill={<></>}
-    />
-  ));
-  return <Stack gap={2}>{toggles}</Stack>;
+      );
+      return acc;
+    },
+    // eslint-disable-next-line no-unused-vars
+    {} as { [id in keyof DebriefDefaultsProps['value']]: React.JSX.Element },
+  );
+  return (
+    <Stack gap={2}>
+      {hiring_manager}
+      {recruiter}
+      {recruiting_coordinator}
+      {sourcer}
+      {previous_interviewers}
+    </Stack>
+  );
 };
 export default DebriefDefaults;
