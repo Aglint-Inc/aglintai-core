@@ -115,4 +115,12 @@ export type ScheduleListType = {
     }[];
     accepted_status: DatabaseEnums['session_accepted_status'];
   }[];
+  candidate: {
+    candidate_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    application_id: string;
+  };
 }[];

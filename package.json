@@ -9,9 +9,10 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > packages/shared-types/src/schema.ts",
+    "supabase": "npx supabase gen types typescript --project-id plionpfmgvenmdwwjzac --schema public > packages/shared-types/src/db/schema.types.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "autofix": "eslint . --fix"
+    "autofix": "eslint . --fix",
+    "pull": "git pull origin development --no-rebase"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

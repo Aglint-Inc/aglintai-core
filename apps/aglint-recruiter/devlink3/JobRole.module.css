@@ -1,7 +1,6 @@
 .div-block-1710 {
-  border: 1px solid #e9ebed;
   border-radius: 10px;
-  background-color: white;
+  background-color: #f7f9fb;
 }
 
 .div-block-1711 {
@@ -9,11 +8,6 @@
   padding: 10px 16px;
   justify-content: space-between;
   align-items: center;
-
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-
-  background-color: #f7f9fb;
 }
 
 .fw-semibold {
@@ -107,37 +101,8 @@
   color: #467b7c;
 }
 
-.icons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.icons.cursor-pointer {
-  transition: all 250ms ease;
-  cursor: pointer;
-}
-
-.icons.cursor-pointer:hover {
-  opacity: 0.8;
-}
-
-.icons.cursor-pointer.mr-20 {
-  margin-right: 20px;
-  transition-property: none;
-}
-
-.icons.task-hover {
-  position: absolute;
-  left: 50px;
-  top: -10px;
-  right: auto;
-  bottom: auto;
-}
-
-.icons.pointer {
-  cursor: pointer;
+.hide {
+  display: none;
 }
 
 .div-block-1712 {
@@ -147,4 +112,14 @@
   flex-wrap: nowrap;
   grid-column-gap: 16px;
   grid-row-gap: 16px;
+}
+
+.div-block-1712.gap-20 {
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.div-block-1712.gap-20-copy {
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }

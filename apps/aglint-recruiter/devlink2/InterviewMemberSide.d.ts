@@ -10,8 +10,6 @@ declare function InterviewMemberSide(props: {
   onClickCompleted?: Types.Devlink.RuntimeProps;
   onClickCancelled?: Types.Devlink.RuntimeProps;
   isCancelActive?: Types.Visibility.VisibilityConditions;
-  onClickAll?: Types.Devlink.RuntimeProps;
-  isAllActive?: Types.Visibility.VisibilityConditions;
   propsGrids?: Types.Devlink.RuntimeProps;
   slotInterview?: Types.Devlink.Slot;
   onClickWaiting?: Types.Devlink.RuntimeProps;

@@ -290,14 +290,28 @@ const InterviewSession = ({
   const {
     getLoadingState,
     interviewPlans: { data },
+    companyMembers,
     job,
     handleReorderSessions,
   } = useJobInterviewPlan();
   const [hover, setHover] = useState(false);
+  const team = Object.entries(session.members_meta).reduce(
+    (acc, [key, value]) => {
+      if (!acc.has(key) && value) {
+        const member =
+          !!(job?.[key] ?? undefined) &&
+          companyMembers.data.find(({ user_id }) => user_id === job[key]);
+        if (member) acc.set(member.user_id, member);
+      }
+      return acc;
+    },
+    new Map<string, (typeof companyMembers)['data'][number]>(),
+  );
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
-        if (curr.recruiter_user) acc.members.push(curr.recruiter_user);
+        if (curr.recruiter_user && !team.has(curr.recruiter_user.user_id))
+          acc.members.push(curr.recruiter_user);
       } else {
         if (curr.interview_module_relation.recruiter_user) {
           acc[curr.interviewer_type].push(
@@ -308,7 +322,11 @@ const InterviewSession = ({
 
       return acc;
     },
-    { qualified: [], training: [], members: [] } as InterviewSessonMembers & {
+    {
+      qualified: [],
+      training: [],
+      members: [...team.values()],
+    } as InterviewSessonMembers & {
       members: CompanyMember[];
     },
   );
