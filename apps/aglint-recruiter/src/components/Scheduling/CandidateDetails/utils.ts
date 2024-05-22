@@ -7,8 +7,7 @@ import {
   InterviewSessionRelationTypeDB,
   InterviewSessionTypeDB,
   JobApplcationDB,
-  RecruiterUserType,
-  SupabaseType,
+  SupabaseType
 } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -241,7 +240,12 @@ export const sendToCandidate = async ({
     end_date: string;
   };
   schedulingOptions: SchedulingApplication['schedulingOptions'];
-  recruiterUser: RecruiterUserType;
+  recruiterUser: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    user_id: string;
+  };
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
 }) => {
