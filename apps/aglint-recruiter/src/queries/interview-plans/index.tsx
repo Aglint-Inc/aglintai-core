@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { getInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
+import { GetInterviewPlansType } from '@/src/pages/api/scheduling/get_interview_plans';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -259,7 +259,7 @@ export const createInterviewPlan = async (job_id: string) => {
 export const getInterviewPlansAPI = async (job_id: string) => {
   return (
     await axios.get(`/api/scheduling/get_interview_plans?job_id=${job_id}`)
-  ).data as ReturnType<getInterviewPlansType>;
+  ).data as GetInterviewPlansType['respone'];
 };
 
 export type CreateInterviewSession = Omit<
