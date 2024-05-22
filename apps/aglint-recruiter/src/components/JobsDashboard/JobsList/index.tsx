@@ -275,14 +275,14 @@ export default JobsList;
 const useJobFilterAndSort = (jobs: Job[]) => {
   const { members } = useAuthDetails();
   const sortOptions = {
-    type: ['publics_date', 'name'] as const,
+    type: ['published_date', 'name'] as const,
     order: ['desc', 'asce'] as const,
   };
   const [sort, setSort] = useState<{
     type: (typeof sortOptions.type)[number];
     order: (typeof sortOptions.order)[number];
   }>({
-    type: 'publics_date',
+    type: 'published_date',
     order: 'desc',
   });
   const [filterValues, setFilterValues] = useState({
@@ -420,6 +420,7 @@ const useJobFilterAndSort = (jobs: Job[]) => {
       );
     return temp;
   }, [
+    jobs,
     locationFilterValues,
     typeFilterValues,
     hiringManagerFilterValues,
@@ -431,29 +432,21 @@ const useJobFilterAndSort = (jobs: Job[]) => {
   ]);
   const sortedJobs = useMemo(() => {
     return filteredJobs.sort((a, b) => {
-      if (sort.type === 'publics_date') {
-        // console.log(
-        //   a.created_at,
-        //   b.created_at,
-        //   (new Date(b.created_at).getTime() -
-        //     new Date(a.created_at).getTime()) *
-        //     (sort.order === 'desc' ? 1 : -1),
-        // );
+      if (sort.type === 'name') {
+        return (
+          a.job_title.localeCompare(b.job_title) *
+          (sort.order === 'asce' ? 1 : -1)
+        );
+      } else {
         return (
           (new Date(b.created_at).getTime() -
             new Date(a.created_at).getTime()) *
           (sort.order === 'desc' ? 1 : -1)
         );
-      } else {
-        return (
-          a.job_title.localeCompare(b.job_title) *
-          (sort.order === 'asce' ? 1 : -1)
-        );
       }
     });
   }, [filteredJobs, sort.order, sort.type]);
   let filterOptions = getFilterOptions(filteredJobs);
-
   return {
     sortOptions,
     setSort,
