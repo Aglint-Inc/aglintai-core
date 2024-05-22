@@ -785,10 +785,11 @@ export class CandidatesScheduling {
               this.db_details.all_session_int_details[sess.session_id]
                 .interviewers[int.user_id].pause_json;
             if (int_pause && int_pause.isManual) {
-              return false;
+              return true;
             }
           }
         }
+        return true;
       };
 
       if (
