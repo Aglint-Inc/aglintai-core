@@ -1069,7 +1069,7 @@ export class CandidatesScheduling {
         }
 
         const common_time = getInterviewersCommonTime(curr_session);
-        const is_conflict_free = common_time.some((free_time_chunk) => {
+        const is_slot_free = common_time.some((free_time_chunk) => {
           return isTimeChunksEnclosed(
             {
               startTime: userTzDayjs(free_time_chunk.startTime),
@@ -1087,12 +1087,12 @@ export class CandidatesScheduling {
           start_time: curr_sess_start_time.format(),
           end_time: curr_sess_end_time.format(),
           ints_conflicts: [],
-          is_conflict_free: true,
+          is_conflict: false,
         };
 
-        if (!is_conflict_free) {
+        if (!is_slot_free) {
           session_slot = getConflictsInSession(session_slot);
-          session_slot.is_conflict_free = false;
+          session_slot.is_conflict = true;
         }
 
         if (session_idx + 1 === plan_comb.length) {
