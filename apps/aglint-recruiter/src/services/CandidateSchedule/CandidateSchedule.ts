@@ -1145,7 +1145,7 @@ export class CandidatesScheduling {
   };
 
   private findCommonTimeRange = (ints_meta: FuncParams): TimeDurationType[] => {
-    //TODO: rewrite the merging function
+    //TODO: rewrite the merging function for beeter understanding
 
     //NOTE: its a place we can do  optimize
     const subtractpauseTimeFromFreeTimeRange = (inters: FuncParams) => {
