@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { agentsDetails, TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { useInterviewerList } from '../Components/AssigneeChip';
@@ -20,7 +20,6 @@ import {
   PriorityIcon,
   StatusIcon,
 } from '../TaskBody/GroupBy';
-import { agentsDetails } from '../utils';
 
 // let setTime;
 type SubTaskIndex = { taskIndex: number | null; subTaskIndex: number | null };

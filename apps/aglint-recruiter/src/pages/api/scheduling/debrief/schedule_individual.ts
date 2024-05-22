@@ -1,29 +1,54 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
-import { ApiFindAvailability, DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  APICandidateConfirmSlot,
+  ApiFindAvailability,
+  DatabaseTableInsert,
+} from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { ApiResponseFindAvailability } from '@/src/components/Scheduling/CandidateDetails/types';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
-import toast from '@/src/utils/toast';
 
 export type ApiBodyParamScheduleIndividual = {
-  schedule_id: string;
+  session_id: string;
   application_id: string;
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+  recruiter_id: string;
+  task_id: string;
+  recruiter_user_name: string;
+  rec_user_id: string;
+  user_tz: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { schedule_id, application_id } =
-      req.body as ApiBodyParamScheduleIndividual;
-    console.log(schedule_id, 'schedule_id');
+    const {
+      application_id,
+      dateRange,
+      rec_user_id,
+      recruiter_id,
+      session_id,
+      recruiter_user_name,
+      task_id,
+      user_tz,
+    } = req.body as ApiBodyParamScheduleIndividual;
 
-    if (!schedule_id) {
+    console.log(application_id, 'application_id');
+
+    if (!application_id) {
       return res.status(400).send('Missing required parameters');
     }
     const scheduleMeetingsSessions =
-      await fetchScheduleMeetingsSession(schedule_id);
+      await fetchScheduleMeetingsSession(application_id);
+
+    const schedule_id = scheduleMeetingsSessions.id;
 
     if (!scheduleMeetingsSessions) {
       console.log('unable to fetch schedule meetings sessions relations');
@@ -47,21 +72,45 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     const jobData = await fetchJob(application_id);
-    const recruiter_id = jobData.public_jobs.recruiter.id;
 
     const sessionRelationHandler = await sessionRelationHander({
-      session_id: selectedDebrief.interview_session.id,
+      session_id,
       jobData: jobData.public_jobs,
       sortFilterConfirmedMeetings,
     });
 
     const availabilities = await findAvailibility({
       recruiter_id: recruiter_id,
-      session_id: selectedDebrief.interview_session.id,
+      session_id,
+      dateRange,
+    });
+
+    if (availabilities.plan_combs.length === 0) {
+      console.log('no availibity found');
+      await updateFailedTask({
+        dateRange,
+        rec_user_id,
+        recruiter_user_name,
+        task_id,
+      });
+      return res.status(200).send('no availibity found');
+    }
+
+    const firstSlot = availabilities.plan_combs[0].sessions[0];
+    const candidate_email = jobData.candidates.email;
+
+    await confirmSlot({
+      candidate_email,
+      start_time: firstSlot.start_time,
+      end_time: firstSlot.end_time,
+      recruiter_id,
+      schedule_id,
+      session_id,
+      task_id,
+      user_tz,
     });
 
     return res.status(200).send({
-      availabilities,
       jobData,
       sessionRelationHandler,
       checkSessionRelations,
@@ -73,6 +122,59 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+const confirmSlot = async ({
+  session_id,
+  start_time,
+  end_time,
+  recruiter_id,
+  candidate_email,
+  task_id,
+  user_tz,
+  schedule_id,
+}: {
+  session_id: string;
+  start_time: string;
+  end_time: string;
+  recruiter_id: string;
+  candidate_email: string;
+  task_id: string;
+  user_tz: string;
+  schedule_id: string;
+}) => {
+  const bodyParams: APICandidateConfirmSlot = {
+    candidate_plan: [
+      {
+        sessions: [
+          {
+            session_id: session_id,
+            start_time: start_time,
+            end_time: end_time,
+          },
+        ],
+      },
+    ],
+    recruiter_id,
+    user_tz,
+    candidate_email,
+    is_debreif: true,
+    task_id,
+    agent_type: 'self',
+    schedule_id,
+  };
+
+  const resConfirmSlot = await axios.post(
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
+    bodyParams,
+  );
+
+  if (resConfirmSlot.status === 200) {
+    console.log(`confirmed slot ad  ${start_time}`);
+    return true;
+  } else {
+    throw new Error('error in confirm_interview_slot api');
+  }
+};
 
 const findSessionRelations = (sessions) => {
   let previousDebriefCompleted = false;
@@ -132,13 +234,13 @@ const findSessionRelations = (sessions) => {
   };
 };
 
-const fetchScheduleMeetingsSession = async (schedule_id: string) => {
+const fetchScheduleMeetingsSession = async (application_id: string) => {
   const { data, error } = await supabaseAdmin
     .from('interview_schedule')
     .select(
       '*,interview_meeting(*,interview_session(*,interview_session_relation(id,is_confirmed,interview_module_relation(user_id))))',
     )
-    .eq('id', schedule_id);
+    .eq('application_id', application_id);
 
   if (error) throw new Error(error.message);
   else return data[0];
@@ -159,6 +261,8 @@ const sortBySessionOrderFilterConfirmedRelations = (
       return {
         id: meet.id,
         status: meet.status,
+        start_time: meet.start_time,
+        end_time: meet.end_time,
         interview_session: {
           id: meet.interview_session[0].id,
           session_order: meet.interview_session[0].session_order,
@@ -185,7 +289,9 @@ const sessionRelationHander = async ({
 }) => {
   const { data, error } = await supabaseAdmin
     .from('interview_session')
-    .select('*,interview_session_relation(id,recruiter_user(user_id))')
+    .select(
+      '*,interview_session_relation(id,recruiter_user(user_id)),interview_meeting(*)',
+    )
     .eq('session_type', 'debrief') // not needed actually
     .eq('id', session_id)
     .single();
@@ -248,7 +354,8 @@ const sessionRelationHander = async ({
   if (intertableUserIds.length > 0) {
     const { error } = await supabaseAdmin
       .from('interview_session_relation')
-      .upsert(insertSessionRelations);
+      .upsert(insertSessionRelations)
+      .select();
 
     if (error) throw new Error(error.message);
     else {
@@ -265,7 +372,7 @@ const fetchJob = async (application_id: string) => {
   const { data, error } = await supabaseAdmin
     .from('applications')
     .select(
-      'id,public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator,recruiter!public_jobs_recruiter_id_fkey(id))',
+      'id,candidates(*),public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator,recruiter!public_jobs_recruiter_id_fkey(id),recruiter_user!public_jobs_hiring_manager_fkey(user_id,first_name,last_name,email,profile_image))',
     )
     .eq('id', application_id)
     .single();
@@ -277,19 +384,22 @@ const fetchJob = async (application_id: string) => {
 const findAvailibility = async ({
   session_id,
   recruiter_id,
+  dateRange,
 }: {
   session_id: string;
   recruiter_id: string;
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
 }) => {
-  const today = dayjs();
-  const endDay = dayjs().add(2, 'day');
   const resAllOptions = await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/find_availability`,
     {
       session_ids: [session_id],
       recruiter_id: recruiter_id,
-      start_date: dayjs(today).format('DD/MM/YYYY'),
-      end_date: dayjs(endDay).format('DD/MM/YYYY'),
+      start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+      end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
       user_tz: 'America/Los_Angeles',
       is_debreif: true,
     } as ApiFindAvailability,
@@ -298,5 +408,45 @@ const findAvailibility = async ({
   if (resAllOptions.data.length === 0) {
     console.log('No availability found.');
     return;
-  } else return resAllOptions.data;
+  } else return resAllOptions.data as ApiResponseFindAvailability;
+};
+
+const updateFailedTask = async ({
+  task_id,
+  rec_user_id,
+  recruiter_user_name,
+  dateRange,
+}: {
+  task_id: string;
+  rec_user_id: string;
+  recruiter_user_name: string;
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+}) => {
+  const { error: errorTasks } = await supabaseAdmin
+    .from('new_tasks')
+    .update({
+      status: 'failed',
+    })
+    .eq('id', task_id);
+
+  if (errorTasks) throw new Error(errorTasks.message);
+
+  await createTaskProgress({
+    type: 'slots_failed',
+    data: {
+      progress_type: 'standard',
+      created_by: { id: rec_user_id, name: recruiter_user_name },
+      task_id: task_id,
+    },
+    optionData: {
+      prevScheduleDateRange: {
+        start_date: dateRange.start_date,
+        end_date: dateRange.end_date,
+      },
+    },
+    supabaseCaller: supabaseAdmin,
+  });
 };
