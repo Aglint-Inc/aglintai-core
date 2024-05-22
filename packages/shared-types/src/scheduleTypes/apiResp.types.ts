@@ -7,7 +7,12 @@ import { InterviewerSessionRelation, RecruiterUserType } from '../data.types';
 import { InterviewSessionApiType } from './types';
 
 export type ConflictReason = {
-  conflict_type: 'soft' | 'hard' | 'ooo';
+  conflict_type:
+    | 'soft'
+    | 'hard'
+    | 'ooo'
+    | 'calender_diconnected'
+    | 'interviewer_paused';
   conflict_event: string;
   start_time: string;
   end_time: string;

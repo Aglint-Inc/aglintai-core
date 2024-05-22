@@ -803,7 +803,8 @@ export class CandidatesScheduling {
         return [];
       }
 
-      const getIntsNotAvailableInSlotTime = (
+      //TODO:
+      const getOutOfWorkHrsMeetAttendees = (
         curr_sess: InterviewSessionApiRespType,
         slot_start_time: string,
         slot_end_time: string,
@@ -854,7 +855,46 @@ export class CandidatesScheduling {
         }
         return ints;
       };
+      const getPausedMeetAttendees = (
+        curr_sess: InterviewSessionApiRespType,
+        slot_start_time: string,
+        slot_end_time: string,
+      ) => {
+        const attendes = [
+          ...curr_sess.qualifiedIntervs,
+          ...curr_sess.trainingIntervs,
+        ].filter((int) => {
+          const pause_json =
+            this.db_details.all_session_int_details[curr_sess.session_id]
+              .interviewers[int.user_id].pause_json;
+          if (pause_json && !pause_json.isManual) {
+            return isTimeChunksEnclosed(
+              {
+                startTime: this.getTimeInCandTimeZone(pause_json.start_date),
+                endTime: this.getTimeInCandTimeZone(pause_json.end_date),
+              },
+              {
+                startTime: this.getTimeInCandTimeZone(slot_start_time),
+                endTime: this.getTimeInCandTimeZone(slot_end_time),
+              },
+            );
+          }
+          return false;
+        });
+        return attendes;
+      };
 
+      /**
+       * checking  conflicts
+       * soft conflicts with key words,
+       * hard conflicts any meeting,
+       * out of office,
+       * interviewer paused
+       * calender disconnected
+       * interviewer load  TODO: later
+       * @param sess_slot
+       * @returns
+       */
       const getConflictsInSession = (sess_slot: SessionCombinationRespType) => {
         const upd_sess_slot: SessionCombinationRespType = { ...sess_slot };
         const session_attendees: SessionInterviewerApiRespType[] = [
@@ -890,9 +930,55 @@ export class CandidatesScheduling {
           return 'hard';
         };
         for (const attendee of session_attendees) {
+          const conflict_reasons: ConflictReason[] = [];
+          const attendee_pause_info =
+            this.db_details.all_session_int_details[sess_slot.session_id]
+              .interviewers[attendee.user_id].pause_json;
+          if (attendee_pause_info) {
+            if (attendee_pause_info.isManual) {
+              conflict_reasons.push({
+                conflict_event: null,
+                conflict_type: 'interviewer_paused',
+                end_time: null,
+                start_time: null,
+              });
+            }
+            if (
+              isTimeChunksEnclosed(
+                {
+                  startTime: this.getTimeInCandTimeZone(
+                    attendee_pause_info.start_date,
+                  ),
+                  endTime: this.getTimeInCandTimeZone(
+                    attendee_pause_info.end_date,
+                  ),
+                },
+                {
+                  startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
+                  endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
+                },
+              )
+            ) {
+              conflict_reasons.push({
+                conflict_type: 'interviewer_paused',
+                conflict_event: null,
+                start_time: attendee_pause_info.start_date,
+                end_time: attendee_pause_info.end_date,
+              });
+            }
+          }
+
           const int_with_events = this.intervs_details_with_events.find(
             (int) => int.interviewer_id === attendee.user_id,
           );
+          if (!int_with_events.isCalenderConnected) {
+            conflict_reasons.push({
+              conflict_event: '',
+              conflict_type: 'calender_diconnected',
+              start_time: '',
+              end_time: '',
+            });
+          }
           const conflicting_events = int_with_events.events.filter(
             (cal_event) => {
               return isTimeChunksOverLapps(
@@ -911,7 +997,6 @@ export class CandidatesScheduling {
               );
             },
           );
-          const conflict_reasons: ConflictReason[] = [];
           conflicting_events.forEach((conf_ev) => {
             const ev_type = getCalEventType(
               this.db_details.comp_schedule_setting,
@@ -948,13 +1033,25 @@ export class CandidatesScheduling {
           session_start_time,
         ).add(curr_session.duration, 'minutes');
 
-        const not_avail_ints = getIntsNotAvailableInSlotTime(
+        const not_avail_ints = getOutOfWorkHrsMeetAttendees(
           curr_session,
           curr_sess_start_time.format(),
           curr_sess_end_time.format(),
         );
-        //TODO: reason why are they not available
+
+        const paused_inters = getPausedMeetAttendees(
+          curr_session,
+          session_start_time,
+          curr_sess_end_time.format(),
+        );
+        //TODO: can we include reason ??
         if (not_avail_ints.length > 0) {
+          return [];
+        }
+        if (
+          this.disabled_overrides.interviewer_pause &&
+          paused_inters.length > 0
+        ) {
           return [];
         }
 
@@ -999,8 +1096,6 @@ export class CandidatesScheduling {
       // TODO:
       // if (!this.overrides.interviewer_load && !isPlanPossible())
       //   return schedule_combs;
-      // TODO: is company holiday
-      // TODO: is company day_off
       const day_start = currDay.startOf('day');
       const day_end = currDay.add(1, 'day').startOf('day');
       let curr_time = this.getFlooredNearestCurrentTime(); //NOTE: take current time 60 minutes later
@@ -1565,4 +1660,6 @@ export class CandidatesScheduling {
 /***check next working day
  * training people optional
  * pause and load check
+ * is company holiday
+ * is company day_off
  */
