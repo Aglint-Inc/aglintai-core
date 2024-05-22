@@ -56,6 +56,7 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
+import DebriefDefaults from './DebriefDefaults';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
 import { settingSubNavItem } from './SubNav/utils';
@@ -1030,6 +1031,11 @@ function SchedulingSettings({
             >
               <SchedulingRegions />
             </ShowCode.When>
+            <ShowCode.When
+              isTrue={router.query.subtab == settingSubNavItem.DEBRIEFDEFAULTS}
+            >
+              <DebriefDefaults />
+            </ShowCode.When>
           </>
         }
       />
@@ -1105,6 +1111,7 @@ const settingsItems = [
   { label: 'Keywords', value: 'keywords' },
   { label: 'Email Template', value: 'emailTemplate' },
   { label: 'Scheduling Reasons', value: 'reasons' },
+  { label: 'Debrief Defaults', value: 'debriefDefaults' },
 ];
 
 function SettingsSubNabItem() {
