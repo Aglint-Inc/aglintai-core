@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CustomDatabase } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Popover, Stack, Typography } from '@mui/material';
 import React from 'react';
 
@@ -13,10 +13,8 @@ function SelectStatus({
   isOptionList = true,
   onChange,
 }: {
-  status: CustomDatabase['public']['Enums']['task_status'];
-  setSelectedStatus: (
-    x: CustomDatabase['public']['Enums']['task_status'],
-  ) => void;
+  status: DB['public']['Enums']['task_status'];
+  setSelectedStatus: (x: DB['public']['Enums']['task_status']) => void;
   isOptionList?: boolean;
   onChange?: any;
 }) {
@@ -82,7 +80,7 @@ function SelectStatus({
                 {
                   id,
                 }: {
-                  id: CustomDatabase['public']['Enums']['task_status'];
+                  id: DB['public']['Enums']['task_status'];
                 },
                 i,
               ) => {

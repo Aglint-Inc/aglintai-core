@@ -10,7 +10,7 @@ import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { addScheduleActivity } from '@/src/components/Scheduling/AllSchedules/queries/utils';
+import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { CompanyEmailsTypeDB } from '@/src/types/companyEmailTypes';
 import { createICSAttachment } from '@/src/utils/apiUtils/mailthankyou/ceateIcsContent';
 import { EmailTemplateFiller } from '@/src/utils/emailTemplate/EmailTemplateFiller';
@@ -47,9 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     addScheduleActivity({
-      title: `Candidate confirmed ${session_details
-        .map((ses) => ses.name)
-        .join(' , ')}`,
+      title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
       application_id: filterJson.interview_schedule.application_id,
       logger: filterJson.interview_schedule.application_id,
       type: 'schedule',

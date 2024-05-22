@@ -19,7 +19,7 @@
 // import { Priority } from '@/devlink/Priority';
 // import { StatusPill } from '@/devlink/StatusPill';
 // import { TicketEmptyState } from '@/devlink/TicketEmptyState';
-// import { WelcomeMatTickets } from '@/devlink2';
+// import { WelcomeMatTickets } from '@/devlink2/WelcomeMatTickets';
 // // import {
 // //   getPriorityIcon,
 // //   useSupportContext,

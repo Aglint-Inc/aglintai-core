@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
 import { useRef, useState } from 'react';
 
-import { MoveAssessment } from '@/devlink2';
+import { MoveAssessment } from '@/devlink2/MoveAssessment';
 import { TaskUpdateButton } from '@/devlink3/TaskUpdateButton';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';

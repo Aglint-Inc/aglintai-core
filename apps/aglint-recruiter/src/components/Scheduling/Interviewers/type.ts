@@ -1,6 +1,7 @@
 import { InterviewModuleType, RecruiterUserType } from '@aglint/shared-types';
 
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
+import { ScheduleListType } from '../Common/ModuleSchedules/hooks';
+import { ModuleType } from '../InterviewTypes/types';
 
 export interface InterviewerDetailsType {
   modules: {
@@ -20,6 +21,15 @@ export interface InterviewerDetailsType {
   }[];
   interviewer: RecruiterUserType;
 }
+
+export type DetailsWithCount = Omit<InterviewerDetailsType, 'modules'> & {
+  modules: (InterviewerDetailsType['modules'][number] & {
+    cancelledCount: number;
+    completedCount: number;
+    confirmedCount: number;
+    moduleMeetings: ScheduleListType;
+  })[];
+};
 
 export type PauseDialog = {
   isOpen: boolean;

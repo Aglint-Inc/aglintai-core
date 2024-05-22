@@ -19,22 +19,19 @@ import { capitalize, cloneDeep } from 'lodash';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 
-import {
-  DayOff,
-  KeywordCard,
-  Keywords,
-  RcCheckbox,
-  ScheduleSettings,
-  TimeRangeInput,
-  WorkingHourDay,
-} from '@/devlink2';
+import { DayOff } from '@/devlink2/DayOff';
+import { KeywordCard } from '@/devlink2/KeywordCard';
+import { Keywords } from '@/devlink2/Keywords';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { ScheduleSettings } from '@/devlink2/ScheduleSettings';
+import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
+import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import FilterInput from '@/src/components/CandidateDatabase/Search/FilterInput';
 import Icon from '@/src/components/Common/Icons/Icon';
 import UITextField from '@/src/components/Common/UITextField';
 import DateSelect from '@/src/components/Scheduling/Settings/Components/DateSelector';
 import MuiSelect from '@/src/components/Scheduling/Settings/Components/MuiSelect';
 import SelectTime from '@/src/components/Scheduling/Settings/Components/SelectTime';
-import ToggleBtn from '@/src/components/Scheduling/Settings/Components/ToggleBtn';
 import { hoursList } from '@/src/components/Scheduling/Settings/utils';
 import timeZones from '@/src/utils/timeZone';
 import toast from '@/src/utils/toast';
@@ -234,7 +231,7 @@ function InterviewerLevelSettings({
               flexDirection={'column-reverse'}
               gap={'10px'}
             >
-              <Stack
+              {/* <Stack
                 alignItems={'center'}
                 direction={'row'}
                 marginLeft={'-10px !important'}
@@ -255,7 +252,7 @@ function InterviewerLevelSettings({
                 <Typography fontSize={'14px'} variant='caption'>
                   Get timezone automatically
                 </Typography>
-              </Stack>
+              </Stack> */}
 
               <Autocomplete
                 disabled={isTimeZone}
@@ -493,7 +490,7 @@ function InterviewerLevelSettings({
                 })}
               />
               <KeywordCard
-                textTitle={'Soft conflicts'}
+                textTitle={'Soft Conflicts'}
                 textWarning={
                   'If these keywords are detected in a calendar event title, any interviews that overlap with these events will be seen as a soft conflict and will be scheduled only on your confirmation'
                 }

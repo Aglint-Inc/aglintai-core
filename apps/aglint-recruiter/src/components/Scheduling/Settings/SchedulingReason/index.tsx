@@ -11,12 +11,10 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import {
-  NewTabPill,
-  ReasonList,
-  ScheduleReason,
-  ScheduleReasonSection,
-} from '@/devlink3';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ReasonList } from '@/devlink3/ReasonList';
+import { ScheduleReason } from '@/devlink3/ScheduleReason';
+import { ScheduleReasonSection } from '@/devlink3/ScheduleReasonSection';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
@@ -27,7 +25,7 @@ const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
     rescheduling: ['other'],
     cancellation: ['other'],
   },
-  company: {
+  internal: {
     rescheduling: ['other'],
     cancellation: ['other'],
     decline: ['other'],
@@ -86,8 +84,8 @@ const SchedulingRegions = () => {
         isMainHeadingVisible={true}
         textMainHeading={
           tab === 'candidate'
-            ? 'Interview Scheduling Options'
-            : 'Interview Management Options'
+            ? 'Set Rescheduling & Cancellation Reasons'
+            : 'Set Decline Rescheduling & Cancellation Reasons'
         }
         textMainHelperText={
           tab === 'candidate'
@@ -108,7 +106,7 @@ const SchedulingRegions = () => {
                   description={`Add reasons for ${capitalizeFirstLetter(
                     item,
                   )}. These options will be available when the ${capitalizeFirstLetter(
-                    tab === 'company' ? 'Internal user' : tab,
+                    tab === 'internal' ? 'Internal user' : tab,
                   )} ${
                     item === 'decline'
                       ? 'decline the Session'

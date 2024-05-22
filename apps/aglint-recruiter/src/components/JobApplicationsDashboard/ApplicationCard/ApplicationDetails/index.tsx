@@ -15,47 +15,45 @@ import React, {
 } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import {
-  AssessmentInvite,
-  CandidateDetails,
-  CandidateEducation,
-  CandidateEducationCard,
-  CandidateExperience,
-  CandidateExperienceCard,
-  CandidateInterviewScore,
-  CandidateResumeScore,
-  CandidateSideDrawer,
-  CandidateSkill,
-  CandidateSkillPills,
-  DetailedFeedbackCardSmall,
-  FeedbackScore,
-  InterviewResultStatus,
-  JobDetailInterview,
-  ResumeFeedbackScore,
-  TaskDetailBlock,
-  UnableFetchResume,
-} from '@/devlink';
-import {
-  AnalysisBlock,
-  ButtonWide,
-  ResAbsentError,
-  ResumeErrorBlock,
-  ScreeningLandingPop,
-  ScrQuestionListItem,
-  SidebarAnalysisBlock,
-  SidebarScreening,
-  StatusBadge,
-  SummaryBlock,
-  UploadCandidateResume,
-} from '@/devlink2';
-import {
-  ButtonPrimaryOutlinedRegular,
-  DangerMessage,
-  NewInterviewPlanCard,
-  NewTabPill,
-} from '@/devlink3';
+import { AssessmentInvite } from '@/devlink/AssessmentInvite';
+import { BookMark } from '@/devlink/BookMark';
+import { CandidateDetails } from '@/devlink/CandidateDetails';
+import { CandidateEducation } from '@/devlink/CandidateEducation';
+import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
+import { CandidateExperience } from '@/devlink/CandidateExperience';
+import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
+import { CandidateInterviewScore } from '@/devlink/CandidateInterviewScore';
+import { CandidateResumeScore } from '@/devlink/CandidateResumeScore';
+import { CandidateSideDrawer } from '@/devlink/CandidateSideDrawer';
+import { CandidateSkill } from '@/devlink/CandidateSkill';
+import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+import { DetailedFeedbackCardSmall } from '@/devlink/DetailedFeedbackCardSmall';
+import { FeedbackScore } from '@/devlink/FeedbackScore';
+import { InterviewResultStatus } from '@/devlink/InterviewResultStatus';
+import { JobDetailInterview } from '@/devlink/JobDetailInterview';
+import { ResumeFeedbackScore } from '@/devlink/ResumeFeedbackScore';
+import { TaskDetailBlock } from '@/devlink/TaskDetailBlock';
+import { UnableFetchResume } from '@/devlink/UnableFetchResume';
+import { AnalysisBlock } from '@/devlink2/AnalysisBlock';
+import { BookmarkDark } from '@/devlink2/BookmarkDark';
+import { ButtonWide } from '@/devlink2/ButtonWide';
+import { ResAbsentError } from '@/devlink2/ResAbsentError';
+import { ResumeErrorBlock } from '@/devlink2/ResumeErrorBlock';
+import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
+import { ScrQuestionListItem } from '@/devlink2/ScrQuestionListItem';
+import { SidebarAnalysisBlock } from '@/devlink2/SidebarAnalysisBlock';
+import { SidebarScreening } from '@/devlink2/SidebarScreening';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { SummaryBlock } from '@/devlink2/SummaryBlock';
+import { UploadCandidateResume } from '@/devlink2/UploadCandidateResume';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
+import { DangerMessage } from '@/devlink3/DangerMessage';
+import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
+import { NewTabPill } from '@/devlink3/NewTabPill';
+import { ResumeWrap } from '@/devlink3/ResumeWrap';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
+import Loader from '@/src/components/Common/Loader';
 import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
@@ -67,11 +65,11 @@ import { SmallCircularScore2 } from '@/src/components/Common/SmallCircularScore'
 import UITextField from '@/src/components/Common/UITextField';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { PhoneScreeningResponseType } from '@/src/components/KnockOffQns/ScreeningCtxProvider';
-import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
 import {
   getScheduleBgcolor,
   getScheduleType,
-} from '@/src/components/Scheduling/AllSchedules/utils';
+} from '@/src/components/Scheduling/Candidates/utils';
 import {
   getScheduleDate,
   ScheduleProgressPillProps,
@@ -140,6 +138,7 @@ const ApplicationDetails = ({
   handleSelectPrevApplication?: () => void;
   hideNextPrev: boolean;
 }) => {
+  const { handleJobApplicationUpdate } = useJobApplications();
   const [drawerOpen, setDrawerOpen] = useState(open);
 
   const candidateImage = application ? (
@@ -159,6 +158,8 @@ const ApplicationDetails = ({
   useEffect(() => {
     if (open) {
       setDrawerOpen(true);
+      if (application.is_new)
+        handleJobApplicationUpdate({ is_new: false }, application.id, true);
     }
   }, [open]);
 
@@ -373,16 +374,16 @@ const NewJobApplicationSideDrawer = ({
         }}
         slotSocialLink={<SocialsBlock application={application} />}
         // isOverviewVisible={overview.valid}
-        isLocationRoleVisible={jobTitle.valid || location.valid}
-        isRoleVisible={jobTitle.valid}
+        // isLocationRoleVisible={jobTitle.valid || location.valid}
+        // isRoleVisible={jobTitle.valid}
         textRole={jobTitle.value}
-        isLocationVisible={location.valid}
+        // isLocationVisible={location.valid}
         textLocation={location.value}
         isResumeVisible={
           processState !== 'unavailable' && processState !== 'fetching'
         }
         onClickResume={{ onClick: () => setOpenResume((prev) => !prev) }}
-        slotMoveTo={<></>}
+        slotBookmark={<Bookmark application={application} />}
         slotOverview={<></>}
         slotCandidateDetails={
           <Sections
@@ -390,6 +391,8 @@ const NewJobApplicationSideDrawer = ({
             openResume={openResume}
             setOpenResume={setOpenResume}
             tab={tab}
+            handleSelectNextApplication={handleSelectNextApplication}
+            handleSelectPrevApplication={handleSelectPrevApplication}
           />
         }
         isAppliedOnVisible={true}
@@ -446,6 +449,77 @@ const NewJobApplicationSideDrawer = ({
   );
 };
 
+const Bookmark = ({
+  application,
+  dark = false,
+}: {
+  application: JobApplication;
+  dark?: boolean;
+}) => {
+  const {
+    setCardStates,
+    cardStates: {
+      checkList: { disabled, list },
+      disabledList,
+    },
+    handleJobApplicationUpdate,
+  } = useJobApplications();
+  const disable =
+    disabledList.has(application.id) || (disabled && list.has(application.id));
+  const handleBookmark = async () => {
+    if (!disable) {
+      setCardStates((prev) => ({
+        ...prev,
+        disabledList: new Set([...prev.disabledList, application.id]),
+      }));
+      await handleJobApplicationUpdate(
+        {
+          bookmarked: !application.bookmarked,
+        },
+        application.id,
+      );
+      setCardStates((prev) => {
+        return {
+          ...prev,
+          disabledList: new Set(
+            [...prev.disabledList].filter((e) => e === application.id),
+          ),
+        };
+      });
+    } else {
+      handleOngoingWarning();
+    }
+  };
+  return (
+    <Stack
+      key={application.id}
+      style={{
+        opacity: disable ? 0.4 : 1,
+        transition: '0.5s',
+        pointerEvents: disable ? 'none' : 'auto',
+      }}
+    >
+      {dark ? (
+        <BookmarkDark
+          isBookmarked={!!application?.bookmarked}
+          onClickBookmark={{
+            onClick: () => handleBookmark(),
+            style: { cursor: 'pointer' },
+          }}
+        />
+      ) : (
+        <BookMark
+          isBookMarked={!!application?.bookmarked}
+          onClickBookmark={{
+            onClick: () => handleBookmark(),
+            style: { cursor: 'pointer' },
+          }}
+        />
+      )}
+    </Stack>
+  );
+};
+
 const SocialsBlock: React.FC<{ application: JobApplication }> = ({
   application,
 }) => {
@@ -486,8 +560,17 @@ const Sections: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
   tab: TabType;
-}> = ({ application, openResume, setOpenResume, tab }) => {
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  tab,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
   switch (tab) {
     case 'Details':
       return (
@@ -495,6 +578,8 @@ const Sections: React.FC<{
           application={application}
           openResume={openResume}
           setOpenResume={setOpenResume}
+          handleSelectNextApplication={handleSelectNextApplication}
+          handleSelectPrevApplication={handleSelectPrevApplication}
         />
       );
     case 'Screening':
@@ -514,7 +599,15 @@ export const NewCandidateDetails: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
   const overview = getCandidateDetails(application, 'overview');
   const resume = application.candidate_files?.resume_json as any;
   const validity = getApplicationProcessState(application);
@@ -532,6 +625,8 @@ export const NewCandidateDetails: React.FC<{
             application={application}
             openResume={openResume}
             setOpenResume={setOpenResume}
+            handleSelectNextApplication={handleSelectNextApplication}
+            handleSelectPrevApplication={handleSelectPrevApplication}
           />
           {validApplication && (
             <>
@@ -1033,7 +1128,15 @@ const NewResumeSection: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
   const { job } = useJobApplications();
   const [upload, setUpload] = useState(false);
   return (
@@ -1042,6 +1145,8 @@ const NewResumeSection: React.FC<{
         application={application}
         openResume={openResume}
         setOpenResume={setOpenResume}
+        handleSelectNextApplication={handleSelectNextApplication}
+        handleSelectPrevApplication={handleSelectPrevApplication}
       />
       <ResumeBlock
         application={application}
@@ -1142,13 +1247,23 @@ const ResumeViewer: React.FC<{
   application: JobApplication;
   openResume: boolean;
   setOpenResume: Dispatch<SetStateAction<boolean>>;
-}> = ({ application, openResume, setOpenResume }) => {
+  handleSelectNextApplication?: () => void;
+  handleSelectPrevApplication?: () => void;
+}> = ({
+  application,
+  openResume,
+  setOpenResume,
+  handleSelectNextApplication,
+  handleSelectPrevApplication,
+}) => {
+  const name = getCandidateDetails(application, 'name');
   return (
     <Dialog
       sx={{
         '& .MuiDialog-paper': {
           borderRadius: '0px !important',
           border: 'none !important',
+          backgroundColor: '#343639',
         },
         '.MuiDialog-container': {
           height: 'auto',
@@ -1159,9 +1274,42 @@ const ResumeViewer: React.FC<{
       open={openResume}
       onClose={() => setOpenResume(false)}
     >
-      <Stack direction={'row'} justifyContent={'center'} height={'90vh'}>
-        <ResumePreviewer url={application.candidate_files?.file_url} />
-      </Stack>
+      <ResumeWrap
+        key={application?.id}
+        textName={name.value}
+        onClickDown={{ onClick: () => handleSelectNextApplication() }}
+        slotBookmark={<Bookmark application={application} dark={true} />}
+        onClickUp={{ onClick: () => handleSelectPrevApplication() }}
+        onClickClose={{ onClick: () => setOpenResume(false) }}
+        slotResume={
+          <Stack
+            direction={'row'}
+            justifyContent={'center'}
+            height={'85vh'}
+            position={'relative'}
+          >
+            <Stack
+              width={'100%'}
+              height={'100%'}
+              position={'absolute'}
+              zIndex={1}
+            >
+              <ResumePreviewer url={application.candidate_files?.file_url} />
+            </Stack>
+            <Stack
+              position={'absolute'}
+              width={'100%'}
+              height={'100%'}
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
+              zIndex={0}
+            >
+              <Loader />
+            </Stack>
+          </Stack>
+        }
+      />
     </Dialog>
   );
 };

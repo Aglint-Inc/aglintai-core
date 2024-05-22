@@ -2,7 +2,8 @@
 import { Dialog, Typography } from '@mui/material';
 import React from 'react';
 
-import { DeletePopup, ResumePop } from '@/devlink3';
+import { DeletePopup } from '@/devlink3/DeletePopup';
+import { ResumePop } from '@/devlink3/ResumePop';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 
 function DeleteMemberDialog({

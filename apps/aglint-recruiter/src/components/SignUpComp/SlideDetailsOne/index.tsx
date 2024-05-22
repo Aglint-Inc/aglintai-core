@@ -7,7 +7,8 @@ import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { RcInfoStep1, RecCompanyDetails } from '@/devlink2';
+import { RcInfoStep1 } from '@/devlink2/RcInfoStep1';
+import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { addHttps } from '@/src/utils/fetchCompDetails';

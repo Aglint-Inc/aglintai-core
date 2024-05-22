@@ -7,4 +7,5 @@ declare function InterviewMemberList(props: {
   textDepartment?: React.ReactNode;
   slotNewTabPill?: Types.Devlink.Slot;
   slotModuleContent?: Types.Devlink.Slot;
+  onClickEdit?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

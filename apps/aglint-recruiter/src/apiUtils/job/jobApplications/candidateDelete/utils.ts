@@ -1,11 +1,11 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
 import { JobApplicationDelete } from '../../../../pages/api/job/jobApplications/candidateDelete';
 import { handleRead, readNewJobApplicationDbAction } from '../read/utils';
 
 export const clearApplications = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   applicationIds: JobApplicationDelete['request']['applications'][number]['id'][],
 ) => {
   const { error } = await supabase
@@ -16,7 +16,7 @@ export const clearApplications = async (
 };
 
 const orphanCandidates = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   candidates: {
     id: JobApplicationDelete['request']['applications'][number]['candidate_id'];
     email: JobApplicationDelete['request']['applications'][number]['email'];
@@ -28,7 +28,7 @@ const orphanCandidates = async (
 };
 
 export const deleteApplications = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   applications: JobApplicationDelete['request']['applications'],
   clearCandidate: JobApplicationDelete['request']['clearCandidate'],
 ) => {
@@ -58,7 +58,7 @@ export const deleteApplications = async (
 };
 
 export const readAllApplications = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   jobId: JobApplicationDelete['request']['jobId'],
   section: JobApplicationDelete['request']['section'],
   parameter: JobApplicationDelete['request']['parameter'],
@@ -82,7 +82,7 @@ export const readAllApplications = async (
 };
 
 export const readApplications = async (
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
   jobId: JobApplicationDelete['request']['jobId'],
   section: JobApplicationDelete['request']['section'],
   parameter: JobApplicationDelete['request']['parameter'],

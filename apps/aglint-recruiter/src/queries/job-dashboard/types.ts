@@ -1,4 +1,4 @@
-import { TransformSchedule } from '@/src/components/Scheduling/Modules/types';
+import { TransformSchedule } from '@/src/components/Scheduling/InterviewTypes/types';
 
 import { Assessment } from '../assessment/types';
 import { resumeMatchRPCFormatter } from '.';

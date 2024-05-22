@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
+import { ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 type BodyParams = {

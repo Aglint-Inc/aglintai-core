@@ -5,14 +5,12 @@ import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useState } from 'react';
 import { useMemo } from 'react';
 
-import {
-  BookmarkEmpty,
-  CandidateDatabaseDetail,
-  CandidateDetailsCard,
-  CandidateEmpty,
-  CandidateSkills,
-  ViewMoreSkills,
-} from '@/devlink';
+import { BookmarkEmpty } from '@/devlink/BookmarkEmpty';
+import { CandidateDatabaseDetail } from '@/devlink/CandidateDatabaseDetail';
+import { CandidateDetailsCard } from '@/devlink/CandidateDetailsCard';
+import { CandidateEmpty } from '@/devlink/CandidateEmpty';
+import { CandidateSkills } from '@/devlink/CandidateSkills';
+import { ViewMoreSkills } from '@/devlink/ViewMoreSkills';
 import { useJobs } from '@/src/context/JobsContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';

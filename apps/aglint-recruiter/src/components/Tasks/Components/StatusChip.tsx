@@ -1,14 +1,14 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
-import { TaskStatus } from '@/devlink3';
+import { TaskStatus } from '@/devlink3/TaskStatus';
 import { palette } from '@/src/context/Theme/Theme';
 
 function StatusChip({
   status,
   arrowDown = false,
 }: {
-  status: CustomDatabase['public']['Enums']['task_status'];
+  status: DB['public']['Enums']['task_status'];
   arrowDown?: boolean;
 }) {
   return (
@@ -22,7 +22,7 @@ function StatusChip({
             color,
           }: {
             backgroundColor: string;
-            id: CustomDatabase['public']['Enums']['task_status'];
+            id: DB['public']['Enums']['task_status'];
             label: string;
             color: string;
           },
@@ -53,44 +53,44 @@ export default StatusChip;
 
 export const statusList = [
   {
-    id: 'not_started' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'not_started' as DB['public']['Enums']['task_status'],
     backgroundColor: '#e9ebed',
     label: 'Not Started',
     color: '#49545c',
   },
   {
-    id: 'scheduled' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'scheduled' as DB['public']['Enums']['task_status'],
     backgroundColor: palette.yellow[400] + '55',
     label: 'Scheduled',
     color: palette.yellow[700],
   },
 
   {
-    id: 'in_progress' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'in_progress' as DB['public']['Enums']['task_status'],
     backgroundColor: '#CEE2F2',
     label: 'In Progress',
     color: '#337FBD',
   },
   {
-    id: 'completed' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'completed' as DB['public']['Enums']['task_status'],
     backgroundColor: '#D1E8DF',
     label: 'Completed',
     color: '#228F67',
   },
   {
-    id: 'cancelled' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'cancelled' as DB['public']['Enums']['task_status'],
     backgroundColor: '#f5d5d8',
     label: 'Cancelled',
     color: '#CC3340',
   },
   {
-    id: 'closed' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'closed' as DB['public']['Enums']['task_status'],
     backgroundColor: palette.grey[500] + 'aa',
     label: 'Closed',
     color: '#000',
   },
   {
-    id: 'failed' as CustomDatabase['public']['Enums']['task_status'],
+    id: 'failed' as DB['public']['Enums']['task_status'],
     backgroundColor: '#f5d5d8' + 'aa',
     label: 'Failed',
     color: '#CC3340',

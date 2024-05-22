@@ -9,11 +9,9 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  AssessmentSubmitPop,
-  CandidateQuestion,
-  CandidateQuestionLayout,
-} from '@/devlink2';
+import { AssessmentSubmitPop } from '@/devlink2/AssessmentSubmitPop';
+import { CandidateQuestion } from '@/devlink2/CandidateQuestion';
+import { CandidateQuestionLayout } from '@/devlink2/CandidateQuestionLayout';
 import { handleAssessmentResultApi } from '@/src/apiUtils/assessment-result/utils';
 import Loader from '@/src/components/Common/Loader';
 import MuiPopup from '@/src/components/Common/MuiPopup';

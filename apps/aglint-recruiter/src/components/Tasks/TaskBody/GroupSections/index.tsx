@@ -2,12 +2,10 @@ import { Collapse, Stack, Tooltip, Typography } from '@mui/material';
 import { IconCaretDownFilled, IconCaretRightFilled } from '@tabler/icons-react';
 import { useState } from 'react';
 
-import {
-  AvatarWithName,
-  PriorityPill,
-  TaskEmpty,
-  TaskTableJobCard,
-} from '@/devlink3';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { PriorityPill } from '@/devlink3/PriorityPill';
+import { TaskEmpty } from '@/devlink3/TaskEmpty';
+import { TaskTableJobCard } from '@/devlink3/TaskTableJobCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { getFullName } from '@/src/utils/jsonResume';

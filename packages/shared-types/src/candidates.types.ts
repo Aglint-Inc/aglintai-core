@@ -1,7 +1,5 @@
-import { Database } from "./schema";
+import { DB } from "..";
 
-export type Candidate = Database['public']['Tables']['candidates']['Row'];
-export type CandidateInsert =
-  Database['public']['Tables']['candidates']['Insert'];
-export type CandidateUpdate =
-  Database['public']['Tables']['candidates']['Update'];
+export type Candidate = DB["public"]["Tables"]["candidates"]["Row"];
+export type CandidateInsert = DB["public"]["Tables"]["candidates"]["Insert"];
+export type CandidateUpdate = DB["public"]["Tables"]["candidates"]["Update"];

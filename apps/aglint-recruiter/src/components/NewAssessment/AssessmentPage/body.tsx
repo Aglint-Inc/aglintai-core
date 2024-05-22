@@ -3,11 +3,9 @@ import { Stack } from '@mui/material';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import {
-  AssessmentDetailBody,
-  AssessmentError as AssessmentErrorDev,
-  DragAndDrop,
-} from '@/devlink2';
+import { AssessmentDetailBody } from '@/devlink2/AssessmentDetailBody';
+import { AssessmentError as AssessmentErrorDev } from '@/devlink2/AssessmentError';
+import { DragAndDrop } from '@/devlink2/DragAndDrop';
 import { useAssessmentQuestionCreate } from '@/src/queries/assessment/questions';
 
 import { useRecommendationCardDrop } from '../hooks';

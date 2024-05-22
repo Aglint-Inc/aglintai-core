@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -62,6 +58,7 @@ export * from "./AvailableOptionCardDate";
 export * from "./AvailableSlots";
 export * from "./BackButton";
 export * from "./BodyWithSublink";
+export * from "./BookmarkDark";
 export * from "./Breadcrum";
 export * from "./BrowseAssessment";
 export * from "./BrowseScreeningPop";
@@ -287,6 +284,7 @@ export * from "./SessionList";
 export * from "./ShadowSession";
 export * from "./ShadowSessionCard";
 export * from "./ShortAnswerQuestion";
+export * from "./ShowFilterButton";
 export * from "./SideDrawerBlock";
 export * from "./SidebarAnalysisBlock";
 export * from "./SidebarBlockConfirmed";

@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-import { FeedbackCandidate } from '@/devlink3';
+import { FeedbackCandidate } from '@/devlink3/FeedbackCandidate';
+import Seo from '@/src/components/Common/Seo';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
 import toast from '@/src/utils/toast';
 
@@ -18,56 +19,62 @@ const InterviewFeedbackPage = () => {
     useSearchParams().get('interview'),
   );
   return isLoadingDetails ? (
-    <DynamicLoader />
+    <>
+      <Seo title='Feedback - Interview | Aglint AI' />
+      <DynamicLoader />
+    </>
   ) : (
-    <FeedbackCandidate
-      slotLogo={
-        <Avatar
-          variant='rounded'
-          src={details.company_logo}
-          sx={{ width: '100%', height: '100px' }}
-          alt={`${details.company_name} logo`}
-        />
-      }
-      isNotSatisfiedActive={form.rating === 1}
-      onClickNotSatisfied={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 1 })),
-      }}
-      isSatisfiedActive={form.rating === 2}
-      onClickSatisfy={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 2 })),
-      }}
-      isNeutralActive={form.rating === 3}
-      onClickNeutral={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 3 })),
-      }}
-      isVerySatisfiedActive={form.rating === 4}
-      onClickVerySatisfy={{
-        onClick: () => setForm((pre) => ({ ...pre, rating: 4 })),
-      }}
-      onClickSubmit={{
-        onClick: () => {
-          submitFeedback({ rating: 10, feedback: 'hi' });
-        },
-      }}
-      slotFeedbackInput={
-        <TextField
-          fullWidth
-          multiline
-          minRows={7}
-          maxRows={7}
-          value={form.feedback}
-          onChange={(e) =>
-            setForm((pre) => ({
-              ...pre,
-              feedback: (e.target.value || '').trim(),
-            }))
-          }
-        />
-      }
-      isRatingVisible={details.candidate_feedback === null}
-      isThankYouVisible={details.candidate_feedback !== null}
-    />
+    <>
+      <Seo title='Feedback - Interview | Aglint AI' />
+      <FeedbackCandidate
+        slotLogo={
+          <Avatar
+            variant='rounded'
+            src={details.company_logo}
+            sx={{ width: '100%', height: '100px' }}
+            alt={`${details.company_name} logo`}
+          />
+        }
+        isNotSatisfiedActive={form.rating === 1}
+        onClickNotSatisfied={{
+          onClick: () => setForm((pre) => ({ ...pre, rating: 1 })),
+        }}
+        isSatisfiedActive={form.rating === 2}
+        onClickSatisfy={{
+          onClick: () => setForm((pre) => ({ ...pre, rating: 2 })),
+        }}
+        isNeutralActive={form.rating === 3}
+        onClickNeutral={{
+          onClick: () => setForm((pre) => ({ ...pre, rating: 3 })),
+        }}
+        isVerySatisfiedActive={form.rating === 4}
+        onClickVerySatisfy={{
+          onClick: () => setForm((pre) => ({ ...pre, rating: 4 })),
+        }}
+        onClickSubmit={{
+          onClick: () => {
+            submitFeedback({ rating: 10, feedback: 'hi' });
+          },
+        }}
+        slotFeedbackInput={
+          <TextField
+            fullWidth
+            multiline
+            minRows={7}
+            maxRows={7}
+            value={form.feedback}
+            onChange={(e) =>
+              setForm((pre) => ({
+                ...pre,
+                feedback: (e.target.value || '').trim(),
+              }))
+            }
+          />
+        }
+        isRatingVisible={details.candidate_feedback === null}
+        isThankYouVisible={details.candidate_feedback !== null}
+      />
+    </>
   );
 };
 

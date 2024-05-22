@@ -3,7 +3,8 @@ import { Collapse, Dialog, Stack } from '@mui/material';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 // import axios from 'axios';
-import { CandidateSelectionPopup, SelectActionsDropdown } from '@/devlink2';
+import { CandidateSelectionPopup } from '@/devlink2/CandidateSelectionPopup';
+import { SelectActionsDropdown } from '@/devlink2/SelectActionsDropdown';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
   // JobApplicationsData,

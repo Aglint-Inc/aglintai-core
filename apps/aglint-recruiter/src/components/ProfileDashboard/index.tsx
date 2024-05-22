@@ -11,18 +11,17 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import {
-  EmailChangePop,
-  NavSublink,
-  PasswordUpdated,
-  ProfileList,
-  UserChangeEmail,
-  UserDetails,
-  UserPasswordChange,
-  UserProfile,
-} from '@/devlink';
+import { EmailChangePop } from '@/devlink/EmailChangePop';
+import { NavSublink } from '@/devlink/NavSublink';
+import { PasswordUpdated } from '@/devlink/PasswordUpdated';
+import { ProfileList } from '@/devlink/ProfileList';
+import { UserChangeEmail } from '@/devlink/UserChangeEmail';
+import { UserDetails } from '@/devlink/UserDetails';
+import { UserPasswordChange } from '@/devlink/UserPasswordChange';
+import { UserProfile } from '@/devlink/UserProfile';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { handleUpdatePassword } from '@/src/context/AuthContext/utils';
+import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
 import AUIButton from '../Common/AUIButton';
@@ -455,7 +454,7 @@ const ProfileDashboard = () => {
                   textEmail={recruiterUser.email}
                   textJobTitle={recruiterUser.position}
                   textLocation={recruiterUser.interview_location}
-                  textRole={recruiterUser.role}
+                  textRole={capitalizeFirstLetter(recruiterUser.role)}
                   textNumber={recruiterUser.phone}
                   onClickEdit={{
                     onClick: () => {

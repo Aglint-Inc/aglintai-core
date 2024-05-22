@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { EmailTemplateType } from '@aglint/shared-types';
+import { ApplicationsUpdate, EmailTemplateType } from '@aglint/shared-types';
 import { useAuthDetails } from '@context/AuthContext/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useReducer, useRef, useState } from 'react';
@@ -34,7 +34,12 @@ import {
   JobApplicationSections,
   Parameters,
 } from './types';
-import { getRange, recalculateDbAction, rescoreDbAction } from './utils';
+import {
+  getRange,
+  recalculateDbAction,
+  rescoreDbAction,
+  updateJobApplicationDbAction,
+} from './utils';
 // eslint-disable-next-line no-unused-vars
 enum ActionType {
   // eslint-disable-next-line no-unused-vars
@@ -66,7 +71,11 @@ type Action =
     }
   | {
       type: ActionType.UPDATE;
-      payload: Partial<JobApplication>;
+      payload: {
+        applicationId: string;
+        application: Partial<JobApplication>;
+        section: JobApplicationSections;
+      };
     };
 
 const reducer = (state: JobApplicationsData, action: Action) => {
@@ -102,21 +111,18 @@ const reducer = (state: JobApplicationsData, action: Action) => {
       const applicationState = Object.assign(
         {},
         ...Object.entries(state).map(([key, value]) => {
-          return {
-            [key]: value.map((v) => {
-              if (v.id === action.payload.id) {
-                return Object.entries(action.payload).reduce(
-                  (acc, [key, value]) => {
-                    if (typeof value === 'object')
-                      return { ...acc, [key]: { ...v[key], ...value } };
-                    else return { ...acc, [key]: value };
-                  },
-                  { ...v },
-                );
-              }
-              return v;
-            }),
-          };
+          if (key === action.payload.section)
+            return {
+              [key]: value.map((application) => {
+                if (application.id === action.payload.applicationId)
+                  return {
+                    ...structuredClone(application),
+                    ...structuredClone(action.payload.application),
+                  };
+                return application;
+              }),
+            };
+          return { [key]: value };
         }),
       );
       return applicationState as JobApplicationsData;
@@ -269,6 +275,55 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
         unFilteredCount: null as CountJobs,
       };
     }
+  };
+
+  const handleJobApplicationUpdate = async (
+    application: Partial<ApplicationsUpdate>,
+    applicationId: string,
+    optimistic: boolean = false,
+  ) => {
+    const safeApplication = structuredClone(
+      applications[section].find(({ id }) => id === applicationId),
+    );
+    if (!safeApplication) return;
+    if (optimistic) {
+      const action: Action = {
+        type: ActionType.UPDATE,
+        payload: {
+          applicationId,
+          application,
+          section,
+        },
+      };
+      dispatch(action);
+    }
+    const { error } = await updateJobApplicationDbAction(applicationId, {
+      ...structuredClone(application),
+    });
+    if (error) {
+      handleJobApplicationError(error);
+      if (optimistic) {
+        const action: Action = {
+          type: ActionType.UPDATE,
+          payload: {
+            applicationId,
+            application: safeApplication,
+            section,
+          },
+        };
+        dispatch(action);
+      }
+      return;
+    }
+    const action: Action = {
+      type: ActionType.UPDATE,
+      payload: {
+        applicationId,
+        application,
+        section,
+      },
+    };
+    dispatch(action);
   };
 
   const showDisqualificationEmailComponent = applications
@@ -803,6 +858,7 @@ const useProviderJobApplicationActions = (job_id: string = undefined) => {
     handleJobApplicationRefresh,
     handleJobApplicationDelete,
     handleJobApplicationSectionUpdate,
+    handleJobApplicationUpdate,
     handleJobApplicationFilter,
     handleManualRefresh,
     handleSelectPrevSection,

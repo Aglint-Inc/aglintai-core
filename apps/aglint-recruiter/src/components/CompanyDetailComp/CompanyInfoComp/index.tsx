@@ -4,8 +4,11 @@ import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
-import { BasicInfo, CompanyInfo, CompanyLocation, RolesPill } from '@/devlink';
-import { DeletePopup } from '@/devlink3';
+import { BasicInfo } from '@/devlink/BasicInfo';
+import { CompanyInfo } from '@/devlink/CompanyInfo';
+import { CompanyLocation } from '@/devlink/CompanyLocation';
+import { RolesPill } from '@/devlink/RolesPill';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
@@ -105,14 +108,19 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <Stack p={'4px'}>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
+
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
+                      const address = [loc.full_address];
+                      const timeZone = [loc.timezone];
+                      const isHeadQuaterVisible = [loc.is_headquarter];
 
                       return (
                         <>
                           <Stack p={'4px'}>
                             <CompanyLocation
+                              isHeadQuaterVisible={isHeadQuaterVisible[0]}
                               onClickEdit={{
                                 onClick: () => {
                                   setDialog({
@@ -121,7 +129,9 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                                   });
                                 },
                               }}
-                              textLocation={location}
+                              textFullAddress={address}
+                              textLocationHeader={location}
+                              textTimeZone={timeZone}
                               // onClickDelete={{
                               //   onClick: () => handleDeleteLocation(i),
                               // }}

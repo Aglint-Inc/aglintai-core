@@ -1,8 +1,6 @@
-import {
-  InterviewAiTranscriptCard,
-  InterviewCandidateCard,
-  NewInterviewTranscript,
-} from '@/devlink';
+import { InterviewAiTranscriptCard } from '@/devlink/InterviewAiTranscriptCard';
+import { InterviewCandidateCard } from '@/devlink/InterviewCandidateCard';
+import { NewInterviewTranscript } from '@/devlink/NewInterviewTranscript';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
 function Transcript({ setOpenPanelDrawer, conversations, interviewerImage }) {

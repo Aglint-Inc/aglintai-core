@@ -1,10 +1,10 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { fetchInterviewModuleByIdApi } from '@/src/components/Scheduling/Modules/queries/utils';
+import { fetchInterviewModuleByIdApi } from '@/src/components/Scheduling/InterviewTypes/queries/utils';
 
-const supabase = createClient<CustomDatabase>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );

@@ -21,22 +21,27 @@ function DateRange({
       sx={{
         '.MuiDateRangeCalendar-root > div:first-child': {
           display: 'none',
+          p: '0px',
+        },
+        '& .MuiDayCalendar-weekContainer': {
+          margin: '0px',
+        },
+        '& .MuiDayCalendar-weekContainer div div': {
+          p: '0.5px 1.7px',
         },
         '&>div': {
           height: 334,
+          width: '100%',
+          px: '7px',
         },
-        '& .MuiDayCalendar-weekContainer': {
-          gap: '7px',
-          py: '1px',
+        '& .MuiDateRangeCalendar-monthContainer': {
+          width: '100%',
         },
-        '& .MuiDateRangePickerDay-rangeIntervalPreview': {
-          border: 'none',
-        },
-        '& .MuiButtonBase-root': {
+        '& .MuiDayCalendar-weekContainer .MuiButtonBase-root': {
           border: 'none',
           fontWeight: 400,
-          height: '32.8px',
-          width: '32.8px',
+          height: '32.7px',
+          width: '32.7px',
           fontSize: '0.72rem',
         },
       }}

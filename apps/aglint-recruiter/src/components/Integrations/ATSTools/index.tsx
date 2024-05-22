@@ -6,12 +6,10 @@ import { capitalize } from 'lodash';
 import posthog from 'posthog-js';
 import { useRef, useState } from 'react';
 
-import { IntegrationCard } from '@/devlink2';
-import {
-  ButtonGrey,
-  ButtonPrimaryDefaultRegular,
-  ButtonPrimaryOutlinedRegular,
-} from '@/devlink3';
+import { IntegrationCard } from '@/devlink2/IntegrationCard';
+import { ButtonGrey } from '@/devlink3/ButtonGrey';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import { ButtonPrimaryOutlinedRegular } from '@/devlink3/ButtonPrimaryOutlinedRegular';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 

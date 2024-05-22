@@ -4,21 +4,17 @@ import axios from 'axios';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  CandidateDatabaseSearch,
-  CandidateHistoryCard,
-  CdSearchHistoryLoader,
-  ClearHistory,
-  NavSublink,
-  SavedList,
-  SavedListLoader,
-  SearchAglintCd,
-} from '@/devlink';
-import {
-  WelcomeMatDiscoverTalent,
-  WelcomeMatTalentDirectory,
-  WelcomeMatTalentRediscovery,
-} from '@/devlink2';
+import { CandidateDatabaseSearch } from '@/devlink/CandidateDatabaseSearch';
+import { CandidateHistoryCard } from '@/devlink/CandidateHistoryCard';
+import { CdSearchHistoryLoader } from '@/devlink/CdSearchHistoryLoader';
+import { ClearHistory } from '@/devlink/ClearHistory';
+import { NavSublink } from '@/devlink/NavSublink';
+import { SavedList } from '@/devlink/SavedList';
+import { SavedListLoader } from '@/devlink/SavedListLoader';
+import { SearchAglintCd } from '@/devlink/SearchAglintCd';
+import { WelcomeMatDiscoverTalent } from '@/devlink2/WelcomeMatDiscoverTalent';
+import { WelcomeMatTalentDirectory } from '@/devlink2/WelcomeMatTalentDirectory';
+import { WelcomeMatTalentRediscovery } from '@/devlink2/WelcomeMatTalentRediscovery';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
@@ -350,6 +346,7 @@ function CandidateSearchHistory() {
 
   return (
     <>
+      {WelcomeMatDiscoverTalent}
       <CandidateDatabaseSearch
         slotSearchAglintCd={
           <>

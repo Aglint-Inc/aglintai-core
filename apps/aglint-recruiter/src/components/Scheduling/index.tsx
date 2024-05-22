@@ -4,15 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import {
-  BodyWithSublink,
-  Breadcrum,
-  EmptyState,
-  InterviewModuleCard,
-  InterviewModuleTable,
-  PageLayout,
-} from '@/devlink2';
-import { ButtonPrimaryDefaultRegular, TaskSwitchButton } from '@/devlink3';
+import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { EmptyState } from '@/devlink2/EmptyState';
+import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
+import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { pageRoutes } from '@/src/utils/pageRouting';
@@ -22,17 +21,18 @@ import Icon from '../Common/Icons/Icon';
 import MuiAvatar from '../Common/MuiAvatar';
 import { ShowCode } from '../Common/ShowCode';
 import SyncStatus from '../JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/SyncStatus';
-import AllSchedules from './AllSchedules';
+import AllSchedules from './Candidates';
+import SchedulingDashboard from './Dashboard';
 import AllInterviewersComp from './Interviewers';
 import InterviewerLevelSettings from './Interviewers/Interviewer/InterviewerLevelSettings';
-import { Modules } from './Modules/Modules';
-import { fetchInterviewModules } from './Modules/queries/utils';
-import { setIsCreateDialogOpen } from './Modules/store';
-import MySchedule from './MySchedule';
+import { Modules } from './InterviewTypes/Modules';
+import { fetchInterviewModules } from './InterviewTypes/queries/utils';
+import { setIsCreateDialogOpen } from './InterviewTypes/store';
+import MySchedule from './MySchedules';
 import Schedules from './Schedules';
-import SchedulingDashboard from './SchedulingDashboard';
+import SeoSettings from './SEO/SeoSettings';
 import SchedulingSettings from './Settings';
-import SubNav from './SubNav';
+import SubNav from './Settings/SubNav';
 import { SchedulingTab } from './types';
 
 function SchedulingMainComp() {
@@ -60,6 +60,8 @@ function SchedulingMainComp() {
 
   return (
     <>
+      <SeoSettings tab={tab} />
+
       <PageLayout
         slotTopbarLeft={
           <>

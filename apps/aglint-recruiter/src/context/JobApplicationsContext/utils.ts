@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 // import { FilterParameter } from '@/src/components/JobApplicationsDashboard/utils';
 
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   Applications,
   ApplicationsInsert,
@@ -60,7 +60,7 @@ export const deleteResumeDbAction = async (
 };
 
 export const updateCandidateDbAction = async (
-  candidate: Database['public']['Tables']['candidates']['Update'],
+  candidate: DB['public']['Tables']['candidates']['Update'],
   signal?: AbortSignal,
 ) => {
   const timerSignal = new AbortController();
@@ -132,14 +132,13 @@ export const updateJobApplicationDbAction = async (
 ) => {
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 60000);
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('applications')
     .update(inputData)
-    .eq('application_id', application_id)
-    .select(`${selectJobApplicationQuery}`)
+    .eq('id', application_id)
     .abortSignal(signal);
   clearTimeout(timeout);
-  return { data, error };
+  return { error };
 };
 
 export const bulkUpdateJobApplicationDbAction = async (
@@ -235,7 +234,7 @@ export const getRange = (
   };
 };
 
-export type Tables = Database['public']['Tables'];
+export type Tables = DB['public']['Tables'];
 
 export type Columns<T extends keyof Tables> = keyof Tables[T]['Row'];
 

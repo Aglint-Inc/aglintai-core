@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { KeywordCard } from "./KeywordCard";
@@ -111,7 +112,7 @@ export function ScheduleSettings({
         </_Builtin.Block>
         {isTimeZoneToggleVisible ? (
           <_Builtin.Block
-            className={_utils.cx(_styles, "toggle_wrap", "ml--10")}
+            className={_utils.cx(_styles, "toggle_wrap", "ml--10", "hide")}
             tag="div"
           >
             <_Builtin.Block

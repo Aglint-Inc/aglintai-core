@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import {
-  AssessmentCard as AssementCardDev,
-  AssessmentDuration,
-  AssessmentLevel as AssementLevelDev,
-} from '@/devlink2';
+import { AssessmentCard as AssementCardDev } from '@/devlink2/AssessmentCard';
+import { AssessmentDuration } from '@/devlink2/AssessmentDuration';
+import { AssessmentLevel as AssementLevelDev } from '@/devlink2/AssessmentLevel';
 import { type Assessment } from '@/src/queries/assessment/types';
 
 import LevelIcon from '../Common/icons/levels';

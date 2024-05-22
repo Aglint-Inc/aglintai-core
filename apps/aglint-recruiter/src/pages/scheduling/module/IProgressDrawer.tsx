@@ -1,10 +1,12 @@
 import { Drawer } from '@mui/material';
 
-import { MutedShadowSession, ShadowSession, StatusBadge } from '@/devlink2';
+import { MutedShadowSession } from '@/devlink2/MutedShadowSession';
+import { ShadowSession } from '@/devlink2/ShadowSession';
+import { StatusBadge } from '@/devlink2/StatusBadge';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
-import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
-import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
-import { ModuleType } from '@/src/components/Scheduling/Modules/types';
+import SessionCard from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/ProgressDrawer/SessionCard';
+import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
+import { ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
 

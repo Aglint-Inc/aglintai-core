@@ -54,166 +54,171 @@ export function JobDashboard({
         )}
         tag="div"
       >
-        {isBanner ? (
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jd_titleblock", "pt-20")}
-            tag="div"
-          >
-            <_Builtin.Block tag="div">
-              {slotBanner ?? <JobsBanner />}
-            </_Builtin.Block>
-          </_Builtin.Block>
-        ) : null}
         <_Builtin.Block
-          className={_utils.cx(_styles, "jd_stats_block")}
+          className={_utils.cx(_styles, "div-block-1735")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jd_stat")}
-            id={_utils.cx(
-              _styles,
-              "w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b69091-06b69083"
-            )}
-            tag="div"
-            {...onClickTopMatch}
-          >
+          {isBanner ? (
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-purple")}
+              className={_utils.cx(_styles, "jd_titleblock")}
               tag="div"
             >
-              {"Top Match"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {textTopMatchPercentage}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "candidate_flex")}
-              tag="div"
-            >
-              <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-600")}
-                tag="div"
-              >
-                {textTopMatchCount}
+              <_Builtin.Block tag="div">
+                {slotBanner ?? <JobsBanner />}
               </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
+          ) : null}
           <_Builtin.Block
-            className={_utils.cx(_styles, "jd_stat")}
+            className={_utils.cx(_styles, "jd_stats_block")}
             tag="div"
-            {...onClickGoodMatch}
           >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-green")}
+              className={_utils.cx(_styles, "jd_stat")}
+              id={_utils.cx(
+                _styles,
+                "w-node-_7e6f5c12-f288-2e98-8a50-7d5c06b69091-06b69083"
+              )}
               tag="div"
-            >
-              {"Good Match"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {textGoodMatchPercentage}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "candidate_flex")}
-              tag="div"
+              {...onClickTopMatch}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-600")}
+                className={_utils.cx(_styles, "fw-semibold", "text-purple")}
                 tag="div"
               >
-                {textGoodMatchCount}
+                {"Top Match"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                tag="div"
+              >
+                {textTopMatchPercentage}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "candidate_flex")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-600")}
+                  tag="div"
+                >
+                  {textTopMatchCount}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jd_stat")}
-            tag="div"
-            {...onClickAverageMatch}
-          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-yellow")}
+              className={_utils.cx(_styles, "jd_stat")}
               tag="div"
-            >
-              {"Average Match"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {textAverageMatchPercentage}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "candidate_flex")}
-              tag="div"
+              {...onClickGoodMatch}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-600")}
+                className={_utils.cx(_styles, "fw-semibold", "text-green")}
                 tag="div"
               >
-                {textAveageMatchCount}
+                {"Good Match"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                tag="div"
+              >
+                {textGoodMatchPercentage}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "candidate_flex")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-600")}
+                  tag="div"
+                >
+                  {textGoodMatchCount}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jd_stat")}
-            tag="div"
-            {...onClickBelowAverage}
-          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-orange")}
+              className={_utils.cx(_styles, "jd_stat")}
               tag="div"
-            >
-              {"Below Average"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {textBelowAveragePercentage}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "candidate_flex")}
-              tag="div"
+              {...onClickAverageMatch}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-600")}
+                className={_utils.cx(_styles, "fw-semibold", "text-yellow")}
                 tag="div"
               >
-                {textBelowAverageCount}
+                {"Average Match"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                tag="div"
+              >
+                {textAverageMatchPercentage}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "candidate_flex")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-600")}
+                  tag="div"
+                >
+                  {textAveageMatchCount}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "jd_stat")}
-            tag="div"
-            {...onClickNotaMatch}
-          >
             <_Builtin.Block
-              className={_utils.cx(_styles, "fw-semibold", "text-red")}
+              className={_utils.cx(_styles, "jd_stat")}
               tag="div"
-            >
-              {"Not a match"}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "text-xl", "fw-semibold")}
-              tag="div"
-            >
-              {textNotAMatchPercentage}
-            </_Builtin.Block>
-            <_Builtin.Block
-              className={_utils.cx(_styles, "candidate_flex")}
-              tag="div"
+              {...onClickBelowAverage}
             >
               <_Builtin.Block
-                className={_utils.cx(_styles, "text-gray-600")}
+                className={_utils.cx(_styles, "fw-semibold", "text-orange")}
                 tag="div"
               >
-                {textNotAMatchCount}
+                {"Below Average"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                tag="div"
+              >
+                {textBelowAveragePercentage}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "candidate_flex")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-600")}
+                  tag="div"
+                >
+                  {textBelowAverageCount}
+                </_Builtin.Block>
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "jd_stat")}
+              tag="div"
+              {...onClickNotaMatch}
+            >
+              <_Builtin.Block
+                className={_utils.cx(_styles, "fw-semibold", "text-red")}
+                tag="div"
+              >
+                {"Not a match"}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "text-xl", "fw-semibold")}
+                tag="div"
+              >
+                {textNotAMatchPercentage}
+              </_Builtin.Block>
+              <_Builtin.Block
+                className={_utils.cx(_styles, "candidate_flex")}
+                tag="div"
+              >
+                <_Builtin.Block
+                  className={_utils.cx(_styles, "text-gray-600")}
+                  tag="div"
+                >
+                  {textNotAMatchCount}
+                </_Builtin.Block>
               </_Builtin.Block>
             </_Builtin.Block>
           </_Builtin.Block>

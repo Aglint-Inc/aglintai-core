@@ -2,7 +2,8 @@ import { Collapse } from '@mui/material';
 import { get } from 'lodash';
 import React from 'react';
 
-import { ScrQuestion, ScrQuestionDefault } from '@/devlink2';
+import { ScrQuestion } from '@/devlink2/ScrQuestion';
+import { ScrQuestionDefault } from '@/devlink2/ScrQuestionDefault';
 import UITypography from '@/src/components/Common/UITypography';
 import { usePhoneScreening } from '@/src/context/PhoneScreeningContext/PhoneScreeningContext';
 

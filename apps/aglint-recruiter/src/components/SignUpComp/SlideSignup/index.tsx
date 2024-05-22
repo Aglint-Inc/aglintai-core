@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { SignupSlider } from '@/devlink';
+import { SignupSlider } from '@/devlink/SignupSlider';
 import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { ApiBodyParamsSignup } from '@/src/pages/api/signup';

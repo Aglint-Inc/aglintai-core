@@ -4,13 +4,13 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
-import { AssistantChat, UserChat, UserChatIcon } from '@/devlink';
-import {
-  ChatboxBodyHeader,
-  ChatboxCandidateListItem,
-  ChatboxPage,
-  WelcomeMatAssistant,
-} from '@/devlink2';
+import { AssistantChat } from '@/devlink/AssistantChat';
+import { UserChat } from '@/devlink/UserChat';
+import { UserChatIcon } from '@/devlink/UserChatIcon';
+import { ChatboxBodyHeader } from '@/devlink2/ChatboxBodyHeader';
+import { ChatboxCandidateListItem } from '@/devlink2/ChatboxCandidateListItem';
+import { ChatboxPage } from '@/devlink2/ChatboxPage';
+import { WelcomeMatAssistant } from '@/devlink2/WelcomeMatAssistant';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 

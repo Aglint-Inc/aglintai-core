@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { DeletePopup } from '@/devlink3';
+import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 
 import MuiPopup from '../Common/MuiPopup';

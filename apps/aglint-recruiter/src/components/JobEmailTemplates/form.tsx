@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { FC, memo } from 'react';
 
-import { EditEmail } from '@/devlink';
+import { EditEmail } from '@/devlink/EditEmail';
 import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 

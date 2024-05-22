@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { NextApiRequest, NextApiResponse } from 'next';
 const crypto = require('crypto');
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,7 +12,7 @@ import { splitFullName } from '@/src/components/JobsDashboard/AddJobWithIntegrat
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
 
-const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
 
 let bucketName = 'resume-job-post';
 

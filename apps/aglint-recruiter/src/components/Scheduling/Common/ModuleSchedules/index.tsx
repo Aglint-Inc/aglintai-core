@@ -1,7 +1,8 @@
 import { InputAdornment, Stack } from '@mui/material';
 import React, { useState } from 'react';
 
-import { AllInterviewEmpty, InterviewMemberSide } from '@/devlink2';
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
+import { InterviewMemberSide } from '@/devlink2/InterviewMemberSide';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
@@ -65,13 +66,9 @@ function ModuleSchedules({
           />
         </Stack>
       }
-      isAllActive={filter === 'all'}
       isUpcomingActive={filter === 'confirmed'}
       isCancelActive={filter === 'cancelled'}
       isCompletedActive={filter === 'completed'}
-      onClickAll={{
-        onClick: () => setFilter('all'),
-      }}
       onClickUpcoming={{
         onClick: () => setFilter('confirmed'),
       }}
@@ -90,7 +87,7 @@ function ModuleSchedules({
           </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <Stack height={'calc(100vh - 154px)'}>
-              <ScheduleMeetingList FilterSchedules={newFilterSchedules()} />
+              <ScheduleMeetingList filterSchedules={newFilterSchedules()} />
             </Stack>
           </ShowCode.When>
         </ShowCode>

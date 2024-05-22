@@ -29,21 +29,19 @@ import {
 } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
-import {
-  BodyWithSublink,
-  CompanyDayOff,
-  DayoffList,
-  InterviewLoad,
-  KeywordCard,
-  Keywords,
-  RcCheckbox,
-  SublinkTab,
-  TextWithBg,
-  TimeRangeInput,
-  WorkingHourDay,
-  WorkingHours,
-} from '@/devlink2';
-import { ConfirmationPopup } from '@/devlink3';
+import { BodyWithSublink } from '@/devlink2/BodyWithSublink';
+import { CompanyDayOff } from '@/devlink2/CompanyDayOff';
+import { DayoffList } from '@/devlink2/DayoffList';
+import { InterviewLoad } from '@/devlink2/InterviewLoad';
+import { KeywordCard } from '@/devlink2/KeywordCard';
+import { Keywords } from '@/devlink2/Keywords';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { SublinkTab } from '@/devlink2/SublinkTab';
+import { TextWithBg } from '@/devlink2/TextWithBg';
+import { TimeRangeInput } from '@/devlink2/TimeRangeInput';
+import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
+import { WorkingHours } from '@/devlink2/WorkingHours';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { pageRoutes } from '@/src/utils/pageRouting';
 import toast from '@/src/utils/toast';
@@ -53,14 +51,14 @@ import Icon from '../../Common/Icons/Icon';
 import { ShowCode } from '../../Common/ShowCode';
 import UITextField from '../../Common/UITextField';
 import { interviewLocationType } from '../../CompanyDetailComp/TeamManagement/AddMemberDialog';
-import SchedulingEmailTemplates from '../SchedulingEmailTemplates';
-import { settingSubNavItem } from '../SubNav/utils';
 import DateSelect from './Components/DateSelector';
+import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
+import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
-import { hoursList } from './utils';
+import { settingSubNavItem } from './SubNav/utils';
 let schedulingSettingObj = {};
 let changeValue = null;
 type specificLocationType = 'all_locations' | 'specific_locations';
@@ -110,7 +108,8 @@ function SchedulingSettings({
   };
   const handleSelectWeeklyValue = (value: any) => {
     setSelectedWeeklyLimit((pre) => {
-      pre.value = value.target.value as number;
+      pre.value = value as number;
+      // pre.value = value.target.value as number;
       return { ...pre } as WeeklyLimitType;
     });
   };
@@ -123,7 +122,8 @@ function SchedulingSettings({
 
   const handleSelectDailyValue = (value: any) => {
     setSelectedDailyLimit((pre) => {
-      pre.value = value.target.value as number;
+      pre.value = value as number;
+      // pre.value = value.target.value as number;
       return { ...pre } as DailyLimitType;
     });
   };
@@ -766,10 +766,10 @@ function SchedulingSettings({
                 <InterviewLoad
                   slotDailyLimit={
                     <>
-                      <MuiSelect
-                        dataset={hoursList}
+                      <MuiNumberfield
                         handleSelect={handleSelectDailyValue}
                         value={selectedDailyLimit.value}
+                        max={50}
                       />
                       <MuiSelect
                         width='150px'
@@ -781,10 +781,10 @@ function SchedulingSettings({
                   }
                   slotWeeklyLimit={
                     <>
-                      <MuiSelect
-                        dataset={hoursList}
+                      <MuiNumberfield
                         handleSelect={handleSelectWeeklyValue}
                         value={selectedWeeklyLimit.value}
+                        max={50}
                       />
                       <MuiSelect
                         width='150px'

@@ -1,4 +1,4 @@
-import { type ModuleType } from '@/src/components/Scheduling/Modules/types';
+import { ModuleType } from '@/src/components/Scheduling/InterviewTypes/types';
 
 import { type CustomType } from '../scheduling-dashboard/types';
 import { type getInterviewModulesAPI } from '.';

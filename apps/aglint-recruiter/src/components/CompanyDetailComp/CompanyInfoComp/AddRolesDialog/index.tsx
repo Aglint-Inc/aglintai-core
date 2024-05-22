@@ -8,7 +8,8 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { AddRolesPop, RolesPill } from '@/devlink';
+import { AddRolesPop } from '@/devlink/AddRolesPop';
+import { RolesPill } from '@/devlink/RolesPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 
 interface RolesProps {

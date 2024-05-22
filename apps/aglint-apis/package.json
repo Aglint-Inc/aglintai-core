@@ -47,7 +47,7 @@
     "@types/express-ws": "^3.0.4",
     "@types/node": "20.11.5",
     "@typescript-eslint/eslint-plugin": "^5.7.1-alpha.25",
-    "eslint": "8.26.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-no-relative-import-paths": "^1.5.4",
     "typescript": "^5.4.3",
     "@aglint/shared-types": "*",

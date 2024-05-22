@@ -1,16 +1,16 @@
-import { type Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { type Ref, forwardRef, memo } from 'react';
 
-import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink';
-import { StatusBadge } from '@/devlink2';
+import { ScheduleProgressPill as ScheduleProgressPillDev } from '@/devlink/ScheduleProgressPill';
+import { StatusBadge } from '@/devlink2/StatusBadge';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 
-import IconScheduleType from '../../AllSchedules/ListCard/Icon';
-import { getScheduleType } from '../../AllSchedules/utils';
+import IconScheduleType from '../../Candidates/ListCard/Icon';
+import { getScheduleType } from '../../Candidates/utils';
 
-type Enums = Database['public']['Enums'];
+type Enums = DB['public']['Enums'];
 
 export type ScheduleProgressPillProps = {
   name: string;

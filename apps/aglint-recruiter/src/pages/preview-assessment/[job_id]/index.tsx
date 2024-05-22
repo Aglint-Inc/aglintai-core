@@ -1,15 +1,22 @@
 import React from 'react';
 
 import CandidateAssessment from '@/src/components/CandidateAssessment';
+import Seo from '@/src/components/Common/Seo';
 import { CandidateAssessmentProvider } from '@/src/context/CandidateAssessment';
 
 function CandidateAssessmentPage() {
   return (
-    <div>
-      <CandidateAssessmentProvider>
-        <CandidateAssessment />
-      </CandidateAssessmentProvider>
-    </div>
+    <>
+      <Seo
+        title='Preview Assessment | Aglint AI'
+        description='AI for People Products'
+      />
+      <div>
+        <CandidateAssessmentProvider>
+          <CandidateAssessment />
+        </CandidateAssessmentProvider>
+      </div>
+    </>
   );
 }
 

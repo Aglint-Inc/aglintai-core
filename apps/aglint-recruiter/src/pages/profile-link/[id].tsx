@@ -4,15 +4,13 @@ import { Avatar, Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import {
-  CandidateEducationCard,
-  CandidateExperienceCard,
-  CandidateSkillPills,
-  // InterviewAiTranscriptCard,
-  // InterviewCandidateCard,
-  // ProfileInterviewScore,
-  ProfileShare,
-} from '@/devlink';
+import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
+import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
+import { CandidateSkillPills } from '@/devlink/CandidateSkillPills';
+// import { // InterviewAiTranscriptCard } from '@/devlink/// InterviewAiTranscriptCard';
+// import { // InterviewCandidateCard } from '@/devlink/// InterviewCandidateCard';
+// import { // ProfileInterviewScore } from '@/devlink/// ProfileInterviewScore';
+import { ProfileShare } from '@/devlink/ProfileShare';
 import Icon from '@/src/components/Common/Icons/Icon';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';

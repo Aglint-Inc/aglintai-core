@@ -9,12 +9,10 @@ import {
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import {
-  AvatarWithName,
-  ListCard,
-  PriorityPill,
-  TaskTableCard,
-} from '@/devlink3';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { ListCard } from '@/devlink3/ListCard';
+import { PriorityPill } from '@/devlink3/PriorityPill';
+import { TaskTableCard } from '@/devlink3/TaskTableCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { pageRoutes } from '@/src/utils/pageRouting';

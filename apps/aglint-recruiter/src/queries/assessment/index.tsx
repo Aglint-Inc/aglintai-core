@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { type Database } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -234,7 +234,7 @@ const readAssessmentTemplatesDbAction = async () => {
 };
 
 const readAssessmentsDbAction = async (
-  recruiter_id: Database['public']['Tables']['recruiter']['Row']['id'],
+  recruiter_id: DB['public']['Tables']['recruiter']['Row']['id'],
 ) => {
   const { data, error } = await supabase.rpc('getassessments', {
     recruiterid: recruiter_id,
@@ -244,7 +244,7 @@ const readAssessmentsDbAction = async (
 };
 
 const deleteAssessmentDbAction = async (
-  assessment_id: Database['public']['Tables']['assessment']['Row']['id'],
+  assessment_id: DB['public']['Tables']['assessment']['Row']['id'],
 ) => {
   const { error } = await supabase
     .from('assessment')

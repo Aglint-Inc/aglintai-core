@@ -4,16 +4,15 @@ import { isEmpty } from 'lodash';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  AddedJobList,
-  CandidateDialog,
-  CandidateEducation,
-  CandidateEducationCard,
-  CandidateExperienceCard,
-  EmailOutReach,
-} from '@/devlink';
+import { AddedJobList } from '@/devlink/AddedJobList';
+import { CandidateDialog } from '@/devlink/CandidateDialog';
+import { CandidateEducation } from '@/devlink/CandidateEducation';
+import { CandidateEducationCard } from '@/devlink/CandidateEducationCard';
 import { CandidateExperience } from '@/devlink/CandidateExperience';
-import { ButtonWide, ScreeningLandingPop } from '@/devlink2';
+import { CandidateExperienceCard } from '@/devlink/CandidateExperienceCard';
+import { EmailOutReach } from '@/devlink/EmailOutReach';
+import { ButtonWide } from '@/devlink2/ButtonWide';
+import { ScreeningLandingPop } from '@/devlink2/ScreeningLandingPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getformatedDate, getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';

@@ -10,12 +10,10 @@ import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  AddCompany,
-  AddCompanyDetails,
-  AddCompanyWebsite,
-  BackButton,
-} from '@/devlink2';
+import { AddCompany } from '@/devlink2/AddCompany';
+import { AddCompanyDetails } from '@/devlink2/AddCompanyDetails';
+import { AddCompanyWebsite } from '@/devlink2/AddCompanyWebsite';
+import { BackButton } from '@/devlink2/BackButton';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ImageUpload from '@/src/components/Common/ImageUpload';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';

@@ -1,18 +1,21 @@
-import { Collapse, Stack } from '@mui/material';
+import { Collapse, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { StatusBadge } from '@/devlink2';
-import { MyScheduleSubCard } from '@/devlink3';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { MembersList } from '@/devlink3/MembersList';
+import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
+import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
+import { getFullName } from '@/src/utils/jsonResume';
 
-import IconScheduleType from '../../../AllSchedules/ListCard/Icon';
+import IconScheduleType from '../../../Candidates/ListCard/Icon';
 import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../AllSchedules/utils';
+} from '../../../Candidates/utils';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import { ScheduleListType } from '../hooks';
 import InterviewerDetailsCard from './InterviewerDetailCard';
@@ -47,6 +50,21 @@ function ScheduleMeetingCard({
             <>
               <Collapse in={collapseOpen}>
                 <Stack direction={'column'} gap={'10px'}>
+                  {/* candidate profile */}
+                  <MembersList
+                    isCorrectVisible={false}
+                    slotImage={<CandidateDefaultIcon size={40} />}
+                    textName={getFullName(
+                      meetingDetails.candidate?.first_name,
+                      meetingDetails.candidate?.last_name,
+                    )}
+                    isDesignationVisible={true}
+                    textDesignation={
+                      <Typography variant='caption'>{'Candidate'}</Typography>
+                    }
+                    textTime={null}
+                  />
+                  {/* members profile */}
                   {meetingDetails.users.map((user, i) => {
                     return (
                       <InterviewerDetailsCard

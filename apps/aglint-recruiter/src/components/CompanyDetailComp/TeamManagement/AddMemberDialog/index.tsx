@@ -1,5 +1,5 @@
 import {
-  Database,
+  DB,
   employmentTypeEnum,
   RecruiterUserType,
   schedulingSettingType,
@@ -15,13 +15,11 @@ import {
 import converter from 'number-to-words';
 import { useState } from 'react';
 
-import {
-  ButtonPrimaryRegular,
-  InviteTeamCard,
-  TeamInvite,
-  TeamInvitesBlock,
-  TeamPendingInvites,
-} from '@/devlink';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
+import { InviteTeamCard } from '@/devlink/InviteTeamCard';
+import { TeamInvite } from '@/devlink/TeamInvite';
+import { TeamInvitesBlock } from '@/devlink/TeamInvitesBlock';
+import { TeamPendingInvites } from '@/devlink/TeamPendingInvites';
 import AUIButton from '@/src/components/Common/AUIButton';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import DynamicLoader from '@/src/components/Scheduling/Interviewers/DynamicLoader';
@@ -230,7 +228,7 @@ const AddMember = ({
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '500px', height: '100%' }}>
+      <Stack sx={{ width: '600px', height: '100%' }}>
         {menu === 'addMember' ? (
           <>
             <TeamInvite
@@ -475,7 +473,7 @@ const AddMember = ({
                           'hiring_manager',
                           'recruiting_coordinator',
                           'sourcer',
-                        ] as Database['public']['Enums']['user_roles'][]
+                        ] as DB['public']['Enums']['user_roles'][]
                       }
                       renderOption={(props, op) => (
                         <li {...props}>{capitalizeFirstLetter(op)}</li>

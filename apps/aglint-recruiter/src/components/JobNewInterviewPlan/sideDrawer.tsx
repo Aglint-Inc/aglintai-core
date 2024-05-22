@@ -3,7 +3,8 @@ import { Drawer } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { InterviewPlanEmpty, SideDrawerBlock } from '@/devlink2';
+import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
+import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
 import toast from '@/src/utils/toast';

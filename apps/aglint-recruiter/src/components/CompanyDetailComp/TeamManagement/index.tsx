@@ -4,9 +4,9 @@ import axios from 'axios';
 import converter from 'number-to-words';
 import { useEffect, useState } from 'react';
 
-import { ButtonPrimaryRegular } from '@/devlink';
+import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
 import { TeamUsersList } from '@/devlink/TeamUsersList';
-import { TeamEmpty } from '@/devlink3';
+import { TeamEmpty } from '@/devlink3/TeamEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { API_get_last_login } from '@/src/pages/api/get_last_login/types';
 import toast from '@/src/utils/toast';

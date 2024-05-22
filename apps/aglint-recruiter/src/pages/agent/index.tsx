@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 
-import { WelcomeAssistant } from '@/devlink3';
+import { WelcomeAssistant } from '@/devlink3/WelcomeAssistant';
 import Seo from '@/src/components/Common/Seo';
 import { JobAssistantProvider } from '@/src/context/JobAssistant';
 
@@ -10,13 +10,9 @@ function AgentPage() {
   const isSourcingEnabled = useFeatureFlagEnabled('isSourcingEnabled');
   return (
     <>
-      <Seo
-        title='Aglint | Agents'
-        description='AI for People Products'
-      />
+      <Seo title='Agent | Aglint AI' description='AI for People Products' />
       <JobAssistantProvider>
         <WelcomeAssistant
-
           onClickJobAssistant={{
             onClick: () => {
               router.push(`/agent/jobs`);

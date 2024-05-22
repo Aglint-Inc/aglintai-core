@@ -5,8 +5,10 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { Checkbox } from '@/devlink';
-import { ConfirmationPopup, DeletePopup, ResumePop } from '@/devlink3';
+import { Checkbox } from '@/devlink/Checkbox';
+import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
+import { DeletePopup } from '@/devlink3/DeletePopup';
+import { ResumePop } from '@/devlink3/ResumePop';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import UITextField from '@/src/components/Common/UITextField';
@@ -241,7 +243,6 @@ function PauseResumeDialog({
                         <Stack direction={'row'} width={'100%'} spacing={1}>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              label={'From'}
                               value={dayjs(pause_json?.start_date)}
                               onChange={(newValue) => {
                                 if (
@@ -268,7 +269,6 @@ function PauseResumeDialog({
                           </LocalizationProvider>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              label={'To'}
                               value={dayjs(pause_json?.end_date)}
                               minDate={dayjs(pause_json?.start_date)}
                               onChange={(newValue) => {

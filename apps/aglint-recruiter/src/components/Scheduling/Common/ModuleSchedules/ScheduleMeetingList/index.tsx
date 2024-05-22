@@ -2,27 +2,34 @@ import { Grid, Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { NewMyScheduleCard } from '@/devlink3';
+import { NewMyScheduleCard } from '@/devlink3/NewMyScheduleCard';
 
+import { DateIcon } from '../../../Settings/Components/DateSelector';
 import { ScheduleListType } from '../hooks';
 import ScheduleMeetingCard from '../ScheduleMeetingCard';
 
 function ScheduleMeetingList({
-  FilterSchedules,
+  filterSchedules,
 }: {
-  FilterSchedules: ScheduleListType;
+  filterSchedules: ScheduleListType;
 }) {
   return (
-    <Stack height={'calc(100vh - 154px)'}>
-      {transformData(FilterSchedules).map((sch, ind) => {
+    <Stack height={'calc(100vh - 120px)'}>
+      {transformData(filterSchedules).map((sch, ind) => {
         const date = Object.keys(sch)[0];
         const schedules = sch[String(date)] as ScheduleListType;
         return (
           <Grid item sm={12} md={12} lg={6} xl={4} key={ind}>
             <NewMyScheduleCard
-              textDate={dayjs(date).format('DD')}
-              textDay={dayjs(date).format('ddd')}
-              textMonth={dayjs(date).format('MMM')}
+              textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
+              textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
+              textMonth={
+                date != 'undefined' ? (
+                  dayjs(date).format('MMM')
+                ) : (
+                  <DateIcon size={40} />
+                )
+              }
               slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
                 return (
                   <ScheduleMeetingCard

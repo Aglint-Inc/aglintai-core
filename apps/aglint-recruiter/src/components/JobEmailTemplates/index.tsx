@@ -5,13 +5,12 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import {
-  EmailTemplateCards,
-  EmailTemplatesStart,
-  JobEditWarning,
-  JobWarningList,
-} from '@/devlink';
-import { Breadcrum, PageLayout } from '@/devlink2';
+import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
+import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
+import { JobEditWarning } from '@/devlink/JobEditWarning';
+import { JobWarningList } from '@/devlink/JobWarningList';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';

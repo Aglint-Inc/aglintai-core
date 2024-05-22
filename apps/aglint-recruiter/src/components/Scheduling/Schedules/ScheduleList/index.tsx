@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { AllInterviewEmpty } from '@/devlink2';
+import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 
 import ScheduleMeetingList from '../../Common/ModuleSchedules/ScheduleMeetingList';
 import DynamicLoader from '../../Interviewers/DynamicLoader';
@@ -17,7 +17,7 @@ function ScheduleList() {
   }
   return (
     <Stack pl={'20px'} overflow={'auto'}>
-      <ScheduleMeetingList FilterSchedules={filterSchedules} />
+      <ScheduleMeetingList filterSchedules={filterSchedules} />
     </Stack>
   );
 }

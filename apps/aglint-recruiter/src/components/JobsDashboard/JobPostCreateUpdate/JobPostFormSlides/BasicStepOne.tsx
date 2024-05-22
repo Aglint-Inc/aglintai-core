@@ -5,7 +5,9 @@ import { get } from 'lodash';
 import Image from 'next/image';
 import React from 'react';
 
-import { JobEditWarning, JobWarningList, NewJobStep1 } from '@/devlink';
+import { JobEditWarning } from '@/devlink/JobEditWarning';
+import { JobWarningList } from '@/devlink/JobWarningList';
+import { NewJobStep1 } from '@/devlink/NewJobStep1';
 
 import UISelect from '../../../Common/Uiselect';
 import UITextField from '../../../Common/UITextField';

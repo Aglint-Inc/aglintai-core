@@ -2,7 +2,9 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "always" // use always for both manual and auto saves
   },
+  "eslint.workingDirectories": ["./apps/aglint-recruiter"],
   "cSpell.words": [
+    "asce",
     "nextjs",
     "posthog",
     "sendgrid",

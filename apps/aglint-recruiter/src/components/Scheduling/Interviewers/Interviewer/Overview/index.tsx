@@ -2,23 +2,20 @@ import { Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { Dispatch } from 'react';
 
-import { InterviewerDetailOverview } from '@/devlink3';
+import { InterviewerDetailOverview } from '@/devlink3/InterviewerDetailOverview';
 
 import { ScheduleListType } from '../../../Common/ModuleSchedules/hooks';
 import ScheduleMeetingCard from '../../../Common/ModuleSchedules/ScheduleMeetingCard';
-import { InterviewerDetailsType, PauseDialog } from '../../type';
-import { getMeetingsByUserIdModuleId } from '..';
+import { DetailsWithCount, PauseDialog } from '../../type';
 import TraininingModules from '../TabModules/TraininingModules';
 
 function Overview({
-  interviewerDetails,
+  detailsWithCount,
   setPauseResumeDialog,
-  userMeetings,
   scheduleList,
 }: {
-  interviewerDetails: InterviewerDetailsType;
+  detailsWithCount: DetailsWithCount;
   setPauseResumeDialog: Dispatch<React.SetStateAction<PauseDialog>>;
-  userMeetings: Awaited<ReturnType<typeof getMeetingsByUserIdModuleId>>;
   scheduleList: ScheduleListType;
 }) {
   const router = useRouter();
@@ -27,20 +24,25 @@ function Overview({
       (item) => item.interview_meeting.status === 'confirmed',
     ) || [];
 
+  const trainingModulesList =
+    detailsWithCount.modules.filter(
+      (item) => item.training_status === 'training',
+    ) || [];
+
   return (
     <>
       <InterviewerDetailOverview
         onClickViewAllModule={{
           onClick: () => {
             router.push(
-              `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=interviewtypes`,
+              `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=interviewtypes`,
             );
           },
         }}
         onClickViewAllSchedule={{
           onClick: () => {
             router.push(
-              `/scheduling/interviewer/${interviewerDetails.interviewer.user_id}?tab=allschedules`,
+              `/scheduling/interviewer/${detailsWithCount.interviewer.user_id}?tab=allschedules`,
             );
           },
         }}
@@ -57,9 +59,9 @@ function Overview({
         }
         slotTrainingModules={
           <TraininingModules
-            interviewerDetails={interviewerDetails}
+            user_id={detailsWithCount.interviewer.user_id}
+            trainingModulesList={trainingModulesList}
             setPauseResumeDialog={setPauseResumeDialog}
-            userMeetings={userMeetings}
           />
         }
       />

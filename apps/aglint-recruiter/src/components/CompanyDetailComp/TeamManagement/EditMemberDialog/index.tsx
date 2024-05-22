@@ -1,5 +1,5 @@
 import { employmentTypeEnum, RecruiterUserType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import {
   Autocomplete,
   Drawer,
@@ -10,7 +10,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { InviteTeamCard, TeamInvite } from '@/devlink';
+import { InviteTeamCard } from '@/devlink/InviteTeamCard';
+import { TeamInvite } from '@/devlink/TeamInvite';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -121,7 +122,7 @@ const EditMember = ({
 
   return (
     <Drawer open={open} onClose={onClose} anchor='right'>
-      <Stack sx={{ width: '500px' }}>
+      <Stack sx={{ width: '600px' }}>
         <TeamInvite
           textTitle={'Update Details'}
           isInviteSentVisible={false}
@@ -309,7 +310,7 @@ const EditMember = ({
                         'hiring_manager',
                         'recruiting_coordinator',
                         'sourcer',
-                      ] as Database['public']['Enums']['user_roles'][]
+                      ] as DB['public']['Enums']['user_roles'][]
                     }
                     renderOption={(props, op) => (
                       <li {...props}>{capitalizeFirstLetter(op)}</li>

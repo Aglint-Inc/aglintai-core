@@ -1,6 +1,6 @@
 import { Stack, Tooltip } from '@mui/material';
 
-import { ResumeTag } from '@/devlink2';
+import { ResumeTag } from '@/devlink2/ResumeTag';
 import { CalculatingResumeScore } from '@/src/components/Common/Lotties/Calculating';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 

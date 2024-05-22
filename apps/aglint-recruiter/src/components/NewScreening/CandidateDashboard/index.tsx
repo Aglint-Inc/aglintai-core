@@ -3,20 +3,19 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import { Checkbox, LoaderSvg } from '@/devlink';
-import {
-  AddFilter,
-  AllInterviewFilter,
-  Breadcrum,
-  ButtonFilter,
-  FilterDropdown,
-  FilterItem,
-  InviteStatus,
-  PageLayout,
-  RefreshButton,
-  ScreeningCards,
-  ScreeningTable,
-} from '@/devlink2';
+import { Checkbox } from '@/devlink/Checkbox';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
+import { AddFilter } from '@/devlink2/AddFilter';
+import { AllInterviewFilter } from '@/devlink2/AllInterviewFilter';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { ButtonFilter } from '@/devlink2/ButtonFilter';
+import { FilterDropdown } from '@/devlink2/FilterDropdown';
+import { FilterItem } from '@/devlink2/FilterItem';
+import { InviteStatus } from '@/devlink2/InviteStatus';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { RefreshButton } from '@/devlink2/RefreshButton';
+import { ScreeningCards } from '@/devlink2/ScreeningCards';
+import { ScreeningTable } from '@/devlink2/ScreeningTable';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';

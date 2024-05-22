@@ -20,20 +20,20 @@ import React, {
 import { DndProvider, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { FetchingAshbyLoader, ImportCandidates } from '@/devlink';
-import {
-  // AllApplicantsTable,
-  AllInterview,
-  ApplicantsListEmpty,
-  ApplicantsTable,
-  Breadcrum,
-  CandidatesListPagination,
-  JobDetails,
-  JobDetailsFilterBlock,
-  RcCheckbox,
-  SelectActionBar,
-  TopApplicantsTable,
-} from '@/devlink2';
+import { FetchingAshbyLoader } from '@/devlink/FetchingAshbyLoader';
+import { ImportCandidates } from '@/devlink/ImportCandidates';
+// import { // AllApplicantsTable } from '@/devlink2/// AllApplicantsTable';
+import { AllInterview } from '@/devlink2/AllInterview';
+import { ApplicantsListEmpty } from '@/devlink2/ApplicantsListEmpty';
+import { ApplicantsTable } from '@/devlink2/ApplicantsTable';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { CandidatesListPagination } from '@/devlink2/CandidatesListPagination';
+import { JobDetails } from '@/devlink2/JobDetails';
+import { JobDetailsFilterBlock } from '@/devlink2/JobDetailsFilterBlock';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { SelectActionBar } from '@/devlink2/SelectActionBar';
+import { TopApplicantsTable } from '@/devlink2/TopApplicantsTable';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobApplications } from '@/src/context/JobApplicationsContext';
 import {
@@ -152,10 +152,14 @@ const JobApplicationComponent = () => {
     <>
       <DNDLayerSwitcher applicationLimit={applicationLimit}>
         <JobDetails
+          isEditJob={false}
           isWarningVisible={
             job.status == 'published' && (!job.jd_json || !job.description)
               ? true
               : false
+          }
+          isFilterVisible={
+            !!((sectionApplications ?? []).length + job.count[section])
           }
           slotRefresh={
             job?.status === 'published' && (
@@ -708,22 +712,11 @@ export const AddCandidates = ({
 const NewJobDetailsTabs = () => {
   const { job } = useJobDetails();
   return (
-    <Stack
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        height: '70px',
-        alignItems: 'stretch',
-        padding: '8px',
-        gap: '8px',
-        borderBottom:
-          '1px solid hsla(210.00000000000023, 10.00%, 92.16%, 1.00)',
-      }}
-    >
+    <>
       {job.activeSections.map((section) => (
         <JobTab key={section} section={section} />
       ))}
-    </Stack>
+    </>
   );
 };
 
@@ -795,52 +788,30 @@ const SectionCard = forwardRef(
       }
     }, [canDrop]);
     return (
-      <Stack
-        ref={dropRef}
-        onClick={() => handleSelectSection(section)}
-        style={{
-          cursor: 'pointer',
-          padding: '16px',
-          fontWeight: 600,
-          minWidth: '160px',
-          flexGrow: 1,
-          backgroundColor:
-            currentSection === section
-              ? 'hsla(205.71428571428586, 17.07%, 91.96%, 1.00)'
-              : normalize && !isOver
-                ? 'hsla(210, 33.33%, 97.65%, 1.00)'
-                : canDrop
-                  ? '#edf7ff'
-                  : 'hsla(210, 33.33%, 97.65%, 1.00)',
-          border:
-            currentSection === section
-              ? '1px solid hsla(208.23529411764707, 21.52%, 84.51%, 1.00)'
-              : isOver
-                ? '1px solid #1f73b7'
-                : '1px solid transparent',
-          flexDirection: 'row',
-          gap: 8,
-          alignItems: 'center',
-          borderRadius: '10px',
-          transition: '0.5s',
-        }}
-      >
-        <SectionIcons section={section} />
-        {capitalize(section)}
-        <Stack
-          style={{
-            backgroundColor: 'hsla(205.71428571428586, 17.07%, 91.96%, 1.00)',
-            borderRadius: '100px',
-            width: '24px',
-            height: '24px',
-            fontWeight: 400,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {job.count[section]}
+      <>
+        <Stack ref={dropRef} onClick={() => handleSelectSection(section)}>
+          <NewTabPill
+            isPillActive={currentSection === section}
+            slotStartIcon={<SectionIcons section={section} />}
+            isStartIconVisible={true}
+            textLabel={`${capitalize(section)} (${job.count[section]})`}
+            onClickPill={{
+              style: {
+                minWidth: '200px',
+                minHeight: '60px',
+                backgroundColor:
+                  normalize && !isOver
+                    ? 'inherit'
+                    : canDrop
+                      ? '#edf7ff'
+                      : 'inherit',
+                border: isOver ? '1px solid #1f73b7' : '1px solid transparent',
+                transition: '0.5s',
+              },
+            }}
+          />
         </Stack>
-      </Stack>
+      </>
     );
   },
 );

@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, {
   ChangeEventHandler,
@@ -9,12 +9,10 @@ import React, {
   useMemo,
 } from 'react';
 
-import {
-  InterviewMode,
-  InterviewModePill,
-  SelectedMemberPill,
-  SidedrawerBodySession,
-} from '@/devlink2';
+import { InterviewMode } from '@/devlink2/InterviewMode';
+import { InterviewModePill } from '@/devlink2/InterviewModePill';
+import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
+import { SidedrawerBodySession } from '@/devlink2/SidedrawerBodySession';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
@@ -27,13 +25,13 @@ import AvatarSelectDropDown from '../Common/AvatarSelect/AvatarSelectDropDown';
 import MuiAvatar from '../Common/MuiAvatar';
 import UITextField from '../Common/UITextField';
 import { AntSwitch } from '../NewAssessment/AssessmentPage/editor';
-import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { getBreakLabel } from './utils';
 
 export type SessionUser = CompanyMember & {
   moduleUserId: string;
-  training_status: Database['public']['Enums']['status_training'];
+  training_status: DB['public']['Enums']['status_training'];
 };
 
 type SessionFormProps = Pick<

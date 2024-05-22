@@ -23,4 +23,5 @@ declare function CandidateListItem(props: {
   isDragVisible?: Types.Visibility.VisibilityConditions;
   isNewBadgeVisible?: Types.Visibility.VisibilityConditions;
   isBookmarkedVisible?: Types.Visibility.VisibilityConditions;
+  slotBookmark?: Types.Devlink.Slot;
 }): React.JSX.Element;

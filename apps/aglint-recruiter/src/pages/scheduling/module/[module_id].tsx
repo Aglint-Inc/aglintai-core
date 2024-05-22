@@ -7,38 +7,34 @@ import dayjs from 'dayjs';
 import { capitalize } from 'lodash';
 import { useMemo, useState } from 'react';
 
-import {
-  Breadcrum,
-  EmptyGeneral,
-  MemberListCard,
-  MutedShadowSession,
-  PageLayout,
-  ShadowSession,
-  StatusBadge,
-} from '@/devlink2';
-import {
-  DarkPill,
-  HistoryPill,
-  HistoryTrainingCard,
-  InterviewerPage,
-} from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { EmptyGeneral } from '@/devlink2/EmptyGeneral';
+import { MemberListCard } from '@/devlink2/MemberListCard';
+import { MutedShadowSession } from '@/devlink2/MutedShadowSession';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { ShadowSession } from '@/devlink2/ShadowSession';
+import { StatusBadge } from '@/devlink2/StatusBadge';
+import { DarkPill } from '@/devlink3/DarkPill';
+import { HistoryPill } from '@/devlink3/HistoryPill';
+import { HistoryTrainingCard } from '@/devlink3/HistoryTrainingCard';
+import { InterviewerPage } from '@/devlink3/InterviewerPage';
 import Loader from '@/src/components/Common/Loader';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import Seo from '@/src/components/Common/Seo';
-import IconScheduleType from '@/src/components/Scheduling/AllSchedules/ListCard/Icon';
-import { getScheduleType } from '@/src/components/Scheduling/AllSchedules/utils';
-import SessionCard from '@/src/components/Scheduling/Modules/ModuleMembers/ProgressDrawer/SessionCard';
-import { ProgressUser } from '@/src/components/Scheduling/Modules/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
+import IconScheduleType from '@/src/components/Scheduling/Candidates/ListCard/Icon';
+import { getScheduleType } from '@/src/components/Scheduling/Candidates/utils';
+import SessionCard from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/ProgressDrawer/SessionCard';
+import { ProgressUser } from '@/src/components/Scheduling/InterviewTypes/ModuleMembers/SlotBodyComp/SlotTrainingMembers';
 import {
   // useGetMeetingsByModuleId,
   useModuleAndUsers,
   useProgressModuleUsers,
-} from '@/src/components/Scheduling/Modules/queries/hooks';
+} from '@/src/components/Scheduling/InterviewTypes/queries/hooks';
 import {
   MemberType,
   ModuleType,
-} from '@/src/components/Scheduling/Modules/types';
-import { useAllInterviewersDetails } from '@/src/components/Scheduling/SchedulingView/hooks';
+} from '@/src/components/Scheduling/InterviewTypes/types';
+import { useAllInterviewersDetails } from '@/src/components/Scheduling/ScheduleDetails/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
@@ -447,6 +443,7 @@ function SlotQualifiedMembers({
 
         trainingStatusArray = trainingStatusArray.map((item) => {
           if (tempMeetingData[item.text]?.length) {
+            // @ts-ignore
             const temp = tempMeetingData[item.text].reverse().pop();
             return { ...item, state: Boolean(temp), meeting: temp };
           }
@@ -580,9 +577,9 @@ function SlotQualifiedMembers({
                   src={member.profile_image}
                   level={getFullName(member.first_name, member.last_name) || ''}
                   variant='circular'
-                  height='60px'
-                  width='60px'
-                  fontSize='24px'
+                  height='40px'
+                  width='40px'
+                  fontSize='16px'
                 />
               }
               textName={getFullName(member.first_name, member.last_name) || ''}

@@ -22,7 +22,7 @@ import {
   useState,
 } from 'react';
 
-import { LoaderSvg } from '@/devlink';
+import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { featureFlag } from '@/src/utils/Constants';
@@ -168,7 +168,14 @@ const AuthProvider = ({ children }) => {
         socials: recruiterRel.recruiter?.socials as unknown as SocialsType,
       });
       setLoading(false);
-      if (recruiterRel.role === 'admin' || recruiterRel.role === 'recruiter') {
+      if (
+        [
+          'admin',
+          'recruiter',
+          'hiring_manager',
+          'recruiting_coordinator',
+        ].includes(recruiterRel.role)
+      ) {
         await getMembersFromDB(recruiterRel.recruiter.id, userDetails.user.id);
       }
     } else {

@@ -1,10 +1,10 @@
-import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DB } from '@aglint/shared-types';
 import { JobApplcationDB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { MoveAssessment } from '@/devlink2';
+import { MoveAssessment } from '@/devlink2/MoveAssessment';
 import {
   CallIcon,
   EmailIcon,
@@ -25,9 +25,9 @@ export type TaskType = {
   schedule_date_range: { start_date: string; end_date: string };
   session_ids: any[];
   task_owner: string;
-  status: CustomDatabase['public']['Enums']['task_status'];
-  priority: CustomDatabase['public']['Enums']['task_priority'];
-  type: CustomDatabase['public']['Enums']['task_type_enum'];
+  status: DB['public']['Enums']['task_status'];
+  priority: DB['public']['Enums']['task_priority'];
+  type: DB['public']['Enums']['task_type_enum'];
   due_date: string;
   start_date: string;
   name: string;

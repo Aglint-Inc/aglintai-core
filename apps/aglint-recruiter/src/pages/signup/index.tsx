@@ -5,7 +5,7 @@ import { SignupProvider } from '@/src/context/SingupContext/SignupContext';
 const SignUpPage = () => {
   return (
     <>
-      <Seo title='Signup' description='AI for People Products' />
+      <Seo title='Sign Up | Aglint AI' description='AI for People Products' />
       <SignupProvider>
         <SignUpComp />
       </SignupProvider>

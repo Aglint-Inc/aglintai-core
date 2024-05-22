@@ -7,15 +7,14 @@ import React, { useCallback, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
-import {
-  AddScheduleCard as AddScheduleCardDev,
-  AvatarWithName,
-  EnableInterviewPlan as EnableInterviewPlanDev,
-  GeneralScheduleCard,
-  InterviewBreakCard,
-  InterviewPlan as InterviewPlanDev,
-} from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { AddScheduleCard as AddScheduleCardDev } from '@/devlink3/AddScheduleCard';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
+import { EnableInterviewPlan as EnableInterviewPlanDev } from '@/devlink3/EnableInterviewPlan';
+import { GeneralScheduleCard } from '@/devlink3/GeneralScheduleCard';
+import { InterviewBreakCard } from '@/devlink3/InterviewBreakCard';
+import { InterviewPlan as InterviewPlanDev } from '@/devlink3/InterviewPlan';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
@@ -35,7 +34,7 @@ import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import MuiAvatar from '../Common/MuiAvatar';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
-import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import InterviewDeletePopup, { InterviewDeletePopupType } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
 import { getBreakLabel } from './utils';

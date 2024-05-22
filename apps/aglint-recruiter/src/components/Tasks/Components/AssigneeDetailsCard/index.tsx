@@ -10,7 +10,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
-import { MemberDetail } from '@/devlink3';
+import { MemberDetail } from '@/devlink3/MemberDetail';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { ScheduleListType } from '@/src/components/Scheduling/Common/ModuleSchedules/hooks';

@@ -1,25 +1,30 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { Breadcrum, PageLayout } from '@/devlink2';
-import { InterviewerDetail, NewTabPill } from '@/devlink3';
+import { Breadcrum } from '@/devlink2/Breadcrum';
+import { PageLayout } from '@/devlink2/PageLayout';
+import { InterviewerDetail } from '@/devlink3/InterviewerDetail';
+import { NewTabPill } from '@/devlink3/NewTabPill';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useInterviewerContext } from '@/src/context/InterviewerContext/InterviewerContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import ModuleSchedules from '../../Common/ModuleSchedules';
 import { useScheduleList } from '../../Common/ModuleSchedules/hooks';
 import DynamicLoader from '../DynamicLoader';
 import PauseResumeDialog from '../PauseResumeDialog';
-import { PauseDialog } from '../type';
+import { DetailsWithCount, PauseDialog } from '../type';
 import { useImrQuery } from './hooks';
 import InterviewerLevelSettings from './InterviewerLevelSettings';
 import Overview from './Overview';
 import TabInterviewModules from './TabModules';
+
+export type detailsWithCount = {
+  InterviewerDe;
+};
 
 function Interviewer() {
   const router = useRouter();
@@ -58,27 +63,39 @@ function Interviewer() {
     user_id: user_id,
   });
 
-  const [userMeetings, setUserMeetings] = useState<
-    Awaited<ReturnType<typeof getMeetingsByUserIdModuleId>>
-  >({});
-
-  useEffect(() => {
-    if (interviewerDetails?.interviewer?.user_id) {
-      getMeetingsByUserIdModuleId({
-        user_id: interviewerDetails.interviewer.user_id,
-        module_ids: interviewerDetails.modules.map((item) => item.module_id),
-      }).then((data) => {
-        setUserMeetings(data);
-      });
-    }
-  }, [interviewerDetails]);
-
   const tab = (router.query.tab || 'overview') as
     | 'overview'
     | 'interviewtypes'
     | 'allschedules'
     | 'availibility'
     | 'keywords';
+
+  const detailsWithCount: DetailsWithCount = useMemo(() => {
+    return {
+      ...interviewerDetails,
+      modules: interviewerDetails?.modules.map((item) => {
+        const moduleMeetings = scheduleList.filter(
+          (sch) => sch.interview_meeting.module_id === item.module_id,
+        );
+        const completedCount = moduleMeetings.filter(
+          (sch) => sch.interview_meeting.status === 'completed',
+        ).length;
+        const cancelledCount = moduleMeetings.filter(
+          (sch) => sch.interview_meeting.status === 'cancelled',
+        ).length;
+        const confirmedCount = moduleMeetings.filter(
+          (sch) => sch.interview_meeting.status === 'confirmed',
+        ).length;
+        return {
+          ...item,
+          completedCount,
+          cancelledCount,
+          confirmedCount,
+          moduleMeetings,
+        };
+      }),
+    };
+  }, [interviewerDetails]);
 
   return (
     <>
@@ -130,7 +147,7 @@ function Interviewer() {
                       }}
                     />
                     <NewTabPill
-                      textLabel={'All Schedules'}
+                      textLabel={'Schedules'}
                       isPillActive={tab === 'allschedules'}
                       onClickPill={{
                         onClick: () => {
@@ -168,9 +185,8 @@ function Interviewer() {
                   <>
                     {tab === 'overview' && (
                       <Overview
-                        interviewerDetails={interviewerDetails}
+                        detailsWithCount={detailsWithCount}
                         setPauseResumeDialog={setPauseResumeDialog}
-                        userMeetings={userMeetings}
                         scheduleList={scheduleList}
                       />
                     )}
@@ -206,8 +222,7 @@ function Interviewer() {
                     )}
                     {tab === 'interviewtypes' && (
                       <TabInterviewModules
-                        interviewerDetails={interviewerDetails}
-                        userMeetings={userMeetings}
+                        detailsWithCount={detailsWithCount}
                         setPauseResumeDialog={setPauseResumeDialog}
                       />
                     )}
@@ -383,57 +398,3 @@ function Interviewer() {
 }
 
 export default Interviewer;
-
-export const getMeetingsByUserIdModuleId = ({
-  user_id,
-  module_ids,
-}: {
-  user_id: string;
-  module_ids: string[];
-}) => {
-  return supabase
-    .from('interview_module_relation')
-    .select(
-      'module_id,interview_session_relation(training_type,interview_session(interview_meeting(*), name, schedule_type) )',
-    )
-    .match({ user_id, training_status: 'training' })
-    .eq('interview_session_relation.is_confirmed', true)
-    .in('module_id', module_ids)
-    .then(({ data, error }) => {
-      if (error) new Error(error.message);
-      const tempData: {
-        [
-          key: string
-        ]: ((typeof data)[number]['interview_session_relation'][number]['interview_session']['interview_meeting'] & {
-          training_type: (typeof data)[number]['interview_session_relation'][number]['training_type'];
-          module_id: string;
-          name: string;
-          schedule_type: (typeof data)[number]['interview_session_relation'][number]['interview_session']['schedule_type'];
-        })[];
-      } = {};
-      data
-        .filter((item) => Boolean(item.interview_session_relation.length))
-        .map(
-          (item) =>
-            item.interview_session_relation.map((itemX) => ({
-              ...itemX,
-              module_id: item.module_id,
-            })) || [],
-        )
-        .flat()
-        .forEach((item) => {
-          const temp = tempData[item.module_id] || [];
-          tempData[item.module_id] = [
-            ...temp,
-            {
-              ...item.interview_session.interview_meeting,
-              training_type: item.training_type,
-              module_id: item.module_id,
-              name: item.interview_session.name,
-              schedule_type: item.interview_session.schedule_type,
-            },
-          ];
-        });
-      return tempData;
-    });
-};

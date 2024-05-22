@@ -1,11 +1,13 @@
-import { CustomDatabase } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Collapse, Drawer, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
-import { CreateTask, InterviewTaskPill, ViewTaskCard } from '@/devlink3';
+import { CreateTask } from '@/devlink3/CreateTask';
+import { InterviewTaskPill } from '@/devlink3/InterviewTaskPill';
+import { ViewTaskCard } from '@/devlink3/ViewTaskCard';
 import Loader from '@/src/components/Common/Loader';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -57,10 +59,10 @@ function AddNewTask() {
   const [inputData, setInputData] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedStatus, setSelectedStatus] =
-    useState<CustomDatabase['public']['Enums']['task_status']>('not_started');
+    useState<DB['public']['Enums']['task_status']>('not_started');
 
   const [selectedType, setSelectedType] =
-    useState<CustomDatabase['public']['Enums']['task_type_enum']>('schedule');
+    useState<DB['public']['Enums']['task_type_enum']>('schedule');
 
   const [selectedJob, setSelectedJob] = useState<{
     name: string;
@@ -92,7 +94,7 @@ function AddNewTask() {
     end_date: dayjs().add(7, 'day').toString(),
   });
   const [selectedPriority, setSelectedPriority] =
-    useState<CustomDatabase['public']['Enums']['task_priority']>('medium');
+    useState<DB['public']['Enums']['task_priority']>('medium');
 
   const [aiload, setAiLoad] = useState(false);
 

@@ -1,11 +1,9 @@
 import React from 'react';
 
-import {
-  AssesmentCardLoader,
-  AssessmentEmpty as AssessmentEmptyDev,
-  AssessmentError as AssessmentErrorDev,
-  AssessmentLandingBody,
-} from '@/devlink2';
+import { AssesmentCardLoader } from '@/devlink2/AssesmentCardLoader';
+import { AssessmentEmpty as AssessmentEmptyDev } from '@/devlink2/AssessmentEmpty';
+import { AssessmentError as AssessmentErrorDev } from '@/devlink2/AssessmentError';
+import { AssessmentLandingBody } from '@/devlink2/AssessmentLandingBody';
 import { useAllAssessments } from '@/src/queries/assessment';
 
 import OptimisticWrapper from '../Common/wrapper/loadingWapper';

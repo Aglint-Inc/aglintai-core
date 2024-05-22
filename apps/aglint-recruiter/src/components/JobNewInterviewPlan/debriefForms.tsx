@@ -7,7 +7,8 @@ import React, {
   useMemo,
 } from 'react';
 
-import { SelectedMemberPill, SidedrawerBodyDebrief } from '@/devlink2';
+import { SelectedMemberPill } from '@/devlink2/SelectedMemberPill';
+import { SidedrawerBodyDebrief } from '@/devlink2/SidedrawerBodyDebrief';
 import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
@@ -17,7 +18,7 @@ import { getFullName } from '@/src/utils/jsonResume';
 
 import MuiAvatar from '../Common/MuiAvatar';
 import UITextField from '../Common/UITextField';
-import IconScheduleType from '../Scheduling/AllSchedules/ListCard/Icon';
+import IconScheduleType from '../Scheduling/Candidates/ListCard/Icon';
 import { DepartmentIcon, RoleIcon } from '.';
 import { DropDown } from './sessionForms';
 import { getBreakLabel } from './utils';
