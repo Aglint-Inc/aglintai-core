@@ -45,42 +45,59 @@ export const mailHandler = async ({
     const position = data.public_jobs.job_title;
     const schedule_name = data.interview_schedule.schedule_name;
     const schedule_id = data.interview_schedule.id;
+    let body = null;
+    let subject = null;
 
     if (data[0].email_template) {
+      body = fillEmailTemplate(
+        data[0].email_template['candidate_availability_request'].body,
+        {
+          company_name: data[0].name,
+          schedule_name: schedule_name,
+          first_name: candidate_name,
+          last_name: '',
+          job_title: position,
+          pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
+        },
+      );
+
+      subject = fillEmailTemplate(
+        data[0].email_template['candidate_availability_request'].subject,
+        {
+          company_name: data[0].name,
+          schedule_name: schedule_name,
+          first_name: candidate_name,
+          last_name: '',
+          job_title: position,
+        },
+      );
+
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`,
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
           email: candidate_email,
-          subject: fillEmailTemplate(
-            data[0].email_template['candidate_availability_request'].subject,
-            {
-              company_name: data[0].name,
-              schedule_name: schedule_name,
-              first_name: candidate_name,
-              last_name: '',
-              job_title: position,
-            },
-          ),
-          text: fillEmailTemplate(
-            data[0].email_template['candidate_availability_request'].body,
-            {
-              company_name: data[0].name,
-              schedule_name: schedule_name,
-              first_name: candidate_name,
-              last_name: '',
-              job_title: position,
-              pick_your_slot_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${schedule_id}?filter_id=${filter_id}'>Pick Your Slot</a>`,
-            },
-          ),
+          subject: subject,
+          text: body,
         },
       );
 
       if (res.status === 200 && res.data.data === 'Email sent') {
-        return true;
+        return {
+          sent: true,
+          body,
+          subject,
+          schedule_id,
+          schedule_name,
+        };
       } else {
         toast.error('Unable to send mail. Please try again later.');
+        return {
+          sent: false,
+          body,
+          subject,
+        };
       }
     }
   } catch (e) {

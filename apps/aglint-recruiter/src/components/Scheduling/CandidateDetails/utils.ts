@@ -1337,13 +1337,13 @@ export const onClickResendInvite = async ({
     }
 
     if (filterId) {
-      const res = await mailHandler({
+      const resMail = await mailHandler({
         filter_id: filterId,
         supabase,
         application_id,
       });
 
-      if (res) {
+      if (resMail.sent) {
         addScheduleActivity({
           title: `Resent booking link to ${candidate_name} for ${session_name}`,
           application_id: application_id,
@@ -1354,6 +1354,7 @@ export const onClickResendInvite = async ({
         });
         toast.success('Invite resent successfully.');
       }
+      return resMail;
     }
   } catch (e) {
     toast.error(e.message);
