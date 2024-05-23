@@ -309,6 +309,10 @@ const thanksPage = {
   '/thanks-page': () => pageRouteBuilder([pages.app(), 'thanks-page']),
 };
 
+const workflows = {
+  '/workflows': () => pageRouteBuilder([pages.app(), 'workflows']),
+};
+
 export const pages = {
   app: () => '',
   ...agent,
@@ -343,4 +347,5 @@ export const pages = {
   ...signup,
   ...support,
   ...thanksPage,
+  ...workflows,
 } as const;
