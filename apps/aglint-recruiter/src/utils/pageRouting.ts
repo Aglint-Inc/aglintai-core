@@ -184,6 +184,8 @@ const jobsById = {
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'profile-score']),
   '/jobs/[id]/screening': ({ id }: { id: string }) =>
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'screening']),
+  '/jobs/[id]/workflows': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'workflows']),
   '/jobs/[id]/hiring-team': ({ id }: { id: string }) =>
     pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'hiring-team']),
   '/jobs/[id]/job-details': ({ id }: { id: string }) =>
