@@ -1,8 +1,12 @@
 .div-block-1650 {
   position: relative;
+
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
+
+  background-color: white;
 }
 
 .div-block-1647 {

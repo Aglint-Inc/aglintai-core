@@ -111,7 +111,7 @@ export function MembersList({
                     className={_utils.cx(_styles, "text-sm", "text-blue-500")}
                     tag="div"
                   >
-                    {"Resend Booking Link"}
+                    {"Resend"}
                   </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block
