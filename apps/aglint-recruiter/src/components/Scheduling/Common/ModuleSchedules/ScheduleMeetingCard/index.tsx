@@ -134,13 +134,14 @@ function ScheduleMeetingCard({
           )}
           textJob={
             <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
-              <span>
-                {meetingDetails?.interview_meeting?.job_title}
-              </span>
+              <span>{meetingDetails?.interview_meeting?.job_title}</span>
               <AvatarWithName
                 isAvatarVisible={false}
                 isCandidateIconVisible={true}
-                textName={meetingDetails.candidate.first_name}
+                textName={getFullName(
+                  meetingDetails.candidate.first_name,
+                  meetingDetails.candidate.last_name,
+                )}
               />
             </Stack>
           }
