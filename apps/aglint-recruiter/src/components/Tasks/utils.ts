@@ -1,11 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
-import { CandidateType, DB, RecruiterUserType } from '@aglint/shared-types';
-import { DatabaseEnums } from '@aglint/shared-types';
 import {
-  TaskActionKey,
-  taskActionType,
-} from '@aglint/shared-types/src/db/tables/new_tasks.types';
+  CandidateType,
+  DatabaseTable,
+  DB,
+  RecruiterUserType,
+} from '@aglint/shared-types';
+import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -339,8 +340,8 @@ export function getTaskActionCount({
   preValue,
   taskActionType,
 }: {
-  preValue: taskActionType;
-  taskActionType: TaskActionKey;
+  preValue: DatabaseTable['new_tasks']['task_action'];
+  taskActionType: keyof DatabaseTable['new_tasks']['task_action'];
 }) {
   if (!Number(preValue[taskActionType])) {
     preValue[taskActionType] = 1;

@@ -15,13 +15,7 @@ type CustomNewScheduleDateRange = {
   end_date: string;
 };
 
-export type TaskActionKey =
-  | "call_followUp"
-  | "email_followUp"
-  | "call_followUp_reminder"
-  | "email_followUp_reminder"
-  | "debrief_schedule_followUp";
-export type taskActionType = {
+type taskActionType = {
   call_followUp: number;
   email_followUp: number;
   call_followUp_reminder: number;
