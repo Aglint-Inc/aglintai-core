@@ -72,9 +72,7 @@ function SlotTrainingMembers({
     <>
       {selUser?.user_id && <MoveToQualifiedDialog editModule={editModule} />}
 
-      {allTrainees.length === 0 && (
-        <EmptyGeneral textEmpt={'No Members Added Yet'} />
-      )}
+      {allTrainees.length === 0 && <EmptyGeneral textEmpt={'No members yet'} />}
       {allTrainees.map((user) => {
         const member = members.find(
           (member) => member.user_id === user.user_id,
