@@ -5,9 +5,11 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const apiKey = 'wjISASRrEo75ixrodaAS5eT8iV4Bv2T2RhNZ3iIUziYsIAC8';
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
+
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
