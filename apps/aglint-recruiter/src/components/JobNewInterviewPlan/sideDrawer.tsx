@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { InterviewPlanEmpty } from '@/devlink2/InterviewPlanEmpty';
 import { SideDrawerBlock } from '@/devlink2/SideDrawerBlock';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobInterviewPlan } from '@/src/context/JobInterviewPlanContext';
 import { CompanyMember } from '@/src/queries/company-members';
 import toast from '@/src/utils/toast';
@@ -229,11 +230,16 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
 };
 
 const CreateDebrief = ({ handleClose, order }: DrawerProps) => {
+  const { recruiter } = useAuthDetails();
   const {
     interviewPlans: { data },
     handleCreateDebriefSession,
   } = useJobInterviewPlan();
-  const [fields, setFields] = useState(getDebriefFields(initialDebriefFields));
+  const [fields, setFields] = useState(
+    getDebriefFields(initialDebriefFields, {
+      members_meta: recruiter?.scheduling_settings?.debrief_defaults,
+    }),
+  );
   const [debriefCreation, setDebriefCreation] = useState(false);
   const interview_plan_id = data.id;
   const handleAdd = async () => {
@@ -280,6 +286,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     session_duration,
     session_type,
     interview_session_relation,
+    members_meta,
   } = data.interview_session.find((session) => id === session.id);
   const { members } = interview_session_relation.reduce(
     (acc, curr) => {
@@ -295,6 +302,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     session_type,
     interview_session_relation,
     members,
+    members_meta,
   };
   const isLoading = getLoadingState(id);
   const [fields, setFields] = useState(getDebriefFields(initialFields));

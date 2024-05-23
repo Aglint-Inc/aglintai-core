@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable security/detect-unsafe-regex */
 /* eslint-disable security/detect-object-injection */
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import posthog from 'posthog-js';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -14,6 +14,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import AUIButton from '../../Common/AUIButton';
 import Loader from '../../Common/Loader';
 import UIPhoneInput from '../../Common/UIPhoneInput';
+import UITextField from '../../Common/UITextField';
 import useUploadCandidate from './hooks';
 
 type FormEntries = {
@@ -242,23 +243,26 @@ const FormBody = ({
   return (
     <Stack gap={3} p={'4px'}>
       <Stack flexDirection={'row'} gap={3}>
-        <TextField
-          margin='none'
-          placeholder={'First Name'}
+        <UITextField
+          labelBold='normal'
+          labelSize='small'
           fullWidth
+          label='First Name'
+          placeholder={'First Name'}
           required
-          id={'first_name'}
           value={applicant.first_name.value}
           error={applicant.first_name.error}
           helperText={applicant.first_name.error && getHelper('First Name')}
           onChange={(e) => handleChange(e, 'first_name')}
         />
-        <TextField
-          margin='none'
-          placeholder={'Last Name'}
+
+        <UITextField
+          labelBold='normal'
+          labelSize='small'
           fullWidth
+          label='Last Name'
+          placeholder='Last Name'
           required
-          id={'last_name'}
           value={applicant.last_name.value}
           error={applicant.last_name.error}
           helperText={applicant.last_name.error && getHelper('Last Name')}
@@ -266,12 +270,13 @@ const FormBody = ({
         />
       </Stack>
       <Stack flexDirection={'row'} gap={3}>
-        <TextField
-          margin='none'
-          placeholder={'Email'}
+        <UITextField
+          labelBold='normal'
+          labelSize='small'
           fullWidth
+          label='Email'
+          placeholder='email'
           required
-          id={'email'}
           value={applicant.email.value}
           error={applicant.email.error}
           helperText={applicant.email.error && getHelper('Email')}
@@ -293,6 +298,8 @@ const FormBody = ({
           }}
         >
           <UIPhoneInput
+            label='Phone Number'
+            labelBold='normal'
             labelSize='small'
             defaultCountry={userCountry}
             placeholder={'Phone Number'}
@@ -306,11 +313,14 @@ const FormBody = ({
           />
         </Stack>
       </Stack>
-      <TextField
-        margin='none'
-        placeholder={'LinkedIn URL'}
+
+      <UITextField
+        labelBold='normal'
+        labelSize='small'
+        label='LinkedIn URL'
         fullWidth
-        id={'linkedin'}
+        placeholder='linkedin'
+        required
         value={applicant.linkedin.value}
         error={applicant.linkedin.error}
         helperText={applicant.linkedin.error && getHelper('LinkedIn url')}

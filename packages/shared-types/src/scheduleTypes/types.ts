@@ -1,10 +1,19 @@
+/**
+ * @abstract Most of the types are only internal to the logic
+ *@author Dileep BC
+ */
+
+import { Dayjs } from 'dayjs';
+
+import { CalendarEvent, ScheduleAuthType } from './calEvent.types';
 import {
-  InterviewerSessionRelation,
-  InterviewMeetingTypeDb,
-  InterviewModuleType,
-  InterviewSession,
   RecruiterUserType,
-} from '@aglint/shared-types';
+  InterviewerSessionRelation,
+  InterviewSession,
+  InterviewModuleType,
+  InterviewMeetingTypeDb,
+} from '../data.types';
+import { schedulingSettingType } from './scheduleSetting';
 
 export type PauseJson = {
   start_date: string;
@@ -49,51 +58,6 @@ export type InterviewSessionApiType = {
   module_name: InterviewModuleType['name'];
 };
 
-export type PlanCombinationType = {
-  plan_comb_id: string;
-  sessions: SessionCombinationType[];
-};
-
-export type SessionCombinationType = InterviewSessionApiType & {
-  start_time: string;
-  end_time: string;
-};
-
-// planCombination reponse types
-
-export type PlanCombinationRespType = {
-  plan_comb_id: string;
-  sessions: SessionCombinationRespType[];
-};
-
-export type SessionCombinationRespType = InterviewSessionApiRespType & {
-  start_time: string;
-  end_time: string;
-};
-
-export type SessionInterviewerApiRespType = Pick<
-  RecruiterUserType,
-  'first_name' | 'last_name' | 'email' | 'profile_image'
-> &
-  Pick<
-    InterviewerSessionRelation,
-    'training_type' | 'interviewer_type' | 'interview_module_relation_id'
-  >;
-
-export type InterviewSessionApiRespType = {
-  session_id: InterviewSession['id'];
-  session_name: InterviewSession['name'];
-  duration: InterviewSession['session_duration'];
-  schedule_type: InterviewSession['schedule_type'];
-  session_type: InterviewSession['session_type'];
-  qualifiedIntervs: SessionInterviewerApiRespType[];
-  trainingIntervs: SessionInterviewerApiRespType[];
-  break_duration: InterviewSession['break_duration'];
-  session_order: InterviewSession['session_order'];
-  interviewer_cnt: InterviewSession['interviewer_cnt'];
-  module_name: InterviewModuleType['name'];
-};
-
 export type SessionsCombType = {
   slot_comb_id: string;
   slot_cnt: number;
@@ -105,18 +69,21 @@ export type SessionSlotType = SessionSlotApiRespType & {
   end_time: string;
 };
 
-export type SessionSlotApiRespType = {
-  session_id: InterviewSession['id'];
-  session_name: InterviewSession['name'];
-  duration: InterviewSession['session_duration'];
-  schedule_type: InterviewSession['schedule_type'];
-  session_type: InterviewSession['session_type'];
-  break_duration: InterviewSession['break_duration'];
-  session_order: InterviewSession['session_order'];
-  interviewer_cnt: InterviewSession['interviewer_cnt'];
-  location: InterviewSession['location'];
-  module_name: InterviewModuleType['name'];
-};
+export type SessionSlotApiRespType = Pick<
+  InterviewSessionApiType,
+  | 'session_id'
+  | 'meeting_id'
+  | 'session_name'
+  | 'duration'
+  | 'schedule_type'
+  | 'session_type'
+  | 'break_duration'
+  | 'break_duration'
+  | 'session_order'
+  | 'interviewer_cnt'
+  | 'location'
+  | 'module_name'
+>;
 
 export type InterviewerMeetingScheduled = {
   meeting_start_time: InterviewMeetingTypeDb['start_time'];
@@ -126,15 +93,75 @@ export type InterviewerMeetingScheduled = {
   interv_user_id: string;
 };
 
-// TODO:
-// reduntant type
-export type SlotInterviwerType = SessionInterviewerApiRespType & {
-  user_id: string;
+export type InterDetailsType = {
+  tokens: ScheduleAuthType | null;
+  interviewer_id: string;
+  email: string;
+  events: CalendarEvent[];
+  freeTimes: InterviewFreeTime[];
+  isCalenderConnected: boolean;
+  int_schedule_setting: schedulingSettingType;
 };
-export type SlotSessionType = Omit<
-  SessionCombinationType,
-  'qualifiedIntervs' | 'trainingIntervs'
-> & {
-  qualified_intervs: SlotInterviwerType[];
-  training_intervs: SlotInterviwerType[];
+
+export type InterviewFreeTime = TimeDurationType & {
+  // priority: number;
+};
+
+export type CompServiceKeyCred = {
+  type: string;
+  project_id: string;
+  private_key_id: string;
+  private_key: string;
+  client_email: string;
+  client_id: string;
+  auth_uri: string;
+  token_uri: string;
+  auth_provider_x509_cert_url: string;
+  client_x509_cert_url: string;
+  universe_domain: string;
+};
+
+export type TimeDurationType = {
+  startTime: string;
+  endTime: string;
+};
+
+export type TimeDurationDayjsType = {
+  startTime: Dayjs;
+  endTime: Dayjs;
+};
+
+export type IntervCntApp = {
+  meet_cnt: number;
+  dur_cnt: number;
+};
+
+export type AllSessionIntDetails = {
+  [session_id: string]: SessionIntDetails;
+};
+export type SessionIntDetails = {
+  session_id: InterviewSession['id'];
+  meeting_id: InterviewSession['meeting_id'];
+  module_id: InterviewSession['module_id'];
+  session_name: InterviewSession['name'];
+  duration: InterviewSession['session_duration'];
+  location: InterviewSession['location'];
+  schedule_type: InterviewSession['schedule_type'];
+  session_type: InterviewSession['session_type'];
+  break_duration: InterviewSession['break_duration'];
+  session_order: InterviewSession['session_order'];
+  interviewer_cnt: InterviewSession['interviewer_cnt'];
+  module_name: InterviewModuleType['name'];
+  interviewers: {
+    [user_id: string]: SessionInterviewerType;
+  };
+};
+
+export type APIOverrideConfig = {
+  holiday: boolean;
+  dayoff: boolean; // sat and sunday
+  out_of_office: boolean;
+  interviewer_pause: boolean;
+  interviewer_load: boolean;
+  calender_not_connected: boolean;
 };

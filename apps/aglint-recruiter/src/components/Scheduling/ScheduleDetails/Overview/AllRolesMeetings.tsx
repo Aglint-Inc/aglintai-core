@@ -10,6 +10,11 @@ import { ScheduleMeeting } from '../types';
 function AllRolesMeetings({ schedule }: { schedule: ScheduleMeeting }) {
   const allRoles = [
     {
+      type: 'organizer',
+      details: schedule.organizer,
+      label: 'Organizer',
+    },
+    {
       type: 'interview_coordinator',
       details: schedule.interview_coordinator,
       label: 'Interview Coordinator',

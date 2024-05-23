@@ -56,6 +56,7 @@ import MuiNumberfield from './Components/MuiNumberfield';
 import MuiSelect from './Components/MuiSelect';
 import SelectTime from './Components/SelectTime';
 import ToggleBtn from './Components/ToggleBtn';
+import DebriefDefaults from './DebriefDefaults';
 import SchedulingEmailTemplates from './SchedulingEmailTemplates';
 import SchedulingRegions from './SchedulingReason';
 import { settingSubNavItem } from './SubNav/utils';
@@ -82,6 +83,15 @@ function SchedulingSettings({
     });
 
   const [workingHours, setWorkingHours] = useState([]);
+  const [debriefDefaults, setDebriefDefaults] = useState<
+    schedulingSettingType['debrief_defaults']
+  >({
+    hiring_manager: false,
+    recruiter: false,
+    recruiting_coordinator: false,
+    sourcer: false,
+    previous_interviewers: false,
+  });
   const [daysOff, setDaysOff] = useState<holidayType[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [freeKeyWords, setFreeKeywords] = useState([]);
@@ -201,6 +211,15 @@ function SchedulingSettings({
         start_time: schedulingSettingData.break_hour?.start_time,
         end_time: schedulingSettingData.break_hour?.end_time,
       });
+      setDebriefDefaults(
+        schedulingSettingData?.debrief_defaults ?? {
+          hiring_manager: false,
+          recruiter: false,
+          recruiting_coordinator: false,
+          sourcer: false,
+          previous_interviewers: false,
+        },
+      );
     }
   }
 
@@ -225,6 +244,7 @@ function SchedulingSettings({
           start_time: selectedHourBreak.start_time,
           end_time: selectedHourBreak.end_time,
         },
+        debrief_defaults: debriefDefaults,
       } as schedulingSettingType;
 
       if (changeValue === 'updating') {
@@ -245,6 +265,7 @@ function SchedulingSettings({
     recruitingBlocks,
     isTimeZone,
     selectedHourBreak,
+    debriefDefaults,
   ]);
 
   useEffect(() => {
@@ -1030,6 +1051,14 @@ function SchedulingSettings({
             >
               <SchedulingRegions />
             </ShowCode.When>
+            <ShowCode.When
+              isTrue={router.query.subtab == settingSubNavItem.DEBRIEFDEFAULTS}
+            >
+              <DebriefDefaults
+                value={debriefDefaults}
+                setValue={setDebriefDefaults}
+              />
+            </ShowCode.When>
           </>
         }
       />
@@ -1105,6 +1134,7 @@ const settingsItems = [
   { label: 'Keywords', value: 'keywords' },
   { label: 'Email Template', value: 'emailTemplate' },
   { label: 'Scheduling Reasons', value: 'reasons' },
+  { label: 'Debrief Defaults', value: 'debriefDefaults' },
 ];
 
 function SettingsSubNabItem() {

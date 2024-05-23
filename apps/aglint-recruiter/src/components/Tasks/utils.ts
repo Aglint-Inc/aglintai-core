@@ -24,23 +24,6 @@ export type JobCandidatesType = ApplicationType & {
   candidates: CandidateType;
 };
 
-export const agentsDetails = [
-  {
-    user_id: EmailAgentId,
-    first_name: 'email',
-    last_name: 'agent',
-    assignee: 'Agents',
-    profile_image: '',
-  },
-  {
-    user_id: PhoneAgentId,
-    first_name: 'phone',
-    last_name: 'agent',
-    assignee: 'Agents',
-    profile_image: '',
-  },
-];
-
 export async function extractDataFromText(
   text: string,
   recruiterUserId: string,
@@ -88,7 +71,10 @@ type ProgressType =
   | 'status_update'
   | 'create_task'
   | 'schedule_date_update'
-  | 'trigger_time_update';
+  | 'trigger_time_update'
+  | 'create_debrief_task'
+  | 'interview_scheduled'
+  | 'debrief_scheduled';
 
 type optionDataType = {
   assignerId?: string;
@@ -120,6 +106,8 @@ type optionDataType = {
   };
   currentSessions?: meetingCardType[];
   selectedSession?: meetingCardType[];
+  timeFormat?: string;
+  debriefDateRange?: { start_date: string; end_date: string };
 };
 
 export async function createTaskProgress({
@@ -158,6 +146,8 @@ export async function createTaskProgress({
     dueDate,
     currentSessions,
     selectedSession,
+    timeFormat,
+    debriefDateRange,
   } = optionData;
   const removedSessions = currentSessions?.filter(
     (ele) => !selectedSession?.map((ele) => ele.id).includes(ele.id),
@@ -189,6 +179,10 @@ export async function createTaskProgress({
         return `Schedule time changed from {previousTriggerTime} to {currentTriggerTime}`;
       case 'slots_failed':
         return `Unable to find slots between {scheduleDateRangeNotFound}`;
+      case 'create_debrief_task':
+        return `Scheduling debrief {selectedSessions} between {debriefDateRange}`;
+      case 'debrief_scheduled':
+        return `Debrief scheduled at {time_format}`;
       default:
         return '';
     }
@@ -218,6 +212,8 @@ export async function createTaskProgress({
         '{selectedSessions}': sessions,
         '{addedSessions}': addedSessions,
         '{removedSessions}': removedSessions,
+        '{time_format}': timeFormat,
+        '{debriefDateRange}': debriefDateRange,
       },
     })
     .select();

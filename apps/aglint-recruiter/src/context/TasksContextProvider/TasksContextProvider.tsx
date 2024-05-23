@@ -5,7 +5,11 @@ import {
   DatabaseTableInsert,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
+import {
+  EmailAgentId,
+  PhoneAgentId,
+  SystemAgentId,
+} from '@aglint/shared-utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { cloneDeep } from 'lodash';
@@ -703,6 +707,13 @@ export const agentsDetails = [
   {
     user_id: PhoneAgentId,
     first_name: 'phone',
+    last_name: 'agent',
+    assignee: 'Agents',
+    profile_image: '',
+  },
+  {
+    user_id: SystemAgentId,
+    first_name: 'system',
     last_name: 'agent',
     assignee: 'Agents',
     profile_image: '',

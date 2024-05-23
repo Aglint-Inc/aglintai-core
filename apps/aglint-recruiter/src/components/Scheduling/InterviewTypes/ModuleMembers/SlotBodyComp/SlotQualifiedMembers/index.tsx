@@ -63,7 +63,7 @@ function SlotQualifiedMembers({
   return (
     <>
       {allQualified.length === 0 && (
-        <EmptyGeneral textEmpt={'No Members Added Yet'} />
+        <EmptyGeneral textEmpt={'No members yet'} />
       )}
       {allQualified.map((user) => {
         const member = members.filter(

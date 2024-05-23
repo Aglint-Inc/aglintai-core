@@ -9,7 +9,6 @@ import {
   DB,
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
-  InterviewScheduleActivityTypeDb,
   SupabaseType,
 } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
@@ -212,7 +211,6 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
-        schedule_activity_data: InterviewScheduleActivityTypeDb[];
       };
       error: any;
     };

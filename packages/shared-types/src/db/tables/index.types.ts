@@ -3,7 +3,6 @@ import { Type } from "../utils.types";
 import { CustomApplications } from "./applications.types";
 import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
 import { CustomInterviewSessionRelation } from "./interview_session_relation.types";
-import { CustomInterviewSession } from "./interview_sessions.types";
 import { CustomNewTasks } from "./new_tasks.types";
 import { CustomNewTaskProgress } from "./new_tasks_progress.types";
 import { CustomRecruiter } from "./recruiter.types";
@@ -28,7 +27,6 @@ export type Tables = Type<
   DatabaseTables,
   {
     new_tasks: CustomNewTasks;
-    interview_session: CustomInterviewSession;
     interview_session_relation: CustomInterviewSessionRelation;
     new_tasks_progress: CustomNewTaskProgress;
     recruiter: CustomRecruiter;

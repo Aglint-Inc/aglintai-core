@@ -2,6 +2,8 @@ import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { JobCreate } from '@/src/queries/job/types';
+import { CustomType } from '@/src/queries/scheduling-dashboard/types';
 import { interviewPlanRecruiterUserQuery } from '@/src/utils/Constants';
 
 const supabase = createClient<DB>(
@@ -13,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const { job_id } = req.query as {
       // eslint-disable-next-line no-unused-vars
-      [id in keyof Parameters<getInterviewPlansType>[0]]: string;
+      [id in keyof GetInterviewPlansType['request']]: string;
     };
     if (job_id) {
       const resInterviewPlan = await getInterviewPlans({ job_id });
@@ -28,7 +30,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-export type getInterviewPlansType = typeof getInterviewPlans;
+type Response = Awaited<ReturnType<typeof getInterviewPlans>>;
+
+export type GetInterviewPlansType = {
+  request: Parameters<typeof getInterviewPlans>[0];
+  respone: CustomType<
+    Response,
+    {
+      interview_session: CustomType<
+        Response['interview_session'],
+        {
+          members_meta: {
+            // eslint-disable-next-line no-unused-vars
+            [id in
+              | keyof Pick<
+                  JobCreate,
+                  | 'hiring_manager'
+                  | 'recruiting_coordinator'
+                  | 'recruiter'
+                  | 'sourcer'
+                >
+              | 'previous_interviewers']: boolean;
+          };
+        }
+      >;
+    }
+  >;
+};
 
 const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
   const { data, error } = await supabase

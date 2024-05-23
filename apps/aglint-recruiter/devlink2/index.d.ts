@@ -52,6 +52,7 @@ export * from "./AssistantHelp";
 export * from "./AssistantLanding";
 export * from "./AssistantLogo";
 export * from "./AssistantTaskEmpty";
+export * from "./Attendee";
 export * from "./AvailabilitySlot";
 export * from "./AvailableOption";
 export * from "./AvailableOptionCardDate";
