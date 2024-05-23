@@ -3027,6 +3027,7 @@ export type Database = {
           id: string
           interval: number
           phase: Database["public"]["Enums"]["workflow_phase"] | null
+          recruiter_id: string | null
           title: string | null
           trigger: Database["public"]["Enums"]["workflow_trigger"] | null
         }
@@ -3035,6 +3036,7 @@ export type Database = {
           id?: string
           interval?: number
           phase?: Database["public"]["Enums"]["workflow_phase"] | null
+          recruiter_id?: string | null
           title?: string | null
           trigger?: Database["public"]["Enums"]["workflow_trigger"] | null
         }
@@ -3043,10 +3045,19 @@ export type Database = {
           id?: string
           interval?: number
           phase?: Database["public"]["Enums"]["workflow_phase"] | null
+          recruiter_id?: string | null
           title?: string | null
           trigger?: Database["public"]["Enums"]["workflow_trigger"] | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "workflow_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       workflow_action: {
         Row: {
