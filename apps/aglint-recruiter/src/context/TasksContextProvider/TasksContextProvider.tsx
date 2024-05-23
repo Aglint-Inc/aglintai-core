@@ -527,6 +527,8 @@ export const TasksProvider = ({ children }: { children: ReactNode }) => {
                     return {
                       ...item,
                       status: rowData.status,
+                      assignee: rowData.assignee,
+                      task_action: rowData.task_action,
                     };
                   }
                   return item;
