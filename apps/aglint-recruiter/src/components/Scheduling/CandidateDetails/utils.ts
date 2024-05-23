@@ -308,17 +308,8 @@ export const sendToCandidate = async ({
       if (!is_debrief && is_mail) {
         mailHandler({
           filter_id: filterJson[0].id,
-          rec_id: recruiter_id,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          mail: selectedApplication.candidates.email,
-          position: selectedApplication.public_jobs.job_title,
-          schedule_name: scheduleName,
-          schedule_id: createCloneRes.schedule.id,
           supabase,
-          rec_mail: recruiterUser.email,
+          application_id: selectedApplication.id,
         });
       }
       if (is_debrief && selected_comb_id) {
@@ -412,17 +403,8 @@ export const sendToCandidate = async ({
       if (!is_debrief && is_mail) {
         mailHandler({
           filter_id: filterJson[0].id,
-          rec_id: recruiter_id,
-          candidate_name: getFullName(
-            selectedApplication.candidates.first_name,
-            selectedApplication.candidates.last_name,
-          ),
-          mail: selectedApplication.candidates.email,
-          position: selectedApplication.public_jobs.job_title,
-          schedule_name: scheduleName,
-          schedule_id: checkSch[0].id,
           supabase,
-          rec_mail: recruiterUser.email,
+          application_id: selectedApplication.id,
         });
       }
 
@@ -1329,24 +1311,14 @@ export const onClickResendInvite = async ({
   session_id,
   candidate_name,
   session_name,
-  candidate_email,
-  job_title,
-  recruiter_id,
-  rec_email,
   rec_user_id,
-  schedule_id,
   application_id,
   filter_id,
 }: {
   session_id?: string;
   candidate_name: string;
   session_name: string;
-  candidate_email: string;
-  job_title: string;
-  recruiter_id: string;
-  rec_email: string;
   rec_user_id: string;
-  schedule_id: string;
   application_id: string;
   filter_id?: string;
 }) => {
@@ -1359,21 +1331,16 @@ export const onClickResendInvite = async ({
         .select('*')
         .contains('session_ids', [session_id])
         .single();
+
       if (errMeetFilterJson) throw new Error(errMeetFilterJson.message);
       filterId = checkFilterJson.id;
     }
 
     if (filterId) {
       const res = await mailHandler({
-        candidate_name: candidate_name,
         filter_id: filterId,
-        mail: candidate_email,
-        position: job_title,
-        rec_id: recruiter_id,
-        schedule_id: schedule_id,
-        schedule_name: `Interview for ${job_title} - ${candidate_name}`,
         supabase,
-        rec_mail: rec_email,
+        application_id,
       });
 
       if (res) {

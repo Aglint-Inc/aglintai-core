@@ -4,6 +4,7 @@ import { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
 
+import { getFullName } from '@/src/utils/jsonResume';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 import toast from '@/src/utils/toast';
 
@@ -15,33 +16,35 @@ export interface TimeSlot {
 }
 
 export type MailHandlerparam = {
-  rec_id: string;
-  candidate_name: string;
-  schedule_name: string;
-  mail: string;
-  position: string;
-  schedule_id: string;
+  application_id: string;
   filter_id: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
-  rec_mail: string;
 };
 
 export const mailHandler = async ({
-  schedule_id,
-  rec_id,
-  candidate_name,
-  schedule_name,
-  mail,
-  position,
+  application_id,
   filter_id,
   supabase,
 }: MailHandlerparam) => {
   try {
     const { data, error } = await supabase
-      .from('recruiter')
-      .select('name, email_template')
-      .eq('id', rec_id);
+      .from('applications')
+      .select(
+        'id,candidates(*),public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator,recruiter!public_jobs_recruiter_id_fkey(id),recruiter_user!public_jobs_hiring_manager_fkey(user_id,first_name,last_name,email,profile_image)),interview_schedule(*)',
+      )
+      .eq('id', application_id)
+      .single();
+
     if (error) throw new Error(error.message);
+
+    const candidate_email = data.candidates.email;
+    const candidate_name = getFullName(
+      data.candidates.first_name,
+      data.candidates.last_name,
+    );
+    const position = data.public_jobs.job_title;
+    const schedule_name = data.interview_schedule.schedule_name;
+    const schedule_id = data.interview_schedule.id;
 
     if (data[0].email_template) {
       const res = await axios.post(
@@ -49,7 +52,7 @@ export const mailHandler = async ({
         {
           fromEmail: `messenger@aglinthq.com`,
           fromName: 'Aglint',
-          email: mail,
+          email: candidate_email,
           subject: fillEmailTemplate(
             data[0].email_template['candidate_availability_request'].subject,
             {

@@ -49,7 +49,7 @@ function Overview({
 }) {
   const router = useRouter();
   const currentDay = dayjs();
-  const { recruiterUser, recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const [filterJson, setFilterJson] = useState<InterviewFilterJsonType>();
   const [isChangeInterviewerOpen, setIsChangeInterviewerOpen] = useState(false);
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
@@ -415,16 +415,11 @@ function Overview({
                     onClickResendInvite({
                       session_name: schedule.interview_session.name,
                       application_id: schedule.applications.id,
-                      candidate_email: schedule.candidates.email,
                       candidate_name: getFullName(
                         schedule.candidates.first_name,
                         schedule.candidates.last_name,
                       ),
-                      job_title: schedule.job.job_title,
-                      rec_email: recruiterUser.email,
                       rec_user_id: recruiterUser.user_id,
-                      recruiter_id: recruiter.id,
-                      schedule_id: schedule.schedule.id,
                       session_id: schedule.interview_session.id,
                     });
                   } else {
