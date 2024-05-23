@@ -67,7 +67,12 @@ export const fetchProgress = async ({
         (ses) => ses.id === sesRel.interview_session.id,
       ).interview_meeting,
     }))
-    .filter((sesRel) => sesRel?.interview_meeting?.id);
+    .filter(
+      (sesRel) =>
+        sesRel?.interview_meeting?.id &&
+        (sesRel.interview_meeting.status === 'confirmed' ||
+          sesRel.interview_meeting.status === 'completed'),
+    );
 
   if (error) throw new Error(error.message);
   return resRel;

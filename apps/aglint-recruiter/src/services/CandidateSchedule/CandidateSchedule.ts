@@ -785,10 +785,11 @@ export class CandidatesScheduling {
               this.db_details.all_session_int_details[sess.session_id]
                 .interviewers[int.user_id].pause_json;
             if (int_pause && int_pause.isManual) {
-              return false;
+              return true;
             }
           }
         }
+        return false;
       };
 
       if (
@@ -803,7 +804,6 @@ export class CandidatesScheduling {
         return [];
       }
 
-      //TODO:
       const getOutOfWorkHrsMeetAttendees = (
         curr_sess: InterviewSessionApiRespType,
         slot_start_time: string,
@@ -915,9 +915,6 @@ export class CandidatesScheduling {
           ...upd_sess_slot.qualifiedIntervs,
           ...upd_sess_slot.trainingIntervs,
         ];
-        // is interviewer out of office for the time
-        // soft conflicts keywords
-        // hard conflicts meetings other
         const getCalEventType = (
           scheduling_settings: schedulingSettingType,
           cal_event: CalendarEvent,
@@ -955,29 +952,30 @@ export class CandidatesScheduling {
                 end_time: null,
                 start_time: null,
               });
-            }
-            if (
-              isTimeChunksEnclosed(
-                {
-                  startTime: this.getTimeInCandTimeZone(
-                    attendee_pause_info.start_date,
-                  ),
-                  endTime: this.getTimeInCandTimeZone(
-                    attendee_pause_info.end_date,
-                  ),
-                },
-                {
-                  startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
-                  endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
-                },
-              )
-            ) {
-              conflict_reasons.push({
-                conflict_type: 'interviewer_paused',
-                conflict_event: null,
-                start_time: attendee_pause_info.start_date,
-                end_time: attendee_pause_info.end_date,
-              });
+            } else {
+              if (
+                isTimeChunksEnclosed(
+                  {
+                    startTime: this.getTimeInCandTimeZone(
+                      attendee_pause_info.start_date,
+                    ),
+                    endTime: this.getTimeInCandTimeZone(
+                      attendee_pause_info.end_date,
+                    ),
+                  },
+                  {
+                    startTime: this.getTimeInCandTimeZone(sess_slot.start_time),
+                    endTime: this.getTimeInCandTimeZone(sess_slot.end_time),
+                  },
+                )
+              ) {
+                conflict_reasons.push({
+                  conflict_type: 'interviewer_paused',
+                  conflict_event: null,
+                  start_time: attendee_pause_info.start_date,
+                  end_time: attendee_pause_info.end_date,
+                });
+              }
             }
           }
 
@@ -1022,7 +1020,7 @@ export class CandidatesScheduling {
               start_time: conf_ev.start.dateTime,
             });
           });
-          if (conflicting_events.length > 0) {
+          if (conflict_reasons.length > 0) {
             upd_sess_slot.ints_conflicts.push({
               interviewer: {
                 user_id: attendee.user_id,
@@ -1031,6 +1029,7 @@ export class CandidatesScheduling {
             });
           }
         }
+
         return upd_sess_slot;
       };
 
@@ -1069,7 +1068,7 @@ export class CandidatesScheduling {
         }
 
         const common_time = getInterviewersCommonTime(curr_session);
-        const is_conflict_free = common_time.some((free_time_chunk) => {
+        const is_slot_free = common_time.some((free_time_chunk) => {
           return isTimeChunksEnclosed(
             {
               startTime: userTzDayjs(free_time_chunk.startTime),
@@ -1087,12 +1086,12 @@ export class CandidatesScheduling {
           start_time: curr_sess_start_time.format(),
           end_time: curr_sess_end_time.format(),
           ints_conflicts: [],
-          is_conflict_free: true,
+          is_conflict: false,
         };
 
-        if (!is_conflict_free) {
+        if (!is_slot_free) {
           session_slot = getConflictsInSession(session_slot);
-          session_slot.is_conflict_free = false;
+          session_slot.is_conflict = true;
         }
 
         if (session_idx + 1 === plan_comb.length) {
@@ -1105,10 +1104,7 @@ export class CandidatesScheduling {
 
         return [session_slot, ...upcoming_sessn_slots];
       };
-      // check for load balance setting
-      // TODO:
-      // if (!this.overrides.interviewer_load && !isPlanPossible())
-      //   return schedule_combs;
+
       const day_start = currDay.startOf('day');
       const day_end = currDay.add(1, 'day').startOf('day');
       let curr_time = this.getFlooredNearestCurrentTime(); //NOTE: take current time 60 minutes later
@@ -1353,16 +1349,23 @@ export class CandidatesScheduling {
         comb,
       );
       for (let comb of combs) {
+        const qualifiedIntervs = comb.map((id) => {
+          const inter = session.qualifiedIntervs.find((i) => i.user_id === id);
+          return {
+            ...inter,
+          };
+        });
+        // NOTE: optional trining ints
+        if (session.trainingIntervs.length > 0) {
+          session_combs.push({
+            ...session,
+            trainingIntervs: [],
+            qualifiedIntervs: [...qualifiedIntervs],
+          });
+        }
         session_combs.push({
           ...session,
-          qualifiedIntervs: comb.map((id) => {
-            const inter = session.qualifiedIntervs.find(
-              (i) => i.user_id === id,
-            );
-            return {
-              ...inter,
-            };
-          }),
+          qualifiedIntervs: [...qualifiedIntervs],
         });
       }
       return session_combs;
