@@ -19,6 +19,7 @@ export async function interviewReminder(req: Request, res: Response) {
     );
 
     const {
+      id: meeting_id,
       session_name,
       session_duration,
       start_time,
@@ -52,7 +53,7 @@ export async function interviewReminder(req: Request, res: Response) {
     // Unique emails
     const interviewer_emails = [
       {email: 'chandra@aglinthq.com'},
-      {email: 'dileep@aglinthq.com'},
+      // {email: 'dileep@aglinthq.com'},
     ];
     const emails = [
       ...new Set([organizer_email, ...interviewer_emails].map(e => e.email)),
@@ -75,43 +76,28 @@ export async function interviewReminder(req: Request, res: Response) {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: '*<www.goole.com|HR Meeting>* with candidate :\n*Dileep *- SDE 2',
+              text: '*Interview 🧑‍💻 Reminder*',
             },
           },
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: '*Meeting Time :* Aug 10 10:00 AM - 10:30 AM IST',
+              text: `* ${session_name} sheduled with candidate :*\n*<https://dev.aglinthq.com/scheduling/view?meeting_id=${meeting_id}&tab=candidate_details|${candidate_name} - ${job_title}>*`,
             },
           },
           {
-            type: 'input',
-            element: {
-              type: 'plain_text_input',
-              multiline: true,
-              action_id: 'plain_text_input-action',
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `*Meeting Place :* ${schedule_type}\n*Meeting Time :* ${dayjs(start_time).format('MMMM DD hh:mm A')} - ${dayjs(end_time).format('hh:mm A')} IST\n *Duration :* ${session_duration} Minutes\n`,
             },
-            label: {
-              type: 'plain_text',
-              text: 'Please put your feedback',
-              emoji: true,
+            accessory: {
+              type: 'image',
+              image_url:
+                'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/google-calendar%201.png',
+              alt_text: 'google calender',
             },
-          },
-          {
-            type: 'actions',
-            elements: [
-              {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  emoji: true,
-                  text: 'Submit',
-                },
-                style: 'primary',
-                value: 'submit',
-              },
-            ],
           },
         ],
       });

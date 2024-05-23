@@ -54,6 +54,9 @@ export async function notifyInterviewConfirmation(req: Request, res: Response) {
     const interviewersWithoutOrganizer = interviewers.filter(
       interviewer => interviewer.email !== organizer.email
     );
+    // interviewersWithoutOrganizer = [
+    //   {email: 'chandra@aglinthq.com', session_relation_id: 'dfdsfsd'},
+    // ];
 
     const job_title = can_app.applications.public_jobs.job_title;
     const candidate_name = `${can_app.applications.candidates.first_name} ${can_app.applications.candidates.first_name}`;

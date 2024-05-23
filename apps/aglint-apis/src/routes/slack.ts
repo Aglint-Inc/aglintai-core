@@ -1,5 +1,6 @@
 import express from 'express';
 import channelMessage from 'src/controllers/slack/channelMessage';
+import {feedback} from 'src/controllers/slack/feedBack';
 import {groupMessage} from 'src/controllers/slack/groupMessage';
 import {interviewReminder} from 'src/controllers/slack/interviewReminder';
 import {listForInteractions} from 'src/controllers/slack/listForInteractions';
@@ -15,5 +16,6 @@ slackRoutes.post('/group-message', groupMessage);
 slackRoutes.post('/notify-interview-confirmation', notifyInterviewConfirmation);
 slackRoutes.post('/interview-reminder', interviewReminder);
 slackRoutes.post('/interactions', listForInteractions);
+slackRoutes.post('/feedback', feedback);
 
 export default slackRoutes;
