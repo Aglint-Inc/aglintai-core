@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { StatusBadge } from '@/devlink2/StatusBadge';
+import { AvatarWithName } from '@/devlink3/AvatarWithName';
 import { MembersList } from '@/devlink3/MembersList';
 import { MyScheduleSubCard } from '@/devlink3/MyScheduleSubCard';
 import CandidateDefaultIcon from '@/src/components/Common/Icons/CandidateDefaultIcon';
@@ -131,7 +132,19 @@ function ScheduleMeetingCard({
           textDuration={getBreakLabel(
             meetingDetails.interview_meeting.session_duration,
           )}
-          textJob={meetingDetails?.interview_meeting?.job_title}
+          textJob={
+            <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
+              <span>{meetingDetails?.interview_meeting?.job_title}</span>
+              <AvatarWithName
+                isAvatarVisible={false}
+                isCandidateIconVisible={true}
+                textName={getFullName(
+                  meetingDetails.candidate.first_name,
+                  meetingDetails.candidate.last_name,
+                )}
+              />
+            </Stack>
+          }
           bgColorProps={{
             style: {
               background: getScheduleBgcolor(

@@ -1,0 +1,155 @@
+.agentfollowup_block {
+  position: relative;
+
+  display: flex;
+  width: 100%;
+  padding: 16px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border-radius: 10px;
+
+  background-color: #fff7ed;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.relative_2.wre {
+  width: 100%;
+}
+
+.relative_2.no_wrap {
+  white-space: nowrap;
+  word-break: normal;
+}
+
+.action_block {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.agent_icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
+
+.link {
+  color: #337fbd;
+  cursor: pointer;
+}
+
+.link.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey_600 {
+  color: #68737d;
+}
+
+.text-gray-600 {
+  color: hsla(208.57142857142856, 9.17%, 44.90%, 1.00);
+}
+
+.text-gray-600.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.text-gray-600.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.text-gray-600.is_link {
+  color: #337fbd;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fw-semibold {
+  font-weight: 600;
+}
+
+.text-gray-600.underline {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.text-grey_600.hide {
+  display: none;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.text-grey_600.text-underline {
+  text-decoration: underline;
+}
+
+.text-grey_600.width-80px {
+  width: 80px;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.text-grey_600.text-underline-copy {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.noborder_block {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 1;
+
+  background-color: #fff7ed;
+}

@@ -33,4 +33,5 @@ type CustomTitleMeta = Partial<{
   "{selectedSessions}": any[];
   "{addedSessions}": any[];
   "{removedSessions}": any[];
+  "{debriefDateRange}": { start_date: string; end_date: string };
 }>;
