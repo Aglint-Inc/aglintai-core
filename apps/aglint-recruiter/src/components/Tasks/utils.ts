@@ -2,6 +2,10 @@
 /* eslint-disable no-unused-vars */
 import { CandidateType, DB, RecruiterUserType } from '@aglint/shared-types';
 import { DatabaseEnums } from '@aglint/shared-types';
+import {
+  TaskActionKey,
+  taskActionType,
+} from '@aglint/shared-types/src/db/tables/new_tasks.types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -74,7 +78,8 @@ type ProgressType =
   | 'trigger_time_update'
   | 'create_debrief_task'
   | 'interview_scheduled'
-  | 'debrief_scheduled';
+  | 'debrief_scheduled'
+  | 'email_followUp_reminder';
 
 type optionDataType = {
   assignerId?: string;
@@ -183,6 +188,8 @@ export async function createTaskProgress({
         return `Scheduling debrief {selectedSessions} between {debriefDateRange}`;
       case 'debrief_scheduled':
         return `Debrief scheduled at {time_format}`;
+      case 'email_followUp_reminder':
+        return `{assigneeName} sent a follow-up email on {time_format}`;
       default:
         return '';
     }
@@ -326,4 +333,18 @@ export function getFormattedTask({
       tasklist: TasksAgentContextType['tasks'];
     }[];
   }
+}
+
+export function getTaskActionCount({
+  preValue,
+  taskActionType,
+}: {
+  preValue: taskActionType;
+  taskActionType: TaskActionKey;
+}) {
+  if (!Number(preValue[taskActionType])) {
+    preValue[taskActionType] = 1;
+  } else preValue[taskActionType] += 1;
+
+  return preValue;
 }

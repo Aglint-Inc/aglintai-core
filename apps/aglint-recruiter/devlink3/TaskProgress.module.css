@@ -1,3 +1,7 @@
+.task_progress {
+  background-color: white;
+}
+
 .div-block-1346 {
   display: flex;
   grid-column-gap: 10px;
@@ -50,13 +54,11 @@
 .div-block-1366 {
   display: flex;
   width: 100%;
-  padding: 10px;
   flex-direction: column;
   flex-wrap: nowrap;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 
-  border: 1px solid #e9ebed;
   border-radius: 10px;
 }
 
@@ -176,4 +178,8 @@
   top: -10px;
   right: auto;
   bottom: auto;
+}
+
+.icons.pointer {
+  cursor: pointer;
 }
