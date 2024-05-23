@@ -8,7 +8,11 @@
         ".env.local",
         ".env.production",
         ".env"
-      ]
+      ],
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
     },
     "dev": {
       "dotEnv": [

@@ -2,6 +2,7 @@
   "name": "@aglint/shared-utils",
   "scripts": {
     "build": "tsup",
+    "lint": "tsup",
     "dev": "tsup --watch"
   },
   "type": "commonjs",
