@@ -23,27 +23,22 @@ function AgentFollowUpCard({
 
   const router = useRouter();
   const selectedTask = tasks.find((ele) => ele.id === router.query?.task_id);
-  const { recruiterUser, recruiter } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   function setFollowUpEmail() {
     const assignee = assignerList.find(
       (ele) => ele.user_id === recruiterUser.user_id,
     );
     onClickResendInvite({
       application_id: selectedTask.application_id,
-      candidate_email: selectedTask.applications.candidates.email,
       candidate_name: getFullName(
         selectedTask.applications.candidates.first_name,
         selectedTask.applications.candidates.first_name,
       ),
-      job_title: selectedTask.applications.public_jobs.job_title,
-      rec_email: recruiter.email,
       rec_user_id: recruiterUser.user_id,
-      recruiter_id: recruiter.id,
       filter_id: selectedTask.filter_id,
-      schedule_id: '',
-      session_name: '',
+      session_name: `${selectedTask.session_ids.map((ses) => ses.name).join(' , ')}`,
     });
-    
+
     createTaskProgress({
       type: 'email_followUp_reminder',
       data: {
