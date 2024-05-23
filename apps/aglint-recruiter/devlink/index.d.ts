@@ -271,6 +271,7 @@ export * from "./NavCompanySetting";
 export * from "./NavIntegration";
 export * from "./NavJobSubLink";
 export * from "./NavJobs";
+export * from "./NavLink";
 export * from "./NavMenu";
 export * from "./NavPhoneScreening";
 export * from "./NavScheduler";

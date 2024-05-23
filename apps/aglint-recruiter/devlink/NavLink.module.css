@@ -1,0 +1,257 @@
+.navlink {
+  position: relative;
+
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.navlink:hover {
+  color: var(--red-400);
+}
+
+.navlink_icon {
+  position: relative;
+  z-index: 2;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursor-pointer {
+  transition: opacity 200ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.7;
+}
+
+.icons.cursor-pointer.width-28 {
+  width: 28px;
+}
+
+.icons.cursor-pointer.height-28 {
+  height: 28px;
+}
+
+.icons.cursor-pointer.p-4 {
+  padding: 4px;
+}
+
+.icons.cursor-pointer.three-dot {
+  width: 20px;
+  height: 20px;
+  padding: 0px;
+}
+
+.icons.curser-hover-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.icons.curser-hover-pointer:hover {
+  opacity: 0.8;
+}
+
+.icons.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.icons.pause {
+  display: none;
+}
+
+.icons.avatar-play {
+  border-radius: 4px;
+}
+
+.icons.db-star-icons {
+  position: absolute;
+  left: auto;
+  top: -6px;
+  right: -6px;
+  bottom: auto;
+}
+
+.icons.ml-5 {
+  margin-left: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icons.ml-20 {
+  margin-left: 20px;
+}
+
+.relative-1 {
+  position: relative;
+  z-index: 1;
+}
+
+.color-white {
+  color: var(--white-80449ce7);
+}
+
+.relative {
+  position: relative;
+}
+
+.icons.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+  flex-direction: row;
+}
+
+@media screen and (max-width: 479px) {
+  .hide {
+    display: none;
+  }
+}
+
+.icons.mb-63 {
+  margin-bottom: 63px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.icons.mt-3 {
+  margin-top: 3px;
+}
+
+.icons.mr--10 {
+  margin-right: -8px;
+}
+
+.icons.mt-2 {
+  margin-top: 2px;
+}
+
+.icons.bookmarked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.start {
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.navlink_current {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: 8px;
+
+  background-color: rgba(233, 235, 237, 0.5);
+}
+
+.navlink_tooltip {
+  position: absolute;
+  left: 46px;
+  top: auto;
+  right: auto;
+  bottom: 6px;
+  z-index: 110;
+
+  display: none;
+  padding: 4px 8px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: max-content;
+  grid-template-rows: auto;
+
+  border-radius: 6px;
+
+  background-color: #2f3941;
+
+  color: white;
+  font-size: 12px;
+}
+
+.navlink_tooltip.cd {
+  width: 110px;
+}
+
+.navlink_tooltip.csetting {
+  width: 125px;
+}
+
+.navlink_tooltip.logout {
+  width: 65px;
+}
+
+.navlink_tooltip.ticket {
+  width: 170px;
+}
+
+.navlink_tooltip.message {
+  display: none;
+  width: 160px;
+}
+
+.navlink_tooltip.schedule {
+  width: 85px;
+}
+
+.navlink_tooltip.schedule-copy {
+  display: none;
+  width: 90px;
+  justify-content: center;
+}
+
+.navlink_tooltip.phone-screen {
+  display: none;
+  width: 135px;
+}
+
+.navlink_tooltip.integration {
+  width: 94px;
+}
+
+.navlink_tooltip.tickets {
+  display: none;
+  width: 50px;
+}
+
+.navlink_tooltip.no_fixed {
+  display: grid;
+  width: auto;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  grid-template-columns: max-content;
+  grid-template-rows: auto;
+}
+
+.no_wrap {
+  word-break: keep-all;
+}
