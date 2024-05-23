@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -14,6 +10,7 @@ export * from "./Activities";
 export * from "./ActivitiesCard";
 export * from "./AddCandidateButton";
 export * from "./AddScheduleCard";
+export * from "./AgentFollowUp";
 export * from "./AgentLayout";
 export * from "./AgentPill";
 export * from "./AgentTask";
@@ -162,9 +159,11 @@ export * from "./NewTaskDropdown";
 export * from "./NoData";
 export * from "./OutlinedButton";
 export * from "./PipeLine";
+export * from "./PopupAgentFollowup";
 export * from "./PriorityOption";
 export * from "./PriorityPill";
 export * from "./ProfileScoreSkeleton";
+export * from "./RadioWithText";
 export * from "./ReasonList";
 export * from "./RelatedJobCard";
 export * from "./RescheduleCard";
