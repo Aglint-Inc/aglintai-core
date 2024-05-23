@@ -2937,6 +2937,45 @@ export type Database = {
           },
         ]
       }
+      template_question_relation: {
+        Row: {
+          created_at: string
+          id: string
+          order: number | null
+          question_id: string
+          template_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order?: number | null
+          question_id: string
+          template_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order?: number | null
+          question_id?: string
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_question_relation_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "question_bank"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "template_question_relation_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "assessment_template"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       threads: {
         Row: {
           applied: boolean | null
@@ -3541,6 +3580,7 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           users: Json
+          candidate: Json
         }[]
       }
       get_interview_schedule_by_rec_id: {
@@ -4092,6 +4132,7 @@ export type Database = {
         Returns: {
           interview_meeting: Json
           users: Json
+          candidate: Json
         }[]
       }
       outreachhandler: {
@@ -4282,6 +4323,13 @@ export type Database = {
         | "interview_schedule"
         | "email_messages"
         | "call_completed"
+        | "call_failed"
+        | "email_failed"
+        | "call_disconnected"
+        | "email_follow_up"
+        | "call_follow_up"
+        | "email_follow_up_reminder"
+        | "call_follow_up_reminder"
       public_job_status: "draft" | "published" | "closed"
       public_job_type:
         | "contract"

@@ -11,7 +11,6 @@ declare function TaskProgress(props: {
   onClickViewTranscript?: Types.Devlink.RuntimeProps;
   textTimeCompleted?: React.ReactNode;
   slotMailContent?: Types.Devlink.Slot;
-  isMailContentVisible?: Types.Visibility.VisibilityConditions;
   isLineVisible?: Types.Visibility.VisibilityConditions;
   slotSoundTask?: Types.Devlink.Slot;
   isSoundTaskVisible?: Types.Visibility.VisibilityConditions;
