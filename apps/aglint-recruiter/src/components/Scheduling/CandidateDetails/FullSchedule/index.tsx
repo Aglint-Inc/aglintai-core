@@ -36,13 +36,9 @@ import SideDrawerEdit from './EditDrawer';
 
 function FullSchedule() {
   const router = useRouter();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
   const initialSessions = useSchedulingApplicationStore(
     (state) => state.initialSessions,
-  );
-
-  const selectedSchedule = useSchedulingApplicationStore(
-    (state) => state.selectedSchedule,
   );
 
   const selectedSessionIds = useSchedulingApplicationStore(
@@ -252,18 +248,11 @@ function FullSchedule() {
                             session_name: session.name,
                             session_id: session.id,
                             application_id: selectedApplication.id,
-                            candidate_email:
-                              selectedApplication.candidates.email,
                             candidate_name: getFullName(
                               selectedApplication.candidates.first_name,
                               selectedApplication.candidates.first_name,
                             ),
-                            job_title:
-                              selectedApplication.public_jobs.job_title,
-                            rec_email: recruiterUser.email,
                             rec_user_id: recruiterUser.user_id,
-                            recruiter_id: recruiter.id,
-                            schedule_id: selectedSchedule.id,
                           });
                         },
                       }}
