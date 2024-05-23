@@ -17,7 +17,7 @@ export type GetWorkflow = {
 const getWorkflow = async ({ recruiter_id }: GetWorkflow) => {
   const { data, error } = await supabase
     .from('workflow')
-    .select('*, workflow_action(id)')
+    .select()
     .eq('recruiter_id', recruiter_id);
   if (error) throw new Error(error.message);
   return data;
