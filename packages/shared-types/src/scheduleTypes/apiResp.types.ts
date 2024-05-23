@@ -44,7 +44,7 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
   start_time: string;
   end_time: string;
   ints_conflicts: InterviwerConflicts[];
-  is_conflict_free: boolean;
+  is_conflict: boolean;
 };
 
 export type SessionInterviewerApiRespType = Pick<

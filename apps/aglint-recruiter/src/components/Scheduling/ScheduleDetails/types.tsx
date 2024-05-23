@@ -33,6 +33,7 @@ export type ScheduleMeeting = ScheduleType & {
   recruiter: UserType;
   recruiting_coordinator: UserType;
   sourcer: UserType;
+  organizer: UserType;
 };
 
 type UserType = {
