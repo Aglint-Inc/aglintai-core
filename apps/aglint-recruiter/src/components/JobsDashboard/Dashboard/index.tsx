@@ -39,7 +39,7 @@ import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes, pages } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 import toast from '@/src/utils/toast';
 
@@ -135,7 +135,7 @@ const Dashboard = () => {
     return await handleJobAsyncUpdate(job.id, { status: 'closed' });
   }, [job.id]);
   const handleDeleteJob = useCallback(() => {
-    push(`${pageRoutes.JOBS}?status=${job?.status ?? 'all'}`);
+    push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
     handleJobDelete(job.id);
   }, [job.id]);
 
@@ -398,7 +398,7 @@ const Roles = () => {
   return (
     <JobRole
       onClickEdit={{
-        onClick: () => push(pages['/jobs/[id]/hiring-team']({ id: job?.id })),
+        onClick: () => push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
       }}
       slotRoleList={coordinators}
     />
@@ -658,7 +658,7 @@ const useBanners = ({
           }
           onClickBanner={{
             onClick: () =>
-              push(pages['/jobs/[id]/job-details']({ id: job?.id })),
+              push(ROUTES['/jobs/[id]/job-details']({ id: job?.id })),
           }}
         />,
       );
@@ -672,7 +672,7 @@ const useBanners = ({
           }
           onClickBanner={{
             onClick: () =>
-              push(pages['/jobs/[id]/hiring-team']({ id: job?.id })),
+              push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id })),
           }}
         />,
       );
@@ -826,7 +826,7 @@ const HiringTeamModule = () => {
   } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
-    push(pages['/jobs/[id]/hiring-team']({ id: job?.id }));
+    push(ROUTES['/jobs/[id]/hiring-team']({ id: job?.id }));
   };
   return (
     <ModuleCard
@@ -847,7 +847,7 @@ const JobDetailsModule = () => {
   } = useJobDetails();
   const { push } = useRouter();
   const handleClick = () => {
-    push(pages['/jobs/[id]/job-details']({ id: job?.id }));
+    push(ROUTES['/jobs/[id]/job-details']({ id: job?.id }));
   };
   return (
     <ModuleCard

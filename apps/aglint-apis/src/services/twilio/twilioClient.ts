@@ -8,7 +8,7 @@ import {
   AudioWebsocketProtocol,
   AudioEncoding,
 } from 'retell-sdk/models/components';
-import {addCallerToCache} from '../../services/cache/cache-db';
+import {addCallerToCache} from '../cache/cache-db';
 import {appLogger} from '../logger';
 
 export class TwilioClient {

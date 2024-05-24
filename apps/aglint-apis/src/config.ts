@@ -24,4 +24,5 @@ export const envConfig = {
   PORT: process.env.PORT ?? '',
   TWILIO_NUMBER: process.env.TWILIO_NUMBER ?? '',
   RETELL_AGENT_ID: process.env.RETELL_AGENT_ID ?? '',
+  SLACK_BOT_TOKEN: process.env.SLACK_BOT_TOKEN,
 };

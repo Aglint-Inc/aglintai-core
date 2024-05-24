@@ -9,7 +9,7 @@ import { InterviewSessionApiType } from './types';
 export type ConflictReason = {
   conflict_type:
     | 'soft'
-    | 'hard'
+    | 'cal_event'
     | 'ooo'
     | 'calender_diconnected'
     | 'interviewer_paused';
@@ -49,12 +49,17 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
 
 export type SessionInterviewerApiRespType = Pick<
   RecruiterUserType,
-  'first_name' | 'last_name' | 'email' | 'profile_image' | 'user_id'
+  | 'first_name'
+  | 'last_name'
+  | 'email'
+  | 'profile_image'
+  | 'user_id'
+  | 'position'
 > &
   Pick<
     InterviewerSessionRelation,
     'training_type' | 'interviewer_type' | 'interview_module_relation_id'
-  >;
+  > & { int_tz: string };
 // planCombination reponse types
 export type PlanCombinationRespType = {
   plan_comb_id: string;

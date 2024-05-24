@@ -138,10 +138,9 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
-  z-index: 2;
 
-  border: 1px solid #e9ebed;
   border-radius: 10px;
 
+  box-shadow: 0 0 0 1px #e9ebed;
   pointer-events: none;
 }

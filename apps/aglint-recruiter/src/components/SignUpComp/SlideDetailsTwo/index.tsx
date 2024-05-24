@@ -8,7 +8,7 @@ import { RcInfoForm } from '@/devlink2/RcInfoForm';
 import { RecCompanyDetails } from '@/devlink2/RecCompanyDetails';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { industries } from '@/src/utils/industries';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
 import AUIButton from '../../Common/AUIButton';
@@ -40,12 +40,12 @@ function SlideDetailsTwo() {
   const { setStep, recruiter, userDetails } = useSignupDetails();
 
   useEffect(() => {
-    if (router.asPath == `${pageRoutes.SIGNUP}?step=${stepObj.detailsTwo}`) {
+    if (router.asPath == `${ROUTES['/signup']()}?step=${stepObj.detailsTwo}`) {
       if (!userDetails?.user) {
-        router.push(pageRoutes.SIGNUP);
+        router.push(ROUTES['/signup']());
       }
       if (recruiter?.name && userDetails?.user) {
-        router.push(pageRoutes.JOBS);
+        router.push(ROUTES['/jobs']());
       }
     }
   }, []);
