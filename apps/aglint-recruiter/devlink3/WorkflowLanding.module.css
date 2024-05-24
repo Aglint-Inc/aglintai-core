@@ -1,0 +1,18 @@
+.slot_search_and-_filter {
+  height: 60px;
+  border-bottom: 1px solid #e9ebed;
+}
+
+.slot_workflow_card {
+  display: flex;
+  overflow: auto;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  height: calc(100vh - 60px);
+}

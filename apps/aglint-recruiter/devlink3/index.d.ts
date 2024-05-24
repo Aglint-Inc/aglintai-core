@@ -1,5 +1,9 @@
 "use client";
 
+console.warn(
+  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
+);
+
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -104,6 +108,7 @@ export * from "./HistoryTrainingCard";
 export * from "./IconRegular";
 export * from "./IconSmall";
 export * from "./InlineEditField";
+export * from "./InputWithLabel";
 export * from "./Instructions";
 export * from "./InstructionsButton";
 export * from "./InterviewBreakCard";
@@ -227,4 +232,11 @@ export * from "./WidgetPanelCard";
 export * from "./WidgetTimeGroup";
 export * from "./WidgetUserCard";
 export * from "./WidgetUserCardWithCompany";
+export * from "./WorkflowAdd";
+export * from "./WorkflowCard";
+export * from "./WorkflowConnector";
+export * from "./WorkflowDetail";
+export * from "./WorkflowEmpty";
+export * from "./WorkflowItem";
+export * from "./WorkflowLanding";
 export * from "./YourSchedules";

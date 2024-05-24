@@ -1,0 +1,57 @@
+.add_actionbutton {
+  display: flex;
+  margin-top: 10px;
+  padding: 8px 14px;
+  justify-content: center;
+  align-items: center;
+  grid-column-gap: 6px;
+  grid-row-gap: 6px;
+
+  border: 1px solid #2f3941;
+  border-radius: 8px;
+
+  background-color: white;
+
+  transition: all 200ms ease;
+
+  cursor: pointer;
+}
+
+.add_actionbutton:hover {
+  background-color: #f7f9fb;
+}
+
+.embed_flex {
+  display: flex;
+  align-items: center;
+}
+
+.embed_flex.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.embed_flex.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.embed_flex.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.embed_flex.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.embed_flex.fixedd {
+  width: 23px;
+}
