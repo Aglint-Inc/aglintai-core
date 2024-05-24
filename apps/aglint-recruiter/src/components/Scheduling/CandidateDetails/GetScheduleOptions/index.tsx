@@ -1,4 +1,4 @@
-import { Dialog, Stack } from '@mui/material';
+import { Dialog, Drawer, Stack } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
@@ -7,6 +7,18 @@ import { useEffect, useState } from 'react';
 
 import { ScheduleOptions } from '@/devlink2/ScheduleOptions';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import { CandidateSchedule } from '@/devlink3/CandidateSchedule';
+import { ConflictHard } from '@/devlink3/ConflictHard';
+import { ConflictSoft } from '@/devlink3/ConflictSoft';
+import { DateOption } from '@/devlink3/DateOption';
+import { DatePickerBody } from '@/devlink3/DatePickerBody';
+import { MemberRow } from '@/devlink3/MemberRow';
+import { NoConflicts } from '@/devlink3/NoConflicts';
+import { ScheduleOption } from '@/devlink3/ScheduleOption';
+import { ScheduleOptionsList } from '@/devlink3/ScheduleOptionsList';
+import { SessionDetails } from '@/devlink3/SessionDetails';
+import { SideDrawerLarge } from '@/devlink3/SideDrawerLarge';
+import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -51,13 +63,8 @@ function GetScheduleOptionsDialog() {
   }));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-  const initialEndDate = currentDate.add(15, 'day');
 
   useEffect(() => {
-    setDateRange({
-      start_date: currentDate.toISOString(),
-      end_date: initialEndDate.toISOString(),
-    });
     return () => {
       setIsScheduleNowOpen(false);
       setSchedulingOptions([]);
@@ -128,21 +135,93 @@ function GetScheduleOptionsDialog() {
 
   return (
     <>
-      <Dialog
-        sx={{
-          '& .MuiDialog-paper': {
-            background: '#fff',
-            border: 'none',
-            borderRadius: '10px',
-          },
-        }}
-        maxWidth='xl'
-        open={isScheduleNowOpen}
+      <Drawer
+        anchor={'right'}
+        open={true || isScheduleNowOpen}
         onClose={() => {
           resetState();
         }}
       >
-        <ScheduleOptions
+        <SideDrawerLarge
+          slotSideDrawerbody={
+            <>
+              {/* <DatePickerBody
+                slotMuiDatePicker={'date picker'}
+                isEmailAgent={false}
+                isPhoneAgent={false}
+                isRequestAvailability={false}
+                isContinueButton={true}
+                isSelfScheduling={true}
+              /> */}
+              <ScheduleOptionsList
+                slotDateOption={
+                  <>
+                    <DateOption
+                      isSelected={true}
+                      slotScheduleOption={
+                        <>
+                          <ScheduleOption
+                            isSelected={true}
+                            isCheckbox={false}
+                            isRadio={false}
+                            slotSingleDaySchedule={
+                              <SingleDaySchedule
+                                slotConflicts={
+                                  <>
+                                    <NoConflicts />
+                                    <ConflictSoft textConflict={1} />
+                                    <ConflictHard textConflict={2} />
+                                  </>
+                                }
+                                slotSessionDetails={
+                                  <>
+                                    <SessionDetails
+                                      isMemberRow={true}
+                                      slotMemberRow={
+                                        <>
+                                          <MemberRow
+                                            slotConflicts={
+                                              <>
+                                                <ConflictSoft />
+                                              </>
+                                            }
+                                          />
+                                          <MemberRow />
+                                          <MemberRow />
+                                        </>
+                                      }
+                                    />
+                                    <SessionDetails
+                                      isMemberRow={false}
+                                      textSessionName={'Break'}
+                                      textSessionDuration={'duration'}
+                                    />
+                                  </>
+                                }
+                              />
+                            }
+                          />
+                          <ScheduleOption
+                            isCheckbox={false}
+                            isRadio={false}
+                            slotSingleDaySchedule={
+                              <>
+                                <SingleDaySchedule isMultiDay={true} />
+                                <SingleDaySchedule isMultiDay={true} />
+                              </>
+                            }
+                          />
+                        </>
+                      }
+                    />
+                  </>
+                }
+              />
+            </>
+          }
+          isBottomBar={true}
+        />
+        {/* <ScheduleOptions
           onClickClose={{
             onClick: () => {
               resetState();
@@ -259,122 +338,8 @@ function GetScheduleOptionsDialog() {
             selectedApplication.candidates.last_name,
           )}
           textPopHeader={isDebrief ? 'Pick a slot' : 'Available Options'}
-        />
-      </Dialog>
-      {/* <MuiPopup
-        props={{
-          onClose: () => {
-            setIsPopupOpen(false);
-            setLoading(false);
-          },
-          open: isPopupOpen,
-        }}
-      >
-        <SchedulingPop
-          textEmail={'Schedule With Email Agent'}
-          textPhone={'Schedule With Phone Agent'}
-          isEmailActive={isEmail}
-          isPhoneActive={isPhone}
-          slotRadioEmail={
-            <RadioButton
-              textLabel=''
-              isChecked={isEmail}
-              onClickCheck={{
-                onClick: () => {
-                  setEmail(true);
-                  setPhone(false);
-                },
-              }}
-            />
-          }
-          slotRadiophone={
-            <RadioButton
-              textLabel=''
-              isChecked={isPhone}
-              onClickCheck={{
-                onClick: () => {
-                  setEmail(false);
-                  setPhone(true);
-                },
-              }}
-            />
-          }
-          slotPrimaryButton={
-            <ButtonWide
-              isLoading={isloading}
-              isEnabled={input !== ''}
-              textButton={'Schedule'}
-              onClickButton={{
-                onClick: () => {
-                  setLoading(true);
-                  isEmail ? initConversation() : makePhoneCal();
-                },
-              }}
-            />
-          }
-          slotInput1={
-            <UITextField
-              placeholder='Enter Phone Number'
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              defaultValue={selectedApplication.candidates.phone}
-            />
-          }
-          slotInput3={
-            <UITextField
-              placeholder='Enter Email'
-              value={inputEmail}
-              onChange={(e) => setInputEmail(e.target.value)}
-              defaultValue={selectedApplication.candidates.email}
-            />
-          }
-          slotInput2={
-            <Stack width={465}>
-              <Autocomplete
-                disableClearable
-                options={timeZones}
-                value={selectedTimeZone}
-                onChange={(event, value) => {
-                  if (value) {
-                    setSelectedTimeZone(value);
-                  }
-                }}
-                autoComplete={false}
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => {
-                  return (
-                    <li {...props}>
-                      <Typography variant='body2' color={'#000'}>
-                        {option.label}
-                      </Typography>
-                    </li>
-                  );
-                }}
-                renderInput={(params) => {
-                  return (
-                    <UITextField
-                      rest={{ ...params }}
-                      labelSize='medium'
-                      // fullWidth
-                      label=''
-                      placeholder='Asia/Calcutta (GMT+05:30)'
-                      InputProps={{
-                        ...params.InputProps,
-                        autoComplete: 'new-password',
-                      }}
-                    />
-                  );
-                }}
-              />
-            </Stack>
-          }
-          onClickClose={{
-            onClick: () => {
-              setIsPopupOpen(false);
-            },
-          }}
-        />
-      </MuiPopup> */}
+        /> */}
+      </Drawer>
     </>
   );
 }

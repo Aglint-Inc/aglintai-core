@@ -22,6 +22,7 @@ import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
+  setIsScheduleNowOpen,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from './store';
@@ -94,15 +95,20 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
+                onClickSelfschedulingLink={{
+                  onClick: () => {
+                    setIsScheduleNowOpen(true);
+                  },
+                }}
                 slotDarkPill={<TabsSchedulingApplication />}
                 onClickClose={{
                   onClick: () => {
                     setSelectedSessionIds([]);
                   },
                 }}
-                slotScheduleNowButton={
-                  <ScheduleNowTopbar isDebrief={isDebrief} />
-                }
+                // slotScheduleNowButton={
+                //   <ScheduleNowTopbar isDebrief={isDebrief} />
+                // }
                 isScheduleNowVisible={selectedSessionIds.length > 0}
                 slotCandidateCard={<RightPanel />}
                 slotFullScheduleCard={

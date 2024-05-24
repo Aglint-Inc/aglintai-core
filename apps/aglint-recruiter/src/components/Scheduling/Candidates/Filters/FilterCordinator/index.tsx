@@ -47,15 +47,6 @@ function FilterCordinator() {
 
   useEffect(() => {
     handleSearch();
-    return () => {
-      setFilter({ coordinator_ids: [] });
-    };
-  }, []);
-
-  useEffect(() => {
-    if (text) {
-      handleSearch();
-    }
   }, [text]);
 
   const open = Boolean(anchorEl);

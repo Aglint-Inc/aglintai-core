@@ -9,4 +9,8 @@ declare function CandidateSchedule(props: {
   slotScheduleNowButton?: Types.Devlink.Slot;
   isScheduleNowVisible?: Types.Visibility.VisibilityConditions;
   onClickClose?: Types.Devlink.RuntimeProps;
+  onClickPhoneAgent?: Types.Devlink.RuntimeProps;
+  onClickMailAgent?: Types.Devlink.RuntimeProps;
+  onClickRequestAvailability?: Types.Devlink.RuntimeProps;
+  onClickSelfschedulingLink?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

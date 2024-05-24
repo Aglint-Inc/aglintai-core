@@ -1,0 +1,25 @@
+.scheduleoptions {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+
+  background-color: #e9ebed;
+}
+
+.schedule_options {
+  position: relative;
+  z-index: 1;
+
+  overflow: auto;
+  padding-top: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+
+  background-color: white;
+
+  height: calc(100vh - 130px);
+}

@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 
 import { ScheduleNowButton } from '@/devlink3/ScheduleNowButton';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
@@ -30,6 +31,14 @@ import { ApiResponseFindAvailability } from '../types';
 function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
   const { recruiter, recruiterUser } = useAuthDetails();
   const currentDate = dayjs();
+  const initialEndDate = currentDate.add(7, 'day');
+
+  useEffect(() => {
+    setDateRange({
+      start_date: currentDate.toISOString(),
+      end_date: initialEndDate.toISOString(),
+    });
+  }, []);
 
   const { selectedSessionIds, dateRange, fetchingPlan, selectedApplication } =
     useSchedulingApplicationStore((state) => ({
