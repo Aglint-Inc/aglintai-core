@@ -937,7 +937,7 @@ export class CandidatesScheduling {
           );
           if (is_ooo_conflict) return 'ooo';
 
-          return 'hard';
+          return 'cal_event';
         };
         for (const attendee of session_attendees) {
           const conflict_reasons: ConflictReason[] = [];

@@ -804,6 +804,41 @@ export type Database = {
           },
         ]
       }
+      company_email_template: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          recruiter_id: string
+          subject: string
+          type: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          recruiter_id?: string
+          subject: string
+          type: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          recruiter_id?: string
+          subject?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_email_template_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: true
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       company_search_cache: {
         Row: {
           company_name: string
@@ -3931,6 +3966,8 @@ export type Database = {
         Args: {
           session_ids: string[]
           company_id: string
+          meet_start_date: string
+          meet_end_date: string
         }
         Returns: {
           interview_sessions: Json[]
@@ -3938,6 +3975,7 @@ export type Database = {
           service_cred: string
           interview_modules: Json[]
           comp_schedule_setting: Json
+          int_meetings: Json[]
         }[]
       }
       get_interview_training_status_count: {
