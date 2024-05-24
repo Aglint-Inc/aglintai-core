@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { AllInterviewEmpty } from '@/devlink2/AllInterviewEmpty';
 import Loader from '@/src/components/Common/Loader';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import ListCardInterviewSchedule from '../ListCard';
 import { ApplicationList } from '../store';
@@ -24,7 +24,9 @@ function AllList({
   const router = useRouter();
   const onClickCard = (app: ApplicationList) => {
     router.push(
-      `${pageRoutes.SCHEDULING}/application/${app.applications.id}`,
+      ROUTES['/scheduling/application/[application_id]']({
+        application_id: app.applications.id,
+      }),
       undefined,
       {
         shallow: true,

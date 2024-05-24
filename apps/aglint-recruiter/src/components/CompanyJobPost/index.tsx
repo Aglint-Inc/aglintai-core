@@ -9,7 +9,7 @@ import { CompanyListingLinks } from '@/devlink/CompanyListingLinks';
 import { OfficeLocationCard } from '@/devlink/OfficeLocationCard';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
 import { palette } from '@/src/context/Theme/Theme';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
 
@@ -59,7 +59,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               textWorkingType={job.job_type || '--'}
               onClickApplyNow={{
                 onClick: () => {
-                  router.push(pageRoutes.JOBPOST + job.id);
+                  router.push(ROUTES['/job-post/[id]']({ id: job.id }));
                 },
               }}
             />

@@ -5,8 +5,6 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-// import { errorMessages } from '@utils/errorMessages';
-import { pageRoutes } from '@utils/pageRouting';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
@@ -17,6 +15,8 @@ import {
 } from 'react-hook-form';
 
 import { ResetPassword } from '@/devlink/ResetPassword';
+// import { errorMessages } from '@utils/errorMessages';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -140,12 +140,12 @@ export default function ResetPasswordComponent() {
   //           throw error;
   //         }
   //         if (data[0].role === 'interviewer') {
-  //           router.push(`${pageRoutes.SCHEDULING}?tab=mySchedules`);
+  //           router.push(`${pages.SCHEDULING}?tab=mySchedules`);
   //           return null;
   //         } else {
-  //           router.push(pageRoutes.DASHBOARD);
+  //           router.push(pages.DASHBOARD);
   //         }
-  //         router.push(pageRoutes.DASHBOARD);
+  //         router.push(pages.DASHBOARD);
   //       } else {
   //         if (
   //           error == 'AuthApiError: Password should be at least 8 characters'
@@ -199,7 +199,7 @@ export default function ResetPasswordComponent() {
     });
     if (!error) {
       toast.success('Password reseted  successfully.');
-      router.push(pageRoutes.LOADING);
+      router.push(ROUTES['/loading']());
     } else {
       toast.error(error.message);
     }
