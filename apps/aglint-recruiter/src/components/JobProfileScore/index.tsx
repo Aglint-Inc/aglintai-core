@@ -177,7 +177,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='experience'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.experience}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.experience}
@@ -197,7 +197,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='skills'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.skills}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.skills}
@@ -217,7 +217,7 @@ const ProfileScoreControls = () => {
                   <UITextField
                     name='education'
                     type='number'
-                    width='60px'
+                    width='70px'
                     value={weights.education}
                     onChange={(e) => handleChange(e)}
                     disabled={disabled.education}
