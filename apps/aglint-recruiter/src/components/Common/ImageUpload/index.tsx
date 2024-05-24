@@ -8,7 +8,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Icon from '@/src/components/Common/Icons/Icon';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 
 function ImageUpload({
@@ -105,7 +105,7 @@ function ImageUpload({
               }}
               variant='square'
             >
-              {router.route.includes(pageRoutes.PROFILE) ? (
+              {router.route.includes(PAGES['/profile']()) ? (
                 <Icon
                   variant='UserSolo'
                   height='32'

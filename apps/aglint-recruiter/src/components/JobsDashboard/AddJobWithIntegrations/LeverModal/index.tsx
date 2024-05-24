@@ -20,7 +20,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_LEVER_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -118,7 +118,7 @@ export function LeverModalComp() {
           ...prev,
           lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
+        router.push(PAGES['/jobs/[id]']({ id: newJobs[0].id }));
       } else {
         toast.error(
           'Import failed. Please try again later or contact support for assistance.',

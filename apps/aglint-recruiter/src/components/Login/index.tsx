@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { RecLoginPage } from '@/devlink2/RecLoginPage';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -132,7 +132,7 @@ function Login() {
   //       password: details.password
   //     });
   //     if (!authData.error) {
-  //       router.push(pageRoutes.LOADING);
+  //       //
   //     } else {
   //       setErrorCheck({
   //         ...errorCheck,
@@ -162,7 +162,7 @@ function Login() {
           // console.log(error);
           setLoginError(error.message);
           toast.error(error.message);
-        } else router.push(pageRoutes.LOADING);
+        } else router.push(PAGES['/loading']());
       });
   };
   const {
@@ -215,7 +215,7 @@ function Login() {
       <RecLoginPage
         onclickForgotPassword={{
           onClick: () => {
-            router.push(pageRoutes.FORGOT_PASSWORD);
+            router.push(PAGES['/forgot-password']());
           },
         }}
         contactLink={{
@@ -228,7 +228,7 @@ function Login() {
         }}
         onclickSignup={{
           onClick: () => {
-            router.push(`${pageRoutes.SIGNUP}`);
+            router.push(`${PAGES['/signup']()}`);
           },
         }}
         slotForm={

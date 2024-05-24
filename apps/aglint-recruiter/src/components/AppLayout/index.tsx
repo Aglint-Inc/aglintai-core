@@ -1,7 +1,6 @@
 //import ResizeWindowContext from '@context/resizeWindow/context';
 import { Avatar, Drawer, LinearProgress, Stack } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { pageRoutes } from '@utils/pageRouting';
 import { LottieComponentProps } from 'lottie-react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -12,6 +11,7 @@ import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
+import PAGES from '@/src/utils/routing/pageRouting';
 
 import Icon from '../Common/Icons/Icon';
 import { isEnvProd } from '../JobsDashboard/JobPostCreateUpdate/utils';
@@ -41,12 +41,11 @@ export default function AppLayout({ children }) {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
       if (
-        router.pathname === pageRoutes.JOBS ||
-        router.pathname === pageRoutes.COMPANY ||
-        router.pathname === pageRoutes.CANDIDATES ||
-        router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.SETTINGS ||
-        router.pathname === pageRoutes.PROFILE
+        router.pathname === PAGES['/jobs']() ||
+        router.pathname === PAGES['/company']() ||
+        router.pathname === PAGES['/candidates/history']() ||
+        router.pathname === PAGES['/notifications']() ||
+        router.pathname === PAGES['/profile']()
       ) {
         setExpand(true);
       } else {
@@ -64,9 +63,9 @@ export default function AppLayout({ children }) {
         setExpand(false);
       }
       if (
-        router.pathname === pageRoutes.CANDIDATES ||
-        router.pathname === pageRoutes.NOTIFICATIONS ||
-        router.pathname === pageRoutes.COMPANY
+        router.pathname === PAGES['/candidates/history']() ||
+        router.pathname === PAGES['/notifications']() ||
+        router.pathname === PAGES['/company']()
       ) {
         setExpand(false);
       }
@@ -137,7 +136,7 @@ export default function AppLayout({ children }) {
             </Stack>
             <NavBottom
               onClickProfile={{
-                onClick: () => router.push(pageRoutes.PROFILE),
+                onClick: () => router.push(PAGES['/profile']()),
               }}
               onClickLogout={{
                 onClick: () => {
@@ -230,7 +229,7 @@ export default function AppLayout({ children }) {
             >
               <CompanyProfileHeader
                 onclickCompany={{
-                  onClick: () => router.push(pageRoutes.COMPANY),
+                  onClick: () => router.push(PAGES['/company']()),
                 }}
                 companyName={companyName}
                 slotLogo={
@@ -278,7 +277,7 @@ export default function AppLayout({ children }) {
               </Stack>
               <NavProfileBlock
                 onclickProfile={{
-                  onClick: () => router.push(pageRoutes.PROFILE),
+                  onClick: () => router.push(PAGES['/profile']()),
                 }}
                 onclickLogout={{
                   onClick: () => {

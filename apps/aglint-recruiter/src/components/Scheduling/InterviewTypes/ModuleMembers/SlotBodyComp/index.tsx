@@ -6,7 +6,7 @@ import { ModuleMembers } from '@/devlink2/ModuleMembers';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import Loader from '@/src/components/Common/Loader';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
-import { pages } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 
 import ModuleSchedules from '../../../Common/ModuleSchedules';
 import {
@@ -91,7 +91,7 @@ function SlotBodyComp({
                       onClickPill={{
                         onClick: () => {
                           router.push(
-                            pages['/scheduling/module/members/[module_id]']({
+                            PAGES['/scheduling/module/members/[module_id]']({
                               module_id: editModule.id,
                             }) + `?tab=${tab.queryParams}`,
                             undefined,

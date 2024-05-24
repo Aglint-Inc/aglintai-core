@@ -11,7 +11,7 @@ import { WelcomeSlider3 } from '@/devlink/WelcomeSlider3';
 import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { ApiBodyParamsSignup } from '@/src/pages/api/signup';
 import { errorMessages } from '@/src/utils/errorMessages';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -170,7 +170,7 @@ const SlideTwoSignUp = () => {
       }
     } catch (err) {
       toast.error(err.message);
-      router.push(pageRoutes.SIGNUP);
+      router.push(PAGES['/signup']());
     }
   };
 
@@ -197,15 +197,15 @@ const SlideTwoSignUp = () => {
     setRouteCheker(true);
     if (
       router.isReady &&
-      router.asPath == `${pageRoutes.SIGNUP}` &&
+      router.asPath == `${PAGES['/signup']()}` &&
       recruiterUser?.role
     ) {
       if (recruiterUser.role === 'interviewer') {
-        router.push(pageRoutes.INTERVIEWER);
+        router.push('/interviewer');
         return;
       } else {
         if (userDetails?.user && recruiter?.industry) {
-          router.push(pageRoutes.JOBS);
+          router.push(PAGES['/jobs']());
           return;
         }
         if (userDetails?.user && !userDetails?.user.user_metadata?.role) {
@@ -254,7 +254,7 @@ const SlideTwoSignUp = () => {
               }}
               onClickBack={{
                 onClick: () => {
-                  router.push(`${pageRoutes.SIGNUP}?step=${stepObj.type}`);
+                  router.push(`${PAGES['/signup']()}?step=${stepObj.type}`);
                   setStep(stepObj.type);
                 },
               }}
@@ -271,7 +271,7 @@ const SlideTwoSignUp = () => {
               isTermsChecked={checked}
               onClickSignIn={{
                 onClick: () => {
-                  router.push(pageRoutes.LOGIN);
+                  router.push(PAGES['/login']());
                   setStep(stepObj.signin);
                 },
               }}

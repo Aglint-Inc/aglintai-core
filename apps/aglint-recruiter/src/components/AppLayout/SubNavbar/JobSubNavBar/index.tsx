@@ -16,7 +16,7 @@ import {
   STATE_LEVER_DIALOG,
 } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
-import { pageRoutes, pages } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 
 function JobSubNavbar() {
   const router = useRouter();
@@ -34,16 +34,16 @@ function JobSubNavbar() {
       <AddJob />
       <NavJobSubLink
         onClickJobAll={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=all`),
+          onClick: () => router.push(`${PAGES['/jobs']()}?status=all`),
         }}
         onClickJobActive={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=published`),
+          onClick: () => router.push(`${PAGES['/jobs']()}?status=published`),
         }}
         onClickJobInactive={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=draft`),
+          onClick: () => router.push(`${PAGES['/jobs']()}?status=draft`),
         }}
         onClickJobClosed={{
-          onClick: () => router.push(`${pageRoutes.JOBS}?status=closed`),
+          onClick: () => router.push(`${PAGES['/jobs']()}?status=closed`),
         }}
         isJobAll={router.query.status === 'all'}
         activeCount={
@@ -117,7 +117,7 @@ function AddJob() {
           }
           onClickLinktoIntegration={{
             onClick: () => {
-              router.push(pages['/intergrations']());
+              router.push(PAGES['/integrations']());
             },
           }}
           onClickAshby={{
@@ -164,7 +164,7 @@ function AddJob() {
           }}
           onClickCreateNewJob={{
             onClick: () => {
-              router.push(pageRoutes.CREATEJOB);
+              router.push(PAGES['/jobs/create']());
             },
           }}
           onClickLeverImport={{

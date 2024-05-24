@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 
 import { CloseJobModal } from '@/devlink/CloseJobModal';
 import UITextField from '@/src/components/Common/UITextField';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -32,7 +32,7 @@ function DeleteModuleDialog({ editModule }: { editModule: ModuleType }) {
         if (data.length === 0) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
-            router.push(`${pageRoutes.SCHEDULING}?tab=interviewtypes`);
+            router.push(`${PAGES['/scheduling']()}?tab=interviewtypes`);
             toast.success('Interview type deleted successfully.');
           } else {
             throw new Error();

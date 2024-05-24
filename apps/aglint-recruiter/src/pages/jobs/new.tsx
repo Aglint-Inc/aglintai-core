@@ -10,15 +10,12 @@ import JobPostFormProvider, {
 } from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormProvider';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import IntegrationProvider from '@/src/context/IntegrationProvider/IntegrationProvider';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 
 function Hoc() {
   return (
     <>
-      <Seo
-        title={`Jobs`}
-        description='AI for People Products'
-      />
+      <Seo title={`Jobs`} description='AI for People Products' />
       <JobPostFormProvider>
         <IntegrationProvider>
           <New />
@@ -53,7 +50,7 @@ function New() {
         <EmptyJobDashboard
           heading={'Create Job'}
           handleClickAddJob={() => {
-            router.push(pageRoutes.CREATEJOB);
+            router.push(PAGES['/jobs/create']());
           }}
           showMsg={false}
         />

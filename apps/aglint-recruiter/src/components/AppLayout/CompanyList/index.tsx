@@ -7,7 +7,6 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CompanyProfileHeader } from '@/devlink2/CompanyProfileHeader';
 import { SwitchComp } from '@/devlink2/SwitchComp';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 import { companyType } from '@/src/utils/userRoles';
@@ -197,7 +196,6 @@ function CompanyList() {
                       }
                       onclickCompany={{
                         onClick: () => {
-                          // router.push(pageRoutes.COMPANY);
                           updateStatus(ele.recId);
                         },
                       }}

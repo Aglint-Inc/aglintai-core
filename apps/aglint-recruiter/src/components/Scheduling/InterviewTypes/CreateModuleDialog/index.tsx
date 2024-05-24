@@ -14,7 +14,7 @@ import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import toast from '@/src/utils/toast';
 
 import {
@@ -45,7 +45,11 @@ function CreateModuleDialog() {
           recruiter_id: recruiter.id,
           department: department,
         });
-        await router.push(`${pageRoutes.INTERVIEWMODULE}/members/${res.id}`);
+        await router.push(
+          PAGES['/scheduling/module/members/[module_id]']({
+            module_id: res.id,
+          }),
+        );
         setIsCreateDialogOpen(null);
         setSelectedUsers([]);
       } catch (e) {

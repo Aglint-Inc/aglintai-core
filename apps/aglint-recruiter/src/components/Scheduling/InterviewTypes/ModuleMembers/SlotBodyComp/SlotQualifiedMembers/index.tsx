@@ -6,7 +6,7 @@ import { MemberListCard } from '@/devlink2/MemberListCard';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useSchedulingContext } from '@/src/context/SchedulingMain/SchedulingMainProvider';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 
 import { useGetMeetingsByModuleId } from '../../../queries/hooks';
 import { getHours } from '../../../queries/utils';
@@ -79,7 +79,9 @@ function SlotQualifiedMembers({
             onClickCard={{
               onClick: () => {
                 router.push(
-                  `${pageRoutes.SCHEDULINGINTERVIEWER}/${user.user_id}`,
+                  PAGES['/scheduling/interviewer/[member_id]']({
+                    member_id: user.user_id,
+                  }),
                 );
               },
             }}

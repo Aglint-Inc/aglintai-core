@@ -13,12 +13,12 @@ let tempEmail = '';
 import { useRouter } from 'next/router';
 
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import toast from '@/src/utils/toast';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 );
 
 export default function ForgotPasswordComponent() {
@@ -27,8 +27,8 @@ export default function ForgotPasswordComponent() {
   const [error, setError] = useState({
     valid: {
       error: false,
-      msg: ''
-    }
+      msg: '',
+    },
   });
   let email = useRef(null);
   const handleEmail = () => {
@@ -40,23 +40,23 @@ export default function ForgotPasswordComponent() {
         ...error,
         valid: {
           error: true,
-          msg: errorMessages.emailRequired
-        }
+          msg: errorMessages.emailRequired,
+        },
       });
     } else if (!emailRegex.test(emailRef)) {
       setError({
         ...error,
         valid: {
           error: true,
-          msg: errorMessages.emailRequired
-        }
+          msg: errorMessages.emailRequired,
+        },
       });
     } else {
       setError({
         ...error,
         valid: {
-          error: false
-        }
+          error: false,
+        },
       });
     }
   };
@@ -70,8 +70,8 @@ export default function ForgotPasswordComponent() {
       const { error } = await supabase.auth.resetPasswordForEmail(
         currentEmail,
         {
-          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`
-        }
+          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
+        },
       );
       if (!error) {
         setLoading(false);
@@ -103,8 +103,8 @@ export default function ForgotPasswordComponent() {
                       setError({
                         ...error,
                         valid: {
-                          error: false
-                        }
+                          error: false,
+                        },
                       })
                     }
                     onBlur={handleEmail}
@@ -119,14 +119,14 @@ export default function ForgotPasswordComponent() {
             }
             onclickBack={{
               onClick: () => {
-                router.push(pageRoutes.LOGIN);
-              }
+                router.push(PAGES['/login']());
+              },
             }}
             onclickReset={{
-              onClick: handleSubmit
+              onClick: handleSubmit,
             }}
             contactLink={{
-              href: 'mailto:admin@aglinthq.com'
+              href: 'mailto:admin@aglinthq.com',
             }}
           />
         </YTransform>
@@ -136,16 +136,16 @@ export default function ForgotPasswordComponent() {
           <PwResetConfirm
             onclickBack={{
               onClick: () => {
-                router.push(pageRoutes.LOGIN);
-              }
+                router.push(PAGES['/login']());
+              },
             }}
             contactLink={{
-              href: 'mailto:admin@aglinthq.com'
+              href: 'mailto:admin@aglinthq.com',
             }}
             onclickReset={{
               onClick: (e) => {
                 handleSubmit(e);
-              }
+              },
             }}
           />
         </YTransform>

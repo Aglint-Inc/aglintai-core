@@ -11,7 +11,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import { useKeyPress } from '@/src/components/JobApplicationsDashboard/hooks';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useTasksContext } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 import toast from '@/src/utils/toast';
 
 import { useTaskStatesContext } from '../../TaskStatesContext';
@@ -110,7 +110,7 @@ function ViewTaskDrawer() {
         const nextTask = tasks.find(
           (ele) => ele.id === tasks[Number(nextIndex)].id,
         );
-        route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
+        route.push(PAGES['/tasks']() + '?task_id=' + nextTask.id);
       }
     } else {
       setDisableNext(true);
@@ -126,7 +126,7 @@ function ViewTaskDrawer() {
         const nextTask = tasks.find(
           (ele) => ele.id === tasks[Number(prevIndex)].id,
         );
-        route.push(pageRoutes.TASKS + '?task_id=' + nextTask.id);
+        route.push(PAGES['/tasks']() + '?task_id=' + nextTask.id);
       }
     } else {
       setDisablePrev(true);
@@ -152,7 +152,7 @@ function ViewTaskDrawer() {
       anchor={'right'}
       open={openViewTask}
       onClose={() => {
-        route.push(pageRoutes.TASKS);
+        route.push(PAGES['/tasks']());
         setDisableNext(false);
         setDisablePrev(false);
       }}
@@ -240,7 +240,7 @@ function ViewTaskDrawer() {
             slotTaskProgress={<SubTaskProgress />}
             onClickClose={{
               onClick: () => {
-                route.push(pageRoutes.TASKS);
+                route.push(PAGES['/tasks']());
               },
             }}
           />

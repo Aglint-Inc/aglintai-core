@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
 
-import { pageRoutes } from '@/src/utils/pageRouting';
-
 import { appKey } from '..';
 
 export const jobDashboardQueryKeys = {
@@ -47,7 +45,7 @@ export const jobDashboardQueryKeys = {
 export const useJobId = () => {
   const router = useRouter();
   const job_id = (
-    (router?.pathname ?? null).startsWith(pageRoutes.JOBDASHBOARD)
+    (router?.pathname ?? null).startsWith('/jobs/[id]')
       ? router?.query?.id ?? null
       : null
   ) as string;

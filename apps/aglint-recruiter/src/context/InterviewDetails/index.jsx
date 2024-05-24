@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { pageRoutes } from '@/src/utils/pageRouting';
+import PAGES from '@/src/utils/routing/pageRouting';
 
 import { getCandidateDetails, getJobDetails } from './utils';
 
@@ -44,7 +44,7 @@ function InterviewDetailsContextProvider({ children }) {
         return null;
       }
       if (
-        router.pathname.includes(pageRoutes.MOCKTEST) &&
+        router.pathname.includes(PAGES['/assessment-new']()) &&
         candidate_details?.feedback !== null &&
         candidate_details?.feedback !== undefined
       ) {

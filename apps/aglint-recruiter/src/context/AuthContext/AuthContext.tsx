@@ -7,7 +7,6 @@ import {
   SocialsType,
 } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { pageRoutes } from '@utils/pageRouting';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -26,6 +25,7 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { featureFlag } from '@/src/utils/Constants';
+import PAGES from '@/src/utils/routing/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -132,11 +132,11 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
-      if (router.route !== pageRoutes.LOADING && data?.session?.user?.id) {
+      if (router.route !== PAGES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
-      router.push(pageRoutes.LOGIN);
+      router.push(PAGES['/login']());
       handleLogout();
     }
   }
@@ -189,7 +189,7 @@ const AuthProvider = ({ children }) => {
     });
     posthog.reset();
     if (!error) {
-      router.push(pageRoutes.LOGIN);
+      router.push(PAGES['/login']());
     }
   };
 
@@ -330,7 +330,7 @@ const AuthProvider = ({ children }) => {
       if (feature && !posthog.isFeatureEnabled(feature)) {
         // eslint-disable-next-line no-console
         console.log('Feature not enabled');
-        router.push(pageRoutes.JOBS);
+        router.push(PAGES['/jobs']());
       }
     }
   }, [router.pathname, userDetails]);
@@ -380,11 +380,10 @@ const AuthLoader = () => {
 
 const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [
-    pageRoutes.LOGIN,
-    pageRoutes.SIGNUP,
-    pageRoutes.MOCKTEST,
-    pageRoutes.PHONESCREEN,
-    pageRoutes.CONFIRM_SCHEDULE,
+    PAGES['/login'](),
+    PAGES['/signup'](),
+    PAGES['/assessment-new'](),
+    PAGES['/candidate-phone-screening'](),
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {
@@ -394,12 +393,12 @@ const isRoutePublic = (path = '') => {
 };
 
 const pageFeatureMapper = {
-  [pageRoutes.ASSISTANT]: 'isAssistantEnabled',
-  [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
-  [pageRoutes.AGENT]: 'isAgentEnabled',
-  [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
-  [pageRoutes.SUPPORT]: 'isSupportEnabled',
-  [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
+  [PAGES['/assisstant']()]: 'isAssistantEnabled',
+  [PAGES['/assessment-new']()]: 'isNewAssessmentEnabled',
+  [PAGES['/agent']()]: 'isAgentEnabled',
+  [PAGES['/screening']()]: 'isPhoneScreeningEnabled',
+  [PAGES['/support']()]: 'isSupportEnabled',
+  [PAGES['/candidates/history']()]: 'isSourcingEnabled',
 };
 
 const updateMember = ({
