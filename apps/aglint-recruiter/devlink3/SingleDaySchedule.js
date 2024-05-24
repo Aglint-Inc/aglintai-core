@@ -2,7 +2,9 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { ConflictOutsideWorkHours } from "./ConflictOutsideWorkHours";
 import { ConflictSoft } from "./ConflictSoft";
+import { ConflictHard } from "./ConflictHard";
 import { SessionDetails } from "./SessionDetails";
 import * as _utils from "./utils";
 import _styles from "./SingleDaySchedule.module.css";
@@ -16,7 +18,6 @@ export function SingleDaySchedule({
   textTotalTimeRange = "11:30AM - 04:00PM PST",
   slotConflicts,
   slotSessionDetails,
-  isSelected = false,
   textDayCount = "Day 1",
   textDate = "April 04",
   isMultiDay = false,
@@ -73,7 +74,13 @@ export function SingleDaySchedule({
             className={_utils.cx(_styles, "slot_conflicts")}
             tag="div"
           >
-            {slotConflicts ?? <ConflictSoft />}
+            {slotConflicts ?? (
+              <>
+                <ConflictOutsideWorkHours />
+                <ConflictSoft />
+                <ConflictHard />
+              </>
+            )}
           </_Builtin.Block>
         </_Builtin.Block>
         <_Builtin.Block

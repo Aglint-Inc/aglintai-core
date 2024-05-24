@@ -74,6 +74,15 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .embed_flex.fixedd {
   width: 23px;
 }
@@ -100,4 +109,9 @@
 
 .info_absolute.top_32 {
   top: 32px;
+  cursor: default;
+}
+
+.info_absolute.top_32.editingg {
+  display: flex;
 }

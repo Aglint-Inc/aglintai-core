@@ -81,6 +81,16 @@ export function ScheduleOption({
             </>
           )}
         </_Builtin.Block>
+        {isSelected ? (
+          <_Builtin.Block
+            className={_utils.cx(_styles, "selected_absolute")}
+            tag="div"
+          />
+        ) : null}
+        <_Builtin.Block
+          className={_utils.cx(_styles, "normal_border")}
+          tag="div"
+        />
       </_Builtin.Block>
     </_Component>
   );

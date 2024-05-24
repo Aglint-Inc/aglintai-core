@@ -55,6 +55,15 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .embed_flex.fixedd {
   width: 23px;
 }
@@ -191,6 +200,8 @@
   right: 0%;
   bottom: 0%;
   z-index: 1;
+
+  border-radius: 10px;
 
   background-color: #edf7ff;
 }

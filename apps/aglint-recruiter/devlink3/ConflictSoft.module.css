@@ -74,6 +74,15 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .embed_flex.fixedd {
   width: 23px;
 }
@@ -100,4 +109,46 @@
 
 .info_absolute.top_32 {
   top: 32px;
+  cursor: default;
+}
+
+.info_absolute.top_32.editingg {
+  display: flex;
+}
+
+.tooltip_content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.conflict_title {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.soft_conflict_text {
+  color: #ed8f1c;
+}
+
+.conflict_resons {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.is_normal_cursor {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 4;
+
+  cursor: default;
 }

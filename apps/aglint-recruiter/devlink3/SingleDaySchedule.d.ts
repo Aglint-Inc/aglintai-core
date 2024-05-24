@@ -6,7 +6,6 @@ declare function SingleDaySchedule(props: {
   textTotalTimeRange?: React.ReactNode;
   slotConflicts?: Types.Devlink.Slot;
   slotSessionDetails?: Types.Devlink.Slot;
-  isSelected?: Types.Visibility.VisibilityConditions;
   textDayCount?: React.ReactNode;
   textDate?: React.ReactNode;
   isMultiDay?: Types.Visibility.VisibilityConditions;

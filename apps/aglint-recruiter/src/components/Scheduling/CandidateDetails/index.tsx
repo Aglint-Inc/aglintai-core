@@ -17,7 +17,6 @@ import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useGetScheduleApplication } from './hooks';
 import RightPanel from './RightPanel';
-import ScheduleNowTopbar from './ScheduleNowTopbar';
 import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
@@ -57,10 +56,6 @@ function SchedulingApplication() {
       resetSchedulingApplicationState();
     };
   }, [router]);
-
-  const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type === 'debrief');
 
   return (
     <>

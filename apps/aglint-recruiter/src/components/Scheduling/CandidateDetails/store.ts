@@ -27,6 +27,7 @@ export interface SchedulingApplication {
     start_date: string;
     end_date: string;
   };
+  stepScheduling: 'pick_date' | 'preference' | 'slot_options';
   members: InterviewScheduleContextType['members'];
   schedulingOptions: PlanCombinationRespType[];
   totalSlots: number;
@@ -60,6 +61,7 @@ const initialState: SchedulingApplication = {
   },
   members: [],
   schedulingOptions: [],
+  stepScheduling: 'pick_date',
   fetchingPlan: false,
   isViewProfileOpen: false,
   fetchingSchedule: true,
@@ -85,6 +87,10 @@ export const setIsEditOpen = (isEditOpen: boolean) =>
 
 export const setIsEditBreakOpen = (isEditBreakOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditBreakOpen });
+
+export const setStepScheduling = (
+  stepScheduling: SchedulingApplication['stepScheduling'],
+) => useSchedulingApplicationStore.setState({ stepScheduling });
 
 export const setSelectedSession = (selectedSession: SessionsType[0]) =>
   useSchedulingApplicationStore.setState({ selectedSession });

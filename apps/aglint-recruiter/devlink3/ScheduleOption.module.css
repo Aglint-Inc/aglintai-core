@@ -60,6 +60,15 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .radio_active.fixedd {
   width: 23px;
 }
@@ -93,14 +102,14 @@
 }
 
 .detail_schedules {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  border: 1px solid #e9ebed;
   border-radius: 10px;
 }
 
 .slotsingleday_schedule {
   display: flex;
-  overflow: hidden;
   width: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -121,4 +130,18 @@
 
   border: 1px solid #337fbd;
   border-radius: 10px;
+}
+
+.normal_border {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 2;
+
+  border: 1px solid #e9ebed;
+  border-radius: 10px;
+
+  pointer-events: none;
 }

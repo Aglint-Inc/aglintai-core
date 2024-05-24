@@ -2,6 +2,7 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import * as _interactions from "./interactions";
+import { ConflictReason } from "./ConflictReason";
 import * as _utils from "./utils";
 import _styles from "./ConflictOutsideWorkHours.module.css";
 
@@ -11,7 +12,14 @@ const _interactionsData = JSON.parse(
 
 export function ConflictOutsideWorkHours({
   as: _Component = _Builtin.Block,
-  textConflict = "conflict count / conflict message",
+  textConflict = (
+    <>
+      {"2"}
+      <br />
+    </>
+  ),
+  slotConflictReasons,
+  isHover = true,
 }) {
   _interactions.useInteractions(_interactionsData, _styles);
 
@@ -30,16 +38,48 @@ export function ConflictOutsideWorkHours({
         value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.25%202.75H8.22656C8.38281%202.75%208.53125%202.75781%208.67188%202.77344C8.85938%202.80469%208.97656%202.89844%209.02344%203.05469C9.05469%203.24219%208.99219%203.38281%208.83594%203.47656C8.21094%203.83594%207.70312%204.32812%207.3125%204.95312C6.9375%205.57812%206.75%206.28125%206.75%207.0625C6.78125%208.23438%207.17969%209.20312%207.94531%209.96875C8.72656%2010.75%209.69531%2011.1562%2010.8516%2011.1875C11.1016%2011.1875%2011.3359%2011.1641%2011.5547%2011.1172C11.7422%2011.1016%2011.875%2011.1719%2011.9531%2011.3281C12.0312%2011.4844%2012.0078%2011.6328%2011.8828%2011.7734C10.9141%2012.7266%209.70312%2013.2188%208.25%2013.25C7.26562%2013.2344%206.38281%2012.9922%205.60156%2012.5234C4.80469%2012.0703%204.17969%2011.4453%203.72656%2010.6484C3.25781%209.86719%203.01562%208.98438%203%208C3.01562%207.01562%203.25%206.13281%203.70312%205.35156C4.17188%204.55469%204.80469%203.92969%205.60156%203.47656C6.38281%203.00781%207.26562%202.76563%208.25%202.75Z%22%20fill%3D%22%231371D6%22%2F%3E%0A%3C%2Fsvg%3E"
       />
       <_Builtin.Block tag="div">{textConflict}</_Builtin.Block>
-      <_Builtin.Block
-        className={_utils.cx(_styles, "info_absolute", "top_32")}
-        tag="div"
-      >
-        <_Builtin.Block tag="div">
-          {
-            "some reasons for the conflict wll appar here. i e committed to another schedule"
-          }
+      {isHover ? (
+        <_Builtin.Block
+          className={_utils.cx(_styles, "info_absolute", "top_32")}
+          tag="div"
+        >
+          <_Builtin.Block
+            className={_utils.cx(_styles, "tooltip_content")}
+            tag="div"
+          >
+            <_Builtin.Block
+              className={_utils.cx(_styles, "conflict_title")}
+              tag="div"
+            >
+              <_Builtin.HtmlEmbed
+                className={_utils.cx(_styles, "embed_flex")}
+                value="%3Csvg%20width%3D%2215%22%20height%3D%2216%22%20viewBox%3D%220%200%2015%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M8.25%202.75H8.22656C8.38281%202.75%208.53125%202.75781%208.67188%202.77344C8.85938%202.80469%208.97656%202.89844%209.02344%203.05469C9.05469%203.24219%208.99219%203.38281%208.83594%203.47656C8.21094%203.83594%207.70312%204.32812%207.3125%204.95312C6.9375%205.57812%206.75%206.28125%206.75%207.0625C6.78125%208.23438%207.17969%209.20312%207.94531%209.96875C8.72656%2010.75%209.69531%2011.1562%2010.8516%2011.1875C11.1016%2011.1875%2011.3359%2011.1641%2011.5547%2011.1172C11.7422%2011.1016%2011.875%2011.1719%2011.9531%2011.3281C12.0312%2011.4844%2012.0078%2011.6328%2011.8828%2011.7734C10.9141%2012.7266%209.70312%2013.2188%208.25%2013.25C7.26562%2013.2344%206.38281%2012.9922%205.60156%2012.5234C4.80469%2012.0703%204.17969%2011.4453%203.72656%2010.6484C3.25781%209.86719%203.01562%208.98438%203%208C3.01562%207.01562%203.25%206.13281%203.70312%205.35156C4.17188%204.55469%204.80469%203.92969%205.60156%203.47656C6.38281%203.00781%207.26562%202.76563%208.25%202.75Z%22%20fill%3D%22%231371D6%22%2F%3E%0A%3C%2Fsvg%3E"
+              />
+              <_Builtin.Block
+                className={_utils.cx(_styles, "outside_work_hours")}
+                tag="div"
+              >
+                {"Outside Work hours"}
+              </_Builtin.Block>
+            </_Builtin.Block>
+            <_Builtin.Block
+              className={_utils.cx(_styles, "conflict_resons")}
+              tag="div"
+            >
+              {slotConflictReasons ?? (
+                <>
+                  <ConflictReason />
+                  <ConflictReason />
+                </>
+              )}
+            </_Builtin.Block>
+          </_Builtin.Block>
         </_Builtin.Block>
-      </_Builtin.Block>
+      ) : null}
+      <_Builtin.Block
+        className={_utils.cx(_styles, "is_normal_cursor")}
+        tag="div"
+      />
     </_Component>
   );
 }
