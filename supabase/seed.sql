@@ -483,3 +483,41 @@ VALUES
 ('a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f', 744, '2024-04-26 14:03:40.024422+00', '523ac2a1-d536-4a84-962c-60179a8bbc48', '05408f9e-40fc-407c-af1d-958cff24d30b', TRUE, 'recruiter', 'a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f'),
 ('a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f', 741, '2024-04-26 13:46:30.351664+00', '523ac2a1-d536-4a84-962c-60179a8bbc48', '02bc9267-0a7a-4e4c-9aff-d7f949782df3', TRUE, 'hiring_manager', 'a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f'),
 ('a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f', 743, '2024-04-26 14:02:34.191224+00', '523ac2a1-d536-4a84-962c-60179a8bbc48', '5d2bb73b-0e3b-4c63-bc60-920554345950', TRUE, 'interviewer', 'a0e4d0db-7492-48c3-bbc9-a8f7d8340f7f');
+
+-- add roles and permissions
+-- -- start -- 
+--   WITH inserted_permissions AS (
+--     INSERT INTO permissions (name)
+--     VALUES ('jobs:create'),
+--     ('jobs:read'),
+--     ('jobs:update')
+--     RETURNING id
+--   )
+--   -- Insert role
+--   , inserted_role AS (
+--     INSERT INTO roles (name)
+--     SELECT DISTINCT role
+--     FROM recruiter_relation
+--     RETURNING id
+--   )
+--   -- Insert role_permissions
+--   INSERT INTO role_permissions ( recruiter_id ,permission_id, role_id)
+--   SELECT '523ac2a1-d536-4a84-962c-60179a8bbc48' as recruiter_id,  ip.id AS permission_id, ir.id AS role_id
+--   FROM inserted_permissions ip, inserted_role ir;
+-- -- end --
+
+-- -- update role from 
+-- BEGIN;
+-- -- Step 1: Rename the column
+-- ALTER TABLE recruiter_relation RENAME COLUMN role TO temp_role;
+
+-- -- Step 2: Add a new column with the correct data type and foreign key constraint
+-- ALTER TABLE recruiter_relation ADD COLUMN role_id UUID REFERENCES roles(id);
+
+-- -- Step 3: Update the new column with the correct values
+-- UPDATE recruiter_relation SET role_id = roles.id FROM roles WHERE recruiter_relation.temp_role::text = roles.name and (recruiter_relation.recruiter_id = roles.recruiter_id or roles.recruiter_id is null);
+
+-- -- Step 4: Drop the temporary column
+-- ALTER TABLE recruiter_relation DROP COLUMN temp_role CASCADE;
+
+-- COMMIT;
