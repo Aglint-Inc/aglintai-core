@@ -7,7 +7,7 @@ import { InterviewModuleCard } from '@/devlink2/InterviewModuleCard';
 import { InterviewModuleTable } from '@/devlink2/InterviewModuleTable';
 import { ArchivedButton } from '@/devlink3/ArchivedButton';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../../Common/Icons/Icon';
 import Loader from '../../Common/Loader';
@@ -103,9 +103,9 @@ export function Modules() {
                           onClickCard={{
                             onClick: () => {
                               router.push(
-                                pageRoutes.INTERVIEWMODULE +
-                                  '/members' +
-                                  `/${mod.interview_modules.id}`,
+                                ROUTES[
+                                  '/scheduling/module/members/[module_id]'
+                                ]({ module_id: mod.interview_modules.id }),
                               );
                             },
                           }}

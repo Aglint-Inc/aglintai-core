@@ -7,7 +7,6 @@ import {
   SocialsType,
 } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
-import { pageRoutes } from '@utils/pageRouting';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import posthog from 'posthog-js';
@@ -26,6 +25,7 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { featureFlag } from '@/src/utils/Constants';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -132,11 +132,11 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
-      if (router.route !== pageRoutes.LOADING && data?.session?.user?.id) {
+      if (router.route !== ROUTES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
       handleLogout();
     }
   }
@@ -189,18 +189,15 @@ const AuthProvider = ({ children }) => {
     });
     posthog.reset();
     if (!error) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
     }
   };
 
   const fetchUserLocation = async () => {
     try {
-      const response = await fetch('https://ipinfo.io/json', {
-        headers: {
-          Authorization: `Bearer e82b96e5cb0802`,
-        },
-      });
-      const data = await response.json();
+      const res = await fetch('/api/getUserLocation');
+      const data = await res.json();
+
       const country = data.country; // Extract the country code from the response
       setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {
@@ -330,7 +327,7 @@ const AuthProvider = ({ children }) => {
       if (feature && !posthog.isFeatureEnabled(feature)) {
         // eslint-disable-next-line no-console
         console.log('Feature not enabled');
-        router.push(pageRoutes.JOBS);
+        router.push(ROUTES['/jobs']());
       }
     }
   }, [router.pathname, userDetails]);
@@ -380,11 +377,10 @@ const AuthLoader = () => {
 
 const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [
-    pageRoutes.LOGIN,
-    pageRoutes.SIGNUP,
-    pageRoutes.MOCKTEST,
-    pageRoutes.PHONESCREEN,
-    pageRoutes.CONFIRM_SCHEDULE,
+    ROUTES['/login'](),
+    ROUTES['/signup'](),
+    ROUTES['/assessment-new'](),
+    ROUTES['/candidate-phone-screening'](),
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {
@@ -394,12 +390,12 @@ const isRoutePublic = (path = '') => {
 };
 
 const pageFeatureMapper = {
-  [pageRoutes.ASSISTANT]: 'isAssistantEnabled',
-  [pageRoutes.ASSESSMENTS]: 'isNewAssessmentEnabled',
-  [pageRoutes.AGENT]: 'isAgentEnabled',
-  [pageRoutes.SCREENING]: 'isPhoneScreeningEnabled',
-  [pageRoutes.SUPPORT]: 'isSupportEnabled',
-  [pageRoutes.CANDIDATES]: 'isSourcingEnabled',
+  [ROUTES['/assisstant']()]: 'isAssistantEnabled',
+  [ROUTES['/assessment-new']()]: 'isNewAssessmentEnabled',
+  [ROUTES['/agent']()]: 'isAgentEnabled',
+  [ROUTES['/screening']()]: 'isPhoneScreeningEnabled',
+  [ROUTES['/support']()]: 'isSupportEnabled',
+  [ROUTES['/candidates/history']()]: 'isSourcingEnabled',
 };
 
 const updateMember = ({

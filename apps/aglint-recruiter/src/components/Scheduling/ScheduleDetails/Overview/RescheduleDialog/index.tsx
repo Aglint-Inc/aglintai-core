@@ -174,21 +174,10 @@ function RescheduleDialog({
           created_by: recruiterUser.user_id,
         });
 
-        const scheduleName = `Interview for ${schedule.job.job_title} - ${schedule.candidates.first_name}`;
-
         mailHandler({
           filter_id: filterJson[0].id,
-          rec_id: recruiter.id,
-          candidate_name: getFullName(
-            schedule.candidates.first_name,
-            schedule.candidates.last_name,
-          ),
-          mail: schedule.candidates.email,
-          position: schedule.job.job_title,
-          schedule_name: scheduleName,
-          schedule_id: schedule.interview_meeting.interview_schedule_id,
+          application_id: schedule.applications.id,
           supabase,
-          rec_mail: recruiterUser.email,
         });
 
         if (cancelReasons?.length > 0) {

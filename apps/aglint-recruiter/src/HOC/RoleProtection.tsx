@@ -2,7 +2,7 @@ import { DB } from '@aglint/shared-types';
 import { useRouter } from 'next/router';
 
 import { useAuthDetails } from '../context/AuthContext/AuthContext';
-import { pageRoutes } from '../utils/pageRouting';
+import ROUTES from '../utils/routing/routes';
 import toast from '../utils/toast';
 
 const withRoleProtection = (
@@ -18,12 +18,12 @@ const withRoleProtection = (
         // Redirect to login page or show an error
         switch (recruiterUser.role) {
           case 'interviewer': {
-            router.push(pageRoutes.SCHEDULING);
+            router.push(ROUTES['/scheduling']());
             toast.warning('You are not authorized to access this page.');
             return null;
           }
           default: {
-            router.push(pageRoutes.AGENT);
+            router.push(ROUTES['/agent']());
             toast.warning('You are not authorized to access this page.');
             return null;
           }

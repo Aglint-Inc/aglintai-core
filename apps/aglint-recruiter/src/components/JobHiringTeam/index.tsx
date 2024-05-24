@@ -13,7 +13,7 @@ import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { Job } from '@/src/queries/job/types';
-import { pages } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../Common/Loader';
 import { capitalize } from '../JobApplicationsDashboard/utils';
@@ -129,7 +129,7 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
         textName={`${capitalize(job?.status ?? 'all')} jobs`}
         onClickLink={{
           onClick: () => {
-            push(`${pages['/jobs']()}?status=${job?.status ?? 'all'}`);
+            push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
           },
           style: { cursor: 'pointer' },
         }}
@@ -139,7 +139,7 @@ const BreadCrumbs = ({ job }: { job: Job }) => {
         textName={capitalize(job?.job_title ?? 'Job')}
         onClickLink={{
           onClick: () => {
-            push(pages['/jobs/[id]']({ id: job?.id }));
+            push(ROUTES['/jobs/[id]']({ id: job?.id }));
           },
           style: { cursor: 'pointer' },
         }}

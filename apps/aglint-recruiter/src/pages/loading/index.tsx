@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import { pageRoutes } from '@utils/pageRouting';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -8,6 +7,7 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import Seo from '@/src/components/Common/Seo';
 import { stepObj } from '@/src/components/SignUpComp/SlideSignup/utils';
 import { Session } from '@/src/context/AuthContext/types';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -40,7 +40,7 @@ export default function Loading() {
       scope: 'local',
     });
     if (!error) {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
     }
   };
 
@@ -67,12 +67,12 @@ export default function Loading() {
         }
       } else {
         toast.error('Unable to login. Please try again.');
-        router.push(pageRoutes.LOGIN);
+        router.push(ROUTES['/login']());
         await handleLogout();
       }
     } catch (error) {
       toast.error('Unable to login. Please try again.');
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
       await handleLogout();
     }
   };
@@ -119,27 +119,31 @@ export default function Loading() {
           if (recruiterRel.role === 'interviewer') {
             router.push(
               localStorage.getItem('redirectURL') ||
-                `${pageRoutes.SCHEDULING}?tab=mySchedules`,
+                `${ROUTES['/scheduling']()}?tab=mySchedules`,
             );
             localStorage.removeItem('redirectURL');
           } else if (recruiterRel.role === 'recruiter') {
-            router.push(localStorage.getItem('redirectURL') || pageRoutes.JOBS);
+            router.push(
+              localStorage.getItem('redirectURL') || ROUTES['/jobs'](),
+            );
             localStorage.removeItem('redirectURL');
           } else if (recruiterRel.role === 'recruiting_coordinator') {
             router.push(
-              localStorage.getItem('redirectURL') || pageRoutes.SCHEDULING,
+              localStorage.getItem('redirectURL') || ROUTES['/scheduling'](),
             );
             localStorage.removeItem('redirectURL');
           } else {
-            router.push(localStorage.getItem('redirectURL') || pageRoutes.JOBS);
+            router.push(
+              localStorage.getItem('redirectURL') || ROUTES['/jobs'](),
+            );
             localStorage.removeItem('redirectURL');
           }
         } catch {
-          router.push(`${pageRoutes.SIGNUP}?step=${stepObj.detailsOne}`);
+          router.push(`${ROUTES['/signup']()}?step=${stepObj.detailsOne}`);
         }
       }
     } catch {
-      router.push(pageRoutes.LOGIN);
+      router.push(ROUTES['/login']());
     }
   };
 

@@ -3,27 +3,27 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useRouter } from 'next/router';
 import type React from 'react';
 
-import { pageRoutes } from '../utils/pageRouting';
+import ROUTES from '../utils/routing/routes';
 
 const queryClient = new QueryClient();
 
-type PageRoutes = typeof pageRoutes;
+type Pages = typeof ROUTES;
 
-const reactQueryPageRoute: PageRoutes[keyof PageRoutes][] = [
-  pageRoutes.ASSESSMENTS,
-  pageRoutes.ASSESSMENT,
-  pageRoutes.JOBASSESSMENT,
-  pageRoutes.JOBS,
-  pageRoutes.JOBDASHBOARD,
-  pageRoutes.CREATEJOB,
-  pageRoutes.EDITJOB,
-  pageRoutes.PROFILESCORE,
-  pageRoutes.SCHEDULINGINTERVIEWER,
-  pageRoutes.JOBEMAILTEMPLATES,
-  pageRoutes.JOBINTERVIEWPLAN,
-  pageRoutes.SCHEDULING,
-  pageRoutes.SCHEDULING_APPLICATION,
-  pageRoutes.SCHEDULING_CANDIDATE_INVITE,
+const reactQueryPageRoute: (keyof Pages)[] = [
+  '/assessment-new',
+  '/assessment-new/[id]',
+  '/jobs/[id]/assessment',
+  '/jobs',
+  '/jobs/[id]',
+  '/jobs/create',
+  '/jobs/[id]/job-details',
+  '/jobs/[id]/profile-score',
+  '/scheduling/interviewer/[member_id]',
+  '/jobs/[id]/email-templates',
+  '/jobs/[id]/interview-plan',
+  '/scheduling',
+  '/scheduling/application/[application_id]',
+  '/scheduling/invite/[id]',
 ];
 
 export const appKey = 'app';

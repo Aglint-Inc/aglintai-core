@@ -650,6 +650,42 @@ export type Database = {
           },
         ]
       }
+      candidate_request_availability: {
+        Row: {
+          availability: Json | null
+          created_at: string
+          date_range: Json | null
+          id: number
+          is_task_created: boolean | null
+          number_of_days: number | null
+          number_of_slots: number | null
+          session_ids: Json | null
+          total_slots: number | null
+        }
+        Insert: {
+          availability?: Json | null
+          created_at?: string
+          date_range?: Json | null
+          id?: number
+          is_task_created?: boolean | null
+          number_of_days?: number | null
+          number_of_slots?: number | null
+          session_ids?: Json | null
+          total_slots?: number | null
+        }
+        Update: {
+          availability?: Json | null
+          created_at?: string
+          date_range?: Json | null
+          id?: number
+          is_task_created?: boolean | null
+          number_of_days?: number | null
+          number_of_slots?: number | null
+          session_ids?: Json | null
+          total_slots?: number | null
+        }
+        Relationships: []
+      }
       candidate_search_history: {
         Row: {
           bookmarked_candidates: string[] | null
@@ -1963,6 +1999,41 @@ export type Database = {
           },
         ]
       }
+      permissions: {
+        Row: {
+          created_at: string | null
+          id: number
+          is_enable: boolean | null
+          name: Database["public"]["Enums"]["permissions_type"]
+          recruiter_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          is_enable?: boolean | null
+          name: Database["public"]["Enums"]["permissions_type"]
+          recruiter_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          is_enable?: boolean | null
+          name?: Database["public"]["Enums"]["permissions_type"]
+          recruiter_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permissions_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       public_jobs: {
         Row: {
           active_status: Json
@@ -2446,6 +2517,7 @@ export type Database = {
           manager_id: string | null
           recruiter_id: string
           role: Database["public"]["Enums"]["user_roles"]
+          role_id: string | null
           user_id: string
         }
         Insert: {
@@ -2456,6 +2528,7 @@ export type Database = {
           manager_id?: string | null
           recruiter_id: string
           role: Database["public"]["Enums"]["user_roles"]
+          role_id?: string | null
           user_id: string
         }
         Update: {
@@ -2466,6 +2539,7 @@ export type Database = {
           manager_id?: string | null
           recruiter_id?: string
           role?: Database["public"]["Enums"]["user_roles"]
+          role_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -2523,6 +2597,13 @@ export type Database = {
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recruiter_relation_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
             referencedColumns: ["id"]
           },
         ]
@@ -2626,6 +2707,78 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "public_request_integration_tool_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      role_permissions: {
+        Row: {
+          permission_id: number
+          recruiter_id: string
+          role_id: string
+        }
+        Insert: {
+          permission_id: number
+          recruiter_id: string
+          role_id: string
+        }
+        Update: {
+          permission_id?: number
+          recruiter_id?: string
+          role_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_permission_id_fkey"
+            columns: ["permission_id"]
+            isOneToOne: false
+            referencedRelation: "permissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_permissions_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      roles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          recruiter_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          recruiter_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          recruiter_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roles_recruiter_id_fkey"
             columns: ["recruiter_id"]
             isOneToOne: false
             referencedRelation: "recruiter"
@@ -4488,6 +4641,35 @@ export type Database = {
         | "zoom"
       interviewer_type: "qualified" | "shadow" | "reverse_shadow"
       job_scoring_param_status: "loading" | "success"
+      permissions_type:
+        | "jobs_create"
+        | "jobs_read"
+        | "jobs_update"
+        | "jobs_delete"
+        | "jobs_publish"
+        | "jobs_unpublish"
+        | "jobs_archive"
+        | "jobs_restore"
+        | "jobs_assignHiringManager"
+        | "jobs_assignRecruiter"
+        | "jobs_assignCoordinator"
+        | "jobs_assignSourcer"
+        | "candidates_add"
+        | "candidates_read"
+        | "candidates_update"
+        | "candidates_delete"
+        | "candidates_moveStage"
+        | "profileScore_view"
+        | "profileScore_update"
+        | "interviews_schedule"
+        | "interviews_read"
+        | "interviews_update"
+        | "interviews_delete"
+        | "reports_generate"
+        | "reports_view"
+        | "reports_export"
+        | "settings_view"
+        | "settings_update"
       progress_type:
         | "standard"
         | "interview_schedule"

@@ -14,7 +14,7 @@ import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegu
 import { TaskSwitchButton } from '@/devlink3/TaskSwitchButton';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
 import Icon from '../Common/Icons/Icon';
@@ -42,7 +42,7 @@ function SchedulingMainComp() {
   useEffect(() => {
     if (router.isReady && !router.query.tab) {
       router.push(
-        `${pageRoutes.SCHEDULING}?tab=${'dashboard' as SchedulingTab}`,
+        `${ROUTES['/scheduling']()}?tab=${'dashboard' as SchedulingTab}`,
         undefined,
         {
           shallow: true,
@@ -70,7 +70,7 @@ function SchedulingMainComp() {
                 isLink={true}
                 onClickLink={{
                   onClick: () => {
-                    router.push(`${pageRoutes.SCHEDULING}?tab=dashboard`);
+                    router.push(`${ROUTES['/scheduling']()}?tab=dashboard`);
                   },
                 }}
               />
@@ -131,12 +131,12 @@ function SchedulingMainComp() {
                 isListActive={tab === 'myschedules'}
                 onClickJobCand={{
                   onClick: () => {
-                    router.push(`${pageRoutes.SCHEDULING}?tab=schedules`);
+                    router.push(`${ROUTES['/scheduling']()}?tab=schedules`);
                   },
                 }}
                 onClickList={{
                   onClick: () => {
-                    router.push(`${pageRoutes.SCHEDULING}?tab=myschedules`);
+                    router.push(`${ROUTES['/scheduling']()}?tab=myschedules`);
                   },
                 }}
                 textFirst={'All Schedules'}
@@ -276,8 +276,9 @@ const InterviewerModule = ({
                     onClickCard={{
                       onClick: () => {
                         router.push(
-                          pageRoutes.INTERVIEWMODULE +
-                            `/${mod.interview_modules.id}`,
+                          ROUTES['/scheduling/module/[module_id]']({
+                            module_id: mod.interview_modules.id,
+                          }),
                         );
                       },
                     }}

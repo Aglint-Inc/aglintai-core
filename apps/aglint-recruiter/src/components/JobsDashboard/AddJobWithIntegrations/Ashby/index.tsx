@@ -22,7 +22,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_ASHBY_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -121,7 +121,7 @@ export function AshbyModalComp() {
           ...prev,
           ashby: { open: false, step: STATE_ASHBY_DIALOG.IMPORTING },
         }));
-        router.push(`${pageRoutes.JOBS}/${newJobs[0].id}`);
+        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
       }
     } catch (error) {
       toast.error(
