@@ -1,7 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
-import { CandidateType, RecruiterUserType } from '@aglint/shared-types';
-import { Database } from '@aglint/shared-types';
+import {
+  CandidateType,
+  DatabaseTable,
+  DB,
+  RecruiterUserType,
+} from '@aglint/shared-types';
 import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
@@ -24,23 +28,6 @@ export type assigneeType = RecruiterUserType & {
 export type JobCandidatesType = ApplicationType & {
   candidates: CandidateType;
 };
-
-export const agentsDetails = [
-  {
-    user_id: EmailAgentId,
-    first_name: 'email',
-    last_name: 'agent',
-    assignee: 'Agents',
-    profile_image: '',
-  },
-  {
-    user_id: PhoneAgentId,
-    first_name: 'phone',
-    last_name: 'agent',
-    assignee: 'Agents',
-    profile_image: '',
-  },
-];
 
 export async function extractDataFromText(
   text: string,
@@ -89,7 +76,11 @@ type ProgressType =
   | 'status_update'
   | 'create_task'
   | 'schedule_date_update'
-  | 'trigger_time_update';
+  | 'trigger_time_update'
+  | 'create_debrief_task'
+  | 'interview_scheduled'
+  | 'debrief_scheduled'
+  | 'email_followUp_reminder';
 
 type optionDataType = {
   assignerId?: string;
@@ -121,6 +112,8 @@ type optionDataType = {
   };
   currentSessions?: meetingCardType[];
   selectedSession?: meetingCardType[];
+  timeFormat?: string;
+  debriefDateRange?: { start_date: string; end_date: string };
 };
 
 export async function createTaskProgress({
@@ -140,7 +133,7 @@ export async function createTaskProgress({
     progress_type: DatabaseEnums['progress_type'];
     jsonb_data?: null;
   };
-  supabaseCaller?: ReturnType<typeof createServerClient<Database>>;
+  supabaseCaller?: ReturnType<typeof createServerClient<DB>>;
 }) {
   var {
     assignerId,
@@ -159,6 +152,8 @@ export async function createTaskProgress({
     dueDate,
     currentSessions,
     selectedSession,
+    timeFormat,
+    debriefDateRange,
   } = optionData;
   const removedSessions = currentSessions?.filter(
     (ele) => !selectedSession?.map((ele) => ele.id).includes(ele.id),
@@ -190,6 +185,12 @@ export async function createTaskProgress({
         return `Schedule time changed from {previousTriggerTime} to {currentTriggerTime}`;
       case 'slots_failed':
         return `Unable to find slots between {scheduleDateRangeNotFound}`;
+      case 'create_debrief_task':
+        return `Scheduling debrief {selectedSessions} between {debriefDateRange}`;
+      case 'debrief_scheduled':
+        return `Debrief scheduled at {time_format}`;
+      case 'email_followUp_reminder':
+        return `{assigneeName} sent a follow-up email on {time_format}`;
       default:
         return '';
     }
@@ -219,6 +220,8 @@ export async function createTaskProgress({
         '{selectedSessions}': sessions,
         '{addedSessions}': addedSessions,
         '{removedSessions}': removedSessions,
+        '{time_format}': timeFormat,
+        '{debriefDateRange}': debriefDateRange,
       },
     })
     .select();
@@ -331,4 +334,18 @@ export function getFormattedTask({
       tasklist: TasksAgentContextType['tasks'];
     }[];
   }
+}
+
+export function getTaskActionCount({
+  preValue,
+  taskActionType,
+}: {
+  preValue: DatabaseTable['new_tasks']['task_action'];
+  taskActionType: keyof DatabaseTable['new_tasks']['task_action'];
+}) {
+  if (!Number(preValue[taskActionType])) {
+    preValue[taskActionType] = 1;
+  } else preValue[taskActionType] += 1;
+
+  return preValue;
 }

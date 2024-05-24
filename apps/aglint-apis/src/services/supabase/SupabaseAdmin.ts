@@ -1,6 +1,6 @@
 import {createClient} from '@supabase/supabase-js';
-import {envConfig} from '@/config';
-import {Database} from '@aglint/shared-types';
+import {envConfig} from '../../config';
+import {Database} from '@aglint/shared-types/src/db/schema.types';
 
 export const supabaseAdmin = createClient<Database>(
   envConfig.SUPABASE_URL,

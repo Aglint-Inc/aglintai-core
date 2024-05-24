@@ -6,10 +6,9 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import {
-  Database,
+  DB,
   InterviewMeetingTypeDb,
   InterviewPlanTypeDB,
-  InterviewScheduleActivityTypeDb,
   SupabaseType,
 } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
@@ -151,7 +150,7 @@ export const fetchInterviewDataJob = async ({
   supabase,
 }: {
   application_id: string;
-  supabase: ReturnType<typeof createServerClient<Database>>;
+  supabase: ReturnType<typeof createServerClient<DB>>;
 }) => {
   try {
     const { data, error } = (await supabase.rpc('get_interview_data_job', {
@@ -202,7 +201,7 @@ export const fetchInterviewDataJob = async ({
 export const fetchInterviewDataSchedule = async (
   schedule_id: string,
   application_id: string,
-  supabase: ReturnType<typeof createServerClient<Database>>,
+  supabase: ReturnType<typeof createServerClient<DB>>,
 ) => {
   try {
     const { data, error } = (await supabase.rpc('get_interview_data_schedule', {
@@ -212,7 +211,6 @@ export const fetchInterviewDataSchedule = async (
       data: {
         interview_data: InterviewDataResponseType[];
         application_data: ApplicationDataResponseType;
-        schedule_activity_data: InterviewScheduleActivityTypeDb[];
       };
       error: any;
     };

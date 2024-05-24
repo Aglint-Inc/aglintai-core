@@ -1,4 +1,4 @@
-import { task_title_metaDataType } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -15,7 +15,7 @@ function ProgressTitle({
   selectedTask,
 }: {
   title: string;
-  titleMetaData: task_title_metaDataType;
+  titleMetaData: DatabaseTable['new_tasks_progress']['title_meta'];
   selectedTask: TasksAgentContextType['tasks'][number];
 }) {
   const candidateDetails = selectedTask?.applications?.candidates;
@@ -23,18 +23,16 @@ function ProgressTitle({
   const currentTimeZone = dayjs.tz.guess();
 
   const bookingDate = titleMetaData['{date_format}']
-    ? `<b>${dayjs(titleMetaData['{date_format}'])
+    ? `${dayjs(titleMetaData['{date_format}'])
         .tz(candidateDetails?.timezone || currentTimeZone)
-        .format(
-          'MMM DD',
-        )} (${candidateDetails?.timezone || currentTimeZone})</b>`
+        .format('MMM DD')} (${candidateDetails?.timezone || currentTimeZone})`
     : '';
   const bookingTime = titleMetaData['{time_format}']
-    ? `<b>${dayjs(titleMetaData['{time_format}'])
+    ? `${dayjs(titleMetaData['{time_format}'])
         .tz(candidateDetails?.timezone || currentTimeZone)
         .format(
           'MMM DD, hh:mm A',
-        )} (${candidateDetails?.timezone || currentTimeZone})</b>`
+        )} (${candidateDetails?.timezone || currentTimeZone})`
     : '';
 
   const location = titleMetaData['{location}'];
@@ -61,7 +59,7 @@ function ProgressTitle({
     titleMetaData['{previousTriggerTime}'],
   ).format('MMM DD, hh:mm A');
   const currentTriggerTime = dayjs(
-    titleMetaData['{previousTriggerTime}'],
+    titleMetaData['{currentTriggerTime}'],
   ).format('MMM DD, hh:mm A');
   const scheduleDateRangeNotFound = `${dayjs(
     titleMetaData['{scheduleDateRangeNotFound}']?.start_date,
@@ -86,9 +84,13 @@ function ProgressTitle({
         .map((word, wordIndex: number) => {
           switch (word) {
             case '{time_format}':
-              return <span>{bookingTime}</span>;
+              return (
+                <span className='progress_date_section'>{bookingTime}</span>
+              );
             case '{date_format}':
-              return <span>{bookingDate}</span>;
+              return (
+                <span className='progress_date_section'>{bookingDate}</span>
+              );
             case '{err_msg}':
               return errorMessage;
             case '{location}':
@@ -189,7 +191,12 @@ function ProgressTitle({
                     .join(', ')}
                 </b>
               );
-
+            case '{debriefDateRange}':
+              return (
+                <DebriefDateRange
+                  debriefDateRange={titleMetaData['{debriefDateRange}']}
+                />
+              );
             default:
               return <span key={wordIndex}>{word}</span>;
           }
@@ -199,6 +206,24 @@ function ProgressTitle({
 }
 
 export default ProgressTitle;
+
+function DebriefDateRange({
+  debriefDateRange,
+}: {
+  debriefDateRange: { start_date: string; end_date: string };
+}) {
+  return (
+    <>
+      <span className='progress_date_section'>
+        {dayjs(debriefDateRange.start_date).format('MMM DD')}
+      </span>{' '}
+      and{' '}
+      <span className='progress_date_section'>
+        {dayjs(debriefDateRange.end_date).format('MMM DD')}
+      </span>
+    </>
+  );
+}
 
 const DueDateRange = ({
   dueDateRange,
@@ -226,5 +251,5 @@ const SelectedSessionList = ({
 }: {
   sessions: { name: string }[];
 }) => {
-  return <b>{sessions.map((ele: { name: any }) => ele.name).join(', ')}</b>;
+  return <b>{sessions?.map((ele: { name: any }) => ele.name).join(', ')}</b>;
 };

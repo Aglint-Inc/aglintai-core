@@ -10,7 +10,7 @@ import {createOpenAiTool, findInterviewSlotOnThatDay} from './utils';
 import {fromError} from 'zod-validation-error';
 import {getCachedCandidateInfo} from '../../../services/cache/cache-db';
 import {agent_activities} from '../../../copies/agents_activity';
-import {appLogger} from '@/services/logger';
+import {appLogger} from '../../../services/logger';
 
 export const findInterviewSlots = () => {
   const schema = z.object({

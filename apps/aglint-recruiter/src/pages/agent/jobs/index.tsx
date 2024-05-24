@@ -30,7 +30,7 @@ function AgentPage() {
   return (
     <>
       <Seo
-        title='Aglint | Agents'
+        title='Job Assissant | Aglint AI'
         description='AI for People Products'
       />
       <JobAssistantProvider>

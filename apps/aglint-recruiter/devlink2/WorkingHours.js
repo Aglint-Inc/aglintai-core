@@ -62,23 +62,6 @@ export function WorkingHours({
         >
           {slotTimeZoneInput}
         </_Builtin.Block>
-        <_Builtin.Block
-          className={_utils.cx(_styles, "toggle_wrap", "ml--10")}
-          tag="div"
-        >
-          <_Builtin.Block
-            className={_utils.cx(_styles, "slot_toggle")}
-            tag="div"
-          >
-            {slotTimeZoneToggle}
-          </_Builtin.Block>
-          <_Builtin.Block
-            className={_utils.cx(_styles, "text-gray-500")}
-            tag="div"
-          >
-            {"Get timezone automatically"}
-          </_Builtin.Block>
-        </_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block className={_utils.cx(_styles, "setting_wrap")} tag="div">
         <_Builtin.Block

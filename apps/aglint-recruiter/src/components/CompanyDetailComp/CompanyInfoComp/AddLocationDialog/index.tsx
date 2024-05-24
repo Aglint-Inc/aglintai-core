@@ -1,15 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  Autocomplete,
   Dialog,
   Stack,
   TextField,
   TextFieldProps,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AddLocationPop } from '@/devlink/AddLocationPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import timeZone from '@/src/utils/timeZone';
+import toast from '@/src/utils/toast';
 
 import { debouncedSave } from '../../utils';
 
@@ -17,8 +21,16 @@ interface LocationProps {
   handleClose: () => void;
   open: boolean;
   edit: number;
-  // eslint-disable-next-line no-unused-vars
-  // handleChange: (recruiter: RecruiterType) => void;
+}
+
+interface Address {
+  region: string;
+  country: string;
+}
+
+interface Geolocation {
+  add: Address;
+  timeZoneId: string;
 }
 
 const AddLocationDialog: React.FC<LocationProps> = ({
@@ -26,72 +38,57 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   open,
   edit,
 }) => {
-  // const isClicked = useRef(false);
-  // const { recruiter } = useAuthDetails();
   const { recruiter, setRecruiter } = useAuthDetails();
-  const initialValue =
-    edit > -1 ? recruiter.office_locations[edit] : (undefined as any);
-  const initialFormFields = {
-    line1: {
-      value: initialValue?.line1 ?? '',
-      error: false,
-      validation: 'string',
-      required: false,
-    },
-    line2: {
-      value: initialValue?.line2 ?? '',
-      error: false,
-      validation: 'string',
-      required: false,
-    },
-    city: {
-      value: initialValue?.city ?? '',
-      error: false,
-      validation: 'string',
-      required: true,
-    },
-    region: {
-      value: initialValue?.region ?? '',
-      error: false,
-      validation: 'string',
-      required: true,
-    },
-    country: {
-      value: initialValue?.country ?? '',
-      error: false,
-      validation: 'string',
-      required: true,
-    },
-    zipcode: {
-      value: initialValue?.zipcode ?? '',
-      error: false,
-      validation: 'string',
-      required: false,
-    },
-    is_headquarter: {
-      value: initialValue?.is_headquarter ?? false,
-      error: false,
-      validation: 'boolean',
-      required: true,
-    },
+  const address1Ref = useRef<HTMLInputElement>(null);
+  const address2Ref = useRef<HTMLInputElement>(null);
+  const cityRef = useRef<HTMLInputElement>(null);
+  const regionRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement>(null);
+  const zipRef = useRef<HTMLInputElement>(null);
+  const timezoneRef = useRef<HTMLInputElement>(null);
+
+  const [timeValue, setTimeZoneValue] = useState(null);
+
+  type initialValueType = {
+    line1: string;
+    line2: string;
+    city: string;
+    region: string;
+    country: string;
+    zipcode: string;
+    is_headquarter: boolean;
+    timezone: string;
+    full_address?: string;
+    location_header?: string;
   };
 
-  const [location, setLocation] = useState(initialFormFields);
+  const initialValue = (
+    edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
+  ) as initialValueType;
+
+  const [isHeadQ, setHeadQ] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleAddLocation = () => {
     setLoading(true);
-    const { error, newLocation } = handleValidate();
+
+    const { error } = handleValidate();
     if (!error) {
       setRecruiter((recruiter) => {
-        const fullAddress = `${location.line1.value},${location.line2.value},${location.city.value},${location.region.value},${location.country.value},${location.zipcode.value}`;
-        const newLocation = Object.assign(
-          { full_address: fullAddress },
-          ...Object.entries(location).reduce((acc, [key, val]) => {
-            acc.push({ [key]: val.value });
-            return acc;
-          }, []),
-        );
+        const textLocationHeader = `${cityRef.current.value},${regionRef.current.value},${countryRef.current.value}`;
+        const fullAddress = `${address1Ref.current.value},${address2Ref.current.value},${zipRef.current.value}`;
+        const newLocation = {
+          full_address: fullAddress,
+          location_header: textLocationHeader,
+          city: cityRef.current.value,
+          country: countryRef.current.value,
+          is_headquarter: isHeadQ,
+          line1: address1Ref.current.value,
+          line2: address2Ref.current.value,
+          region: regionRef.current.value,
+          timezone: timeValue,
+          zipcode: zipRef.current.value,
+        } as initialValueType;
         const newRecruiter = {
           ...recruiter,
           office_locations:
@@ -104,11 +101,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               : ([...recruiter.office_locations, newLocation] as any),
         };
         debouncedSave(newRecruiter, newRecruiter.id);
-        setLocation(initialFormFields);
         handleClose();
         return newRecruiter;
       });
-    } else setLocation(newLocation);
+    }
     setLoading(false);
   };
 
@@ -145,18 +141,85 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     );
   };
 
-  const handleChange = (e, key: string) => {
-    setLocation((prev) => {
-      return {
-        ...prev,
-        [key]: {
-          ...prev[key],
-          value: e.target.value,
-          error: false,
-        },
-      };
-    });
+  const handleChange = (value: string, key: string) => {
+    if (key === 'city') {
+      if (value.length > 3) {
+        geoCodeLocation(value).then((data) => {
+          if (data) {
+            const responseData = data as any as Geolocation;
+            regionRef.current.value = responseData.add.region;
+            countryRef.current.value = responseData.add.country;
+            if (responseData?.timeZoneId) {
+              setTimeZoneValue(
+                timeZone.find((ele) => ele.tzCode === responseData?.timeZoneId)
+                  .label,
+              );
+            }
+          }
+        });
+      }
+    }
   };
+  const geoCodeLocation = async (address: string) => {
+    if (address.length > 3) {
+      const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
+      let locationData = null;
+      try {
+        locationData = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
+        );
+      } catch (error) {
+        toast.message('Please give proper location');
+      }
+      const result = (locationData as any)?.data?.results[0];
+
+      const add = {
+        region: result?.address_components[3]?.long_name ?? '',
+        country: result?.address_components[4]?.long_name ?? '',
+      };
+      const geo = {
+        lat: result?.geometry.location.lat ?? '',
+        lang: result?.geometry.location.lng ?? '',
+      };
+      let timezone = null;
+      try {
+        timezone = await axios.get(
+          `https://maps.googleapis.com/maps/api/timezone/json?location=${geo.lat},${geo.lang}&timestamp=1331161200&key=${apiKey}`,
+        );
+      } catch (error) {
+        toast.message('Failed to fetch timezone');
+      }
+
+      const timeZoneId = timezone && timezone?.data.timeZoneId;
+      return { add, timeZoneId };
+    }
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(e.target.value);
+  };
+  const debouncedSearch = useCallback(
+    debounce((text: string) => {
+      handleChange(text, 'city');
+    }, 500),
+    [],
+  );
+  function debounce(func: Function, delay: number) {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return (...args: any[]) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  }
+  useEffect(() => {
+    if (recruiter) {
+      setHeadQ(initialValue?.is_headquarter);
+      setTimeZoneValue(initialValue?.timezone);
+    }
+  }, [recruiter]);
+
   return (
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
@@ -165,63 +228,74 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           slotForm={
             <Stack spacing={2}>
               <CustomTextField
-                placeholder='Line 1'
-                label='Line 1'
-                defaultValue={location.line1.value}
-                required={location.line1.required}
-                onChange={(e) => handleChange(e, 'line1')}
-                error={location.line1.error}
-                helperText={
-                  location.line1.error && 'Please enter a valid address line'
-                }
+                inputRef={address1Ref}
+                placeholder='Address Line 1'
+                label='Address Line 1'
+                defaultValue={initialValue?.line1}
               />
               <CustomTextField
-                placeholder='Line 2'
-                label='Line 2'
-                defaultValue={location.line2.value}
-                required={location.line2.required}
-                onChange={(e) => handleChange(e, 'line2')}
-                error={location.line2.error}
-                helperText={
-                  location.line2.error && 'Please enter a valid address line'
-                }
+                inputRef={address2Ref}
+                placeholder='Address Line 2'
+                label='Address Line 2'
+                defaultValue={initialValue?.line2}
               />
-              <CustomTextField
-                placeholder='City'
-                label='City'
-                defaultValue={location.city.value}
-                required={location.city.required}
-                onChange={(e) => handleChange(e, 'city')}
-                error={location.city.error}
-                helperText={location.city.error && 'Please enter a valid city'}
-              />
-              <CustomTextField
-                placeholder='Region'
-                label='Region'
-                defaultValue={location.region.value}
-                required={location.region.required}
-                onChange={(e) => handleChange(e, 'region')}
-                error={location.region.error}
-                helperText={
-                  location.region.error && 'Please enter a valid region'
-                }
-              />
-              <CustomTextField
-                placeholder='Country'
-                label='Country'
-                defaultValue={location.country.value}
-                required={location.country.required}
-                onChange={(e) => handleChange(e, 'country')}
-                error={location.country.error}
-                helperText={
-                  location.country.error && 'Please enter a valid country'
-                }
-              />
-              <CustomTextField
-                placeholder='Zip Code'
-                label='Zip Code'
-                defaultValue={location.zipcode.value}
-                onChange={(e) => handleChange(e, 'zipcode')}
+              <Stack direction={'row'} spacing={'10px'}>
+                <CustomTextField
+                  sx={{ width: '225px' }}
+                  inputRef={cityRef}
+                  name='city'
+                  placeholder='Enter City'
+                  label='City'
+                  onChange={handleSearch}
+                  defaultValue={initialValue?.city}
+                />
+                <CustomTextField
+                  sx={{ width: '225px' }}
+                  inputRef={regionRef}
+                  name='region'
+                  placeholder='Enter Region'
+                  label='Region'
+                  defaultValue={initialValue?.region}
+                />
+              </Stack>
+              <Stack direction={'row'} spacing={'10px'}>
+                <CustomTextField
+                  sx={{ width: '225px' }}
+                  inputRef={countryRef}
+                  required={true}
+                  name='country'
+                  // defaultValue={address1Ref.current?.value || ''}
+                  placeholder='Enter Country'
+                  label='Country'
+                  defaultValue={initialValue?.country}
+                />
+                <CustomTextField
+                  sx={{ width: '225px' }}
+                  inputRef={zipRef}
+                  placeholder='Zip Code'
+                  label='Zip Code'
+                  defaultValue={initialValue?.zipcode}
+                />
+              </Stack>
+              <Autocomplete
+                fullWidth
+                value={timeValue}
+                options={timeZone.map((item) => {
+                  //put type heres
+                  return `${item.label}`;
+                })}
+                onChange={(_, value) => {
+                  setTimeZoneValue(value);
+                }}
+                renderInput={(params) => (
+                  <CustomTextField
+                    {...params}
+                    inputRef={timezoneRef}
+                    name='timezone'
+                    placeholder='Asia Calcutta (GMT +05:30)'
+                    label='Timezone is fetched automatically based on entered city.'
+                  />
+                )}
               />
             </Stack>
           }
@@ -235,18 +309,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               handleAddLocation();
             },
           }}
-          isChecked={location.is_headquarter.value}
+          isChecked={isHeadQ}
           onClickCheck={{
             onClick: () => {
-              setLocation((prev) => {
-                return {
-                  ...prev,
-                  is_headquarter: {
-                    ...prev.is_headquarter,
-                    value: !prev.is_headquarter.value,
-                  },
-                };
-              });
+              setHeadQ(!isHeadQ);
             },
           }}
         />

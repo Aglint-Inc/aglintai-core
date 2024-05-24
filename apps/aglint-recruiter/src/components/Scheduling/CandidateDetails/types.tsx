@@ -1,4 +1,4 @@
-import { Candidate } from '@aglint/shared-types';
+import { Candidate, PlanCombinationRespType } from '@aglint/shared-types';
 import {
   InterviewMeetingTypeDb,
   InterviewModuleRelationType,
@@ -89,4 +89,9 @@ export type InterviewDataResponseType = {
       interview_session_relation: InterviewSessionRelationTypeDB;
     }[];
   };
+};
+
+export type ApiResponseFindAvailability = {
+  plan_combs: PlanCombinationRespType[];
+  total: number;
 };

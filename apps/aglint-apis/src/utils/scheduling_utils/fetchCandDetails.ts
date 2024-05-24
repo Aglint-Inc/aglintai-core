@@ -1,4 +1,3 @@
-import {envConfig} from '../../config';
 import axios from 'axios';
 import dayjs, {Dayjs} from 'dayjs';
 import {
@@ -23,6 +22,7 @@ import {
   schedulingSettingType,
 } from '@aglint/shared-types';
 import {SINGLE_DAY_TIME} from '@aglint/shared-utils';
+import {envConfig} from '../../config';
 const utc = require('dayjs/plugin/utc');
 const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);

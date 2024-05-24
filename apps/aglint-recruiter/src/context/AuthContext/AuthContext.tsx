@@ -195,12 +195,9 @@ const AuthProvider = ({ children }) => {
 
   const fetchUserLocation = async () => {
     try {
-      const response = await fetch('https://ipinfo.io/json', {
-        headers: {
-          Authorization: `Bearer e82b96e5cb0802`,
-        },
-      });
-      const data = await response.json();
+      const res = await fetch('/api/getUserLocation');
+      const data = await res.json();
+
       const country = data.country; // Extract the country code from the response
       setUserCountry(country?.toLowerCase() ?? 'us'); // Set the default country based on the user's location
     } catch (error) {

@@ -191,6 +191,10 @@
   width: 100px;
 }
 
+.text-capitalize-word {
+  text-transform: capitalize;
+}
+
 .slot_input_field {
   min-height: 40px;
 }
@@ -213,6 +217,14 @@
 .dummy_inputfield.is_small {
   width: auto;
   height: 26px;
+}
+
+.slot_attendee {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 }
 
 .slot_avatarselectionpill {

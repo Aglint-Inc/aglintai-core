@@ -1,4 +1,4 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { capitalize } from 'lodash';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -13,7 +13,7 @@ import { pageRoutes } from '@/src/utils/pageRouting';
 
 const tabs: {
   text: string;
-  roles?: Database['public']['Enums']['user_roles'][];
+  roles?: DB['public']['Enums']['user_roles'][];
   flag?: featureFlag[];
 }[] = [
   {
@@ -105,6 +105,7 @@ const settingsItems = [
   { label: 'Company Day Off', value: 'dayOff' },
   { label: 'Keywords', value: 'keywords' },
   { label: 'Email Template', value: 'emailTemplate' },
+  { label: 'Debrief Defaults', value: 'debriefDefaults' },
 ];
 
 function SettingsSubNabItem({ tab }: { tab: string }) {

@@ -47,7 +47,9 @@ export function getListItems({
       .filter((v, i, a) => a.findIndex((v2) => v2.id === v.id) === i);
   }
   if (filterType.name === 'member') {
-    const allMembers = allSchedules.map((ele) => [...ele.users]).flat();
+    const allMembers = allSchedules
+      ?.map((ele) => [...(ele.users || [])])
+      .flat();
     itemList = allMembers
       .map((member) => ({
         id: member.id,

@@ -1,12 +1,11 @@
 import { createServerClient } from '@supabase/ssr';
 
 import {
-  CustomDatabase,
+  DB,
   DatabaseEnums,
   DatabaseTable,
   DatabaseTableInsert,
-} from './customSchema';
-import { Database } from './schema';
+} from './db/index.schema.types';
 
 export type AddressType = {
   line1: string;
@@ -16,9 +15,7 @@ export type AddressType = {
   country: string;
 };
 
-export type SupabaseType = ReturnType<
-  typeof createServerClient<CustomDatabase>
->;
+export type SupabaseType = ReturnType<typeof createServerClient<DB>>;
 
 export type SocialsType = {
   [key: string]: string;
@@ -215,10 +212,6 @@ export type InterviewModuleRelationType =
     };
   };
 
-export type AgentChatType = DatabaseTable['agent_chatx'];
-
-export type AgentActivityType = DatabaseTableInsert['agent_activity'];
-
 export type InterviewMeetingTypeDb = DatabaseTableInsert['interview_meeting'];
 
 export type IntegrationType = DatabaseTable['request_integration_tool'];
@@ -234,18 +227,12 @@ export type InterviewFilterJsonType = DatabaseTable['interview_filter_json'];
 export type InterviewSessionRelationTypeDB =
   DatabaseTable['interview_session_relation'];
 
-export type employmentTypeEnum =
-  Database['public']['Enums']['employment_type_enum'];
+export type employmentTypeEnum = DatabaseEnums['employment_type_enum'];
 
 export type InterviewSession = DatabaseTable['interview_session'];
 
 export type InterviewerSessionRelation =
   DatabaseTable['interview_session_relation'];
-
-export type SubTaskProgress = DatabaseTable['sub_task_progress'];
-
-export type InterviewScheduleActivityTypeDb =
-  DatabaseTable['interview_schedule_activity'];
 
 export type ApplicationLogsTypeDb = DatabaseTable['application_logs'];
 

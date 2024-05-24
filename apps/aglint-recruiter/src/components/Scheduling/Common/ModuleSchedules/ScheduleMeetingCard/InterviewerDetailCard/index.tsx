@@ -88,7 +88,8 @@ function InterviewerDetailsCard({
                   : `${weeklyNumber} / ${user.scheduling_settings.interviewLoad.weeklyLimit.value} Interviews`
               }
               onClickViewInterviewDetail={{
-                onClick: () => {
+                onClick: (e) => {
+                  e.stopPropagation();
                   router.replace(`/scheduling/interviewer/${user.id}`);
                 },
               }}
@@ -114,8 +115,13 @@ function InterviewerDetailsCard({
           textName={getFullName(user.first_name, user.last_name)}
           isDesignationVisible={true}
           textDesignation={user.position}
-          textTime={`${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`}
-          isShadow={user.training_type !== 'qualified'}
+          textTime={
+            meetingTiming.startDate
+              ? `${timeFrom.format('hh:mm A')} - ${timeTo.format('hh:mm A')} ${convertTimeZoneToAbbreviation(userTzDayjs.tz.guess())}`
+              : null
+          }
+          isShadow={user.training_type === 'shadow'}
+          isReverseShadow={user.training_type === 'reverse_shadow'}
           isButtonVisible={false}
           isDetailVisible={true}
         />

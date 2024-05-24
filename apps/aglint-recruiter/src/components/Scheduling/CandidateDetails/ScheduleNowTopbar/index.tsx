@@ -1,5 +1,4 @@
 import { ApiFindAvailability } from '@aglint/shared-types';
-import { PlanCombinationRespType } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -26,6 +25,7 @@ import {
   setTotalSlots,
   useSchedulingApplicationStore,
 } from '../store';
+import { ApiResponseFindAvailability } from '../types';
 
 function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -69,10 +69,7 @@ function ScheduleNowTopbar({ isDebrief }: { isDebrief: boolean }) {
       } as ApiFindAvailability);
 
       if (res.status === 200) {
-        const respTyped = res.data as {
-          plan_combs: PlanCombinationRespType[];
-          total: number;
-        };
+        const respTyped = res.data as ApiResponseFindAvailability;
         if (respTyped.plan_combs.length === 0) {
           toast.error('No availability found.');
         } else {

@@ -1,10 +1,9 @@
-import { Database } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { API_reset_password } from './type';
 
-const supabase = createClient<Database>(
+const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY,
 );
@@ -60,7 +59,7 @@ const getResponse = (data: { passwordReset?: boolean; error?: string }) => {
   return { passwordReset: false, error: null, ...data };
 };
 
-import { CustomDatabase, DatabaseEnums } from '@aglint/shared-types';
+import { DatabaseEnums, DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 
 /**
@@ -106,7 +105,7 @@ export const server_checkUserRolePermissions = async ({
   roles: DatabaseEnums['user_roles'][];
 }) => {
   try {
-    const supabase = createServerClient<CustomDatabase>(
+    const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
@@ -185,7 +184,7 @@ export const server_getUserRoleAndId = async ({
   getVal: (name: string) => string;
 }) => {
   try {
-    const supabase = createServerClient<CustomDatabase>(
+    const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {

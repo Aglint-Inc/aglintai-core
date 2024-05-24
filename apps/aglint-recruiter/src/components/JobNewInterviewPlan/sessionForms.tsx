@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import React, {
   ChangeEventHandler,
@@ -31,7 +31,7 @@ import { getBreakLabel } from './utils';
 
 export type SessionUser = CompanyMember & {
   moduleUserId: string;
-  training_status: Database['public']['Enums']['status_training'];
+  training_status: DB['public']['Enums']['status_training'];
 };
 
 type SessionFormProps = Pick<

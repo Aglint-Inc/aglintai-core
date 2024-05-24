@@ -108,6 +108,7 @@ export type ScheduleListType = {
     profile_image: string;
     scheduling_settings: schedulingSettingType;
     training_type: DatabaseEnums['interviewer_type'];
+    is_confirmed: boolean;
     weekly_meetings: {
       end_time: string;
       duration: number;
@@ -115,4 +116,12 @@ export type ScheduleListType = {
     }[];
     accepted_status: DatabaseEnums['session_accepted_status'];
   }[];
+  candidate: {
+    candidate_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    application_id: string;
+  };
 }[];

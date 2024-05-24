@@ -81,6 +81,15 @@ function FilterTasks() {
           value: filter.jobTitle.values,
         },
       ]}
+      dateRangeSelector={{
+        name: 'Interview Date',
+        setValue: (val) => {
+          handelFilter({
+            ...filter,
+            date: { ...filter.date, values: val },
+          });
+        },
+      }}
     />
   );
 }

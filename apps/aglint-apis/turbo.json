@@ -8,7 +8,8 @@
         ".env.local",
         ".env.production",
         ".env"
-      ]
+      ],
+      "dependsOn": ["^build"]
     },
     "dev": {
       "dotEnv": [
@@ -19,6 +20,9 @@
       ]
     },
     "test": {
+      "dotEnv": [".env.test.local", ".env.test", ".env"]
+    },
+    "start:development": {
       "dotEnv": [".env.test.local", ".env.test", ".env"]
     }
   }

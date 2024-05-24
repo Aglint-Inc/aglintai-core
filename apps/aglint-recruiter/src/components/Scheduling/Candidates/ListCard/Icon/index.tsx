@@ -1,4 +1,4 @@
-import { Database } from '@aglint/shared-types';
+import { DB } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 
 import { ShowCode } from '@/src/components/Common/ShowCode';
@@ -6,7 +6,7 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 function IconScheduleType({
   type,
 }: {
-  type: Database['public']['Enums']['interview_schedule_type'];
+  type: DB['public']['Enums']['interview_schedule_type'];
 }) {
   return (
     <Stack height={'100%'} justifyContent={'center'} alignItems={'center'}>
