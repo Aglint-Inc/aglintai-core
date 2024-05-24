@@ -1,0 +1,8 @@
+node_modules
+.turbo
+dist
+.gitignore
+Docker
+.dockerignore
+.env
+.env.*
