@@ -7,7 +7,6 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { CompanyProfileHeader } from '@/devlink2/CompanyProfileHeader';
 import { SwitchComp } from '@/devlink2/SwitchComp';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-// import { pageRoutes } from '@/src/utils/pageRouting';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 import { companyType } from '@/src/utils/userRoles';
@@ -53,6 +52,7 @@ function CompanyList() {
       setAllRecruiterRelation(() =>
         relations.map((reln) => ({
           created_at: reln.created_at,
+          role_id: reln.role_id,
           created_by: reln.created_by,
           id: reln.id,
           is_active: reln.is_active,
@@ -60,7 +60,6 @@ function CompanyList() {
           user_id: userDetails.user.id,
           role: reln.role,
           manager_id: reln.manager_id,
-          role_id: reln.role_id,
         })),
       );
     } catch (error) {
@@ -198,7 +197,6 @@ function CompanyList() {
                       }
                       onclickCompany={{
                         onClick: () => {
-                          // router.push(pageRoutes.COMPANY);
                           updateStatus(ele.recId);
                         },
                       }}

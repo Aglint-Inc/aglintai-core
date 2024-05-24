@@ -16,7 +16,7 @@ import { TaskTableJobSubCard } from '@/devlink3/TaskTableJobSubCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { getFullName } from '@/src/utils/jsonResume';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/src/utils/text/textUtils';
 
 import AssigneeChip from '../../Components/AssigneeChip';
@@ -120,7 +120,7 @@ function GroupTaskCard({
         }
         onClickCard={{
           onClick: () => {
-            route.push(pageRoutes.TASKS + '?task_id=' + task.id);
+            route.push(ROUTES['/tasks']() + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}

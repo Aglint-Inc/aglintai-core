@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { CdAglintDb } from '@/devlink/CdAglintDb';
 import { Checkbox } from '@/devlink/Checkbox';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -270,7 +270,7 @@ function AppoloSearch() {
         isSelectedVisible={selectedCandidates.length > 0}
         onClickCandidateData={{
           onClick: () => {
-            router.push(pageRoutes.CANDIDATES);
+            router.push(ROUTES['/candidates/history']());
             setSelectedCandidates([]);
             setIsSelectAll(false);
             setFilters(null);

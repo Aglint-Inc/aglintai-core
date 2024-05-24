@@ -16,7 +16,7 @@ import { NavTask } from '@/devlink/NavTask';
 import { NavTickets } from '@/devlink/NavTickets';
 import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 function SideNavbar() {
@@ -56,7 +56,7 @@ function SideNavbar() {
       icon: <AssistantLogo />,
       text: 'Agent',
       SubComponents: null,
-      route: pageRoutes.AGENT,
+      route: ROUTES['/agent'](),
       comingsoon: false,
       isvisible: isAgentEnabled,
       roles: ['admin'],
@@ -65,7 +65,7 @@ function SideNavbar() {
       icon: <NavTask isActive={false} />,
       text: 'Tasks',
       SubComponents: null,
-      route: pageRoutes.TASKS + '?myTasks',
+      route: ROUTES['/tasks']() + '?myTasks',
       comingsoon: false,
       isvisible: isTasksEnabled,
       // roles: [
@@ -78,7 +78,7 @@ function SideNavbar() {
       icon: <NavJobs isActive={false} />,
       text: 'Jobs',
       SubComponents: null,
-      route: pageRoutes.JOBS,
+      route: ROUTES['/jobs'](),
       comingsoon: false,
       isvisible: true,
       roles: [
@@ -93,7 +93,7 @@ function SideNavbar() {
       icon: <NavScheduler isActive={false} />,
       text: 'Scheduler',
       SubComponents: null,
-      route: pageRoutes.SCHEDULING,
+      route: ROUTES['/scheduling'](),
       comingsoon: false,
       isvisible: isSchedulingEnabled,
       roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
@@ -102,7 +102,7 @@ function SideNavbar() {
       icon: <NavCd isActive={false} />,
       text: 'Candidates',
       SubComponents: null,
-      route: pageRoutes.CANDIDATES,
+      route: ROUTES['/candidates/history'](),
       comingsoon: false,
       isvisible: isSourcingEnabled,
       roles: ['admin', 'recruiter'],
@@ -111,7 +111,7 @@ function SideNavbar() {
       icon: <NavTickets isActive={false} />,
       text: 'Tickets',
       SubComponents: null,
-      route: pageRoutes.SUPPORT,
+      route: ROUTES['/support'](),
       comingsoon: false,
       isvisible: isSupportEnabled,
       roles: ['admin'],
@@ -120,7 +120,7 @@ function SideNavbar() {
       icon: <NavAssistant isActive={false} />,
       text: 'Assistant',
       SubComponents: null,
-      route: pageRoutes.ASSISTANT,
+      route: ROUTES['/assisstant'](),
       comingsoon: false,
       isvisible: isAssistantEnabled,
       roles: ['admin'],
@@ -130,7 +130,7 @@ function SideNavbar() {
       icon: <NavPhoneScreening isActive={false} />,
       text: 'Phone Screening',
       SubComponents: null,
-      route: pageRoutes.SCREENING,
+      route: ROUTES['/screening'](),
       comingsoon: false,
       isvisible: isPhoneScreeningEnabled,
       roles: ['admin', 'recruiter', 'recruiting_coordinator', 'interviewer'],
@@ -140,7 +140,7 @@ function SideNavbar() {
       icon: <NavAssessment isActive={false} />,
       text: 'Assessment',
       SubComponents: null,
-      route: pageRoutes.ASSESSMENTS,
+      route: ROUTES['/assessment-new'](),
       comingsoon: false,
       isvisible: isAssessmentEnabled,
       roles: ['admin', 'recruiter'],
@@ -149,7 +149,7 @@ function SideNavbar() {
       icon: <NavIntegration isActive={false} />,
       text: 'Integrations',
       SubComponents: null,
-      route: '/integrations',
+      route: ROUTES['/integrations'](),
       comingsoon: false,
       isvisible: true,
       roles: ['admin'],
@@ -158,7 +158,7 @@ function SideNavbar() {
       icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',
       SubComponents: null,
-      route: pageRoutes.COMPANY,
+      route: ROUTES['/company'](),
       comingsoon: false,
       isvisible: true,
       roles: ['admin'],
@@ -171,7 +171,7 @@ function SideNavbar() {
     })?.roles;
     if (tempR && !isAllowed(tempR)) {
       toast.error('This section of the application is not accessible to you.');
-      router.replace(pageRoutes.LOADING);
+      router.replace(ROUTES['/loading']());
     }
   }, [pathName]);
 

@@ -8,7 +8,7 @@ import { SubLinkSubMenu } from '@/devlink2/SubLinkSubMenu';
 import { SublinkTab } from '@/devlink2/SublinkTab';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { featureFlag } from '@/src/utils/Constants';
-import { pageRoutes } from '@/src/utils/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 // import toast from '@/src/utils/toast';
 
 const tabs: {
@@ -73,7 +73,7 @@ function SubNav() {
                 if (item === 'settings') {
                   if (!router.query.subtab) {
                     router.push(
-                      `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}` +
+                      `${ROUTES['/scheduling']()}?tab=${item.replace(' ', '')}` +
                         (isAllowed(['interviewer'])
                           ? ''
                           : `&subtab=${settingsItems[0].value}`),
@@ -81,7 +81,7 @@ function SubNav() {
                   }
                 } else {
                   router.push(
-                    `${pageRoutes.SCHEDULING}?tab=${item.replace(' ', '')}`,
+                    `${ROUTES['/scheduling']()}?tab=${item.replace(' ', '')}`,
                   );
                 }
               },
@@ -122,7 +122,7 @@ function SettingsSubNabItem({ tab }: { tab: string }) {
               onClick: (e: any) => {
                 e.stopPropagation();
                 router.push(
-                  `${pageRoutes.SCHEDULING}?tab=${tab.replace(
+                  `${ROUTES['/scheduling']()}?tab=${tab.replace(
                     ' ',
                     '',
                   )}&subtab=${item.value}`,
