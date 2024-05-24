@@ -1,3 +1,5 @@
+import { CustomMembersMeta } from "../common.types";
+
 export type CustomSchedulingSettings = {
   isAutomaticTimezone: boolean;
   timeZone: {
@@ -39,4 +41,5 @@ export type CustomSchedulingSettings = {
     start_time: string;
     end_time: string;
   };
+  debrief_defaults: CustomMembersMeta;
 };

@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
+import { agentsDetails, TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 
 // import { useInterviewerList } from '../../CompanyDetailComp/Interviewers';
 import { useInterviewerList } from '../Components/AssigneeChip';
@@ -20,7 +20,6 @@ import {
   PriorityIcon,
   StatusIcon,
 } from '../TaskBody/GroupBy';
-import { agentsDetails } from '../utils';
 
 // let setTime;
 type SubTaskIndex = { taskIndex: number | null; subTaskIndex: number | null };
@@ -72,6 +71,10 @@ interface ContextValue {
   setShowToolBar: (x: boolean) => void;
   selectedGroupBy: groupByTextType | null;
   setSelectedGroupBy: (x: groupByTextType | null) => void;
+  openEmailFollowUp: boolean;
+  setOpenEmailFollowUp: (x: boolean) => void;
+  openPhoneFollowUp: boolean;
+  setOpenPhoneFollowUp: (x: boolean) => void;
 }
 
 const defaultProvider: ContextValue = {
@@ -98,6 +101,10 @@ const defaultProvider: ContextValue = {
   setShowToolBar: () => {},
   selectedGroupBy: null,
   setSelectedGroupBy: () => {},
+  openEmailFollowUp: false,
+  setOpenEmailFollowUp: () => {},
+  openPhoneFollowUp: false,
+  setOpenPhoneFollowUp: () => {},
 };
 const TaskStatesContext = createContext<ContextValue>(defaultProvider);
 const useTaskStatesContext = () => useContext(TaskStatesContext);
@@ -121,6 +128,9 @@ function TaskStatesProvider({ children }) {
 
   const [isImmediate, setIsImmediate] = useState(true);
   const [selectedTasksIds, setSelectedTasksIds] = useState([]);
+  // follow up
+  const [openEmailFollowUp, setOpenEmailFollowUp] = useState(false);
+  const [openPhoneFollowUp, setOpenPhoneFollowUp] = useState(false);
 
   useEffect(() => {
     const members = interviewers
@@ -158,6 +168,10 @@ function TaskStatesProvider({ children }) {
         setShowToolBar,
         selectedGroupBy,
         setSelectedGroupBy,
+        openEmailFollowUp,
+        setOpenEmailFollowUp,
+        openPhoneFollowUp,
+        setOpenPhoneFollowUp,
       }}
     >
       {children}

@@ -15,13 +15,12 @@ export function TaskProgress({
   onClickViewTranscript = {},
   textTimeCompleted = "5 Hours ago",
   slotMailContent,
-  isMailContentVisible = true,
   isLineVisible = true,
   slotSoundTask,
   isSoundTaskVisible = false,
 }) {
   return (
-    <_Component tag="div">
+    <_Component className={_utils.cx(_styles, "task_progress")} tag="div">
       <_Builtin.Block tag="div">
         {isTaskProgressVisible ? (
           <_Builtin.Block
@@ -50,19 +49,17 @@ export function TaskProgress({
               tag="div"
             >
               <_Builtin.Block tag="div">{textTask}</_Builtin.Block>
-              {isMailContentVisible ? (
-                <_Builtin.Block
-                  className={_utils.cx(_styles, "div-block-1366")}
-                  tag="div"
-                >
-                  {slotMailContent ?? (
-                    <>
-                      <TranscriptCard />
-                      <TranscriptCard />
-                    </>
-                  )}
-                </_Builtin.Block>
-              ) : null}
+              <_Builtin.Block
+                className={_utils.cx(_styles, "div-block-1366")}
+                tag="div"
+              >
+                {slotMailContent ?? (
+                  <>
+                    <TranscriptCard />
+                    <TranscriptCard />
+                  </>
+                )}
+              </_Builtin.Block>
               {isSoundTaskVisible ? (
                 <_Builtin.Block tag="div">{slotSoundTask}</_Builtin.Block>
               ) : null}

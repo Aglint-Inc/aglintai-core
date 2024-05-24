@@ -1,10 +1,11 @@
+import { Functions } from "./functions/index.types";
 import { Database } from "./schema.types";
 import { Tables } from "./tables/index.types";
 import { Type } from "./utils.types";
 
 export type DB = Type<
   Database,
-  { public: Type<Database["public"], { Tables: Tables }> }
+  { public: Type<Database["public"], { Tables: Tables; Functions: Functions }> }
 >;
 
 export type DatabaseTable = {

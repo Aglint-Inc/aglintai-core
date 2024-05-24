@@ -1,6 +1,11 @@
 import { RecruiterUserType } from '@aglint/shared-types';
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
+import {
+  EmailAgentId,
+  PhoneAgentId,
+  SystemAgentId,
+} from '@aglint/shared-utils';
 import { Stack, Typography } from '@mui/material';
+import { IconSettingsAutomation } from '@tabler/icons-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { AgentPill } from '@/devlink3/AgentPill';
@@ -42,6 +47,14 @@ function AssigneeChip({
         <AgentPill
           isEmailAgentVisible={false}
           isPhoneAgentVisible={assigneeId === PhoneAgentId}
+        />
+      </ShowCode.When>
+      <ShowCode.When isTrue={assigneeId === SystemAgentId}>
+        <AvatarWithName
+          isAvatarVisible={true}
+          isCandidateIconVisible={false}
+          slotAvatar={<IconSettingsAutomation color='grey' stroke={2} size={30} />}
+          textName={'System'}
         />
       </ShowCode.When>
       <ShowCode.When isTrue={Boolean(assigneeDetails?.first_name)}>

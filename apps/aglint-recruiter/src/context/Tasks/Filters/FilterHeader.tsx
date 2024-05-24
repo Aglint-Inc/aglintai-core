@@ -223,6 +223,7 @@ export const FilterHeader = ({
                         <ShowCode.Else>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateCalendar
+                            views={['day']}
                               disablePast
                               value={dayjs(selectedDate[0])}
                               onChange={(e) => {
