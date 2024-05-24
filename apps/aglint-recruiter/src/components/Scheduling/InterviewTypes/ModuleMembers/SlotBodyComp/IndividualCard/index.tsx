@@ -13,7 +13,7 @@ import { SessionIcon } from '@/src/components/Scheduling/Common/ScheduleProgress
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { numberToOrdinalText } from '@/src/utils/numberToText/numberToOrdinalText';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useProgressModuleUsers } from '../../../queries/hooks';
 import {
@@ -74,7 +74,7 @@ function IndividualCard({
         onClickCard={{
           onClick: () => {
             router.push(
-              PAGES['/scheduling/interviewer/[member_id]']({
+              ROUTES['/scheduling/interviewer/[member_id]']({
                 member_id: user.user_id,
               }),
             );

@@ -10,7 +10,7 @@ import { useSignupDetails } from '@/src/context/SingupContext/SignupContext';
 import { RecruiterOnboardingEmailApi } from '@/src/pages/api/emails/recruiterOnboarding';
 import { handleEmailApi } from '@/src/pages/api/emails/utils';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import { companyType } from '@/src/utils/userRoles';
 
@@ -49,7 +49,7 @@ const SignUpComp = () => {
 
   return (
     <>
-      {router.asPath === PAGES['/signup']() && (
+      {router.asPath === ROUTES['/signup']() && (
         <YTransform uniqueKey={step}>
           <SlideTwoSignUp />
         </YTransform>
@@ -123,20 +123,20 @@ const SignUpComp = () => {
           <OnboardingFinalState
             onClickImportJob={{
               onClick: () => {
-                router.push(PAGES['/jobs']());
+                router.push(ROUTES['/jobs']());
                 sendOnboardingMail(emailPayload);
               },
             }}
             isSourcingVisible={isSourcingEnabled}
             onClickSourceCandidates={{
               onClick: () => {
-                router.push(PAGES['/candidates/history']());
+                router.push(ROUTES['/candidates/history']());
                 sendOnboardingMail(emailPayload);
               },
             }}
             onClickScheduleInterview={{
               onClick: () => {
-                router.push(PAGES['/scheduling']());
+                router.push(ROUTES['/scheduling']());
                 sendOnboardingMail(emailPayload);
               },
             }}

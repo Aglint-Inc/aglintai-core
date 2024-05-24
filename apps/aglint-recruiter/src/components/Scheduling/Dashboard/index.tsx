@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { SchedulingDashboard as SchedulingDashboardDev } from '@/devlink3/SchedulingDashboard';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import InterviewConversion from './InterviewConversion';
 import InterviewMeetingStatus from './InterviewMeetingStatus';
@@ -18,23 +18,24 @@ const SchedulingDashboard = () => {
       <SchedulingDashboardDev
         onClickCandidates={{
           onClick: () =>
-            router.push(`${PAGES['/scheduling']()}?tab=candidates`),
+            router.push(`${ROUTES['/scheduling']()}?tab=candidates`),
         }}
         onClickInterviewTypes={{
           onClick: () =>
-            router.push(`${PAGES['/scheduling']()}?tab=interviewtypes`),
+            router.push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
         }}
         onClickInterviewers={{
           onClick: () =>
-            router.push(`${PAGES['/scheduling']()}?tab=interviewers`),
+            router.push(`${ROUTES['/scheduling']()}?tab=interviewers`),
         }}
         onClickMySchedule={{
-          onClick: () => router.push(`${PAGES['/scheduling']()}?tab=schedules`),
+          onClick: () =>
+            router.push(`${ROUTES['/scheduling']()}?tab=schedules`),
         }}
         onClickScheduleSetting={{
           onClick: () =>
             router.push(
-              `${PAGES['/scheduling']()}?tab=settings&subtab=interviewLoad`,
+              `${ROUTES['/scheduling']()}?tab=settings&subtab=interviewLoad`,
             ),
         }}
         slotFirstGrid={

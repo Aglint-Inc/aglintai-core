@@ -22,7 +22,7 @@ import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationPro
 import { STATE_GREENHOUSE_DIALOG } from '@/src/context/IntegrationProvider/utils';
 import { useJobs } from '@/src/context/JobsContext';
 import { ScrollList } from '@/src/utils/framer-motions/Animation';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -139,7 +139,7 @@ export function GreenhouseModal() {
           ...prev,
           greenhouse: { open: false, step: STATE_GREENHOUSE_DIALOG.IMPORTING },
         }));
-        router.push(PAGES['/jobs/[id]']({ id: newJobs[0].id }));
+        router.push(ROUTES['/jobs/[id]']({ id: newJobs[0].id }));
       } else {
         toast.error(
           'Import failed. Please try again later or contact support for assistance.',

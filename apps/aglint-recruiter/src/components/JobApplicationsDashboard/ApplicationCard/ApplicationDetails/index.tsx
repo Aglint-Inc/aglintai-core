@@ -89,7 +89,7 @@ import { palette } from '@/src/context/Theme/Theme';
 import { Job } from '@/src/queries/job/types';
 import { getFullName } from '@/src/utils/jsonResume';
 // import interviewerList from '@/src/utils/interviewer_list';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 // import CandidateAvatar from '../../Common/CandidateAvatar';
@@ -1045,7 +1045,7 @@ const NewInterviewStatus = ({
                   onClick: () => {
                     navigator.clipboard
                       .writeText(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}${PAGES['/candidate-assessment/']()}/${application.id}`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}${ROUTES['/candidate-assessment/']()}/${application.id}`,
                       )
                       .then(() => {
                         toast.success('Interview link copied.');

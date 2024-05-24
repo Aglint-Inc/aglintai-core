@@ -12,7 +12,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import { Job } from '@/src/queries/job/types';
 import { ScrollList, YTransform } from '@/src/utils/framer-motions/Animation';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
 import { calculateTimeDifference, StatusColor } from '../utils';
@@ -257,7 +257,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                 }
                 onClickCard={{
                   onClick: () => {
-                    router.push(PAGES['/jobs/[id]']({ id: job.id }));
+                    router.push(ROUTES['/jobs/[id]']({ id: job.id }));
                     posthog.capture('Job Card Clicked');
                   },
                 }}

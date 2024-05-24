@@ -6,7 +6,7 @@ import { InterviewModuleStatsCard } from '@/devlink3/InterviewModuleStatsCard';
 import { InterviewStatsLoader } from '@/devlink3/InterviewStatsLoader';
 import { NoData } from '@/devlink3/NoData';
 import { useInterviewTrainingStatus } from '@/src/queries/scheduling-dashboard';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 const LIMIT = 6;
 
@@ -16,7 +16,7 @@ const TrainingStatus = () => {
   return (
     <InterviewModuleStats
       onClickViewAllModules={{
-        onClick: () => push(`${PAGES['/scheduling']()}?tab=interviewers`),
+        onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewers`),
       }}
       isViewAllVisible={!!data && data.length !== 0}
       slotInterviewModuleStatsCard={<TrainingStatusComponent />}

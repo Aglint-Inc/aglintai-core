@@ -13,7 +13,7 @@ import { hashCode } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import { useCompanyMembers } from '@/src/queries/company-members';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import Loader from '../Common/Loader';
 import { Form, JobMetaFormProps, useJobForms, WarningSvg } from './form';
@@ -127,7 +127,7 @@ const JobCreate = () => {
     <>
       <PageLayout
         isBackButton
-        onClickBack={{ onClick: () => push(PAGES['/jobs']()) }}
+        onClickBack={{ onClick: () => push(ROUTES['/jobs']()) }}
         slotTopbarLeft={<EditJobTopbarLeft textName={'Create Job'} />}
         slotBody={<JobCreateForm fields={fields} setFields={setFields} />}
       />
@@ -188,7 +188,7 @@ const JobCreateForm = ({
         ...newJob,
         description_hash: hashCode(newJob.description),
       });
-      push(PAGES['/jobs/[id]']({ id }));
+      push(ROUTES['/jobs/[id]']({ id }));
     } else {
       setFields(newFields);
     }

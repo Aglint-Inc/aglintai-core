@@ -33,7 +33,7 @@ import {
   ScoreJson,
 } from '@/src/context/JobApplicationsContext/types';
 import { palette } from '@/src/context/Theme/Theme';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -262,7 +262,7 @@ function InterviewFeedbackPage() {
               navigator.clipboard
                 .writeText(
                   process.env.NEXT_PUBLIC_HOST_NAME +
-                    PAGES['/profile-link/[id]']({ id: application.id }),
+                    ROUTES['/profile-link/[id]']({ id: application.id }),
                 )
                 .then(() => {
                   toast.success('Link copied.');

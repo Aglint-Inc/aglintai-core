@@ -13,7 +13,7 @@ let tempEmail = '';
 import { useRouter } from 'next/router';
 
 import { YTransform } from '@/src/utils/framer-motions/Animation';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 const supabase = createClient(
@@ -119,7 +119,7 @@ export default function ForgotPasswordComponent() {
             }
             onclickBack={{
               onClick: () => {
-                router.push(PAGES['/login']());
+                router.push(ROUTES['/login']());
               },
             }}
             onclickReset={{
@@ -136,7 +136,7 @@ export default function ForgotPasswordComponent() {
           <PwResetConfirm
             onclickBack={{
               onClick: () => {
-                router.push(PAGES['/login']());
+                router.push(ROUTES['/login']());
               },
             }}
             contactLink={{

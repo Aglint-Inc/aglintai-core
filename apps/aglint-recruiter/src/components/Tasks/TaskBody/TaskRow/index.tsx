@@ -15,7 +15,7 @@ import { PriorityPill } from '@/devlink3/PriorityPill';
 import { TaskTableCard } from '@/devlink3/TaskTableCard';
 import { ShowCode } from '@/src/components/Common/ShowCode';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import {
   capitalizeAll,
   capitalizeFirstLetter,
@@ -99,7 +99,7 @@ function TaskRow({ task }: { task: TasksAgentContextType['tasks'][number] }) {
         }
         onClickCard={{
           onClick: () => {
-            route.push(PAGES['/tasks']() + '?task_id=' + task.id);
+            route.push(ROUTES['/tasks']() + '?task_id=' + task.id);
             setTaskId(task.id);
           },
         }}

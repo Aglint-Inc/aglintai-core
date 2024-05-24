@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
 import { useJobs } from '@/src/context/JobsContext';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { appKey } from '..';
 
@@ -16,7 +16,7 @@ export const useCurrentJob = () => {
   const router = useRouter();
   const { jobs } = useJobs();
   const job_id = (
-    (router?.pathname ?? null).startsWith(PAGES['/jobs']())
+    (router?.pathname ?? null).startsWith(ROUTES['/jobs']())
       ? router?.query?.id ?? null
       : null
   ) as string;

@@ -3,11 +3,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useRouter } from 'next/router';
 import type React from 'react';
 
-import PAGES from '../utils/routing/pageRouting';
+import ROUTES from '../utils/routing/routes';
 
 const queryClient = new QueryClient();
 
-type Pages = typeof PAGES;
+type Pages = typeof ROUTES;
 
 const reactQueryPageRoute: (keyof Pages)[] = [
   '/assessment-new',

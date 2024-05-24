@@ -12,7 +12,7 @@ import { SavedListMenu } from '@/devlink/SavedListMenu';
 import LoaderGrey from '@/src/components/Common/LoaderGrey';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -119,7 +119,7 @@ function AddToListComp({ isSaveToList = false }: { isSaveToList: boolean }) {
             callback(toast) {
               setSelectedCandidate(null);
               router.push(
-                PAGES['/candidates/aglintdb']() + `?list=${data[0].id}`,
+                ROUTES['/candidates/aglintdb']() + `?list=${data[0].id}`,
               );
               toast.destroy();
             },

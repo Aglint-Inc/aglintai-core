@@ -10,7 +10,7 @@ import { TrainingProgressList } from '@/devlink3/TrainingProgressList';
 import { TrainingProgressLoader } from '@/devlink3/TrainingProgressLoader';
 import { useInterviewTrainingProgress } from '@/src/queries/scheduling-dashboard';
 import { getFullName } from '@/src/utils/jsonResume';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 const LIMIT = 4;
@@ -21,7 +21,7 @@ const TrainingProgress = () => {
   return (
     <TrainingProgressDev
       onClickViewAllInterviewers={{
-        onClick: () => push(`${PAGES['/scheduling']()}?tab=interviewtypes`),
+        onClick: () => push(`${ROUTES['/scheduling']()}?tab=interviewtypes`),
       }}
       isViewAllVisible={!!data && data.length !== 0}
       slotTrainingProgressList={<TrainingProgressComponent />}

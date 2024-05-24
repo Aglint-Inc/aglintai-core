@@ -16,7 +16,7 @@ import {
 
 import { ResetPassword } from '@/devlink/ResetPassword';
 // import { errorMessages } from '@utils/errorMessages';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -199,7 +199,7 @@ export default function ResetPasswordComponent() {
     });
     if (!error) {
       toast.success('Password reseted  successfully.');
-      router.push(PAGES['/loading']());
+      router.push(ROUTES['/loading']());
     } else {
       toast.error(error.message);
     }

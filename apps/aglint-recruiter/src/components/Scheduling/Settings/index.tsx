@@ -43,7 +43,7 @@ import { WorkingHourDay } from '@/devlink2/WorkingHourDay';
 import { WorkingHours } from '@/devlink2/WorkingHours';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import FilterInput from '../../CandidateDatabase/Search/FilterInput';
@@ -1152,7 +1152,7 @@ function SettingsSubNabItem() {
               onClick: (e: any) => {
                 e.stopPropagation();
                 router.push(
-                  `${PAGES['/scheduling']()}?tab=settings&subtab=${item.value}`,
+                  `${ROUTES['/scheduling']()}?tab=settings&subtab=${item.value}`,
                 );
               },
             }}

@@ -14,7 +14,7 @@ import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
 import {
@@ -46,7 +46,7 @@ function CreateModuleDialog() {
           department: department,
         });
         await router.push(
-          PAGES['/scheduling/module/members/[module_id]']({
+          ROUTES['/scheduling/module/members/[module_id]']({
             module_id: res.id,
           }),
         );

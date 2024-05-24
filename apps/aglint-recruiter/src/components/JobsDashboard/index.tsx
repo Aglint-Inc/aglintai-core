@@ -6,7 +6,7 @@ import { JobsDashboard } from '@/devlink/JobsDashboard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobs } from '@/src/context/JobsContext';
 import { Job } from '@/src/queries/job/types';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 
 import SubNavBar from '../AppLayout/SubNavbar';
 import Icon from '../Common/Icons/Icon';
@@ -86,7 +86,7 @@ const DashboardComp = () => {
           {data?.length == 0 ? (
             <EmptyJobDashboard
               handleClickAddJob={() => {
-                router.push(PAGES['/jobs/create']());
+                router.push(ROUTES['/jobs/create']());
               }}
               heading={'Jobs'}
             />

@@ -19,7 +19,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 
 import { selectJobApplicationQuery } from '../apiUtils/job/jobApplications/read/utils';
@@ -315,13 +315,13 @@ const InterviewPrepProvider = ({ children }) => {
   }
 
   function closeInterviewStartedDrawer() {
-    if (router.asPath == PAGES['/login']()) {
-      router.push(PAGES['/agent']());
+    if (router.asPath == ROUTES['/login']()) {
+      router.push(ROUTES['/agent']());
       return;
     }
 
     if (
-      router.pathname.includes(PAGES['/assessment-new']()) &&
+      router.pathname.includes(ROUTES['/assessment-new']()) &&
       introStep === 1
     ) {
       updateFeedbackOnJobApplications(
@@ -364,7 +364,7 @@ const InterviewPrepProvider = ({ children }) => {
     currentInterviewID = '';
     audioElement?.pause();
     audioElement = null;
-    router.push(PAGES['/assessment-new']());
+    router.push(ROUTES['/assessment-new']());
   }
 
   async function letsBegin() {
@@ -400,7 +400,7 @@ const InterviewPrepProvider = ({ children }) => {
       }
       // // log recent activities
       log_activity({
-        type: PAGES['/assessment-new'](),
+        type: ROUTES['/assessment-new'](),
         item_id: interview[0].id,
         log_message: `Incomplete mock interview for ${interview[0].role} at ${interview[0].company}`,
       }).then((data) => {
@@ -631,7 +631,7 @@ const InterviewPrepProvider = ({ children }) => {
 
         setIntroStep((pre) => pre + 1);
         startTimer();
-        if (router.pathname.includes(PAGES['/assessment-new']())) {
+        if (router.pathname.includes(ROUTES['/assessment-new']())) {
           context = mockTestPrePrompts(jobDetails);
         } else {
           context = prePrompts(interviewDetails);
@@ -647,7 +647,7 @@ const InterviewPrepProvider = ({ children }) => {
           if (!error) {
             context.push(response.response);
             handleSpeak(response.response.role, response.response.content);
-            if (router.pathname.includes(PAGES['/assessment-new']())) {
+            if (router.pathname.includes(ROUTES['/assessment-new']())) {
               setTokenJson((pre) => {
                 pre.interview_pre = openAiChatToken + response.token;
                 updateAiTokenForSignUpUser(pre);
@@ -710,7 +710,7 @@ const InterviewPrepProvider = ({ children }) => {
         if (!error) {
           context.push(response.response);
           handleSpeak(response.response.role, response.response.content);
-          if (router.pathname.includes(PAGES['/assessment-new']())) {
+          if (router.pathname.includes(ROUTES['/assessment-new']())) {
             setTokenJson((pre) => {
               pre.interview_pre = openAiChatToken + response.token;
               updateAiTokenForSignUpUser(pre);
@@ -758,7 +758,7 @@ const InterviewPrepProvider = ({ children }) => {
         if (!error) {
           context.push(response.response);
           handleSpeak(response.response.role, response.response.content);
-          if (router.pathname.includes(PAGES['/assessment-new']())) {
+          if (router.pathname.includes(ROUTES['/assessment-new']())) {
             setTokenJson((pre) => {
               pre.interview_pre = openAiChatToken + response.token;
               updateAiTokenForSignUpUser(pre);
@@ -779,7 +779,7 @@ const InterviewPrepProvider = ({ children }) => {
   }
 
   async function getFeedback() {
-    if (router.pathname.includes(PAGES['/assessment-new']())) {
+    if (router.pathname.includes(ROUTES['/assessment-new']())) {
       setOpenUserFeedback(true);
     }
     audioElement?.pause();
@@ -792,7 +792,7 @@ const InterviewPrepProvider = ({ children }) => {
     resetTranscript();
     setLoadingRes(true);
 
-    const pre_prompts = router.pathname.includes(PAGES['/assessment-new']())
+    const pre_prompts = router.pathname.includes(ROUTES['/assessment-new']())
       ? mockTestPrePrompts(jobDetails)
       : prePrompts(interviewDetails);
 
@@ -825,7 +825,7 @@ const InterviewPrepProvider = ({ children }) => {
     ai_feedback_json = structuredFeedback;
     setAiFeedbackJSON(structuredFeedback);
 
-    // if (router.pathname.includes(PAGES['/assessment-new']())) {
+    // if (router.pathname.includes(ROUTES['/assessment-new']())) {
     //   setTokenJson((pre) => {
     //     pre.interview_pre = openAiChatToken + response.token;
     //     updateAiTokenForSignUpUser(pre);
@@ -837,7 +837,7 @@ const InterviewPrepProvider = ({ children }) => {
     // setOpenAiChatToken((pre) => pre + response.token);
 
     setLoadingRes(false);
-    if (router.pathname.includes(PAGES['/assessment-new']())) {
+    if (router.pathname.includes(ROUTES['/assessment-new']())) {
       updateFeedbackOnJobApplications(
         ai_feedback_json,
         conversations,
@@ -873,7 +873,7 @@ const InterviewPrepProvider = ({ children }) => {
       // log recent activities
       update_log_activity(log_id, {
         log_message: `Completed mock interview for ${data[0].role} at ${data[0].company}`,
-        type: PAGES['/assessment-new'](),
+        type: ROUTES['/assessment-new'](),
       });
     }
   }
@@ -1014,7 +1014,7 @@ const InterviewPrepProvider = ({ children }) => {
           // Handle the completion of the audio playback here
           // You can invoke a callback function or trigger any desired events
 
-          if (router.pathname === PAGES['/assessment-new']()) {
+          if (router.pathname === ROUTES['/assessment-new']()) {
             startRecording();
           }
 

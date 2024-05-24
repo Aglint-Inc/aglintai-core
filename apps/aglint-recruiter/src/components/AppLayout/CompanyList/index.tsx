@@ -52,6 +52,7 @@ function CompanyList() {
       setAllRecruiterRelation(() =>
         relations.map((reln) => ({
           created_at: reln.created_at,
+          role_id: reln.role_id,
           created_by: reln.created_by,
           id: reln.id,
           is_active: reln.is_active,

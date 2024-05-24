@@ -25,7 +25,7 @@ import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { API_getMembersWithRole } from '@/src/pages/api/getMembersWithRole/type';
 import { API_setMembersWithRole } from '@/src/pages/api/setMembersWithRole/type';
 import { featureFlag } from '@/src/utils/Constants';
-import PAGES from '@/src/utils/routing/pageRouting';
+import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
@@ -132,11 +132,11 @@ const AuthProvider = ({ children }) => {
       } else {
         setUserDetails(data.session);
       }
-      if (router.route !== PAGES['/loading']() && data?.session?.user?.id) {
+      if (router.route !== ROUTES['/loading']() && data?.session?.user?.id) {
         await getRecruiterDetails(data.session);
       }
     } catch (err) {
-      router.push(PAGES['/login']());
+      router.push(ROUTES['/login']());
       handleLogout();
     }
   }
@@ -189,7 +189,7 @@ const AuthProvider = ({ children }) => {
     });
     posthog.reset();
     if (!error) {
-      router.push(PAGES['/login']());
+      router.push(ROUTES['/login']());
     }
   };
 
@@ -330,7 +330,7 @@ const AuthProvider = ({ children }) => {
       if (feature && !posthog.isFeatureEnabled(feature)) {
         // eslint-disable-next-line no-console
         console.log('Feature not enabled');
-        router.push(PAGES['/jobs']());
+        router.push(ROUTES['/jobs']());
       }
     }
   }, [router.pathname, userDetails]);
@@ -380,10 +380,10 @@ const AuthLoader = () => {
 
 const isRoutePublic = (path = '') => {
   const whiteListedRoutes = [
-    PAGES['/login'](),
-    PAGES['/signup'](),
-    PAGES['/assessment-new'](),
-    PAGES['/candidate-phone-screening'](),
+    ROUTES['/login'](),
+    ROUTES['/signup'](),
+    ROUTES['/assessment-new'](),
+    ROUTES['/candidate-phone-screening'](),
   ];
   for (const route of whiteListedRoutes) {
     if (path.startsWith(route)) {
@@ -393,12 +393,12 @@ const isRoutePublic = (path = '') => {
 };
 
 const pageFeatureMapper = {
-  [PAGES['/assisstant']()]: 'isAssistantEnabled',
-  [PAGES['/assessment-new']()]: 'isNewAssessmentEnabled',
-  [PAGES['/agent']()]: 'isAgentEnabled',
-  [PAGES['/screening']()]: 'isPhoneScreeningEnabled',
-  [PAGES['/support']()]: 'isSupportEnabled',
-  [PAGES['/candidates/history']()]: 'isSourcingEnabled',
+  [ROUTES['/assisstant']()]: 'isAssistantEnabled',
+  [ROUTES['/assessment-new']()]: 'isNewAssessmentEnabled',
+  [ROUTES['/agent']()]: 'isAgentEnabled',
+  [ROUTES['/screening']()]: 'isPhoneScreeningEnabled',
+  [ROUTES['/support']()]: 'isSupportEnabled',
+  [ROUTES['/candidates/history']()]: 'isSourcingEnabled',
 };
 
 const updateMember = ({
