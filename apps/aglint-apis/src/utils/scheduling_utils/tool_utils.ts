@@ -1,15 +1,14 @@
 import {Dayjs} from 'dayjs';
 import {InterviewSlotsRespAPI} from './schedule_agent.types';
-
-import {dayjsLocal} from '@utils/dayjsLocal/dayjsLocal';
 import {
   getCachedCandidateInfo,
   updateCandidateInfo,
-} from '@services/cache/cache-db';
+} from '../../services/cache/cache-db';
 import {
   CandidateInfoType,
   ScheduleTool,
-} from '@/types/app_types/scheduleAgentTypes';
+} from '../../types/app_types/scheduleAgentTypes';
+import {dayjsLocal} from '../dayjsLocal/dayjsLocal';
 
 export const findCurrDayPlan = (
   all_slots: CandidateInfoType['all_slots'],
