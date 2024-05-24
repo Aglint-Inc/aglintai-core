@@ -60,6 +60,7 @@ function CompanyList() {
           user_id: userDetails.user.id,
           role: reln.role,
           manager_id: reln.manager_id,
+          role_id: reln.role_id,
         })),
       );
     } catch (error) {
