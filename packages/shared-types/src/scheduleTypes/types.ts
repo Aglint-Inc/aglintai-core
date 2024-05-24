@@ -30,6 +30,7 @@ export type SessionInterviewerType = Pick<
   | 'schedule_auth'
   | 'scheduling_settings'
   | 'user_id'
+  | 'position'
 > &
   Pick<
     InterviewerSessionRelation,
@@ -39,6 +40,8 @@ export type SessionInterviewerType = Pick<
     | 'interview_module_relation_id'
   > & {
     pause_json: PauseJson;
+  } & {
+    int_tz: string;
   };
 
 export type InterviewSessionApiType = {
