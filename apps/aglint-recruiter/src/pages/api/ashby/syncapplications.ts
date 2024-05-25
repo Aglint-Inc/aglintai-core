@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
+import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { AshbyApplication } from '@/src/components/JobsDashboard/AddJobWithIntegrations/Ashby/types';
-import { DB } from '@aglint/shared-types';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
