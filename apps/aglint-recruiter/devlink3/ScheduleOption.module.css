@@ -1,0 +1,149 @@
+.schedule_option_wrap {
+  position: relative;
+
+  display: flex;
+  width: 100%;
+  margin-top: 14px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+
+  background-color: white;
+
+  cursor: pointer;
+}
+
+.selection_wrap {
+  padding-top: 6px;
+}
+
+.radio_wra {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.radio_active {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+}
+
+.radio_active.hide {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+.radio_active.custom_top {
+  margin-top: 2px;
+}
+
+.relative_2 {
+  position: relative;
+  z-index: 2;
+}
+
+.radio_active.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.radio_active.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.radio_active.fixedd {
+  width: 23px;
+}
+
+.radio_inactive {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+}
+
+.radio_inactive.hide {
+  display: none;
+}
+
+.radio_inactive.custom_top {
+  margin-top: 2px;
+}
+
+.radio_inactive.cursor-pointer {
+  transition: all 250ms ease;
+  cursor: pointer;
+}
+
+.radio_inactive.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
+.radio_inactive.fixedd {
+  width: 23px;
+}
+
+.detail_schedules {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.slotsingleday_schedule {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+
+  border-radius: 10px;
+
+  background-color: #e9ebed;
+}
+
+.selected_absolute {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border: 1px solid #337fbd;
+  border-radius: 10px;
+}
+
+.normal_border {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border-radius: 10px;
+
+  box-shadow: inset 0 0 0 1px #e9ebed;
+  pointer-events: none;
+}

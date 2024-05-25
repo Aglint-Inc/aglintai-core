@@ -84,7 +84,7 @@ export default async function handler(req, res) {
             if (uploadError) {
               throw uploadError;
             }
-            const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
+            const fileLink = `${process.env.NEXT_PUBLIC_HOST_NAME}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
               const { error: errorResume } = await supabase

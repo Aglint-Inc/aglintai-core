@@ -17,11 +17,11 @@ import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useGetScheduleApplication } from './hooks';
 import RightPanel from './RightPanel';
-import ScheduleNowTopbar from './ScheduleNowTopbar';
 import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
+  setIsScheduleNowOpen,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from './store';
@@ -57,10 +57,6 @@ function SchedulingApplication() {
     };
   }, [router]);
 
-  const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type === 'debrief');
-
   return (
     <>
       <DeleteScheduleDialog />
@@ -94,15 +90,20 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
+                onClickSelfschedulingLink={{
+                  onClick: () => {
+                    setIsScheduleNowOpen(true);
+                  },
+                }}
                 slotDarkPill={<TabsSchedulingApplication />}
                 onClickClose={{
                   onClick: () => {
                     setSelectedSessionIds([]);
                   },
                 }}
-                slotScheduleNowButton={
-                  <ScheduleNowTopbar isDebrief={isDebrief} />
-                }
+                // slotScheduleNowButton={
+                //   <ScheduleNowTopbar isDebrief={isDebrief} />
+                // }
                 isScheduleNowVisible={selectedSessionIds.length > 0}
                 slotCandidateCard={<RightPanel />}
                 slotFullScheduleCard={
