@@ -1,4 +1,5 @@
 .schedule_option {
+  overflow: hidden;
   width: 100%;
   background-color: white;
   z-index: unset;

@@ -76,7 +76,7 @@ export function SingleDaySchedule({
           >
             {slotConflicts ?? (
               <>
-                <ConflictOutsideWorkHours />
+                <ConflictOutsideWorkHours isHover={false} />
                 <ConflictSoft />
                 <ConflictHard />
               </>

@@ -1,8 +1,8 @@
 import {
   InterviewModuleType,
   InterviewScheduleTypeDB,
+  PlanCombinationRespType,
 } from '@aglint/shared-types';
-import { PlanCombinationRespType } from '@aglint/shared-types';
 import { create } from 'zustand';
 
 import { InterviewScheduleContextType } from '@/src/context/SchedulingMain/SchedulingMainProvider';
@@ -30,7 +30,6 @@ export interface SchedulingApplication {
   stepScheduling: 'pick_date' | 'preference' | 'slot_options';
   members: InterviewScheduleContextType['members'];
   schedulingOptions: PlanCombinationRespType[];
-  totalSlots: number;
   isScheduleNowOpen: boolean;
   isViewProfileOpen: boolean;
   fetchingPlan: boolean;
@@ -41,6 +40,8 @@ export interface SchedulingApplication {
   isEditOpen: boolean;
   isEditBreakOpen: boolean;
   editSession: SessionsType[0];
+  selectedSlots: PlanCombinationRespType[];
+  selectedCombIds: string[];
 }
 
 const initialState: SchedulingApplication = {
@@ -51,7 +52,6 @@ const initialState: SchedulingApplication = {
   selectedSession: null,
   initialSessions: [],
   selectedSchedule: null,
-  totalSlots: 0,
   interviewModules: [],
   isScheduleNowOpen: false,
   scheduleName: '',
@@ -71,6 +71,8 @@ const initialState: SchedulingApplication = {
   isEditOpen: false,
   isEditBreakOpen: false,
   editSession: null,
+  selectedSlots: [],
+  selectedCombIds: [],
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -99,9 +101,6 @@ export const setEditSession = (editSession: Partial<SessionsType[0]>) =>
   useSchedulingApplicationStore.setState((state) => ({
     editSession: { ...state.editSession, ...editSession },
   }));
-
-export const setTotalSlots = (totalSlots: number) =>
-  useSchedulingApplicationStore.setState({ totalSlots });
 
 export const setSelectedSchedule = (
   selectedSchedule: InterviewScheduleTypeDB,
@@ -170,6 +169,12 @@ export const setDateRange = (dateRange: {
   start_date: string;
   end_date: string;
 }) => useSchedulingApplicationStore.setState({ dateRange });
+
+export const setSelectedSlots = (selectedSlots: PlanCombinationRespType[]) =>
+  useSchedulingApplicationStore.setState({ selectedSlots });
+
+export const setSelectedCombIds = (selectedCombIds: string[]) =>
+  useSchedulingApplicationStore.setState({ selectedCombIds });
 
 export const resetSchedulingApplicationState = () =>
   useSchedulingApplicationStore.setState({ ...initialState });

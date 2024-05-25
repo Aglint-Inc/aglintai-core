@@ -115,3 +115,10 @@
 .info_absolute.top_32.editingg {
   display: flex;
 }
+
+.info_absolute.top_32.move_to_top {
+  left: auto;
+  top: auto;
+  right: 0%;
+  bottom: 30px;
+}

@@ -15,11 +15,24 @@ export function ScheduleOptionsList({
   return (
     <_Component className={_utils.cx(_styles, "scheduleoptions")} tag="div">
       <_Builtin.Block
+        className={_utils.cx(_styles, "schedule_option_hint")}
+        tag="div"
+      >
+        <_Builtin.Block tag="div">
+          {
+            "Select multiple available options and then click 'send' to forward them to the candidate for selection."
+          }
+        </_Builtin.Block>
+      </_Builtin.Block>
+      <_Builtin.Block
         className={_utils.cx(_styles, "schedule_options")}
         tag="div"
       >
         {slotDateOption ?? (
           <>
+            <DateOption isSelected={false} />
+            <DateOption isSelected={false} />
+            <DateOption isSelected={false} />
             <DateOption isSelected={false} />
             <EmptySlots />
           </>

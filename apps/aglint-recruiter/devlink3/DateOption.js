@@ -1,9 +1,14 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
+import * as _interactions from "./interactions";
 import { ScheduleOption } from "./ScheduleOption";
 import * as _utils from "./utils";
 import _styles from "./DateOption.module.css";
+
+const _interactionsData = JSON.parse(
+  '{"events":{"e-81":{"id":"e-81","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-53","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-82"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"45bd81f0-ef6a-a068-df78-dbaca431f2ea"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716558866415},"e-82":{"id":"e-82","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-54","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-81"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"ELEMENT","styleBlockIds":[],"id":"45bd81f0-ef6a-a068-df78-dbaca431f2ea"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716558866416}},"actionLists":{"a-53":{"id":"a-53","title":"Date Option [Expand]","actionItemGroups":[{"actionItems":[{"id":"a-53-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]}}},{"id":"a-53-n-10","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"","duration":500,"locked":false,"target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]},"heightValue":0,"widthUnit":"PX","heightUnit":"px"}},{"id":"a-53-n-2","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-53-n-5","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"flex","target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]}}}]},{"actionItems":[{"id":"a-53-n-7","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"outExpo","duration":800,"locked":false,"target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]},"widthUnit":"PX","heightUnit":"AUTO"}},{"id":"a-53-n-9","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"easeOut","duration":300,"target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]},"value":1,"unit":""}}]}],"createdOn":1716558879003,"useFirstGroupAsInitialState":true},"a-54":{"id":"a-54","title":"Date Option [Expand] 2","actionItemGroups":[{"actionItems":[{"id":"a-54-n-5","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"outExpo","duration":800,"locked":false,"target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]},"heightValue":0,"widthUnit":"PX","heightUnit":"px"}},{"id":"a-54-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"easeOut","duration":300,"target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-54-n-4","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"value":"none","target":{"useEventTarget":"SIBLINGS","selector":".slot_schedule_option","selectorGuids":["7b22a50a-f374-3007-94e1-5c4dade0b6ee"]}}}]}],"createdOn":1716558879003,"useFirstGroupAsInitialState":false}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+);
 
 export function DateOption({
   as: _Component = _Builtin.Block,
@@ -12,9 +17,15 @@ export function DateOption({
   textdate = "April 16",
   textOptionCount = "3 options",
 }) {
+  _interactions.useInteractions(_interactionsData, _styles);
+
   return (
     <_Component className={_utils.cx(_styles, "date_option")} tag="div">
-      <_Builtin.Block className={_utils.cx(_styles, "date_wrap")} tag="div">
+      <_Builtin.Block
+        className={_utils.cx(_styles, "date_wrap")}
+        data-w-id="45bd81f0-ef6a-a068-df78-dbaca431f2ea"
+        tag="div"
+      >
         <_Builtin.Block
           className={_utils.cx(_styles, "flex_hr_10", "relative_2")}
           tag="div"
@@ -37,6 +48,15 @@ export function DateOption({
           tag="div"
         >
           <_Builtin.Block tag="div">{textOptionCount}</_Builtin.Block>
+          <_Builtin.Block
+            className={_utils.cx(_styles, "expand_arrow_date_option")}
+            tag="div"
+          >
+            <_Builtin.HtmlEmbed
+              className={_utils.cx(_styles, "embed_flex")}
+              value="%3Csvg%20width%3D%2215%22%20height%3D%2215%22%20viewBox%3D%220%200%2015%2015%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M7.75781%2010.7578C7.58594%2010.9141%207.41406%2010.9141%207.24219%2010.7578L2.74219%206.25781C2.58594%206.08594%202.58594%205.91406%202.74219%205.74219C2.91406%205.58594%203.08594%205.58594%203.25781%205.74219L7.5%209.96094L11.7422%205.74219C11.9141%205.58594%2012.0859%205.58594%2012.2578%205.74219C12.4141%205.91406%2012.4141%206.08594%2012.2578%206.25781L7.75781%2010.7578Z%22%20fill%3D%22%2368737D%22%2F%3E%0A%3C%2Fsvg%3E"
+            />
+          </_Builtin.Block>
         </_Builtin.Block>
         {isSelected ? (
           <_Builtin.Block

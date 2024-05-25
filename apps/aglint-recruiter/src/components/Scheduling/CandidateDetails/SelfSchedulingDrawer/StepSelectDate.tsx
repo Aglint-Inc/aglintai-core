@@ -13,24 +13,18 @@ import {
   setNoOptions,
   setSchedulingOptions,
   setStepScheduling,
-  setTotalSlots,
   useSchedulingApplicationStore,
 } from '../store';
 import { ApiResponseFindAvailability } from '../types';
 
 function SelectDateRange() {
   const { recruiter } = useAuthDetails();
-  const { dateRange, initialSessions, selectedSessionIds, fetchingPlan } =
+  const { dateRange, selectedSessionIds, fetchingPlan } =
     useSchedulingApplicationStore((state) => ({
       dateRange: state.dateRange,
-      initialSessions: state.initialSessions,
       selectedSessionIds: state.selectedSessionIds,
       fetchingPlan: state.fetchingPlan,
     }));
-
-  const isDebrief = initialSessions
-    .filter((ses) => selectedSessionIds.includes(ses.id))
-    .some((ses) => ses.session_type === 'debrief');
 
   const findScheduleOptions = async ({
     session_ids,
@@ -53,7 +47,7 @@ function SelectDateRange() {
         start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
         end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
         user_tz: dayjs.tz.guess(),
-        is_debreif: isDebrief,
+        is_debreif: true,
       } as ApiFindAvailability);
 
       if (res.status === 200) {
@@ -61,7 +55,6 @@ function SelectDateRange() {
         if (respTyped.plan_combs.length === 0) {
           toast.error('No availability found.');
         } else {
-          setTotalSlots(respTyped.total);
           setSchedulingOptions(respTyped.plan_combs);
           setStepScheduling('slot_options');
         }

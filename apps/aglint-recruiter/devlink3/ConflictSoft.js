@@ -30,7 +30,12 @@ export function ConflictSoft({
       <_Builtin.Block tag="div">{textConflict}</_Builtin.Block>
       {isHover ? (
         <_Builtin.Block
-          className={_utils.cx(_styles, "info_absolute", "top_32")}
+          className={_utils.cx(
+            _styles,
+            "info_absolute",
+            "top_32",
+            "move_to_top"
+          )}
           tag="div"
         >
           <_Builtin.Block
@@ -56,12 +61,7 @@ export function ConflictSoft({
               className={_utils.cx(_styles, "conflict_resons")}
               tag="div"
             >
-              {slotConflictReason ?? (
-                <>
-                  <ConflictReason />
-                  <ConflictReason />
-                </>
-              )}
+              {slotConflictReason ?? <ConflictReason />}
             </_Builtin.Block>
           </_Builtin.Block>
         </_Builtin.Block>

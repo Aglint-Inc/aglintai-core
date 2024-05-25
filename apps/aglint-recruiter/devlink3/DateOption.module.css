@@ -1,5 +1,6 @@
 .date_option {
   width: 100%;
+  background-color: white;
 }
 
 .date_wrap {
@@ -174,7 +175,7 @@
   grid-row-gap: 20px;
 }
 
-.expand_arrow-copy {
+.expand_arrow_date_option {
   display: flex;
   width: 24px;
   height: 24px;
@@ -189,7 +190,7 @@
   transition: all 200ms ease;
 }
 
-.expand_arrow-copy:hover {
+.expand_arrow_date_option:hover {
   background-color: #e9ebed;
 }
 
@@ -207,11 +208,8 @@
 }
 
 .slot_schedule_option {
-  display: flex;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  display: none;
+  overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
 }

@@ -1,25 +1,28 @@
 .scheduleoptions {
   display: flex;
+  overflow: auto;
   width: 100%;
   flex-direction: column;
   flex-wrap: nowrap;
-  grid-column-gap: 1px;
-  grid-row-gap: 1px;
-
-  background-color: #e9ebed;
-}
-
-.schedule_options {
-  position: relative;
-  z-index: 1;
-
-  overflow: auto;
-  padding-top: 16px;
-  padding-right: 16px;
-  padding-bottom: 16px;
-  padding-left: 16px;
 
   background-color: white;
 
   height: calc(100vh - 130px);
+}
+
+.schedule_option_hint {
+  padding: 20px 20px 0px;
+}
+
+.schedule_options {
+  z-index: 1;
+
+  display: flex;
+  padding: 16px 16px 60px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+
+  background-color: white;
 }

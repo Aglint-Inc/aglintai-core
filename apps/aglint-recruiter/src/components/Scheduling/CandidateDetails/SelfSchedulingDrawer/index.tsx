@@ -33,19 +33,18 @@ function SelfSchedulingDrawer() {
     schedulingOptions,
     selCoordinator,
     stepScheduling,
+    selectedCombIds,
   } = useSchedulingApplicationStore((state) => ({
     dateRange: state.dateRange,
-    noOptions: state.noOptions,
     selectedApplication: state.selectedApplication,
     initialSessions: state.initialSessions,
     isScheduleNowOpen: state.isScheduleNowOpen,
     selectedSessionIds: state.selectedSessionIds,
     schedulingOptions: state.schedulingOptions,
-    totalSlots: state.totalSlots,
     selCoordinator: state.selCoordinator,
     stepScheduling: state.stepScheduling,
+    selectedCombIds: state.selectedCombIds,
   }));
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -67,7 +66,7 @@ function SelfSchedulingDrawer() {
   const onClickSendToCandidate = async () => {
     try {
       setSaving(true);
-      if (isDebrief && !selectedId) {
+      if (isDebrief && selectedCombIds.length === 0) {
         toast.warning('Please select a time slot to schedule.');
       } else {
         const res = await axios.post(
@@ -81,9 +80,11 @@ function SelfSchedulingDrawer() {
             recruiterUser,
             schedulingOptions,
             selCoordinator,
-            selected_comb_id: selectedId,
             selectedApplication,
             selectedSessionIds,
+            selectedDebrief: schedulingOptions.find(
+              (opt) => opt.plan_comb_id === selectedCombIds[0],
+            ),
             user_tz: dayjs.tz.guess(),
           } as ApiBodyParamsSendToCandidate,
         );
@@ -105,8 +106,7 @@ function SelfSchedulingDrawer() {
             })),
           );
         }
-        setSelectedSessionIds([]);
-        setIsScheduleNowOpen(false);
+        resetState();
       }
     } catch (e) {
       //
@@ -132,21 +132,30 @@ function SelfSchedulingDrawer() {
         }}
       >
         <SideDrawerLarge
+          onClickBack={{
+            onClick: () => {
+              setStepScheduling('pick_date');
+            },
+          }}
+          onClickPrimary={{
+            onClick: () => {
+              if (!saving) onClickSendToCandidate();
+            },
+          }}
+          textPrimaryButton={!isDebrief ? 'Send to Candidate' : 'Schedule Now'}
           isSelectedNumber={false}
           slotSideDrawerbody={
             <>
               {stepScheduling === 'pick_date' ? (
                 <SelectDateRange />
               ) : (
-                <StepSlotOptions />
+                <StepSlotOptions isDebrief={isDebrief} />
               )}
             </>
           }
           isBottomBar={stepScheduling !== 'pick_date'}
         />
-       
       </Drawer>
-      
     </>
   );
 }
