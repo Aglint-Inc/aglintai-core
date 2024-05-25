@@ -5,11 +5,12 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { AshbyApplication } from '@/src/components/JobsDashboard/AddJobWithIntegrations/Ashby/types';
+import { DB } from '@aglint/shared-types';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
