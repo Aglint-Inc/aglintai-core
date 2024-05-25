@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
+import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 const crypto = require('crypto');
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export default async function handler(req, res) {
   let apiKey = req.body.apiKey;

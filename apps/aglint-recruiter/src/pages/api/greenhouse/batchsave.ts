@@ -7,10 +7,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/greenhouse/saveResume`;
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 interface BatchSaveResponse {
   data: Array<Record<string, unknown>>; // Adjust this based on the actual structure of the returned JSONB objects
