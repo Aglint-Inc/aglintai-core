@@ -652,6 +652,7 @@ export type Database = {
       }
       candidate_request_availability: {
         Row: {
+          application_id: string
           availability: Json | null
           created_at: string
           date_range: Json | null
@@ -659,10 +660,12 @@ export type Database = {
           is_task_created: boolean | null
           number_of_days: number | null
           number_of_slots: number | null
+          recruiter_id: string
           session_ids: Json | null
           total_slots: number | null
         }
         Insert: {
+          application_id: string
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
@@ -670,10 +673,12 @@ export type Database = {
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
+          recruiter_id: string
           session_ids?: Json | null
           total_slots?: number | null
         }
         Update: {
+          application_id?: string
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
@@ -681,10 +686,26 @@ export type Database = {
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
+          recruiter_id?: string
           session_ids?: Json | null
           total_slots?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "candidate_request_availability_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_request_availability_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       candidate_search_history: {
         Row: {

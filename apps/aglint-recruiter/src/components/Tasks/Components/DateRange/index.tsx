@@ -30,6 +30,7 @@ function DateRange({
         },
         '& .MuiDayCalendar-weekContainer div div': {
           p: '0.5px 1.7px',
+          height: '38px',
         },
         '&>div': {
           height: 334,
@@ -46,6 +47,9 @@ function DateRange({
           width: '32.7px',
           fontSize: '0.72rem',
         },
+        '& .MuiPickersSlideTransition-root': {
+          minHeight: 235,
+        },
       }}
       direction={'column'}
       justifyContent={'center'}
@@ -54,7 +58,11 @@ function DateRange({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateRangeCalendar
           disablePast={disablePast}
-          value={value}
+          value={
+            value.length
+              ? [dayjs(value[0]), dayjs(value[1])]
+              : [dayjs(), dayjs()]
+          }
           calendars={calendars}
           onChange={onChange}
         />
