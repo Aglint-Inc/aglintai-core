@@ -39,7 +39,7 @@ import {
 } from '../../store';
 import DebriedForm from './DebriefFrom';
 
-type Interviewer = {
+export type Interviewer = {
   name: string;
   value: string | number;
   start_icon_url?: string;
@@ -144,9 +144,17 @@ function SideDrawerEdit() {
     (module) => module.id === editSession?.module_id,
   );
 
+  const selectedQuaInterviewerIds = selectedInterviewers.map(
+    (interviewer) => interviewer.value,
+  );
+
   if (moduleCurrent) {
     optionsInterviewers = (moduleCurrent?.members
-      .filter((user) => user.training_status == 'qualified')
+      .filter(
+        (user) =>
+          user.training_status == 'qualified' &&
+          selectedQuaInterviewerIds.indexOf(user.moduleUserId) === -1,
+      )
       ?.map((member) => ({
         name: member.first_name + ' ' + member.last_name,
         value: member.moduleUserId,
@@ -272,7 +280,7 @@ function SideDrawerEdit() {
             });
           });
 
-          editInterviewSession({
+          const editInterviewSessionParams: EditInterviewSession = {
             break_duration: editSession.break_duration,
             interviewer_cnt: editSession.interviewer_cnt,
             location: editSession.location,
@@ -284,9 +292,11 @@ function SideDrawerEdit() {
             session_type: editSession.session_type,
             interview_module_relation_entries:
               interview_module_relation_entries,
-          } as EditInterviewSession);
+          };
+
+          editInterviewSession(editInterviewSessionParams);
         } else {
-          updateDebriefSession({
+          const updateDebriefParams: UpdateDebriefSession = {
             break_duration: editSession.break_duration,
             location: editSession.location,
             name: editSession.name,
@@ -296,7 +306,9 @@ function SideDrawerEdit() {
             members: debriefMembers.map((member) => ({
               id: member.value as string,
             })),
-          } as UpdateDebriefSession);
+            members_meta: editSession.members_meta,
+          };
+          updateDebriefSession(updateDebriefParams);
         }
       } else {
         toast.error('Error caching session.');
@@ -322,7 +334,7 @@ function SideDrawerEdit() {
           });
         });
 
-        await editInterviewSession({
+        const editInterviewSessionParams: EditInterviewSession = {
           break_duration: editSession.break_duration,
           interviewer_cnt: editSession.interviewer_cnt,
           location: editSession.location,
@@ -333,9 +345,11 @@ function SideDrawerEdit() {
           session_id: editSession.id,
           session_type: editSession.session_type,
           interview_module_relation_entries: interview_module_relation_entries,
-        } as EditInterviewSession);
+        };
+
+        await editInterviewSession(editInterviewSessionParams);
       } else {
-        await updateDebriefSession({
+        const updateDebriefParams: UpdateDebriefSession = {
           break_duration: editSession.break_duration,
           location: editSession.location,
           name: editSession.name,
@@ -345,7 +359,9 @@ function SideDrawerEdit() {
           members: debriefMembers.map((member) => ({
             id: member.value as string,
           })),
-        } as UpdateDebriefSession);
+          members_meta: editSession.members_meta,
+        };
+        await updateDebriefSession(updateDebriefParams);
       }
       await fetchInterviewDataByApplication();
       handleClose();
@@ -637,8 +653,6 @@ function SideDrawerEdit() {
                   debriefMembers={debriefMembers}
                   optionMembers={optionMembers}
                   setDebriefMembers={setDebriefMembers}
-                  setTrainingInterviewers={setTrainingInterviewers}
-                  trainingInterviewers={trainingInterviewers}
                 />
               )
             }

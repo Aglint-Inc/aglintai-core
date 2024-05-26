@@ -215,21 +215,19 @@ export const createCloneSession = async ({
 export const sendToCandidate = async ({
   is_mail,
   is_debrief = false,
-  selected_comb_id,
   selectedApplication,
   initialSessions,
   selectedSessionIds,
   selCoordinator,
   recruiter_id,
   dateRange,
-  schedulingOptions,
+  selectedDebrief,
   recruiterUser,
   supabase,
   user_tz,
 }: {
   is_mail: boolean;
   is_debrief?: boolean;
-  selected_comb_id: string;
   selectedApplication: SchedulingApplication['selectedApplication'];
   initialSessions: SchedulingApplication['initialSessions'];
   selectedSessionIds: SchedulingApplication['selectedSessionIds'];
@@ -239,7 +237,7 @@ export const sendToCandidate = async ({
     start_date: string;
     end_date: string;
   };
-  schedulingOptions: SchedulingApplication['schedulingOptions'];
+  selectedDebrief: SchedulingApplication['schedulingOptions'][number];
   recruiterUser: {
     email: string;
     first_name: string;
@@ -312,37 +310,20 @@ export const sendToCandidate = async ({
           application_id: selectedApplication.id,
         });
       }
-      if (is_debrief && selected_comb_id) {
-        const selectedSchedule = schedulingOptions.filter(
-          (ses) => ses.plan_comb_id === selected_comb_id,
-        );
-        const bodyParams = {
-          candidate_plan: [
-            {
-              sessions: selectedSchedule[0].sessions.map((ses) => {
-                return {
-                  session_id: createCloneRes.refSessions.find(
-                    (sesRef) => sesRef.id === ses.session_id,
-                  ).newId,
-                  start_time: ses.start_time,
-                  end_time: ses.end_time,
-                };
-              }),
-            },
-          ],
-          recruiter_id: recruiter_id,
-          user_tz: user_tz,
+      if (is_debrief && selectedDebrief) {
+        await scheduleDebrief({
+          selectedDebrief,
           candidate_email: selectedApplication.candidates.email,
-          is_debreif: true,
-        } as APICandidateConfirmSlot;
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
-          bodyParams,
-        );
-
-        if (res.status === 200) {
-          console.log('Booked debrief session');
-        }
+          candidate_id: selectedApplication.candidates.id,
+          candidate_name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
+          filter_id: filterJson[0].id,
+          recruiter_id,
+          schedule_id: createCloneRes.schedule.id,
+          user_tz,
+        });
       }
     } else {
       const organizer_id = await getOrganizerId(
@@ -408,41 +389,81 @@ export const sendToCandidate = async ({
         });
       }
 
-      if (is_debrief && selected_comb_id) {
-        const selectedSchedule = schedulingOptions.filter(
-          (ses) => ses.plan_comb_id === selected_comb_id,
-        );
-        const bodyParams = {
-          candidate_plan: [
-            {
-              sessions: selectedSchedule[0].sessions.map((ses) => {
-                return {
-                  session_id: ses.session_id,
-                  start_time: ses.start_time,
-                  end_time: ses.end_time,
-                };
-              }),
-            },
-          ],
-          recruiter_id: recruiter_id,
-          user_tz: user_tz,
+      if (is_debrief && selectedDebrief) {
+        await scheduleDebrief({
+          selectedDebrief,
+          candidate_email: selectedApplication.candidates.email,
+          candidate_id: selectedApplication.candidates.id,
+          candidate_name: getFullName(
+            selectedApplication.candidates.first_name,
+            selectedApplication.candidates.last_name,
+          ),
+          filter_id: filterJson[0].id,
+          recruiter_id,
           schedule_id: checkSch[0].id,
-          is_debreif: true,
-        } as APICandidateConfirmSlot;
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
-          bodyParams,
-        );
-
-        if (res.status === 200) {
-          console.log('Booked debrief session');
-        }
+          user_tz,
+        });
       }
     }
     return true;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.log(e.message);
+  }
+};
+
+const scheduleDebrief = async ({
+  selectedDebrief,
+  recruiter_id,
+  user_tz,
+  schedule_id,
+  candidate_email,
+  candidate_id,
+  candidate_name,
+  filter_id,
+}) => {
+  console.log({
+    selectedDebrief,
+    recruiter_id,
+    user_tz,
+    schedule_id,
+    candidate_email,
+    candidate_id,
+    candidate_name,
+    filter_id,
+  });
+
+  const bodyParams: APICandidateConfirmSlot = {
+    candidate_plan: [
+      {
+        sessions: selectedDebrief.sessions.map((ses) => {
+          return {
+            session_id: ses.session_id,
+            start_time: ses.start_time,
+            end_time: ses.end_time,
+          };
+        }),
+      },
+    ],
+    recruiter_id: recruiter_id,
+    user_tz: user_tz,
+    schedule_id: schedule_id,
+    is_debreif: true,
+    agent_type: 'self',
+    task_id: null,
+    candidate_email,
+    candidate_id,
+    candidate_name,
+    filter_id,
+  };
+
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/confirm_interview_slot`,
+    bodyParams,
+  );
+
+  if (res.status === 200) {
+    console.log('Booked debrief session');
   }
 };
 

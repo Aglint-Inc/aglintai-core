@@ -3,9 +3,10 @@ import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const supabaseUrl: string = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseServiceKey: string = process.env.SUPABASE_SERVICE_KEY || '';
-const supabase = createClient<DB>(supabaseUrl, supabaseServiceKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export default async function handler(
   req: NextApiRequest,

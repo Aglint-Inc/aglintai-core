@@ -3,7 +3,7 @@ import 'react-date-range/dist/theme/default.css';
 
 import { Popover, Stack } from '@mui/material';
 import { addDays } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 
 import { ButtonPrimarySmall } from '@/devlink/ButtonPrimarySmall';
@@ -11,18 +11,12 @@ import { ButtonTextSmall } from '@/devlink/ButtonTextSmall';
 import { ButtonFilter } from '@/devlink2/ButtonFilter';
 
 import { setFilter, useFilterCandidateStore } from '../../filter-store';
-import {} from // FilterType,
-// setFilterVisible,
-'../../store';
 
 function DateRangeFilterComp() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
   const filter = useFilterCandidateStore((state) => state.filter);
-  // const filterVisible = useInterviewSchedulingStore(
-  //   (state) => state.filterVisible,
-  // );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -35,12 +29,6 @@ function DateRangeFilterComp() {
   const open = Boolean(anchorEl);
   const id = open ? 'date-range' : undefined;
 
-  // useEffect(() => {
-  //   return () => {
-  //     setFilter({ job_ids: [] });
-  //   };
-  // }, []);
-
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -48,12 +36,6 @@ function DateRangeFilterComp() {
       key: 'selection',
     },
   ]);
-
-  useEffect(() => {
-    return () => {
-      setFilter({ dateRange: null });
-    };
-  }, []);
 
   return (
     <>
