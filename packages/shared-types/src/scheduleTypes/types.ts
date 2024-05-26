@@ -160,11 +160,23 @@ export type SessionIntDetails = {
   };
 };
 
-export type APIOverrideConfig = {
-  holiday: boolean;
-  dayoff: boolean; // sat and sunday
-  out_of_office: boolean;
-  interviewer_pause: boolean;
-  interviewer_load: boolean;
-  calender_not_connected: boolean;
+export type APIOptions = {
+  use_recruiting_blocks: boolean;
+  include_free_time: boolean;
+  check_next_minutes: number;
+  make_training_optional: boolean;
+  include_conflicting_slots: {
+    show_soft_conflicts: boolean;
+    show_conflicts_events: boolean;
+    interviewers_load: boolean;
+    interviewer_pause: boolean;
+    out_of_office: boolean;
+    calender_not_connected: boolean;
+    override_working_hours: {
+      start: number;
+      end: number;
+    } | null;
+    day_off: boolean;
+    holiday: boolean;
+  };
 };

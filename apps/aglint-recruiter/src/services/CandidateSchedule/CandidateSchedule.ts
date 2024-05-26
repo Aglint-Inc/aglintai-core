@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   AllSessionIntDetails,
-  APIOverrideConfig,
+  APIOptions,
   CalendarEvent,
   CompServiceKeyCred,
   ConflictReason,
@@ -79,7 +79,7 @@ export class CandidatesScheduling {
     user_start_date_js: Dayjs;
     user_end_date_js: Dayjs;
   };
-  private disabled_overrides: APIOverrideConfig;
+  private api_options: APIOptions;
 
   constructor(
     _api_payload: ApiPayload,
@@ -87,7 +87,7 @@ export class CandidatesScheduling {
       start_date_js: Dayjs;
       end_date_js: Dayjs;
     },
-    _default_overrides?: APIOverrideConfig,
+    _api_options?: Partial<APIOptions>,
   ) {
     this.api_payload = _api_payload;
     if (_schedule_dates) {
@@ -96,23 +96,9 @@ export class CandidatesScheduling {
         user_end_date_js: _schedule_dates.end_date_js,
       };
     }
-    if (_default_overrides) {
-      this.disabled_overrides = {
-        calender_not_connected: !_default_overrides.calender_not_connected,
-        dayoff: !_default_overrides.dayoff,
-        holiday: !_default_overrides.holiday,
-        interviewer_load: !_default_overrides.interviewer_load,
-        interviewer_pause: !_default_overrides.interviewer_pause,
-        out_of_office: !_default_overrides.out_of_office,
-      };
-    } else {
-      this.disabled_overrides = {
-        interviewer_load: true,
-        interviewer_pause: true,
-        calender_not_connected: true,
-        dayoff: true,
-        holiday: true,
-        out_of_office: true,
+    if (_api_options) {
+      this.api_options = {
+        //
       };
     }
   }
