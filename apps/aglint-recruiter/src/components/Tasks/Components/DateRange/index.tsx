@@ -5,16 +5,18 @@ import {
   LocalizationProvider,
 } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 function DateRange({
   onChange,
   value,
   disablePast = true,
+  calendars = 1,
 }: {
-  onChange: (x: any) => void;
-  value: any[];
+  onChange: (date: [Dayjs, Dayjs]) => void;
+  value: [Dayjs, Dayjs];
   disablePast?: boolean;
+  calendars?: 1 | 2 | 3;
 }) {
   return (
     <Stack
@@ -52,12 +54,8 @@ function DateRange({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateRangeCalendar
           disablePast={disablePast}
-          defaultValue={
-            value.length
-              ? [dayjs(value[0]), dayjs(value[1])]
-              : [dayjs(), dayjs()]
-          }
-          calendars={1}
+          value={value}
+          calendars={calendars}
           onChange={onChange}
         />
       </LocalizationProvider>

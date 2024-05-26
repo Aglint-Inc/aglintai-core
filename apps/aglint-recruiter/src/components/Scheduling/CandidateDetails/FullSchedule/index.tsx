@@ -20,7 +20,7 @@ import { getScheduleBgcolor, getScheduleType } from '../../Candidates/utils';
 import { convertTimeZoneToAbbreviation } from '../../utils';
 import CancelScheduleDialog from '../Common/CancelScheduleDialog';
 import RescheduleDialog from '../Common/RescheduleDialog';
-import GetScheduleOptionsDialog from '../GetScheduleOptions';
+import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import {
   SchedulingApplication,
   setEditSession,
@@ -82,7 +82,7 @@ function FullSchedule() {
       <BreakDrawerEdit />
       <CancelScheduleDialog />
       <RescheduleDialog />
-      <GetScheduleOptionsDialog />
+      <SelfSchedulingDrawer />
       <NewInterviewPlan
         slotNewInterviewPlanCard={initialSessions?.map((session, ind) => {
           return (
