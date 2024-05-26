@@ -28,12 +28,12 @@ const nextConfig = {
         basePath: false,
         permanent: false,
       },
-      // {
-      //   source: '/signup',
-      //   destination: '/login',
-      //   basePath: false,
-      //   permanent: false,
-      // },
+      {
+        source: '/signup',
+        destination: '/login',
+        basePath: false,
+        permanent: false,
+      },
     ];
   },
   images: {
