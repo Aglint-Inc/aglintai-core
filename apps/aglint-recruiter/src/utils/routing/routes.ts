@@ -32,8 +32,8 @@ const assessmentThanks = {
     pageRouteBuilder([assessmentThanks['/assessment-thanks'](), assessment_id]),
 } as const;
 
-const assisstant = {
-  '/assisstant': () => pageRouteBuilder([ROUTES.app(), 'assisstant']),
+const assistant = {
+  assistant: () => pageRouteBuilder([ROUTES.app(), 'assistant']),
 };
 
 const auth = {
@@ -274,7 +274,7 @@ const ROUTES = {
   ...agent,
   ...assementNew,
   ...assessmentThanks,
-  ...assisstant,
+  ...assistant,
   ...auth,
   ...authCal,
   ...authEmail,
