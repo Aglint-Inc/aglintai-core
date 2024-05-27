@@ -4,6 +4,7 @@
   },
   "eslint.workingDirectories": ["./apps/aglint-recruiter"],
   "cSpell.words": [
+    "aglint",
     "asce",
     "nextjs",
     "posthog",
