@@ -26,7 +26,9 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
+import { z } from 'zod';
 
+import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { GoogleCalender } from '../GoogleCalender/google-calender';
@@ -87,7 +89,7 @@ export class CandidatesScheduling {
       start_date_js: Dayjs;
       end_date_js: Dayjs;
     },
-    _api_options?: Partial<APIOptions>,
+    _api_options?: z.infer<typeof schema_find_availability_payload>['options'],
   ) {
     this.api_payload = _api_payload;
     if (_schedule_dates) {
@@ -96,11 +98,33 @@ export class CandidatesScheduling {
         user_end_date_js: _schedule_dates.end_date_js,
       };
     }
-    if (_api_options) {
-      this.api_options = {
-        //
-      };
-    }
+    this.api_options = {
+      check_next_minutes: _api_options.check_next_minutes,
+      include_free_time: _api_options.include_free_time,
+      make_training_optional: _api_options.make_training_optional,
+      use_recruiting_blocks: _api_options.use_recruiting_blocks,
+      include_conflicting_slots: {
+        calender_not_connected:
+          _api_options.include_conflicting_slots.calender_not_connected,
+        day_off: _api_options.include_conflicting_slots.day_off,
+        holiday: _api_options.include_conflicting_slots.holiday,
+        interviewer_pause:
+          _api_options.include_conflicting_slots.interviewer_pause,
+        interviewers_load:
+          _api_options.include_conflicting_slots.interviewers_load,
+        out_of_office: _api_options.include_conflicting_slots.out_of_office,
+        override_working_hours: {
+          start:
+            _api_options.include_conflicting_slots.override_working_hours.start,
+          end: _api_options.include_conflicting_slots.override_working_hours
+            .end,
+        },
+        show_conflicts_events:
+          _api_options.include_conflicting_slots.show_conflicts_events,
+        show_soft_conflicts:
+          _api_options.include_conflicting_slots.show_soft_conflicts,
+      },
+    };
   }
 
   // getters and setters

@@ -14,8 +14,6 @@ import { CandidatesScheduling } from '@/src/services/CandidateSchedule/Candidate
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    // Parse request body
-    // TODO: find better solution for this
     const parsedData = schema_find_availability_payload.parse({
       ...req.body,
       options: req.body.options || {
@@ -29,8 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       true,
     );
     const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      end_date,
-      user_tz,
+      parsedData.end_date,
+      parsedData.candidate_tz,
       false,
     );
 
