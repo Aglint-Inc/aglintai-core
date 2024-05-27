@@ -73,6 +73,9 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
         .select()
         .in('id', payload.session_ids),
     );
+    session_details = session_details.sort(
+      (s1, s2) => s1.session_order - s2.session_order,
+    );
 
     // [company_details] = supabaseWrap(
     //   await supabaseAdmin
@@ -156,7 +159,12 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
         );
 
       prev_cand_selected_days.forEach((sel_day) => {
-        const next_int_day = sel_day.add(prev_day_break, 'day');
+        let next_int_day = sel_day.add(prev_day_break, 'day');
+        if (next_int_day.format('dddd') === DaysOfWeek.SATURDAY) {
+          next_int_day = next_int_day.add(2, 'day');
+        } else if (next_int_day.format('dddd') === DaysOfWeek.SUNDAY) {
+          next_int_day = next_int_day.add(1, 'day');
+        }
         cand_selected_dates.push(next_int_day);
       });
     }
