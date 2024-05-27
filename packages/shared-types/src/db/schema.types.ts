@@ -2061,7 +2061,7 @@ export type Database = {
           id: number
           is_enable: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id: string | null
+          recruiter_id: string
           updated_at: string | null
         }
         Insert: {
@@ -2069,7 +2069,7 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id?: string | null
+          recruiter_id: string
           updated_at?: string | null
         }
         Update: {
@@ -2077,7 +2077,7 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name?: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id?: string | null
+          recruiter_id?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -3304,6 +3304,13 @@ export type Database = {
             referencedRelation: "workflow"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "workflow_action_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       workflow_action_logs: {
@@ -3362,6 +3369,13 @@ export type Database = {
             referencedRelation: "workflow"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "workflow_action_logs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       workflow_job_relation: {
@@ -3396,6 +3410,13 @@ export type Database = {
             columns: ["workflow_id"]
             isOneToOne: false
             referencedRelation: "workflow"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_job_relation_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3535,6 +3556,27 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_view: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          interval: number | null
+          jobs: Json | null
+          phase: Database["public"]["Enums"]["workflow_phase"] | null
+          recruiter_id: string | null
+          title: string | null
+          trigger: Database["public"]["Enums"]["workflow_trigger"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]
