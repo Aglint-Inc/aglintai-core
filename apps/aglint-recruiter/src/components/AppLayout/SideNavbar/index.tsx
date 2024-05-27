@@ -103,7 +103,7 @@ function SideNavbar() {
       icon: <NavAssistant isActive={false} />,
       text: 'Assistant',
       SubComponents: null,
-      route: ROUTES['assistant'](),
+      route: ROUTES['/assistant'](),
       comingSoon: false,
       isVisible: isAssistantEnabled,
     },

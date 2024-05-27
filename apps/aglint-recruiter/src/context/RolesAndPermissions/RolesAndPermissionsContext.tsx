@@ -25,8 +25,15 @@ export const RolesAndPermissionsProvider = ({
   const checkPermissions: RolesAndPermissionsContextType['checkPermissions'] = (
     permission,
   ) => {
+    // console.log(
+    //   'userPermissions',
+    //   permission,
+    //   userPermissions['permissions'][permission],
+    // );
     // eslint-disable-next-line security/detect-object-injection
-    return Boolean(userPermissions['permissions'][permission]);
+    return (
+      Boolean(permission) && Boolean(userPermissions['permissions'][permission])
+    );
   };
   const ifAllowed: RolesAndPermissionsContextType['ifAllowed'] = <
     T extends Function | ReactNode,
@@ -35,7 +42,7 @@ export const RolesAndPermissionsProvider = ({
     permission,
   ) => {
     // eslint-disable-next-line security/detect-object-injection
-    if (userPermissions.permissions[permission]) {
+    if (Boolean(permission) && userPermissions.permissions[permission]) {
       return func;
     }
     if (typeof func === 'function') {

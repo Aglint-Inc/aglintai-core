@@ -1,20 +1,5 @@
 "use strict";
-// import yargs from 'yargs';
-// import { hideBin } from 'yargs/helpers';
 Object.defineProperty(exports, "__esModule", { value: true });
-// const argv = yargs(hideBin(process.argv))
-//   .option('scan', {
-//     alias: 's',
-//     type: 'string',
-//     description: 'scan path',
-//     demandOption: false,
-//   })
-//   .option('file', {
-//     alias: 'f',
-//     type: 'string',
-//     description: 'output file path',
-//     demandOption: false,
-//   }).argv;
 var fs = require("fs");
 var path = require("path");
 function processDirectory(rootDir, outputFile) {
@@ -38,21 +23,34 @@ function processDirectory(rootDir, outputFile) {
                     var filePath = fullPath
                         .replace(/\.ts$|\.js$|\.jsx$|\.tsx$/, '')
                         .replace(rootDir, '');
-                    //   console.log({ filePath });
                     result.push(filePath);
                 }
             }
         }
     }
     walkDirectory(rootDir);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.writeFileSync(outputFile, "export const PATHS = [\n".concat(result.map(function (item) { return '"' + item + '"'; }).join(',\n'), "\n] as const"), 'utf-8');
-    console.log("Paths have been saved to ".concat(outputFile));
 }
 var args = process.argv.slice(2);
 var rootDirectory = args[0] || '.';
 var outputFile = args[1] || 'script/paths.ts';
-console.log("Scanning ", rootDirectory, "...");
 processDirectory(rootDirectory, outputFile);
+// import yargs from 'yargs';
+// import { hideBin } from 'yargs/helpers';
+// const argv = yargs(hideBin(process.argv))
+//   .option('scan', {
+//     alias: 's',
+//     type: 'string',
+//     description: 'scan path',
+//     demandOption: false,
+//   })
+//   .option('file', {
+//     alias: 'f',
+//     type: 'string',
+//     description: 'output file path',
+//     demandOption: false,
+//   }).argv;
 // type path_Node = {
 //   path: string;
 //   leaf_node: boolean;

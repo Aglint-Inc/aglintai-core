@@ -421,7 +421,7 @@ const isRoutePublic = (path = '') => {
 };
 
 const pageFeatureMapper = {
-  [ROUTES['assistant']()]: 'isAssistantEnabled',
+  [ROUTES['/assistant']()]: 'isAssistantEnabled',
   [ROUTES['/assessment-new']()]: 'isNewAssessmentEnabled',
   [ROUTES['/agent']()]: 'isAgentEnabled',
   [ROUTES['/screening']()]: 'isPhoneScreeningEnabled',
