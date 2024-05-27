@@ -2,13 +2,18 @@
 /* eslint-disable no-console */
 import { DatabaseTable } from '@aglint/shared-types';
 import { CustomMembersMeta } from '@aglint/shared-types/src/db/common.types';
+import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
+import { ApiBodyParamTaskCreate } from '../debrief/task_create';
+
 export type ApiDebriefAddUsers = {
   filter_id: string;
 };
+
+const debrief_task_create_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/debrief/task_create`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -46,12 +51,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       (meet) => meet.interview_session[0].id === debriefSessionId,
     );
 
-    const allUserIds = [
-      ...(findSessionRelations({
-        sessions: intMeetSessions,
-        debriefSessionId,
-      }).user_ids || []),
-    ];
+    const sessionRelations = findSessionRelations({
+      sessions: intMeetSessions,
+      debriefSessionId,
+    });
+
+    const isAllPreviousMeetingsBooked =
+      sessionRelations.allPreviousMeetings.filter(
+        (meet) => meet.status !== 'completed' && meet.status !== 'confirmed',
+      ).length === 0;
+
+    console.log(isAllPreviousMeetingsBooked, 'isAllPreviousMeetingsBooked');
+
+    if (isAllPreviousMeetingsBooked) {
+      const bodyParams: ApiBodyParamTaskCreate = {
+        application_id: filterJson.interview_schedule.application_id,
+        schedule_id: filterJson.interview_schedule.id,
+      };
+      axios.post(`${debrief_task_create_url}`, bodyParams);
+    }
+
+    const allUserIds = [...(sessionRelations.user_ids || [])];
 
     const members_meta = debriefSession.interview_session[0]
       .members_meta as CustomMembersMeta;
@@ -109,6 +129,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (insertTableUserIds.length === 0) {
       return res.status(200).send('No new users to add');
     }
+    console.log('No new users to add');
 
     const { data: debriefSessionInsert, error: errDebSes } = await supabaseAdmin
       .from('interview_session_relation')
@@ -145,7 +166,11 @@ const fetchMeetingsSessions = async (interview_schedule_id: string) => {
 
   if (errSessions) throw new Error(errSessions.message);
 
-  return intMeetSessions;
+  return intMeetSessions.sort(
+    (s1, s2) =>
+      s1.interview_session[0].session_order -
+      s2.interview_session[0].session_order,
+  );
 };
 
 function findSessionRelations({
@@ -155,6 +180,8 @@ function findSessionRelations({
   sessions: Awaited<ReturnType<typeof fetchMeetingsSessions>>;
   debriefSessionId: string;
 }) {
+  let allPreviousMeetings: Awaited<ReturnType<typeof fetchMeetingsSessions>> =
+    [];
   let user_ids = [];
   let previousDebriefIndex = -1;
   let selectedDebriefIndex = -1;
@@ -170,8 +197,6 @@ function findSessionRelations({
     }
   }
 
-  console.log(selectedDebriefIndex, previousDebriefIndex);
-
   // If no debrief meeting was found or the specified debrief meeting is not valid, return null
   if (selectedDebriefIndex === -1) {
     return null;
@@ -185,10 +210,13 @@ function findSessionRelations({
       if (sesrel.is_confirmed)
         user_ids.push(sesrel.interview_module_relation.user_id);
     });
+
+    allPreviousMeetings.push(session);
   }
 
   return {
     user_ids: user_ids,
     debriefSessionId: debriefSessionId,
+    allPreviousMeetings,
   };
 }
