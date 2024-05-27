@@ -7,3 +7,10 @@ export const workflowQueryKeys = {
     queryKey: [...workflowQueryKeys.all.queryKey, ...argsToKeys(args)],
   }),
 } as const;
+
+export const workflowMutationKeys = {
+  all: { mutationKey: [appKey, 'workflow'] as string[] },
+  workflow: (args: GetWorkflow) => ({
+    mutationKey: [...workflowMutationKeys.all.mutationKey, ...argsToKeys(args)],
+  }),
+} as const;
