@@ -33,7 +33,7 @@ const assessmentThanks = {
 } as const;
 
 const assistant = {
-  assistant: () => pageRouteBuilder([ROUTES.app(), 'assistant']),
+  '/assistant': () => pageRouteBuilder([ROUTES.app(), 'assistant']),
 };
 
 const auth = {
