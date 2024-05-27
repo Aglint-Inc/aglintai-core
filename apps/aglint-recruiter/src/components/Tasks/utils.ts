@@ -2,11 +2,11 @@
 /* eslint-disable no-unused-vars */
 import {
   CandidateType,
+  DatabaseEnums,
   DatabaseTable,
   DB,
   RecruiterUserType,
 } from '@aglint/shared-types';
-import { DatabaseEnums } from '@aglint/shared-types';
 import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { createServerClient } from '@supabase/ssr';
 import axios from 'axios';
@@ -16,7 +16,6 @@ import { Supabase } from '@/src/apiUtils/job/jobApplications/candidateUpload/typ
 import { ApplicationType } from '@/src/context/CandidateAssessment/types';
 import { TasksAgentContextType } from '@/src/context/TasksContextProvider/TasksContextProvider';
 import { supabase } from '@/src/utils/supabase/client';
-import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { meetingCardType } from './TaskBody/ViewTask/Progress/SessionCard';
 import { groupByTextType } from './TaskStatesContext';

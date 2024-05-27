@@ -1,6 +1,7 @@
 import { Database } from "../schema.types";
 import { Type } from "../utils.types";
 import { CustomApplications } from "./applications.types";
+import { CandidateRequestAvailability } from "./candidate_request_availability.type";
 import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
 import { CustomInterviewSessionRelation } from "./interview_session_relation.types";
 import { CustomNewTasks } from "./new_tasks.types";
@@ -33,5 +34,6 @@ export type Tables = Type<
     recruiter_user: CustomRecruiterUser;
     interview_session_cancel: CustomInterviewSessionCancel;
     applications: CustomApplications;
+    candidate_request_availability: CandidateRequestAvailability;
   }
 >;

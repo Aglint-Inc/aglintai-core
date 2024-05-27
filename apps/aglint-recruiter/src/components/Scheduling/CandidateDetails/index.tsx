@@ -16,6 +16,8 @@ import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
 import { useGetScheduleApplication } from './hooks';
+import RequestAvailabilityDrawer from './RequestAvailability/Components/RequestAvailabilityDrawer';
+import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
 import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
@@ -55,16 +57,19 @@ function SchedulingApplication() {
     return () => {
       resetSchedulingApplicationState();
     };
-  }, [router]);
+  }, [router.query.application_id]);
 
   return (
     <>
+      <RequestAvailabilityProvider>
+        <RequestAvailabilityDrawer />
+      </RequestAvailabilityProvider>
       <DeleteScheduleDialog />
       <RescheduleDialog />
       <PageLayout
         onClickBack={{
           onClick: () => {
-            window.history.back();
+            router.back();
           },
         }}
         isBackButton={true}
@@ -99,6 +104,20 @@ function SchedulingApplication() {
                 onClickClose={{
                   onClick: () => {
                     setSelectedSessionIds([]);
+                  },
+                }}
+                onClickRequestAvailability={{
+                  onClick: () => {
+                    const currentPath = router.pathname; // '/scheduling/application/[application_id]'
+                    const currentQuery = router.query; // { application_id: '84caebfb-8db6-4881-a88f-400726884504' }
+                    const updatedQuery = {
+                      ...currentQuery,
+                      candidate_request_availability: 'true',
+                    };
+                    router.replace({
+                      pathname: currentPath,
+                      query: updatedQuery,
+                    });
                   },
                 }}
                 // slotScheduleNowButton={
