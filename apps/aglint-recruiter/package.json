@@ -16,7 +16,6 @@
     "pull": "git pull origin development --no-rebase"
   },
   "dependencies": {
-    "@aglint/shared-types": "*",
     "@aglint/shared-utils": "*",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "5.14.8",
@@ -90,10 +89,10 @@
     "uuid": "^9.0.1",
     "vercel-toast": "^1.8.0",
     "xlsx": "^0.18.5",
-    "zod": "^3.23.8",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@aglint/shared-types": "*",
     "@aglint/eslint-plugin-linter": "*",
     "@types/lodash": "^4.14.199",
     "@types/react": "^18",
