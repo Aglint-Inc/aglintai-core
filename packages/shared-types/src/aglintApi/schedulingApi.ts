@@ -1,15 +1,5 @@
 import { RecruiterUserType } from '../data.types';
 
-export interface ApiFindAvailability {
-  session_ids: string[];
-  plan_id: string;
-  recruiter_id: string;
-  start_date: string;
-  end_date: string;
-  user_tz: string;
-  is_debreif: boolean;
-}
-
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
   cand_email: string;
@@ -78,4 +68,34 @@ export type APIFindAltenativeTimeSlotResponse = {
 export type APICandScheduleMailThankYou = {
   filter_id: string;
   cand_tz: string;
+};
+
+export type APIOptions = {
+  use_recruiting_blocks: boolean;
+  include_free_time: boolean;
+  check_next_minutes: number;
+  make_training_optional: boolean;
+  include_conflicting_slots: {
+    show_soft_conflicts: boolean;
+    show_conflicts_events: boolean;
+    interviewers_load: boolean;
+    interviewer_pause: boolean;
+    out_of_office: boolean;
+    calender_not_connected: boolean;
+    override_working_hours: {
+      start: number;
+      end: number;
+    } | null;
+    day_off: boolean;
+    holiday: boolean;
+  };
+};
+
+export type APIFindAvailability = {
+  session_ids: string[];
+  recruiter_id: string;
+  start_date_str: string;
+  end_date_str: string;
+  candidate_tz: string;
+  options?: APIOptions;
 };

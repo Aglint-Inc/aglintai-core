@@ -9,7 +9,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -20,39 +20,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    const start_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      parsedData.start_date,
-      parsedData.candidate_tz,
-      true,
-    );
-    const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      parsedData.end_date,
-      parsedData.candidate_tz,
-      false,
-    );
-
-    const cand_schedule = new CandidatesScheduling(
+    const cand_schedule = new CandidatesSchedulingV2(
       {
-        company_id: parsedData.recruiter_id,
+        recruiter_id: parsedData.recruiter_id,
         session_ids: parsedData.session_ids,
-        user_tz: parsedData.candidate_tz,
+        candidate_tz: parsedData.candidate_tz,
+        start_date_str: parsedData.start_date,
+        end_date_str: parsedData.end_date,
       },
       parsedData.options,
-      {
-        end_date_js: end_date_js,
-        start_date_js: start_date_js,
-      },
     );
 
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchInterviewrsCalEvents();
-    const combs = cand_schedule.findMultiDayComb();
 
     // return res.status(200).json({
     //   plan_combs: is_debreif ? combs : combs.slice(0, 20),
     //   total: combs.length,
     // });
-    return res.status(200).send(combs);
+    return res.status(200).send([]);
   } catch (error) {
     console.log(error.message);
     return res.status(500).send(error.message);

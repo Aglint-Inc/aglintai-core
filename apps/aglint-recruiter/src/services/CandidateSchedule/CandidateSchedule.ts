@@ -1,4 +1,6 @@
 /* eslint-disable security/detect-object-injection */
+userTzDayjs.extend(isSameOrAfter);
+userTzDayjs.extend(isSameOrBefore);
 import {
   AllSessionIntDetails,
   APIOptions,
@@ -44,8 +46,6 @@ import {
   isTimeChunksOverLapps,
 } from './utils/time_range_utils';
 import { userTzDayjs } from './utils/userTzDayjs';
-userTzDayjs.extend(isSameOrAfter);
-userTzDayjs.extend(isSameOrBefore);
 
 type ApiPayload = {
   user_tz: string;

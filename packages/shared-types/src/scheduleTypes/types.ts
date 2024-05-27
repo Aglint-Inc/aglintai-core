@@ -100,7 +100,10 @@ export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;
-  events: CalendarEvent[];
+  events: Pick<
+    CalendarEvent,
+    'id' | 'start' | 'end' | 'organizer' | 'attendees'
+  >[];
   freeTimes: InterviewFreeTime[];
   isCalenderConnected: boolean;
   int_schedule_setting: schedulingSettingType;
@@ -157,26 +160,5 @@ export type SessionIntDetails = {
   module_name: InterviewModuleType['name'];
   interviewers: {
     [user_id: string]: SessionInterviewerType;
-  };
-};
-
-export type APIOptions = {
-  use_recruiting_blocks: boolean;
-  include_free_time: boolean;
-  check_next_minutes: number;
-  make_training_optional: boolean;
-  include_conflicting_slots: {
-    show_soft_conflicts: boolean;
-    show_conflicts_events: boolean;
-    interviewers_load: boolean;
-    interviewer_pause: boolean;
-    out_of_office: boolean;
-    calender_not_connected: boolean;
-    override_working_hours: {
-      start: number;
-      end: number;
-    } | null;
-    day_off: boolean;
-    holiday: boolean;
   };
 };
