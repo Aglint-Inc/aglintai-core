@@ -16,6 +16,8 @@ const DEFAULT: Permissions = Object.assign(
 
 const PERMISSIONS: Permissions = {
   ...DEFAULT,
+  '/tasks': 'tasks_enabled',
+
   '/jobs': 'jobs_enabled',
   '/jobs/create': 'jobs_create',
   '/jobs/[id]': 'jobs_read',
@@ -26,7 +28,11 @@ const PERMISSIONS: Permissions = {
   '/jobs/[id]/screening': 'jobs_update',
   '/jobs/[id]/hiring-team': 'jobs_update',
   '/jobs/[id]/email-templates': 'jobs_update',
+
+  '/scheduling': 'scheduler_enabled',
+
   '/company': 'company_setting_enabled',
+
   '/api/job/jobApplications/read': 'jobs_read',
 };
 

@@ -10,6 +10,7 @@ export const server_check_permissions = async ({
   permission: DatabaseEnums['permissions_type'];
 }) => {
   try {
+    if (!permission) throw new Error('Permission not provided.');
     const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -75,7 +76,7 @@ export const server_check_permissions = async ({
     });
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(error);
+    // console.error(error);
     return { isAllowed: false, id: null, rec_id: null, role: null };
   }
 };
