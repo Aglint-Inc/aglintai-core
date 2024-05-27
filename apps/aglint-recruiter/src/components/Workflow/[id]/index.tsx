@@ -1,9 +1,10 @@
+import Body from './body';
 import Layout from './layout';
 
 const Workflow = () => {
   return (
     <Layout>
-      <>KKK</>
+      <Body />
     </Layout>
   );
 };
