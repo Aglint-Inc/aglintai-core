@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { useWorkflows } from '@/src/context/Workflow';
+import { useWorkflow } from '@/src/context/Workflows/[id]';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
@@ -17,15 +17,8 @@ const Layout = (props: LayoutProps) => {
 export default Layout;
 
 const BreadCrumbs = () => {
-  const {
-    query: { id },
-    push,
-  } = useRouter();
-  const {
-    workflows: { data, status },
-  } = useWorkflows();
-  const workflow =
-    status === 'success' && (data ?? []).find((workflow) => workflow.id === id);
+  const { push } = useRouter();
+  const { workflow } = useWorkflow();
   return (
     <>
       <Breadcrum

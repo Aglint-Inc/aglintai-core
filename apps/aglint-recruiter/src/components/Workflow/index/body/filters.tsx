@@ -8,7 +8,7 @@ import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import {
   useWorkflowStore,
   WorkflowStore,
-} from '../../../../context/Workflow/store';
+} from '../../../../context/Workflows/store';
 
 const Filters = () => {
   const {
