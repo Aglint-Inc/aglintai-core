@@ -158,6 +158,15 @@ function SideNavbar() {
       roles: ['admin'],
     },
     {
+      icon: <Link module='Workflows' path='/workflows' />,
+      text: 'Company Settings',
+      SubComponents: null,
+      route: ROUTES['/workflows'](),
+      comingsoon: false,
+      isvisible: true,
+      roles: ['admin'],
+    },
+    {
       icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',
       SubComponents: null,
@@ -253,7 +262,7 @@ const Link = ({ module /* path */ }: LinkProps) => {
   );
 };
 
-type Path<T extends keyof typeof pages> = keyof Pick<typeof pages, T>;
+type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
 
 type LinkProps =
   | {
@@ -282,7 +291,7 @@ type LinkProps =
     }
   | {
       module: 'Integrations';
-      path: Path<'/intergrations'>;
+      path: Path<'/integrations'>;
     }
   | {
       module: 'Workflows';
