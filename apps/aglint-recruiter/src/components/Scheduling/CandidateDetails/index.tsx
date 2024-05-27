@@ -101,6 +101,8 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
+                isMailAgent={Boolean(selectedApplication.candidates.email)}
+                isPhoneAgent={Boolean(selectedApplication.candidates.phone)}
                 isRequestAvailabilityButton={!isDebrief}
                 isScheduleAgentButton={!isDebrief}
                 isScheduleDebriefButton={isDebrief}
