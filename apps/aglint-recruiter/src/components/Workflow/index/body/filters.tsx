@@ -5,7 +5,10 @@ import { JobIcon } from '@/src/components/Tasks/TaskBody/GroupBy';
 import { useJobs } from '@/src/context/JobsContext';
 import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 
-import { useWorkflowStore, WorkflowStore } from '../../store';
+import {
+  useWorkflowStore,
+  WorkflowStore,
+} from '../../../../context/Workflow/store';
 
 const Filters = () => {
   const {
