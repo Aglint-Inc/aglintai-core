@@ -16,10 +16,10 @@ import { getFullName } from '@/src/utils/jsonResume';
 import { ApiBodyParamsScheduleAgent } from '../application/schedulewithagent';
 import { ApiBodyParamScheduleIndividual } from '../debrief/schedule_individual';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
-
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 const agent_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/schedulewithagent`;
 const debrief_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/debrief/schedule_individual`;

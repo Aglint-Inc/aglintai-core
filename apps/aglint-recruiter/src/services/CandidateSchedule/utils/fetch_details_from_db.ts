@@ -44,7 +44,7 @@ export const fetch_details_from_db = async (
 
   const fetchAndVerifyDb = async () => {
     const r = supabaseWrap(
-      await supabaseAdmin.rpc('upd_get_interview_session_data', {
+      await supabaseAdmin.rpc('get_interview_session_data', {
         session_ids: session_ids,
         company_id,
         meet_start_date: null,
@@ -208,6 +208,8 @@ export const fetch_details_from_db = async (
           session_id: int.session_id,
           training_type: int.training_type,
           user_id: int.user_id,
+          position: int.position,
+          int_tz: int.int_tz,
         };
       });
     });
@@ -252,6 +254,8 @@ const mapInt = (i: SessionInterviewerType) => {
     profile_image: i.profile_image,
     training_type: i.training_type,
     user_id: i.user_id,
+    position: i.position,
+    int_tz: i.int_tz,
   };
   return int;
 };

@@ -1,0 +1,1 @@
+alter table "public"."permissions" alter column "recruiter_id" set not null;

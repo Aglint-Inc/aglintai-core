@@ -5,9 +5,11 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const apiKey = 'wjISASRrEo75ixrodaAS5eT8iV4Bv2T2RhNZ3iIUziYsIAC8';
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY;
-const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
+
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY,
+);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -82,7 +84,7 @@ export default async function handler(req, res) {
             if (uploadError) {
               throw uploadError;
             }
-            const fileLink = `${supabaseUrl}/storage/v1/object/public/${bucketName}/${data.path}`;
+            const fileLink = `${process.env.NEXT_PUBLIC_HOST_NAME}/storage/v1/object/public/${bucketName}/${data.path}`;
             if (!uploadError) {
               // Get the link to the uploaded file
               const { error: errorResume } = await supabase

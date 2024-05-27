@@ -89,6 +89,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     }
+    session_ids.forEach((s) => {
+      axios.post(
+        `https://apis-ta7r36xoza-wl.a.run.app/api/slack/notify-interview-confirmation`,
+        {
+          session_id: s,
+        },
+      );
+    });
 
     if (
       req_body.task_id &&
@@ -97,14 +105,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       req_body.candidate_name &&
       req_body.agent_type
     ) {
-      session_ids.forEach((s) => {
-        axios.post(
-          `https://apis-ta7r36xoza-wl.a.run.app/api/slack/notify-interview-confirmation`,
-          {
-            session_id: s,
-          },
-        );
-      });
       const agent_type =
         req_body.agent_type === 'phone' ? 'phone_agent' : 'email_agent';
       const candLogger = getCandidateLogger(
