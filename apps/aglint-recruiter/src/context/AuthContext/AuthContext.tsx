@@ -449,11 +449,10 @@ const updateMember = ({
     });
 };
 
-const getMembers = (id: string) => {
+const getMembers = () => {
   return axios
-    .post<API_getMembersWithRole['response']>('/api/getMembersWithRole', { id })
+    .get<API_getMembersWithRole['response']>('/api/getMembersWithRole')
     .then(({ data }) => {
-      if (data.error) throw new Error(data.error);
-      return data.members;
+      return data;
     });
 };
