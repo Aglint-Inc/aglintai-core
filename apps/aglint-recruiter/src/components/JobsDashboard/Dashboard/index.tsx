@@ -1,6 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { CircularProgress, Dialog, Popover, Stack } from '@mui/material';
+import {
+  CircularProgress,
+  Dialog,
+  Popover,
+  Stack,
+  Typography,
+} from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { Fragment, useCallback, useMemo, useState } from 'react';
@@ -34,6 +40,7 @@ import { JobApplicationSections } from '@/src/context/JobApplicationsContext/typ
 import { useJobDetails } from '@/src/context/JobDashboard';
 import { useJobDashboardStore } from '@/src/context/JobDashboard/store';
 import { useJobs } from '@/src/context/JobsContext';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { palette } from '@/src/context/Theme/Theme';
 import NotFoundPage from '@/src/pages/404';
 import { useCompanyMembers } from '@/src/queries/company-members';
@@ -802,8 +809,15 @@ const JobClose = ({
 };
 
 const Modules = () => {
+  const { checkPermissions } = useRolesAndPermissions();
   const { isAssessmentEnabled, isScreeningEnabled, isSchedulingEnabled } =
     useAuthDetails();
+  if (!checkPermissions('jobs_update'))
+    return (
+      <Stack p={2}>
+        <Typography fontSize={'14px'}> No settings Available.</Typography>
+      </Stack>
+    );
   return (
     <>
       <JobDetailsModule />
