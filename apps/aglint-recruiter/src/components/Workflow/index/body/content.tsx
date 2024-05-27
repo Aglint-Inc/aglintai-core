@@ -5,18 +5,19 @@ import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import {
-  useWorkflow,
-  useWorkflowDelete,
-  useWorkflowState,
-} from '@/src/queries/workflow';
+import { useWorkflows } from '@/src/context/Workflow';
+import { useWorkflowDelete, useWorkflowState } from '@/src/queries/workflow';
 import ROUTES from '@/src/utils/routing/routes';
 
-import { useWorkflowStore, WorkflowStore } from '../../store';
+import {
+  useWorkflowStore,
+  WorkflowStore,
+} from '../../../../context/Workflow/store';
 
 const Content = () => {
-  const { recruiter_id } = useAuthDetails();
-  const { data, status } = useWorkflow({ recruiter_id });
+  const {
+    workflows: { data, status },
+  } = useWorkflows();
   if (status === 'error') return <>Error</>;
   if (status == 'pending') return <Loader />;
   return <Cards data={data} />;
@@ -24,7 +25,9 @@ const Content = () => {
 
 export default Content;
 
-const Cards = (props: { data: ReturnType<typeof useWorkflow>['data'] }) => {
+const Cards = (props: {
+  data: ReturnType<typeof useWorkflows>['workflows']['data'];
+}) => {
   const { recruiter_id } = useAuthDetails();
   const { push } = useRouter();
   const filters = useWorkflowStore((state) => state.filters);
