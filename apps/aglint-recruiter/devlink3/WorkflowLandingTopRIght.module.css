@@ -1,24 +1,27 @@
-.add_actionbutton {
+.new_workflow_btn {
+  position: relative;
+
   display: flex;
-  margin-top: 10px;
-  padding: 8px 14px;
-  justify-content: center;
+  padding: 6px 12px;
+  justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 6px;
-  grid-row-gap: 6px;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
 
-  border: 1px solid #2f3941;
-  border-radius: 8px;
+  border: 1px none #1f73b7;
+  border-radius: 4px;
 
-  background-color: white;
+  background-color: #1f73b7;
 
   transition: all 200ms ease;
+
+  color: white;
 
   cursor: pointer;
 }
 
-.add_actionbutton:hover {
-  background-color: #f7f9fb;
+.new_workflow_btn:hover {
+  background-color: hsla(206.8421052631579, 75.10%, 36.17%, 1.00);
 }
 
 .embed_flex {

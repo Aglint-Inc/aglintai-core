@@ -259,4 +259,5 @@ export * from "./WorkflowDetail";
 export * from "./WorkflowEmpty";
 export * from "./WorkflowItem";
 export * from "./WorkflowLanding";
+export * from "./WorkflowLandingTopRIght";
 export * from "./YourSchedules";
