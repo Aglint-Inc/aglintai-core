@@ -41,11 +41,15 @@ export default handler;
 
 const candReqAvailability = (payload: CandReqAvailableSlots) => {
   let session_details: InterviewSessionTypeDB[];
+  const curr_cand_date = userTzDayjs().tz(payload.candidate_tz).startOf('day');
   let cand_start_date = CandidatesScheduling.convertDateFormatToDayjs(
     payload.date_range_start,
     payload.candidate_tz,
     true,
   );
+  if (cand_start_date.isSameOrAfter(curr_cand_date, 'day')) {
+    cand_start_date = curr_cand_date.add(1, 'day');
+  }
   let cand_end_date = CandidatesScheduling.convertDateFormatToDayjs(
     payload.date_range_end,
     payload.candidate_tz,
