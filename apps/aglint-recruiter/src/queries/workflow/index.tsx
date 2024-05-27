@@ -4,7 +4,7 @@ import { supabase } from '@/src/utils/supabase/client';
 
 import { workflowMutationKeys, workflowQueryKeys } from './keys';
 
-export const useWorkflow = (args: GetWorkflow) => {
+export const useWorkflowQuery = (args: GetWorkflow) => {
   const { queryKey } = workflowQueryKeys.workflow(args);
   return useQuery({
     queryKey,

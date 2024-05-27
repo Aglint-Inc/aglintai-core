@@ -1,5 +1,5 @@
 import Workflows from '@/src/components/Workflow/index';
-import WorkflowProvider from '@/src/context/Workflow';
+import WorkflowsProvider from '@/src/context/Workflows';
 
 const WorkflowsPage = () => {
   return <Workflows />;
@@ -8,5 +8,5 @@ const WorkflowsPage = () => {
 export default WorkflowsPage;
 
 WorkflowsPage.privateProvider = (page) => {
-  return <WorkflowProvider>{page}</WorkflowProvider>;
+  return <WorkflowsProvider>{page}</WorkflowsProvider>;
 };
