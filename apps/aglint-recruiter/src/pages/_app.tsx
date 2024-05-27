@@ -17,6 +17,7 @@ import ScreenSizeProvider from '../context/ResizeWindow/ResizeWindow';
 // import { SupportProvider } from '../context/SupportContext/SupportContext';
 import Theme from '../context/Theme/Theme';
 import { QueryProvider } from '../queries';
+import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 
 const MyApp = ({ Component, pageProps }) => {
   const provider =
@@ -50,9 +51,11 @@ const MyApp = ({ Component, pageProps }) => {
                     <QueryProvider>
                       <JobsProvider>
                         {/* <SupportProvider> */}
-                        <AppLayout>
-                          {provider(<Component {...pageProps} />)}
-                        </AppLayout>
+                        <RolesAndPermissionsProvider>
+                          <AppLayout>
+                            {provider(<Component {...pageProps} />)}
+                          </AppLayout>
+                        </RolesAndPermissionsProvider>
                         {/* </SupportProvider> */}
                       </JobsProvider>
                     </QueryProvider>
