@@ -1,4 +1,5 @@
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
+import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -60,5 +61,6 @@ const Cards = (props: { data: ReturnType<typeof useWorkflow>['data'] }) => {
         </OptimisticWrapper>
       );
     });
+  if (cards.length === 0) return <WorkflowEmpty />;
   return <>{cards}</>;
 };
