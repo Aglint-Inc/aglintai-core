@@ -1,8 +1,4 @@
-import {
-  APIFindAvailability,
-  APIOptions,
-  InterDetailsType,
-} from '@aglint/shared-types';
+import { APIFindAvailability, APIOptions } from '@aglint/shared-types';
 import { Dayjs } from 'dayjs';
 import { z } from 'zod';
 
@@ -10,7 +6,11 @@ import { schema_find_availability_payload } from '@/src/types/scheduling/schema_
 
 import { findEachInterviewerFreeTimes } from './findEachInterFreeTime';
 import { ScheduleUtils } from './ScheduleUtils';
-import { DBDetailsType } from './types';
+import {
+  DBDetailsType,
+  IntervsWorkHrsEventMapType,
+  IntervsWorkHrsEventType,
+} from './types';
 import { fetch_details_from_db } from './utils/fetch_details_from_db';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
 
@@ -18,7 +18,7 @@ export class CandidatesSchedulingV2 {
   public db_details: DBDetailsType;
   private api_options: APIOptions;
   private api_payload: Omit<APIFindAvailability, 'options'>;
-  public intervs_details_map: Map<string, InterDetailsType>;
+  public intervs_details_map: IntervsWorkHrsEventMapType;
   private schedule_dates: {
     user_start_date_js: Dayjs;
     user_end_date_js: Dayjs;
@@ -42,7 +42,7 @@ export class CandidatesSchedulingV2 {
         true,
       ),
       user_end_date_js: ScheduleUtils.convertDateFormatToDayjs(
-        _api_payload.start_date_str,
+        _api_payload.end_date_str,
         _api_payload.candidate_tz,
         false,
       ),
@@ -133,6 +133,7 @@ export class CandidatesSchedulingV2 {
       this.schedule_dates.user_start_date_js.format(),
       this.schedule_dates.user_end_date_js.format(),
     );
+
     const inter_details = findEachInterviewerFreeTimes(
       int_with_events,
       this.api_payload,
@@ -142,7 +143,13 @@ export class CandidatesSchedulingV2 {
     );
 
     for (let inter of inter_details) {
-      this.intervs_details_map.set(inter.interviewer_id, inter);
+      const details: IntervsWorkHrsEventType = {
+        email: inter.email,
+        events: inter.events,
+        freeTimes: inter.freeTimes,
+        work_hours: inter.work_hours,
+      };
+      this.intervs_details_map.set(inter.interviewer_id, details);
     }
   }
 }

@@ -54,7 +54,7 @@ export const fetchIntsCalEventsDetails = async (
       newInt.events = fetched_events.map((e) => ({
         id: e.id,
         summary: e.summary,
-        attendees: e.attendees,
+        attendees: e.attendees ?? [],
         organizer: e.organizer,
         end: {
           ...e.end,

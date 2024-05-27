@@ -196,6 +196,7 @@ export const findEachInterviewerFreeTimes = (
     if (!day1_work_hours && !day2_work_hours) {
       return [];
     }
+
     if (day1_work_hours) {
       work_time_duration.push({
         ...getWorkHourFromIntAvil(
@@ -223,6 +224,8 @@ export const findEachInterviewerFreeTimes = (
         ),
       });
     }
+
+    return work_time_duration;
   };
 
   const getWorkHourFromIntAvil = (

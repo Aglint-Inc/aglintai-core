@@ -1,6 +1,7 @@
 import {
   AllSessionIntDetails,
   CompServiceKeyCred,
+  InterDetailsType,
   InterviewerMeetingScheduled,
   InterviewSessionApiRespType,
   schedulingSettingType,
@@ -18,3 +19,9 @@ export type DBDetailsType = {
   ints_schd_meetings: Map<string, UserMeetingDetails[]>;
   all_session_int_details: AllSessionIntDetails;
 };
+
+export type IntervsWorkHrsEventType = Pick<
+  InterDetailsType,
+  'events' | 'freeTimes' | 'work_hours' | 'email'
+>;
+export type IntervsWorkHrsEventMapType = Map<string, IntervsWorkHrsEventType>;

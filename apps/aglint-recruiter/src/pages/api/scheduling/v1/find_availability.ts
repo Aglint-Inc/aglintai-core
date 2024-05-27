@@ -31,8 +31,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       parsedData.options,
     );
 
+    console.time('f');
     await cand_schedule.fetchDetails();
-    await cand_schedule.fetchInterviewrsCalEvents();
+    console.timeEnd('f');
+    console.time('c');
+    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    console.timeEnd('c');
 
     // return res.status(200).json({
     //   plan_combs: is_debreif ? combs : combs.slice(0, 20),
@@ -40,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // });
     return res.status(200).send([]);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).send(error.message);
   }
 };
