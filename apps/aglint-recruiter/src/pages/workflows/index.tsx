@@ -1,7 +1,7 @@
-import Workflow from '@/src/components/Workflow/index';
+import Workflows from '@/src/components/Workflow/index';
 
 const WorkflowsPage = () => {
-  return <Workflow />;
+  return <Workflows />;
 };
 
 export default WorkflowsPage;

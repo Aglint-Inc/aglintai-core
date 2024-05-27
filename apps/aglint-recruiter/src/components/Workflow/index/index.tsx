@@ -4,7 +4,7 @@ import { useWorkflowStore } from '../store';
 import Body from './body';
 import Layout from './layout';
 
-const Workflow = () => {
+const Workflows = () => {
   const reset = useWorkflowStore((state) => state.resetAll);
   useEffect(() => {
     return () => reset();
@@ -16,4 +16,4 @@ const Workflow = () => {
   );
 };
 
-export default Workflow;
+export default Workflows;
