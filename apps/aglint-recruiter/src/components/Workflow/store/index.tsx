@@ -22,7 +22,8 @@ const createWorkflowSlice: StateCreator<Slices, [], [], WorkflowSlice> = (
   },
 });
 
-export const useWorkflowStore = create<Slices & WorkflowSlice>()((...a) => ({
+export type WorkflowStore = Slices & WorkflowSlice;
+export const useWorkflowStore = create<WorkflowStore>()((...a) => ({
   ...createFiltersSlice(...a),
   ...createWorkflowSlice(...a),
 }));
