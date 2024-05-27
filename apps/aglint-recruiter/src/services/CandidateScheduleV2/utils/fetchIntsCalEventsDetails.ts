@@ -25,8 +25,8 @@ export const fetchIntsCalEventsDetails = async (
     freeTimes: [],
     int_schedule_setting: i.scheduling_settings,
     isCalenderConnected: false,
+    work_hours: [],
   }));
-  const intervs_details_map: Map<string, InterDetailsType> = new Map();
   const promiseArr = ints_meta.map(async (int) => {
     let newInt: InterDetailsType = {
       ...int,
@@ -53,6 +53,7 @@ export const fetchIntsCalEventsDetails = async (
       );
       newInt.events = fetched_events.map((e) => ({
         id: e.id,
+        summary: e.summary,
         attendees: e.attendees,
         organizer: e.organizer,
         end: {
@@ -66,9 +67,8 @@ export const fetchIntsCalEventsDetails = async (
     } catch (error) {
       newInt.isCalenderConnected = false;
     }
-    intervs_details_map.set(newInt.interviewer_id, newInt);
+    return newInt;
   });
 
-  await Promise.all(promiseArr);
-  return intervs_details_map;
+  return await Promise.all(promiseArr);
 };

@@ -8,6 +8,7 @@ import { z } from 'zod';
 
 import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
 
+import { findEachInterviewerFreeTimes } from './findEachInterFreeTime';
 import { ScheduleUtils } from './ScheduleUtils';
 import { DBDetailsType } from './types';
 import { fetch_details_from_db } from './utils/fetch_details_from_db';
@@ -16,7 +17,7 @@ import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
 export class CandidatesSchedulingV2 {
   public db_details: DBDetailsType;
   private api_options: APIOptions;
-  private api_payload: APIFindAvailability;
+  private api_payload: Omit<APIFindAvailability, 'options'>;
   public intervs_details_map: Map<string, InterDetailsType>;
   private schedule_dates: {
     user_start_date_js: Dayjs;
@@ -27,7 +28,13 @@ export class CandidatesSchedulingV2 {
     _api_payload: Omit<APIFindAvailability, 'options'>,
     _api_options: z.infer<typeof schema_find_availability_payload>['options'],
   ) {
-    this.api_payload = _api_payload;
+    this.api_payload = {
+      candidate_tz: _api_payload.candidate_tz,
+      end_date_str: _api_payload.end_date_str,
+      recruiter_id: _api_payload.recruiter_id,
+      session_ids: _api_payload.session_ids,
+      start_date_str: _api_payload.start_date_str,
+    };
     this.schedule_dates = {
       user_start_date_js: ScheduleUtils.convertDateFormatToDayjs(
         _api_payload.start_date_str,
@@ -67,6 +74,7 @@ export class CandidatesSchedulingV2 {
           _api_options.include_conflicting_slots.show_soft_conflicts,
       },
     };
+    this.intervs_details_map = new Map();
   }
 
   // getters and setters
@@ -78,7 +86,6 @@ export class CandidatesSchedulingV2 {
   }
 
   //NOTE: publicly exposed apis
-
   /**
    * fetches necessay details from supabse db for finding the slots
    */
@@ -97,16 +104,7 @@ export class CandidatesSchedulingV2 {
       const meet_end_date = this.schedule_dates.user_end_date_js.add(7, 'day');
       meeting_date.end = meet_end_date.format();
     }
-    const {
-      all_inters,
-      comp_schedule_setting,
-      company_cred,
-
-      int_meetings,
-      ints_schd_meetings,
-      all_session_int_details,
-      api_sess_ints,
-    } = await fetch_details_from_db(
+    const db_data = await fetch_details_from_db(
       this.api_payload.session_ids,
       this.api_payload.recruiter_id,
       {
@@ -115,26 +113,36 @@ export class CandidatesSchedulingV2 {
       },
     );
     this.db_details = {
-      all_inters,
-      comp_schedule_setting,
-      company_cred,
-      ses_with_ints: api_sess_ints,
-      int_meetings,
-      ints_schd_meetings,
-      all_session_int_details,
+      all_inters: db_data.all_inters,
+      comp_schedule_setting: db_data.comp_schedule_setting,
+      company_cred: db_data.company_cred,
+      ses_with_ints: db_data.api_sess_ints,
+      int_meetings: db_data.int_meetings,
+      ints_schd_meetings: db_data.ints_schd_meetings,
+      all_session_int_details: db_data.all_session_int_details,
     };
   }
 
   /**
    * find calender events for each interviewer
    */
-  public async fetchInterviewrsCalEvents() {
-    this.intervs_details_map = await fetchIntsCalEventsDetails(
+  public async fetchIntsEventsFreeTimeWorkHrs() {
+    const int_with_events = await fetchIntsCalEventsDetails(
       this.db_details.all_inters,
       this.db_details.company_cred,
       this.schedule_dates.user_start_date_js.format(),
       this.schedule_dates.user_end_date_js.format(),
     );
-    console.log(this.intervs_details_map);
+    const inter_details = findEachInterviewerFreeTimes(
+      int_with_events,
+      this.api_payload,
+      this.db_details,
+      this.schedule_dates.user_start_date_js.format(),
+      this.schedule_dates.user_end_date_js.format(),
+    );
+
+    for (let inter of inter_details) {
+      this.intervs_details_map.set(inter.interviewer_id, inter);
+    }
   }
 }

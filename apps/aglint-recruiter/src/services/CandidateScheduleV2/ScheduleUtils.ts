@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export class ScheduleUtils {
@@ -17,5 +19,21 @@ export class ScheduleUtils {
       user_dayjs = user_dayjs.endOf('day');
     }
     return user_dayjs;
+  };
+  static setTimeInDay = (
+    current_day: string,
+    time: string, // scheduling settign time eg .. '09:00'
+    timeZone: string,
+  ) => {
+    const [hours, minutes] = time.split(':');
+    let userTime = userTzDayjs(current_day).tz(timeZone);
+    userTime = userTime.set('hour', Number(hours));
+    userTime = userTime.set('minutes', Number(minutes));
+
+    return userTime;
+  };
+  static addHoursToCurrTime = (curr_time: Dayjs) => {
+    curr_time = curr_time.add(2, 'hour').set('minutes', 0).set('seconds', 0);
+    return curr_time;
   };
 }

@@ -95,22 +95,29 @@ export type InterviewerMeetingScheduled = {
   meeting_duration: InterviewSession['session_duration'];
   interv_user_id: string;
 };
-
+export type MinCalEventDetailTypes = Pick<
+  CalendarEvent,
+  'id' | 'start' | 'end' | 'organizer' | 'attendees' | 'summary'
+>;
 export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;
-  events: Pick<
-    CalendarEvent,
-    'id' | 'start' | 'end' | 'organizer' | 'attendees'
-  >[];
-  freeTimes: InterviewFreeTime[];
+  events: MinCalEventDetailTypes[];
+  freeTimes: InterDayFreeTime[];
+  work_hours: InterDayWorkHr[];
   isCalenderConnected: boolean;
   int_schedule_setting: schedulingSettingType;
 };
 
-export type InterviewFreeTime = TimeDurationType & {
-  // priority: number;
+export type InterDayFreeTime = {
+  curr_date: string;
+  free_times: TimeDurationType[];
+};
+
+export type InterDayWorkHr = {
+  curr_date: string;
+  free_times: TimeDurationType[];
 };
 
 export type CompServiceKeyCred = {
