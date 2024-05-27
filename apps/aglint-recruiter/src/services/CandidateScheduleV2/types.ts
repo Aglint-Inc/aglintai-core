@@ -3,9 +3,12 @@ import {
   CompServiceKeyCred,
   InterDetailsType,
   InterviewerMeetingScheduled,
+  InterviewModuleRelationType,
   InterviewSessionApiRespType,
   schedulingSettingType,
   SessionInterviewerType,
+  TimeDurationDayjsType,
+  TimeDurationType,
 } from '@aglint/shared-types';
 
 import { UserMeetingDetails } from '../CandidateSchedule/utils/fetch_details_from_db';
@@ -25,3 +28,14 @@ export type IntervsWorkHrsEventType = Pick<
   'events' | 'freeTimes' | 'work_hours' | 'email'
 >;
 export type IntervsWorkHrsEventMapType = Map<string, IntervsWorkHrsEventType>;
+
+export type FuncParams = {
+  inter_id: string;
+  time_ranges: TimeDurationType[];
+  interviewer_pause: InterviewModuleRelationType['pause_json'] | null;
+};
+
+export type DayjsTimeRange = {
+  inter_id: string;
+  time_ranges: TimeDurationDayjsType[];
+};
