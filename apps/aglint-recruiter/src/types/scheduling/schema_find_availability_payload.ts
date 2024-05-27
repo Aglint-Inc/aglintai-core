@@ -16,8 +16,8 @@ const scheduling_options_schema = z.object({
       day_off: z.boolean().default(false),
       holiday: z.boolean().default(false),
       override_working_hours: z.object({
-        start: z.number().min(0),
-        end: z.number().max(23),
+        start: z.number().min(0).default(8),
+        end: z.number().max(23).default(8),
       }),
     })
     .default({}), // Ensure defaults for nested object

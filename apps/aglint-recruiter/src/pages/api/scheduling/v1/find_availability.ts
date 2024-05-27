@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const parsedData = schema_find_availability_payload.parse({
       ...req.body,
       options: req.body.options || {
-        include_conflicting_slots: {},
+        include_conflicting_slots: { override_working_hours: {} },
       },
     });
 
