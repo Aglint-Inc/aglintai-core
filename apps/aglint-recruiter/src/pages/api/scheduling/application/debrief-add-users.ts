@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: filterJson, error: errorFilterJson } = await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,recruiter!public_jobs_recruiter_id_fkey(name, email_template)),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
+        '*,interview_schedule( *,applications( id,public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator),candidates(*) ) ),recruiter_user(first_name,last_name,user_id,email)',
       )
       .eq('id', filter_id)
       .single();
@@ -41,14 +41,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('No debrief session found');
     }
 
-    let eligibleUserIds = [
-      ...new Set(
-        findSessionRelations({
-          sessions: intMeetSessions,
-          debriefSessionId,
-        }).user_ids || [],
-      ),
+    const hiring_manager =
+      filterJson.interview_schedule.applications.public_jobs.hiring_manager;
+    const recruiter =
+      filterJson.interview_schedule.applications.public_jobs.recruiter;
+    const recruiting_coordinator =
+      filterJson.interview_schedule.applications.public_jobs
+        .recruiting_coordinator;
+    const sourcer =
+      filterJson.interview_schedule.applications.public_jobs.sourcer;
+
+    const allUserIds = [
+      ...(findSessionRelations({
+        sessions: intMeetSessions,
+        debriefSessionId,
+      }).user_ids || []),
+      hiring_manager,
+      recruiter,
+      recruiting_coordinator,
+      sourcer,
     ];
+
+    let eligibleUserIds = [...new Set(allUserIds.filter((id) => id !== null))];
 
     const existingUserIds = intMeetSessions
       .find((meet) => meet.interview_session[0].id === debriefSessionId)
