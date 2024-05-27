@@ -41,6 +41,15 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .embed_flex.fixedd {
   width: 23px;
 }
@@ -53,17 +62,4 @@
   align-items: center;
   grid-column-gap: 4px;
   grid-row-gap: 4px;
-}
-
-.link {
-  color: #337fbd;
-  cursor: pointer;
-}
-
-.link.text-underline {
-  text-decoration: underline;
-}
-
-.text-grey_600 {
-  color: #68737d;
 }
