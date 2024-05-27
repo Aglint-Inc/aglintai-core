@@ -8,7 +8,6 @@ const timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 import { NextApiRequest, NextApiResponse } from 'next';
-import { z } from 'zod';
 
 import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 
@@ -32,27 +31,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       false,
     );
 
-    // const cand_schedule = new CandidatesScheduling(
-    //   {
-    //     company_id: recruiter_id,
-    //     session_ids,
-    //     user_tz,
-    //   },
-    //   {
-    //     end_date_js: end_date_js,
-    //     start_date_js: start_date_js,
-    //   },
-    // );
+    const cand_schedule = new CandidatesScheduling(
+      {
+        company_id: parsedData.recruiter_id,
+        session_ids: parsedData.session_ids,
+        user_tz: parsedData.candidate_tz,
+      },
+      parsedData.options,
+      {
+        end_date_js: end_date_js,
+        start_date_js: start_date_js,
+      },
+    );
 
-    // await cand_schedule.fetchDetails();
-    // await cand_schedule.fetchInterviewrsCalEvents();
-    // const combs = cand_schedule.findMultiDayComb();
+    await cand_schedule.fetchDetails();
+    await cand_schedule.fetchInterviewrsCalEvents();
+    const combs = cand_schedule.findMultiDayComb();
 
     // return res.status(200).json({
     //   plan_combs: is_debreif ? combs : combs.slice(0, 20),
     //   total: combs.length,
     // });
-    return res.status(200).send(parsedData);
+    return res.status(200).send(combs);
   } catch (error) {
     console.log(error.message);
     return res.status(500).send(error.message);

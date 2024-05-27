@@ -85,11 +85,11 @@ export class CandidatesScheduling {
 
   constructor(
     _api_payload: ApiPayload,
-    _schedule_dates?: {
+    _api_options: z.infer<typeof schema_find_availability_payload>['options'],
+    _schedule_dates: {
       start_date_js: Dayjs;
       end_date_js: Dayjs;
     },
-    _api_options?: z.infer<typeof schema_find_availability_payload>['options'],
   ) {
     this.api_payload = _api_payload;
     if (_schedule_dates) {
@@ -803,12 +803,12 @@ export class CandidatesScheduling {
       };
 
       if (
-        this.disabled_overrides.calender_not_connected &&
+        this.api_options.include_conflicting_slots.calender_not_connected &&
         isAnySessIntsCalDisConnected()
       )
         return [];
       if (
-        this.disabled_overrides.interviewer_pause &&
+        this.api_options.include_conflicting_slots.interviewer_pause &&
         isAnySessIntsPausedManually()
       ) {
         return [];
@@ -1071,7 +1071,7 @@ export class CandidatesScheduling {
           return [];
         }
         if (
-          this.disabled_overrides.interviewer_pause &&
+          this.api_options.include_conflicting_slots.interviewer_pause &&
           paused_inters.length > 0
         ) {
           return [];
