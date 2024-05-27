@@ -15,7 +15,7 @@ export type GetWorkflow = {} & WorkflowKeys;
 export type Workflow = Awaited<ReturnType<typeof getWorkflow>>[number];
 const getWorkflow = async ({ recruiter_id }: GetWorkflow) => {
   const { data, error } = await supabase
-    .from('workflow')
+    .from('workflow_view')
     .select()
     .eq('recruiter_id', recruiter_id);
   if (error) throw new Error(error.message);
