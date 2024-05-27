@@ -17,6 +17,7 @@ import { agent_activities } from '@/src/utils/scheduling_v2/agents_activity';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
+import { ApiDebriefAddUsers } from '../application/debrief-add-users';
 
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
@@ -56,6 +57,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
         payload,
       );
+      const payloadDebriefAddUsers: ApiDebriefAddUsers = {
+        filter_id: req_body.filter_id,
+      };
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/debrief-add-users`,
+        payloadDebriefAddUsers,
+      ); // add confirmed users to next debrief session
     }
 
     const session_ids: string[] = req_body.candidate_plan.reduce(
