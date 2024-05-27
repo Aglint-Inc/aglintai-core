@@ -57,9 +57,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const isAllPreviousMeetingsBooked =
-      sessionRelations.allPreviousMeetings.filter(
+      sessionRelations?.allPreviousMeetings?.filter(
         (meet) => meet.status !== 'completed' && meet.status !== 'confirmed',
-      ).length === 0;
+      )?.length === 0;
 
     console.log(isAllPreviousMeetingsBooked, 'isAllPreviousMeetingsBooked');
 
@@ -71,7 +71,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       axios.post(`${debrief_task_create_url}`, bodyParams);
     }
 
-    const allUserIds = [...(sessionRelations.user_ids || [])];
+    const allUserIds = [...(sessionRelations?.user_ids || [])];
 
     const members_meta = debriefSession.interview_session[0]
       .members_meta as CustomMembersMeta;
@@ -199,6 +199,7 @@ function findSessionRelations({
 
   // If no debrief meeting was found or the specified debrief meeting is not valid, return null
   if (selectedDebriefIndex === -1) {
+    console.log('No debrief meeting found');
     return null;
   }
 
