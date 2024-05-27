@@ -3,7 +3,6 @@ import React from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { WorkflowLandingTopRIght } from '@/devlink3/WorkflowLandingTopRIght';
 import { useWorkflows } from '@/src/context/Workflow';
 import ROUTES from '@/src/utils/routing/routes';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
@@ -11,11 +10,7 @@ import { capitalizeAll } from '@/src/utils/text/textUtils';
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
   return (
-    <PageLayout
-      slotTopbarLeft={<BreadCrumbs />}
-      slotTopbarRight={<Actions />}
-      slotBody={props.children}
-    />
+    <PageLayout slotTopbarLeft={<BreadCrumbs />} slotBody={props.children} />
   );
 };
 
@@ -44,8 +39,4 @@ const BreadCrumbs = () => {
       />
     </>
   );
-};
-
-const Actions = () => {
-  return <WorkflowLandingTopRIght />;
 };
