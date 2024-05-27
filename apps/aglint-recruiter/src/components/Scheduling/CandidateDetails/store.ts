@@ -42,6 +42,12 @@ export interface SchedulingApplication {
   editSession: SessionsType[0];
   selectedSlots: PlanCombinationRespType[];
   selectedCombIds: string[];
+  scheduleFlow:
+    | 'self_scheduling'
+    | 'email_agent'
+    | 'phone_agent'
+    | 'request_availibility'
+    | 'debrief';
 }
 
 const initialState: SchedulingApplication = {
@@ -73,6 +79,7 @@ const initialState: SchedulingApplication = {
   editSession: null,
   selectedSlots: [],
   selectedCombIds: [],
+  scheduleFlow: 'self_scheduling',
 };
 
 export const useSchedulingApplicationStore = create<SchedulingApplication>()(
@@ -83,6 +90,10 @@ export const useSchedulingApplicationStore = create<SchedulingApplication>()(
 
 export const setInitalLoading = (initialLoading: boolean) =>
   useSchedulingApplicationStore.setState({ initialLoading });
+
+export const setScheduleFlow = (
+  scheduleFlow: SchedulingApplication['scheduleFlow'],
+) => useSchedulingApplicationStore.setState({ scheduleFlow });
 
 export const setIsEditOpen = (isEditOpen: boolean) =>
   useSchedulingApplicationStore.setState({ isEditOpen });
