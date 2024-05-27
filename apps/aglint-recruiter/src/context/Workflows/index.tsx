@@ -3,24 +3,24 @@ import React, { createContext, useContext, useEffect } from 'react';
 import useWorkflowsContext from './hooks';
 import { useWorkflowStore } from './store';
 
-const WorkflowContext =
+const WorkflowsContext =
   createContext<ReturnType<typeof useWorkflowsContext>>(undefined);
 
-const WorkflowProvider = (props: React.PropsWithChildren) => {
+const WorkflowsProvider = (props: React.PropsWithChildren) => {
   const value = useWorkflowsContext();
   const reset = useWorkflowStore((state) => state.resetAll);
   useEffect(() => {
     return () => reset();
   }, []);
   return (
-    <WorkflowContext.Provider value={value}>
+    <WorkflowsContext.Provider value={value}>
       {props.children}
-    </WorkflowContext.Provider>
+    </WorkflowsContext.Provider>
   );
 };
 
-export default WorkflowProvider;
+export default WorkflowsProvider;
 
 export const useWorkflows = () => {
-  return useContext(WorkflowContext);
+  return useContext(WorkflowsContext);
 };
