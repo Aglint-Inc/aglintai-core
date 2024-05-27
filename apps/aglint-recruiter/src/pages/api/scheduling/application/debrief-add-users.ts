@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { DatabaseTable } from '@aglint/shared-types';
+import { CustomMembersMeta } from '@aglint/shared-types/src/db/common.types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
@@ -41,28 +42,59 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('No debrief session found');
     }
 
-    const hiring_manager =
-      filterJson.interview_schedule.applications.public_jobs.hiring_manager;
-    const recruiter =
-      filterJson.interview_schedule.applications.public_jobs.recruiter;
-    const recruiting_coordinator =
-      filterJson.interview_schedule.applications.public_jobs
-        .recruiting_coordinator;
-    const sourcer =
-      filterJson.interview_schedule.applications.public_jobs.sourcer;
+    const debriefSession = intMeetSessions.find(
+      (meet) => meet.interview_session[0].id === debriefSessionId,
+    );
 
     const allUserIds = [
       ...(findSessionRelations({
         sessions: intMeetSessions,
         debriefSessionId,
       }).user_ids || []),
-      hiring_manager,
-      recruiter,
-      recruiting_coordinator,
-      sourcer,
     ];
 
-    let eligibleUserIds = [...new Set(allUserIds.filter((id) => id !== null))];
+    const members_meta = debriefSession.interview_session[0]
+      .members_meta as CustomMembersMeta;
+
+    if (
+      members_meta.hiring_manager &&
+      filterJson.interview_schedule.applications.public_jobs.hiring_manager
+    ) {
+      allUserIds.push(
+        filterJson.interview_schedule.applications.public_jobs.hiring_manager,
+      );
+    }
+
+    if (
+      members_meta.recruiter &&
+      filterJson.interview_schedule.applications.public_jobs.recruiter
+    ) {
+      allUserIds.push(
+        filterJson.interview_schedule.applications.public_jobs.recruiter,
+      );
+    }
+
+    if (
+      members_meta.recruiting_coordinator &&
+      filterJson.interview_schedule.applications.public_jobs
+        .recruiting_coordinator
+    ) {
+      allUserIds.push(
+        filterJson.interview_schedule.applications.public_jobs
+          .recruiting_coordinator,
+      );
+    }
+
+    if (
+      members_meta.sourcer &&
+      filterJson.interview_schedule.applications.public_jobs.sourcer
+    ) {
+      allUserIds.push(
+        filterJson.interview_schedule.applications.public_jobs.sourcer,
+      );
+    }
+
+    let eligibleUserIds = [...new Set(allUserIds)];
 
     const existingUserIds = intMeetSessions
       .find((meet) => meet.interview_session[0].id === debriefSessionId)
@@ -78,7 +110,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('No new users to add');
     }
 
-    const { data: debriefSession, error: errDebSes } = await supabaseAdmin
+    const { data: debriefSessionInsert, error: errDebSes } = await supabaseAdmin
       .from('interview_session_relation')
       .upsert(
         insertTableUserIds.map((user_id) => ({
@@ -93,7 +125,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (errDebSes) throw new Error(errDebSes.message);
 
     return res.status(200).send({
-      debriefSession,
+      debriefSessionInsert,
     });
   } catch (error) {
     console.log('error', error);
@@ -107,7 +139,7 @@ const fetchMeetingsSessions = async (interview_schedule_id: string) => {
   const { data: intMeetSessions, error: errSessions } = await supabaseAdmin
     .from('interview_meeting')
     .select(
-      'id,interview_schedule_id,status,interview_session(id,session_type,interview_session_relation(*,interview_module_relation(*)))',
+      'id,interview_schedule_id,status,interview_session(*,interview_session_relation(*,interview_module_relation(*)))',
     )
     .eq('interview_schedule_id', interview_schedule_id);
 
