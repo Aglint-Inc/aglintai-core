@@ -11,6 +11,9 @@ import { NavProfileBlock } from '@/devlink2/NavProfileBlock';
 import { ResponsiveBanner } from '@/devlink2/ResponsiveBanner';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ResizeWindowContext from '@/src/context/ResizeWindow/context';
+import { useRolesAndPermissions } from '@/src/context/RolesAndPermissions/RolesAndPermissionsContext';
+import NotFoundPage from '@/src/pages/404';
+import PERMISSIONS from '@/src/utils/routing/permissions';
 import ROUTES from '@/src/utils/routing/routes';
 
 import Icon from '../Common/Icons/Icon';
@@ -37,6 +40,8 @@ export default function AppLayout({ children }) {
     queryClient.removeQueries();
     handleLogout();
   };
+
+  const { checkPermissions } = useRolesAndPermissions();
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production' && windowSize.innerWidth > 991) {
@@ -318,7 +323,11 @@ export default function AppLayout({ children }) {
             ></Stack>
           </Stack>
         </Stack>
-        {children}
+        {checkPermissions(PERMISSIONS[String(router.pathname)]) ? (
+          children
+        ) : (
+          <NotFoundPage />
+        )}
       </Stack>
     </Stack>
   );
