@@ -48,6 +48,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const timezoneRef = useRef<HTMLInputElement>(null);
 
   const [timeValue, setTimeZoneValue] = useState(null);
+  const [isRequired, setIsRequired] = useState(false);
 
   type initialValueType = {
     line1: string;
@@ -66,6 +67,13 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
   ) as initialValueType;
 
+  useEffect(() => {
+    if (initialValue?.city && initialValue?.region && initialValue?.country) {
+      setIsRequired(true);
+    } else {
+      setIsRequired(false);
+    }
+  }, []);
   const [isHeadQ, setHeadQ] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -155,6 +163,15 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   .label,
               );
             }
+            if (
+              cityRef.current.value &&
+              regionRef.current.value &&
+              countryRef.current.value
+            ) {
+              setIsRequired(true);
+            } else {
+              setIsRequired(false);
+            }
           }
         });
       }
@@ -195,8 +212,22 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     }
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debouncedSearch(e.target.value);
+  const handleSearch = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    key: string,
+  ) => {
+    if (key === 'city') {
+      debouncedSearch(e.target.value);
+    }
+    if (
+      cityRef.current.value &&
+      regionRef.current.value &&
+      countryRef.current.value
+    ) {
+      setIsRequired(true);
+    } else {
+      setIsRequired(false);
+    }
   };
   const debouncedSearch = useCallback(
     debounce((text: string) => {
@@ -224,18 +255,21 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
+          isLocationDescVisible={!isRequired}
+          isAddDisable={!isRequired}
+          textLocationDesc='City, Region and Country are required fields'
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           slotForm={
             <Stack spacing={2}>
               <CustomTextField
                 inputRef={address1Ref}
-                placeholder='Address Line 1'
-                label='Address Line 1'
+                placeholder='123 Example St'
+                label='Street Address'
                 defaultValue={initialValue?.line1}
               />
               <CustomTextField
                 inputRef={address2Ref}
-                placeholder='Address Line 2'
+                placeholder='Suite 456 (Optional)'
                 label='Address Line 2'
                 defaultValue={initialValue?.line2}
               />
@@ -244,17 +278,18 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   sx={{ width: '225px' }}
                   inputRef={cityRef}
                   name='city'
-                  placeholder='Enter City'
-                  label='City'
-                  onChange={handleSearch}
+                  placeholder='San Francisco'
+                  label='City *'
+                  onChange={(e) => handleSearch(e, 'city')}
                   defaultValue={initialValue?.city}
                 />
                 <CustomTextField
                   sx={{ width: '225px' }}
                   inputRef={regionRef}
                   name='region'
-                  placeholder='Enter Region'
-                  label='Region'
+                  placeholder='CA'
+                  label='State/Province/Region *'
+                  onChange={(e) => handleSearch(e, 'region')}
                   defaultValue={initialValue?.region}
                 />
               </Stack>
@@ -264,15 +299,16 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                   inputRef={countryRef}
                   required={true}
                   name='country'
+                  onChange={(e) => handleSearch(e, 'country')}
                   // defaultValue={address1Ref.current?.value || ''}
-                  placeholder='Enter Country'
-                  label='Country'
+                  placeholder='Please enter country name'
+                  label='Country *'
                   defaultValue={initialValue?.country}
                 />
                 <CustomTextField
                   sx={{ width: '225px' }}
                   inputRef={zipRef}
-                  placeholder='Zip Code'
+                  placeholder='Please enter the zip code or postal code'
                   label='Zip Code'
                   defaultValue={initialValue?.zipcode}
                 />
@@ -292,8 +328,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
                     {...params}
                     inputRef={timezoneRef}
                     name='timezone'
-                    placeholder='Asia Calcutta (GMT +05:30)'
-                    label='Timezone is fetched automatically based on entered city.'
+                    placeholder='e.g., America/New_York'
+                    label='Timezone'
                   />
                 )}
               />
@@ -336,3 +372,11 @@ const CustomTextField = (props: TextFieldProps) => {
     </Stack>
   );
 };
+
+// if (
+//   cityRef.current.value &&
+//   regionRef.current.value &&
+//   countryRef.current.value
+// ) {
+//   setIsRequired(true);
+// }
