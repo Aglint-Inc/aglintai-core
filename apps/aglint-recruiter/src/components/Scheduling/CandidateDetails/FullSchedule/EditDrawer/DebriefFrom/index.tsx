@@ -79,7 +79,7 @@ function DebriedForm({
   return (
     <>
       <SidedrawerBodyDebrief
-        slotAttendee={''}
+        isAttendeeVisible={false}
         slotSessionNameInput={
           <UITextField
             name={'name'}

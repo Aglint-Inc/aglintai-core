@@ -24,6 +24,7 @@ import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
   setIsScheduleNowOpen,
+  setScheduleFlow,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from './store';
@@ -45,7 +46,12 @@ function SchedulingApplication() {
     selectedApplication: state.selectedApplication,
     scheduleName: state.scheduleName,
     tab: state.tab,
+    dateRange: state.dateRange,
   }));
+
+  const isDebrief = initialSessions
+    .filter((ses) => selectedSessionIds.includes(ses.id))
+    .some((ses) => ses.session_type === 'debrief');
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
@@ -95,8 +101,33 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
+                isMailAgent={Boolean(selectedApplication.candidates.email)}
+                isPhoneAgent={Boolean(selectedApplication.candidates.phone)}
+                isRequestAvailabilityButton={!isDebrief}
+                isScheduleAgentButton={!isDebrief}
+                isScheduleDebriefButton={isDebrief}
+                isSelfScheduleButton={!isDebrief}
+                onClickDebrief={{
+                  onClick: () => {
+                    setScheduleFlow('debrief');
+                    setIsScheduleNowOpen(true);
+                  },
+                }}
                 onClickSelfschedulingLink={{
                   onClick: () => {
+                    setScheduleFlow('self_scheduling');
+                    setIsScheduleNowOpen(true);
+                  },
+                }}
+                onClickMailAgent={{
+                  onClick: () => {
+                    setScheduleFlow('email_agent');
+                    setIsScheduleNowOpen(true);
+                  },
+                }}
+                onClickPhoneAgent={{
+                  onClick: () => {
+                    setScheduleFlow('phone_agent');
                     setIsScheduleNowOpen(true);
                   },
                 }}
@@ -108,6 +139,7 @@ function SchedulingApplication() {
                 }}
                 onClickRequestAvailability={{
                   onClick: () => {
+                    setScheduleFlow('request_availibility');
                     const currentPath = router.pathname; // '/scheduling/application/[application_id]'
                     const currentQuery = router.query; // { application_id: '84caebfb-8db6-4881-a88f-400726884504' }
                     const updatedQuery = {
