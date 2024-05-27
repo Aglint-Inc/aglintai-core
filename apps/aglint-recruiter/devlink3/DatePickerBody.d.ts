@@ -11,4 +11,5 @@ declare function DatePickerBody(props: {
   isRequestAvailability?: Types.Visibility.VisibilityConditions;
   isSelfScheduling?: Types.Visibility.VisibilityConditions;
   isContinueButton?: Types.Visibility.VisibilityConditions;
+  isLoading?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

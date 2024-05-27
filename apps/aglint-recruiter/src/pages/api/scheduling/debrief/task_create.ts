@@ -111,7 +111,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const findSessionRelations = (sessions) => {
+const findSessionRelations = (
+  sessions: ReturnType<typeof sortBySessionOrderFilterConfirmedRelations>,
+) => {
   let previousDebriefCompleted = false;
   let sessionRelationIds = [];
   let selectedDebriefId = null;

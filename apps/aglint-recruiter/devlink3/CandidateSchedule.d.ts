@@ -13,4 +13,11 @@ declare function CandidateSchedule(props: {
   onClickMailAgent?: Types.Devlink.RuntimeProps;
   onClickRequestAvailability?: Types.Devlink.RuntimeProps;
   onClickSelfschedulingLink?: Types.Devlink.RuntimeProps;
+  onClickDebrief?: Types.Devlink.RuntimeProps;
+  isSelfScheduleButton?: Types.Visibility.VisibilityConditions;
+  isRequestAvailabilityButton?: Types.Visibility.VisibilityConditions;
+  isScheduleDebriefButton?: Types.Visibility.VisibilityConditions;
+  isScheduleAgentButton?: Types.Visibility.VisibilityConditions;
+  isPhoneAgent?: Types.Visibility.VisibilityConditions;
+  isMailAgent?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

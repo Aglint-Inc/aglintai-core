@@ -8,6 +8,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
+import { useAllActivities, useGetScheduleApplication } from '../hooks';
 import {
   setDateRange,
   setinitialSessions,
@@ -34,6 +35,7 @@ function SelfSchedulingDrawer() {
     selCoordinator,
     stepScheduling,
     selectedCombIds,
+    scheduleFlow,
   } = useSchedulingApplicationStore((state) => ({
     dateRange: state.dateRange,
     selectedApplication: state.selectedApplication,
@@ -44,7 +46,12 @@ function SelfSchedulingDrawer() {
     selCoordinator: state.selCoordinator,
     stepScheduling: state.stepScheduling,
     selectedCombIds: state.selectedCombIds,
+    scheduleFlow: state.scheduleFlow,
   }));
+  const { refetch } = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
+  const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -112,6 +119,8 @@ function SelfSchedulingDrawer() {
       //
     } finally {
       setSaving(false);
+      refetch();
+      fetchInterviewDataByApplication();
     }
   };
 
@@ -137,9 +146,23 @@ function SelfSchedulingDrawer() {
               setStepScheduling('pick_date');
             },
           }}
+          textDrawertitle={
+            scheduleFlow === 'self_scheduling'
+              ? 'Send Self Scheduling Link'
+              : scheduleFlow === 'email_agent'
+                ? 'Schedule With Email Agent'
+                : scheduleFlow === 'phone_agent'
+                  ? 'Schedule With Phone Agent'
+                  : 'Schedule Now'
+          }
           onClickPrimary={{
             onClick: () => {
               if (!saving) onClickSendToCandidate();
+            },
+          }}
+          onClickCancel={{
+            onClick: () => {
+              resetState();
             },
           }}
           textPrimaryButton={!isDebrief ? 'Send to Candidate' : 'Schedule Now'}
