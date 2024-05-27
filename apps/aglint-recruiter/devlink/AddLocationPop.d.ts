@@ -12,4 +12,5 @@ declare function AddLocationPop(props: {
   isAddDisable?: Types.Visibility.VisibilityConditions;
   textLocationDesc?: React.ReactNode;
   isLocationDescVisible?: Types.Visibility.VisibilityConditions;
+  textButtonLabel?: React.ReactNode;
 }): React.JSX.Element;

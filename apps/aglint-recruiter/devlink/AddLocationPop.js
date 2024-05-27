@@ -15,6 +15,7 @@ export function AddLocationPop({
   isAddDisable = false,
   textLocationDesc = "This is some text inside of a div block.",
   isLocationDescVisible = true,
+  textButtonLabel = "Add",
 }) {
   return (
     <_Component
@@ -85,7 +86,7 @@ export function AddLocationPop({
               tag="div"
               {...onClickAdd}
             >
-              <_Builtin.Block tag="div">{"Add"}</_Builtin.Block>
+              <_Builtin.Block tag="div">{textButtonLabel}</_Builtin.Block>
             </_Builtin.Block>
             {isAddDisable ? (
               <_Builtin.Block
@@ -105,7 +106,7 @@ export function AddLocationPop({
                   className={_utils.cx(_styles, "text-grey-400")}
                   tag="div"
                 >
-                  {"Add"}
+                  {textButtonLabel}
                 </_Builtin.Block>
               </_Builtin.Block>
             ) : null}

@@ -7,16 +7,27 @@ import {
   TextFieldProps,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AddLocationPop } from '@/devlink/AddLocationPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZone from '@/src/utils/timeZone';
-import toast from '@/src/utils/toast';
 
 import { debouncedSave } from '../../utils';
+import { debounce, geoCodeLocation, handleValidate } from './until';
 
+type initialValueType = {
+  line1: string;
+  line2: string;
+  city: string;
+  region: string;
+  country: string;
+  zipcode: string;
+  is_headquarter: boolean;
+  timezone: string;
+  full_address?: string;
+  location_header?: string;
+};
 interface LocationProps {
   handleClose: () => void;
   open: boolean;
@@ -50,30 +61,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   const [timeValue, setTimeZoneValue] = useState(null);
   const [isRequired, setIsRequired] = useState(false);
 
-  type initialValueType = {
-    line1: string;
-    line2: string;
-    city: string;
-    region: string;
-    country: string;
-    zipcode: string;
-    is_headquarter: boolean;
-    timezone: string;
-    full_address?: string;
-    location_header?: string;
-  };
-
   const initialValue = (
     edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
   ) as initialValueType;
 
-  useEffect(() => {
-    if (initialValue?.city && initialValue?.region && initialValue?.country) {
-      setIsRequired(true);
-    } else {
-      setIsRequired(false);
-    }
-  }, []);
   const [isHeadQ, setHeadQ] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -116,39 +107,6 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     setLoading(false);
   };
 
-  const handleValidate = () => {
-    return Object.entries(location).reduce(
-      (acc, [key, curr]) => {
-        let value = curr.value as any;
-        let error = false;
-        switch (curr.validation) {
-          case 'string':
-            {
-              if (curr.required && value.trim().length === 0) {
-                error = true;
-              } else {
-                value = value.trim();
-              }
-            }
-            break;
-          case 'boolean': {
-            if (typeof value !== 'boolean') {
-              error = true;
-            }
-          }
-        }
-        return {
-          newLocation: {
-            ...acc.newLocation,
-            [key]: { ...acc.newLocation[key], value, error },
-          },
-          error: error && !acc.error ? true : acc.error,
-        };
-      },
-      { newLocation: location, error: false },
-    );
-  };
-
   const handleChange = (value: string, key: string) => {
     if (key === 'city') {
       if (value.length > 3) {
@@ -177,40 +135,6 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       }
     }
   };
-  const geoCodeLocation = async (address: string) => {
-    if (address.length > 3) {
-      const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
-      let locationData = null;
-      try {
-        locationData = await axios.get(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
-        );
-      } catch (error) {
-        toast.message('Please give proper location');
-      }
-      const result = (locationData as any)?.data?.results[0];
-
-      const add = {
-        region: result?.address_components[3]?.long_name ?? '',
-        country: result?.address_components[4]?.long_name ?? '',
-      };
-      const geo = {
-        lat: result?.geometry.location.lat ?? '',
-        lang: result?.geometry.location.lng ?? '',
-      };
-      let timezone = null;
-      try {
-        timezone = await axios.get(
-          `https://maps.googleapis.com/maps/api/timezone/json?location=${geo.lat},${geo.lang}&timestamp=1331161200&key=${apiKey}`,
-        );
-      } catch (error) {
-        toast.message('Failed to fetch timezone');
-      }
-
-      const timeZoneId = timezone && timezone?.data.timeZoneId;
-      return { add, timeZoneId };
-    }
-  };
 
   const handleSearch = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -229,21 +153,14 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       setIsRequired(false);
     }
   };
+
   const debouncedSearch = useCallback(
     debounce((text: string) => {
       handleChange(text, 'city');
     }, 500),
     [],
   );
-  function debounce(func: Function, delay: number) {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    return (...args: any[]) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        func(...args);
-      }, delay);
-    };
-  }
+
   useEffect(() => {
     if (recruiter) {
       setHeadQ(initialValue?.is_headquarter);
@@ -259,6 +176,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           isAddDisable={!isRequired}
           textLocationDesc='City, Region and Country are required fields'
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
+          textButtonLabel={edit === -1 ? 'Add' : 'Save'}
           slotForm={
             <Stack spacing={2}>
               <CustomTextField
@@ -372,11 +290,3 @@ const CustomTextField = (props: TextFieldProps) => {
     </Stack>
   );
 };
-
-// if (
-//   cityRef.current.value &&
-//   regionRef.current.value &&
-//   countryRef.current.value
-// ) {
-//   setIsRequired(true);
-// }
