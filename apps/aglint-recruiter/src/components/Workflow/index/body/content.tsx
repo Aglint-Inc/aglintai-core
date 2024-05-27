@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
@@ -8,6 +10,7 @@ import {
   useWorkflowDelete,
   useWorkflowState,
 } from '@/src/queries/workflow';
+import ROUTES from '@/src/utils/routing/routes';
 
 import { useWorkflowStore, WorkflowStore } from '../../store';
 
@@ -23,6 +26,7 @@ export default Content;
 
 const Cards = (props: { data: ReturnType<typeof useWorkflow>['data'] }) => {
   const { recruiter_id } = useAuthDetails();
+  const { push } = useRouter();
   const filters = useWorkflowStore((state) => state.filters);
   const mutations = useWorkflowState({ recruiter_id });
   const { mutate: handleDelete } = useWorkflowDelete({ recruiter_id });
@@ -57,6 +61,9 @@ const Cards = (props: { data: ReturnType<typeof useWorkflow>['data'] }) => {
             textWorkflowTrigger={trigger}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
             onClickDelete={{ onClick: () => handleDelete({ id }) }}
+            onClickEdit={{
+              onClick: () => push(ROUTES['/workflows/[id]']({ id })),
+            }}
           />
         </OptimisticWrapper>
       );

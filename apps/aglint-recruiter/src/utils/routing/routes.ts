@@ -323,9 +323,15 @@ const thanksPage = {
     pageRouteBuilder([ROUTES.app(), 'thanks-page'], ...args),
 } as const;
 
+const workflowsById = {
+  '/workflows/[id]': (...args: Args<{ id: string }>) =>
+    pageRouteBuilder([workflows['/workflows']()], ...args),
+} as const;
+
 const workflows = {
   '/workflows': (...args: Args) =>
     pageRouteBuilder([ROUTES.app(), 'workflows'], ...args),
+  ...workflowsById,
 } as const;
 
 const ROUTES = {
