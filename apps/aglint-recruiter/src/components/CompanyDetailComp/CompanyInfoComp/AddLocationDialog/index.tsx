@@ -113,8 +113,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         geoCodeLocation(value).then((data) => {
           if (data) {
             const responseData = data as any as Geolocation;
-            regionRef.current.value = responseData.add.region;
-            countryRef.current.value = responseData.add.country;
+            regionRef.current.value = responseData.add?.region;
+            countryRef.current.value = responseData.add?.country;
             if (responseData?.timeZoneId) {
               setTimeZoneValue(
                 timeZone.find((ele) => ele.tzCode === responseData?.timeZoneId)
@@ -172,9 +172,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
-          isLocationDescVisible={!isRequired}
+          isLocationDescVisible={false}
           isAddDisable={!isRequired}
-          textLocationDesc='City, Region and Country are required fields'
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           textButtonLabel={edit === -1 ? 'Add' : 'Save'}
           slotForm={
@@ -263,7 +262,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               handleAddLocation();
             },
           }}
-          isChecked={isHeadQ}
+          isCheckboxVisible={initialValue?.is_headquarter ? true : false}
+          isChecked={initialValue?.is_headquarter ? true : false}
           onClickCheck={{
             onClick: () => {
               setHeadQ(!isHeadQ);
