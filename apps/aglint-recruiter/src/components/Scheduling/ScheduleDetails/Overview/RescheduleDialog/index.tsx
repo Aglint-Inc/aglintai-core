@@ -12,7 +12,7 @@ import React, { Dispatch, useState } from 'react';
 import { ScheduleOptions } from '@/devlink2/ScheduleOptions';
 import { ButtonGrey } from '@/devlink3/ButtonGrey';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
-import LoaderGrey from '@/src/components/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/Common/LoaderGrey';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';

@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react';
 import { ChatMessage } from '@/devlink/ChatMessage';
 import { JobAssist } from '@/devlink/JobAssist';
 import { JobAssistCardSmall } from '@/devlink/JobAssistCardSmall';
-import { CalculatingResumeScore } from '@/public/lottie/Calculating';
+import { CalculatingResumeScore } from '@/public/lottie/CalculatingResumeScore';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { JobApplication } from '@/src/context/JobApplicationsContext/types';
 import { useJobAssistantContext } from '@/src/context/JobAssistant';
