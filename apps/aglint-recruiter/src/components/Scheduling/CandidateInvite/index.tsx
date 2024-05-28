@@ -257,11 +257,11 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
                   },
                 }}
               >
-                {'Request for '}
+                {'Request to '}
                 {capitalizeFirstLetter(
                   cancelReschedulingDetails.type == 'declined'
-                    ? 'cancelation'
-                    : 'rescheduling',
+                    ? 'cancel'
+                    : 'reschedule',
                 )}
                 {' all Sessions'}
                 {cancelReschedulingDetails.type == 'reschedule' &&
