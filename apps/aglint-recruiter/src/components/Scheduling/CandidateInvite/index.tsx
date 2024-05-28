@@ -157,7 +157,10 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
     useState<DatabaseTable['recruiter']['scheduling_reason']>(null);
   const [cancelReschedulingDetails, setCancelReschedulingDetails] = useState<{
     all: boolean;
-    type: 'cancelation' | 'rescheduling';
+    type: 'reschedule' | 'declined';
+    other_details: Awaited<
+      ReturnType<typeof getCancelRescheduleData>
+    >[number]['other_details'];
     sessions: Awaited<ReturnType<typeof getCancelRescheduleData>>;
   }>(null);
 
@@ -181,13 +184,15 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
             .flat(2),
         );
 
-        setCancelReschedulingDetails({
-          all:
-            data.length == temp.size ||
-            data.every((item) => temp.has(item.session_id)),
-          type: data[0].type == 'declined' ? 'cancelation' : 'rescheduling',
-          sessions: data,
-        });
+        data.length &&
+          setCancelReschedulingDetails({
+            all:
+              data.length == temp.size ||
+              data.every((item) => temp.has(item.session_id)),
+            type: data[0]?.type,
+            other_details: data[0]?.other_details,
+            sessions: data,
+          });
       });
     }
   }, [props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id]);
@@ -219,7 +224,20 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
         session_id: session.interview_session.id,
         schedule_id: session.interview_meeting.interview_schedule_id,
       }));
-    return saveCancelReschedule({ details });
+    return saveCancelReschedule({ details }).then(() => {
+      setCancelReschedulingDetails({
+        all: true,
+        type: detail.type,
+        other_details: detail.other_details,
+        sessions: details.map((item) => ({
+          session_id: item.session_id,
+          reason: item.reason,
+          other_details: item.other_details,
+          type: item.type,
+        })),
+      });
+      return true;
+    });
   };
 
   return (
@@ -228,10 +246,27 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
         slotBanner={
           <>
             {cancelReschedulingDetails?.all && (
-              <Alert variant='outlined' severity='warning'>
-                Request for{' '}
-                {capitalizeFirstLetter(cancelReschedulingDetails.type)} all
-                Sessions received.
+              <Alert
+                variant='outlined'
+                severity='warning'
+                sx={{
+                  '& .MuiAlert-icon, & .MuiAlert-action': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+                }}
+              >
+                {'Request for '}
+                {capitalizeFirstLetter(
+                  cancelReschedulingDetails.type == 'declined'
+                    ? 'cancelation'
+                    : 'rescheduling',
+                )}
+                {' all Sessions'}
+                {cancelReschedulingDetails.type == 'reschedule' &&
+                  ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
+                {' received.'}
               </Alert>
             )}
           </>
@@ -246,7 +281,8 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
         textMailSent={candidate.email}
         slotButton={
           <Stack direction={'row'} gap={2}>
-            {cancelReschedulingDetails?.all === false && (
+            {(!cancelReschedulingDetails ||
+              cancelReschedulingDetails.all == false) && (
               <>
                 <ScheduleButton
                   textLabel={'Request Reschedule'}
