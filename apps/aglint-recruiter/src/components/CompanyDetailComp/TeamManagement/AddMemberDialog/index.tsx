@@ -129,10 +129,10 @@ const AddMember = ({
     }
     if (
       !form.email ||
-      form.email.trim() === '' ||
-      form.email.split('@')[1] !== recruiter.email.split('@')[1]
+      form?.email?.trim() === '' ||
+      form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]
     ) {
-      if (form.email.split('@')[1] !== recruiter.email.split('@')[1]) {
+      if (form?.email?.split('@')[1] !== recruiter?.email?.split('@')[1]) {
         toast.error(`Email domain doesn't match organization.`);
       }
       temp = { ...temp, email: true };
@@ -283,8 +283,11 @@ const AddMember = ({
                       value={form.first_name ? form.first_name : ''}
                       name='first_name'
                       placeholder='First Name'
-                      label='First Name'
+                      label='First Name *'
                       error={formError.first_name}
+                      helperText={
+                        formError.first_name ? 'First name must required' : ''
+                      }
                       onFocus={() => {
                         setFormError({ ...formError, first_name: false });
                       }}
@@ -320,8 +323,11 @@ const AddMember = ({
                     value={form.email ? form.email : ''}
                     name='email'
                     placeholder='Email'
-                    label='Email'
+                    label='Email *'
                     error={formError.email}
+                    helperText={
+                      formError.email ? 'Please enter valid email' : ''
+                    }
                     onFocus={() => {
                       setFormError({ ...formError, email: false });
                     }}
@@ -347,8 +353,11 @@ const AddMember = ({
                       value={form.designation ? form.designation : ''}
                       name='title'
                       placeholder='Enter title'
-                      label='Title'
+                      label='Title *'
                       error={formError.designation}
+                      helperText={
+                        formError.designation ? 'Title must required' : ''
+                      }
                       onFocus={() => {
                         setFormError({ ...formError, designation: false });
                       }}
@@ -444,7 +453,12 @@ const AddMember = ({
                           }}
                           name='Department'
                           placeholder='Select Department'
-                          label='Department'
+                          label='Department *'
+                          helperText={
+                            formError.department
+                              ? 'Department is must required'
+                              : ''
+                          }
                         />
                       )}
                     />
@@ -483,8 +497,11 @@ const AddMember = ({
                           {...params}
                           name='Role'
                           placeholder='Choose Role'
-                          label='Role'
+                          label='Role *'
                           error={formError.role}
+                          helperText={
+                            formError.role ? 'Role must required' : ''
+                          }
                           onFocus={() => {
                             setFormError({ ...formError, role: false });
                           }}
@@ -512,11 +529,14 @@ const AddMember = ({
                           {...params}
                           name='manager'
                           placeholder='Select Manager'
-                          label='Manager'
+                          label='Manager *'
                           error={formError.manager}
                           onFocus={() => {
                             setFormError({ ...formError, manager: false });
                           }}
+                          helperText={
+                            formError.manager ? 'Manager must required' : ''
+                          }
                         />
                       )}
                     />
@@ -526,7 +546,16 @@ const AddMember = ({
               slotButtons={
                 <Stack width={'100%'} marginTop={'16px'}>
                   <AUIButton
-                    disabled={isDisable}
+                    disabled={
+                      form.email &&
+                      form.first_name &&
+                      form.designation &&
+                      form.department &&
+                      form.role &&
+                      form.manager_id
+                        ? false
+                        : true
+                    }
                     size='medium'
                     onClick={() => {
                       setIsDisable(true);
