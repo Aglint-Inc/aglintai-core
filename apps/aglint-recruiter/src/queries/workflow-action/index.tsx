@@ -80,14 +80,17 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         return acc;
       }, [] as WorkflowAction[]);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
-      return { previousWorkflowActions, newWorkflowActions };
     },
-    onError: (_error, _variables, context) => {
-      toast.error('Unable to update action');
-      queryClient.setQueryData<WorkflowAction[]>(
-        queryKey,
-        context.previousWorkflowActions,
-      );
+    onError: (_error, variables) => {
+      const previousWorkflowActions =
+        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+      const newWorkflowActions = structuredClone(
+        previousWorkflowActions,
+      ).reduce((acc, curr) => {
+        if (curr.id !== variables.id) acc.push(curr);
+        return acc;
+      }, [] as WorkflowAction[]);
+      queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
   });
 };
@@ -122,24 +125,30 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         workflow_id,
       });
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
-      return { previousWorkflowActions, newWorkflowActions, id };
     },
-    onError: (_error, _variables, context) => {
+    onError: (_error, variables) => {
       toast.error('Unable to update action');
-      queryClient.setQueryData<WorkflowAction[]>(
-        queryKey,
-        context.previousWorkflowActions,
-      );
+      const previousWorkflowActions =
+        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+      const newWorkflowActions = structuredClone(
+        previousWorkflowActions,
+      ).reduce((acc, curr) => {
+        if (curr.id !== variables.id) acc.push(curr);
+        return acc;
+      }, [] as WorkflowAction[]);
+      queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
-    onSuccess: (data, _variables, context) => {
-      queryClient.setQueryData<WorkflowAction[]>(
-        queryKey,
-        context.newWorkflowActions.reduce((acc, curr) => {
-          if (curr.id === context.id) acc.push(data);
-          else acc.push(curr);
-          return acc;
-        }, []),
-      );
+    onSuccess: (data, variables) => {
+      const previousWorkflowActions =
+        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+      const newWorkflowActions = structuredClone(
+        previousWorkflowActions,
+      ).reduce((acc, curr) => {
+        if (curr.id === variables.id) acc.push(data);
+        else acc.push(curr);
+        return acc;
+      }, []);
+      queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
   });
 };

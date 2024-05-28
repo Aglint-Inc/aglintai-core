@@ -73,11 +73,18 @@ export const useWorkflowUpdate = (args: WorkflowKeys) => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-      return { previousWorkflows, newWorkflows };
     },
-    onError: (_error, _variables, context) => {
+    onError: (_error, variables) => {
       toast.error('Unable to update workflow');
-      queryClient.setQueryData<Workflow[]>(queryKey, context.previousWorkflows);
+      const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
+      const newWorkflows = structuredClone(previousWorkflows).reduce(
+        (acc, curr) => {
+          if (curr.id !== variables.id) acc.push(curr);
+          return acc;
+        },
+        [] as Workflow[],
+      );
+      queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
     },
   });
 };
