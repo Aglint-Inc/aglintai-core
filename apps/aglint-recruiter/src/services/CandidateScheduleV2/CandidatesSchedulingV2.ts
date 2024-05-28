@@ -4,10 +4,8 @@ import {
   APIOptions,
   ConflictReason,
   InterviewSessionApiRespType,
-  MinCalEventDetailTypes,
   PauseJson,
   PlanCombinationRespType,
-  schedulingSettingType,
   SessionCombinationRespType,
   SessionInterviewerApiRespType,
   SessionsCombType,
@@ -156,6 +154,7 @@ export class CandidatesSchedulingV2 {
     const int_with_events = await fetchIntsCalEventsDetails(
       this.db_details.all_inters,
       this.db_details.company_cred,
+      this.db_details.comp_schedule_setting,
       this.schedule_dates.user_start_date_js.format(),
       this.schedule_dates.user_end_date_js.format(),
     );
@@ -364,30 +363,7 @@ export class CandidatesSchedulingV2 {
           ...upd_sess_slot.qualifiedIntervs,
           ...upd_sess_slot.trainingIntervs,
         ];
-        const getCalEventType = (
-          scheduling_settings: schedulingSettingType,
-          cal_event: MinCalEventDetailTypes,
-        ): ConflictReason['conflict_type'] => {
-          const soft_conf_key_words =
-            scheduling_settings.schedulingKeyWords.SoftConflicts.map((str) =>
-              str.toLowerCase(),
-            );
-          const out_of_office_key_words =
-            scheduling_settings.schedulingKeyWords.outOfOffice.map((str) =>
-              str.toLowerCase(),
-            );
 
-          const is_soft_conflict = soft_conf_key_words.some((key_word) =>
-            cal_event.summary.toLowerCase().includes(key_word),
-          );
-          if (is_soft_conflict) return 'soft';
-          const is_ooo_conflict = out_of_office_key_words.some((key_word) =>
-            cal_event.summary.toLowerCase().includes(key_word),
-          );
-          if (is_ooo_conflict) return 'ooo';
-
-          return 'cal_event';
-        };
         for (const attendee of session_attendees) {
           const conflict_reasons: ConflictReason[] = [];
           const attendee_pause_info =
@@ -458,10 +434,7 @@ export class CandidatesSchedulingV2 {
             },
           );
           conflicting_events.forEach((conf_ev) => {
-            const ev_type = getCalEventType(
-              this.db_details.comp_schedule_setting,
-              conf_ev,
-            );
+            const ev_type = conf_ev.cal_type;
             conflict_reasons.push({
               conflict_type: ev_type,
               conflict_event: conf_ev.summary,
@@ -643,7 +616,6 @@ export class CandidatesSchedulingV2 {
           cloneDeep(session_rounds[curr_day_idx]),
           curr_date,
         );
-
         if (combs.length === 0) {
           curr_date = curr_date.add(1, 'day');
         }

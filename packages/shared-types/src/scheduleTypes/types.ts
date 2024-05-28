@@ -14,6 +14,7 @@ import {
   InterviewMeetingTypeDb,
 } from '../data.types';
 import { schedulingSettingType } from './scheduleSetting';
+import { CalConflictType, ConflictReason } from './apiResp.types';
 
 export type PauseJson = {
   start_date: string;
@@ -98,7 +99,9 @@ export type InterviewerMeetingScheduled = {
 export type MinCalEventDetailTypes = Pick<
   CalendarEvent,
   'id' | 'start' | 'end' | 'organizer' | 'attendees' | 'summary'
->;
+> & {
+  cal_type: CalConflictType;
+};
 export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;

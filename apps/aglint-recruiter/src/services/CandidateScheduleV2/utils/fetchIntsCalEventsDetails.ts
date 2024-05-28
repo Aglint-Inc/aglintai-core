@@ -1,6 +1,8 @@
 import {
+  CalConflictType,
   CompServiceKeyCred,
   InterDetailsType,
+  schedulingSettingType,
   SessionInterviewerType,
 } from '@aglint/shared-types';
 
@@ -11,6 +13,7 @@ import { GoogleCalender } from '../../GoogleCalender/google-calender';
 export const fetchIntsCalEventsDetails = async (
   session_inters: SessionInterviewerType[],
   company_cred: CompServiceKeyCred,
+  comp_schedule_setting: schedulingSettingType,
   start_date: string,
   end_date: string,
 ) => {
@@ -27,6 +30,28 @@ export const fetchIntsCalEventsDetails = async (
     isCalenderConnected: false,
     work_hours: [],
   }));
+
+  const getCalEventType = (cal_event_summary: string): CalConflictType => {
+    const soft_conf_key_words =
+      comp_schedule_setting.schedulingKeyWords.SoftConflicts.map((str) =>
+        str.toLowerCase(),
+      );
+    const out_of_office_key_words =
+      comp_schedule_setting.schedulingKeyWords.outOfOffice.map((str) =>
+        str.toLowerCase(),
+      );
+
+    const is_soft_conflict = soft_conf_key_words.some((key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word),
+    );
+    if (is_soft_conflict) return 'soft';
+    const is_ooo_conflict = out_of_office_key_words.some((key_word) =>
+      cal_event_summary.toLowerCase().includes(key_word),
+    );
+    if (is_ooo_conflict) return 'ooo';
+
+    return 'cal_event';
+  };
   const promiseArr = ints_meta.map(async (int) => {
     let newInt: InterDetailsType = {
       ...int,
@@ -62,6 +87,7 @@ export const fetchIntsCalEventsDetails = async (
         start: {
           ...e.start,
         },
+        cal_type: getCalEventType(e.summary),
       }));
       newInt.isCalenderConnected = true;
     } catch (error) {
