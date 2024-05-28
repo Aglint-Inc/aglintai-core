@@ -13,4 +13,5 @@ declare function AddLocationPop(props: {
   textLocationDesc?: React.ReactNode;
   isLocationDescVisible?: Types.Visibility.VisibilityConditions;
   textButtonLabel?: React.ReactNode;
+  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
