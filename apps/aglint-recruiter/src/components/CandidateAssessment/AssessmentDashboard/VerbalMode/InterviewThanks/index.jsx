@@ -1,12 +1,12 @@
 import { Stack } from '@mui/material';
 
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
+import CompleteLottie from '@/src/components/Common/Lotties/CandidateAssessment/CompletedLottie';
+import InCompleteLottie from '@/src/components/Common/Lotties/CandidateAssessment/IncompleteLottie';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
 import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
-import CompleteLottie from './CompletedLottie';
-import InCompleteLottie from './IncompleteLottie';
 
 function InterviewThanks() {
   const { jobDetails, candidateDetails, initialLoading } =
