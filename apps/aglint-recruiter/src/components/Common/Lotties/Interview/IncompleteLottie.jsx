@@ -1,15 +1,15 @@
 import Lottie from 'lottie-react';
 import React, { useRef } from 'react';
 
-import { complete_lottie } from './complete-lottie';
+import { incomplete_lottie } from '@/public/lottie/Interview/incomplete-lottie';
 
-function CompleteLottie() {
+function InCompleteLottie() {
   const lottieRef = useRef();
   return (
     <div>
       <Lottie
         lottieRef={lottieRef}
-        animationData={complete_lottie}
+        animationData={incomplete_lottie}
         loop={false}
         autoplay={true}
       />
@@ -17,4 +17,4 @@ function CompleteLottie() {
   );
 }
 
-export default CompleteLottie;
+export default InCompleteLottie;

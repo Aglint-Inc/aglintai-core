@@ -8,19 +8,20 @@ import { NewInterviewScreen } from '@/devlink/NewInterviewScreen';
 import { useCandidateAssessment } from '@/src/context/CandidateAssessment';
 import { useInterviewContext } from '@/src/context/InterviewContext';
 
+import CompleteLoaderLottie from '../../Common/Lotties/Interview/CompleteLoaderLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
-import SidePanelDrawer from '../../Common/SidePanelDrawer';
-import CompleteLoaderLottie from '../Components/CompleteLoaderLottie';
+// import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import CandidatePanel from './CandidatePanel';
 import VideoCandidatePanel from './CandidatePanel/VideoCandidatePanel';
 import InterviewerPanel from './InterviewerPanel';
 import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
+import SidePanelDrawer from '../../Common/SidePanelDrawer';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const {
     conversations,
     getFeedback,
@@ -33,7 +34,7 @@ function Interview_home() {
     disconnecting,
     videoAssessment,
   } = useInterviewContext();
-  const { assessmentDetails } = useCandidateAssessment()
+  const { assessmentDetails } = useCandidateAssessment();
 
   return (
     <Stack>
@@ -49,7 +50,7 @@ function Interview_home() {
             candidateImage={'/'}
           />
         </Stack>
-      </SidePanelDrawer>
+      </SidePanelDrawe>
       <MuiPopup
         props={{
           open: openEndInterview,

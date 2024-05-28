@@ -1,9 +1,10 @@
 import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
+
+import { recordLottie } from '@/public/lottie/Interview/record-lottie';
 let stopRecording;
 import { useEffect } from 'react';
 
-import { recordLottie } from './record-lottie';
 function RecordLottie({ lottieRef, listening }) {
   useEffect(() => {
     if (listening) {

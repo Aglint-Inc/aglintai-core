@@ -10,7 +10,7 @@ import { TranscriptBlock } from '@/Interview_devlink/TranscriptBlock';
 import { UserCardScript } from '@/Interview_devlink/UserCardScript';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
-import PlayStop from '../PlayStop';
+import PlayStop from '../../../Common/Lotties/Interview/PlayStop';
 
 function Transcript_chat() {
   const { interviewerIndex, conversations } = useInterviewPrep();

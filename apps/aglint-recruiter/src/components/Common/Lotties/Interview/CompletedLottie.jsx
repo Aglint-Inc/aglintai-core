@@ -1,20 +1,20 @@
 import Lottie from 'lottie-react';
 import React, { useRef } from 'react';
 
-import { complete_loader_lottie } from './complete-loader-lottie';
+import { complete_lottie } from '@/public/lottie/Interview/complete-lottie';
 
-function CompleteLoaderLottie() {
+function CompleteLottie() {
   const lottieRef = useRef();
   return (
     <div>
       <Lottie
         lottieRef={lottieRef}
-        animationData={complete_loader_lottie}
-        loop={true}
+        animationData={complete_lottie}
+        loop={false}
         autoplay={true}
       />
     </div>
   );
 }
 
-export default CompleteLoaderLottie;
+export default CompleteLottie;
