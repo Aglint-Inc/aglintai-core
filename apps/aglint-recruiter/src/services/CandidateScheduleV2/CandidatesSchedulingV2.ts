@@ -3,7 +3,6 @@ import {
   APIFindAvailability,
   APIOptions,
   ConflictReason,
-  holidayType,
   InterviewSessionApiRespType,
   MinCalEventDetailTypes,
   PauseJson,
@@ -13,6 +12,7 @@ import {
   SessionInterviewerApiRespType,
   SessionsCombType,
   SessionSlotType,
+  TimeDurationDayjsType,
   TimeDurationType,
 } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
@@ -32,6 +32,7 @@ import {
   FuncParams,
   IntervsWorkHrsEventMapType,
   IntervsWorkHrsEventType,
+  SlotIntDetails,
 } from './types';
 import { fetch_details_from_db } from './utils/fetch_details_from_db';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
@@ -248,6 +249,22 @@ export class CandidatesSchedulingV2 {
     ) => {
       // main variable
       const schedule_combs: PlanCombinationRespType[] = [];
+      const all_slot_inters: (SessionInterviewerApiRespType & {
+        session_id: string;
+      })[] = plan_comb.reduce(
+        (curr_ints, sess) => [
+          ...curr_ints,
+          ...sess.qualifiedIntervs.map((i) => ({
+            ...i,
+            session_id: sess.session_id,
+          })),
+          ...sess.trainingIntervs.map((i) => ({
+            ...i,
+            session_id: sess.session_id,
+          })),
+        ],
+        [],
+      );
 
       /**
        * @param curr_session
@@ -283,15 +300,7 @@ export class CandidatesSchedulingV2 {
       };
 
       const isAnySessIntsCalDisConnected = () => {
-        const all_inters: SessionInterviewerApiRespType[] = plan_comb.reduce(
-          (curr_ints, sess) => [
-            ...curr_ints,
-            ...sess.qualifiedIntervs,
-            ...sess.trainingIntervs,
-          ],
-          [],
-        );
-        return all_inters.some((int) => {
+        return all_slot_inters.some((int) => {
           const isCalenderConnected = this.intervs_details_map.get(
             int.user_id,
           ).isCalenderConnected;
@@ -299,126 +308,43 @@ export class CandidatesSchedulingV2 {
         });
       };
       const isAnySessIntsPausedManually = () => {
-        for (const sess of plan_comb) {
-          // no pause_json for training_inters
-          const inters = [...sess.qualifiedIntervs];
-
-          for (const int of inters) {
-            const int_pause =
-              this.db_details.all_session_int_details[sess.session_id]
-                .interviewers[int.user_id].pause_json;
-            if (int_pause && int_pause.isManual) {
-              return true;
-            }
+        for (const int of all_slot_inters) {
+          const int_pause =
+            this.db_details.all_session_int_details[int.session_id]
+              .interviewers[int.user_id].pause_json;
+          if (int_pause && int_pause.isManual) {
+            return true;
           }
         }
         return false;
       };
-
-      if (
-        !this.api_options.include_conflicting_slots.calender_not_connected &&
-        isAnySessIntsCalDisConnected()
-      )
-        return [];
-      if (
-        !this.api_options.include_conflicting_slots.interviewer_pause &&
-        isAnySessIntsPausedManually()
-      ) {
-        return [];
-      }
-
-      const getOutOfWorkHrsMeetAttendees = (
-        curr_sess: InterviewSessionApiRespType,
-        slot_start_time: string,
-        slot_end_time: string,
-      ) => {
-        const holidays = this.db_details.comp_schedule_setting.totalDaysOff;
-        const all_ints: SessionInterviewerApiRespType[] = [
-          ...curr_sess.qualifiedIntervs,
-          ...curr_sess.trainingIntervs,
-        ];
-
-        const ints: SessionInterviewerApiRespType[] = [];
-
-        for (let int of all_ints) {
-          const int_sched_sett =
-            this.db_details.all_session_int_details[curr_sess.session_id]
-              .interviewers[int.user_id].scheduling_settings;
-          const int_tz = int_sched_sett.timeZone.tzCode;
-          const curr_day = userTzDayjs(slot_start_time)
-            .tz(int_tz)
-            .format('dddd');
-          const working_hrs = int_sched_sett.workingHours.find(
-            (day) => day.day.toLowerCase() === curr_day.toLowerCase(),
-          );
-
-          // NOTE: condition for checking whether today is not working day
-          if (
-            holidays.find((holiday: holidayType) =>
-              userTzDayjs(slot_start_time)
-                .tz(int_tz)
-                .isSame(userTzDayjs(holiday.date, 'DD MMM YYYY'), 'date'),
-            ) ||
-            !working_hrs.isWorkDay
-          ) {
-            ints.push({
+      const getAllSlotInters = () => {
+        let ints: SlotIntDetails[] = [];
+        plan_comb.forEach((session_slot) => {
+          const sess_ints = [
+            ...session_slot.qualifiedIntervs,
+            ...session_slot.trainingIntervs,
+          ];
+          const curr_sess_int_details = sess_ints.map((int) => {
+            let int_tz =
+              this.db_details.all_session_int_details[session_slot.session_id]
+                .interviewers[int.user_id].scheduling_settings.timeZone.tzCode;
+            let int_detail: SlotIntDetails = {
               ...int,
-            });
-          }
-          if (
-            !isTimeChunksOverLapps(
-              {
-                startTime: ScheduleUtils.setTimeInDay(
-                  slot_start_time,
-                  working_hrs.timeRange.startTime,
-                  int_tz,
-                ),
-                endTime: ScheduleUtils.setTimeInDay(
-                  slot_start_time,
-                  working_hrs.timeRange.endTime,
-                  int_tz,
-                ),
-              },
-              {
-                startTime: userTzDayjs(slot_start_time).tz(int_tz),
-                endTime: userTzDayjs(slot_end_time).tz(int_tz),
-              },
-            )
-          ) {
-            ints.push({
-              ...int,
-            });
-          }
-        }
-        return ints;
-      };
-      const getPausedMeetAttendees = (
-        curr_sess: InterviewSessionApiRespType,
-        slot_start_time: string,
-        slot_end_time: string,
-      ) => {
-        const attendes = [
-          ...curr_sess.qualifiedIntervs,
-          ...curr_sess.trainingIntervs,
-        ].filter((int) => {
-          const pause_json =
-            this.db_details.all_session_int_details[curr_sess.session_id]
-              .interviewers[int.user_id].pause_json;
-          if (pause_json && !pause_json.isManual) {
-            return isTimeChunksEnclosed(
-              {
-                startTime: this.getTimeInCandTimeZone(pause_json.start_date),
-                endTime: this.getTimeInCandTimeZone(pause_json.end_date),
-              },
-              {
-                startTime: this.getTimeInCandTimeZone(slot_start_time),
-                endTime: this.getTimeInCandTimeZone(slot_end_time),
-              },
-            );
-          }
-          return false;
+              session_id: session_slot.session_id,
+              curr_day_work_hrs: this.intervs_details_map
+                .get(int.user_id)
+                .work_hours.find((work_day) =>
+                  userTzDayjs(work_day.curr_date)
+                    .tz(int_tz)
+                    .isSame(currDay, 'day'),
+                ).work_hrs,
+            };
+            return int_detail;
+          });
+          ints = [...ints, ...curr_sess_int_details];
         });
-        return attendes;
+        return ints;
       };
 
       /**
@@ -559,6 +485,7 @@ export class CandidatesSchedulingV2 {
       const getSessionsAvailability = (
         session_idx: number,
         session_start_time: string,
+        common_work_hrs_dayjs: TimeDurationDayjsType[],
       ): SessionCombinationRespType[] => {
         const curr_session = plan_comb[session_idx];
         const curr_sess_start_time =
@@ -568,25 +495,13 @@ export class CandidatesSchedulingV2 {
           session_start_time,
         ).add(curr_session.duration, 'minutes');
 
-        const not_avail_ints = getOutOfWorkHrsMeetAttendees(
-          curr_session,
-          curr_sess_start_time.format(),
-          curr_sess_end_time.format(),
+        const is_sesn_time_availble = common_work_hrs_dayjs.some((t) =>
+          isTimeChunksEnclosed(t, {
+            startTime: curr_sess_start_time,
+            endTime: curr_sess_end_time,
+          }),
         );
-
-        const paused_inters = getPausedMeetAttendees(
-          curr_session,
-          session_start_time,
-          curr_sess_end_time.format(),
-        );
-        //TODO: can we include reason ??
-        if (not_avail_ints.length > 0) {
-          return [];
-        }
-        if (
-          this.api_options.include_conflicting_slots.interviewer_pause &&
-          paused_inters.length > 0
-        ) {
+        if (!is_sesn_time_availble) {
           return [];
         }
 
@@ -618,43 +533,75 @@ export class CandidatesSchedulingV2 {
         }
 
         if (session_idx + 1 === plan_comb.length) {
-          return [session_slot];
+          return [{ ...session_slot }];
         }
         const upcoming_sessn_slots = getSessionsAvailability(
           session_idx + 1,
           curr_sess_end_time.add(curr_session.break_duration).format(),
+          common_work_hrs_dayjs,
         );
 
         return [session_slot, ...upcoming_sessn_slots];
       };
 
-      const day_start = currDay.startOf('day');
-      const day_end = currDay.add(1, 'day').startOf('day');
+      const getCommonIntsWorkHrs = (all_int_work_hrs: SlotIntDetails[]) => {
+        const common_work_hrs = findCommonTimeRangeUtil(
+          all_int_work_hrs.map((i) => ({
+            inter_id: i.user_id,
+            time_ranges: i.curr_day_work_hrs,
+          })),
+          this.api_payload.candidate_tz,
+        );
+        const common_work_hrs_dayjs: TimeDurationDayjsType[] =
+          common_work_hrs.map((t) => ({
+            startTime: userTzDayjs(t.startTime).tz(
+              this.api_payload.candidate_tz,
+            ),
+            endTime: userTzDayjs(t.endTime).tz(this.api_payload.candidate_tz),
+          }));
+        return common_work_hrs_dayjs;
+      };
 
-      let near_curr_time = ScheduleUtils.getNearestCurrTime(
-        this.api_payload.candidate_tz,
-      );
-      if (near_curr_time.isAfter(day_end, 'minutes')) {
+      if (
+        !this.api_options.include_conflicting_slots.calender_not_connected &&
+        isAnySessIntsCalDisConnected()
+      )
+        return [];
+      if (
+        !this.api_options.include_conflicting_slots.interviewer_pause &&
+        isAnySessIntsPausedManually()
+      ) {
         return [];
       }
-      if (near_curr_time.isBefore(day_start, 'seconds')) {
-        near_curr_time = day_start;
-      }
-      while (near_curr_time.isBefore(day_end)) {
-        const session_comb = getSessionsAvailability(
-          0,
-          near_curr_time.format(),
+
+      let all_int_work_hrs: SlotIntDetails[] = getAllSlotInters();
+      let common_work_hrs_dayjs = getCommonIntsWorkHrs(all_int_work_hrs);
+
+      for (let work_hour_duration of common_work_hrs_dayjs) {
+        let curr_start_time = userTzDayjs(work_hour_duration.startTime).tz(
+          this.api_payload.candidate_tz,
         );
-        if (session_comb.length !== 0) {
-          schedule_combs.push({
-            plan_comb_id: nanoid(),
-            sessions: [...session_comb],
-          });
+        let curr_end_time = userTzDayjs(work_hour_duration.endTime).tz(
+          this.api_payload.candidate_tz,
+        );
+
+        while (curr_start_time.isSameOrBefore(curr_end_time, 'minutes')) {
+          const slot_comb = getSessionsAvailability(
+            0,
+            curr_start_time.format(),
+            common_work_hrs_dayjs,
+          );
+          if (slot_comb.length > 0) {
+            schedule_combs.push({
+              plan_comb_id: nanoid(),
+              sessions: [...slot_comb],
+            });
+          }
+          curr_start_time = curr_start_time.add(
+            this.api_options.check_next_minutes,
+            'minutes',
+          );
         }
-        near_curr_time = near_curr_time.add(
-          this.api_options.check_next_minutes,
-          'minutes',
-        );
       }
 
       return schedule_combs;

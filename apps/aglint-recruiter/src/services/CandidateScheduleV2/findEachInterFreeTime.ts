@@ -61,7 +61,7 @@ export const findEachInterviewerFreeTimes = (
       );
       work_hrs.push({
         curr_date: current_date.format(),
-        free_times: work_time_duration,
+        work_hrs: work_time_duration,
       });
       free_times.push({
         curr_date: current_date.format(),

@@ -1,3 +1,5 @@
+import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
+
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export class ScheduleUtils {
@@ -37,5 +39,13 @@ export class ScheduleUtils {
       .set('minutes', 0)
       .set('seconds', 0);
     return curr_world_time;
+  };
+  static convertTimedurationJsToStr = (
+    t: TimeDurationDayjsType,
+  ): TimeDurationType => {
+    return {
+      startTime: t.startTime.format(),
+      endTime: t.endTime.format(),
+    };
   };
 }

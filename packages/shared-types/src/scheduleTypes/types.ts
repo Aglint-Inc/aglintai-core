@@ -117,7 +117,7 @@ export type InterDayFreeTime = {
 
 export type InterDayWorkHr = {
   curr_date: string;
-  free_times: TimeDurationType[];
+  work_hrs: TimeDurationType[];
 };
 
 export type CompServiceKeyCred = {

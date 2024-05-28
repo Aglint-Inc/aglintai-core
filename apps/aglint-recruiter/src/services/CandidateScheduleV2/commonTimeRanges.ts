@@ -1,44 +1,17 @@
 /* eslint-disable security/detect-object-injection */
 import { TimeDurationDayjsType, TimeDurationType } from '@aglint/shared-types';
-import { cloneDeep } from 'lodash';
 
 import { DayjsTimeRange, FuncParams } from './types';
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export const findCommonTimeRangeUtil = (
   ints_meta: FuncParams[],
-  cand_tz: string,
+  resp_tz: string,
 ): TimeDurationType[] => {
   //TODO: rewrite the merging function for beeter understanding
 
-  const subtractpauseTimeFromFreeTimeRange = (inters: FuncParams[]) => {
-    const updInters = cloneDeep(inters);
-    for (const int of updInters) {
-      if (!int.interviewer_pause || int.time_ranges.length === 0) continue;
-      if (int.interviewer_pause.isManual) {
-        int.time_ranges = [];
-      } else {
-        int.time_ranges = int.time_ranges.filter((t) => {
-          const flag =
-            userTzDayjs(t.endTime).isBefore(
-              int.interviewer_pause.start_date,
-              'date',
-            ) ||
-            userTzDayjs(t.startTime).isAfter(
-              int.interviewer_pause.end_date,
-              'date',
-            );
-          return flag;
-        });
-      }
-    }
-
-    return updInters;
-  };
-  const inters = subtractpauseTimeFromFreeTimeRange(ints_meta);
-
-  if (inters.find((i) => i.time_ranges.length === 0)) return [];
-  const int_sorted_range: DayjsTimeRange[] = inters.map((i) => ({
+  if (ints_meta.find((i) => i.time_ranges.length === 0)) return [];
+  const int_sorted_range: DayjsTimeRange[] = ints_meta.map((i) => ({
     inter_id: i.inter_id,
     time_ranges: i.time_ranges
       .sort((time1, time2) => {
@@ -160,7 +133,7 @@ export const findCommonTimeRangeUtil = (
     curr_intersection = [...new_intersection];
   }
   return curr_intersection.map((t) => ({
-    startTime: userTzDayjs(t.startTime).tz(cand_tz).format(),
-    endTime: userTzDayjs(t.endTime).tz(cand_tz).format(),
+    startTime: userTzDayjs(t.startTime).tz(resp_tz).format(),
+    endTime: userTzDayjs(t.endTime).tz(resp_tz).format(),
   }));
 };

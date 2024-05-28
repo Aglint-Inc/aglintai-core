@@ -3,9 +3,9 @@ import {
   CompServiceKeyCred,
   InterDetailsType,
   InterviewerMeetingScheduled,
-  InterviewModuleRelationType,
   InterviewSessionApiRespType,
   schedulingSettingType,
+  SessionInterviewerApiRespType,
   SessionInterviewerType,
   TimeDurationDayjsType,
   TimeDurationType,
@@ -32,10 +32,14 @@ export type IntervsWorkHrsEventMapType = Map<string, IntervsWorkHrsEventType>;
 export type FuncParams = {
   inter_id: string;
   time_ranges: TimeDurationType[];
-  interviewer_pause: InterviewModuleRelationType['pause_json'] | null;
 };
 
 export type DayjsTimeRange = {
   inter_id: string;
   time_ranges: TimeDurationDayjsType[];
+};
+
+export type SlotIntDetails = SessionInterviewerApiRespType & {
+  session_id: string;
+  curr_day_work_hrs: TimeDurationType[];
 };
