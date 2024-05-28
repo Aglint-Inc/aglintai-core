@@ -1,9 +1,19 @@
 import { appKey, argsToKeys } from '..';
-import { GetWorkflowAction } from '.';
+import { WorkflowActionKeys } from '.';
 
 export const workflowActionQueryKeys = {
   all: { queryKey: [appKey, 'workflowAction'] as string[] },
-  workflowAction: (args: GetWorkflowAction) => ({
+  workflowAction: (args: WorkflowActionKeys) => ({
     queryKey: [...workflowActionQueryKeys.all.queryKey, ...argsToKeys(args)],
+  }),
+} as const;
+
+export const workflowActionMutationKeys = {
+  all: { mutationKey: [appKey, 'workflowAction'] as string[] },
+  workflowAction: (args: WorkflowActionKeys) => ({
+    mutationKey: [
+      ...workflowActionMutationKeys.all.mutationKey,
+      ...argsToKeys(args),
+    ],
   }),
 } as const;

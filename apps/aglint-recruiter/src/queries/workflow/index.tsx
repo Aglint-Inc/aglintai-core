@@ -28,7 +28,6 @@ const getWorkflow = async ({ recruiter_id }: GetWorkflow) => {
   if (error) throw new Error(error.message);
   return data;
 };
-// TODO: RPC function with list of job_ids needed here
 
 export const useWorkflowMutations = (args: WorkflowKeys) => {
   const { mutationKey } = workflowMutationKeys.workflow(args);

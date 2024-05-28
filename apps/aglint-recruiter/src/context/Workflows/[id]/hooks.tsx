@@ -1,5 +1,14 @@
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+import {
+  useWorkflowActionCreate,
+  useWorkflowActionDelete,
+  useWorkflowActionMutations,
+  useWorkflowActions,
+  useWorkflowActionUpdate,
+} from '@/src/queries/workflow-action';
 
 import { useWorkflows } from '..';
 
@@ -9,9 +18,10 @@ const useWorkflowContext = () => {
   } = useRouter();
   const {
     workflows: { data, status },
-    workflowDelete: { mutate: deleteMutation },
-    workflowUpdate: { mutate: updateMuation },
+    workflowDelete: { mutate: deleteWorkflowMutation },
+    workflowUpdate: { mutate: updateWorkflowMuation },
   } = useWorkflows();
+
   const workflow = useMemo(
     () =>
       status === 'success'
@@ -20,20 +30,60 @@ const useWorkflowContext = () => {
     [status, data],
   );
 
-  const handleDelete = useCallback(
-    () => deleteMutation({ id: workflow?.id ?? null }),
+  const handleDeleteWorkflow = useCallback(
+    () => deleteWorkflowMutation({ id: workflow?.id ?? null }),
+    [workflow],
+  );
+  const handleUpdateWorkflow = useCallback(
+    (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) =>
+      updateWorkflowMuation({ id: workflow?.id ?? null, payload }),
     [workflow],
   );
 
-  const handleUpdate = useCallback(
-    (payload: Parameters<typeof updateMuation>[0]['payload']) =>
-      updateMuation({ id: workflow?.id ?? null, payload }),
+  const actions = useWorkflowActions({ workflow_id: workflow?.id });
+  const actionMutations = useWorkflowActionMutations({
+    workflow_id: workflow?.id,
+  });
+  const { mutate: createActionMutation } = useWorkflowActionCreate({
+    workflow_id: workflow?.id,
+  });
+  const { mutate: deleteActionMutation } = useWorkflowActionDelete({
+    workflow_id: workflow?.id,
+  });
+  const { mutate: updateActionMutation } = useWorkflowActionUpdate({
+    workflow_id: workflow?.id,
+  });
+
+  const handleCreateAction = useCallback(
+    (payload: Parameters<typeof createActionMutation>[0]['payload']) => {
+      const id = uuidv4();
+      createActionMutation({
+        id,
+        payload,
+        workflow_id: workflow?.id,
+      });
+    },
     [workflow],
   );
+  const handleDeleteAction = useCallback(
+    () => deleteActionMutation({ id: workflow?.id }),
+    [workflow],
+  );
+  const handleUpdateAction = useCallback(
+    (payload: Parameters<typeof updateActionMutation>[0]['payload']) =>
+      updateActionMutation({ id: workflow?.id, payload }),
+    [workflow],
+  );
+
   return {
     workflow,
-    handleDelete,
-    handleUpdate,
+    actions,
+    actionMutations,
+    handleDeleteWorkflow,
+    handleUpdateWorkflow,
+    handleCreateAction,
+    handleDeleteAction,
+    handleUpdateAction,
   };
 };
 
