@@ -5,8 +5,8 @@ import { ReactNode } from 'react';
 import { ConfirmationPopup } from '@/devlink3/ConfirmationPopup';
 import { DeletePopup } from '@/devlink3/DeletePopup';
 
+import Loader from '../../Common/Lotties/Integrations/Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import Loader from '../Loader';
 import { SchedulingReasonTypes } from '../types';
 
 function SchedulingPopUps({

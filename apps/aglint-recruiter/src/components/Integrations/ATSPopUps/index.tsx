@@ -11,8 +11,8 @@ import { LearnHowLever } from '@/devlink3/LearnHowLever';
 import toast from '@/src/utils/toast';
 
 import Icon from '../../Common/Icons/Icon';
+import Loader from '../../Common/Lotties/Integrations/Loader';
 import { ShowCode } from '../../Common/ShowCode';
-import Loader from '../Loader';
 import { PopUpReasonTypes } from '../types';
 
 function ATSPopUps({

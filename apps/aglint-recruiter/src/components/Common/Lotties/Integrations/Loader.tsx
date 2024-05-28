@@ -2,7 +2,8 @@ import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 import React from 'react';
 
-import { loaderLottie } from './loader-loattie';
+import { loaderLottie } from '@/public/lottie/Integrations/loader-loattie';
+
 function Loader() {
   return (
     <Stack height={70} position={'relative'}>
