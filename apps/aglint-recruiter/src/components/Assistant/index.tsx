@@ -18,7 +18,7 @@ import ChatMessageLoader from '../AssistantChat/ChatMessageLoader';
 import UITypography from '../Common/UITypography';
 import ResumePreviewer from '../JobApplicationsDashboard/ApplicationCard/ApplicationDetails/ResumePreviewer';
 import { formatTimeStamp } from '../JobApplicationsDashboard/utils';
-import Loader from '../SignUpComp/Loader/Index';
+import Loader from '../Common/Lotties/SignUp/Index';
 
 function Assistant() {
   const { recruiter } = useAuthDetails();
