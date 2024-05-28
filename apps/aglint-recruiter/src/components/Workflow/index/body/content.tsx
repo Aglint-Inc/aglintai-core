@@ -11,6 +11,7 @@ import {
   useWorkflowStore,
   WorkflowStore,
 } from '../../../../context/Workflows/store';
+import { getTriggerOption } from '../../[id]/body/trigger';
 
 const Content = () => {
   const {
@@ -52,7 +53,7 @@ const Cards = (props: {
         }
       }, true);
     })
-    .map(({ id, title, trigger, jobs }) => {
+    .map(({ id, title, trigger, phase, jobs }) => {
       const loading = !!mutations.find((mutation) => mutation.id === id);
       const jobCount = jobs.length;
       return (
@@ -60,7 +61,7 @@ const Cards = (props: {
           <WorkflowCard
             key={id}
             textWorkflowName={title}
-            textWorkflowTrigger={trigger}
+            textWorkflowTrigger={getTriggerOption(trigger, phase)}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
             onClickDelete={{ onClick: () => handleDelete({ id }) }}
             onClickEdit={{

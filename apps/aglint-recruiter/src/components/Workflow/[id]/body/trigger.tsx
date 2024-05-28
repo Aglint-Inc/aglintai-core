@@ -150,7 +150,7 @@ const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
   }[],
 );
 
-function getTriggerOption(
+export function getTriggerOption(
   trigger: DatabaseEnums['workflow_trigger'],
   phase: DatabaseEnums['workflow_phase'],
 ): string {
