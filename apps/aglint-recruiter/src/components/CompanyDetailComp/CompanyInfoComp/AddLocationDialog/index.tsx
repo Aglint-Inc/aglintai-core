@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AddLocationPop } from '@/devlink/AddLocationPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZone from '@/src/utils/timeZone';
+import toast from '@/src/utils/toast';
 
 import { debouncedSave } from '../../utils';
 import { debounce, geoCodeLocation, handleValidate } from './until';
@@ -184,7 +185,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
           isLocationDescVisible={false}
-          isAddDisable={!isRequired}
+          isAddDisable={edit === -1 ? !isRequired : false}
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           textButtonLabel={edit === -1 ? 'Add' : 'Save'}
           slotForm={
@@ -270,7 +271,15 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           }}
           onClickAdd={{
             onClick: () => {
-              handleAddLocation();
+              if (edit === -1) {
+                handleAddLocation();
+              } else {
+                cityRef.current.value &&
+                regionRef.current.value &&
+                countryRef.current.value
+                  ? handleAddLocation()
+                  : toast.message('Please Enter the required fields');
+              }
             },
           }}
           isCheckboxVisible={
