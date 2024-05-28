@@ -27,13 +27,13 @@ import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
+import ThankYou from '@/public/lottie/JobPost/ThankYouLottie';
 import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import Icon from '../Common/Icons/Icon';
-import ThankYou from './ThankYouLottie';
 import UploadDB from './UploadDB';
 
 interface JobsListProps {
