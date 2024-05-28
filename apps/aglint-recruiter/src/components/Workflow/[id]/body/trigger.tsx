@@ -1,8 +1,8 @@
 import { DatabaseEnums } from '@aglint/shared-types';
-import { useState } from 'react';
 
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
+import { useWorkflow } from '@/src/context/Workflows/[id]';
 
 const Trigger = () => {
   return (
@@ -18,36 +18,51 @@ const Trigger = () => {
 export default Trigger;
 
 const Forms = () => {
+  const {
+    workflow: { phase },
+  } = useWorkflow();
   return (
     <>
       <TriggerForm />
-      <DurationForm />
+      {phase !== 'now' && <DurationForm />}
     </>
   );
 };
 
 const TriggerForm = () => {
-  const [value, setValue] =
-    useState<(typeof TRIGGER_OPTIONS)[number]['value']>();
+  const {
+    workflow: { trigger, phase, interval },
+    handleUpdate,
+  } = useWorkflow();
+  const payload = { trigger, phase };
   return (
     <UISelect
       label='When will the event trigger?'
-      value={value}
+      value={JSON.stringify(payload)}
       menuOptions={TRIGGER_OPTIONS}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={(e) => {
+        const { phase, trigger } = JSON.parse(e.target.value) as typeof payload;
+        handleUpdate({
+          phase,
+          trigger,
+          interval: phase === 'now' ? 0 : interval === 0 ? 30 : interval,
+        });
+      }}
     />
   );
 };
 
 const DurationForm = () => {
-  const [value, setValue] =
-    useState<(typeof DURATION_OPTIONS)[number]['value']>();
+  const {
+    workflow: { interval },
+    handleUpdate,
+  } = useWorkflow();
   return (
     <UISelect
-      label='How long before event start?'
-      value={value}
+      label='Interval between the trigger and action'
+      value={interval}
       menuOptions={DURATION_OPTIONS}
-      onChange={(e) => setValue(e.target.value)}
+      onChange={(e) => handleUpdate({ interval: e.target.value })}
     />
   );
 };
@@ -114,7 +129,10 @@ const TRIGGER_OPTIONS = TRIGGER_PAYLOAD.reduce(
     acc.push(
       ...phases.map((phase) => ({
         name: getTriggerOption(trigger, phase),
-        value: { trigger, phase },
+        value: JSON.stringify({
+          trigger,
+          phase,
+        }) as unknown as (typeof acc)[number]['value'],
       })),
     );
     return acc;

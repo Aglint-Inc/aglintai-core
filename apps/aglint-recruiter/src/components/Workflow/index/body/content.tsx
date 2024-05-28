@@ -4,9 +4,7 @@ import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import Loader from '@/src/components/Common/Loader';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
-import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflows } from '@/src/context/Workflows';
-import { useWorkflowDelete, useWorkflowState } from '@/src/queries/workflow';
 import ROUTES from '@/src/utils/routing/routes';
 
 import {
@@ -28,11 +26,12 @@ export default Content;
 const Cards = (props: {
   data: ReturnType<typeof useWorkflows>['workflows']['data'];
 }) => {
-  const { recruiter_id } = useAuthDetails();
   const { push } = useRouter();
   const filters = useWorkflowStore((state) => state.filters);
-  const mutations = useWorkflowState({ recruiter_id });
-  const { mutate: handleDelete } = useWorkflowDelete({ recruiter_id });
+  const {
+    workflowDelete: { mutate: handleDelete },
+    workflowMutations: mutations,
+  } = useWorkflows();
   const cards = props.data
     .filter(({ title, jobs }) => {
       return Object.entries(filters).reduce((acc, [key, value]) => {
