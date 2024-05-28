@@ -29,6 +29,7 @@ const getWorkflowActions = async ({ workflow_id }: WorkflowActionKeys) => {
   const { data, error } = await supabase
     .from('workflow_action')
     .select()
+    .order('order', { ascending: true })
     .eq('workflow_id', workflow_id);
   if (error) throw new Error(error.message);
   return data;
