@@ -135,14 +135,15 @@ export const findEachInterviewerFreeTimes = (
       interviewer.events,
       api_payload.candidate_tz,
     );
-    let curr_world_time = userTzDayjs().tz(
+
+    let nearest_curr_time = ScheduleUtils.getNearestCurrTime(
       interviewer.int_schedule_setting.timeZone.tzCode,
     );
-    const stepped_time = ScheduleUtils.addHoursToCurrTime(curr_world_time);
-    if (current_day.isSame(stepped_time, 'day')) {
+
+    if (current_day.isSame(nearest_curr_time, 'day')) {
       current_day_blocked_times.push({
         startTime: userTzDayjs(current_day),
-        endTime: userTzDayjs(stepped_time),
+        endTime: userTzDayjs(nearest_curr_time),
       });
     }
 

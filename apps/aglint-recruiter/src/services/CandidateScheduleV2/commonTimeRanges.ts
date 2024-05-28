@@ -6,12 +6,12 @@ import { DayjsTimeRange, FuncParams } from './types';
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export const findCommonTimeRangeUtil = (
-  ints_meta: FuncParams,
+  ints_meta: FuncParams[],
   cand_tz: string,
 ): TimeDurationType[] => {
   //TODO: rewrite the merging function for beeter understanding
 
-  const subtractpauseTimeFromFreeTimeRange = (inters: FuncParams) => {
+  const subtractpauseTimeFromFreeTimeRange = (inters: FuncParams[]) => {
     const updInters = cloneDeep(inters);
     for (const int of updInters) {
       if (!int.interviewer_pause || int.time_ranges.length === 0) continue;

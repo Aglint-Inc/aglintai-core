@@ -25,7 +25,7 @@ export type DBDetailsType = {
 
 export type IntervsWorkHrsEventType = Pick<
   InterDetailsType,
-  'events' | 'freeTimes' | 'work_hours' | 'email'
+  'events' | 'freeTimes' | 'work_hours' | 'email' | 'isCalenderConnected'
 >;
 export type IntervsWorkHrsEventMapType = Map<string, IntervsWorkHrsEventType>;
 

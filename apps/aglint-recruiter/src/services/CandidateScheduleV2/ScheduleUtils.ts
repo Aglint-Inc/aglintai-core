@@ -1,5 +1,3 @@
-import { Dayjs } from 'dayjs';
-
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export class ScheduleUtils {
@@ -32,8 +30,12 @@ export class ScheduleUtils {
 
     return userTime;
   };
-  static addHoursToCurrTime = (curr_time: Dayjs) => {
-    curr_time = curr_time.add(2, 'hour').set('minutes', 0).set('seconds', 0);
-    return curr_time;
+  static getNearestCurrTime = (tz: string) => {
+    let curr_world_time = userTzDayjs().tz(tz);
+    curr_world_time = curr_world_time
+      .add(2, 'hour')
+      .set('minutes', 0)
+      .set('seconds', 0);
+    return curr_world_time;
   };
 }
