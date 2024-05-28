@@ -83,7 +83,7 @@ function RequestAvailability() {
       <ReqAvailability
         textDateAvailability={
           <Stack>
-            {`${selectedDate[0]?.format('MMM DD')}-${selectedDate[1]?.format('MMM DD')}`}
+            {`${selectedDate[0]?.format('MMMM DD')} - ${selectedDate[1]?.format('MMMM DD')}`}
             <Popover
               id={id}
               open={open}
@@ -109,11 +109,7 @@ function RequestAvailability() {
                 onChange={(e) => {
                   setSelectedDate(e);
                 }}
-                value={
-                  dayjs(selectedDate[0]).toString() == 'Invalid Date'
-                    ? [dayjs(selectedDate[0]), dayjs(selectedDate[1])]
-                    : [dayjs(selectedDate[0]), dayjs(selectedDate[1])]
-                }
+                value={[dayjs(selectedDate[0]), dayjs(selectedDate[1])]}
               />
             </Popover>
           </Stack>
@@ -148,11 +144,12 @@ function RequestAvailability() {
         slotAvailabilityCriteria={
           <>
             <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-              <Typography width={'450px'}>
+              <Typography variant='body2' width={'450px'}>
                 Minimum number of days should be selected.
               </Typography>
               <Autocomplete
                 fullWidth
+                disableClearable
                 disablePortal
                 value={selectedDays}
                 options={requestDaysListOptions}
@@ -171,11 +168,12 @@ function RequestAvailability() {
             </Stack>
 
             <Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-              <Typography width={'450px'}>
+              <Typography variant='body2' width={'450px'}>
                 Minimum number of slots selected per each day.
               </Typography>
               <Autocomplete
                 fullWidth
+                disableClearable
                 disablePortal
                 value={selectedSlots}
                 options={slotsListOptions}
