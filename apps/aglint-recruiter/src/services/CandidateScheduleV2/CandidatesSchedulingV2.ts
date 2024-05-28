@@ -630,15 +630,20 @@ export class CandidatesSchedulingV2 {
         return final_combs;
       }
 
-      let combs: PlanCombinationRespType[] = [];
+      let combs: PlanCombinationRespType[] = this.findFixedBreakSessionCombs(
+        cloneDeep(session_rounds[curr_day_idx]),
+        curr_date,
+      );
       while (
         combs.length === 0 &&
+        curr_day_idx !== 0 &&
         curr_date.isSameOrBefore(this.schedule_dates.user_end_date_js, 'day')
       ) {
         combs = this.findFixedBreakSessionCombs(
           cloneDeep(session_rounds[curr_day_idx]),
           curr_date,
         );
+
         if (combs.length === 0) {
           curr_date = curr_date.add(1, 'day');
         }
@@ -727,8 +732,10 @@ export class CandidatesSchedulingV2 {
       let all_combs: SessionsCombType[][][] = [];
       while (curr_date.isSameOrBefore(dayjs_end_date)) {
         const plan_combs = findMultiDaySlotsUtil([], curr_date, 0);
-        const session_combs = combineSlots(plan_combs);
-        all_combs = [...all_combs, session_combs];
+        if (plan_combs.length > 0) {
+          const session_combs = combineSlots(plan_combs);
+          all_combs = [...all_combs, session_combs];
+        }
         curr_date = curr_date.add(1, 'day');
       }
       return all_combs;
