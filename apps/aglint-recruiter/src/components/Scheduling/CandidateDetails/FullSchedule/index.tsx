@@ -61,7 +61,7 @@ function FullSchedule() {
   }: {
     session: SchedulingApplication['initialSessions'][0];
   }) => {
-    if (session.users.length > 0) {
+    if (session?.users?.length > 0) {
       if (selectedSessionIds.includes(session.id)) {
         setSelectedSessionIds(
           selectedSessionIds.filter((id) => id !== session.id),
@@ -119,7 +119,8 @@ function FullSchedule() {
                 <NewInterviewPlanCard
                   isCheckboxVisible={true}
                   onClickCard={{
-                    onClick: () => {
+                    onClick: (e) => {
+                      e.stopPropagation();
                       if (
                         session.interview_meeting?.status === 'completed' ||
                         session.interview_meeting?.status === 'confirmed'
@@ -195,7 +196,8 @@ function FullSchedule() {
                       <Checkbox
                         isChecked={selectedSessionIds.includes(session.id)}
                         onClickCheck={{
-                          onClick: () => {
+                          onClick: (e) => {
+                            e.stopPropagation();
                             selectSession({ session });
                           },
                         }}

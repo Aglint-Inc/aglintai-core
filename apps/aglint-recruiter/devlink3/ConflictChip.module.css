@@ -1,3 +1,9 @@
+.conflict_div {
+  display: flex;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .conflict {
   position: relative;
 
@@ -85,50 +91,4 @@
 
 .embed_flex.fixedd {
   width: 23px;
-}
-
-.info_absolute {
-  position: absolute;
-  left: auto;
-  top: 28px;
-  right: 0%;
-  bottom: auto;
-  z-index: 3;
-
-  display: none;
-  width: 270px;
-  padding: 12px;
-
-  border: 1px solid #e9ebed;
-  border-radius: 10px;
-
-  background-color: white;
-
-  color: #2f3941;
-}
-
-.info_absolute.top_32 {
-  top: 32px;
-  cursor: default;
-}
-
-.info_absolute.top_32.editingg {
-  display: flex;
-}
-
-.info_absolute.top_32.move_to_top {
-  left: auto;
-  top: auto;
-  right: 0%;
-  bottom: 30px;
-}
-
-.info_absolute.top_32.seperate_card {
-  position: static;
-  left: auto;
-  top: auto;
-  right: 0%;
-  bottom: 30px;
-
-  display: flex;
 }
