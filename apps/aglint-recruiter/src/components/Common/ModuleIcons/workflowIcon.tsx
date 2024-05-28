@@ -1,4 +1,4 @@
-const Workflow = () => {
+const WorkflowIcon = () => {
   return (
     <svg
       width='24'
@@ -15,4 +15,4 @@ const Workflow = () => {
   );
 };
 
-export default Workflow;
+export default WorkflowIcon;

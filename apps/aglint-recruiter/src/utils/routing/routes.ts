@@ -1,339 +1,248 @@
-type Params = Partial<{ [id: string]: string | number | boolean | null }>;
-const pageRouteBuilder = (
-  routes: string[],
-  ...args: Args<Params, Params>
-): string => {
-  const safeDynamicPaths = Object.values(args[0] ?? {}).map((path) => path);
-  const safeQueries = Object.entries(args[1] ?? {})
-    .map(([key, value]) => `${key}=${value}`)
-    .join('&');
-  return `${[...routes, ...safeDynamicPaths].join('/')}${safeQueries ? `?${safeQueries}` : ''}`;
+const pageRouteBuilder = (routes: string[]): string => {
+  return routes.join('/');
 };
-
-type Args<
-  T extends Params = undefined,
-  U extends Params = undefined,
-> = Parameters<
-  (
-    // eslint-disable-next-line no-unused-vars
-    dynamicPaths?: T,
-    // eslint-disable-next-line no-unused-vars
-    queries?: U,
-  ) => void
->;
-
 const agentJobs = {
-  '/agent/jobs': (...args: Args) =>
-    pageRouteBuilder([agent['/agent'](), 'jobs'], ...args),
-  '/agent/jobs/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([agentJobs['agent/jobs']()], ...args),
+  '/agent/jobs': () => pageRouteBuilder([agent['/agent'](), 'jobs']),
+  '/agent/jobs/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([agentJobs['agent/jobs'](), id]),
 } as const;
-
 const agent = {
-  '/agent': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'agent'], ...args),
-  '/agent/scheduler': (...args: Args) =>
-    pageRouteBuilder([agent['/agent'](...args), 'scheduler'], ...args),
-  '/agent/sourcing': (...args: Args) =>
-    pageRouteBuilder([agent['/agent'](), 'sourcing'], ...args),
+  '/agent': () => pageRouteBuilder([ROUTES.app(), 'agent']),
+  '/agent/scheduler': () => pageRouteBuilder([agent['/agent'](), 'scheduler']),
+  '/agent/sourcing': () => pageRouteBuilder([agent['/agent'](), 'sourcing']),
   ...agentJobs,
 } as const;
-
 const assementNew = {
-  '/assessment-new': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'assessment-new'], ...args),
-  '/assessment-new/[id]': (args: { id: string }) =>
-    pageRouteBuilder([assementNew['/assessment-new']()], args),
+  '/assessment-new': () => pageRouteBuilder([ROUTES.app(), 'assessment-new']),
+  '/assessment-new/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([assementNew['/assessment-new'](), id]),
 } as const;
-
 const assessmentThanks = {
-  '/assessment-thanks': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'assessment-thanks'], ...args),
-  '/assessment-thanks/[assessment_id]': (args: { assessment_id: string }) =>
-    pageRouteBuilder([assessmentThanks['/assessment-thanks']()], args),
+  '/assessment-thanks': () =>
+    pageRouteBuilder([ROUTES.app(), 'assessment-thanks']),
+  '/assessment-thanks/[assessment_id]': ({
+    assessment_id,
+  }: {
+    assessment_id: string;
+  }) =>
+    pageRouteBuilder([assessmentThanks['/assessment-thanks'](), assessment_id]),
 } as const;
-
 const assisstant = {
-  '/assisstant': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'assisstant'], ...args),
+  '/assisstant': () => pageRouteBuilder([ROUTES.app(), 'assisstant']),
 };
-
 const auth = {
-  '/auth/microsoft': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'auth/microsoft'], ...args),
-  '/auth/zoom': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'auth/zoom'], ...args),
+  '/auth/microsoft': () => pageRouteBuilder([ROUTES.app(), 'auth/microsoft']),
+  '/auth/zoom': () => pageRouteBuilder([ROUTES.app(), 'auth/zoom']),
 } as const;
-
 const authCal = {
-  '/auth-cal/google': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'auth-cal/google'], ...args),
+  '/auth-cal/google': () => () =>
+    pageRouteBuilder([ROUTES.app(), 'auth-cal/google']),
 } as const;
-
 const authEmail = {
-  '/auth-email/google': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'auth-email/google'], ...args),
+  '/auth-email/google': () => () =>
+    pageRouteBuilder([ROUTES.app(), 'auth-email/google']),
 } as const;
-
 const candidateAssessment = {
-  '/candidate-assessment': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'candidate-assessment'], ...args),
-  '/candidate-assessment/[application_id]/[assessment_id]': (
-    args: Args<{
-      application_id: string;
-      assessment_id: string;
-    }>,
-  ) =>
-    pageRouteBuilder(
-      [candidateAssessment['candidate-assessment'](...args)],
-      ...args,
-    ),
+  '/candidate-assessment': () =>
+    pageRouteBuilder([ROUTES.app(), 'candidate-assessment']),
+  '/candidate-assessment/[application_id]/[assessment_id]': ({
+    application_id,
+    assessment_id,
+  }: {
+    application_id: string;
+    assessment_id: string;
+  }) =>
+    pageRouteBuilder([
+      candidateAssessment['candidate-assessment'](),
+      application_id,
+      assessment_id,
+    ]),
 } as const;
-
 const candidatePhoneScreening = {
-  '/candidate-phone-screening': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'candidate-phone-screening'], ...args),
+  '/candidate-phone-screening': () =>
+    pageRouteBuilder([ROUTES.app(), 'candidate-phone-screening']),
 } as const;
-
 const candidates = {
-  '/candidates': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'candidates'], ...args),
-  '/candidates/aglintdb': (...args: Args) =>
-    pageRouteBuilder([candidates['/candidates'](...args), 'aglintdb'], ...args),
-  '/candidates/history': (...args: Args) =>
-    pageRouteBuilder([candidates['/candidates'](...args), 'history'], ...args),
-  '/candidates/search': (...args: Args) =>
-    pageRouteBuilder([candidates['/candidates'](...args), 'search'], ...args),
+  '/candidates': () => pageRouteBuilder([ROUTES.app(), 'candidates']),
+  '/candidates/aglintdb': () =>
+    pageRouteBuilder([candidates['/candidates'](), 'aglintdb']),
+  '/candidates/history': () =>
+    pageRouteBuilder([candidates['/candidates'](), 'history']),
+  '/candidates/search': () =>
+    pageRouteBuilder([candidates['/candidates'](), 'search']),
 } as const;
-
 const company = {
-  '/company': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'company'], ...args),
+  '/company': () => pageRouteBuilder([ROUTES.app(), 'company']),
 } as const;
-
 const companyPostings = {
-  '/company-postings/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([ROUTES.app()], ...args),
+  '/company-postings/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([ROUTES.app(), id]),
 } as const;
-
 const forgotPassword = {
-  '/forgot-password': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'forgot-password'], ...args),
+  '/forgot-password': () => pageRouteBuilder([ROUTES.app(), 'forgot-password']),
 } as const;
-
 const integrations = {
-  '/integrations': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'integrations'], ...args),
+  '/integrations': () => pageRouteBuilder([ROUTES.app(), 'integrations']),
 } as const;
-
 const interview = {
-  '/interview/feedback': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'interview/feedback'], ...args),
+  '/interview/feedback': () =>
+    pageRouteBuilder([ROUTES.app(), 'interview/feedback']),
 };
-
 const jobAssistant = {
-  '/job-assistant/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([ROUTES.app(), 'job-assistant'], ...args),
+  '/job-assistant/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([ROUTES.app(), 'job-assistant', id]),
 } as const;
-
 const jobPost = {
-  '/job-post/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([ROUTES.app(), 'job-post'], ...args),
+  '/job-post/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([ROUTES.app(), 'job-post', id]),
 } as const;
-
 const jobPostAssistant = {
-  '/job-post-assistant/[company_id]': (
-    ...args: Args<{
-      company_id: string;
-    }>
-  ) => pageRouteBuilder([ROUTES.app(), 'job-post-assistant'], ...args),
+  '/job-post-assistant/[company_id]': ({
+    company_id,
+  }: {
+    company_id: string;
+  }) => pageRouteBuilder([ROUTES.app(), 'job-post-assistant', company_id]),
 } as const;
-
 const jobsById = {
-  '/jobs/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([jobs['/jobs']()], ...args),
-  '/jobs/[id]/agent': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'agent'],
-      ...args,
-    ),
-  '/jobs/[id]/assessment': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'assessment'],
-      ...args,
-    ),
-  '/jobs/[id]/candidate-list': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'candidate-list'],
-      ...args,
-    ),
-  '/jobs/[id]/email-templates': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'email-templates'],
-      ...args,
-    ),
-  '/jobs/[id]/interview-plan': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'interview-plan'],
-      ...args,
-    ),
-  '/jobs/[id]/profile-score': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'profile-score'],
-      ...args,
-    ),
-  '/jobs/[id]/screening': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'screening'],
-      ...args,
-    ),
-  '/jobs/[id]/hiring-team': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'hiring-team'],
-      ...args,
-    ),
-  '/jobs/[id]/job-details': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder(
-      [jobsById['/jobs/[id]']({ ...args[0] }), 'job-details'],
-      ...args,
-    ),
+  '/jobs/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobs['/jobs'](), id]),
+  '/jobs/[id]/agent': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'agent']),
+  '/jobs/[id]/assessment': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'assessment']),
+  '/jobs/[id]/candidate-list': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'candidate-list']),
+  '/jobs/[id]/email-templates': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'email-templates']),
+  '/jobs/[id]/interview-plan': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'interview-plan']),
+  '/jobs/[id]/profile-score': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'profile-score']),
+  '/jobs/[id]/screening': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'screening']),
+  '/jobs/[id]/hiring-team': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'hiring-team']),
+  '/jobs/[id]/job-details': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'job-details']),
+  '/jobs/[id]/workflows': ({ id }: { id: string }) =>
+    pageRouteBuilder([jobsById['/jobs/[id]']({ id }), 'workflows']),
 } as const;
-
 const jobs = {
-  '/jobs': (...args: Args<{ lk: string }>) =>
-    pageRouteBuilder([ROUTES.app(), 'jobs'], ...args),
-  '/jobs/create': (...args: Args) =>
-    pageRouteBuilder([jobs['/jobs'](), 'create'], ...args),
-  '/jobs/edit': (...args: Args) =>
-    pageRouteBuilder([jobs['/jobs'](), 'edit'], ...args),
-  '/jobs/new': (...args: Args) =>
-    pageRouteBuilder([jobs['/jobs'](), 'new'], ...args),
+  '/jobs': () => pageRouteBuilder([ROUTES.app(), 'jobs']),
+  '/jobs/create': () => pageRouteBuilder([jobs['/jobs'](), 'create']),
+  '/jobs/edit': () => pageRouteBuilder([jobs['/jobs'](), 'edit']),
+  '/jobs/new': () => pageRouteBuilder([jobs['/jobs'](), 'new']),
   ...jobsById,
 } as const;
-
 const loading = {
-  '/loading': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'loading'], ...args),
+  '/loading': () => pageRouteBuilder([ROUTES.app(), 'loading']),
 } as const;
-
 const login = {
-  '/login': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'login'], ...args),
+  '/login': () => pageRouteBuilder([ROUTES.app(), 'login']),
 } as const;
-
 const notifications = {
-  '/notifications': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'notifications'], ...args),
+  '/notifications': () => pageRouteBuilder([ROUTES.app(), 'notifications']),
 } as const;
-
 const previewAssessment = {
-  '/preview-assessment': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'preview-assessment'], ...args),
-  '/preview-assessment/[job_id]/[assessment_id]': (
-    ...args: Args<{
-      job_id: string;
-      assessment_id: string;
-    }>
-  ) => pageRouteBuilder([previewAssessment['preview-assessment']()], ...args),
+  '/preview-assessment': () =>
+    pageRouteBuilder([ROUTES.app(), 'preview-assessment']),
+  '/preview-assessment/[job_id]/[assessment_id]': ({
+    job_id,
+    assessment_id,
+  }: {
+    job_id: string;
+    assessment_id: string;
+  }) =>
+    pageRouteBuilder([
+      previewAssessment['preview-assessment'](),
+      job_id,
+      assessment_id,
+    ]),
 } as const;
-
 const profile = {
-  '/profile': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'profile'], ...args),
+  '/profile': () => pageRouteBuilder([ROUTES.app(), 'profile']),
 } as const;
-
 const profileLink = {
-  '/profile-link/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([ROUTES.app(), 'profile-link'], ...args),
+  '/profile-link/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([ROUTES.app(), 'profile-link', id]),
 } as const;
-
 const resetPassword = {
-  '/reset-password': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'reset-password'], ...args),
+  '/reset-password': () => pageRouteBuilder([ROUTES.app(), 'reset-password']),
 } as const;
-
 const scheduling = {
-  '/scheduling': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'scheduling'], ...args),
-  '/scheduling/application/[application_id]': (
-    ...args: Args<{
-      application_id: string;
-    }>
-  ) => pageRouteBuilder([scheduling['/scheduling'](), 'application'], ...args),
-  '/scheduling/interviewer/[member_id]': (
-    ...args: Args<{
-      member_id: string;
-    }>
-  ) => pageRouteBuilder([scheduling['/scheduling'](), 'interviewer'], ...args),
-  '/scheduling/invite/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'invite'], ...args),
-  '/scheduling/module/members/[module_id]': (
-    ...args: Args<{
-      module_id: string;
-    }>
-  ) =>
-    pageRouteBuilder(
-      [scheduling['/scheduling'](), 'module', 'members'],
-      ...args,
-    ),
-  '/scheduling/module/IProgressDrawer': (...args: Args) =>
-    pageRouteBuilder(
-      [scheduling['/scheduling'](), 'module', 'IProgressDrawer'],
-      ...args,
-    ),
-  '/scheduling/module/[module_id]': (...args: Args<{ module_id: string }>) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'module'], ...args),
-  '/scheduling/view': (...args: Args) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'view'], ...args),
+  '/scheduling': () => pageRouteBuilder([ROUTES.app(), 'scheduling']),
+  '/scheduling/application/[application_id]': ({
+    application_id,
+  }: {
+    application_id: string;
+  }) =>
+    pageRouteBuilder([
+      scheduling['/scheduling'](),
+      'application',
+      application_id,
+    ]),
+  '/scheduling/interviewer/[member_id]': ({
+    member_id,
+  }: {
+    member_id: string;
+  }) =>
+    pageRouteBuilder([scheduling['/scheduling'](), 'interviewer', member_id]),
+  '/scheduling/invite/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([scheduling['/scheduling'](), 'invite', id]),
+  '/scheduling/module/members/[module_id]': ({
+    module_id,
+  }: {
+    module_id: string;
+  }) =>
+    pageRouteBuilder([
+      scheduling['/scheduling'](),
+      'module',
+      'members',
+      module_id,
+    ]),
+  '/scheduling/module/IProgressDrawer': () =>
+    pageRouteBuilder([
+      scheduling['/scheduling'](),
+      'module',
+      'IProgressDrawer',
+    ]),
+  '/scheduling/module/[module_id]': ({ module_id }: { module_id: string }) =>
+    pageRouteBuilder([scheduling['/scheduling'](), 'module', module_id]),
+  '/scheduling/view': () =>
+    pageRouteBuilder([scheduling['/scheduling'](), 'view']),
 } as const;
-
 const screening = {
-  '/screening': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'screening'], ...args),
-  '/screening/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([screening['/screening']()], ...args),
+  '/screening': () => pageRouteBuilder([ROUTES.app(), 'screening']),
+  '/screening/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([screening['/screening'](), id]),
 } as const;
-
 const screeningDashboard = {
-  '/screening-dashboard': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'screening-dashboard'], ...args),
+  '/screening-dashboard': () =>
+    pageRouteBuilder([ROUTES.app(), 'screening-dashboard']),
 } as const;
-
 const signup = {
-  '/signup': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'signup'], ...args),
+  '/signup': () => pageRouteBuilder([ROUTES.app(), 'signup']),
 } as const;
-
 const support = {
-  '/support': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'support'], ...args),
-  '/support/create': (...args: Args) =>
-    pageRouteBuilder([support['/support'](), 'create'], ...args),
-  '/support/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([support['/support']()], ...args),
+  '/support': () => pageRouteBuilder([ROUTES.app(), 'support']),
+  '/support/create': () => pageRouteBuilder([support['/support'](), 'create']),
+  '/support/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([support['/support'](), id]),
 } as const;
-
 const tasks = {
-  '/tasks': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'tasks'], ...args),
+  '/tasks': () => pageRouteBuilder([ROUTES.app(), 'tasks']),
 } as const;
-
 const thanksPage = {
-  '/thanks-page': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'thanks-page'], ...args),
+  '/thanks-page': () => pageRouteBuilder([ROUTES.app(), 'thanks-page']),
 } as const;
-
 const workflowsById = {
-  '/workflows/[id]': (...args: Args<{ id: string }>) =>
-    pageRouteBuilder([workflows['/workflows']()], ...args),
+  '/workflows/[id]': ({ id }: { id: string }) =>
+    pageRouteBuilder([workflows['/workflows'](), id]),
 } as const;
-
 const workflows = {
-  '/workflows': (...args: Args) =>
-    pageRouteBuilder([ROUTES.app(), 'workflows'], ...args),
+  '/workflows': () => pageRouteBuilder([ROUTES.app(), 'workflows']),
   ...workflowsById,
 } as const;
-
 const ROUTES = {
   app: () => '',
   ...agent,
@@ -371,5 +280,4 @@ const ROUTES = {
   ...thanksPage,
   ...workflows,
 } as const;
-
 export default ROUTES;

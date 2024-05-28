@@ -20,7 +20,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
 
-import Workflow from './Icons/workflow';
+import WorkflowIcon from '../../Common/ModuleIcons/workflowIcon';
 
 function SideNavbar() {
   const router = useRouter();
@@ -240,7 +240,7 @@ const LinkIcon = ({ module }: Pick<LinkProps, 'module'>) => {
     case 'Integrations':
     case 'Company Settings':
     case 'Workflows':
-      return <Workflow />;
+      return <WorkflowIcon />;
   }
 };
 
