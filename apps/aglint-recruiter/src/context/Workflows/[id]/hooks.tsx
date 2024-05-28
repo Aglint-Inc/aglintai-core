@@ -47,10 +47,10 @@ const useWorkflowContext = () => {
   const { mutate: createActionMutation } = useWorkflowActionCreate({
     workflow_id: workflow?.id,
   });
-  const { mutate: deleteActionMutation } = useWorkflowActionDelete({
+  const { mutate: handleDeleteAction } = useWorkflowActionDelete({
     workflow_id: workflow?.id,
   });
-  const { mutate: updateActionMutation } = useWorkflowActionUpdate({
+  const { mutate: handleUpdateAction } = useWorkflowActionUpdate({
     workflow_id: workflow?.id,
   });
 
@@ -63,15 +63,6 @@ const useWorkflowContext = () => {
         workflow_id: workflow?.id,
       });
     },
-    [workflow],
-  );
-  const handleDeleteAction = useCallback(
-    () => deleteActionMutation({ id: workflow?.id }),
-    [workflow],
-  );
-  const handleUpdateAction = useCallback(
-    (payload: Parameters<typeof updateActionMutation>[0]['payload']) =>
-      updateActionMutation({ id: workflow?.id, payload }),
     [workflow],
   );
 

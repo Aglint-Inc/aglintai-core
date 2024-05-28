@@ -4,7 +4,7 @@ import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import Loader from '@/src/components/Common/Loader';
-// import UISelect from '@/src/components/Common/Uiselect';
+import UISelect from '@/src/components/Common/Uiselect';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 
@@ -57,51 +57,58 @@ const Action = (props: ActionProps) => {
 };
 
 const Forms = (props: ActionProps) => {
-  return <>{JSON.stringify(props)}</>;
+  return (
+    <>
+      <ActionForm {...props} />
+    </>
+  );
 };
 
-// const ActionForm = () => {
-//   const { handleUpdateAction } = useWorkflow();
-//   return (
-//     <UISelect
-//       label='Do this'
-//       value={JSON.stringify(payload)}
-//       menuOptions={ACTION_OPTIONS}
-//       onChange={(e) => {
-//         const { phase, trigger } = JSON.parse(e.target.value) as typeof payload;
-//         handleUpdateAction({
-//           phase,
-//           trigger,
-//           interval: phase === 'now' ? 0 : interval === 0 ? 30 : interval,
-//         });
-//       }}
-//     />
-//   );
-// };
+const ActionForm = ({ action: { id, medium, target } }: ActionProps) => {
+  const { handleUpdateAction } = useWorkflow();
+  const payload = { medium, target };
+  return (
+    <UISelect
+      label='Do this'
+      value={JSON.stringify(payload)}
+      menuOptions={ACTION_OPTIONS}
+      onChange={(e) => {
+        const { medium, target } = JSON.parse(e.target.value) as typeof payload;
+        handleUpdateAction({
+          id,
+          payload: {
+            medium,
+            target,
+          },
+        });
+      }}
+    />
+  );
+};
 
 const ACTION_PAYLOAD: {
-  target: DatabaseEnums['workflow_action_target'];
   medium: DatabaseEnums['workflow_action_medium'][];
+  target: DatabaseEnums['workflow_action_target'];
 }[] = [
   {
+    medium: ['email'],
     target: 'applicant',
-    medium: ['email'],
   },
   {
+    medium: ['email'],
     target: 'hiring_manager',
-    medium: ['email'],
   },
   {
+    medium: ['email'],
     target: 'interviewers',
-    medium: ['email'],
   },
   {
+    medium: ['email'],
     target: 'recruiter',
-    medium: ['email'],
   },
   {
-    target: 'recruiting_coordinator',
     medium: ['email'],
+    target: 'recruiting_coordinator',
   },
 ];
 
@@ -109,10 +116,10 @@ export const ACTION_OPTIONS = ACTION_PAYLOAD.reduce(
   (acc, { target, medium: mediums }) => {
     acc.push(
       ...mediums.map((medium) => ({
-        name: getActionOption(target, medium),
+        name: getActionOption(medium, target),
         value: JSON.stringify({
-          target,
           medium,
+          target,
         }) as unknown as (typeof acc)[number]['value'],
       })),
     );
@@ -121,15 +128,15 @@ export const ACTION_OPTIONS = ACTION_PAYLOAD.reduce(
   [] as {
     name: string;
     value: {
-      target: DatabaseEnums['workflow_action_target'];
       medium: DatabaseEnums['workflow_action_medium'];
+      target: DatabaseEnums['workflow_action_target'];
     };
   }[],
 );
 
 function getActionOption(
-  target: DatabaseEnums['workflow_action_target'],
   medium: DatabaseEnums['workflow_action_medium'],
+  target: DatabaseEnums['workflow_action_target'],
 ): string {
   let message = '';
   switch (target) {

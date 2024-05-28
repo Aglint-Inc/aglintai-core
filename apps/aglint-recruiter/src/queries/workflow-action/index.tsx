@@ -148,7 +148,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         if (curr.id === variables.id) acc.push(data);
         else acc.push(curr);
         return acc;
-      }, []);
+      }, [] as WorkflowAction[]);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
   });
@@ -166,7 +166,8 @@ const createWorkflowAction = async ({
   const { data, error } = await supabase
     .from('workflow_action')
     .insert({ ...payload, id, workflow_id })
-    .select();
+    .select()
+    .single();
   if (error) throw new Error(error.message);
   return data;
 };
