@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -22,6 +23,7 @@ import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
+import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities } from '../hooks';
@@ -86,7 +88,7 @@ function RequestAvailability() {
   // handle submit
 
   async function handleSubmit() {
-    insertCandidateRequestAvailability({
+    const result = await insertCandidateRequestAvailability({
       application_id: selectedApplication.id,
       recruiter_id: recruiter.id,
       availability: availability,
@@ -104,6 +106,41 @@ function RequestAvailability() {
       }),
       total_slots: null,
     });
+
+    // send request availability email to candidate
+
+    const body = fillEmailTemplate(
+      recruiter.email_template['request_candidate_slot'].body,
+      {
+        company_name: recruiter.name,
+        schedule_name: selectedSessions.map((ele) => ele.name).join(','),
+        first_name: selectedApplication.candidates.first_name,
+        last_name: selectedApplication.candidates.last_name,
+        job_title: selectedApplication.public_jobs.job_title,
+        availability_link: `<a href='${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${result.id}'>Pick Your Slot</a>`,
+      },
+    );
+
+    const subject = fillEmailTemplate(
+      recruiter.email_template['request_candidate_slot'].subject,
+      {
+        company_name: recruiter.name,
+        schedule_name: selectedSessions.map((ele) => ele.name).join(','),
+        first_name: selectedApplication.candidates.first_name,
+        last_name: selectedApplication.candidates.last_name,
+        job_title: selectedApplication.public_jobs.job_title,
+      },
+    );
+
+    await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
+      fromEmail: `messenger@aglinthq.com`,
+      fromName: 'Aglint',
+      email: selectedApplication.candidates.email,
+      subject: subject,
+      text: body,
+    });
+    // end
+
     let task = null as null | DatabaseTable['new_tasks'];
     if (markCreateTicket) {
       task = await createTask({

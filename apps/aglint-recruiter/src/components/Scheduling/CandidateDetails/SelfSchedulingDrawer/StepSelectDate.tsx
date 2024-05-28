@@ -161,8 +161,8 @@ function SelectDateRange() {
           <DateRange
             onChange={(val) => {
               setDateRange({
-                start_date: val[0].toISOString(),
-                end_date: val[1].toISOString(),
+                start_date: val[0]?.toISOString(),
+                end_date: val[1]?.toISOString(),
               });
             }}
             value={[dayjs(dateRange.start_date), dayjs(dateRange.end_date)]}
