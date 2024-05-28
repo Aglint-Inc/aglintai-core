@@ -2,6 +2,7 @@
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
+  Alert,
   Box,
   Dialog,
   FormControlLabel,
@@ -23,8 +24,6 @@ import React, {
 } from 'react';
 
 import { ButtonPrimaryRegular } from '@/devlink/ButtonPrimaryRegular';
-// import { // AvailableTimerangeEmpty } from '@/devlink/// AvailableTimerangeEmpty';
-// import { // AvailableTimeRangeLoader } from '@/devlink/// AvailableTimeRangeLoader';
 import { CandidateConfirmationPage } from '@/devlink/CandidateConfirmationPage';
 import { CandidateScheduleCard } from '@/devlink/CandidateScheduleCard';
 import { ChangeButton } from '@/devlink/ChangeButton';
@@ -156,12 +155,48 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
   >(null);
   const [scheduling_reason, setSchedulingReason] =
     useState<DatabaseTable['recruiter']['scheduling_reason']>(null);
+  const [cancelReschedulingDetails, setCancelReschedulingDetails] = useState<{
+    all: boolean;
+    type: 'reschedule' | 'declined';
+    other_details: Awaited<
+      ReturnType<typeof getCancelRescheduleData>
+    >[number]['other_details'];
+    sessions: Awaited<ReturnType<typeof getCancelRescheduleData>>;
+  }>(null);
 
   useEffect(() => {
     get_scheduling_reason(candidate.recruiter_id).then((data) => {
       setSchedulingReason(data);
     });
-  }, []);
+    if (
+      props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id
+    ) {
+      getCancelRescheduleData({
+        schedule_id:
+          props.rounds[0]?.sessions[0]?.interview_meeting
+            ?.interview_schedule_id,
+      }).then((data) => {
+        const temp = new Set(
+          props.rounds
+            .map((round) =>
+              round.sessions.map((ses) => ses.interview_session.id),
+            )
+            .flat(2),
+        );
+
+        data.length &&
+          setCancelReschedulingDetails({
+            all:
+              data.length == temp.size ||
+              data.every((item) => temp.has(item.session_id)),
+            type: data[0]?.type,
+            other_details: data[0]?.other_details,
+            sessions: data,
+          });
+      });
+    }
+  }, [props.rounds[0]?.sessions[0]?.interview_meeting?.interview_schedule_id]);
+
   const handleCancelReschedule = async (
     detail: Omit<DatabaseTableInsert['interview_session_cancel'], 'session_id'>,
   ) => {
@@ -182,19 +217,60 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
     const details = props.rounds
       .reduce(
         (prev, curr) => [...prev, ...curr.sessions],
-        [] as (typeof props.rounds)[0]['sessions'],
+        [] as (typeof props.rounds)[number]['sessions'],
       )
       .map((session) => ({
         ...detail,
         session_id: session.interview_session.id,
         schedule_id: session.interview_meeting.interview_schedule_id,
       }));
-    return saveCancelReschedule({ details });
+    return saveCancelReschedule({ details }).then(() => {
+      setCancelReschedulingDetails({
+        all: true,
+        type: detail.type,
+        other_details: detail.other_details,
+        sessions: details.map((item) => ({
+          session_id: item.session_id,
+          reason: item.reason,
+          other_details: item.other_details,
+          type: item.type,
+        })),
+      });
+      return true;
+    });
   };
 
   return (
     <>
       <InterviewConfirmed
+        slotBanner={
+          <>
+            {cancelReschedulingDetails?.all && (
+              <Alert
+                variant='outlined'
+                severity='warning'
+                sx={{
+                  '& .MuiAlert-icon, & .MuiAlert-action': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+                }}
+              >
+                {'Request to '}
+                {capitalizeFirstLetter(
+                  cancelReschedulingDetails.type == 'declined'
+                    ? 'cancel'
+                    : 'reschedule',
+                )}
+                {' all Sessions'}
+                {cancelReschedulingDetails.type == 'reschedule' &&
+                  ` from ${dayjs(cancelReschedulingDetails.other_details.dateRange.start).format('MMMM DD')} to ${dayjs(cancelReschedulingDetails.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
+                {' received.'}
+              </Alert>
+            )}
+          </>
+        }
         slotCompanyLogo={<Logo />}
         slotInterviewConfirmedCard={
           <ConfirmedScheduleCards rounds={props.rounds} />
@@ -205,43 +281,48 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
         textMailSent={candidate.email}
         slotButton={
           <Stack direction={'row'} gap={2}>
-            <ScheduleButton
-              textLabel={'Request Reschedule'}
-              onClickProps={{
-                onClick: () => setCancelReschedule('reschedule'),
-              }}
-            />
-            <ScheduleButton
-              textLabel={'Cancel Schedule'}
-              textColorProps={{
-                style: { color: '#D93F4C' },
-              }}
-              onClickProps={{
-                onClick: () => setCancelReschedule('cancel'),
-                style: { background: '#FFF0F1' },
-              }}
-              slotIcon={
-                <Box
-                  display={'flex'}
-                  height={'100%'}
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='13'
-                    height='16'
-                    viewBox='0 0 13 13'
-                    fill='none'
-                  >
-                    <path
-                      d='M4 0.498047V1.62305H8.5V0.498047C8.51562 0.263672 8.64062 0.138672 8.875 0.123047C9.10938 0.138672 9.23438 0.263672 9.25 0.498047V1.62305H10C10.4219 1.63867 10.7734 1.78711 11.0547 2.06836C11.3359 2.34961 11.4844 2.70117 11.5 3.12305V3.87305V4.62305V10.623C11.4844 11.0449 11.3359 11.3965 11.0547 11.6777C10.7734 11.959 10.4219 12.1074 10 12.123H2.5C2.07812 12.1074 1.72656 11.959 1.44531 11.6777C1.16406 11.3965 1.01562 11.0449 1 10.623V4.62305V3.87305V3.12305C1.01562 2.70117 1.16406 2.34961 1.44531 2.06836C1.72656 1.78711 2.07812 1.63867 2.5 1.62305H3.25V0.498047C3.26562 0.263672 3.39062 0.138672 3.625 0.123047C3.85938 0.138672 3.98438 0.263672 4 0.498047ZM1.75 4.62305V10.623C1.75 10.8418 1.82031 11.0215 1.96094 11.1621C2.10156 11.3027 2.28125 11.373 2.5 11.373H10C10.2188 11.373 10.3984 11.3027 10.5391 11.1621C10.6797 11.0215 10.75 10.8418 10.75 10.623V4.62305H1.75ZM2.5 2.37305C2.28125 2.37305 2.10156 2.44336 1.96094 2.58398C1.82031 2.72461 1.75 2.9043 1.75 3.12305V3.87305H10.75V3.12305C10.75 2.9043 10.6797 2.72461 10.5391 2.58398C10.3984 2.44336 10.2188 2.37305 10 2.37305H2.5ZM8.00781 6.75586L6.78906 7.99805L8.00781 9.24023C8.16406 9.41211 8.16406 9.58398 8.00781 9.75586C7.83594 9.91211 7.66406 9.91211 7.49219 9.75586L6.25 8.53711L5.00781 9.75586C4.83594 9.91211 4.66406 9.91211 4.49219 9.75586C4.33594 9.58398 4.33594 9.41211 4.49219 9.24023L5.71094 7.99805L4.49219 6.75586C4.33594 6.58398 4.33594 6.41211 4.49219 6.24023C4.66406 6.08398 4.83594 6.08398 5.00781 6.24023L6.25 7.45898L7.49219 6.24023C7.66406 6.08398 7.83594 6.08398 8.00781 6.24023C8.16406 6.41211 8.16406 6.58398 8.00781 6.75586Z'
-                      fill='#D93F4C'
-                    />
-                  </svg>
-                </Box>
-              }
-            />
+            {(!cancelReschedulingDetails ||
+              cancelReschedulingDetails.all == false) && (
+              <>
+                <ScheduleButton
+                  textLabel={'Request Reschedule'}
+                  onClickProps={{
+                    onClick: () => setCancelReschedule('reschedule'),
+                  }}
+                />
+                <ScheduleButton
+                  textLabel={'Cancel Schedule'}
+                  textColorProps={{
+                    style: { color: '#D93F4C' },
+                  }}
+                  onClickProps={{
+                    onClick: () => setCancelReschedule('cancel'),
+                    style: { background: '#FFF0F1' },
+                  }}
+                  slotIcon={
+                    <Box
+                      display={'flex'}
+                      height={'100%'}
+                      justifyContent={'center'}
+                      alignItems={'center'}
+                    >
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        width='13'
+                        height='16'
+                        viewBox='0 0 13 13'
+                        fill='none'
+                      >
+                        <path
+                          d='M4 0.498047V1.62305H8.5V0.498047C8.51562 0.263672 8.64062 0.138672 8.875 0.123047C9.10938 0.138672 9.23438 0.263672 9.25 0.498047V1.62305H10C10.4219 1.63867 10.7734 1.78711 11.0547 2.06836C11.3359 2.34961 11.4844 2.70117 11.5 3.12305V3.87305V4.62305V10.623C11.4844 11.0449 11.3359 11.3965 11.0547 11.6777C10.7734 11.959 10.4219 12.1074 10 12.123H2.5C2.07812 12.1074 1.72656 11.959 1.44531 11.6777C1.16406 11.3965 1.01562 11.0449 1 10.623V4.62305V3.87305V3.12305C1.01562 2.70117 1.16406 2.34961 1.44531 2.06836C1.72656 1.78711 2.07812 1.63867 2.5 1.62305H3.25V0.498047C3.26562 0.263672 3.39062 0.138672 3.625 0.123047C3.85938 0.138672 3.98438 0.263672 4 0.498047ZM1.75 4.62305V10.623C1.75 10.8418 1.82031 11.0215 1.96094 11.1621C2.10156 11.3027 2.28125 11.373 2.5 11.373H10C10.2188 11.373 10.3984 11.3027 10.5391 11.1621C10.6797 11.0215 10.75 10.8418 10.75 10.623V4.62305H1.75ZM2.5 2.37305C2.28125 2.37305 2.10156 2.44336 1.96094 2.58398C1.82031 2.72461 1.75 2.9043 1.75 3.12305V3.87305H10.75V3.12305C10.75 2.9043 10.6797 2.72461 10.5391 2.58398C10.3984 2.44336 10.2188 2.37305 10 2.37305H2.5ZM8.00781 6.75586L6.78906 7.99805L8.00781 9.24023C8.16406 9.41211 8.16406 9.58398 8.00781 9.75586C7.83594 9.91211 7.66406 9.91211 7.49219 9.75586L6.25 8.53711L5.00781 9.75586C4.83594 9.91211 4.66406 9.91211 4.49219 9.75586C4.33594 9.58398 4.33594 9.41211 4.49219 9.24023L5.71094 7.99805L4.49219 6.75586C4.33594 6.58398 4.33594 6.41211 4.49219 6.24023C4.66406 6.08398 4.83594 6.08398 5.00781 6.24023L6.25 7.45898L7.49219 6.24023C7.66406 6.08398 7.83594 6.08398 8.00781 6.24023C8.16406 6.41211 8.16406 6.58398 8.00781 6.75586Z'
+                          fill='#D93F4C'
+                        />
+                      </svg>
+                    </Box>
+                  }
+                />
+              </>
+            )}
           </Stack>
         }
       />
@@ -1089,5 +1170,22 @@ const saveCancelReschedule = async ({
         throw new Error(error.message);
       }
       return true;
+    });
+};
+
+const getCancelRescheduleData = async ({
+  schedule_id,
+}: {
+  schedule_id: string;
+}) => {
+  return supabase
+    .from('interview_session_cancel')
+    .select('reason, session_id, type, other_details')
+    .eq('schedule_id', schedule_id)
+    .then(({ data, error }) => {
+      if (error) {
+        return [];
+      }
+      return data;
     });
 };
