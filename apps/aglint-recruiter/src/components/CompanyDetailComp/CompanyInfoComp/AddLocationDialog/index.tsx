@@ -65,6 +65,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
   ) as initialValueType;
 
+  const hasHeadquarter = (
+    recruiter.office_locations as initialValueType[]
+  ).some((location) => location.is_headquarter === true);
+
   const [isHeadQ, setHeadQ] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -269,8 +273,12 @@ const AddLocationDialog: React.FC<LocationProps> = ({
               handleAddLocation();
             },
           }}
-          isCheckboxVisible={initialValue?.is_headquarter ? true : false}
-          isChecked={initialValue?.is_headquarter ? true : false}
+          isCheckboxVisible={
+            hasHeadquarter && initialValue?.is_headquarter
+              ? true
+              : !hasHeadquarter
+          }
+          isChecked={initialValue?.is_headquarter ? true : isHeadQ}
           onClickCheck={{
             onClick: () => {
               setHeadQ(!isHeadQ);
