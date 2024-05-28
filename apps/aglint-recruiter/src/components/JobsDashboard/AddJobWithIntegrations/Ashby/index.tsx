@@ -16,6 +16,8 @@ import { LoadingJobsAts } from '@/devlink/LoadingJobsAts';
 import { NoResultAts } from '@/devlink/NoResultAts';
 import { SkeletonLoaderAtsCard } from '@/devlink/SkeletonLoaderAtsCard';
 import { ButtonPrimaryDefaultRegular } from '@/devlink3/ButtonPrimaryDefaultRegular';
+import LoaderLever from '@/public/lottie/JobDashboard/AddJobWithIntegrations';
+import FetchingJobsLever from '@/public/lottie/JobDashboard/FetchingJobsLever_Ashby';
 import UITextField from '@/src/components/Common/UITextField';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useIntegration } from '@/src/context/IntegrationProvider/IntegrationProvider';
@@ -26,9 +28,7 @@ import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
-import LoaderLever from '../Loader';
 import { POSTED_BY } from '../utils';
-import FetchingJobsLever from './Loader';
 import { JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
 
