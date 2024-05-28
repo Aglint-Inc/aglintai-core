@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const parsedData = schema_find_availability_payload.parse({
       ...req.body,
       options: req.body.options || {
-        include_conflicting_slots: { override_working_hours: {} },
+        include_conflicting_slots: {},
       },
     });
 
@@ -31,18 +31,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       parsedData.options,
     );
 
-    console.time('f');
     await cand_schedule.fetchDetails();
-    console.timeEnd('f');
-    console.time('c');
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    console.time('c');
+    const slots = cand_schedule.findCandSlotForTheDay();
     console.timeEnd('c');
 
     // return res.status(200).json({
     //   plan_combs: is_debreif ? combs : combs.slice(0, 20),
     //   total: combs.length,
     // });
-    return res.status(200).send([]);
+    return res.status(200).send(slots);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);

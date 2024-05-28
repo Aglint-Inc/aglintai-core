@@ -1,5 +1,6 @@
 import {
   APIFindAvailability,
+  APIOptions,
   holidayType,
   InterDayFreeTime,
   InterDayWorkHr,
@@ -33,6 +34,7 @@ import { userTzDayjs } from './utils/userTzDayjs';
 export const findEachInterviewerFreeTimes = (
   ints_details: InterDetailsType[],
   api_payload: Omit<APIFindAvailability, 'options'>,
+  api_options: APIOptions,
   db_details: DBDetailsType,
   start_date: string,
   end_date: string,
@@ -118,6 +120,23 @@ export const findEachInterviewerFreeTimes = (
         int_schedule_setting.timeZone.tzCode,
       ).format(),
     };
+
+    if (api_options.include_conflicting_slots.override_work_hr_start) {
+      work_hour.startTime = current_day
+        .tz(int_schedule_setting.timeZone.tzCode)
+        .set(
+          'hour',
+          api_options.include_conflicting_slots.override_work_hr_start,
+        )
+        .format();
+    }
+
+    if (api_options.include_conflicting_slots.override_work_hr_end) {
+      work_hour.endTime = current_day
+        .tz(int_schedule_setting.timeZone.tzCode)
+        .set('hour', api_options.include_conflicting_slots.override_work_hr_end)
+        .format();
+    }
 
     return work_hour;
   };

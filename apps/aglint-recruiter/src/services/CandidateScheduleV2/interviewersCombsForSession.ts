@@ -2,6 +2,7 @@ import { InterviewSessionApiRespType } from '@aglint/shared-types';
 
 export const calcInterversCombsForSesson = (
   sessions: InterviewSessionApiRespType[],
+  is_training_optional,
 ) => {
   const findCombinationOfStrings = (str_arr: string[], comb: number) => {
     let total_combs: string[][] = [];
@@ -53,7 +54,7 @@ export const calcInterversCombsForSesson = (
         };
       });
       // NOTE: optional trining ints
-      if (session.trainingIntervs.length > 0) {
+      if (is_training_optional) {
         session_combs.push({
           ...session,
           trainingIntervs: [],

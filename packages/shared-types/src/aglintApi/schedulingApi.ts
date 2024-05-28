@@ -82,10 +82,8 @@ export type APIOptions = {
     interviewer_pause: boolean;
     out_of_office: boolean;
     calender_not_connected: boolean;
-    override_working_hours: {
-      start: number;
-      end: number;
-    } | null;
+    override_work_hr_start: number | null;
+    override_work_hr_end: number | null;
     day_off: boolean;
     holiday: boolean;
   };

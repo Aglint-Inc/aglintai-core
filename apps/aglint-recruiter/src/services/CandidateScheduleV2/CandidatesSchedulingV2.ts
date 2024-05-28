@@ -89,12 +89,10 @@ export class CandidatesSchedulingV2 {
         interviewers_load:
           _api_options.include_conflicting_slots.interviewers_load,
         out_of_office: _api_options.include_conflicting_slots.out_of_office,
-        override_working_hours: {
-          start:
-            _api_options.include_conflicting_slots.override_working_hours.start,
-          end: _api_options.include_conflicting_slots.override_working_hours
-            .end,
-        },
+        override_work_hr_start:
+          _api_options.include_conflicting_slots.override_work_hr_start,
+        override_work_hr_end:
+          _api_options.include_conflicting_slots.override_work_hr_end,
         show_conflicts_events:
           _api_options.include_conflicting_slots.show_conflicts_events,
         show_soft_conflicts:
@@ -164,6 +162,7 @@ export class CandidatesSchedulingV2 {
     const inter_details = findEachInterviewerFreeTimes(
       int_with_events,
       this.api_payload,
+      this.api_options,
       this.db_details,
       this.schedule_dates.user_start_date_js.format(),
       this.schedule_dates.user_end_date_js.format(),
@@ -181,8 +180,19 @@ export class CandidatesSchedulingV2 {
     }
   }
 
-  //NOTE: private funcs
+  // find slots for the day
+  public findCandSlotForTheDay() {
+    const { findCurrentDayPlan } = this.findMultiDaySlots();
+    return findCurrentDayPlan();
+  }
 
+  // find slots for the date range
+  public findCandSlotsForDateRange() {
+    const { findAllDayPlans } = this.findMultiDaySlots();
+    return findAllDayPlans();
+  }
+
+  //NOTE: private funcs
   private getSessionRounds() {
     let session_rounds: InterviewSessionApiRespType[][] = [[]];
     let curr_round = 0;
@@ -209,8 +219,10 @@ export class CandidatesSchedulingV2 {
     const cached_free_time = new Map<string, TimeDurationType[]>();
     let all_schedule_combs: PlanCombinationRespType[] = [];
 
-    const interviewrs_sesn_comb =
-      calcInterversCombsForSesson(interview_sessions);
+    const interviewrs_sesn_comb = calcInterversCombsForSesson(
+      interview_sessions,
+      this.api_options.make_training_optional,
+    );
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
       session_idx,
@@ -288,7 +300,8 @@ export class CandidatesSchedulingV2 {
       };
       const isAnySessIntsPausedManually = () => {
         for (const sess of plan_comb) {
-          const inters = [...sess.qualifiedIntervs, ...sess.trainingIntervs];
+          // no pause_json for training_inters
+          const inters = [...sess.qualifiedIntervs];
 
           for (const int of inters) {
             const int_pause =
@@ -303,12 +316,12 @@ export class CandidatesSchedulingV2 {
       };
 
       if (
-        this.api_options.include_conflicting_slots.calender_not_connected &&
+        !this.api_options.include_conflicting_slots.calender_not_connected &&
         isAnySessIntsCalDisConnected()
       )
         return [];
       if (
-        this.api_options.include_conflicting_slots.interviewer_pause &&
+        !this.api_options.include_conflicting_slots.interviewer_pause &&
         isAnySessIntsPausedManually()
       ) {
         return [];
@@ -675,11 +688,13 @@ export class CandidatesSchedulingV2 {
         combs.length === 0 &&
         curr_date.isSameOrBefore(this.schedule_dates.user_end_date_js, 'day')
       ) {
-        curr_date = curr_date.add(1, 'day');
         combs = this.findFixedBreakSessionCombs(
           cloneDeep(session_rounds[curr_day_idx]),
           curr_date,
         );
+        if (combs.length === 0) {
+          curr_date = curr_date.add(1, 'day');
+        }
       }
       if (combs.length === 0) {
         return [];
