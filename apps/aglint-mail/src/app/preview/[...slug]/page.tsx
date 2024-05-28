@@ -21,6 +21,7 @@ const Page = async ({ params }: { params: PreviewParams }) => {
   const emailsDirMetadata = await getEmailsDirectoryMetadata(
     emailsDirectoryAbsolutePath,
   );
+
   if (typeof emailsDirMetadata === 'undefined') {
     throw new Error(
       `Could not find the emails directory specified under ${emailsDirectoryAbsolutePath}!
@@ -31,13 +32,8 @@ This is most likely not an issue with the preview server. Maybe there was a typo
 
   let emailPath: string;
   try {
-    emailPath = await getEmailPathFromSlug(
-      `${emailsDirectoryAbsolutePath}/${
-        params.slug[params.slug.length - 1]
-      }.tsx`,
-    );
+    emailPath = await getEmailPathFromSlug(slug);
   } catch (exception) {
-    console.log(exception);
     if (exception instanceof Error) {
       console.warn(exception.message);
       redirect('/');
@@ -46,6 +42,7 @@ This is most likely not an issue with the preview server. Maybe there was a typo
   }
 
   const emailRenderingResult = await renderEmailByPath(emailPath);
+
   if (
     'error' in emailRenderingResult &&
     process.env.NEXT_PUBLIC_IS_BUILDING === 'true'

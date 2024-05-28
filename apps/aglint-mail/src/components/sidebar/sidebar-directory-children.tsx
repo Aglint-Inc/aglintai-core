@@ -58,17 +58,18 @@ export const SidebarDirectoryChildren = (props: {
 
                 {props.emailsDirectoryMetadata.emailFilenames.map(
                   (emailFilename, index) => {
-                    const emailSlug = `${directoryPathRelativeToEmailsDirectory}${pathSeparator}${emailFilename}`;
-                    console.log(emailSlug);
+                    const emailSlug = `${directoryPathRelativeToEmailsDirectory}${
+                      !isBaseEmailsDirectory ? pathSeparator : ''
+                    }${emailFilename}`;
                     const removeExtensionFrom = (path: string) => {
                       if (
                         path.split('.').pop() === 'tsx' ||
                         path.split('.').pop() === 'jsx' ||
                         path.split('.').pop() === 'js'
                       ) {
-                        console.log(path);
                         return path.split('.').slice(0, -1).join('.');
                       }
+
                       return path;
                     };
                     const isCurrentPage = props.currentEmailOpenSlug

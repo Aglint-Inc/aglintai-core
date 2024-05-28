@@ -81,8 +81,9 @@ export const EmailsProvider = (props: {
             .replace(`${normalizedEmailsDirRelativePath}${pathSeparator}`, '')
             .replace(normalizedEmailsDirRelativePath, '');
 
-        const pathForChangedEmail =
-          await getEmailPathFromSlug(slugForChangedEmail);
+        const pathForChangedEmail = await getEmailPathFromSlug(
+          slugForChangedEmail,
+        );
 
         const lastResult = renderingResultPerEmailPath[pathForChangedEmail];
 

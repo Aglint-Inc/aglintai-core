@@ -26,6 +26,7 @@ const Preview = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
   const activeView = searchParams.get('view') ?? 'desktop';
   const activeLang = searchParams.get('lang') ?? 'jsx';
   const { useEmailRenderingResult } = useEmails();

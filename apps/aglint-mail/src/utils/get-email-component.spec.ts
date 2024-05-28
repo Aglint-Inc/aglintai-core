@@ -8,6 +8,7 @@ test('getEmailComponent() with a demo email template', async () => {
   );
 
   if ('error' in result) {
+    console.log(result.error);
     expect('error' in result).toBe(false);
   } else {
     expect(result.emailComponent).toBeTruthy();

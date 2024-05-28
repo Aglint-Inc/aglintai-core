@@ -10,7 +10,6 @@ import {
   Text,
 } from '@react-email/components';
 import * as React from 'react';
-import { emailsDirectoryAbsolutePath } from '../utils/emails-directory-absolute-path';
 
 interface NotionMagicLinkEmailProps {
   loginCode?: string;
@@ -18,7 +17,7 @@ interface NotionMagicLinkEmailProps {
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : '.';
+  : '';
 
 export const NotionMagicLinkEmail = ({
   loginCode,
@@ -66,7 +65,7 @@ export const NotionMagicLinkEmail = ({
           account.
         </Text>
         <Img
-          src={`${emailsDirectoryAbsolutePath}\\static\\notion-logo.png`}
+          src={`/static/notion-logo.png`}
           width="32"
           height="32"
           alt="Notion's Logo"

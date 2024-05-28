@@ -6,9 +6,9 @@ import { emailsDirectoryAbsolutePath } from '../utils/emails-directory-absolute-
 // eslint-disable-next-line @typescript-eslint/require-await
 export const getEmailPathFromSlug = async (slug: string) => {
   if (['.tsx', '.jsx', '.ts', '.js'].includes(path.extname(slug)))
-    return path.join(slug);
+    return path.join(emailsDirectoryAbsolutePath, slug);
 
-  const pathWithoutExtension = path.join(slug);
+  const pathWithoutExtension = path.join(emailsDirectoryAbsolutePath, slug);
 
   if (fs.existsSync(`${pathWithoutExtension}.tsx`)) {
     return `${pathWithoutExtension}.tsx`;
