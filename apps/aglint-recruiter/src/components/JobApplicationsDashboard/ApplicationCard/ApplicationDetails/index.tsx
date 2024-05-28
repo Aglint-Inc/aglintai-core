@@ -51,6 +51,7 @@ import { DangerMessage } from '@/devlink3/DangerMessage';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
+import NoApplicants from '@/public/lottie/JobApplicationsDashboard/NoApplicants';
 import ResumeWait from '@/public/lottie/ResumeWait';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
@@ -109,7 +110,6 @@ import { useKeyPress } from '../../hooks';
 // import RedirectWrapper from '../../Common/Wrappers/redirectWrapper';
 import { CheckIcon, FileIcon, UploadIcon } from '../../ImportManualCandidates';
 import useUploadCandidate from '../../ImportManualCandidates/hooks';
-import NoApplicants from '../../Lotties/NoApplicants';
 import {
   capitalize,
   formatTimeStamp,

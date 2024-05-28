@@ -7,7 +7,7 @@ import { InterviewTranscriptCard } from '@/devlink/InterviewTranscriptCard';
 import { UserTranscript } from '@/devlink/UserTranscript';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 
-import PlayStop from '../../../Common/PlayStop';
+import PlayStop from '../../../../Common/Lotties/JobApplicationDashboard/PlayStop';
 
 function ConversationCard({
   roleImage,
