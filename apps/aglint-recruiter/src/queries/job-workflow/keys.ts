@@ -7,3 +7,19 @@ export const jobWorkflowQueryKeys = {
     queryKey: [...jobWorkflowQueryKeys.all.queryKey, ...argsToKeys(args)],
   }),
 } as const;
+
+export const jobWorkflowMutationKeys = {
+  all: { mutationKey: [appKey, 'jobWorkflow'] as string[] },
+  update: (args: GetJobWorkflow) => ({
+    mutationKey: [
+      ...jobWorkflowMutationKeys.all.mutationKey,
+      ...argsToKeys(args),
+    ],
+  }),
+  delete: (args: GetJobWorkflow) => ({
+    mutationKey: [
+      ...jobWorkflowMutationKeys.all.mutationKey,
+      ...argsToKeys(args),
+    ],
+  }),
+} as const;
