@@ -75,7 +75,13 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     if (!error) {
       setRecruiter((recruiter) => {
         const textLocationHeader = `${cityRef.current.value},${regionRef.current.value},${countryRef.current.value}`;
-        const fullAddress = `${address1Ref.current.value},${address2Ref.current.value},${zipRef.current.value}`;
+        const addressParts = [
+          address1Ref.current.value,
+          address2Ref.current.value,
+          zipRef.current.value,
+        ];
+        const fullAddress = addressParts.filter((part) => part).join(', ');
+
         const newLocation = {
           full_address: fullAddress,
           location_header: textLocationHeader,
@@ -155,6 +161,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   };
 
   const debouncedSearch = useCallback(
+    // eslint-disable-next-line react-compiler/react-compiler
     debounce((text: string) => {
       handleChange(text, 'city');
     }, 500),
