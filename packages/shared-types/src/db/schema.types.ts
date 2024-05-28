@@ -656,12 +656,13 @@ export type Database = {
           availability: Json | null
           created_at: string
           date_range: Json | null
-          id: number
+          id: string
           is_task_created: boolean | null
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
           session_ids: Json | null
+          slots: Json | null
           total_slots: number | null
         }
         Insert: {
@@ -669,12 +670,13 @@ export type Database = {
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
-          id?: number
+          id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
           session_ids?: Json | null
+          slots?: Json | null
           total_slots?: number | null
         }
         Update: {
@@ -682,12 +684,13 @@ export type Database = {
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
-          id?: number
+          id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
           session_ids?: Json | null
+          slots?: Json | null
           total_slots?: number | null
         }
         Relationships: [
@@ -2061,7 +2064,7 @@ export type Database = {
           id: number
           is_enable: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id: string | null
+          recruiter_id: string
           updated_at: string | null
         }
         Insert: {
@@ -2069,7 +2072,7 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id?: string | null
+          recruiter_id: string
           updated_at?: string | null
         }
         Update: {
@@ -2077,7 +2080,7 @@ export type Database = {
           id?: number
           is_enable?: boolean | null
           name?: Database["public"]["Enums"]["permissions_type"]
-          recruiter_id?: string | null
+          recruiter_id?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -3304,6 +3307,13 @@ export type Database = {
             referencedRelation: "workflow"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "workflow_action_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       workflow_action_logs: {
@@ -3362,6 +3372,13 @@ export type Database = {
             referencedRelation: "workflow"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "workflow_action_logs_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
+            referencedColumns: ["id"]
+          },
         ]
       }
       workflow_job_relation: {
@@ -3396,6 +3413,13 @@ export type Database = {
             columns: ["workflow_id"]
             isOneToOne: false
             referencedRelation: "workflow"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_job_relation_workflow_id_fkey"
+            columns: ["workflow_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3535,6 +3559,27 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_view: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          interval: number | null
+          jobs: Json | null
+          phase: Database["public"]["Enums"]["workflow_phase"] | null
+          recruiter_id: string | null
+          title: string | null
+          trigger: Database["public"]["Enums"]["workflow_trigger"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]
@@ -4729,6 +4774,14 @@ export type Database = {
         | "reports_export"
         | "settings_view"
         | "settings_update"
+        | "tasks_enabled"
+        | "jobs_enabled"
+        | "scheduler_enabled"
+        | "sourcing_enabled"
+        | "phone_screening_enabled"
+        | "assessment_enabled"
+        | "integrations_enabled"
+        | "company_setting_enabled"
       progress_type:
         | "standard"
         | "interview_schedule"
