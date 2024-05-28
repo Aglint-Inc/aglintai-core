@@ -130,9 +130,14 @@
   top: 0%;
   right: 0%;
   bottom: 0%;
+  z-index: 2;
+
+  display: flex;
 
   border: 1px solid #337fbd;
   border-radius: 10px;
+
+  pointer-events: none;
 }
 
 .normal_border {

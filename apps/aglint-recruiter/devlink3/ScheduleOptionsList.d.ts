@@ -6,4 +6,5 @@ declare function ScheduleOptionsList(props: {
   slotDateOption?: Types.Devlink.Slot;
   slotToggle?: Types.Devlink.Slot;
   slotfilters?: Types.Devlink.Slot;
+  textDescription?: React.ReactNode;
 }): React.JSX.Element;
