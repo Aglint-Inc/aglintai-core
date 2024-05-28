@@ -1,8 +1,9 @@
 import { Job } from '@/src/queries/job/types';
+import { EmailTemplatType } from '@/src/types/companyEmailTypes';
 
 export const templateObj: {
   // eslint-disable-next-line no-unused-vars
-  [id in keyof Job['email_template']]: EmailTemplatInfoType;
+  [id in keyof Job['email_template']]: EmailTemplatType;
 } = {
   application_received: {
     listing: 'Application Recieved',
@@ -143,16 +144,4 @@ export type EmailTemplateParams = {
   title: { heading: string; listing: string; description: string };
   excerpt: string;
   path: string;
-};
-
-type EmailTemplatInfoType = {
-  listing: string;
-  heading: string;
-  triggerInfo: string;
-  description: string;
-  descriptionInJob: string;
-  subjectPlaceHolder: string;
-  bodyPlaceHolder: string;
-  trigger: string;
-  dynamicContent: string;
 };

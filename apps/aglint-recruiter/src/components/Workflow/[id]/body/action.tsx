@@ -1,17 +1,20 @@
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
-import { EmailTemplateType } from '@aglint/shared-types';
+/* eslint-disable security/detect-object-injection */
+import type { DatabaseEnums } from '@aglint/shared-types';
 
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import Loader from '@/src/components/Common/Loader';
 import UISelect from '@/src/components/Common/Uiselect';
-import { templateObj } from '@/src/components/JobEmailTemplates/utils';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
+import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
-import { EmailTempPath } from '@/src/types/companyEmailTypes';
+import { emailTemplates } from '@/src/utils/emailTemplate';
 
 const Actions = () => {
+  const {
+    recruiter: { email_template },
+  } = useAuthDetails();
   const {
     actions: { data, status },
     actionMutations: mutations,
@@ -34,7 +37,16 @@ const Actions = () => {
       {
         <WorkflowAdd
           onClickAdd={{
-            onClick: () => handleCreateAction({ order: actions.length + 1 }),
+            onClick: () =>
+              handleCreateAction({
+                order: actions.length + 1,
+                medium: 'email',
+                target: 'applicant',
+                payload: {
+                  key: 'application_received',
+                  template: email_template['application_received'],
+                },
+              }),
           }}
         />
       }
@@ -63,6 +75,7 @@ const Forms = (props: ActionProps) => {
   return (
     <>
       <ActionForm {...props} />
+      <TemplateForm {...props} />
     </>
   );
 };
@@ -89,19 +102,26 @@ const ActionForm = ({ action: { id, medium, target } }: ActionProps) => {
   );
 };
 
-const TemplateForm = ({ action: {} }: ActionProps) => {
+const TemplateForm = ({ action: { id, payload } }: ActionProps) => {
+  const {
+    recruiter: { email_template },
+  } = useAuthDetails();
+  const { handleUpdateAction } = useWorkflow();
   return (
     <UISelect
       label='Template'
-      value={JSON.stringify(payload)}
+      value={payload?.key}
       menuOptions={TEMPLATE_OPTIONS}
       onChange={(e) => {
-        const { medium, target } = JSON.parse(e.target.value) as typeof payload;
+        const safeKey = e.target
+          .value as ActionProps['action']['payload']['key'];
         handleUpdateAction({
           id,
           payload: {
-            medium,
-            target,
+            payload: {
+              key: safeKey,
+              template: email_template?.[safeKey],
+            },
           },
         });
       }}
@@ -111,10 +131,10 @@ const TemplateForm = ({ action: {} }: ActionProps) => {
 
 const TEMPLATE_OPTIONS: {
   name: string;
-  value: keyof EmailTemplateType | EmailTempPath;
-}[] = Object.entries(templateObj).map(([key, value]) => ({
-  name: value.listing,
-  value: key as keyof EmailTemplateType | EmailTempPath,
+  value: ActionProps['action']['payload']['key'];
+}[] = Object.entries(emailTemplates).map(([key, { heading }]) => ({
+  name: heading,
+  value: key as ActionProps['action']['payload']['key'],
 }));
 
 const ACTION_PAYLOAD: {
