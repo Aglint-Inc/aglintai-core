@@ -1,7 +1,6 @@
 import React from "react";
 import * as _Builtin from "./_Builtin";
 import { RcInfoStep1 } from "./RcInfoStep1";
-import { RcLoading } from "./RcLoading";
 import { RcInfoForm } from "./RcInfoForm";
 import * as _utils from "./utils";
 import _styles from "./RecCompanyDetails.module.css";
