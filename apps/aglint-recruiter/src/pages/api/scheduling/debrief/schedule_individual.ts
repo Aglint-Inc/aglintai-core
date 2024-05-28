@@ -176,7 +176,9 @@ const confirmSlot = async ({
   }
 };
 
-const findSessionRelations = (sessions) => {
+const findSessionRelations = (
+  sessions: ReturnType<typeof sortBySessionOrderFilterConfirmedRelations>,
+) => {
   let previousDebriefCompleted = false;
   let sessionRelationIds = [];
   let selectedDebriefId = null;

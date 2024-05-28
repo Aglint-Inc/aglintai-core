@@ -14,6 +14,7 @@ export function DatePickerBody({
   isRequestAvailability = false,
   isSelfScheduling = true,
   isContinueButton = true,
+  isLoading = false,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "date_picker")} tag="div">
@@ -122,6 +123,14 @@ export function DatePickerBody({
           {...onClickButton}
         >
           <_Builtin.Block tag="div">{"Continue"}</_Builtin.Block>
+          {isLoading ? (
+            <_Builtin.Block
+              className={_utils.cx(_styles, "isloading_continue")}
+              tag="div"
+            >
+              <_Builtin.Block tag="div">{"Loading..."}</_Builtin.Block>
+            </_Builtin.Block>
+          ) : null}
         </_Builtin.Block>
       ) : null}
     </_Component>

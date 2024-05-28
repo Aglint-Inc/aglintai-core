@@ -345,6 +345,8 @@
 }
 
 .button_primary.large_btn-copy {
+  position: relative;
+  overflow: hidden;
   width: 300px;
   padding-top: 10px;
   padding-bottom: 10px;
