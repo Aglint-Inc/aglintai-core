@@ -265,7 +265,7 @@ function Overview({
                       },
                     }}
                     isRescheduleBtnVisible={
-                      item.interview_session_cancel.type === 'reschedule'
+                      !item.interview_session_cancel.schedule_id
                     }
                     isCancelVisible={
                       item.interview_session_cancel.schedule_id &&
