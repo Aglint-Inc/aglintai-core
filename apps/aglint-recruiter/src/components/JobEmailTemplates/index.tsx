@@ -5,6 +5,7 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
+import { EditEmail } from '@/devlink/EditEmail';
 import { EmailTemplateCards } from '@/devlink/EmailTemplateCards';
 import { EmailTemplatesStart } from '@/devlink/EmailTemplatesStart';
 import { JobEditWarning } from '@/devlink/JobEditWarning';
@@ -16,6 +17,7 @@ import { validateString } from '@/src/context/JobDashboard/hooks';
 import { useJobs } from '@/src/context/JobsContext';
 import { Job } from '@/src/queries/job/types';
 import { useCurrentJob } from '@/src/queries/job-assessment/keys';
+import { emailTemplates as emailTemplatesUtils } from '@/src/utils/emailTemplate';
 
 import Loader from '../Common/Loader';
 import { capitalize } from '../JobApplicationsDashboard/utils';
@@ -155,11 +157,18 @@ const JobEmailTemplates = () => {
         <Sections selection={selection} setSelection={setSelection} />
       }
       slotEmailDetails={
-        <JobEmailTemplateForms
-          key={selection}
-          fields={fields[selection]}
-          selection={selection}
-          handleChange={handleChange}
+        <EditEmail
+          editEmailDescription={emailTemplatesUtils[selection].descriptionInJob}
+          textEmailName={emailTemplatesUtils[selection].heading}
+          slotForm={
+            <JobEmailTemplateForms
+              key={selection}
+              fields={fields[selection]}
+              selection={selection}
+              handleChange={handleChange}
+            />
+          }
+          isSaveChangesButtonVisible={false}
         />
       }
 

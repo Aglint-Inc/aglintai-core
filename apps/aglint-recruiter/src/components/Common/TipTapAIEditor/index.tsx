@@ -131,7 +131,14 @@ const TipTapAIEditor = ({
         <div className={styles.tipTapEditorContainer}>
           {editor && (
             <>
-              <MenuBtns borderRadius={(border && borderRadius) || '4px'} />
+              <Stack
+                sx={{
+                  pointerEvents: disabled ? 'none' : 'auto',
+                  opacity: disabled ? 0.5 : 1,
+                }}
+              >
+                <MenuBtns borderRadius={(border && borderRadius) || '4px'} />
+              </Stack>
             </>
           )}
           <Stack
@@ -141,6 +148,8 @@ const TipTapAIEditor = ({
                 minHeight: '250px',
                 width: '100%',
                 wordBreak: 'break-word',
+                color: disabled ? '#c2c8cc' : palette.grey[800],
+                cursor: disabled ? 'default' : 'auto',
               },
               '& .ProseMirror *::selection': {
                 background: '#EDF8F4',
