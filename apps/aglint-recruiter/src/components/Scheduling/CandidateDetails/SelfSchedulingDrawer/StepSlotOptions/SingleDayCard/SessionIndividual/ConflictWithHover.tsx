@@ -1,0 +1,59 @@
+import { ConflictReason as ConflictReasonType } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
+import React from 'react';
+
+import { ConflictChip } from '@/devlink3/ConflictChip';
+import { ConflictPopover } from '@/devlink3/ConflictPopover';
+import { ConflictReason } from '@/devlink3/ConflictReason';
+import { CustomTooltip } from '@/src/components/Common/Tooltip';
+
+function ConflictWithHover({
+  isHardConflict,
+  isOutsideWorkHours,
+  isSoftConflict,
+  textCount,
+  conflictReasons,
+}: {
+  isHardConflict: boolean;
+  isOutsideWorkHours: boolean;
+  isSoftConflict: boolean;
+  textCount: number;
+  conflictReasons: ConflictReasonType[];
+}) {
+  return (
+    <>
+      <CustomTooltip
+        title={
+          <React.Fragment>
+            <Stack bgcolor={'#fff'} borderRadius={'10px'}>
+              <ConflictPopover
+                isHardConflict={isHardConflict}
+                isOutsideWorkHours={isOutsideWorkHours}
+                isSoftConflict={isSoftConflict}
+                slotConflictReason={conflictReasons.map((item, ind) => {
+                  return (
+                    <ConflictReason
+                      key={ind}
+                      textConflictReason={item.conflict_event}
+                    />
+                  );
+                })}
+              />
+            </Stack>
+          </React.Fragment>
+        }
+      >
+        <Stack>
+          <ConflictChip
+            isHardConflict={isHardConflict}
+            isOutsideWorkHours={isOutsideWorkHours}
+            isSoftConflict={isSoftConflict}
+            textCount={textCount}
+          />
+        </Stack>
+      </CustomTooltip>
+    </>
+  );
+}
+
+export default ConflictWithHover;

@@ -1,17 +1,12 @@
 "use client";
 import React from "react";
 import * as _Builtin from "./_Builtin";
-import * as _interactions from "./interactions";
 import { ConflictOutsideWorkHours } from "./ConflictOutsideWorkHours";
 import { ConflictSoft } from "./ConflictSoft";
 import { ConflictHard } from "./ConflictHard";
 import { SessionDetails } from "./SessionDetails";
 import * as _utils from "./utils";
 import _styles from "./SingleDaySchedule.module.css";
-
-const _interactionsData = JSON.parse(
-  '{"events":{"e-77":{"id":"e-77","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-49","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-78"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6981ec98-474e-304c-03aa-19612359a63c","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6981ec98-474e-304c-03aa-19612359a63c","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716446921616},"e-78":{"id":"e-78","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-50","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-77"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"6981ec98-474e-304c-03aa-19612359a63c","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"6981ec98-474e-304c-03aa-19612359a63c","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1716446921617}},"actionLists":{"a-49":{"id":"a-49","title":"SessionDetail [show]","actionItemGroups":[{"actionItems":[{"id":"a-49-n","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".schedule_option_expandeed","selectorGuids":["33d106a2-3a48-c1fe-6bec-f2e4444a4fa7"]},"heightValue":0,"widthUnit":"PX","heightUnit":"px","locked":false}},{"id":"a-49-n-5","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".expand_arrow","selectorGuids":["9f263f8a-3590-9f16-c30c-c671e94b05b9"]},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}},{"id":"a-49-n-3","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".schedule_option_expandeed","selectorGuids":["33d106a2-3a48-c1fe-6bec-f2e4444a4fa7"]},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-49-n-2","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"outExpo","duration":800,"target":{"useEventTarget":"CHILDREN","selector":".schedule_option_expandeed","selectorGuids":["33d106a2-3a48-c1fe-6bec-f2e4444a4fa7"]},"widthUnit":"PX","heightUnit":"AUTO","locked":false}},{"id":"a-49-n-6","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"easeOut","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".expand_arrow","selectorGuids":["9f263f8a-3590-9f16-c30c-c671e94b05b9"]},"zValue":180,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}},{"id":"a-49-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"easeOut","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".schedule_option_expandeed","selectorGuids":["33d106a2-3a48-c1fe-6bec-f2e4444a4fa7"]},"value":1,"unit":""}}]}],"useFirstGroupAsInitialState":true,"createdOn":1716445709534},"a-50":{"id":"a-50","title":"SessionDetail [hide]","actionItemGroups":[{"actionItems":[{"id":"a-50-n-3","actionTypeId":"STYLE_SIZE","config":{"delay":0,"easing":"outExpo","duration":500,"target":{"useEventTarget":"CHILDREN","selector":".schedule_option_expandeed","selectorGuids":["33d106a2-3a48-c1fe-6bec-f2e4444a4fa7"]},"heightValue":0,"widthUnit":"PX","heightUnit":"px","locked":false}},{"id":"a-50-n-5","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"easeOut","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".expand_arrow","selectorGuids":["9f263f8a-3590-9f16-c30c-c671e94b05b9"]},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}},{"id":"a-50-n-4","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"easeOut","duration":300,"target":{"useEventTarget":"CHILDREN","selector":".schedule_option_expandeed","selectorGuids":["33d106a2-3a48-c1fe-6bec-f2e4444a4fa7"]},"value":0,"unit":""}}]}],"useFirstGroupAsInitialState":false,"createdOn":1716445709534}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
-);
 
 export function SingleDaySchedule({
   as: _Component = _Builtin.Block,
@@ -21,18 +16,15 @@ export function SingleDaySchedule({
   textDayCount = "Day 1",
   textDate = "April 04",
   isMultiDay = false,
+  onClickSingleDay = {},
+  rotateArrow = {},
 }) {
-  _interactions.useInteractions(_interactionsData, _styles);
-
   return (
-    <_Component
-      className={_utils.cx(_styles, "schedule_option")}
-      data-w-id="6981ec98-474e-304c-03aa-19612359a63c"
-      tag="div"
-    >
+    <_Component className={_utils.cx(_styles, "schedule_option")} tag="div">
       <_Builtin.Block
         className={_utils.cx(_styles, "schedule_option_main")}
         tag="div"
+        {...onClickSingleDay}
       >
         <_Builtin.Block className={_utils.cx(_styles, "main_left")} tag="div">
           {isMultiDay ? (
@@ -86,6 +78,7 @@ export function SingleDaySchedule({
         <_Builtin.Block
           className={_utils.cx(_styles, "expand_arrow")}
           tag="div"
+          {...rotateArrow}
         >
           <_Builtin.HtmlEmbed
             className={_utils.cx(_styles, "embed_flex")}

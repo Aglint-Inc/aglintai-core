@@ -7,4 +7,6 @@ declare function DateOption(props: {
   isSelected?: Types.Visibility.VisibilityConditions;
   textdate?: React.ReactNode;
   textOptionCount?: React.ReactNode;
+  onClickDateOption?: Types.Devlink.RuntimeProps;
+  rotateArrow?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

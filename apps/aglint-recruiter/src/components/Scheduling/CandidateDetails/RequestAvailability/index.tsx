@@ -20,11 +20,14 @@ import PopUpArrowIcon from '@/src/components/Common/Icons/PopUpArrowIcon';
 import ToggleBtn from '@/src/components/JobsDashboard/JobPostCreateUpdate/JobPostFormSlides/utils/UIToggle';
 import DateRange from '@/src/components/Tasks/Components/DateRange';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
+import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import { supabase } from '@/src/utils/supabase/client';
 import { fillEmailTemplate } from '@/src/utils/support/supportUtils';
 
+import { addScheduleActivity } from '../../Candidates/queries/utils';
+import { useAllActivities } from '../hooks';
 import { addScheduleActivity } from '../../Candidates/queries/utils';
 import { useAllActivities } from '../hooks';
 import { useSchedulingApplicationStore } from '../store';
