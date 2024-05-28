@@ -128,7 +128,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
     },
     onError: (_error, variables) => {
-      toast.error('Unable to update action');
+      toast.error('Unable to create action');
       const previousWorkflowActions =
         queryClient.getQueryData<WorkflowAction[]>(queryKey);
       const newWorkflowActions = structuredClone(

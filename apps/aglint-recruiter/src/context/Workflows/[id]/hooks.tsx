@@ -18,7 +18,6 @@ const useWorkflowContext = () => {
   } = useRouter();
   const {
     workflows: { data, status },
-    workflowDelete: { mutate: deleteWorkflowMutation },
     workflowUpdate: { mutate: updateWorkflowMuation },
   } = useWorkflows();
 
@@ -30,10 +29,6 @@ const useWorkflowContext = () => {
     [status, data],
   );
 
-  const handleDeleteWorkflow = useCallback(
-    () => deleteWorkflowMutation({ id: workflow?.id ?? null }),
-    [workflow],
-  );
   const handleUpdateWorkflow = useCallback(
     (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) =>
       updateWorkflowMuation({ id: workflow?.id ?? null, payload }),
@@ -70,7 +65,6 @@ const useWorkflowContext = () => {
     workflow,
     actions,
     actionMutations,
-    handleDeleteWorkflow,
     handleUpdateWorkflow,
     handleCreateAction,
     handleDeleteAction,

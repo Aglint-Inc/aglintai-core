@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Breadcrum } from '@/devlink2/Breadcrum';
 import { PageLayout } from '@/devlink2/PageLayout';
-import { WorkflowLandingTopRIght } from '@/devlink3/WorkflowLandingTopRIght';
+
+import Create from './popup/create';
 
 type LayoutProps = React.PropsWithChildren;
 const Layout = (props: LayoutProps) => {
@@ -22,5 +23,5 @@ const BreadCrumbs = () => {
 };
 
 const Actions = () => {
-  return <WorkflowLandingTopRIght />;
+  return <Create />;
 };

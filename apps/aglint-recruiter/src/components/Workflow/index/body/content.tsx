@@ -29,10 +29,7 @@ const Cards = (props: {
 }) => {
   const { push } = useRouter();
   const filters = useWorkflowStore((state) => state.filters);
-  const {
-    workflowDelete: { mutate: handleDelete },
-    workflowMutations: mutations,
-  } = useWorkflows();
+  const { handleDeleteWorkflow, workflowMutations: mutations } = useWorkflows();
   const cards = props.data
     .filter(({ title, jobs }) => {
       return Object.entries(filters).reduce((acc, [key, value]) => {
@@ -55,7 +52,7 @@ const Cards = (props: {
     })
     .map(({ id, title, trigger, phase, jobs }) => {
       const loading = !!mutations.find((mutation) => mutation.id === id);
-      const jobCount = jobs.length;
+      const jobCount = (jobs ?? []).length;
       return (
         <OptimisticWrapper key={id} loading={loading}>
           <WorkflowCard
@@ -63,7 +60,7 @@ const Cards = (props: {
             textWorkflowName={title}
             textWorkflowTrigger={getTriggerOption(trigger, phase)}
             textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
-            onClickDelete={{ onClick: () => handleDelete({ id }) }}
+            onClickDelete={{ onClick: () => handleDeleteWorkflow({ id }) }}
             onClickEdit={{
               onClick: () => push(ROUTES['/workflows/[id]']({ id })),
             }}

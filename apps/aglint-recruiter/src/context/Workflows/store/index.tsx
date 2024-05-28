@@ -1,8 +1,9 @@
 import { create, StateCreator } from 'zustand';
 
 import { type FiltersSlice, createFiltersSlice } from './filters';
+import { type PopupSlice, createPopupSlice } from './popup';
 
-type Slices = FiltersSlice;
+type Slices = FiltersSlice & PopupSlice;
 
 export type CreateSlice<
   // eslint-disable-next-line no-unused-vars
@@ -19,11 +20,13 @@ const createWorkflowSlice: StateCreator<Slices, [], [], WorkflowSlice> = (
 ) => ({
   resetAll: () => {
     get().resetFilters();
+    get().resetPopup();
   },
 });
 
 export type WorkflowStore = Slices & WorkflowSlice;
 export const useWorkflowStore = create<WorkflowStore>()((...a) => ({
   ...createFiltersSlice(...a),
+  ...createPopupSlice(...a),
   ...createWorkflowSlice(...a),
 }));
