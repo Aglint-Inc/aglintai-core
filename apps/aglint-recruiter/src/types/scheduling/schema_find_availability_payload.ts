@@ -24,11 +24,25 @@ const scheduling_options_schema = z.object({
 export const schema_find_availability_payload = z.object({
   session_ids: z.string().array(),
   recruiter_id: z.string(),
+  candidate_tz: z.string(),
   start_date: z.string(),
   end_date: z.string(),
-  candidate_tz: z.string(),
   options: scheduling_options_schema.default({}), // Ensure default values are applied
 });
 
-// TODO: better types needed
-export type SchedulingAPI = z.infer<typeof schema_find_availability_payload>;
+export const schema_find_interview_slot = z.object({
+  session_ids: z.string().array(),
+  recruiter_id: z.string(),
+  candidate_tz: z.string(),
+  schedule_date: z.string(),
+  options: scheduling_options_schema.default({}), // Ensure default values are applied
+});
+
+export const schema_find_slots_date_range = z.object({
+  session_ids: z.string().array(),
+  recruiter_id: z.string(),
+  date_range_start: z.string(),
+  date_range_end: z.string(),
+  candidate_tz: z.string(),
+  options: scheduling_options_schema.default({}), // Ensure default values are applied
+});

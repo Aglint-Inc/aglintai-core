@@ -47,7 +47,7 @@ export const findEachInterviewerFreeTimes = (
   ) => {
     let free_times: InterDayFreeTime[] = [];
     let work_hrs: InterDayWorkHr[] = [];
-    let current_date = start_date;
+    let current_date = start_date.startOf('day');
 
     while (!current_date.isAfter(end_date, 'day')) {
       const work_time_duration = findWorkTimeForTheDay(

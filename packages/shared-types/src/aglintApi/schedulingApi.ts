@@ -31,21 +31,6 @@ export type APIEventAttendeeStatus = {
   attendee_interv_id: string;
 };
 
-export type APIFindInterviewSlot = {
-  session_ids: string[];
-  recruiter_id: string;
-  start_date: string;
-  user_tz: string;
-};
-
-export type APIFindSlotsDateRange = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  user_tz: string;
-};
-
 export type APIFindAltenativeTimeSlot = {
   session_id: string;
   recruiter_id: string;
@@ -94,6 +79,23 @@ export type APIFindAvailability = {
   recruiter_id: string;
   start_date_str: string;
   end_date_str: string;
+  candidate_tz: string;
+  options?: APIOptions;
+};
+
+export type APIFindInterviewSlot = {
+  session_ids: string[];
+  recruiter_id: string;
+  schedule_date: string;
+  candidate_tz: string;
+  options?: APIOptions;
+};
+
+export type APIFindSlotsDateRange = {
+  session_ids: string[];
+  recruiter_id: string;
+  date_range_start: string;
+  date_range_end: string;
   candidate_tz: string;
   options?: APIOptions;
 };

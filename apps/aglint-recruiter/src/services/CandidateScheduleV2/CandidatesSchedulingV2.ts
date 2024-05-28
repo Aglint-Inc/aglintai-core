@@ -4,7 +4,6 @@ import {
   APIOptions,
   ConflictReason,
   InterviewSessionApiRespType,
-  PauseJson,
   PlanCombinationRespType,
   SessionCombinationRespType,
   SessionInterviewerApiRespType,
@@ -236,7 +235,7 @@ export class CandidatesSchedulingV2 {
       ) {
         combs = this.findFixedBreakSessionCombs(
           cloneDeep(session_rounds[curr_day_idx]),
-          curr_date,
+          curr_date.startOf('day'),
         );
         if (combs.length === 0) {
           curr_date = curr_date.add(1, 'day');
@@ -361,13 +360,17 @@ export class CandidatesSchedulingV2 {
         }
 
         const common_time_range = this.findCommonTimeRange(
-          all_int_attendees.map((s) => ({
-            inter_id: s.user_id,
-            time_ranges: [],
-            interviewer_pause: this.db_details.all_session_int_details[
-              curr_session.session_id
-            ].interviewers[s.user_id].pause_json as PauseJson,
-          })),
+          all_int_attendees.map((s) => {
+            const curr_day_free_times = this.intervs_details_map
+              .get(s.user_id)
+              .freeTimes.find((c_day) => {
+                return c_day.curr_date === currDay.format();
+              }).free_times;
+            return {
+              inter_id: s.user_id,
+              time_ranges: curr_day_free_times, //TODO: where is free time
+            };
+          }),
         );
         cached_free_time.set(map_key.join('_'), common_time_range);
         return common_time_range;
@@ -491,7 +494,7 @@ export class CandidatesSchedulingV2 {
             });
           }
           const conflicting_events = int_with_events.cal_date_events[
-            currDay.startOf('day').format()
+            currDay.format()
           ].filter((cal_event) => {
             return isTimeChunksOverLapps(
               {
@@ -590,19 +593,23 @@ export class CandidatesSchedulingV2 {
 
       const getCommonIntsWorkHrs = (all_int_work_hrs: SlotIntDetails[]) => {
         const common_work_hrs = findCommonTimeRangeUtil(
-          all_int_work_hrs.map((i) => ({
-            inter_id: i.user_id,
-            time_ranges: i.curr_day_work_hrs,
-          })),
+          all_int_work_hrs.map((i) => {
+            return {
+              inter_id: i.user_id,
+              time_ranges: i.curr_day_work_hrs,
+            };
+          }),
           this.api_payload.candidate_tz,
         );
         const common_work_hrs_dayjs: TimeDurationDayjsType[] =
-          common_work_hrs.map((t) => ({
-            startTime: userTzDayjs(t.startTime).tz(
-              this.api_payload.candidate_tz,
-            ),
-            endTime: userTzDayjs(t.endTime).tz(this.api_payload.candidate_tz),
-          }));
+          common_work_hrs.map((t) => {
+            return {
+              startTime: userTzDayjs(t.startTime).tz(
+                this.api_payload.candidate_tz,
+              ),
+              endTime: userTzDayjs(t.endTime).tz(this.api_payload.candidate_tz),
+            };
+          });
         return common_work_hrs_dayjs;
       };
 
@@ -682,7 +689,7 @@ export class CandidatesSchedulingV2 {
       ) {
         combs = this.findFixedBreakSessionCombs(
           cloneDeep(session_rounds[curr_day_idx]),
-          curr_date,
+          curr_date.startOf('day'),
         );
         if (combs.length === 0) {
           curr_date = curr_date.add(1, 'day');
