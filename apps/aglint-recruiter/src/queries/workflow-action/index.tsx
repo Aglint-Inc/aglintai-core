@@ -38,9 +38,13 @@ export const useWorkflowActionMutations = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   return useMutationState({
     filters: { mutationKey, status: 'pending' },
-    select: (mutation) => mutation.state.data as WorkflowAction,
+    select: (mutation) => mutation.state.variables as Mutations,
   });
 };
+type Mutations =
+  | DeleteWorkflowAction
+  | UpdateWorkflowAction
+  | InsertWorkflowAction;
 
 export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
@@ -140,8 +144,8 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
   });
 };
 type InsertWorkflowAction = {
-  workflow_id: string;
   id: string;
+  workflow_id: string;
   payload: Omit<DatabaseTableInsert['workflow_action'], 'id' | 'workflow_id'>;
 };
 const createWorkflowAction = async ({

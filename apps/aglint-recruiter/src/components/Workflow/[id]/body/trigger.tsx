@@ -1,17 +1,21 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 
+import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import UISelect from '@/src/components/Common/Uiselect';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 
 const Trigger = () => {
   return (
-    <WorkflowItem
-      textWorkflowType={'Trigger'}
-      textTypeDescription={'When something happens'}
-      slotWorkflowIcon={<TriggerIcon />}
-      slotInputFields={<Forms />}
-    />
+    <>
+      <WorkflowItem
+        textWorkflowType={'Trigger'}
+        textTypeDescription={'When something happens'}
+        slotWorkflowIcon={<TriggerIcon />}
+        slotInputFields={<Forms />}
+      />
+      <WorkflowConnector />
+    </>
   );
 };
 

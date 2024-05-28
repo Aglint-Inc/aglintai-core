@@ -33,9 +33,10 @@ export const useWorkflowMutations = (args: WorkflowKeys) => {
   const { mutationKey } = workflowMutationKeys.workflow(args);
   return useMutationState({
     filters: { mutationKey, status: 'pending' },
-    select: (mutation) => mutation.state.data as Workflow,
+    select: (mutation) => mutation.state.variables as Mutations,
   });
 };
+type Mutations = DeleteWorkflow | UpdateWorkflow;
 
 type WorkflowKeys = {
   recruiter_id: string;

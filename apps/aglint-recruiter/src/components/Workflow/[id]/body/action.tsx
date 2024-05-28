@@ -1,24 +1,168 @@
+import { DatabaseEnums } from '@aglint/shared-types';
+
+import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
+import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
-import AUIButton from '@/src/components/Common/AUIButton';
+import Loader from '@/src/components/Common/Loader';
+// import UISelect from '@/src/components/Common/Uiselect';
+import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 
-const Action = () => {
-  const { handleCreateAction } = useWorkflow();
+const Actions = () => {
+  const {
+    actions: { data, status },
+    actionMutations: mutations,
+    handleCreateAction,
+  } = useWorkflow();
+  if (status === 'error') return <>Error</>;
+  if (status === 'pending') return <Loader />;
+  const actions = data.map((action) => {
+    const loading = !!mutations.find((mutation) => mutation.id === action.id);
+    return (
+      <OptimisticWrapper key={action.id} loading={loading}>
+        <Action key={action.id} action={action} />
+        <WorkflowConnector />
+      </OptimisticWrapper>
+    );
+  });
+  return (
+    <>
+      {actions}
+      {
+        <WorkflowAdd
+          onClickAdd={{
+            onClick: () => handleCreateAction({ order: actions.length + 1 }),
+          }}
+        />
+      }
+    </>
+  );
+};
+
+export default Actions;
+
+type ActionProps = {
+  action: ReturnType<typeof useWorkflow>['actions']['data'][number];
+};
+
+const Action = (props: ActionProps) => {
   return (
     <WorkflowItem
       textWorkflowType={'Action'}
       textTypeDescription={'An action to be performed'}
       slotWorkflowIcon={<ActionIcon />}
-      slotInputFields={
-        <AUIButton onClick={() => handleCreateAction({ order: 0 })}>
-          CREATE
-        </AUIButton>
-      }
+      slotInputFields={<Forms {...props} />}
     />
   );
 };
 
-export default Action;
+const Forms = (props: ActionProps) => {
+  return <>{JSON.stringify(props)}</>;
+};
+
+// const ActionForm = () => {
+//   const { handleUpdateAction } = useWorkflow();
+//   return (
+//     <UISelect
+//       label='Do this'
+//       value={JSON.stringify(payload)}
+//       menuOptions={ACTION_OPTIONS}
+//       onChange={(e) => {
+//         const { phase, trigger } = JSON.parse(e.target.value) as typeof payload;
+//         handleUpdateAction({
+//           phase,
+//           trigger,
+//           interval: phase === 'now' ? 0 : interval === 0 ? 30 : interval,
+//         });
+//       }}
+//     />
+//   );
+// };
+
+const ACTION_PAYLOAD: {
+  target: DatabaseEnums['workflow_action_target'];
+  medium: DatabaseEnums['workflow_action_medium'][];
+}[] = [
+  {
+    target: 'applicant',
+    medium: ['email'],
+  },
+  {
+    target: 'hiring_manager',
+    medium: ['email'],
+  },
+  {
+    target: 'interviewers',
+    medium: ['email'],
+  },
+  {
+    target: 'recruiter',
+    medium: ['email'],
+  },
+  {
+    target: 'recruiting_coordinator',
+    medium: ['email'],
+  },
+];
+
+export const ACTION_OPTIONS = ACTION_PAYLOAD.reduce(
+  (acc, { target, medium: mediums }) => {
+    acc.push(
+      ...mediums.map((medium) => ({
+        name: getActionOption(target, medium),
+        value: JSON.stringify({
+          target,
+          medium,
+        }) as unknown as (typeof acc)[number]['value'],
+      })),
+    );
+    return acc;
+  },
+  [] as {
+    name: string;
+    value: {
+      target: DatabaseEnums['workflow_action_target'];
+      medium: DatabaseEnums['workflow_action_medium'];
+    };
+  }[],
+);
+
+function getActionOption(
+  target: DatabaseEnums['workflow_action_target'],
+  medium: DatabaseEnums['workflow_action_medium'],
+): string {
+  let message = '';
+  switch (target) {
+    case 'applicant':
+      message = 'the Applicant';
+      break;
+    case 'custom':
+      message = 'custom emails';
+      break;
+    case 'hiring_manager':
+      message = 'the Hiring Manager';
+      break;
+    case 'interviewers':
+      message = 'the Interviewers';
+      break;
+    case 'recruiter':
+      message = 'the Recruiter';
+      break;
+    case 'recruiting_coordinator':
+      message = 'the Recruiting coordinator';
+      break;
+  }
+  let preMessage = '';
+  switch (medium) {
+    case 'email':
+      preMessage = 'an email';
+      break;
+    case 'slack':
+      preMessage = 'a slack message';
+      break;
+  }
+  return `Send ${preMessage} to ${message}`;
+}
 
 const ActionIcon = () => {
   return (
