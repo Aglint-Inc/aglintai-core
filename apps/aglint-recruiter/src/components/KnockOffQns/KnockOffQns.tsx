@@ -1,10 +1,10 @@
 import { CandidateStart } from '@/devlink/CandidateStart';
 import { PhoneScreenings } from '@/devlink/PhoneScreenings';
 import { PhoneScreenSuccess } from '@/devlink/PhoneScreenSuccess';
+import PhoneScreeningFormSubmit from '@/public/lottie/PhoneScreeningFormSubmit';
 import { YTransform } from '@/src/utils/framer-motions/Animation';
 
 import AUIButton from '../Common/AUIButton';
-import PhoneScreeningFormSubmit from '../Common/Lotties/PhoneScreeningFormSubmit';
 import CompanyLogo from './CompanyLogo';
 import PhoneScreeningQn from './PhoneScreeningQn';
 import { useScreeningCtx } from './ScreeningCtxProvider';
@@ -41,7 +41,7 @@ const KnockOffQns = () => {
 };
 
 const StartSlide = () => {
-  const { updateState, state } = useScreeningCtx();  
+  const { updateState, state } = useScreeningCtx();
   return (
     <CandidateStart
       slotLogo={

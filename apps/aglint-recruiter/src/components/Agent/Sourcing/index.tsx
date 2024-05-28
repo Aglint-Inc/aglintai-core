@@ -44,9 +44,9 @@ import toast from '@/src/utils/toast';
 
 import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
 import { calculateTotalExperience } from '../../CandidateDatabase/AppoloSearch/utils';
+import LottieAnimations from '../../Common/Lotties/LottieIcons';
 import MuiAvatar from '../../Common/MuiAvatar';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
-import LottieAnimations from '../../lottie/LottieIcons';
 import { processing_sourcing } from './util';
 
 export type messageType = {

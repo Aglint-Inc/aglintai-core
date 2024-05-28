@@ -51,10 +51,10 @@ import { DangerMessage } from '@/devlink3/DangerMessage';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { NewTabPill } from '@/devlink3/NewTabPill';
 import { ResumeWrap } from '@/devlink3/ResumeWrap';
+import ResumeWait from '@/public/lottie/ResumeWait';
 import { getSafeAssessmentResult } from '@/src/apiUtils/job/jobApplications/candidateEmail/utils';
 import AUIButton from '@/src/components/Common/AUIButton';
 import Loader from '@/src/components/Common/Loader';
-import ResumeWait from '@/src/components/Common/Lotties/ResumeWait';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import MuiPopup from '@/src/components/Common/MuiPopup';
 import ScoreWheel, {

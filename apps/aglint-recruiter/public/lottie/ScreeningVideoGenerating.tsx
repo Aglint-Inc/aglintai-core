@@ -1,3 +1,5 @@
+//this lottie is not used
+
 import { useLottie } from 'lottie-react';
 import React from 'react';
 

@@ -45,8 +45,8 @@ import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import toast from '@/src/utils/toast';
 
 import ChatMessageLoader from '../../AssistantChat/ChatMessageLoader';
+import LottieAnimations from '../../Common/Lotties/LottieIcons';
 import MuiAvatar from '../../Common/MuiAvatar';
-import LottieAnimations from '../../lottie/LottieIcons';
 
 export type messageType = {
   sender: string;
