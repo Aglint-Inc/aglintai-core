@@ -208,6 +208,80 @@ export class CandidatesSchedulingV2 {
     return session_rounds;
   }
 
+  public findMultiDayComb() {
+    let session_rounds = this.getSessionRounds();
+
+    let dayjs_start_date: Dayjs = this.schedule_dates.user_start_date_js;
+    let dayjs_end_date: Dayjs = this.schedule_dates.user_end_date_js;
+
+    const findMultiDayPlanUtil = (
+      final_combs: PlanCombinationRespType[],
+      curr_date: Dayjs,
+      curr_day_idx: number,
+    ): PlanCombinationRespType[] => {
+      if (curr_day_idx === session_rounds.length) {
+        return final_combs;
+      }
+
+      if (userTzDayjs(curr_date).isAfter(dayjs_end_date, 'date')) {
+        return [];
+      }
+
+      let combs: PlanCombinationRespType[] = [];
+      // for multiday plan find the immmediade next day slots
+      while (
+        curr_day_idx === 0 &&
+        combs.length === 0 &&
+        curr_date.isSameOrBefore(dayjs_end_date, 'day')
+      ) {
+        combs = this.findFixedBreakSessionCombs(
+          cloneDeep(session_rounds[curr_day_idx]),
+          curr_date,
+        );
+        if (combs.length === 0) {
+          curr_date = curr_date.add(1, 'day');
+        }
+      }
+      if (combs.length === 0) {
+        return [];
+      }
+      if (final_combs.length === 0) {
+        final_combs = cloneDeep(combs);
+      } else {
+        const temp_combs: PlanCombinationRespType[] = [];
+        const next_day_combs: PlanCombinationRespType[] = cloneDeep(combs);
+        for (let final_slot of final_combs) {
+          for (let nextdaySlot of next_day_combs) {
+            temp_combs.push({
+              plan_comb_id: nanoid(),
+              sessions: [...final_slot.sessions, ...nextdaySlot.sessions],
+            });
+          }
+        }
+        final_combs = cloneDeep(temp_combs);
+      }
+
+      const days_gap = Math.floor(
+        session_rounds[curr_day_idx][session_rounds[curr_day_idx].length - 1]
+          .break_duration / SINGLE_DAY_TIME,
+      );
+
+      const next_day = curr_date.add(days_gap, 'day');
+      return findMultiDayPlanUtil(final_combs, next_day, ++curr_day_idx);
+    };
+
+    let curr_date = dayjs_start_date;
+    let all_combs: PlanCombinationRespType[] = [];
+    while (curr_date.isSameOrBefore(dayjs_end_date)) {
+      let combs = findMultiDayPlanUtil([], curr_date, 0);
+      if (combs.length > 0) {
+        all_combs = [...all_combs, ...combs];
+      }
+      curr_date = curr_date.add(1, 'day');
+    }
+    return all_combs;
+  }
+
   /**
   @returns combination of slots in a paricular day
   @param interview_sessions - particualar day sessions with fixed breaks
@@ -600,10 +674,7 @@ export class CandidatesSchedulingV2 {
         return final_combs;
       }
 
-      let combs: PlanCombinationRespType[] = this.findFixedBreakSessionCombs(
-        cloneDeep(session_rounds[curr_day_idx]),
-        curr_date,
-      );
+      let combs: PlanCombinationRespType[] = [];
       while (
         combs.length === 0 &&
         curr_day_idx !== 0 &&
