@@ -124,6 +124,10 @@
   color: #467b7c;
 }
 
+.hide {
+  display: none;
+}
+
 .div-block-1642 {
   display: flex;
   grid-column-gap: 10px;
@@ -155,6 +159,15 @@
   opacity: 0.8;
 }
 
+.cursor-pointer {
+  transition: opacity 250ms ease;
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  opacity: 0.8;
+}
+
 .text-sm {
   font-size: 12px;
   line-height: 16px;
@@ -175,10 +188,6 @@
 
 .text-grey-600 {
   color: #68737d;
-}
-
-.hide {
-  display: none;
 }
 
 .text-grey-600.text-underline {

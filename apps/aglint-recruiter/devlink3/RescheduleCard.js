@@ -16,6 +16,9 @@ export function RescheduleCard({
   bgColorProps = {},
   textColorProps = {},
   textName = "Robert fox",
+  isRescheduleBtnVisible = true,
+  isCancelVisible = true,
+  onClickCancel = {},
 }) {
   return (
     <_Component
@@ -64,18 +67,20 @@ export function RescheduleCard({
           className={_utils.cx(_styles, "div-block-1643")}
           tag="div"
         >
-          <_Builtin.Block
-            className={_utils.cx(
-              _styles,
-              "text-blue-500",
-              "text-underline",
-              "cursor-pointer"
-            )}
-            tag="div"
-            {...onClickRescheduleNow}
-          >
-            {"Reschedule Now"}
-          </_Builtin.Block>
+          {isRescheduleBtnVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-blue-500",
+                "text-underline",
+                "cursor-pointer"
+              )}
+              tag="div"
+              {...onClickRescheduleNow}
+            >
+              {"Reschedule Now"}
+            </_Builtin.Block>
+          ) : null}
           {isChangeInterviewerVisible ? (
             <_Builtin.Block
               className={_utils.cx(
@@ -88,6 +93,20 @@ export function RescheduleCard({
               {...onClickChangeInterviewer}
             >
               {"Change interviewer"}
+            </_Builtin.Block>
+          ) : null}
+          {isCancelVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-grey-600",
+                "text-underline",
+                "cursor-pointer"
+              )}
+              tag="div"
+              {...onClickCancel}
+            >
+              {"Cancel"}
             </_Builtin.Block>
           ) : null}
         </_Builtin.Block>
