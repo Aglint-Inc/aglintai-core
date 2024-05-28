@@ -108,19 +108,21 @@ const CompanyInfoComp = ({ setIsSaving }) => {
                 <Stack p={'4px'}>
                   {recruiter?.office_locations &&
                     recruiter?.office_locations.map((loc: any, i) => {
-
                       const location = [loc.city, loc.region, loc.country]
                         .filter(Boolean)
                         .join(', ');
                       const address = [loc.full_address];
                       const timeZone = [loc.timezone];
-                      const isHeadQuaterVisible = [loc.is_headquarter];
+                      const isHeadQuaterVisible = loc?.is_headquarter
+                        ? loc.is_headquarterue
+                        : false;
 
                       return (
                         <>
                           <Stack p={'4px'}>
                             <CompanyLocation
-                              isHeadQuaterVisible={isHeadQuaterVisible[0]}
+                              // isHeadQuaterVisible={isHeadQuaterVisible[0]}
+                              isHeadQuaterVisible={isHeadQuaterVisible}
                               onClickEdit={{
                                 onClick: () => {
                                   setDialog({

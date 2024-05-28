@@ -299,32 +299,11 @@
   line-height: 1.4;
 }
 
-.slot-location-forms {
-  margin-top: 16px;
-}
-
-.div-block-453 {
+.div-block-988 {
   display: flex;
-  margin-top: 16px;
+  margin-top: 10px;
+  justify-content: flex-start;
   align-items: center;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
-}
-
-.final-check-box {
-  display: flex;
-  width: 17px;
-  height: 17px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border: 1px solid var(--grey300-03a46dba);
-  border-radius: 4px;
-
-  background-color: white;
-
-  cursor: pointer;
 }
 
 .icons {
@@ -435,17 +414,56 @@
   align-items: flex-start;
 }
 
+.text-red-600 {
+  color: var(--red600-953350ec);
+}
+
+.slot-location-forms {
+  margin-top: 16px;
+}
+
+.div-block-453 {
+  display: flex;
+  margin-top: 16px;
+  align-items: center;
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}
+
+.final-check-box {
+  display: flex;
+  width: 17px;
+  height: 17px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 1px solid var(--grey300-03a46dba);
+  border-radius: 4px;
+
+  background-color: white;
+
+  cursor: pointer;
+}
+
 .roles-btn-wrappers-pop {
-  display: grid;
   margin-top: 16px;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
   grid-auto-columns: 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
+}
+
+.pop-button-wrappers {
+  align-items: center;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.div-block-987 {
+  position: relative;
 }
 
 .div-block-986 {
@@ -472,10 +490,26 @@
   color: white;
 }
 
-.pop-button-wrappers {
-  align-items: center;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+.div-block-986.primary.disable {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  background-color: #d8dcde;
+
+  transition-property: none;
+
+  cursor: auto;
+}
+
+.div-block-986.primary.disable:hover {
+  opacity: 1;
+}
+
+.text-grey-400.mr-4 {
+  margin-right: 4px;
 }
 
 .close-pop {
@@ -494,7 +528,7 @@
   cursor: pointer;
 }
 
-#w-node-_694ed1d9-2be7-f877-4d2b-102823603a8f-8facdcb2 {
-}
 #w-node-_044aa0d8-d364-cf9a-f7f2-1183971856d8-8facdcb2 {
+}
+#w-node-_29bff11b-2f0f-0fb8-8f76-a5d2759ca272-8facdcb2 {
 }
