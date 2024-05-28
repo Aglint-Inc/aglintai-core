@@ -157,6 +157,7 @@ export class CandidatesSchedulingV2 {
       this.db_details.comp_schedule_setting,
       this.schedule_dates.user_start_date_js.format(),
       this.schedule_dates.user_end_date_js.format(),
+      this.api_payload.candidate_tz,
     );
 
     const inter_details = findEachInterviewerFreeTimes(
@@ -171,10 +172,10 @@ export class CandidatesSchedulingV2 {
     for (let inter of inter_details) {
       const details: IntervsWorkHrsEventType = {
         email: inter.email,
-        events: inter.events,
         freeTimes: inter.freeTimes,
         work_hours: inter.work_hours,
         isCalenderConnected: inter.isCalenderConnected,
+        cal_date_events: inter.cal_date_events,
       };
       this.intervs_details_map.set(inter.interviewer_id, details);
     }
@@ -415,24 +416,20 @@ export class CandidatesSchedulingV2 {
               end_time: '',
             });
           }
-          const conflicting_events = int_with_events.events.filter(
-            (cal_event) => {
-              return isTimeChunksOverLapps(
-                {
-                  startTime: this.getTimeInCandTimeZone(
-                    cal_event.start.dateTime,
-                  ),
-                  endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
-                },
-                {
-                  startTime: this.getTimeInCandTimeZone(
-                    upd_sess_slot.start_time,
-                  ),
-                  endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-                },
-              );
-            },
-          );
+          const conflicting_events = int_with_events.cal_date_events[
+            currDay.startOf('day').format()
+          ].filter((cal_event) => {
+            return isTimeChunksOverLapps(
+              {
+                startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
+                endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
+              },
+              {
+                startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+                endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+              },
+            );
+          });
           conflicting_events.forEach((conf_ev) => {
             const ev_type = conf_ev.cal_type;
             conflict_reasons.push({

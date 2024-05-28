@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import {
   CalConflictType,
   CompServiceKeyCred,
@@ -8,6 +9,7 @@ import {
 
 import { getFullName } from '@/src/utils/jsonResume';
 
+import { userTzDayjs } from '../../CandidateSchedule/utils/userTzDayjs';
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
 
 export const fetchIntsCalEventsDetails = async (
@@ -16,6 +18,7 @@ export const fetchIntsCalEventsDetails = async (
   comp_schedule_setting: schedulingSettingType,
   start_date: string,
   end_date: string,
+  cand_tz: string,
 ) => {
   const ints_meta: InterDetailsType[] = session_inters.map((i) => ({
     email: i.email,
@@ -23,8 +26,9 @@ export const fetchIntsCalEventsDetails = async (
     name: getFullName(i.first_name, i.last_name),
     profile_img: i.profile_image,
     shedule_settings: i.scheduling_settings,
+    all_events: [],
     tokens: i.schedule_auth as any,
-    events: [],
+    cal_date_events: {},
     freeTimes: [],
     int_schedule_setting: i.scheduling_settings,
     isCalenderConnected: false,
@@ -52,10 +56,10 @@ export const fetchIntsCalEventsDetails = async (
 
     return 'cal_event';
   };
-  const promiseArr = ints_meta.map(async (int) => {
+  const promisedInts = ints_meta.map(async (int) => {
     let newInt: InterDetailsType = {
       ...int,
-      events: [],
+      cal_date_events: {},
       freeTimes: [],
       isCalenderConnected: false,
     };
@@ -76,19 +80,7 @@ export const fetchIntsCalEventsDetails = async (
         start_date,
         end_date,
       );
-      newInt.events = fetched_events.map((e) => ({
-        id: e.id,
-        summary: e.summary,
-        attendees: e.attendees ?? [],
-        organizer: e.organizer,
-        end: {
-          ...e.end,
-        },
-        start: {
-          ...e.start,
-        },
-        cal_type: getCalEventType(e.summary),
-      }));
+      newInt.all_events = fetched_events;
       newInt.isCalenderConnected = true;
     } catch (error) {
       newInt.isCalenderConnected = false;
@@ -96,5 +88,44 @@ export const fetchIntsCalEventsDetails = async (
     return newInt;
   });
 
-  return await Promise.all(promiseArr);
+  const ints_events = await Promise.all(promisedInts);
+
+  const ints_cal_details: InterDetailsType[] = ints_events.map((i) => {
+    const cal_event_map: InterDetailsType['cal_date_events'] = {};
+    i.all_events.forEach((cal_event) => {
+      const cal_event_date = userTzDayjs(cal_event.start.dateTime)
+        .tz(cand_tz)
+        .startOf('day')
+        .format();
+      if (!cal_event_map[cal_event_date]) {
+        cal_event_map[cal_event_date] = [];
+      }
+      cal_event_map[cal_event_date].push({
+        id: cal_event.id,
+        summary: cal_event.summary,
+        attendees: cal_event.attendees ?? [],
+        organizer: cal_event.organizer,
+        end: {
+          ...cal_event.end,
+        },
+        start: {
+          ...cal_event.start,
+        },
+        cal_type: getCalEventType(cal_event.summary),
+      });
+    });
+    return {
+      all_events: i.all_events,
+      cal_date_events: cal_event_map,
+      email: i.email,
+      freeTimes: i.freeTimes,
+      int_schedule_setting: i.int_schedule_setting,
+      interviewer_id: i.interviewer_id,
+      isCalenderConnected: i.isCalenderConnected,
+      tokens: i.tokens,
+      work_hours: i.work_hours,
+    };
+  });
+
+  return ints_cal_details;
 };

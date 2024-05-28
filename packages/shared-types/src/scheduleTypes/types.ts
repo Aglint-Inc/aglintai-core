@@ -106,7 +106,10 @@ export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;
-  events: MinCalEventDetailTypes[];
+  all_events: CalendarEvent[];
+  cal_date_events: {
+    [cal_date_str: string]: MinCalEventDetailTypes[];
+  };
   freeTimes: InterDayFreeTime[];
   work_hours: InterDayWorkHr[];
   isCalenderConnected: boolean;

@@ -151,7 +151,7 @@ export const findEachInterviewerFreeTimes = (
     }
     let current_day_blocked_times = getInterviewerBlockedTimes(
       db_details.comp_schedule_setting,
-      interviewer.events,
+      interviewer.cal_date_events[current_day.startOf('day').format()],
       api_payload.candidate_tz,
     );
 
