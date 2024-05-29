@@ -13,6 +13,8 @@
 // import React, { useState } from 'react';
 // import { useEffect } from 'react';
 
+// import SupportEmptyLottie from '@/public/lottie/Support/EmptyLottie';
+
 // import { AllTickets } from '@/devlink/AllTickets';
 // import { Assignee } from '@/devlink/Assignee';
 // import { InboxTickets } from '@/devlink/InboxTickets';
@@ -36,7 +38,6 @@
 
 // import Loader from '../Common/Loader';
 // import { capitalize } from '../JobApplicationsDashboard/utils';
-// import SupportEmptyLottie from './EmptyLottie';
 // import SupportTicketDetails from './SupportTicket';
 // dayjs.extend(relativeTime);
 

@@ -1,11 +1,12 @@
 import { Stack } from '@mui/material';
 
 import { InterviewCompleted } from '@/devlink/InterviewCompleted';
+import Loader from '@/src/components/Common/Loader';
 import CompleteLottie from '@/src/components/Common/Lotties/CandidateAssessment/CompletedLottie';
 import InCompleteLottie from '@/src/components/Common/Lotties/CandidateAssessment/IncompleteLottie';
 import { useInterviewDetailsContext } from '@/src/context/InterviewDetails';
 
-import Loader from '../../Common/Loader';
+// import Loader from '../../Common/Loader';
 import MuiAvatar from '../../Common/MuiAvatar';
 
 function InterviewThanks() {
