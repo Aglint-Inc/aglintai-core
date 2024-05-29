@@ -48,8 +48,7 @@ const companyLogo =
 
 // NOTE: export default
 
-export function InterviewBookingConfirmation({
-  subject = dummy.subject,
+function InterviewBookingConfirmation({
   body = dummy.body,
 }: InterviewBookingConfirmationType) {
   const htmlParser = Parser();
@@ -66,9 +65,9 @@ export function InterviewBookingConfirmation({
                 className="w-[120px] mb-[10px]"
                 alt="Company logo"
               />
-              <Heading className="text-[24px]  mb-[0px]">
+              {/* <Heading className="text-[24px]  mb-[0px]">
                 {htmlParser.parse(subject)}
-              </Heading>
+              </Heading> */}
 
               <Text>{htmlParser.parse(body)}</Text>
 

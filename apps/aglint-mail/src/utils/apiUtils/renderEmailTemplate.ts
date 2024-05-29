@@ -16,6 +16,9 @@ export const renderEmailTemplate = async (filename: string, payload = {}) => {
     throw new ServerError('dummy data is not a object type', 500);
 
   validatePayload(dummy, payload); //validate the incoming payload
+
+  console.log('payload', payload);
+
   const element = React.createElement(Template, payload);
   const html = render(element);
   return { html, subject: getSubject(payload) };

@@ -6,22 +6,23 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
-import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
+import fetchTemplate from '../../../utils/apiUtils/get-template';
 type ReqPayload = {
   api_key: string;
   mail_type: string;
   payload: any;
   recipient_email: string;
+  recruiter_id: string;
 };
 
 export async function POST(req: Request) {
-  const [module_relation] = supabaseWrap(
-    await supabaseAdmin.from('company_email_template').select(),
-  );
-  console.log(module_relation);
-
-  const { api_key, recipient_email, mail_type, payload }: ReqPayload =
-    await req.json();
+  const {
+    api_key,
+    recipient_email,
+    mail_type,
+    payload,
+    recruiter_id,
+  }: ReqPayload = await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
@@ -39,6 +40,12 @@ export async function POST(req: Request) {
       throw new ClientError('recipient_email attribute missing', 400);
     }
 
+    if (!recruiter_id) {
+      throw new ClientError('recruiter_id is missing', 400);
+    }
+
+    const filled_body = await fetchTemplate(recruiter_id);
+
     const { emails } = await getEmails();
     const emailIdx = emails.findIndex((e) => e === mail_type);
 
@@ -47,7 +54,7 @@ export async function POST(req: Request) {
 
     const { html, subject } = await renderEmailTemplate(
       emails[emailIdx],
-      payload,
+      filled_body,
     );
     await sendMail({ email: recipient_email, html, subject });
     return NextResponse.json('success', {
