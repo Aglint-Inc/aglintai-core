@@ -1,6 +1,5 @@
 import { z } from 'zod';
-
-const scheduling_options_schema = z.object({
+export const scheduling_options_schema = z.object({
   include_free_time: z.boolean().default(true),
   make_training_optional: z.boolean().default(true),
   use_recruiting_blocks: z.boolean().default(true),

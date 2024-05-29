@@ -15,6 +15,7 @@ import axios from 'axios';
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
+import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
 import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
@@ -35,6 +36,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
 
   const first_day_slot = candidate_plan[0].sessions;
   const last_day_slot = candidate_plan[candidate_plan.length - 1].sessions;
+
   const cand_scheduling = new CandidatesSchedulingV2(
     {
       recruiter_id: recruiter_id,
@@ -47,7 +49,7 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
         'DD/MM/YYYY',
       ),
     },
-    null,
+    scheduling_options_schema.parse({}),
   );
   await cand_scheduling.fetchDetails();
   await cand_scheduling.fetchIntsEventsFreeTimeWorkHrs();

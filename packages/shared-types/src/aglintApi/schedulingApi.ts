@@ -94,8 +94,8 @@ export type APIFindInterviewSlot = {
 export type APIFindSlotsDateRange = {
   session_ids: string[];
   recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
+  start_date_str: string;
+  end_date_str: string;
   candidate_tz: string;
   options?: APIOptions;
 };
