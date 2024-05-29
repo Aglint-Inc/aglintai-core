@@ -10,7 +10,7 @@ import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 

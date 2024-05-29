@@ -82,7 +82,8 @@ export function fillEmailTemplate(
     date_range?: string;
     reschedule_reason?: string;
     additional_reschedule_notes?: string;
-    cancle_reason?:string;
+    cancle_reason?: string;
+    availability_link?: string;
   },
 ) {
   let filledTemplate = template;
@@ -104,7 +105,8 @@ export function fillEmailTemplate(
     '[dateRange]': email.date_range,
     '[rescheduleReason]': email.reschedule_reason,
     '[additionalRescheduleNotes]': email.additional_reschedule_notes,
-    '[cancleReason]':email.cancle_reason
+    '[cancleReason]': email.cancle_reason,
+    '[availabilityLink]': email.availability_link,
   };
 
   for (const [placeholder, value] of Object.entries(placeholders)) {

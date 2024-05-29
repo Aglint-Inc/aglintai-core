@@ -5,7 +5,7 @@ import { NoConflicts } from '@/devlink3/NoConflicts';
 import { SessionDetails } from '@/devlink3/SessionDetails';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { formatTimeWithTimeZone } from '../../../../../utils';

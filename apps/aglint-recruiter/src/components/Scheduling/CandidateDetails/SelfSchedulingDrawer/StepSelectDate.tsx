@@ -1,4 +1,4 @@
-import { ApiFindAvailability } from '@aglint/shared-types';
+import { APIFindAvailability } from '@aglint/shared-types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 
@@ -60,11 +60,11 @@ function SelectDateRange() {
       const res = await axios.post('/api/scheduling/v1/find_availability', {
         session_ids: session_ids,
         recruiter_id: rec_id,
-        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-        user_tz: dayjs.tz.guess(),
+        start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        candidate_tz: dayjs.tz.guess(),
         is_debreif: true,
-      } as ApiFindAvailability);
+      } as APIFindAvailability);
 
       if (res.status === 200) {
         const respTyped = res.data as ApiResponseFindAvailability;
@@ -93,11 +93,11 @@ function SelectDateRange() {
         {
           session_ids: selectedSessionIds,
           recruiter_id: recruiter.id,
-          start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-          end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-          user_tz: dayjs.tz.guess(),
+          start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+          end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+          candidate_tz: dayjs.tz.guess(),
           is_debreif: false,
-        } as ApiFindAvailability,
+        } as APIFindAvailability,
       );
 
       if (resAllOptions.data.length === 0) {
@@ -161,8 +161,8 @@ function SelectDateRange() {
           <DateRange
             onChange={(val) => {
               setDateRange({
-                start_date: val[0] ? val[0].toISOString() : null,
-                end_date: val[1] ? val[1]?.toISOString() : null,
+                start_date: val[0]?.toISOString(),
+                end_date: val[1]?.toISOString(),
               });
             }}
             value={[dayjs(dateRange.start_date), dayjs(dateRange.end_date)]}

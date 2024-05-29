@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import {
   APICandidateConfirmSlot,
-  ApiFindAvailability,
+  APIFindAvailability,
   DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -1321,11 +1321,11 @@ const checkAvailibility = async ({
     {
       session_ids: session_ids,
       recruiter_id: recruiter_id,
-      start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-      end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-      user_tz: timezone || 'America/Los_Angeles',
+      start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+      end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+      candidate_tz: timezone || 'America/Los_Angeles',
       is_debreif: false,
-    } as ApiFindAvailability,
+    } as APIFindAvailability,
   );
 
   if (resAllOptions.data.length === 0) {

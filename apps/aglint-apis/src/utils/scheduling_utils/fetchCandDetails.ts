@@ -10,6 +10,7 @@ import {
 } from '../../types/app_types/scheduleAgentTypes';
 import {getFullName} from '../getFullName';
 import {
+  APIFindSlotsDateRange,
   CandidateType,
   InterviewFilterJsonType,
   InterviewMeetingTypeDb,
@@ -61,10 +62,10 @@ export const fetchCandidateDetails = async (
     (async () => {
       // TODO: need to adjust dates
       const all_slots = await getallSlotsInDateRange({
-        user_tz: 'Asia/colombo', // default time zone
+        candidate_tz: 'Asia/colombo', // default time zone
         session_ids: filter_json.session_ids,
-        date_range_end: filter_json.end_date,
-        date_range_start: filter_json.start_date,
+        start_date_str: filter_json.end_date,
+        end_date_str: filter_json.start_date,
         recruiter_id: filter_json.recruiter_id,
       });
       return all_slots;
@@ -195,14 +196,7 @@ const countInteviewDays = (sessions: InterviewSessionTypeDB[]) => {
   return count;
 };
 
-type api_payload = {
-  session_ids: string[];
-  recruiter_id: string;
-  date_range_start: string;
-  date_range_end: string;
-  user_tz: string;
-};
-const getallSlotsInDateRange = async (payload: api_payload) => {
+const getallSlotsInDateRange = async (payload: APIFindSlotsDateRange) => {
   // console.log(envConfig);
   const {data} = await axios.post(
     `${envConfig.CLIENT_APP_URL}/api/scheduling/v1/find_slots_date_range`,

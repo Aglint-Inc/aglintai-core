@@ -1,5 +1,5 @@
 import {
-  CalendarEvent,
+  MinCalEventDetailTypes,
   schedulingSettingType,
   TimeDurationDayjsType,
 } from '@aglint/shared-types';
@@ -15,7 +15,7 @@ import { userTzDayjs } from './userTzDayjs';
  */
 export const getInterviewerBlockedTimes = (
   comp_shedule_settings: schedulingSettingType,
-  int_events: CalendarEvent[],
+  int_events: MinCalEventDetailTypes[],
   cand_tz: string,
 ): TimeDurationDayjsType[] => {
   const free_time_keyWords: string[] = [
@@ -23,7 +23,7 @@ export const getInterviewerBlockedTimes = (
     ...comp_shedule_settings.schedulingKeyWords.recruitingBlocks,
   ].map((key_word: string) => key_word.toLowerCase());
 
-  const isEventFreeTime = (cal_event: CalendarEvent) => {
+  const isEventFreeTime = (cal_event: MinCalEventDetailTypes) => {
     let is_event_free_time = false;
     free_time_keyWords.forEach((key_word: string) => {
       if (
@@ -35,8 +35,8 @@ export const getInterviewerBlockedTimes = (
     });
     return is_event_free_time;
   };
-  const free_time_events: CalendarEvent[] = [];
-  const busy_time_events: CalendarEvent[] = [];
+  const free_time_events: MinCalEventDetailTypes[] = [];
+  const busy_time_events: MinCalEventDetailTypes[] = [];
   int_events.forEach((cal_event) => {
     if (isEventFreeTime(cal_event)) {
       free_time_events.push(cal_event);
