@@ -42,8 +42,8 @@ import * as AuthContext from '@/src/context/AuthContext/AuthContext';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
-import LottieAnimations from '../../../../public/lottie/Agent/LottieIcons';
 import { calculateTotalExperience } from '../../CandidateDatabase/AppoloSearch/utils';
+import LottieAnimations from '../../Common/Lotties/Agent/LottieIcons';
 import ChatMessageLoader from '../../Common/Lotties/AssistantChat/ChatMessageLoader';
 import MuiAvatar from '../../Common/MuiAvatar';
 import CompanyLogo from '../../JobApplicationsDashboard/Common/CompanyLogo';
