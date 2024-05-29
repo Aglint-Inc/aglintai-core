@@ -1,19 +1,23 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog } from '@mui/material';
+import { Dialog, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 
-import { AssessmentCard } from '@/devlink2/AssessmentCard';
-import { AssessmentEmpty } from '@/devlink2/AssessmentEmpty';
 import { AssessmentError } from '@/devlink2/AssessmentError';
 import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
-import { BrowseAssessment } from '@/devlink2/BrowseAssessment';
 import { EmptyAssessmentList } from '@/devlink2/EmptyAssessmentList';
-import { SelectButton } from '@/devlink2/SelectButton';
+import { RcCheckbox } from '@/devlink2/RcCheckbox';
+import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { JobsWorkflow } from '@/devlink3/JobsWorkflow';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
+import {
+  JobDashboardStore,
+  useJobDashboardStore,
+} from '@/src/context/JobDashboard/store';
+import { useJobs } from '@/src/context/JobsContext';
+import { FilterHeader } from '@/src/context/Tasks/Filters/FilterHeader';
 import {
   useJobWorkflowConnect,
   useJobWorkflowDeleteMutations,
@@ -22,37 +26,45 @@ import {
 } from '@/src/queries/job-workflow';
 import { useWorkflowQuery, Workflow } from '@/src/queries/workflow';
 import ROUTES from '@/src/utils/routing/routes';
+import toast from '@/src/utils/toast';
 
 import Loader from '../Common/Loader';
-import SearchField from '../JobApplicationsDashboard/SearchField';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
 import { getTriggerOption } from '../Workflow/[id]/body/trigger';
+import { JobIcon } from '../Workflow/index/body/icons';
 
 const JobWorkflowComp = () => {
+  const { push } = useRouter();
   const {
     workflows: { data: jobWorkflows },
   } = useJobDetails();
-  const [open, setOpen] = useState(false);
+  const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
+    setPopup,
+  }));
   return (
     <>
       <JobsWorkflow
+        onClickCreateWorkflow={{ onClick: () => push(ROUTES['/workflows']()) }}
         isVisible={(jobWorkflows ?? []).length !== 0}
-        onClickAddWorkflow={{ onClick: () => setOpen(true) }}
-        slotWorflows={<JobWorkflows onOpen={() => setOpen(true)} />}
+        onClickAddWorkflow={{ onClick: () => setPopup({ open: true }) }}
+        slotWorflows={<JobWorkflows />}
       />
-      <WorkflowBrowser open={open} onClose={() => setOpen(false)} />
+      <WorkflowBrowser />
     </>
   );
 };
 
 export default JobWorkflowComp;
 
-const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
+const JobWorkflows = () => {
   const {
     job,
     workflows: { data: jobWorkflows, status, refetch },
   } = useJobDetails();
   const { push } = useRouter();
+  const { setPopup } = useJobDashboardStore(({ setPopup }) => ({
+    setPopup,
+  }));
   const updateMutations = useJobWorkflowUpdateMutations({ job_id: job?.id });
   const deleteMutations = useJobWorkflowDeleteMutations({ job_id: job?.id });
   const { mutate } = useJobWorkflowDisconnect({ job_id: job?.id });
@@ -71,7 +83,7 @@ const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
       <EmptyAssessmentList
         message={'No workflows added'}
         linkText={'Browse all workflows'}
-        onClickBrowseAssessment={{ onClick: () => onOpen() }}
+        onClickBrowseAssessment={{ onClick: () => setPopup({ open: true }) }}
       />
     );
   const cards = jobWorkflows.map((workflow) => {
@@ -107,25 +119,33 @@ const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
   return <>{cards}</>;
 };
 
-const WorkflowBrowser = ({
-  open,
-  onClose,
-}: {
-  open: boolean;
-  onClose: () => void;
-}) => {
+const WorkflowBrowser = () => {
   const { recruiter_id } = useAuthDetails();
-  const { job } = useJobDetails();
+  const {
+    job,
+    workflows: { data: workflows },
+  } = useJobDetails();
   const { data, status } = useWorkflowQuery({ recruiter_id });
+  const {
+    popup: { open },
+    filters,
+    resetWorkflow,
+    selections,
+    setSelections,
+  } = useJobDashboardStore(
+    ({ popup, filters, resetWorkflow, selections, setSelections }) => ({
+      popup,
+      filters,
+      resetWorkflow,
+      selections,
+      setSelections,
+    }),
+  );
   const { mutate } = useJobWorkflowConnect({ job_id: job?.id });
-  const [selections, setSelections] = useState<Workflow[]>([]);
-  const [filter, setFilter] = useState('');
+  const workflowIds = (workflows ?? []).map(({ id }) => id);
+
   const handleClose = useCallback(() => {
-    onClose();
-    setTimeout(() => {
-      setSelections([]);
-      setFilter('');
-    }, 400);
+    resetWorkflow();
   }, []);
 
   if (status === 'error') return <>Error</>;
@@ -133,27 +153,74 @@ const WorkflowBrowser = ({
 
   const count = selections.length;
 
-  const workflows = data
-    .filter(({ jobs }) => !jobs.includes(job?.id))
-    .filter(({ title }) => title.toLowerCase().includes(filter.toLowerCase()));
-
-  const handleClick = (action: 'insert' | 'delete', workflow: Workflow) => {
+  const handleClick = (action: 'insert' | 'delete', id: Workflow['id']) => {
     switch (action) {
       case 'insert':
         {
-          setSelections((prev) => structuredClone([...prev, workflow]));
+          setSelections([...selections, id]);
         }
         break;
       case 'delete':
-        setSelections((prev) =>
-          structuredClone(prev.filter(({ id }) => id !== workflow.id)),
-        );
+        setSelections(selections.filter((selection) => selection !== id));
         break;
     }
   };
 
-  const handleAddTemplates = () => {
-    mutate({ job_id: job?.id, workflow_ids: selections.map(({ id }) => id) });
+  const cards = data
+    .filter(({ id }) => !workflowIds.includes(id))
+    .filter(({ title, jobs }) => {
+      return Object.entries(filters).reduce((acc, [key, value]) => {
+        if (!acc) return acc;
+        switch (key as keyof JobDashboardStore['filters']) {
+          case 'search':
+            return title
+              .toLowerCase()
+              .includes((value as string).toLowerCase());
+          case 'job':
+            return (
+              filters.job.length === 0 ||
+              !!jobs.reduce((acc, curr) => {
+                if ((value as string[]).includes(curr)) acc.push(curr);
+                return acc;
+              }, []).length
+            );
+        }
+      }, true);
+    })
+    .map(({ id, title, trigger, phase, jobs }) => {
+      const checked = selections.includes(id);
+      const jobCount = (jobs ?? []).length;
+      return (
+        <WorkflowCard
+          key={id}
+          isCheckboxVisible={true}
+          isChecked={checked}
+          slotCheckbox={
+            <RcCheckbox
+              isChecked={checked}
+              onclickCheck={{
+                onClick: () => handleClick(checked ? 'delete' : 'insert', id),
+              }}
+              text={<></>}
+            />
+          }
+          textWorkflowName={title}
+          textWorkflowTrigger={getTriggerOption(trigger, phase)}
+          textJobs={`Used in ${jobCount} job${jobCount === 1 ? '' : 's'}`}
+          onClickDelete={{ style: { display: 'none' } }}
+          onClickEdit={{
+            style: { display: 'none' },
+          }}
+        />
+      );
+    });
+
+  const handleSubmit = () => {
+    if (selections.length === 0) {
+      toast.error('Please add one or more templates');
+      return;
+    }
+    mutate({ job_id: job?.id, workflow_ids: selections });
     handleClose();
   };
   return (
@@ -167,7 +234,38 @@ const WorkflowBrowser = ({
         },
       }}
     >
-      <BrowseAssessment
+      <GeneralPopupLarge
+        isIcon={false}
+        onClickAction={{ onClick: () => handleSubmit() }}
+        textPopupTitle={'Add Workflow'}
+        textPopupButton={
+          <Stack direction={'row'} gap={2}>
+            Add
+            <Stack
+              style={{
+                display: count ? 'flex' : 'none',
+                alignItems: 'center',
+
+                backgroundColor: 'white',
+                color: '#2596be',
+                borderRadius: '50%',
+                width: '20px',
+              }}
+            >
+              {count}
+            </Stack>
+          </Stack>
+        }
+        isDescriptionVisibe={true}
+        slotPopup={
+          <Stack style={{ height: '600px', gap: '8px', overflow: 'scroll' }}>
+            {cards}
+          </Stack>
+        }
+        onClickClose={{ onClick: () => handleClose() }}
+        textDescription={<Filters />}
+      />
+      {/* <BrowseAssessment
         onClickAddSelectedTemplates={{ onClick: () => handleAddTemplates() }}
         textTemplatesCount={`${count} workflow${
           count === 1 ? '' : 's'
@@ -192,67 +290,71 @@ const WorkflowBrowser = ({
             handleSearch={async (val) => setFilter(val ?? '')}
           />
         }
-      />
+      /> */}
     </Dialog>
   );
 };
 
-const AllBrowserCards = ({
-  workflows,
-  selections,
-  handleClick,
-}: {
-  workflows: Workflow[];
-  selections: Workflow[];
-  // eslint-disable-next-line no-unused-vars
-  handleClick: (action: 'insert' | 'delete', workflow: Workflow) => void;
-}) => {
-  return (
-    <>
-      {workflows.map((workflow) => (
-        <BrowserCard
-          key={workflow.id}
-          workflow={workflow}
-          handleClick={handleClick}
-          selections={selections}
-        />
-      ))}
-    </>
+const Filters = () => {
+  const {
+    filters: { search, ...filters },
+    setFilters,
+  } = useJobDashboardStore(({ filters, setFilters }) => ({
+    filters,
+    setFilters,
+  }));
+  const options = useFilterOptions();
+  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] = useMemo(
+    () =>
+      Object.entries(filters).map(([key, value]) => ({
+        active: value.length,
+        name: key,
+        value: value,
+        type: 'filter',
+        icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
+        setValue: (newValue) =>
+          setFilters({ [key]: structuredClone(newValue) }),
+        options: options[key] ?? [],
+      })),
+    [filters],
   );
+  const component = useMemo(
+    () => (
+      <FilterHeader
+        filters={safeFilters}
+        search={{
+          value: search,
+          setValue: (newValue) => setFilters({ search: newValue }),
+          placeholder: 'Search in workflows',
+        }}
+      />
+    ),
+    [safeFilters, search],
+  );
+  return component;
 };
 
-const BrowserCard = ({
-  workflow,
-  handleClick,
-  selections,
-}: {
-  workflow: Workflow;
-  selections: Workflow[];
-  handleClick: (
-    // eslint-disable-next-line no-unused-vars
-    action: 'insert' | 'delete',
-    // eslint-disable-next-line no-unused-vars
-    workflow: Workflow,
-  ) => void;
-}) => {
-  const isSelected = !!selections.find(({ id }) => id === workflow.id);
-  return (
-    <AssessmentCard
-      key={workflow.id}
-      textAssessmentName={workflow.title}
-      textDescription={<></>}
-      slotDurationAndLevel={<></>}
-      slotAssessmentType={<></>}
-      onClickCard={{
-        onClick: () => handleClick(isSelected ? 'delete' : 'insert', workflow),
-      }}
-      slotAssessmentStatus={
-        <SelectButton
-          isSelected={isSelected}
-          textButton={isSelected ? 'Selected' : 'Select'}
-        />
-      }
-      isActive={isSelected}
-    />
-  );
+type FilterIconProps = {
+  filter: keyof Omit<JobDashboardStore['filters'], 'search'>;
+};
+const FilterIcon = ({ filter }: FilterIconProps) => {
+  switch (filter) {
+    case 'job':
+      return <JobIcon />;
+  }
+};
+
+type FilterOptions = {
+  // eslint-disable-next-line no-unused-vars
+  [id in FilterIconProps['filter']]: { id: string; label: string }[];
+};
+const useFilterOptions = (): FilterOptions => {
+  const {
+    jobs: { data },
+  } = useJobs();
+  const job = (data ?? []).map((job) => ({
+    id: job.id,
+    label: job.job_title,
+  }));
+  return { job };
 };

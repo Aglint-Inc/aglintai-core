@@ -108,6 +108,7 @@ export * from "./FeedbackCandidate";
 export * from "./FeedbackTableRow";
 export * from "./FeedbackViewPopup";
 export * from "./FullScheduleCard";
+export * from "./GeneralPopupLarge";
 export * from "./GeneralScheduleCard";
 export * from "./GraphBlock";
 export * from "./GraphButtonOption";
