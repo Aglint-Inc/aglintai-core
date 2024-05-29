@@ -1,3 +1,8 @@
+.workflow_listing {
+  overflow: auto;
+  height: calc(100vh - 60px);
+}
+
 .slot_search_and-_filter {
   display: flex;
   height: 60px;
