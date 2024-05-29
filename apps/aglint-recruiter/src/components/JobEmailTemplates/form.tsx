@@ -141,8 +141,8 @@ const EmailBody: FC<MetaForms> = memo(
 EmailBody.displayName = 'EmailBody';
 
 type MetaForms = {
-  name: keyof Form;
-  value: Form[keyof Form];
+  name: keyof Omit<Form, 'default'>;
+  value: Form[keyof Omit<Form, 'default'>];
   // eslint-disable-next-line no-unused-vars
   onChange: (name: keyof Form, value: string) => void;
   template?: DatabaseTable['recruiter']['email_template']['application_received'];

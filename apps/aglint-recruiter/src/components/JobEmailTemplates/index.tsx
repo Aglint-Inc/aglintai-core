@@ -90,7 +90,7 @@ const JobEmailTemplates = () => {
           acc[curr[0]] = {
             value: curr[1],
             error: {
-              value: validateString(curr[1]),
+              value: validateString(String(curr[1])),
               helper: getHelper(curr[0] as any),
             },
           };
@@ -261,7 +261,7 @@ const validateForms = (fields: AllForms) => {
           value: value.value,
           error: {
             ...value.error,
-            value: validateString(value.value),
+            value: validateString(String(value.value)),
           },
         };
         return acc;

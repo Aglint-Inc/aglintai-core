@@ -92,7 +92,7 @@ type EmailTemplateTypes =
 
 type EmailTemplate = {
   body: string;
-  default: string;
+  default: boolean;
   subject: string;
   fromName: string;
 };

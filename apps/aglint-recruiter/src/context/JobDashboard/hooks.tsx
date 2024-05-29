@@ -351,7 +351,7 @@ export const validateEmailTemplates = (
     Object.entries(emailTemplates).reduce((acc, [key, value]) => {
       const label = templateObj[key]?.heading;
       Object.entries(value).forEach(([key, value]) => {
-        if (key !== 'default' && validateString(value))
+        if (key !== 'default' && validateString(String(value)))
           acc.push(`${getHelper(key as any)} in ${label}`);
       });
       return acc;
