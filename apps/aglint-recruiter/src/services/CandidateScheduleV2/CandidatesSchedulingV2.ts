@@ -240,7 +240,6 @@ export class CandidatesSchedulingV2 {
       let combs: PlanCombinationRespType[] = [];
       // for multiday plan find the immmediade next day slots
       while (
-        curr_day_idx === 0 &&
         combs.length === 0 &&
         curr_date.isSameOrBefore(dayjs_end_date, 'day')
       ) {
@@ -249,7 +248,11 @@ export class CandidatesSchedulingV2 {
           curr_date.startOf('day'),
         );
         if (combs.length === 0) {
-          curr_date = curr_date.add(1, 'day');
+          if (curr_day_idx === 0) {
+            break;
+          } else {
+            curr_date = curr_date.add(1, 'day');
+          }
         }
       }
       if (combs.length === 0) {
@@ -703,8 +706,12 @@ export class CandidatesSchedulingV2 {
           cloneDeep(session_rounds[curr_day_idx]),
           curr_date.startOf('day'),
         );
-        if (combs.length === 0 && curr_day_idx > 0) {
-          curr_date = curr_date.add(1, 'day');
+        if (combs.length === 0) {
+          if (curr_day_idx === 0) {
+            break;
+          } else {
+            curr_date = curr_date.add(1, 'day');
+          }
         }
       }
       if (combs.length === 0) {

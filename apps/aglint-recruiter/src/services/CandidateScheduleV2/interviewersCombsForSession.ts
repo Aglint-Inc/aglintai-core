@@ -54,7 +54,7 @@ export const calcInterversCombsForSesson = (
         };
       });
       // NOTE: optional trining ints
-      if (is_training_optional) {
+      if (is_training_optional && session.trainingIntervs.length > 0) {
         session_combs.push({
           ...session,
           trainingIntervs: [],
