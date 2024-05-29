@@ -14,21 +14,15 @@ import { PhoneAgentIcon } from '@/src/components/Tasks/Components/PhoneAgentIcon
 import { getFullName } from '@/src/utils/jsonResume';
 
 import { useAllActivities } from '../hooks';
-import { useSchedulingApplicationStore } from '../store';
 
-function RightPanel() {
+function RightPanel({
+  allActivities,
+}: {
+  allActivities: ReturnType<typeof useAllActivities>;
+}) {
   const router = useRouter();
-  const { selectedApplication } = useSchedulingApplicationStore((state) => ({
-    selectedApplication: state.selectedApplication,
-  }));
 
-  const {
-    data: activities,
-    isLoading,
-    isFetching,
-  } = useAllActivities({
-    application_id: selectedApplication?.id,
-  });
+  const { data: activities, isLoading } = allActivities;
 
   return (
     <>
@@ -43,7 +37,7 @@ function RightPanel() {
                 textDescription={'No activities found.'}
               />
             )}
-            {isLoading || isFetching ? (
+            {isLoading ? (
               <Stack height={'calc(100vh - 60px)'}>
                 <Loader />
               </Stack>

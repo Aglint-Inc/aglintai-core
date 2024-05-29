@@ -34,19 +34,15 @@ import { onClickResendInvite } from '../utils';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 
-function FullSchedule() {
+function FullSchedule({ refetch }: { refetch: () => void }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const initialSessions = useSchedulingApplicationStore(
-    (state) => state.initialSessions,
-  );
-
-  const selectedSessionIds = useSchedulingApplicationStore(
-    (state) => state.selectedSessionIds,
-  );
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
-  );
+  const { initialSessions, selectedSessionIds, selectedApplication } =
+    useSchedulingApplicationStore((state) => ({
+      initialSessions: state.initialSessions,
+      selectedSessionIds: state.selectedSessionIds,
+      selectedApplication: state.selectedApplication,
+    }));
 
   const isDebrief = initialSessions
     .filter((ses) => selectedSessionIds.includes(ses.id))
@@ -80,9 +76,9 @@ function FullSchedule() {
     <>
       <SideDrawerEdit />
       <BreakDrawerEdit />
-      <CancelScheduleDialog />
-      <RescheduleDialog />
-      <SelfSchedulingDrawer />
+      <CancelScheduleDialog refetch={refetch} />
+      <RescheduleDialog refetch={refetch} />
+      <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
         slotNewInterviewPlanCard={initialSessions?.map((session, ind) => {
           return (
