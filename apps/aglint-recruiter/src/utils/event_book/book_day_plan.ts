@@ -13,8 +13,8 @@ import {
 import axios from 'axios';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
 import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
