@@ -3,7 +3,7 @@ import Loader from '@/src/components/Common/Loader';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import NotFoundPage from '@/src/pages/404';
 
-import Action from './action';
+import Actions from './action';
 import Trigger from './trigger';
 
 const Body = () => {
@@ -15,7 +15,7 @@ const Body = () => {
       slotWorkflowItem={
         <>
           <Trigger />
-          <Action />
+          <Actions />
         </>
       }
     />

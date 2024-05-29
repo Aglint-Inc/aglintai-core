@@ -13,6 +13,7 @@ const Trigger = () => {
         textTypeDescription={'When something happens'}
         slotWorkflowIcon={<TriggerIcon />}
         slotInputFields={<Forms />}
+        isDeleteVisible={false}
       />
       <WorkflowConnector />
     </>

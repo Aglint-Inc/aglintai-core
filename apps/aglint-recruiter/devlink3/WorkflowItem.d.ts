@@ -7,4 +7,6 @@ declare function WorkflowItem(props: {
   textWorkflowType?: React.ReactNode;
   textTypeDescription?: React.ReactNode;
   slotWorkflowIcon?: Types.Devlink.Slot;
+  isDeleteVisible?: Types.Visibility.VisibilityConditions;
+  onClickDelete?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

@@ -8,4 +8,6 @@ declare function WorkflowCard(props: {
   textWorkflowName?: React.ReactNode;
   onClickEdit?: Types.Devlink.RuntimeProps;
   onClickDelete?: Types.Devlink.RuntimeProps;
+  slotCheckbox?: Types.Devlink.Slot;
+  isCheckboxVisible?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;

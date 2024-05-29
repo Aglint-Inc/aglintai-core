@@ -39,7 +39,7 @@ const Actions = () => {
           onClickAdd={{
             onClick: () =>
               handleCreateAction({
-                order: actions.length + 1,
+                order: data.length ? data[data.length - 1].order + 1 : 1,
                 medium: 'email',
                 target: 'applicant',
                 payload: {
@@ -61,12 +61,17 @@ type ActionProps = {
 };
 
 const Action = (props: ActionProps) => {
+  const { handleDeleteAction } = useWorkflow();
   return (
     <WorkflowItem
       textWorkflowType={'Action'}
       textTypeDescription={'An action to be performed'}
       slotWorkflowIcon={<ActionIcon />}
       slotInputFields={<Forms {...props} />}
+      isDeleteVisible={true}
+      onClickDelete={{
+        onClick: () => handleDeleteAction({ id: props.action.id }),
+      }}
     />
   );
 };

@@ -15,4 +15,5 @@ declare function ConfirmationPopup(props: {
   isBlueButtonVisible?: Types.Visibility.VisibilityConditions;
   isGreyButtonVisible?: Types.Visibility.VisibilityConditions;
   isDescriptionVisible?: Types.Visibility.VisibilityConditions;
+  widthStyleProps?: Types.Devlink.RuntimeProps;
 }): React.JSX.Element;

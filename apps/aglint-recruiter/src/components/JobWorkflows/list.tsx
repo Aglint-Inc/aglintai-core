@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
-import { Dialog, Stack } from '@mui/material';
+import { Dialog } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
 import { AssessmentCard } from '@/devlink2/AssessmentCard';
@@ -9,6 +10,7 @@ import { AssessmentListCardLoader } from '@/devlink2/AssessmentListCardLoader';
 import { BrowseAssessment } from '@/devlink2/BrowseAssessment';
 import { EmptyAssessmentList } from '@/devlink2/EmptyAssessmentList';
 import { SelectButton } from '@/devlink2/SelectButton';
+import { JobsWorkflow } from '@/devlink3/JobsWorkflow';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
@@ -19,21 +21,26 @@ import {
   useJobWorkflowUpdateMutations,
 } from '@/src/queries/job-workflow';
 import { useWorkflowQuery, Workflow } from '@/src/queries/workflow';
+import ROUTES from '@/src/utils/routing/routes';
 
-import AUIButton from '../Common/AUIButton';
 import Loader from '../Common/Loader';
 import SearchField from '../JobApplicationsDashboard/SearchField';
 import OptimisticWrapper from '../NewAssessment/Common/wrapper/loadingWapper';
 import { getTriggerOption } from '../Workflow/[id]/body/trigger';
 
 const JobWorkflowComp = () => {
+  const {
+    workflows: { data: jobWorkflows },
+  } = useJobDetails();
   const [open, setOpen] = useState(false);
   return (
     <>
+      <JobsWorkflow
+        isVisible={(jobWorkflows ?? []).length !== 0}
+        onClickAddWorkflow={{ onClick: () => setOpen(true) }}
+        slotWorflows={<JobWorkflows onOpen={() => setOpen(true)} />}
+      />
       <WorkflowBrowser open={open} onClose={() => setOpen(false)} />
-      <Stack direction={'column'} padding={4} gap={2}>
-        <JobWorkflows onOpen={() => setOpen(true)} />
-      </Stack>
     </>
   );
 };
@@ -45,6 +52,7 @@ const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
     job,
     workflows: { data: jobWorkflows, status, refetch },
   } = useJobDetails();
+  const { push } = useRouter();
   const updateMutations = useJobWorkflowUpdateMutations({ job_id: job?.id });
   const deleteMutations = useJobWorkflowDeleteMutations({ job_id: job?.id });
   const { mutate } = useJobWorkflowDisconnect({ job_id: job?.id });
@@ -61,6 +69,8 @@ const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
   if (jobWorkflows.length === 0)
     return (
       <EmptyAssessmentList
+        message={'No workflows added'}
+        linkText={'Browse all workflows'}
         onClickBrowseAssessment={{ onClick: () => onOpen() }}
       />
     );
@@ -81,7 +91,9 @@ const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
                 workflow_id: workflow.id,
               }),
           }}
-          onClickEdit={{ style: { display: 'none' } }}
+          onClickEdit={{
+            onClick: () => push(ROUTES['/workflows/[id]']({ id: workflow.id })),
+          }}
           textJobs={<></>}
           textWorkflowName={workflow.title}
           textWorkflowTrigger={getTriggerOption(
@@ -92,14 +104,7 @@ const JobWorkflows = ({ onOpen }: { onOpen: () => void }) => {
       </OptimisticWrapper>
     );
   });
-  return (
-    <>
-      {cards}
-      <Stack width={'200px'} alignSelf={'flex-end'}>
-        <AUIButton onClick={() => onOpen()}>Add workflow</AUIButton>
-      </Stack>
-    </>
-  );
+  return <>{cards}</>;
 };
 
 const WorkflowBrowser = ({

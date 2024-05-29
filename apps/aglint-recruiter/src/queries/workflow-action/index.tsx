@@ -49,7 +49,24 @@ type Mutations =
 
 export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
-  return useMutation({ mutationFn: deleteWorkflowAction, mutationKey });
+  const { queryKey } = workflowActionQueryKeys.workflowAction(args);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey,
+    mutationFn: deleteWorkflowAction,
+    onSuccess: (_data, variables) => {
+      const prevWorkflowActions =
+        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+      const newWorkflowActions = structuredClone(prevWorkflowActions).reduce(
+        (acc, curr) => {
+          if (curr.id !== variables.id) acc.push(curr);
+          return acc;
+        },
+        [] as WorkflowAction[],
+      );
+      queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
+    },
+  });
 };
 type DeleteWorkflowAction = {
   id: string;
