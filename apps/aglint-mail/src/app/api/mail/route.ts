@@ -44,8 +44,9 @@ export async function POST(req: Request) {
       throw new ClientError('recruiter_id is missing', 400);
     }
 
-    const filled_body = await fetchTemplate(recruiter_id);
-
+    const filled_body = await fetchTemplate(recruiter_id, mail_type, payload);
+    payload.body = filled_body.body;
+    payload.subject = filled_body.subject;
     const { emails } = await getEmails();
     const emailIdx = emails.findIndex((e) => e === mail_type);
 
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
 
     const { html, subject } = await renderEmailTemplate(
       emails[emailIdx],
-      filled_body,
+      payload,
     );
     await sendMail({ email: recipient_email, html, subject });
     return NextResponse.json('success', {

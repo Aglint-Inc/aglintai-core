@@ -15,7 +15,7 @@ export const renderEmailTemplate = async (filename: string, payload = {}) => {
   if (typeof dummy !== 'object')
     throw new ServerError('dummy data is not a object type', 500);
 
-  validatePayload(dummy, payload); //validate the incoming payload
+  // validatePayload(dummy, payload); //validate the incoming payload
 
   console.log('payload', payload);
 

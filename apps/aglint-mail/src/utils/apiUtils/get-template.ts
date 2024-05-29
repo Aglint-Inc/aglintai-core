@@ -3,6 +3,7 @@ import { supabaseAdmin, supabaseWrap } from '../../supabase/supabaseAdmin';
 
 export type EmailTemplateFields = {
   body: string;
+  subject: string;
 };
 
 export type DbFetchedTypes = {
@@ -11,23 +12,25 @@ export type DbFetchedTypes = {
   subject: string;
   fromName: string;
 };
-const fetchTemplate = async (recruiter_id: string) => {
+const fetchTemplate = async (
+  recruiter_id: string,
+  mail_type: string,
+  fields: any,
+) => {
   const [templates] = supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
       .select()
-      .eq('recruiter_id', recruiter_id),
+      .eq('recruiter_id', recruiter_id)
+      .eq('type', mail_type),
   );
-  const data = fillEmail(
-    {
-      '[companyName]': 'aglint',
-      '[firstName]': 'chandan',
-      '[scheduleName]': 'Python Interview',
-    },
-    templates,
-  );
+  let data = null;
+  if (mail_type === 'candidate_invite_confirmation') {
+    data = fillEmail(fields, templates);
+  } else if (mail_type === 'debrief_calendar_invite') {
+  }
 
-  return data.body;
+  return data;
 };
 
 export default fetchTemplate;
@@ -46,62 +49,64 @@ export const fillEmail = <T extends EmailTempPath>(
       key,
       dynamic_fields[String(key)],
     );
-    //   updated_template.fromName = updated_template.fromName.replaceAll(
-    //     key,
-    //     dynamic_fields[String(key)],
-    //   );
+    // updated_template.fromName = updated_template.fromName.replaceAll(
+    //   key,
+    //   dynamic_fields[String(key)],
+    // );
     updated_template.body = updated_template.body.replaceAll(
       key,
       dynamic_fields[String(key)],
     );
   }
+
   return updated_template;
 };
 export type EmailTempPath =
-  | 'candidate_availability_request'
-  | 'aglint_mail'
   | 'candidate_invite_confirmation'
   | 'debrief_calendar_invite'
   | 'cancel_interview_session'
-  | 'init_email_agent'
-  | 'confirmation_mail_to_organizer'
-  | 'candidate_reschedule_request'
-  | 'candidate_cancel_request'
-  | 'recruiter_rescheduling_email';
+  | 'confirmation_mail_to_organizer';
+// | 'candidate_availability_request'
+// | 'init_email_agent'
+// | 'candidate_reschedule_request'
+// | 'candidate_cancel_request'
+// | 'recruiter_rescheduling_email';
 
 export type EmailDynamicParams<T extends EmailTempPath> = {
-  aglint_mail: {
-    '[companyName]': string;
-    '[firstName]': string;
-    '[scheduleName]': string;
-  };
-  init_email_agent: {
-    '[candidateFirstName]': string;
-    '[companyName]': string;
-    '[jobRole]': string;
-    '[endDate]': string;
-    '[startDate]': string;
-    '[companyTimeZone]': string;
-    '[candidateTimeZone]': string;
-    '[selfScheduleLink]': string;
-  };
+  // init_email_agent: {
+  //   '[candidateFirstName]': string;
+  //   '[companyName]': string;
+  //   '[jobRole]': string;
+  //   '[endDate]': string;
+  //   '[startDate]': string;
+  //   '[companyTimeZone]': string;
+  //   '[candidateTimeZone]': string;
+  //   '[selfScheduleLink]': string;
+  // };
   confirmation_mail_to_organizer: {
     '[recruiterName]': string;
     '[firstName]': string;
     '[meetingLink]': string;
-    '[companyName]': string;
   };
-  candidate_reschedule_request: never;
-  candidate_cancel_request: never;
-  recruiter_rescheduling_email: never;
-  candidate_availability_request: never;
+  // candidate_reschedule_request: never;
+  // candidate_cancel_request: never;
+  // recruiter_rescheduling_email: never;
+  // candidate_availability_request: never;
   candidate_invite_confirmation: {
-    '[companyName]': string;
-    '[schedule_name]': string;
+    '[firstName]': string;
+    '[viewDetailsLink]': string;
+    '[companyNmae]': string;
+    '[jobTitle]': string;
+  };
+  debrief_calendar_invite: {
+    '[teamMemberName]': string;
     '[firstName]': string;
     '[jobTitle]': string;
-    '[viewDetailsLink]': string;
+    '[companyName]': string;
   };
-  debrief_calendar_invite: never;
-  cancel_interview_session: never;
+  cancel_interview_session: {
+    '[companyName]': string;
+    '[firstName]': string;
+    '[sessionName]': string;
+  };
 }[T];
