@@ -11,13 +11,13 @@ import { useInterviewContext } from '@/src/context/InterviewContext';
 import CompleteLoaderLottie from '../../Common/Lotties/Interview/CompleteLoaderLottie';
 import MuiAvatar from '../../Common/MuiAvatar';
 import MuiPopup from '../../Common/MuiPopup';
+import SidePanelDrawer from '../../Common/SidePanelDrawer';
 // import SidePanelDrawer from '../../Common/SidePanelDrawer';
 import CandidatePanel from './CandidatePanel';
 import VideoCandidatePanel from './CandidatePanel/VideoCandidatePanel';
 import InterviewerPanel from './InterviewerPanel';
 import VideoInterviewerPanel from './InterviewerPanel/VideoInterviewerPanel';
 import Transcript from './Transcript';
-import SidePanelDrawer from '../../Common/SidePanelDrawer';
 
 function Interview_home() {
   const [openSidePanelDrawer, setOpenPanelDrawer] = useState(false);
@@ -50,7 +50,7 @@ function Interview_home() {
             candidateImage={'/'}
           />
         </Stack>
-      </SidePanelDrawe>
+      </SidePanelDrawer>
       <MuiPopup
         props={{
           open: openEndInterview,

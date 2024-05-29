@@ -1,3 +1,4 @@
+// this file is not used
 import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 
