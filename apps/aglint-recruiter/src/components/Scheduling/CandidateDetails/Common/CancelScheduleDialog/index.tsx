@@ -11,10 +11,9 @@ import {
   useInterviewSchedulingStore,
 } from '../../../Candidates/store';
 import { cancelMailHandler } from '../../../Candidates/utils';
-import { useAllActivities } from '../../hooks';
 import { setinitialSessions, useSchedulingApplicationStore } from '../../store';
 
-function CancelScheduleDialog() {
+function CancelScheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser, recruiter } = useAuthDetails();
   const isCancelOpen = useInterviewSchedulingStore(
     (state) => state.isCancelOpen,
@@ -28,9 +27,6 @@ function CancelScheduleDialog() {
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication,
   );
-  const { refetch } = useAllActivities({
-    application_id: selectedApplication?.id,
-  });
 
   const onClickCancel = async () => {
     try {

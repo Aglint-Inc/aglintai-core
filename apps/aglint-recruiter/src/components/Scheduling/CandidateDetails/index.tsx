@@ -15,7 +15,7 @@ import CandidateFeedback from './CandidateFeedback';
 import DeleteScheduleDialog from './Common/CancelScheduleDialog';
 import RescheduleDialog from './Common/RescheduleDialog';
 import FullSchedule from './FullSchedule';
-import { useGetScheduleApplication } from './hooks';
+import { useAllActivities, useGetScheduleApplication } from './hooks';
 import RequestAvailabilityDrawer from './RequestAvailability/Components/RequestAvailabilityDrawer';
 import { RequestAvailabilityProvider } from './RequestAvailability/RequestAvailabilityContext';
 import RightPanel from './RightPanel';
@@ -50,6 +50,10 @@ function SchedulingApplication() {
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
 
+  const allActivities = useAllActivities({
+    application_id: selectedApplication?.id,
+  });
+
   useEffect(() => {
     if (router.isReady && router.query.application_id) {
       setFetchingSchedule(true);
@@ -65,8 +69,8 @@ function SchedulingApplication() {
       <RequestAvailabilityProvider>
         <RequestAvailabilityDrawer />
       </RequestAvailabilityProvider>
-      <DeleteScheduleDialog />
-      <RescheduleDialog />
+      <DeleteScheduleDialog refetch={allActivities.refetch} />
+      <RescheduleDialog refetch={allActivities.refetch} />
       <PageLayout
         onClickBack={{
           onClick: () => {
@@ -104,7 +108,7 @@ function SchedulingApplication() {
                   },
                 }}
                 isScheduleNowVisible={selectedSessionIds.length > 0}
-                slotCandidateCard={<RightPanel />}
+                slotCandidateCard={<RightPanel allActivities={allActivities} />}
                 slotFullScheduleCard={
                   tab === 'candidate_detail' ? (
                     <CandidateInfo
@@ -113,7 +117,7 @@ function SchedulingApplication() {
                       file={selectedApplication.candidate_files}
                     />
                   ) : tab === 'interview_plan' ? (
-                    <FullSchedule />
+                    <FullSchedule refetch={allActivities.refetch} />
                   ) : tab === 'feedback' ? (
                     <FeedbackWindow
                       interview_sessions={initialSessions.map((item) => ({
