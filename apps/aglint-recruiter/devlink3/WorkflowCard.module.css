@@ -12,6 +12,11 @@
   align-items: center;
 }
 
+.div-block-1757 {
+  position: relative;
+  width: 100%;
+}
+
 .workflow_card {
   display: flex;
   width: 100%;
@@ -42,13 +47,13 @@
   align-items: center;
 }
 
-.fw-semibold {
-  font-weight: 600;
-}
-
 .relative-1 {
   position: relative;
   z-index: 1;
+}
+
+.fw-semibold {
+  font-weight: 600;
 }
 
 .fw-semibold.relative_2 {
@@ -218,4 +223,15 @@
   align-items: center;
   grid-column-gap: 8px;
   grid-row-gap: 8px;
+}
+
+.active-workflow-card {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+
+  border: 1px solid #337fbd;
+  border-radius: 10px;
 }

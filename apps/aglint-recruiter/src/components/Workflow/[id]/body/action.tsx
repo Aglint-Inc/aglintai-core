@@ -1,13 +1,19 @@
 /* eslint-disable security/detect-object-injection */
-import type { DatabaseEnums } from '@aglint/shared-types';
+import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { Stack } from '@mui/material';
+import React, { memo } from 'react';
 
 import { WorkflowAdd } from '@/devlink3/WorkflowAdd';
 import { WorkflowConnector } from '@/devlink3/WorkflowConnector';
 import { WorkflowItem } from '@/devlink3/WorkflowItem';
 import Loader from '@/src/components/Common/Loader';
+import TipTapAIEditor from '@/src/components/Common/TipTapAIEditor';
 import UISelect from '@/src/components/Common/Uiselect';
+import UITextField from '@/src/components/Common/UITextField';
+import UITypography from '@/src/components/Common/UITypography';
 import OptimisticWrapper from '@/src/components/NewAssessment/Common/wrapper/loadingWapper';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
+import { palette } from '@/src/context/Theme/Theme';
 import { useWorkflow } from '@/src/context/Workflows/[id]';
 import { emailTemplates } from '@/src/utils/emailTemplate';
 
@@ -81,6 +87,7 @@ const Forms = (props: ActionProps) => {
     <>
       <ActionForm {...props} />
       <TemplateForm {...props} />
+      <Template key={props.action.payload.key} {...props} />
     </>
   );
 };
@@ -133,6 +140,102 @@ const TemplateForm = ({ action: { id, payload } }: ActionProps) => {
     />
   );
 };
+
+const Template = ({
+  action: {
+    payload: { template },
+  },
+}: ActionProps) => {
+  const sender_name = <SenderName name='fromName' value={template} />;
+
+  const email_subject = <EmailSubject name='subject' value={template} />;
+
+  const email_body = <EmailBody name='body' value={template} />;
+
+  const forms = (
+    <Stack spacing={'20px'}>
+      {sender_name}
+      {email_subject}
+      {email_body}
+    </Stack>
+  );
+
+  return forms;
+};
+
+type EmailTemplate = DatabaseTable['recruiter']['email_template'];
+
+type FormsType = {
+  name: keyof Omit<EmailTemplate[keyof EmailTemplate], 'default'>;
+  value: EmailTemplate[keyof EmailTemplate];
+  disabled?: boolean;
+};
+
+const SenderName: React.FC<FormsType> = memo(
+  ({ name, value, disabled = true }) => {
+    return (
+      <UITextField
+        label={'Sender Name'}
+        disabled={disabled}
+        name={name}
+        placeholder={'Sender Name'}
+        value={value[name]}
+        error={false}
+        helperText={null}
+        onChange={null}
+        defaultLabelColor={palette.grey[800]}
+      />
+    );
+  },
+);
+SenderName.displayName = 'SenderName';
+
+const EmailSubject: React.FC<FormsType> = memo(
+  ({ name, value, disabled = true }) => {
+    return (
+      <UITextField
+        label={'Email Subject'}
+        disabled={disabled}
+        name={name}
+        placeholder={'Email Subject'}
+        value={value[name]}
+        error={false}
+        helperText={null}
+        onChange={null}
+        minRows={1}
+        multiline
+        defaultLabelColor={palette.grey[800]}
+      />
+    );
+  },
+);
+EmailSubject.displayName = 'EmailSubject';
+
+const EmailBody: React.FC<FormsType> = memo(
+  ({ name, value, disabled = true }) => {
+    return (
+      <Stack>
+        <UITypography type='small'>Email Body</UITypography>
+        <Stack
+          sx={{
+            mt: '8px',
+            border: '1px solid',
+            borderColor: palette.grey[300],
+            borderRadius: '4px',
+          }}
+        >
+          <TipTapAIEditor
+            disabled={disabled}
+            initialValue={value[name]}
+            handleChange={null}
+            placeholder=''
+          />
+        </Stack>
+      </Stack>
+    );
+  },
+);
+EmailBody.displayName = 'EmailBody';
 
 const TEMPLATE_OPTIONS: {
   name: string;

@@ -10,4 +10,5 @@ declare function WorkflowCard(props: {
   onClickDelete?: Types.Devlink.RuntimeProps;
   slotCheckbox?: Types.Devlink.Slot;
   isCheckboxVisible?: Types.Visibility.VisibilityConditions;
+  isChecked?: Types.Visibility.VisibilityConditions;
 }): React.JSX.Element;
