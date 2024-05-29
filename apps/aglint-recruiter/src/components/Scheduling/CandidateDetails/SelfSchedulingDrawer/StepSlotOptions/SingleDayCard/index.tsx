@@ -9,7 +9,7 @@ import React from 'react';
 import { ConflictChip } from '@/devlink3/ConflictChip';
 import { NoConflicts } from '@/devlink3/NoConflicts';
 import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import { formatTimeWithTimeZone } from '../../../../utils';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
