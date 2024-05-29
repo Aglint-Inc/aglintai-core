@@ -150,8 +150,10 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
+          filter_id: string | null
           id: string
           logger: string
+          metadata: Json | null
           task_id: string | null
           title: string | null
           type: Database["public"]["Enums"]["application_logs_type"]
@@ -161,8 +163,10 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          filter_id?: string | null
           id?: string
           logger: string
+          metadata?: Json | null
           task_id?: string | null
           title?: string | null
           type?: Database["public"]["Enums"]["application_logs_type"]
@@ -172,13 +176,22 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          filter_id?: string | null
           id?: string
           logger?: string
+          metadata?: Json | null
           task_id?: string | null
           title?: string | null
           type?: Database["public"]["Enums"]["application_logs_type"]
         }
         Relationships: [
+          {
+            foreignKeyName: "application_logs_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_application_logs_application_id_fkey"
             columns: ["application_id"]
@@ -656,12 +669,13 @@ export type Database = {
           availability: Json | null
           created_at: string
           date_range: Json | null
-          id: number
+          id: string
           is_task_created: boolean | null
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
           session_ids: Json | null
+          slots: Json | null
           total_slots: number | null
         }
         Insert: {
@@ -669,12 +683,13 @@ export type Database = {
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
-          id?: number
+          id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
           session_ids?: Json | null
+          slots?: Json | null
           total_slots?: number | null
         }
         Update: {
@@ -682,12 +697,13 @@ export type Database = {
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
-          id?: number
+          id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
           session_ids?: Json | null
+          slots?: Json | null
           total_slots?: number | null
         }
         Relationships: [
@@ -829,6 +845,7 @@ export type Database = {
         Row: {
           body: string
           created_at: string
+          footer: string | null
           id: string
           recruiter_id: string
           subject: string
@@ -837,6 +854,7 @@ export type Database = {
         Insert: {
           body: string
           created_at?: string
+          footer?: string | null
           id?: string
           recruiter_id?: string
           subject: string
@@ -845,6 +863,7 @@ export type Database = {
         Update: {
           body?: string
           created_at?: string
+          footer?: string | null
           id?: string
           recruiter_id?: string
           subject?: string
@@ -4771,6 +4790,14 @@ export type Database = {
         | "reports_export"
         | "settings_view"
         | "settings_update"
+        | "tasks_enabled"
+        | "jobs_enabled"
+        | "scheduler_enabled"
+        | "sourcing_enabled"
+        | "phone_screening_enabled"
+        | "assessment_enabled"
+        | "integrations_enabled"
+        | "company_setting_enabled"
       progress_type:
         | "standard"
         | "interview_schedule"

@@ -1,59 +1,40 @@
 /* eslint-disable no-console */
 import dayjs from 'dayjs';
 
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 var utc = require('dayjs/plugin/utc');
 var timezone = require('dayjs/plugin/timezone');
 dayjs.extend(utc);
 dayjs.extend(timezone);
-import { APIFindSlotsDateRange } from '@aglint/shared-types';
-import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const required_fields = ['recruiter_id', 'date_range_start', 'date_range_end'];
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    let {
-      session_ids,
-      recruiter_id,
-      date_range_start,
-      date_range_end,
-      user_tz,
-    } = req.body as APIFindSlotsDateRange;
-
-    required_fields.forEach((field) => {
-      if (!has(req.body, field)) {
-        throw new Error(`missing Field ${field}`);
-      }
+    const parsedData = schema_find_availability_payload.parse({
+      ...req.body,
+      options: req.body.options || {
+        include_conflicting_slots: {},
+      },
     });
 
-    const start_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      date_range_start,
-      user_tz,
-      true,
-    );
-    const end_date_js = CandidatesScheduling.convertDateFormatToDayjs(
-      date_range_end,
-      user_tz,
-      false,
-    );
-
-    const cand_schedule = new CandidatesScheduling(
+    const cand_schedule = new CandidatesSchedulingV2(
       {
-        company_id: recruiter_id,
-        session_ids,
-        user_tz,
+        recruiter_id: parsedData.recruiter_id,
+        session_ids: parsedData.session_ids,
+        candidate_tz: parsedData.candidate_tz,
+        start_date_str: parsedData.start_date_str,
+        end_date_str: parsedData.end_date_str,
       },
-      {
-        start_date_js: start_date_js,
-        end_date_js: end_date_js,
-      },
+      parsedData.options,
     );
 
     await cand_schedule.fetchDetails();
-    await cand_schedule.fetchInterviewrsCalEvents();
+    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
+    console.time('c1');
     const all_day_plans = cand_schedule.findCandSlotsForDateRange();
+    console.timeEnd('c1');
 
     return res.status(200).json(all_day_plans);
   } catch (error) {

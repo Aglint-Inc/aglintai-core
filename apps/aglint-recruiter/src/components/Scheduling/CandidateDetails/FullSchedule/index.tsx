@@ -10,7 +10,7 @@ import { NewInterviewPlan } from '@/devlink3/NewInterviewPlan';
 import { NewInterviewPlanCard } from '@/devlink3/NewInterviewPlanCard';
 import { getBreakLabel } from '@/src/components/JobNewInterviewPlan/utils';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
@@ -34,19 +34,15 @@ import { onClickResendInvite } from '../utils';
 import BreakDrawerEdit from './BreakDrawer';
 import SideDrawerEdit from './EditDrawer';
 
-function FullSchedule() {
+function FullSchedule({ refetch }: { refetch: () => void }) {
   const router = useRouter();
   const { recruiterUser } = useAuthDetails();
-  const initialSessions = useSchedulingApplicationStore(
-    (state) => state.initialSessions,
-  );
-
-  const selectedSessionIds = useSchedulingApplicationStore(
-    (state) => state.selectedSessionIds,
-  );
-  const selectedApplication = useSchedulingApplicationStore(
-    (state) => state.selectedApplication,
-  );
+  const { initialSessions, selectedSessionIds, selectedApplication } =
+    useSchedulingApplicationStore((state) => ({
+      initialSessions: state.initialSessions,
+      selectedSessionIds: state.selectedSessionIds,
+      selectedApplication: state.selectedApplication,
+    }));
 
   const isDebrief = initialSessions
     .filter((ses) => selectedSessionIds.includes(ses.id))
@@ -61,7 +57,7 @@ function FullSchedule() {
   }: {
     session: SchedulingApplication['initialSessions'][0];
   }) => {
-    if (session.users.length > 0) {
+    if (session?.users?.length > 0) {
       if (selectedSessionIds.includes(session.id)) {
         setSelectedSessionIds(
           selectedSessionIds.filter((id) => id !== session.id),
@@ -80,9 +76,9 @@ function FullSchedule() {
     <>
       <SideDrawerEdit />
       <BreakDrawerEdit />
-      <CancelScheduleDialog />
-      <RescheduleDialog />
-      <SelfSchedulingDrawer />
+      <CancelScheduleDialog refetch={refetch} />
+      <RescheduleDialog refetch={refetch} />
+      <SelfSchedulingDrawer refetch={refetch} />
       <NewInterviewPlan
         slotNewInterviewPlanCard={initialSessions?.map((session, ind) => {
           return (
@@ -119,7 +115,8 @@ function FullSchedule() {
                 <NewInterviewPlanCard
                   isCheckboxVisible={true}
                   onClickCard={{
-                    onClick: () => {
+                    onClick: (e) => {
+                      e.stopPropagation();
                       if (
                         session.interview_meeting?.status === 'completed' ||
                         session.interview_meeting?.status === 'confirmed'
@@ -195,7 +192,8 @@ function FullSchedule() {
                       <Checkbox
                         isChecked={selectedSessionIds.includes(session.id)}
                         onClickCheck={{
-                          onClick: () => {
+                          onClick: (e) => {
+                            e.stopPropagation();
                             selectSession({ session });
                           },
                         }}

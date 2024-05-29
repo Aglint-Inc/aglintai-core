@@ -1,7 +1,7 @@
 import { CalendarEvent } from '@aglint/shared-types';
 import { uniqueId } from 'lodash';
 
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 export const createICSAttachment = (
   event: CalendarEvent,

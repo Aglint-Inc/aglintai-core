@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AddLocationPop } from '@/devlink/AddLocationPop';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import timeZone from '@/src/utils/timeZone';
+import toast from '@/src/utils/toast';
 
 import { debouncedSave } from '../../utils';
 import { debounce, geoCodeLocation, handleValidate } from './until';
@@ -65,6 +66,10 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     edit > -1 ? recruiter.office_locations[edit] : (undefined as any)
   ) as initialValueType;
 
+  const hasHeadquarter = (
+    recruiter.office_locations as initialValueType[]
+  ).some((location) => location.is_headquarter === true);
+
   const [isHeadQ, setHeadQ] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -75,7 +80,13 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     if (!error) {
       setRecruiter((recruiter) => {
         const textLocationHeader = `${cityRef.current.value},${regionRef.current.value},${countryRef.current.value}`;
-        const fullAddress = `${address1Ref.current.value},${address2Ref.current.value},${zipRef.current.value}`;
+        const addressParts = [
+          address1Ref.current.value,
+          address2Ref.current.value,
+          zipRef.current.value,
+        ];
+        const fullAddress = addressParts.filter((part) => part).join(', ');
+
         const newLocation = {
           full_address: fullAddress,
           location_header: textLocationHeader,
@@ -113,8 +124,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
         geoCodeLocation(value).then((data) => {
           if (data) {
             const responseData = data as any as Geolocation;
-            regionRef.current.value = responseData.add.region;
-            countryRef.current.value = responseData.add.country;
+            regionRef.current.value = responseData.add?.region;
+            countryRef.current.value = responseData.add?.country;
             if (responseData?.timeZoneId) {
               setTimeZoneValue(
                 timeZone.find((ele) => ele.tzCode === responseData?.timeZoneId)
@@ -155,6 +166,7 @@ const AddLocationDialog: React.FC<LocationProps> = ({
   };
 
   const debouncedSearch = useCallback(
+    // eslint-disable-next-line react-compiler/react-compiler
     debounce((text: string) => {
       handleChange(text, 'city');
     }, 500),
@@ -172,9 +184,8 @@ const AddLocationDialog: React.FC<LocationProps> = ({
     <Dialog onClose={handleClose} open={open}>
       <Stack style={{ pointerEvents: loading ? 'none' : 'auto' }}>
         <AddLocationPop
-          isLocationDescVisible={!isRequired}
-          isAddDisable={!isRequired}
-          textLocationDesc='City, Region and Country are required fields'
+          isLocationDescVisible={false}
+          isAddDisable={edit === -1 ? !isRequired : false}
           headerText={edit === -1 ? 'Add Location' : 'Edit location'}
           textButtonLabel={edit === -1 ? 'Add' : 'Save'}
           slotForm={
@@ -260,10 +271,23 @@ const AddLocationDialog: React.FC<LocationProps> = ({
           }}
           onClickAdd={{
             onClick: () => {
-              handleAddLocation();
+              if (edit === -1) {
+                handleAddLocation();
+              } else {
+                cityRef.current.value &&
+                regionRef.current.value &&
+                countryRef.current.value
+                  ? handleAddLocation()
+                  : toast.message('Please Enter the required fields');
+              }
             },
           }}
-          isChecked={isHeadQ}
+          isCheckboxVisible={
+            hasHeadquarter && initialValue?.is_headquarter
+              ? true
+              : !hasHeadquarter
+          }
+          isChecked={initialValue?.is_headquarter ? true : isHeadQ}
           onClickCheck={{
             onClick: () => {
               setHeadQ(!isHeadQ);

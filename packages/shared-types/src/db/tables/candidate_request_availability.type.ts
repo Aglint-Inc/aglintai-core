@@ -5,6 +5,11 @@ export type CandidateRequestAvailability = TableType<
   {
     availability: AvailabilityType;
     date_range: DateRange;
+    session_ids: RequestSessions;
+    slots: {
+      startTime: string;
+      endTime: string;
+    }[];
   }
 >;
 
@@ -15,3 +20,10 @@ type AvailabilityType = {
   day_offs: boolean;
   outside_work_hours: boolean;
 };
+
+type RequestSessions = {
+  id: string;
+  name: string;
+  session_duration: number;
+  break_duration: number;
+}[];

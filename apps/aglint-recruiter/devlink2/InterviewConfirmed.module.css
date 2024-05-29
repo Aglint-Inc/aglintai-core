@@ -81,6 +81,10 @@
   font-weight: 600;
 }
 
+.div-block-1727 {
+  width: 100%;
+}
+
 .div-block-1482 {
   display: flex;
   flex-direction: column;
@@ -148,6 +152,20 @@
   opacity: 0.7;
 }
 
+@media screen and (max-width: 479px) {
+  .text-grey-600.mob {
+    font-size: 12px;
+  }
+}
+
+.max-width-700 {
+  max-width: 700px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
 .div-block-1212 {
   display: flex;
   justify-content: flex-start;
@@ -176,6 +194,10 @@
   transition-property: none;
 }
 
+.icons.cursor-pointer.no-transition {
+  transition-property: none;
+}
+
 .icons.ml-4 {
   margin-left: 4px;
 }
@@ -194,6 +216,24 @@
 }
 
 .icons.pointer {
+  cursor: pointer;
+}
+
+.icons.picked {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+
+.icons.closediv {
+  position: absolute;
+  left: auto;
+  top: -7px;
+  right: -7px;
+  bottom: auto;
+
   cursor: pointer;
 }
 

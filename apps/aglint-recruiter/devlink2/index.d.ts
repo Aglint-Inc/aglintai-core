@@ -1,9 +1,5 @@
 "use client";
 
-console.warn(
-  "⚠️ Avoid importing components from 'index.js' for better performance. This practice is deprecated and may be removed in the future."
-);
-
 export * as _Builtin from "./_Builtin";
 export * from "./devlinkContext";
 export * from "./interactions";
@@ -57,7 +53,10 @@ export * from "./AssistantLanding";
 export * from "./AssistantLogo";
 export * from "./AssistantTaskEmpty";
 export * from "./Attendee";
+export * from "./AvailabilityEmpty";
+export * from "./AvailabilityReq";
 export * from "./AvailabilitySlot";
+export * from "./AvailabilitySubmitted";
 export * from "./AvailableOption";
 export * from "./AvailableOptionCardDate";
 export * from "./AvailableSlots";
@@ -73,6 +72,7 @@ export * from "./ButtonPrimary";
 export * from "./ButtonSetting";
 export * from "./ButtonWide";
 export * from "./ButtonWithShadow";
+export * from "./CalendarPick";
 export * from "./CancelButton";
 export * from "./CandidateAssesmentCard";
 export * from "./CandidateDetailSidebar";
@@ -101,6 +101,7 @@ export * from "./ConfirmSlots";
 export * from "./CsvImport";
 export * from "./CsvListItem";
 export * from "./DateList";
+export * from "./DatePicker";
 export * from "./DatePill";
 export * from "./DayOff";
 export * from "./DayoffList";
@@ -303,6 +304,7 @@ export * from "./SidedrawerBodySession";
 export * from "./SkeletalUnit";
 export * from "./Skeleton";
 export * from "./SkeletonParagraph";
+export * from "./SlotPicker";
 export * from "./SortArrows";
 export * from "./StatusBadge";
 export * from "./SubLinkSubMenu";
@@ -315,6 +317,7 @@ export * from "./TableHeaderCell";
 export * from "./TeamAvailabilityCard";
 export * from "./TemplateStatus";
 export * from "./TextWithBg";
+export * from "./TimePick";
 export * from "./TimeRangeAvailable";
 export * from "./TimeRangeConfirmed";
 export * from "./TimeRangeDisabled";
