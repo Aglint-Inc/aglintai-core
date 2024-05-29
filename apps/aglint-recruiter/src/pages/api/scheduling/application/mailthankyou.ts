@@ -21,7 +21,8 @@ const required_fields: (keyof APICandScheduleMailThankYou)[] = [
 ];
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { cand_tz, filter_id } = req.body as APICandScheduleMailThankYou;
+    const { cand_tz, filter_id, task_id } =
+      req.body as APICandScheduleMailThankYou;
     required_fields.forEach((field) => {
       if (!has(req.body, field)) {
         throw new Error(`missing Field ${field}`);
@@ -42,7 +43,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const session_details = supabaseWrap(
       await supabaseAdmin
         .from('interview_session')
-        .select('*,interview_meeting(meeting_json,meeting_link)')
+        .select(
+          '*,interview_meeting(*),interview_session_relation(*,interview_module_relation(*,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
+        )
         .in('id', filterJson.session_ids),
     );
 
@@ -53,6 +56,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       type: 'schedule',
       supabase: supabaseAdmin,
       created_by: null,
+      filter_id,
+      task_id,
+      metadata: {
+        type: 'booking_confirmation',
+        sessions: session_details,
+      },
     });
 
     const company_name =

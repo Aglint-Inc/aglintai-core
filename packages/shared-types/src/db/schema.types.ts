@@ -150,8 +150,10 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
+          filter_id: string | null
           id: string
           logger: string
+          metadata: Json | null
           task_id: string | null
           title: string | null
           type: Database["public"]["Enums"]["application_logs_type"]
@@ -161,8 +163,10 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          filter_id?: string | null
           id?: string
           logger: string
+          metadata?: Json | null
           task_id?: string | null
           title?: string | null
           type?: Database["public"]["Enums"]["application_logs_type"]
@@ -172,13 +176,22 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          filter_id?: string | null
           id?: string
           logger?: string
+          metadata?: Json | null
           task_id?: string | null
           title?: string | null
           type?: Database["public"]["Enums"]["application_logs_type"]
         }
         Relationships: [
+          {
+            foreignKeyName: "application_logs_filter_id_fkey"
+            columns: ["filter_id"]
+            isOneToOne: false
+            referencedRelation: "interview_filter_json"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "public_application_logs_application_id_fkey"
             columns: ["application_id"]
@@ -832,6 +845,7 @@ export type Database = {
         Row: {
           body: string
           created_at: string
+          footer: string | null
           id: string
           recruiter_id: string
           subject: string
@@ -840,6 +854,7 @@ export type Database = {
         Insert: {
           body: string
           created_at?: string
+          footer?: string | null
           id?: string
           recruiter_id?: string
           subject: string
@@ -848,6 +863,7 @@ export type Database = {
         Update: {
           body?: string
           created_at?: string
+          footer?: string | null
           id?: string
           recruiter_id?: string
           subject?: string

@@ -1,5 +1,6 @@
 import { ApplicationLogsTypeDb } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
+import { Json } from '@aglint/shared-types/src/db/schema.types';
 import { createServerClient } from '@supabase/ssr';
 
 import { supabase } from '@/src/utils/supabase/client';
@@ -48,6 +49,8 @@ export const addScheduleActivity = async ({
   logger,
   supabase,
   created_by,
+  filter_id,
+  metadata,
 }: {
   title: string;
   application_id: string;
@@ -57,8 +60,10 @@ export const addScheduleActivity = async ({
   logger: string;
   supabase: ReturnType<typeof createServerClient<DB>>;
   created_by: string;
+  filter_id?: string;
+  metadata?: Json;
 }) => {
-  const { error } = await supabase.from('application_logs').insert({
+  const { data, error } = await supabase.from('application_logs').insert({
     application_id,
     title,
     description,
@@ -66,8 +71,13 @@ export const addScheduleActivity = async ({
     type,
     logger,
     created_by,
+    filter_id,
+    metadata,
   });
 
-  // eslint-disable-next-line no-console
-  console.log(error);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
