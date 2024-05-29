@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     addScheduleActivity({
       title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
       application_id: filterJson.interview_schedule.application_id,
-      logger: filterJson.interview_schedule.application_id,
+      logged_by: "user",
       type: 'schedule',
       supabase: supabaseAdmin,
       created_by: null,

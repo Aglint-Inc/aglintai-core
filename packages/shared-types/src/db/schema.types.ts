@@ -175,9 +175,8 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
-          filter_id: string | null
           id: string
-          logger: string
+          logged_by: Database["public"]["Enums"]["application_logger"]
           metadata: Json | null
           task_id: string | null
           title: string | null
@@ -188,9 +187,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
-          filter_id?: string | null
           id?: string
-          logger: string
+          logged_by?: Database["public"]["Enums"]["application_logger"]
           metadata?: Json | null
           task_id?: string | null
           title?: string | null
@@ -201,22 +199,14 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
-          filter_id?: string | null
           id?: string
-          logger?: string
+          logged_by?: Database["public"]["Enums"]["application_logger"]
           metadata?: Json | null
           task_id?: string | null
           title?: string | null
           type?: Database["public"]["Enums"]["application_logs_type"]
         }
         Relationships: [
-          {
-            foreignKeyName: "application_logs_filter_id_fkey"
-            columns: ["filter_id"]
-            isOneToOne: false
-            referencedRelation: "interview_filter_json"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "public_application_logs_application_id_fkey"
             columns: ["application_id"]
@@ -873,29 +863,26 @@ export type Database = {
         Row: {
           body: string
           created_at: string
-          footer: string | null
           id: string
           recruiter_id: string
           subject: string
-          type: string
+          type: Database["public"]["Enums"]["email_types"]
         }
         Insert: {
           body: string
           created_at?: string
-          footer?: string | null
           id?: string
           recruiter_id?: string
           subject: string
-          type: string
+          type: Database["public"]["Enums"]["email_types"]
         }
         Update: {
           body?: string
           created_at?: string
-          footer?: string | null
           id?: string
           recruiter_id?: string
           subject?: string
-          type?: string
+          type?: Database["public"]["Enums"]["email_types"]
         }
         Relationships: [
           {
@@ -4755,6 +4742,7 @@ export type Database = {
       activity_type: "aglint" | "user" | "candidate"
       agent_type: "scheduler" | "job" | "sourcing" | "screening"
       agent_types: "scheduler" | "screening" | "job_assistant" | "sourcing"
+      application_logger: "email_agent" | "phone_agent" | "user" | "system"
       application_logs_type: "standard" | "schedule" | "interview"
       application_processing_status:
         | "not started"
@@ -4781,6 +4769,12 @@ export type Database = {
       cancel_type: "reschedule" | "declined"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
+      email_types:
+        | "debrief_calendar_invite"
+        | "candidate_invite_confirmation"
+        | "cancel_interview_session"
+        | "init_email_agent"
+        | "confirmation_mail_to_organizer"
       employment_type_enum: "fulltime" | "parttime" | "contractor"
       file_type: "resume" | "coverletter" | "cv" | "image"
       icon_status_activity: "success" | "waiting" | "error"

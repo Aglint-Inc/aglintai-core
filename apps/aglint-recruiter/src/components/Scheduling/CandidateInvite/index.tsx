@@ -208,7 +208,7 @@ const ConfirmedPage = (props: ScheduleCardsProps) => {
           ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
           : `Requested reschedule for ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
       application_id: schedule.application_id,
-      logger: schedule.application_id,
+      logged_by: 'user', // error logs
       type: 'schedule',
       supabase: supabase,
       created_by: null,
