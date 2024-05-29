@@ -10,6 +10,7 @@ import { RcCheckbox } from '@/devlink2/RcCheckbox';
 import { GeneralPopupLarge } from '@/devlink3/GeneralPopupLarge';
 import { JobsWorkflow } from '@/devlink3/JobsWorkflow';
 import { WorkflowCard } from '@/devlink3/WorkflowCard';
+import { WorkflowEmpty } from '@/devlink3/WorkflowEmpty';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { useJobDetails } from '@/src/context/JobDashboard';
 import {
@@ -259,7 +260,7 @@ const WorkflowBrowser = () => {
         isDescriptionVisibe={true}
         slotPopup={
           <Stack style={{ height: '600px', gap: '8px', overflow: 'scroll' }}>
-            {cards}
+            {cards.length ? cards : <WorkflowEmpty />}
           </Stack>
         }
         onClickClose={{ onClick: () => handleClose() }}
