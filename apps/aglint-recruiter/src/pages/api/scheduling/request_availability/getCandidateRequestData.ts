@@ -1,10 +1,14 @@
 /* eslint-disable security/detect-object-injection */
 import { DB } from '@aglint/shared-types';
-import { CookieOptions, createServerClient, serialize } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { fetchAllActivities } from '@/src/components/Scheduling/CandidateDetails/hooks';
 
+const supabase = createClient<DB>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!,
+);
 export type ApiResponseActivities =
   | {
       data: Awaited<ReturnType<typeof fetchAllActivities>>;
@@ -19,23 +23,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const supabase = createServerClient<DB>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return req.cookies[name];
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, value, options));
-        },
-        remove(name: string, options: CookieOptions) {
-          res.setHeader('Set-Cookie', serialize(name, '', options));
-        },
-      },
-    },
-  );
   try {
     if (req.method === 'POST') {
       const { request_id } = req.body;
