@@ -697,14 +697,13 @@ export class CandidatesSchedulingV2 {
       let combs: PlanCombinationRespType[] = [];
       while (
         combs.length === 0 &&
-        curr_day_idx !== 0 &&
         curr_date.isSameOrBefore(this.schedule_dates.user_end_date_js, 'day')
       ) {
         combs = this.findFixedBreakSessionCombs(
           cloneDeep(session_rounds[curr_day_idx]),
           curr_date.startOf('day'),
         );
-        if (combs.length === 0) {
+        if (combs.length === 0 && curr_day_idx > 0) {
           curr_date = curr_date.add(1, 'day');
         }
       }
