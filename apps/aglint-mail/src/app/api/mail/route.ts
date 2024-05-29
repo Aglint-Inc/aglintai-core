@@ -6,6 +6,7 @@ import {
 import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
+import { supabaseAdmin, supabaseWrap } from '../../../supabase/supabaseAdmin';
 type ReqPayload = {
   api_key: string;
   mail_type: string;
@@ -14,6 +15,11 @@ type ReqPayload = {
 };
 
 export async function POST(req: Request) {
+  const [module_relation] = supabaseWrap(
+    await supabaseAdmin.from('company_email_template').select(),
+  );
+  console.log(module_relation);
+
   const { api_key, recipient_email, mail_type, payload }: ReqPayload =
     await req.json();
 
