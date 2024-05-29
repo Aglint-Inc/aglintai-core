@@ -70,6 +70,8 @@ export * from "./ChatWindow";
 export * from "./Checkbox";
 export * from "./CloseNewTask";
 export * from "./ConfirmationPopup";
+export * from "./ConfirmScheduleList";
+export * from "./ConfirmScheduleListCard";
 export * from "./ConflictChip";
 export * from "./ConflictHard";
 export * from "./ConflictOnVacation";

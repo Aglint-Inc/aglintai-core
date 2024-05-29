@@ -13,6 +13,10 @@ export function ActivitiesCard({
   onClickViewTask = {},
   textDesc = "This is some text inside of a div block.",
   isViewTaskVisible = true,
+  slotContent,
+  onClickReschedule = {},
+  isRescheduleVisible = true,
+  isContentVisible = true,
 }) {
   return (
     <_Component className={_utils.cx(_styles, "div-block-1404")} tag="div">
@@ -46,6 +50,9 @@ export function ActivitiesCard({
         >
           {textDesc}
         </_Builtin.Block>
+        {isContentVisible ? (
+          <_Builtin.Block tag="div">{slotContent}</_Builtin.Block>
+        ) : null}
         <_Builtin.Block
           className={_utils.cx(_styles, "div-block-1567")}
           tag="div"
@@ -56,6 +63,21 @@ export function ActivitiesCard({
           >
             {textTime}
           </_Builtin.Block>
+          {isRescheduleVisible ? (
+            <_Builtin.Block
+              className={_utils.cx(
+                _styles,
+                "text-sm",
+                "text-underline",
+                "text-grey-600",
+                "cursor-pointer"
+              )}
+              tag="div"
+              {...onClickReschedule}
+            >
+              {"Reschedule"}
+            </_Builtin.Block>
+          ) : null}
           {isViewTaskVisible ? (
             <_Builtin.Block
               className={_utils.cx(

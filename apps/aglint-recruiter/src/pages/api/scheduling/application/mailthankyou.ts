@@ -40,14 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const email_templates = filterJson.interview_schedule.applications
       .public_jobs.recruiter.email_template as CompanyEmailsTypeDB;
 
-    const session_details = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session')
-        .select(
-          '*,interview_meeting(*),interview_session_relation(*,interview_module_relation(*,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
-        )
-        .in('id', filterJson.session_ids),
-    );
+    const session_details = await fetchSessionDetails(filterJson.session_ids);
 
     addScheduleActivity({
       title: `Booked ${session_details.map((ses) => ses.name).join(' , ')}`,
@@ -125,3 +118,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+export const fetchSessionDetails = async (session_ids: string[]) => {
+  const { data, error } = await supabaseAdmin
+    .from('interview_session')
+    .select(
+      '*,interview_meeting(id,start_time,end_time,status,cal_event_id,meeting_link,meeting_json),interview_session_relation(*,interview_module_relation(id,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
+    )
+    .in('id', session_ids);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
