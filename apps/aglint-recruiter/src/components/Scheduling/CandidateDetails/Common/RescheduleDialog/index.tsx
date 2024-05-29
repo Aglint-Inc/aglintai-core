@@ -71,7 +71,7 @@ function RescheduleDialog({ refetch }: { refetch: () => void }) {
         await addScheduleActivity({
           title: `Cancelled session ${selectedSession.name}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,
