@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { GreenhouseType } from '@aglint/shared-types';
+import { DatabaseTableInsert, GreenhouseType } from '@aglint/shared-types';
 import { DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
@@ -188,7 +188,8 @@ export default async function handler(req, res) {
                 job_id: jobId,
                 id: ref.application_id,
                 is_resume_fetching: true,
-              };
+                source: 'greenhouse',
+              } as DatabaseTableInsert['applications'];
             } else {
               return null;
             }
