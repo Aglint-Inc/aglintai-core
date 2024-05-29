@@ -293,10 +293,12 @@ export class CandidatesSchedulingV2 {
     const cached_free_time = new Map<string, TimeDurationType[]>();
     let all_schedule_combs: PlanCombinationRespType[] = [];
 
+    // TODO: move this up for improved perf
     const interviewrs_sesn_comb = calcInterversCombsForSesson(
       interview_sessions,
       this.api_options.make_training_optional,
     );
+
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
       session_idx,
