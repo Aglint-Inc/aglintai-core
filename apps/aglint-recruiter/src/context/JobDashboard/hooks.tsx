@@ -26,6 +26,7 @@ import {
   useJobTenureAndExperience,
 } from '@/src/queries/job-dashboard';
 import { useJobScoringPoll } from '@/src/queries/job-scoring-param';
+import { useJobWorkflow } from '@/src/queries/job-workflow';
 import { capitalizeAll } from '@/src/utils/text/textUtils';
 
 import { useAuthDetails } from '../AuthContext/AuthContext';
@@ -76,6 +77,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
   const interviewPlanEnabled = useJobInterviewPlanEnabled(job);
   const interviewPlans = useInterviewPlans();
   const scoringPoll = useJobScoringPoll(job);
+  const workflows = useJobWorkflow({ job_id: job?.id });
 
   const refreshDashboard = useJobDashboardRefresh();
 
@@ -139,7 +141,8 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     !schedules.isPending &&
     !interviewPlanEnabled.isPending &&
     !interviewPlans.isPending &&
-    !scoringPoll.isPending
+    !scoringPoll.isPending &&
+    !workflows.isPending
   );
 
   const handleJobRefresh = async () => {
@@ -165,6 +168,7 @@ const useProviderJobDashboardActions = (job_id: string = undefined) => {
     jobPolling,
     emailTemplateValidity,
     interviewPlanEnabled,
+    workflows,
     handleJobRefresh,
     isInterviewPlanDisabled,
     isInterviewSessionEmpty,
@@ -347,7 +351,7 @@ export const validateEmailTemplates = (
     Object.entries(emailTemplates).reduce((acc, [key, value]) => {
       const label = templateObj[key]?.heading;
       Object.entries(value).forEach(([key, value]) => {
-        if (key !== 'default' && validateString(value))
+        if (key !== 'default' && validateString(String(value)))
           acc.push(`${getHelper(key as any)} in ${label}`);
       });
       return acc;

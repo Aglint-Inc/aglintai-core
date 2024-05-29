@@ -11,6 +11,7 @@ const OptimisticWrapper: React.FC<{
         opacity: loading ? 0.4 : 1,
         pointerEvents: loading ? 'none' : 'auto',
         transition: '0.4s',
+        width: '100%',
       }}
     >
       {children}

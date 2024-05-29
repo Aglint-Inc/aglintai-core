@@ -9,6 +9,7 @@ import { CustomNewTasks } from "./new_tasks.types";
 import { CustomNewTaskProgress } from "./new_tasks_progress.types";
 import { CustomRecruiter } from "./recruiter.types";
 import { CustomRecruiterUser } from "./recruiter_user.types";
+import { CustomWorkflowAction } from "./workflow_action.types";
 
 type DatabaseTables = Database["public"]["Tables"];
 
@@ -37,5 +38,6 @@ export type Tables = Type<
     applications: CustomApplications;
     candidate_request_availability: CandidateRequestAvailability;
     interview_session: CustomInterviewSession;
+    workflow_action: CustomWorkflowAction;
   }
 >;

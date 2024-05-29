@@ -49,9 +49,9 @@ import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import HiringTeamIcon from '../../Common/ModuleIcons/hiringTeamIcon';
 import JobDetailsIcon from '../../Common/ModuleIcons/jobDetailsIcon';
 import ProfileScoreIcon from '../../Common/ModuleIcons/profileScoreIcon';
-// import EmailTemplateIcon from '../../Common/ModuleIcons/emailTemplateIcon';
 import SchedulingIcon from '../../Common/ModuleIcons/schedulingIcon';
 import ScreeningIcon from '../../Common/ModuleIcons/screeningIcon';
+import WorkflowIcon from '../../Common/ModuleIcons/workflowIcon';
 import MuiAvatar from '../../Common/MuiAvatar';
 import UITextField from '../../Common/UITextField';
 import { AddCandidates } from '../../JobApplicationsDashboard';
@@ -813,7 +813,23 @@ const Modules = () => {
       {isScreeningEnabled && <ScreeningModule />}
       <HiringTeamModule />
       <EmailTemplatesModule />
+      <WorkflowModule />
     </>
+  );
+};
+
+const WorkflowModule = () => {
+  const { job } = useJobDetails();
+  const { push } = useRouter();
+  const handleClick = () => {
+    push(ROUTES['/jobs/[id]/workflows']({ id: job?.id }));
+  };
+  return (
+    <ModuleCard
+      onClickCard={{ onClick: () => handleClick() }}
+      textName={'Workflows'}
+      slotIcon={<WorkflowIcon />}
+    />
   );
 };
 
