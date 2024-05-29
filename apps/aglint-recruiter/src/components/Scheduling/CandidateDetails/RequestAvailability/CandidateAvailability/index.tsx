@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { DatabaseTable } from '@aglint/shared-types';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -16,7 +17,6 @@ import { ShowCode } from '@/src/components/Common/ShowCode';
 import toast from '@/src/utils/toast';
 
 import {
-  dateSlotsType,
   updateCandidateRequestAvailability,
   useRequestAvailabilityContext,
 } from '../RequestAvailabilityContext';
@@ -29,30 +29,56 @@ function CandidateAvailability() {
     candidateRequestAvailability,
     loading,
     setSelectedDateSlots,
+    setSelectedSlots,
     selectedDateSlots,
     selectedSlots,
   } = useRequestAvailabilityContext();
 
-  const handleClickDate = (ele: dateSlotsType) => {
-    //@ts-ignore
-    setSelectedDateSlots((pre: dateSlotsType[]) => {
-      if (pre.map((ele) => ele.curr_day).includes(ele.curr_day)) {
-        return pre.filter((date) => date.curr_day !== ele.curr_day);
-      } else {
-        return [...pre, ele];
-      }
-    });
+  const handleClickDate = (
+    ele: DatabaseTable['candidate_request_availability']['slots'][number],
+  ) => {
+    setSelectedDateSlots(
+      //@ts-ignore
+      (pre: DatabaseTable['candidate_request_availability']['slots']) => {
+        if (pre.map((ele) => ele.curr_day).includes(ele.curr_day)) {
+          return pre.filter((date) => date.curr_day !== ele.curr_day);
+        } else {
+          return [...pre, ele];
+        }
+      },
+    );
+    setSelectedSlots(
+      //@ts-ignore
+      (pre: DatabaseTable['candidate_request_availability']['slots']) => {
+        if (pre.map((ele) => ele.curr_day).includes(ele.curr_day)) {
+          return pre.filter((date) => date.curr_day !== ele.curr_day);
+        } else {
+          return [...pre, { curr_day: ele.curr_day, slots: [] }];
+        }
+      },
+    );
   };
-
+  const markAsAllDateSelected =
+    selectedDateSlots.length &&
+    selectedDateSlots.length >= candidateRequestAvailability.number_of_days;
+  const markAsAllSlotsSelected =
+    selectedSlots.length &&
+    selectedSlots.every(
+      (item) =>
+        item.slots.length >= candidateRequestAvailability.number_of_slots,
+    );
   const handleSubmit = async () => {
-    const eventsByDate = selectedSlots.reduce((acc, event) => {
-      const date = event.startTime.split('T')[0];
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(event);
-      return acc;
-    }, {});
+    const eventsByDate = selectedSlots
+      .map((ele) => ele.slots)
+      .flat()
+      .reduce((acc, event) => {
+        const date = event.startTime.split('T')[0];
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        acc[date].push(event);
+        return acc;
+      }, {});
     const checkMinimumSlotsSelected = Object.keys(eventsByDate).filter(
       (date) =>
         eventsByDate[date].length <
@@ -114,14 +140,9 @@ function CandidateAvailability() {
   if (candidateRequestAvailability) {
     return (
       <AvailabilityReq
-        isPickedCalendarActive={
-          selectedDateSlots.length >=
-          candidateRequestAvailability.number_of_days
-        }
+        isPickedCalendarActive={markAsAllDateSelected}
         textPickDays={`Pick at least ${candidateRequestAvailability.number_of_days} days.`}
-        isPickSlotIconActive={
-          candidateRequestAvailability.number_of_slots < selectedSlots.length
-        }
+        isPickSlotIconActive={markAsAllSlotsSelected}
         textPickSlots={`Pick at least  ${candidateRequestAvailability.number_of_slots} slots from each day.`}
         slotPrimaryButton={
           <ButtonPrimary
@@ -166,12 +187,12 @@ function CandidateAvailability() {
                     .sort((a, b) =>
                       dayjs(a.curr_day).isAfter(dayjs(b.curr_day)) ? 1 : -1,
                     )
-                    .map((dateSlot, i) => {
+                    .map((slotTime, i) => {
                       return (
                         <SlotColumn
-                          onClose={() => handleClickDate(dateSlot)}
+                          onClose={() => handleClickDate(slotTime)}
                           key={i}
-                          date={dateSlot}
+                          slotTime={slotTime}
                         />
                       );
                     })}
