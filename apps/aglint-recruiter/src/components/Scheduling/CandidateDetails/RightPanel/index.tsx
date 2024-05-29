@@ -1,4 +1,3 @@
-import { EmailAgentId, PhoneAgentId } from '@aglint/shared-utils';
 import { Stack } from '@mui/material';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
@@ -57,11 +56,11 @@ function RightPanel({
                       },
                     }}
                     slotImage={
-                      act.logger === EmailAgentId ? (
+                      act.logged_by === 'email_agent' ? (
                         <EmailAgentIcon />
-                      ) : act.logger === PhoneAgentId ? (
+                      ) : act.logged_by === 'phone_agent' ? (
                         <PhoneAgentIcon />
-                      ) : act.logger == act.application_id ? (
+                      ) : act.logged_by === 'user' ? (
                         <svg
                           width='24'
                           height='24'

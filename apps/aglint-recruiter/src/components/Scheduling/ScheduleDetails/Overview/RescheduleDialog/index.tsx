@@ -166,7 +166,7 @@ function RescheduleDialog({
 
         addScheduleActivity({
           title: `Rescheduled interview with new booking link for ${schedule.interview_session.name}`,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           application_id: schedule.applications.id,
           type: 'schedule',
           supabase,

@@ -193,14 +193,13 @@ function RequestAvailability() {
     addScheduleActivity({
       application_id: selectedApplication.id,
       created_by: recruiterUser.user_id,
-      logger: recruiterUser.user_id,
+      logged_by: 'user',
       supabase: supabase,
       title: `Request Availability from ${getFullName(
         selectedApplication.candidates.first_name,
         selectedApplication.candidates.last_name,
       )} to Schedule Interviews for ${selectedSessions.map((ele) => ele.name).join(',')}`,
       type: 'schedule',
-      description: '',
       task_id: task ? task.id : null,
     });
     refetch(); // refetching activities
