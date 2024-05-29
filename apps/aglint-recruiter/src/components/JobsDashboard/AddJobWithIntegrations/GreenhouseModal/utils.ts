@@ -1,5 +1,6 @@
 import {
   CandidateType,
+  DatabaseTableInsert,
   GreenhouseRefDbType,
   GreenhouseType,
   NewCandidateType,
@@ -127,7 +128,8 @@ export const createJobApplications = async (
                 job_id: post.public_job_id,
                 id: ref.application_id,
                 is_resume_fetching: true,
-              };
+                source: 'greenhouse',
+              } as DatabaseTableInsert['applications'];
             } else {
               return null;
             }

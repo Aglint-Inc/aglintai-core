@@ -1,3 +1,4 @@
+import { DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -85,7 +86,8 @@ export const createJobApplications = async (selectedLeverPostings, apiKey) => {
             job_id: post.job_id,
             id: ref.application_id,
             is_resume_fetching: true,
-          };
+            source: 'lever',
+          } as DatabaseTableInsert['applications'];
         });
 
         const { error } = await supabase
