@@ -244,9 +244,13 @@ function Overview({
                       },
                     }}
                     textReschedule={
-                      item.interview_session_cancel.type === 'reschedule'
-                        ? 'requested for reschedule'
-                        : 'declined this schedule'
+                      item.interview_session_cancel.schedule_id
+                        ? item.interview_session_cancel.type === 'reschedule'
+                          ? 'requested for reschedule'
+                          : 'cancelled this schedule'
+                        : item.interview_session_cancel.type === 'reschedule'
+                          ? 'requested for reschedule'
+                          : 'declined this schedule'
                     }
                     isChangeInterviewerVisible={
                       item.interview_session_cancel.session_relation_id &&
@@ -258,6 +262,19 @@ function Overview({
                       onClick: () => {
                         setCancelUserId(item.recruiter_user.id);
                         setIsChangeInterviewerOpen(true);
+                      },
+                    }}
+                    isRescheduleBtnVisible={
+                      !item.interview_session_cancel.schedule_id
+                    }
+                    isCancelVisible={
+                      item.interview_session_cancel.schedule_id &&
+                      item.interview_session_cancel.type === 'declined'
+                    }
+                    onClickCancel={{
+                      onClick: () => {
+                        setCancelUserId(item.recruiter_user.id);
+                        setIsCancelOpen(true);
                       },
                     }}
                   />

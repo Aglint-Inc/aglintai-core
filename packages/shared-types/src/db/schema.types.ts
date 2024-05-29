@@ -656,12 +656,13 @@ export type Database = {
           availability: Json | null
           created_at: string
           date_range: Json | null
-          id: number
+          id: string
           is_task_created: boolean | null
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
           session_ids: Json | null
+          slots: Json | null
           total_slots: number | null
         }
         Insert: {
@@ -669,12 +670,13 @@ export type Database = {
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
-          id?: number
+          id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
           session_ids?: Json | null
+          slots?: Json | null
           total_slots?: number | null
         }
         Update: {
@@ -682,12 +684,13 @@ export type Database = {
           availability?: Json | null
           created_at?: string
           date_range?: Json | null
-          id?: number
+          id?: string
           is_task_created?: boolean | null
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
           session_ids?: Json | null
+          slots?: Json | null
           total_slots?: number | null
         }
         Relationships: [
