@@ -23,11 +23,11 @@ import StatusUpdateDropdownBreadcrum from './StatusUpdateDropdownBreadcrum';
 import {
   resetSchedulingApplicationState,
   setFetchingSchedule,
-  setIsScheduleNowOpen,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from './store';
 import TabsSchedulingApplication from './Tabs';
+import TopBarButtons from './TopBarButtons';
 
 function SchedulingApplication() {
   const router = useRouter();
@@ -45,6 +45,7 @@ function SchedulingApplication() {
     selectedApplication: state.selectedApplication,
     scheduleName: state.scheduleName,
     tab: state.tab,
+    dateRange: state.dateRange,
   }));
 
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
@@ -95,34 +96,13 @@ function SchedulingApplication() {
               />
             ) : (
               <CandidateSchedule
-                onClickSelfschedulingLink={{
-                  onClick: () => {
-                    setIsScheduleNowOpen(true);
-                  },
-                }}
+                slotScheduleButton={<TopBarButtons />}
                 slotDarkPill={<TabsSchedulingApplication />}
                 onClickClose={{
                   onClick: () => {
                     setSelectedSessionIds([]);
                   },
                 }}
-                onClickRequestAvailability={{
-                  onClick: () => {
-                    const currentPath = router.pathname; // '/scheduling/application/[application_id]'
-                    const currentQuery = router.query; // { application_id: '84caebfb-8db6-4881-a88f-400726884504' }
-                    const updatedQuery = {
-                      ...currentQuery,
-                      candidate_request_availability: 'true',
-                    };
-                    router.replace({
-                      pathname: currentPath,
-                      query: updatedQuery,
-                    });
-                  },
-                }}
-                // slotScheduleNowButton={
-                //   <ScheduleNowTopbar isDebrief={isDebrief} />
-                // }
                 isScheduleNowVisible={selectedSessionIds.length > 0}
                 slotCandidateCard={<RightPanel />}
                 slotFullScheduleCard={

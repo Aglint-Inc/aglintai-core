@@ -58,7 +58,7 @@ function DateRange({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateRangeCalendar
           disablePast={disablePast}
-          value={
+          defaultValue={
             value.length
               ? [dayjs(value[0]), dayjs(value[1])]
               : [dayjs(), dayjs()]

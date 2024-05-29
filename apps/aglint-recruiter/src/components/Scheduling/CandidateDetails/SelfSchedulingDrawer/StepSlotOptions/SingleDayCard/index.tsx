@@ -2,11 +2,11 @@ import {
   PlanCombinationRespType,
   SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { Collapse } from '@mui/material';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { ConflictHard } from '@/devlink3/ConflictHard';
-import { ConflictSoft } from '@/devlink3/ConflictSoft';
+import { ConflictChip } from '@/devlink3/ConflictChip';
 import { NoConflicts } from '@/devlink3/NoConflicts';
 import { SingleDaySchedule } from '@/devlink3/SingleDaySchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
@@ -53,8 +53,20 @@ function SingleDayCard({
     .flat()
     .filter((item) => item.conflict_type !== 'soft');
 
+  const [collapse, setCollapse] = React.useState(false);
+
   return (
     <SingleDaySchedule
+      onClickSingleDay={{
+        onClick: () => {
+          setCollapse(!collapse);
+        },
+      }}
+      rotateArrow={{
+        style: {
+          transform: collapse ? 'rotate(180deg)' : '',
+        },
+      }}
       isMultiDay={isMultiDay}
       textDayCount={`Day ${ind + 1}`}
       textDate={dayjs(day).format('MMMM DD')}
@@ -63,27 +75,31 @@ function SingleDayCard({
         <>
           {sesAllConflicts.length === 0 && <NoConflicts />}
           {sesSoftConflicts.length > 0 && (
-            <ConflictSoft
-              isHover={false}
-              textConflict={sesSoftConflicts.length}
+            <ConflictChip
+              isSoftConflict={true}
+              isHardConflict={false}
+              isOutsideWorkHours={false}
+              textCount={sesSoftConflicts.length}
             />
           )}
           {sesHardConflicts.length > 0 && (
-            <ConflictHard
-              isHover={false}
-              textConflict={sesHardConflicts.length}
+            <ConflictChip
+              isSoftConflict={false}
+              isHardConflict={true}
+              isOutsideWorkHours={false}
+              textCount={sesHardConflicts.length}
             />
           )}
         </>
       }
       slotSessionDetails={
-        <>
+        <Collapse in={collapse}>
           {sessions.map((session) => {
             return (
               <SessionIndividual key={session.session_id} session={session} />
             );
           })}
-        </>
+        </Collapse>
       }
     />
   );

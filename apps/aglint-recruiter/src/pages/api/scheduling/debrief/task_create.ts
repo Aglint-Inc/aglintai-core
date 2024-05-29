@@ -8,6 +8,7 @@ import {
   createFilterJson,
   getOrganizerId,
 } from '@/src/components/Scheduling/CandidateDetails/utils';
+import { addScheduleActivity } from '@/src/components/Scheduling/Candidates/queries/utils';
 import { meetingCardType } from '@/src/components/Tasks/TaskBody/ViewTask/Progress/SessionCard';
 import { createTaskProgress } from '@/src/components/Tasks/utils';
 import { getFullName } from '@/src/utils/jsonResume';
@@ -98,6 +99,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_id,
     });
 
+    addScheduleActivity({
+      title: `Auto scheduling ${selectedDebrief.interview_session.name}`,
+      logger: recruiter_user.user_id,
+      type: 'schedule',
+      application_id,
+      task_id: task.task.id,
+      supabase: supabaseAdmin,
+      created_by: recruiter_user.user_id,
+    });
+
     return res.status(200).send({
       task,
       checkSessionRelations,
@@ -111,7 +122,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export default handler;
 
-const findSessionRelations = (sessions) => {
+const findSessionRelations = (
+  sessions: ReturnType<typeof sortBySessionOrderFilterConfirmedRelations>,
+) => {
   let previousDebriefCompleted = false;
   let sessionRelationIds = [];
   let selectedDebriefId = null;
@@ -200,6 +213,7 @@ const sortBySessionOrderFilterConfirmedRelations = (
         end_time: meet.end_time,
         interview_session: {
           id: meet.interview_session[0].id,
+          name: meet.interview_session[0].name,
           session_order: meet.interview_session[0].session_order,
           session_type: meet.interview_session[0].session_type,
           interview_session_relation:

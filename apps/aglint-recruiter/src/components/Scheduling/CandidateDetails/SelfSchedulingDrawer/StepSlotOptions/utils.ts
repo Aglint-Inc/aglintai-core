@@ -6,7 +6,11 @@ export function extractPlanData(
   return sessionsArray.map((plan) => ({
     plan_comb_id: plan.plan_comb_id,
     sessions: plan.sessions,
-    dateRange: plan.sessions.map((session) => session.start_time.split('T')[0]),
+    dateRange: [
+      ...new Set(
+        plan.sessions.map((session) => session.start_time.split('T')[0]),
+      ),
+    ],
   }));
 }
 
