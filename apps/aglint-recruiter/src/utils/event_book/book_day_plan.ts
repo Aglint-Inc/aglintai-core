@@ -13,8 +13,8 @@ import {
 import axios from 'axios';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
 import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
 import { EmailTemplateFiller } from '../emailTemplate/EmailTemplateFiller';
 import { fetchScheduleDetails } from '../emailTemplate/fetchCompEmailTemplate';
@@ -35,23 +35,22 @@ export const bookCandidatePlan = async (req_body: APICandidateConfirmSlot) => {
 
   const first_day_slot = candidate_plan[0].sessions;
   const last_day_slot = candidate_plan[candidate_plan.length - 1].sessions;
-  const cand_scheduling = new CandidatesScheduling(
+  const cand_scheduling = new CandidatesSchedulingV2(
     {
-      company_id: recruiter_id,
+      recruiter_id: recruiter_id,
       session_ids: all_sess_ids,
-      user_tz,
+      candidate_tz: user_tz,
+      start_date_str: userTzDayjs(first_day_slot[0].start_time).format(
+        'DD/MM/YYYY',
+      ),
+      end_date_str: userTzDayjs(last_day_slot[0].start_time).format(
+        'DD/MM/YYYY',
+      ),
     },
-    {
-      start_date_js: userTzDayjs(first_day_slot[0].start_time)
-        .tz(user_tz)
-        .startOf('day'),
-      end_date_js: userTzDayjs(last_day_slot[0].start_time)
-        .tz(user_tz)
-        .endOf('day'),
-    },
+    null,
   );
   await cand_scheduling.fetchDetails();
-  await cand_scheduling.fetchInterviewrsCalEvents();
+  await cand_scheduling.fetchIntsEventsFreeTimeWorkHrs();
   const { company_cred, ses_with_ints } = cand_scheduling.db_details;
   const meetings_info = await fetchMeetingsInfo(
     ses_with_ints.map((s) => s.meeting_id),

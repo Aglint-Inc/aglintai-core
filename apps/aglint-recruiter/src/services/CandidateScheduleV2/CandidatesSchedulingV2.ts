@@ -192,6 +192,17 @@ export class CandidatesSchedulingV2 {
     return findAllDayPlans();
   }
 
+  public async ignoreTrainee() {
+    this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
+      ...s,
+      trainingIntervs: [],
+    }));
+    this.db_details.all_inters = this.db_details.all_inters.filter(
+      (i) => i.interviewer_type !== 'training',
+    );
+    //
+  }
+
   //NOTE: private funcs
   private getSessionRounds() {
     let session_rounds: InterviewSessionApiRespType[][] = [[]];
