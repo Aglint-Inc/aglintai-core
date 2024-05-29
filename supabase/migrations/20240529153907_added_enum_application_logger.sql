@@ -9,5 +9,3 @@ alter table "public"."application_logs" alter column logged_by type "public"."ap
 alter table "public"."application_logs" alter column "logged_by" set default 'system'::application_logger;
 
 drop type "public"."application_logger__old_version_to_be_dropped";
-
-
