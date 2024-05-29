@@ -22,14 +22,14 @@ function RightPanel({
 }) {
   const router = useRouter();
 
-  const { data: activities, isLoading } = allActivities;
+  const { data: activities, isLoading, isFetched } = allActivities;
 
   return (
     <>
       <Activities
         slotActivitiesCard={
           <>
-            {!isLoading && activities.length === 0 && (
+            {isFetched && !isLoading && activities.length === 0 && (
               <EmptyState
                 slotIcons={
                   <Icon variant='ActivityTimeline' width='50px' height='50px' />
@@ -37,7 +37,7 @@ function RightPanel({
                 textDescription={'No activities found.'}
               />
             )}
-            {isLoading ? (
+            {!isFetched || isLoading ? (
               <Stack height={'calc(100vh - 60px)'}>
                 <Loader />
               </Stack>
