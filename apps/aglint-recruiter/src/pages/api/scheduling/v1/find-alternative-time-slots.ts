@@ -7,8 +7,8 @@ import { SessionCombinationRespType } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
 import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const required_fields = [
   'recruiter_id',

@@ -9,8 +9,8 @@ import {
 
 import { getFullName } from '@/src/utils/jsonResume';
 
-import { userTzDayjs } from '../../CandidateSchedule/utils/userTzDayjs';
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
+import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (
   session_inters: SessionInterviewerType[],

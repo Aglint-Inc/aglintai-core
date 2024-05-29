@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   APICandidateConfirmSlot,
-  ApiFindAvailability,
+  APIFindAvailability,
   DatabaseTableInsert,
 } from '@aglint/shared-types';
 import axios from 'axios';
@@ -402,11 +402,11 @@ const findAvailibility = async ({
     {
       session_ids: [session_id],
       recruiter_id: recruiter_id,
-      start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-      end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
-      user_tz: 'America/Los_Angeles',
+      start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
+      end_date_str: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+      candidate_tz: 'America/Los_Angeles',
       is_debreif: true,
-    } as ApiFindAvailability,
+    } as APIFindAvailability,
   );
 
   if (resAllOptions.data.length === 0) {

@@ -99,3 +99,19 @@ export type APIFindSlotsDateRange = {
   candidate_tz: string;
   options?: APIOptions;
 };
+
+export type CandReqAvailableSlots = {
+  session_ids: string[];
+  recruiter_id: string;
+  date_range_start: string;
+  date_range_end: string;
+  candidate_tz: string;
+  current_interview_day: number; // starts from 1
+  previously_selected_dates: string[];
+  options?: {
+    cand_start_hour: number;
+    cand_end_hour: number;
+    show_slots_saturday: boolean;
+    show_slots_sunday: boolean;
+  };
+};

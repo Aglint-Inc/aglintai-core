@@ -11,7 +11,7 @@ import {
   TimeDurationType,
 } from '@aglint/shared-types';
 
-import { UserMeetingDetails } from '../CandidateSchedule/utils/fetch_details_from_db';
+import { UserMeetingDetails } from './utils/fetch_details_from_db';
 
 export type DBDetailsType = {
   company_cred: CompServiceKeyCred;
