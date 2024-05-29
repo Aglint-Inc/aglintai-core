@@ -1,0 +1,16 @@
+{
+  "name": "mobile-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chrono-node": "^2.7.5",
+    "openai": "^4.47.1"
+  }
+}
