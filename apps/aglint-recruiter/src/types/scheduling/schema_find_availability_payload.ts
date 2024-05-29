@@ -25,8 +25,8 @@ export const schema_find_availability_payload = z.object({
   session_ids: z.string().array(),
   recruiter_id: z.string(),
   candidate_tz: z.string(),
-  start_date: z.string(),
-  end_date: z.string(),
+  start_date_str: z.string(),
+  end_date_str: z.string(),
   options: scheduling_options_schema.default({}), // Ensure default values are applied
 });
 
