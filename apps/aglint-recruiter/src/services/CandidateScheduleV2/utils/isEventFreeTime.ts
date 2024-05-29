@@ -37,6 +37,7 @@ export const getInterviewerBlockedTimes = (
   };
   const free_time_events: MinCalEventDetailTypes[] = [];
   const busy_time_events: MinCalEventDetailTypes[] = [];
+
   int_events.forEach((cal_event) => {
     if (isEventFreeTime(cal_event)) {
       free_time_events.push(cal_event);

@@ -1,6 +1,6 @@
 import { InterviewSessionApiRespType } from '@aglint/shared-types';
 
-export const calcInterversCombsForSesson = (
+const calcInterversCombsForSesson = (
   sessions: InterviewSessionApiRespType[],
   is_training_optional,
 ) => {
@@ -80,4 +80,19 @@ export const calcInterversCombsForSesson = (
   }
 
   return total_combs;
+};
+export const calcIntsCombsForEachSessionRound = (
+  session_rounds: InterviewSessionApiRespType[][],
+  is_training_optional,
+) => {
+  let ints_combs_for_each_round: InterviewSessionApiRespType[][][] = [];
+
+  for (let curr_round of session_rounds) {
+    const ints_cmobs_for_curr_round = calcInterversCombsForSesson(
+      curr_round,
+      is_training_optional,
+    );
+    ints_combs_for_each_round.push(ints_cmobs_for_curr_round);
+  }
+  return ints_combs_for_each_round;
 };
