@@ -42,6 +42,7 @@ export const sendMail = async ({
       throw new MailSenderError(`mail failed to send`);
     }
   } catch (e: any) {
+    console.log(e);
     throw new MailSenderError(e.message);
   }
 };

@@ -17,6 +17,7 @@ import * as React from 'react';
 interface InterviewBookingConfirmationType {
   subject?: string;
   body?: string;
+  meeting_details: meetingDetails;
 }
 
 interface meetingDetails {
@@ -26,25 +27,26 @@ interface meetingDetails {
   link?: string;
 }
 
-// export dummy
+// NOTE: export dummy
 export const dummy: InterviewBookingConfirmationType = {
   subject: 'You have selected for the Interview at Huwaei',
   body: '<p>You have selected for the Interview at [companyName]</p><p>Hi [firstName], Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!</p><h4>[scheduleName]</h4><p>[pickYourSlotLink]</p><p>Best regards,</p><p>[companyName] Recruitment Team</p>',
+  meeting_details: {
+    type: '<strong>Personality and cultural fit</strong>',
+    platform: 'Google meet',
+    duration: '45 minutes',
+    link: 'https://example.com',
+  },
 };
 
-const meetingDetails: meetingDetails = {
-  type: '<strong>Personality and cultural fit</strong>',
-  platform: 'Google meet',
-  duration: '45 minutes',
-  link: 'https://example.com',
-};
-
-// export get subject
+// NOTE: export
 export const getSubject = (p: any) =>
   `Job Hunt Strategy Questions and Answers - Session with `;
 
 const companyLogo =
   'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png';
+
+// NOTE: export default
 
 export function InterviewBookingConfirmation({
   subject = dummy.subject,
@@ -82,17 +84,17 @@ export function InterviewBookingConfirmation({
                     src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/booking_confirmation_personality_logo.png"
                     className="inline "
                   />
-                  {htmlParser.parse(meetingDetails.type)}
+                  {htmlParser.parse(dummy.meeting_details.type)}
                 </Text>
                 <Text className="m-0 flex gap-1 items-center">
                   <Img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/booking_confirmation_gmeet_logo.png" />
-                  {htmlParser.parse(meetingDetails.platform)}&nbsp;&nbsp;
+                  {htmlParser.parse(dummy.meeting_details.platform)}&nbsp;&nbsp;
                   <Img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/booking_confirmation_duration_logo.png" />
-                  {htmlParser.parse(meetingDetails.duration)}
+                  {htmlParser.parse(dummy.meeting_details.duration)}
                 </Text>
               </Container>
               <Button
-                href={meetingDetails.link}
+                href={dummy.meeting_details.link}
                 className="px-3 py-2 bg-[#337FBD] text-white br rounded-md text-[14px]"
               >
                 Pick your slot

@@ -48,6 +48,7 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (e: any) {
+    console.log(e);
     if (e instanceof ClientError) {
       return NextResponse.json(
         {
