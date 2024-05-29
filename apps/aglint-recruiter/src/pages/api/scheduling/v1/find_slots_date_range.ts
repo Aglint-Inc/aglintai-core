@@ -24,8 +24,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         recruiter_id: parsedData.recruiter_id,
         session_ids: parsedData.session_ids,
         candidate_tz: parsedData.candidate_tz,
-        start_date_str: parsedData.start_date,
-        end_date_str: parsedData.end_date,
+        start_date_str: parsedData.start_date_str,
+        end_date_str: parsedData.end_date_str,
       },
       parsedData.options,
     );
