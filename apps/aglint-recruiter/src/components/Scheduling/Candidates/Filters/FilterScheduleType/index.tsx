@@ -7,11 +7,11 @@ import { ButtonFilter } from '@/devlink2/ButtonFilter';
 import { FilterDropdown } from '@/devlink2/FilterDropdown';
 
 import {
+  FilterType,
   setFilter,
   setFilterVisible,
   useFilterCandidateStore,
 } from '../../filter-store';
-import { FilterType } from '../../store';
 
 function FilterScheduleType() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(

@@ -4,8 +4,11 @@ import React from 'react';
 import { AddFilter } from '@/devlink2/AddFilter';
 import { AllInterviewFilter } from '@/devlink2/AllInterviewFilter';
 
-import { setFilterVisible, useFilterCandidateStore } from '../../filter-store';
-import { FilterType } from '../../store';
+import {
+  FilterType,
+  setFilterVisible,
+  useFilterCandidateStore,
+} from '../../filter-store';
 
 const FILTERS_LENGTH = Object.keys(FilterType).length;
 

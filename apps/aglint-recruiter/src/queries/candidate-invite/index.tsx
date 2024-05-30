@@ -4,7 +4,6 @@ import {
 } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 import { useInviteParams } from '@/src/context/CandidateInviteContext/hooks';
 import {
@@ -91,10 +90,7 @@ const getInviteSlots = async ({ filter_json, user_tz }: InviteSlotsParams) => {
     const paylod: APIFindSlotsDateRange = {
       session_ids: filter_json.session_ids,
       recruiter_id: filter_json.recruiter_id,
-      start_date_str:
-        filter_json.start_date > dayjs().format('DD/MM/YYYY')
-          ? filter_json.start_date
-          : dayjs().format('DD/MM/YYYY'),
+      start_date_str: filter_json.start_date,
       end_date_str: filter_json.end_date,
       candidate_tz: user_tz,
     };

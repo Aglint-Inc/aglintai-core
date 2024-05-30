@@ -15,7 +15,7 @@ import { PauseJson } from '@aglint/shared-types';
 
 import { ScoreJson } from '@/src/context/JobApplicationsContext/types';
 
-import { ApplicationList } from '../Candidates/store';
+import { ApplicationList } from '../Candidates/utils';
 
 export type SchedulingSlice = {
   isCreateDialogOpen: boolean;

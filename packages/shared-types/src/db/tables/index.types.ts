@@ -1,5 +1,6 @@
 import { Database } from "../schema.types";
 import { Type } from "../utils.types";
+import { CustomApplicationLogs } from "./application_logs.types copy";
 import { CustomApplications } from "./applications.types";
 import { CandidateRequestAvailability } from "./candidate_request_availability.type";
 import { CustomInterviewSessionCancel } from "./interview_session_cancel.types";
@@ -39,5 +40,6 @@ export type Tables = Type<
     candidate_request_availability: CandidateRequestAvailability;
     interview_session: CustomInterviewSession;
     workflow_action: CustomWorkflowAction;
+    application_logs: CustomApplicationLogs;
   }
 >;

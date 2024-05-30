@@ -47,6 +47,7 @@ export const addScheduleActivity = async ({
   logged_by,
   supabase,
   created_by,
+  metadata,
 }: {
   title: string;
   application_id: string;
@@ -56,8 +57,9 @@ export const addScheduleActivity = async ({
   logged_by: DatabaseTable['application_logs']['logged_by'];
   supabase: ReturnType<typeof createServerClient<DB>>;
   created_by: string;
+  metadata?: DatabaseTable['application_logs']['metadata'];
 }) => {
-  const { error } = await supabase.from('application_logs').insert({
+  const { data, error } = await supabase.from('application_logs').insert({
     application_id,
     title,
     description,
@@ -65,8 +67,12 @@ export const addScheduleActivity = async ({
     type,
     created_by,
     logged_by,
+    metadata,
   });
 
-  // eslint-disable-next-line no-console
-  console.log(error);
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
