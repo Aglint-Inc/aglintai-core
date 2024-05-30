@@ -58,10 +58,24 @@ export const geoCodeLocation = async (address: string) => {
     }
     const result = (locationData as any)?.data?.results[0];
 
-    const add = {
-      region: result?.address_components[3]?.long_name ?? '',
-      country: result?.address_components[4]?.long_name ?? '',
-    };
+    let add = null;
+    if (result?.address_components[4]) {
+      add = {
+        region: result?.address_components[3]?.long_name ?? '',
+        country: result?.address_components[4]?.long_name ?? '',
+      };
+    } else if (result?.address_components[3]) {
+      add = {
+        region: result?.address_components[2]?.long_name ?? '',
+        country: result?.address_components[3]?.long_name ?? '',
+      };
+    } else {
+      add = {
+        region: result?.address_components[1]?.long_name ?? '',
+        country: result?.address_components[2]?.long_name ?? '',
+      };
+    }
+
     const geo = {
       lat: result?.geometry.location.lat ?? '',
       lang: result?.geometry.location.lng ?? '',

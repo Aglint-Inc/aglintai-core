@@ -16,7 +16,6 @@
     "pull": "git pull origin development --no-rebase"
   },
   "dependencies": {
-    "@aglint/shared-types": "*",
     "@aglint/shared-utils": "*",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -95,6 +94,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@aglint/shared-types": "*",
     "@aglint/eslint-plugin-linter": "*",
     "@types/lodash": "^4.14.199",
     "@types/react": "^18",

@@ -8,20 +8,20 @@ import UITypography from '../UITypography';
 
 type MenuOption = {
   name: string;
-  value: string | number;
+  value: any;
 };
 
 type Props = {
   label?: string;
   menuOptions: MenuOption[];
-  value: string | number;
+  value: any;
   fullWidth?: boolean;
   disabled?: boolean;
   onChange: (
     // eslint-disable-next-line no-unused-vars
-    event: SelectChangeEvent<string | number>,
+    event: SelectChangeEvent<any>,
   ) => void;
-  defaultValue?: string | number;
+  defaultValue?: any;
   startIcon?: any;
   size?: 'sm' | 'md';
 };

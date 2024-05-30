@@ -122,3 +122,13 @@
   right: 0%;
   bottom: 30px;
 }
+
+.info_absolute.top_32.seperate_card {
+  position: static;
+  left: auto;
+  top: auto;
+  right: 0%;
+  bottom: 30px;
+
+  display: flex;
+}

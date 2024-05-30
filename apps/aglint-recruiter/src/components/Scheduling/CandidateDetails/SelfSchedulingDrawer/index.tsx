@@ -8,7 +8,7 @@ import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { ApiBodyParamsSendToCandidate } from '@/src/pages/api/scheduling/application/sendtocandidate';
 import toast from '@/src/utils/toast';
 
-import { useAllActivities, useGetScheduleApplication } from '../hooks';
+import { useGetScheduleApplication } from '../hooks';
 import {
   setDateRange,
   setinitialSessions,
@@ -21,7 +21,7 @@ import {
 import SelectDateRange from './StepSelectDate';
 import StepSlotOptions from './StepSlotOptions';
 
-function SelfSchedulingDrawer() {
+function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
   const currentDate = dayjs();
   const initialEndDate = currentDate.add(7, 'day');
   const { recruiter, recruiterUser } = useAuthDetails();
@@ -48,9 +48,7 @@ function SelfSchedulingDrawer() {
     selectedCombIds: state.selectedCombIds,
     scheduleFlow: state.scheduleFlow,
   }));
-  const { refetch } = useAllActivities({
-    application_id: selectedApplication?.id,
-  });
+
   const { fetchInterviewDataByApplication } = useGetScheduleApplication();
   const [saving, setSaving] = useState(false);
 
@@ -116,7 +114,7 @@ function SelfSchedulingDrawer() {
         resetState();
       }
     } catch (e) {
-      //
+      toast.error('Error sending to candidate.');
     } finally {
       setSaving(false);
       refetch();

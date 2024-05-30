@@ -11,14 +11,13 @@ import {
   setIsRescheduleOpen,
   useInterviewSchedulingStore,
 } from '../../../Candidates/store';
-import { useAllActivities } from '../../hooks';
 import {
   setinitialSessions,
   setSelectedSessionIds,
   useSchedulingApplicationStore,
 } from '../../store';
 
-function RescheduleDialog() {
+function RescheduleDialog({ refetch }: { refetch: () => void }) {
   const { recruiterUser } = useAuthDetails();
   const isRescheduleOpen = useInterviewSchedulingStore(
     (state) => state.isRescheduleOpen,
@@ -32,9 +31,6 @@ function RescheduleDialog() {
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication,
   );
-  const { refetch } = useAllActivities({
-    application_id: selectedApplication?.id,
-  });
 
   const onClickReschedule = async () => {
     try {
@@ -75,7 +71,7 @@ function RescheduleDialog() {
         await addScheduleActivity({
           title: `Cancelled session ${selectedSession.name}`,
           application_id: selectedApplication.id,
-          logger: recruiterUser.user_id,
+          logged_by: 'user',
           type: 'schedule',
           supabase,
           created_by: recruiterUser.user_id,

@@ -14,13 +14,13 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { supabaseWrap } from '@/src/components/JobsDashboard/JobPostCreateUpdate/utils';
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
+import { ScheduleUtils } from '@/src/services/CandidateScheduleV2/ScheduleUtils';
 import {
   CHECK_NEXT_MINUTES,
   DEFAULT_CANDIDATE_REQ_END_HOUR,
   DEFAULT_CANDIDATE_REQ_START_HOUR,
-} from '@/src/services/CandidateSchedule/utils/constants';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+} from '@/src/services/CandidateScheduleV2/utils/constants';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/src/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { session_ids } = req.body as CandReqAvailableSlots;
@@ -42,7 +42,7 @@ export default handler;
 const candReqAvailability = (payload: CandReqAvailableSlots) => {
   let session_details: InterviewSessionTypeDB[];
   const curr_cand_date = userTzDayjs().tz(payload.candidate_tz).startOf('day');
-  let cand_start_date = CandidatesScheduling.convertDateFormatToDayjs(
+  let cand_start_date = ScheduleUtils.convertDateFormatToDayjs(
     payload.date_range_start,
     payload.candidate_tz,
     true,
@@ -50,7 +50,7 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
   if (cand_start_date.isSameOrAfter(curr_cand_date, 'day')) {
     cand_start_date = curr_cand_date.add(1, 'day');
   }
-  let cand_end_date = CandidatesScheduling.convertDateFormatToDayjs(
+  let cand_end_date = ScheduleUtils.convertDateFormatToDayjs(
     payload.date_range_end,
     payload.candidate_tz,
     false,
@@ -156,10 +156,7 @@ const candReqAvailability = (payload: CandReqAvailableSlots) => {
 
       const prev_cand_selected_days: Dayjs[] =
         payload.previously_selected_dates.map((sel_day) =>
-          CandidatesScheduling.convertDateFormatToDayjs(
-            sel_day,
-            payload.candidate_tz,
-          ),
+          ScheduleUtils.convertDateFormatToDayjs(sel_day, payload.candidate_tz),
         );
 
       prev_cand_selected_days.forEach((sel_day) => {

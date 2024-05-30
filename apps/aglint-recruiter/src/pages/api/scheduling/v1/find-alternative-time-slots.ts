@@ -7,8 +7,8 @@ import { SessionCombinationRespType } from '@aglint/shared-types';
 import { has } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { CandidatesScheduling } from '@/src/services/CandidateSchedule/CandidateSchedule';
-import { userTzDayjs } from '@/src/services/CandidateSchedule/utils/userTzDayjs';
+import { CandidatesSchedulingV2 } from '@/src/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { userTzDayjs } from '@/src/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const required_fields = [
   'recruiter_id',
@@ -32,21 +32,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     });
     let slot_ints: APIFindAltenativeTimeSlotResponse = [];
-    const slot_date = userTzDayjs(slot_start_time).tz(user_tz);
-    const cand_schedule = new CandidatesScheduling(
+    const cand_schedule = new CandidatesSchedulingV2(
       {
-        company_id: recruiter_id,
+        recruiter_id: recruiter_id,
         session_ids: [session_id],
-        user_tz,
+        candidate_tz: user_tz,
+        end_date_str: slot_start_time,
+        start_date_str: slot_start_time,
       },
-      {
-        start_date_js: slot_date.startOf('day'),
-        end_date_js: slot_date.endOf('day'),
-      },
+      null,
     );
     await cand_schedule.fetchDetails();
     cand_schedule.ignoreTrainee();
-    await cand_schedule.fetchInterviewrsCalEvents();
+    await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     replacement_ints.forEach((int_id) => {
       slot_ints.push({
         user_id: int_id,

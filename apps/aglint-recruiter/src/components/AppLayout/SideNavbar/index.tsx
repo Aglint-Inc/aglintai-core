@@ -10,6 +10,7 @@ import { NavCd } from '@/devlink/NavCd';
 import { NavCompanySetting } from '@/devlink/NavCompanySetting';
 import { NavIntegration } from '@/devlink/NavIntegration';
 import { NavJobs } from '@/devlink/NavJobs';
+import { NavLink } from '@/devlink/NavLink';
 import { NavPhoneScreening } from '@/devlink/NavPhoneScreening';
 import { NavScheduler } from '@/devlink/NavScheduler';
 import { NavTask } from '@/devlink/NavTask';
@@ -18,6 +19,8 @@ import { AssistantLogo } from '@/devlink2/AssistantLogo';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import ROUTES from '@/src/utils/routing/routes';
 import toast from '@/src/utils/toast';
+
+import WorkflowIcon from '../../Common/ModuleIcons/workflowIcon';
 
 function SideNavbar() {
   const router = useRouter();
@@ -155,6 +158,15 @@ function SideNavbar() {
       roles: ['admin'],
     },
     {
+      icon: <Link module='Workflows' path='/workflows' />,
+      text: 'Company Settings',
+      SubComponents: null,
+      route: ROUTES['/workflows'](),
+      comingsoon: false,
+      isvisible: true,
+      roles: ['admin'],
+    },
+    {
       icon: <NavCompanySetting isActive={false} />,
       text: 'Company Settings',
       SubComponents: null,
@@ -216,3 +228,76 @@ function SideNavbar() {
 }
 
 export default SideNavbar;
+
+const LinkIcon = ({ module }: Pick<LinkProps, 'module'>) => {
+  switch (module) {
+    case 'Agent':
+    case 'Jobs':
+    case 'Scheduler':
+    case 'Sourcing Hub':
+    case 'Phone Screening':
+    case 'Assessment':
+    case 'Integrations':
+    case 'Company Settings':
+    case 'Workflows':
+      return <WorkflowIcon />;
+  }
+};
+
+const Link = ({ module /* path */ }: LinkProps) => {
+  // const { pathname, push } = useRouter();
+  // const [hover, setHover] = useState(false);
+  return (
+    <Stack
+    // onMouseOver={() => setHover(true)}
+    // onMouseOut={() => setHover(false)}
+    // onClick={() => push(path)}
+    >
+      <NavLink
+        // isActive={hover || pathname.startsWith(path)}
+        texttooltip={module}
+        slotIcon={<LinkIcon module={module} />}
+      />
+    </Stack>
+  );
+};
+
+type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
+
+type LinkProps =
+  | {
+      module: 'Agent';
+      path: Path<'/agent'>;
+    }
+  | {
+      module: 'Jobs';
+      path: Path<'/jobs'>;
+    }
+  | {
+      module: 'Scheduler';
+      path: Path<'/scheduling'>;
+    }
+  | {
+      module: 'Sourcing Hub';
+      path: Path<'/candidates/history'>;
+    }
+  | {
+      module: 'Phone Screening';
+      path: Path<'/screening'>;
+    }
+  | {
+      module: 'Assessment';
+      path: Path<'/assessment-new'>;
+    }
+  | {
+      module: 'Integrations';
+      path: Path<'/integrations'>;
+    }
+  | {
+      module: 'Workflows';
+      path: Path<'/workflows'>;
+    }
+  | {
+      module: 'Company Settings';
+      path: Path<'/company'>;
+    };

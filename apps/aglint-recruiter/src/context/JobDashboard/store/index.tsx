@@ -1,41 +1,39 @@
 import { create, StateCreator } from 'zustand';
 
-import {
-  type DismissWarningsSlice,
-  createDismissWarningsSlice,
-} from './dismissWarnings';
-import {
-  type PublishButtonSlice,
-  createPublishButtonSlice,
-} from './publishButtonStore';
+import { DashboardSlices, DashboardSlicesType } from './[id]';
+import { WorkflowSlices, WorkflowSlicesType } from './workflow';
 
-type Slices = PublishButtonSlice & DismissWarningsSlice;
+type SlicesType = DashboardSlicesType & WorkflowSlicesType;
+const Slices = { ...DashboardSlices, ...WorkflowSlices };
 
 export type CreateSlice<
   // eslint-disable-next-line no-unused-vars
-  T extends Partial<Slices>,
-> = StateCreator<Slices, [], [], T>;
+  T extends Partial<SlicesType>,
+> = StateCreator<SlicesType, [], [], T>;
 
-type JobDashboardSlice = {
+type JobDashboardCustomSlice = {
   resetAll: () => void;
 };
 
 const createJobDasboardSlice: StateCreator<
-  Slices,
+  SlicesType,
   [],
   [],
-  JobDashboardSlice
+  JobDashboardCustomSlice
 > = (set, get) => ({
   resetAll: () => {
-    get().resetDismissWarnings();
-    get().resetPublishing();
+    get().resetDashboard();
+    get().resetWorkflow();
   },
 });
 
-export const useJobDashboardStore = create<Slices & JobDashboardSlice>()(
-  (...a) => ({
-    ...createPublishButtonSlice(...a),
-    ...createDismissWarningsSlice(...a),
-    ...createJobDasboardSlice(...a),
-  }),
-);
+export type JobDashboardStore = SlicesType & JobDashboardCustomSlice;
+export const useJobDashboardStore = create<JobDashboardStore>()((...a) => ({
+  ...Object.assign(
+    {},
+    ...Object.values(Slices).map((f) => ({
+      ...f(...a),
+    })),
+  ),
+  ...createJobDasboardSlice(...a),
+}));

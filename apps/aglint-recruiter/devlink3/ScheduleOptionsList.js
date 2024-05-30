@@ -11,6 +11,7 @@ export function ScheduleOptionsList({
   slotDateOption,
   slotToggle,
   slotfilters,
+  textDescription = "Select multiple available options and then click 'send' to forward them to the candidate for selection.",
 }) {
   return (
     <_Component className={_utils.cx(_styles, "scheduleoptions")} tag="div">
@@ -18,11 +19,7 @@ export function ScheduleOptionsList({
         className={_utils.cx(_styles, "schedule_option_hint")}
         tag="div"
       >
-        <_Builtin.Block tag="div">
-          {
-            "Select multiple available options and then click 'send' to forward them to the candidate for selection."
-          }
-        </_Builtin.Block>
+        <_Builtin.Block tag="div">{textDescription}</_Builtin.Block>
       </_Builtin.Block>
       <_Builtin.Block
         className={_utils.cx(_styles, "schedule_options")}

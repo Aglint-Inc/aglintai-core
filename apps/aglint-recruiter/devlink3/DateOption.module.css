@@ -13,6 +13,8 @@
   border-radius: 10px;
 
   background-color: #f7f9fb;
+
+  cursor: pointer;
 }
 
 .flex_hr_10 {
@@ -208,7 +210,7 @@
 }
 
 .slot_schedule_option {
-  display: none;
+  display: flex;
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
