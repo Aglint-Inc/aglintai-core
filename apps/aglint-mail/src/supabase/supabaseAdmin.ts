@@ -14,6 +14,7 @@ export const supabaseWrap = <T extends unknown, U extends unknown>({
   data: T;
   error: U;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-throw-literal
   if (error) throw error;
   return data;
 };

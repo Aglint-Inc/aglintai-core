@@ -17,13 +17,8 @@ interface ReqPayload {
 }
 
 export async function POST(req: Request) {
-  const {
-    api_key,
-    recipient_email,
-    mail_type,
-    payload,
-    recruiter_id,
-  }: ReqPayload = await req.json();
+  const { recipient_email, mail_type, payload, recruiter_id }: ReqPayload =
+    await req.json();
 
   try {
     // if(!api_key)  throw new ClientError("api_key not found",401)
@@ -51,7 +46,7 @@ export async function POST(req: Request) {
     const { emails } = await getEmails();
     const emailIdx = emails.findIndex((e) => e === mail_type);
 
-    if (emailIdx == -1)
+    if (emailIdx === -1)
       throw new ClientError(`${mail_type} does not match any mail_type`, 400);
 
     const { html, subject } = await renderEmailTemplate(
@@ -63,7 +58,7 @@ export async function POST(req: Request) {
       status: 200,
     });
   } catch (e: any) {
-    console.log(e);
+    console.error(e);
     if (e instanceof ClientError) {
       return NextResponse.json(
         {

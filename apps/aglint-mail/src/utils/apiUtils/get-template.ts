@@ -1,4 +1,3 @@
-import React from 'react';
 import { supabaseAdmin, supabaseWrap } from '../../supabase/supabaseAdmin';
 
 export interface EmailTemplateFields {

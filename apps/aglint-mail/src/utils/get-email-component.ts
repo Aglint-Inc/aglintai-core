@@ -1,4 +1,3 @@
- 
 import path from 'node:path';
 import vm from 'node:vm';
 import { type RawSourceMap } from 'source-map-js';
@@ -80,7 +79,6 @@ export const getEmailComponent = async (
     __dirname: path.dirname(emailPath),
     require: (module: string) => {
       if (module in staticNodeModulesForVM) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return staticNodeModulesForVM[module];
       }
 

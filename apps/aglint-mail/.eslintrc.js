@@ -1,9 +1,7 @@
-const { resolve } = require('node:path');
-
-const project = resolve(process.cwd(), './tsconfig.json');
 
 /** @type {import('eslint').ESLint.ConfigData} */
 module.exports = {
+  root: true,
   extends: [
     "@vercel/style-guide/eslint/node",
     "@vercel/style-guide/eslint/browser",
@@ -15,7 +13,7 @@ module.exports = {
     .map(require.resolve)
     .concat(["eslint-config-prettier"]),
   parserOptions: {
-    project,
+    project: true,
   },
   globals: {
     React: true,
@@ -24,7 +22,7 @@ module.exports = {
   settings: {
     "import/resolver": {
       typescript: {
-        project,
+        project: true,
       },
     },
   },
@@ -47,6 +45,15 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'turbo/no-undeclared-env-vars': 'off',
     'eslint-comments/require-description': 'off',
-    'no-console': 'error',
+    'no-console': ['off', { "allow": "error" }],
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "unicorn/filename-case": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "camelcase": 'off'
   },
 };

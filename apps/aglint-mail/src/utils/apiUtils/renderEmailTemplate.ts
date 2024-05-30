@@ -1,7 +1,6 @@
 import { render } from '@react-email/render';
-import React from 'react'; // Import React to use React.createElement
+import { createElement } from 'react'; // Import React to use React.createElement
 import { ServerError } from './customErrors';
-import { validatePayload } from './validate-payload';
 
 interface Payload {
   subject: string;
@@ -25,9 +24,7 @@ export const renderEmailTemplate = async (
 
   // validatePayload(dummy, payload); //validate the incoming payload
 
-  console.log('payload', payload);
-
-  const element = React.createElement(Template, payload);
+  const element = createElement(Template, payload);
   const html = render(element);
   return { html, subject: getSubject(payload.subject) };
 };

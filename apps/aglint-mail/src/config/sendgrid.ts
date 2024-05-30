@@ -1,6 +1,5 @@
+import sgMail from '@sendgrid/mail';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
-
-const sgMail = require('@sendgrid/mail');
 
 const SENDGRID_API_KEY =
   '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';
@@ -38,10 +37,9 @@ export const sendMail = async ({
     const Response = resp[0];
 
     if (Response.statusCode >= 200 && Response.statusCode < 300) {
-      
-    } else {
-      throw new MailSenderError(`mail failed to send`);
+      return 'ok';
     }
+    throw new MailSenderError(`mail failed to send`);
   } catch (e: any) {
     console.log(e);
     throw new MailSenderError(e.message);

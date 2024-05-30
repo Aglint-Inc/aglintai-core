@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Head,
-  Heading,
   Html,
   Img,
   Link,
@@ -67,7 +66,6 @@ export const InterviewBookingConfirmation = ({
 
               <Container
                 className="my-8 rounded-md "
-                
                 style={{
                   border: '1px solid #E9EBED',
                   padding: '10px 20px',
@@ -83,7 +81,7 @@ export const InterviewBookingConfirmation = ({
                   />
                   {htmlParser.parse(meetingDetails.type)}
                 </Text>
-                <Text className="m-0 flex gap-1 items-center " >
+                <Text className="m-0 flex gap-1 items-center ">
                   <Img src="https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/booking_confirmation_gmeet_logo.png" />
                   {htmlParser.parse(meetingDetails.platform)}&nbsp;&nbsp;
                   <Img
@@ -133,5 +131,5 @@ export const InterviewBookingConfirmation = ({
       </Tailwind>
     </Html>
   );
-}
+};
 export default InterviewBookingConfirmation;

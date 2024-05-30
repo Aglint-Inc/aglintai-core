@@ -1,5 +1,5 @@
+/* eslint-disable prefer-named-capture-group */
 import { promises as fs } from 'node:fs';
-import path from 'node:path';
 import { emailsDirectoryAbsolutePath } from '../emails-directory-absolute-path';
 
 export const CONTENT_DIR = 'emails';

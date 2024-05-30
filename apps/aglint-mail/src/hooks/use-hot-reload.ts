@@ -8,7 +8,6 @@ import type { HotReloadChange } from '../utils/types/hot-reload-change';
  * and calls the received parameter callback
  */
 export const useHotreload = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onShouldReload: (changes: HotReloadChange[]) => any,
 ) => {
   const socketRef = useRef<Socket | null>(null);

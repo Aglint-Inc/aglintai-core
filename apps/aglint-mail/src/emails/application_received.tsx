@@ -1,9 +1,7 @@
 import {
   Body,
-  Button,
   Container,
   Head,
-  Heading,
   Html,
   Img,
   Link,
@@ -83,5 +81,5 @@ export const InterviewBookingConfirmation = ({
       </Tailwind>
     </Html>
   );
-}
+};
 export default InterviewBookingConfirmation;
