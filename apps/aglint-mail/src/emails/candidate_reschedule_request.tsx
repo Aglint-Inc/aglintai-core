@@ -15,7 +15,6 @@ import { Parser } from 'html-to-react';
 import * as React from 'react';
 
 interface InterviewBookingConfirmationType {
-  subject?: string;
   body?: string;
   companyLogo?: string;
   meetingDetails: {
@@ -29,7 +28,6 @@ interface InterviewBookingConfirmationType {
 
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
-  subject: 'Meeting Reschedule Request From Candidate',
   body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to reschedule betweeen [dateRange] stating reason [rescheduleReason]</p><p>Additional notes from [firstName] : [additionalRescheduleNotes]</p><p>Thank you</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
@@ -46,7 +44,6 @@ export const dummy: InterviewBookingConfirmationType = {
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export function InterviewBookingConfirmation({
-  subject = dummy.subject,
   body = dummy.body,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
@@ -65,10 +62,6 @@ export function InterviewBookingConfirmation({
                 className="w-[120px] mb-[10px]"
                 alt="Company logo"
               />
-              <Heading className="text-[24px]  mb-[0px] text-[#2F3941]">
-                {htmlParser.parse(subject)}
-              </Heading>
-
               <Text className="">{htmlParser.parse(body)}</Text>
 
               <Container

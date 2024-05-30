@@ -15,7 +15,6 @@ import { Parser } from 'html-to-react';
 import * as React from 'react';
 
 interface InterviewBookingConfirmationType {
-  subject?: string;
   body?: string;
   companyLogo?: string;
   meetingDetails: {
@@ -46,7 +45,6 @@ export const dummy: InterviewBookingConfirmationType = {
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export function InterviewBookingConfirmation({
-  subject = dummy.subject,
   body = dummy.body,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
@@ -65,9 +63,6 @@ export function InterviewBookingConfirmation({
                 className="w-[120px] mb-[10px]"
                 alt="Company logo"
               />
-              <Heading className="text-[24px]  mb-[0px] text-[#2F3941]">
-                {htmlParser.parse(subject)}
-              </Heading>
 
               <Text className="">{htmlParser.parse(body)}</Text>
 

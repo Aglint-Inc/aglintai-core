@@ -28,7 +28,6 @@ interface InterviewBookingConfirmationType {
 
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
-  subject: 'You have been selected for the interview at [companyName]',
   body: '<p>You have selected for the Interview at [companyName]</p><p>Hi [firstName], Choose a time slot that suits you best and take the first step towards joining our team. We look forward to meeting you!</p><h4>[scheduleName]</h4><p>[pickYourSlotLink]</p><p>Best regards,</p><p>[companyName] Recruitment Team</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
@@ -44,7 +43,6 @@ export const dummy: InterviewBookingConfirmationType = {
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export function InterviewBookingConfirmation({
-  subject = dummy.subject,
   body = dummy.body,
   meetingDetails = dummy.meetingDetails,
   companyLogo = dummy.companyLogo,
@@ -63,9 +61,6 @@ export function InterviewBookingConfirmation({
                 className="w-[120px] mb-[10px]"
                 alt="Company logo"
               />
-              <Heading className="text-[24px]  mb-[0px] text-[#2F3941]">
-                {htmlParser.parse(subject)}
-              </Heading>
 
               <Text className="">{htmlParser.parse(body)}</Text>
 

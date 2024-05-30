@@ -15,15 +15,12 @@ import { Parser } from 'html-to-react';
 import * as React from 'react';
 
 interface InterviewBookingConfirmationType {
-  subject?: string;
   body?: string;
   companyLogo?: string;
 }
 
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
-  subject:
-    'Invitation to a Phone Screening Session for [firstName] - [jobTitle] Position at [companyName]',
   body: '<p>Dear [firstName],</p><p>I hope this message finds you well. We appreciate your interest in the [jobTitle] position at [companyName], and we are excited to move forward with your application.</p><p>After reviewing your application, we would like to invite you to participate in a phone screening session. This initial conversation will give us the opportunity to learn more about your experiences, skills, and how they align with the requirements of the role.</p><p>Please click on the following link to access the phone screening session: [phoneScreeningLink]</p><p>Best regards ,</p><p>[companyName]</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
@@ -34,7 +31,6 @@ const companyLogo =
 export const getSubject = (companyName: any) => `${companyName}`;
 
 export function InterviewBookingConfirmation({
-  subject = dummy.subject,
   body = dummy.body,
 }: InterviewBookingConfirmationType) {
   const htmlParser = Parser();
@@ -51,9 +47,6 @@ export function InterviewBookingConfirmation({
                 className="w-[120px] mb-[10px]"
                 alt="Company logo"
               />
-              <Heading className="text-[24px]  mb-[0px] text-[#2F3941]">
-                {htmlParser.parse(subject)}
-              </Heading>
 
               <Text className="">{htmlParser.parse(body)}</Text>
 
