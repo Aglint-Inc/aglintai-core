@@ -52,8 +52,8 @@ export const CodeContainer: React.FC<Readonly<CodeContainerProps>> = ({
         return activeLang === language;
       });
       setIsCopied(true);
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      await copyTextToClipboard(activeContent[0]!.content);
+       
+      await copyTextToClipboard(activeContent[0].content);
       setTimeout(() => {
         setIsCopied(false);
       }, 3000);
@@ -133,7 +133,7 @@ export const CodeContainer: React.FC<Readonly<CodeContainerProps>> = ({
       {markups.map(({ language, content }) => {
         return (
           <div
-            className={`${activeLang !== language && 'hidden'}`}
+            className={activeLang !== language && 'hidden'}
             key={language}
           >
             <Code language={language}>{content}</Code>

@@ -1,17 +1,17 @@
 import React from 'react';
 import { supabaseAdmin, supabaseWrap } from '../../supabase/supabaseAdmin';
 
-export type EmailTemplateFields = {
+export interface EmailTemplateFields {
   body: string;
   subject: string;
-};
+}
 
-export type DbFetchedTypes = {
+export interface DbFetchedTypes {
   body: string;
   default: boolean;
   subject: string;
   fromName: string;
-};
+}
 const fetchTemplate = async (
   recruiter_id: string,
   mail_type: string,
@@ -40,7 +40,7 @@ export const fillEmail = <T extends EmailTempPath>(
   if (email_template) {
     updated_template = { ...email_template };
   }
-  for (let key of Object.keys(dynamic_fields)) {
+  for (const key of Object.keys(dynamic_fields)) {
     updated_template.subject = updated_template.subject.replaceAll(
       key,
       dynamic_fields[String(key)],
@@ -183,7 +183,7 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
   };
 }[T];
 
-export type api_payload = {
+export interface EmailPayloads {
   application_received: {
     recipient_email: string;
     mail_type: string;
@@ -438,4 +438,4 @@ export type api_payload = {
       '[companyName]': string;
     };
   };
-};
+}

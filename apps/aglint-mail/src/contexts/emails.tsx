@@ -114,8 +114,8 @@ export const EmailsProvider = (props: {
           }, [serverEmailRenderedResult, emailPath]);
 
           if (typeof renderingResultPerEmailPath[emailPath] !== 'undefined') {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            return renderingResultPerEmailPath[emailPath]!;
+             
+            return renderingResultPerEmailPath[emailPath];
           }
 
           return serverEmailRenderedResult;

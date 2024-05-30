@@ -1,5 +1,5 @@
-import { Suspense } from 'react';
 import path from 'node:path';
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { getEmailPathFromSlug } from '../../../actions/get-email-path-from-slug';
 import { getEmailsDirectoryMetadata } from '../../../actions/get-emails-directory-metadata';

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import * as React from 'react';
 import { cn } from '../utils';
 import { tabTransition } from '../utils/constants';
+import { pathSeparator } from '../utils/emails-directory-absolute-path';
 import { Heading } from './heading';
 import { IconHideSidebar } from './icons/icon-hide-sidebar';
 import { IconMonitor } from './icons/icon-monitor';
@@ -11,7 +12,6 @@ import { IconPhone } from './icons/icon-phone';
 import { IconSource } from './icons/icon-source';
 import { Send } from './send';
 import { Tooltip } from './tooltip';
-import { pathSeparator } from '../utils/emails-directory-absolute-path';
 
 interface TopbarProps {
   currentEmailOpenSlug: string;
@@ -59,7 +59,7 @@ export const Topbar: React.FC<Readonly<TopbarProps>> = ({
             aria-label="View mode"
             className="inline-block items-center bg-slate-2 border border-slate-6 rounded-md overflow-hidden h-[36px]"
             onValueChange={(value) => {
-              if (value) setActiveView?.(value);
+              if (value) setActiveView(value);
             }}
             type="single"
             value={activeView}

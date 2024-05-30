@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+ 
 import path from 'node:path';
 import vm from 'node:vm';
 import { type RawSourceMap } from 'source-map-js';
@@ -54,8 +54,8 @@ export const getEmailComponent = async (
     };
   }
 
-  const sourceMapFile = outputFiles[0]!;
-  const bundledEmailFile = outputFiles[1]!;
+  const sourceMapFile = outputFiles[0];
+  const bundledEmailFile = outputFiles[1];
   const builtEmailCode = bundledEmailFile.text;
 
   const fakeContext = {

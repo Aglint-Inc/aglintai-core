@@ -1,5 +1,5 @@
 'use server';
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+ 
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -43,7 +43,7 @@ const mergeDirectoriesWithSubDirectories = (
     currentResultingMergedDirectory.emailFilenames.length === 0 &&
     currentResultingMergedDirectory.subDirectories.length === 1
   ) {
-    const onlySubDirectory = currentResultingMergedDirectory.subDirectories[0]!;
+    const onlySubDirectory = currentResultingMergedDirectory.subDirectories[0];
     currentResultingMergedDirectory = {
       subDirectories: onlySubDirectory.subDirectories,
       emailFilenames: onlySubDirectory.emailFilenames,
@@ -85,13 +85,13 @@ export const getEmailsDirectoryMetadata = async (
         (dirent) =>
           getEmailsDirectoryMetadata(
             path.join(absolutePathToEmailsDirectory, dirent.name),
-          ) as Promise<EmailsDirectory>,
+          ),
       ),
   );
 
   return mergeDirectoriesWithSubDirectories({
     absolutePath: absolutePathToEmailsDirectory,
-    directoryName: absolutePathToEmailsDirectory.split(path.sep).pop()!,
+    directoryName: absolutePathToEmailsDirectory.split(path.sep).pop(),
     emailFilenames,
     subDirectories,
   });

@@ -78,7 +78,7 @@ const Preview = ({
     <Shell
       activeView={hasNoErrors ? activeView : undefined}
       currentEmailOpenSlug={slug}
-      markup={renderedEmailMetadata?.markup}
+      markup={renderedEmailMetadata.markup}
       setActiveView={hasNoErrors ? handleViewChange : undefined}
     >
       {/* This relative is so that when there is any error the user can still switch between emails */}

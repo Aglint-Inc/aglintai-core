@@ -9,11 +9,11 @@ export const validatePayload = (prev:any, reqPayload:any)=>{
     };
 
     const keys = Object.keys(prev);
-    for(let key of keys){
+    for(const key of keys){
         if(!(key in reqPayload)){
             throw new MailArgValidationError(`attribute ${key} not found in payload, payload should be of type ${JSON.stringify(prev)}`)
         }
     }
 
-    return ;
+    
 }

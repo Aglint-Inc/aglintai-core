@@ -1,12 +1,12 @@
 import { render } from '@react-email/render';
+import React from 'react'; // Import React to use React.createElement
 import { ServerError } from './customErrors';
 import { validatePayload } from './validate-payload';
-import React from 'react'; // Import React to use React.createElement
 
-type Payload = {
+interface Payload {
   subject: string;
   body: string;
-};
+}
 
 export const renderEmailTemplate = async (
   filename: string,

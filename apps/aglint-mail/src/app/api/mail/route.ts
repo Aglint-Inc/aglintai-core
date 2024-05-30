@@ -7,13 +7,14 @@ import { getEmails } from '../../../utils/apiUtils/get-emails';
 import { renderEmailTemplate } from '../../../utils/apiUtils/renderEmailTemplate';
 import { sendMail } from '../../../config/sendgrid';
 import fetchTemplate from '../../../utils/apiUtils/get-template';
-type ReqPayload = {
+
+interface ReqPayload {
   api_key: string;
   mail_type: string;
   payload: any;
   recipient_email: string;
   recruiter_id: string;
-};
+}
 
 export async function POST(req: Request) {
   const {
