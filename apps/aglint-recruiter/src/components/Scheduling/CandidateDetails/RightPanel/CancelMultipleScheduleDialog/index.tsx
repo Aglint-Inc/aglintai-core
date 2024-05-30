@@ -1,6 +1,7 @@
 import { DatabaseTableInsert } from '@aglint/shared-types';
 import { Dialog } from '@mui/material';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 import { DeletePopup } from '@/devlink3/DeletePopup';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
@@ -11,6 +12,7 @@ import { cancelMailHandler } from '../../../Candidates/utils';
 import {
   setinitialSessions,
   setMultipleCancelOpen,
+  setSelectedApplicationLog,
   useSchedulingApplicationStore,
 } from '../../store';
 
@@ -28,6 +30,12 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
   const selectedApplication = useSchedulingApplicationStore(
     (state) => state.selectedApplication,
   );
+
+  useEffect(() => {
+    return () => {
+      onClickClose();
+    };
+  }, []);
 
   const onClickCancel = async () => {
     try {
@@ -92,7 +100,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
           created_by: recruiterUser.user_id,
         });
 
-        setMultipleCancelOpen(false);
+        onClickClose();
 
         setinitialSessions(
           initialSessions.map((session) => {
@@ -133,6 +141,11 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
     }
   };
 
+  const onClickClose = () => {
+    setSelectedApplicationLog(null);
+    setMultipleCancelOpen(false);
+  };
+
   return (
     <Dialog
       sx={{
@@ -144,7 +157,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
       }}
       open={isCancelOpen}
       onClose={() => {
-        setMultipleCancelOpen(false);
+        onClickClose();
       }}
     >
       <DeletePopup
@@ -155,7 +168,7 @@ function CancelMultipleScheduleDialog({ refetch }: { refetch: () => void }) {
         isIcon={false}
         onClickCancel={{
           onClick: () => {
-            setMultipleCancelOpen(false);
+            onClickClose();
           },
         }}
         onClickDelete={{

@@ -2,6 +2,7 @@
 import {
   APICandidateConfirmSlot,
   APIFindAvailability,
+  DatabaseTable,
   DB,
   InterviewMeetingTypeDb,
   InterviewSessionRelationTypeDB,
@@ -234,6 +235,7 @@ export const sendToCandidate = async ({
   recruiterUser,
   supabase,
   user_tz,
+  selectedApplicationLog,
 }: {
   is_mail: boolean;
   is_debrief?: boolean;
@@ -255,6 +257,7 @@ export const sendToCandidate = async ({
   };
   supabase: ReturnType<typeof createServerClient<DB>>;
   user_tz: string;
+  selectedApplicationLog?: DatabaseTable['application_logs'];
 }) => {
   try {
     const scheduleName = getScheduleName({
@@ -446,6 +449,22 @@ export const sendToCandidate = async ({
           throw new Error('Error in scheduling debrief');
         }
       }
+    }
+
+    if (selectedApplicationLog) {
+      await supabase
+        .from('application_logs')
+        .update({
+          metadata: {
+            ...selectedApplicationLog.metadata,
+            action: 'rescheduled',
+          },
+        })
+        .eq('id', selectedApplicationLog.id);
+      await supabase
+        .from('interview_filter_json')
+        .delete()
+        .eq('id', selectedApplicationLog.metadata.filter_id);
     }
     return true;
   } catch (e) {
