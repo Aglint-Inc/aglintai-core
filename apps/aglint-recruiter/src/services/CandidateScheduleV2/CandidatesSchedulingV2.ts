@@ -17,7 +17,7 @@ import { cloneDeep } from 'lodash';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
-import { schema_find_availability_payload } from '@/src/types/scheduling/schema_find_availability_payload';
+import { scheduling_options_schema } from '@/src/types/scheduling/schema_find_availability_payload';
 
 import { findCommonTimeRangeUtil } from './commonTimeRanges';
 import { findEachInterviewerFreeTimes } from './findEachInterFreeTime';
@@ -51,7 +51,7 @@ export class CandidatesSchedulingV2 {
 
   constructor(
     _api_payload: Omit<APIFindAvailability, 'options'>,
-    _api_options: z.infer<typeof schema_find_availability_payload>['options'],
+    _api_options: z.infer<typeof scheduling_options_schema>,
   ) {
     this.api_payload = {
       candidate_tz: _api_payload.candidate_tz,
@@ -77,6 +77,8 @@ export class CandidatesSchedulingV2 {
       include_free_time: _api_options.include_free_time,
       make_training_optional: _api_options.make_training_optional,
       use_recruiting_blocks: _api_options.use_recruiting_blocks,
+      cand_start_time: _api_options.cand_start_time,
+      cand_end_time: _api_options.cand_end_time,
       include_conflicting_slots: {
         calender_not_connected:
           _api_options.include_conflicting_slots.calender_not_connected,
@@ -87,10 +89,6 @@ export class CandidatesSchedulingV2 {
         interviewers_load:
           _api_options.include_conflicting_slots.interviewers_load,
         out_of_office: _api_options.include_conflicting_slots.out_of_office,
-        override_work_hr_start:
-          _api_options.include_conflicting_slots.override_work_hr_start,
-        override_work_hr_end:
-          _api_options.include_conflicting_slots.override_work_hr_end,
         show_conflicts_events:
           _api_options.include_conflicting_slots.show_conflicts_events,
         show_soft_conflicts:
@@ -175,6 +173,7 @@ export class CandidatesSchedulingV2 {
         work_hours: inter.work_hours,
         isCalenderConnected: inter.isCalenderConnected,
         cal_date_events: inter.cal_date_events,
+        interviewer_tz: inter.int_schedule_setting.timeZone.tzCode,
       };
       this.intervs_details_map.set(inter.interviewer_id, details);
     }
@@ -527,6 +526,7 @@ export class CandidatesSchedulingV2 {
             endTime: curr_sess_end_time,
           }),
         );
+
         if (!is_sesn_time_availble) {
           return [];
         }
@@ -655,36 +655,35 @@ export class CandidatesSchedulingV2 {
       const { cal_disc_inters, curr_day_paused_inters, indef_paused_inters } =
         getConflicedTypeInts();
 
-      console.log(cal_disc_inters, curr_day_paused_inters, indef_paused_inters);
-
       let all_int_work_hrs: SlotIntDetails[] = getAllSlotInters();
       let common_work_hrs_dayjs = getCommonIntsWorkHrs(all_int_work_hrs);
 
-      for (let work_hour_duration of common_work_hrs_dayjs) {
-        let curr_start_time = userTzDayjs(work_hour_duration.startTime).tz(
-          this.api_payload.candidate_tz,
-        );
-        let curr_end_time = userTzDayjs(work_hour_duration.endTime).tz(
-          this.api_payload.candidate_tz,
-        );
+      const cand_start_time = currDay.set(
+        'hours',
+        this.api_options.cand_start_time,
+      );
+      const cand_end_time = currDay.set(
+        'hours',
+        this.api_options.cand_end_time,
+      );
+      let cand_time = cand_start_time;
 
-        while (curr_start_time.isSameOrBefore(curr_end_time, 'minutes')) {
-          const slot_comb = getSessionsAvailability(
-            0,
-            curr_start_time.format(),
-            common_work_hrs_dayjs,
-          );
-          if (slot_comb.length > 0) {
-            schedule_combs.push({
-              plan_comb_id: nanoid(),
-              sessions: [...slot_comb],
-            });
-          }
-          curr_start_time = curr_start_time.add(
-            this.api_options.check_next_minutes,
-            'minutes',
-          );
+      while (cand_time.isBefore(cand_end_time, 'minutes')) {
+        const slot_comb = getSessionsAvailability(
+          0,
+          cand_time.format(),
+          common_work_hrs_dayjs,
+        );
+        if (slot_comb.length > 0) {
+          schedule_combs.push({
+            plan_comb_id: nanoid(),
+            sessions: [...slot_comb],
+          });
         }
+        cand_time = cand_time.add(
+          this.api_options.check_next_minutes,
+          'minutes',
+        );
       }
 
       return schedule_combs;

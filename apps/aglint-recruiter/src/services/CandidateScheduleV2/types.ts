@@ -30,7 +30,9 @@ export type IntervsWorkHrsEventType = Pick<
   | 'work_hours'
   | 'email'
   | 'isCalenderConnected'
->;
+> & {
+  interviewer_tz: string;
+};
 export type IntervsWorkHrsEventMapType = Map<string, IntervsWorkHrsEventType>;
 
 export type FuncParams = {

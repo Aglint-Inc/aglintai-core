@@ -121,23 +121,6 @@ export const findEachInterviewerFreeTimes = (
       ).format(),
     };
 
-    if (api_options.include_conflicting_slots.override_work_hr_start) {
-      work_hour.startTime = current_day
-        .tz(int_schedule_setting.timeZone.tzCode)
-        .set(
-          'hour',
-          api_options.include_conflicting_slots.override_work_hr_start,
-        )
-        .format();
-    }
-
-    if (api_options.include_conflicting_slots.override_work_hr_end) {
-      work_hour.endTime = current_day
-        .tz(int_schedule_setting.timeZone.tzCode)
-        .set('hour', api_options.include_conflicting_slots.override_work_hr_end)
-        .format();
-    }
-
     return work_hour;
   };
 

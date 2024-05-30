@@ -4,6 +4,8 @@ export const scheduling_options_schema = z.object({
   make_training_optional: z.boolean().default(true),
   use_recruiting_blocks: z.boolean().default(true),
   check_next_minutes: z.number().default(30),
+  cand_start_time: z.number().default(8),
+  cand_end_time: z.number().default(18),
   include_conflicting_slots: z
     .object({
       show_soft_conflicts: z.boolean().default(true),

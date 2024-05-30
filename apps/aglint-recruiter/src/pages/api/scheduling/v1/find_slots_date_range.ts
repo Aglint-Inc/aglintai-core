@@ -29,7 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       parsedData.options,
     );
-
     await cand_schedule.fetchDetails();
     await cand_schedule.fetchIntsEventsFreeTimeWorkHrs();
     const all_day_plans = cand_schedule.findCandSlotsForDateRange();
