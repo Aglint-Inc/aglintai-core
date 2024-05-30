@@ -4,7 +4,7 @@ import { supabase } from '@/src/utils/supabase/client';
 import toast from '@/src/utils/toast';
 
 import { FilterCandidateState, setPagination } from '../filter-store';
-import { ApplicationList } from '../store';
+import { ApplicationList } from '../utils';
 import { getPaginationDB } from './utils';
 
 export const useAllInterviewSchedules = ({ page, filter, rec_id }) => {

@@ -15,7 +15,6 @@ import { getFullName } from '@/src/utils/jsonResume';
 import toast from '@/src/utils/toast';
 
 import IconScheduleType from '../../Candidates/ListCard/Icon';
-import { setIsCancelOpen, setIsRescheduleOpen } from '../../Candidates/store';
 import { getScheduleBgcolor, getScheduleType } from '../../Candidates/utils';
 import { convertTimeZoneToAbbreviation } from '../../utils';
 import CancelScheduleDialog from '../Common/CancelScheduleDialog';
@@ -24,6 +23,8 @@ import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import {
   SchedulingApplication,
   setEditSession,
+  setIndividualCancelOpen,
+  setIndividualRescheduleOpen,
   setIsEditBreakOpen,
   setIsEditOpen,
   setSelectedSession,
@@ -271,13 +272,13 @@ function FullSchedule({ refetch }: { refetch: () => void }) {
                       onClickCancelSchedule={{
                         onClick: () => {
                           setSelectedSession(session);
-                          setIsCancelOpen(true);
+                          setIndividualCancelOpen(true);
                         },
                       }}
                       onClickReschedule={{
                         onClick: () => {
                           setSelectedSession(session);
-                          setIsRescheduleOpen(true);
+                          setIndividualRescheduleOpen(true);
                         },
                       }}
                       onClickEdit={{
