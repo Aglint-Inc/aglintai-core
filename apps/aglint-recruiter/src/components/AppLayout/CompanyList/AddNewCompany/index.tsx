@@ -16,7 +16,7 @@ import { AddCompanyWebsite } from '@/devlink2/AddCompanyWebsite';
 import { BackButton } from '@/devlink2/BackButton';
 import AUIButton from '@/src/components/Common/AUIButton';
 import ImageUpload from '@/src/components/Common/ImageUpload';
-import Loader from '@/src/components/Common/Lotties/SignUp/Loader';
+import Loader from '@/src/components/Common/Lotties/Loader';
 import UIPhoneInput from '@/src/components/Common/UIPhoneInput';
 import UITextField from '@/src/components/Common/UITextField';
 import UITypography from '@/src/components/Common/UITypography';
