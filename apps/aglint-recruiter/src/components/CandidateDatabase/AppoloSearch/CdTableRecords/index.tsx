@@ -10,7 +10,7 @@ import { CdLoadMore } from '@/devlink/CdLoadMore';
 import { CdTableAglint } from '@/devlink/CdTableAglint';
 import { CdTableLoader } from '@/devlink/CdTableLoader';
 import { Checkbox } from '@/devlink/Checkbox';
-import { EmptyStateCandidateSearchAglint } from '@/public/lottie/CandidateDatabase/EmptyLottie';
+import { EmptyStateCandidateSearchAglint } from '@/public/lottie/EmptyLottie';
 import MuiAvatar from '@/src/components/Common/MuiAvatar';
 import CompanyLogo from '@/src/components/JobApplicationsDashboard/Common/CompanyLogo';
 import { getFullName } from '@/src/utils/jsonResume';

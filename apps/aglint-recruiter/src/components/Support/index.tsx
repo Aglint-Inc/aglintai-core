@@ -13,7 +13,7 @@
 // import React, { useState } from 'react';
 // import { useEffect } from 'react';
 
-// import SupportEmptyLottie from '@/public/lottie/Support/EmptyLottie';
+// import SupportEmptyLottie from '@/public/lottie/supportEmptyLottie';
 
 // import { AllTickets } from '@/devlink/AllTickets';
 // import { Assignee } from '@/devlink/Assignee';

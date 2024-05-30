@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 import { useRef } from 'react';
 
-import { chat_message_loader } from '@/public/lottie/AssistantChat/chat_message_loader';
+import { chat_message_loader } from '@/public/lottie/AssistantChat_chat_message_loader';
 
 function ChatMessageLoader() {
   const lottieRef = useRef();

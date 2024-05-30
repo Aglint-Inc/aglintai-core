@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 import React from 'react';
 
-import { loaderLottie } from '@/public/lottie/Integrations/loader-loattie';
+import { loaderLottie } from '@/public/lottie/loader-loattie';
 
 function Loader() {
   return (

@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import React, { useRef } from 'react';
 
-import { complete_lottie } from '@/public/lottie/Interview/complete-lottie';
+import { complete_lottie } from '@/public/lottie/complete-lottie';
 
 function CompleteLottie() {
   const lottieRef = useRef();

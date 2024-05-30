@@ -27,7 +27,7 @@ import { InterviewCompleted } from '@/devlink/InterviewCompleted';
 import { JobListing } from '@/devlink/JobListing';
 import { LoaderSvg } from '@/devlink/LoaderSvg';
 import { OpenJobListingCard } from '@/devlink/OpenJobListingCard';
-import ThankYou from '@/public/lottie/JobPost/ThankYouLottie';
+import ThankYou from '@/public/lottie/ThankYouLottie';
 import { palette } from '@/src/context/Theme/Theme';
 import ROUTES from '@/src/utils/routing/routes';
 import { supabase } from '@/src/utils/supabase/client';

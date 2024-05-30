@@ -1,7 +1,8 @@
 import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 
-import { recordLottie } from '@/public/lottie/CandidateAssessment/record-lottie';
+import { recordLottie } from '@/public/lottie/record-lottie';
+
 let stopRecording;
 import { useEffect } from 'react';
 

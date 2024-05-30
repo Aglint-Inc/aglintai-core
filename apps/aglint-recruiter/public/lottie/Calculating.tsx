@@ -1,3 +1,4 @@
+// this file is not used
 import Lottie from 'lottie-react';
 
 const Calculating = () => {

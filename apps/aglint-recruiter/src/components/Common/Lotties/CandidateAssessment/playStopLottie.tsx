@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 import { useEffect } from 'react';
 
-import { playStopLottie } from '@/public/lottie/CandidateAssessment/play-stop-lottie';
+import { playStopLottie } from '@/public/lottie/play-stop-lottie';
 
 function PlayStop({ lottieRef, speaking }) {
   useEffect(() => {

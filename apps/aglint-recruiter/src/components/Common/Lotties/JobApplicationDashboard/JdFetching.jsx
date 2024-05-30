@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import Lottie from 'lottie-react';
 import React, { useRef } from 'react';
 
-import { jd_lottie } from '@/public/lottie/JobApplicationsDashboard/jd-loader-lottie';
+import { jd_lottie } from '@/public/lottie/jd-loader-lottie';
 
 function JdFetching() {
   const lottieRef = useRef();

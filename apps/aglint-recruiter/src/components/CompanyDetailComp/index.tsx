@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { CompanySetting } from '@/devlink/CompanySetting';
 import { NavSublink } from '@/devlink/NavSublink';
 import { SavedChanges } from '@/devlink/SavedChanges';
-import LoaderGrey from '@/public/lottie/Common/LoaderGrey';
+import LoaderGrey from '@/public/lottie/LoaderGrey';
 import { useAuthDetails } from '@/src/context/AuthContext/AuthContext';
 import { palette } from '@/src/context/Theme/Theme';
 
