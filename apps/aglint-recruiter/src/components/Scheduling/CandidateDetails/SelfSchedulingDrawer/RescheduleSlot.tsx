@@ -77,7 +77,7 @@ function RescheduleSlot() {
     <Stack position={'absolute'} width={'100%'} overflow={'hidden'}>
       <Stack
         position={'relative'}
-        height={'calc(100vh - 56px)'}
+        height={'calc(100vh - 60px)'}
         zIndex={10}
         width={'100%'}
       >
