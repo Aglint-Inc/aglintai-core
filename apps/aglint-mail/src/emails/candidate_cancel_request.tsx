@@ -28,7 +28,6 @@ interface InterviewBookingConfirmationType {
 
 // export dummy
 export const dummy: InterviewBookingConfirmationType = {
-  subject: 'Meeting Cancle Request From Candidate',
   body: '<p>Dear [recruiterName],</p><p>[firstName] is requesting to cancle interview stating reason : [rescheduleReason]</p><p>Additional Notes from [firstName] : [additionalRescheduleNotes]</p><p>Thank you</p>',
   companyLogo:
     'https://plionpfmgvenmdwwjzac.supabase.co/storage/v1/object/public/temp/aglint-black.png',
@@ -99,7 +98,6 @@ export function InterviewBookingConfirmation({
               >
                 Cancel Schedule
               </Button>
-              <Text className="bm-0">Thank You</Text>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;
                 <Link

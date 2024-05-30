@@ -98,7 +98,6 @@ export function InterviewBookingConfirmation({
               >
                 Confirm Interview
               </Button>
-              <Text className="my-0">Thank You</Text>
               <Text className="text-[#999999] text-[10px] mt-10 leading-4">
                 If you have any queries please &nbsp;
                 <Link

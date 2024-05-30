@@ -58,17 +58,17 @@ export const fillEmail = <T extends EmailTempPath>(
   return updated_template;
 };
 export type EmailTempPath =
-  | 'candidate_invite_confirmation'
-  | 'debrief_calendar_invite'
-  | 'cancel_interview_session'
-  | 'confirmation_mail_to_organizer'
   | 'application_received'
+  | 'cancel_interview_session'
   | 'candidate_availability_request'
-  | 'candidate_cancle_request'
+  | 'candidate_cancel_request'
+  | 'candidate_invite_confirmation'
   | 'candidate_reschedule_request'
+  | 'confirmation_mail_to_organizer'
+  | 'debrief_calendar_invite'
   | 'init_email_agent'
-  | 'interview_resend'
   | 'interview'
+  | 'interview_resend'
   | 'phone_screening'
   | 'phone_screening_resend'
   | 'recruiter_rescheduling_email'
@@ -76,22 +76,11 @@ export type EmailTempPath =
   | 'request_candidate_slot';
 
 export type EmailDynamicParams<T extends EmailTempPath> = {
-  confirmation_mail_to_organizer: {
-    '[recruiterName]': string;
-    '[firstName]': string;
-    '[meetingLink]': string;
-  };
-  candidate_invite_confirmation: {
-    '[firstName]': string;
-    '[viewDetailsLink]': string;
+  application_received: {
     '[companyName]': string;
-    '[jobTitle]': string;
-  };
-  debrief_calendar_invite: {
-    '[teamMemberName]': string;
     '[firstName]': string;
     '[jobTitle]': string;
-    '[companyName]': string;
+    '[supportLink]': string;
   };
   cancel_interview_session: {
     '[companyName]': string;
@@ -99,23 +88,25 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
     '[sessionName]': string;
     '[jobTitle]': string;
   };
-  application_received: {
-    '[companyName]': string;
-    '[firstName]': string;
-    '[jobTitle]': string;
-    '[supportLink]': string;
-  };
   candidate_availability_request: {
     '[companyName]': string;
     '[firstName]': string;
     '[scheduleName]': string;
   };
-  candidate_cancle_request: {
+  candidate_cancel_request: {
     '[recruiterName]': string;
     '[firstName]': string;
     '[rescheduleReason]': string;
     '[additionalRescheduleNotes]': string;
   };
+
+  candidate_invite_confirmation: {
+    '[firstName]': string;
+    '[viewDetailsLink]': string;
+    '[companyName]': string;
+    '[jobTitle]': string;
+  };
+
   candidate_reschedule_request: {
     '[recruiterName]': string;
     '[firstName]': string;
@@ -123,6 +114,18 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
     '[rescheduleReason]': string;
     '[additionalRescheduleNotes]': string;
   };
+  confirmation_mail_to_organizer: {
+    '[recruiterName]': string;
+    '[candidateFirstName]': string;
+    '[meetingLink]': string;
+  };
+  debrief_calendar_invite: {
+    '[teamMemberName]': string;
+    '[firstName]': string;
+    '[jobTitle]': string;
+    '[companyName]': string;
+  };
+
   init_email_agent: {
     '[companyName]': string;
     '[candidateFirstName]': string;
@@ -132,13 +135,6 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
     '[endDate]': string;
     '[selfScheduleLink]': string;
   };
-  interview_resend: {
-    '[jobTitle]': string;
-    '[companyName]': string;
-    '[firstName]': string;
-    '[interviewLink]': string;
-    '[supportLink]': string;
-  };
   interview: {
     '[companyName]': string;
     '[firstName]': string;
@@ -146,6 +142,14 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
     '[interviewLink]': string;
     '[supportLink]': string;
   };
+  interview_resend: {
+    '[jobTitle]': string;
+    '[companyName]': string;
+    '[firstName]': string;
+    '[interviewLink]': string;
+    '[supportLink]': string;
+  };
+
   phone_screening: {
     '[firstName]': string;
     '[jobTitle]': string;
@@ -180,10 +184,258 @@ export type EmailDynamicParams<T extends EmailTempPath> = {
 }[T];
 
 export type api_payload = {
+  application_received: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[companyName]': string;
+      '[firstName]': string;
+      '[jobTitle]': string;
+      '[supportLink]': string;
+    };
+  };
+  cancel_interview_session: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[companyName]': string;
+      '[firstName]': string;
+      '[sessionName]': string;
+      '[jobTitle]': string;
+    };
+  };
+  candidate_availability_request: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[companyName]': string;
+      '[firstName]': string;
+      '[scheduleName]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+  candidate_cancel_request: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[recruiterName]': string;
+      '[firstName]': string;
+      '[rescheduleReason]': string;
+      '[additionalRescheduleNotes]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+  candidate_invite_confirmation: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[firstName]': string;
+      '[viewDetailsLink]': string;
+      '[companyName]': string;
+      '[jobTitle]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+  candidate_reschedule_request: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[recruiterName]': string;
+      '[firstName]': string;
+      '[dateRange]': string;
+      '[rescheduleReason]': string;
+      '[additionalRescheduleNotes]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
   confirmation_mail_to_organizer: {
     recipient_email: string;
     mail_type: string;
     recruiter_id: string;
-    payload: {};
+    payload: {
+      '[recruiterName]': string;
+      '[meetingLink]': string;
+      '[candidateFirstName]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+
+  debrief_calendar_invite: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[teamMemberName]': string;
+      '[firstName]': string;
+      '[jobTitle]': string;
+      '[companyName]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+
+  init_email_agent: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[companyName]': string;
+      '[candidateFirstName]': string;
+      '[jobRole]': string;
+      '[companyTimeZone]': string;
+      '[startDate]': string;
+      '[endDate]': string;
+      '[selfScheduleLink]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+  interview: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[companyName]': string;
+      '[firstName]': string;
+      '[jobTitle]': string;
+      '[interviewLink]': string;
+      '[supportLink]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+  interview_resend: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[jobTitle]': string;
+      '[companyName]': string;
+      '[firstName]': string;
+      '[interviewLink]': string;
+      '[supportLink]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+
+  phone_screening: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[firstName]': string;
+      '[jobTitle]': string;
+      '[companyName]': string;
+      '[phoneScreeningLink]': string;
+    };
+  };
+  phone_screening_resend: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[firstName]': string;
+      '[jobTitle]': string;
+      '[companyName]': string;
+      '[phoneScreeningLink]': string;
+    };
+  };
+  recruiter_rescheduling_email: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[jobTitle]': string;
+      '[firstName]': string;
+      '[recruiterRescheduleReason]': string;
+      '[scheduleName]': string;
+      '[pickYourSlotLink]': string;
+      '[companyName]': string;
+      'meetingDetails': {
+        dateTime: string;
+        type: string;
+        platform: string;
+        duration: string;
+        link: string;
+      };
+    };
+  };
+  rejection: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[companyName]': string;
+      '[firstName]': string;
+      '[jobTitle]': string;
+    };
+  };
+  request_candidate_slot: {
+    recipient_email: string;
+    mail_type: string;
+    recruiter_id: string;
+    payload: {
+      '[jobTitle]': string;
+      '[firstName]': string;
+      '[availabilityLink]': string;
+      '[companyName]': string;
+    };
   };
 };
